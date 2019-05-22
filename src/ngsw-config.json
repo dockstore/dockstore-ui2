@@ -9,9 +9,6 @@
         "files": [
           "/favicon.ico",
           "/index.html",
-          "/ngsw-worker.js",
-          "/scripts*.js",
-          "/main*.js",
           "/*.css",
           "/*.(woff|woff2)"
         ],
