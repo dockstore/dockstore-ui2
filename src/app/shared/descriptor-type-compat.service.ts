@@ -19,6 +19,8 @@ import { ToolDescriptor } from './swagger';
 export enum WebserviceDescriptorTypeEnum {
   CWL = 'cwl',
   WDL = 'wdl',
+  // DOCKSTORE-2428 - demo how to add new workflow language
+  // SWL = 'swl',
   NFL = 'nfl'
 }
 
@@ -65,6 +67,16 @@ constructor() { }
         console.log('Unneeded conversion');
         return ToolDescriptor.TypeEnum.NFL;
       }
+
+      // DOCKSTORE-2428 - demo how to add new workflow language
+      // case WebserviceDescriptorTypeEnum.SWL: {
+      //   return ToolDescriptor.TypeEnum.SWL;
+      // }
+      // case ToolDescriptor.TypeEnum.SWL: {
+      //   console.log('Unneeded conversion');
+      //   return ToolDescriptor.TypeEnum.SWL;
+      // }
+
       default: {
         console.error('Unrecognized descriptor type: ' + descriptorType);
       }

@@ -3,7 +3,7 @@ import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
-import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
+import { DescriptorLanguageBean, ToolDescriptor, ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
@@ -116,10 +116,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       takeUntil(this.ngUnsubscribe))
       .subscribe(fileDescriptors => {
         if (fileDescriptors && fileDescriptors.length) {
-          this.workflowsService.wdl(this.workflow.id, this.selectedVersion.name).subscribe(sourceFile => {
+          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, ToolDescriptor.TypeEnum.WDL).subscribe(sourceFile => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
             if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
-              this.workflowsService.secondaryWdl(this.workflow.id, this.selectedVersion.name).subscribe(
+              this.workflowsService.secondaryDescriptors(this.workflow.id, this.selectedVersion.name, ToolDescriptor.TypeEnum.WDL).subscribe(
                 (sourceFiles: Array<SourceFile>) => {
                   this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
                 });

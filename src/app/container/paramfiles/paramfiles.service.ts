@@ -34,7 +34,9 @@ export class ParamfilesService {
     if (type === 'workflows') {
       return this.workflowsService.getTestParameterFiles(id, versionName);
     } else {
-      return this.containersService.getTestParameterFiles(id, descriptor, versionName);
+      if (descriptor == 'CWL' || descriptor == 'WDL') {
+        return this.containersService.getTestParameterFiles(id, descriptor, versionName);
+      }
     }
   }
 
@@ -51,6 +53,10 @@ export class ParamfilesService {
         } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.NFL)) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.NFL);
         }
+        // DOCKSTORE-2428 - demo how to add new workflow language
+        // else if (type === 'SWL_TEST_JSON' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.SWL)) {
+        //   descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.SWL);
+        // }
       }
     }
     return descriptorsWithParamfiles;
@@ -76,6 +82,10 @@ export class ParamfilesService {
           if (this.checkValidFileType(version, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.NEXTFLOWCONFIG)) {
             descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
           }
+          // DOCKSTORE-2428 - demo how to add new workflow language
+          // if (this.checkValidFileType(version, SourceFile.TypeEnum.SWLTESTJSON, SourceFile.TypeEnum.DOCKSTORESWL)) {
+          //   descriptorTypes.push(ToolDescriptor.TypeEnum.SWL);
+          // }
         }
         return descriptorTypes;
       }
@@ -110,11 +120,11 @@ export class ParamfilesService {
       }
 
       // Check that at least one file is present
-      const langaugeFile = version.sourceFiles.find((sourceFile) => {
+      const languageFile = version.sourceFiles.find((sourceFile) => {
         return sourceFile.type === fileType;
       });
 
-      return langaugeFile !== undefined;
+      return languageFile !== undefined;
     }
 
   // get versions which have test parameter files
