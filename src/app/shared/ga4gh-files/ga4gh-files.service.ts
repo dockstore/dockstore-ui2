@@ -44,7 +44,11 @@ export class GA4GHFilesService {
     this.clearFiles();
     this.filesService.removeAll();
     if (!descriptorTypes) {
-      descriptorTypes = [ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL];
+      descriptorTypes = [ToolDescriptor.TypeEnum.CWL,
+        ToolDescriptor.TypeEnum.WDL,
+        // DOCKSTORE-2428 - demo how to add new workflow language
+        // ToolDescriptor.TypeEnum.SWL,
+        ToolDescriptor.TypeEnum.NFL];
     }
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach(descriptorType => {
