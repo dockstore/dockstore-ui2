@@ -122,6 +122,9 @@
     </mat-card-header>
     <mat-card-content class="p-3">
       <div>
+        <strong matTooltip="DOI listed in descriptor">DOI</strong>: {{ selectedVersion.doiURL ? selectedVersion.doiURL : 'n/a' }}
+      </div>
+      <div>
         <strong matTooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author ? workflow?.author : 'n/a' }}
       </div>
       <div>
