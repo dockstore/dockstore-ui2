@@ -73,6 +73,7 @@
           class="mr-2">
           View Public
         </a>
+        <button mat-flat-button id="DOIButton" class="mr-2" color="accent" (click)="requestDOIForWorkflowVersion()" [disabled]="(isRefreshing$ | async)" [matTooltip]="pubUnpubMessage">Create DOI</button>
         <button mat-flat-button id="publishButton" class="mr-2" color="accent" (click)="publish()" [(ngModel)]="published" [disabled]="(isRefreshing$ | async) || publishDisable()" [matTooltip]="pubUnpubMessage" btnCheckbox>{{workflow?.is_published ? 'Unpublish' : 'Publish'}}</button>
         <button mat-flat-button color="primary" (click)="refresh()" [disabled]="(isRefreshing$ | async)" *ngIf="!isHosted() && canWrite" matTooltip="Sync the workflow with the source control repository">Refresh</button>
       </div>

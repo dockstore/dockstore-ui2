@@ -292,6 +292,17 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     }
   }
 
+  requestDOIForWorkflowVersion() {
+    const message = 'Creating DOI';
+    this.alertService.start(message);
+    this.workflowsService.requestDOIForWorkflowVersion(this.workflow.id, this.selectedVersion.id).subscribe(
+        (response: Array<WorkflowVersion>) => {
+          this.alertService.detailedSuccess();
+        }, (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        });
+  }
+
   isValid() {
     if (!this.workflow) {
       return false;
