@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2019 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,18 +14,12 @@
  *    limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { User } from './swagger';
 
-@Component({
-  selector: 'app-home-foot-note',
-  templateUrl: './home-foot-note.component.html',
-  styleUrls: ['./home-foot-note.component.css']
-})
-export class HomeFootNoteComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+export function isStarredByUser(starredUsers: User[], currentUser: User): boolean {
+  if (!currentUser || !starredUsers) {
+    return false;
+  } else {
+    return starredUsers.some(user => user.id === currentUser.id);
   }
-
 }

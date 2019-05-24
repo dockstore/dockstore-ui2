@@ -16,7 +16,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -52,7 +52,7 @@ import RoleEnum = Permission.RoleEnum;
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css'],
 })
-export class WorkflowComponent extends Entry {
+export class WorkflowComponent extends Entry implements AfterViewInit {
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
   public workflow: ExtendedWorkflow;
@@ -92,11 +92,24 @@ export class WorkflowComponent extends Entry {
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
-    this.redirectAndCallDiscourse('/my-workflows');
+    this.redirectToCanonicalURL('/my-workflows');
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
+  }
+
+  ngAfterViewInit() {
+    if (this.publicPage) {
+      this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        workflow => {
+          if (workflow && workflow.topicId) {
+            this.discourseHelper(workflow.topicId);
+          }
+      });
+    }
+
+    this.updateTabSelection();
   }
 
   clearState() {
