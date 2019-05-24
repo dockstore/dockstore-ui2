@@ -15,8 +15,8 @@ import { takeUntil } from 'rxjs/operators';
 export class AliasesComponent extends Base implements OnInit {
 
   loading$: Observable<boolean>;
-  organization$: Observable<Organization>;
-  collection$: Observable<Collection>;
+  organization$: Observable<Organization | null>;
+  collection$: Observable<Collection | null>;
 
   public type: string | null;
   public alias: string | null;
