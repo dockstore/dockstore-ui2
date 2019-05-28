@@ -19,14 +19,25 @@
 </app-header>
 <app-loading [loading]="(loading$ | async)">
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
-  <div class="row ml-4 mx-4" *ngIf="organizationStarGazersClicked">
-    <app-organization-stargazers></app-organization-stargazers>
+  <div class="container" *ngIf="organizationStarGazersClicked && (organization$ | async) as org">
+    <div fxLayout="row">
+      <div fxFlex="70">
+        <h3>{{org.displayName}}</h3>
+      </div>
+      <div fxFlex="30">
+        <app-organization-starring *ngIf="org?.status === approved" [organization]="org" class="pull-right starring-button" (change)="organizationStarGazersChange()"></app-organization-starring>
+      </div>
+    </div>
+    <p class="update">
+      <span [matTooltip]="(org)?.dbUpdateDate | date:'medium'">Last updated: {{ org?.dbUpdateDate | timeAgoMessage }}</span>
+    </p>
+      <app-organization-stargazers></app-organization-stargazers>
     <button mat-flat-button color="primary" id="backButton" type="button" (click)="organizationStarGazersClicked=false">
       <mat-icon>chevron_left</mat-icon>Back to details
     </button>
   </div>
   <!-- Organization header -->
-  <div class="container" *ngIf="(organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
+  <div class="container" *ngIf="!organizationStarGazersClicked && (organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
     <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
       <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
       <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">

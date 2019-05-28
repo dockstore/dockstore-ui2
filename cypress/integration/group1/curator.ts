@@ -21,7 +21,7 @@ describe('Curator UI', () => {
     cy.server();
     const userObject = { id: 1, username: 'user_A', curator: true, isAdmin: false, name: 'user_A', setupComplete: false};
     cy.route({
-      url: '/users/user',
+      url: '*/users/user',
       method: 'GET',
       status: 200,
       response: userObject
