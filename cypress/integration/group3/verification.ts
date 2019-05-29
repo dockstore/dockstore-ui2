@@ -9,7 +9,7 @@ describe('See verification information and logs', () => {
         cy.server();
         cy.fixture('toolTesterLogs').then((json) => {
             cy.route({
-                url: '/toolTester/logs/**',
+                url: `${Dockstore.API_URI}/toolTester/logs/**`,
                 method: 'GET',
                 response: json
             });
