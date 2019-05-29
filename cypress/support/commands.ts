@@ -32,9 +32,12 @@ export function getTab(tabName: string): any {
 
 export function resetDB() {
   before(() => {
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -f scripts/resetDb.sql -U dockstore -d webservice_test');
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
-    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml');
+    cy.exec('PGPASSWORD=dockstore psql -h localhost -f scripts/resetDb.sql -U dockstore -d webservice_test')
+      .its('stdout').should('contain', 'COMMIT');
+    cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore')
+      .its('stdout').should('contain', 'ALTER TABLE');
+    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml')
+      .its('stdout').should('contain', 'Successfully released change log lock');
   });
 }
 export function setTokenUserViewPort() {
