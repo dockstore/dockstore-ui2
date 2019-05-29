@@ -45,7 +45,7 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
    * Returns true if entry is a workflow, returns false if entry is not a workflow (i.e. a tool)
    * @param entry The entry to check
    */
-  public isEntryAWorkflow(entry: Entry | null): boolean {
+  public isEntryAWorkflow(entry: Entry | null): boolean | null {
     if (!entry) {
       return null;
     }
