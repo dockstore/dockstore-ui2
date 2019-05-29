@@ -28,19 +28,6 @@ describe('Dockstore Home', () => {
     // expect(browser.getLocationAbsUrl()).toMatch("/");
   });
 
-  describe('Browse tabs', () => {
-    it('should have tool tab selected', () => {
-      cy
-        .get('#toolTab')
-        .should('exist');
-    });
-    it('should not have workflow tab selected', () => {
-      cy
-        .get('#workflowTab')
-        .should('exist');
-    });
-  });
-
   describe('Navigation', () => {
     it('My Tools visible', () => {
       cy
@@ -92,13 +79,4 @@ describe('Dockstore Home', () => {
       .click();
   }
 
-  describe('Workflow and Tool Star Count', () => {
-    it('Workflow Star Count', () => {
-      starColumn('/workflows/github.com/A/l', 'workflow');
-    });
-
-    it('Tool Star Count', () => {
-      starColumn('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8', 'tool');
-    });
-  });
 });

@@ -1,0 +1,26 @@
+events {
+}
+
+http {
+  include       /etc/nginx/mime.types;
+  server {
+    listen 4200;
+
+      location = /swagger.json {
+        proxy_pass 	http://localhost:8080/swagger.json;
+      }
+
+    location /api/ {
+          rewrite ^ $request_uri;
+          rewrite ^/api/(.*) $1 break;
+          return 400;
+          proxy_pass     http://localhost:8080/$uri;
+    }
+
+    location / {
+        root   REPLACEME/dist;
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html =404;
+    }
+  }
+}

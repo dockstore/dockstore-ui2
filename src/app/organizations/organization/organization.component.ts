@@ -34,12 +34,16 @@ import { UserQuery } from '../../shared/user/user.query';
   styleUrls: ['./organization.component.scss']
 })
 export class OrganizationComponent implements OnInit {
+  public organizationStarGazersClicked = false;
+
   organization$: Observable<Organization>;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
   gravatarUrl$: Observable<string>;
+  approved = Organization.StatusEnum.APPROVED;
+
   constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog,
     private activatedRoute: ActivatedRoute, private userQuery: UserQuery
   ) { }
@@ -75,5 +79,9 @@ export class OrganizationComponent implements OnInit {
     this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'organization' }, width: '600px'
     });
+  }
+
+  organizationStarGazersChange(): void {
+    this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
   }
 }

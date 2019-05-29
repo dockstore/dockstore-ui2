@@ -15,7 +15,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NgxMdModule } from 'ngx-md';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
@@ -32,12 +32,12 @@ import { SearchContainersComponent } from './search/search.component';
   ],
   imports: [
     CommonModule,
-    NgxMdModule.forRoot(),
     HeaderModule,
     SelectModule,
     ListContainersModule,
     ContainerModule,
-    containersRouting
+    containersRouting,
+    MarkdownModule
   ]
 })
 export class ContainersModule {

@@ -61,21 +61,21 @@ describe('Shared with me workflow test from my-workflows', () => {
     cy
       .route({
         method: 'GET',
-        url: '*workflows/200*',
+        url: '*/workflows/200*',
         response: readerWorkflow
       }).as('getReaderWorkflow');
 
     cy
       .route({
         method: 'GET',
-        url: '*workflows/201*',
+        url: '*/workflows/201*',
         response: writerWorkflow
       }).as('getWriterWorkflow');
 
     cy
       .route({
         method: 'GET',
-        url: '*workflows/202*',
+        url: '*/workflows/202*',
         response: ownerWorkflow
       }).as('getOwnerWorkflow');
 

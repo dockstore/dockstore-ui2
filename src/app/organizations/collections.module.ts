@@ -9,7 +9,7 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { CollectionComponent, CollectionRemoveEntryDialogComponent } from './collection/collection.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
-import { NgxMdModule } from 'ngx-md';
+import { MarkdownModule } from 'ngx-markdown';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
 
 @NgModule({
@@ -21,7 +21,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     HeaderModule,
     RefreshAlertModule,
     RouterModule,
-    NgxMdModule,
+    MarkdownModule,
     UpdateOrganizationDescriptionModule
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent],

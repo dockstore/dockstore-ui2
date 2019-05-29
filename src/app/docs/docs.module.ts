@@ -16,7 +16,6 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxMdModule } from 'ngx-md';
 import { HeaderModule } from '../shared/modules/header.module';
 import { docsRouting } from './docs.routing';
 
@@ -28,7 +27,6 @@ import { DocsComponent } from './docs.component';
   ],
   imports: [
     CommonModule,
-    NgxMdModule.forRoot(),
     docsRouting,
     HeaderModule
   ],

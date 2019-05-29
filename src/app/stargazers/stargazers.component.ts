@@ -20,6 +20,7 @@ import { Base } from '../shared/base';
 import { StarentryService } from '../shared/starentry.service';
 import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
+import { altAvatarImg } from '../shared/constants';
 
 @Component({
   selector: 'app-stargazers',
@@ -29,6 +30,7 @@ import { StarringService } from '../starring/starring.service';
 })
 export class StargazersComponent extends Base implements OnInit {
   starGazers: any;
+  private altAvatarImg = altAvatarImg;
 
   constructor(private starringService: StarringService,
     private userService: UserService,

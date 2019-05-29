@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { NgxMdModule } from 'ngx-md';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
@@ -13,6 +12,10 @@ import { EventsModule } from './events.module';
 import { RouterModule } from '@angular/router';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { OrganizationMemberRemoveConfirmDialogComponent } from './organization-members/organization-members.component';
+import { OrganizationStarringModule} from './organization/organization-starring/organization-starring.module';
+import { OrganizationStargazersModule } from './organization/organization-stargazers/organization-stargazers.module';
+import { PipeModule } from '../shared/pipe/pipe.module';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   imports: [
@@ -21,12 +24,15 @@ import { OrganizationMemberRemoveConfirmDialogComponent } from './organization-m
     FlexLayoutModule,
     HeaderModule,
     CustomMaterialModule,
-    NgxMdModule,
     OrganizationMembersModule,
     UpdateOrganizationDescriptionModule,
     EventsModule,
     RouterModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    OrganizationStarringModule,
+    OrganizationStargazersModule,
+    MarkdownModule,
+    PipeModule
   ],
   declarations: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],
   exports: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],

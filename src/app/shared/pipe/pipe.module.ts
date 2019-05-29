@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { ExpandPanelPipe } from '../entry/expand-panel.pipe';
 import { SelectTabPipe } from '../entry/select-tab.pipe';
+import { TimeAgoMsgPipe } from '../../organizations/organization/time-ago-msg.pipe';
 
 @NgModule({
   imports: [
@@ -12,12 +13,14 @@ import { SelectTabPipe } from '../entry/select-tab.pipe';
   declarations: [
     ExpandPanelPipe,
     MapFriendlyValuesPipe,
-    SelectTabPipe
+    SelectTabPipe,
+    TimeAgoMsgPipe
   ],
   exports: [
     ExpandPanelPipe,
     MapFriendlyValuesPipe,
-    SelectTabPipe
+    SelectTabPipe,
+    TimeAgoMsgPipe
   ],
 })
 export class PipeModule { }

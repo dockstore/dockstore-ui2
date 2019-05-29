@@ -13,7 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { NgModule } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarConfig, MatTooltipDefaultOptions, MAT_SNACK_BAR_DEFAULT_OPTIONS, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
@@ -28,14 +29,14 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxMdModule } from 'ngx-md';
+import { MarkdownModule } from 'ngx-markdown';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
+import { ConfigurationService } from './configuration.service';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
-import { HomeFootNoteComponent } from './home-foot-note/home-foot-note.component';
 import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
@@ -56,13 +57,14 @@ import { RequestsModule } from './loginComponents/requests.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
+import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
 import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
-import { Dockstore } from './shared/dockstore.model';
 import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
@@ -94,6 +96,7 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 
+
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
   hideDelay: 500,
@@ -106,6 +109,10 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
   verticalPosition: 'bottom'
 };
 
+export function configurationServiceFactory(configurationService: ConfigurationService): Function {
+  return () => configurationService.load();
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -115,7 +122,6 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     NavbarComponent,
     HomeComponent,
     FooterComponent,
-    HomeFootNoteComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,
@@ -152,10 +158,12 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     OrderByModule,
     FlexLayoutModule,
     StarringModule,
+    OrganizationStarringModule,
+    OrganizationStargazersModule,
     routing,
     ModalModule.forRoot(),
     StargazersModule,
-    NgxMdModule.forRoot(),
+    MarkdownModule.forRoot(),
     ReactiveFormsModule,
     SearchModule,
     ApiModule.forRoot(getApiConfig),
@@ -178,6 +186,7 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ProviderService,
     ContainerService,
     ImageProviderService,
+    HttpClient,
     CLIENT_ROUTER_PROVIDERS,
     RegisterCheckerWorkflowService,
     RefreshService,
@@ -191,6 +200,13 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
     ExtendedToolsService,
     VerifiedByService,
     Title,
+    ConfigurationService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: configurationServiceFactory,
+      deps: [ConfigurationService],
+      multi: true
+    },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults }
   ],
@@ -202,7 +218,7 @@ export class AppModule {
 
 export const apiConfig = new Configuration({
   apiKeys: {},
-  basePath: Dockstore.API_URI
+  basePath: window.location.protocol + '//' + window.location.host + '/api'
 });
 
 export function getApiConfig() {

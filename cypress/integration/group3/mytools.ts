@@ -54,7 +54,7 @@ describe('Dockstore my tools', () => {
   describe('Should contain extended DockstoreTool properties', () => {
     it('visit another page then come back', () => {
       cy.get('a#home-nav-button').click();
-      cy.contains('Browse Tools');
+      cy.contains('Docker Tools and Workflows for the Sciences');
       cy.get('a#my-tools-nav-button').click();
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');

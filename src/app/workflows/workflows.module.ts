@@ -19,7 +19,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { NgxMdModule } from 'ngx-md';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { HeaderModule } from '../shared/modules/header.module';
 import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
@@ -41,12 +41,12 @@ import { workflowsRouting } from './workflows.routing';
     AlertModule.forRoot(),
     HeaderModule,
     ListWorkflowsModule,
-    NgxMdModule.forRoot(),
     SelectModule,
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
     WorkflowModule,
-    workflowsRouting
+    workflowsRouting,
+    MarkdownModule
   ],
   providers: [
     {provide: TooltipConfig, useFactory: getTooltipConfig}
