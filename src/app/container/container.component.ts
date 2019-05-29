@@ -147,13 +147,26 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     // will need to be aggregated with a summary page
     this.schema = {
       '@type': 'SoftwareApplication',
+      'description': this.tool.description,
       'name': this.tool.name,
-      'about': this.tool.description,
-      'audience' : 'Bioinformaticians',
+      'softwareVersion': this.defaultVersion,
+      'url': window.location,
+
+      'audience': 'Bioinformaticians',
       'dateModified': this.tool.lastUpdated,
-      'author': this.tool.author,
-      'identifier': this.tool.id
+      'identifier': this.tool.id,
+
+
     };
+    if (this.tool.author) {
+      this.schema.publisher = {
+        '@type' : 'Person',
+        'name' : this.tool.author
+      };
+      if (this.tool.email) {
+          this.schema.publisher.email = this.tool.email;
+      }
+    }
   }
 
   public subscriptions(): void {
