@@ -24,6 +24,7 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UserQuery } from '../shared/user/user.query';
 import { StarringService } from './starring.service';
 import { AlertService } from '../shared/alert/state/alert.service';
+import { isStarredByUser } from '../shared/starring';
 
 @Component({
   selector: 'app-starring',
@@ -40,7 +41,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;
-  public disable = false;
+  public disableRateButton = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
   private starredUsers: User[];
   constructor(private trackLoginService: TrackLoginService,
@@ -55,7 +56,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
     // get tool from the observer
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
-      this.rate = this.calculateRate(this.starredUsers);
+      this.rate = isStarredByUser(this.starredUsers, this.user);
     });
   }
 
@@ -91,30 +92,13 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
     this.getStarredUsers();
   }
 
-  calculateRate(starredUsers: User[]): boolean {
-    if (!this.user || !starredUsers) {
-      return false;
-    } else {
-      let matchingUser: User;
-      if (!starredUsers) {
-        return false;
-      }
-      matchingUser = starredUsers.find(user => user.id === this.user.id);
-      if (matchingUser) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-
   /**
    * Handles the star button being clicked
    *
    * @memberof StarringComponent
    */
   setStarring() {
-    this.disable = true;
+    this.disableRateButton = true;
     if (this.isLoggedIn) {
       const type = this.entryType === 'workflows' ? 'workflow' : 'tool';
 
@@ -135,7 +119,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
         },
         (error) => {
           this.alertService.detailedError(error);
-          this.disable = false;
+          this.disableRateButton = false;
         });
     }
   }
@@ -152,11 +136,11 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
         (starring: User[]) => {
           this.total_stars = starring.length;
           this.starredUsers = starring;
-          this.rate = this.calculateRate(starring);
-          this.disable = false;
-        }, error => this.disable = false);
+          this.rate = isStarredByUser(starring, this.user);
+          this.disableRateButton = false;
+        }, error => this.disableRateButton = false);
     } else {
-      this.disable = false;
+      this.disableRateButton = false;
     }
   }
   getStargazers() {

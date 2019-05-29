@@ -20,16 +20,16 @@
  */
 
 
+.header > .container {
+  color: #ffffff;
+}
+
 .nav > li > a {
   display: block;
   padding:10px 0;
 }
 
 span.nav-menu-usericon { display: none; }
-
-.header1 div.splash {
-  height: 300px;
-}
 
 div.view-content {
   min-height: 500px;

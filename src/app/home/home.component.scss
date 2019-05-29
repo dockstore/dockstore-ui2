@@ -19,7 +19,7 @@
 }
 .twitter {
   border: 1px solid #CFD1D7;
-  border-radius: 15px;
+  border-radius: 5px;
 }
 /* Video Button */
 .youtube, .youtube:active, .youtube:focus {
@@ -75,4 +75,100 @@ span {
   margin-top: 2px;
   margin-bottom: 2px;
   font-weight: 700;
+}
+
+.button-link {
+  text-decoration: none !important; // Overwrites default link underline
+  color: black !important;
+}
+
+.landing-search {
+  width: 60%;
+  max-width: 600px;
+  padding-left: 30px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border: none;
+  line-height: 2em;
+  background: white url(../../../images/search-button.png) left center no-repeat;
+  background-position: 5px;
+  outline: none;
+  color: black;
+}
+
+.search-title {
+  color: white;
+  margin: 20px 0px 0px 0px;
+}
+
+.underlined-link {
+  text-decoration: underline !important;
+}
+
+.sign-up, .sign-up:active, .sign-up:focus {
+  float: none;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background: none;
+  text-transform: uppercase;
+  padding: 8px 22px;
+
+  border: 2px solid #5e7ec5;
+  color: #5e7ec5;
+}
+
+.sign-up:hover {
+  border: 2px solid #3b5da5;
+  color: #3b5da5;
+}
+
+.top-section {
+  min-height: 800px;
+}
+
+.search-holder {
+  margin-top: 40px;
+}
+
+.header-lower {
+  min-height: 200px;
+}
+
+.content-holder {
+  padding: 40px 0px 40px 0px;
+  min-height: 300px;
+}
+
+.stripe-holder {
+  min-height: 175px;
+  width: 100%;
+  background-color: #eef0f6;
+  border: 1px solid #cfd1d7;
+}
+
+#next-steps {
+  min-height: 175px;
+  margin: 40px 0px 0px 0px;
+  width: 100%;
+  background-color: #eef0f6;
+  border: 1px solid #cfd1d7;
+}
+
+@media (max-width: 767px) {
+  .hidden-on-mobile {
+     display: none !important;
+  }
+}
+
+.youtube {
+  z-index: 1070;
+}
+
+.small-card, .small-card > mat-card {
+  min-height: 150px;
+  width: 100% !important;
+}
+
+.big-button {
+  font-size: 16px;
 }

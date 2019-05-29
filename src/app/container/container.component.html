@@ -185,7 +185,15 @@
         </mat-tab>
       </mat-tab-group>
     </div>
-    <div *ngIf="publicPage" class="mt-2" id='discourse-comments'></div>
+
+    <div *ngIf="publicPage" class="mt-2 mr-3">
+      <div *ngIf="tool?.topicId !== null else noTopicId" id='discourse-comments'></div>
+      <ng-template #noTopicId>
+        <mat-card class="alert alert-warning" role="alert">
+          <mat-icon>info</mat-icon> No Discourse topic exists for this tool.
+        </mat-card>
+      </ng-template>
+    </div>
   </div>
 
   <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic && tool">

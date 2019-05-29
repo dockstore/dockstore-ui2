@@ -24,7 +24,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxMdModule } from 'ngx-md';
+
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
 import { AddEntryModule } from '../../organizations/collection/add-entry.module';
@@ -59,6 +59,7 @@ import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { getTooltipConfig } from './../tooltip';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,6 @@ import { getTooltipConfig } from './../tooltip';
     AlertModule.forRoot(),
     CurrentCollectionsModule,
     FlexLayoutModule,
-    NgxMdModule.forRoot(),
     HeaderModule,
     ListWorkflowsModule,
     ModalModule.forRoot(),
@@ -98,7 +98,8 @@ import { getTooltipConfig } from './../tooltip';
     StargazersModule,
     ClipboardModule,
     EntryModule,
-    AddEntryModule
+    AddEntryModule,
+    MarkdownModule
   ],
   providers: [
     { provide: TooltipConfig, useFactory: getTooltipConfig },

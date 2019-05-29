@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2018 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -14,13 +14,17 @@
  *    limitations under the License.
  */
 
-h3 {
-  font-size: 20px;
-  color: #21335B;
-  font-weight: normal;
-}
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Organization } from './swagger';
 
-.container-fluid {
-  background-color:#eef0f6;
-  border: 1px solid #cfd1d7;
+
+@Injectable()
+export class StarOrganizationService {
+  private starOrganizationSource = new BehaviorSubject<any>(null);
+  starOrganization$ = this.starOrganizationSource.asObservable();
+  constructor() { }
+  setOrganization(organization: { theOrganization: Organization; } ) {
+    this.starOrganizationSource.next(organization);
+  }
 }
