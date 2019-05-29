@@ -22,7 +22,7 @@ export function unregisterServiceWorkers() {
           registrations.forEach((registration) => {
             registration.unregister();
           })
-        })
+        });
     }
   });
 }
