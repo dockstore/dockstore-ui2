@@ -8,39 +8,56 @@ https://github.com/dockstore/dockstore-ui2/blob/develop/src/index.html
 Please keep the two in sync when making changes, pending a better solution via git submodules
 -->
 
-  <head>
-    <meta charset="utf-8" />
-    <meta name="google-site-verification" content="GFLds4kE1pcp99mSh5ipFD49XediZA8PN03qMGmPF8w" />
-    <title>Dockstore</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#21335B" />
-    <script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "Organization",
-        "url": "https://dockstore.org",
-        "logo": "https://raw.githubusercontent.com/dockstore/dockstore-ui2/develop/src/assets/images/dockstore/dockstore.png",
-        "sameAs": ["https://twitter.com/DockstoreOrg"]
-      }
-    </script>
-    <script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "WebSite",
-        "url": "https://dockstore.org",
-        "sameAs": ["https://twitter.com/DockstoreOrg"],
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://dockstore.org/search?search={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      }
-    </script>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta name="google-site-verification" content="GFLds4kE1pcp99mSh5ipFD49XediZA8PN03qMGmPF8w" />
+  <title>Dockstore</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#21335B"/>
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "url": "https://dockstore.org",
+  "logo": "https://raw.githubusercontent.com/dockstore/dockstore-ui2/develop/src/assets/images/dockstore/dockstore.png",
+  "sameAs": ["https://twitter.com/DockstoreOrg"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "https://dockstore.org",
+  "sameAs": ["https://twitter.com/DockstoreOrg"],
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://dockstore.org/search?search={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+  }
+  </script>
+
+  <script>
+  (function(w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({
+      'gtm.start': new Date().getTime(),
+      event: 'gtm.js'
+    });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src =
+      'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', '{{ TAG_MANAGER_ID }}');
+  </script>
+</head>
 
   <body>
     <app-root>

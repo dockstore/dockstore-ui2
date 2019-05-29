@@ -194,12 +194,30 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
     this.schema = {
-      '@type': 'Product',
-      'name': this.workflow.workflowName,
+      '@type': 'SoftwareApplication',
       'description': this.workflow.description,
-      'identifier': this.workflow.id,
-      'url': this.shareURL
+      'name': this.workflow.workflowName,
+      'softwareVersion': this.workflow.defaultVersion,
+      'url': this.shareURL,
+      'identifier': this.workflow.id
     };
+    if (this.workflow.author) {
+      this.schema.publisher = {
+        '@type' : 'Person',
+        'name' : this.workflow.author
+      };
+      if (this.workflow.email) {
+        this.schema.publisher.email = this.workflow.email;
+      }
+    } else if (this.workflow.organization) {
+      this.schema.publisher = {
+        '@type': 'Organization',
+        'name': this.workflow.organization
+      };
+      if (this.workflow.email) {
+        this.schema.publisher.email = this.workflow.email;
+      }
+    }
   }
 
   public getDefaultVersionName(): string {
