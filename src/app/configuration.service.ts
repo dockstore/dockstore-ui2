@@ -54,6 +54,11 @@ export class ConfigurationService {
     Dockstore.GITLAB_REDIRECT_URI = Dockstore.HOSTNAME + config.gitlabRedirectPath;
     Dockstore.GITLAB_SCOPE = config.gitlabScope;
 
+    Dockstore.ZENODO_AUTH_URL = config.zenodoAuthUrl;
+    Dockstore.ZENODO_CLIENT_ID = config.zenodoClientId;
+    Dockstore.ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + config.zenodoRedirectPath;
+    Dockstore.ZENODO_SCOPE = config.zenodoScope;
+
     Dockstore.GOOGLE_CLIENT_ID = config.googleClientId;
     Dockstore.GOOGLE_SCOPE = config.googleScope;
 
