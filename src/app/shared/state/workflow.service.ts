@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
+import { WorkflowClass } from '../enum/WorkflowClass.enum';
 import { Workflow } from '../swagger';
 import { ExtendedWorkflowService } from './extended-workflow.service';
 import { WorkflowStore } from './workflow.store';
@@ -27,6 +28,10 @@ export class WorkflowService {
       this.workflowStore.remove();
       this.extendedWorkflowService.remove();
     }
+  }
+
+  setWorkflowClass(workflowClass: WorkflowClass): void {
+    this.workflowStore.updateRoot({ workflowClass: workflowClass });
   }
 
   get() {

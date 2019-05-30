@@ -14,16 +14,19 @@
  *    limitations under the License.
  */
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
+import { WorkflowClass } from 'app/shared/enum/WorkflowClass.enum';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { includesValidation } from '../../shared/constants';
+import { includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../../shared/constants';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
@@ -40,8 +43,9 @@ import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { MyBioWorkflowsService } from '../my-bio-workflows.service';
+import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * How the workflow selection works:
@@ -70,12 +74,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Workflow;
   workflows: Array<Workflow>;
+  workflowClass: WorkflowClass;
+  title$: Observable<string>;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
   public isRefreshing$: Observable<boolean>;
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
-  constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
+  constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration, private route: ActivatedRoute,
+    private myBioWorkflowsService: MyBioWorkflowsService, private myServicesService: MyServicesService,
     private usersService: UsersService, private userQuery: UserQuery, private alertService: AlertService,
     private workflowService: WorkflowService, protected authService: AuthService, public dialog: MatDialog,
     protected accountsService: AccountsService, private refreshService: RefreshService,
@@ -83,6 +90,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService, private matSnackbar: MatSnackBar,
     protected tokenQuery: TokenQuery, protected workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
+    this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
+    this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
+    this.title$ = this.workflowQuery.title$;
   }
 
   ngOnInit() {
@@ -232,12 +242,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * Grabs the workflow from the webservice and loads it
    * @param workflow Selected workflow
    */
-  selectEntry(workflow: ExtendedWorkflow): void {
+  selectEntry(workflow: ExtendedWorkflow | null): void {
     if (workflow !== null) {
-      this.workflowsService.getWorkflow(workflow.id, includesValidation).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
-        this.location.go('/my-workflows/' + result.full_workflow_path);
-        this.workflowService.setWorkflow(result);
-      });
+      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
+      } else {
+        this.myServicesService.selectEntry(workflow.id, includesValidation);
+      }
     }
   }
 
@@ -245,9 +256,14 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * Triggers a URL change, which will select the appropriate workflow
    * @param workflow Selected workflow
    */
-  goToEntry(workflow: ExtendedWorkflow): void {
+  goToEntry(workflow: ExtendedWorkflow | null): void {
     if (workflow !== null) {
-      this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+        this.router.navigateByUrl('/' + myBioWorkflowsURLSegment + '/' + workflow.full_workflow_path);
+      } else {
+        this.router.navigateByUrl('/' + myServicesURLSegment + '/' + workflow.full_workflow_path);
+      }
+
     }
   }
 

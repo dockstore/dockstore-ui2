@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { WorkflowStore, WorkflowState } from './workflow.store';
-import { Workflow, ToolDescriptor } from '../swagger';
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
+import { WorkflowClass } from '../enum/WorkflowClass.enum';
+import { ToolDescriptor, Workflow } from '../swagger';
+import { WorkflowState, WorkflowStore } from './workflow.store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkflowQuery extends QueryEntity<WorkflowState, Workflow> {
+  public workflowClass$: Observable<WorkflowClass> = this.select(state => state.workflowClass);
+  public title$: Observable<string> = this.workflowClass$.pipe(map((workflowClass: WorkflowClass) => this.getTitle(workflowClass)));
   public workflow$: Observable<Workflow> = this.selectActive();
   public workflowId$: Observable<number> = this.workflow$.pipe(map((workflow: Workflow) => workflow ? workflow.id : null));
   public workflowIsPublished$: Observable<boolean> = this.workflow$.pipe(
@@ -19,9 +22,13 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Workflow> {
   public isNFL$: Observable<boolean> = this.descriptorType$.pipe(
     map((descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.NFL));
   public isWDL$: Observable<boolean> = this.descriptorType$.pipe(
-    map( (descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.WDL));
+    map((descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.WDL));
   constructor(protected store: WorkflowStore, private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(store);
+  }
+
+  private getTitle(workflowClass: WorkflowClass) {
+    return workflowClass === WorkflowClass.BioWorkflow ? 'My workflows' : 'My services';
   }
 
 }

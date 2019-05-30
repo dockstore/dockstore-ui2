@@ -16,18 +16,19 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { ga4ghWorkflowIdPrefix, includesValidation } from '../shared/constants';
+import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
+import { WorkflowClass } from '../shared/enum/WorkflowClass.enum';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
@@ -65,6 +66,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  private workflowClass: WorkflowClass;
   validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
@@ -92,7 +94,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
-    this.redirectToCanonicalURL('/my-workflows');
+    this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
+    if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
+    } else {
+      this.redirectToCanonicalURL('/' + myServicesURLSegment);
+    }
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
@@ -106,7 +113,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
           if (workflow && workflow.topicId) {
             this.discourseHelper(workflow.topicId);
           }
-      });
+        });
     }
 
     this.updateTabSelection();
@@ -234,9 +241,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         .subscribe(workflow => {
           this.workflowService.setWorkflow(workflow);
           this.selectTab(this.validTabs.indexOf(this.currentTab));
-          if (this.workflow != null) {
-            this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-          }
+          this.updateWorkflowUrl(this.workflow);
         }, error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
@@ -254,6 +259,23 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             this.bitbucketPath += pathSuffix;
           }
         });
+    }
+  }
+  /**
+   * Updates the workflow (bio workflow or service) url and also checks for the null
+   *
+   * @private
+   * @param {(Workflow | null)} workflow
+   * @memberof WorkflowComponent
+   */
+  private updateWorkflowUrl(workflow: Workflow | null) {
+    if (workflow != null) {
+      const entryPath = workflow.full_workflow_path;
+      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+        this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
+      } else {
+        this.updateUrl(entryPath, myServicesURLSegment, 'workflows');
+      }
     }
   }
 
@@ -368,16 +390,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
         [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
     }
-    if (this.workflow != null) {
-      this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-    }
+    this.updateWorkflowUrl(this.workflow);
   }
 
   setEntryTab(tabName: string): void {
     this.currentTab = tabName;
-    if (this.workflow != null) {
-      this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-    }
+    this.updateWorkflowUrl(this.workflow);
   }
 
   getPageIndex(): number {

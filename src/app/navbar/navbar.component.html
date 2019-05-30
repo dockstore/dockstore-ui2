@@ -30,12 +30,17 @@
             <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png"> Docs
         </a>
         <span class="spacer"></span>
-        <a mat-button class="icon" id="my-tools-nav-button" *ngIf="isLoggedIn" routerLink="/my-tools">
+        <ng-template [ngIf]="isLoggedIn">
+        <a mat-button class="icon" id="my-tools-nav-button" routerLink="/my-tools">
           <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools
         </a>
-        <a mat-button class="icon" id="my-workflows-nav-button" *ngIf="isLoggedIn" routerLink="/my-workflows">
+        <a mat-button class="icon" id="my-workflows-nav-button" routerLink="/my-workflows">
           <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
         </a>
+        <a mat-button class="icon" id="my-workflows-nav-button" routerLink="/my-services">
+          <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Services
+        </a>
+        </ng-template>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
         <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
           <mat-icon class="hidden-lg" *ngIf="user?.isAdmin">lock</mat-icon>
@@ -113,9 +118,10 @@
 
   <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
     <div class="container-fluid navbar-holder">
-      <span *ngIf="isLoggedIn">
-        <a mat-button class="icon my-icon-sm" id="my-tools-nav-button-xs" routerLink="/my-tools">My Tools</a>
-        <a mat-button class="icon my-icon-sm" id="my-workflows-nav-button-xs" routerLink="/my-workflows">My Workflows</a>
+      <span *ngIf="isLoggedIn" fxLayout="row">
+        <a fxFlex mat-button class="icon" id="my-tools-nav-button-xs" routerLink="/my-tools">My Tools</a>
+        <a fxFlex mat-button class="icon" id="my-workflows-nav-button-xs" routerLink="/my-workflows">My Workflows</a>
+        <a fxFlex mat-button class="icon" id="my-workflows-nav-button-xs" routerLink="/my-services">My Services</a>
       </span>
     </div>
   </mat-toolbar-row>

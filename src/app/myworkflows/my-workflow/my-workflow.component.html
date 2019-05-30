@@ -15,7 +15,7 @@
   -->
 <app-header>
   <button mat-icon-button (click)="toggleSidebar()"><mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon></button>
-  <img src="../assets/images/dockstore/dockstore-workflows-green.png"> My Workflows
+  <img src="../assets/images/dockstore/dockstore-workflows-green.png"> {{ title$ | async | titlecase }}
 </app-header>
 
 <button mat-fab color="accent" id="registerWorkflowButton" class="fab-bottom-right" matTooltip="Register workflow" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="(isRefreshing$ | async)"><mat-icon>add</mat-icon></button>
@@ -31,7 +31,7 @@
                 <button mat-flat-button color="primary" matTooltipPosition="after" matTooltip="Find new workflows and sync all existing workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)">
                   Refresh All
                 </button>
-              <h3 class="sidebar-header">My workflows</h3>
+              <h3 class="sidebar-header">{{ title$ | async }}</h3>
             </div>
             <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any workflows</p>
             <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="(isRefreshing$ | async)"></app-sidebar-accordion>
