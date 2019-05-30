@@ -1,9 +1,8 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
+import { CustomMaterialModule } from '../../modules/material.module';
 import { VerifiedByComponent } from './verified-by.component';
+
 
 describe('VerifiedByComponent', () => {
   let component: VerifiedByComponent;
@@ -11,9 +10,10 @@ describe('VerifiedByComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VerifiedByComponent ]
+      imports: [CustomMaterialModule],
+      declarations: [VerifiedByComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
