@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AliasesStore } from './aliases.store';
-import { OrganizationsService, Organization, Collection, DockstoreTool, ContainersService, WorkflowsService, Workflow } from '../../shared/swagger';
+import {
+  OrganizationsService, Organization, Collection, DockstoreTool, ContainersService, WorkflowsService, Workflow
+ } from '../../shared/swagger';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 
