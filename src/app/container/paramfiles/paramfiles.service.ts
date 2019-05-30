@@ -34,7 +34,7 @@ export class ParamfilesService {
     if (type === 'workflows') {
       return this.workflowsService.getTestParameterFiles(id, versionName);
     } else {
-      if (descriptor == 'CWL' || descriptor == 'WDL') {
+      if (descriptor === 'CWL' || descriptor === 'WDL') {
         return this.containersService.getTestParameterFiles(id, descriptor, versionName);
       }
     }
