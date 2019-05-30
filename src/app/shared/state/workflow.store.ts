@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { WorkflowClass } from '../enum/WorkflowClass.enum';
+import { ToolClass } from '../enum/tool-class';
 import { Workflow } from '../swagger';
 
 export interface WorkflowState extends EntityState<Workflow> {
-  workflowClass: WorkflowClass;
+  toolClass: ToolClass;
 }
 
 @Injectable({ providedIn: 'root' })

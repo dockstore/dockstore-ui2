@@ -28,7 +28,7 @@ import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
-import { WorkflowClass } from '../shared/enum/WorkflowClass.enum';
+import { ToolClass } from '../shared/enum/tool-class';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
@@ -66,7 +66,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
-  private workflowClass: WorkflowClass;
+  private toolClass: ToolClass;
   validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
@@ -94,8 +94,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
-    this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
-    if (this.workflowClass === WorkflowClass.BioWorkflow) {
+    this.toolClass = this.workflowQuery.getSnapshot().toolClass;
+    if (this.toolClass === ToolClass.BioWorkflow) {
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else {
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
@@ -271,7 +271,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   private updateWorkflowUrl(workflow: Workflow | null) {
     if (workflow != null) {
       const entryPath = workflow.full_workflow_path;
-      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      if (this.toolClass === ToolClass.BioWorkflow) {
         this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
       } else {
         this.updateUrl(entryPath, myServicesURLSegment, 'workflows');

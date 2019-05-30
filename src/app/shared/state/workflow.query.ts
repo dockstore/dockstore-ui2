@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
-import { WorkflowClass } from '../enum/WorkflowClass.enum';
+import { ToolClass } from '../enum/tool-class';
 import { ToolDescriptor, Workflow } from '../swagger';
 import { WorkflowState, WorkflowStore } from './workflow.store';
 
@@ -11,8 +11,8 @@ import { WorkflowState, WorkflowStore } from './workflow.store';
   providedIn: 'root'
 })
 export class WorkflowQuery extends QueryEntity<WorkflowState, Workflow> {
-  public workflowClass$: Observable<WorkflowClass> = this.select(state => state.workflowClass);
-  public title$: Observable<string> = this.workflowClass$.pipe(map((workflowClass: WorkflowClass) => this.getTitle(workflowClass)));
+  public toolClass$: Observable<ToolClass> = this.select(state => state.toolClass);
+  public title$: Observable<string> = this.toolClass$.pipe(map((toolClass: ToolClass) => this.getTitle(toolClass)));
   public workflow$: Observable<Workflow> = this.selectActive();
   public workflowId$: Observable<number> = this.workflow$.pipe(map((workflow: Workflow) => workflow ? workflow.id : null));
   public workflowIsPublished$: Observable<boolean> = this.workflow$.pipe(
@@ -27,8 +27,8 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Workflow> {
     super(store);
   }
 
-  private getTitle(workflowClass: WorkflowClass) {
-    return workflowClass === WorkflowClass.BioWorkflow ? 'My workflows' : 'My services';
+  private getTitle(toolClass: ToolClass) {
+    return toolClass === ToolClass.BioWorkflow ? 'My workflows' : 'My services';
   }
 
 }

@@ -1,4 +1,4 @@
-export enum WorkflowClass {
+export enum ToolClass {
     BioWorkflow,
     Service
 }

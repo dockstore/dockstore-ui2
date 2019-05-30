@@ -19,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
-import { WorkflowClass } from 'app/shared/enum/WorkflowClass.enum';
+import { ToolClass } from 'app/shared/enum/tool-class';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
@@ -74,7 +74,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Workflow;
   workflows: Array<Workflow>;
-  workflowClass: WorkflowClass;
+  toolClass: ToolClass;
   title$: Observable<string>;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
@@ -90,8 +90,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService, private matSnackbar: MatSnackBar,
     protected tokenQuery: TokenQuery, protected workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
-    this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
-    this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
+    this.workflowService.setToolClass(this.route.snapshot.data['toolClass']);
+    this.toolClass = this.workflowQuery.getSnapshot().toolClass;
     this.title$ = this.workflowQuery.title$;
   }
 
@@ -244,7 +244,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   selectEntry(workflow: ExtendedWorkflow | null): void {
     if (workflow !== null) {
-      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      if (this.toolClass === ToolClass.BioWorkflow) {
         this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
       } else {
         this.myServicesService.selectEntry(workflow.id, includesValidation);
@@ -258,7 +258,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   goToEntry(workflow: ExtendedWorkflow | null): void {
     if (workflow !== null) {
-      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      if (this.toolClass === ToolClass.BioWorkflow) {
         this.router.navigateByUrl('/' + myBioWorkflowsURLSegment + '/' + workflow.full_workflow_path);
       } else {
         this.router.navigateByUrl('/' + myServicesURLSegment + '/' + workflow.full_workflow_path);
