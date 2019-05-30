@@ -14,6 +14,7 @@ googleClientSecret: <fill me in>
 googleRedirectURI: http://localhost:8080/auth/tokens/google.com
 discourseKey: <fill me in>
 discourseUrl: <fill me in>
+discourseCategoryId: 9
 
 authorizerType: inmemory
 
