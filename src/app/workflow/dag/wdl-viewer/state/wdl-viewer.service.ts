@@ -74,7 +74,7 @@ export class WdlViewerService {
    * @param version
    */
   createSingle(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipelineResponse> {
-    return this.workflowsService.primaryDescriptor(workflow.id, version.name,ToolDescriptor.TypeEnum.WDL).pipe(switchMap(prim => {
+    return this.workflowsService.primaryDescriptor(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL).pipe(switchMap(prim => {
       // Errors thrown by the parse function are caught by the Observable being subscribed to
       return from(pipeline.parse(prim.content));
     }));
@@ -87,7 +87,8 @@ export class WdlViewerService {
    * @param version
    */
   createMultiple(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipelineResponse> {
-    return forkJoin(this.workflowsService.primaryDescriptor(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL), this.workflowsService.secondaryDescriptors(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL))
+    return forkJoin(this.workflowsService.primaryDescriptor(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL),
+      this.workflowsService.secondaryDescriptors(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL))
       .pipe(
         switchMap(res => {
           // Store each secondary file in a zip object

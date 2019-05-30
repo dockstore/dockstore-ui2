@@ -116,14 +116,16 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       takeUntil(this.ngUnsubscribe))
       .subscribe(fileDescriptors => {
         if (fileDescriptors && fileDescriptors.length) {
-          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, ToolDescriptor.TypeEnum.WDL).subscribe(sourceFile => {
-            this.descriptorsService.updatePrimaryDescriptor(sourceFile);
-            if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
-              this.workflowsService.secondaryDescriptors(this.workflow.id, this.selectedVersion.name, ToolDescriptor.TypeEnum.WDL).subscribe(
-                (sourceFiles: Array<SourceFile>) => {
-                  this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
-                });
-            }
+          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name,
+            ToolDescriptor.TypeEnum.WDL).subscribe(sourceFile => {
+              this.descriptorsService.updatePrimaryDescriptor(sourceFile);
+              if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
+                this.workflowsService.secondaryDescriptors(this.workflow.id, this.selectedVersion.name,
+                  ToolDescriptor.TypeEnum.WDL).subscribe(
+                  (sourceFiles: Array<SourceFile>) => {
+                    this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
+                  });
+              }
           });
         }
       });
