@@ -55,7 +55,7 @@ export class Dockstore {
   // static GITLAB_SCOPE = 'read_user openid';
   static GITLAB_SCOPE = 'api';
 
-  static ZENODO_AUTH_URL = 'https://sandbox.zenodo.org/oauth/authorize';
+  static ZENODO_AUTH_URL = 'https://zenodo.org/oauth/authorize';
   static ZENODO_CLIENT_ID = 'fill_this_in';
   static ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.ZENODO;
   static ZENODO_SCOPE = 'deposit:write deposit:actions';
