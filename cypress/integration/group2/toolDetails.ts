@@ -192,9 +192,9 @@ describe('Find tool by alias', () => {
       url: '*/containers/fakeAlias/aliases',
       method: 'GET',
       status: 200,
-      response: { 'tool_path': 'a/b/c' }
+      response: { 'tool_path': 'quay.io/A2/b3' }
     });
     cy.visit('/aliases/tools/fakeAlias');
-    cy.url().should('eq', Cypress.config().baseUrl + '/tools/a/b/c');
+    cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3');
   });
 });
