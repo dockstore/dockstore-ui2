@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { ToolClass } from 'app/shared/enum/tool-class';
 import { Observable } from 'rxjs';
-
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
+
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -16,11 +17,14 @@ export class SidebarAccordionComponent implements OnInit {
   @Input() refreshMessage;
   public workflowId$: Observable<number>;
   activeTab = 0;
-
+  toolClass$: Observable<ToolClass>;
+  ToolClass = ToolClass;
   constructor(private workflowQuery: WorkflowQuery,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+
+    this.toolClass$ = this.workflowQuery.toolClass$;
     this.workflowId$ = this.workflowQuery.workflowId$;
   }
 }

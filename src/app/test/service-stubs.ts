@@ -13,6 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { ToolClass } from 'app/shared/enum/tool-class';
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
 import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
@@ -285,6 +286,8 @@ export class WorkflowStubService {
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     sharedWorkflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = observableOf({});
+
+    setToolClass(toolClass: ToolClass) {}
     setWorkflow(thing: Workflow) {
         this.workflow$.next(thing);
     }

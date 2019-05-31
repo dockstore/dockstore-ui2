@@ -15,12 +15,16 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MatSnackBarModule } from '@angular/material';
+import {
+  MatDialogModule,
+  MatDialogRef,
+  MatSnackBarModule
+} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
-
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -40,7 +44,7 @@ import {
   UrlResolverStubService,
   UsersStubService,
   WorkflowsStubService,
-  WorkflowStubService,
+  WorkflowStubService
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
@@ -53,9 +57,19 @@ describe('MyWorkflowsComponent', () => {
   let refreshService: RefreshService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+      declarations: [
+        MyWorkflowComponent,
+        RouterLinkStubDirective,
+        RouterOutletStubComponent
+      ],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule, MatSnackBarModule],
+      imports: [
+        RouterTestingModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        CustomMaterialModule
+      ],
       providers: [
         UserQuery,
         { provide: Configuration, useClass: ConfigurationStub },
@@ -63,37 +77,46 @@ describe('MyWorkflowsComponent', () => {
         { provide: AuthService, useClass: AuthStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },
-        { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+        {
+          provide: RegisterWorkflowModalService,
+          useClass: RegisterWorkflowModalStubService
+        },
         TokenQuery,
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: UrlResolverService, useClass: UrlResolverStubService }, MyWorkflowsService,
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
+        MyWorkflowsService,
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => { }
+            close: (dialogResult: any) => {}
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MyWorkflowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    registerWorkflowModalService = fixture.debugElement.injector.get(RegisterWorkflowModalService);
+    registerWorkflowModalService = fixture.debugElement.injector.get(
+      RegisterWorkflowModalService
+    );
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
   it('should set observables', () => {
-    registerWorkflowModalService = fixture.debugElement.injector.get(RegisterWorkflowModalService);
+    registerWorkflowModalService = fixture.debugElement.injector.get(
+      RegisterWorkflowModalService
+    );
     spyOn(registerWorkflowModalService, 'setWorkflowRepository');
     component.setRegisterEntryModalInfo('a/b');
-    expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
+    expect(
+      registerWorkflowModalService.setWorkflowRepository
+    ).toHaveBeenCalled();
   });
   it('should refresh workflows', () => {
     component.user = { id: 1 };

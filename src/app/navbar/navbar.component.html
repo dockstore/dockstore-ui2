@@ -31,15 +31,20 @@
         </a>
         <span class="spacer"></span>
         <ng-template [ngIf]="isLoggedIn">
-        <a mat-button class="icon" id="my-tools-nav-button" routerLink="/my-tools">
-          <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools
-        </a>
-        <a mat-button class="icon" id="my-workflows-nav-button" routerLink="/my-workflows">
-          <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
-        </a>
-        <a mat-button class="icon" id="my-workflows-nav-button" routerLink="/my-services">
-          <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Services
-        </a>
+            <button mat-raised-button color="accent" [matMenuTriggerFor]="menu">My Entries
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <a mat-menu-item routerLink="/my-tools">
+                  <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-tools-purple.png">&nbsp;My&nbsp;Tools
+                </a>
+                <a mat-menu-item  routerLink="/my-workflows">
+                  <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png">&nbsp;My&nbsp;Workflows
+                </a>
+                <a mat-menu-item routerLink="/my-services">
+                  <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png">&nbsp;My&nbsp;Services
+                </a>
+            </mat-menu>
         </ng-template>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
         <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
@@ -119,9 +124,20 @@
   <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
     <div class="container-fluid navbar-holder">
       <span *ngIf="isLoggedIn" fxLayout="row">
-        <a fxFlex mat-button class="icon" id="my-tools-nav-button-xs" routerLink="/my-tools">My Tools</a>
-        <a fxFlex mat-button class="icon" id="my-workflows-nav-button-xs" routerLink="/my-workflows">My Workflows</a>
-        <a fxFlex mat-button class="icon" id="my-workflows-nav-button-xs" routerLink="/my-services">My Services</a>
+          <button mat-raised-button color="accent" [matMenuTriggerFor]="menu">My Entries
+              <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+              <a mat-menu-item routerLink="/my-tools">
+                <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools
+              </a>
+              <a mat-menu-item  routerLink="/my-workflows">
+                <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
+              </a>
+              <a mat-menu-item routerLink="/my-services">
+                <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Services
+              </a>
+          </mat-menu>
       </span>
     </div>
   </mat-toolbar-row>

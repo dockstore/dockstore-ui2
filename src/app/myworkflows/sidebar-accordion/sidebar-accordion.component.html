@@ -33,9 +33,15 @@
       </mat-tab>
     </mat-tab-group>
     <mat-action-row>
+      <div *ngIf="(toolClass$ | async) === ToolClass.BioWorkflow">
       <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
         <app-refresh-workflow-organization [organization]="orgObj?.organization"></app-refresh-workflow-organization>
       </span>
+    </div>
+    <div *ngIf="(toolClass$ | async) === ToolClass.Service">
+        <a mat-button target="_blank" rel="noopener noreferrer" [href]="orgObj?.organization | githubNameToId | async">Manage on GitHub</a>
+    </div>
+      
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
