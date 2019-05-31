@@ -43,6 +43,10 @@ export class DescriptorService {
               } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
                   descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
               }
+              // DOCKSTORE-2428 - demo how to add new workflow language
+              // else if (element === SourceFile.TypeEnum.DOCKSTORESWL) {
+              //   descriptorTypes.push(ToolDescriptor.TypeEnum.SWL);
+              // }
           });
           return descriptorTypes;
         }
@@ -79,6 +83,15 @@ export class DescriptorService {
           if (nflValidation && nflValidation.valid) {
             descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
           }
+
+          // DOCKSTORE-2428 - demo how to add new workflow language
+          // const swlValidation = version.validations.find((validation) => {
+          //   return validation.type === SourceFile.TypeEnum.DOCKSTORESWL ||
+          //     validation.type === SourceFile.TypeEnum.DOCKSTORESWL;
+          // });
+          // if (swlValidation && swlValidation.valid) {
+          //   descriptorTypes.push(ToolDescriptor.TypeEnum.SWL);
+          // }
         }
         return descriptorTypes;
       }

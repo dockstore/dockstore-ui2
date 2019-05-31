@@ -1,7 +1,7 @@
 {
   "name": "Dockstore",
   "short_name": "Dockstore",
-  "description": "Create, Share, Use",  
+  "description": "Create, Share, Use",
   "icons": [{
     "src": "assets/images/dockstore/dockstore.png",
       "sizes": "328x328",
@@ -12,7 +12,8 @@
       "sizes": "512x512",
       "type": "image/png"
    }
-   ],
+  ],
+  "scope": "/",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
