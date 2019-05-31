@@ -28,7 +28,8 @@ describe('Dockstore my workflows', () => {
       cy.visit('/my-workflows');
       cy.get('a#home-nav-button').click();
       cy.contains('Docker Tools and Workflows for the Sciences');
-      cy.get('a#my-workflows-nav-button').click();
+      cy.contains('button', 'My Entries').click();
+      cy.get('[data-cy=my-workflows-nav-button]').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
       cy.visit('/my-workflows/github.com/A/g');

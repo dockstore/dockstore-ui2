@@ -1,13 +1,23 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule, MatDialogModule, MatDialogRef, MatExpansionModule, MatIconModule, MatListModule, MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatDialogModule,
+  MatDialogRef,
+  MatExpansionModule,
+  MatIconModule,
+  MatListModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule
+} from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
+import { RefreshWorkflowOrganizationComponent } from 'app/workflow/refresh-workflow-organization/refresh-workflow-organization.component';
 import { GithubNameToIdPipe } from '../../github-name-to-id.pipe';
 import { ExpandPanelPipe } from '../../shared/entry/expand-panel.pipe';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
-import { RefreshWorkflowOrganizationComponent } from './../../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
 describe('SidebarAccordionComponent', () => {
@@ -16,7 +26,13 @@ describe('SidebarAccordionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, ExpandPanelPipe, SelectTabPipe, GithubNameToIdPipe],
+      declarations: [
+        SidebarAccordionComponent,
+        RefreshWorkflowOrganizationComponent,
+        ExpandPanelPipe,
+        SelectTabPipe,
+        GithubNameToIdPipe
+      ],
       imports: [
         HttpClientTestingModule,
         MatDialogModule,
@@ -27,19 +43,22 @@ describe('SidebarAccordionComponent', () => {
         MatExpansionModule,
         MatListModule,
         MatTooltipModule,
-        RouterTestingModule],
+        RouterTestingModule
+      ],
       providers: [
-        { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+        {
+          provide: RegisterWorkflowModalService,
+          useClass: RegisterWorkflowModalStubService
+        },
         { provide: WorkflowService, useClass: WorkflowStubService },
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => { }
+            close: (dialogResult: any) => {}
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

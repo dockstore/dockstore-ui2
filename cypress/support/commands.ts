@@ -69,7 +69,8 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
     .parent()
     .parent()
     .contains('div .no-wrap', repo)
-    .should('be.visible').click();
+    .should('be.visible')
+    .click();
 }
 
 export function approvePotatoMembership() {

@@ -55,7 +55,8 @@ describe('Dockstore my tools', () => {
     it('visit another page then come back', () => {
       cy.get('a#home-nav-button').click();
       cy.contains('Docker Tools and Workflows for the Sciences');
-      cy.get('a#my-tools-nav-button').click();
+      cy.contains('button', 'My Entries').click();
+      cy.get('[data-cy=my-tools-nav-button]').click();
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
       cy.contains('GitHub');
