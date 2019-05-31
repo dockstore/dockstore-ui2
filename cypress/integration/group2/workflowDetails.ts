@@ -129,7 +129,7 @@ describe('Find workflow by alias', () => {
   it('workflow alias', () => {
     cy.server();
     cy.route({
-      url: '/workflows/fakeAlias/aliases',
+      url: '*/workflows/fakeAlias/aliases',
       method: 'GET',
       status: 200,
       response: { 'full_workflow_path': 'a/b/c' }

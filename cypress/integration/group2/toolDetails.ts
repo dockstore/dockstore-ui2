@@ -189,7 +189,7 @@ describe('Find tool by alias', () => {
   it('tool alias', () => {
     cy.server();
     cy.route({
-      url: '/tools/fakeAlias/aliases',
+      url: '*/containers/fakeAlias/aliases',
       method: 'GET',
       status: 200,
       response: { 'tool_path': 'a/b/c' }
