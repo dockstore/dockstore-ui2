@@ -58,7 +58,7 @@ export class Dockstore {
   static ZENODO_AUTH_URL = 'https://sandbox.zenodo.org/oauth/authorize';
   static ZENODO_CLIENT_ID = 'fill_this_in';
   static ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.ZENODO;
-  static ZENODO_SCOPE = 'deposit:write,deposit:actions';
+  static ZENODO_SCOPE = 'deposit:write deposit:actions';
 
   static GOOGLE_CLIENT_ID = 'fill_this_in';
   static GOOGLE_SCOPE = 'profile email';
