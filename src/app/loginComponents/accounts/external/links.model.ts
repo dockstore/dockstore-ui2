@@ -28,6 +28,8 @@ export class Links {
   static readonly ZENODO = () => `${ Dockstore.ZENODO_AUTH_URL }
                             ?client_id=${ Dockstore.ZENODO_CLIENT_ID }
                             &redirect_uri=${ Dockstore.ZENODO_REDIRECT_URI }
-                            &scope=${ Dockstore.ZENODO_SCOPE }`
+                            &response_type=code`.replace(/\s/g, '') +
+                            `&scope=${ Dockstore.ZENODO_SCOPE }`
+
 
 }
