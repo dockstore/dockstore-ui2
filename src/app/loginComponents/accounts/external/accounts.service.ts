@@ -36,7 +36,7 @@ export class AccountsService {
                 this.openWindowPreserveSpaces(Links.GITLAB());
                 break;
             case TokenSource.ZENODO:
-                this.openWindow(Links.ZENODO());
+                this.openWindowPreserveSpaces(Links.ZENODO());
                 break;
             case TokenSource.QUAY:
                 this.openWindow(Links.QUAY());
