@@ -28,6 +28,7 @@ import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
 import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 import { WdlViewerService } from './wdl-viewer/state/wdl-viewer.service';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 
 /**
  * This is the DAG tab
@@ -59,7 +60,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public dagResult$: Observable<any>;
   private cy: cytoscape.Core;
   public expanded: Boolean = false;
-  public workflow$: Observable<Workflow>;
+  public workflow$: Observable<BioWorkflow>;
   public isNFL$: Observable<boolean>;
   public isWDL$: Observable<boolean>;
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
@@ -130,7 +131,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isWDL$ = this.workflowQuery.isWDL$;
     this.dagResult$ = this.dagQuery.dagResults$;
-    this.workflow$ = this.workflowQuery.workflow$;
+    this.workflow$ = <Observable<BioWorkflow>><unknown>this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;
     this.dagService.loadExtensions();
     this.wdlViewerResult$ = this.wdlViewerService.status$;

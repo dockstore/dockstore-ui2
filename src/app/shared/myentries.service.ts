@@ -14,9 +14,14 @@
  *     limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { AlertService } from './alert/state/alert.service';
+import { Base } from './base';
+import { WorkflowService } from './state/workflow.service';
+import { UsersService, WorkflowsService } from './swagger';
+import { UserQuery } from './user/user.query';
 
 @Injectable()
-export abstract class MyEntriesService {
+export abstract class MyEntriesService extends Base {
   /**
    * Find the index for the group that the entry belongs to
    * @param  orgWorkflows Array of grouped entries
@@ -55,13 +60,10 @@ export abstract class MyEntriesService {
       groupEntries.splice(unIndex, 1);
     }
     if (orIndex >= 0) {
-      groupEntries.splice(
-        (unIndex < orIndex) ? orIndex - 1 : orIndex,
-        1
-      );
+      groupEntries.splice(unIndex < orIndex ? orIndex - 1 : orIndex, 1);
     }
 
-    const path = (type === 'workflow') ? 'organization' : 'namespace';
+    const path = type === 'workflow' ? 'organization' : 'namespace';
 
     sortedGroupEntries = sortedGroupEntries.concat(
       groupEntries.sort(function(a, b) {
@@ -79,7 +81,6 @@ export abstract class MyEntriesService {
     }
     return sortedGroupEntries;
   }
-
 
   /**
    * Sorts and groups entries by source control and organization for workflows and registry and namespace
@@ -107,16 +108,22 @@ export abstract class MyEntriesService {
       groupEntries[pos].entries.push(entries[i]);
     }
 
-    const path = (type === 'workflow') ? 'full_workflow_path' : 'tool_path';
+    const path = type === 'workflow' ? 'full_workflow_path' : 'tool_path';
 
     groupEntries.forEach(groupEntry => {
       groupEntry.entries.sort((a, b) => {
-        if (a[path] < b[path]) { return -1; }
-        if (a[path] > b[path]) { return 1; }
+        if (a[path] < b[path]) {
+          return -1;
+        }
+        if (a[path] > b[path]) {
+          return 1;
+        }
         return 0;
       });
     });
     /* Return Namespaces w/ Nested Containers */
     return this.sortGroups(groupEntries, username, type);
   }
+
+  abstract getMyEntries(): void;
 }

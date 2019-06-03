@@ -48,6 +48,8 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -56,7 +58,7 @@ import RoleEnum = Permission.RoleEnum;
 export class WorkflowComponent extends Entry implements AfterViewInit {
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
-  public workflow: ExtendedWorkflow;
+  public workflow: BioWorkflow | Service;
   public missingWarning: boolean;
   public title: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
@@ -212,7 +214,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
 
   public subscriptions(): void {
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      workflow => {
+      (workflow: BioWorkflow | Service) => {
         this.workflow = workflow;
         if (workflow) {
           this.published = this.workflow.is_published;

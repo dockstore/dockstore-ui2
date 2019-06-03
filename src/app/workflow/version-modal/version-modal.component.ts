@@ -30,6 +30,8 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 
 export interface Dialogdata {
   canRead: boolean;
@@ -46,7 +48,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
-  workflow: Workflow;
+  workflow: BioWorkflow | Service;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
   public tooltip = Tooltip;

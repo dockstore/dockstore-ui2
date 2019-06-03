@@ -28,6 +28,8 @@ import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { MatDialog } from '@angular/material';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -41,7 +43,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   @Input() isOwner: boolean;
   items: any[];
   isPublic: boolean;
-  public workflow: Workflow;
+  public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
 
   constructor(

@@ -27,12 +27,14 @@ import { WorkflowsService } from './swagger/api/workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from './swagger/model/workflow';
 import { ToolQuery } from './tool/tool.query';
+import { BioWorkflow } from './swagger/model/bioWorkflow';
+import { Service } from './swagger/model/service';
 
 @Injectable()
 export class RefreshService {
     public tool: DockstoreTool;
     private tools;
-    private workflow: Workflow;
+    private workflow: Service | BioWorkflow;
     private workflows;
     constructor(private workflowsService: WorkflowsService, private containerService: ContainerService, private alertService: AlertService,
         private workflowService: WorkflowService, private containersService: ContainersService, private usersService: UsersService,
