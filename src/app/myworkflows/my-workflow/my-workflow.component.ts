@@ -93,7 +93,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
     this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
     this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
-    this.workflowClass$ = this.workflowQuery.workflowClass$;
+    this.workflowClass$ = this.workflowQuery.workflowClassName$;
   }
 
   ngOnInit() {

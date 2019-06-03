@@ -21,6 +21,7 @@ import { ga4ghWorkflowIdPrefix } from '../constants';
 import { SessionQuery } from '../session/session.query';
 import { DockstoreTool, Entry, Workflow } from '../swagger';
 import { CheckerWorkflowState, CheckerWorkflowStore } from './checker-workflow.store';
+import { BioWorkflow } from '../swagger/model/bioWorkflow';
 
 @Injectable({ providedIn: 'root' })
 export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
@@ -31,7 +32,7 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
     map((entry: Entry) => this.isEntryAWorkflow(entry) ? (<Workflow>entry).mode === Workflow.ModeEnum.STUB : false));
   checkerWorkflowPath$: Observable<string> = this.checkerWorkflow$.pipe(
     map(workflow => workflow ? workflow.full_workflow_path : null));
-  parentId$: Observable<number> = this.entry$.pipe(map((entry: Workflow) => entry ? entry.parent_id : null));
+  parentId$: Observable<number> = this.entry$.pipe(map((entry: BioWorkflow) => entry ? entry.parent_id : null));
   checkerId$: Observable<number> = this.entry$.pipe(map((entry: Entry) => entry ? entry.checker_id : null));
   entryIsWorkflow$: Observable<boolean> = this.entry$.pipe(
     map((entry: Entry) => entry ? this.isEntryAWorkflow(entry) : null));

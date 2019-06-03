@@ -12,7 +12,7 @@ import { WorkflowState, WorkflowStore } from './workflow.store';
 })
 export class WorkflowQuery extends QueryEntity<WorkflowState, Workflow> {
   public workflowClass$: Observable<WorkflowClass> = this.select(state => state.workflowClass);
-  public workflowClass$: Observable<string> = this.workflowClass$.pipe(map((workflowClass: WorkflowClass) => this.getWorkflowClass(workflowClass)));
+  public workflowClassName$: Observable<string> = this.workflowClass$.pipe(map((workflowClass: WorkflowClass) => this.getWorkflowClass(workflowClass)));
   public workflow$: Observable<Workflow> = this.selectActive();
   public workflowId$: Observable<number> = this.workflow$.pipe(map((workflow: Workflow) => workflow ? workflow.id : null));
   public workflowIsPublished$: Observable<boolean> = this.workflow$.pipe(

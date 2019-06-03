@@ -31,6 +31,7 @@ import { CheckerWorkflowQuery } from './checker-workflow.query';
 import { CheckerWorkflowStore } from './checker-workflow.store';
 import { WorkflowQuery } from './workflow.query';
 import { includesValidation } from '../constants';
+import { BioWorkflow } from '../swagger/model/bioWorkflow';
 
 @Injectable({ providedIn: 'root' })
 export class CheckerWorkflowService extends Base {
@@ -107,7 +108,7 @@ export class CheckerWorkflowService extends Base {
    * Go to parent entry (could be a tool or workflow)
    */
   public goToParentEntry(): void {
-    const parentId = (<Workflow>this.checkerWorkflowQuery.getSnapshot().entry).parent_id;
+    const parentId = (<BioWorkflow>this.checkerWorkflowQuery.getSnapshot().entry).parent_id;
     if (!parentId) {
       console.log('This entry is not a checker workflow and has no parent entry.');
       return;
