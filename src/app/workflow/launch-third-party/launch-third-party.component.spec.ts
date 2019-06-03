@@ -56,9 +56,6 @@ describe('LaunchThirdPartyComponent', () => {
     expect(nativeElement
       .querySelector('a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'))
       .toBeTruthy();
-    expect(nativeElement
-      .querySelector('a[href="https://portal.firecloud.org/#import/dockstore/github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl:master"]'))
-      .toBeTruthy();
     // https://platform.dnanexus.com/panx/tools/import-workflow?source=https://dockstore.org:443/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master
     expect(nativeElement
       .querySelector('a[href="https://platform.dnanexus.com/panx/tools/import-workflow?source='

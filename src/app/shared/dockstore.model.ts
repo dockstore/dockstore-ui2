@@ -30,7 +30,6 @@ export class Dockstore {
   static DISCOURSE_URL = 'http://localhost/';
 
   static DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
-  static FIRECLOUD_IMPORT_URL = 'https://portal.firecloud.org/#import/dockstore';
   static DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
   static TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
 
@@ -62,6 +61,5 @@ export class Dockstore {
 
   static FEATURES = {
     enableCwlViewer: true,
-    enableLaunchWithFireCloud: true
   };
 }
