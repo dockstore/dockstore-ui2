@@ -19,12 +19,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { WorkflowsComponent } from './workflows.component';
 import { SearchWorkflowsComponent } from './search/search.component';
 import { WorkflowComponent } from '../workflow/workflow.component';
+import { WorkflowClass } from 'app/shared/enum/workflow-class';
 
 const WORKFLOWS_ROUTES: Routes = [
   {
-    path: '', component: WorkflowsComponent, data: { title: 'Dockstore | Workflow'}, children: [
-      { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Workflows'} },
-      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Workflow'} }
+    path: '',
+    component: WorkflowsComponent,
+    data: { title: 'Dockstore | Workflow', workflowClass: WorkflowClass.BioWorkflow },
+    children: [
+      { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Workflows', workflowClass: WorkflowClass.BioWorkflow } },
+      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Workflow', workflowClass: WorkflowClass.BioWorkflow } }
     ]
   }
 ];

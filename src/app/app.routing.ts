@@ -26,6 +26,7 @@ import { SearchComponent } from './search/search.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
+import { WorkflowClass } from './shared/enum/workflow-class';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
@@ -36,18 +37,29 @@ const APP_ROUTES: Routes = [
   { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools' } },
   { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools' } },
   { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows' } },
+  {
+    path: 'services',
+    loadChildren: 'app/workflows/services/services.module#ServicesModule',
+    data: { title: 'Dockstore | Services', workflowClass: WorkflowClass.Service }
+  },
   { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows' } },
   { path: 'organizations', loadChildren: 'app/organizations/organizations.module#OrganizationsModule' },
   {
-    path: 'my-tools', loadChildren: 'app/mytools/mytools.module#MyToolsModule', canActivate: [AuthGuard],
+    path: 'my-tools',
+    loadChildren: 'app/mytools/mytools.module#MyToolsModule',
+    canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Tools' }
   },
   {
-    path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard],
+    path: 'my-workflows',
+    loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule',
+    canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Workflows' }
   },
   {
-    path: 'my-services', loadChildren: 'app/my-services/my-services.module#MyServicesModule', canActivate: [AuthGuard],
+    path: 'my-services',
+    loadChildren: 'app/my-services/my-services.module#MyServicesModule',
+    canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Services' }
   },
   { path: 'aliases', loadChildren: 'app/aliases/aliases.module#AliasesModule', data: { title: 'Dockstore | Aliases' } },

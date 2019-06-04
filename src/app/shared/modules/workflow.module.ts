@@ -115,7 +115,9 @@ import { MarkdownModule } from 'ngx-markdown';
   exports: [
     WorkflowComponent,
     CustomMaterialModule,
-    EntryModule
+    EntryModule,
+    HeaderModule,
+    CommonModule
   ],
   entryComponents: [VersionModalComponent]
 })

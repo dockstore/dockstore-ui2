@@ -68,7 +68,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
-  private workflowClass: WorkflowClass;
+  public workflowClass: WorkflowClass;
   validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
@@ -236,7 +236,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   }
 
   public setupPublicEntry(url: String) {
-    if (url.includes('workflows')) {
+    if (url.includes('workflows') || url.includes('services')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation)
@@ -276,7 +276,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       if (this.workflowClass === WorkflowClass.BioWorkflow) {
         this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
       } else {
-        this.updateUrl(entryPath, myServicesURLSegment, 'workflows');
+        this.updateUrl(entryPath, myServicesURLSegment, 'services');
       }
     }
   }

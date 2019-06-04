@@ -15,9 +15,20 @@
  */
 
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { WorkflowQuery } from 'app/shared/state/workflow.query';
+import { WorkflowService } from 'app/shared/state/workflow.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-workflows',
   templateUrl: './workflows.component.html'
 })
-export class WorkflowsComponent { }
+export class WorkflowsComponent {
+  public workflowClass$: Observable<WorkflowClass>;
+  constructor(private workflowQuery: WorkflowQuery, private workflowService: WorkflowService, private route: ActivatedRoute) {
+    this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
+    this.workflowClass$ = this.workflowQuery.workflowClass$;
+  }
+}

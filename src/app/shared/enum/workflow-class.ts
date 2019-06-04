@@ -1,4 +1,4 @@
 export enum WorkflowClass {
-    BioWorkflow = 'BIOWORKFLOW',
-    Service = 'SERVICE'
+    BioWorkflow = 'workflow',
+    Service = 'service'
 }
