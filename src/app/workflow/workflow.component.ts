@@ -77,6 +77,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   protected readers = [];
   protected writers = [];
   protected owners = [];
+  WorkflowClass = WorkflowClass;
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   publishMessage = 'Publish the workflow to make it visible to the public';

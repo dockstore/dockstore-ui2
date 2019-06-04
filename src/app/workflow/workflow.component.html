@@ -177,28 +177,30 @@
               </div>
             </ng-template>
           </mat-tab>
-          <mat-tab id="toolsTab" label="Tools">
-            <div *ngIf="validVersions && !isStub()">
-              <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
-              </app-tool-tab>
-            </div>
-            <div *ngIf="isStub()" class="p-3">
-              <mat-card class="alert alert-warning" role="alert">
-                <mat-icon>warning</mat-icon> To see tools, please refresh the workflow.
-              </mat-card>
-            </div>
-          </mat-tab>
-          <mat-tab id="dagTab" label="DAG">
-            <ng-template matTabContent>
-              <app-dag [id]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite"
-                [isOwner]="isOwner"></app-dag>
+          <div *ngIf="workflowClass === WorkflowClass.BioWorkflow">
+            <mat-tab id="toolsTab" label="Tools">
+              <div *ngIf="validVersions && !isStub()">
+                <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+                </app-tool-tab>
+              </div>
               <div *ngIf="isStub()" class="p-3">
                 <mat-card class="alert alert-warning" role="alert">
-                  <mat-icon>warning</mat-icon> To see the DAG, please refresh the workflow.
+                  <mat-icon>warning</mat-icon> To see tools, please refresh the workflow.
                 </mat-card>
               </div>
-            </ng-template>
-          </mat-tab>
+            </mat-tab>
+            <mat-tab id="dagTab" label="DAG">
+              <ng-template matTabContent>
+                <app-dag [id]="workflow?.id" [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite"
+                  [isOwner]="isOwner"></app-dag>
+                <div *ngIf="isStub()" class="p-3">
+                  <mat-card class="alert alert-warning" role="alert">
+                    <mat-icon>warning</mat-icon> To see the DAG, please refresh the workflow.
+                  </mat-card>
+                </div>
+              </ng-template>
+            </mat-tab>
+          </div>
           <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
             <app-permissions [workflow]="workflow"></app-permissions>
           </mat-tab>

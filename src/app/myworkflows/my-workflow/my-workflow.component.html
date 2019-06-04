@@ -20,16 +20,8 @@
   </button>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> My {{ workflowClassName$ | async | titlecase }}s
 </app-header>
-<button
-  mat-fab
-  color="accent"
-  id="registerWorkflowButton"
-  class="fab-bottom-right"
-  matTooltip="Register workflow"
-  matTooltipPosition="before"
-  (click)="showRegisterEntryModal()"
-  [disabled]="isRefreshing$ | async"
->
+<button *ngIf="workflowClass === WorkflowClass.BioWorkflow" mat-fab color="accent" id="registerWorkflowButton" class="fab-bottom-right"
+  matTooltip="Register workflow" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="isRefreshing$ | async">
   <mat-icon>add</mat-icon>
 </button>
 <div class="container-fluid sidebar-set-height">
@@ -39,29 +31,20 @@
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
         <div id="parent">
           <div id="child">
-            <div
-              class="clearfix sidebar-header"
-              matTooltipPosition="after"
-              [matTooltip]="(hasSourceControlToken$ | async) ? '' : 'Requires source control token'"
-            >
+            <div class="clearfix sidebar-header" matTooltipPosition="after"
+              [matTooltip]="(hasSourceControlToken$ | async) ? '' : 'Requires source control token'">
               <mat-toolbar>
                 <mat-toolbar-row>
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
                     <span>My {{ workflowClassName$ | async }}s</span>
                     <mat-menu #appMenu="matMenu">
-                      <button
-                        mat-menu-item
-                        color="primary"
-                        matTooltipPosition="after"
-                        matTooltip="Find new workflows and sync all existing workflows"
-                        (click)="refreshAllEntries()"
-                        [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)"
-                      >
+                      <button *ngIf="workflowClass === WorkflowClass.BioWorkflow" mat-menu-item color="primary" matTooltipPosition="after"
+                        matTooltip="Find new workflows and sync all existing workflows" (click)="refreshAllEntries()"
+                        [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)">
                         Refresh All
                       </button>
-                      <a mat-menu-item href="https://github.com/apps/dockstore" target="_blank" rel="noopener noreferrer"
-                        >Manage on GitHub</a
-                      >
+                      <a mat-menu-item href="https://github.com/apps/dockstore" target="_blank" rel="noopener noreferrer">Manage on
+                        GitHub</a>
                     </mat-menu>
                     <button mat-icon-button [matMenuTriggerFor]="appMenu">
                       <mat-icon>
@@ -75,11 +58,8 @@
             <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">
               You have not registered any {{ workflowClassName$ | async }}s
             </p>
-            <app-sidebar-accordion
-              [openOneAtATime]="oneAtATime"
-              [groupEntriesObject]="groupEntriesObject"
-              [refreshMessage]="isRefreshing$ | async"
-            ></app-sidebar-accordion>
+            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject"
+              [refreshMessage]="isRefreshing$ | async"></app-sidebar-accordion>
             <br />
             <div class="clearfix sidebar-header">
               <h3 class="sidebar-header">Shared with me</h3>
@@ -92,13 +72,11 @@
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div
-          *ngIf="
+        <div *ngIf="
             !(isRefreshing$ | async) &&
             ((groupEntriesObject?.length == 0 || !groupEntriesObject) &&
               (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))
-          "
-        >
+          ">
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>
@@ -119,13 +97,8 @@
                   Press the 'Register {{ workflowClassName$ | async | titlecase }}' button to manually add a
                   {{ workflowClassName$ | async }}.
                 </li>
-                <button
-                  mat-raised-button
-                  color="primary"
-                  type="button"
-                  (click)="showRegisterEntryModal()"
-                  [disabled]="isRefreshing$ | async"
-                >
+                <button mat-raised-button color="primary" type="button" (click)="showRegisterEntryModal()"
+                  [disabled]="isRefreshing$ | async">
                   Register {{ workflowClassName$ | async | titlecase }}
                 </button>
               </ul>
