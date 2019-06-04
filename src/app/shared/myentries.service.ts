@@ -125,5 +125,12 @@ export abstract class MyEntriesService extends Base {
     return this.sortGroups(groupEntries, username, type);
   }
 
+  /**
+   * Gets all the user's current entries for a specific entry type (Tool, BioWorkflow, Service)
+   *
+   * @abstract
+   * @memberof MyEntriesService
+   */
   abstract getMyEntries(): void;
+  abstract registerEntry(): void;
 }

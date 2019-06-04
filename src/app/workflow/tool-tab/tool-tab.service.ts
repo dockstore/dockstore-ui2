@@ -23,6 +23,8 @@ export class ToolTabService {
         return 'Task Excerpt';
       case ToolDescriptor.TypeEnum.NFL:
         return 'Process Excerpt';
+      case ToolDescriptor.TypeEnum.DOCKSTORESERVICE:
+        return 'Service';
       default:
         console.error('Unknown descriptor type found: ' + descriptorType);
         return 'Tool Excerpt';

@@ -13,19 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
 import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 import { AuthService } from 'ng2-ui-auth';
-import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
-import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { AlertService } from '../../shared/alert/state/alert.service';
 import { includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../../shared/constants';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
@@ -36,8 +35,6 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow } from '../../shared/swagger';
-import { UsersService } from '../../shared/swagger/api/users.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
@@ -46,9 +43,6 @@ import { RegisterWorkflowModalService } from '../../workflow/register-workflow-m
 import { MyBioWorkflowsService } from '../my-bio-workflows.service';
 import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { MyEntriesService } from 'app/shared/myentries.service';
-import { Service } from 'app/shared/swagger/model/service';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 
 /**
  * How the workflow selection works:
@@ -76,7 +70,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
   workflowClass: WorkflowClass;
-  workflowClass$: Observable<string>;
+  workflowClassName$: Observable<string>;
   WorkflowClass = WorkflowClass;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
@@ -105,7 +99,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
     this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
     this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
-    this.workflowClass$ = this.workflowQuery.workflowClassName$;
+    this.workflowClassName$ = this.workflowQuery.workflowClassName$.pipe(shareReplay(1));
   }
 
   ngOnInit() {
@@ -135,7 +129,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
     // Updates selected workflow from service and selects in sidebar
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
-    this.myworkflowService.getMyEntries();
+    this.getMyEntries();
+
     // Using the workflows and shared with me workflows, initialize the organization groupings and set the initial entry
     combineLatest(this.workflowService.workflows$, this.workflowService.sharedWorkflows$)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -150,8 +145,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
             this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
-            // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh), the url needs to be
-            // used to set the workflow onInit. Otherwise, the select-tab.pipe results in really strange behaviour. Not entirely sure why.
+            // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),
+            // the url needs to be used to set the workflow onInit.
+            // Otherwise, the select-tab.pipe results in really strange behaviour. Not entirely sure why.
             this.workflowService.setWorkflow(
               this.findEntryFromPath(
                 this.urlResolverService.getEntryPathFromUrl(),
@@ -172,6 +168,14 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );
+  }
+
+  private getMyEntries() {
+    if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      this.myworkflowService.getMyEntries();
+    } else {
+      this.myServicesService.getMyEntries();
+    }
   }
 
   /**
@@ -272,7 +276,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    const dialogRef = this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+    if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+    } else {
+      this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+    }
   }
 
   refreshAllEntries(): void {

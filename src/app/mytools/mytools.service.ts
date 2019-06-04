@@ -27,4 +27,8 @@ export class MytoolsService extends MyEntriesService {
   getMyEntries() {
 
   }
+
+  registerEntry() {
+
+  }
 }

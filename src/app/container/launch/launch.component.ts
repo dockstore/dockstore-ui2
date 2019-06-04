@@ -64,9 +64,8 @@ export class LaunchComponent {
   protected published$: Observable<boolean>;
 
   constructor(private launchService: ToolLaunchService, private toolQuery: ToolQuery,
-    private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService,
-    private descriptorTypeCompatService: DescriptorTypeCompatService) {
-    this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
+    private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService) {
+    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
       this.descriptors = descriptors;
       this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });

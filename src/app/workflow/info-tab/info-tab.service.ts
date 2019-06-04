@@ -62,7 +62,7 @@ export class InfoTabService {
             this.workflow = workflow;
             this.cancelEditing();
         });
-        this.descriptorLanguageService.descriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);
+        this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);
         this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
     }
     setWorkflowPathEditing(editing: boolean) {

@@ -77,7 +77,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
     this.mode$ = this.registerCheckerWorkflowService.mode$;
 
     this.syncTestJson = false;
-    this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
+    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
       this.descriptorLanguages = descriptorLanguages.filter((language: string) => language !== ToolDescriptor.TypeEnum.NFL);
     });
     this.isRefreshing$ = this.alertQuery.showInfo$;

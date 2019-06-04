@@ -73,8 +73,7 @@ export class LaunchWorkflowComponent extends EntryTab {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private launchService: WorkflowLaunchService, private workflowQuery: WorkflowQuery,
-    protected gA4GHFilesService: GA4GHFilesService, private gA4GHFilesQuery: GA4GHFilesQuery,
-    private descriptorTypeCompatService: DescriptorTypeCompatService) {
+    protected gA4GHFilesService: GA4GHFilesService, private gA4GHFilesQuery: GA4GHFilesQuery) {
     super();
     this.published$ = this.workflowQuery.workflowIsPublished$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;

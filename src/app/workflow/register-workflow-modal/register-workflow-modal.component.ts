@@ -95,7 +95,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
       workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
     this.registerWorkflowModalService.isModalShown$.pipe(
       takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
+    this.descriptorLanguages$ = this.registerWorkflowModalService.filteredDescriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
     this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<ToolDescriptor.TypeEnum>) => {
       if (languages && languages.length > 0) {
@@ -207,6 +207,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
       }
       case ToolDescriptor.TypeEnum.NFL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
+        break;
+      }
+      case ToolDescriptor.TypeEnum.DOCKSTORESERVICE: {
+        this.descriptorValidationPattern = validationDescriptorPatterns.testParameterFilePath;
         break;
       }
       default: {

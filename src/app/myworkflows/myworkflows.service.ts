@@ -17,16 +17,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
+import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, WorkflowsService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
-import { forkJoin, of as observableOf, combineLatest } from 'rxjs';
+import { combineLatest, forkJoin, of as observableOf } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
-import { WorkflowQuery } from 'app/shared/state/workflow.query';
-import { WorkflowClass } from 'app/shared/enum/workflow-class';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class MyWorkflowsService extends MyEntriesService {
   constructor(
     protected userQuery: UserQuery,
@@ -76,16 +77,12 @@ export class MyWorkflowsService extends MyEntriesService {
         const workflowClassName = this.workflowQuery.getWorkflowClass(workflowClass);
         if (user && workflowClassName) {
           this.alertService.start('Fetching ' + workflowClassName + 's');
-          if (workflowClass === WorkflowClass.BioWorkflow) {
-            this.getMyBioWorkflows(user.id);
-          } else {
-            this.getMyServices();
-          }
+          this.getMyBioWorkflows(user.id);
         }
       });
   }
 
-  getMyBioWorkflows(id: number) {
+  getMyBioWorkflows(id: number): void {
     forkJoin(
       this.usersService.userWorkflows(id).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -115,5 +112,5 @@ export class MyWorkflowsService extends MyEntriesService {
       );
   }
 
-  getMyServices() {}
+  registerEntry(): void {}
 }
