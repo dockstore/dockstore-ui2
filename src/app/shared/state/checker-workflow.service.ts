@@ -107,7 +107,7 @@ export class CheckerWorkflowService extends Base {
    * Go to parent entry (could be a tool or workflow)
    */
   public goToParentEntry(): void {
-    const parentId = (<Workflow>this.checkerWorkflowQuery.getSnapshot().entry).parent_id;
+    const parentId = (<Workflow>this.checkerWorkflowQuery.getSnapshot().entry).parentEntry.id;
     if (!parentId) {
       console.log('This entry is not a checker workflow and has no parent entry.');
       return;

@@ -56,6 +56,7 @@ export class ConfigurationService {
 
     Dockstore.GOOGLE_CLIENT_ID = config.googleClientId;
     Dockstore.GOOGLE_SCOPE = config.googleScope;
+    Dockstore.GOOGLE_TAG_MANAGER_ID = config.tagManagerId;
 
     Dockstore.CWL_VISUALIZER_URI = config.cwlVisualizerUri;
 

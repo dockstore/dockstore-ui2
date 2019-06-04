@@ -31,7 +31,7 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
     map((entry: Entry) => this.isEntryAWorkflow(entry) ? (<Workflow>entry).mode === Workflow.ModeEnum.STUB : false));
   checkerWorkflowPath$: Observable<string> = this.checkerWorkflow$.pipe(
     map(workflow => workflow ? workflow.full_workflow_path : null));
-  parentId$: Observable<number> = this.entry$.pipe(map((entry: Workflow) => entry ? entry.parent_id : null));
+  parentId$: Observable<number> = this.entry$.pipe(map((entry: Workflow) => entry && entry.parentEntry && entry.parentEntry.id));
   checkerId$: Observable<number> = this.entry$.pipe(map((entry: Entry) => entry ? entry.checker_id : null));
   entryIsWorkflow$: Observable<boolean> = this.entry$.pipe(
     map((entry: Entry) => entry ? this.isEntryAWorkflow(entry) : null));

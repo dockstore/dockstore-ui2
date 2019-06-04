@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { AlertService } from './shared/alert/state/alert.service';
+import { Dockstore } from './shared/dockstore.model';
 
 @Component({
   selector: 'app-root',
@@ -49,12 +50,11 @@ export class AppComponent implements OnInit, OnDestroy {
    * Injecting it is slower than having it in the HTML, but because the Google Tag Manager ID changes,
    * we would've needed multiple index.html and multiple builds.
    * The initial page load time will always be inaccurate but we have lighthouse to check that.
-   * TODO: Pull the Google Tag Manager Id from the config.json
    * @private
    * @memberof AppComponent
    */
   private injectGoogleTagManagerScript() {
-    const googleTagManagerId = 'change this';
+    const googleTagManagerId = Dockstore.GOOGLE_TAG_MANAGER_ID;
     const script = document.createElement('script');
     script.innerHTML = `(function(w, d, s, l, i) {
       w[l] = w[l] || [];
