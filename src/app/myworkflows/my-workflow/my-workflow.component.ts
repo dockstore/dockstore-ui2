@@ -43,6 +43,7 @@ import { RegisterWorkflowModalService } from '../../workflow/register-workflow-m
 import { MyBioWorkflowsService } from '../my-bio-workflows.service';
 import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
+import { TokenService } from 'app/shared/state/token.service';
 
 /**
  * How the workflow selection works:
@@ -94,7 +95,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected urlResolverService: UrlResolverService,
     protected tokenQuery: TokenQuery,
     protected workflowQuery: WorkflowQuery,
-    private alertQuery: AlertQuery
+    private alertQuery: AlertQuery,
+    private tokenService: TokenService
   ) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
     this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
@@ -103,6 +105,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
+    this.tokenQuery.gitHubToken$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**

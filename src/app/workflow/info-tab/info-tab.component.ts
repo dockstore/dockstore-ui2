@@ -16,7 +16,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, shareReplay } from 'rxjs/operators';
 
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
@@ -33,6 +33,7 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
+import { WorkflowClass } from 'app/shared/enum/workflow-class';
 
 @Component({
   selector: 'app-info-tab',
@@ -59,6 +60,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
+  public workflowClass$: Observable<WorkflowClass>;
   public isRefreshing$: Observable<boolean>;
   modeTooltipContent = `<b>STUB:</b> Basic metadata pulled from source control.<br />
   <b>FULL:</b> Full content synced from source control.<br />
@@ -67,6 +69,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     private sessionQuery: SessionQuery, private infoTabService: InfoTabService, private alertQuery: AlertQuery,
     private workflowQuery: WorkflowQuery) {
     super();
+    this.workflowClass$ = this.workflowQuery.workflowClass$.pipe(shareReplay());
   }
 
   ngOnChanges() {
