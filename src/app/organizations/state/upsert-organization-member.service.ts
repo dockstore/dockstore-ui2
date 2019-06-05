@@ -71,6 +71,20 @@ export class UpsertOrganizationMemberService {
   }
 
   /**
+   * Get the description based on the mode
+   *
+   * @param {*} data
+   * @returns {string}
+   * @memberof UpsertOrganizationMemberService
+   */
+  getDescription(data: any): string {
+    const mode: TagEditorMode = data.mode;
+    const addUserDescription = 'Send an invitation to a user to join the organization.';
+    const editUserDescription = 'Modify an existing user role in the organization.';
+    return mode === TagEditorMode.Add ? addUserDescription : editUserDescription;
+  }
+
+  /**
    * Add not yet approved organization to Dockstore
    *
    * @param {FormsState['organization']} formState  The organization form state
