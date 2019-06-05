@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { TokenStore, TokenState } from './token.store';
-import { Token } from '../../shared/swagger/model/token';
-import { map, switchMap } from 'rxjs/operators';
-import { TokenSource } from '../enum/token-source.enum';
 import { Observable } from 'rxjs';
-import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { Token } from '../../shared/swagger/model/token';
+import { TokenSource } from '../enum/token-source.enum';
+import { TokenState, TokenStore } from './token.store';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,7 @@ export class TokenQuery extends QueryEntity<TokenState, Token> {
   tokens$: Observable<Array<Token>> = this.selectAll();
   hasGitHubToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasEntity(TokenSource.GITHUB)));
   hasGoogleToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasEntity(TokenSource.GOOGLE)));
-  gitHubToken$: Observable<string> = this.selectEntity('github.com').pipe(map((token: Token) => token.token));
+  gitHubToken$: Observable<string> = this.selectEntity('github.com').pipe(map((token: Token) => (token ? token.token : null)));
   gitHubOrganizations$: Observable<any> = this.select(state => state.gitHubOrganizations);
   hasSourceControlToken$: Observable<boolean> = this.tokens$.pipe(
     map(tokens => this.hasEntity(TokenSource.GITHUB) || this.hasEntity(TokenSource.BITBUCKET) || this.hasEntity(TokenSource.GITLAB))
@@ -24,7 +23,7 @@ export class TokenQuery extends QueryEntity<TokenState, Token> {
     map(tokenStatusSet => (tokenStatusSet ? tokenStatusSet.github : false))
   );
 
-  constructor(protected store: TokenStore, private httpBackend: HttpBackend) {
+  constructor(protected store: TokenStore) {
     super(store);
   }
 

@@ -23,8 +23,13 @@ export class SidebarAccordionComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-
     this.workflowClass$ = this.workflowQuery.workflowClass$;
     this.workflowId$ = this.workflowQuery.workflowId$;
+  }
+
+  reloadPage(): void {
+      setTimeout(() => {
+    window.location.reload();
+  }, 60000); // Activate after 1 minute.
   }
 }

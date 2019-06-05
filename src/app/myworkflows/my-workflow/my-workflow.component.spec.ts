@@ -13,13 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  MatDialogModule,
-  MatDialogRef,
-  MatSnackBarModule
-} from '@angular/material';
+import { MatDialogModule, MatDialogRef, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
@@ -65,6 +62,7 @@ describe('MyWorkflowsComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         RouterTestingModule,
+        HttpClientTestingModule,
         BrowserAnimationsModule,
         MatDialogModule,
         MatSnackBarModule,

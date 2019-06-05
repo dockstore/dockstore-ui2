@@ -17,20 +17,28 @@
 import { Workflow } from './../shared/swagger/model/workflow';
 import { MyWorkflowsService } from './myworkflows.service';
 import { TestBed, inject } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { MetadataService, UsersService, WorkflowsService } from 'app/shared/swagger';
+import { MetadataStubService, WorkflowStubService, UsersStubService, WorkflowsStubService } from 'app/test/service-stubs';
+import { WorkflowService } from 'app/shared/state/workflow.service';
+import { UserQuery } from 'app/shared/user/user.query';
+import { WorkflowQuery } from 'app/shared/state/workflow.query';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 
 describe('MyWorkflowsService', () => {
   const tool1: Workflow = {
-      defaultTestParameterFilePath: '',
-      descriptorType: '',
-      gitUrl: '',
-      mode: Workflow.ModeEnum.FULL,
-      organization: 'cc',
-      repository: 'aa',
-      workflow_path: '',
-      sourceControl: 'github.com',
-      path: 'github.com/cc/aa',
-      full_workflow_path: 'github.com/cc/aa',
-      source_control_provider: 'GITHUB'
+    defaultTestParameterFilePath: '',
+    descriptorType: '',
+    gitUrl: '',
+    mode: Workflow.ModeEnum.FULL,
+    organization: 'cc',
+    repository: 'aa',
+    workflow_path: '',
+    sourceControl: 'github.com',
+    path: 'github.com/cc/aa',
+    full_workflow_path: 'github.com/cc/aa',
+    source_control_provider: 'GITHUB'
   };
   const tool2: Workflow = {
     defaultTestParameterFilePath: '',
@@ -44,7 +52,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/cc/bb',
     full_workflow_path: 'github.com/cc/bb',
     source_control_provider: 'GITHUB'
-};
+  };
   const tool3: Workflow = {
     defaultTestParameterFilePath: '',
     descriptorType: '',
@@ -57,7 +65,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/bb/cc',
     full_workflow_path: 'github.com/bb/cc',
     source_control_provider: 'GITHUB'
-};
+  };
   const tool4: Workflow = {
     defaultTestParameterFilePath: '',
     descriptorType: '',
@@ -70,7 +78,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/bb/dd',
     full_workflow_path: 'github.com/bb/dd',
     source_control_provider: 'GITHUB'
-};
+  };
   const tool5: Workflow = {
     defaultTestParameterFilePath: '',
     descriptorType: '',
@@ -83,7 +91,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
     source_control_provider: 'GITHUB'
-};
+  };
   const tool6: Workflow = {
     defaultTestParameterFilePath: '',
     descriptorType: '',
@@ -96,18 +104,39 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
     source_control_provider: 'GITHUB'
-};
+  };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
-  const expectedResult1 = {'entries': [(tool5), (tool6)], 'isFirstOpen': false,
-  'namespace': 'github.com/aa', 'sourceControl': 'github.com', 'organization': 'aa'};
-  const expectedResult2 = {'entries': [(tool3), (tool4)], 'isFirstOpen': false,
-  'namespace': 'github.com/bb', 'sourceControl': 'github.com', 'organization': 'bb'};
-  const expectedResult3 = {'entries': [(tool1), (tool2)], 'isFirstOpen': false,
-  'namespace': 'github.com/cc', 'sourceControl': 'github.com', 'organization': 'cc'};
+  const expectedResult1 = {
+    entries: [tool5, tool6],
+    isFirstOpen: false,
+    namespace: 'github.com/aa',
+    sourceControl: 'github.com',
+    organization: 'aa'
+  };
+  const expectedResult2 = {
+    entries: [tool3, tool4],
+    isFirstOpen: false,
+    namespace: 'github.com/bb',
+    sourceControl: 'github.com',
+    organization: 'bb'
+  };
+  const expectedResult3 = {
+    entries: [tool1, tool2],
+    isFirstOpen: false,
+    namespace: 'github.com/cc',
+    sourceControl: 'github.com',
+    organization: 'cc'
+  };
   const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MyWorkflowsService]
+      imports: [CustomMaterialModule, RouterTestingModule],
+      providers: [
+        MyWorkflowsService,
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService }
+      ]
     });
   });
   it('should be truthy', inject([MyWorkflowsService], (service: MyWorkflowsService) => {

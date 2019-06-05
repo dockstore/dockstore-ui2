@@ -7,6 +7,7 @@ import { WorkflowService } from '../shared/state/workflow.service';
 import { WorkflowsService } from '../shared/swagger';
 import { WorkflowsStubService, WorkflowStubService } from '../test/service-stubs';
 import { MyServicesService } from './my-services.service';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
 
 describe('Service: MyServices', () => {
   beforeEach(() => {
@@ -16,7 +17,7 @@ describe('Service: MyServices', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService }
       ],
-      imports: [HttpClientTestingModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, CustomMaterialModule]
     });
   });
 

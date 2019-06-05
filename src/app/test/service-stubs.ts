@@ -514,7 +514,7 @@ export class CheckerWorkflowStubService {
 }
 
 export class DescriptorLanguageStubService {
-    descriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
+    filteredDescriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
 }
 
 export class RegisterCheckerWorkflowStubService {

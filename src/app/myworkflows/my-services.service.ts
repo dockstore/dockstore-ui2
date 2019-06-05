@@ -27,7 +27,7 @@ export class MyServicesService extends MyEntriesService {
   ) {
     super();
   }
-  selectEntry(id: number, includesValidation) {
+  selectEntry(id: number, includesValidation: string) {
     this.workflowsService.getWorkflow(id, includesValidation).subscribe((service: Workflow) => {
       this.location.go('/my-services/' + service.full_workflow_path);
       this.workflowService.setWorkflow(service);

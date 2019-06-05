@@ -105,7 +105,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
-    this.tokenQuery.gitHubToken$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));
+    this.tokenQuery.gitHubToken$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**
