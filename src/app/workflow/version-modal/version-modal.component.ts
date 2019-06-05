@@ -17,7 +17,7 @@ import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } fro
 import { NgForm } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil, shareReplay } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
@@ -65,6 +65,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   canRead: boolean;
   canWrite: boolean;
   isOwner: boolean;
+  isService$: Observable<boolean>;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
@@ -75,6 +76,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
+    this.isService$ = this.workflowQuery.isService$.pipe(shareReplay());
     this.canRead = this.data.canRead;
     this.canWrite = this.data.canWrite;
     this.isOwner = this.data.isOwner;

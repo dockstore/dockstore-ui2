@@ -15,11 +15,10 @@
  */
 import { NgModule } from '@angular/core';
 import { WorkflowsPageModule } from 'app/shared/modules/workflowsPage.module';
-import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
 import { workflowsRouting } from './workflows.routing';
 
 @NgModule({
   declarations: [],
-  imports: [ListWorkflowsModule, workflowsRouting, WorkflowsPageModule]
+  imports: [workflowsRouting, WorkflowsPageModule]
 })
 export class WorkflowsModule {}

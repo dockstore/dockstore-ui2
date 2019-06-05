@@ -30,6 +30,8 @@ import { MatDialog } from '@angular/material';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
+import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-view-workflow',
@@ -43,6 +45,8 @@ export class ViewWorkflowComponent extends View implements OnInit {
   @Input() isOwner: boolean;
   items: any[];
   isPublic: boolean;
+  WorkflowClass = WorkflowClass;
+  public workflowClass$: Observable<WorkflowClass>
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
 
@@ -82,6 +86,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   }
 
   ngOnInit() {
+    this.workflowClass$ = this.workflowQuery.workflowClass$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
   }

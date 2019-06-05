@@ -57,6 +57,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   defaultTestFilePathEditing: boolean;
   isPublic: boolean;
   trsLink: string;
+  WorkflowClass = WorkflowClass;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;

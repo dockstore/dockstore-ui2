@@ -38,81 +38,83 @@
             #workflow/{{workflow?.full_workflow_path}}
           </a>
         </li>
-        <span>
-          <li *ngIf="workflow?.workflow_path || !isPublic">
-            <form #editWorkflowPathForm="ngForm" class="form-inline">
-              <div class="form-group">
-                <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
-                <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
-                <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath"
-                  type="text" class="input-default form-control" name="workflowPath" [(ngModel)]="workflow.workflow_path"
-                  placeholder="e.g. /Dockstore.cwl" />
-              </div>
-              <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group push-right" role="group"
-                aria-label="Basic example">
-                <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                  <mat-icon>cancel</mat-icon> Cancel
-                </button>
-                <button *ngIf="!isPublic" type="button"
-                  [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || (isRefreshing$ | async)" class="btn btn-link"
-                  (click)="toggleEditWorkflowPath()">
-                  <mat-icon *ngIf="workflowPathEditing">save</mat-icon>
-                  <mat-icon *ngIf="!workflowPathEditing">edit</mat-icon>
-                  {{ workflowPathEditing ? 'Save' : 'Edit' }}
-                </button>
-              </div>
-            </form>
-            <form #editTestFilePathForm="ngForm" class="form-inline" *ngIf="!(isNFL$ | async)">
-              <div class="form-group">
-                <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
-                <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
-                <input *ngIf="defaultTestFilePathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath"
-                  type="text" class="input-default form-control" name="workflowPath" [(ngModel)]="workflow.defaultTestParameterFilePath"
-                  placeholder="e.g. /Dockstore.cwl" />
-              </div>
-              <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                <button *ngIf="!isPublic" type="button"
-                  [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)"
-                  class="btn btn-link push-right" (click)="toggleEditDefaultTestFilePath()">
-                  <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
-                  <mat-icon *ngIf="!defaultTestFilePathEditing">edit</mat-icon>
-                  {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
-                </button>
-              </span>
-            </form>
-          </li>
-        </span>
-        <app-info-tab-checker-workflow-path *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && !(isNFL$ | async)" [canRead]="canRead"
-          [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab-checker-workflow-path>
-        <!-- TODO: Remove once hosted workflows and Nextflow support checker workflows -->
-        <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async)">
-          <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>:
-          n/a
-        </div>
-        <li *ngIf="!isPublic">
-          <ng-template #modeTooltip>
-            <div [innerHtml]="modeTooltipContent"></div>
-          </ng-template>
-          <strong [matTooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
-          <button class="btn btn-link push-right" type="button"
-            *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published" (click)="restubWorkflow()"
-            [disabled]="(isRefreshing$ | async)">
-            <mat-icon>clear</mat-icon> Restub
-          </button>
-        </li>
-        <li>
-          <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
-            <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
-            <select class="form-control input-sm" (change)="update()" [(ngModel)]="workflow.descriptorType">
-              <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">
-                {{'descriptor_type'
-                | mapFriendlyValue: descriptorLanguage }}</option>
-            </select>
+        <div *ngIf="(workflowClass$ | async) === WorkflowClass.BioWorkflow">
+          <span>
+            <li *ngIf="workflow?.workflow_path || !isPublic">
+              <form #editWorkflowPathForm="ngForm" class="form-inline">
+                <div class="form-group">
+                  <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
+                  <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
+                  <input *ngIf="workflowPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.workflowDescriptorPath"
+                    type="text" class="input-default form-control" name="workflowPath" [(ngModel)]="workflow.workflow_path"
+                    placeholder="e.g. /Dockstore.cwl" />
+                </div>
+                <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group push-right" role="group"
+                  aria-label="Basic example">
+                  <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                  </button>
+                  <button *ngIf="!isPublic" type="button"
+                    [disabled]="workflowPathEditing && !editWorkflowPathForm.valid || (isRefreshing$ | async)" class="btn btn-link"
+                    (click)="toggleEditWorkflowPath()">
+                    <mat-icon *ngIf="workflowPathEditing">save</mat-icon>
+                    <mat-icon *ngIf="!workflowPathEditing">edit</mat-icon>
+                    {{ workflowPathEditing ? 'Save' : 'Edit' }}
+                  </button>
+                </div>
+              </form>
+              <form #editTestFilePathForm="ngForm" class="form-inline" *ngIf="!(isNFL$ | async)">
+                <div class="form-group">
+                  <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
+                  <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
+                  <input *ngIf="defaultTestFilePathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath"
+                    type="text" class="input-default form-control" name="workflowPath" [(ngModel)]="workflow.defaultTestParameterFilePath"
+                    placeholder="e.g. /Dockstore.cwl" />
+                </div>
+                <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+                  <button *ngIf="!isPublic" type="button"
+                    [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)"
+                    class="btn btn-link push-right" (click)="toggleEditDefaultTestFilePath()">
+                    <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
+                    <mat-icon *ngIf="!defaultTestFilePathEditing">edit</mat-icon>
+                    {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
+                  </button>
+                </span>
+              </form>
+            </li>
+          </span>
+          <app-info-tab-checker-workflow-path *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && !(isNFL$ | async)"
+            [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner"></app-info-tab-checker-workflow-path>
+          <!-- TODO: Remove once hosted workflows and Nextflow support checker workflows -->
+          <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async)">
+            <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>:
+            n/a
           </div>
-          <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
-            <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>: {{ 'descriptor_type' |
+          <li *ngIf="!isPublic">
+            <ng-template #modeTooltip>
+              <div [innerHtml]="modeTooltipContent"></div>
+            </ng-template>
+            <strong [matTooltip]="modeTooltip">Mode</strong>: {{workflow?.mode}}
+            <button class="btn btn-link push-right" type="button"
+              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published" (click)="restubWorkflow()"
+              [disabled]="(isRefreshing$ | async)">
+              <mat-icon>clear</mat-icon> Restub
+            </button>
+          </li>
+          <li>
+            <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
+              <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
+              <select class="form-control input-sm" (change)="update()" [(ngModel)]="workflow.descriptorType">
+                <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{descriptorLanguage | lowercase}}">
+                  {{'descriptor_type'
+                | mapFriendlyValue: descriptorLanguage }}</option>
+              </select>
+            </div>
+            <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
+              <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>: {{ 'descriptor_type' |
             mapFriendlyValue : workflow?.descriptorType }}</div>
-        </li>
+          </li>
+        </div>
       </ul>
     </mat-card-content>
   </mat-card>

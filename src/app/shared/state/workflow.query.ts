@@ -14,6 +14,7 @@ import { WorkflowState, WorkflowStore } from './workflow.store';
 })
 export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkflow> {
   public workflowClass$: Observable<WorkflowClass> = this.select(state => state.workflowClass);
+  public isService$: Observable<boolean> = this.workflowClass$.pipe(map(workflowClass => workflowClass === WorkflowClass.Service));
   public workflowClassName$: Observable<string> = this.workflowClass$.pipe(
     map((workflowClass: WorkflowClass) => this.getWorkflowClass(workflowClass))
   );
