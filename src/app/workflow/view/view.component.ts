@@ -46,7 +46,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   items: any[];
   isPublic: boolean;
   WorkflowClass = WorkflowClass;
-  public workflowClass$: Observable<WorkflowClass>
+  public workflowClass$: Observable<WorkflowClass>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
 

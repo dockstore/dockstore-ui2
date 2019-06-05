@@ -25,6 +25,9 @@ export class GithubNameToIdPipe implements PipeTransform {
     }
     return this.tokenQuery.gitHubOrganizations$.pipe(
       map((organizationsResponse: Array<any>) => {
+        if (!organizationsResponse) {
+          return null;
+        }
         const matchingOrganization = organizationsResponse.find(e => e.login === userNameOrOrganizationName);
         if (matchingOrganization) {
           return this.idToLink(matchingOrganization['id']);
