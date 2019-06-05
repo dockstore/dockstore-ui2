@@ -243,7 +243,7 @@ describe('Dockstore Organizations', () => {
 
     it('be able to Create organization user', () => {
       cy.get('#addUserToOrgButton').click();
-      typeInInput('Username', 'potato');
+      typeInInput('Dockstore Username', 'potato');
       cy.get('mat-select').click();
       cy.get('mat-option').contains('Member').click();
       cy.get('.mat-select-panel').should('not.be.visible');

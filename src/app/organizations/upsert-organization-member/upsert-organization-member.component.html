@@ -7,7 +7,7 @@
   <form [formGroup]="form">
     <div fxLayout="column">
       <mat-form-field>
-        <input type="text" matInput formControlName="username" placeholder="Username" required>
+        <input type="text" matInput formControlName="username" placeholder="Dockstore Username" required>
         <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
         <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
         <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>

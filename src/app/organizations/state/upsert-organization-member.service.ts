@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { OrganizationMembersService } from './organization-members.service';
+import { MatSnackBar } from '@angular/material';
 
 // This is recorded into the Akita state
 export interface FormsState {
@@ -25,7 +26,8 @@ export class UpsertOrganizationMemberService {
   constructor(private upsertOrganizationMemberStore: UpsertOrganizationMemberStore,
               private organizationMembersService: OrganizationMembersService,
               private formBuilder: FormBuilder, private organizationsService: OrganizationsService,
-              private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private alertService: AlertService) {
+              private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private alertService: AlertService,
+              private matSnackBar: MatSnackBar) {
   }
 
   /**
@@ -108,6 +110,7 @@ export class UpsertOrganizationMemberService {
         this.organizationMembersService.updateCanEdit(organizationId);
         this.upsertOrganizationMemberStore.setError(false);
         this.alertService.simpleSuccess();
+        this.matSnackBar.open('Invitation sent to ' + organization.user.username, 'Dismiss');
       }, (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
         this.upsertOrganizationMemberStore.setError(true);
