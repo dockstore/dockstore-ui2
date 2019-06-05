@@ -14,11 +14,12 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
-
+import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { WorkflowQuery } from 'app/shared/state/workflow.query';
+import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ListService } from '../../shared/list.service';
-import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
 import { PaginatorQuery } from '../../shared/state/paginator.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
@@ -34,19 +35,21 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
   public displayedColumns = ['repository', 'author', 'descriptorType', 'projectLinks', 'stars'];
+  public workflowClass$: Observable<WorkflowClass>;
   type: 'tool' | 'workflow' = 'workflow';
   constructor(
     private dockstoreService: DockstoreService,
-    private pagenumberService: PagenumberService,
     private workflowsService: WorkflowsService,
     protected providerService: ProviderService,
+    protected workflowQuery: WorkflowQuery,
     listService: ListService, paginatorService: PaginatorService,
     dateService: DateService, protected paginatorQuery: PaginatorQuery
   ) {
-    super(listService, paginatorService, providerService, dateService);
+    super(listService, paginatorService, providerService, dateService, workflowQuery);
   }
 
   ngOnInit() {
+    this.workflowClass$ = this.workflowQuery.workflowClass$;
     this.pageSize$ = this.paginatorQuery.workflowPageSize$;
     this.pageIndex$ = this.paginatorQuery.workflowPageIndex$;
     this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.providerService);

@@ -14,16 +14,12 @@
  *    limitations under the License.
  */
 import { NgModule } from '@angular/core';
-import { SharedWorkflowServicesModule } from 'app/shared-workflow-services/shared-workflow-services.module';
-import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
-import { SearchWorkflowsComponent } from './search/search.component';
-import { WorkflowsComponent } from './workflows.component';
-import { workflowsRouting } from './workflows.routing';
-import { WorkflowModule } from 'app/shared/modules/workflow.module';
 import { WorkflowsPageModule } from 'app/shared/modules/workflowsPage.module';
+import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
+import { workflowsRouting } from './workflows.routing';
 
 @NgModule({
-  declarations: [SearchWorkflowsComponent],
+  declarations: [],
   imports: [ListWorkflowsModule, workflowsRouting, WorkflowsPageModule]
 })
 export class WorkflowsModule {}

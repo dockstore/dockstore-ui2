@@ -14,18 +14,16 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
-
+import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ListService } from '../../shared/list.service';
-import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
 import { PaginatorQuery } from '../../shared/state/paginator.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
 import { ContainersService, DockstoreTool } from '../../shared/swagger';
 import { ToolLister } from '../../shared/tool-lister';
-import { ListContainersService } from './list.service';
 import { PublishedToolsDataSource } from './published-tools.datasource';
 
 @Component({
@@ -37,16 +35,16 @@ export class ListContainersComponent extends ToolLister implements OnInit {
 
   public displayedColumns = ['name', 'author', 'format', 'projectLinks', 'stars'];
   type: 'tool' | 'workflow' = 'tool';
-  constructor(private listContainersService: ListContainersService,
+  constructor(
     private dockstoreService: DockstoreService,
     private imageProviderService: ImageProviderService,
-    private pagenumberService: PagenumberService,
     private containersService: ContainersService,
     protected providerService: ProviderService,
+    protected workflowQuery: WorkflowQuery,
     listService: ListService, paginatorService: PaginatorService,
     dateService: DateService, private paginatorQuery: PaginatorQuery
   ) {
-    super(listService, paginatorService, providerService, dateService);
+    super(listService, paginatorService, providerService, dateService, workflowQuery);
   }
   ngOnInit() {
     this.pageSize$ = this.paginatorQuery.toolPageSize$;

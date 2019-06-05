@@ -26,6 +26,8 @@ import { ListService } from './list.service';
 import { ProviderService } from './provider.service';
 import { PaginatorService } from './state/paginator.service';
 import { DockstoreTool, Workflow } from './swagger';
+import { WorkflowQuery } from './state/workflow.query';
+import { WorkflowClass } from './enum/workflow-class';
 
 export abstract class ToolLister implements AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
@@ -37,7 +39,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   public pageSize$: Observable<number>;
   public pageIndex$: Observable<number>;
   constructor(private listService: ListService, private paginatorService: PaginatorService,
-    protected providerService: ProviderService, private dateService: DateService) {
+    protected providerService: ProviderService, private dateService: DateService, protected workflowQuery: WorkflowQuery) {
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
@@ -112,7 +114,12 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
         direction = 'desc';
       }
     }
+    if (this.workflowQuery) {
+
+    }
+    const workflowClass: WorkflowClass = this.workflowQuery ? this.workflowQuery.getSnapshot().workflowClass : null;
     this.dataSource.loadEntries(
+      workflowClass,
       this.input.nativeElement.value,
       direction,
       this.paginator.pageIndex * this.paginator.pageSize,

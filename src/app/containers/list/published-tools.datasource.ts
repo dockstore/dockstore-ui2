@@ -23,6 +23,7 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { ProviderService } from '../../shared/provider.service';
 import { ContainersService, DockstoreTool } from '../../shared/swagger';
+import { WorkflowClass } from 'app/shared/enum/workflow-class';
 
 @Injectable()
 export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreTool> {
@@ -45,7 +46,7 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
    * @param {string} sortCol  The column to sort by ("stars")
    * @memberof PublishedToolsDataSource
    */
-  loadEntries(filter: string,
+  loadEntries(workflowClass: WorkflowClass, filter: string,
     sortDirection: 'asc' | 'desc',
     pageIndex: number,
     pageSize: number,
