@@ -73,11 +73,11 @@ export class MyWorkflowsService extends MyEntriesService {
   // If two of the calls error, there should be a weird combined detailed card displayed
   // Any errors should still return an empty array for that set of workflows
   getMyEntries(): void {
-    combineLatest(this.userQuery.user$, this.workflowQuery.workflowClass$)
+    combineLatest(this.userQuery.user$, this.workflowQuery.entryType$)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(([user, workflowClass]) => {
-        if (user && workflowClass) {
-          this.alertService.start('Fetching ' + workflowClass + 's');
+      .subscribe(([user, entryType]) => {
+        if (user && entryType) {
+          this.alertService.start('Fetching ' + entryType + 's');
           this.getMyBioWorkflows(user.id);
         }
       });

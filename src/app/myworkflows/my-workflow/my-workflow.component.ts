@@ -17,7 +17,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
-import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { AuthService } from 'ng2-ui-auth';
@@ -70,9 +70,9 @@ import { TokenService } from 'app/shared/state/token.service';
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
-  workflowClass: WorkflowClass;
-  workflowClass$: Observable<string>;
-  WorkflowClass = WorkflowClass;
+  entryType: EntryType;
+  entryType$: Observable<string>;
+  EntryType = EntryType;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
   public isRefreshing$: Observable<boolean>;
@@ -100,9 +100,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     private tokenService: TokenService
   ) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
-    this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
-    this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
-    this.workflowClass$ = this.workflowQuery.workflowClass$.pipe(shareReplay(1));
+    this.workflowService.setEntryType(this.route.snapshot.data['entryType']);
+    this.entryType = this.workflowQuery.getSnapshot().entryType;
+    this.entryType$ = this.workflowQuery.entryType$.pipe(shareReplay(1));
   }
 
   ngOnInit() {
@@ -178,7 +178,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   private getMyEntries() {
-    if (this.workflowClass === WorkflowClass.BioWorkflow) {
+    if (this.entryType === EntryType.BioWorkflow) {
       this.myworkflowService.getMyEntries();
     } else {
       this.myServicesService.getMyEntries();
@@ -256,7 +256,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   selectEntry(workflow: ExtendedWorkflow | null): void {
     if (workflow !== null) {
-      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      if (this.entryType === EntryType.BioWorkflow) {
         this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
       } else {
         this.myServicesService.selectEntry(workflow.id, includesValidation);
@@ -270,7 +270,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   goToEntry(workflow: ExtendedWorkflow | null): void {
     if (workflow !== null) {
-      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      if (this.entryType === EntryType.BioWorkflow) {
         this.router.navigateByUrl('/' + myBioWorkflowsURLSegment + '/' + workflow.full_workflow_path);
       } else {
         this.router.navigateByUrl('/' + myServicesURLSegment + '/' + workflow.full_workflow_path);
@@ -283,7 +283,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    if (this.workflowClass === WorkflowClass.BioWorkflow) {
+    if (this.entryType === EntryType.BioWorkflow) {
       this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
     } else {
       this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });

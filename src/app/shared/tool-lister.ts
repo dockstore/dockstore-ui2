@@ -27,7 +27,7 @@ import { ProviderService } from './provider.service';
 import { PaginatorService } from './state/paginator.service';
 import { DockstoreTool, Workflow } from './swagger';
 import { WorkflowQuery } from './state/workflow.query';
-import { WorkflowClass } from './enum/workflow-class';
+import { EntryType } from './enum/entry-type';
 
 export abstract class ToolLister implements AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
@@ -117,9 +117,9 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
     if (this.workflowQuery) {
 
     }
-    const workflowClass: WorkflowClass = this.workflowQuery ? this.workflowQuery.getSnapshot().workflowClass : null;
+    const entryType: EntryType = this.workflowQuery ? this.workflowQuery.getSnapshot().entryType : null;
     this.dataSource.loadEntries(
-      workflowClass,
+      entryType,
       this.input.nativeElement.value,
       direction,
       this.paginator.pageIndex * this.paginator.pageSize,

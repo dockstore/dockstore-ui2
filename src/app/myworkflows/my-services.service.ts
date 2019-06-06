@@ -39,11 +39,11 @@ export class MyServicesService extends MyEntriesService {
   }
 
   getMyEntries() {
-    combineLatest(this.userQuery.user$, this.workflowQuery.workflowClass$)
+    combineLatest(this.userQuery.user$, this.workflowQuery.entryType$)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(([user, workflowClass]) => {
+      .subscribe(([user, entryType]) => {
         if (user) {
-          this.alertService.start('Fetching ' + workflowClass + 's');
+          this.alertService.start('Fetching ' + entryType + 's');
           this.getMyServices(user.id);
         }
       });

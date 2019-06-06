@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
@@ -18,13 +18,13 @@ export class SidebarAccordionComponent implements OnInit {
   @Input() refreshMessage;
   public workflowId$: Observable<number>;
   activeTab = 0;
-  workflowClass$: Observable<WorkflowClass>;
-  WorkflowClass = WorkflowClass;
+  entryType$: Observable<EntryType>;
+  EntryType = EntryType;
   constructor(private workflowQuery: WorkflowQuery, private myWorkflowsService: MyWorkflowsService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.workflowClass$ = this.workflowQuery.workflowClass$;
+    this.entryType$ = this.workflowQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
   }
 

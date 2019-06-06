@@ -16,7 +16,7 @@
 
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { Observable } from 'rxjs';
@@ -26,9 +26,9 @@ import { Observable } from 'rxjs';
   templateUrl: './workflows.component.html'
 })
 export class WorkflowsComponent {
-  public workflowClass$: Observable<WorkflowClass>;
+  public entryType$: Observable<EntryType>;
   constructor(private workflowQuery: WorkflowQuery, private workflowService: WorkflowService, private route: ActivatedRoute) {
-    this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
-    this.workflowClass$ = this.workflowQuery.workflowClass$;
+    this.workflowService.setEntryType(this.route.snapshot.data['entryType']);
+    this.entryType$ = this.workflowQuery.entryType$;
   }
 }

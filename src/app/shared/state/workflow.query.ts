@@ -4,7 +4,7 @@ import { QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
-import { WorkflowClass } from '../enum/workflow-class';
+import { EntryType } from '../enum/entry-type';
 import { ToolDescriptor } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
@@ -14,12 +14,12 @@ import { WorkflowState, WorkflowStore } from './workflow.store';
   providedIn: 'root'
 })
 export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkflow> {
-  public workflowClass$: Observable<WorkflowClass> = this.select(state => state.workflowClass);
-  public isService$: Observable<boolean> = this.workflowClass$.pipe(map(workflowClass => workflowClass === WorkflowClass.Service));
+  public entryType$: Observable<EntryType> = this.select(state => state.entryType);
+  public isService$: Observable<boolean> = this.entryType$.pipe(map(entryType => entryType === EntryType.Service));
   public workflow$: Observable<Service | BioWorkflow> = this.selectActive();
   public workflowId$: Observable<number> = this.workflow$.pipe(map((workflow: Service | BioWorkflow) => (workflow ? workflow.id : null)));
-  public gitHubAppInstallationLink$: Observable<string> = this.workflowClass$.pipe(
-    map((workflowClass: WorkflowClass) => this.generateGitHubAppInstallationUrl(workflowClass))
+  public gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
+    map((entryType: EntryType) => this.generateGitHubAppInstallationUrl(entryType))
   );
   public workflowIsPublished$: Observable<boolean> = this.workflow$.pipe(
     map((workflow: Service | BioWorkflow) => (workflow ? workflow.is_published : null))
@@ -42,13 +42,13 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
   /**
    * Generate the general GitHub App installation URL
    *
-   * @param {WorkflowClass} workflowClass  To determine which page the user currently is on
+   * @param {EntryType} entryType  To determine which page the user currently is on
    * @returns {string}
    * @memberof WorkflowQuery
    */
-  generateGitHubAppInstallationUrl(workflowClass: WorkflowClass): string {
+  generateGitHubAppInstallationUrl(entryType: EntryType): string {
     let queryParams = new HttpParams();
-    queryParams = queryParams.set('state', workflowClass);
+    queryParams = queryParams.set('state', entryType);
     return 'https://github.com/apps/dockstore/installations/new?' + queryParams;
   }
 }

@@ -28,7 +28,7 @@ import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
-import { WorkflowClass } from '../shared/enum/workflow-class';
+import { EntryType } from '../shared/enum/entry-type';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
@@ -68,7 +68,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
-  public workflowClass: WorkflowClass;
+  public entryType: EntryType;
   validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
@@ -77,7 +77,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   protected readers = [];
   protected writers = [];
   protected owners = [];
-  WorkflowClass = WorkflowClass;
+  EntryType = EntryType;
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   publishMessage = 'Publish the workflow to make it visible to the public';
@@ -97,8 +97,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
-    this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
-    if (this.workflowClass === WorkflowClass.BioWorkflow) {
+    this.entryType = this.workflowQuery.getSnapshot().entryType;
+    if (this.entryType === EntryType.BioWorkflow) {
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else {
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
@@ -274,7 +274,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   private updateWorkflowUrl(workflow: Workflow | null) {
     if (workflow != null) {
       const entryPath = workflow.full_workflow_path;
-      if (this.workflowClass === WorkflowClass.BioWorkflow) {
+      if (this.entryType === EntryType.BioWorkflow) {
         this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
       } else {
         this.updateUrl(entryPath, myServicesURLSegment, 'services');

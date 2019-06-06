@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators';
 import { MetadataService } from './../swagger/api/metadata.service';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 import { ToolDescriptor } from '../swagger';
-import { WorkflowClass } from '../enum/workflow-class';
+import { EntryType } from '../enum/entry-type';
 import { WorkflowQuery } from '../state/workflow.query';
 
 @Injectable()
@@ -40,7 +40,7 @@ export class DescriptorLanguageService {
         }
       })
     );
-    const combined$ = combineLatest(this.descriptorLanguages$, this.workflowQuery.workflowClass$);
+    const combined$ = combineLatest(this.descriptorLanguages$, this.workflowQuery.entryType$);
     this.filteredDescriptorLanguages$ = combined$.pipe(
       map(combined => this.filterLanguages(combined[0], combined[1]))
     );
@@ -67,8 +67,8 @@ export class DescriptorLanguageService {
     }
   }
 
-  filterLanguages(thing: ToolDescriptor.TypeEnum[], workflowClass: WorkflowClass): ToolDescriptor.TypeEnum[] {
-    if (workflowClass === WorkflowClass.BioWorkflow || !workflowClass) {
+  filterLanguages(thing: ToolDescriptor.TypeEnum[], entryType: EntryType): ToolDescriptor.TypeEnum[] {
+    if (entryType === EntryType.BioWorkflow || !entryType) {
       return thing.filter(thingy => thingy !== ToolDescriptor.TypeEnum.DOCKSTORESERVICE);
     } else {
       return [ToolDescriptor.TypeEnum.DOCKSTORESERVICE];

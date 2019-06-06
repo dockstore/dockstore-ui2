@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
@@ -35,7 +35,7 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
   public displayedColumns = ['repository', 'author', 'descriptorType', 'projectLinks', 'stars'];
-  public workflowClass$: Observable<WorkflowClass>;
+  public entryType$: Observable<EntryType>;
   type: 'tool' | 'workflow' = 'workflow';
   constructor(
     private dockstoreService: DockstoreService,
@@ -49,7 +49,7 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
   }
 
   ngOnInit() {
-    this.workflowClass$ = this.workflowQuery.workflowClass$;
+    this.entryType$ = this.workflowQuery.entryType$;
     this.pageSize$ = this.paginatorQuery.workflowPageSize$;
     this.pageIndex$ = this.paginatorQuery.workflowPageIndex$;
     this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.providerService);

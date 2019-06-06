@@ -30,7 +30,7 @@ import { MatDialog } from '@angular/material';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
-import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -45,30 +45,36 @@ export class ViewWorkflowComponent extends View implements OnInit {
   @Input() isOwner: boolean;
   items: any[];
   isPublic: boolean;
-  WorkflowClass = WorkflowClass;
-  public workflowClass$: Observable<WorkflowClass>;
+  EntryType = EntryType;
+  public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
 
   constructor(
-    private workflowService: WorkflowService, private workflowQuery: WorkflowQuery,
-    private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
-    private workflowsService: WorkflowsService, private matDialog: MatDialog,
+    private workflowService: WorkflowService,
+    private workflowQuery: WorkflowQuery,
+    private versionModalService: VersionModalService,
+    private sessionQuery: SessionQuery,
+    private workflowsService: WorkflowsService,
+    private matDialog: MatDialog,
     private hostedService: HostedService,
-    dateService: DateService) {
+    dateService: DateService
+  ) {
     super(dateService);
   }
 
   showVersionModal() {
     this.versionModalService.setVersion(this.version);
-    this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name)
-      .subscribe(items => {
+    this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name).subscribe(
+      items => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
         this.openVersionModal();
-      }, error => {
+      },
+      error => {
         this.openVersionModal();
-      });
+      }
+    );
   }
 
   /**
@@ -78,28 +84,28 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   private openVersionModal(): void {
-    const dialogRef = this.matDialog.open(VersionModalComponent,
-      {
-        width: '600px',
-        data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
-      });
+    const dialogRef = this.matDialog.open(VersionModalComponent, {
+      width: '600px',
+      data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
+    });
   }
 
   ngOnInit() {
-    this.workflowClass$ = this.workflowQuery.workflowClass$;
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => this.isPublic = isPublic);
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.entryType$ = this.workflowQuery.entryType$;
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
   }
 
   deleteHostedVersion() {
-    const deleteMessage = 'Are you sure you want to delete version ' +
-      this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
+    const deleteMessage =
+      'Are you sure you want to delete version ' + this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
       this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
         result => {
           this.workflowService.setWorkflow(result);
-        }, (error: HttpErrorResponse) => {
+        },
+        (error: HttpErrorResponse) => {
           console.log(error);
         }
       );

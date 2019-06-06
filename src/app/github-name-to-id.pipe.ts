@@ -41,9 +41,9 @@ export class GithubNameToIdPipe implements PipeTransform {
   }
 
   private idToLink(id: number): string {
-    const workflowClass = this.workflowQuery.getSnapshot().workflowClass;
+    const entryType = this.workflowQuery.getSnapshot().entryType;
     let params = new HttpParams();
-    params = params.set('state', workflowClass);
+    params = params.set('state', entryType);
     params = params.set('suggested_target_id', id.toString());
     return 'https://github.com/apps/dockstore/installations/new/permissions?' + params.toString();
   }

@@ -33,7 +33,7 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
-import { WorkflowClass } from 'app/shared/enum/workflow-class';
+import { EntryType } from 'app/shared/enum/entry-type';
 
 @Component({
   selector: 'app-info-tab',
@@ -57,11 +57,11 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   defaultTestFilePathEditing: boolean;
   isPublic: boolean;
   trsLink: string;
-  WorkflowClass = WorkflowClass;
+  EntryType = EntryType;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
-  public workflowClass$: Observable<WorkflowClass>;
+  public entryType$: Observable<EntryType>;
   public isRefreshing$: Observable<boolean>;
   modeTooltipContent = `<b>STUB:</b> Basic metadata pulled from source control.<br />
   <b>FULL:</b> Full content synced from source control.<br />
@@ -70,7 +70,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     private sessionQuery: SessionQuery, private infoTabService: InfoTabService, private alertQuery: AlertQuery,
     private workflowQuery: WorkflowQuery) {
     super();
-    this.workflowClass$ = this.workflowQuery.workflowClass$.pipe(shareReplay());
+    this.entryType$ = this.workflowQuery.entryType$.pipe(shareReplay());
   }
 
   ngOnChanges() {

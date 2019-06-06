@@ -34,12 +34,12 @@
       </mat-tab>
     </mat-tab-group>
     <mat-action-row>
-      <div *ngIf="(workflowClass$ | async) === WorkflowClass.BioWorkflow">
+      <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
           <app-refresh-workflow-organization [organization]="orgObj?.organization"></app-refresh-workflow-organization>
         </span>
       </div>
-      <div *ngIf="(workflowClass$ | async) === WorkflowClass.Service">
+      <div *ngIf="(entryType$ | async) === EntryType.Service">
         <div *ngIf="(orgObj?.organization | githubNameToId | async) as link">
           <a mat-button target="_blank" (click)="reloadPage()" rel="noopener noreferrer" [href]="link">Manage Organization on GitHub</a>
         </div>
