@@ -78,6 +78,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public isRefreshing$: Observable<boolean>;
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
+  public gitHubAppInstallationLink$: Observable<string>;
   constructor(
     private myworkflowService: MyWorkflowsService,
     protected configuration: Configuration,
@@ -105,6 +106,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
+    this.gitHubAppInstallationLink$ = this.workflowQuery.gitHubAppInstallationLink$;
     this.tokenQuery.gitHubToken$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));

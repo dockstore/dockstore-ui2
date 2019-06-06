@@ -1,8 +1,9 @@
-import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TokenQuery } from './shared/state/token.query';
+import { WorkflowQuery } from './shared/state/workflow.query';
 import { UserQuery } from './shared/user/user.query';
 
 /**
@@ -17,7 +18,8 @@ import { UserQuery } from './shared/user/user.query';
   name: 'githubNameToId'
 })
 export class GithubNameToIdPipe implements PipeTransform {
-  constructor(private tokenQuery: TokenQuery, private httpBackend: HttpBackend, private userQuery: UserQuery) {}
+  constructor(private tokenQuery: TokenQuery, private httpBackend: HttpBackend, private userQuery: UserQuery,
+    private workflowQuery: WorkflowQuery) {}
   transform(userNameOrOrganizationName: string): Observable<string> {
     const username = this.userQuery.getSnapshot().user.name;
     if (userNameOrOrganizationName === username) {
@@ -39,7 +41,11 @@ export class GithubNameToIdPipe implements PipeTransform {
   }
 
   private idToLink(id: number): string {
-    return 'https://github.com/apps/dockstore/installations/new/permissions?state=my-services&suggested_target_id=' + id;
+    const workflowClass = this.workflowQuery.getSnapshot().workflowClass;
+    let params = new HttpParams();
+    params = params.set('state', workflowClass);
+    params = params.set('suggested_target_id', id.toString());
+    return 'https://github.com/apps/dockstore/installations/new/permissions?' + params.toString();
   }
 
   private getIdFromUsername(username: string): Observable<string> {
