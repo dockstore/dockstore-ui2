@@ -56,6 +56,7 @@ export class Dockstore {
 
   static GOOGLE_CLIENT_ID = 'fill_this_in';
   static GOOGLE_SCOPE = 'profile email';
+  static GOOGLE_TAG_MANAGER_ID = 'filled in by configuration service';
 
   static CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 

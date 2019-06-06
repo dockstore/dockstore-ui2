@@ -49,7 +49,7 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
     pageSize: number,
     sortCol: string) {
     this.loadingSubject$.next(true);
-    this.workflowsService.allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, 'response').pipe(
+    this.workflowsService.allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, false, 'response').pipe(
       catchError(() => of([])),
       finalize(() => this.loadingSubject$.next(false))
     )
