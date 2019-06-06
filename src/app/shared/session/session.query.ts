@@ -13,10 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
-
+import { map } from 'rxjs/operators';
+import { EntryType } from '../enum/entry-type';
 import { SessionState, SessionStore } from './session.store';
 
 @Injectable({
@@ -24,7 +26,25 @@ import { SessionState, SessionStore } from './session.store';
 })
 export class SessionQuery extends Query<SessionState> {
   isPublic$: Observable<boolean> = this.select(session => session.isPublic);
+  entryType$: Observable<EntryType> = this.select(session => session.entryType);
+  isService$: Observable<boolean> = this.entryType$.pipe(map(entryType => entryType === EntryType.Service));
+  gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
+    map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(entryType) : null))
+  );
   constructor(protected store: SessionStore) {
     super(store);
+  }
+
+  /**
+   * Generate the general GitHub App installation URL
+   *
+   * @param {EntryType} entryType  To determine which page the user currently is on
+   * @returns {string}
+   * @memberof WorkflowQuery
+   */
+  generateGitHubAppInstallationUrl(entryType: EntryType): string {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('state', entryType);
+    return 'https://github.com/apps/dockstore/installations/new?' + queryParams;
   }
 }

@@ -18,6 +18,8 @@ import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { SessionService } from 'app/shared/session/session.service';
 import { TokenService } from 'app/shared/state/token.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
@@ -97,16 +99,18 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected tokenQuery: TokenQuery,
     protected workflowQuery: WorkflowQuery,
     private alertQuery: AlertQuery,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private sessionService: SessionService,
+    private sessionQuery: SessionQuery
   ) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
-    this.workflowService.setEntryType(this.route.snapshot.data['entryType']);
-    this.entryType = this.workflowQuery.getSnapshot().entryType;
-    this.entryType$ = this.workflowQuery.entryType$.pipe(shareReplay(1));
+    this.sessionService.setEntryType(this.route.snapshot.data['entryType']);
+    this.entryType = this.sessionQuery.getSnapshot().entryType;
+    this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
   }
 
   ngOnInit() {
-    this.gitHubAppInstallationLink$ = this.workflowQuery.gitHubAppInstallationLink$;
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.tokenQuery.gitHubToken$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));
@@ -287,11 +291,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    if (this.entryType === EntryType.BioWorkflow) {
-      this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
-    } else {
-      this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
-    }
+    this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
   }
 
   refreshAllEntries(): void {

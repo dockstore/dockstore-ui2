@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ImageProviderService } from '../../shared/image-provider.service';
-import { ListService } from '../../shared/list.service';
 import { ProviderService } from '../../shared/provider.service';
 import { PaginatorQuery } from '../../shared/state/paginator.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
@@ -41,10 +41,11 @@ export class ListContainersComponent extends ToolLister implements OnInit {
     private containersService: ContainersService,
     protected providerService: ProviderService,
     protected workflowQuery: WorkflowQuery,
-    listService: ListService, paginatorService: PaginatorService,
+    protected sessionQuery: SessionQuery,
+    paginatorService: PaginatorService,
     dateService: DateService, private paginatorQuery: PaginatorQuery
   ) {
-    super(listService, paginatorService, providerService, dateService, workflowQuery);
+    super(paginatorService, providerService, dateService, sessionQuery);
   }
   ngOnInit() {
     this.pageSize$ = this.paginatorQuery.toolPageSize$;

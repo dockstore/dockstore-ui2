@@ -17,8 +17,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { WorkflowQuery } from 'app/shared/state/workflow.query';
-import { WorkflowService } from 'app/shared/state/workflow.service';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -27,8 +27,8 @@ import { Observable } from 'rxjs';
 })
 export class WorkflowsComponent {
   public entryType$: Observable<EntryType>;
-  constructor(private workflowQuery: WorkflowQuery, private workflowService: WorkflowService, private route: ActivatedRoute) {
-    this.workflowService.setEntryType(this.route.snapshot.data['entryType']);
-    this.entryType$ = this.workflowQuery.entryType$;
+  constructor(private sessionQuery: SessionQuery, private sessionService: SessionService, private route: ActivatedRoute) {
+    this.sessionService.setEntryType(this.route.snapshot.data['entryType']);
+    this.entryType$ = this.sessionQuery.entryType$;
   }
 }

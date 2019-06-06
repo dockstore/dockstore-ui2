@@ -15,23 +15,22 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-
+import { MatDialog } from '@angular/material';
+import { EntryType } from 'app/shared/enum/entry-type';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
-import { VersionModalService } from '../version-modal/version-modal.service';
-import { takeUntil } from 'rxjs/operators';
-import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { WorkflowService } from '../../shared/state/workflow.service';
-import { MatDialog } from '@angular/material';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { Service } from 'app/shared/swagger/model/service';
-import { EntryType } from 'app/shared/enum/entry-type';
-import { Observable } from 'rxjs';
+import { VersionModalService } from '../version-modal/version-modal.service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -91,7 +90,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   }
 
   ngOnInit() {
-    this.entryType$ = this.workflowQuery.entryType$;
+    this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
   }

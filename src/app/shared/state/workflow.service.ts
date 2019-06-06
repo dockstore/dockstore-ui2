@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-import { EntryType } from '../enum/entry-type';
-import { ExtendedWorkflowService } from './extended-workflow.service';
-import { WorkflowStore } from './workflow.store';
+import { Workflow } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
-import { Workflow } from '../swagger';
+import { ExtendedWorkflowService } from './extended-workflow.service';
+import { WorkflowStore } from './workflow.store';
 
 
 @Injectable({ providedIn: 'root' })
@@ -29,10 +28,6 @@ export class WorkflowService {
       this.workflowStore.remove();
       this.extendedWorkflowService.remove();
     }
-  }
-
-  setEntryType(entryType: EntryType): void {
-    this.workflowStore.updateRoot({ entryType: entryType });
   }
 
   get() {

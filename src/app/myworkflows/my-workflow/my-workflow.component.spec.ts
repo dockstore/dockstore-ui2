@@ -54,11 +54,7 @@ describe('MyWorkflowsComponent', () => {
   let refreshService: RefreshService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MyWorkflowComponent,
-        RouterLinkStubDirective,
-        RouterOutletStubComponent
-      ],
+      declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         RouterTestingModule,
@@ -75,10 +71,7 @@ describe('MyWorkflowsComponent', () => {
         { provide: AuthService, useClass: AuthStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },
-        {
-          provide: RegisterWorkflowModalService,
-          useClass: RegisterWorkflowModalStubService
-        },
+        { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
         TokenQuery,
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
@@ -98,23 +91,17 @@ describe('MyWorkflowsComponent', () => {
     fixture = TestBed.createComponent(MyWorkflowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    registerWorkflowModalService = fixture.debugElement.injector.get(
-      RegisterWorkflowModalService
-    );
+    registerWorkflowModalService = fixture.debugElement.injector.get(RegisterWorkflowModalService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
   it('should set observables', () => {
-    registerWorkflowModalService = fixture.debugElement.injector.get(
-      RegisterWorkflowModalService
-    );
+    registerWorkflowModalService = fixture.debugElement.injector.get(RegisterWorkflowModalService);
     spyOn(registerWorkflowModalService, 'setWorkflowRepository');
     component.setRegisterEntryModalInfo('a/b');
-    expect(
-      registerWorkflowModalService.setWorkflowRepository
-    ).toHaveBeenCalled();
+    expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
   });
   it('should refresh workflows', () => {
     component.user = { id: 1 };

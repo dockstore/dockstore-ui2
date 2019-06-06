@@ -97,7 +97,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
     this._toolType = 'workflows';
     this.location = location;
-    this.entryType = this.workflowQuery.getSnapshot().entryType;
+    this.entryType = this.sessionQuery.getSnapshot().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else {

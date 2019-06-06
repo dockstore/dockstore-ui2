@@ -15,11 +15,11 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { ListService } from '../../shared/list.service';
 import { ProviderService } from '../../shared/provider.service';
 import { PaginatorQuery } from '../../shared/state/paginator.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
@@ -41,15 +41,15 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
     private dockstoreService: DockstoreService,
     private workflowsService: WorkflowsService,
     protected providerService: ProviderService,
-    protected workflowQuery: WorkflowQuery,
-    listService: ListService, paginatorService: PaginatorService,
-    dateService: DateService, protected paginatorQuery: PaginatorQuery
+    protected workflowQuery: WorkflowQuery, paginatorService: PaginatorService,
+    dateService: DateService, protected paginatorQuery: PaginatorQuery,
+    protected sessionQuery: SessionQuery
   ) {
-    super(listService, paginatorService, providerService, dateService, workflowQuery);
+    super(paginatorService, providerService, dateService, sessionQuery);
   }
 
   ngOnInit() {
-    this.entryType$ = this.workflowQuery.entryType$;
+    this.entryType$ = this.sessionQuery.entryType$;
     this.pageSize$ = this.paginatorQuery.workflowPageSize$;
     this.pageIndex$ = this.paginatorQuery.workflowPageIndex$;
     this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.providerService);

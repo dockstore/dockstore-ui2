@@ -15,9 +15,9 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable } from 'rxjs';
-import { takeUntil, shareReplay } from 'rxjs/operators';
-
+import { shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -33,7 +33,6 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
-import { EntryType } from 'app/shared/enum/entry-type';
 
 @Component({
   selector: 'app-info-tab',
@@ -70,7 +69,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     private sessionQuery: SessionQuery, private infoTabService: InfoTabService, private alertQuery: AlertQuery,
     private workflowQuery: WorkflowQuery) {
     super();
-    this.entryType$ = this.workflowQuery.entryType$.pipe(shareReplay());
+    this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay());
   }
 
   ngOnChanges() {

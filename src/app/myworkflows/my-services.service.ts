@@ -1,14 +1,14 @@
 import { Location } from '@angular/common';
-import { Injectable } from '@angular/core';
-import { WorkflowService } from 'app/shared/state/workflow.service';
-import { Workflow, WorkflowsService, UsersService } from 'app/shared/swagger';
-import { forkJoin, combineLatest, of as observableOf } from 'rxjs';
-import { MyEntriesService } from 'app/shared/myentries.service';
-import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
+import { MyEntriesService } from 'app/shared/myentries.service';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { WorkflowService } from 'app/shared/state/workflow.service';
+import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
-import { WorkflowQuery } from 'app/shared/state/workflow.query';
+import { combineLatest, forkJoin, of as observableOf } from 'rxjs';
+import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { MyWorkflowsService } from './myworkflows.service';
 
 @Injectable({
@@ -22,8 +22,8 @@ export class MyServicesService extends MyEntriesService {
     private location: Location,
     private usersService: UsersService,
     protected userQuery: UserQuery,
-    private workflowQuery: WorkflowQuery,
-    private myWorkflowsService: MyWorkflowsService
+    private myWorkflowsService: MyWorkflowsService,
+    private sessionQuery: SessionQuery
   ) {
     super();
   }
@@ -39,7 +39,7 @@ export class MyServicesService extends MyEntriesService {
   }
 
   getMyEntries() {
-    combineLatest(this.userQuery.user$, this.workflowQuery.entryType$)
+    combineLatest(this.userQuery.user$, this.sessionQuery.entryType$)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([user, entryType]) => {
         if (user) {

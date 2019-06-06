@@ -26,7 +26,6 @@ import { SearchComponent } from './search/search.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
-import { EntryType } from './shared/enum/entry-type';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
@@ -40,7 +39,7 @@ const APP_ROUTES: Routes = [
   {
     path: 'services',
     loadChildren: 'app/workflows/services/services.module#ServicesModule',
-    data: { title: 'Dockstore | Services', entryType: EntryType.Service }
+    data: { title: 'Dockstore | Services'}
   },
   { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows' } },
   { path: 'organizations', loadChildren: 'app/organizations/organizations.module#OrganizationsModule' },

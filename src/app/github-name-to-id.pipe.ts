@@ -2,8 +2,8 @@ import { HttpBackend, HttpClient, HttpHeaders, HttpParams } from '@angular/commo
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SessionQuery } from './shared/session/session.query';
 import { TokenQuery } from './shared/state/token.query';
-import { WorkflowQuery } from './shared/state/workflow.query';
 import { UserQuery } from './shared/user/user.query';
 
 /**
@@ -19,7 +19,7 @@ import { UserQuery } from './shared/user/user.query';
 })
 export class GithubNameToIdPipe implements PipeTransform {
   constructor(private tokenQuery: TokenQuery, private httpBackend: HttpBackend, private userQuery: UserQuery,
-    private workflowQuery: WorkflowQuery) {}
+    private sessionQuery: SessionQuery) {}
   transform(userNameOrOrganizationName: string): Observable<string> {
     const username = this.userQuery.getSnapshot().user.name;
     if (userNameOrOrganizationName === username) {
@@ -41,7 +41,7 @@ export class GithubNameToIdPipe implements PipeTransform {
   }
 
   private idToLink(id: number): string {
-    const entryType = this.workflowQuery.getSnapshot().entryType;
+    const entryType = this.sessionQuery.getSnapshot().entryType;
     let params = new HttpParams();
     params = params.set('state', entryType);
     params = params.set('suggested_target_id', id.toString());

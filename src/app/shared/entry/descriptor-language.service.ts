@@ -14,14 +14,13 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { EntryType } from '../enum/entry-type';
+import { SessionQuery } from '../session/session.query';
+import { ToolDescriptor } from '../swagger';
 import { MetadataService } from './../swagger/api/metadata.service';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
-import { ToolDescriptor } from '../swagger';
-import { EntryType } from '../enum/entry-type';
-import { WorkflowQuery } from '../state/workflow.query';
 
 @Injectable()
 export class DescriptorLanguageService {
@@ -29,7 +28,7 @@ export class DescriptorLanguageService {
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
   public filteredDescriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
 
-  constructor(private metadataService: MetadataService, private workflowQuery: WorkflowQuery) {
+  constructor(private metadataService: MetadataService, private sessionQuery: SessionQuery) {
     this.update();
     this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(
       map(descriptorLanguageMap => {
@@ -40,7 +39,7 @@ export class DescriptorLanguageService {
         }
       })
     );
-    const combined$ = combineLatest(this.descriptorLanguages$, this.workflowQuery.entryType$);
+    const combined$ = combineLatest(this.descriptorLanguages$, this.sessionQuery.entryType$);
     this.filteredDescriptorLanguages$ = combined$.pipe(
       map(combined => this.filterLanguages(combined[0], combined[1]))
     );

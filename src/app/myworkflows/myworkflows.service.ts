@@ -16,15 +16,15 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { WorkflowQuery } from 'app/shared/state/workflow.query';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, WorkflowsService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { combineLatest, forkJoin, of as observableOf } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 export class MyWorkflowsService extends MyEntriesService {
   constructor(
     protected userQuery: UserQuery,
-    private workflowQuery: WorkflowQuery,
+    private sessionQuery: SessionQuery,
     protected alertService: AlertService,
     protected usersService: UsersService,
     protected workflowService: WorkflowService,
@@ -73,7 +73,7 @@ export class MyWorkflowsService extends MyEntriesService {
   // If two of the calls error, there should be a weird combined detailed card displayed
   // Any errors should still return an empty array for that set of workflows
   getMyEntries(): void {
-    combineLatest(this.userQuery.user$, this.workflowQuery.entryType$)
+    combineLatest(this.userQuery.user$, this.sessionQuery.entryType$)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([user, entryType]) => {
         if (user && entryType) {

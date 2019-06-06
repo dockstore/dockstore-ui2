@@ -15,17 +15,16 @@
  */
 
 import { RouterModule, Routes } from '@angular/router';
-
-import { WorkflowsComponent } from './workflows.component';
-import { SearchWorkflowsComponent } from './search/search.component';
-import { WorkflowComponent } from '../workflow/workflow.component';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { WorkflowComponent } from '../workflow/workflow.component';
+import { SearchWorkflowsComponent } from './search/search.component';
+import { WorkflowsComponent } from './workflows.component';
 
 const WORKFLOWS_ROUTES: Routes = [
   {
     path: '',
     component: WorkflowsComponent,
-    data: { title: 'Dockstore | Workflow', entryType: EntryType.BioWorkflow },
+    data: { title: 'Dockstore | Workflow' },
     children: [
       { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Workflows', entryType: EntryType.BioWorkflow } },
       { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Workflow', entryType: EntryType.BioWorkflow } }
