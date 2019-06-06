@@ -39,7 +39,7 @@ export class GithubNameToIdPipe implements PipeTransform {
   }
 
   private idToLink(id: number): string {
-    return 'https://github.com/apps/dockstore/installations/new/permissions?suggested_target_id=' + id;
+    return 'https://github.com/apps/dockstore/installations/new/permissions?state=my-services&suggested_target_id=' + id;
   }
 
   private getIdFromUsername(username: string): Observable<string> {

@@ -18,7 +18,7 @@
     <mat-icon *ngIf="showSidebar">chevron_left</mat-icon>
     <mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
   </button>
-  <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> My {{ workflowClassName$ | async | titlecase }}s
+  <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> My {{ workflowClass$ | async | titlecase }}s
 </app-header>
 <button *ngIf="workflowClass === WorkflowClass.BioWorkflow" mat-fab color="accent" id="registerWorkflowButton" class="fab-bottom-right"
   matTooltip="Register workflow" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="isRefreshing$ | async">
@@ -36,15 +36,15 @@
               <mat-toolbar>
                 <mat-toolbar-row>
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-                    <span>My {{ workflowClassName$ | async }}s</span>
+                    <span>My {{ workflowClass$ | async }}s</span>
                     <mat-menu #appMenu="matMenu">
                       <button *ngIf="workflowClass === WorkflowClass.BioWorkflow" mat-menu-item color="primary" matTooltipPosition="after"
                         matTooltip="Find new workflows and sync all existing workflows" (click)="refreshAllEntries()"
                         [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)">
                         Refresh All
                       </button>
-                      <a mat-menu-item href="https://github.com/apps/dockstore" (click)="reloadPage()" target="_blank"
-                        rel="noopener noreferrer">Manage on
+                      <a mat-menu-item href="https://github.com/apps/dockstore/installations/new?state=my-services" (click)="reloadPage()"
+                        target="_blank" rel="noopener noreferrer">Manage on
                         GitHub</a>
                     </mat-menu>
                     <button mat-icon-button [matMenuTriggerFor]="appMenu">
@@ -57,7 +57,7 @@
               </mat-toolbar>
             </div>
             <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">
-              You have not registered any {{ workflowClassName$ | async }}s
+              You have not registered any {{ workflowClass$ | async }}s
             </p>
             <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject"
               [refreshMessage]="isRefreshing$ | async"></app-sidebar-accordion>
@@ -66,7 +66,7 @@
               <h3 class="sidebar-header">Shared with me</h3>
             </div>
             <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
-              You have no {{ workflowClassName$ | async }}s shared with you
+              You have no {{ workflowClass$ | async }}s shared with you
             </p>
             <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
           </div>
@@ -82,8 +82,8 @@
             <mat-card class="alert alert-info" role="alert">
               <p>
                 <mat-icon>info</mat-icon>
-                There are currently no {{ workflowClassName$ | async }}s registered under this account. To add your first
-                {{ workflowClassName$ | async }}, do one of the following:
+                There are currently no {{ workflowClass$ | async }}s registered under this account. To add your first
+                {{ workflowClass$ | async }}, do one of the following:
               </p>
               <ul>
                 <li *ngIf="workflowClass === WorkflowClass.Service">
@@ -95,12 +95,12 @@
                   workflow stubs and refresh/publish those that correspond to real workflows.
                 </li>
                 <li>
-                  Press the 'Register {{ workflowClassName$ | async | titlecase }}' button to manually add a
-                  {{ workflowClassName$ | async }}.
+                  Press the 'Register {{ workflowClass$ | async | titlecase }}' button to manually add a
+                  {{ workflowClass$ | async }}.
                 </li>
                 <button mat-raised-button color="primary" type="button" (click)="showRegisterEntryModal()"
                   [disabled]="isRefreshing$ | async">
-                  Register {{ workflowClassName$ | async | titlecase }}
+                  Register {{ workflowClass$ | async | titlecase }}
                 </button>
               </ul>
               <div *ngIf="!hasGitHubToken" class="mt-3">

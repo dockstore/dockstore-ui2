@@ -42,9 +42,8 @@ export class MyServicesService extends MyEntriesService {
     combineLatest(this.userQuery.user$, this.workflowQuery.workflowClass$)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([user, workflowClass]) => {
-        const workflowClassName = this.workflowQuery.getWorkflowClass(workflowClass);
-        if (user && workflowClassName) {
-          this.alertService.start('Fetching ' + workflowClassName + 's');
+        if (user) {
+          this.alertService.start('Fetching ' + workflowClass + 's');
           this.getMyServices(user.id);
         }
       });

@@ -15,9 +15,6 @@ import { WorkflowState, WorkflowStore } from './workflow.store';
 export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkflow> {
   public workflowClass$: Observable<WorkflowClass> = this.select(state => state.workflowClass);
   public isService$: Observable<boolean> = this.workflowClass$.pipe(map(workflowClass => workflowClass === WorkflowClass.Service));
-  public workflowClassName$: Observable<string> = this.workflowClass$.pipe(
-    map((workflowClass: WorkflowClass) => this.getWorkflowClass(workflowClass))
-  );
   public workflow$: Observable<Service | BioWorkflow> = this.selectActive();
   public workflowId$: Observable<number> = this.workflow$.pipe(map((workflow: Service | BioWorkflow) => (workflow ? workflow.id : null)));
   public workflowIsPublished$: Observable<boolean> = this.workflow$.pipe(
@@ -36,9 +33,5 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
   );
   constructor(protected store: WorkflowStore, private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(store);
-  }
-
-  getWorkflowClass(workflowClass: WorkflowClass) {
-    return workflowClass === WorkflowClass.BioWorkflow ? 'workflow' : 'service';
   }
 }

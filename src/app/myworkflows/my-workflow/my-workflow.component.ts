@@ -71,7 +71,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
   workflowClass: WorkflowClass;
-  workflowClassName$: Observable<string>;
+  workflowClass$: Observable<string>;
   WorkflowClass = WorkflowClass;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
@@ -101,7 +101,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService);
     this.workflowService.setWorkflowClass(this.route.snapshot.data['workflowClass']);
     this.workflowClass = this.workflowQuery.getSnapshot().workflowClass;
-    this.workflowClassName$ = this.workflowQuery.workflowClassName$.pipe(shareReplay(1));
+    this.workflowClass$ = this.workflowQuery.workflowClass$.pipe(shareReplay(1));
   }
 
   ngOnInit() {
