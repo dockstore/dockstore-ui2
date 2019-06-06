@@ -4,6 +4,7 @@ import { WorkflowClass } from 'app/shared/enum/workflow-class';
 import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
+import { MyWorkflowsService } from '../myworkflows.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class SidebarAccordionComponent implements OnInit {
   activeTab = 0;
   workflowClass$: Observable<WorkflowClass>;
   WorkflowClass = WorkflowClass;
-  constructor(private workflowQuery: WorkflowQuery,
+  constructor(private workflowQuery: WorkflowQuery, private myWorkflowsService: MyWorkflowsService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -28,8 +29,6 @@ export class SidebarAccordionComponent implements OnInit {
   }
 
   reloadPage(): void {
-      setTimeout(() => {
-    window.location.reload();
-  }, 60000); // Activate after 1 minute.
+    this.myWorkflowsService.reloadPage();
   }
 }

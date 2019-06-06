@@ -24,6 +24,7 @@ import { UserQuery } from 'app/shared/user/user.query';
 import { combineLatest, forkJoin, of as observableOf } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,8 @@ export class MyWorkflowsService extends MyEntriesService {
     protected alertService: AlertService,
     protected usersService: UsersService,
     protected workflowService: WorkflowService,
-    protected workflowsService: WorkflowsService
+    protected workflowsService: WorkflowsService,
+    private matSnackBar: MatSnackBar
   ) {
     super();
   }
@@ -110,6 +112,27 @@ export class MyWorkflowsService extends MyEntriesService {
           console.error('This should be impossible because both errors are caught already');
         }
       );
+  }
+
+  /**
+   * Reloads the website after 1 min has elapsed
+   * Replace this entire function with a better redirect mechanism later
+   *
+   * @memberof MyWorkflowsService
+   */
+  reloadPage(): void {
+    this.alertService.start('Awaiting GitHub app changes');
+    // Time in ms
+    const time = 60000;
+    const matSnackConfig: MatSnackBarConfig = {
+      duration: time
+    };
+    this.matSnackBar.open('Reloading after 1 minute to display potential GitHub app changes...', '', matSnackConfig);
+
+    setTimeout(() => {
+      this.alertService.detailedSuccess('Reloading the page now');
+      window.location.reload();
+    }, time);
   }
 
   registerEntry(): void {}
