@@ -34,12 +34,6 @@ export class AliasesComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    /*
-    let myType: string | null;
-    myType = this.route.snapshot.paramMap.get('type') ;
-    // Avoid assigning null to this.type
-    this.type = (myType) ? myType : '';
-     */
     this.type = this.route.snapshot.paramMap.get('type') ;
     this.alias = this.route.snapshot.paramMap.get('alias');
     this.validType = (this.type) ? this.types.includes(this.type) : false;
