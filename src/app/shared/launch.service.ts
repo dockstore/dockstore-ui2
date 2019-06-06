@@ -14,12 +14,11 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-
 import { ga4ghPath } from './constants';
 import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';
-import { EntryType } from './enum/entryType.enum';
 import { ToolDescriptor } from './swagger';
+
 
 @Injectable()
 export abstract class LaunchService {
@@ -64,7 +63,7 @@ export abstract class LaunchService {
      * @param path The tool/workflow's path
      * @param versionName The version name tool/workflow
      */
-    getCheckEntry(path: string, versionName: string, entryType: EntryType) {
+    getCheckEntry(path: string, versionName: string) {
         if (path) {
             const entryName = path + (versionName ? ':' + versionName : '');
             return 'dockstore checker launch --entry ' + entryName + ' --json checkparam.json';

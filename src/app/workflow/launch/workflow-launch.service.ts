@@ -14,11 +14,9 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
-import { EntryType } from '../../shared/enum/entryType.enum';
 import { LaunchService } from '../../shared/launch.service';
 import { ToolDescriptor } from '../../shared/swagger';
 
@@ -55,6 +53,6 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getCheckWorkflowString(path: string, versionName: string): string {
-    return this.getCheckEntry(path, versionName, EntryType.WORKFLOW);
+    return this.getCheckEntry(path, versionName);
   }
 }
