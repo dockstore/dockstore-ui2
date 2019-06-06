@@ -24,10 +24,10 @@ const WORKFLOWS_ROUTES: Routes = [
   {
     path: '',
     component: WorkflowsComponent,
-    data: { title: 'Dockstore | Workflow' },
+    data: { title: 'Dockstore | Workflow', entryType: EntryType.BioWorkflow },
     children: [
-      { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Workflows', entryType: EntryType.BioWorkflow } },
-      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Workflow', entryType: EntryType.BioWorkflow } }
+      { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Workflows' } },
+      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Workflow' } }
     ]
   }
 ];

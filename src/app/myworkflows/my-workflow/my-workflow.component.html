@@ -18,7 +18,7 @@
     <mat-icon *ngIf="showSidebar">chevron_left</mat-icon>
     <mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
   </button>
-  <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> My {{ entryType$ | async | titlecase }}s
+  <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> {{ myEntryPageTitle$ | async | titlecase }}
 </app-header>
 <button *ngIf="entryType === EntryType.BioWorkflow" mat-fab color="accent" id="registerWorkflowButton" class="fab-bottom-right"
   matTooltip="Register workflow" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="isRefreshing$ | async">

@@ -73,7 +73,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
   entryType: EntryType;
-  entryType$: Observable<string>;
+  entryType$: Observable<EntryType>;
+  myEntryPageTitle$: Observable<string>;
   EntryType = EntryType;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
@@ -84,7 +85,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   constructor(
     private myworkflowService: MyWorkflowsService,
     protected configuration: Configuration,
-    private route: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     private myBioWorkflowsService: MyBioWorkflowsService,
     private myServicesService: MyServicesService,
     private userQuery: UserQuery,
@@ -100,11 +101,10 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected workflowQuery: WorkflowQuery,
     private alertQuery: AlertQuery,
     private tokenService: TokenService,
-    private sessionService: SessionService,
-    private sessionQuery: SessionQuery
+    protected sessionService: SessionService,
+    protected sessionQuery: SessionQuery
   ) {
-    super(accountsService, authService, configuration, tokenQuery, urlResolverService);
-    this.sessionService.setEntryType(this.route.snapshot.data['entryType']);
+    super(accountsService, authService, configuration, tokenQuery, urlResolverService, sessionQuery, sessionService, activatedRoute);
     this.entryType = this.sessionQuery.getSnapshot().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
   }

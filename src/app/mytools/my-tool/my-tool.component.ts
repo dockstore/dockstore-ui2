@@ -17,8 +17,10 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { SessionService } from 'app/shared/session/session.service';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -34,7 +36,6 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
-import { SessionQuery } from '../../shared/session/session.query';
 import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
@@ -58,25 +59,45 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   private registerTool: Tool;
   public showSidebar = true;
-  constructor(private mytoolsService: MytoolsService, protected configuration: Configuration, private usersService: UsersService,
-    private userQuery: UserQuery, protected authService: AuthService,
-    private containerService: ContainerService, private dialog: MatDialog, private location: Location,
-    private refreshService: RefreshService, protected accountsService: AccountsService, private alertService: AlertService,
-    private registerToolService: RegisterToolService, protected tokenQuery: TokenQuery, private sessionQuery: SessionQuery,
-    protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService,
-    private toolQuery: ToolQuery, private alertQuery: AlertQuery) {
-    super(accountsService, authService, configuration, tokenQuery, urlResolverService);
+  constructor(
+    private mytoolsService: MytoolsService,
+    protected configuration: Configuration,
+    private usersService: UsersService,
+    private userQuery: UserQuery,
+    protected authService: AuthService,
+    protected activatedRoute: ActivatedRoute,
+    private containerService: ContainerService,
+    private dialog: MatDialog,
+    private location: Location,
+    private refreshService: RefreshService,
+    protected accountsService: AccountsService,
+    private alertService: AlertService,
+    private registerToolService: RegisterToolService,
+    protected tokenQuery: TokenQuery,
+    protected sessionService: SessionService,
+    protected urlResolverService: UrlResolverService,
+    private router: Router,
+    private containersService: ContainersService,
+    private toolQuery: ToolQuery,
+    private alertQuery: AlertQuery,
+    protected sessionQuery: SessionQuery
+  ) {
+    super(accountsService, authService, configuration, tokenQuery, urlResolverService, sessionQuery, sessionService, activatedRoute);
   }
 
   ngOnInit() {
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => {
         if (this.groupEntriesObject) {
-          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
-            this.groupEntriesObject);
+          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
           this.selectEntry(foundTool);
         }
-    });
+      });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
         const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
@@ -95,12 +116,15 @@ export class MyToolComponent extends MyEntry implements OnInit {
       if (user) {
         this.user = user;
         this.alertService.start('Fetching tools');
-        this.usersService.userContainers(user.id).subscribe(tools => {
-          this.containerService.setTools(tools);
-          this.alertService.detailedSuccess();
-        }, (error: HttpErrorResponse) => {
-          this.alertService.detailedError(error);
-        });
+        this.usersService.userContainers(user.id).subscribe(
+          tools => {
+            this.containerService.setTools(tools);
+            this.alertService.detailedSuccess();
+          },
+          (error: HttpErrorResponse) => {
+            this.alertService.detailedError(error);
+          }
+        );
       }
     });
 
@@ -118,7 +142,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       }
     });
 
-    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => this.registerTool = tool);
+    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {
@@ -172,10 +196,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   selectEntry(tool: ExtendedDockstoreTool): void {
     if (tool !== null) {
-      this.containersService.getContainer(tool.id, includesValidation).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
-        this.location.go(this.pageName + '/' + result.tool_path);
-        this.containerService.setTool(result);
-      });
+      this.containersService
+        .getContainer(tool.id, includesValidation)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(result => {
+          this.location.go(this.pageName + '/' + result.tool_path);
+          this.containerService.setTool(result);
+        });
     }
   }
 

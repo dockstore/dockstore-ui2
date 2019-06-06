@@ -15,7 +15,7 @@
   -->
 <app-header>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png">
-  Available {{entryType$ | async | titlecase}}s
+  {{ entryPageTitle$ | async | titlecase }}
 </app-header>
 <div class="container">
   <router-outlet></router-outlet>
