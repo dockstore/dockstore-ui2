@@ -15,14 +15,15 @@
  */
 
 import { Injectable } from '@angular/core';
+import { StarEntry } from 'app/starring/StarEntry';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class StarentryService {
-  private starEntrySource = new BehaviorSubject<any>(null);
+  private starEntrySource = new BehaviorSubject<StarEntry>(null);
   starEntry$ = this.starEntrySource.asObservable();
-  constructor() { }
-  setEntry(entry: any) {
+  constructor() {}
+  setEntry(entry: StarEntry) {
     this.starEntrySource.next(entry);
   }
 }

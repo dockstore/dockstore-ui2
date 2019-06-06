@@ -149,7 +149,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             this.setGroupEntriesObject(sortedWorkflows);
 
             this.sharedWorkflows = sharedWorkflows;
-            const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, EntryType.BioWorkflow);
+            const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(
+              sharedWorkflows,
+              this.user.username,
+              EntryType.BioWorkflow
+            );
             this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
             // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),
