@@ -14,17 +14,15 @@
  *    limitations under the License.
  */
 
+import { inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EntryType } from 'app/shared/enum/entry-type';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { WorkflowService } from 'app/shared/state/workflow.service';
+import { UsersService, WorkflowsService } from 'app/shared/swagger';
+import { UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { MyWorkflowsService } from './myworkflows.service';
-import { TestBed, inject } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { MetadataService, UsersService, WorkflowsService } from 'app/shared/swagger';
-import { MetadataStubService, WorkflowStubService, UsersStubService, WorkflowsStubService } from 'app/test/service-stubs';
-import { WorkflowService } from 'app/shared/state/workflow.service';
-import { UserQuery } from 'app/shared/user/user.query';
-import { WorkflowQuery } from 'app/shared/state/workflow.query';
-import { AlertService } from 'app/shared/alert/state/alert.service';
 
 describe('MyWorkflowsService', () => {
   const tool1: Workflow = {
@@ -143,8 +141,8 @@ describe('MyWorkflowsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should ...', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
-    expect(service.sortGroupEntries(tools, 'asdf', 'workflow').length).toBe(3);
-    expect(service.sortGroupEntries(tools, 'asdf', 'workflow')).toEqual(expectedResult);
-    expect(service.sortGroupEntries([], 'asdf', 'workflow')).toEqual([]);
+    expect(service.sortGroupEntries(tools, 'asdf', EntryType.BioWorkflow).length).toBe(3);
+    expect(service.sortGroupEntries(tools, 'asdf', EntryType.BioWorkflow)).toEqual(expectedResult);
+    expect(service.sortGroupEntries([], 'asdf', EntryType.BioWorkflow)).toEqual([]);
   }));
 });

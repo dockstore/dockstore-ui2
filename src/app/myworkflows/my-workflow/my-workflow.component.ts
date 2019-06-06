@@ -18,6 +18,7 @@ import { MatDialog } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { TokenService } from 'app/shared/state/token.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { AuthService } from 'ng2-ui-auth';
@@ -43,7 +44,6 @@ import { RegisterWorkflowModalService } from '../../workflow/register-workflow-m
 import { MyBioWorkflowsService } from '../my-bio-workflows.service';
 import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { TokenService } from 'app/shared/state/token.service';
 
 /**
  * How the workflow selection works:
@@ -145,11 +145,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         ([workflows, sharedWorkflows]) => {
           if (workflows && sharedWorkflows) {
             this.workflows = workflows;
-            const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
+            const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, EntryType.BioWorkflow);
             this.setGroupEntriesObject(sortedWorkflows);
 
             this.sharedWorkflows = sharedWorkflows;
-            const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
+            const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, EntryType.BioWorkflow);
             this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
             // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),

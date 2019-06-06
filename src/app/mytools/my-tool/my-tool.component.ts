@@ -18,6 +18,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { NavigationEnd, Router } from '@angular/router';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -43,7 +44,6 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
-
 
 @Component({
   selector: 'app-my-tool',
@@ -107,7 +107,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
       if (tools) {
         this.tools = tools;
-        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'tool');
+        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, EntryType.Tool);
         this.setGroupEntriesObject(sortedContainers);
         // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
         if (!this.tool) {

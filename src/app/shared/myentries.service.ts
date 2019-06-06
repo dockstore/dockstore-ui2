@@ -14,11 +14,8 @@
  *     limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { AlertService } from './alert/state/alert.service';
 import { Base } from './base';
-import { WorkflowService } from './state/workflow.service';
-import { UsersService, WorkflowsService } from './swagger';
-import { UserQuery } from './user/user.query';
+import { EntryType } from './enum/entry-type';
 
 @Injectable()
 export abstract class MyEntriesService extends Base {
@@ -90,7 +87,7 @@ export abstract class MyEntriesService extends Base {
    * @param  type     Either tool or workflow
    * @return          A sorted array of entries grouped together
    */
-  sortGroupEntries(entries: any[], username: string, type: string): any {
+  sortGroupEntries(entries: any[], username: string, type: EntryType): any {
     const groupEntries = [];
     for (let i = 0; i < entries.length; i++) {
       const prefix = entries[i].path.split('/', 2).join('/');
@@ -108,7 +105,7 @@ export abstract class MyEntriesService extends Base {
       groupEntries[pos].entries.push(entries[i]);
     }
 
-    const path = type === 'workflow' ? 'full_workflow_path' : 'tool_path';
+    const path = (type === EntryType.BioWorkflow || type === EntryType.Service) ? 'full_workflow_path' : 'tool_path';
 
     groupEntries.forEach(groupEntry => {
       groupEntry.entries.sort((a, b) => {

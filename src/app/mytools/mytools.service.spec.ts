@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
+import { inject, TestBed } from '@angular/core/testing';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { DockstoreTool } from '../shared/swagger';
-import { TestBed, inject } from '@angular/core/testing';
-
 import { MytoolsService } from './mytools.service';
 
 describe('MytoolsService', () => {
@@ -139,8 +139,8 @@ describe('MytoolsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should ...', inject([MytoolsService], (service: MytoolsService) => {
-    expect(service.sortGroupEntries(tools, 'asdf', 'tool').length).toBe(3);
-    expect(service.sortGroupEntries(tools, 'asdf', 'tool')).toEqual(expectedResult);
-    expect(service.sortGroupEntries([], 'asdf', 'tool')).toEqual([]);
+    expect(service.sortGroupEntries(tools, 'asdf', EntryType.Tool).length).toBe(3);
+    expect(service.sortGroupEntries(tools, 'asdf', EntryType.Tool)).toEqual(expectedResult);
+    expect(service.sortGroupEntries([], 'asdf', EntryType.Tool)).toEqual([]);
   }));
 });
