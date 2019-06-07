@@ -66,6 +66,14 @@ export class DescriptorLanguageService {
     }
   }
 
+  /**
+   * Some entries are not meant to show all descriptor types
+   *
+   * @param {ToolDescriptor.TypeEnum[]} thing
+   * @param {EntryType} entryType
+   * @returns {ToolDescriptor.TypeEnum[]}
+   * @memberof DescriptorLanguageService
+   */
   filterLanguages(thing: ToolDescriptor.TypeEnum[], entryType: EntryType): ToolDescriptor.TypeEnum[] {
     if (entryType === EntryType.BioWorkflow || EntryType.Tool || !entryType) {
       return thing.filter(thingy => thingy !== ToolDescriptor.TypeEnum.DOCKSTORESERVICE);
