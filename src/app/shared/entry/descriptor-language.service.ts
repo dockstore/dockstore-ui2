@@ -67,7 +67,7 @@ export class DescriptorLanguageService {
   }
 
   filterLanguages(thing: ToolDescriptor.TypeEnum[], entryType: EntryType): ToolDescriptor.TypeEnum[] {
-    if (entryType === EntryType.BioWorkflow || !entryType) {
+    if (entryType === EntryType.BioWorkflow || EntryType.Tool || !entryType) {
       return thing.filter(thingy => thingy !== ToolDescriptor.TypeEnum.DOCKSTORESERVICE);
     } else {
       return [ToolDescriptor.TypeEnum.DOCKSTORESERVICE];
