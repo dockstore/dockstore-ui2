@@ -139,7 +139,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   addTag() {
     this.alertService.start('Adding tag');
     this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe((tags: Tag[]) => {
-      this.tool.tags = tags;
+      this.tool.workflowVersions = tags;
       const id = this.tool.id;
       const tagName = this.unsavedVersion.name;
       // Store the unsaved test files if valid and exist

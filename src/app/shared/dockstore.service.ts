@@ -70,7 +70,7 @@ export class DockstoreService {
   getVerifiedSources(toolRef) {
     const sources = [];
     if (toolRef !== null) {
-      for (const version of toolRef.tags) {
+      for (const version of toolRef.workflowVersions) {
         if (version.verified) {
           sources.push({
             version: version.name,

@@ -31,6 +31,7 @@ import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
 
 import RoleEnum = Permission.RoleEnum;
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -662,7 +663,7 @@ export class WorkflowsStubService {
     }
     refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
         const refreshedWorkflow: Workflow = {
-            'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+            'descriptorType': DescriptorTypeEnum.CWL,
             'gitUrl': 'refreshedGitUrl',
             'mode': Workflow.ModeEnum.FULL,
             'organization': 'refreshedOrganization',
