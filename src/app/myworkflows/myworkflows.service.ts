@@ -16,7 +16,7 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
@@ -111,27 +111,6 @@ export class MyWorkflowsService extends MyEntriesService {
           console.error('This should be impossible because both errors are caught already');
         }
       );
-  }
-
-  /**
-   * Reloads the website after 1 min has elapsed
-   * Replace this entire function with a better redirect mechanism later
-   *
-   * @memberof MyWorkflowsService
-   */
-  reloadPage(): void {
-    this.alertService.start('Awaiting GitHub app changes');
-    // Time in ms
-    const time = 60000;
-    const matSnackConfig: MatSnackBarConfig = {
-      duration: time
-    };
-    this.matSnackBar.open('Reloading after 1 minute to display potential GitHub app changes...', '', matSnackConfig);
-
-    setTimeout(() => {
-      this.alertService.detailedSuccess('Reloading the page now');
-      window.location.reload();
-    }, time);
   }
 
   registerEntry(): void {}

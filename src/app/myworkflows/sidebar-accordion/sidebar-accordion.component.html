@@ -41,7 +41,7 @@
       </div>
       <div *ngIf="(entryType$ | async) === EntryType.Service">
         <div *ngIf="(orgObj?.organization | githubNameToId | async) as link">
-          <a mat-button target="_blank" (click)="reloadPage()" rel="noopener noreferrer" [href]="link">Manage Organization on GitHub</a>
+          <a mat-button target="_blank" rel="noopener noreferrer" [href]="link">Manage Organization on GitHub</a>
         </div>
       </div>
     </mat-action-row>

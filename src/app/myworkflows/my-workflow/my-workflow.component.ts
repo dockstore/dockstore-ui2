@@ -297,10 +297,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   refreshAllEntries(): void {
     this.refreshService.refreshAllWorkflows(this.user.id);
   }
-
-  reloadPage(): void {
-    this.myworkflowService.reloadPage();
-  }
 }
 export interface OrgWorkflowObject {
   sourceControl: string;

@@ -27,8 +27,4 @@ export class SidebarAccordionComponent implements OnInit {
     this.entryType$ = this.sessionQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
   }
-
-  reloadPage(): void {
-    this.myWorkflowsService.reloadPage();
-  }
 }

@@ -15,6 +15,7 @@
  */
 import { RouterModule, Routes } from '@angular/router';
 import { FundingComponent } from './funding/funding.component';
+import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -39,7 +40,7 @@ const APP_ROUTES: Routes = [
   {
     path: 'services',
     loadChildren: 'app/workflows/services/services.module#ServicesModule',
-    data: { title: 'Dockstore | Services'}
+    data: { title: 'Dockstore | Services' }
   },
   { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows' } },
   { path: 'organizations', loadChildren: 'app/organizations/organizations.module#OrganizationsModule' },
@@ -55,6 +56,7 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Workflows' }
   },
+  { path: 'githubCallback', component: GithubCallbackComponent },
   {
     path: 'my-services',
     loadChildren: 'app/my-services/my-services.module#MyServicesModule',
