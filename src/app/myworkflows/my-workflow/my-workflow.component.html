@@ -43,8 +43,8 @@
                         [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)">
                         Refresh All
                       </button>
-                      <a mat-menu-item [href]="gitHubAppInstallationLink$ | async" target="_blank" rel="noopener noreferrer">Manage on
-                        GitHub</a>
+                      <a *ngIf="entryType === EntryType.Service" mat-menu-item [href]="gitHubAppInstallationLink$ | async" target="_blank"
+                        rel="noopener noreferrer">Manage on GitHub</a>
                     </mat-menu>
                     <button mat-icon-button [matMenuTriggerFor]="appMenu">
                       <mat-icon>
