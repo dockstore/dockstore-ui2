@@ -35,7 +35,7 @@
           </a>
         </span>
         <a
-          [routerLink]="('/workflows/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
+          [routerLink]="('/' + (entryType$ | async) + 's/' + workflow?.full_workflow_path )">{{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}</a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">

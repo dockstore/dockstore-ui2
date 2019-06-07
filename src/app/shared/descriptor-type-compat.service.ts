@@ -21,7 +21,8 @@ export enum WebserviceDescriptorTypeEnum {
   WDL = 'wdl',
   // DOCKSTORE-2428 - demo how to add new workflow language
   // SWL = 'swl',
-  NFL = 'nfl'
+  NFL = 'nfl',
+  SERVICE = 'service'
 }
 
 /**
@@ -66,6 +67,9 @@ constructor() { }
       case ToolDescriptor.TypeEnum.NFL: {
         console.log('Unneeded conversion');
         return ToolDescriptor.TypeEnum.NFL;
+      }
+      case WebserviceDescriptorTypeEnum.SERVICE: {
+        return ToolDescriptor.TypeEnum.DOCKSTORESERVICE;
       }
 
       // DOCKSTORE-2428 - demo how to add new workflow language

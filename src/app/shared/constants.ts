@@ -17,6 +17,7 @@
 export const ga4ghPath = '/api/ga4gh/v2';
 export const formInputDebounceTime = 250;
 export const ga4ghWorkflowIdPrefix = '#workflow/';
+export const ga4ghServiceIdPrefix = '#service/';
 export const includesValidation = 'validations';
 export const bootstrap4smallModalSize = '300px';
 export const bootstrap4mediumModalSize = '500px';
