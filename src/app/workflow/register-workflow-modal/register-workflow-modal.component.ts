@@ -206,7 +206,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
         this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
         break;
       }
-      case DescriptorTypeEnum.NFL: {
+      case DescriptorTypeEnum.NEXTFLOW: {
         this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
         break;
       }

@@ -26,8 +26,8 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
-import { WebserviceDescriptorTypeEnum } from '../../shared/descriptor-type-compat.service';
-import { ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor, ToolVersion } from '../../shared/swagger';
+import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 
 @Component({
   selector: 'app-info-tab',
@@ -65,11 +65,11 @@ export class InfoTabComponent implements OnInit, OnChanges {
       const found = this.validVersions.find((version: Tag) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
-      if (this.tool.descriptorType.includes(WebserviceDescriptorTypeEnum.CWL)) {
+      if (this.tool.descriptorType.includes(DescriptorTypeEnum.CWL)) {
         this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, ToolDescriptor.TypeEnum.CWL,
           this.currentVersion.cwl_path);
       }
-      if (this.tool.descriptorType.includes(WebserviceDescriptorTypeEnum.WDL)) {
+      if (this.tool.descriptorType.includes(DescriptorTypeEnum.WDL)) {
         this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, ToolDescriptor.TypeEnum.WDL,
           this.currentVersion.wdl_path);
       }

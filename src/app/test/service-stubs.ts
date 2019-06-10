@@ -559,10 +559,10 @@ export class DescriptorsStubService {
             const typesAvailable = new Array();
             for (const file of version.sourceFiles) {
                 const type = file.type;
-                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.CWL)) {
-                    typesAvailable.push(WebserviceDescriptorTypeEnum.CWL);
-                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.WDL)) {
-                    typesAvailable.push(WebserviceDescriptorTypeEnum.WDL);
+                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes(DescriptorTypeEnum.CWL)) {
+                    typesAvailable.push(DescriptorTypeEnum.CWL);
+                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes(DescriptorTypeEnum.WDL)) {
+                    typesAvailable.push(DescriptorTypeEnum.WDL);
                 }
             }
             return typesAvailable;

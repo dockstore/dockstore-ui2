@@ -14,7 +14,8 @@
  *     limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { ToolDescriptor } from './swagger';
+import { ToolDescriptor, Workflow } from './swagger';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export enum WebserviceDescriptorTypeEnum {
   CWL = 'cwl',
@@ -46,14 +47,14 @@ constructor() { }
    */
   public stringToDescriptorType(descriptorType: string): ToolDescriptor.TypeEnum {
     switch (descriptorType) {
-      case WebserviceDescriptorTypeEnum.CWL: {
+      case DescriptorTypeEnum.CWL: {
         return ToolDescriptor.TypeEnum.CWL;
       }
       case ToolDescriptor.TypeEnum.CWL: {
         console.log('Unneeded conversion');
         return ToolDescriptor.TypeEnum.CWL;
       }
-      case WebserviceDescriptorTypeEnum.WDL: {
+      case DescriptorTypeEnum.WDL: {
         return ToolDescriptor.TypeEnum.WDL;
       }
       case ToolDescriptor.TypeEnum.WDL: {
