@@ -46,6 +46,17 @@ constructor() { }
    * @memberof LaunchComponent
    */
   public stringToDescriptorType(descriptorType: string): ToolDescriptor.TypeEnum {
+    if (descriptorType.toUpperCase() === DescriptorTypeEnum.CWL) {
+      return ToolDescriptor.TypeEnum.CWL;
+    } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.WDL) {
+      return ToolDescriptor.TypeEnum.WDL;
+    } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.NEXTFLOW) {
+      return ToolDescriptor.TypeEnum.NFL;
+    } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.SERVICE) {
+      return ToolDescriptor.TypeEnum.SERVICE;
+    }
+
+    // the following probably needs cleanup, not sure if it covers any cases the above doesn't
     switch (descriptorType) {
       case DescriptorTypeEnum.CWL: {
         return ToolDescriptor.TypeEnum.CWL;
