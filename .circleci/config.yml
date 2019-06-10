@@ -24,7 +24,7 @@ jobs:
       - run: 
           name: "Setup custom environment variables"
           command: |
-            echo 'export WEBSERVICE_VERSION="1.6.0-alpha.6"' >> $BASH_ENV # Redirect MY_ENV_VAR into $BASH_ENV
+            echo 'export WEBSERVICE_VERSION="1.6.0"' >> $BASH_ENV # Redirect MY_ENV_VAR into $BASH_ENV
       - run: #need chrome, should be in Docker image 
           command: |
             sudo curl https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - \

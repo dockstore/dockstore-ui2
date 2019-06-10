@@ -23,11 +23,13 @@ export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
   RoleEnum = OrganizationUser.RoleEnum;
   form: FormGroup;
   public title: string;
+  public description: string;
   public TagEditorMode = TagEditorMode;
 
   ngOnInit() {
     this.form = this.upsertOrganizationMemberService.createForm(this.formsManager, this.data);
     this.title = this.upsertOrganizationMemberService.getTitle(this.data);
+    this.description = this.upsertOrganizationMemberService.getDescription(this.data);
   }
 
   upsertUser(): void {
