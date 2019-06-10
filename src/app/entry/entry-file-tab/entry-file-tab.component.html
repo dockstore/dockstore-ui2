@@ -1,10 +1,10 @@
 <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
   <mat-tab *ngFor="let fileType of differentFileTypes" label="{{ fileType }}">
     <ng-template matTabContent>
-      <mat-toolbar style="height: 75px">
+      <mat-toolbar color="primary">
         <app-loading class="w-100" [loading]="loading">
           <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
-            <mat-form-field>
+            <mat-form-field class="w-50">
               <mat-select [(value)]="selected" (selectionChange)="getFile()">
                 <mat-option [value]="file" *ngFor="let file of dropdown"> {{ file.path }} </mat-option>
               </mat-select>
