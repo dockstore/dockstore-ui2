@@ -160,6 +160,9 @@
           </mat-tab>
           <mat-tab id="fileTab" label="Files">
             <ng-template matTabContent>
+              <div *ngIf="entryType === EntryType.Service">
+                <app-entry-file-tab></app-entry-file-tab>
+              </div>
               <div *ngIf="validVersions && !isStub() && !isHosted()">
                 <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id"
                   [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion"

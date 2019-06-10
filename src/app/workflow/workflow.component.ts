@@ -19,6 +19,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
@@ -48,8 +50,6 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { Service } from 'app/shared/swagger/model/service';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -223,6 +223,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
           this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
             this.workflow.defaultVersion);
           if (this.selectedVersion) {
+            this.workflowService.setWorkflowVersion(this.selectedVersion);
             this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
               [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
           }
@@ -393,6 +394,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
         [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
     }
+    this.workflowService.setWorkflowVersion(version); ;
     this.updateWorkflowUrl(this.workflow);
   }
 

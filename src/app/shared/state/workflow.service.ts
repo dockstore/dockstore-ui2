@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-import { Workflow } from '../swagger';
+import { Workflow, WorkflowVersion } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
 import { ExtendedWorkflowService } from './extended-workflow.service';
 import { WorkflowStore } from './workflow.store';
-
 
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
@@ -53,6 +52,10 @@ export class WorkflowService {
 
   setWorkflows(workflows: BioWorkflow[] | Service[]) {
     this.workflows$.next(workflows);
+  }
+
+  setWorkflowVersion(version: WorkflowVersion) {
+    this.workflowStore.updateRoot({version: version});
   }
 
   setSharedWorkflows(workflows: Array<any>) {
