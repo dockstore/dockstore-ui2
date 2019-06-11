@@ -50,9 +50,9 @@ constructor() { }
       return ToolDescriptor.TypeEnum.CWL;
     } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.WDL) {
       return ToolDescriptor.TypeEnum.WDL;
-    } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.NEXTFLOW) {
+    } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.NFL) {
       return ToolDescriptor.TypeEnum.NFL;
-    } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.SERVICE) {
+    } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.Service) {
       return ToolDescriptor.TypeEnum.SERVICE;
     }
 
