@@ -84,8 +84,15 @@ jobs:
             - aws-s3/copy:
                 from: dist
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG}-$(echo $CIRCLE_SHA1 | cut -c -7)'
-                arguments: '--recursive'
-
+                arguments: |
+                  --recursive \
+                  --exclude index.html
+            - aws-s3/copy:
+                from: dist
+                to: 's3://${AWS_BUCKET}/${CIRCLE_TAG}-$(echo $CIRCLE_SHA1 | cut -c -7)'
+                arguments: |
+                  --include index.html \
+                  --cache-control max-age=0
 workflows:
   version: 2
   everything:
