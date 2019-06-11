@@ -19,7 +19,6 @@ import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';
 import { ToolDescriptor } from './swagger';
 
-
 @Injectable()
 export abstract class LaunchService {
     protected static readonly descriptorWdl = ' --descriptor wdl';

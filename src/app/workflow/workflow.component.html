@@ -160,26 +160,28 @@
           </mat-tab>
           <mat-tab id="fileTab" label="Files">
             <ng-template matTabContent>
-              <div *ngIf="entryType === EntryType.Service">
+              <div *ngIf="entryType === EntryType.Service; else BioWorkflow">
                 <app-entry-file-tab></app-entry-file-tab>
               </div>
-              <div *ngIf="validVersions && !isStub() && !isHosted()">
-                <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id"
-                  [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion"
-                  [descriptorType]="(descriptorType$ | async)" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
-                </app-files-workflow>
-              </div>
-              <div *ngIf="validVersions && isHosted()">
-                <app-workflow-file-editor *ngIf="validVersions && currentTab === 'files'" [entrypath]="workflow.full_workflow_path"
-                  [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion"
-                  [publicPage]="publicPage" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
-                </app-workflow-file-editor>
-              </div>
-              <div *ngIf="isStub()" class="p-3">
-                <mat-card class="alert alert-warning" role="alert">
-                  <mat-icon>warning</mat-icon> To see files, please refresh the workflow.
-                </mat-card>
-              </div>
+              <ng-template #BioWorkflow>
+                <div *ngIf="validVersions && !isStub() && !isHosted()">
+                  <app-files-workflow *ngIf="validVersions" [entrypath]="workflow.full_workflow_path" [id]="workflow?.id"
+                    [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion"
+                    [descriptorType]="(descriptorType$ | async)" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+                  </app-files-workflow>
+                </div>
+                <div *ngIf="validVersions && isHosted()">
+                  <app-workflow-file-editor *ngIf="validVersions && currentTab === 'files'" [entrypath]="workflow.full_workflow_path"
+                    [id]="workflow?.id" [versions]="validVersions" [default]="defaultVersion" [selectedVersion]="selectedVersion"
+                    [publicPage]="publicPage" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+                  </app-workflow-file-editor>
+                </div>
+                <div *ngIf="isStub()" class="p-3">
+                  <mat-card class="alert alert-warning" role="alert">
+                    <mat-icon>warning</mat-icon> To see files, please refresh the workflow.
+                  </mat-card>
+                </div>
+              </ng-template>
             </ng-template>
           </mat-tab>
           <div *ngIf="entryType === EntryType.BioWorkflow">

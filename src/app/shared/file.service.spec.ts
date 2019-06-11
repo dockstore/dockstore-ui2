@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
-
 import { sampleSourceFile, sampleTag } from '../test/mocked-objects';
 import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
@@ -34,6 +33,19 @@ describe('FileService', () => {
     const descriptorType = ToolDescriptor.TypeEnum.CWL;
     const entryType = 'tool';
     const url = fileService.getDescriptorPath('quay.io/org/repo', tag, sourceFile, descriptorType, entryType);
-    expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN-CWL/descriptor//cwl.json');
+    expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN-CWL/descriptor/%2Fcwl.json');
+  }));
+
+  it('should get downloadFilePath', inject([FileService], (fileService: FileService) => {
+    const id = '#workflow/github.com/HumanCellAtlas/skylab/HCA_SmartSeq2';
+    const versionId = 'dockstore';
+    const type = 'PLAIN-WDL';
+    const relativePath = 'HISAT2.wdl';
+    const downloadFilePath = fileService.getDownloadFilePath(id, versionId, type, relativePath);
+    expect(downloadFilePath).toEqual(
+      Dockstore.API_URI +
+        // tslint:disable-next-line: max-line-length
+        '/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN-WDL/descriptor/HISAT2.wdl'
+    );
   }));
 });

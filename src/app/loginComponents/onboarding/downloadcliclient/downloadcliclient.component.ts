@@ -7,7 +7,6 @@ import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
 
-
 @Component({
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',

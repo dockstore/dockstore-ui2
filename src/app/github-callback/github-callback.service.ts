@@ -21,7 +21,7 @@ export class GithubCallbackService {
    * Given the state query param, determines what route to go to
    *
    * @param {(string | null)} state  The state query param
-   * @returns {(string)}
+   * @returns {(string)}  The route to redirect to
    * @memberof GithubCallbackComponent
    */
   public stateToUrl(state: string | null): string {

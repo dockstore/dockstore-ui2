@@ -394,7 +394,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
         [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
     }
-    this.workflowService.setWorkflowVersion(version); ;
+    this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
   }
 

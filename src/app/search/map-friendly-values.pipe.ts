@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Pipe, PipeTransform } from '@angular/core';
+import { ToolFile } from 'app/shared/swagger';
 
 @Pipe({
   name: 'mapFriendlyValue'
@@ -58,6 +59,13 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ['author', new Map([
       ['', 'n/a']
     ])],
+    ['ToolFile.FileTypeEnum', new Map([
+      [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR, 'Primary Descriptor'],
+      [ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR, 'Secondary Descriptor'],
+      [ToolFile.FileTypeEnum.TESTFILE, 'Test Parameter File'],
+      [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
+      [ToolFile.FileTypeEnum.OTHER, 'Service Files']
+    ])]
   ]);
 
   /**

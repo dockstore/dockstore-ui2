@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ace } from './../grammars/custom-grammars.js';
 
 let ACE_EDITOR_INSTANCE = 0;
