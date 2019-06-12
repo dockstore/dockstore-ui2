@@ -30,6 +30,14 @@ export function getTab(tabName: string): any {
     .should('be.visible');
 }
 
+export function assertNoTab(tabName: string): any {
+  return cy
+    .get('.mat-tab-labels')
+    .should('be.visible')
+    .contains('div', tabName)
+    .should('not.be.visible');
+}
+
 export function resetDB() {
   before(() => {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');

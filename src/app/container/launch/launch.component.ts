@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
+import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
-
-import { ContainerService } from '../../shared/container.service';
-import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { takeUntil } from 'rxjs/operators';
 import { ToolDescriptor } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Workflow } from '../../shared/swagger/model/workflow';
@@ -31,11 +30,11 @@ import { ToolLaunchService } from './tool-launch.service';
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css']
 })
-export class LaunchComponent {
+export class LaunchComponent extends Base {
   @Input() basePath: string;
   @Input() path: string;
   @Input() toolname: string;
-  @Input() mode: (DockstoreTool.ModeEnum | Workflow.ModeEnum);
+  @Input() mode: DockstoreTool.ModeEnum | Workflow.ModeEnum;
 
   _selectedVersion: Tag;
   @Input() set selectedVersion(value: Tag) {
@@ -63,12 +62,18 @@ export class LaunchComponent {
   currentDescriptorType: ToolDescriptor.TypeEnum;
   protected published$: Observable<boolean>;
 
-  constructor(private launchService: ToolLaunchService, private toolQuery: ToolQuery,
-    private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService) {
-    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
-      this.descriptors = descriptors;
-      this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
-    });
+  constructor(
+    private launchService: ToolLaunchService,
+    private toolQuery: ToolQuery,
+    private descriptorLanguageService: DescriptorLanguageService
+  ) {
+    super();
+    this.descriptorLanguageService.filteredDescriptorLanguages$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
+        this.descriptors = descriptors;
+        this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
+      });
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
