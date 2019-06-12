@@ -3,10 +3,10 @@ import { Store, StoreConfig } from '@datorama/akita';
 import { Organization, Collection, DockstoreTool, Workflow } from '../../shared/swagger';
 
 export interface AliasesState {
-   organization: Organization;
-   collection: Collection;
-   tool: DockstoreTool;
-   workflow: Workflow;
+   organization: Organization | null;
+   collection: Collection | null;
+   tool: DockstoreTool | null;
+   workflow: Workflow | null;
 }
 
 export function createInitialState(): AliasesState {

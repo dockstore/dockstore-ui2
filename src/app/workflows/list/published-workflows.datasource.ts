@@ -16,13 +16,13 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../../shared/provider.service';
 import { Workflow, WorkflowsService } from '../../shared/swagger';
-import { EntryType } from 'app/shared/enum/entry-type';
+
 
 @Injectable()
 export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow> {

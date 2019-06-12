@@ -28,7 +28,7 @@ export class PermissionsComponent implements OnInit {
   public hosted = false;
   public updating = 0;
   public hasGoogleAccount = false;
-  public firecloudUrl = Dockstore.FIRECLOUD_IMPORT_URL.substr(0, Dockstore.FIRECLOUD_IMPORT_URL.indexOf('/#'));
+  public terraUrl = Dockstore.TERRA_IMPORT_URL.substr(0, Dockstore.TERRA_IMPORT_URL.indexOf('/#'));
   private _workflow: Workflow;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -80,7 +80,7 @@ export class PermissionsComponent implements OnInit {
           this.processResponse(userPermissions);
         },
         (e: HttpErrorResponse) => {
-          this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with FireCloud`);
+          this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with Terra`);
         }
       );
     }

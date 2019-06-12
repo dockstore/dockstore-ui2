@@ -30,7 +30,6 @@ export class Dockstore {
   static DISCOURSE_URL = 'http://localhost/';
 
   static DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
-  static FIRECLOUD_IMPORT_URL = 'https://portal.firecloud.org/#import/dockstore';
   static DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
   static TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
 
@@ -57,11 +56,11 @@ export class Dockstore {
 
   static GOOGLE_CLIENT_ID = 'fill_this_in';
   static GOOGLE_SCOPE = 'profile email';
+  static GOOGLE_TAG_MANAGER_ID = 'filled in by configuration service';
 
   static CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 
   static FEATURES = {
     enableCwlViewer: true,
-    enableLaunchWithFireCloud: true
   };
 }

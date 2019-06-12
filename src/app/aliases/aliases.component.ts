@@ -15,13 +15,13 @@ import { takeUntil } from 'rxjs/operators';
 export class AliasesComponent extends Base implements OnInit {
 
   loading$: Observable<boolean>;
-  organization$: Observable<Organization>;
-  collection$: Observable<Collection>;
-  workflow$: Observable<Workflow>;
-  tool$: Observable<DockstoreTool>;
+  organization$: Observable<Organization | null>;
+  collection$: Observable<Collection | null>;
+  workflow$: Observable<Workflow | null>;
+  tool$: Observable<DockstoreTool | null>;
 
-  public type: string;
-  public alias: string;
+  public type: string | null;
+  public alias: string | null;
   public validType: boolean;
   // Types contains resource types that support aliases
   public types = [ 'organizations', 'collections', 'workflows', 'tools', 'containers' ];
@@ -34,12 +34,12 @@ export class AliasesComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    this.type = this.route.snapshot.paramMap.get('type');
+    this.type = this.route.snapshot.paramMap.get('type') ;
     this.alias = this.route.snapshot.paramMap.get('alias');
-    this.validType = this.types.includes(this.type);
+    this.validType = (this.type) ? this.types.includes(this.type) : false;
     this.loading$ = this.aliasesQuery.loading$;
 
-    if (this.type === 'organizations') {
+    if (this.type === 'organizations' && this.alias) {
       this.aliasesService.updateOrganizationFromAlias(this.alias);
       this.organization$ = this.aliasesQuery.organization$;
       this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization: Organization) => {
@@ -47,7 +47,7 @@ export class AliasesComponent extends Base implements OnInit {
           this.router.navigate(['/organizations', organization.name]);
         }
       });
-    } else if (this.type === 'collections') {
+    } else if (this.type === 'collections' && this.alias) {
       this.aliasesService.updateCollectionFromAlias(this.alias);
       this.collection$ = this.aliasesQuery.collection$;
       this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
@@ -55,7 +55,7 @@ export class AliasesComponent extends Base implements OnInit {
           this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
         }
       });
-    } else if (this.type === 'workflows') {
+    } else if (this.type === 'workflows' && this.alias) {
       this.aliasesService.updateWorkflowFromAlias(this.alias);
       this.workflow$ = this.aliasesQuery.workflow$;
       this.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
@@ -63,7 +63,7 @@ export class AliasesComponent extends Base implements OnInit {
           this.router.navigate(['/workflows', workflow.full_workflow_path]);
         }
       });
-    } else if (this.type === 'tools' || this.type === 'containers') {
+    } else if ((this.type === 'tools' || this.type === 'containers') && this.alias) {
       this.aliasesService.updateToolFromAlias(this.alias);
       this.tool$ = this.aliasesQuery.tool$;
       this.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: DockstoreTool) => {

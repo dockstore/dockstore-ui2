@@ -24,6 +24,7 @@ import { SessionQuery } from '../session/session.query';
 import { ContainersService } from '../swagger/api/containers.service';
 import { WorkflowsService } from '../swagger/api/workflows.service';
 import { DockstoreTool } from '../swagger/model/dockstoreTool';
+import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Entry } from '../swagger/model/entry';
 import { Workflow } from '../swagger/model/workflow';
 import { ToolQuery } from '../tool/tool.query';

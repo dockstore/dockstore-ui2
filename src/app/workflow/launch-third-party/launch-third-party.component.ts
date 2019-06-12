@@ -102,8 +102,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
               private descriptorsQuery: DescriptorsQuery,
               private descriptorsService: DescriptorsService) {
     super();
-    iconRegistry.addSvgIcon('firecloud',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/FireCloud-white-icon.svg'));
     iconRegistry.addSvgIcon('dnanexus',
       sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/DX_Logo_white_alpha.svg'));
     iconRegistry.addSvgIcon('terra',

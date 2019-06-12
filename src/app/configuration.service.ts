@@ -31,7 +31,6 @@ export class ConfigurationService {
     Dockstore.DISCOURSE_URL = config.discourseUrl;
 
     Dockstore.DNASTACK_IMPORT_URL = config.dnaStackImportUrl;
-    Dockstore.FIRECLOUD_IMPORT_URL = config.fireCloudImportUrl;
     Dockstore.DNANEXUS_IMPORT_URL = config.dnaNexusImportUrl;
     Dockstore.TERRA_IMPORT_URL = config.terraImportUrl;
 
@@ -56,10 +55,9 @@ export class ConfigurationService {
 
     Dockstore.GOOGLE_CLIENT_ID = config.googleClientId;
     Dockstore.GOOGLE_SCOPE = config.googleScope;
+    Dockstore.GOOGLE_TAG_MANAGER_ID = config.tagManagerId;
 
     Dockstore.CWL_VISUALIZER_URI = config.cwlVisualizerUri;
-
-    Dockstore.FEATURES.enableLaunchWithFireCloud = config.enableLaunchWithFireCloud;
   }
 
 

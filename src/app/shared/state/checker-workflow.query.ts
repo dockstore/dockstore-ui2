@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { SessionQuery } from '../session/session.query';
-import { DockstoreTool, Entry, Workflow } from '../swagger';
+import { DockstoreTool, Entry, Workflow, BioWorkflow } from '../swagger';
 import { CheckerWorkflowState, CheckerWorkflowStore } from './checker-workflow.store';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 
