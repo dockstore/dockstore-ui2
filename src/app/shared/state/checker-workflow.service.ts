@@ -18,21 +18,19 @@ import { Router } from '@angular/router';
 import { transaction } from '@datorama/akita';
 import { combineLatest, merge as observableMerge, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, first, map, takeUntil } from 'rxjs/operators';
-
 import { Base } from '../base';
+import { includesValidation } from '../constants';
 import { SessionQuery } from '../session/session.query';
 import { ContainersService } from '../swagger/api/containers.service';
 import { WorkflowsService } from '../swagger/api/workflows.service';
-import { DockstoreTool } from '../swagger/model/dockstoreTool';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
+import { DockstoreTool } from '../swagger/model/dockstoreTool';
 import { Entry } from '../swagger/model/entry';
 import { Workflow } from '../swagger/model/workflow';
 import { ToolQuery } from '../tool/tool.query';
 import { CheckerWorkflowQuery } from './checker-workflow.query';
 import { CheckerWorkflowStore } from './checker-workflow.store';
 import { WorkflowQuery } from './workflow.query';
-import { includesValidation } from '../constants';
-import { BioWorkflow } from '../swagger/model/bioWorkflow';
 
 @Injectable({ providedIn: 'root' })
 export class CheckerWorkflowService extends Base {
