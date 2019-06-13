@@ -25,6 +25,7 @@ import { DescriptorLanguageService } from '../../shared/entry/descriptor-languag
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { HostedService, MetadataService, ToolDescriptor, Workflow, WorkflowsService } from '../../shared/swagger';
 import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Injectable()
 export class RegisterWorkflowModalService {
@@ -35,7 +36,7 @@ export class RegisterWorkflowModalService {
     private sourceControlMap = [];
     workflows: any;
     isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    public descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
+    public descriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
     workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
         this.sampleWorkflow);
     constructor(private workflowsService: WorkflowsService, private descriptorTypeCompatService: DescriptorTypeCompatService,
@@ -45,7 +46,7 @@ export class RegisterWorkflowModalService {
         this.sampleWorkflow.repository = 'GitHub';
         // Setting a ToolDescriptor.TypeEnum to a workflow's descriptorType is currently weird
         // because it's not supposed to be compatible yet (in the webservice)
-        this.sampleWorkflow.descriptorType = ToolDescriptor.TypeEnum.CWL;
+        this.sampleWorkflow.descriptorType = Workflow.DescriptorTypeEnum.CWL;
         this.sampleWorkflow.workflowName = '';
         this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
         this.descriptorLanguageService.descriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);

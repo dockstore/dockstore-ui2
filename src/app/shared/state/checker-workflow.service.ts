@@ -21,12 +21,12 @@ import { distinctUntilChanged, filter, first, map, takeUntil } from 'rxjs/operat
 
 import { Base } from '../base';
 import { SessionQuery } from '../session/session.query';
-import { ContainersService } from '../swagger/api/containers.service';
-import { WorkflowsService } from '../swagger/api/workflows.service';
-import { DockstoreTool } from '../swagger/model/dockstoreTool';
-import { BioWorkflow } from '../swagger/model/bioWorkflow';
-import { Entry } from '../swagger/model/entry';
-import { Workflow } from '../swagger/model/workflow';
+import { ContainersService } from '../swagger';
+import { WorkflowsService } from '../swagger';
+import { DockstoreTool } from '../swagger';
+import { BioWorkflow } from '../swagger';
+import { Entry } from '../swagger';
+import { Workflow } from '../swagger';
 import { ToolQuery } from '../tool/tool.query';
 import { CheckerWorkflowQuery } from './checker-workflow.query';
 import { CheckerWorkflowStore } from './checker-workflow.store';

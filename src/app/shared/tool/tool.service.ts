@@ -45,10 +45,10 @@ export class ToolService {
   }
 
   @transaction()
-  setTags(tags: (Array<Tag> | null)) {
+  setTags(workflowVersions: (Array<Tag> | null)) {
     this.toolStore.updateActive(active => {
       return {
-        ...active.tags, tags
+        ...active.workflowVersions, workflowVersions
       };
     });
     this.extendedDockstoreToolService.update(this.toolQuery.getActive());

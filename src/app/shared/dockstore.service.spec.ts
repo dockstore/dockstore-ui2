@@ -96,7 +96,7 @@ describe('DockstoreService', () => {
             workflowVersions: [workflowVersion1, workflowVersion2, workflowVersion3]
         };
         const tool: any = {
-            tags: [workflowVersion1, workflowVersion2, workflowVersion3]
+            workflowVersions: [workflowVersion1, workflowVersion2, workflowVersion3]
         };
         expect(service.getVerifiedWorkflowSources(workflow)).toEqual([{version: 'c', verifiedSource: 'tester'}]);
         expect(service.getVerifiedSources(tool)).toEqual([{version: 'c', verifiedSource: 'tester'}]);

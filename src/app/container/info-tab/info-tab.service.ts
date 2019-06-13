@@ -87,7 +87,7 @@ export class InfoTabService extends Base {
 
   updateAndRefresh(tool: DockstoreTool) {
     const message = 'Tool Info';
-    tool.tags = [];
+    tool.workflowVersions = [];
     this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
       this.alertService.start('Updating ' + message);
       this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {

@@ -22,7 +22,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ToolDescriptor, Workflow } from '../../shared/swagger';
+import { ToolDescriptor, ToolVersion, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
 import {
   exampleDescriptorPatterns,
@@ -31,6 +31,7 @@ import {
   validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export interface HostedWorkflowObject {
   name: string;
@@ -52,11 +53,11 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public isModalShown: boolean;
   public isRefreshing$: Observable<boolean>;
   public descriptorValidationPattern;
-  public descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
+  public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
   public hostedWorkflow = {
     repository: '',
-    descriptorType: ToolDescriptor.TypeEnum.CWL,
+    descriptorType: DescriptorTypeEnum.CWL,
     entryName: null
   };
   public options = [
@@ -97,7 +98,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
       takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
     this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
-    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<ToolDescriptor.TypeEnum>) => {
+    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<DescriptorTypeEnum>) => {
       if (languages && languages.length > 0) {
         // Set the initial descriptor type selected
         this.workflow.descriptorType = languages[0];
@@ -195,17 +196,17 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * @param {ToolDescriptor.TypeEnum} descriptorType  The current selected descriptor type
    * @memberof RegisterWorkflowModalComponent
    */
-  changeDescriptorType(descriptorType: ToolDescriptor.TypeEnum): void {
+  changeDescriptorType(descriptorType: DescriptorTypeEnum): void {
     switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL: {
+      case DescriptorTypeEnum.CWL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.cwlPath;
         break;
       }
-      case ToolDescriptor.TypeEnum.WDL: {
+      case DescriptorTypeEnum.WDL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
         break;
       }
-      case ToolDescriptor.TypeEnum.NFL: {
+      case DescriptorTypeEnum.NFL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
         break;
       }

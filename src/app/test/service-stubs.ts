@@ -31,6 +31,7 @@ import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
 
 import RoleEnum = Permission.RoleEnum;
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -558,10 +559,10 @@ export class DescriptorsStubService {
             const typesAvailable = new Array();
             for (const file of version.sourceFiles) {
                 const type = file.type;
-                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.CWL)) {
-                    typesAvailable.push(WebserviceDescriptorTypeEnum.CWL);
-                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.WDL)) {
-                    typesAvailable.push(WebserviceDescriptorTypeEnum.WDL);
+                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes(DescriptorTypeEnum.CWL)) {
+                    typesAvailable.push(DescriptorTypeEnum.CWL);
+                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes(DescriptorTypeEnum.WDL)) {
+                    typesAvailable.push(DescriptorTypeEnum.WDL);
                 }
             }
             return typesAvailable;
@@ -662,7 +663,7 @@ export class WorkflowsStubService {
     }
     refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
         const refreshedWorkflow: Workflow = {
-            'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+            'descriptorType': DescriptorTypeEnum.CWL,
             'gitUrl': 'refreshedGitUrl',
             'mode': Workflow.ModeEnum.FULL,
             'organization': 'refreshedOrganization',

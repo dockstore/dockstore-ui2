@@ -25,6 +25,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Component({
   selector: 'app-launch',
@@ -53,9 +54,9 @@ export class LaunchComponent {
   dockstoreSupportedCwlMakeTemplate: string;
   checkEntryCommand: string;
   consonance: string;
-  descriptors: Array<ToolDescriptor.TypeEnum>;
+  descriptors: Array<Workflow.DescriptorTypeEnum>;
   filteredDescriptors: Array<string>;
-  currentDescriptor: ToolDescriptor.TypeEnum;
+  currentDescriptor: DescriptorTypeEnum;
   ToolDescriptor = ToolDescriptor;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
@@ -66,7 +67,7 @@ export class LaunchComponent {
   constructor(private launchService: ToolLaunchService, private toolQuery: ToolQuery,
     private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService,
     private descriptorTypeCompatService: DescriptorTypeCompatService) {
-    this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
+    this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
       this.descriptors = descriptors;
       this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
     });
@@ -74,8 +75,8 @@ export class LaunchComponent {
   }
 
   // Returns an array of descriptors that are valid for the given tool version
-  filterDescriptors(descriptors: Array<ToolDescriptor.TypeEnum>, version: Tag): Array<string> {
-    const newDescriptors: Array<ToolDescriptor.TypeEnum> = [];
+  filterDescriptors(descriptors: Array<DescriptorTypeEnum>, version: Tag): Array<string> {
+    const newDescriptors: Array<DescriptorTypeEnum> = [];
 
     // Return empty array if no descriptors present yet
     if (descriptors === undefined || version === undefined) {
@@ -96,7 +97,7 @@ export class LaunchComponent {
 
     // Create a list of valid descriptors
     for (const descriptor of descriptors) {
-      if ((descriptor === ToolDescriptor.TypeEnum.CWL && hasCwl) || (descriptor === ToolDescriptor.TypeEnum.WDL && hasWdl)) {
+      if ((descriptor === DescriptorTypeEnum.CWL && hasCwl) || (descriptor === DescriptorTypeEnum.WDL && hasWdl)) {
         newDescriptors.push(descriptor);
       }
     }

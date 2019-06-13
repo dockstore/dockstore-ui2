@@ -25,7 +25,7 @@
   </div>
 </div>
 
-<div class="row m-1" *ngIf="tool?.mode == 'MANUAL_IMAGE_PATH' && tool?.tags?.length === 0">
+<div class="row m-1" *ngIf="tool?.mode == 'MANUAL_IMAGE_PATH' && tool?.workflowVersions?.length === 0">
   <mat-card class="alert alert-info" role="alert">
     <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
   </mat-card>
@@ -43,14 +43,14 @@
       <span *ngIf="tool?.private_access" class="private-lock" matTooltip="Private">
         <app-private-icon></app-private-icon>
       </span>
-      {{ tool?.tool_path }}<span *ngIf="tool?.tags.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name
+      {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span><span class="ds-green">{{ selectedVersion?.name
         }}</span>
     </h3>
 
-    <div *ngIf="!publicPage && tool?.tags.length > 0">
+    <div *ngIf="!publicPage && tool?.workflowVersions.length > 0">
       <mat-form-field>
         <mat-select name="toolVersions" [(value)]="selectedVersion" (selectionChange)="onSelectedVersionChange(selectedVersion)">
-          <mat-option *ngFor="let tag of tool.tags" [value]="tag">{{tag.name}}</mat-option>
+          <mat-option *ngFor="let tag of tool.workflowVersions" [value]="tag">{{tag.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -149,7 +149,7 @@
             [extendedDockstoreTool]="(extendedTool$ | async)" [validVersions]="validVersions"></app-info-tab>
         </mat-tab>
         <mat-tab id="launchTab" label="Launch">
-          <app-launch *ngIf="tool?.tags.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion"
+          <app-launch *ngIf="tool?.workflowVersions.length > 0; else noTags" [basePath]="tool?.path" [selectedVersion]="selectedVersion"
             [path]="tool?.tool_path" [toolname]="tool?.toolname" [mode]="tool?.mode"></app-launch>
           <ng-template #noTags>
             <div class="p-3">
@@ -161,7 +161,7 @@
         </mat-tab>
         <mat-tab id="versionTab" label="Versions">
           <div *ngIf="validVersions">
-            <app-versions-container [versions]="tool?.tags" (selectedVersionChange)="onSelectedVersionChange($event)"
+            <app-versions-container [versions]="tool?.workflowVersions" (selectedVersionChange)="onSelectedVersionChange($event)"
               id="versionsTab" [verifiedSource]="(extendedTool$ | async)?.verifiedSources" [selectedVersion]="selectedVersion">
             </app-versions-container>
           </div>
