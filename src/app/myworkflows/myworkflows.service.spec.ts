@@ -21,7 +21,7 @@ import { TestBed, inject } from '@angular/core/testing';
 describe('MyWorkflowsService', () => {
   const tool1: Workflow = {
       defaultTestParameterFilePath: '',
-      descriptorType: '',
+      descriptorType: null,
       gitUrl: '',
       mode: Workflow.ModeEnum.FULL,
       organization: 'cc',
@@ -34,7 +34,7 @@ describe('MyWorkflowsService', () => {
   };
   const tool2: Workflow = {
     defaultTestParameterFilePath: '',
-    descriptorType: '',
+    descriptorType: null,
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
     organization: 'cc',
@@ -47,7 +47,7 @@ describe('MyWorkflowsService', () => {
 };
   const tool3: Workflow = {
     defaultTestParameterFilePath: '',
-    descriptorType: '',
+    descriptorType: null,
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
     organization: 'bb',
@@ -60,7 +60,7 @@ describe('MyWorkflowsService', () => {
 };
   const tool4: Workflow = {
     defaultTestParameterFilePath: '',
-    descriptorType: '',
+    descriptorType: null,
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
     organization: 'bb',
@@ -73,7 +73,7 @@ describe('MyWorkflowsService', () => {
 };
   const tool5: Workflow = {
     defaultTestParameterFilePath: '',
-    descriptorType: '',
+    descriptorType: null,
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
     organization: 'aa',
@@ -86,7 +86,7 @@ describe('MyWorkflowsService', () => {
 };
   const tool6: Workflow = {
     defaultTestParameterFilePath: '',
-    descriptorType: '',
+    descriptorType: null,
     gitUrl: '',
     mode: Workflow.ModeEnum.FULL,
     organization: 'aa',
