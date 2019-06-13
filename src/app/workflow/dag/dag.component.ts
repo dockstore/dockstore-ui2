@@ -15,20 +15,19 @@
  */
 import { AfterViewInit, Component, ElementRef, HostListener, Input, NgZone, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { filterNil } from '@datorama/akita';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor } from '../../shared/swagger';
-import { Workflow } from './../../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
-import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 import { WdlViewerService } from './wdl-viewer/state/wdl-viewer.service';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
 /**
  * This is the DAG tab
@@ -131,7 +130,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isWDL$ = this.workflowQuery.isWDL$;
     this.dagResult$ = this.dagQuery.dagResults$;
-    this.workflow$ = <Observable<BioWorkflow>><unknown>this.workflowQuery.workflow$;
+    this.workflow$ = <Observable<BioWorkflow>>this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;
     this.dagService.loadExtensions();
     this.wdlViewerResult$ = this.wdlViewerService.status$;

@@ -212,7 +212,7 @@ export class EntryFileTabService extends Base {
       )
       .subscribe(
         (fileWrapper: FileWrapper) => {
-          this.hanndleFileWrapperChange(fileWrapper);
+          this.handleFileWrapperChange(fileWrapper);
         },
         error => {
           this.setFileContents(null);
@@ -229,7 +229,7 @@ export class EntryFileTabService extends Base {
    * @memberof EntryFileTabService
    */
   @transaction()
-  private hanndleFileWrapperChange(fileWrapper: FileWrapper) {
+  private handleFileWrapperChange(fileWrapper: FileWrapper) {
     this.setFileContents(fileWrapper.content);
     this.changeDownloadFilePath();
   }

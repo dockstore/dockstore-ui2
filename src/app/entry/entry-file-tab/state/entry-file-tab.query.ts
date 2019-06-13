@@ -9,7 +9,6 @@ import { EntryFileTabState, EntryFileTabStore } from './entry-file-tab.store';
 
 @Injectable()
 export class EntryFileTabQuery extends Query<EntryFileTabState> {
-  unfilteredFiles$: Observable<ToolFile[]> = this.select(state => state.files);
   files$: Observable<ToolFile[]> = this.select(state => state.files);
   selectedFileType$: Observable<ToolFile.FileTypeEnum> = this.select(state => state.selectedFileType);
   selectedFile$: Observable<ToolFile> = this.select(state => state.selectedFile);
