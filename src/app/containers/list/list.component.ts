@@ -55,6 +55,6 @@ export class ListContainersComponent extends ToolLister implements OnInit {
   }
 
   getVerified(tool: DockstoreTool): boolean {
-    return this.dockstoreService.getVersionVerified(tool.tags);
+    return this.dockstoreService.getVersionVerified(tool.workflowVersions);
   }
 }

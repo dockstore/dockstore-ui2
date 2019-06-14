@@ -15,7 +15,6 @@
  */
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
-import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
@@ -32,6 +31,7 @@ import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
 
 import RoleEnum = Permission.RoleEnum;
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export class ContainerStubService {
     private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -514,7 +514,13 @@ export class CheckerWorkflowStubService {
 }
 
 export class DescriptorLanguageStubService {
-    filteredDescriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
+  descriptorLanguages$ = observableOf([
+    ToolDescriptor.TypeEnum.CWL,
+    ToolDescriptor.TypeEnum.WDL,
+    ToolDescriptor.TypeEnum.NFL,
+    ToolDescriptor.TypeEnum.SERVICE
+  ]);
+  filteredDescriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
 }
 
 export class RegisterCheckerWorkflowStubService {
@@ -561,10 +567,10 @@ export class DescriptorsStubService {
             const typesAvailable = new Array();
             for (const file of version.sourceFiles) {
                 const type = file.type;
-                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.CWL)) {
-                    typesAvailable.push(WebserviceDescriptorTypeEnum.CWL);
-                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes(WebserviceDescriptorTypeEnum.WDL)) {
-                    typesAvailable.push(WebserviceDescriptorTypeEnum.WDL);
+                if (type === 'DOCKSTORE_CWL' && !typesAvailable.includes(DescriptorTypeEnum.CWL)) {
+                    typesAvailable.push(DescriptorTypeEnum.CWL);
+                } else if (type === 'DOCKSTORE_WDL' && !typesAvailable.includes(DescriptorTypeEnum.WDL)) {
+                    typesAvailable.push(DescriptorTypeEnum.WDL);
                 }
             }
             return typesAvailable;
@@ -665,7 +671,7 @@ export class WorkflowsStubService {
     }
     refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
         const refreshedWorkflow: Workflow = {
-            'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+            'descriptorType': DescriptorTypeEnum.CWL,
             'gitUrl': 'refreshedGitUrl',
             'mode': Workflow.ModeEnum.FULL,
             'organization': 'refreshedOrganization',

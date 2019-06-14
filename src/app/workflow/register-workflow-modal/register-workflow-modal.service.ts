@@ -17,49 +17,43 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-
+import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { HostedService, MetadataService, ToolDescriptor, Workflow, WorkflowsService, SourceControlBean } from '../../shared/swagger';
+import { HostedService, MetadataService, Workflow, WorkflowsService } from '../../shared/swagger';
 import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
-import { WorkflowQuery } from 'app/shared/state/workflow.query';
-import { map } from 'rxjs/operators';
+
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Injectable()
 export class RegisterWorkflowModalService {
-  workflowRegisterError$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  private descriptorLanguageMap: Array<string> = [];
-  sampleWorkflow: Workflow = <Workflow>{};
-  actualWorkflow: Workflow;
-  private sourceControlMap = [];
-  workflows: any;
-  isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
-  public filteredDescriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
-  workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(this.sampleWorkflow);
-  constructor(
-    private workflowsService: WorkflowsService,
-    private workflowService: WorkflowService,
-    private router: Router,
-    private alertService: AlertService,
-    private descriptorLanguageService: DescriptorLanguageService,
-    private metadataService: MetadataService,
-    private hostedService: HostedService
-  ) {
-    this.sampleWorkflow.repository = 'GitHub';
-    // Setting a ToolDescriptor.TypeEnum to a workflow's descriptorType is currently weird
-    // because it's not supposed to be compatible yet (in the webservice)
-    this.sampleWorkflow.descriptorType = ToolDescriptor.TypeEnum.CWL;
-    this.sampleWorkflow.workflowName = '';
-    this.metadataService
-      .getSourceControlList()
-      .subscribe((sourceControlBeans: SourceControlBean[]) => (this.sourceControlMap = sourceControlBeans));
-
-    this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
-    this.workflow.subscribe(workflow => (this.actualWorkflow = workflow));
-    this.workflowService.workflows$.subscribe(workflows => (this.workflows = workflows));
+    workflowRegisterError$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    private descriptorLanguageMap: Array<string> = [];
+    sampleWorkflow: Workflow = <Workflow>{};
+    actualWorkflow: Workflow;
+    private sourceControlMap = [];
+    workflows: any;
+    isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    public descriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
+    public filteredDescriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
+    workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(
+        this.sampleWorkflow);
+    constructor(private workflowsService: WorkflowsService, private descriptorTypeCompatService: DescriptorTypeCompatService,
+        private workflowService: WorkflowService, private router: Router,
+        private alertService: AlertService, private descriptorLanguageService: DescriptorLanguageService,
+        private metadataService: MetadataService, private hostedService: HostedService) {
+        this.sampleWorkflow.repository = 'GitHub';
+        // Setting a ToolDescriptor.TypeEnum to a workflow's descriptorType is currently weird
+        // because it's not supposed to be compatible yet (in the webservice)
+        this.sampleWorkflow.descriptorType = Workflow.DescriptorTypeEnum.CWL;
+        this.sampleWorkflow.workflowName = '';
+        this.metadataService.getSourceControlList().subscribe(map => this.sourceControlMap = map);
+        this.descriptorLanguageService.descriptorLanguages$.subscribe(map => this.descriptorLanguageMap = map);
+        this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
+        this.workflow.subscribe(workflow => this.actualWorkflow = workflow);
+        this.workflowService.workflows$.subscribe(workflows => this.workflows = workflows);
   }
 
   clearWorkflowRegisterError() {

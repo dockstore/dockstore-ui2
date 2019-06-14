@@ -33,7 +33,7 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
   }
 
   getVerified(tool: DockstoreTool): boolean {
-    return this.dockstoreService.getVersionVerified(tool.tags);
+    return this.dockstoreService.getVersionVerified(tool.workflowVersions);
   }
 
 }

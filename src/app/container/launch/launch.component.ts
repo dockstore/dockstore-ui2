@@ -24,6 +24,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Component({
   selector: 'app-launch',
@@ -52,9 +53,9 @@ export class LaunchComponent extends Base {
   dockstoreSupportedCwlMakeTemplate: string;
   checkEntryCommand: string;
   consonance: string;
-  descriptors: Array<ToolDescriptor.TypeEnum>;
+  descriptors: Array<Workflow.DescriptorTypeEnum>;
   filteredDescriptors: Array<string>;
-  currentDescriptor: ToolDescriptor.TypeEnum;
+  currentDescriptor: DescriptorTypeEnum;
   ToolDescriptor = ToolDescriptor;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
@@ -70,7 +71,7 @@ export class LaunchComponent extends Base {
     super();
     this.descriptorLanguageService.filteredDescriptorLanguages$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
+      .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
         this.descriptors = descriptors;
         this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
       });
@@ -78,8 +79,8 @@ export class LaunchComponent extends Base {
   }
 
   // Returns an array of descriptors that are valid for the given tool version
-  filterDescriptors(descriptors: Array<ToolDescriptor.TypeEnum>, version: Tag): Array<string> {
-    const newDescriptors: Array<ToolDescriptor.TypeEnum> = [];
+  filterDescriptors(descriptors: Array<DescriptorTypeEnum>, version: Tag): Array<string> {
+    const newDescriptors: Array<DescriptorTypeEnum> = [];
 
     // Return empty array if no descriptors present yet
     if (descriptors === undefined || version === undefined) {
@@ -100,7 +101,7 @@ export class LaunchComponent extends Base {
 
     // Create a list of valid descriptors
     for (const descriptor of descriptors) {
-      if ((descriptor === ToolDescriptor.TypeEnum.CWL && hasCwl) || (descriptor === ToolDescriptor.TypeEnum.WDL && hasWdl)) {
+      if ((descriptor === DescriptorTypeEnum.CWL && hasCwl) || (descriptor === DescriptorTypeEnum.WDL && hasWdl)) {
         newDescriptors.push(descriptor);
       }
     }

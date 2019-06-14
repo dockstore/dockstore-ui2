@@ -19,30 +19,26 @@ import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
 import { ToolDescriptor } from '../swagger';
+import { Workflow } from '../swagger/model/workflow';
 import { MetadataService } from './../swagger/api/metadata.service';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 
 @Injectable()
 export class DescriptorLanguageService {
-  private descriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
+  public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
-  public filteredDescriptorLanguages$: Observable<Array<ToolDescriptor.TypeEnum>>;
-
+  public filteredDescriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   constructor(private metadataService: MetadataService, private sessionQuery: SessionQuery) {
-    this.update();
-    this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(
-      map(descriptorLanguageMap => {
-        if (descriptorLanguageMap) {
-          return descriptorLanguageMap.map(descriptorLanguage =>
-            this.convertDescriptorLanguageBeanToToolDescriptorTypeEnum(descriptorLanguage)
-          );
-        }
-      })
-    );
-    const combined$ = combineLatest(this.descriptorLanguages$, this.sessionQuery.entryType$);
-    this.filteredDescriptorLanguages$ = combined$.pipe(
-      map(combined => this.filterLanguages(combined[0], combined[1]))
-    );
+      this.update();
+      this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(map(descriptorLanguageMap => {
+          if (descriptorLanguageMap) {
+              return descriptorLanguageMap.map((descriptorLanguage) => <Workflow.DescriptorTypeEnum>descriptorLanguage.value.toString());
+          }
+      }));
+      const combined$ = combineLatest(this.descriptorLanguages$, this.sessionQuery.entryType$);
+      this.filteredDescriptorLanguages$ = combined$.pipe(
+        map(combined => this.filterLanguages(combined[0], combined[1]))
+      );
   }
   update() {
     this.metadataService.getDescriptorLanguages().subscribe((languageBeans: Array<DescriptorLanguageBean>) => {
@@ -60,7 +56,7 @@ export class DescriptorLanguageService {
    */
   convertDescriptorLanguageBeanToToolDescriptorTypeEnum(descriptorLanguageBean: DescriptorLanguageBean): ToolDescriptor.TypeEnum {
     if (descriptorLanguageBean.value === 'service') {
-      return ToolDescriptor.TypeEnum.DOCKSTORESERVICE;
+      return ToolDescriptor.TypeEnum.SERVICE;
     } else {
       return <ToolDescriptor.TypeEnum>descriptorLanguageBean.value.toString();
     }
@@ -74,11 +70,11 @@ export class DescriptorLanguageService {
    * @returns {ToolDescriptor.TypeEnum[]}
    * @memberof DescriptorLanguageService
    */
-  filterLanguages(descriptorTypes: ToolDescriptor.TypeEnum[], entryType: EntryType): ToolDescriptor.TypeEnum[] {
+  filterLanguages(descriptorTypes: Workflow.DescriptorTypeEnum[], entryType: EntryType): Workflow.DescriptorTypeEnum[] {
     if (entryType === EntryType.BioWorkflow || entryType === EntryType.Tool || !entryType) {
-      return descriptorTypes.filter(descriptorType => descriptorType !== ToolDescriptor.TypeEnum.DOCKSTORESERVICE);
+      return descriptorTypes.filter(descriptorType => descriptorType !== Workflow.DescriptorTypeEnum.Service);
     } else {
-      return [ToolDescriptor.TypeEnum.DOCKSTORESERVICE];
+      return [Workflow.DescriptorTypeEnum.Service];
     }
   }
 }

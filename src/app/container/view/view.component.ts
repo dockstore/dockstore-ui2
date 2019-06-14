@@ -62,7 +62,7 @@ export class ViewContainerComponent extends View implements OnInit {
       this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(
         deleteResponse => {
           this.containertagsService.getTagsByPath(this.tool.id).subscribe(response => {
-            this.tool.tags = response;
+            this.tool.workflowVersions = response;
             this.containerService.setTool(this.tool);
           });
         });

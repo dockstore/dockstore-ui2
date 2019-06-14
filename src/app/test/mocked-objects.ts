@@ -22,9 +22,10 @@ import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { WorkflowVersion } from '../shared/swagger';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export const updatedWorkflow: Workflow = {
-    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+    'descriptorType': DescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -38,7 +39,7 @@ export const updatedWorkflow: Workflow = {
 
 export const sampleWorkflow1: Workflow = {
     id: 1,
-    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+    'descriptorType': DescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -52,7 +53,7 @@ export const sampleWorkflow1: Workflow = {
 
 export const sampleWorkflow2: Workflow = {
     id: 2,
-    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+    'descriptorType': DescriptorTypeEnum.CWL,
     'gitUrl': 'updatedGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'updatedOrganization',
@@ -66,7 +67,7 @@ export const sampleWorkflow2: Workflow = {
 
 export const sampleWorkflow3: Workflow = {
     id: 3,
-    'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+    'descriptorType': DescriptorTypeEnum.CWL,
     'gitUrl': 'sampleGitUrl',
     'mode': Workflow.ModeEnum.FULL,
     'organization': 'sampleOrganization',
@@ -81,7 +82,7 @@ export const sampleWorkflow3: Workflow = {
 
 export const sampleWdlWorkflow1: Workflow = {
   id: 4,
-  'descriptorType': WebserviceDescriptorTypeEnum.WDL,
+  'descriptorType': DescriptorTypeEnum.WDL,
   'gitUrl': 'sampleGitUrl',
   'mode': Workflow.ModeEnum.FULL,
   'organization': 'sampleOrganization',
@@ -96,7 +97,7 @@ export const sampleWdlWorkflow1: Workflow = {
 
 export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
   id: 5,
-  'descriptorType': WebserviceDescriptorTypeEnum.CWL,
+  'descriptorType': DescriptorTypeEnum.CWL,
   'gitUrl': 'git@github.com:dockstore-testing/md5sum-checker.git',
   'mode': Workflow.ModeEnum.FULL,
   'organization': 'dockstore-testing',
@@ -111,7 +112,7 @@ export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
 
 export const sampleWdlWorkflow2: Workflow = {
   id: 5,
-  'descriptorType': WebserviceDescriptorTypeEnum.WDL,
+  'descriptorType': DescriptorTypeEnum.WDL,
   'gitUrl': 'sampleGitUrl',
   'mode': Workflow.ModeEnum.FULL,
   'organization': 'sampleOrganization',
