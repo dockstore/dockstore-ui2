@@ -64,6 +64,7 @@
     "pipeline-builder": "^0.3.10-dev.298",
     "rxjs": "^6.3.3",
     "ts-md5": "^1.2.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.2.4",
     "zone.js": "^0.8.29"
   },
