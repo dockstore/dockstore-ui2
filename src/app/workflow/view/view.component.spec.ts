@@ -24,7 +24,7 @@ import {
   HostedStubService,
   VersionModalStubService,
   WorkflowsStubService,
-  WorkflowStubService,
+  WorkflowStubService
 } from '../../test/service-stubs';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
@@ -42,18 +42,17 @@ describe('ViewWorkflowComponent', () => {
       providers: [
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: VersionModalService, useClass: VersionModalStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService},
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: DateService, useClass: DateStubService },
         { provide: HostedService, useClass: HostedStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewWorkflowComponent);
     component = fixture.componentInstance;
-    const workflowVersion: WorkflowVersion = {id: 5, reference: 'stuff', name: 'name'};
+    const workflowVersion: WorkflowVersion = { id: 5, reference: 'stuff', name: 'name' };
     component.version = workflowVersion;
     fixture.detectChanges();
   });

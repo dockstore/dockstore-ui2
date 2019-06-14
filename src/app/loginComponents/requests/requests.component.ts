@@ -3,39 +3,34 @@ import { RequestsService } from '../state/requests.service';
 import { RequestsQuery } from '../state/requests.query';
 import { Observable } from 'rxjs';
 import { Organization, OrganizationUser } from '../../shared/swagger';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
   selector: 'organization-request-confirm-dialog',
-  templateUrl: 'organization-request-confirm-dialog.html',
+  templateUrl: 'organization-request-confirm-dialog.html'
 })
 export class OrganizationRequestConfirmDialogComponent {
-
   constructor(
     public dialogRef: MatDialogRef<OrganizationRequestConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }
 
 @Component({
   selector: 'organization-invite-confirm-dialog',
-  templateUrl: 'organization-invite-confirm-dialog.html',
+  templateUrl: 'organization-invite-confirm-dialog.html'
 })
 export class OrganizationInviteConfirmDialogComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  constructor(public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }
 
 export interface DialogData {
@@ -43,7 +38,6 @@ export interface DialogData {
   id: number;
   approve: boolean; // true = approve, false = reject
 }
-
 
 @Component({
   selector: 'requests',
@@ -61,11 +55,12 @@ export class RequestsComponent implements OnInit {
   isCurator$: Observable<boolean>;
   userId$: Observable<number>;
 
-  constructor(private requestsQuery: RequestsQuery,
-              private requestsService: RequestsService,
-              public dialog: MatDialog,
-              private userQuery: UserQuery
-  ) { }
+  constructor(
+    private requestsQuery: RequestsQuery,
+    private requestsService: RequestsService,
+    public dialog: MatDialog,
+    private userQuery: UserQuery
+  ) {}
 
   ngOnInit() {
     this.isLoading$ = this.requestsQuery.isLoading$;

@@ -22,10 +22,7 @@ export interface FilesState extends EntityState<FileWrapper> {}
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'files' })
 export class FilesStore extends EntityStore<FilesState, FileWrapper> {
-
   constructor() {
     super({});
   }
-
 }
-

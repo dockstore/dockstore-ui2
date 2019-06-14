@@ -22,7 +22,9 @@ import { TrackLoginService } from '../../../shared/track-login.service';
 import {
   ContainerStubService,
   OrganizationStarringStubService,
-  StarEntryStubService, StarOrganizationStubService, StarringStubService,
+  StarEntryStubService,
+  StarOrganizationStubService,
+  StarringStubService,
   TrackLoginStubService
 } from '../../../test/service-stubs';
 import { OrganizationStarringService } from './organization-starring.service';
@@ -38,17 +40,16 @@ describe('OrganizationStarringComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatIconModule, MatSnackBarModule],
-      declarations: [ OrganizationStarringComponent ],
+      declarations: [OrganizationStarringComponent],
       providers: [
-        {provide: TrackLoginService, useClass: TrackLoginStubService},
-        {provide: OrganizationStarringService, useClass: OrganizationStarringStubService},
-        {provide: StarentryService, useClass: StarEntryStubService},
-        {provide: ContainerService, useClass: ContainerStubService},
-        {provide: StarringService, useClass: StarringStubService},
-        {provide: StarOrganizationService, useClass: StarOrganizationStubService}
-        ]
-    })
-    .compileComponents();
+        { provide: TrackLoginService, useClass: TrackLoginStubService },
+        { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },
+        { provide: StarentryService, useClass: StarEntryStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: StarringService, useClass: StarringStubService },
+        { provide: StarOrganizationService, useClass: StarOrganizationStubService }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

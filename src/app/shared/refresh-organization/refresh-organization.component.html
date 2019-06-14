@@ -14,6 +14,14 @@
   ~    limitations under the License.
   -->
 
-<button mat-button color="accent" matTooltip="Refresh all entries in the organization" type="button" class="mr-1" (click)="refreshOrganization()" [disabled]="(isRefreshing$ | async)">
-    {{buttonText}}
+<button
+  mat-button
+  color="accent"
+  matTooltip="Refresh all entries in the organization"
+  type="button"
+  class="mr-1"
+  (click)="refreshOrganization()"
+  [disabled]="isRefreshing$ | async"
+>
+  {{ buttonText }}
 </button>

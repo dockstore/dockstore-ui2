@@ -24,20 +24,23 @@ export class AppComponent implements OnInit, OnDestroy {
   private unsubscribe = new Subject<void>();
 
   ngOnInit() {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(() => {
-        let route = this.activatedRoute;
-        while (route.firstChild) {
-          route = route.firstChild;
-        }
-        return route;
-      }),
-      mergeMap((route) => route.data),
-    ).pipe(takeUntil(this.unsubscribe)).subscribe((event) => {
-      this.titleService.setTitle(event['title']);
-      this.alertService.clearEverything();
-    });
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        map(() => {
+          let route = this.activatedRoute;
+          while (route.firstChild) {
+            route = route.firstChild;
+          }
+          return route;
+        }),
+        mergeMap(route => route.data)
+      )
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(event => {
+        this.titleService.setTitle(event['title']);
+        this.alertService.clearEverything();
+      });
   }
 
   ngOnDestroy(): void {
@@ -73,5 +76,3 @@ export class AppComponent implements OnInit, OnDestroy {
     document.head.appendChild(script);
   }
 }
-
-

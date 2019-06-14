@@ -89,8 +89,6 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     UrlDeconstructPipe,
     RouterModule
   ],
-  entryComponents: [
-    RegisterCheckerWorkflowComponent
-  ]
+  entryComponents: [RegisterCheckerWorkflowComponent]
 })
-export class EntryModule { }
+export class EntryModule {}

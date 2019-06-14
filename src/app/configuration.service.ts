@@ -8,23 +8,24 @@ import { AuthConfig } from './shared/auth.model';
   providedIn: 'root'
 })
 export class ConfigurationService {
-
-  constructor(private metadataService: MetadataService, private configService: ConfigService) {
-  }
+  constructor(private metadataService: MetadataService, private configService: ConfigService) {}
 
   load(): Promise<void> {
+    return this.metadataService
+      .getConfig()
+      .toPromise()
+      .then(
+        (config: Config) => {
+          this.updateDockstoreModel(config);
 
-    return this.metadataService.getConfig().toPromise().then((config: Config) => {
-
-        this.updateDockstoreModel(config);
-
-        this.updateAuthProviders();
-      },
-      (e) => {
-        console.error('Error downloading config.json', e);
-        // Less than ideal, but just let the normal error handling in footer.component.ts kick in later.
-        Promise.resolve();
-      });
+          this.updateAuthProviders();
+        },
+        e => {
+          console.error('Error downloading config.json', e);
+          // Less than ideal, but just let the normal error handling in footer.component.ts kick in later.
+          Promise.resolve();
+        }
+      );
   }
 
   private updateDockstoreModel(config: Config) {
@@ -64,7 +65,6 @@ export class ConfigurationService {
 
     Dockstore.CWL_VISUALIZER_URI = config.cwlVisualizerUri;
   }
-
 
   /**
    * In app.module.ts, the line `Ng2UiAuthModule.forRoot(AuthConfig)` in the imports section, initializes

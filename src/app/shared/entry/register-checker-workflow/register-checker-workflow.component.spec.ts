@@ -18,11 +18,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
-import {
-  CheckerWorkflowStubService,
-  DescriptorLanguageStubService,
-  RegisterCheckerWorkflowStubService,
-} from '../../../test/service-stubs';
+import { CheckerWorkflowStubService, DescriptorLanguageStubService, RegisterCheckerWorkflowStubService } from '../../../test/service-stubs';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow.component';
@@ -38,13 +34,13 @@ describe('RegisterCheckerWorkflowComponent', () => {
       declarations: [RegisterCheckerWorkflowComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [FormsModule, MatSnackBarModule, MatDialogModule],
-      providers: [{provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService},
-        {provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+      providers: [
+        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
+        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         DescriptorTypeCompatService,
-        {provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService}
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

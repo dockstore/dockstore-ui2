@@ -20,7 +20,7 @@ import {
   RefreshStubService,
   WorkflowsStubService,
   WorkflowStubService,
-  RegisterCheckerWorkflowStubService,
+  RegisterCheckerWorkflowStubService
 } from '../../../test/service-stubs';
 import { ContainerService } from '../../container.service';
 import { RefreshService } from '../../refresh.service';
@@ -34,12 +34,12 @@ describe('Service: RegisterCheckerWorkflow', () => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule, MatDialogModule],
       providers: [
-      { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
-      {provide: WorkflowsService, useClass: WorkflowsStubService},
-      {provide: ContainerService, useClass: ContainerStubService},
-      {provide: WorkflowService, useClass: WorkflowStubService},
-      {provide: RefreshService, useClass: RefreshStubService}
-    ]
+        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: RefreshService, useClass: RefreshStubService }
+      ]
     });
   });
 

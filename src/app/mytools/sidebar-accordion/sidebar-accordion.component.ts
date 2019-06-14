@@ -17,7 +17,7 @@ export class SidebarAccordionComponent implements OnInit {
   public toolId$: Observable<number>;
   activeTab = 0;
 
-  constructor(private toolQuery: ToolQuery) { }
+  constructor(private toolQuery: ToolQuery) {}
 
   ngOnInit(): void {
     this.toolId$ = this.toolQuery.toolId$;

@@ -8,9 +8,7 @@ import { WdlViewerState, WdlViewerStore } from './wdl-viewer.store';
   providedIn: 'root'
 })
 export class WdlViewerQuery extends QueryEntity<WdlViewerState, WdlViewerPipelineResponse> {
-
   constructor(protected store: WdlViewerStore) {
     super(store);
   }
-
 }

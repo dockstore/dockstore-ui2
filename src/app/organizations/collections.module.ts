@@ -28,4 +28,4 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
   exports: [CollectionsComponent, CollectionComponent],
   entryComponents: [CollectionRemoveEntryDialogComponent]
 })
-export class CollectionsModule { }
+export class CollectionsModule {}

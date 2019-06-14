@@ -24,7 +24,7 @@ import { SearchService } from './state/search.service';
 describe('Service: QueryBuilder', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [QueryBuilderService, {provide: SearchService, useClass: SearchStubService}]
+      providers: [QueryBuilderService, { provide: SearchService, useClass: SearchStubService }]
     });
   });
 

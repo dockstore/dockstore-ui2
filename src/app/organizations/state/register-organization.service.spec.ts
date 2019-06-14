@@ -19,7 +19,9 @@ describe('RegisterOrganizationService', () => {
     const organizationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganization', 'updateOrganization']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
     TestBed.configureTestingModule({
-      providers: [RegisterOrganizationService, FormBuilder,
+      providers: [
+        RegisterOrganizationService,
+        FormBuilder,
         { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub }
       ],

@@ -34,8 +34,12 @@ import { SearchService } from '../state/search.service';
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<Workflow>;
-  constructor(private dockstoreService: DockstoreService,
-              dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
+  constructor(
+    private dockstoreService: DockstoreService,
+    dateService: DateService,
+    searchQuery: SearchQuery,
+    searchService: SearchService
+  ) {
     super(dateService, searchQuery, searchService);
   }
 

@@ -14,12 +14,8 @@ describe('AuthComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AuthComponent],
       imports: [RouterTestingModule.withRoutes([{ path: '**', component: AuthComponent }])],
-      providers: [
-        { provide: UserService, useClass: UserStubService },
-        { provide: TokenService, useClass: TokenStubService }
-      ]
-    })
-      .compileComponents();
+      providers: [{ provide: UserService, useClass: UserStubService }, { provide: TokenService, useClass: TokenStubService }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

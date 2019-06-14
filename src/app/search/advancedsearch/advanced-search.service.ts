@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-import {AdvancedSearchObject} from './../../shared/models/AdvancedSearchObject';
-import {BehaviorSubject} from 'rxjs';
-import {Injectable} from '@angular/core';
+import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
+import { BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AdvancedSearchService {
@@ -30,8 +30,7 @@ export class AdvancedSearchService {
   };
   advancedSearch$: BehaviorSubject<AdvancedSearchObject> = new BehaviorSubject<AdvancedSearchObject>(this.initAdvancedSearch);
   showModal$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  constructor() {
-  }
+  constructor() {}
 
   setAdvancedSearch(advancedSearch: AdvancedSearchObject): void {
     this.advancedSearch$.next(advancedSearch);

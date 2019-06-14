@@ -14,10 +14,7 @@ export function createInitialState(): DagState {
 @Injectable()
 @StoreConfig({ name: 'dag' })
 export class DagStore extends Store<DagState> {
-
   constructor() {
     super(createInitialState());
   }
-
 }
-

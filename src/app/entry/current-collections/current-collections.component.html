@@ -18,12 +18,27 @@
     <h3>Collections</h3>
   </div>
   <mat-list>
-      <mat-list-item [matTooltip]="collectionOrganizations.organizationDisplayName" *ngFor="let collectionOrganizations of (currentCollections$ | async)">
-          <a [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]" routerLinkActive="router-link-active" >{{collectionOrganizations.collectionDisplayName}}</a>
-      </mat-list-item>
-    </mat-list>
+    <mat-list-item
+      [matTooltip]="collectionOrganizations.organizationDisplayName"
+      *ngFor="let collectionOrganizations of currentCollections$ | async"
+    >
+      <a
+        [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]"
+        routerLinkActive="router-link-active"
+        >{{ collectionOrganizations.collectionDisplayName }}</a
+      >
+    </mat-list-item>
+  </mat-list>
   <div class="p-3 panel-body">
-    <button *ngIf="(isLoggedIn$ | async)" fxFlex mat-raised-button color="default" matTooltip="Add the entry to a collection" (click)="addEntryToCollection()" id="addToolToCollectionButton">
+    <button
+      *ngIf="isLoggedIn$ | async"
+      fxFlex
+      mat-raised-button
+      color="default"
+      matTooltip="Add the entry to a collection"
+      (click)="addEntryToCollection()"
+      id="addToolToCollectionButton"
+    >
       <mat-icon>add</mat-icon>Add to my collection
     </button>
   </div>

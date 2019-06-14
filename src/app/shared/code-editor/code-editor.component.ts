@@ -47,16 +47,14 @@ export class CodeEditorComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const aceMode = 'ace/mode/' + this.mode;
-    this.editor = ace.edit(this.aceId,
-      {
-        mode: aceMode,
-        readOnly: this.readOnly,
-        showLineNumbers: true,
-        maxLines: 60,
-        theme: 'ace/theme/idle_fingers',
-        fontSize: '12pt'
-      }
-    );
+    this.editor = ace.edit(this.aceId, {
+      mode: aceMode,
+      readOnly: this.readOnly,
+      showLineNumbers: true,
+      maxLines: 60,
+      theme: 'ace/theme/idle_fingers',
+      fontSize: '12pt'
+    });
 
     this.editor.getSession().on('change', () => {
       this.contentChange.emit(this.editor.getValue());
@@ -115,5 +113,4 @@ export class CodeEditorComponent implements AfterViewInit {
       this.editor.setReadOnly(readOnly);
     }
   }
-
 }

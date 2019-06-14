@@ -23,17 +23,14 @@ import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../../shared/provider.service';
 import { Workflow, WorkflowsService } from '../../shared/swagger';
 
-
 @Injectable()
 export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow> {
-
   private entriesSubject$ = new BehaviorSubject<ExtendedWorkflow[]>([]);
   private loadingSubject$ = new BehaviorSubject<boolean>(false);
   public entriesLengthSubject$ = new BehaviorSubject<number>(0);
   public loading$ = this.loadingSubject$.asObservable();
 
-  constructor(private workflowsService: WorkflowsService, private providersService: ProviderService) {
-  }
+  constructor(private workflowsService: WorkflowsService, private providersService: ProviderService) {}
 
   /**
    * Updates the datasource from the endpoint
@@ -44,21 +41,21 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
    * @param {string} sortCol  The column to sort by ("stars")
    * @memberof PublishedWorkflowsDataSource
    */
-  loadEntries(entryType: EntryType, filter: string,
-    sortDirection: 'asc' | 'desc',
-    pageIndex: number,
-    pageSize: number,
-    sortCol: string) {
+  loadEntries(entryType: EntryType, filter: string, sortDirection: 'asc' | 'desc', pageIndex: number, pageSize: number, sortCol: string) {
     this.loadingSubject$.next(true);
     const isService = entryType === EntryType.Service;
-    this.workflowsService.allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, isService, 'response').pipe(
-      catchError(() => of([])),
-      finalize(() => this.loadingSubject$.next(false))
-    )
+    this.workflowsService
+      .allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, isService, 'response')
+      .pipe(
+        catchError(() => of([])),
+        finalize(() => this.loadingSubject$.next(false))
+      )
       .subscribe((entries: HttpResponse<Array<Workflow>>) => {
-        this.entriesSubject$.next(entries.body.map(tool => {
-          return <ExtendedWorkflow>this.providersService.setUpProvider(tool);
-        }));
+        this.entriesSubject$.next(
+          entries.body.map(tool => {
+            return <ExtendedWorkflow>this.providersService.setUpProvider(tool);
+          })
+        );
         this.entriesLengthSubject$.next(Number(entries.headers.get('X-total-count')));
       });
   }

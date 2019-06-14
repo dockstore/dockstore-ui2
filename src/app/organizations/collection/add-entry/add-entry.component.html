@@ -15,23 +15,28 @@
 -->
 <h1 mat-dialog-title>Add to collection</h1>
 <div mat-dialog-content>
-  <app-loading [loading]="(isLoading$ | async)" [retainContent]="true">
+  <app-loading [loading]="isLoading$ | async" [retainContent]="true">
     <div fxLayout="column" fxLayoutGap="15px">
-      <div fxFlex *ngIf="(memberships$ | async) as memberships">
+      <div fxFlex *ngIf="memberships$ | async as memberships">
         <ng-template #noMemberships>
           <mat-card class="alert alert-info" role="alert">
             <mat-icon>info</mat-icon> You must be part of an organization to add to a collection
           </mat-card>
         </ng-template>
         <mat-form-field *ngIf="memberships && memberships.length > 0; else noMemberships">
-          <mat-select id="selectOrganization" placeholder="Organization" [(value)]="selectedOrganizationId" (selectionChange)="onOrganizationChange($event)">
+          <mat-select
+            id="selectOrganization"
+            placeholder="Organization"
+            [(value)]="selectedOrganizationId"
+            (selectionChange)="onOrganizationChange($event)"
+          >
             <mat-option *ngFor="let membership of memberships" [value]="membership.organization.id">
-              {{membership.organization.displayName}}
+              {{ membership.organization.displayName }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex *ngIf="(collections$ | async) as collections">
+      <div fxFlex *ngIf="collections$ | async as collections">
         <ng-template #noCollections>
           <mat-card class="alert alert-info" role="alert">
             <mat-icon>info</mat-icon> The selected organization has no collections that can be added
@@ -40,7 +45,7 @@
         <mat-form-field id="selectCollection" *ngIf="selectedOrganizationId && collections && collections.length > 0; else noCollections">
           <mat-select placeholder="Collection" [(value)]="selectedCollectionId" [disabled]="!selectedOrganizationId">
             <mat-option *ngFor="let collection of collections" [value]="collection.id">
-              {{collection.displayName}}
+              {{ collection.displayName }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -51,7 +56,14 @@
 
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
   <button mat-button id="closeDialogButton" mat-dialog-close>Close</button>
-  <button mat-flat-button id="addEntryToCollectionButton" [mat-dialog-close]="selectedCollectionId" color="primary" [disabled]="!selectedOrganizationId || !selectedCollectionId" (click)="addToCollection()">
+  <button
+    mat-flat-button
+    id="addEntryToCollectionButton"
+    [mat-dialog-close]="selectedCollectionId"
+    color="primary"
+    [disabled]="!selectedOrganizationId || !selectedCollectionId"
+    (click)="addToCollection()"
+  >
     <mat-icon>add</mat-icon>Add to collection
   </button>
 </div>

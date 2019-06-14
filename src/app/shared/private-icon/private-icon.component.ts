@@ -6,8 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./private-icon.component.css']
 })
 export class PrivateIconComponent {
-
   // Change this link if necessary
   readonly privateDocsLink = 'https://docs.dockstore.org/docs/publisher-tutorials/public-and-private-tools/';
-  constructor() { }
+  constructor() {}
 }

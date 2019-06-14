@@ -14,5 +14,4 @@ export class CollectionsQuery extends QueryEntity<CollectionsState, Collection> 
   constructor(protected store: CollectionsStore) {
     super(store);
   }
-
 }

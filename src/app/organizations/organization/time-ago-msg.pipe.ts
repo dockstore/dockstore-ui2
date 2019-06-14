@@ -19,11 +19,8 @@ import { DateService } from '../../shared/date.service';
 @Pipe({
   name: 'timeAgoMessage'
 })
-
-export class TimeAgoMsgPipe  implements PipeTransform {
-
-  constructor(private dateService: DateService) {
-  }
+export class TimeAgoMsgPipe implements PipeTransform {
+  constructor(private dateService: DateService) {}
 
   transform(date: Date) {
     return this.dateService.getAgoMessage(new Date(date).getTime());

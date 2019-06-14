@@ -28,18 +28,11 @@ describe('HomeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeComponent ],
+      declarations: [HomeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        TabsModule.forRoot(),
-        RouterTestingModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule
-      ],
-      providers: [ TwitterService],
-    })
-    .compileComponents();
+      imports: [TabsModule.forRoot(), RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
+      providers: [TwitterService]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

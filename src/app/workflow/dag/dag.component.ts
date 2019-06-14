@@ -94,8 +94,13 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
         break;
     }
   }
-  constructor(private dagService: DagService, private workflowQuery: WorkflowQuery, private dagQuery: DagQuery, private ngZone: NgZone,
-    private wdlViewerService: WdlViewerService) {
+  constructor(
+    private dagService: DagService,
+    private workflowQuery: WorkflowQuery,
+    private dagQuery: DagQuery,
+    private ngZone: NgZone,
+    private wdlViewerService: WdlViewerService
+  ) {
     super();
   }
 
@@ -108,9 +113,11 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
    */
   refreshDocument(cy: cytoscape.Core) {
     if (this.cyElement && this.cyElement.nativeElement.offsetHeight >= 500) {
-      this.ngZone.runOutsideAngular(() => requestAnimationFrame(() => {
-        this.cy = this.dagService.refreshDocument(cy, this.cyElement.nativeElement);
-      }));
+      this.ngZone.runOutsideAngular(() =>
+        requestAnimationFrame(() => {
+          this.cy = this.dagService.refreshDocument(cy, this.cyElement.nativeElement);
+        })
+      );
     } else {
       requestAnimationFrame(() => this.refreshDocument(cy));
     }
@@ -120,7 +127,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     if (this.expanded) {
       this.dagService.closeFullscreen();
     } else {
-      const nativeElement: (HTMLElement | any) = this.dagHolderElement.nativeElement;
+      const nativeElement: HTMLElement | any = this.dagHolderElement.nativeElement;
       this.dagService.openFullscreen(nativeElement);
     }
   }
@@ -137,9 +144,17 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.dagResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe)).subscribe(dagResults => {
-      this.refreshDocument(this.cy);
-    }, error => console.error('Something went terribly wrong with dagResult$'));
+    this.dagResult$
+      .pipe(
+        filterNil,
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(
+        dagResults => {
+          this.refreshDocument(this.cy);
+        },
+        error => console.error('Something went terribly wrong with dagResult$')
+      );
   }
 
   ngOnChanges() {

@@ -29,10 +29,13 @@ import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
   providedIn: 'root'
 })
 export class ExtendedDockstoreToolService {
-
-  constructor(private providerService: ProviderService,
-    private imageProviderService: ImageProviderService, private dateService: DateService,
-    private dockstoreService: DockstoreService, private extendedDockstoreToolStore: ExtendedDockstoreToolStore) { }
+  constructor(
+    private providerService: ProviderService,
+    private imageProviderService: ImageProviderService,
+    private dateService: DateService,
+    private dockstoreService: DockstoreService,
+    private extendedDockstoreToolStore: ExtendedDockstoreToolStore
+  ) {}
 
   /**
    * Updates the extendedDockstoreTool by extended the current tool

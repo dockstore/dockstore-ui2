@@ -19,14 +19,16 @@
   </div>
   <div class="p-3 panel-body">
     <div class="container-source-repos">
-      <strong>{{version.name}} is verified with: </strong>
-      <br>
+      <strong>{{ version.name }} is verified with: </strong>
+      <br />
       <p *ngFor="let verifiedByString of verifiedByStringArray">
-        {{verifiedByString}}
+        {{ verifiedByString }}
       </p>
     </div>
     <div fxLayoutAlign="center center" fxLayout="column">
-      <button class="center" mat-raised-button (click)="openVerificationAndAvailableLogsDialog()" data-cy="verificationLogsDialog">More Info</button>
+      <button class="center" mat-raised-button (click)="openVerificationAndAvailableLogsDialog()" data-cy="verificationLogsDialog">
+        More Info
+      </button>
     </div>
   </div>
 </div>

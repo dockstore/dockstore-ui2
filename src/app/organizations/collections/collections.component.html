@@ -13,30 +13,37 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<app-loading [loading]="(loading$ | async)">
-  <div *ngIf="(collections$ | async | json) === '{}' ; else hasCollections">
-    <mat-card class="alert alert-info mx-1" role="alert">
-      <mat-icon>info</mat-icon> No collections found.
-    </mat-card>
+<app-loading [loading]="loading$ | async">
+  <div *ngIf="(collections$ | async | json) === '{}'; else hasCollections">
+    <mat-card class="alert alert-info mx-1" role="alert"> <mat-icon>info</mat-icon> No collections found. </mat-card>
   </div>
   <ng-template #hasCollections>
     <div fxLayout="column">
-      <mat-card fxFlex *ngFor="let collection of ((collections$ | async) | keyvalue)" class="m-1">
+      <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue" class="m-1">
         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
           <div fxFlex fxGrow="3">
             <mat-card-header>
               <mat-card-title>
-                <a [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]" [matTooltip]="collection?.value?.name">
-                  {{collection.value.displayName}}
+                <a
+                  [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]"
+                  [matTooltip]="collection?.value?.name"
+                >
+                  {{ collection.value.displayName }}
                 </a>
               </mat-card-title>
-              <mat-card-subtitle>{{collection.value.topic}}</mat-card-subtitle>
+              <mat-card-subtitle>{{ collection.value.topic }}</mat-card-subtitle>
             </mat-card-header>
           </div>
           <div fxFlex fxGrow="1" fxLayoutAlign="flex-end center">
             <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0">
-              <button color="basic" *ngIf="(canEdit$ | async)" mat-icon-button (click)="editCollection(collection)" id="editCollection"
-                matTooltip="Edit the collection">
+              <button
+                color="basic"
+                *ngIf="canEdit$ | async"
+                mat-icon-button
+                (click)="editCollection(collection)"
+                id="editCollection"
+                matTooltip="Edit the collection"
+              >
                 <mat-icon>edit</mat-icon>
               </button>
             </mat-card-content>
@@ -46,7 +53,7 @@
     </div>
   </ng-template>
 </app-loading>
-<mat-action-row *ngIf="(canEdit$ | async)">
+<mat-action-row *ngIf="canEdit$ | async">
   <div fxFlex></div>
   <button mat-button class="my-2" (click)="createCollection()" id="createCollection" matTooltip="Create a new collection">
     <mat-icon>add</mat-icon>Create collection

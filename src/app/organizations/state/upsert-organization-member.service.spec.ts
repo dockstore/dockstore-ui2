@@ -11,9 +11,8 @@ describe('UpsertOrganizationMemberService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UpsertOrganizationMemberService, UpsertOrganizationMemberStore,
-      FormBuilder],
-      imports: [ HttpClientTestingModule, MatSnackBarModule, MatDialogModule ]
+      providers: [UpsertOrganizationMemberService, UpsertOrganizationMemberStore, FormBuilder],
+      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule]
     });
 
     upsertOrganizationMemberService = TestBed.get(UpsertOrganizationMemberService);
@@ -23,5 +22,4 @@ describe('UpsertOrganizationMemberService', () => {
   it('should be created', () => {
     expect(upsertOrganizationMemberService).toBeDefined();
   });
-
 });

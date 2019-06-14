@@ -43,7 +43,8 @@ export class ListContainersComponent extends ToolLister implements OnInit {
     protected workflowQuery: WorkflowQuery,
     protected sessionQuery: SessionQuery,
     paginatorService: PaginatorService,
-    dateService: DateService, private paginatorQuery: PaginatorQuery
+    dateService: DateService,
+    private paginatorQuery: PaginatorQuery
   ) {
     super(paginatorService, providerService, dateService, sessionQuery);
   }

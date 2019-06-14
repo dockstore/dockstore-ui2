@@ -23,7 +23,7 @@ import { ToolDescriptor } from './swagger';
 describe('FileService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FileService],
+      providers: [FileService]
     });
   });
 

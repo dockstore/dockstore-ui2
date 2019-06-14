@@ -20,8 +20,12 @@ export class SidebarAccordionComponent implements OnInit {
   activeTab = 0;
   entryType$: Observable<EntryType>;
   EntryType = EntryType;
-  constructor(private workflowQuery: WorkflowQuery, private myWorkflowsService: MyWorkflowsService,
-    public dialog: MatDialog, private sessionQuery: SessionQuery) { }
+  constructor(
+    private workflowQuery: WorkflowQuery,
+    private myWorkflowsService: MyWorkflowsService,
+    public dialog: MatDialog,
+    private sessionQuery: SessionQuery
+  ) {}
 
   ngOnInit(): void {
     this.entryType$ = this.sessionQuery.entryType$;

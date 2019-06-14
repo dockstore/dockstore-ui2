@@ -13,12 +13,14 @@ import { UserService } from '../../shared/user/user.service';
   templateUrl: './auth.component.html'
 })
 export class AuthComponent extends Base implements OnInit {
-
-  constructor(private tokenService: TokenService, private userService: UserService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router) {
-                super();
-              }
+  constructor(
+    private tokenService: TokenService,
+    private userService: UserService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {
+    super();
+  }
 
   private getQuayToken(fragment: string) {
     const accessTokenString = 'access_token=';
@@ -30,23 +32,19 @@ export class AuthComponent extends Base implements OnInit {
   }
 
   private addToken() {
-
-    const addQuayToken = this.activatedRoute.fragment.pipe(mergeMap(fragment =>
-      this.tokenService.registerToken(this.getQuayToken(fragment), Provider.QUAY)));
+    const addQuayToken = this.activatedRoute.fragment.pipe(
+      mergeMap(fragment => this.tokenService.registerToken(this.getQuayToken(fragment), Provider.QUAY))
+    );
 
     const queryObservable = this.activatedRoute.queryParams;
 
-    const addGitHubToken = queryObservable.pipe(
-          mergeMap(query => this.tokenService.registerToken(query['code'], Provider.GITHUB)));
+    const addGitHubToken = queryObservable.pipe(mergeMap(query => this.tokenService.registerToken(query['code'], Provider.GITHUB)));
 
-    const addGitLabToken = queryObservable.pipe(
-      mergeMap(query => this.tokenService.registerToken(query['code'], Provider.GITLAB)));
+    const addGitLabToken = queryObservable.pipe(mergeMap(query => this.tokenService.registerToken(query['code'], Provider.GITLAB)));
 
-    const addZenodoToken = queryObservable.pipe(
-      mergeMap(query => this.tokenService.registerToken(query['code'], Provider.ZENODO)));
+    const addZenodoToken = queryObservable.pipe(mergeMap(query => this.tokenService.registerToken(query['code'], Provider.ZENODO)));
 
-    const addBitbucketToken = queryObservable.pipe(mergeMap(query =>
-      this.tokenService.registerToken(query['code'], Provider.BITBUCKET)));
+    const addBitbucketToken = queryObservable.pipe(mergeMap(query => this.tokenService.registerToken(query['code'], Provider.BITBUCKET)));
 
     return this.activatedRoute.params.pipe(
       mergeMap(params => {
@@ -68,17 +66,23 @@ export class AuthComponent extends Base implements OnInit {
             return observableOf(null);
           }
         }
-      }));
+      })
+    );
   }
 
   ngOnInit() {
     const prevPage = localStorage.getItem('page');
 
-    this.addToken().pipe(takeUntil(this.ngUnsubscribe)).subscribe(token => {
-      this.userService.getUser();
-      this.router.navigate([`${ prevPage }`]);
-    }, error => {
-      this.router.navigate([`${ prevPage }`]);
-    });
+    this.addToken()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        token => {
+          this.userService.getUser();
+          this.router.navigate([`${prevPage}`]);
+        },
+        error => {
+          this.router.navigate([`${prevPage}`]);
+        }
+      );
   }
 }

@@ -22,8 +22,11 @@ export class AvailableLogsComponent extends Base implements OnInit {
   isLoading$: Observable<boolean>;
   toolId$: Observable<string | null>;
   displayedColumns: string[] = ['testFilename', 'runner', 'filename', 'actions'];
-  constructor(private availableLogsQuery: AvailableLogsQuery, private checkerWorkflowQuery: CheckerWorkflowQuery,
-    private availableLogsService: AvailableLogsService, @Inject(MAT_DIALOG_DATA) public data: (Tag | WorkflowVersion | null)
+  constructor(
+    private availableLogsQuery: AvailableLogsQuery,
+    private checkerWorkflowQuery: CheckerWorkflowQuery,
+    private availableLogsService: AvailableLogsService,
+    @Inject(MAT_DIALOG_DATA) public data: Tag | WorkflowVersion | null
   ) {
     super();
     this.version = data;
@@ -32,7 +35,7 @@ export class AvailableLogsComponent extends Base implements OnInit {
 
   ngOnInit() {
     this.toolId$ = this.checkerWorkflowQuery.trsId$;
-    this.toolId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolId: (string | null)) => {
+    this.toolId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolId: string | null) => {
       if (this.versionName && toolId) {
         this.availableLogsService.get(toolId, this.versionName);
       } else {
@@ -54,6 +57,4 @@ export class AvailableLogsComponent extends Base implements OnInit {
   remove(id: ID) {
     this.availableLogsService.remove(id);
   }
-
-
 }

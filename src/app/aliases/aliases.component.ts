@@ -13,7 +13,6 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./aliases.component.scss']
 })
 export class AliasesComponent extends Base implements OnInit {
-
   loading$: Observable<boolean>;
   organization$: Observable<Organization | null>;
   collection$: Observable<Collection | null>;
@@ -24,19 +23,20 @@ export class AliasesComponent extends Base implements OnInit {
   public alias: string | null;
   public validType: boolean;
   // Types contains resource types that support aliases
-  public types = [ 'organizations', 'collections', 'workflows', 'tools', 'containers' ];
-  constructor(private aliasesQuery: AliasesQuery,
-              private aliasesService: AliasesService,
-              private route: ActivatedRoute,
-              private router: Router
+  public types = ['organizations', 'collections', 'workflows', 'tools', 'containers'];
+  constructor(
+    private aliasesQuery: AliasesQuery,
+    private aliasesService: AliasesService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     super();
   }
 
   ngOnInit() {
-    this.type = this.route.snapshot.paramMap.get('type') ;
+    this.type = this.route.snapshot.paramMap.get('type');
     this.alias = this.route.snapshot.paramMap.get('alias');
-    this.validType = (this.type) ? this.types.includes(this.type) : false;
+    this.validType = this.type ? this.types.includes(this.type) : false;
     this.loading$ = this.aliasesQuery.loading$;
 
     if (this.type === 'organizations' && this.alias) {

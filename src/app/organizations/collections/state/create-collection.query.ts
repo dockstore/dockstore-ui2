@@ -11,5 +11,4 @@ export class CreateCollectionQuery extends Query<CreateCollectionState> {
   constructor(protected store: CreateCollectionStore) {
     super(store);
   }
-
 }

@@ -46,8 +46,12 @@ export class ChangeUsernameComponent implements OnInit {
     Validators.maxLength(39)
   ]);
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(private userService: UserService, private usersService: UsersService, private refreshService: RefreshService,
-    private userQuery: UserQuery) { }
+  constructor(
+    private userService: UserService,
+    private usersService: UsersService,
+    private refreshService: RefreshService,
+    private userQuery: UserQuery
+  ) {}
 
   ngOnInit() {
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
@@ -58,11 +62,16 @@ export class ChangeUsernameComponent implements OnInit {
       }
     });
     this.canChangeUsername$ = this.userQuery.canChangeUsername$;
-    this.usernameFormControl.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe)).subscribe(value => {
-      if (this.usernameFormControl.valid) {
-        this.checkIfUsernameExists(value);
-      }
-    });
+    this.usernameFormControl.valueChanges
+      .pipe(
+        debounceTime(formInputDebounceTime),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(value => {
+        if (this.usernameFormControl.valid) {
+          this.checkIfUsernameExists(value);
+        }
+      });
   }
 
   /**
@@ -71,18 +80,25 @@ export class ChangeUsernameComponent implements OnInit {
   checkIfUsernameExists(value: string): void {
     this.username = value;
     this.checkingIfValid = true;
-    this.usersService.checkUserExists(this.username).pipe(finalize(() => {
-      this.checkingIfValid = false;
-    })).subscribe(
-      (userExists: boolean) => {
-        if (userExists && this.username === this.user.username) {
-          this.usernameTaken = false;
-        } else {
-          this.usernameTaken = userExists;
+    this.usersService
+      .checkUserExists(this.username)
+      .pipe(
+        finalize(() => {
+          this.checkingIfValid = false;
+        })
+      )
+      .subscribe(
+        (userExists: boolean) => {
+          if (userExists && this.username === this.user.username) {
+            this.usernameTaken = false;
+          } else {
+            this.usernameTaken = userExists;
+          }
+        },
+        error => {
+          console.error(error);
         }
-      }, error => {
-        console.error(error);
-      });
+      );
   }
 
   /**

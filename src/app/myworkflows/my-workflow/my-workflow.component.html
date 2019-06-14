@@ -20,8 +20,17 @@
   </button>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> {{ myEntryPageTitle$ | async | titlecase }}
 </app-header>
-<button *ngIf="entryType === EntryType.BioWorkflow" mat-fab color="accent" id="registerWorkflowButton" class="fab-bottom-right"
-  matTooltip="Register workflow" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="isRefreshing$ | async">
+<button
+  *ngIf="entryType === EntryType.BioWorkflow"
+  mat-fab
+  color="accent"
+  id="registerWorkflowButton"
+  class="fab-bottom-right"
+  matTooltip="Register workflow"
+  matTooltipPosition="before"
+  (click)="showRegisterEntryModal()"
+  [disabled]="isRefreshing$ | async"
+>
   <mat-icon>add</mat-icon>
 </button>
 <div class="container-fluid sidebar-set-height">
@@ -31,20 +40,35 @@
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
         <div id="parent">
           <div id="child">
-            <div class="clearfix sidebar-header" matTooltipPosition="after"
-              [matTooltip]="(hasSourceControlToken$ | async) ? '' : 'Requires source control token'">
+            <div
+              class="clearfix sidebar-header"
+              matTooltipPosition="after"
+              [matTooltip]="(hasSourceControlToken$ | async) ? '' : 'Requires source control token'"
+            >
               <mat-toolbar>
                 <mat-toolbar-row>
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
                     <span>My {{ entryType$ | async }}s</span>
                     <mat-menu #appMenu="matMenu">
-                      <button *ngIf="entryType === EntryType.BioWorkflow" mat-menu-item color="primary" matTooltipPosition="after"
-                        matTooltip="Find new workflows and sync all existing workflows" (click)="refreshAllEntries()"
-                        [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)">
+                      <button
+                        *ngIf="entryType === EntryType.BioWorkflow"
+                        mat-menu-item
+                        color="primary"
+                        matTooltipPosition="after"
+                        matTooltip="Find new workflows and sync all existing workflows"
+                        (click)="refreshAllEntries()"
+                        [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)"
+                      >
                         Refresh All
                       </button>
-                      <a *ngIf="entryType === EntryType.Service" mat-menu-item [href]="gitHubAppInstallationLink$ | async" target="_blank"
-                        rel="noopener noreferrer">Manage on GitHub</a>
+                      <a
+                        *ngIf="entryType === EntryType.Service"
+                        mat-menu-item
+                        [href]="gitHubAppInstallationLink$ | async"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Manage on GitHub</a
+                      >
                     </mat-menu>
                     <button mat-icon-button [matMenuTriggerFor]="appMenu">
                       <mat-icon>
@@ -58,8 +82,11 @@
             <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">
               You have not registered any {{ entryType$ | async }}s
             </p>
-            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject"
-              [refreshMessage]="isRefreshing$ | async"></app-sidebar-accordion>
+            <app-sidebar-accordion
+              [openOneAtATime]="oneAtATime"
+              [groupEntriesObject]="groupEntriesObject"
+              [refreshMessage]="isRefreshing$ | async"
+            ></app-sidebar-accordion>
             <br />
             <div class="clearfix sidebar-header">
               <h3 class="sidebar-header">Shared with me</h3>
@@ -72,17 +99,19 @@
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div *ngIf="
+        <div
+          *ngIf="
             !(isRefreshing$ | async) &&
             ((groupEntriesObject?.length == 0 || !groupEntriesObject) &&
               (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))
-          ">
+          "
+        >
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>
                 <mat-icon>info</mat-icon>
-                There are currently no {{ entryType$ | async }}s registered under this account. To add your first
-                {{ entryType$ | async }}, do one of the following:
+                There are currently no {{ entryType$ | async }}s registered under this account. To add your first {{ entryType$ | async }},
+                do one of the following:
               </p>
               <ul>
                 <li *ngIf="entryType === EntryType.Service">
@@ -93,12 +122,14 @@
                   Press the 'Refresh All' button to create workflow stubs for all of your source control repositories. Browse to the
                   workflow stubs and refresh/publish those that correspond to real workflows.
                 </li>
-                <li>
-                  Press the 'Register {{ entryType$ | async | titlecase }}' button to manually add a
-                  {{ entryType$ | async }}.
-                </li>
-                <button mat-raised-button color="primary" type="button" (click)="showRegisterEntryModal()"
-                  [disabled]="isRefreshing$ | async">
+                <li>Press the 'Register {{ entryType$ | async | titlecase }}' button to manually add a {{ entryType$ | async }}.</li>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="button"
+                  (click)="showRegisterEntryModal()"
+                  [disabled]="isRefreshing$ | async"
+                >
                   Register {{ entryType$ | async | titlecase }}
                 </button>
               </ul>

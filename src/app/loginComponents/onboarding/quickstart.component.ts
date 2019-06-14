@@ -22,8 +22,7 @@ import { Component, OnInit } from '@angular/core';
 export class QuickStartComponent implements OnInit {
   public curStep = 1;
   public tokenSetComplete;
-  constructor() {
-  }
+  constructor() {}
   ngOnInit() {
     localStorage.setItem('page', '/quick-start');
   }
@@ -45,5 +44,4 @@ export class QuickStartComponent implements OnInit {
         localStorage.setItem('page', '/quick-start');
     }
   }
-
 }

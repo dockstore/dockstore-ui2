@@ -25,7 +25,6 @@ import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionService } from './create-collection.service';
 import { CreateCollectionStore } from './create-collection.store';
 
-
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let organizationQuerySpy: jasmine.SpyObj<OrganizationQuery>;
 let collectionsServiceSpy: jasmine.SpyObj<CollectionsService>;
@@ -42,7 +41,10 @@ describe('CreateCollectionService', () => {
     const collectionsServiceStub = jasmine.createSpyObj('CollectionsService', ['updateCollections']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
     TestBed.configureTestingModule({
-      providers: [CreateCollectionService, CreateCollectionStore, FormBuilder,
+      providers: [
+        CreateCollectionService,
+        CreateCollectionStore,
+        FormBuilder,
         { provide: MatDialog, useValue: matDialogStub },
         { provide: CollectionsService, useValue: collectionsServiceStub },
         { provide: OrganizationsService, useValue: organizationsServiceStub },

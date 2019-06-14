@@ -50,9 +50,15 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     return [4, 5];
   }
 
-  constructor(dockstoreService: DockstoreService, dateService: DateService, private alertService: AlertService,
+  constructor(
+    dockstoreService: DockstoreService,
+    dateService: DateService,
+    private alertService: AlertService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
-    private workflowsService: WorkflowsService, private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
+    private workflowsService: WorkflowsService,
+    private refreshService: RefreshService,
+    protected sessionQuery: SessionQuery
+  ) {
     super(dockstoreService, dateService, sessionQuery);
   }
 
@@ -82,14 +88,16 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     }
     const message = 'Updating default workflow version';
     this.alertService.start(message);
-    this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(response => {
+    this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(
+      response => {
         this.alertService.detailedSuccess();
         if (this.workflow.mode !== Workflow.ModeEnum.HOSTED) {
           this.refreshService.refreshWorkflow();
         }
-      }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
+      },
+      (error: HttpErrorResponse) => this.alertService.detailedError(error)
+    );
   }
-
 
   /**
    * Updates the version and emits an event for the parent component

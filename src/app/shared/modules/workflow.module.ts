@@ -113,13 +113,7 @@ import { getTooltipConfig } from './../tooltip';
     RegisterWorkflowModalService,
     VersionModalService
   ],
-  exports: [
-    WorkflowComponent,
-    CustomMaterialModule,
-    EntryModule,
-    HeaderModule,
-    CommonModule
-  ],
+  exports: [WorkflowComponent, CustomMaterialModule, EntryModule, HeaderModule, CommonModule],
   entryComponents: [VersionModalComponent]
 })
-export class WorkflowModule { }
+export class WorkflowModule {}

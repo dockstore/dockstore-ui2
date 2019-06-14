@@ -22,7 +22,6 @@ import { LaunchService } from './../../shared/launch.service';
 
 @Injectable()
 export class ToolLaunchService extends LaunchService {
-
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(descriptorTypeCompatService);
   }
@@ -33,8 +32,12 @@ export class ToolLaunchService extends LaunchService {
       descriptor = ToolLaunchService.descriptorWdl;
     }
 
-    return 'dockstore tool convert entry2json' + descriptor + ` --entry ${path}:${versionName} > Dockstore.json
-            \nvim Dockstore.json`;
+    return (
+      'dockstore tool convert entry2json' +
+      descriptor +
+      ` --entry ${path}:${versionName} > Dockstore.json
+            \nvim Dockstore.json`
+    );
   }
 
   getCliString(path: string, versionName: string, currentDescriptor: string) {
@@ -47,9 +50,11 @@ export class ToolLaunchService extends LaunchService {
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
-    return 'cwl-runner ' +
+    return (
+      'cwl-runner ' +
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
+      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`
+    );
   }
 
   getCheckToolString(path: string, versionName: string): string {

@@ -26,4 +26,4 @@ import { AddEntryComponent } from './add-entry/add-entry.component';
   declarations: [AddEntryComponent],
   entryComponents: [AddEntryComponent]
 })
-export class AddEntryModule { }
+export class AddEntryModule {}

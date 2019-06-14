@@ -16,14 +16,10 @@ describe('BasicSearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [ MatAutocompleteModule, RouterTestingModule],
-      declarations: [ BasicSearchComponent ],
-      providers: [
-        ProviderService,
-        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService}
-      ]
-    })
-    .compileComponents();
+      imports: [MatAutocompleteModule, RouterTestingModule],
+      declarations: [BasicSearchComponent],
+      providers: [ProviderService, { provide: AdvancedSearchService, useClass: AdvancedSearchStubService }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -25,8 +25,12 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 describe('Service: PublishedWorkflowsDataSource', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PublishedWorkflowsDataSource, ImageProviderService, ProviderService,
-        { provide: WorkflowsService, useClass: WorkflowsStubService} ],
+      providers: [
+        PublishedWorkflowsDataSource,
+        ImageProviderService,
+        ProviderService,
+        { provide: WorkflowsService, useClass: WorkflowsStubService }
+      ]
     });
   });
 

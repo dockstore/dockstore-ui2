@@ -28,11 +28,10 @@ describe('FooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FooterComponent ],
-      imports: [ RouterTestingModule ],
-      providers: [ MetadataService, {provide: GA4GHService, useClass: GA4GHStubService} ]
-    })
-    .compileComponents();
+      declarations: [FooterComponent],
+      imports: [RouterTestingModule],
+      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

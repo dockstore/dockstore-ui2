@@ -65,6 +65,4 @@ export class EntryFileTabComponent extends Base implements OnInit {
   matSelectChange(event: MatSelectChange) {
     this.entryFileTabService.changeFile(event.value);
   }
-
-
 }

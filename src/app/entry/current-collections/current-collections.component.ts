@@ -19,9 +19,12 @@ export class CurrentCollectionsComponent implements OnInit, OnChanges {
   isLoading$: Observable<boolean>;
   isLoggedIn$: Observable<boolean>;
 
-  constructor(private currentCollectionsQuery: CurrentCollectionsQuery, private matDialog: MatDialog,
-    private currentCollectionsService: CurrentCollectionsService, private trackLoginService: TrackLoginService
-  ) { }
+  constructor(
+    private currentCollectionsQuery: CurrentCollectionsQuery,
+    private matDialog: MatDialog,
+    private currentCollectionsService: CurrentCollectionsService,
+    private trackLoginService: TrackLoginService
+  ) {}
 
   ngOnInit() {
     this.currentCollections$ = this.currentCollectionsQuery.currentCollectionOrganizations$;
@@ -43,7 +46,8 @@ export class CurrentCollectionsComponent implements OnInit, OnChanges {
 
   addEntryToCollection() {
     this.matDialog.open(AddEntryComponent, {
-      data: { entryId: this.id }, width: '500px'
+      data: { entryId: this.id },
+      width: '500px'
     });
   }
 

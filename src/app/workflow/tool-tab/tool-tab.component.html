@@ -25,26 +25,27 @@
     </mat-card>
     <table *ngIf="hasContent" mat-table [dataSource]="toolContent" class="mat-elevation-z1 w-100">
       <ng-container matColumnDef="workflowExcerpt">
-        <th mat-header-cell *matHeaderCellDef> Workflow Excerpt </th>
-        <td mat-cell *matCellDef="let tool"> <strong>{{workflowExcerptRowHeading$ | async}}</strong>:&nbsp;{{tool?.id}}
+        <th mat-header-cell *matHeaderCellDef>Workflow Excerpt</th>
+        <td mat-cell *matCellDef="let tool">
+          <strong>{{ workflowExcerptRowHeading$ | async }}</strong
+          >:&nbsp;{{ tool?.id }}
         </td>
       </ng-container>
       <ng-container matColumnDef="toolExcerpt">
-        <th mat-header-cell *matHeaderCellDef> {{ toolExcerptHeaderName$ | async }} </th>
+        <th mat-header-cell *matHeaderCellDef>{{ toolExcerptHeaderName$ | async }}</th>
         <td mat-cell *matCellDef="let tool">
           <div *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
-            <strong>run</strong>:&nbsp;{{tool?.file}}
-            <br>
+            <strong>run</strong>:&nbsp;{{ tool?.file }}
+            <br />
           </div>
-          <strong>docker</strong>:&nbsp;{{tool?.docker}}
-          <br>
-          <strong>link</strong>:&nbsp;<a href="{{tool?.link}}" target="_blank"
-            *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
+          <strong>docker</strong>:&nbsp;{{ tool?.docker }}
+          <br />
+          <strong>link</strong>:&nbsp;<a href="{{ tool?.link }}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{ tool?.link }}</a>
           <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </app-loading>
 </div>

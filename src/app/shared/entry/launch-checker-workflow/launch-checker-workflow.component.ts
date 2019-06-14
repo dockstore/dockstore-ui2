@@ -32,6 +32,5 @@ export class LaunchCheckerWorkflowComponent implements OnInit {
     this.checkerWorkflowPath$ = this.checkerWorkflowQuery.checkerWorkflowPath$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

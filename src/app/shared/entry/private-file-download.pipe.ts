@@ -6,11 +6,9 @@ import { SafeUrl } from '@angular/platform-browser';
   name: 'privateFileDownload'
 })
 export class PrivateFileDownloadPipe implements PipeTransform {
-
   constructor(protected fileService: FileService) {}
 
   transform(content: string): SafeUrl {
     return this.fileService.getFileData(content);
   }
-
 }

@@ -32,9 +32,9 @@ describe('ToolTabComponent', () => {
       imports: [FormsModule, CustomMaterialModule, RefreshAlertModule],
       providers: [
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService }]
-    })
-      .compileComponents();
+        { provide: WorkflowsService, useClass: WorkflowsStubService }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

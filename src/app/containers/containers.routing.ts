@@ -24,10 +24,10 @@ const CONTAINERS_ROUTES: Routes = [
   {
     path: '',
     component: ContainersComponent,
-    data: { title: 'Dockstore | Tool', entryType: EntryType.Tool  },
+    data: { title: 'Dockstore | Tool', entryType: EntryType.Tool },
     children: [
       { path: '', component: SearchContainersComponent, data: { title: 'Dockstore | Tools' } },
-      { path: '**', component: ContainerComponent, data: { title: 'Dockstore | Tool'} }
+      { path: '**', component: ContainerComponent, data: { title: 'Dockstore | Tool' } }
     ]
   }
 ];

@@ -17,15 +17,12 @@ import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { ToolTesterLog } from '../openapi/model/toolTesterLog';
 
-export interface AvailableLogsState extends EntityState<ToolTesterLog> { }
+export interface AvailableLogsState extends EntityState<ToolTesterLog> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'available-logs' })
 export class AvailableLogsStore extends EntityStore<AvailableLogsState, ToolTesterLog> {
-
   constructor() {
     super();
   }
-
 }
-

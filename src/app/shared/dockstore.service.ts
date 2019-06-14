@@ -20,10 +20,9 @@ import { Tag, WorkflowVersion } from './swagger';
 
 @Injectable()
 export class DockstoreService {
-  constructor() {
-  }
+  constructor() {}
 
-  getValidVersions(versions: Array<WorkflowVersion|Tag>): Array<WorkflowVersion|Tag> {
+  getValidVersions(versions: Array<WorkflowVersion | Tag>): Array<WorkflowVersion | Tag> {
     return versions.filter(version => version.valid);
   }
 
@@ -34,7 +33,7 @@ export class DockstoreService {
    * @returns {boolean} Whether or not one of the versions are verified
    * @memberof DockstoreService
    */
-  getVersionVerified(versions: Array<WorkflowVersion|Tag>): boolean {
+  getVersionVerified(versions: Array<WorkflowVersion | Tag>): boolean {
     if (!versions) {
       return false;
     }
@@ -79,7 +78,7 @@ export class DockstoreService {
         }
       }
     }
-    return sources.filter(function (elem, pos) {
+    return sources.filter(function(elem, pos) {
       return sources.indexOf(elem) === pos;
     });
   }
@@ -96,7 +95,7 @@ export class DockstoreService {
         }
       }
     }
-    return sources.filter(function (elem, pos) {
+    return sources.filter(function(elem, pos) {
       return sources.indexOf(elem) === pos;
     });
   }
@@ -117,8 +116,7 @@ export class DockstoreService {
 
   getIconClass(columnName: string, sortColumn: string, sortReverse: boolean): IconDefinition {
     if (sortColumn === columnName) {
-      return !sortReverse ? faSortAlphaDown :
-        faSortAlphaUp;
+      return !sortReverse ? faSortAlphaDown : faSortAlphaUp;
     } else {
       return faSort;
     }

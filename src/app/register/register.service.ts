@@ -21,17 +21,19 @@ import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class RegisterService {
-
-  constructor(private auth: AuthService, private matSnackBar: MatSnackBar) { }
+  constructor(private auth: AuthService, private matSnackBar: MatSnackBar) {}
 
   authenticate(provider: string): Observable<any> {
     return Observable.create(observable => {
-      return this.auth.authenticate(provider, { 'register' : true}).subscribe(user => {
-        observable.next(user);
-        observable.complete();
-      }, error => {
-        this.matSnackBar.open(error._body, 'Dismiss');
-      });
+      return this.auth.authenticate(provider, { register: true }).subscribe(
+        user => {
+          observable.next(user);
+          observable.complete();
+        },
+        error => {
+          this.matSnackBar.open(error._body, 'Dismiss');
+        }
+      );
     });
   }
 }

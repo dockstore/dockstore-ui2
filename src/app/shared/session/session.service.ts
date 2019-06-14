@@ -21,8 +21,7 @@ import { SessionStore } from './session.store';
   providedIn: 'root'
 })
 export class SessionService {
-
-  constructor(private sessionStore: SessionStore) { }
+  constructor(private sessionStore: SessionStore) {}
 
   setPublicPage(isPublic: boolean): void {
     this.sessionStore.setState(state => {

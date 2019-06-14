@@ -28,24 +28,9 @@ import { HeaderModule } from './header.module';
 import { CustomMaterialModule } from './material.module';
 
 @NgModule({
-  declarations: [
-    ListContainersComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    ClipboardModule,
-    CustomMaterialModule,
-    HeaderModule,
-    PrivateIconModule
-  ],
-  providers: [
-    PublishedToolsDataSource,
-    ListContainersService
-  ],
-  exports: [
-    ListContainersComponent
-  ]
+  declarations: [ListContainersComponent],
+  imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule],
+  providers: [PublishedToolsDataSource, ListContainersService],
+  exports: [ListContainersComponent]
 })
-export class ListContainersModule {
-}
+export class ListContainersModule {}

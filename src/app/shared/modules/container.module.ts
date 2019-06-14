@@ -103,7 +103,7 @@ import { MarkdownModule } from 'ngx-markdown';
     MarkdownModule
   ],
   providers: [
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
+    { provide: TooltipConfig, useFactory: getTooltipConfig },
     EmailService,
     DateService,
     FileService,
@@ -115,12 +115,7 @@ import { MarkdownModule } from 'ngx-markdown';
     VersionModalService,
     InfoTabService
   ],
-  exports: [
-    ContainerComponent,
-    CustomMaterialModule,
-    EntryModule
-  ],
+  exports: [ContainerComponent, CustomMaterialModule, EntryModule],
   entryComponents: [VersionModalComponent, AddTagComponent]
 })
-export class ContainerModule {
-}
+export class ContainerModule {}

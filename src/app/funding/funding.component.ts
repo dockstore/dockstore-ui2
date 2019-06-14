@@ -6,5 +6,5 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./funding.component.scss']
 })
 export class FundingComponent {
-  constructor() { }
+  constructor() {}
 }

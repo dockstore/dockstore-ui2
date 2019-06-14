@@ -66,6 +66,6 @@ export class Dockstore {
   static CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 
   static FEATURES = {
-    enableCwlViewer: true,
+    enableCwlViewer: true
   };
 }

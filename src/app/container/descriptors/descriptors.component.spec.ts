@@ -28,21 +28,21 @@ describe('DescriptorsComponent', () => {
   let component: DescriptorsComponent;
   let fixture: ComponentFixture<DescriptorsComponent>;
 
-  class HttpStubService { }
-  class FileStubService { }
-  class HttpStub { }
+  class HttpStubService {}
+  class FileStubService {}
+  class HttpStub {}
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DescriptorsComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [DescriptorService,
+      providers: [
+        DescriptorService,
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: FileService, useClass: FileStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService },
+        { provide: GA4GHService, useClass: GA4GHStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

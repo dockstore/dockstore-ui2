@@ -23,8 +23,7 @@ describe('ControlsComponent', () => {
         { provide: UsersService, useClass: UsersStubService },
         { provide: RefreshService, useClass: RefreshStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

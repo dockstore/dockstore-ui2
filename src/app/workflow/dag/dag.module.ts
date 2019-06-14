@@ -24,16 +24,8 @@ import { DagComponent } from './dag.component';
 import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FlexLayoutModule,
-    FormsModule,
-    MatIconModule,
-    MatProgressBarModule,
-    MatTooltipModule,
-    CustomMaterialModule
-  ],
+  imports: [CommonModule, FlexLayoutModule, FormsModule, MatIconModule, MatProgressBarModule, MatTooltipModule, CustomMaterialModule],
   declarations: [DagComponent, CwlViewerComponent, WdlViewerComponent],
   exports: [DagComponent]
 })
-export class DagModule { }
+export class DagModule {}

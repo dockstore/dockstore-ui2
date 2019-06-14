@@ -9,10 +9,12 @@ import { TokenStore } from './token.store';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
-
-  constructor(private tokenStore: TokenStore, private tokensService: TokensService, private usersService: UsersService,
-    private httpBackend: HttpBackend) {
-  }
+  constructor(
+    private tokenStore: TokenStore,
+    private tokensService: TokensService,
+    private usersService: UsersService,
+    private httpBackend: HttpBackend
+  ) {}
 
   @transaction()
   get(userId: number) {
@@ -56,7 +58,6 @@ export class TokenService {
         console.log('Unknown provider: ' + provider);
         return throwError('Unknown provider.');
       }
-
     }
   }
   deleteToken(tokenId: number) {
@@ -64,7 +65,7 @@ export class TokenService {
   }
 
   setGitHubOrganizations(gitHubOrganizations: any) {
-    this.tokenStore.updateRoot({gitHubOrganizations: gitHubOrganizations});
+    this.tokenStore.updateRoot({ gitHubOrganizations: gitHubOrganizations });
   }
 
   getGitHubOrganizations(token: String) {

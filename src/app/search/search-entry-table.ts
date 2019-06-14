@@ -18,10 +18,10 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Subject } from 'rxjs';
 import { DateService } from '../shared/date.service';
 import { DockstoreTool, Workflow } from '../shared/swagger';
-import {SearchQuery} from './state/search.query';
-import {Base} from '../shared/base';
-import {takeUntil} from 'rxjs/operators';
-import {SearchService} from './state/search.service';
+import { SearchQuery } from './state/search.query';
+import { Base } from '../shared/base';
+import { takeUntil } from 'rxjs/operators';
+import { SearchService } from './state/search.service';
 
 export abstract class SearchEntryTable extends Base implements OnInit {
   @ViewChild(MatPaginator) protected paginator: MatPaginator;
@@ -30,7 +30,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   public readonly displayedColumns = ['name', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
-  abstract dataSource: (MatTableDataSource<Workflow | DockstoreTool>);
+  abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
   abstract privateNgOnInit(): void;
 
   constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {

@@ -22,8 +22,7 @@ export class DownloadCLIClientComponent implements OnInit {
   public textData2 = '';
   public textData3 = '';
   private cwltoolVersion = '';
-  constructor(private authService: AuthService, private metadataService: MetadataService,
-    private gA4GHService: GA4GHService) { }
+  constructor(private authService: AuthService, private metadataService: MetadataService, private gA4GHService: GA4GHService) {}
 
   ngOnInit() {
     if (this.authService.getToken()) {
@@ -37,16 +36,24 @@ export class DownloadCLIClientComponent implements OnInit {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
         this.downloadCli = `https://github.com/ga4gh/dockstore/releases/download/${apiVersion}/dockstore`;
-        this.metadataService.getRunnerDependencies(apiVersion, '2', 'cwltool', 'json').pipe(finalize(() => this.generateMarkdown())).subscribe((json: any) => {
-          if (json) {
-            this.cwltoolVersion = json.cwltool;
-          }
-        }, err => {
-          console.log('Unable to retrieve requirements.txt file.');
-        });
-      }, error => {
+        this.metadataService
+          .getRunnerDependencies(apiVersion, '2', 'cwltool', 'json')
+          .pipe(finalize(() => this.generateMarkdown()))
+          .subscribe(
+            (json: any) => {
+              if (json) {
+                this.cwltoolVersion = json.cwltool;
+              }
+            },
+            err => {
+              console.log('Unable to retrieve requirements.txt file.');
+            }
+          );
+      },
+      error => {
         this.generateMarkdown();
-      });
+      }
+    );
   }
   generateMarkdown(): void {
     this.textData1 = `

@@ -29,16 +29,16 @@ export class DescriptorLanguageService {
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
   public filteredDescriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   constructor(private metadataService: MetadataService, private sessionQuery: SessionQuery) {
-      this.update();
-      this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(map(descriptorLanguageMap => {
-          if (descriptorLanguageMap) {
-              return descriptorLanguageMap.map((descriptorLanguage) => <Workflow.DescriptorTypeEnum>descriptorLanguage.value.toString());
-          }
-      }));
-      const combined$ = combineLatest(this.descriptorLanguages$, this.sessionQuery.entryType$);
-      this.filteredDescriptorLanguages$ = combined$.pipe(
-        map(combined => this.filterLanguages(combined[0], combined[1]))
-      );
+    this.update();
+    this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(
+      map(descriptorLanguageMap => {
+        if (descriptorLanguageMap) {
+          return descriptorLanguageMap.map(descriptorLanguage => <Workflow.DescriptorTypeEnum>descriptorLanguage.value.toString());
+        }
+      })
+    );
+    const combined$ = combineLatest(this.descriptorLanguages$, this.sessionQuery.entryType$);
+    this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
   }
   update() {
     this.metadataService.getDescriptorLanguages().subscribe((languageBeans: Array<DescriptorLanguageBean>) => {

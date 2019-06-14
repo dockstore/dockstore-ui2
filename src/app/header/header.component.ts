@@ -28,12 +28,15 @@ export class HeaderComponent implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private router: Router) {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe((event) => {
-      this.isExtended = toExtendSite(this.router.url);
-    });
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(event => {
+        this.isExtended = toExtendSite(this.router.url);
+      });
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

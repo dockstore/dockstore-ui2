@@ -25,11 +25,10 @@ describe('SponsorsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SponsorsComponent ],
+      declarations: [SponsorsComponent],
       providers: [Location],
       imports: [RouterTestingModule]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

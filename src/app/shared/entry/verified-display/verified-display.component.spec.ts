@@ -15,8 +15,7 @@ describe('VerifiedDisplayComponent', () => {
     TestBed.configureTestingModule({
       declarations: [VerifiedDisplayComponent],
       imports: [CustomMaterialModule, BrowserAnimationsModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -30,21 +29,20 @@ describe('VerifiedDisplayComponent', () => {
   });
   const expectedObject = [
     {
-      'path': '/\u2028Dockstore-BTCA-SG.json',
-      'platform': 'Dockstore CLI',
-      'platformVersion': '1.0.0',
-      'metadata': 'Docktesters group'
+      path: '/\u2028Dockstore-BTCA-SG.json',
+      platform: 'Dockstore CLI',
+      platformVersion: '1.0.0',
+      metadata: 'Docktesters group'
     },
     {
-      'path': '/\u2028Dockstore.json',
-      'platform': 'Dockstore CLI',
-      'platformVersion': 'N/A',
-      'metadata': 'Docktesters group'
+      path: '/\u2028Dockstore.json',
+      platform: 'Dockstore CLI',
+      platformVersion: 'N/A',
+      metadata: 'Docktesters group'
     }
   ];
 
   it('should create datasource data from sourcefiles', () => {
-    expect(component.getCustomVerificationInformationArray(testSourceFiles))
-      .toEqual(expectedObject);
+    expect(component.getCustomVerificationInformationArray(testSourceFiles)).toEqual(expectedObject);
   });
 });

@@ -28,11 +28,10 @@ export class RefreshOrganizationComponent implements OnInit, OnDestroy {
   @Input() protected organization: string;
   public isRefreshing$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(private userQuery: UserQuery, protected alertQuery: AlertQuery) {
-  }
+  constructor(private userQuery: UserQuery, protected alertQuery: AlertQuery) {}
 
   ngOnInit() {
-    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => this.userId = userId);
+    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => (this.userId = userId));
     this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 

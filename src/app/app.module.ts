@@ -97,11 +97,10 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 
-
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
   hideDelay: 500,
-  touchendHideDelay: 500,
+  touchendHideDelay: 500
 };
 
 export const myCustomSnackbarDefaults: MatSnackBarConfig = {
@@ -215,8 +214,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
 
 export const apiConfig = new Configuration({
   apiKeys: {},

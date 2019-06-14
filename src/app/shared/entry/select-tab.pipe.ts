@@ -36,7 +36,7 @@ export class SelectTabPipe implements PipeTransform {
    * @returns {number}  0 if published, 1 if unpublished
    * @memberof SelectTabPipe
    */
-  transform(orgEntriesObject: (OrgToolObject | OrgWorkflowObject), entryId: number): number {
+  transform(orgEntriesObject: OrgToolObject | OrgWorkflowObject, entryId: number): number {
     const publishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.published;
     const unpublishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.unpublished;
     if (publishedEntries.find((entry: Entry) => entry.id === entryId)) {

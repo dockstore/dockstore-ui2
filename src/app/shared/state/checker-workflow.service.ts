@@ -36,22 +36,31 @@ import { WorkflowQuery } from './workflow.query';
 export class CheckerWorkflowService extends Base {
   // The current public page status
   private publicPage: boolean;
-  constructor(private workflowsService: WorkflowsService, private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery,
-    private router: Router, private containersService: ContainersService,
-    private toolQuery: ToolQuery, private checkerWorkflowStore: CheckerWorkflowStore, private checkerWorkflowQuery: CheckerWorkflowQuery) {
+  constructor(
+    private workflowsService: WorkflowsService,
+    private sessionQuery: SessionQuery,
+    private workflowQuery: WorkflowQuery,
+    private router: Router,
+    private containersService: ContainersService,
+    private toolQuery: ToolQuery,
+    private checkerWorkflowStore: CheckerWorkflowStore,
+    private checkerWorkflowQuery: CheckerWorkflowQuery
+  ) {
     super();
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage: boolean) => this.publicPage = publicPage);
-    observableMerge(this.toolQuery.tool$, this.workflowQuery.workflow$).pipe(
-      filter(x => x != null),
-      distinctUntilChanged(),
-      takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) =>
-      this.setEntryAndChecker(entry));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage: boolean) => (this.publicPage = publicPage));
+    observableMerge(this.toolQuery.tool$, this.workflowQuery.workflow$)
+      .pipe(
+        filter(x => x != null),
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((entry: Entry) => this.setEntryAndChecker(entry));
   }
 
   @transaction()
   public setEntryAndChecker(entry: Entry) {
     const checker_id = entry.checker_id;
-    if (checker_id)  {
+    if (checker_id) {
       this.updateCheckerWorkflow(checker_id, this.publicPage, entry);
     } else {
       this.setState(null, entry);
@@ -59,28 +68,41 @@ export class CheckerWorkflowService extends Base {
   }
 
   public getCheckerWorkflowURLObservable(checkerWorkflow$: Observable<Workflow>, isPublic$: Observable<boolean>): Observable<string> {
-  return combineLatest(
-    checkerWorkflow$,
-    isPublic$).pipe(
-      map(([workflow, isPublic]) => workflow ? this.getCheckerWorkflowURL(workflow, isPublic) : null));
-    }
+    return combineLatest(checkerWorkflow$, isPublic$).pipe(
+      map(([workflow, isPublic]) => (workflow ? this.getCheckerWorkflowURL(workflow, isPublic) : null))
+    );
+  }
 
   public canAdd(checkerId$: Observable<number>, parentId$: Observable<number>, isStub$: Observable<boolean>): Observable<boolean> {
-    return combineLatest(checkerId$, parentId$, isStub$).pipe(map(([checkerId, parentId, isStub]) => {
-      return !checkerId && !parentId && !isStub;
-    }));
+    return combineLatest(checkerId$, parentId$, isStub$).pipe(
+      map(([checkerId, parentId, isStub]) => {
+        return !checkerId && !parentId && !isStub;
+      })
+    );
   }
 
   public updateCheckerWorkflow(id: number, isPublic: boolean, entry) {
     // This sets the checker-workflow.checkerWorkflow state
     if (isPublic) {
-      this.workflowsService.getPublishedWorkflow(id, includesValidation).pipe(first()).subscribe((workflow: Workflow) => {
-        this.setState(workflow, entry);
-      }, error => this.setState(null, entry));
+      this.workflowsService
+        .getPublishedWorkflow(id, includesValidation)
+        .pipe(first())
+        .subscribe(
+          (workflow: Workflow) => {
+            this.setState(workflow, entry);
+          },
+          error => this.setState(null, entry)
+        );
     } else {
-      this.workflowsService.getWorkflow(id).pipe(first()).subscribe((workflow: Workflow) => {
-        this.setState(workflow, entry);
-      }, error => this.setState(null, entry));
+      this.workflowsService
+        .getWorkflow(id)
+        .pipe(first())
+        .subscribe(
+          (workflow: Workflow) => {
+            this.setState(workflow, entry);
+          },
+          error => this.setState(null, entry)
+        );
     }
   }
 
@@ -92,8 +114,6 @@ export class CheckerWorkflowService extends Base {
       };
     });
   }
-
-
 
   public getCheckerWorkflowURL(workflow: Workflow, isPublic: boolean): string {
     if (workflow) {
@@ -113,17 +133,31 @@ export class CheckerWorkflowService extends Base {
       return;
     }
     if (this.publicPage) {
-      this.workflowsService.getPublishedWorkflow(parentId).subscribe((workflow: Workflow) => {
-        this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
-      }, error => this.containersService.getPublishedContainer(parentId).subscribe((tool: DockstoreTool) => {
-        this.goToEntry(this.publicPage, tool.tool_path, 'tool');
-      }, error2 => console.log('Can not get parent entry')));
+      this.workflowsService.getPublishedWorkflow(parentId).subscribe(
+        (workflow: Workflow) => {
+          this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
+        },
+        error =>
+          this.containersService.getPublishedContainer(parentId).subscribe(
+            (tool: DockstoreTool) => {
+              this.goToEntry(this.publicPage, tool.tool_path, 'tool');
+            },
+            error2 => console.log('Can not get parent entry')
+          )
+      );
     } else {
-      this.workflowsService.getWorkflow(parentId).subscribe((workflow: Workflow) => {
-        this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
-      }, error => this.containersService.getContainer(parentId).subscribe((tool: DockstoreTool) => {
-        this.goToEntry(this.publicPage, tool.tool_path, 'tool');
-      }, error2 => console.log('Can not get parent entry')));
+      this.workflowsService.getWorkflow(parentId).subscribe(
+        (workflow: Workflow) => {
+          this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
+        },
+        error =>
+          this.containersService.getContainer(parentId).subscribe(
+            (tool: DockstoreTool) => {
+              this.goToEntry(this.publicPage, tool.tool_path, 'tool');
+            },
+            error2 => console.log('Can not get parent entry')
+          )
+      );
     }
   }
 

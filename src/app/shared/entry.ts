@@ -52,21 +52,25 @@ export abstract class Entry implements OnInit, OnDestroy {
   public currentTab = 'info';
   public urlVersion;
   location: Location;
-  public selectedVersion: (WorkflowVersion | Tag | null) = null;
+  public selectedVersion: WorkflowVersion | Tag | null = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   protected selected = new FormControl(0);
-  constructor(private trackLoginService: TrackLoginService,
+  constructor(
+    private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
     public dateService: DateService,
     public urlResolverService: UrlResolverService,
     public activatedRoute: ActivatedRoute,
     public locationService: Location,
-    protected sessionService: SessionService, protected sessionQuery: SessionQuery, protected gA4GHFilesService: GA4GHFilesService) {
+    protected sessionService: SessionService,
+    protected sessionQuery: SessionQuery,
+    protected gA4GHFilesService: GA4GHFilesService
+  ) {
     this.location = locationService;
     this.gA4GHFilesService.clearFiles();
   }
@@ -74,15 +78,18 @@ export abstract class Entry implements OnInit, OnDestroy {
   ngOnInit() {
     this.clearState();
     this.subscriptions();
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd),
-      takeUntil(this.ngUnsubscribe)).subscribe((event: RouterEvent) => {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((event: RouterEvent) => {
         this.parseURL(event.url);
       });
     this.parseURL(this.router.url);
     this.sessionService.setPublicPage(this.isPublic());
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
-    this.trackLoginService.isLoggedIn$.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(state => this.isLoggedIn = state);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.publicPage = publicPage));
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => (this.isLoggedIn = state));
   }
 
   private parseURL(url: String): void {
@@ -186,26 +193,26 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @returns {((WorkflowVersion | Tag))}  The version to display to the user
    * @memberof Entry
    */
-  public selectVersion(versions: (Array<WorkflowVersion | Tag>), urlVersion: string, defaultVersion: string): (WorkflowVersion | Tag) {
+  public selectVersion(versions: Array<WorkflowVersion | Tag>, urlVersion: string, defaultVersion: string): WorkflowVersion | Tag {
     if (!versions || versions.length === 0) {
       return null;
     }
-    let foundVersion: (WorkflowVersion | Tag);
+    let foundVersion: WorkflowVersion | Tag;
     if (urlVersion) {
-      foundVersion = versions.find((version: (WorkflowVersion | Tag)) => version.name === urlVersion);
+      foundVersion = versions.find((version: WorkflowVersion | Tag) => version.name === urlVersion);
       if (foundVersion) {
         return foundVersion;
       }
     }
     if (defaultVersion) {
-      foundVersion = versions.find((version: (WorkflowVersion | Tag)) => version.name === defaultVersion);
+      foundVersion = versions.find((version: WorkflowVersion | Tag) => version.name === defaultVersion);
       if (foundVersion) {
         return foundVersion;
       }
     }
 
     // Select newest last_modified version, if it's the same, choose the top
-    return versions.reduce((a, b) => b.last_modified > a.last_modified ? b : a);
+    return versions.reduce((a, b) => (b.last_modified > a.last_modified ? b : a));
   }
 
   public getEntryPathFromURL(): string {
@@ -278,7 +285,6 @@ export abstract class Entry implements OnInit, OnDestroy {
   selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
     this.setEntryTab(matTabChangeEvent.tab.textLabel.toLowerCase());
   }
-
 
   /**
    * Sorts a list of versions by verified and then last_modified, returning a subset of the versions (1 default + 5 other versions max)
@@ -365,8 +371,10 @@ export abstract class Entry implements OnInit, OnDestroy {
       discourseUrl: Dockstore.DISCOURSE_URL,
       topicId: topicId
     };
-    (function () {
-      const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+    (function() {
+      const d = document.createElement('script');
+      d.type = 'text/javascript';
+      d.async = true;
       d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
     })();

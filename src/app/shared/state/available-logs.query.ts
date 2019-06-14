@@ -6,9 +6,7 @@ import { AvailableLogsState, AvailableLogsStore } from './available-logs.store';
   providedIn: 'root'
 })
 export class AvailableLogsQuery extends QueryEntity<AvailableLogsState, ToolTesterLog> {
-
   constructor(protected store: AvailableLogsStore) {
     super(store);
   }
-
 }

@@ -28,8 +28,7 @@ describe('LaunchCheckerWorkflowComponent', () => {
       declarations: [LaunchCheckerWorkflowComponent],
       providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
       imports: [MatCardModule]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

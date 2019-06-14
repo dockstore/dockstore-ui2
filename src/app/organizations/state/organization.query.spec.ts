@@ -5,11 +5,10 @@ describe('OrganizationQuery', () => {
   let query: OrganizationQuery;
 
   beforeEach(() => {
-    query = new OrganizationQuery(new OrganizationStore);
+    query = new OrganizationQuery(new OrganizationStore());
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

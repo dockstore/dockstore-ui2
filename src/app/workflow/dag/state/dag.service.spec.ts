@@ -29,15 +29,14 @@ import { DagQuery } from './dag.query';
 describe('Service: Dag', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DagService, DagStore, DagQuery, Renderer2,
-        { provide: WorkflowsService, useClass: WorkflowsStubService }]
+      providers: [DagService, DagStore, DagQuery, Renderer2, { provide: WorkflowsService, useClass: WorkflowsStubService }]
     });
   });
 
   it('should ...', inject([DagService], (service: DagService) => {
     expect(service).toBeTruthy();
   }));
-  it('should check if it\'s n/a', inject([DagService], (service: DagService) => {
+  it("should check if it's n/a", inject([DagService], (service: DagService) => {
     expect(service.isNA('n/a')).toBeTruthy();
     expect(service.isNA('asdf')).toBeFalsy();
   }));
@@ -58,7 +57,6 @@ describe('Service: Dag', () => {
     <div><b>Docker: </b> <a href=''>valid link</a></div>
     </div>`);
   }));
-
 
   it('should get DAG', inject([DagService], (service: DagService) => {
     service.getCurrentDAG(2, 2).subscribe(results => expect(results).toEqual('someDAG'));

@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CustomMaterialModule } from '../../modules/material.module';
 import { VerifiedByComponent } from './verified-by.component';
 
-
 describe('VerifiedByComponent', () => {
   let component: VerifiedByComponent;
   let fixture: ComponentFixture<VerifiedByComponent>;
@@ -12,8 +11,7 @@ describe('VerifiedByComponent', () => {
     TestBed.configureTestingModule({
       imports: [CustomMaterialModule],
       declarations: [VerifiedByComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -15,7 +15,7 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
-import { Organization, User} from '../../../shared/swagger';
+import { Organization, User } from '../../../shared/swagger';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { ContainerService } from '../../../shared/container.service';
@@ -35,7 +35,6 @@ import { Base } from '../../../shared/base';
   styleUrls: ['../../../starring/starring.component.css']
 })
 export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {
-
   @Input() organization: Organization;
   @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
   private user: User;
@@ -44,19 +43,21 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
   public total_stars = 0;
   public disableRateButton = false;
   private starredUsers: User[];
-  constructor(private trackLoginService: TrackLoginService,
-              private userQuery: UserQuery,
-              private containerService: ContainerService,
-              private starringService: StarringService,
-              private starentryService: StarentryService,
-              private starOrganizationService: StarOrganizationService,
-              private organizationStarringService: OrganizationStarringService,
-              private alertService: AlertService) {
+  constructor(
+    private trackLoginService: TrackLoginService,
+    private userQuery: UserQuery,
+    private containerService: ContainerService,
+    private starringService: StarringService,
+    private starentryService: StarentryService,
+    private starOrganizationService: StarOrganizationService,
+    private organizationStarringService: OrganizationStarringService,
+    private alertService: AlertService
+  ) {
     super();
   }
 
   ngOnInit() {
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => (this.isLoggedIn = isLoggedIn));
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
       this.rate = isStarredByUser(this.starredUsers, this.user);
@@ -82,7 +83,6 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
   setStarring() {
     this.disableRateButton = true;
     if (this.isLoggedIn) {
-
       const message = (this.rate ? 'Unstarring ' : 'Starring ') + this.organization.name;
       this.alertService.start(message);
 
@@ -91,12 +91,12 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
           // update total_stars
           this.alertService.simpleSuccess();
           this.getStarredUsers();
-
         },
-        (error) => {
+        error => {
           this.alertService.detailedError(error);
           this.disableRateButton = false;
-        });
+        }
+      );
     }
   }
 
@@ -110,13 +110,18 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
 
   getStarredUsers(): void {
     if (this.organization) {
-      this.organizationStarringService.getStarring(this.organization.id).pipe(first()).subscribe(
-        (starring: User[]) => {
-          this.total_stars = starring.length;
-          this.starredUsers = starring;
-          this.rate = isStarredByUser(starring, this.user);
-          this.disableRateButton = false;
-        }, error => this.disableRateButton = false);
+      this.organizationStarringService
+        .getStarring(this.organization.id)
+        .pipe(first())
+        .subscribe(
+          (starring: User[]) => {
+            this.total_stars = starring.length;
+            this.starredUsers = starring;
+            this.rate = isStarredByUser(starring, this.user);
+            this.disableRateButton = false;
+          },
+          error => (this.disableRateButton = false)
+        );
     } else {
       this.disableRateButton = false;
     }
@@ -124,7 +129,7 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
 
   getStargazers() {
     const selectedOrganization = {
-      theOrganization: this.organization,
+      theOrganization: this.organization
     };
     this.starOrganizationService.setOrganization(selectedOrganization);
     this.change.emit();

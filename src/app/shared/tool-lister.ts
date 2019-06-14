@@ -36,14 +36,18 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   public length$: Observable<number>;
   public pageSize$: Observable<number>;
   public pageIndex$: Observable<number>;
-  constructor(private paginatorService: PaginatorService,
-    protected providerService: ProviderService, private dateService: DateService, protected sessionQuery: SessionQuery) {
+  constructor(
+    private paginatorService: PaginatorService,
+    protected providerService: ProviderService,
+    private dateService: DateService,
+    protected sessionQuery: SessionQuery
+  ) {
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
-  abstract type: ('tool' | 'workflow');
+  abstract type: 'tool' | 'workflow';
   abstract displayedColumns: Array<string>;
-  public dataSource: (PublishedWorkflowsDataSource | PublishedToolsDataSource);
+  public dataSource: PublishedWorkflowsDataSource | PublishedToolsDataSource;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('input') input: ElementRef;
@@ -55,7 +59,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
    * @returns {boolean}  True if entry is verified, false otherwise
    * @memberof ToolLister
    */
-  abstract getVerified(entry: (DockstoreTool | Workflow)): boolean;
+  abstract getVerified(entry: DockstoreTool | Workflow): boolean;
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -63,31 +67,36 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
       this.loadPublishedEntries();
 
       // Handle paginator changes
-      merge(this.paginator.page).pipe(
-        distinctUntilChanged(),
-        tap(() => this.loadPublishedEntries()),
-        takeUntil(this.ngUnsubscribe)
-      ).subscribe(() => this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex));
+      merge(this.paginator.page)
+        .pipe(
+          distinctUntilChanged(),
+          tap(() => this.loadPublishedEntries()),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe(() => this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex));
 
       // Handle sort changes
-      this.sort.sortChange.pipe(
-        tap(() => {
-          this.paginator.pageIndex = 0;
-          this.loadPublishedEntries();
-        }),
-        takeUntil(this.ngUnsubscribe)
-      ).subscribe();
+      this.sort.sortChange
+        .pipe(
+          tap(() => {
+            this.paginator.pageIndex = 0;
+            this.loadPublishedEntries();
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe();
 
       // Handle input text field changes
-      fromEvent(this.input.nativeElement, 'keyup').pipe(
-        debounceTime(formInputDebounceTime),
-        distinctUntilChanged(),
-        tap(() => {
-          this.paginator.pageIndex = 0;
-          this.loadPublishedEntries();
-        }),
-        takeUntil(this.ngUnsubscribe)
-      )
+      fromEvent(this.input.nativeElement, 'keyup')
+        .pipe(
+          debounceTime(formInputDebounceTime),
+          distinctUntilChanged(),
+          tap(() => {
+            this.paginator.pageIndex = 0;
+            this.loadPublishedEntries();
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
         .subscribe();
     });
   }
@@ -119,7 +128,8 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
       direction,
       this.paginator.pageIndex * this.paginator.pageSize,
       this.paginator.pageSize,
-      this.sort.active);
+      this.sort.active
+    );
   }
 
   ngOnDestroy() {

@@ -17,14 +17,14 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import {Organization, User} from '../../../shared/swagger';
-import {OrganizationsService} from '../../../shared/swagger';
-import {UsersService} from '../../../shared/swagger';
-import {StarRequest} from '../../../shared/swagger';
+import { Organization, User } from '../../../shared/swagger';
+import { OrganizationsService } from '../../../shared/swagger';
+import { UsersService } from '../../../shared/swagger';
+import { StarRequest } from '../../../shared/swagger';
 
 @Injectable()
 export class OrganizationStarringService {
-  constructor(private usersService: UsersService,  private organizationsService: OrganizationsService) { }
+  constructor(private usersService: UsersService, private organizationsService: OrganizationsService) {}
 
   setUnstar(organizationID: number): Observable<any> {
     return this.organizationsService.unstarOrganization(organizationID);

@@ -27,12 +27,16 @@ import { OrganizationService } from './organization.service';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionsService {
-
-  constructor(private collectionsStore: CollectionsStore, private organizationsService: OrganizationsService,
-    private alertService: AlertService, private organizationService: OrganizationService,
-    private organizationStore: OrganizationQuery, private collectionsQuery: CollectionsQuery,
-    private matDialog: MatDialog, private router: Router) {
-  }
+  constructor(
+    private collectionsStore: CollectionsStore,
+    private organizationsService: OrganizationsService,
+    private alertService: AlertService,
+    private organizationService: OrganizationService,
+    private organizationStore: OrganizationQuery,
+    private collectionsQuery: CollectionsQuery,
+    private matDialog: MatDialog,
+    private router: Router
+  ) {}
 
   clearState() {
     this.collectionsStore.remove();
@@ -46,17 +50,21 @@ export class CollectionsService {
     this.collectionsStore.setLoading(true);
     const activeId: ID = this.collectionsQuery.getActiveId();
     this.collectionsStore.remove();
-    this.organizationsService.getCollectionsFromOrganization(organizationID).pipe(
-      finalize(() => this.collectionsStore.setLoading(false)))
-      .subscribe((collections: Array<Collection>) => {
-        this.addAll(collections);
-        if (activeId) {
-          this.updateCollectionFromId(organizationID, activeId as number);
+    this.organizationsService
+      .getCollectionsFromOrganization(organizationID)
+      .pipe(finalize(() => this.collectionsStore.setLoading(false)))
+      .subscribe(
+        (collections: Array<Collection>) => {
+          this.addAll(collections);
+          if (activeId) {
+            this.updateCollectionFromId(organizationID, activeId as number);
+          }
+        },
+        error => {
+          console.error(error);
+          this.collectionsStore.setError(true);
         }
-      }, error => {
-        console.error(error);
-        this.collectionsStore.setError(true);
-      });
+      );
   }
 
   add(collection: Collection) {
@@ -79,16 +87,20 @@ export class CollectionsService {
   updateCollectionFromName(organizationName: string, collectionName: string) {
     this.collectionsStore.setError(false);
     this.collectionsStore.setLoading(true);
-    this.organizationsService.getCollectionByName(organizationName, collectionName)
+    this.organizationsService
+      .getCollectionByName(organizationName, collectionName)
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
-      .subscribe((collection: Collection) => {
-        this.collectionsStore.setError(false);
-        this.collectionsStore.createOrReplace(collection.id, collection);
-        this.collectionsStore.setActive(collection.id);
-        this.organizationService.updateOrganizationFromID(collection.organizationID);
-      }, () => {
-        this.collectionsStore.setError(true);
-      });
+      .subscribe(
+        (collection: Collection) => {
+          this.collectionsStore.setError(false);
+          this.collectionsStore.createOrReplace(collection.id, collection);
+          this.collectionsStore.setActive(collection.id);
+          this.organizationService.updateOrganizationFromID(collection.organizationID);
+        },
+        () => {
+          this.collectionsStore.setError(true);
+        }
+      );
   }
 
   /**
@@ -103,18 +115,22 @@ export class CollectionsService {
   updateCollectionFromId(organizationId: number, collectionId: number) {
     this.collectionsStore.setError(false);
     this.collectionsStore.setLoading(true);
-    this.organizationsService.getCollectionById(organizationId, collectionId)
+    this.organizationsService
+      .getCollectionById(organizationId, collectionId)
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
-      .subscribe((collection: Collection) => {
-        this.collectionsStore.setError(false);
-        this.collectionsStore.createOrReplace(collection.id, collection);
-        this.collectionsStore.setActive(collection.id);
-        this.organizationService.updateOrganizationFromID(collection.organizationID);
-        // Navigate to the new collectionName in case the name changes.
-        this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
-      }, () => {
-        this.collectionsStore.setError(true);
-      });
+      .subscribe(
+        (collection: Collection) => {
+          this.collectionsStore.setError(false);
+          this.collectionsStore.createOrReplace(collection.id, collection);
+          this.collectionsStore.setActive(collection.id);
+          this.organizationService.updateOrganizationFromID(collection.organizationID);
+          // Navigate to the new collectionName in case the name changes.
+          this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
+        },
+        () => {
+          this.collectionsStore.setError(true);
+        }
+      );
   }
 
   /**
@@ -126,16 +142,19 @@ export class CollectionsService {
    */
   removeEntryFromCollection(organizationId: number, collectionId: number, entryId: number, entryName: string) {
     this.alertService.start('Removing entry ' + entryName);
-    this.organizationsService.deleteEntryFromCollection(organizationId, collectionId, entryId).pipe(
-      finalize(() => this.collectionsStore.setLoading(false)
-      ))
-      .subscribe((collection: Collection) => {
-        this.alertService.simpleSuccess();
-        this.updateCollectionFromId(organizationId, collectionId);
-        this.matDialog.closeAll();
-      }, () => {
-        this.collectionsStore.setError(true);
-        this.alertService.simpleError();
-      });
+    this.organizationsService
+      .deleteEntryFromCollection(organizationId, collectionId, entryId)
+      .pipe(finalize(() => this.collectionsStore.setLoading(false)))
+      .subscribe(
+        (collection: Collection) => {
+          this.alertService.simpleSuccess();
+          this.updateCollectionFromId(organizationId, collectionId);
+          this.matDialog.closeAll();
+        },
+        () => {
+          this.collectionsStore.setError(true);
+          this.alertService.simpleError();
+        }
+      );
   }
 }

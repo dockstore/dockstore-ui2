@@ -23,8 +23,11 @@ import { User } from './../shared/swagger/model/user';
 
 @Injectable()
 export class StarringService {
-  constructor(private usersService: UsersService, private containersService: ContainersService,
-    private workflowsService: WorkflowsService) { }
+  constructor(
+    private usersService: UsersService,
+    private containersService: ContainersService,
+    private workflowsService: WorkflowsService
+  ) {}
 
   setUnstar(entryID: number, entryType: EntryType): any {
     if (entryType === EntryType.BioWorkflow) {

@@ -32,35 +32,37 @@ export interface FormsState {
  */
 @Injectable({ providedIn: 'root' })
 export class RegisterOrganizationService {
-
   // Regex found from https://gist.github.com/dperini/729294 which validator.js uses except using a more simple version and enforce http(s)
   readonly urlRegex = new RegExp(
     '^' +
-    // protocol identifier (optional) + //
-    '(?:(?:https?:)?//)' +
-    // user:pass authentication (optional)
-    '(?:\\S+(?::\\S*)?@)?' +
-    // host (optional) + domain + tld
-    '(?:(?!-)[-a-z0-9\\u00a1-\\uffff]*[a-z0-9\\u00a1-\\uffff]+(?!./|\\.$)\\.?){2,}' +
-    // server port number (optional)
-    '(?::\\d{2,5})?' +
-    // resource path (optional)
-    '(?:/\\S*)?' +
-    '$', 'i'
+      // protocol identifier (optional) + //
+      '(?:(?:https?:)?//)' +
+      // user:pass authentication (optional)
+      '(?:\\S+(?::\\S*)?@)?' +
+      // host (optional) + domain + tld
+      '(?:(?!-)[-a-z0-9\\u00a1-\\uffff]*[a-z0-9\\u00a1-\\uffff]+(?!./|\\.$)\\.?){2,}' +
+      // server port number (optional)
+      '(?::\\d{2,5})?' +
+      // resource path (optional)
+      '(?:/\\S*)?' +
+      '$',
+    'i'
   );
   // The old regex in case needed
   // readonly urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
   readonly organizationNameRegex = /^[a-zA-Z][a-zA-Z\d]*$/;
   readonly organizationDisplayNameRegex = /^[a-zA-Z\d ,_\-&()']*$/;
 
-  readonly logoUrlRegex = new RegExp(
-    '^' +
-    '([^\\s]+)(.jpg|.jpeg|.png|.gif)$'
-  , 'i');
+  readonly logoUrlRegex = new RegExp('^' + '([^\\s]+)(.jpg|.jpeg|.png|.gif)$', 'i');
 
-  constructor(private organizationsService: OrganizationsService, private alertService: AlertService, private matDialog: MatDialog,
-    private router: Router, private organizationService: OrganizationService, private builder: FormBuilder) {
-  }
+  constructor(
+    private organizationsService: OrganizationsService,
+    private alertService: AlertService,
+    private matDialog: MatDialog,
+    private router: Router,
+    private organizationService: OrganizationService,
+    private builder: FormBuilder
+  ) {}
 
   /**
    * Create or update organization based on mode
@@ -105,18 +107,14 @@ export class RegisterOrganizationService {
       avatarUrl = organization.avatarUrl;
     }
     const registerOrganizationForm = this.builder.group({
-      name: [name, [
-        Validators.required,
-        Validators.maxLength(39),
-        Validators.minLength(3),
-        Validators.pattern(this.organizationNameRegex)
-      ]],
-      displayName: [displayName, [
-        Validators.required,
-        Validators.maxLength(50),
-        Validators.minLength(3),
-        Validators.pattern(this.organizationDisplayNameRegex)
-      ]],
+      name: [
+        name,
+        [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(this.organizationNameRegex)]
+      ],
+      displayName: [
+        displayName,
+        [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(this.organizationDisplayNameRegex)]
+      ],
       topic: [topic, Validators.required],
       link: [link, Validators.pattern(this.urlRegex)],
       location: [location],
@@ -163,18 +161,21 @@ export class RegisterOrganizationService {
         users: []
       };
       this.alertService.start('Adding organization');
-      this.organizationsService.createOrganization(newOrganization).subscribe((organization: Organization) => {
-        this.matDialog.closeAll();
-        if (organization) {
-          this.router.navigate(['/organizations', organization.name]);
-          this.alertService.simpleSuccess();
-        } else {
-          console.error('No idea how it would successfully return no organization');
-          this.alertService.simpleError();
+      this.organizationsService.createOrganization(newOrganization).subscribe(
+        (organization: Organization) => {
+          this.matDialog.closeAll();
+          if (organization) {
+            this.router.navigate(['/organizations', organization.name]);
+            this.alertService.simpleSuccess();
+          } else {
+            console.error('No idea how it would successfully return no organization');
+            this.alertService.simpleError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
         }
-      }, (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      });
+      );
     }
   }
 
@@ -187,8 +188,11 @@ export class RegisterOrganizationService {
    * @returns {void}
    * @memberof RegisterOrganizationService
    */
-  updateOrganization(organizationFormState: FormsState['registerOrganization'], organizationId: number,
-  organizationDescription: string): void {
+  updateOrganization(
+    organizationFormState: FormsState['registerOrganization'],
+    organizationId: number,
+    organizationDescription: string
+  ): void {
     if (!organizationFormState) {
       console.error('Something has gone terribly wrong with the form manager');
       return;
@@ -206,21 +210,23 @@ export class RegisterOrganizationService {
         users: []
       };
       this.alertService.start('Updating organization');
-      this.organizationsService.updateOrganization(organizationId, editedOrganization).subscribe((organization: Organization) => {
-        this.matDialog.closeAll();
-        if (organization) {
-          this.alertService.detailedSuccess();
-          // Watch out if this function is executed on Dockstore UI where it's not /organizations/{organizationId}
-          this.router.navigate(['/organizations', editedOrganization.name]);
-          this.organizationService.updateOrganizationFromID(organizationId);
-        } else {
-          console.error('No idea how it would successfully return no organization');
-          this.alertService.simpleError();
+      this.organizationsService.updateOrganization(organizationId, editedOrganization).subscribe(
+        (organization: Organization) => {
+          this.matDialog.closeAll();
+          if (organization) {
+            this.alertService.detailedSuccess();
+            // Watch out if this function is executed on Dockstore UI where it's not /organizations/{organizationId}
+            this.router.navigate(['/organizations', editedOrganization.name]);
+            this.organizationService.updateOrganizationFromID(organizationId);
+          } else {
+            console.error('No idea how it would successfully return no organization');
+            this.alertService.simpleError();
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
         }
-      }, (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      });
+      );
     }
   }
-
 }

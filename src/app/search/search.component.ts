@@ -15,13 +15,7 @@
  */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material';
-import {
-  faSort,
-  faSortAlphaDown,
-  faSortAlphaUp,
-  faSortNumericDown,
-  faSortNumericUp,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
@@ -92,14 +86,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private nonVerifiedCount: number;
   private verifiedCount: number;
 
-  private advancedSearchOptions = [
-    'ANDSplitFilter',
-    'ANDNoSplitFilter',
-    'ORFilter',
-    'NOTFilter',
-    'searchMode',
-    'toAdvanceSearch'
-  ];
+  private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode', 'toAdvanceSearch'];
 
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
@@ -113,9 +100,13 @@ export class SearchComponent implements OnInit, OnDestroy {
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
    */
-  constructor(private queryBuilderService: QueryBuilderService,
-    public searchService: SearchService, private searchQuery: SearchQuery,
-    private advancedSearchService: AdvancedSearchService, private alertService: AlertService) {
+  constructor(
+    private queryBuilderService: QueryBuilderService,
+    public searchService: SearchService,
+    private searchQuery: SearchQuery,
+    private advancedSearchService: AdvancedSearchService,
+    private alertService: AlertService
+  ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
@@ -141,10 +132,13 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.toSaveSearch$.next(false);
       }
     });
-    this.searchQuery.searchText$.pipe(
-      debounceTime(formInputDebounceTime),
-      distinctUntilChanged(),
-      takeUntil(this.ngUnsubscribe)).subscribe((value: string) => {
+    this.searchQuery.searchText$
+      .pipe(
+        debounceTime(formInputDebounceTime),
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((value: string) => {
         this.values = value;
         this.onKey();
       });
@@ -166,15 +160,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Applies parameters from the permalink to the search
-  */
+   * Applies parameters from the permalink to the search
+   */
   parseParams() {
     let useAdvSearch = false;
     const URIParams = this.searchService.createURIParams();
     if (!URIParams.paramsMap) {
       return;
     }
-    URIParams.paramsMap.forEach(((value, key) => {
+    URIParams.paramsMap.forEach((value, key) => {
       if (this.friendlyNames.get(key)) {
         value.forEach(categoryValue => {
           categoryValue = decodeURIComponent(categoryValue);
@@ -197,7 +191,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           }
         }
       }
-    }));
+    });
 
     if (useAdvSearch) {
       this.searchTerm = false;
@@ -264,38 +258,51 @@ export class SearchComponent implements OnInit, OnDestroy {
    *
    * **/
   setupNonVerifiedBucketCount(sideBarQuery: string) {
-    const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(this.query_size, this.values,
-      this.advancedSearchObject, this.searchTerm, this.filters);
+    const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(
+      this.query_size,
+      this.values,
+      this.advancedSearchObject,
+      this.searchTerm,
+      this.filters
+    );
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: queryBodyNotVerified
-    }).then(nonVerifiedHits => {
-      this.nonVerifiedCount = nonVerifiedHits.hits.total;
-      this.updateSideBar(sideBarQuery);
-    }).catch(error => console.log(error));
+    })
+      .then(nonVerifiedHits => {
+        this.nonVerifiedCount = nonVerifiedHits.hits.total;
+        this.updateSideBar(sideBarQuery);
+      })
+      .catch(error => console.log(error));
   }
 
   setupVerifiedBucketCount(sideBarQuery: string) {
-    const queryBodyVerified = this.queryBuilderService.getVerifiedQuery(this.query_size, this.values,
-      this.advancedSearchObject, this.searchTerm, this.filters);
+    const queryBodyVerified = this.queryBuilderService.getVerifiedQuery(
+      this.query_size,
+      this.values,
+      this.advancedSearchObject,
+      this.searchTerm,
+      this.filters
+    );
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: queryBodyVerified
-    }).then(verifiedHits => {
-      this.verifiedCount = verifiedHits.hits.total;
-      this.setupNonVerifiedBucketCount(sideBarQuery);
-    }).catch(error => console.log(error));
+    })
+      .then(verifiedHits => {
+        this.verifiedCount = verifiedHits.hits.total;
+        this.setupNonVerifiedBucketCount(sideBarQuery);
+      })
+      .catch(error => console.log(error));
   }
 
   setupOrderBuckets() {
-    this.entryOrder.forEach(
-      (value, key) => {
-        if (value.Items.size > 0 || value.SelectedItems.size > 0) {
-          this.orderedBuckets.set(key, value);
-        }
-      });
+    this.entryOrder.forEach((value, key) => {
+      if (value.Items.size > 0 || value.SelectedItems.size > 0) {
+        this.orderedBuckets.set(key, value);
+      }
+    });
     this.retainZeroBuckets();
   }
 
@@ -307,18 +314,17 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   setupAllBuckets(hits: any) {
     const aggregations = hits.aggregations;
-    Object.entries(aggregations).forEach(
-      ([key, value]) => {
-        if (value['buckets'] != null) {
-          this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
-        }
-        // look for second level buckets (with filtering)
-        // If there are second level buckets,
-        // the buckets will always be under a property with the same name as the root property
-        if (value[key]) {
-          this.setupBuckets(key, value[key].buckets);
-        }
-      });
+    Object.entries(aggregations).forEach(([key, value]) => {
+      if (value['buckets'] != null) {
+        this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
+      }
+      // look for second level buckets (with filtering)
+      // If there are second level buckets,
+      // the buckets will always be under a property with the same name as the root property
+      if (value[key]) {
+        this.setupBuckets(key, value[key].buckets);
+      }
+    });
     this.setFilter = true;
   }
   /**
@@ -373,10 +379,22 @@ export class SearchComponent implements OnInit, OnDestroy {
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    const sideBarQuery = this.queryBuilderService.getSidebarQuery(this.query_size, this.values, this.advancedSearchObject,
-      this.searchTerm, this.bucketStubs, this.filters, this.sortModeMap);
-    const tableQuery = this.queryBuilderService.getResultQuery(this.query_size, this.values, this.advancedSearchObject,
-      this.searchTerm, this.filters);
+    const sideBarQuery = this.queryBuilderService.getSidebarQuery(
+      this.query_size,
+      this.values,
+      this.advancedSearchObject,
+      this.searchTerm,
+      this.bucketStubs,
+      this.filters,
+      this.sortModeMap
+    );
+    const tableQuery = this.queryBuilderService.getResultQuery(
+      this.query_size,
+      this.values,
+      this.advancedSearchObject,
+      this.searchTerm,
+      this.filters
+    );
     this.resetEntryOrder();
     this.setupVerifiedBucketCount(sideBarQuery);
     this.updateResultsTable(tableQuery);
@@ -387,10 +405,12 @@ export class SearchComponent implements OnInit, OnDestroy {
       index: 'tools',
       type: 'entry',
       body: value
-    }).then(hits => {
-      this.setupAllBuckets(hits);
-      this.setupOrderBuckets();
-    }).catch(error => console.log(error));
+    })
+      .then(hits => {
+        this.setupAllBuckets(hits);
+        this.setupOrderBuckets();
+      })
+      .catch(error => console.log(error));
   }
 
   /**
@@ -404,16 +424,18 @@ export class SearchComponent implements OnInit, OnDestroy {
       index: 'tools',
       type: 'entry',
       body: value
-    }).then(hits => {
-      this.hits = hits.hits.hits;
-      this.searchService.filterEntry(this.hits, this.query_size);
-      if (this.values.length > 0 && hits) {
-        this.searchTerm = true;
-      }
-      if (this.searchTerm && this.hits.length === 0) {
-        this.searchService.suggestSearchTerm(this.values);
-      }
-    }).catch(error => console.log(error));
+    })
+      .then(hits => {
+        this.hits = hits.hits.hits;
+        this.searchService.filterEntry(this.hits, this.query_size);
+        if (this.values.length > 0 && hits) {
+          this.searchTerm = true;
+        }
+        if (this.searchTerm && this.hits.length === 0) {
+          this.searchService.suggestSearchTerm(this.values);
+        }
+      })
+      .catch(error => console.log(error));
   }
 
   /**===============================================
@@ -439,7 +461,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.orderedBuckets.clear();
   }
 
-
   /**===============================================
    *                Event Functions
    * ==============================================
@@ -452,28 +473,30 @@ export class SearchComponent implements OnInit, OnDestroy {
       index: 'tools',
       type: 'entry',
       body: {
-        'size': 0,
-        'aggs': {
-          'autocomplete': {
-            'terms': {
-              'field': 'description',
-              'size': 4,
-              'order': {
-                '_count': 'desc'
+        size: 0,
+        aggs: {
+          autocomplete: {
+            terms: {
+              field: 'description',
+              size: 4,
+              order: {
+                _count: 'desc'
               },
-              'include': {
-                'pattern': pattern
+              include: {
+                pattern: pattern
               }
             }
           }
         }
       }
-    }).then(hits => {
-      this.searchService.setAutoCompleteTerms(hits);
-    }).catch(error => console.log(error));
-    this.advancedSearchObject = {...this.advancedSearchObject, toAdvanceSearch: false};
+    })
+      .then(hits => {
+        this.searchService.setAutoCompleteTerms(hits);
+      })
+      .catch(error => console.log(error));
+    this.advancedSearchObject = { ...this.advancedSearchObject, toAdvanceSearch: false };
     this.searchTerm = true;
-    if ((!this.values || 0 === this.values.length)) {
+    if (!this.values || 0 === this.values.length) {
       this.searchTerm = false;
     }
     this.updateQuery();
@@ -505,7 +528,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     let orderedMap2;
     if (this.sortModeMap.get(category).SortBy === sortMode) {
       let orderBy: boolean;
-      if (this.sortModeMap.get(category).SortBy) { // Sort by Count
+      if (this.sortModeMap.get(category).SortBy) {
+        // Sort by Count
         orderBy = this.sortModeMap.get(category).CountOrderBy;
         this.sortModeMap.get(category).CountOrderBy = !orderBy;
       } else {
@@ -515,12 +539,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
     if (sortMode) {
       /* Reorder the bucket map by count */
-      orderedMap2 = this.searchService.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
-        this.sortModeMap.get(category).CountOrderBy);
+      orderedMap2 = this.searchService.sortCategoryValue(
+        this.orderedBuckets.get(category).Items,
+        sortMode,
+        this.sortModeMap.get(category).CountOrderBy
+      );
     } else {
       /* Reorder the bucket map by alphabet */
-      orderedMap2 = this.searchService.sortCategoryValue(this.orderedBuckets.get(category).Items, sortMode,
-        this.sortModeMap.get(category).AlphabetOrderBy);
+      orderedMap2 = this.searchService.sortCategoryValue(
+        this.orderedBuckets.get(category).Items,
+        sortMode,
+        this.sortModeMap.get(category).AlphabetOrderBy
+      );
     }
     this.orderedBuckets.get(category).Items = orderedMap2;
     this.sortModeMap.get(category).SortBy = sortMode;

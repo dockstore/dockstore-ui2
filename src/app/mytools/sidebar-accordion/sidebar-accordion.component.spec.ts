@@ -4,9 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ContainerService } from './../../shared/container.service';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { RegisterToolStubService, ContainerStubService } from './../../test/service-stubs';
-import {
-  RefreshToolOrganizationComponent,
-} from './../../container/refresh-tool-organization/refresh-tool-organization.component';
+import { RefreshToolOrganizationComponent } from './../../container/refresh-tool-organization/refresh-tool-organization.component';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
 import {
   MatButtonModule,
@@ -26,7 +24,7 @@ describe('SidebarAccordionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidebarAccordionComponent, RefreshToolOrganizationComponent, ExpandPanelPipe, SelectTabPipe ],
+      declarations: [SidebarAccordionComponent, RefreshToolOrganizationComponent, ExpandPanelPipe, SelectTabPipe],
       imports: [
         MatTabsModule,
         MatToolbarModule,
@@ -35,13 +33,13 @@ describe('SidebarAccordionComponent', () => {
         MatExpansionModule,
         MatListModule,
         MatTooltipModule,
-        RouterTestingModule],
+        RouterTestingModule
+      ],
       providers: [
         { provide: RegisterToolService, useClass: RegisterToolStubService },
         { provide: ContainerService, useClass: ContainerStubService }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -18,15 +18,19 @@ import { UserQuery } from './shared/user/user.query';
   name: 'githubNameToId'
 })
 export class GithubNameToIdPipe implements PipeTransform {
-  constructor(private tokenQuery: TokenQuery, private httpBackend: HttpBackend, private userQuery: UserQuery,
-    private sessionQuery: SessionQuery) {}
+  constructor(
+    private tokenQuery: TokenQuery,
+    private httpBackend: HttpBackend,
+    private userQuery: UserQuery,
+    private sessionQuery: SessionQuery
+  ) {}
   transform(userNameOrOrganizationName: string): Observable<string> {
     const username = this.userQuery.getSnapshot().user.name;
     if (userNameOrOrganizationName === username) {
       return this.getIdFromUsername(username);
     }
     return this.tokenQuery.gitHubOrganizations$.pipe(
-      map((organizationsResponse: Array<{login: string, id: number}>) => {
+      map((organizationsResponse: Array<{ login: string; id: number }>) => {
         if (!organizationsResponse) {
           return null;
         }

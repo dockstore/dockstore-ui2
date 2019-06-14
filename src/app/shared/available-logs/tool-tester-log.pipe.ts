@@ -5,10 +5,7 @@ import { Dockstore } from '../dockstore.model';
   name: 'toolTesterLog'
 })
 export class ToolTesterLogPipe implements PipeTransform {
-
-  constructor(private router: Router) {
-
-  }
+  constructor(private router: Router) {}
 
   /**
    * This creates the ToolTester log URL
@@ -30,9 +27,8 @@ export class ToolTesterLogPipe implements PipeTransform {
         runner: runner,
         log_type: 'FULL',
         filename: filename
-      },
+      }
     });
     return Dockstore.API_URI + urlTree.toString();
   }
-
 }

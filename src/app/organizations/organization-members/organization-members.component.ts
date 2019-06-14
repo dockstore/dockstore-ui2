@@ -29,10 +29,9 @@ import { UpsertOrganizationMemberComponent } from '../upsert-organization-member
 
 @Component({
   selector: 'organization-member-remove-dialog',
-  templateUrl: 'delete-username-confirm-dialog.html',
+  templateUrl: 'delete-username-confirm-dialog.html'
 })
 export class OrganizationMemberRemoveConfirmDialogComponent {
-
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 }
 
@@ -51,10 +50,14 @@ export class OrganizationMembersComponent implements OnInit {
   canEdit$: Observable<boolean>;
   canEditMembership$: Observable<boolean>;
   userId$: Observable<number>;
-  constructor(private organizationMembersQuery: OrganizationMembersQuery, private organizationQuery: OrganizationQuery,
-    private organizationMembersService: OrganizationMembersService, private matDialog: MatDialog, private userQuery: UserQuery,
+  constructor(
+    private organizationMembersQuery: OrganizationMembersQuery,
+    private organizationQuery: OrganizationQuery,
+    private organizationMembersService: OrganizationMembersService,
+    private matDialog: MatDialog,
+    private userQuery: UserQuery,
     private alertService: AlertService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.userId$ = this.userQuery.userId$;
@@ -84,8 +87,10 @@ export class OrganizationMembersComponent implements OnInit {
    */
   editUser(organizationUser: OrganizationUser) {
     this.alertService.clearEverything();
-    this.matDialog.open(UpsertOrganizationMemberComponent,
-      { data: { mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role }, width: '600px' });
+    this.matDialog.open(UpsertOrganizationMemberComponent, {
+      data: { mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role },
+      width: '600px'
+    });
   }
 
   /**
@@ -95,8 +100,10 @@ export class OrganizationMembersComponent implements OnInit {
    */
   addUser() {
     this.alertService.clearEverything();
-    this.matDialog.open(UpsertOrganizationMemberComponent,
-      { data: { mode: TagEditorMode.Add, username: null, role: null }, width: '600px' });
+    this.matDialog.open(UpsertOrganizationMemberComponent, {
+      data: { mode: TagEditorMode.Add, username: null, role: null },
+      width: '600px'
+    });
   }
 
   /**
@@ -106,8 +113,10 @@ export class OrganizationMembersComponent implements OnInit {
    * @memberof OrganizationMembersComponent
    */
   removeUserDialog(organizationUser: OrganizationUser) {
-    const dialogRef = this.matDialog.open(OrganizationMemberRemoveConfirmDialogComponent,
-      { data: { role: organizationUser }, width: '600px' });
+    const dialogRef = this.matDialog.open(OrganizationMemberRemoveConfirmDialogComponent, {
+      data: { role: organizationUser },
+      width: '600px'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

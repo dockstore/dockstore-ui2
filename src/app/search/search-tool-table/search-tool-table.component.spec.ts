@@ -10,7 +10,7 @@ import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { DockstoreStubService, ListContainersStubService, SearchStubService } from '../../test/service-stubs';
 import { SearchToolTableComponent } from './search-tool-table.component';
 import { SearchService } from '../state/search.service';
-import {RouterTestingModule} from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SearchToolTableComponent', () => {
   let component: SearchToolTableComponent;
@@ -21,11 +21,13 @@ describe('SearchToolTableComponent', () => {
       declarations: [SearchToolTableComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
-      providers: [{ provide: DockstoreService, useClass: DockstoreStubService }, DateService,
-      { provide: ListContainersService, useClass: ListContainersStubService },
-      { provide: SearchService, useClass: SearchStubService }]
-    })
-      .compileComponents();
+      providers: [
+        { provide: DockstoreService, useClass: DockstoreStubService },
+        DateService,
+        { provide: ListContainersService, useClass: ListContainersStubService },
+        { provide: SearchService, useClass: SearchStubService }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

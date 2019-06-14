@@ -6,18 +6,10 @@ import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { ExpandPanelPipe } from '../entry/expand-panel.pipe';
 import { SelectTabPipe } from '../entry/select-tab.pipe';
 
-const DECLARATIONS: any[] = [
-  ExpandPanelPipe,
-  MapFriendlyValuesPipe,
-  SelectTabPipe,
-  TimeAgoMsgPipe,
-  GithubNameToIdPipe
-];
+const DECLARATIONS: any[] = [ExpandPanelPipe, MapFriendlyValuesPipe, SelectTabPipe, TimeAgoMsgPipe, GithubNameToIdPipe];
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   declarations: DECLARATIONS,
-  exports: DECLARATIONS,
+  exports: DECLARATIONS
 })
-export class PipeModule { }
+export class PipeModule {}

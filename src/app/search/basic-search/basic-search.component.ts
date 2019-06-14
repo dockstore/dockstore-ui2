@@ -14,9 +14,11 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./basic-search.component.scss']
 })
 export class BasicSearchComponent extends Base implements OnInit {
-
-  constructor(private advancedSearchService: AdvancedSearchService, private searchService: SearchService,
-    private searchQuery: SearchQuery) {
+  constructor(
+    private advancedSearchService: AdvancedSearchService,
+    private searchService: SearchService,
+    private searchQuery: SearchQuery
+  ) {
     super();
   }
   public searchFormControl = new FormControl();
@@ -34,13 +36,15 @@ export class BasicSearchComponent extends Base implements OnInit {
     this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;
     this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
 
-    this.searchFormControl.valueChanges.pipe(
-      debounceTime(formInputDebounceTime),
-      distinctUntilChanged(),
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe(searchText => {
-      this.searchService.setSearchText(searchText);
-    });
+    this.searchFormControl.valueChanges
+      .pipe(
+        debounceTime(formInputDebounceTime),
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(searchText => {
+        this.searchService.setSearchText(searchText);
+      });
   }
 
   /**

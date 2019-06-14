@@ -27,9 +27,11 @@ export class DescriptorsService {
   }
 
   trsUrl(workflowPath: string, version: string) {
-    return `${Dockstore.API_URI}${ga4ghPath}/tools/`
-      + encodeURIComponent(`${ga4ghWorkflowIdPrefix + workflowPath}`)
-      + '/versions/'
-      + encodeURIComponent(`${version}`);
+    return (
+      `${Dockstore.API_URI}${ga4ghPath}/tools/` +
+      encodeURIComponent(`${ga4ghWorkflowIdPrefix + workflowPath}`) +
+      '/versions/' +
+      encodeURIComponent(`${version}`)
+    );
   }
 }

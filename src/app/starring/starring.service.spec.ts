@@ -25,10 +25,11 @@ import { StarringService } from './starring.service';
 describe('StarringService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StarringService,
-        {provide: ContainersService, useClass: ContainersStubService},
-        {provide: WorkflowsService, useClass: WorkflowsStubService},
-        {provide: UsersService, useClass: UsersStubService}
+      providers: [
+        StarringService,
+        { provide: ContainersService, useClass: ContainersStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: UsersService, useClass: UsersStubService }
       ]
     });
   });

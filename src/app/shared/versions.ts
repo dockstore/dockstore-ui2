@@ -26,8 +26,7 @@ import { SessionQuery } from './session/session.query';
 import { Tooltip } from './tooltip';
 
 export abstract class Versions extends EntryTab {
-
-  @Input() versions: Array<(Tag | WorkflowVersion)>;
+  @Input() versions: Array<Tag | WorkflowVersion>;
   @Input() verifiedSource: Array<any>;
   sortColumn: string;
   sortReverse: boolean;
@@ -38,8 +37,7 @@ export abstract class Versions extends EntryTab {
 
   abstract setNoOrderCols(): Array<number>;
 
-  constructor(protected dockstoreService: DockstoreService,
-    private dateService: DateService, protected sessionQuery: SessionQuery) {
+  constructor(protected dockstoreService: DockstoreService, private dateService: DateService, protected sessionQuery: SessionQuery) {
     // By default, sort by last_modified, latest first
     super();
     this.sortColumn = 'last_modified';
@@ -48,7 +46,7 @@ export abstract class Versions extends EntryTab {
 
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.publicPage = publicPage));
   }
 
   getDefaultTooltip(publicPage: boolean): string {

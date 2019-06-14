@@ -13,9 +13,21 @@ import { RefreshWorkflowOrganizationComponent } from '../workflow/refresh-workfl
 import { RegisterWorkflowModalComponent } from '../workflow/register-workflow-modal/register-workflow-modal.component';
 
 const DECLARATIONS: any[] = [
-  MyWorkflowComponent, RefreshWorkflowOrganizationComponent, RegisterWorkflowModalComponent, SidebarAccordionComponent];
-const IMPORTS = [FormsModule, WorkflowModule,
-  HeaderModule, CustomMaterialModule, RefreshAlertModule, PipeModule, CommonModule, RouterModule];
+  MyWorkflowComponent,
+  RefreshWorkflowOrganizationComponent,
+  RegisterWorkflowModalComponent,
+  SidebarAccordionComponent
+];
+const IMPORTS = [
+  FormsModule,
+  WorkflowModule,
+  HeaderModule,
+  CustomMaterialModule,
+  RefreshAlertModule,
+  PipeModule,
+  CommonModule,
+  RouterModule
+];
 
 /**
  * This is a shared module between the My Workflows page and the My Services page.
@@ -29,4 +41,4 @@ const IMPORTS = [FormsModule, WorkflowModule,
   imports: IMPORTS,
   exports: DECLARATIONS.concat(IMPORTS)
 })
-export class SharedWorkflowServicesModule { }
+export class SharedWorkflowServicesModule {}

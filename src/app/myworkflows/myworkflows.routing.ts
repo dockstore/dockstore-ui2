@@ -19,7 +19,9 @@ import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 
 const routes: Routes = [
   {
-    path: '**', component: MyWorkflowComponent, data: { title: 'Dockstore | My Workflows', entryType: EntryType.BioWorkflow }
+    path: '**',
+    component: MyWorkflowComponent,
+    data: { title: 'Dockstore | My Workflows', entryType: EntryType.BioWorkflow }
   }
 ];
 export const myworkflowRouting = RouterModule.forChild(routes);

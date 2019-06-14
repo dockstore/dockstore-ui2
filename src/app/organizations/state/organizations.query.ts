@@ -13,7 +13,8 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
   filteredOrganizations$: Observable<Array<Organization>> = combineLatest(this.organizations$, this.searchName$).pipe(
     map(([organizations, searchName]: [Array<Organization>, string]) => {
       return this.filterOrganizations(organizations, searchName);
-    }));
+    })
+  );
 
   // loading$ is currently not being used because the alertQuery global loading is used instead
   // loading$: Observable<boolean> = this.loading$;
@@ -34,8 +35,11 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
   filterOrganizations(organizations: Array<Organization>, searchName: string): Array<Organization> | null {
     searchName = searchName.toLowerCase();
     if (organizations) {
-      return searchName ? organizations.filter(organization => organization.name.toLowerCase().includes(searchName)
-      || organization.topic.toLowerCase().includes(searchName)) : organizations;
+      return searchName
+        ? organizations.filter(
+            organization => organization.name.toLowerCase().includes(searchName) || organization.topic.toLowerCase().includes(searchName)
+          )
+        : organizations;
     }
     return null;
   }

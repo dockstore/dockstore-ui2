@@ -8,10 +8,7 @@ import { AvailableLogsStore } from './available-logs.store';
 
 @Injectable({ providedIn: 'root' })
 export class AvailableLogsService {
-
-  constructor(private availableLogsStore: AvailableLogsStore,
-    private toolTesterService: ToolTesterService) {
-  }
+  constructor(private availableLogsStore: AvailableLogsStore, private toolTesterService: ToolTesterService) {}
 
   /**
    * Gets the ToolTester logs from the webservice
@@ -24,19 +21,24 @@ export class AvailableLogsService {
     if (toolId && toolVersionName) {
       this.availableLogsStore.setLoading(true);
       this.removeAll();
-      this.toolTesterService.search(toolId, toolVersionName).pipe(
-        finalize(() => this.availableLogsStore.setLoading(false))).subscribe((entities: ToolTesterLog[]) => {
-          // Need to set a unique ID for each entity
-          let id = 0;
-          entities.forEach((entity: ToolTesterLog) => {
-            this.availableLogsStore.createOrReplace(id, entity);
-            id = id + 1;
-          });
-          this.availableLogsStore.setLoading(false);
-        }, (error: HttpErrorResponse) => {
-          // Silently fail (simply no logs will be displayed, Dockstore logging will know it has failed)
-          console.error(error);
-        });
+      this.toolTesterService
+        .search(toolId, toolVersionName)
+        .pipe(finalize(() => this.availableLogsStore.setLoading(false)))
+        .subscribe(
+          (entities: ToolTesterLog[]) => {
+            // Need to set a unique ID for each entity
+            let id = 0;
+            entities.forEach((entity: ToolTesterLog) => {
+              this.availableLogsStore.createOrReplace(id, entity);
+              id = id + 1;
+            });
+            this.availableLogsStore.setLoading(false);
+          },
+          (error: HttpErrorResponse) => {
+            // Silently fail (simply no logs will be displayed, Dockstore logging will know it has failed)
+            console.error(error);
+          }
+        );
     } else {
       this.availableLogsStore.setLoading(false);
       console.error('Tool ID or ToolVersion name is null');
