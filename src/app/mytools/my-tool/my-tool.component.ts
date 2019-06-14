@@ -87,17 +87,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   ngOnInit() {
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(() => {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
         if (this.groupEntriesObject) {
-          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
+          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
+            this.groupEntriesObject);
           this.selectEntry(foundTool);
         }
-      });
+    });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
         const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
@@ -116,15 +112,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
       if (user) {
         this.user = user;
         this.alertService.start('Fetching tools');
-        this.usersService.userContainers(user.id).subscribe(
-          tools => {
-            this.containerService.setTools(tools);
-            this.alertService.detailedSuccess();
-          },
-          (error: HttpErrorResponse) => {
-            this.alertService.detailedError(error);
-          }
-        );
+        this.usersService.userContainers(user.id).subscribe(tools => {
+          this.containerService.setTools(tools);
+          this.alertService.detailedSuccess();
+        }, (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        });
       }
     });
 
@@ -196,13 +189,10 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   selectEntry(tool: ExtendedDockstoreTool): void {
     if (tool !== null) {
-      this.containersService
-        .getContainer(tool.id, includesValidation)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(result => {
-          this.location.go(this.pageName + '/' + result.tool_path);
-          this.containerService.setTool(result);
-        });
+      this.containersService.getContainer(tool.id, includesValidation).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
+        this.location.go(this.pageName + '/' + result.tool_path);
+        this.containerService.setTool(result);
+      });
     }
   }
 
