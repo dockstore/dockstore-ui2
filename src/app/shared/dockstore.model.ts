@@ -33,7 +33,7 @@ export class Dockstore {
   static DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
   static TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
 
-  static GITHUB_CLIENT_ID = 'fill_this_in';
+  static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
 
   static GITHUB_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.GITHUB;
@@ -42,19 +42,24 @@ export class Dockstore {
   static QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
   static QUAYIO_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.QUAY;
   static QUAYIO_SCOPE = 'repo:read,user:read';
-  static QUAYIO_CLIENT_ID = 'fill_this_in';
+  static QUAYIO_CLIENT_ID = 'will be filled in by configuration.service';
 
   static BITBUCKET_AUTH_URL = 'https://bitbucket.org/site/oauth2/authorize';
-  static BITBUCKET_CLIENT_ID = 'fill_this_in';
+  static BITBUCKET_CLIENT_ID = 'will be filled in by configuration.service';
 
   static GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
-  static GITLAB_CLIENT_ID = 'fill_this_in';
+  static GITLAB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITLAB_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.GITLAB;
   // getting ready for gitlab scopes, this seems to request a token with the correct scope but it doesn't work to retrieve membership
   // static GITLAB_SCOPE = 'read_user openid';
   static GITLAB_SCOPE = 'api';
 
-  static GOOGLE_CLIENT_ID = 'fill_this_in';
+  static ZENODO_AUTH_URL = 'https://zenodo.org/oauth/authorize';
+  static ZENODO_CLIENT_ID = 'will be filled in by configuration.service';
+  static ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.ZENODO;
+  static ZENODO_SCOPE = 'deposit:write deposit:actions';
+
+  static GOOGLE_CLIENT_ID = 'will be filled in by configuration.service';
   static GOOGLE_SCOPE = 'profile email';
   static GOOGLE_TAG_MANAGER_ID = 'filled in by configuration service';
 

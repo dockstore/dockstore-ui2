@@ -74,6 +74,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: '',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
       show: false
+    },
+    {
+      name: 'Zenodo',
+      source: TokenSource.ZENODO,
+      bold: '',
+      message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
+      show: false
     }
   ];
 

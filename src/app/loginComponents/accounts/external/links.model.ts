@@ -25,4 +25,11 @@ export class Links {
                             &response_type=code`.replace(/\s/g, '') +
                             `&scope=${ Dockstore.GITLAB_SCOPE }`
 
+  static readonly ZENODO = () => `${ Dockstore.ZENODO_AUTH_URL }
+                            ?client_id=${ Dockstore.ZENODO_CLIENT_ID }
+                            &redirect_uri=${ Dockstore.ZENODO_REDIRECT_URI }
+                            &response_type=code`.replace(/\s/g, '') +
+                            `&scope=${ Dockstore.ZENODO_SCOPE }`
+
+
 }

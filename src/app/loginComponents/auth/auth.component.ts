@@ -42,6 +42,9 @@ export class AuthComponent extends Base implements OnInit {
     const addGitLabToken = queryObservable.pipe(
       mergeMap(query => this.tokenService.registerToken(query['code'], Provider.GITLAB)));
 
+    const addZenodoToken = queryObservable.pipe(
+      mergeMap(query => this.tokenService.registerToken(query['code'], Provider.ZENODO)));
+
     const addBitbucketToken = queryObservable.pipe(mergeMap(query =>
       this.tokenService.registerToken(query['code'], Provider.BITBUCKET)));
 
@@ -58,6 +61,8 @@ export class AuthComponent extends Base implements OnInit {
             return addBitbucketToken;
           case Provider.GITLAB:
             return addGitLabToken;
+          case Provider.ZENODO:
+            return addZenodoToken;
           default: {
             console.log('Unknown provider: ' + provider);
             return observableOf(null);

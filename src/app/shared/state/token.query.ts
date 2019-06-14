@@ -36,7 +36,8 @@ export class TokenQuery extends QueryEntity<TokenState, Token> {
       github: false,
       bitbucket: false,
       quayio: false,
-      gitlab: false
+      gitlab: false,
+      zenodo: false
     };
     if (tokens) {
       tokens.forEach(token => {
@@ -55,6 +56,9 @@ export class TokenQuery extends QueryEntity<TokenState, Token> {
             break;
           case TokenSource.GITLAB:
             tokenStatusSet.gitlab = true;
+            break;
+          case TokenSource.ZENODO:
+            tokenStatusSet.zenodo = true;
             break;
         }
       });
