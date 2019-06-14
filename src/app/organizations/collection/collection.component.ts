@@ -3,14 +3,15 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection, Organization } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
+// tslint:disable-next-line: max-line-length
+import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
-import { UserQuery } from '../../shared/user/user.query';
-import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
 
 @Component({
   selector: 'collection-entry-confirm-remove',

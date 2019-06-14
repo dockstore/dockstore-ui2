@@ -68,33 +68,33 @@ export const validationMessages = {
     required: 'This field cannot be empty.',
     minlength: 'Descriptor Path is too short. (Min. 3 characters.)',
     maxlength: 'Descriptor Path is too long. (Max 256 characters.)',
-    pattern: "Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.cwl', '*.yml', or '*.yaml'."
+    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.cwl', '*.yml', or '*.yaml'.`
   },
   wdlPath: {
     required: 'This field cannot be empty.',
     minlength: 'Descriptor Path is too short. (Min. 3 characters.)',
     maxlength: 'Descriptor Path is too long. (Max 256 characters.)',
-    pattern: "Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.wdl'."
+    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.wdl'.`
   },
   dockerfilePath: {
     required: 'This field cannot be empty.',
     minlength: 'Dockerfile Path is too short. (Min. 3 characters.)',
     maxlength: 'Dockerfile Path is too long. (Max 256 characters.)',
     pattern:
-      "Must begin with '/' and end with 'Dockerfile'. " +
-      "Optionally you can use a string as a prefix or a suffix to 'Dockerfile', as long as they are separated by a '.'."
+      `Must begin with '/' and end with 'Dockerfile'. ` +
+      `Optionally you can use a string as a prefix or a suffix to 'Dockerfile', as long as they are separated by a '.'.`
   },
   gitPath: {
     required: 'This field cannot be empty.',
     minlength: 'Source Code Repository Path is too short. (Min. 3 characters.)',
     maxlength: 'Source Code Repository Path is too long. (Max 128 characters.)',
-    pattern: "The namespace and name of the Git repository, separated by a '/'. "
+    pattern: `The namespace and name of the Git repository, separated by a '/'. `
   },
   imagePath: {
     required: 'This field cannot be empty.',
     minlength: 'Image Path is too short. (Min. 3 characters.)',
     maxlength: 'Image Path is too long. (Max 128 characters.)',
-    pattern: "The namespace and name of the image repository, separated by a '/'. " + "Use '_' for an empty namespace."
+    pattern: `The namespace and name of the image repository, separated by a '/'. ` + `Use '_' for an empty namespace.`
   },
   label: {
     maxlength: 'Labels string is too long. (Max 512 characters.)',
@@ -104,19 +104,19 @@ export const validationMessages = {
     required: 'This field cannot be empty.',
     minlength: 'Test parameter file path is too short. (Min. 3 characters.)',
     maxlength: 'Test parameter file path is too long. (Max 256 characters.)',
-    pattern: "Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'."
+    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`
   },
   wdlTestParameterFilePath: {
     required: 'This field cannot be empty.',
     minlength: 'Test parameter file path is too short. (Min. 3 characters.)',
     maxlength: 'Test parameter file path is too long. (Max 256 characters.)',
-    pattern: "Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'."
+    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`
   },
   testParameterFilePath: {
     required: 'This field cannot be empty.',
     minlength: 'Test parameter file path is too short. (Min. 3 characters.)',
     maxlength: 'Test parameter file path is too long. (Max 256 characters.)',
-    pattern: "Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'."
+    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`
   },
   toolName: {
     maxlength: 'Tool Name is too long. (Max 256 characters.)',
@@ -129,7 +129,7 @@ export const validationMessages = {
     required: 'This field cannot be empty.',
     minlength: 'Git reference is too short. (Min. 3 characters.)',
     maxlength: 'Git reference is too long. (Max 128 characters.)',
-    pattern: "May only consist of alphanumeric characters, '-' and '_', with interior '/' and '.' separators."
+    pattern: `May only consist of alphanumeric characters, '-' and '_', with interior '/' and '.' separators.`
   },
   versionTag: {
     required: 'This field cannot be empty.',
@@ -140,7 +140,7 @@ export const validationMessages = {
     required: 'This field cannot be empty.',
     minlength: 'Workflow Path is too short. (Min. 3 characters.)',
     maxlength: 'Workflow Path is too long. (Max 256 characters.)',
-    pattern: "Must begin with '/' and end with '*.cwl', '*.yml', '*.yaml', '*.config', or'*.wdl' " + 'depending on the descriptor type.'
+    pattern: `Must begin with '/' and end with '*.cwl', '*.yml', '*.yaml', '*.config', or'*.wdl' ` + 'depending on the descriptor type.'
   },
   repository: {
     maxlength: 'Repository Name is too long. (Max 256 characters.)',

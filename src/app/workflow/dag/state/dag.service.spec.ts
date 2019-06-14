@@ -14,15 +14,13 @@
  *    limitations under the License.
  */
 
+import { Renderer2 } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs';
-
 import { WorkflowsService } from '../../../shared/swagger/api/workflows.service';
 import { WorkflowsStubService } from '../../../test/service-stubs';
+import { DagQuery } from './dag.query';
 import { DagService } from './dag.service';
 import { DagStore } from './dag.store';
-import { Renderer2 } from '@angular/core';
-import { DagQuery } from './dag.query';
 
 /* tslint:disable:no-unused-variable */
 
@@ -36,7 +34,7 @@ describe('Service: Dag', () => {
   it('should ...', inject([DagService], (service: DagService) => {
     expect(service).toBeTruthy();
   }));
-  it("should check if it's n/a", inject([DagService], (service: DagService) => {
+  it(`should check if it's n/a`, inject([DagService], (service: DagService) => {
     expect(service.isNA('n/a')).toBeTruthy();
     expect(service.isNA('asdf')).toBeFalsy();
   }));

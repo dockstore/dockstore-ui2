@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 
-import { Tag, WorkflowVersion } from './swagger';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 
@@ -28,7 +27,7 @@ export class ProviderService {
     return tool;
   }
 
-  // TODO: Without an anchor, this looks fragile (for example if you had a github repo that included the string " bitbucket.org" in its name.
+  // TODO: Without an anchor, this looks fragile (github repo that included the string " bitbucket.org" in its name)
   private getProvider(gitUrl: string): string {
     if (gitUrl.startsWith('git@github.com')) {
       return 'GitHub';

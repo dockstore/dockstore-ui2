@@ -16,15 +16,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
-
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
+// tslint:disable-next-line: max-line-length
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
-import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
   selector: 'organization',

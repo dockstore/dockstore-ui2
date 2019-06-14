@@ -160,8 +160,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             );
             this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
-            // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh), the url needs to be
-            // used to set the workflow onInit. Otherwise, the select-tab.pipe results in really strange behaviour. Not entirely sure why.
+            // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),
+            // the url needs to be used to set the workflow onInit.
+            // Otherwise, the select - tab.pipe results in really strange behaviour. Not entirely sure why.
             this.workflowService.setWorkflow(
               this.findEntryFromPath(
                 this.urlResolverService.getEntryPathFromUrl(),
