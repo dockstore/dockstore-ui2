@@ -21,6 +21,7 @@ import { StarentryService } from '../shared/starentry.service';
 import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
 import { altAvatarImg } from '../shared/constants';
+import { StarEntry } from 'app/starring/StarEntry';
 
 @Component({
   selector: 'app-stargazers',
@@ -40,7 +41,7 @@ export class StargazersComponent extends Base implements OnInit {
 
   ngOnInit() {
     this.starentryService.starEntry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      entry => {
+      (entry: StarEntry) => {
         if (entry && entry.theEntry) {
           this.starringService.getStarring(entry.theEntry.id, entry.theEntryType).subscribe(
             starring => {

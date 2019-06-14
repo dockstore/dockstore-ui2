@@ -1,4 +1,4 @@
-/**
+/*
  *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,17 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { SearchWorkflowsComponent } from 'app/workflows/search/search.component';
+import { WorkflowsComponent } from 'app/workflows/workflows.component';
+import { WorkflowModule } from './workflow.module';
+import { ListWorkflowsModule } from './list-workflows.module';
 
-@Component({
-  selector: 'app-myworkflows',
-  templateUrl: './myworkflows.component.html',
-  styleUrls: ['./myworkflows.component.css']
+@NgModule({
+  declarations: [WorkflowsComponent, SearchWorkflowsComponent],
+  imports: [WorkflowModule, ListWorkflowsModule],
+  exports: [WorkflowsComponent, WorkflowModule, ListWorkflowsModule]
 })
-export class MyWorkflowsComponent implements OnInit {
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-}
+export class WorkflowsPageModule {}

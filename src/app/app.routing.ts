@@ -1,4 +1,3 @@
-import { MaintenanceComponent } from './maintenance/maintenance.component';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,23 +13,22 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
 import { RouterModule, Routes } from '@angular/router';
-
-import { AuthGuard } from './shared/auth.guard';
-
+import { FundingComponent } from './funding/funding.component';
+import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
-import { SearchComponent } from './search/search.component';
-import { StarredEntriesComponent } from './starredentries/starredentries.component';
+import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
-import { FundingComponent } from './funding/funding.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { SearchComponent } from './search/search.component';
+import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
+import { StarredEntriesComponent } from './starredentries/starredentries.component';
 
-export const CLIENT_ROUTER_PROVIDERS = [ AuthGuard ];
+export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
 const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full', data: { title: 'Dockstore'} },
@@ -39,12 +37,24 @@ const APP_ROUTES: Routes = [
   { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools'} },
   { path: 'tools', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools'} },
   { path: 'workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows'} },
+  {
+    path: 'services',
+    loadChildren: 'app/workflows/services/services.module#ServicesModule',
+    data: { title: 'Dockstore | Services' }
+  },
   { path: 'search-workflows', loadChildren: 'app/workflows/workflows.module#WorkflowsModule', data: { title: 'Dockstore | Workflows'} },
   { path: 'organizations', loadChildren: 'app/organizations/organizations.module#OrganizationsModule'},
   { path: 'my-tools', loadChildren: 'app/mytools/mytools.module#MyToolsModule', canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Tools'}},
   { path: 'my-workflows', loadChildren: 'app/myworkflows/myworkflows.module#MyWorkflowsModule', canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Workflows'}},
+  {
+    path: 'my-services',
+    loadChildren: 'app/my-services/my-services.module#MyServicesModule',
+    canActivate: [AuthGuard],
+    data: { title: 'Dockstore | My Services' }
+  },
+  { path: 'githubCallback', component: GithubCallbackComponent },
   { path: 'aliases', loadChildren: 'app/aliases/aliases.module#AliasesModule', data: { title: 'Dockstore | Aliases' } },
   { path: 'search*', component: SearchComponent, data: { title: 'Dockstore | Search'} },
   { path: 'login', component: LoginComponent, data: { title: 'Dockstore | Login'} },

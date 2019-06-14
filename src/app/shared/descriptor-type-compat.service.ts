@@ -22,7 +22,8 @@ export enum WebserviceDescriptorTypeEnum {
   WDL = 'wdl',
   // DOCKSTORE-2428 - demo how to add new workflow language
   // SWL = 'swl',
-  NFL = 'nfl'
+  NFL = 'nfl',
+  SERVICE = 'service'
 }
 
 /**
@@ -35,8 +36,7 @@ export enum WebserviceDescriptorTypeEnum {
   providedIn: 'root'
 })
 export class DescriptorTypeCompatService {
-
-constructor() { }
+  constructor() {}
 
   /**
    * Checks if the descriptor type string is valid
@@ -79,6 +79,9 @@ constructor() { }
         console.log('Unneeded conversion');
         return ToolDescriptor.TypeEnum.NFL;
       }
+      case WebserviceDescriptorTypeEnum.SERVICE: {
+        return ToolDescriptor.TypeEnum.SERVICE;
+      }
 
       // DOCKSTORE-2428 - demo how to add new workflow language
       // case WebserviceDescriptorTypeEnum.SWL: {
@@ -95,4 +98,24 @@ constructor() { }
     }
   }
 
+  /**
+   * Converts the ToolDescriptor.TypeEnum to the plain text type
+   *
+   * @param {ToolDescriptor.TypeEnum} typeEnum  The ToolDescriptor.TypeEnum to convert
+   * @returns {string}  Plain type that the TRS accepts
+   * @memberof DescriptorTypeCompatService
+   */
+  public toolDescriptorTypeEnumToPlainTRS(typeEnum: ToolDescriptor.TypeEnum): string {
+    switch (typeEnum) {
+      case ToolDescriptor.TypeEnum.WDL:
+        return 'PLAIN-WDL';
+      case ToolDescriptor.TypeEnum.CWL:
+        return 'PLAIN-CWL';
+      case ToolDescriptor.TypeEnum.NFL:
+        return 'PLAIN-NFL';
+      default:
+        console.error('Unhandled descriptor type: ' + typeEnum);
+        return null;
+    }
+  }
 }

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-
+import { EntryType } from '../enum/entry-type';
 import { SessionStore } from './session.store';
 
 @Injectable({
@@ -29,6 +29,15 @@ export class SessionService {
       return {
         ...state,
         isPublic: isPublic
+      };
+    });
+  }
+
+  setEntryType(entryType: EntryType): void {
+    this.sessionStore.setState(state => {
+      return {
+        ...state,
+        entryType: entryType
       };
     });
   }

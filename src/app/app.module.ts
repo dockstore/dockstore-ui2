@@ -37,6 +37,7 @@ import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
+import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
@@ -138,7 +139,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     BannerComponent,
     ChangeUsernameComponent,
     YoutubeComponent,
-    SitemapComponent
+    SitemapComponent,
+    GithubCallbackComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

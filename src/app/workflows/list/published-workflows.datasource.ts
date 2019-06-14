@@ -16,12 +16,13 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../../shared/provider.service';
 import { Workflow, WorkflowsService } from '../../shared/swagger';
+
 
 @Injectable()
 export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow> {
@@ -43,13 +44,14 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
    * @param {string} sortCol  The column to sort by ("stars")
    * @memberof PublishedWorkflowsDataSource
    */
-  loadEntries(filter: string,
+  loadEntries(entryType: EntryType, filter: string,
     sortDirection: 'asc' | 'desc',
     pageIndex: number,
     pageSize: number,
     sortCol: string) {
     this.loadingSubject$.next(true);
-    this.workflowsService.allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, false, 'response').pipe(
+    const isService = entryType === EntryType.Service;
+    this.workflowsService.allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, isService, 'response').pipe(
       catchError(() => of([])),
       finalize(() => this.loadingSubject$.next(false))
     )

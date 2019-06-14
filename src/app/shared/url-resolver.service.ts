@@ -10,6 +10,8 @@ export class UrlResolverService {
         const url = this.router.url;
         let title = this.decodedString(url.replace(`/my-workflows/`, ''));
         title = this.decodedString(title.replace(`/my-tools/`, ''));
+        title = this.decodedString(title.replace(`/my-services/`, ''));
+        title = this.decodedString(title.replace(`/services/`, ''));
         title = this.decodedString(title.replace(`/workflows/`, ''));
         title = this.decodedString(title.replace(`/tools/`, ''));
         title = this.decodedString(title.replace(`/containers/`, ''));

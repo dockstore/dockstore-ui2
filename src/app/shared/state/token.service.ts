@@ -1,21 +1,17 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
-import { map } from 'rxjs/operators';
-
-import { TokensService, UsersService, User } from '../swagger';
-import { Token } from '../swagger/model/token';
-import { UserQuery } from '../user/user.query';
-import { TokenStore } from './token.store';
 import { Observable, throwError } from 'rxjs';
-import { UserState } from '../user/user.store';
 import { Provider } from '../enum/provider.enum';
+import { TokensService, UsersService } from '../swagger';
+import { Token } from '../swagger/model/token';
+import { TokenStore } from './token.store';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
 
   constructor(private tokenStore: TokenStore, private tokensService: TokensService, private usersService: UsersService,
-    private http: HttpClient, private userQuery: UserQuery) {
+    private httpBackend: HttpBackend) {
   }
 
   @transaction()
@@ -65,5 +61,21 @@ export class TokenService {
   }
   deleteToken(tokenId: number) {
     return this.tokensService.deleteToken(tokenId);
+  }
+
+  setGitHubOrganizations(gitHubOrganizations: any) {
+    this.tokenStore.updateRoot({gitHubOrganizations: gitHubOrganizations});
+  }
+
+  getGitHubOrganizations(token: String) {
+    const httpClient = new HttpClient(this.httpBackend);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: 'token ' + token
+      })
+    };
+    const getOrganizationUrl = 'https://api.github.com/user/orgs';
+    httpClient.get(getOrganizationUrl, httpOptions).subscribe(gitHubOrganizations => this.setGitHubOrganizations(gitHubOrganizations));
   }
 }

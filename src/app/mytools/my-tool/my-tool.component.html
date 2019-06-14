@@ -15,7 +15,7 @@
   -->
   <app-header>
     <button mat-icon-button (click)="toggleSidebar()"><mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon></button>
-    <img src="../assets/images/dockstore/dockstore-tools-blue.png"> My Tools
+    <img src="../assets/images/dockstore/dockstore-tools-blue.png"> {{ myEntryPageTitle$ | async | titlecase }}
   </app-header>
 
   <button mat-fab color="accent" id="register_tool_button" class="fab-bottom-right" matTooltip="Register tool" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="(isRefreshing$ | async)"><mat-icon>add</mat-icon></button>

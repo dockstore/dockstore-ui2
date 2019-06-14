@@ -30,14 +30,14 @@ describe('Dockstore Home', () => {
 
   describe('Navigation', () => {
     it('My Tools visible', () => {
-      cy
-        .get('#my-tools-nav-button')
-        .should('visible');
+      cy.get('[data-cy=dropdown-main]').should('be.visible').click();
+      cy.get('[data-cy=my-tools-nav-button]').should('visible');
     });
     it('My Workflows visible', () => {
-      cy
-        .get('#my-workflows-nav-button')
-        .should('visible');
+      cy.get('[data-cy=dropdown-main]')
+        .should('be.visible')
+        .click();
+      cy.get('[data-cy=my-workflows-nav-button]').should('visible');
     });
   });
 

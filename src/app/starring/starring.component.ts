@@ -14,17 +14,18 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
-
+import { AlertService } from '../shared/alert/state/alert.service';
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
+import { isStarredByUser } from '../shared/starring';
 import { User } from '../shared/swagger/model/user';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserQuery } from '../shared/user/user.query';
+import { StarEntry } from './StarEntry';
 import { StarringService } from './starring.service';
-import { AlertService } from '../shared/alert/state/alert.service';
-import { isStarredByUser } from '../shared/starring';
 
 @Component({
   selector: 'app-starring',
@@ -37,7 +38,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
   private user: any;
   private entry: any;
-  private entryType: string;
+  private entryType: EntryType;
   public isLoggedIn: boolean;
   public rate = false;
   public total_stars = 0;
@@ -83,12 +84,13 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
 
   setupTool(tool: any) {
     this.entry = tool;
-    this.entryType = 'containers';
+    this.entryType = EntryType.Tool;
     this.getStarredUsers();
   }
   setupWorkflow(workflow: any) {
     this.entry = workflow;
-    this.entryType = 'workflows';
+    // This may actually be an EntryType.Service, but setting it to EntryType.BioWorkflow anyways
+    this.entryType = EntryType.BioWorkflow;
     this.getStarredUsers();
   }
 
@@ -100,15 +102,14 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   setStarring() {
     this.disableRateButton = true;
     if (this.isLoggedIn) {
-      const type = this.entryType === 'workflows' ? 'workflow' : 'tool';
-
+      let message: string;
       if (this.rate) {
-        const message = 'Unstarring ' + type;
+        message = 'Unstarring ' + this.entryType;
         this.alertService.start(message);
       } else {
-        const message = 'Starring ' + type;
-        this.alertService.start(message);
+        message = 'Starring ' + this.entryType;
       }
+      this.alertService.start(message);
 
       this.setStar().subscribe(
         data => {
@@ -144,7 +145,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
   getStargazers() {
-    const selectedEntry = {
+    const selectedEntry: StarEntry = {
       theEntry: this.entry,
       theEntryType: this.entryType
     };

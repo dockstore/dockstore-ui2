@@ -17,7 +17,10 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { SessionService } from 'app/shared/session/session.service';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -33,7 +36,6 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
-import { SessionQuery } from '../../shared/session/session.query';
 import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
@@ -43,7 +45,6 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
-
 
 @Component({
   selector: 'app-my-tool',
@@ -58,14 +59,30 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   private registerTool: Tool;
   public showSidebar = true;
-  constructor(private mytoolsService: MytoolsService, protected configuration: Configuration, private usersService: UsersService,
-    private userQuery: UserQuery, protected authService: AuthService,
-    private containerService: ContainerService, private dialog: MatDialog, private location: Location,
-    private refreshService: RefreshService, protected accountsService: AccountsService, private alertService: AlertService,
-    private registerToolService: RegisterToolService, protected tokenQuery: TokenQuery, private sessionQuery: SessionQuery,
-    protected urlResolverService: UrlResolverService, private router: Router, private containersService: ContainersService,
-    private toolQuery: ToolQuery, private alertQuery: AlertQuery) {
-    super(accountsService, authService, configuration, tokenQuery, urlResolverService);
+  constructor(
+    private mytoolsService: MytoolsService,
+    protected configuration: Configuration,
+    private usersService: UsersService,
+    private userQuery: UserQuery,
+    protected authService: AuthService,
+    protected activatedRoute: ActivatedRoute,
+    private containerService: ContainerService,
+    private dialog: MatDialog,
+    private location: Location,
+    private refreshService: RefreshService,
+    protected accountsService: AccountsService,
+    private alertService: AlertService,
+    private registerToolService: RegisterToolService,
+    protected tokenQuery: TokenQuery,
+    protected sessionService: SessionService,
+    protected urlResolverService: UrlResolverService,
+    private router: Router,
+    private containersService: ContainersService,
+    private toolQuery: ToolQuery,
+    private alertQuery: AlertQuery,
+    protected sessionQuery: SessionQuery
+  ) {
+    super(accountsService, authService, configuration, tokenQuery, urlResolverService, sessionQuery, sessionService, activatedRoute);
   }
 
   ngOnInit() {
@@ -107,7 +124,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
       if (tools) {
         this.tools = tools;
-        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, 'tool');
+        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, EntryType.Tool);
         this.setGroupEntriesObject(sortedContainers);
         // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
         if (!this.tool) {
@@ -118,7 +135,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       }
     });
 
-    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => this.registerTool = tool);
+    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {

@@ -22,6 +22,8 @@ import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { ToolTabService } from './tool-tab.service';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 
 @Component({
   selector: 'app-tool-tab',
@@ -29,7 +31,7 @@ import { ToolTabService } from './tool-tab.service';
   styleUrls: ['./tool-tab.component.scss']
 })
 export class ToolTabComponent extends EntryTab {
-  workflow: Workflow;
+  workflow: BioWorkflow | Service;
   toolContent: string = null;
   _selectedVersion: WorkflowVersion;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;

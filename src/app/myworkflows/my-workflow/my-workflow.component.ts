@@ -13,17 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
+import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { SessionService } from 'app/shared/session/session.service';
+import { TokenService } from 'app/shared/state/token.service';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 import { AuthService } from 'ng2-ui-auth';
-import { combineLatest, forkJoin, Observable, of as observableOf } from 'rxjs';
-import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { AlertService } from '../../shared/alert/state/alert.service';
-import { includesValidation } from '../../shared/constants';
+import { includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../../shared/constants';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
@@ -33,15 +38,14 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow } from '../../shared/swagger';
-import { UsersService } from '../../shared/swagger/api/users.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { MyBioWorkflowsService } from '../my-bio-workflows.service';
+import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * How the workflow selection works:
@@ -63,29 +67,54 @@ import { HttpErrorResponse } from '@angular/common/http';
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  providers: [MyWorkflowsService, ProviderService,
-    DockstoreService]
+  providers: [MyWorkflowsService, ProviderService, DockstoreService]
 })
-
 export class MyWorkflowComponent extends MyEntry implements OnInit {
-  workflow: Workflow;
+  workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
+  entryType: EntryType;
+  entryType$: Observable<EntryType>;
+  myEntryPageTitle$: Observable<string>;
+  EntryType = EntryType;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
   public isRefreshing$: Observable<boolean>;
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
-  constructor(private myworkflowService: MyWorkflowsService, protected configuration: Configuration,
-    private usersService: UsersService, private userQuery: UserQuery, private alertService: AlertService,
-    private workflowService: WorkflowService, protected authService: AuthService, public dialog: MatDialog,
-    protected accountsService: AccountsService, private refreshService: RefreshService,
-    private router: Router, private location: Location, private registerWorkflowModalService: RegisterWorkflowModalService,
-    protected urlResolverService: UrlResolverService, private workflowsService: WorkflowsService, private matSnackbar: MatSnackBar,
-    protected tokenQuery: TokenQuery, protected workflowQuery: WorkflowQuery, private alertQuery: AlertQuery) {
-    super(accountsService, authService, configuration, tokenQuery, urlResolverService);
+  public gitHubAppInstallationLink$: Observable<string>;
+  constructor(
+    private myworkflowService: MyWorkflowsService,
+    protected configuration: Configuration,
+    protected activatedRoute: ActivatedRoute,
+    private myBioWorkflowsService: MyBioWorkflowsService,
+    private myServicesService: MyServicesService,
+    private userQuery: UserQuery,
+    private workflowService: WorkflowService,
+    protected authService: AuthService,
+    public dialog: MatDialog,
+    protected accountsService: AccountsService,
+    private refreshService: RefreshService,
+    private router: Router,
+    private registerWorkflowModalService: RegisterWorkflowModalService,
+    protected urlResolverService: UrlResolverService,
+    protected tokenQuery: TokenQuery,
+    protected workflowQuery: WorkflowQuery,
+    private alertQuery: AlertQuery,
+    private tokenService: TokenService,
+    protected sessionService: SessionService,
+    protected sessionQuery: SessionQuery
+  ) {
+    super(accountsService, authService, configuration, tokenQuery, urlResolverService, sessionQuery, sessionService, activatedRoute);
+    this.entryType = this.sessionQuery.getSnapshot().entryType;
+    this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
   }
 
   ngOnInit() {
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+    this.tokenQuery.gitHubToken$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
@@ -100,50 +129,29 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
-    this.workflowService.setWorkflow(null);
-    this.workflowService.setWorkflows(null);
-    this.workflowService.setSharedWorkflows(null);
+    this.myworkflowService.clearPartialState();
 
     // Updates selected workflow from service and selects in sidebar
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
-
-    // Retrieve all of the workflows for the user and update the workflow service
-    // TODO: Fix this. What should happen is:
-    // If none of the two calls error, there should be a simple snackBar displayed
-    // If one of the two calls error, there should be a detailed card displayed
-    // If two of the calls error, there should be a weird combined detailed card displayed
-    // Any errors should still return an empty array for that set of workflows
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
-      if (user) {
-        this.user = user;
-        this.alertService.start('Fetching workflows');
-        forkJoin(this.usersService.userWorkflows(user.id).pipe(catchError((error: HttpErrorResponse) => {
-          this.alertService.detailedSnackBarError(error);
-          return observableOf([]);
-        })), this.workflowsService.sharedWorkflows().pipe(catchError((error: HttpErrorResponse) => {
-          this.alertService.detailedSnackBarError(error);
-          return observableOf([]);
-        }))).pipe(finalize(() => this.alertService.simpleSuccess()),
-          takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
-            this.workflowService.setWorkflows(workflows);
-            this.workflowService.setSharedWorkflows(sharedWorkflows);
-          }, error => {
-            console.error('This should be impossible because both errors are caught already');
-          });
-      }
-    });
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
+    this.getMyEntries();
 
     // Using the workflows and shared with me workflows, initialize the organization groupings and set the initial entry
     combineLatest(this.workflowService.workflows$, this.workflowService.sharedWorkflows$)
-      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(([workflows, sharedWorkflows]) => {
-        if (workflows && sharedWorkflows) {
-          this.workflows = workflows;
-          const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, 'workflow');
-          this.setGroupEntriesObject(sortedWorkflows);
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        ([workflows, sharedWorkflows]) => {
+          if (workflows && sharedWorkflows) {
+            this.workflows = workflows;
+            const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, EntryType.BioWorkflow);
+            this.setGroupEntriesObject(sortedWorkflows);
 
-          this.sharedWorkflows = sharedWorkflows;
-          const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(sharedWorkflows, this.user.username, 'workflow');
-          this.setGroupSharedEntriesObject(sortedSharedWorkflows);
+            this.sharedWorkflows = sharedWorkflows;
+            const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(
+              sharedWorkflows,
+              this.user.username,
+              EntryType.BioWorkflow
+            );
+            this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
           // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh), the url needs to be
           // used to set the workflow onInit. Otherwise, the select-tab.pipe results in really strange behaviour. Not entirely sure why.
@@ -161,6 +169,14 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       }, error => {
         console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
       });
+  }
+
+  private getMyEntries() {
+    if (this.entryType === EntryType.BioWorkflow) {
+      this.myworkflowService.getMyEntries();
+    } else {
+      this.myServicesService.getMyEntries();
+    }
   }
 
   /**
@@ -216,11 +232,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   protected findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow {
     let matchingWorkflow: ExtendedWorkflow;
     for (let i = 0; i < orgWorkflows.length; i++) {
-      matchingWorkflow = orgWorkflows[i].published.find((workflow: Workflow) => workflow.full_workflow_path === path);
+      matchingWorkflow = orgWorkflows[i].published.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
       if (matchingWorkflow) {
         return matchingWorkflow;
       }
-      matchingWorkflow = orgWorkflows[i].unpublished.find((workflow: Workflow) => workflow.full_workflow_path === path);
+      matchingWorkflow = orgWorkflows[i].unpublished.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
       if (matchingWorkflow) {
         return matchingWorkflow;
       }
@@ -232,12 +248,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * Grabs the workflow from the webservice and loads it
    * @param workflow Selected workflow
    */
-  selectEntry(workflow: ExtendedWorkflow): void {
+  selectEntry(workflow: ExtendedWorkflow | null): void {
     if (workflow !== null) {
-      this.workflowsService.getWorkflow(workflow.id, includesValidation).pipe(takeUntil(this.ngUnsubscribe)).subscribe((result) => {
-        this.location.go('/my-workflows/' + result.full_workflow_path);
-        this.workflowService.setWorkflow(result);
-      });
+      if (this.entryType === EntryType.BioWorkflow) {
+        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
+      } else {
+        this.myServicesService.selectEntry(workflow.id, includesValidation);
+      }
     }
   }
 
@@ -245,9 +262,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * Triggers a URL change, which will select the appropriate workflow
    * @param workflow Selected workflow
    */
-  goToEntry(workflow: ExtendedWorkflow): void {
+  goToEntry(workflow: ExtendedWorkflow | null): void {
     if (workflow !== null) {
-      this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
+      if (this.entryType === EntryType.BioWorkflow) {
+        this.router.navigateByUrl('/' + myBioWorkflowsURLSegment + '/' + workflow.full_workflow_path);
+      } else {
+        this.router.navigateByUrl('/' + myServicesURLSegment + '/' + workflow.full_workflow_path);
+      }
     }
   }
 
@@ -256,13 +277,12 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    const dialogRef = this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+    this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
   }
 
   refreshAllEntries(): void {
     this.refreshService.refreshAllWorkflows(this.user.id);
   }
-
 }
 export interface OrgWorkflowObject {
   sourceControl: string;

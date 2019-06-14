@@ -16,19 +16,18 @@
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef, MatRadioChange } from '@angular/material';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
-import { SessionQuery } from '../../shared/session/session.query';
-import { ToolDescriptor, ToolVersion, Workflow } from '../../shared/swagger';
+import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
 import {
   exampleDescriptorPatterns,
   formErrors,
   validationDescriptorPatterns,
-  validationMessages,
+  validationMessages
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
@@ -77,9 +76,12 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
-  constructor(private registerWorkflowModalService: RegisterWorkflowModalService, private sessionQuery: SessionQuery,
-    public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>, private alertQuery: AlertQuery) {
-  }
+  constructor(
+    private registerWorkflowModalService: RegisterWorkflowModalService,
+    public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>,
+    private alertQuery: AlertQuery,
+    private descriptorLanguageService: DescriptorLanguageService
+  ) {}
 
   friendlyRepositoryKeys(): Array<string> {
     return this.registerWorkflowModalService.friendlyRepositoryKeys().filter(key => key !== 'Dockstore');
@@ -91,12 +93,16 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
 
   ngOnInit() {
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
-    this.registerWorkflowModalService.workflowRegisterError$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      workflowRegisterError => this.workflowRegisterError = workflowRegisterError);
-    this.registerWorkflowModalService.isModalShown$.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
-    this.descriptorLanguages$ = this.registerWorkflowModalService.descriptorLanguages$;
+    this.registerWorkflowModalService.workflow
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((workflow: Service | BioWorkflow) => (this.workflow = workflow));
+    this.registerWorkflowModalService.workflowRegisterError$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(workflowRegisterError => (this.workflowRegisterError = workflowRegisterError));
+    this.registerWorkflowModalService.isModalShown$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(isModalShown => (this.isModalShown = isModalShown));
+    this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
     this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<DescriptorTypeEnum>) => {
       if (languages && languages.length > 0) {
@@ -144,8 +150,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.registerWorkflowForm = this.currentForm;
     if (this.registerWorkflowForm) {
       this.registerWorkflowForm.valueChanges.pipe(
-        debounceTime(formInputDebounceTime),
-        takeUntil(this.ngUnsubscribe))
+          debounceTime(formInputDebounceTime),
+          takeUntil(this.ngUnsubscribe)
+        )
         .subscribe(data => this.onValueChanged(data));
     }
   }
@@ -208,6 +215,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
       }
       case DescriptorTypeEnum.NFL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
+        break;
+      }
+      case DescriptorTypeEnum.Service: {
+        this.descriptorValidationPattern = validationDescriptorPatterns.testParameterFilePath;
         break;
       }
       default: {

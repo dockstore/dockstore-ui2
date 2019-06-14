@@ -30,10 +30,17 @@ export function getTab(tabName: string): any {
     .should('be.visible');
 }
 
+export function assertNoTab(tabName: string): any {
+  return cy
+    .get('.mat-tab-labels')
+    .should('be.visible')
+    .contains('div', tabName)
+    .should('not.be.visible');
+}
+
 export function resetDB() {
   before(() => {
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -f scripts/resetDb.sql -U dockstore -d webservice_test')
-      .its('stdout').should('contain', 'COMMIT');
+    cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
     cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore')
       .its('stdout').should('contain', 'ALTER TABLE');
     cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml')
@@ -70,7 +77,8 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
     .parent()
     .parent()
     .contains('div .no-wrap', repo)
-    .should('be.visible').click();
+    .should('be.visible')
+    .click();
 }
 
 export function approvePotatoMembership() {

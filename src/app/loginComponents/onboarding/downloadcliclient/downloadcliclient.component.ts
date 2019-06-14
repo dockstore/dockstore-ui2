@@ -2,7 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { finalize } from 'rxjs/operators';
-
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
@@ -78,7 +77,7 @@ source ~/.bashrc
 `;
     this.textData2 = `
 #### Part 2 - Setup Dockstore CLI Config
-1. Create the folder <code>~/.dockstore</code> and create a configuration file \`~/.dockstore/config\`:
+1. Create the folder \`~/.dockstore\` and create a configuration file \`~/.dockstore/config\`:
 \`\`\`
 mkdir -p ~/.dockstore
 printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockstore/config

@@ -13,8 +13,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
-import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
@@ -286,6 +286,8 @@ export class WorkflowStubService {
     workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     sharedWorkflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]);  // This contains the list of unsorted workflows
     copyBtn$ = observableOf({});
+
+    setEntryType(entryType: EntryType) {}
     setWorkflow(thing: Workflow) {
         this.workflow$.next(thing);
     }
@@ -512,7 +514,13 @@ export class CheckerWorkflowStubService {
 }
 
 export class DescriptorLanguageStubService {
-    descriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
+  descriptorLanguages$ = observableOf([
+    ToolDescriptor.TypeEnum.CWL,
+    ToolDescriptor.TypeEnum.WDL,
+    ToolDescriptor.TypeEnum.NFL,
+    ToolDescriptor.TypeEnum.SERVICE
+  ]);
+  filteredDescriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
 }
 
 export class RegisterCheckerWorkflowStubService {
