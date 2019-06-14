@@ -61,7 +61,7 @@ export class RegisterWorkflowModalService {
   }
 
   setIsModalShown(isModalShown: boolean) {
-    this.isModalShown$.next(isModalShown);
+      this.isModalShown$.next(isModalShown);
   }
 
   setWorkflowRegisterError(error: HttpErrorResponse) {
@@ -74,11 +74,11 @@ export class RegisterWorkflowModalService {
         };
       } else {
         errorObj = {
-          message:
-            'The webservice encountered an error trying to create this ' +
+            message: 'The webservice encountered an error trying to create this ' +
             'workflow, please ensure that the workflow attributes are ' +
             'valid.',
-          errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' + error.error
+            errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' +
+            error.error
         };
       }
     }
@@ -86,45 +86,36 @@ export class RegisterWorkflowModalService {
   }
 
   setWorkflow(workflow: Workflow) {
-    this.workflow.next(workflow);
+      this.workflow.next(workflow);
   }
 
   setWorkflowRepository(repository) {
-    this.actualWorkflow.gitUrl = repository;
-    this.setWorkflow(this.actualWorkflow);
+      this.actualWorkflow.gitUrl = repository;
+      this.setWorkflow(this.actualWorkflow);
   }
 
   registerWorkflow(dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
-    this.clearWorkflowRegisterError();
-    this.alertService.start('Registering new workflow');
-    const lowerCaseDescriptorType = this.actualWorkflow.descriptorType.toLowerCase();
-    this.workflowsService
-      .manualRegister(
-        this.actualWorkflow.repository,
-        this.actualWorkflow.gitUrl,
-        this.actualWorkflow.workflow_path,
-        this.actualWorkflow.workflowName,
-        lowerCaseDescriptorType,
-        this.actualWorkflow.defaultTestParameterFilePath
-      )
-      .subscribe(
-        result => {
-          this.workflowsService.refresh(result.id).subscribe(
-            refreshResult => {
-              this.workflows.push(refreshResult);
-              this.workflowService.setWorkflows(this.workflows);
-              this.alertService.detailedSuccess();
-              dialogRef.close();
-              this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
-            },
-            (error: HttpErrorResponse) => this.alertService.detailedError(error)
-          );
-        },
-        (error: HttpErrorResponse) => {
-          this.alertService.detailedError(error);
-          this.setWorkflowRegisterError(error);
-        }
-      );
+      this.clearWorkflowRegisterError();
+      this.alertService.start('Registering new workflow');
+      const lowerCaseDescriptorType = this.actualWorkflow.descriptorType.toLowerCase();
+      this.workflowsService.manualRegister(
+          this.actualWorkflow.repository,
+          this.actualWorkflow.gitUrl,
+          this.actualWorkflow.workflow_path,
+          this.actualWorkflow.workflowName,
+          lowerCaseDescriptorType,
+          this.actualWorkflow.defaultTestParameterFilePath).subscribe(result => {
+              this.workflowsService.refresh(result.id).subscribe(refreshResult => {
+                  this.workflows.push(refreshResult);
+                  this.workflowService.setWorkflows(this.workflows);
+                  this.alertService.detailedSuccess();
+                  dialogRef.close();
+                  this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
+              }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
+          }, (error: HttpErrorResponse) =>  {
+            this.alertService.detailedError(error);
+            this.setWorkflowRegisterError(error);
+          });
   }
 
   /**
@@ -134,33 +125,27 @@ export class RegisterWorkflowModalService {
   registerHostedWorkflow(hostedWorkflow, dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
     this.clearWorkflowRegisterError();
     this.alertService.start('Registering new workflow');
-    this.hostedService
-      .createHostedWorkflow(
-        hostedWorkflow.repository,
-        undefined,
-        hostedWorkflow.descriptorType,
-        undefined,
-        hostedWorkflow.entryName ? hostedWorkflow.entryName : undefined
-      )
-      .subscribe(
-        result => {
+    this.hostedService.createHostedWorkflow(
+      hostedWorkflow.repository,
+      undefined,
+      hostedWorkflow.descriptorType,
+      undefined,
+      hostedWorkflow.entryName ? hostedWorkflow.entryName : undefined).subscribe(result => {
           this.alertService.detailedSuccess();
           this.workflows.push(result);
           this.workflowService.setWorkflows(this.workflows);
           dialogRef.close();
           this.clearWorkflowRegisterError();
           this.router.navigateByUrl('/my-workflows' + '/' + result.full_workflow_path);
-        },
-        (error: HttpErrorResponse) => {
+        }, (error: HttpErrorResponse) =>  {
           this.alertService.detailedError(error);
-        }
-      );
+        });
   }
 
   friendlyRepositoryKeys(): Array<string> {
-    if (this.sourceControlMap) {
-      return this.sourceControlMap.map(a => a.friendlyName);
-    }
+      if (this.sourceControlMap) {
+          return this.sourceControlMap.map((a) => a.friendlyName);
+      }
   }
 
   getDescriptorLanguageKeys(): Array<string> {
