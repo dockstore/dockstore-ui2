@@ -202,7 +202,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.workflow = workflow;
       this.title = this.workflow.full_workflow_path;
       this.initTool();
-      this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
+      this.sortedVersions = this.getSortedWorkflowVersions(this.workflow.workflowVersions, this.defaultVersion);
       if (this.publicPage) {
         this.sortedVersions = this.dockstoreService.getValidVersions(this.sortedVersions);
       }
@@ -243,7 +243,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.workflow = workflow;
       if (workflow) {
         this.published = this.workflow.is_published;
-        this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
+        this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
           this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name, [

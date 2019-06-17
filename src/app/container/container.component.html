@@ -173,6 +173,7 @@
                 id="versionsTab"
                 [verifiedSource]="(extendedTool$ | async)?.verifiedSources"
                 [selectedVersion]="selectedVersion"
+                [isTool]="true"
               >
               </app-versions-container>
             </div>
@@ -236,7 +237,7 @@
                   (click)="onSelectedVersionChange(sortedVersion)"
                   >{{ sortedVersion.name }}
                 </a>
-                <small>{{ sortedVersion.last_modified | date }}</small>
+                <small>{{ sortedVersion.last_built | date }}</small>
               </p>
               <hr class="m-0" />
             </span>

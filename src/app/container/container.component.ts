@@ -166,7 +166,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
         } else {
-          this.selectedVersion = this.selectVersion(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
+          this.selectedVersion = this.selectTag(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
         }
       }
       // Select version
@@ -183,7 +183,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.initTool();
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
-      this.sortedVersions = this.getSortedVersions(this.tool.workflowVersions, this.defaultVersion);
+      this.sortedVersions = this.getSortedTags(this.tool.tags, this.defaultVersion);
     }
   }
 

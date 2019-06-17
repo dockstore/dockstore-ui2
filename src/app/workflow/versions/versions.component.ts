@@ -50,6 +50,10 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     return [4, 5];
   }
 
+  setDefaultSortColumn(): string {
+    return 'last_modified';
+  }
+
   constructor(
     dockstoreService: DockstoreService,
     dateService: DateService,

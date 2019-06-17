@@ -60,6 +60,10 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     super(dockstoreService, dateService, sessionQuery);
   }
 
+  setDefaultSortColumn(): string {
+    return 'last_build';
+  }
+
   ngOnInit() {
     this.publicPageSubscription();
     this.extendedDockstoreToolQuery.extendedDockstoreTool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: ExtendedDockstoreTool) => {

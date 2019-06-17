@@ -47,7 +47,7 @@
           </th>
           <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <label placement="top" matTooltip="Date of last build of the Docker image">Date Built</label>
-            <fa-icon class="pull-right" [icon]="getIconClass('last_modified')" (click)="clickSortColumn('last_modified')"></fa-icon>
+            <fa-icon class="pull-right" [icon]="getIconClass('last_build')" (click)="clickSortColumn('last_build')"></fa-icon>
           </th>
           <th>
             <label placement="top" matTooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
@@ -119,7 +119,7 @@
               ><span>{{ version.reference || 'n/a' }}</span></ng-template
             >
           </td>
-          <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">{{ version.last_modified | date: 'medium' }}</td>
+          <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">{{ version.last_built | date: 'medium' }}</td>
           <td>
             <mat-icon *ngIf="version.valid">check</mat-icon>
             <mat-icon *ngIf="!version.valid">close</mat-icon>
