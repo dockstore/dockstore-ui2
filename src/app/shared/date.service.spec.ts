@@ -42,4 +42,9 @@ describe('DateService', () => {
     it('should be getVerifiedLink', inject([DateService], (service: DateService) => {
         expect(service.getVerifiedLink()).toEqual('https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow');
     }));
+    it('should be ISO8601Format', inject([DateService], (service: DateService) => {
+        expect(service.getISO8601Format(1498675698000)).toEqual('2017-06-28T18:48:18.000Z');
+    }));
 });
+
+
