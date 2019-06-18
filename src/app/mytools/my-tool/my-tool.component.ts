@@ -116,15 +116,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
       if (user) {
         this.user = user;
         this.alertService.start('Fetching tools');
-        this.usersService.userContainers(user.id).subscribe(
-          tools => {
-            this.containerService.setTools(tools);
-            this.alertService.detailedSuccess();
-          },
-          (error: HttpErrorResponse) => {
-            this.alertService.detailedError(error);
-          }
-        );
+        this.usersService.userContainers(user.id).subscribe(tools => {
+          this.containerService.setTools(tools);
+          this.alertService.simpleSuccess();
+        }, (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        });
       }
     });
 
