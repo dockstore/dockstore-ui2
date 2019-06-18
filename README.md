@@ -61,7 +61,7 @@ npm ci
 ```
 `npm ci` will install all npm dependencies including Prettier and the Husky Git hook. 
 Ensure `CI=true` is not set when using `npm ci` or else the Git hook will not work.
-Pretter + Husky will automatically format changed files before each commit:
+Prettier + Husky will automatically format changed files before each commit:
 ```
 $ git commit -m "Test"
 ghusky > pre-commit (node v10.13.0)
