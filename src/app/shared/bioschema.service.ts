@@ -7,6 +7,7 @@ import { WorkflowVersion } from './swagger/model/workflowVersion';
 import { ExtendedWorkflowQuery } from './state/extended-workflow.query';
 import { WorkflowQuery } from './state/workflow.query';
 import { WorkflowService } from './state/workflow.service';
+import {Tag} from './swagger';
 
 export interface Person {
   '@type': string;
@@ -29,12 +30,12 @@ export interface BioschemaTool {
   @Injectable()
 export class BioschemaService {
   constructor(private dateService: DateService) {}
-  getToolSchema(tool: DockstoreTool): BioschemaTool {
+  getToolSchema(tool: DockstoreTool, selectedVersion: Tag): BioschemaTool {
     const results: BioschemaTool = {
       '@type': 'SoftwareApplication',
       'description': tool.description,
       'name': tool.name,
-      'softwareVersion': tool.defaultVersion,
+      'softwareVersion': selectedVersion.name,
       'url': window.location,
       'audience': 'Bioinformaticians',
       'dateModified': this.dateService.getISO8601FormatFromDate(tool.lastUpdated),
@@ -52,12 +53,12 @@ export class BioschemaService {
     return results;
 
   }
-  getWorkflowSchema(workflow: Workflow): BioschemaTool {
+  getWorkflowSchema(workflow: Workflow, selectedVersion: WorkflowVersion): BioschemaTool {
     const results: BioschemaTool = {
       '@type': 'SoftwareApplication',
       'description': workflow.description,
       'name': workflow.workflowName,
-      'softwareVersion': workflow.defaultVersion,
+      'softwareVersion': selectedVersion.name,
       'url': window.location,
       'audience': 'Bioinformaticians',
       'dateModified': this.dateService.getISO8601FormatFromNumber(workflow.last_modified),
