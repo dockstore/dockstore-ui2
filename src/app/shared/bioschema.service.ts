@@ -20,7 +20,7 @@ export interface BioschemaTool {
   name: string;
   softwareVersion: string;
   url?: Location;
-  audience?: string;
+  audience: string;
   dateModified?: string;
   identifier?: number;
   publisher?: Person;
@@ -37,7 +37,7 @@ export class BioschemaService {
       'softwareVersion': tool.defaultVersion,
       'url': window.location,
       'audience': 'Bioinformaticians',
-      'dateModified': this.dateService.getISO8601Format(tool.lastUpdated),
+      'dateModified': this.dateService.getISO8601FormatFromDate(tool.lastUpdated),
       'identifier': tool.id,
     };
     if (tool.author) {
@@ -59,6 +59,8 @@ export class BioschemaService {
       'name': workflow.workflowName,
       'softwareVersion': workflow.defaultVersion,
       'url': window.location,
+      'audience': 'Bioinformaticians',
+      'dateModified': this.dateService.getISO8601FormatFromNumber(workflow.last_modified),
       'identifier': workflow.id
     };
     if (workflow.author) {
