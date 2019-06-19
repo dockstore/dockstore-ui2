@@ -194,7 +194,7 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @returns {((WorkflowVersion | Tag))}  The version to display to the user
    * @memberof Entry
    */
-  public selectVersion(versions: Array<WorkflowVersion | Tag>, urlVersion: string, defaultVersion: string): WorkflowVersion | Tag {
+  public selectVersion(versions: (Array<WorkflowVersion | Tag>), urlVersion: string, defaultVersion: string): (WorkflowVersion | Tag) | null{
     if (!versions || versions.length === 0) {
       return null;
     }
@@ -213,23 +213,20 @@ export abstract class Entry implements OnInit, OnDestroy {
     } else {
       return null;
     }
-
-    // Select newest last_modified version, if it's the same, choose the top
-    //  return versions.reduce((a, b) => b.last_modified > a.last_modified ? b : a);
   }
 
   selectTag(versions: Array<Tag>, urlVersion: string, defaultVersion: string): Tag {
     const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
-    if (selectedTag != null) {
-      return selectedTag;
-    } else {return versions.reduce((a,b) => b.last_built > a.last_built ? b : a);}
+    return selectedTag || versions.reduce((a,b) => b.last_built > a.last_built ? b : a);
   }
 
   selectWorkflowVersion(versions: Array<WorkflowVersion>, urlVersion: string, defaultVersion: string) {
     const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
     if (selectedTag != null) {
       return selectedTag;
-    } else {return versions.reduce((a, b) => b.last_modified > a.last_modified ? b : a); }
+    } else {
+      // Select newest last_modified version, if it's the same, choose the top
+      return versions.reduce((a, b) => b.last_modified > a.last_modified ? b : a);}
   }
 
   public getEntryPathFromURL(): string {
@@ -283,36 +280,6 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @param {Tag|WorkflowVersion} b - version b
    * @returns {number} - indicates order
    */
-  entryVersionSorting(a: Tag | WorkflowVersion, b: Tag | WorkflowVersion, isTool: boolean): number {
-    // let entryADate: any;
-    // let entryBDate: any;
-    // if ('last_build' in a && 'last_build' in b){
-    //   entryADate = a.last_build;
-    //   entryBDate = b.last_build;
-    // } else if ('lastModified' in a && 'lastModified' in b) {
-    //   entryADate = a.lastModified;
-    //   entryBDate = b.lastModified;
-    // }
-
-    if (a.verified && !b.verified) {
-      return -1;
-    } else if (!a.verified && b.verified) {
-      return 1;
-    } else {
-      if (isTool) {
-        this.tagSorting(a, b);
-      } else {
-        this.workflowVersionSorting(a, b);
-      }
-      // if (entryADate > entryBDate) {
-      //   return -1;
-      // } else if (entryADate < entryBDate) {
-      //   return 1;
-      // } else {
-      //   return 0;
-      // }
-    }
-  }
 
   verifiedSorting(a: Tag | WorkflowVersion, b: Tag | WorkflowVersion): number {
     if (a.verified && !b.verified) {
@@ -320,7 +287,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     } else if (!a.verified && b.verified) {
       return 1;
     } else {
-      return -2;
+      return 0;
     }
   }
   workflowVersionSorting(a: WorkflowVersion, b: WorkflowVersion): number {
@@ -341,7 +308,7 @@ export abstract class Entry implements OnInit, OnDestroy {
 
   tagSorting(a: Tag, b: Tag): number {
     const verifiedSorting = this.verifiedSorting(a, b);
-    if (verifiedSorting !== -2) {
+    if (verifiedSorting !== 0) {
       return verifiedSorting;
     } else {
       if (a.last_built > b.last_built) {
@@ -365,10 +332,6 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @returns {Array<any>} Sorted array of versions
    */
   getSortedVersions(versions: Array<Tag | WorkflowVersion>, defaultVersion: Tag | WorkflowVersion, sortedVersions: Array<Tag | WorkflowVersion>): Array<Tag | WorkflowVersion> {
-    // let sortedVersions: Array<Tag | WorkflowVersion> = [];
-
-    // Sort versions by verified date and then last_modified
-    // sortedVersions = versions.slice().sort((a, b) => this.entryVersionSorting(a, b, isTool));
 
     // Get the top 6 versions
     const recentVersions: Array<Tag | WorkflowVersion> = sortedVersions.slice(0, 6);
@@ -394,14 +357,12 @@ export abstract class Entry implements OnInit, OnDestroy {
   }
 
   getSortedWorkflowVersions(versions: Array<WorkflowVersion>, defaultVersion: WorkflowVersion): Array<WorkflowVersion> {
-    let sortedWorkflowVersions: Array<WorkflowVersion> = [];
-    sortedWorkflowVersions = versions.slice().sort((a, b) => this.workflowVersionSorting(a, b));
+    const sortedWorkflowVersions: Array<WorkflowVersion> = versions.slice().sort((a, b) => this.workflowVersionSorting(a, b));
     return this.getSortedVersions(versions, defaultVersion, sortedWorkflowVersions);
   }
 
   getSortedTags(versions: Array<Tag>, defaultVersion: WorkflowVersion): Array<Tag> {
-    let sortedTags: Array<Tag> = [];
-    sortedTags = versions.slice().sort((a, b) => this.tagSorting(a, b));
+    const sortedTags: Array<Tag> = versions.slice().sort((a, b) => this.tagSorting(a, b));
     return this.getSortedVersions(versions, defaultVersion, sortedTags);
   }
 

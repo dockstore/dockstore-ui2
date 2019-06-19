@@ -60,8 +60,8 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     super(dockstoreService, dateService, sessionQuery);
   }
 
-  setDefaultSortColumn(): string {
-    return 'last_build';
+  defaultSortColumn(): string {
+    return 'last_built';
   }
 
   ngOnInit() {

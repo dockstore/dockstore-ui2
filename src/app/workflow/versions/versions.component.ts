@@ -50,7 +50,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     return [4, 5];
   }
 
-  setDefaultSortColumn(): string {
+  defaultSortColumn(): string {
     return 'last_modified';
   }
 

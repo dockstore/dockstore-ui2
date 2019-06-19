@@ -38,14 +38,12 @@ export abstract class Versions extends EntryTab {
   dtOptions;
 
   abstract setNoOrderCols(): Array<number>;
-  abstract setDefaultSortColumn(): string;
+  abstract defaultSortColumn(): string;
 
   constructor(protected dockstoreService: DockstoreService, private dateService: DateService, protected sessionQuery: SessionQuery) {
     // By default, sort by last_built, latest first
     super();
-    // this.sortColumn = 'last_build';
-    // (this.isTool === true) ? this.sortColumn = 'last_build' : this.sortColumn = 'last_modified';
-    this.sortColumn = this.setDefaultSortColumn();
+    this.sortColumn = this.defaultSortColumn();
     this.sortReverse = true;
   }
 
