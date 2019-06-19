@@ -24,6 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
+import { BioschemaService } from '../shared/bioschema.service';
 import { includesValidation } from '../shared/constants';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
