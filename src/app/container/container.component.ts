@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { BioschemaService } from '../shared/bioschema.service';
+import {BioschemaService, BioschemaTool} from '../shared/bioschema.service';
 import { includesValidation } from '../shared/constants';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
@@ -61,6 +61,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
+  public bioschemaService: BioschemaService;
   public tool: DockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
@@ -163,28 +164,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     this.resetContainerEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
-    this.schema = {
-      '@type': 'SoftwareApplication',
-      'description': this.tool.description,
-      'name': this.tool.name,
-      'softwareVersion': this.defaultVersion,
-      'url': window.location,
-
-      'audience': 'Bioinformaticians',
-      'dateModified': this.tool.lastUpdated,
-      'identifier': this.tool.id,
-
-
-    };
-    if (this.tool.author) {
-      this.schema.publisher = {
-        '@type' : 'Person',
-        'name' : this.tool.author
-      };
-      if (this.tool.email) {
-          this.schema.publisher.email = this.tool.email;
-      }
-    }
+    this.schema = this.bioschemaService.getToolSchema(this.tool, this.selectedVersion);
   }
 
   public subscriptions(): void {
