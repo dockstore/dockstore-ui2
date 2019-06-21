@@ -68,7 +68,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
-  public bioschemaService: BioschemaService;
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public entryType: EntryType;
   validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
@@ -92,6 +91,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
+    private bioschemaService: BioschemaService,
     private refreshService: RefreshService,
     private workflowsService: WorkflowsService,
     trackLoginService: TrackLoginService,
