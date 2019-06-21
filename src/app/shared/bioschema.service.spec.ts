@@ -5,11 +5,11 @@ import {DateService} from './date.service';
 describe('BioschemaService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BioschemaService]
+      providers: [BioschemaService, DateService]
     });
   });
 
-  it('should be created', inject([BioschemaService], (service: BioschemaService) => {
+  it('should be created', inject([BioschemaService, DateService], (service: BioschemaService) => {
     expect(service).toBeTruthy();
   }));
   // it('should be a json', inject([DateService], (service: DateService) => {

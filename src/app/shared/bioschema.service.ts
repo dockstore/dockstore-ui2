@@ -27,7 +27,7 @@ export interface BioschemaTool {
   publisher?: Person;
 }
 
-  @Injectable()
+@Injectable()
 export class BioschemaService {
   constructor(private dateService: DateService) {}
   getToolSchema(tool: DockstoreTool, selectedVersion: Tag): BioschemaTool {
