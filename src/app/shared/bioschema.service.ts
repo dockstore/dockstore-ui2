@@ -1,12 +1,8 @@
 import {Injectable} from '@angular/core';
 import { DateService } from './date.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
-import {WorkflowComponent} from '../workflow/workflow.component';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from './swagger/model/workflowVersion';
-import { ExtendedWorkflowQuery } from './state/extended-workflow.query';
-import { WorkflowQuery } from './state/workflow.query';
-import { WorkflowService } from './state/workflow.service';
 import {Tag} from './swagger';
 
 export interface Person {
