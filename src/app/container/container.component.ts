@@ -61,7 +61,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
-  public bioschemaService: BioschemaService;
   public tool: DockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
@@ -86,6 +85,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     private updateContainer: ContainerService,
     private containersService: ContainersService,
     private emailService: EmailService,
+    private bioschemaService: BioschemaService,
     trackLoginService: TrackLoginService,
     providerService: ProviderService,
     router: Router,
