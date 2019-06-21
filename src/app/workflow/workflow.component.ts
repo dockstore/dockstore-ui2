@@ -27,7 +27,6 @@ import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
 import {BioschemaService} from '../shared/bioschema.service';
-import { ga4ghWorkflowIdPrefix, includesValidation } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -69,6 +68,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
+  public bioschemaService: BioschemaService;
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public entryType: EntryType;
   validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
@@ -172,31 +172,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.resetWorkflowEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
-    this.schema = {
-      '@type': 'SoftwareApplication',
-      'description': this.workflow.description,
-      'name': this.workflow.workflowName,
-      'softwareVersion': this.workflow.defaultVersion,
-      'url': this.shareURL,
-      'identifier': this.workflow.id
-    };
-    if (this.workflow.author) {
-      this.schema.publisher = {
-        '@type' : 'Person',
-        'name' : this.workflow.author
-      };
-      if (this.workflow.email) {
-        this.schema.publisher.email = this.workflow.email;
-      }
-    } else if (this.workflow.organization) {
-      this.schema.publisher = {
-        '@type': 'Organization',
-        'name': this.workflow.organization
-      };
-      if (this.workflow.email) {
-        this.schema.publisher.email = this.workflow.email;
-      }
-    }
+    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
   }
 
   public getDefaultVersionName(): string {
