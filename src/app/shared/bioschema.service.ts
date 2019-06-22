@@ -14,9 +14,9 @@ export interface Person {
 export interface BioschemaTool {
   '@type': string;
   description: string;
-  name: string;
+  name?: string;
   softwareVersion: string;
-  url?: Location;
+  url: string;
   audience: string;
   dateModified?: string;
   identifier?: number;
@@ -26,17 +26,25 @@ export interface BioschemaTool {
 @Injectable()
 export class BioschemaService {
   constructor(private dateService: DateService) {}
-  getToolSchema(tool: DockstoreTool, selectedVersion: Tag): BioschemaTool {
+  private getBaseSchema(entry: DockstoreTool | Workflow, selectedVersion: Tag | WorkflowVersion): BioschemaTool {
     const results: BioschemaTool = {
       '@type': 'SoftwareApplication',
-      'description': tool.description,
-      'name': tool.name,
+      'description': entry.description,
       'softwareVersion': selectedVersion.name,
-      'url': window.location,
+      'url': window.location.href,
       'audience': 'Bioinformaticians',
-      'dateModified': this.dateService.getISO8601FormatFromDate(tool.lastUpdated),
-      'identifier': tool.id,
+      'identifier': entry.id,
     };
+    return results;
+  }
+  getToolSchema(tool: DockstoreTool, selectedVersion: Tag): BioschemaTool {
+    const results = this.getBaseSchema(tool, selectedVersion);
+    if (tool.name) {
+      results.name = tool.name;
+    }
+    if (tool.lastUpdated) {
+      results.dateModified = this.dateService.getISO8601FormatFromDate(tool.lastUpdated);
+    }
     if (tool.author) {
       results.publisher = {
         '@type' : 'Person',
@@ -50,16 +58,13 @@ export class BioschemaService {
 
   }
   getWorkflowSchema(workflow: Workflow, selectedVersion: WorkflowVersion): BioschemaTool {
-    const results: BioschemaTool = {
-      '@type': 'SoftwareApplication',
-      'description': workflow.description,
-      'name': workflow.workflowName,
-      'softwareVersion': selectedVersion.name,
-      'url': window.location,
-      'audience': 'Bioinformaticians',
-      'dateModified': this.dateService.getISO8601FormatFromNumber(workflow.last_modified),
-      'identifier': workflow.id
-    };
+    const results = this.getBaseSchema(workflow, selectedVersion)
+    if (workflow.workflowName) {
+      results.name = workflow.workflowName;
+    }
+    if (workflow.last_modified) {
+      results.dateModified = this.dateService.getISO8601FormatFromNumber(workflow.last_modified);
+    }
     if (workflow.author) {
       results.publisher = {
         '@type' : 'Person',
