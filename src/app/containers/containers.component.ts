@@ -26,11 +26,10 @@ import { Observable } from 'rxjs';
 })
 export class ContainersComponent implements OnInit {
   entryPageTitle$: Observable<string>;
-  constructor(private sessionService: SessionService, private activatedRoute: ActivatedRoute, private sessionQuery: SessionQuery) { }
+  constructor(private sessionService: SessionService, private activatedRoute: ActivatedRoute, private sessionQuery: SessionQuery) {}
 
   ngOnInit() {
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.entryPageTitle$ = this.sessionQuery.entryPageTitle$;
   }
-
 }

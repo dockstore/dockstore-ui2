@@ -22,19 +22,9 @@ import { StarringComponent } from './starring.component';
 import { StarringService } from './starring.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatIconModule
-  ],
-  declarations: [
-    StarringComponent
-  ],
-  exports: [
-    StarringComponent
-  ],
-  providers: [
-    StarringService,
-    StarentryService
-  ]
+  imports: [CommonModule, MatIconModule],
+  declarations: [StarringComponent],
+  exports: [StarringComponent],
+  providers: [StarringService, StarentryService]
 })
-export class StarringModule { }
+export class StarringModule {}

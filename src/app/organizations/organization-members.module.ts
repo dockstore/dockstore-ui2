@@ -8,14 +8,8 @@ import { OrganizationMembersComponent } from './organization-members/organizatio
 import { UpsertOrganizationMemberModule } from './upsert-organization-member.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FlexLayoutModule,
-    CustomMaterialModule,
-    RefreshAlertModule,
-    UpsertOrganizationMemberModule
-  ],
+  imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, RefreshAlertModule, UpsertOrganizationMemberModule],
   declarations: [OrganizationMembersComponent],
   exports: [OrganizationMembersComponent]
 })
-export class OrganizationMembersModule { }
+export class OrganizationMembersModule {}

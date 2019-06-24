@@ -39,8 +39,7 @@ describe('LoginComponent', () => {
         { provide: LoginService, useClass: LoginStubService },
         { provide: RegisterService, useClass: LoginStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

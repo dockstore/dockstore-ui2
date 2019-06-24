@@ -12,19 +12,20 @@ export class SearchQuery extends Query<SearchState> {
   public toolhit$: Observable<any> = this.select(state => state.toolhit);
   public shortUrl$: Observable<string> = this.select(state => state.shortUrl);
   public workflows$: Observable<Array<Workflow>> = this.workflowhit$.pipe(
-    map((elasticSearchResults: Array<any>) => elasticSearchResults ?
-      elasticSearchResults.map(elasticSearchResult => elasticSearchResult._source) : null));
+    map((elasticSearchResults: Array<any>) =>
+      elasticSearchResults ? elasticSearchResults.map(elasticSearchResult => elasticSearchResult._source) : null
+    )
+  );
   public tools$: Observable<Array<DockstoreTool>> = this.toolhit$.pipe(
-    map((elasticSearchResults: Array<any>) => elasticSearchResults ?
-      elasticSearchResults.map(elasticSearchResult => elasticSearchResult._source) : null));
+    map((elasticSearchResults: Array<any>) =>
+      elasticSearchResults ? elasticSearchResults.map(elasticSearchResult => elasticSearchResult._source) : null
+    )
+  );
   public activeToolTab$: Observable<boolean> = combineLatest(this.tools$, this.workflows$).pipe(
-    map(([tools, workflows]) => this.setTabActive(tools, workflows)));
-  public noToolHits$: Observable<boolean> = this.tools$.pipe(
-    map((tools: Array<DockstoreTool>) => this.haveNoHits(tools)
-    ));
-  public noWorkflowHits$: Observable<boolean> = this.workflows$.pipe(
-    map((workflows: Array<Workflow>) => this.haveNoHits(workflows)
-    ));
+    map(([tools, workflows]) => this.setTabActive(tools, workflows))
+  );
+  public noToolHits$: Observable<boolean> = this.tools$.pipe(map((tools: Array<DockstoreTool>) => this.haveNoHits(tools)));
+  public noWorkflowHits$: Observable<boolean> = this.workflows$.pipe(map((workflows: Array<Workflow>) => this.haveNoHits(workflows)));
   public searchText$: Observable<string> = this.select(state => state.searchText);
   public showToolTagCloud$: Observable<boolean> = this.select(state => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select(state => state.showWorkflowTagCloud);
@@ -39,11 +40,11 @@ export class SearchQuery extends Query<SearchState> {
   }
 
   /**
- * This handles the which tab (tool or workflow) is set to active based on hits.
- * The default is tool if both have hits
- *
- * @memberof SearchResultsComponent
- */
+   * This handles the which tab (tool or workflow) is set to active based on hits.
+   * The default is tool if both have hits
+   *
+   * @memberof SearchResultsComponent
+   */
   setTabActive(tools: Array<DockstoreTool>, workflows: Array<Workflow>): boolean {
     if (!tools || !workflows) {
       return true;
@@ -62,8 +63,6 @@ export class SearchQuery extends Query<SearchState> {
   }
 
   haveNoHits(object: Array<any>): boolean {
-    return (!object || object.length === 0);
+    return !object || object.length === 0;
   }
-
-
 }

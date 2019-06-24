@@ -55,7 +55,7 @@ export class WorkflowService {
   }
 
   setWorkflowVersion(version: WorkflowVersion) {
-    this.workflowStore.updateRoot({version: version});
+    this.workflowStore.updateRoot({ version: version });
   }
 
   setSharedWorkflows(workflows: Array<any>) {

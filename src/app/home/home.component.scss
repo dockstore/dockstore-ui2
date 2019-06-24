@@ -15,14 +15,16 @@
  */
 
 .mainScreen {
-  padding-top:30px;
+  padding-top: 30px;
 }
 .twitter {
-  border: 1px solid #CFD1D7;
+  border: 1px solid #cfd1d7;
   border-radius: 5px;
 }
 /* Video Button */
-.youtube, .youtube:active, .youtube:focus {
+.youtube,
+.youtube:active,
+.youtube:focus {
   float: none;
   margin-top: 30px;
   margin-bottom: 30px;
@@ -105,7 +107,9 @@ span {
   text-decoration: underline !important;
 }
 
-.sign-up, .sign-up:active, .sign-up:focus {
+.sign-up,
+.sign-up:active,
+.sign-up:focus {
   float: none;
   margin-top: 30px;
   margin-bottom: 30px;
@@ -156,7 +160,7 @@ span {
 
 @media (max-width: 767px) {
   .hidden-on-mobile {
-     display: none !important;
+    display: none !important;
   }
 }
 
@@ -164,7 +168,8 @@ span {
   z-index: 1070;
 }
 
-.small-card, .small-card > mat-card {
+.small-card,
+.small-card > mat-card {
   min-height: 150px;
   width: 100% !important;
 }

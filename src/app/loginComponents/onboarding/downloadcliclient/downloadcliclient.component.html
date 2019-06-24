@@ -5,9 +5,17 @@
 </a>
 <markdown [data]="textData2"></markdown>
 <div class="input-group textarea indent">
-  <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>token: {{dsToken}}&#13;&#10;server-url: {{dsServerURI}}</textarea>
-    <span class="input-group-btn">
-    <button class="btn btn-default textarea btn" [ngClass]="{'btn-copy':isCopied2}" type="button" [ngxClipboard]="inputTarget" (cbOnSuccess)="isCopied2 = true">
+  <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>
+token: {{ dsToken }}&#13;&#10;server-url: {{ dsServerURI }}</textarea
+  >
+  <span class="input-group-btn">
+    <button
+      class="btn btn-default textarea btn"
+      [ngClass]="{ 'btn-copy': isCopied2 }"
+      type="button"
+      [ngxClipboard]="inputTarget"
+      (cbOnSuccess)="isCopied2 = true"
+    >
       <mat-icon>file_copy</mat-icon>
     </button>
   </span>

@@ -21,4 +21,4 @@ import { Component } from '@angular/core';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchContainersComponent { }
+export class SearchContainersComponent {}

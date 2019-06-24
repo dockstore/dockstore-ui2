@@ -45,15 +45,17 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   public disableRateButton = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
   private starredUsers: User[];
-  constructor(private trackLoginService: TrackLoginService,
+  constructor(
+    private trackLoginService: TrackLoginService,
     private userQuery: UserQuery,
     private containerService: ContainerService,
     private starringService: StarringService,
     private starentryService: StarentryService,
-    private alertService: AlertService) { }
+    private alertService: AlertService
+  ) {}
 
   ngOnInit() {
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => (this.isLoggedIn = isLoggedIn));
     // get tool from the observer
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
@@ -116,12 +118,12 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
           // update total_stars
           this.alertService.simpleSuccess();
           this.getStarredUsers();
-
         },
-        (error) => {
+        error => {
           this.alertService.detailedError(error);
           this.disableRateButton = false;
-        });
+        }
+      );
     }
   }
   setStar(): any {
@@ -133,13 +135,18 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   }
   getStarredUsers(): any {
     if (this.entry && this.entryType) {
-      this.starringService.getStarring(this.entry.id, this.entryType).pipe(first()).subscribe(
-        (starring: User[]) => {
-          this.total_stars = starring.length;
-          this.starredUsers = starring;
-          this.rate = isStarredByUser(starring, this.user);
-          this.disableRateButton = false;
-        }, error => this.disableRateButton = false);
+      this.starringService
+        .getStarring(this.entry.id, this.entryType)
+        .pipe(first())
+        .subscribe(
+          (starring: User[]) => {
+            this.total_stars = starring.length;
+            this.starredUsers = starring;
+            this.rate = isStarredByUser(starring, this.user);
+            this.disableRateButton = false;
+          },
+          error => (this.disableRateButton = false)
+        );
     } else {
       this.disableRateButton = false;
     }

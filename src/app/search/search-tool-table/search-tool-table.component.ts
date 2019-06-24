@@ -19,8 +19,12 @@ import { SearchService } from '../state/search.service';
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<DockstoreTool>;
-  constructor(private dockstoreService: DockstoreService,
-              dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
+  constructor(
+    private dockstoreService: DockstoreService,
+    dateService: DateService,
+    searchQuery: SearchQuery,
+    searchService: SearchService
+  ) {
     super(dateService, searchQuery, searchService);
   }
 
@@ -35,5 +39,4 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
   getVerified(tool: DockstoreTool): boolean {
     return this.dockstoreService.getVersionVerified(tool.workflowVersions);
   }
-
 }

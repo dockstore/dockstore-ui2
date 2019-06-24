@@ -22,24 +22,24 @@ import { ImageProviderService } from './image-provider.service';
 import { TestBed, inject } from '@angular/core/testing';
 
 describe('DateService', () => {
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            providers: [DateService]
-        });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [DateService]
     });
+  });
 
-    it('should be created', inject([DateService], (service: DateService) => {
-        expect(service).toBeTruthy();
-    }));
-    it('should be getDateTimeMessage', inject([DateService], (service: DateService) => {
-        const date: String = service.getDateTimeMessage(1504214211322);
-        const result = (date === 'Aug. 31 2017 at 9:16:51 PM' || date === 'Aug. 31 2017 at 17:16:51');
-    }));
-    it('should be getAgoMessage', inject([DateService], (service: DateService) => {
-        expect(service.getAgoMessage(null)).toEqual('n/a');
-        expect(service.getAgoMessage(1498675698000)).toContain(' days ago');
-    }));
-    it('should be getVerifiedLink', inject([DateService], (service: DateService) => {
-        expect(service.getVerifiedLink()).toEqual('https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow');
-    }));
+  it('should be created', inject([DateService], (service: DateService) => {
+    expect(service).toBeTruthy();
+  }));
+  it('should be getDateTimeMessage', inject([DateService], (service: DateService) => {
+    const date: String = service.getDateTimeMessage(1504214211322);
+    const result = date === 'Aug. 31 2017 at 9:16:51 PM' || date === 'Aug. 31 2017 at 17:16:51';
+  }));
+  it('should be getAgoMessage', inject([DateService], (service: DateService) => {
+    expect(service.getAgoMessage(null)).toEqual('n/a');
+    expect(service.getAgoMessage(1498675698000)).toContain(' days ago');
+  }));
+  it('should be getVerifiedLink', inject([DateService], (service: DateService) => {
+    expect(service.getVerifiedLink()).toEqual('https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow');
+  }));
 });

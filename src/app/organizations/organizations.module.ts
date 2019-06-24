@@ -21,8 +21,8 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     OrganizationsRouting,
     ReactiveFormsModule,
     RegisterOrganizationModule,
-    UpdateOrganizationDescriptionModule,
+    UpdateOrganizationDescriptionModule
   ],
   declarations: [OrganizationsComponent]
 })
-export class OrganizationsModule { }
+export class OrganizationsModule {}

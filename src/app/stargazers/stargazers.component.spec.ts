@@ -31,12 +31,11 @@ describe('StargazersComponent', () => {
       declarations: [StargazersComponent],
       imports: [MatIconModule, MatCardModule],
       providers: [
-        { provide: UserService, useClass: UserStubService},
+        { provide: UserService, useClass: UserStubService },
         { provide: StarringService, useClass: StarringStubService },
         { provide: StarentryService, useClass: StarEntryStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

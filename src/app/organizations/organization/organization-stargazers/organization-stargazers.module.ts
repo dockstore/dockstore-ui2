@@ -24,20 +24,9 @@ import { StarOrganizationService } from '../../../shared/star-organization.servi
 import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FlexLayoutModule,
-    CustomMaterialModule,
-  ],
-  declarations: [
-    OrganizationStargazersComponent
-  ],
-  exports: [
-    OrganizationStargazersComponent,
-  ],
-  providers: [
-    OrganizationStarringService,
-    StarOrganizationService
-  ]
+  imports: [CommonModule, FlexLayoutModule, CustomMaterialModule],
+  declarations: [OrganizationStargazersComponent],
+  exports: [OrganizationStargazersComponent],
+  providers: [OrganizationStarringService, StarOrganizationService]
 })
-export class OrganizationStargazersModule { }
+export class OrganizationStargazersModule {}

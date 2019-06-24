@@ -9,7 +9,8 @@ import { TokenService } from '../../../shared/state/token.service';
 describe('Service: Accounts', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AccountsService,
+      providers: [
+        AccountsService,
         { provide: UserService, useClass: UserStubService },
         { provide: LoginService, useClass: LoginStubService },
         { provide: TokenService, useClass: TokenStubService }

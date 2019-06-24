@@ -29,26 +29,24 @@ import { User } from '../../../shared/swagger';
 export class OrganizationStargazersComponent extends Base implements OnInit {
   starGazers: Array<User>;
 
-  constructor(private organizationStarringService: OrganizationStarringService,
-              private userService: UserService,
-              private starOrganizationService: StarOrganizationService) {
+  constructor(
+    private organizationStarringService: OrganizationStarringService,
+    private userService: UserService,
+    private starOrganizationService: StarOrganizationService
+  ) {
     super();
   }
 
   ngOnInit() {
-    this.starOrganizationService.starOrganization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      organization => {
-        if (organization && organization.theOrganization ) {
-          this.organizationStarringService.getStarring(organization.theOrganization.id).subscribe(
-            (starring: Array<User>) => {
-              this.starGazers = starring;
-              this.starGazers.forEach(
-                (user: User) => {
-                  user.avatarUrl = this.userService.gravatarUrl(null, user.avatarUrl);
-                });
-            });
-        }
+    this.starOrganizationService.starOrganization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(organization => {
+      if (organization && organization.theOrganization) {
+        this.organizationStarringService.getStarring(organization.theOrganization.id).subscribe((starring: Array<User>) => {
+          this.starGazers = starring;
+          this.starGazers.forEach((user: User) => {
+            user.avatarUrl = this.userService.gravatarUrl(null, user.avatarUrl);
+          });
+        });
       }
-    );
+    });
   }
 }

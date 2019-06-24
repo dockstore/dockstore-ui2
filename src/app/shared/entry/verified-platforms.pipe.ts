@@ -6,7 +6,6 @@ import { SourceFile } from '../swagger';
   name: 'verifiedPlatforms'
 })
 export class VerifiedPlatformsPipe implements PipeTransform {
-
   transform(sourcefiles: SourceFile[]): string {
     const platforms = new Set<string>();
     sourcefiles.forEach((sourcefile: SourceFile) => {
@@ -18,5 +17,4 @@ export class VerifiedPlatformsPipe implements PipeTransform {
     });
     return Array.from(platforms).join(', ');
   }
-
 }

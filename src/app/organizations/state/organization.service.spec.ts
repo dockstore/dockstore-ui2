@@ -22,23 +22,21 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
 
-
 @Component({
-  template: `<router-outlet></router-outlet>`
+  template: `
+    <router-outlet></router-outlet>
+  `
 })
-export class OrganizationsComponent {
-}
+export class OrganizationsComponent {}
 
-export const MOCK_ORGANIZATIONS_ROUTES: Routes = [
-  { path: '**', component: OrganizationsComponent }
-];
+export const MOCK_ORGANIZATIONS_ROUTES: Routes = [{ path: '**', component: OrganizationsComponent }];
 
 describe('OrganizationService', () => {
   let organizationService: OrganizationService;
   let organizationStore: OrganizationStore;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrganizationsComponent ],
+      declarations: [OrganizationsComponent],
       providers: [OrganizationService, OrganizationStore],
       imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)]
     });

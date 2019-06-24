@@ -11,9 +11,9 @@ import { VerifiedByService } from '../../verified-by.service';
   styleUrls: ['./verified-by.component.scss']
 })
 export class VerifiedByComponent implements OnChanges {
-  @Input() version: (WorkflowVersion | Tag);
+  @Input() version: WorkflowVersion | Tag;
   public verifiedByStringArray: Array<string> = [];
-  constructor(private verifiedByService: VerifiedByService, private matDialog: MatDialog) { }
+  constructor(private verifiedByService: VerifiedByService, private matDialog: MatDialog) {}
 
   ngOnChanges() {
     if (this.version) {

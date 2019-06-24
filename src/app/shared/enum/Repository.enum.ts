@@ -15,11 +15,13 @@
  */
 
 export enum Repository {
-    GITHUB,
-    BITBUCKET,
-    GITLAB
+  GITHUB,
+  BITBUCKET,
+  GITLAB
 }
 
 export enum FriendlyRepositories {
-    'GitHub', 'Bitbucket', 'GitLab'
+  'GitHub',
+  'Bitbucket',
+  'GitLab'
 }

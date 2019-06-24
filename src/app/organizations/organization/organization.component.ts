@@ -16,17 +16,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
-
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
-import {
-  UpdateOrganizationOrCollectionDescriptionComponent
-} from './update-organization-description/update-organization-description.component';
-import { UserQuery } from '../../shared/user/user.query';
+// tslint:disable-next-line: max-line-length
+import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 
 @Component({
   selector: 'organization',
@@ -44,9 +42,13 @@ export class OrganizationComponent implements OnInit {
   gravatarUrl$: Observable<string>;
   approved = Organization.StatusEnum.APPROVED;
 
-  constructor(private organizationQuery: OrganizationQuery, private organizationService: OrganizationService, private matDialog: MatDialog,
-    private activatedRoute: ActivatedRoute, private userQuery: UserQuery
-  ) { }
+  constructor(
+    private organizationQuery: OrganizationQuery,
+    private organizationService: OrganizationService,
+    private matDialog: MatDialog,
+    private activatedRoute: ActivatedRoute,
+    private userQuery: UserQuery
+  ) {}
 
   ngOnInit() {
     const organizationName = this.activatedRoute.snapshot.paramMap.get('organizationName');
@@ -66,18 +68,18 @@ export class OrganizationComponent implements OnInit {
    */
   editOrganization() {
     const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
-    this.matDialog.open(RegisterOrganizationComponent,
-      {
-        data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
-        width: '600px'
-      });
+    this.matDialog.open(RegisterOrganizationComponent, {
+      data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
+      width: '600px'
+    });
   }
 
   updateDescription() {
     const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
     const description = organizationSnapshot.description;
     this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
-      data: { description: description, type: 'organization' }, width: '600px'
+      data: { description: description, type: 'organization' },
+      width: '600px'
     });
   }
 

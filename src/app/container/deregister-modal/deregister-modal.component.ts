@@ -25,10 +25,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ModalComponent implements OnInit {
   @Input() refreshMessage;
 
-  constructor(private registerToolService: RegisterToolService) { }
+  constructor(private registerToolService: RegisterToolService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
   deregister() {
     this.registerToolService.deregisterTool();
   }

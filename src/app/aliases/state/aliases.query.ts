@@ -13,5 +13,4 @@ export class AliasesQuery extends Query<AliasesState> {
   constructor(protected store: AliasesStore) {
     super(store);
   }
-
 }

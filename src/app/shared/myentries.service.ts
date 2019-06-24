@@ -105,7 +105,7 @@ export abstract class MyEntriesService extends Base {
       groupEntries[pos].entries.push(entries[i]);
     }
 
-    const path = (type === EntryType.BioWorkflow || type === EntryType.Service) ? 'full_workflow_path' : 'tool_path';
+    const path = type === EntryType.BioWorkflow || type === EntryType.Service ? 'full_workflow_path' : 'tool_path';
 
     groupEntries.forEach(groupEntry => {
       groupEntry.entries.sort((a, b) => {

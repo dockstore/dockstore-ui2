@@ -40,10 +40,9 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
   selector: 'app-launch-third-party',
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss'],
-  providers: [ DescriptorsService, DescriptorsQuery, DescriptorsStore]
+  providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore]
 })
 export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit {
-
   /**
    * The workflow
    */
@@ -95,36 +94,41 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    */
   workflowPathAsQueryValue: string;
 
-  constructor(private workflowsService: WorkflowsService, private descriptorTypeCompatService: DescriptorTypeCompatService,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer,
-              private gA4GHFilesQuery: GA4GHFilesQuery,
-              private descriptorsQuery: DescriptorsQuery,
-              private descriptorsService: DescriptorsService) {
+  constructor(
+    private workflowsService: WorkflowsService,
+    private descriptorTypeCompatService: DescriptorTypeCompatService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
+    private gA4GHFilesQuery: GA4GHFilesQuery,
+    private descriptorsQuery: DescriptorsQuery,
+    private descriptorsService: DescriptorsService
+  ) {
     super();
-    iconRegistry.addSvgIcon('dnanexus',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/DX_Logo_white_alpha.svg'));
-    iconRegistry.addSvgIcon('terra',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/terra.svg'));
+    iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/DX_Logo_white_alpha.svg'));
+    iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/terra.svg'));
   }
 
   ngOnInit(): void {
-    this.gA4GHFilesQuery.getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
-      [FileTypeEnum.PRIMARYDESCRIPTOR, FileTypeEnum.SECONDARYDESCRIPTOR]).pipe(
-      takeUntil(this.ngUnsubscribe))
+    this.gA4GHFilesQuery
+      .getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType), [
+        FileTypeEnum.PRIMARYDESCRIPTOR,
+        FileTypeEnum.SECONDARYDESCRIPTOR
+      ])
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(fileDescriptors => {
         if (fileDescriptors && fileDescriptors.length) {
-          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name,
-            ToolDescriptor.TypeEnum.WDL).subscribe(sourceFile => {
+          this.workflowsService
+            .primaryDescriptor(this.workflow.id, this.selectedVersion.name, ToolDescriptor.TypeEnum.WDL)
+            .subscribe(sourceFile => {
               this.descriptorsService.updatePrimaryDescriptor(sourceFile);
               if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
-                this.workflowsService.secondaryDescriptors(this.workflow.id, this.selectedVersion.name,
-                  ToolDescriptor.TypeEnum.WDL).subscribe(
-                  (sourceFiles: Array<SourceFile>) => {
+                this.workflowsService
+                  .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, ToolDescriptor.TypeEnum.WDL)
+                  .subscribe((sourceFiles: Array<SourceFile>) => {
                     this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
                   });
               }
-          });
+            });
         }
       });
   }
@@ -134,10 +138,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     this.trsUrl = this.trsUrlAsQueryValue = this.workflowPathAsQueryValue = null;
     if (this.workflow && this.selectedVersion) {
       this.trsUrl = this.descriptorsService.trsUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
-      this.trsUrlAsQueryValue = new HttpUrlEncodingCodec()
-        .encodeValue(this.trsUrl);
+      this.trsUrlAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.trsUrl);
       this.workflowPathAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.workflow.full_workflow_path);
     }
   }
-
 }

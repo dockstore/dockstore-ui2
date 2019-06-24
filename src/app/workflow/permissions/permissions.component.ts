@@ -19,7 +19,6 @@ import { AlertService } from '../../shared/alert/state/alert.service';
   styleUrls: ['./permissions.component.scss']
 })
 export class PermissionsComponent implements OnInit {
-
   public Role = RoleEnum;
   public canViewPermissions = false;
   public owners: string[] = [];
@@ -44,9 +43,13 @@ export class PermissionsComponent implements OnInit {
     return this._workflow;
   }
 
-  constructor(private workflowsService: WorkflowsService, private snackBar: MatSnackBar, private alertService: AlertService,
-    private tokenQuery: TokenQuery, private refreshService: RefreshService) {
-  }
+  constructor(
+    private workflowsService: WorkflowsService,
+    private snackBar: MatSnackBar,
+    private alertService: AlertService,
+    private tokenQuery: TokenQuery,
+    private refreshService: RefreshService
+  ) {}
 
   ngOnInit() {
     this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
@@ -94,7 +97,8 @@ export class PermissionsComponent implements OnInit {
   private handleError(e: HttpErrorResponse, defaultMessage: string) {
     this.updating--;
     const message = e.error || defaultMessage;
-    if (e.status === 409) { // A more severe error that deserves more attention than a disappearing snackbar
+    if (e.status === 409) {
+      // A more severe error that deserves more attention than a disappearing snackbar
       this.alertService.detailedError(e);
     } else {
       this.alertService.simpleError();
@@ -110,15 +114,12 @@ export class PermissionsComponent implements OnInit {
         this.canViewPermissions = true;
         this.processResponse(userPermissions);
       },
-      () => {
-      }
+      () => {}
     );
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
-    return permissions
-      .filter(u => u.role === role)
-      .map(c => c.email);
+    return permissions.filter(u => u.role === role).map(c => c.email);
   }
 
   private processResponse(userPermissions: Permission[]): void {
@@ -126,5 +127,4 @@ export class PermissionsComponent implements OnInit {
     this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
     this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
   }
-
 }

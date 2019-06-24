@@ -3,7 +3,6 @@
 </ng-template>
 
 <div *ngIf="!(isLoading$ | async); else loading">
-
   <!-- Curator/Admin Pending Organizations -->
   <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
     <h3>Curator Requests</h3>
@@ -13,17 +12,18 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of (allPendingOrganizations$ | async); let i = index" [id]="'pending-org-card-' + i">
+      <mat-card *ngFor="let org of allPendingOrganizations$ | async; let i = index" [id]="'pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + org.name )" [matTooltip]="org?.name">{{org.displayName}}</a>
+            <a [routerLink]="'/organizations/' + org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
           </mat-card-title>
           <mat-card-subtitle>
-            <p>Requested by user(s)
+            <p>
+              Requested by user(s)
               <span *ngFor="let user of org?.users; let last = last">
                 <strong *ngIf="user?.accepted">{{ user.user.username }}<span *ngIf="!last">, </span></strong>
               </span>
-              on {{ org.dbCreateDate | date}}
+              on {{ org.dbCreateDate | date }}
             </p>
           </mat-card-subtitle>
         </mat-card-header>
@@ -32,10 +32,22 @@
         </mat-card-content>
 
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button mat-flat-button [id]="'reject-pending-org-' + i" class="mr-1" (click)="openDialog(org.displayName, org.id, false)" matTooltip="Reject an organization request">
+          <button
+            mat-flat-button
+            [id]="'reject-pending-org-' + i"
+            class="mr-1"
+            (click)="openDialog(org.displayName, org.id, false)"
+            matTooltip="Reject an organization request"
+          >
             <mat-icon>clear</mat-icon>Reject
           </button>
-          <button mat-flat-button color="primary" [id]="'approve-pending-org-' + i" (click)="openDialog(org.displayName, org.id, true)" matTooltip="Approve an organization request">
+          <button
+            mat-flat-button
+            color="primary"
+            [id]="'approve-pending-org-' + i"
+            (click)="openDialog(org.displayName, org.id, true)"
+            matTooltip="Approve an organization request"
+          >
             <mat-icon>done</mat-icon>Approve
           </button>
         </mat-card-actions>
@@ -52,14 +64,14 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let membership of (myPendingOrganizationRequests$ | async); let i = index" [id]="'my-pending-org-card-' + i">
+      <mat-card *ngFor="let membership of myPendingOrganizationRequests$ | async; let i = index" [id]="'my-pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + membership.organization?.name )" [matTooltip]="membership.organization?.name">{{membership.organization.displayName}}</a>
+            <a [routerLink]="'/organizations/' + membership.organization?.name" [matTooltip]="membership.organization?.name">{{
+              membership.organization.displayName
+            }}</a>
           </mat-card-title>
-          <mat-card-subtitle>
-            Requested on {{ membership.dbCreateDate | date}}
-          </mat-card-subtitle>
+          <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
@@ -72,21 +84,27 @@
       <mat-icon>info</mat-icon> You have no rejected organizations.
     </mat-card>
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let membership of (myRejectedOrganizationRequests$ | async); let i = index" [id]="'my-rejected-org-card-' + i">
+      <mat-card *ngFor="let membership of myRejectedOrganizationRequests$ | async; let i = index" [id]="'my-rejected-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <mat-icon color="primary" matTooltip="This organization has been rejected">warning</mat-icon>
-            <a [routerLink]="('/organizations/' + membership.organization?.name )" [matTooltip]="membership.organization?.name">{{membership.organization.displayName}}</a>
+            <a [routerLink]="'/organizations/' + membership.organization?.name" [matTooltip]="membership.organization?.name">{{
+              membership.organization.displayName
+            }}</a>
           </mat-card-title>
-          <mat-card-subtitle>
-            Requested on {{ membership.dbCreateDate | date}}
-          </mat-card-subtitle>
+          <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
         </mat-card-content>
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button mat-flat-button color="primary" [id]="'request-re-review-' + i" (click)="rerequestReview(membership)" matTooltip="Request a re-review of a rejected organization">
+          <button
+            mat-flat-button
+            color="primary"
+            [id]="'request-re-review-' + i"
+            (click)="rerequestReview(membership)"
+            matTooltip="Request a re-review of a rejected organization"
+          >
             <mat-icon>cached</mat-icon>Request Re-review
           </button>
         </mat-card-actions>
@@ -103,26 +121,37 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let membership of (myOrganizationInvites$ | async); let i = index" [id]="'my-org-invites-card-' + i">
+      <mat-card *ngFor="let membership of myOrganizationInvites$ | async; let i = index" [id]="'my-org-invites-card-' + i">
         <mat-card-header>
           <mat-card-title>
-            <a [routerLink]="('/organizations/' + membership.organization?.name )" [matTooltip]="membership.organization?.name">{{membership.organization.displayName}}</a>
+            <a [routerLink]="'/organizations/' + membership.organization?.name" [matTooltip]="membership.organization?.name">{{
+              membership.organization.displayName
+            }}</a>
           </mat-card-title>
-          <mat-card-subtitle>
-            Requested on {{ membership.dbCreateDate | date}}
-          </mat-card-subtitle>
+          <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
-          You have been invited to join the organization with the role <strong>{{ membership.role | lowercase }}</strong>.
+          You have been invited to join the organization with the role <strong>{{ membership.role | lowercase }}</strong
+          >.
         </mat-card-content>
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button mat-flat-button class="mr-1" [id]="'reject-invite-org-' + i" (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, false)"
-            matTooltip="Decline an organization invite">
+          <button
+            mat-flat-button
+            class="mr-1"
+            [id]="'reject-invite-org-' + i"
+            (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, false)"
+            matTooltip="Decline an organization invite"
+          >
             <mat-icon>clear</mat-icon>Decline
           </button>
-          <button mat-flat-button color="primary" [id]="'accept-invite-org-' + i" (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, true)"
-            matTooltip="Accept an organization invite">
+          <button
+            mat-flat-button
+            color="primary"
+            [id]="'accept-invite-org-' + i"
+            (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, true)"
+            matTooltip="Accept an organization invite"
+          >
             <mat-icon>done</mat-icon>Accept
           </button>
         </mat-card-actions>

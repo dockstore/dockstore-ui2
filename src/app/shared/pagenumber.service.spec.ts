@@ -24,8 +24,8 @@ describe('PagenumberService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [PagenumberService],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      imports: [ RouterTestingModule]
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule]
     });
   });
 

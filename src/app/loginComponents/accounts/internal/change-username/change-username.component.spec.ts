@@ -23,7 +23,7 @@ describe('ChangeUsernameComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChangeUsernameComponent ],
+      declarations: [ChangeUsernameComponent],
       imports: [
         ReactiveFormsModule,
         MatIconModule,
@@ -40,8 +40,7 @@ describe('ChangeUsernameComponent', () => {
         { provide: UsersService, useClass: UsersStubService },
         { provide: RefreshService, useClass: RefreshStubService }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

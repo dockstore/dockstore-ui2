@@ -14,10 +14,26 @@
   ~    limitations under the License.
   -->
 
-<button id="deregisterButton" mat-raised-button color="warn" (click)="staticModal.show()" matTooltip="Delete the tool" [disabled]="refreshMessage">
+<button
+  id="deregisterButton"
+  mat-raised-button
+  color="warn"
+  (click)="staticModal.show()"
+  matTooltip="Delete the tool"
+  [disabled]="refreshMessage"
+>
   Delete
 </button>
-<div class="modal fade" bsModal #staticModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  bsModal
+  #staticModal="bs-modal"
+  [config]="{ backdrop: 'static' }"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="mySmallModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -28,7 +44,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" mat-button color="secondary" (click)="staticModal.hide()">Close</button>
-        <button id="deregisterConfirmButton" type="button" mat-flat-button color="warn" (click)="deregister(); staticModal.hide()" >
+        <button id="deregisterConfirmButton" type="button" mat-flat-button color="warn" (click)="deregister(); staticModal.hide()">
           Delete
         </button>
       </div>

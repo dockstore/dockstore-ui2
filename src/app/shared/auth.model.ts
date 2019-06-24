@@ -16,7 +16,7 @@
 import { Dockstore } from '../shared/dockstore.model';
 
 export const AuthConfig = {
-  defaultHeaders: {'Content-Type': 'application/json'},
+  defaultHeaders: { 'Content-Type': 'application/json' },
   providers: {
     github: {
       url: Dockstore.API_URI + '/auth/tokens/github',

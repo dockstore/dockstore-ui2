@@ -63,9 +63,11 @@ export class ToolTabComponent extends EntryTab {
     super();
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.toolExcerptHeaderName$ = this.descriptorType$.pipe(
-      map(descriptorType => this.toolTabService.descriptorTypeToHeaderName(descriptorType)));
+      map(descriptorType => this.toolTabService.descriptorTypeToHeaderName(descriptorType))
+    );
     this.workflowExcerptRowHeading$ = this.descriptorType$.pipe(
-      map(descriptorType => this.toolTabService.descriptorTypeToWorkflowExcerptRowHeading(descriptorType)));
+      map(descriptorType => this.toolTabService.descriptorTypeToWorkflowExcerptRowHeading(descriptorType))
+    );
   }
 
   /**
@@ -78,13 +80,18 @@ export class ToolTabComponent extends EntryTab {
   getTableToolContent(workflowId: number, versionId: number): void {
     if (workflowId && versionId) {
       this.loading = true;
-      this.workflowsService.getTableToolContent(workflowId, versionId).pipe(finalize(() => this.loading = false)).subscribe(
-        (toolContent) => {
-          this.handleToolContent(toolContent);
-        }, error => {
-          console.log('Could not retrieve table tool content');
-          this.handleToolContent(null);
-        });
+      this.workflowsService
+        .getTableToolContent(workflowId, versionId)
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe(
+          toolContent => {
+            this.handleToolContent(toolContent);
+          },
+          error => {
+            console.log('Could not retrieve table tool content');
+            this.handleToolContent(null);
+          }
+        );
     } else {
       this.handleNullToolContent();
     }

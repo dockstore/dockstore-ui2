@@ -33,9 +33,7 @@ import { FilesQuery } from '../../workflow/files/state/files.query';
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.scss']
 })
-
 export class ParamfilesComponent extends EntryFileSelector {
-
   @Input() id: number;
   @Input() entrypath: string;
   @Input() publicPage: boolean;
@@ -45,12 +43,20 @@ export class ParamfilesComponent extends EntryFileSelector {
     this.checkIfValid(false, value);
   }
   public filePath: string;
-  protected entryType: ('tool' | 'workflow') = 'tool';
+  protected entryType: 'tool' | 'workflow' = 'tool';
   public downloadFilePath: string;
-  constructor(private containerService: ContainerService, private containersService: ContainersService,
-    protected gA4GHService: GA4GHService, private paramfilesService: ParamfilesService, protected gA4GHFilesService: GA4GHFilesService,
-    public fileService: FileService, private gA4GHFilesQuery: GA4GHFilesQuery, private toolQuery: ToolQuery,
-    protected filesService: FilesService, protected filesQuery: FilesQuery) {
+  constructor(
+    private containerService: ContainerService,
+    private containersService: ContainersService,
+    protected gA4GHService: GA4GHService,
+    private paramfilesService: ParamfilesService,
+    protected gA4GHFilesService: GA4GHFilesService,
+    public fileService: FileService,
+    private gA4GHFilesQuery: GA4GHFilesQuery,
+    private toolQuery: ToolQuery,
+    protected filesService: FilesService,
+    protected filesQuery: FilesQuery
+  ) {
     super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.toolQuery.toolIsPublished$;
   }

@@ -120,13 +120,20 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
      * due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
      */
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(event => {
-      if (this.groupEntriesObject && this.groupSharedEntriesObject) {
-        const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
-          this.groupEntriesObject.concat(this.groupSharedEntriesObject));
-        this.selectEntry(foundWorkflow);
-      }
-    });
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(event => {
+        if (this.groupEntriesObject && this.groupSharedEntriesObject) {
+          const foundWorkflow = this.findEntryFromPath(
+            this.urlResolverService.getEntryPathFromUrl(),
+            this.groupEntriesObject.concat(this.groupSharedEntriesObject)
+          );
+          this.selectEntry(foundWorkflow);
+        }
+      });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
     this.myworkflowService.clearPartialState();
@@ -153,22 +160,29 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             );
             this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
-          // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh), the url needs to be
-          // used to set the workflow onInit. Otherwise, the select-tab.pipe results in really strange behaviour. Not entirely sure why.
-          this.workflowService.setWorkflow(this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(),
-            this.groupEntriesObject.concat(this.groupSharedEntriesObject)));
-          // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
-          if (!this.workflow) {
-            if (this.workflows.length > 0) {
-              this.selectInitialEntry(sortedWorkflows);
-            } else if (this.sharedWorkflows.length > 0) {
-              this.selectInitialEntry(sortedSharedWorkflows);
+            // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),
+            // the url needs to be used to set the workflow onInit.
+            // Otherwise, the select - tab.pipe results in really strange behaviour. Not entirely sure why.
+            this.workflowService.setWorkflow(
+              this.findEntryFromPath(
+                this.urlResolverService.getEntryPathFromUrl(),
+                this.groupEntriesObject.concat(this.groupSharedEntriesObject)
+              )
+            );
+            // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
+            if (!this.workflow) {
+              if (this.workflows.length > 0) {
+                this.selectInitialEntry(sortedWorkflows);
+              } else if (this.sharedWorkflows.length > 0) {
+                this.selectInitialEntry(sortedSharedWorkflows);
+              }
             }
           }
+        },
+        error => {
+          console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
-      }, error => {
-        console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
-      });
+      );
   }
 
   private getMyEntries() {

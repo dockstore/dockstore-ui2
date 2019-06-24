@@ -18,8 +18,8 @@ import { Store, StoreConfig } from '@datorama/akita';
 import { Workflow, Entry } from '../swagger';
 
 export interface CheckerWorkflowState {
-   entry: Entry;
-   checkerWorkflow: Workflow;
+  entry: Entry;
+  checkerWorkflow: Workflow;
 }
 
 export function createInitialState(): CheckerWorkflowState {
@@ -32,10 +32,7 @@ export function createInitialState(): CheckerWorkflowState {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'checkerWorkflow' })
 export class CheckerWorkflowStore extends Store<CheckerWorkflowState> {
-
   constructor() {
     super(createInitialState());
   }
-
 }
-

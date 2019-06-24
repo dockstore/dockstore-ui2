@@ -29,10 +29,9 @@ describe('DocsComponent', () => {
   // let fixture: ComponentFixture<DocsComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DocsComponent, RouterLinkStubDirective, RouterOutletStubComponent ],
+      declarations: [DocsComponent, RouterLinkStubDirective, RouterOutletStubComponent],
       imports: [HeaderModule]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   // beforeEach(() => {

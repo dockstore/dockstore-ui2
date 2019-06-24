@@ -29,4 +29,4 @@ import { CustomMaterialModule } from './modules/material.module';
   exports: [VerifiedDisplayComponent],
   entryComponents: [AvailableLogsComponent]
 })
-export class AvailableLogsModule { }
+export class AvailableLogsModule {}

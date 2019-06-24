@@ -18,17 +18,15 @@ import { Store, StoreConfig } from '@datorama/akita';
 import { EntryType } from '../enum/entry-type';
 
 export interface SessionState {
-   isPublic: boolean;
-   entryType: EntryType;
+  isPublic: boolean;
+  entryType: EntryType;
 }
-​
 export function createInitialState(): SessionState {
   return {
     isPublic: true,
     entryType: null
   };
 }
-​
 /**
  * This store is for app-wide state information such as:
  * whether the current public page or not

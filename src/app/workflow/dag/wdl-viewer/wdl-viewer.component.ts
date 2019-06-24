@@ -30,10 +30,9 @@ import { WdlViewerService } from './state/wdl-viewer.service';
   selector: 'app-wdl-viewer',
   templateUrl: './wdl-viewer.html',
   styleUrls: ['./wdl-viewer.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class WdlViewerComponent implements AfterViewInit, OnDestroy {
-
   @Input() workflow: Workflow;
   @Input() expanded: boolean;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -50,17 +49,23 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
   private versionChanged = false;
   private visualizer: any;
 
-  constructor(private wdlViewerService: WdlViewerService, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-    protected workflowsService: WorkflowsService, private renderer: Renderer2, private workflowQuery: WorkflowQuery,
-    private wdlViewerQuery: WdlViewerQuery) {
-  }
-
+  constructor(
+    private wdlViewerService: WdlViewerService,
+    public fileService: FileService,
+    protected gA4GHFilesService: GA4GHFilesService,
+    protected workflowsService: WorkflowsService,
+    private renderer: Renderer2,
+    private workflowQuery: WorkflowQuery,
+    private wdlViewerQuery: WdlViewerQuery
+  ) {}
 
   ngAfterViewInit() {
     this.visualizer = new pipeline.Visualizer(this.diagram.nativeElement, false);
 
     // Retrieve all files for this workflow from Ga4ghFiles entity Store
-    this.wdlViewerService.getFiles(ToolDescriptor.TypeEnum.WDL).pipe(takeUntil(this.ngUnsubscribe))
+    this.wdlViewerService
+      .getFiles(ToolDescriptor.TypeEnum.WDL)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
         // Do not re-create the WDL visualization if the workflow version is not different
         if (!this.versionChanged) {
@@ -68,31 +73,37 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
         }
 
         // Add delay so parent component can finish rendering its view before the status is set
-        this.wdlViewerQuery.selectEntity(this.version.id).pipe(delay(0), takeUntil(this.ngUnsubscribe))
+        this.wdlViewerQuery
+          .selectEntity(this.version.id)
+          .pipe(
+            delay(0),
+            takeUntil(this.ngUnsubscribe)
+          )
           .subscribe((wdlViewerPipelineResponse: WdlViewerPipelineResponse) => {
             this.wdlViewerError = false;
 
             if (wdlViewerPipelineResponse) {
-
               // Attach cached pipeline to the DOM element
               this.visualizer.attachTo(wdlViewerPipelineResponse.model[0]);
               this.clearProgressBar();
               this.wdlViewerService.setStatus(true);
-
             } else if (files && files.length > 0 && this.version.id) {
-
               // Create the Epam WDL visualization and attach the result to the DOM element. Stop subscribing after first completion
-              this.wdlViewerService.create(files, this.workflow, this.version).pipe(take(1))
-                .subscribe((res: WdlViewerPipelineResponse) => {
+              this.wdlViewerService
+                .create(files, this.workflow, this.version)
+                .pipe(take(1))
+                .subscribe(
+                  (res: WdlViewerPipelineResponse) => {
                     this.wdlViewerService.update(this.workflow.id, this.version.id, res);
                   },
                   (error: Error) => {
                     this.showError(error);
-                  });
+                  }
+                );
             } else {
               this.showError();
             }
-        });
+          });
       });
   }
 

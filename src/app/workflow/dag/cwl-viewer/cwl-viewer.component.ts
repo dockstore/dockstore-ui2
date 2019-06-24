@@ -28,9 +28,7 @@ import { takeUntil } from 'rxjs/operators';
   providers: [CwlViewerService],
   styleUrls: ['./cwl-viewer.scss']
 })
-
 export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() selectedVersion: WorkflowVersion;
   @Input() set refresh(value: any) {
     this.resetZoom();
@@ -46,17 +44,14 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   private onDestroy$ = new Subject<void>();
 
-  constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowQuery: ExtendedWorkflowQuery) {
-  }
+  constructor(private cwlViewerService: CwlViewerService, private extendedWorkflowQuery: ExtendedWorkflowQuery) {}
 
   ngOnInit(): void {
     this.cwlViewerDescriptor = null;
-    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe(
-      workflow => {
-        this.extendedWorkflow = workflow;
-        this.updateCwlViewerImg();
-      }
-    );
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe(workflow => {
+      this.extendedWorkflow = workflow;
+      this.updateCwlViewerImg();
+    });
   }
 
   ngOnChanges(): void {
@@ -86,8 +81,13 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
       this.loading = true;
       this.cwlViewerDescriptor = null;
       this.errorMessage = null;
-      this.cwlViewerService.getVisualizationUrls(this.extendedWorkflow.providerUrl, this.selectedVersion.reference,
-        this.selectedVersion.workflow_path, this.onDestroy$)
+      this.cwlViewerService
+        .getVisualizationUrls(
+          this.extendedWorkflow.providerUrl,
+          this.selectedVersion.reference,
+          this.selectedVersion.workflow_path,
+          this.onDestroy$
+        )
         .subscribe(
           cwlViewerDescriptor => {
             this.cwlViewerDescriptor = cwlViewerDescriptor;
@@ -95,13 +95,13 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
             this.loading = false;
             this.resetZoom();
           },
-          (error) => {
+          error => {
             this.errorMessage = error.message || 'Unknown error';
             this.cwlViewerDescriptor = null;
             this.cwlViewerError = true;
             this.loading = false;
-          });
+          }
+        );
     }
   }
-
 }

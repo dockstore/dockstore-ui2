@@ -42,9 +42,14 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
-  constructor(private checkerWorkflowService: CheckerWorkflowService, private checkerWorkflowQuery: CheckerWorkflowQuery,
-    private registerCheckerWorkflowService: RegisterCheckerWorkflowService, private alertQuery: AlertQuery,
-    private sessionQuery: SessionQuery, private matDialog: MatDialog) {
+  constructor(
+    private checkerWorkflowService: CheckerWorkflowService,
+    private checkerWorkflowQuery: CheckerWorkflowQuery,
+    private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
+    private alertQuery: AlertQuery,
+    private sessionQuery: SessionQuery,
+    private matDialog: MatDialog
+  ) {
     super();
   }
 
@@ -54,14 +59,16 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
     this.isPublic$ = this.sessionQuery.isPublic$;
     this.isStub$ = this.checkerWorkflowQuery.isStub$;
     this.checkerWorkflowURL$ = this.checkerWorkflowService.getCheckerWorkflowURLObservable(
-      this.checkerWorkflowQuery.checkerWorkflow$, this.isPublic$);
+      this.checkerWorkflowQuery.checkerWorkflow$,
+      this.isPublic$
+    );
     this.checkerId$ = this.checkerWorkflowQuery.checkerId$;
     this.canAdd$ = this.checkerWorkflowService.canAdd(this.checkerId$, this.parentId$, this.isStub$);
   }
 
   add(): void {
     this.registerCheckerWorkflowService.add();
-    const dialogRef = this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px'});
+    const dialogRef = this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px' });
   }
 
   delete(): void {

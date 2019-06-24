@@ -5,16 +5,15 @@ import { ToolDescriptor } from '../../shared/swagger';
   providedIn: 'root'
 })
 export class ToolTabService {
-
-  constructor() { }
+  constructor() {}
 
   /**
-     * Determines the second column's header name. No break needed because headings are always short.
-     *
-     * @param {ToolDescriptor.TypeEnum} descriptorType  The current workflow's descriptor type
-     * @returns {string}                                The heading
-     * @memberof ToolTabService
-     */
+   * Determines the second column's header name. No break needed because headings are always short.
+   *
+   * @param {ToolDescriptor.TypeEnum} descriptorType  The current workflow's descriptor type
+   * @returns {string}                                The heading
+   * @memberof ToolTabService
+   */
   descriptorTypeToHeaderName(descriptorType: ToolDescriptor.TypeEnum): string {
     switch (descriptorType) {
       case ToolDescriptor.TypeEnum.CWL:
@@ -53,4 +52,3 @@ export class ToolTabService {
     }
   }
 }
-

@@ -14,5 +14,4 @@ export class EventsQuery extends QueryEntity<EventsState, Event> {
   constructor(protected store: EventsStore) {
     super(store);
   }
-
 }

@@ -57,8 +57,20 @@ cd dockstore-ui2
 git checkout develop
 git pull
 
-CI=true npm ci
+npm ci
 ```
+`npm ci` will install all npm dependencies including Prettier and the Husky Git hook. 
+Ensure `CI=true` is not set when using `npm ci` or else the Git hook will not work.
+Prettier + Husky will automatically format changed files before each commit:
+```
+$ git commit -m "Test"
+ghusky > pre-commit (node v10.13.0)
+  ↓ Stashing changes... [skipped]
+    → No partially staged files found...
+  ✔ Running linters...
+[feature/2130/prettier b6da3e7c] Test
+```
+
 
 Check to make sure Angular CLI has been properly set up
 ```

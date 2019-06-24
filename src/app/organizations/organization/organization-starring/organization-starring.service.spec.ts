@@ -1,17 +1,19 @@
-import {inject, TestBed} from '@angular/core/testing';
-import {OrganizationsService, UsersService} from '../../../shared/swagger';
-import {OrganizationsStubService, UsersStubService} from '../../../test/service-stubs';
-import {OrganizationStarringService} from './organization-starring.service';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {RequestsService} from '../../../loginComponents/state/requests.service';
+import { inject, TestBed } from '@angular/core/testing';
+import { OrganizationsService, UsersService } from '../../../shared/swagger';
+import { OrganizationsStubService, UsersStubService } from '../../../test/service-stubs';
+import { OrganizationStarringService } from './organization-starring.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RequestsService } from '../../../loginComponents/state/requests.service';
 
 describe('OrganizationStarringService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [OrganizationStarringService, RequestsService,
-        {provide: UsersService, useClass: UsersStubService},
-        {provide: OrganizationsService, useClass: OrganizationsStubService}
+      providers: [
+        OrganizationStarringService,
+        RequestsService,
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: OrganizationsService, useClass: OrganizationsStubService }
       ]
     });
   });

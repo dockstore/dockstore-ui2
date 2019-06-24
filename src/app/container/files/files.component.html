@@ -16,27 +16,24 @@
 
 <mat-tab-group mat-stretch-tabs>
   <mat-tab label="Dockerfile">
-    <app-dockerfile [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
-    </app-dockerfile>
+    <app-dockerfile [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage"> </app-dockerfile>
   </mat-tab>
 
   <mat-tab label="Descriptor Files">
     <ng-template matTabContent>
-    <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
-    </app-descriptors-container>
-  </ng-template>
+      <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
+      </app-descriptors-container>
+    </ng-template>
   </mat-tab>
 
   <mat-tab label="Test Parameter Files">
-      <ng-template matTabContent>
-    <app-paramfiles-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
-    </app-paramfiles-container>
+    <ng-template matTabContent>
+      <app-paramfiles-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
+      </app-paramfiles-container>
     </ng-template>
   </mat-tab>
 </mat-tab-group>
 
 <div *ngIf="!versions">
-  <mat-card class="alert alert-info" role="alert">
-    <mat-icon>warning</mat-icon> No files will be shown for invalid versions.
-  </mat-card>
+  <mat-card class="alert alert-info" role="alert"> <mat-icon>warning</mat-icon> No files will be shown for invalid versions. </mat-card>
 </div>

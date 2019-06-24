@@ -11,7 +11,7 @@ describe('OrganizationMembersService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationMembersService, OrganizationMembersStore],
-      imports: [ HttpClientTestingModule, MatSnackBarModule ]
+      imports: [HttpClientTestingModule, MatSnackBarModule]
     });
 
     organizationMembersService = TestBed.get(OrganizationMembersService);
@@ -21,5 +21,4 @@ describe('OrganizationMembersService', () => {
   it('should be created', () => {
     expect(organizationMembersService).toBeDefined();
   });
-
 });

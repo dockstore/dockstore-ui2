@@ -1,45 +1,85 @@
 <h4 mat-dialog-title>Register Checker Workflow</h4>
 <div mat-dialog-content>
-        <app-alert></app-alert>
-        <form #registerCheckerWorkflowForm="ngForm" name="registerCheckerWorkflowForm" class="form-horizontal" (submit)="registerCheckerWorkflow()" novalidate>
-          <div class="modal-body">
-            <div class="form-group form-group-sm">
-              <label class="col-sm-3 control-label">
-                Default Descriptor Path:
-              </label>
-              <div class="col-sm-9">
-                <input type="text" id="checkerWorkflowPath" class="form-control" name="workflow_path" [(ngModel)]="workflowPath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.workflowDescriptorPath"
-                  required matTooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl" />
-                <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
-              </div>
-            </div>
-            <div class="form-group form-group-sm">
-              <label class="col-sm-3 control-label">
-                Default Test Parameter File Path:
-              </label>
-              <div class="col-sm-9">
-                <input type="text" id="checkerWorkflowTestParameterFilePath" class="form-control" name="testParameterFilePath" [(ngModel)]="testParameterFilePath" minlength="3" maxlength="256" [pattern]="validationDescriptorPatterns.testParameterFilePath"
-                  required matTooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /test.json" />
-                <mat-card *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </mat-card>
-              </div>
-            </div>
-            <div class="form-group form-group-sm" *ngIf="!isWorkflow">
-              <label class="col-sm-3 control-label" matTooltip="Type of descriptor language used">Descriptor Type:
-              </label>
-              <div class="col-sm-9">
-                <select class="form-control input-sm" [(ngModel)]="descriptorType" (ngModelChange)="onDescriptorTypeChange($event)" name="descriptorType">
-                  <option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{descriptorLanguage}}">{{descriptorLanguage}}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" mat-button color="secondary" data-dismiss="modal" mat-dialog-close>
-              Close
-            </button>
-            <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerCheckerWorkflowForm.form.valid || (isRefreshing$ | async)">
-              {{ (mode$ | async )==='add' ? 'Add Checker Workflow' : 'Save Checker Workflow' }}
-            </button>
-          </div>
-        </form>
+  <app-alert></app-alert>
+  <form
+    #registerCheckerWorkflowForm="ngForm"
+    name="registerCheckerWorkflowForm"
+    class="form-horizontal"
+    (submit)="registerCheckerWorkflow()"
+    novalidate
+  >
+    <div class="modal-body">
+      <div class="form-group form-group-sm">
+        <label class="col-sm-3 control-label">
+          Default Descriptor Path:
+        </label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            id="checkerWorkflowPath"
+            class="form-control"
+            name="workflow_path"
+            [(ngModel)]="workflowPath"
+            minlength="3"
+            maxlength="256"
+            [pattern]="validationDescriptorPatterns.workflowDescriptorPath"
+            required
+            matTooltip="Default relative path to the CWL Descriptor in the Git repository."
+            placeholder="e.g. /Dockstore.cwl"
+          />
+          <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="col-sm-3 control-label">
+          Default Test Parameter File Path:
+        </label>
+        <div class="col-sm-9">
+          <input
+            type="text"
+            id="checkerWorkflowTestParameterFilePath"
+            class="form-control"
+            name="testParameterFilePath"
+            [(ngModel)]="testParameterFilePath"
+            minlength="3"
+            maxlength="256"
+            [pattern]="validationDescriptorPatterns.testParameterFilePath"
+            required
+            matTooltip="Default relative path to the WDL Descriptor in the Git repository."
+            placeholder="e.g. /test.json"
+          />
+          <mat-card *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </mat-card>
+        </div>
+      </div>
+      <div class="form-group form-group-sm" *ngIf="!isWorkflow">
+        <label class="col-sm-3 control-label" matTooltip="Type of descriptor language used">Descriptor Type: </label>
+        <div class="col-sm-9">
+          <select
+            class="form-control input-sm"
+            [(ngModel)]="descriptorType"
+            (ngModelChange)="onDescriptorTypeChange($event)"
+            name="descriptorType"
+          >
+            <option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{ descriptorLanguage }}">{{
+              descriptorLanguage
+            }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" mat-button color="secondary" data-dismiss="modal" mat-dialog-close>
+        Close
+      </button>
+      <button
+        id="submitButton"
+        type="submit"
+        mat-flat-button
+        color="primary"
+        [disabled]="!registerCheckerWorkflowForm.form.valid || (isRefreshing$ | async)"
+      >
+        {{ (mode$ | async) === 'add' ? 'Add Checker Workflow' : 'Save Checker Workflow' }}
+      </button>
+    </div>
+  </form>
 </div>

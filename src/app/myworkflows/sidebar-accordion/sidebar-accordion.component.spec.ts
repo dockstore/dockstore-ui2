@@ -17,18 +17,8 @@ describe('SidebarAccordionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        SidebarAccordionComponent,
-        RefreshWorkflowOrganizationComponent,
-        ExpandPanelPipe,
-        SelectTabPipe,
-        GithubNameToIdPipe
-      ],
-      imports: [
-        HttpClientTestingModule,
-        CustomMaterialModule,
-        RouterTestingModule
-      ],
+      declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, ExpandPanelPipe, SelectTabPipe, GithubNameToIdPipe],
+      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
       providers: [
         {
           provide: RegisterWorkflowModalService,

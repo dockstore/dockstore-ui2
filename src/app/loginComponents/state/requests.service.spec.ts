@@ -11,8 +11,7 @@ describe('RequestsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [RequestsService, RequestsStore],
-      imports: [ HttpClientTestingModule,
-        MatSnackBarModule ]
+      imports: [HttpClientTestingModule, MatSnackBarModule]
     });
 
     requestsService = TestBed.get(RequestsService);
@@ -22,5 +21,4 @@ describe('RequestsService', () => {
   it('should be created', () => {
     expect(requestsService).toBeDefined();
   });
-
 });

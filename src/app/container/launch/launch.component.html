@@ -31,7 +31,7 @@
         <div class="col-sm-4">
           <mat-form-field class="m-2">
             <mat-select name="toolVersions" [(value)]="currentDescriptor" (selectionChange)="reactToDescriptor($event)">
-              <mat-option *ngFor="let descriptor of filteredDescriptors" [value]="descriptor">{{descriptor}}</mat-option>
+              <mat-option *ngFor="let descriptor of filteredDescriptors" [value]="descriptor">{{ descriptor }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -48,19 +48,23 @@
         </mat-card>
         <div *ngIf="currentDescriptor === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <mat-card class="m-2" [matTooltip]="cwlrunnerTooltip">
-            {{cwlrunnerDescription}}
+            {{ cwlrunnerDescription }}
             <pre>{{ cwl }}</pre>
           </mat-card>
           <mat-card class="m-2" [matTooltip]="cwltoolTooltip">
-            Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently
-            run a tool off of dockstore.org and other <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH
-              tool registries</a> when all inputs and outputs are available on the local filesystem or via HTTP(S):
+            Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a tool off of
+            dockstore.org and other
+            <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when
+            all inputs and outputs are available on the local filesystem or via HTTP(S):
             <pre>{{ dockstoreSupportedCwlLaunch }}</pre>
             cwltool can also be used to create the input template:
             <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
           </mat-card>
-          <mat-card class="m-2" matTooltip="Commands for launching tool through Consonance: a DIY open-source framework for
-        spinning up VMs and running tools on AWS EC2">
+          <mat-card
+            class="m-2"
+            matTooltip="Commands for launching tool through Consonance: a DIY open-source framework for
+        spinning up VMs and running tools on AWS EC2"
+          >
             <a href="https://github.com/Consonance/consonance/wiki">Run on AWS VMs with Consonance</a>
             <pre>{{ consonance }}</pre>
           </mat-card>

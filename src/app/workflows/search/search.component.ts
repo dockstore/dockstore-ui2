@@ -20,4 +20,4 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-search-workflows',
   templateUrl: './search.component.html'
 })
-export class SearchWorkflowsComponent { }
+export class SearchWorkflowsComponent {}

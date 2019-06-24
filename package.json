@@ -64,6 +64,7 @@
     "pipeline-builder": "^0.3.10-dev.298",
     "rxjs": "^6.3.3",
     "ts-md5": "^1.2.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.2.4",
     "zone.js": "^0.8.29"
   },
@@ -83,6 +84,7 @@
     "@types/node": "^6.0.60",
     "akita-schematics": "^2.0.1",
     "codelyzer": "^4.5.0",
+    "husky": "^2.4.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^4.0.1",
@@ -92,11 +94,24 @@
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-spec-reporter": "0.0.32",
+    "lint-staged": "^8.2.1",
+    "prettier": "^1.18.2",
     "protractor": "^5.4.1",
     "rxjs-tslint": "^0.1.5",
     "rxjs-tslint-rules": "^4.10.0",
     "ts-loader": "^5.3.3",
     "ts-node": "~5.0.1",
     "tslint": "^5.11.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,html,js,css,scss,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

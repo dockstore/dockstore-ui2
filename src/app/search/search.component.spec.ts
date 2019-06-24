@@ -22,12 +22,7 @@ import { of } from 'rxjs';
 
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { ProviderService } from '../shared/provider.service';
-import {
-  AdvancedSearchStubService,
-  ProviderStubService,
-  QueryBuilderStubService,
-  SearchStubService,
-} from './../test/service-stubs';
+import { AdvancedSearchStubService, ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
 import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
@@ -61,17 +56,16 @@ describe('SearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
+      declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
       imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule],
       providers: [
-        { provide: SearchService, useClass: SearchStubService},
+        { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService},
+        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService },
         { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select']) }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

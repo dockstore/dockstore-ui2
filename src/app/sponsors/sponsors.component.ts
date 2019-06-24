@@ -29,16 +29,20 @@ import { SponsorsService } from './sponsors.service';
   providers: [SponsorsService]
 })
 export class SponsorsComponent extends Base implements OnInit {
-
   public sponsors: Sponsor[];
   public partners: Sponsor[];
   public showSecondRow = false;
 
   constructor(private sponsorsService: SponsorsService, private location: Location, private router: Router) {
     super();
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => {
         this.hideSecondRow();
-    });
+      });
   }
 
   ngOnInit() {
@@ -56,5 +60,4 @@ export class SponsorsComponent extends Base implements OnInit {
       this.showSecondRow = false;
     }
   }
-
 }

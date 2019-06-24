@@ -21,9 +21,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./mytools.component.css']
 })
 export class MyToolsComponent implements OnInit {
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

@@ -5,11 +5,8 @@ import { MatIconModule } from '@angular/material';
 import { PrivateIconComponent } from './private-icon.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatIconModule
-  ],
+  imports: [CommonModule, MatIconModule],
   declarations: [PrivateIconComponent],
   exports: [PrivateIconComponent]
 })
-export class PrivateIconModule { }
+export class PrivateIconModule {}

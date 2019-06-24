@@ -4,7 +4,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'removeExtension'
 })
 export class RemoveExtensionPipe implements PipeTransform {
-
   /**
    * This removes the extension of the log filename so that only the seconds from epoch remains
    *

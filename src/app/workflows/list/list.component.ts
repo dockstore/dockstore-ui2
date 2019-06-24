@@ -41,8 +41,10 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
     private dockstoreService: DockstoreService,
     private workflowsService: WorkflowsService,
     protected providerService: ProviderService,
-    protected workflowQuery: WorkflowQuery, paginatorService: PaginatorService,
-    dateService: DateService, protected paginatorQuery: PaginatorQuery,
+    protected workflowQuery: WorkflowQuery,
+    paginatorService: PaginatorService,
+    dateService: DateService,
+    protected paginatorQuery: PaginatorQuery,
     protected sessionQuery: SessionQuery
   ) {
     super(paginatorService, providerService, dateService, sessionQuery);

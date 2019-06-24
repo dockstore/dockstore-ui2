@@ -21,7 +21,7 @@ import { FileService } from './../../shared/file.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DockerfileComponent } from './dockerfile.component';
-class DockerFileStubService { }
+class DockerFileStubService {}
 
 describe('DockerfileComponent', () => {
   let component: DockerfileComponent;
@@ -29,15 +29,14 @@ describe('DockerfileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DockerfileComponent ],
+      declarations: [DockerfileComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: FileService, useClass: FileStubService },
         { provide: ContainerService, useClass: ContainerStubService },
-        { provide: ContainersService, useClass: ContainersStubService}
+        { provide: ContainersService, useClass: ContainersStubService }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

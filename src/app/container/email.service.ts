@@ -4,8 +4,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class EmailService {
-
-constructor(private dockstoreService: DockstoreService) { }
+  constructor(private dockstoreService: DockstoreService) {}
   /**
    * Compose the href for an email
    * @param email The mailto address
@@ -62,8 +61,7 @@ constructor(private dockstoreService: DockstoreService) { }
    * @param toolRegistry The tool registry (Quay.io, GitLab, etc) of the tool whose access is being requested
    */
   private getRequestEmailBody(path: string, toolRegistry: string): string {
-    return encodeURI(`I would like to request access to your Docker image ${path}. ` +
-    `My user name on ${toolRegistry} is <username>`);
+    return encodeURI(`I would like to request access to your Docker image ${path}. ` + `My user name on ${toolRegistry} is <username>`);
   }
 
   // Contact Author button methods

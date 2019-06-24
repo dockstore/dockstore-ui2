@@ -8,8 +8,7 @@ import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
   providedIn: 'root'
 })
 export class MyBioWorkflowsService {
-
-  constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private location: Location) { }
+  constructor(private workflowsService: WorkflowsService, private workflowService: WorkflowService, private location: Location) {}
   selectEntry(id: number, includesValidation: string) {
     this.workflowsService.getWorkflow(id, includesValidation).subscribe((result: Workflow) => {
       this.location.go('/my-workflows/' + result.full_workflow_path);

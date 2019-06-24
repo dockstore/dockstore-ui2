@@ -18,11 +18,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class TwitterService {
-
-  constructor() { }
+  constructor() {}
   runScript() {
     // https://stackoverflow.com/questions/42993859/twitter-widget-on-angular-2
-    (<any>window).twttr = (function (d, s, id) {
+    (<any>window).twttr = (function(d, s, id) {
       let js: any;
       const fjs = d.getElementsByTagName(s)[0];
       const t = (<any>window).twttr || {};
@@ -35,12 +34,12 @@ export class TwitterService {
       fjs.parentNode.insertBefore(js, fjs);
 
       t._e = [];
-      t.ready = function (f: any) {
+      t.ready = function(f: any) {
         t._e.push(f);
       };
 
       return t;
-    }(document, 'script', 'twitter-wjs'));
+    })(document, 'script', 'twitter-wjs');
 
     if ((<any>window).twttr.ready()) {
       (<any>window).twttr.widgets.load();

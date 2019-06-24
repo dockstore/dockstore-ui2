@@ -19,16 +19,11 @@ import { MyEntriesService } from './../shared/myentries.service';
 
 @Injectable()
 export class MytoolsService extends MyEntriesService {
-
   getGroupIndex(groupEntries: any[], group: string): number {
     return groupEntries.findIndex(nsContainer => nsContainer.namespace === group);
   }
 
-  getMyEntries() {
+  getMyEntries() {}
 
-  }
-
-  registerEntry() {
-
-  }
+  registerEntry() {}
 }

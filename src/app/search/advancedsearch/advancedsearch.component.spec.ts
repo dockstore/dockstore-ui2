@@ -28,12 +28,11 @@ describe('AdvancedSearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdvancedSearchComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      imports: [ ModalModule.forRoot() ],
-      providers: [{provide: AdvancedSearchService, useClass: AdvancedSearchStubService}]
-    })
-    .compileComponents();
+      declarations: [AdvancedSearchComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [ModalModule.forRoot()],
+      providers: [{ provide: AdvancedSearchService, useClass: AdvancedSearchStubService }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

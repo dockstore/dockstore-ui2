@@ -21,7 +21,6 @@ import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 
 @Injectable()
 export class ImageProviderService {
-
   // TODO: link Amazon ECR properly
 
   private dockerRegistryList: Array<any>;
@@ -72,7 +71,7 @@ export class ImageProviderService {
         const containerRegistry = registry.enum;
 
         if (containerRegistry === 'DOCKER_HUB') {
-          url += ((match[2] !== '_') ? 'r/' : '');
+          url += match[2] !== '_' ? 'r/' : '';
         } else if (containerRegistry === 'GITLAB') {
           suffix = '/container_registry';
         }
@@ -90,8 +89,7 @@ export class ImageProviderService {
   }
 
   private getDockerRegistryList() {
-    this.containersService.getDockerRegistries()
-    .subscribe(registryList => {
+    this.containersService.getDockerRegistries().subscribe(registryList => {
       this.dockerRegistryList = registryList;
       localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
     });
@@ -110,12 +108,12 @@ export class ImageProviderService {
         }
       });
     } else {
-    const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
-    if (dockerReg) {
-      return dockerReg.privateOnly === 'true';
-    } else {
-      return false;
+      const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
+      if (dockerReg) {
+        return dockerReg.privateOnly === 'true';
+      } else {
+        return false;
+      }
     }
-  }
   }
 }

@@ -5,11 +5,10 @@ describe('CurrentCollectionsQuery', () => {
   let query: CurrentCollectionsQuery;
 
   beforeEach(() => {
-    query = new CurrentCollectionsQuery(new CurrentCollectionsStore);
+    query = new CurrentCollectionsQuery(new CurrentCollectionsStore());
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

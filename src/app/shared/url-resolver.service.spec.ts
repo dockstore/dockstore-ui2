@@ -9,7 +9,7 @@ describe('Service: UrlResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [UrlResolverService, {provide: Router, useClass: RouterStub}]
+      providers: [UrlResolverService, { provide: Router, useClass: RouterStub }]
     });
   });
 

@@ -25,162 +25,162 @@ import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.s
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export const updatedWorkflow: Workflow = {
-    'descriptorType': DescriptorTypeEnum.CWL,
-    'gitUrl': 'updatedGitUrl',
-    'mode': Workflow.ModeEnum.FULL,
-    'organization': 'updatedOrganization',
-    'repository': 'updatedRepository',
-    'workflow_path': 'updatedWorkflowPath',
-    'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath',
-    'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB'
+  descriptorType: DescriptorTypeEnum.CWL,
+  gitUrl: 'updatedGitUrl',
+  mode: Workflow.ModeEnum.FULL,
+  organization: 'updatedOrganization',
+  repository: 'updatedRepository',
+  workflow_path: 'updatedWorkflowPath',
+  workflowVersions: [],
+  defaultTestParameterFilePath: 'updatedTestParameterPath',
+  sourceControl: 'github.com',
+  source_control_provider: 'GITHUB'
 };
 
 export const sampleWorkflow1: Workflow = {
-    id: 1,
-    'descriptorType': DescriptorTypeEnum.CWL,
-    'gitUrl': 'updatedGitUrl',
-    'mode': Workflow.ModeEnum.FULL,
-    'organization': 'updatedOrganization',
-    'repository': 'updatedRepository',
-    'workflow_path': 'updatedWorkflowPath',
-    'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath',
-    'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB'
+  id: 1,
+  descriptorType: DescriptorTypeEnum.CWL,
+  gitUrl: 'updatedGitUrl',
+  mode: Workflow.ModeEnum.FULL,
+  organization: 'updatedOrganization',
+  repository: 'updatedRepository',
+  workflow_path: 'updatedWorkflowPath',
+  workflowVersions: [],
+  defaultTestParameterFilePath: 'updatedTestParameterPath',
+  sourceControl: 'github.com',
+  source_control_provider: 'GITHUB'
 };
 
 export const sampleWorkflow2: Workflow = {
-    id: 2,
-    'descriptorType': DescriptorTypeEnum.CWL,
-    'gitUrl': 'updatedGitUrl',
-    'mode': Workflow.ModeEnum.FULL,
-    'organization': 'updatedOrganization',
-    'repository': 'updatedRepository',
-    'workflow_path': 'updatedWorkflowPath',
-    'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath',
-    'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB'
+  id: 2,
+  descriptorType: DescriptorTypeEnum.CWL,
+  gitUrl: 'updatedGitUrl',
+  mode: Workflow.ModeEnum.FULL,
+  organization: 'updatedOrganization',
+  repository: 'updatedRepository',
+  workflow_path: 'updatedWorkflowPath',
+  workflowVersions: [],
+  defaultTestParameterFilePath: 'updatedTestParameterPath',
+  sourceControl: 'github.com',
+  source_control_provider: 'GITHUB'
 };
 
 export const sampleWorkflow3: Workflow = {
-    id: 3,
-    'descriptorType': DescriptorTypeEnum.CWL,
-    'gitUrl': 'sampleGitUrl',
-    'mode': Workflow.ModeEnum.FULL,
-    'organization': 'sampleOrganization',
-    'repository': 'sampleRepository',
-    'workflow_path': 'sampleWorkflowPath',
-    'workflowVersions': [],
-    'defaultTestParameterFilePath': 'updatedTestParameterPath',
-    'sourceControl': 'github.com',
-    'source_control_provider': 'GITHUB',
-    'full_workflow_path': 'github.com/sampleWorkflowPath'
+  id: 3,
+  descriptorType: DescriptorTypeEnum.CWL,
+  gitUrl: 'sampleGitUrl',
+  mode: Workflow.ModeEnum.FULL,
+  organization: 'sampleOrganization',
+  repository: 'sampleRepository',
+  workflow_path: 'sampleWorkflowPath',
+  workflowVersions: [],
+  defaultTestParameterFilePath: 'updatedTestParameterPath',
+  sourceControl: 'github.com',
+  source_control_provider: 'GITHUB',
+  full_workflow_path: 'github.com/sampleWorkflowPath'
 };
 
 export const sampleWdlWorkflow1: Workflow = {
   id: 4,
-  'descriptorType': DescriptorTypeEnum.WDL,
-  'gitUrl': 'sampleGitUrl',
-  'mode': Workflow.ModeEnum.FULL,
-  'organization': 'sampleOrganization',
-  'repository': 'sampleRepository',
-  'workflow_path': 'sampleWorkflowPath',
-  'workflowVersions': [],
-  'defaultTestParameterFilePath': 'updatedTestParameterPath',
-  'sourceControl': 'github.com',
-  'source_control_provider': 'GITHUB',
-  'full_workflow_path': 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence'
+  descriptorType: DescriptorTypeEnum.WDL,
+  gitUrl: 'sampleGitUrl',
+  mode: Workflow.ModeEnum.FULL,
+  organization: 'sampleOrganization',
+  repository: 'sampleRepository',
+  workflow_path: 'sampleWorkflowPath',
+  workflowVersions: [],
+  defaultTestParameterFilePath: 'updatedTestParameterPath',
+  sourceControl: 'github.com',
+  source_control_provider: 'GITHUB',
+  full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence'
 };
 
 export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
   id: 5,
-  'descriptorType': DescriptorTypeEnum.CWL,
-  'gitUrl': 'git@github.com:dockstore-testing/md5sum-checker.git',
-  'mode': Workflow.ModeEnum.FULL,
-  'organization': 'dockstore-testing',
-  'repository': 'md5sum-checker',
-  'workflow_path': '/md5sum/md5sum-workflow.cwl',
-  'workflowVersions': [],
-  'defaultTestParameterFilePath': '/md5sum/md5sum-input-cwl.json',
-  'sourceControl': 'github.com',
-  'source_control_provider': 'GITHUB',
-  'full_workflow_path': 'github.com/dockstore-testing/md5sum-checker'
+  descriptorType: DescriptorTypeEnum.CWL,
+  gitUrl: 'git@github.com:dockstore-testing/md5sum-checker.git',
+  mode: Workflow.ModeEnum.FULL,
+  organization: 'dockstore-testing',
+  repository: 'md5sum-checker',
+  workflow_path: '/md5sum/md5sum-workflow.cwl',
+  workflowVersions: [],
+  defaultTestParameterFilePath: '/md5sum/md5sum-input-cwl.json',
+  sourceControl: 'github.com',
+  source_control_provider: 'GITHUB',
+  full_workflow_path: 'github.com/dockstore-testing/md5sum-checker'
 };
 
 export const sampleWdlWorkflow2: Workflow = {
   id: 5,
-  'descriptorType': DescriptorTypeEnum.WDL,
-  'gitUrl': 'sampleGitUrl',
-  'mode': Workflow.ModeEnum.FULL,
-  'organization': 'sampleOrganization',
-  'repository': 'sampleRepository',
-  'workflow_path': 'sampleWorkflowPath',
-  'workflowVersions': [],
-  'defaultTestParameterFilePath': 'updatedTestParameterPath',
-  'sourceControl': 'github.com',
-  'source_control_provider': 'GITHUB',
-  'full_workflow_path': 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl'
+  descriptorType: DescriptorTypeEnum.WDL,
+  gitUrl: 'sampleGitUrl',
+  mode: Workflow.ModeEnum.FULL,
+  organization: 'sampleOrganization',
+  repository: 'sampleRepository',
+  workflow_path: 'sampleWorkflowPath',
+  workflowVersions: [],
+  defaultTestParameterFilePath: 'updatedTestParameterPath',
+  sourceControl: 'github.com',
+  source_control_provider: 'GITHUB',
+  full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl'
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {
-  'id': 1,
-  'reference': '',
-  'name': 'master'
+  id: 1,
+  reference: '',
+  name: 'master'
 };
 
 export const sampleTool1: DockstoreTool = {
-    id: 1,
-    default_cwl_path: 'sampleDefaultCWLPath',
-    default_dockerfile_path: 'sampleDefaultDockerfilePath',
-    default_wdl_path: 'sampleDefaultWDLPath',
-    gitUrl: 'sampleGitUrl',
-    mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
-    name: 'sampleName',
-    namespace: 'sampleNamespace',
-    private_access: false,
-    registry_string: 'quay.io',
-    registry: DockstoreTool.RegistryEnum.QUAYIO,
-    toolname: 'sampleToolname',
-    defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
-    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
-    tool_path: ''
+  id: 1,
+  default_cwl_path: 'sampleDefaultCWLPath',
+  default_dockerfile_path: 'sampleDefaultDockerfilePath',
+  default_wdl_path: 'sampleDefaultWDLPath',
+  gitUrl: 'sampleGitUrl',
+  mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
+  name: 'sampleName',
+  namespace: 'sampleNamespace',
+  private_access: false,
+  registry_string: 'quay.io',
+  registry: DockstoreTool.RegistryEnum.QUAYIO,
+  toolname: 'sampleToolname',
+  defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
+  defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
+  tool_path: ''
 };
 
 export const sampleTool2: DockstoreTool = {
-    id: 2,
-    default_cwl_path: 'sampleDefaultCWLPath',
-    default_dockerfile_path: 'sampleDefaultDockerfilePath',
-    default_wdl_path: 'sampleDefaultWDLPath',
-    gitUrl: 'sampleGitUrl',
-    mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
-    name: 'sampleName',
-    namespace: 'sampleNamespace',
-    private_access: false,
-    registry_string: 'quay.io',
-    registry: DockstoreTool.RegistryEnum.QUAYIO,
-    toolname: 'sampleToolname',
-    defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
-    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
+  id: 2,
+  default_cwl_path: 'sampleDefaultCWLPath',
+  default_dockerfile_path: 'sampleDefaultDockerfilePath',
+  default_wdl_path: 'sampleDefaultWDLPath',
+  gitUrl: 'sampleGitUrl',
+  mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
+  name: 'sampleName',
+  namespace: 'sampleNamespace',
+  private_access: false,
+  registry_string: 'quay.io',
+  registry: DockstoreTool.RegistryEnum.QUAYIO,
+  toolname: 'sampleToolname',
+  defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
+  defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
 };
 
 export const sampleTool3: DockstoreTool = {
-    id: 3,
-    default_cwl_path: 'sampleDefaultCWLPath',
-    default_dockerfile_path: 'sampleDefaultDockerfilePath',
-    default_wdl_path: 'sampleDefaultWDLPath',
-    gitUrl: 'sampleGitUrl',
-    mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
-    name: 'sampleName',
-    namespace: 'sampleNamespace',
-    private_access: false,
-    registry_string: 'quay.io',
-    registry: DockstoreTool.RegistryEnum.QUAYIO,
-    toolname: 'sampleToolname',
-    defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
-    defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
+  id: 3,
+  default_cwl_path: 'sampleDefaultCWLPath',
+  default_dockerfile_path: 'sampleDefaultDockerfilePath',
+  default_wdl_path: 'sampleDefaultWDLPath',
+  gitUrl: 'sampleGitUrl',
+  mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
+  name: 'sampleName',
+  namespace: 'sampleNamespace',
+  private_access: false,
+  registry_string: 'quay.io',
+  registry: DockstoreTool.RegistryEnum.QUAYIO,
+  toolname: 'sampleToolname',
+  defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
+  defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
 };
 
 // Case 1: sampleTool1 in published entries, unpublished doesn't matter
@@ -215,45 +215,45 @@ export const orgObj4: OrgToolObject = {
 };
 
 export const gitLabToken: Token = {
-    'id': 4,
-    'tokenSource': 'gitlab.com',
-    'content': 'fakeGitLabToken',
-    'username': 'fakeGitLabUsername',
-    'refreshToken': null,
-    'userId': 2,
+  id: 4,
+  tokenSource: 'gitlab.com',
+  content: 'fakeGitLabToken',
+  username: 'fakeGitLabUsername',
+  refreshToken: null,
+  userId: 2
 };
 
 export const gitHubToken: Token = {
-    'id': 3,
-    'tokenSource': 'github.com',
-    'content': 'fakeGitHubToken',
-    'username': 'fakeGitHubUsername',
-    'refreshToken': null,
-    'userId': 2,
+  id: 3,
+  tokenSource: 'github.com',
+  content: 'fakeGitHubToken',
+  username: 'fakeGitHubUsername',
+  refreshToken: null,
+  userId: 2
 };
 
 export const bitbucketToken: Token = {
-    'id': 2,
-    'tokenSource': 'bitbucket.org',
-    'content': 'fakeBitbucketToken',
-    'username': 'fakeBitbucketUsername',
-    'refreshToken': null,
-    'userId': 2,
+  id: 2,
+  tokenSource: 'bitbucket.org',
+  content: 'fakeBitbucketToken',
+  username: 'fakeBitbucketUsername',
+  refreshToken: null,
+  userId: 2
 };
 
 export const quayToken: Token = {
-    'id': 1,
-    'tokenSource': 'quay.io',
-    'content': 'fakeQuayToken',
-    'username': 'fakeQuayUsername',
-    'refreshToken': null,
-    'userId': 2,
+  id: 1,
+  tokenSource: 'quay.io',
+  content: 'fakeQuayToken',
+  username: 'fakeQuayUsername',
+  refreshToken: null,
+  userId: 2
 };
 
 export const sampleTag = {
-    'reference': 'sampleReference',
-    'image_id': 'sampleImageId',
-    'name': 'sampleName'
+  reference: 'sampleReference',
+  image_id: 'sampleImageId',
+  name: 'sampleName'
 };
 
 export const wdlSourceFile: SourceFile = {
@@ -290,50 +290,46 @@ export const sampleSourceFile: SourceFile = {
 
 export const testSourceFiles: Array<SourceFile> = [
   {
-    'content': 'potato',
-    'id': 3071652,
-    'path': '\/Dockerfile',
-    'absolutePath': '',
-    'type': SourceFile.TypeEnum.DOCKERFILE,
-    'verifiedBySource': {
-
-    }
+    content: 'potato',
+    id: 3071652,
+    path: '/Dockerfile',
+    absolutePath: '',
+    type: SourceFile.TypeEnum.DOCKERFILE,
+    verifiedBySource: {}
   },
   {
-    'content': 'potato',
-    'id': 3071752,
-    'path': '\/Dockstore-BTCA-SG.json',
-    'absolutePath': '',
-    'type': SourceFile.TypeEnum.CWLTESTJSON,
-    'verifiedBySource': {
+    content: 'potato',
+    id: 3071752,
+    path: '/Dockstore-BTCA-SG.json',
+    absolutePath: '',
+    type: SourceFile.TypeEnum.CWLTESTJSON,
+    verifiedBySource: {
       'Dockstore CLI': {
-        'metadata': 'Docktesters group',
-        'verified': true,
-        'platformVersion': '1.0.0'
+        metadata: 'Docktesters group',
+        verified: true,
+        platformVersion: '1.0.0'
       }
     }
   },
   {
-    'content': 'potato',
-    'id': 3071602,
-    'path': '\/Dockstore.cwl',
-    'absolutePath': '',
-    'type': SourceFile.TypeEnum.DOCKSTORECWL,
-    'verifiedBySource': {
-
-    }
+    content: 'potato',
+    id: 3071602,
+    path: '/Dockstore.cwl',
+    absolutePath: '',
+    type: SourceFile.TypeEnum.DOCKSTORECWL,
+    verifiedBySource: {}
   },
   {
-    'content': 'potato',
-    'id': 3071702,
-    'path': '\/Dockstore.json',
-    'absolutePath': '',
-    'type': SourceFile.TypeEnum.CWLTESTJSON,
-    'verifiedBySource': {
+    content: 'potato',
+    id: 3071702,
+    path: '/Dockstore.json',
+    absolutePath: '',
+    type: SourceFile.TypeEnum.CWLTESTJSON,
+    verifiedBySource: {
       'Dockstore CLI': {
-        'metadata': 'Docktesters group',
-        'verified': true,
-        'platformVersion': null,
+        metadata: 'Docktesters group',
+        verified: true,
+        platformVersion: null
       }
     }
   }

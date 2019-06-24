@@ -146,10 +146,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   }
 
   formChanged() {
-    if (this.currentForm === this.registerWorkflowForm) { return; }
+    if (this.currentForm === this.registerWorkflowForm) {
+      return;
+    }
     this.registerWorkflowForm = this.currentForm;
     if (this.registerWorkflowForm) {
-      this.registerWorkflowForm.valueChanges.pipe(
+      this.registerWorkflowForm.valueChanges
+        .pipe(
           debounceTime(formInputDebounceTime),
           takeUntil(this.ngUnsubscribe)
         )
@@ -165,7 +168,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * @memberof RegisterWorkflowModalComponent
    */
   onValueChanged(data?: any): void {
-    if (!this.registerWorkflowForm) { return; }
+    if (!this.registerWorkflowForm) {
+      return;
+    }
     const form = this.registerWorkflowForm.form;
     for (const field in formErrors) {
       if (formErrors.hasOwnProperty(field)) {

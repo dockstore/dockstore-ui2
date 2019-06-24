@@ -33,9 +33,7 @@ import { FilesQuery } from '../../workflow/files/state/files.query';
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.scss']
 })
-
 export class DescriptorsComponent extends EntryFileSelector {
-
   @Input() id: number;
   @Input() entrypath: string;
   @Input() publicPage: boolean;
@@ -45,12 +43,19 @@ export class DescriptorsComponent extends EntryFileSelector {
     this.checkIfValid(true, value);
   }
 
-  protected entryType: ('tool' | 'workflow') = 'tool';
+  protected entryType: 'tool' | 'workflow' = 'tool';
 
-  constructor(private containerService: ContainerService,
-    private descriptorsService: DescriptorService, protected gA4GHService: GA4GHService, private toolQuery: ToolQuery,
-    private gA4GHFilesQuery: GA4GHFilesQuery, public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-    protected filesService: FilesService, protected filesQuery: FilesQuery) {
+  constructor(
+    private containerService: ContainerService,
+    private descriptorsService: DescriptorService,
+    protected gA4GHService: GA4GHService,
+    private toolQuery: ToolQuery,
+    private gA4GHFilesQuery: GA4GHFilesQuery,
+    public fileService: FileService,
+    protected gA4GHFilesService: GA4GHFilesService,
+    protected filesService: FilesService,
+    protected filesQuery: FilesQuery
+  ) {
     super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.toolQuery.toolIsPublished$;
   }
@@ -71,7 +76,9 @@ export class DescriptorsComponent extends EntryFileSelector {
    * @memberof DescriptorsComponent
    */
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
-    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
-    ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
+    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [
+      ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
+      ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR
+    ]);
   }
 }

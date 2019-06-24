@@ -9,10 +9,7 @@ export interface TokenState extends EntityState<Token> {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'token', idKey: 'tokenSource' })
 export class TokenStore extends EntityStore<TokenState, Token> {
-
   constructor() {
     super();
   }
-
 }
-
