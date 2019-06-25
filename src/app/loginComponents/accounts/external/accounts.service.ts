@@ -25,19 +25,19 @@ export class AccountsService {
   link(source: string) {
     switch (source) {
       case TokenSource.GITHUB:
-        this.openWindow(Links.GITHUB);
+        this.openWindow(Links.GITHUB());
         break;
       case TokenSource.BITBUCKET:
-        this.openWindow(Links.BITBUCKET);
+        this.openWindow(Links.BITBUCKET());
         break;
       case TokenSource.GITLAB:
-        this.openWindowPreserveSpaces(Links.GITLAB);
+        this.openWindowPreserveSpaces(Links.GITLAB());
         break;
       case TokenSource.ZENODO:
-        this.openWindowPreserveSpaces(Links.ZENODO);
+        this.openWindowPreserveSpaces(Links.ZENODO());
         break;
       case TokenSource.QUAY:
-        this.openWindow(Links.QUAY);
+        this.openWindow(Links.QUAY());
         break;
       case TokenSource.GOOGLE:
         this.loginService
