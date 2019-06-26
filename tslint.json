@@ -134,6 +134,11 @@
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true
+    "directive-class-suffix": true,
+    "semicolon": [
+      true,
+      "always",
+      "ignore-bound-class-methods"
+    ]
   }
 }
