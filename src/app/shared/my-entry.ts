@@ -28,9 +28,11 @@ import { SessionService } from './session/session.service';
 import { TokenQuery } from './state/token.query';
 import { Configuration, DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
+import { Base } from './base';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
-export abstract class MyEntry implements OnDestroy {
+export abstract class MyEntry extends Base implements OnDestroy {
   abstract readonly pageName: string;
   oneAtATime = true;
   user: any;
@@ -50,6 +52,7 @@ export abstract class MyEntry implements OnDestroy {
     protected sessionService: SessionService,
     protected activatedRoute: ActivatedRoute
   ) {
+    super();
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.myEntryPageTitle$ = this.sessionQuery.myEntryPageTitle$;
   }
@@ -105,7 +108,7 @@ export abstract class MyEntry implements OnDestroy {
     localStorage.setItem('page', this.pageName);
     const token = this.authService.getToken();
     this.configuration.apiKeys['Authorization'] = token ? 'Bearer ' + token : null;
-    this.tokenQuery.hasGitHubToken$.subscribe(hasGitHubToken => (this.hasGitHubToken = hasGitHubToken));
+    this.tokenQuery.hasGitHubToken$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasGitHubToken => (this.hasGitHubToken = hasGitHubToken));
   }
 
   ngOnDestroy() {
