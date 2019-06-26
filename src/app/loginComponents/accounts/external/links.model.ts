@@ -1,5 +1,6 @@
 import { Dockstore } from '../../../shared/dockstore.model';
 
+/* tslint:disable:semicolon */
 export class Links {
   static readonly GITHUB = () => `${Dockstore.GITHUB_AUTH_URL}
                             ?client_id=${Dockstore.GITHUB_CLIENT_ID}
