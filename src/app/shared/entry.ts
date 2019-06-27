@@ -194,7 +194,7 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @returns {((WorkflowVersion | Tag))}  The version to display to the user
    * @memberof Entry
    */
-  public selectVersion(versions: (Array<WorkflowVersion | Tag>), urlVersion: string, defaultVersion: string): (WorkflowVersion | Tag) | null{
+  public selectVersion(versions: (Array<WorkflowVersion | Tag>), urlVersion: string, defaultVersion: string): (WorkflowVersion | Tag | null) {
     if (!versions || versions.length === 0) {
       return null;
     }
@@ -293,7 +293,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   workflowVersionSorting(a: WorkflowVersion, b: WorkflowVersion): number {
 
     const verifiedSorting = this.verifiedSorting(a, b);
-    if (verifiedSorting !== -2) {
+    if (verifiedSorting !== 0) {
      return verifiedSorting;
     } else {
       if (a.last_modified > b.last_modified) {
