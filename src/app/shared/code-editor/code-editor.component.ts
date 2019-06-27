@@ -98,6 +98,10 @@ export class CodeEditorComponent implements AfterViewInit {
         this.mode = 'xml';
       } else if (filepath.endsWith('.pl')) {
         this.mode = 'perl';
+      } else if (filepath.endsWith('.md')) {
+        this.mode = 'markdown';
+      } else if (filepath.endsWith('.sh')) {
+        this.mode = 'sh';
       } else {
         this.mode = 'text';
       }
