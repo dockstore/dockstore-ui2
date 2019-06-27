@@ -14,12 +14,6 @@
  *    limitations under the License.
  */
 
-li,
-div a {
-  /* set space between list elements */
-  margin: 10px;
-}
-
 .container-fluid,
 a {
   background-color: #21335b;
@@ -33,4 +27,8 @@ a {
 .container-fluid,
 ul {
   list-style: none;
+}
+
+.footer-heading {
+  font-weight: bold;
 }
