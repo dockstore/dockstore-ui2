@@ -29,6 +29,6 @@ ul {
   list-style: none;
 }
 
-.footer-heading {
+.footer-list li:first-child {
   font-weight: bold;
 }
