@@ -26,13 +26,20 @@
             </a>
           </li>
           <li class="m-0">
+            <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank" rel="noopener noreferrer" class="footer-link">
+              <small>API </small>
+            </a>
+            -
             <a
               href="https://github.com/dockstore/dockstore/releases/tag/{{ version }}"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>API - {{ version }}</small>
+              <small>{{ version }} </small>
+            </a>
+            <a href="https://status.dockstore.org/" target="_blank" rel="noopener noreferrer" class="footer-link">
+              <img src="https://img.shields.io/uptimerobot/status/m779655940-a297af07d1cac2d6ad40c491.svg" />
             </a>
           </li>
           <li class="m-0">
@@ -46,18 +53,8 @@
             </a>
           </li>
           <li class="m-0">
-            <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <small>Swagger</small>
-            </a>
-          </li>
-          <li class="m-0">
             <a [href]="dsServerURI + '/metadata/rss'" target="_blank" rel="noopener noreferrer" class="footer-link">
               <small><mat-icon>rss_feed</mat-icon>RSS</small>
-            </a>
-          </li>
-          <li class="m-0">
-            <a href="https://status.dockstore.org/" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <img src="https://img.shields.io/uptimerobot/status/m779655940-a297af07d1cac2d6ad40c491.svg" />
             </a>
           </li>
         </ul>
