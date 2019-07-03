@@ -194,7 +194,7 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @returns {((WorkflowVersion | Tag))}  The version to display to the user
    * @memberof Entry
    */
-  public selectVersion(versions: (Array<WorkflowVersion | Tag>), urlVersion: string, defaultVersion: string): (WorkflowVersion | Tag | null) {
+  public selectVersion(versions: Array<WorkflowVersion | Tag>, urlVersion: string, defaultVersion: string): WorkflowVersion | Tag | null {
     if (!versions || versions.length === 0) {
       return null;
     }
@@ -217,16 +217,12 @@ export abstract class Entry implements OnInit, OnDestroy {
 
   selectTag(versions: Array<Tag>, urlVersion: string, defaultVersion: string): Tag {
     const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
-    return selectedTag || versions.reduce((a,b) => b.last_built > a.last_built ? b : a);
+    return selectedTag || versions.reduce((a, b) => (b.last_built > a.last_built ? b : a));
   }
 
   selectWorkflowVersion(versions: Array<WorkflowVersion>, urlVersion: string, defaultVersion: string) {
-    const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
-    if (selectedTag != null) {
-      return selectedTag;
-    } else {
-      // Select newest last_modified version, if it's the same, choose the top
-      return versions.reduce((a, b) => b.last_modified > a.last_modified ? b : a);}
+    const selectedWorkflowVersion = this.selectVersion(versions, urlVersion, defaultVersion);
+    return selectedWorkflowVersion || versions.reduce((a, b) => (b.last_modified > a.last_modified ? b : a));
   }
 
   public getEntryPathFromURL(): string {
@@ -291,10 +287,9 @@ export abstract class Entry implements OnInit, OnDestroy {
     }
   }
   workflowVersionSorting(a: WorkflowVersion, b: WorkflowVersion): number {
-
     const verifiedSorting = this.verifiedSorting(a, b);
     if (verifiedSorting !== 0) {
-     return verifiedSorting;
+      return verifiedSorting;
     } else {
       if (a.last_modified > b.last_modified) {
         return -1;
@@ -331,8 +326,11 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @param {Tag|WorkflowVersion} defaultVersion - Default version of the entry
    * @returns {Array<any>} Sorted array of versions
    */
-  getSortedVersions(versions: Array<Tag | WorkflowVersion>, defaultVersion: Tag | WorkflowVersion, sortedVersions: Array<Tag | WorkflowVersion>): Array<Tag | WorkflowVersion> {
-
+  getSortedVersions(
+    versions: Array<Tag | WorkflowVersion>,
+    defaultVersion: Tag | WorkflowVersion,
+    sortedVersions: Array<Tag | WorkflowVersion>
+  ): Array<Tag | WorkflowVersion> {
     // Get the top 6 versions
     const recentVersions: Array<Tag | WorkflowVersion> = sortedVersions.slice(0, 6);
     const index = recentVersions.indexOf(defaultVersion);

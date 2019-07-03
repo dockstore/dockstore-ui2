@@ -41,7 +41,7 @@ export abstract class Versions extends EntryTab {
   abstract defaultSortColumn(): string;
 
   constructor(protected dockstoreService: DockstoreService, private dateService: DateService, protected sessionQuery: SessionQuery) {
-    // By default, sort by last_built, latest first
+    // By default, sort by last_built for tools and last_modified for workflows, latest first
     super();
     this.sortColumn = this.defaultSortColumn();
     this.sortReverse = true;
