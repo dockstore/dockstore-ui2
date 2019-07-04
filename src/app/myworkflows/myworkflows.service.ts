@@ -29,9 +29,7 @@ import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MyWorkflowsService extends MyEntriesService {
   constructor(
     protected userQuery: UserQuery,

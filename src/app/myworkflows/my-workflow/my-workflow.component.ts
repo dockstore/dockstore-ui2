@@ -41,7 +41,6 @@ import { Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
-import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyBioWorkflowsService } from '../my-bio-workflows.service';
 import { MyServicesService } from '../my-services.service';
@@ -256,7 +255,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.registerWorkflowModalService.setWorkflowRepository(gitURL);
   }
 
-  showRegisterEntryModal(): void {}
+  showRegisterEntryModal(): void {
+    this.myWorkflowsService.registerEntry();
+  }
 
   refreshAllEntries(): void {
     this.refreshService.refreshAllWorkflows(this.user.id);

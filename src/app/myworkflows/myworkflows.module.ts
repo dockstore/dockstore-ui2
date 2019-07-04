@@ -15,11 +15,9 @@
  */
 import { NgModule } from '@angular/core';
 import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
-import { RegisterWorkflowModalComponent } from './../workflow/register-workflow-modal/register-workflow-modal.component';
 import { myworkflowRouting } from './myworkflows.routing';
 
 @NgModule({
-  imports: [SharedWorkflowServicesModule, myworkflowRouting],
-  entryComponents: [RegisterWorkflowModalComponent]
+  imports: [SharedWorkflowServicesModule, myworkflowRouting]
 })
 export class MyWorkflowsModule {}
