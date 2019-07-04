@@ -16,7 +16,9 @@
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
     "test": "npx ng test",
     "lint": "npx ng lint",
-    "e2e": "npx ng e2e"
+    "e2e": "npx ng e2e",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "private": true,
   "dependencies": {
@@ -66,7 +68,8 @@
     "ts-md5": "^1.2.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.2.4",
-    "zone.js": "^0.8.29"
+    "zone.js": "^0.8.29",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.8",
@@ -113,5 +116,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "snyk": true
 }
