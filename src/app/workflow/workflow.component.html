@@ -239,13 +239,14 @@
           <mat-tab id="fileTab" label="Files">
             <ng-template matTabContent>
               <div *ngIf="entryType === EntryType.Service; else FilesTabBioWorkflow" class="p-3">
-                <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length === 0; else hasVersionsFilesTab">
+                <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
+                  <app-entry-file-tab></app-entry-file-tab>
+                </div>
+
+                <ng-template #noVersionsFilesTab>
                   <mat-card class="alert alert-info" role="alert">
                     <mat-icon>info</mat-icon> This service does not have any versions. Create a release/tag on GitHub with a valid dockstore config file to add a new version.
                   </mat-card>
-                </div>
-                <ng-template #hasVersionsFilesTab>
-                  <app-entry-file-tab></app-entry-file-tab>
                 </ng-template>
               </div>
               <ng-template #FilesTabBioWorkflow>
