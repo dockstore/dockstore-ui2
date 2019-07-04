@@ -286,7 +286,7 @@ export class WorkflowStubService {
   workflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]); // This contains the list of unsorted workflows
   sharedWorkflows$: BehaviorSubject<Workflow[]> = new BehaviorSubject([]); // This contains the list of unsorted workflows
   copyBtn$ = observableOf({});
-
+  clearVersion() {}
   clearActive() {}
   setEntryType(entryType: EntryType) {}
   setWorkflow(thing: Workflow) {
