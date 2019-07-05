@@ -29,7 +29,6 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
 export abstract class Versions extends EntryTab {
   @Input() versions: Array<Tag | WorkflowVersion>;
   @Input() verifiedSource: Array<any>;
-  @Input() isTool: boolean;
   sortColumn: string;
   sortReverse: boolean;
   publicPage: boolean;
