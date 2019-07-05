@@ -28,7 +28,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../../shared/constants';
+import { myBioWorkflowsURLSegment, myServicesURLSegment } from '../../shared/constants';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
@@ -42,8 +42,6 @@ import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyBioWorkflowsService } from '../my-bio-workflows.service';
-import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 
 /**
@@ -85,7 +83,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   constructor(
     protected configuration: Configuration,
     protected activatedRoute: ActivatedRoute,
-    private myServicesService: MyServicesService,
     private userQuery: UserQuery,
     private workflowService: WorkflowService,
     protected authService: AuthService,
@@ -101,7 +98,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     private tokenService: TokenService,
     protected sessionService: SessionService,
     protected sessionQuery: SessionQuery,
-    private myBioWorkflowsService: MyBioWorkflowsService,
     private myWorkflowsService: MyWorkflowsService
   ) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService, sessionQuery, sessionService, activatedRoute);
@@ -228,13 +224,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * @param workflow Selected workflow
    */
   selectEntry(workflow: ExtendedWorkflow | null): void {
-    if (workflow !== null) {
-      if (this.entryType === EntryType.BioWorkflow) {
-        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
-      } else {
-        this.myServicesService.selectEntry(workflow.id, includesValidation);
-      }
-    }
+    this.myWorkflowsService.selectEntry(workflow, this.entryType);
   }
 
   /**

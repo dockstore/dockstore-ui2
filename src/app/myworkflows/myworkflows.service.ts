@@ -18,6 +18,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { transaction } from '@datorama/akita';
 import { AlertService } from 'app/shared/alert/state/alert.service';
+import { includesValidation } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 import { MyEntriesService } from 'app/shared/myentries.service';
@@ -69,6 +70,20 @@ export class MyWorkflowsService extends MyEntriesService {
       }
     }
     return null;
+  }
+
+  /**
+   * Grabs the workflow from the webservice and loads it
+   * @param workflow Selected workflow
+   */
+  selectEntry(workflow: ExtendedWorkflow | null, entryType: EntryType | null): void {
+    if (workflow && entryType) {
+      if (entryType === EntryType.BioWorkflow) {
+        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
+      } else {
+        this.myServicesService.selectEntry(workflow.id, includesValidation);
+      }
+    }
   }
 
   public getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
