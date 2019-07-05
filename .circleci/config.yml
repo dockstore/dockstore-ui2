@@ -91,13 +91,13 @@ jobs:
                 at: .
             - aws-s3/copy:
                 from: dist
-                to: 's3://${AWS_BUCKET}/${CIRCLE_TAG}-$(echo $CIRCLE_SHA1 | cut -c -7)'
+                to: 's3://${AWS_BUCKET}/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)'
                 arguments: |
                   --recursive \
                   --exclude index.html
             - aws-s3/copy:
                 from: dist/index.html
-                to: 's3://${AWS_BUCKET}/${CIRCLE_TAG}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
+                to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
 workflows:
@@ -144,7 +144,7 @@ workflows:
             tags:
               only: /.*/
             branches:
-              ignore: /.*/
+              only: develop
 commands:
   install_container_dependencies:
     steps:

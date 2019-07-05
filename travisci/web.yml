@@ -20,6 +20,8 @@ zenodoClientID: <fill me in>
 zenodoClientSecret: <fill me in>
 zenodoRedirectURI: http://<fill me in>:8080/auth/zenodo.org
 zenodoUrl: https://zenodo.org
+gitHubAppPrivateKeyFile: <fill me in>
+gitHubAppId: <fill me in>
 
 authorizerType: inmemory
 
@@ -67,7 +69,6 @@ database:
   checkConnectionWhileIdle: false
 
 uiConfig:
-  discourseUrl: https://discuss.dockstore.org
   dnaStackImportUrl: https://app.dnastack.com/#/app/workflow/import/dockstore
   dnaNexusImportUrl: https://platform.dnanexus.com/panx/tools/import-workflow
   terraImportUrl: https://app.terra.bio/#import-tool/dockstore
