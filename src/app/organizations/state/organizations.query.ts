@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { Organization } from '../../shared/swagger';
 import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
@@ -26,6 +25,7 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
    * Filters the organization based on a string
    * Case insensitive
    * Partial match
+   * Searches every property of an organization (does not search its collections)
    *
    * @param {Array<Organization>} organizations  List of all approved organizations
    * @param {string} searchName                  Search string
@@ -36,9 +36,11 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
     searchName = searchName.toLowerCase();
     if (organizations) {
       return searchName
-        ? organizations.filter(
-            organization => organization.name.toLowerCase().includes(searchName) || organization.topic.toLowerCase().includes(searchName)
-          )
+        ? organizations.filter(organization => {
+            const matchOptions: any[] = Object.values(organization).filter(objectValue => typeof objectValue === 'string');
+            console.log(matchOptions);
+            return matchOptions.some(stringIdentifier => stringIdentifier.toLowerCase().includes(searchName));
+          })
         : organizations;
     }
     return null;
