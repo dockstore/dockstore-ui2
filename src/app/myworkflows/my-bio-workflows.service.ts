@@ -27,6 +27,7 @@ export class MyBioWorkflowsService {
   }
 
   getMyBioWorkflows(id: number): void {
+    this.alertService.start('Fetching workflows');
     forkJoin(
       this.usersService.userWorkflows(id).pipe(
         catchError((error: HttpErrorResponse) => {

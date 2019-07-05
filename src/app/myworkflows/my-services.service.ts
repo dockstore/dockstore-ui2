@@ -28,6 +28,7 @@ export class MyServicesService {
   }
 
   getMyServices(id: number): void {
+    this.alertService.start('Fetching services');
     forkJoin(
       this.usersService.userWorkflows(id).pipe(
         catchError((error: HttpErrorResponse) => {
