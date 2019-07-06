@@ -58,7 +58,7 @@ export class BioschemaService {
 
   }
   getWorkflowSchema(workflow: Workflow, selectedVersion: WorkflowVersion): BioschemaTool {
-    const results = this.getBaseSchema(workflow, selectedVersion)
+    const results = this.getBaseSchema(workflow, selectedVersion);
     if (workflow.workflowName) {
       results.name = workflow.workflowName;
     }

@@ -87,8 +87,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   pubUnpubMessage: string;
   @Input() user;
 
-  constructor(private dockstoreService: DockstoreService, dateService: DateService, private bioschemaService: BioschemaService, private refreshService: RefreshService,
-    private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
+  constructor(private dockstoreService: DockstoreService, dateService: DateService, private bioschemaService: BioschemaService,
+    private refreshService: RefreshService, private workflowsService: WorkflowsService, trackLoginService: TrackLoginService,
+    providerService: ProviderService,
     router: Router, private workflowService: WorkflowService, private extendedWorkflowQuery: ExtendedWorkflowQuery,
     urlResolverService: UrlResolverService, private alertService: AlertService,
     location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,

@@ -91,7 +91,7 @@ export class DateService {
     return tsAsDate.toISOString();
   }
 
-  getISO8601FormatFromNumber(timestamp: number){
+  getISO8601FormatFromNumber(timestamp: number) {
     const tsAsDate = new Date(timestamp);
     return tsAsDate.toISOString();
   }
