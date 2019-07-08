@@ -13,7 +13,7 @@ describe('OrganizationsQuery', () => {
     expect(query).toBeTruthy();
   });
 
-  fit('should filter organizations', () => {
+  it('should filter organizations', () => {
     const potatoOrganization: Organization = {
       name: 'potato',
       status: Organization.StatusEnum.APPROVED,
@@ -23,7 +23,8 @@ describe('OrganizationsQuery', () => {
       email: 'someEmail',
       description: 'someDescription',
       link: 'someLink',
-      location: 'someLocation'
+      location: 'someLocation',
+      avatarUrl: 'someAvatarUrl'
     };
 
     const beefOrganization: Organization = { name: 'beef', status: Organization.StatusEnum.APPROVED, users: [], topic: 'nothing relevent' };
@@ -61,6 +62,7 @@ describe('OrganizationsQuery', () => {
     expect(query.filterOrganizations(exampleOrganizations, 'someDescription')).toEqual([potatoOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'someLink')).toEqual([potatoOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'someLocation')).toEqual([potatoOrganization]);
+    expect(query.filterOrganizations(exampleOrganizations, 'someAvatarUrl')).toEqual([]);
     expect(query.filterOrganizations([], 'CK')).toEqual([]);
   });
 });

@@ -37,7 +37,15 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
     if (organizations) {
       return searchName
         ? organizations.filter(organization => {
-            const matchOptions: any[] = Object.values(organization).filter(objectValue => typeof objectValue === 'string');
+            const matchOptions: string[] = [
+              organization.description,
+              organization.displayName,
+              organization.email,
+              organization.link,
+              organization.location,
+              organization.name,
+              organization.topic
+            ].filter(matchOption => !!matchOption);
             return matchOptions.some(stringIdentifier => stringIdentifier.toLowerCase().includes(searchName));
           })
         : organizations;
