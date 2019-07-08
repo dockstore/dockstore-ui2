@@ -45,7 +45,21 @@ export function resetDB() {
       .its('stdout').should('contain', 'ALTER TABLE');
     cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml')
       .its('stdout').should('contain', 'Successfully released change log lock');
+    checkInitialConnectionPool();
   });
+}
+
+export function checkInitialConnectionPool() {
+  cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'SELECT COUNT(*) FROM pg_stat_activity WHERE state ILIKE \'%idle%\'').then((result => {
+    cy.exec(`echo ${result.stdout} > cypress/fixtures/connectionPoolQuery.json`);
+  }));
+}
+
+export function assertConnectionPool(): void {
+  cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'SELECT COUNT(*) FROM pg_stat_activity WHERE state ILIKE \'%idle%\'').then((result => {
+    cy.fixture('connectionPoolQuery.json').should('eq', result.stdout);
+  }));
+
 }
 export function setTokenUserViewPort() {
   beforeEach(() => {

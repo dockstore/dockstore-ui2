@@ -13,9 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort, resetDB } from '../../support/commands';
+import { assertConnectionPool, resetDB, setTokenUserViewPort } from '../../support/commands';
 describe('Verify Title Tags', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPort();
 
   describe('Dropdown links', () => {

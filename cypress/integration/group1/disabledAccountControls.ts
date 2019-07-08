@@ -13,10 +13,13 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { assertConnectionPool, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Go to disabled Dockstore Account Controls', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('');

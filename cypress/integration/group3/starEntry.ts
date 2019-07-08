@@ -13,10 +13,13 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPortCurator } from '../../support/commands';
+import { assertConnectionPool, resetDB, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Tool, Workflow, and Organization starring', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPortCurator();
 
   function typeInInput(fieldName: string, text: string) {

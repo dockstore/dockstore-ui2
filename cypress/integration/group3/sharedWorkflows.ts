@@ -13,10 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { assertConnectionPool, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Shared with me workflow test from my-workflows', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPort();
 
   beforeEach(() => {

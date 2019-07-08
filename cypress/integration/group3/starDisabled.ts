@@ -13,10 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB } from '../../support/commands';
+import { assertConnectionPool, resetDB } from '../../support/commands';
 
 describe('Workflow starring while not logged in', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   beforeEach(() => {
     cy.clearLocalStorage();
     cy.visit('/workflows/github.com/A/l');

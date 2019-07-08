@@ -13,11 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
+import { assertConnectionPool, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore hosted tools', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPort();
 
   beforeEach(() => {

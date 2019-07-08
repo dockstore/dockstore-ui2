@@ -13,10 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort, resetDB } from '../../support/commands';
+import { assertConnectionPool, resetDB, setTokenUserViewPort } from '../../support/commands';
 describe('Admin UI', () => {
   resetDB();
   setTokenUserViewPort();
+  after(() => {
+    assertConnectionPool();
+  });
   beforeEach(() => {
     cy.server();
     const userObject = { id: 1, username: 'user_A', curator: false, isAdmin: true, name: 'user_A', setupComplete: false};

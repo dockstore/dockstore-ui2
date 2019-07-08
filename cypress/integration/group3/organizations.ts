@@ -13,10 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { approvePotatoMembership, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { approvePotatoMembership, assertConnectionPool, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore Organizations', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPort();
 
   function typeInInput(fieldName: string, text: string) {

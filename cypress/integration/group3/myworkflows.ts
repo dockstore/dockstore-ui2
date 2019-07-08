@@ -13,10 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { getTab, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { assertConnectionPool, getTab, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPort();
 
   const cwlDescriptorType = 'CWL';

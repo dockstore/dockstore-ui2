@@ -13,11 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { assertConnectionPool, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore Home', () => {
   resetDB();
   setTokenUserViewPort();
+    after(() => {
+      assertConnectionPool();
+    });
   beforeEach(() => {
     cy.visit('');
   });
@@ -58,7 +61,7 @@ describe('Dockstore Home', () => {
   });
 
   function starColumn(url: string, type: string) {
-    if(type === 'workflow'){
+    if (type === 'workflow') {
       cy.get('#workflowTab-link')
         .click();
     }
@@ -68,7 +71,7 @@ describe('Dockstore Home', () => {
     cy.get('#starringButton')
       .click();
     cy.visit('');
-    if(type === 'workflow'){
+    if (type === 'workflow') {
       cy.get('#workflowTab-link')
         .click();
     }

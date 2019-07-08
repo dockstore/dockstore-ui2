@@ -13,9 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort, resetDB } from '../../support/commands';
+import { assertConnectionPool, resetDB, setTokenUserViewPort } from '../../support/commands';
 describe('Curator UI', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPort();
   beforeEach(() => {
     cy.server();

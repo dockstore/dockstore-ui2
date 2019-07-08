@@ -13,11 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { assertConnectionPool, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Checker workflow test from my-tools', () => {
   resetDB();
   setTokenUserViewPort();
+    after(() => {
+      assertConnectionPool();
+    });
   beforeEach(() => {
     // Visit my-tools page
     cy.visit('/my-tools');

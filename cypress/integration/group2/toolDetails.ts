@@ -13,10 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, goToTab, getTab } from '../../support/commands';
+import { assertConnectionPool, getTab, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
   resetDB();
+    after(() => {
+      assertConnectionPool();
+    });
   setTokenUserViewPort();
   it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/containers/quay.io%2FA2%2Fa');
