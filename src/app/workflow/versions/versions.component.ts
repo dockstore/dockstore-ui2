@@ -50,10 +50,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     return [4, 5];
   }
 
-  defaultSortColumn(): string {
-    return 'last_modified';
-  }
-
   constructor(
     dockstoreService: DockstoreService,
     dateService: DateService,
@@ -64,6 +60,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     protected sessionQuery: SessionQuery
   ) {
     super(dockstoreService, dateService, sessionQuery);
+    this.sortColumn = 'last_modified';
   }
 
   ngOnInit() {

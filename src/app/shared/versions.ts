@@ -29,6 +29,7 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
 export abstract class Versions extends EntryTab {
   @Input() versions: Array<Tag | WorkflowVersion>;
   @Input() verifiedSource: Array<any>;
+  @Input() isTool = true;
   sortColumn: string;
   sortReverse: boolean;
   publicPage: boolean;
@@ -37,12 +38,9 @@ export abstract class Versions extends EntryTab {
   dtOptions;
 
   abstract setNoOrderCols(): Array<number>;
-  abstract defaultSortColumn(): string;
-
   constructor(protected dockstoreService: DockstoreService, private dateService: DateService, protected sessionQuery: SessionQuery) {
     // By default, sort by last_built for tools and last_modified for workflows, latest first
     super();
-    this.sortColumn = this.defaultSortColumn();
     this.sortReverse = true;
   }
 

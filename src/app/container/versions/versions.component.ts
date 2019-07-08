@@ -58,10 +58,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     protected sessionQuery: SessionQuery
   ) {
     super(dockstoreService, dateService, sessionQuery);
-  }
-
-  defaultSortColumn(): string {
-    return 'last_built';
+    this.sortColumn = 'last_built';
   }
 
   ngOnInit() {
