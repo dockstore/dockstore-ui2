@@ -40,8 +40,6 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
             const matchOptions: string[] = [
               organization.description,
               organization.displayName,
-              organization.email,
-              organization.link,
               organization.location,
               organization.name,
               organization.topic

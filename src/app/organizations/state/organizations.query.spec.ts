@@ -58,9 +58,9 @@ describe('OrganizationsQuery', () => {
     expect(query.filterOrganizations(exampleOrganizations, 'CK')).toEqual([chickenOrganization, duckOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'someTopic')).toEqual([potatoOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'someDisplayName')).toEqual([potatoOrganization]);
-    expect(query.filterOrganizations(exampleOrganizations, 'someEmail')).toEqual([potatoOrganization]);
+    expect(query.filterOrganizations(exampleOrganizations, 'someEmail')).toEqual([]);
     expect(query.filterOrganizations(exampleOrganizations, 'someDescription')).toEqual([potatoOrganization]);
-    expect(query.filterOrganizations(exampleOrganizations, 'someLink')).toEqual([potatoOrganization]);
+    expect(query.filterOrganizations(exampleOrganizations, 'someLink')).toEqual([]);
     expect(query.filterOrganizations(exampleOrganizations, 'someLocation')).toEqual([potatoOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'someAvatarUrl')).toEqual([]);
     expect(query.filterOrganizations([], 'CK')).toEqual([]);
