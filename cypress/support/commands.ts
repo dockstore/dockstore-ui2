@@ -50,13 +50,13 @@ export function resetDB() {
 }
 
 export function checkInitialConnectionPool() {
-  cy.exec(`PGPASSWORD=dockstore psql -h localhost -c "SELECT COUNT(*) FROM pg_stat_activity WHERE state ILIKE '%idle%'" webservice_test -U dockstore`).then((result => {
+  cy.exec(`PGPASSWORD=dockstore psql -h localhost -c "SELECT COUNT(*) FROM pg_stat_activity WHERE state NOT LIKE '%idle%'" webservice_test -U dockstore`).then((result => {
     cy.exec(`echo '${JSON.stringify(result)}' >cypress/fixtures/connectionPoolQuery.txt`);
   }));
 }
 
 export function assertConnectionPool(): void {
-  cy.exec(`PGPASSWORD=dockstore psql -h localhost -c "SELECT COUNT(*) FROM pg_stat_activity WHERE state ILIKE '%idle%'" webservice_test -U dockstore`).then((result => {
+  cy.exec(`PGPASSWORD=dockstore psql -h localhost -c "SELECT COUNT(*) FROM pg_stat_activity WHERE state NOT LIKE '%idle%'" webservice_test -U dockstore`).then((result => {
     cy.fixture('connectionPoolQuery.txt').should('deep.eq', JSON.stringify(result) + '\n');
   }));
 
