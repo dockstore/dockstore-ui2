@@ -57,7 +57,7 @@ export class MyWorkflowsService extends MyEntriesService {
     return groupEntries.findIndex(orgWorkflow => orgWorkflow.sourceControl + '/' + orgWorkflow.organization === group);
   }
 
-  public findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow {
+  public findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow | null {
     let matchingWorkflow: ExtendedWorkflow;
     for (let i = 0; i < orgWorkflows.length; i++) {
       matchingWorkflow = orgWorkflows[i].published.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
@@ -86,7 +86,7 @@ export class MyWorkflowsService extends MyEntriesService {
     }
   }
 
-  public getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
+  public getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow | null {
     for (let i = 0; i < orgWorkflows.length; i++) {
       const foundWorkflow = orgWorkflows[i]['entries'].find((workflow: Workflow) => {
         return workflow.is_published === true;
@@ -100,24 +100,20 @@ export class MyWorkflowsService extends MyEntriesService {
 
   public convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
     const groupEntriesObject: Array<OrgWorkflowObject> = [];
-    for (let i = 0; i < nsWorkflows.length; i++) {
+    nsWorkflows.map(nsWorkflow => {
       const orgWorkflowObject: OrgWorkflowObject = {
         sourceControl: '',
         organization: '',
         published: [],
         unpublished: []
       };
-      const nsWorkflow: Array<Workflow> = nsWorkflows[i].entries;
-      orgWorkflowObject.sourceControl = nsWorkflows[i].sourceControl;
-      orgWorkflowObject.organization = nsWorkflows[i].organization;
-      orgWorkflowObject.published = nsWorkflow.filter((workflow: Workflow) => {
-        return workflow.is_published;
-      });
-      orgWorkflowObject.unpublished = nsWorkflow.filter((workflow: Workflow) => {
-        return !workflow.is_published;
-      });
+      const nsWorkflowEntries: Array<Workflow> = nsWorkflow.entries;
+      orgWorkflowObject.sourceControl = nsWorkflow.sourceControl;
+      orgWorkflowObject.organization = nsWorkflow.organization;
+      orgWorkflowObject.published = nsWorkflowEntries.filter((workflow: Workflow) => workflow.is_published);
+      orgWorkflowObject.unpublished = nsWorkflowEntries.filter((workflow: Workflow) => !workflow.is_published);
       groupEntriesObject.push(orgWorkflowObject);
-    }
+    });
     return groupEntriesObject;
   }
 

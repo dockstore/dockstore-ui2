@@ -211,11 +211,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     return this.myWorkflowsService.convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows);
   }
 
-  protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
+  protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow | null {
     return this.myWorkflowsService.getFirstPublishedEntry(orgWorkflows);
   }
 
-  protected findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow {
+  protected findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow | null {
     return this.myWorkflowsService.findEntryFromPath(path, orgWorkflows);
   }
 
