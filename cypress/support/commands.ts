@@ -50,6 +50,20 @@ export function resetDB() {
 }
 
 export function checkInitialConnectionPool() {
+    cy.exec(
+      `PGPASSWORD=dockstore psql -h localhost -c "SELECT * FROM pg_stat_activity WHERE state NOT LIKE '%idle%'" webservice_test -U dockstore`
+    ).then(result => {
+      cy.log(result.stdout);
+      expect(result.stdout).contains('a');
+    });
+    const baseUrl = Cypress.config().baseUrl;
+    if (baseUrl) {
+      const adminBaseUrl = baseUrl.replace('4200', '8081');
+      cy.request(adminBaseUrl + '/metrics').then(response => {
+        expect(response.body).to.have.property('gauges');
+        expect(response.body.gauges['org.apache.http.conn.HttpClientConnectionManager.webservice.leased-connections']['value']).to.eq(0);
+      });
+    }
   cy.exec(`PGPASSWORD=dockstore psql -h localhost -c "SELECT COUNT(*) FROM pg_stat_activity WHERE state NOT LIKE '%idle%'" webservice_test -U dockstore`).then((result => {
     cy.exec(`echo '${JSON.stringify(result)}' >cypress/fixtures/connectionPoolQuery.txt`);
   }));
