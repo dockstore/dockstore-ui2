@@ -60,7 +60,7 @@
     "ng2-ui-auth": "^9.2.1",
     "ngx-bootstrap": "^3.0.1",
     "ngx-clipboard": "^12.0.0",
-    "ngx-markdown": "^7.1.5",
+    "ngx-markdown": "^8.1.0",
     "pipeline-builder": "^0.3.10-dev.298",
     "rxjs": "^6.3.3",
     "ts-md5": "^1.2.0",
