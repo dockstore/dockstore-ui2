@@ -25,7 +25,7 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
    * Filters the organization based on a string
    * Case insensitive
    * Partial match
-   * Searches every 5 name, description, displayName, location, and topic of an organization (does not search its collections)
+   * Searches the name, description, displayName, location, and topic of each organization (does not search its collections)
    *
    * @param {Array<Organization>} organizations  List of all approved organizations
    * @param {string} searchName                  Search string
