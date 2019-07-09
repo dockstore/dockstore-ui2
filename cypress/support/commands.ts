@@ -58,6 +58,7 @@ export function checkInitialConnectionPool() {
 export function assertConnectionPool(): void {
   cy.exec(`PGPASSWORD=dockstore psql -h localhost -c "SELECT * FROM pg_stat_activity WHERE state NOT LIKE '%idle%'" webservice_test -U dockstore`).then((result => {
     cy.log(result.stdout);
+    expect(result.stdout).contains('a');
   }));
   const baseUrl = Cypress.config().baseUrl;
   if (baseUrl) {
