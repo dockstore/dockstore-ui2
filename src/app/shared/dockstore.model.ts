@@ -65,6 +65,8 @@ export class Dockstore {
 
   static CWL_VISUALIZER_URI = 'https://view.commonwl.org';
 
+  static GITHUB_APP_INSTALLATION_URL = 'will be filled in by configuration.service';
+
   static FEATURES = {
     enableCwlViewer: true
   };
