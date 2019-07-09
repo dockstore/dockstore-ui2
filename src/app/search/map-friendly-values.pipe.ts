@@ -58,7 +58,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR, 'Secondary Descriptors'],
         [ToolFile.FileTypeEnum.TESTFILE, 'Test Parameter Files'],
         [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
-        [ToolFile.FileTypeEnum.DOCKSTORE_SERVICE_OTHER, 'Files']
+        [ToolFile.FileTypeEnum.OTHER, 'Files']
       ])
     ]
   ]);
