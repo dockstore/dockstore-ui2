@@ -20,6 +20,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
 import { SessionState, SessionStore } from './session.store';
+import { Dockstore } from '../dockstore.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,6 @@ export class SessionQuery extends Query<SessionState> {
   generateGitHubAppInstallationUrl(entryType: EntryType): string {
     let queryParams = new HttpParams();
     queryParams = queryParams.set('state', entryType);
-    return 'https://github.com/apps/dockstore/installations/new?' + queryParams;
+    return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams;
   }
 }

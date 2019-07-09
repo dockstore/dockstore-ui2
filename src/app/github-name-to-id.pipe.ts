@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { SessionQuery } from './shared/session/session.query';
 import { TokenQuery } from './shared/state/token.query';
 import { UserQuery } from './shared/user/user.query';
+import { Dockstore } from './shared/dockstore.model';
 
 /**
  * This converts an organization name or username to a GitHub apps installation link
@@ -49,7 +50,7 @@ export class GithubNameToIdPipe implements PipeTransform {
     let params = new HttpParams();
     params = params.set('state', entryType);
     params = params.set('suggested_target_id', id.toString());
-    return 'https://github.com/apps/dockstore/installations/new/permissions?' + params.toString();
+    return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new/permissions?' + params.toString();
   }
 
   private getIdFromUsername(username: string): Observable<string> {
