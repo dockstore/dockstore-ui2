@@ -51,7 +51,7 @@ export class MyServicesService extends MyEntriesService {
 
   getMyServices(id: number): void {
     forkJoin(
-      this.usersService.userWorkflows(id).pipe(
+      this.usersService.userServices(id).pipe(
         catchError((error: HttpErrorResponse) => {
           this.alertService.detailedSnackBarError(error);
           return observableOf([]);
