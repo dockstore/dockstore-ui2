@@ -75,12 +75,20 @@ export class DateService {
   }
 
   getISO8601FormatFromDate(timestamp: Date) {
-    const tsAsDate = new Date(timestamp);
-    return tsAsDate.toISOString();
+    if (timestamp) {
+      const tsAsDate = new Date(timestamp);
+      return tsAsDate.toISOString();
+    } else {
+      return 'n/a';
+    }
   }
 
-  getISO8601FormatFromNumber(timestamp: number){
-    const tsAsDate = new Date(timestamp);
-    return tsAsDate.toISOString();
+  getISO8601FormatFromNumber(timestamp: number) {
+    if (timestamp) {
+      const tsAsDate = new Date(timestamp);
+      return tsAsDate.toISOString();
+    } else {
+      return 'n/a';
+    }
   }
 }
