@@ -40,6 +40,7 @@ export function assertNoTab(tabName: string): any {
 
 export function resetDB() {
   before(() => {
+    checkInitialConnectionPool();
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
     cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore')
       .its('stdout').should('contain', 'ALTER TABLE');
