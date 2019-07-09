@@ -17,17 +17,16 @@ describe('BioschemaService', () => {
   it('should be created', inject([BioschemaService, DateService], (service: BioschemaService) => {
     expect(service).toBeTruthy();
   }));
-  it('should have expected attributes', inject([DateService], (service: DateService) => {
+  it('should have expected attributes', inject([BioschemaService, DateService], (service: BioschemaService) => {
     // create a DockstoreTool object
-    const bs = new BioschemaService(new DateService());
-    const tag: Tag = {name: 'tag', reference: ''};
+    const tag: Tag = {name: '1.0.0', reference: ''};
     const tool: DockstoreTool = {
       // Attributes used in the method being tested
       author: 'me',
       description: 'text',
       email: 'me@ucsc.edu',
-      id: 0,
-      lastUpdated: new Date(1498675698000),
+      id: 1,
+      lastUpdated: new Date('2017-06-28T18:48:18.000Z'),
       name: 'tool',
       // Attributes not used in method being tested, but required for a DockstoreTool object
       default_cwl_path: '',
@@ -36,49 +35,49 @@ describe('BioschemaService', () => {
       defaultCWLTestParameterFile: '',
       defaultWDLTestParameterFile: '',
       gitUrl: '',
-      mode: 'HOSTED',
+      mode: DockstoreTool.ModeEnum.HOSTED,
       namespace: '',
       private_access: false,
       registry_string: ''
     };
-    const result: BioschemaTool = bs.getToolSchema(tool, tag);
+    const result: BioschemaTool = service.getToolSchema(tool, tag);
     expect(result['@type']).toEqual('SoftwareApplication');
     expect(result.description).toEqual('text');
-    expect(result.softwareVersion).toEqual('tag');
+    expect(result.softwareVersion).toEqual('1.0.0');
     expect(result.audience).toEqual('Bioinformaticians');
-    expect(result.identifier).toEqual(0);
+    expect(result.identifier).toEqual(1);
     expect(result.name).toEqual('tool');
     expect(result.dateModified).toEqual('2017-06-28T18:48:18.000Z');
     expect(result.publisher).toEqual({'@type': 'Person', 'name': 'me', 'email': 'me@ucsc.edu'});
   }));
-  it('should have expected attributes', inject([DateService], (service: DateService) => {
+  it('should have expected attributes', inject([BioschemaService, DateService], (service: BioschemaService) => {
     // create a Workflow object
-    const bs = new BioschemaService(new DateService());
-    const version: WorkflowVersion = {name: 'version', reference: ''};
+    const version: WorkflowVersion = {name: '1.0.0', reference: ''};
+    const date: Date = new Date('2017-06-28T18:48:18.000Z');
     const workflow: Workflow = {
       // Attributes used in the method being tested
       author: 'me',
       description: 'text',
       email: 'me@ucsc.edu',
-      id: 0,
-      last_modified: 1498675698000,
+      id: 1,
+      last_modified: date.getTime(),
       workflowName: 'workflow',
       // Attributes not being tested, but required for a Workflow object
       gitUrl: '',
-      mode: 'HOSTED',
+      mode: Workflow.ModeEnum.HOSTED,
       organization: '',
       repository: '',
       sourceControl: '',
-      descriptorType: 'CWL',
+      descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
       defaultTestParameterFilePath: ''
     };
-    const result: BioschemaTool = bs.getWorkflowSchema(workflow, version);
+    const result: BioschemaTool = service.getWorkflowSchema(workflow, version);
     expect(result['@type']).toEqual('SoftwareApplication');
     expect(result.description).toEqual('text');
-    expect(result.softwareVersion).toEqual('version');
+    expect(result.softwareVersion).toEqual('1.0.0');
     expect(result.audience).toEqual('Bioinformaticians');
-    expect(result.identifier).toEqual(0);
+    expect(result.identifier).toEqual(1);
     expect(result.name).toEqual('workflow');
     expect(result.dateModified).toEqual('2017-06-28T18:48:18.000Z');
     expect(result.publisher).toEqual({'@type': 'Person', 'name': 'me', 'email': 'me@ucsc.edu'});
