@@ -41,12 +41,23 @@ export function assertNoTab(tabName: string): any {
 export function resetDB() {
   before(() => {
     checkInitialConnectionPool();
-    cy.exec('java -jar dockstore-webservice.jar db locks --force-release travisci/web.yml');
-    cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore')
-      .its('stdout').should('contain', 'ALTER TABLE');
-    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml')
-      .its('stdout').should('contain', 'Successfully released change log lock');
+    cy.wait(5000);
+    cy.exec('java -jar dockstore-webservice.jar db locks --force-release travisci/web.yml').then((obj) => {
+      expect(obj.code).eq(0);
+      cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml').then((obj2) => {
+        expect(obj2.code).eq(0);
+        cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore').then((obj3) => {
+          expect(obj3.code).eq(0);
+        }).then((obj4) => {
+          expect(obj4.code).eq(0);
+          cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml').then((obj5) => {
+            expect(obj5.code).eq(0);
+            cy.wait(5000);
+            checkInitialConnectionPool();
+          });
+        });
+      });
+    });
     checkInitialConnectionPool();
   });
 }
