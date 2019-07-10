@@ -119,7 +119,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.usersService.userContainers(user.id).subscribe(
           tools => {
             this.containerService.setTools(tools);
-            this.alertService.detailedSuccess();
+            this.alertService.simpleSuccess();
           },
           (error: HttpErrorResponse) => {
             this.alertService.detailedError(error);
@@ -167,7 +167,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     return groupEntriesObject;
   }
 
-  protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool {
+  protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool | null {
     for (let i = 0; i < orgEntries.length; i++) {
       const foundTool = orgEntries[i]['entries'].find((entry: DockstoreTool) => {
         return entry.is_published === true;
@@ -179,7 +179,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     return null;
   }
 
-  protected findEntryFromPath(path: string, orgTools: Array<OrgToolObject>): ExtendedDockstoreTool {
+  protected findEntryFromPath(path: string, orgTools: Array<OrgToolObject>): ExtendedDockstoreTool | null {
     let matchingTool: ExtendedDockstoreTool;
     for (let i = 0; i < orgTools.length; i++) {
       matchingTool = orgTools[i].published.find((tool: DockstoreTool) => tool.tool_path === path);

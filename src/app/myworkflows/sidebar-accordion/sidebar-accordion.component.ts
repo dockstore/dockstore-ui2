@@ -5,7 +5,6 @@ import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
-import { MyWorkflowsService } from '../myworkflows.service';
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -20,12 +19,7 @@ export class SidebarAccordionComponent implements OnInit {
   activeTab = 0;
   entryType$: Observable<EntryType>;
   EntryType = EntryType;
-  constructor(
-    private workflowQuery: WorkflowQuery,
-    private myWorkflowsService: MyWorkflowsService,
-    public dialog: MatDialog,
-    private sessionQuery: SessionQuery
-  ) {}
+  constructor(private workflowQuery: WorkflowQuery, public dialog: MatDialog, private sessionQuery: SessionQuery) {}
 
   ngOnInit(): void {
     this.entryType$ = this.sessionQuery.entryType$;

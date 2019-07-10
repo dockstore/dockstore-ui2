@@ -128,6 +128,6 @@ export abstract class MyEntriesService extends Base {
    * @abstract
    * @memberof MyEntriesService
    */
-  abstract getMyEntries(): void;
+  abstract getMyEntries(userId: number, entryType: EntryType): void;
   abstract registerEntry(): void;
 }

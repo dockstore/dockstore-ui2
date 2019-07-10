@@ -1,6 +1,7 @@
 {
   "extends": [
-    "rxjs-tslint-rules"
+    "rxjs-tslint-rules",
+    "tslint-config-prettier"
   ],
   "rulesDirectory": [
     "node_modules/codelyzer",

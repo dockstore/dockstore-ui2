@@ -28,7 +28,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../../shared/constants';
+import { myBioWorkflowsURLSegment, myServicesURLSegment } from '../../shared/constants';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
@@ -41,10 +41,7 @@ import { Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
-import { RegisterWorkflowModalComponent } from '../../workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyBioWorkflowsService } from '../my-bio-workflows.service';
-import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 
 /**
@@ -67,7 +64,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  providers: [MyWorkflowsService, ProviderService, DockstoreService]
+  providers: [ProviderService, DockstoreService]
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Service | BioWorkflow;
@@ -75,6 +72,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   entryType: EntryType;
   entryType$: Observable<EntryType>;
   myEntryPageTitle$: Observable<string>;
+  workflow$: Observable<Service | BioWorkflow>;
   EntryType = EntryType;
   sharedWorkflows: Array<Workflow>;
   readonly pageName = '/my-workflows';
@@ -83,11 +81,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   hasSourceControlToken$: Observable<boolean>;
   public gitHubAppInstallationLink$: Observable<string>;
   constructor(
-    private myworkflowService: MyWorkflowsService,
     protected configuration: Configuration,
     protected activatedRoute: ActivatedRoute,
-    private myBioWorkflowsService: MyBioWorkflowsService,
-    private myServicesService: MyServicesService,
     private userQuery: UserQuery,
     private workflowService: WorkflowService,
     protected authService: AuthService,
@@ -102,7 +97,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     private alertQuery: AlertQuery,
     private tokenService: TokenService,
     protected sessionService: SessionService,
-    protected sessionQuery: SessionQuery
+    protected sessionQuery: SessionQuery,
+    private myWorkflowsService: MyWorkflowsService
   ) {
     super(accountsService, authService, configuration, tokenQuery, urlResolverService, sessionQuery, sessionService, activatedRoute);
     this.entryType = this.sessionQuery.getSnapshot().entryType;
@@ -110,6 +106,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
+    this.myWorkflowsService.clearPartialState();
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.tokenQuery.gitHubToken$
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -120,6 +117,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
      * due to when the user clicks the 'view checker workflow' or 'view parent entry' buttons.
      */
+    this.workflow$ = this.workflowQuery.selectActive();
     this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
@@ -136,7 +134,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
-    this.myworkflowService.clearPartialState();
 
     // Updates selected workflow from service and selects in sidebar
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
@@ -149,11 +146,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         ([workflows, sharedWorkflows]) => {
           if (workflows && sharedWorkflows) {
             this.workflows = workflows;
-            const sortedWorkflows = this.myworkflowService.sortGroupEntries(workflows, this.user.username, EntryType.BioWorkflow);
+            const sortedWorkflows = this.myWorkflowsService.sortGroupEntries(workflows, this.user.username, EntryType.BioWorkflow);
             this.setGroupEntriesObject(sortedWorkflows);
 
             this.sharedWorkflows = sharedWorkflows;
-            const sortedSharedWorkflows = this.myworkflowService.sortGroupEntries(
+            const sortedSharedWorkflows = this.myWorkflowsService.sortGroupEntries(
               sharedWorkflows,
               this.user.username,
               EntryType.BioWorkflow
@@ -186,11 +183,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   private getMyEntries() {
-    if (this.entryType === EntryType.BioWorkflow) {
-      this.myworkflowService.getMyEntries();
-    } else {
-      this.myServicesService.getMyEntries();
-    }
+    combineLatest(this.userQuery.user$, this.sessionQuery.entryType$)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([user, entryType]) => {
+        if (user && entryType) {
+          this.myWorkflowsService.getMyEntries(user.id, entryType);
+        }
+      });
   }
 
   /**
@@ -209,53 +208,15 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
-    const groupEntriesObject: Array<OrgWorkflowObject> = [];
-    for (let i = 0; i < nsWorkflows.length; i++) {
-      const orgWorkflowObject: OrgWorkflowObject = {
-        sourceControl: '',
-        organization: '',
-        published: [],
-        unpublished: []
-      };
-      const nsWorkflow: Array<Workflow> = nsWorkflows[i].entries;
-      orgWorkflowObject.sourceControl = nsWorkflows[i].sourceControl;
-      orgWorkflowObject.organization = nsWorkflows[i].organization;
-      orgWorkflowObject.published = nsWorkflow.filter((workflow: Workflow) => {
-        return workflow.is_published;
-      });
-      orgWorkflowObject.unpublished = nsWorkflow.filter((workflow: Workflow) => {
-        return !workflow.is_published;
-      });
-      groupEntriesObject.push(orgWorkflowObject);
-    }
-    return groupEntriesObject;
+    return this.myWorkflowsService.convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows);
   }
 
-  protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow {
-    for (let i = 0; i < orgWorkflows.length; i++) {
-      const foundWorkflow = orgWorkflows[i]['entries'].find((workflow: Workflow) => {
-        return workflow.is_published === true;
-      });
-      if (foundWorkflow) {
-        return foundWorkflow;
-      }
-    }
-    return null;
+  protected getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow | null {
+    return this.myWorkflowsService.getFirstPublishedEntry(orgWorkflows);
   }
 
-  protected findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow {
-    let matchingWorkflow: ExtendedWorkflow;
-    for (let i = 0; i < orgWorkflows.length; i++) {
-      matchingWorkflow = orgWorkflows[i].published.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
-      if (matchingWorkflow) {
-        return matchingWorkflow;
-      }
-      matchingWorkflow = orgWorkflows[i].unpublished.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
-      if (matchingWorkflow) {
-        return matchingWorkflow;
-      }
-    }
-    return null;
+  protected findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow | null {
+    return this.myWorkflowsService.findEntryFromPath(path, orgWorkflows);
   }
 
   /**
@@ -263,13 +224,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * @param workflow Selected workflow
    */
   selectEntry(workflow: ExtendedWorkflow | null): void {
-    if (workflow !== null) {
-      if (this.entryType === EntryType.BioWorkflow) {
-        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
-      } else {
-        this.myServicesService.selectEntry(workflow.id, includesValidation);
-      }
-    }
+    this.myWorkflowsService.selectEntry(workflow, this.entryType);
   }
 
   /**
@@ -291,7 +246,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    this.dialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+    this.myWorkflowsService.registerEntry();
   }
 
   refreshAllEntries(): void {
