@@ -15,6 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from './../shared/myentries.service';
 
 @Injectable()
@@ -23,7 +24,7 @@ export class MytoolsService extends MyEntriesService {
     return groupEntries.findIndex(nsContainer => nsContainer.namespace === group);
   }
 
-  getMyEntries() {}
+  getMyEntries(userId: number, entryType: EntryType) {}
 
   registerEntry() {}
 }

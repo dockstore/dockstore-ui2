@@ -4,7 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { RefreshService } from '../../shared/refresh.service';
@@ -12,7 +12,6 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
 
 import RoleEnum = Permission.RoleEnum;
-import { AlertService } from '../../shared/alert/state/alert.service';
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
@@ -108,14 +107,16 @@ export class PermissionsComponent implements OnInit {
   private onChange() {
     this.canViewPermissions = false;
     this.owners = [];
-    this.hosted = this.workflow.mode === 'HOSTED';
-    this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path).subscribe(
-      (userPermissions: Permission[]) => {
-        this.canViewPermissions = true;
-        this.processResponse(userPermissions);
-      },
-      () => {}
-    );
+    if (this._workflow) {
+      this.hosted = this.workflow.mode === 'HOSTED';
+      this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path).subscribe(
+        (userPermissions: Permission[]) => {
+          this.canViewPermissions = true;
+          this.processResponse(userPermissions);
+        },
+        () => {}
+      );
+    }
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {

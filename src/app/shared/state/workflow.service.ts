@@ -38,6 +38,10 @@ export class WorkflowService {
     this.workflowStore.setActive(null);
   }
 
+  clearVersion() {
+    this.workflowStore.updateRoot({ version: null });
+  }
+
   add(workflow: Service | BioWorkflow) {
     this.workflowStore.add(workflow);
   }

@@ -225,7 +225,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             this.isOwner = actions.indexOf('SHARE') !== -1;
             // TODO: when expanding permissions beyond hosted workflows, this component will need to tolerate a 401
             // for users that are not on FireCloud
-            if (this.isOwner && this.isHosted()) {
+            if (this.isOwner && this.isHosted() && this.workflow) {
               this.workflowsService
                 .getWorkflowPermissions(this.workflow.full_workflow_path)
                 .pipe(takeUntil(this.ngUnsubscribe))

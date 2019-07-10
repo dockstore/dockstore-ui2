@@ -17,9 +17,11 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from '../myworkflows/my-workflow/my-workflow.component';
+import { Base } from './base';
 import { TokenSource } from './enum/token-source.enum';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
@@ -30,7 +32,7 @@ import { Configuration, DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 
 @Injectable()
-export abstract class MyEntry implements OnDestroy {
+export abstract class MyEntry extends Base implements OnDestroy {
   abstract readonly pageName: string;
   oneAtATime = true;
   user: any;
@@ -50,6 +52,7 @@ export abstract class MyEntry implements OnDestroy {
     protected sessionService: SessionService,
     protected activatedRoute: ActivatedRoute
   ) {
+    super();
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.myEntryPageTitle$ = this.sessionQuery.myEntryPageTitle$;
   }
@@ -80,7 +83,7 @@ export abstract class MyEntry implements OnDestroy {
    * @returns {((DockstoreTool | Workflow))} The first published entry found, null if there aren't any
    * @memberof MyEntry
    */
-  protected abstract getFirstPublishedEntry(orgEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>): DockstoreTool | Workflow;
+  protected abstract getFirstPublishedEntry(orgEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>): DockstoreTool | Workflow | null;
 
   /**
    * Determines the tool to go to based on the URL
@@ -94,7 +97,7 @@ export abstract class MyEntry implements OnDestroy {
   protected abstract findEntryFromPath(
     path: string,
     orgEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>
-  ): ExtendedDockstoreTool | ExtendedWorkflow;
+  ): ExtendedDockstoreTool | ExtendedWorkflow | null;
 
   public abstract selectEntry(entry: ExtendedDockstoreTool | ExtendedWorkflow): void;
   public abstract setRegisterEntryModalInfo(gitURLOrNamespace: String): void;
@@ -105,7 +108,7 @@ export abstract class MyEntry implements OnDestroy {
     localStorage.setItem('page', this.pageName);
     const token = this.authService.getToken();
     this.configuration.apiKeys['Authorization'] = token ? 'Bearer ' + token : null;
-    this.tokenQuery.hasGitHubToken$.subscribe(hasGitHubToken => (this.hasGitHubToken = hasGitHubToken));
+    this.tokenQuery.hasGitHubToken$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasGitHubToken => (this.hasGitHubToken = hasGitHubToken));
   }
 
   ngOnDestroy() {

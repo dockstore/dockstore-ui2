@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { MyWorkflowComponent } from '../myworkflows/my-workflow/my-workflow.component';
 import { SidebarAccordionComponent } from '../myworkflows/sidebar-accordion/sidebar-accordion.component';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
@@ -39,6 +40,8 @@ const IMPORTS = [
 @NgModule({
   declarations: DECLARATIONS,
   imports: IMPORTS,
-  exports: DECLARATIONS.concat(IMPORTS)
+  providers: [MyWorkflowsService],
+  exports: DECLARATIONS.concat(IMPORTS),
+  entryComponents: [RegisterWorkflowModalComponent]
 })
 export class SharedWorkflowServicesModule {}
