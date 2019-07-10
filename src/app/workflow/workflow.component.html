@@ -209,7 +209,7 @@
             </mat-tab>
           </div>
           <mat-tab id="versionsTab" label="Versions">
-            <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
+            <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0 && !isStub(); else noVersionsVersionTab">
               <app-versions-workflow
                 [versions]="(extendedWorkflow$ | async)?.workflowVersions"
                 (selectedVersionChange)="onSelectedVersionChange($event)"
@@ -227,7 +227,8 @@
                 <mat-card class="alert alert-info" role="alert">
                   <mat-icon>info</mat-icon>
                   <span *ngIf="entryType === EntryType.Service; else noVersionsVersionTabBioWorkflow">
-                    This service does not have any versions. Create a release/tag on GitHub with a valid dockstore config file to add a new version.
+                    This service does not have any versions. Create a release/tag on GitHub with a valid dockstore config file to add a new
+                    version.
                   </span>
                   <ng-template #noVersionsVersionTabBioWorkflow>
                     To see versions, please refresh the workflow.
@@ -245,7 +246,8 @@
 
                 <ng-template #noVersionsFilesTab>
                   <mat-card class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> This service does not have any versions. Create a release/tag on GitHub with a valid dockstore config file to add a new version.
+                    <mat-icon>info</mat-icon> This service does not have any versions. Create a release/tag on GitHub with a valid dockstore
+                    config file to add a new version.
                   </mat-card>
                 </ng-template>
               </div>
