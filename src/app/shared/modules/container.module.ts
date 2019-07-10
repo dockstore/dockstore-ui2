@@ -20,7 +20,6 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { BioschemaService} from '../bioschema.service';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -104,8 +103,7 @@ import { MarkdownModule } from 'ngx-markdown';
     MarkdownModule
   ],
   providers: [
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
-    BioschemaService,
+    { provide: TooltipConfig, useFactory: getTooltipConfig },
     EmailService,
     DateService,
     FileService,

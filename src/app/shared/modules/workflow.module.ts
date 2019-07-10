@@ -44,7 +44,6 @@ import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { DateService } from '../date.service';
-import { BioschemaService} from '../bioschema.service';
 import { FileService } from '../file.service';
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
@@ -106,7 +105,6 @@ import { getTooltipConfig } from './../tooltip';
   providers: [
     { provide: TooltipConfig, useFactory: getTooltipConfig },
     DateService,
-    BioschemaService,
     FileService,
     WorkflowLaunchService,
     ParamfilesService,
