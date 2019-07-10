@@ -63,10 +63,12 @@ export function checkInitialConnectionPool() {
             cy.request(adminBaseUrl + '/metrics').then(response => {
               expect(response.body).to.have.property('gauges');
               expect(response.body.gauges['io.dropwizard.db.ManagedPooledDataSource.hibernate.active']['value']).to.eq(0);
+              cy.wait(5000);
               cy.exec(
-                `PGPASSWORD=dockstore psql -h localhost -c "SELECT COUNT(*) FROM pg_stat_activity WHERE state NOT LIKE '%idle%'" webservice_test -U dockstore`
+                `PGPASSWORD=dockstore psql -h localhost -c "SELECT * FROM pg_stat_activity WHERE state NOT LIKE '%idle%'" webservice_test -U dockstore`
               ).then(result => {
-                cy.exec(`echo '${JSON.stringify(result)}' >cypress/fixtures/connectionPoolQuery.txt`);
+                expect(result.stdout).contains('a');
+                cy.wait(5000);
               });
             });
           }
