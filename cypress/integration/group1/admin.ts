@@ -40,7 +40,8 @@ describe('Admin UI', () => {
   describe('Dropdown', () => {
     it('Admin user sees lock icon', () => {
       cy.
-      get('#dropdown-accounts > .mat-icon')
+        get('#dropdown-accounts > .mat-icon')
+        .should('be.visible')
         .contains('lock');
     });
   });
@@ -58,6 +59,7 @@ describe('Admin UI', () => {
         .should('exist');
       cy
         .get('#account-is-admin > .mat-icon')
+        .should('be.visible')
         .contains('lock');
     });
   });
