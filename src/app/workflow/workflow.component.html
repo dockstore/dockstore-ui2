@@ -209,7 +209,7 @@
             </mat-tab>
           </div>
           <mat-tab id="versionsTab" label="Versions">
-            <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0 && !isStub(); else noVersionsVersionTab">
+            <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
               <app-versions-workflow
                 [versions]="(extendedWorkflow$ | async)?.workflowVersions"
                 (selectedVersionChange)="onSelectedVersionChange($event)"
