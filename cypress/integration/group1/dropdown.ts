@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPortCurator } from '../../support/commands';
+import {goToTab, setTokenUserViewPortCurator} from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
@@ -76,6 +76,41 @@ describe('Dropdown test', () => {
 
     it('Should show all accounts as linked (except GitLab and Bitbucket)', () => {
       everythingOk();
+    });
+    setTokenUserViewPortCurator();
+    // Check that changing the tab changes the url
+    it('should default to accounts tab', () => {
+      cy.visit('/accounts');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
+    });
+    it('Change tab to profiles', () => {
+      goToTab('Profiles');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=profiles');
+    });
+    it('Change tab to dockstore account controls', () => {
+      goToTab('Dockstore Account Controls');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20controls');
+    });
+    it('Change tab to requests', () => {
+      goToTab('Requests');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=requests');
+    });
+    // Check that changing the url changes the tab
+    it('Link to accounts tab', () => {
+      cy.visit('/accounts?tab=accounts');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
+    });
+    it('Link to profiles tab', () => {
+      cy.visit('/accounts?tab=profiles');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=profiles');
+    });
+    it('Link to dockstore account controls tab', () => {
+      cy.visit('/accounts?tab=dockstore%20account%20controls');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20controls');
+    });
+    it('Link to requests tab', () => {
+      cy.visit('/accounts?tab=requests');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=requests');
     });
   });
 
