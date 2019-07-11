@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class AccountsComponent implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
-  protected selected = new FormControl(0);
+  selected = new FormControl(0);
   validTabs = ['accounts', 'profiles', 'dockstore account controls', 'requests'];
   constructor(private location: Location, private router: Router) {}
 
