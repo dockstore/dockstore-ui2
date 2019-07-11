@@ -59,9 +59,7 @@ describe('Dockstore hosted workflows', () => {
       // Check content of the version tab to see a single row that says you have no versions
       goToTab('Versions');
       cy
-        .get('table > tbody')
-        .find('tr')
-        .should('have.length', 1);
+        .contains('To see versions, please refresh the workflow.')
 
       // Add a new version with one descriptor
       goToTab('Files');
