@@ -74,7 +74,7 @@ describe('Dockstore Home', () => {
   //     cy.contains('td', 'test').should('be.visible');
   //     checkFilesTab();
   //   });
-  });
+  // });
   function checkTabs() {
     getTab('Info');
     getTab('Versions');
