@@ -227,7 +227,7 @@
                 <mat-card class="alert alert-info" role="alert">
                   <mat-icon>info</mat-icon>
                   <span *ngIf="entryType === EntryType.Service; else noVersionsVersionTabBioWorkflow">
-                    This service does not have any versions. Create a release/tag on GitHub with a valid dockstore config file to add a new
+                    This service does not have any versions. Create a release/tag on GitHub with a valid .dockstore.yaml to add a new
                     version.
                   </span>
                   <ng-template #noVersionsVersionTabBioWorkflow>
