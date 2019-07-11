@@ -231,7 +231,12 @@
                     version.
                   </span>
                   <ng-template #noVersionsVersionTabBioWorkflow>
-                    To see versions, please refresh the workflow.
+                    <span *ngIf="workflow?.mode === WorkflowModel.ModeEnum.HOSTED">
+                      To see versions, please add a new version.
+                    </span>
+                    <span *ngIf="workflow?.mode !== WorkflowModel.ModeEnum.HOSTED">
+                      To see versions, please refresh the workflow.
+                    </span>
                   </ng-template>
                 </mat-card>
               </div>
