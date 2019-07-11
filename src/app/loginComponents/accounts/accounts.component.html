@@ -3,7 +3,15 @@
   Profiles, Accounts and Controls
 </app-header>
 <div class="container separation">
-  <mat-tab-group>
+  <mat-tab-group
+    [selectedIndex]="selected.value"
+    class="ds-tabs"
+    id="workflow_tabs"
+    #entryTabs
+    (selectedIndexChange)="selected.setValue($event)"
+    (selectedTabChange)="selectedTabChange($event)"
+    mat-stretch-tabs
+  >
     <mat-tab label="Accounts">
       <app-accounts-external></app-accounts-external>
     </mat-tab>
