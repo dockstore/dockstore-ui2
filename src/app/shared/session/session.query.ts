@@ -48,6 +48,6 @@ export class SessionQuery extends Query<SessionState> {
   generateGitHubAppInstallationUrl(entryType: EntryType): string {
     let queryParams = new HttpParams();
     queryParams = queryParams.set('state', entryType);
-    return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams;
+    return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams.toString();
   }
 }
