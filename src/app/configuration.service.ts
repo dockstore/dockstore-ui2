@@ -64,6 +64,8 @@ export class ConfigurationService {
     Dockstore.GOOGLE_TAG_MANAGER_ID = config.tagManagerId;
 
     Dockstore.CWL_VISUALIZER_URI = config.cwlVisualizerUri;
+
+    Dockstore.GITHUB_APP_INSTALLATION_URL = config.gitHubAppInstallationUrl;
   }
 
   /**

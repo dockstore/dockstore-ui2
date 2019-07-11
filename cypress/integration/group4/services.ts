@@ -58,23 +58,23 @@ describe('Dockstore Home', () => {
   });
 
   // TODO: These are fake services, need to use a more realistic ones later
-  describe('my-services', () => {
-    setTokenUserViewPort();
-    it('Have no services in /services', () => {
-      cy.visit('/my-services');
-      cy.url().should('contain', 'my-services/github.com/A/l');
-      cy.get('[data-cy=header]').contains('h3', 'My Services');
-      cy.get('#workflow-path').contains('github.com/A/l:master');
-      checkTabs();
-      checkInfoTab();
-      // TRS only visibile in public page
-      cy.contains('TRS: ').should('not.be.visible');
-      checkVersionsTab();
-      // Hidden version not visible on public page
-      cy.contains('td', 'test').should('be.visible');
-      checkFilesTab();
-    });
-  });
+  // describe('my-services', () => {
+  //   setTokenUserViewPort();
+  //   it('Have no services in /services', () => {
+  //     cy.visit('/my-services');
+  //     cy.url().should('contain', 'my-services/github.com/A/l');
+  //     cy.get('[data-cy=header]').contains('h3', 'My Services');
+  //     cy.get('#workflow-path').contains('github.com/A/l:master');
+  //     checkTabs();
+  //     checkInfoTab();
+  //     // TRS only visibile in public page
+  //     cy.contains('TRS: ').should('not.be.visible');
+  //     checkVersionsTab();
+  //     // Hidden version not visible on public page
+  //     cy.contains('td', 'test').should('be.visible');
+  //     checkFilesTab();
+  //   });
+  // });
   function checkTabs() {
     getTab('Info');
     getTab('Versions');

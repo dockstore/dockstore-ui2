@@ -30,7 +30,7 @@ export class MyServicesService {
   getMyServices(id: number): void {
     this.alertService.start('Fetching services');
     forkJoin(
-      this.usersService.userWorkflows(id).pipe(
+      this.usersService.userServices(id).pipe(
         catchError((error: HttpErrorResponse) => {
           this.alertService.detailedSnackBarError(error);
           return observableOf([]);
