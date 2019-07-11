@@ -88,7 +88,7 @@
         </tr>
         <tr
           (click)="setVersion(version)"
-          *ngFor="let version of versions | orderBy: convertSorting()"
+          *ngFor="let version of versions | orderBy: convertSorting(tool?.mode)"
           [ngClass]="{ info: versionTag != null && version != null && versionTag.id == version.id }"
         >
           <td class="break">

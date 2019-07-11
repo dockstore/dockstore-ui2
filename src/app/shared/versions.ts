@@ -24,6 +24,7 @@ import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { DateService } from './date.service';
 import { SessionQuery } from './session/session.query';
 import { Tooltip } from './tooltip';
+import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 export abstract class Versions extends EntryTab {
   @Input() versions: Array<Tag | WorkflowVersion>;
@@ -68,7 +69,10 @@ export abstract class Versions extends EntryTab {
   getIconClass(columnName): IconDefinition {
     return this.dockstoreService.getIconClass(columnName, this.sortColumn, this.sortReverse);
   }
-  convertSorting(): string {
+  convertSorting(mode): string | undefined {
+    if (mode && mode === DockstoreTool.ModeEnum.HOSTED) {
+      this.sortColumn = 'id';
+    }
     return this.sortReverse ? '-' + this.sortColumn : this.sortColumn;
   }
   getDateTimeString(timestamp) {

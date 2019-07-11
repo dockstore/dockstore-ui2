@@ -84,6 +84,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   unpublishMessage = 'Unpublish the workflow to remove it from the public';
   viewPublicMessage = 'Go to the public page for this workflow';
   pubUnpubMessage: string;
+  public WorkflowModel = Workflow;
   @Input() user;
 
   constructor(
