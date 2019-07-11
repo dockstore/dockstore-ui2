@@ -96,7 +96,7 @@
         </tr>
         <tr
           (click)="setVersion(version)"
-          *ngFor="let version of versions | orderBy: convertSorting()"
+          *ngFor="let version of versions | orderBy: convertSorting(workflow?.mode)"
           [ngClass]="{ info: _selectedVersion != null && version != null && _selectedVersion.id == version.id }"
         >
           <td>

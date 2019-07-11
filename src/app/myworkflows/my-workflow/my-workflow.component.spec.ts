@@ -44,8 +44,8 @@ import {
   WorkflowStubService
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
+import { MyWorkflowsService } from '../myworkflows.service';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -72,11 +72,11 @@ describe('MyWorkflowsComponent', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+        MyWorkflowsService,
         TokenQuery,
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: UrlResolverService, useClass: UrlResolverStubService },
-        MyWorkflowsService,
         {
           provide: MatDialogRef,
           useValue: {

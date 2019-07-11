@@ -163,7 +163,8 @@ describe('Dockstore hosted tools', () => {
       // Should have a version 2
       goToTab('Versions');
         cy.get('table')
-        .contains('span', /\b2\b/);
+        .contains('span', /\b2\b/)
+        .click();
 
       // Should be able to publish
       cy
