@@ -19,15 +19,15 @@ export class AccountsComponent implements OnInit {
     this.parseURL(this.router.url);
   }
 
-  private parseURL(url: String): void {
+  private parseURL(url: string): void {
     const decodedUrl: string = decodeURIComponent(url.toString()); // decode any encoded spaces, etc. in the string
-    const strippedUrl: String = decodedUrl.endsWith('/') ? decodedUrl.slice(0, -1) : decodedUrl; // remove any trailing slash
+    const strippedUrl: string = decodedUrl.endsWith('/') ? decodedUrl.slice(0, -1) : decodedUrl; // remove any trailing slash
     this.setupTab(strippedUrl);
   }
 
-  public setupTab(url: String) {
-    const regexp: RegExp = new RegExp('\\?tab=(.*)');
-    const match = regexp.exec(url.toString());
+  public setupTab(url: string) {
+    const u = new URL(url);
+    const match = u.searchParams.get('tab');
     if (match) {
       // look for a tab name in the url
       const tabIndex = this.validTabs.indexOf(match[1]);
