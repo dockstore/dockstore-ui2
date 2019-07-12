@@ -30,7 +30,10 @@ export class AccountsComponent implements OnInit {
     const match = regexp.exec(url.toString());
     if (match) {
       // look for a tab name in the url
-      this.currentTab = match[1]; // if found, set the tab accordingly
+      const tabIndex = this.validTabs.indexOf(match[1]);
+      if (tabIndex >= 0) {
+        this.currentTab = match[1]; // if found, set the tab accordingly
+      }
     } // if not found, default to the 'accounts' tab
     this.selectTab(this.validTabs.indexOf(this.currentTab));
     this.setAccountsTab(this.currentTab);
@@ -38,9 +41,7 @@ export class AccountsComponent implements OnInit {
 
   selectTab(tabIndex: number): void {
     // called on setup
-    if (tabIndex >= 0) {
-      this.selected.setValue(tabIndex);
-    }
+    this.selected.setValue(tabIndex);
   }
 
   selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
