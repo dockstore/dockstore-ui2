@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatTabChangeEvent } from '@angular/material';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import Dictionary = cytoscape.Css.Dictionary;
 
 @Component({
   selector: 'app-accounts',
@@ -10,33 +12,32 @@ import { Router } from '@angular/router';
 })
 export class AccountsComponent implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
-  selected = new FormControl(0);
+  selected = new FormControl();
   validTabs = ['accounts', 'profiles', 'dockstore account controls', 'requests'];
-  constructor(private location: Location, private router: Router) {}
+  constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     localStorage.setItem('page', '/accounts');
-    this.parseURL(this.router.url);
+    this.parseParam(this.activatedRoute.queryParams);
   }
 
-  private parseURL(url: string): void {
-    const decodedUrl: string = decodeURIComponent(url.toString()); // decode any encoded spaces, etc. in the string
-    const strippedUrl: string = decodedUrl.endsWith('/') ? decodedUrl.slice(0, -1) : decodedUrl; // remove any trailing slash
-    this.setupTab(strippedUrl);
+  private parseParam(params: Observable<Params>): void {
+    params.subscribe(next => {
+      this.setupTab(next);
+    });
   }
 
-  public setupTab(url: string) {
-    const u = new URL(url);
-    const match = u.searchParams.get('tab');
+  public setupTab(u: Dictionary) {
+    const match: string = u['tab'];
     if (match) {
       // look for a tab name in the url
-      const tabIndex = this.validTabs.indexOf(match[1]);
+      const tabIndex = this.validTabs.indexOf(match);
       if (tabIndex >= 0) {
-        this.currentTab = match[1]; // if found, set the tab accordingly
+        this.currentTab = match; // if found, set the tab accordingly
       }
     } // if not found, default to the 'accounts' tab
     this.selectTab(this.validTabs.indexOf(this.currentTab));
-    this.setAccountsTab(this.currentTab);
+    this.setAccountsTab();
   }
 
   selectTab(tabIndex: number): void {
@@ -46,11 +47,11 @@ export class AccountsComponent implements OnInit {
 
   selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
     // called on tab change event
-    this.setAccountsTab(matTabChangeEvent.tab.textLabel.toLowerCase());
+    this.currentTab = matTabChangeEvent.tab.textLabel.toLowerCase();
+    this.setAccountsTab();
   }
 
-  setAccountsTab(tabName: string) {
-    this.currentTab = tabName;
-    this.location.replaceState('accounts?tab=' + tabName);
+  setAccountsTab() {
+    this.location.replaceState('accounts?tab=' + this.currentTab);
   }
 }
