@@ -83,6 +83,10 @@ describe('Dropdown test', () => {
       cy.visit('/accounts');
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
     });
+    it('should default to accounts tab when tab name misspelled', () => {
+      cy.visit('/accounts?tab=abcd');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
+    });
     it('Change tab to profiles', () => {
       goToTab('Profiles');
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=profiles');

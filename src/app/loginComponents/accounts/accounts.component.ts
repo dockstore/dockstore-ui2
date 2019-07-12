@@ -38,7 +38,9 @@ export class AccountsComponent implements OnInit {
 
   selectTab(tabIndex: number): void {
     // called on setup
-    this.selected.setValue(tabIndex);
+    if (tabIndex >= 0) {
+      this.selected.setValue(tabIndex);
+    }
   }
 
   selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
