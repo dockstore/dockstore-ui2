@@ -4,9 +4,7 @@ import { UpsertOrganizationMemberStore, UpsertOrganizationMemberState } from './
 
 @Injectable({ providedIn: 'root' })
 export class UpsertOrganizationMemberQuery extends Query<UpsertOrganizationMemberState> {
-
   constructor(protected store: UpsertOrganizationMemberStore) {
     super(store);
   }
-
 }

@@ -20,9 +20,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) { }
-  canActivate(next: ActivatedRouteSnapshot,
-              state: RouterStateSnapshot) {
+  constructor(private auth: AuthService, private router: Router) {}
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.auth.isAuthenticated()) {
       return true;
     }

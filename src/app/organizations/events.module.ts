@@ -7,9 +7,8 @@ import { CustomMaterialModule } from './../shared/modules/material.module';
 import { EventsComponent } from './events/events.component';
 
 @NgModule({
-  imports: [ CommonModule, CustomMaterialModule, FlexLayoutModule,
-  RefreshAlertModule ],
-  declarations: [ EventsComponent ],
-  exports: [ EventsComponent ]
+  imports: [CommonModule, CustomMaterialModule, FlexLayoutModule, RefreshAlertModule],
+  declarations: [EventsComponent],
+  exports: [EventsComponent]
 })
-export class EventsModule { }
+export class EventsModule {}

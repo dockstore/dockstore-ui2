@@ -48,7 +48,7 @@
 }
 
 .close-icon {
-  border:1px solid transparent;
+  border: 1px solid transparent;
   background-color: transparent;
   display: inline-block;
   vertical-align: middle;
@@ -56,13 +56,13 @@
   cursor: pointer;
 }
 .close-icon:after {
-  content: "X";
+  content: 'X';
   /*display: inline-block;*/
   width: 35px;
   height: 30px;
   position: absolute;
-  background-color: #FA9595;
-  z-index:1;
+  background-color: #fa9595;
+  z-index: 1;
   right: 40px;
   top: 0px;
   bottom: 0px;
@@ -73,7 +73,7 @@
   color: white;
   font-weight: normal;
   font-size: 12px;
-  box-shadow: 0 0 2px #E50F0F;
+  box-shadow: 0 0 2px #e50f0f;
   cursor: pointer;
 }
 .search-box:not(:valid) ~ .close-icon {
@@ -117,7 +117,7 @@
 }
 
 .search-container {
-  padding-top:30px;
+  padding-top: 30px;
 }
 
 .advancedSearch-btn {

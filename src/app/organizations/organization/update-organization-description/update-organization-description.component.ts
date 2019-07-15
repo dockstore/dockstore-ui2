@@ -25,9 +25,10 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {
   updateOrganizationOrCollectionDescriptionForm: FormGroup;
 
-  constructor(private updateOrganizationOrDescriptionDescriptionService: UpdateOrganizationOrCollectionDescriptionService
-    , @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  constructor(
+    private updateOrganizationOrDescriptionDescriptionService: UpdateOrganizationOrCollectionDescriptionService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit() {
     this.updateOrganizationOrCollectionDescriptionForm = this.updateOrganizationOrDescriptionDescriptionService.createForm(this.data);
@@ -36,10 +37,13 @@ export class UpdateOrganizationOrCollectionDescriptionComponent implements OnIni
   updateOrganizationDescription() {
     if (this.data.type === 'collection') {
       this.updateOrganizationOrDescriptionDescriptionService.updateCollectionDescription(
-        this.updateOrganizationOrCollectionDescriptionForm, this.data.collectionId);
+        this.updateOrganizationOrCollectionDescriptionForm,
+        this.data.collectionId
+      );
     } else if (this.data.type === 'organization') {
       this.updateOrganizationOrDescriptionDescriptionService.updateOrganizationDescription(
-        this.updateOrganizationOrCollectionDescriptionForm);
+        this.updateOrganizationOrCollectionDescriptionForm
+      );
     }
   }
 

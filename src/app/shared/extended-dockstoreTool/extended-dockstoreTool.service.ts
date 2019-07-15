@@ -29,10 +29,13 @@ import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
   providedIn: 'root'
 })
 export class ExtendedDockstoreToolService {
-
-  constructor(private providerService: ProviderService,
-    private imageProviderService: ImageProviderService, private dateService: DateService,
-    private dockstoreService: DockstoreService, private extendedDockstoreToolStore: ExtendedDockstoreToolStore) { }
+  constructor(
+    private providerService: ProviderService,
+    private imageProviderService: ImageProviderService,
+    private dateService: DateService,
+    private dockstoreService: DockstoreService,
+    private extendedDockstoreToolStore: ExtendedDockstoreToolStore
+  ) {}
 
   /**
    * Updates the extendedDockstoreTool by extended the current tool
@@ -64,7 +67,7 @@ export class ExtendedDockstoreToolService {
       extendedTool.email = this.dockstoreService.stripMailTo(extendedTool.email);
       extendedTool.lastBuildDate = this.dateService.getDateTimeMessage(new Date(extendedTool.lastBuild).getTime());
       extendedTool.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(extendedTool.lastUpdated).getTime());
-      extendedTool.versionVerified = this.dockstoreService.getVersionVerified(extendedTool.tags);
+      extendedTool.versionVerified = this.dockstoreService.getVersionVerified(extendedTool.workflowVersions);
       extendedTool.verifiedSources = this.dockstoreService.getVerifiedSources(extendedTool);
       return extendedTool;
     } else {

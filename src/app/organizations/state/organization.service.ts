@@ -22,10 +22,11 @@ import { OrganizationStore } from './organization.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
-
-  constructor(private organizationStore: OrganizationStore, private organizationsService: OrganizationsService,
-    private organizationMembersService: OrganizationMembersService) {
-  }
+  constructor(
+    private organizationStore: OrganizationStore,
+    private organizationsService: OrganizationsService,
+    private organizationMembersService: OrganizationMembersService
+  ) {}
 
   clearState(): void {
     this.organizationStore.setState(state => {
@@ -40,21 +41,26 @@ export class OrganizationService {
 
   updateOrganizationFromID(organizationID: number): void {
     this.organizationStore.setLoading(true);
-    this.organizationsService.getOrganizationById(organizationID).pipe(finalize(() => this.organizationStore.setLoading(false)))
-      .subscribe((organization: Organization) => {
-        this.organizationStore.setError(false);
-        this.updateOrganization(organization);
-        this.organizationMembersService.updateCanEdit(organizationID);
-      }, () => {
-        this.organizationStore.setError(true);
-      });
+    this.organizationsService
+      .getOrganizationById(organizationID)
+      .pipe(finalize(() => this.organizationStore.setLoading(false)))
+      .subscribe(
+        (organization: Organization) => {
+          this.organizationStore.setError(false);
+          this.updateOrganization(organization);
+          this.organizationMembersService.updateCanEdit(organizationID);
+        },
+        () => {
+          this.organizationStore.setError(true);
+        }
+      );
   }
 
   updateOrganization(organization: Organization) {
     this.organizationStore.setState(state => {
       return {
         ...state,
-        organization: organization,
+        organization: organization
       };
     });
   }
@@ -63,14 +69,19 @@ export class OrganizationService {
   updateOrganizationFromName(organizationName: string): void {
     this.clearState();
     this.organizationStore.setLoading(true);
-    this.organizationsService.getOrganizationByName(organizationName).pipe(finalize(() => this.organizationStore.setLoading(false)))
-      .subscribe((organization: Organization) => {
-        this.organizationStore.setError(false);
-        this.updateOrganization(organization);
-        this.organizationMembersService.updateCanEdit(organization.id);
-      }, () => {
-        this.organizationStore.setError(true);
-      });
+    this.organizationsService
+      .getOrganizationByName(organizationName)
+      .pipe(finalize(() => this.organizationStore.setLoading(false)))
+      .subscribe(
+        (organization: Organization) => {
+          this.organizationStore.setError(false);
+          this.updateOrganization(organization);
+          this.organizationMembersService.updateCanEdit(organization.id);
+        },
+        () => {
+          this.organizationStore.setError(true);
+        }
+      );
   }
 
   genGravatarUrl(url: string): string {

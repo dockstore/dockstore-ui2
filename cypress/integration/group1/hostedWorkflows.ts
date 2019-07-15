@@ -56,12 +56,10 @@ describe('Dockstore hosted workflows', () => {
         .get('#downloadZipButton')
         .should('not.be.visible');
 
-      // Check content of the version tab to see a single row that says you have no versions
+      // Should have alert saying there are no versions
       goToTab('Versions');
       cy
-        .get('table > tbody')
-        .find('tr')
-        .should('have.length', 1);
+        .contains('To see versions, please add a new version.')
 
       // Add a new version with one descriptor
       goToTab('Files');

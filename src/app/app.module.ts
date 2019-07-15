@@ -13,17 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MAT_TOOLTIP_DEFAULT_OPTIONS,
-  MatSnackBarConfig,
-  MatTooltipDefaultOptions,
-} from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarConfig, MatTooltipDefaultOptions, MAT_SNACK_BAR_DEFAULT_OPTIONS, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
@@ -34,19 +30,20 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
-
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
+import { ConfigurationService } from './configuration.service';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
+import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
-import { DeleteAccountDialogComponent, } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
+import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
@@ -57,9 +54,12 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
+import { RequestsModule } from './loginComponents/requests.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
+import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './register/register.service';
 import { SearchModule } from './search/search.module';
 import { RefreshAlertModule } from './shared/alert/alert.module';
@@ -79,6 +79,7 @@ import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
 import { OrderByModule } from './shared/modules/orderby.module';
+import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
@@ -90,21 +91,16 @@ import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
+import { SitemapComponent } from './sitemap/sitemap.component';
 import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { SitemapComponent } from './sitemap/sitemap.component';
-import { RequestsModule } from './loginComponents/requests.module';
-import {OrganizationStarringModule} from './organizations/organization/organization-starring/organization-starring.module';
-import {OrganizationStargazersModule} from './organizations/organization/organization-stargazers/organization-stargazers.module';
-import { ConfigurationService } from './configuration.service';
-import { HttpClient } from '@angular/common/http';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
   hideDelay: 500,
-  touchendHideDelay: 500,
+  touchendHideDelay: 500
 };
 
 export const myCustomSnackbarDefaults: MatSnackBarConfig = {
@@ -142,8 +138,9 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     BannerComponent,
     ChangeUsernameComponent,
     YoutubeComponent,
-    SitemapComponent
-],
+    SitemapComponent,
+    GithubCallbackComponent
+  ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
     FontAwesomeModule,
@@ -171,6 +168,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ReactiveFormsModule,
     SearchModule,
     ApiModule.forRoot(getApiConfig),
+    ApiModule2.forRoot(getApiConfig),
     CustomMaterialModule,
     RefreshAlertModule,
     RequestsModule
@@ -207,17 +205,16 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     {
       provide: APP_INITIALIZER,
       useFactory: configurationServiceFactory,
-      deps: [ ConfigurationService ],
+      deps: [ConfigurationService],
       multi: true
     },
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults},
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults}
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults }
   ],
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
 
 export const apiConfig = new Configuration({
   apiKeys: {},

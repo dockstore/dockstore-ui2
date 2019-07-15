@@ -28,18 +28,20 @@ export class ParamfilesService {
   // - get versions with test paramfiles
   // - get descriptors with test paramfiles for each version
 
-  constructor(private containersService: ContainersService, private workflowsService: WorkflowsService) { }
+  constructor(private containersService: ContainersService, private workflowsService: WorkflowsService) {}
 
   getFiles(id: number, type: string, versionName?: string, descriptor?: ToolDescriptor.TypeEnum) {
     if (type === 'workflows') {
       return this.workflowsService.getTestParameterFiles(id, versionName);
     } else {
-      return this.containersService.getTestParameterFiles(id, descriptor, versionName);
+      if (descriptor === 'CWL' || descriptor === 'WDL') {
+        return this.containersService.getTestParameterFiles(id, descriptor, versionName);
+      }
     }
   }
 
   // get descriptors which have test parameter files
-  getDescriptors(version: (WorkflowVersion|Tag)): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(version: WorkflowVersion | Tag): Array<ToolDescriptor.TypeEnum> {
     const descriptorsWithParamfiles: Array<ToolDescriptor.TypeEnum> = [];
     if (version) {
       for (const file of version.sourceFiles) {
@@ -51,6 +53,10 @@ export class ParamfilesService {
         } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.NFL)) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.NFL);
         }
+        // DOCKSTORE-2428 - demo how to add new workflow language
+        // else if (type === 'SWL_TEST_JSON' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.SWL)) {
+        //   descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.SWL);
+        // }
       }
     }
     return descriptorsWithParamfiles;
@@ -61,61 +67,65 @@ export class ParamfilesService {
    * @param version the current selected version of the workflow or tool
    * @returns an array that may contain 'CWL' or 'WDL' or 'NFL'
    */
-    getValidDescriptors(version: (WorkflowVersion|Tag)) {
-      if (version) {
-        const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
-        if (version.validations) {
-          if (this.checkValidFileType(version, SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.DOCKSTORECWL)) {
-            descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
-          }
-
-          if (this.checkValidFileType(version, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.DOCKSTOREWDL)) {
-            descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
-          }
-
-          if (this.checkValidFileType(version, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.NEXTFLOWCONFIG)) {
-            descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
-          }
+  getValidDescriptors(version: WorkflowVersion | Tag) {
+    if (version) {
+      const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
+      if (version.validations) {
+        if (this.checkValidFileType(version, SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.DOCKSTORECWL)) {
+          descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
         }
-        return descriptorTypes;
+
+        if (this.checkValidFileType(version, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.DOCKSTOREWDL)) {
+          descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
+        }
+
+        if (this.checkValidFileType(version, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.NEXTFLOWCONFIG)) {
+          descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
+        }
+        // DOCKSTORE-2428 - demo how to add new workflow language
+        // if (this.checkValidFileType(version, SourceFile.TypeEnum.SWLTESTJSON, SourceFile.TypeEnum.DOCKSTORESWL)) {
+        //   descriptorTypes.push(ToolDescriptor.TypeEnum.SWL);
+        // }
       }
+      return descriptorTypes;
+    }
+  }
+
+  /**
+   * A helper method that checks for a given version and file type,
+   * if the file type has a valid validation and at least one file is present.
+   * The related language must have a valid descriptor too.
+   * All these must be true to show the corresponding language in the dropdown
+   * @param version Version of interest
+   * @param fileType Ex. SourceFile.TypeEnum.CWLTESTJSON
+   * @param descriptorType Ex. SourceFile.TypeEnum.DOCKSTORECWL
+   */
+  checkValidFileType(version: WorkflowVersion | Tag, fileType: SourceFile.TypeEnum, descriptorType: SourceFile.TypeEnum) {
+    // Check that the language has a valid descriptor
+    const descriptorValidation = version.validations.find((validation: Validation) => {
+      return validation.type === descriptorType;
+    });
+
+    if (!(descriptorValidation && descriptorValidation.valid)) {
+      return false;
     }
 
-    /**
-     * A helper method that checks for a given version and file type,
-     * if the file type has a valid validation and at least one file is present.
-     * The related language must have a valid descriptor too.
-     * All these must be true to show the corresponding language in the dropdown
-     * @param version Version of interest
-     * @param fileType Ex. SourceFile.TypeEnum.CWLTESTJSON
-     * @param descriptorType Ex. SourceFile.TypeEnum.DOCKSTORECWL
-     */
-    checkValidFileType(version: (WorkflowVersion|Tag), fileType: SourceFile.TypeEnum, descriptorType: SourceFile.TypeEnum) {
-      // Check that the language has a valid descriptor
-      const descriptorValidation = version.validations.find((validation: Validation) => {
-        return validation.type === descriptorType;
-      });
+    // Check that at least one file is valid
+    const validationObject = version.validations.find((validation: Validation) => {
+      return validation.type === fileType;
+    });
 
-      if (!(descriptorValidation && descriptorValidation.valid)) {
-        return false;
-      }
-
-      // Check that at least one file is valid
-      const validationObject = version.validations.find((validation: Validation) => {
-        return validation.type === fileType;
-      });
-
-      if (!(validationObject && validationObject.valid)) {
-        return false;
-      }
-
-      // Check that at least one file is present
-      const langaugeFile = version.sourceFiles.find((sourceFile) => {
-        return sourceFile.type === fileType;
-      });
-
-      return langaugeFile !== undefined;
+    if (!(validationObject && validationObject.valid)) {
+      return false;
     }
+
+    // Check that at least one file is present
+    const languageFile = version.sourceFiles.find(sourceFile => {
+      return sourceFile.type === fileType;
+    });
+
+    return languageFile !== undefined;
+  }
 
   // get versions which have test parameter files
   getVersions(versions: Array<Tag | WorkflowVersion>) {
@@ -129,5 +139,4 @@ export class ParamfilesService {
     }
     return versionsWithParamfiles;
   }
-
 }

@@ -36,10 +36,13 @@ import { RegisterCheckerWorkflowService } from './register-checker-workflow.serv
   styleUrls: ['./register-checker-workflow.component.scss']
 })
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
-
-  constructor(private registerCheckerWorkflowService: RegisterCheckerWorkflowService, private alertQuery: AlertQuery,
+  constructor(
+    private registerCheckerWorkflowService: RegisterCheckerWorkflowService,
+    private alertQuery: AlertQuery,
     private descriptorLanguageService: DescriptorLanguageService,
-    private checkerWorkflowQuery: CheckerWorkflowQuery, private descriptorTypeCompatService: DescriptorTypeCompatService) {
+    private checkerWorkflowQuery: CheckerWorkflowQuery,
+    private descriptorTypeCompatService: DescriptorTypeCompatService
+  ) {
     super();
   }
   public registerError: HttpErrorResponse;
@@ -77,7 +80,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
     this.mode$ = this.registerCheckerWorkflowService.mode$;
 
     this.syncTestJson = false;
-    this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
+    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
       this.descriptorLanguages = descriptorLanguages.filter((language: string) => language !== ToolDescriptor.TypeEnum.NFL);
     });
     this.isRefreshing$ = this.alertQuery.showInfo$;
@@ -149,15 +152,23 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   }
 
   formChanged(): void {
-    if (this.currentForm === this.registerCheckerWorkflowForm) { return; }
+    if (this.currentForm === this.registerCheckerWorkflowForm) {
+      return;
+    }
     this.registerCheckerWorkflowForm = this.currentForm;
     if (this.registerCheckerWorkflowForm) {
-      this.registerCheckerWorkflowForm.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+      this.registerCheckerWorkflowForm.valueChanges
+        .pipe(
+          debounceTime(formInputDebounceTime),
+          takeUntil(this.ngUnsubscribe)
+        )
         .subscribe(data => this.onValueChanged(data));
     }
   }
   onValueChanged(data?: any): void {
-    if (!this.registerCheckerWorkflowForm) { return; }
+    if (!this.registerCheckerWorkflowForm) {
+      return;
+    }
     const form = this.registerCheckerWorkflowForm.form;
     for (const field in formErrors) {
       if (formErrors.hasOwnProperty(field)) {
@@ -176,5 +187,4 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
     }
   }
   // Validation ends here
-
 }

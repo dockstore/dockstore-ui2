@@ -5,11 +5,10 @@ describe('UpdateOrganizationOrCollectionDescriptionQuery', () => {
   let query: UpdateOrganizationOrCollectionDescriptionQuery;
 
   beforeEach(() => {
-    query = new UpdateOrganizationOrCollectionDescriptionQuery(new UpdateOrganizationOrCollectionDescriptionStore);
+    query = new UpdateOrganizationOrCollectionDescriptionQuery(new UpdateOrganizationOrCollectionDescriptionStore());
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

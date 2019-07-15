@@ -22,19 +22,21 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class LoginService {
-
-  constructor(private auth: AuthService, private matSnackBar: MatSnackBar, private alertService: AlertService) { }
+  constructor(private auth: AuthService, private matSnackBar: MatSnackBar, private alertService: AlertService) {}
 
   authenticate(provider: string): Observable<any> {
     return Observable.create(observable => {
       this.alertService.start('Logging in');
-      return this.auth.authenticate(provider).subscribe(user => {
-        this.alertService.simpleSuccess();
-        observable.next(user);
-        observable.complete();
-      }, (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      });
+      return this.auth.authenticate(provider).subscribe(
+        user => {
+          this.alertService.simpleSuccess();
+          observable.next(user);
+          observable.complete();
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
     });
   }
 }

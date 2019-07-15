@@ -31,7 +31,7 @@ export class DagService {
     {
       selector: 'node',
       style: {
-        'content': 'data(name)',
+        content: 'data(name)',
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
@@ -42,7 +42,7 @@ export class DagService {
     {
       selector: 'edge',
       style: {
-        'width': 3,
+        width: 3,
         'target-arrow-shape': 'triangle',
         'line-color': '#9dbaea',
         'target-arrow-color': '#9dbaea',
@@ -53,7 +53,7 @@ export class DagService {
     {
       selector: 'node[id = "UniqueBeginKey"]',
       style: {
-        'content': 'Start',
+        content: 'Start',
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
@@ -64,7 +64,7 @@ export class DagService {
     {
       selector: 'node[id = "UniqueEndKey"]',
       style: {
-        'content': 'End',
+        content: 'End',
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
@@ -75,7 +75,7 @@ export class DagService {
     {
       selector: 'node[type = "workflow"]',
       style: {
-        'content': 'data(name)',
+        content: 'data(name)',
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
@@ -86,7 +86,7 @@ export class DagService {
     {
       selector: 'node[type = "tool"]',
       style: {
-        'content': 'data(name)',
+        content: 'data(name)',
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
@@ -97,7 +97,7 @@ export class DagService {
     {
       selector: 'node[type = "expressionTool"]',
       style: {
-        'content': 'data(name)',
+        content: 'data(name)',
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
@@ -108,14 +108,19 @@ export class DagService {
     {
       selector: 'edge.notselected',
       style: {
-        'opacity': '0.4'
+        opacity: '0.4'
       }
     }
   ];
 
-  constructor(private workflowsService: WorkflowsService, private dagStore: DagStore, private dagQuery: DagQuery,
-    private renderer: Renderer2, private workflowQuery: WorkflowQuery, @Inject(DOCUMENT) private document: HTMLDocument) {
-  }
+  constructor(
+    private workflowsService: WorkflowsService,
+    private dagStore: DagStore,
+    private dagQuery: DagQuery,
+    private renderer: Renderer2,
+    private workflowQuery: WorkflowQuery,
+    @Inject(DOCUMENT) private document: HTMLDocument
+  ) {}
 
   getTooltipText(name: string, tool: string, type: string, docker: string, run: string): string {
     const dynamicPopover = this.setDynamicPopover(name, tool, type, docker, run);
@@ -154,7 +159,7 @@ export class DagService {
    * any because mozRequestFullScreen, webkitRequestFullscreen, and msRequestFullscreen not found
    * @memberof DagComponent
    */
-  openFullscreen(nativeElement: (HTMLElement | any)) {
+  openFullscreen(nativeElement: HTMLElement | any) {
     if (nativeElement.requestFullscreen) {
       nativeElement.requestFullscreen();
     } else if (nativeElement.mozRequestFullScreen) {
@@ -181,7 +186,6 @@ export class DagService {
     }
   }
 
-
   /**
    * Determines whether the page is in fullscreen mode or not
    *
@@ -190,11 +194,13 @@ export class DagService {
    */
   isFullScreen(): boolean {
     // any because those properties apparently don't exist in type def
-    const document: (HTMLDocument | any) = this.document;
-    return (document.fullscreenElement && document.fullscreenElement !== null) ||
+    const document: HTMLDocument | any = this.document;
+    return (
+      (document.fullscreenElement && document.fullscreenElement !== null) ||
       (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
       (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
-      (document.msFullscreenElement && document.msFullscreenElement !== null);
+      (document.msFullscreenElement && document.msFullscreenElement !== null)
+    );
   }
 
   getDockerText(link: string, docker: string) {
@@ -207,7 +213,7 @@ export class DagService {
   }
 
   isNA(docker: string) {
-    return (docker === 'n/a');
+    return docker === 'n/a';
   }
 
   isHttp(run: string) {
@@ -238,11 +244,14 @@ export class DagService {
 
   getDAGResults(workflowVersion: WorkflowVersion, workflowId: number) {
     if (workflowVersion && workflowVersion.id) {
-      this.getCurrentDAG(workflowId, workflowVersion.id).subscribe(result => {
-        this.setDagResults(result);
-      }, error => {
-        this.setDagResults(null);
-      });
+      this.getCurrentDAG(workflowId, workflowVersion.id).subscribe(
+        result => {
+          this.setDagResults(result);
+        },
+        error => {
+          this.setDagResults(null);
+        }
+      );
     }
   }
 
@@ -344,50 +353,64 @@ export class DagService {
       const nodes: cytoscape.NodeCollection = cy.nodes().filter(node => node.id() !== 'UniqueBeginKey' && node.id() !== 'UniqueEndKey');
       nodes.forEach((node: cytoscape.NodeSingular) => this.setDAGNodeTooltip(node, element));
 
-      cy.on('mouseout', 'node', function () {
+      cy.on('mouseout', 'node', function() {
         const node = this;
         cy.elements().removeClass('notselected');
-        node.connectedEdges().animate({
-          style: {
-            'line-color': '#9dbaea',
-            'target-arrow-color': '#9dbaea',
-            'width': 3
-          }
-        }, {
+        node.connectedEdges().animate(
+          {
+            style: {
+              'line-color': '#9dbaea',
+              'target-arrow-color': '#9dbaea',
+              width: 3
+            }
+          },
+          {
             duration: 150
-          });
+          }
+        );
       });
 
-      cy.on('mouseover', 'node', function () {
+      cy.on('mouseover', 'node', function() {
         const node = this;
-        cy.elements().difference(node.connectedEdges()).not(node).addClass('notselected');
+        cy.elements()
+          .difference(node.connectedEdges())
+          .not(node)
+          .addClass('notselected');
 
-        node.outgoers('edge').animate({
-          style: {
-            'line-color': '#e57373',
-            'target-arrow-color': '#e57373',
-            'width': 5
-          }
-        }, {
+        node.outgoers('edge').animate(
+          {
+            style: {
+              'line-color': '#e57373',
+              'target-arrow-color': '#e57373',
+              width: 5
+            }
+          },
+          {
             duration: 150
-          });
-        node.incomers('edge').animate({
-          style: {
-            'line-color': '#81c784',
-            'target-arrow-color': '#81c784',
-            'width': 5
           }
-        }, {
+        );
+        node.incomers('edge').animate(
+          {
+            style: {
+              'line-color': '#81c784',
+              'target-arrow-color': '#81c784',
+              width: 5
+            }
+          },
+          {
             duration: 150
-          });
+          }
+        );
       });
 
-      cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
-        try { // your browser may block popups
+      cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function() {
+        try {
+          // your browser may block popups
           if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
             window.open(this.data('tool'));
           }
-        } catch (e) { // fall back on url change
+        } catch (e) {
+          // fall back on url change
           if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
             window.location.href = this.data('tool');
           }

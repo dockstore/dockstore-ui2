@@ -14,20 +14,21 @@
  *    limitations under the License.
  */
 
-li, div a {
-  /* set space between list elements */
-  margin: 10px;
-}
-
-.container-fluid, a {
-  background-color: #21335B;
+.container-fluid,
+a {
+  background-color: #21335b;
   color: white;
 }
 
 .container-fluid {
-  padding-top:20px;
+  padding-top: 20px;
 }
 
-.container-fluid, ul {
+.container-fluid,
+ul {
   list-style: none;
+}
+
+.footer-list li:first-child {
+  font-weight: bold;
 }

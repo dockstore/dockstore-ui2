@@ -17,10 +17,7 @@ export interface OrganizationMembersState extends EntityState<OrganizationUser> 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'organization-members', idKey: 'id.userId' })
 export class OrganizationMembersStore extends EntityStore<OrganizationMembersState, OrganizationUser> {
-
   constructor() {
     super();
   }
-
 }
-

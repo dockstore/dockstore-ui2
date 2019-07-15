@@ -41,13 +41,20 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     this.checkIfValid(false, value);
   }
   public isNFL$: Observable<boolean>;
-  protected entryType: ('tool' | 'workflow') = 'workflow';
+  protected entryType: 'tool' | 'workflow' = 'workflow';
   public downloadFilePath: string;
 
-  constructor(private paramfilesService: ParamfilesService, protected gA4GHService: GA4GHService,
-    public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery,
-    private workflowService: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery, protected filesService: FilesService,
-    protected filesQuery: FilesQuery) {
+  constructor(
+    private paramfilesService: ParamfilesService,
+    protected gA4GHService: GA4GHService,
+    public fileService: FileService,
+    protected gA4GHFilesService: GA4GHFilesService,
+    private workflowQuery: WorkflowQuery,
+    private workflowService: WorkflowQuery,
+    private gA4GHFilesQuery: GA4GHFilesQuery,
+    protected filesService: FilesService,
+    protected filesQuery: FilesQuery
+  ) {
     super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.workflowService.workflowIsPublished$;
     this.isNFL$ = this.workflowQuery.isNFL$;

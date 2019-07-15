@@ -12,7 +12,7 @@ import { EventsModule } from './events.module';
 import { RouterModule } from '@angular/router';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { OrganizationMemberRemoveConfirmDialogComponent } from './organization-members/organization-members.component';
-import { OrganizationStarringModule} from './organization/organization-starring/organization-starring.module';
+import { OrganizationStarringModule } from './organization/organization-starring/organization-starring.module';
 import { OrganizationStargazersModule } from './organization/organization-stargazers/organization-stargazers.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { MarkdownModule } from 'ngx-markdown';
@@ -34,8 +34,8 @@ import { MarkdownModule } from 'ngx-markdown';
     MarkdownModule,
     PipeModule
   ],
-  declarations: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],
-  exports: [ OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent ],
-  entryComponents: [ OrganizationMemberRemoveConfirmDialogComponent ]
+  declarations: [OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent],
+  exports: [OrganizationComponent, OrganizationMemberRemoveConfirmDialogComponent],
+  entryComponents: [OrganizationMemberRemoveConfirmDialogComponent]
 })
-export class OrganizationModule { }
+export class OrganizationModule {}

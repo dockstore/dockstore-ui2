@@ -68,12 +68,19 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   private ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private paramfilesService: ParamfilesService, private versionModalService: VersionModalService,
-    private listContainersService: ListContainersService, private containerService: ContainerService, private alertService: AlertService,
-    private containersService: ContainersService, private containertagsService: ContainertagsService, private sessionQuery: SessionQuery,
-    private dateService: DateService, private matDialog: MatDialog,
-    private toolQuery: ToolQuery) {
-  }
+  constructor(
+    private paramfilesService: ParamfilesService,
+    private versionModalService: VersionModalService,
+    private listContainersService: ListContainersService,
+    private containerService: ContainerService,
+    private alertService: AlertService,
+    private containersService: ContainersService,
+    private containertagsService: ContainertagsService,
+    private sessionQuery: SessionQuery,
+    private dateService: DateService,
+    private matDialog: MatDialog,
+    private toolQuery: ToolQuery
+  ) {}
 
   // Almost all these functions should be moved to a service
   getSizeString(size) {
@@ -89,18 +96,24 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   formChanged() {
-    if (this.currentForm === this.tagEditorForm) { return; }
+    if (this.currentForm === this.tagEditorForm) {
+      return;
+    }
     this.tagEditorForm = this.currentForm;
     if (this.tagEditorForm) {
-      this.tagEditorForm.valueChanges.pipe(
-        debounceTime(formInputDebounceTime),
-        takeUntil(this.ngUnsubscribe))
+      this.tagEditorForm.valueChanges
+        .pipe(
+          debounceTime(formInputDebounceTime),
+          takeUntil(this.ngUnsubscribe)
+        )
         .subscribe(data => this.onValueChanged(data));
     }
   }
 
   onValueChanged(data?: any) {
-    if (!this.tagEditorForm) { return; }
+    if (!this.tagEditorForm) {
+      return;
+    }
     const form = this.tagEditorForm.form;
     for (const field in formErrors) {
       if (formErrors.hasOwnProperty(field)) {
@@ -136,36 +149,43 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
       // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, newCWL, 'CWL', tagName, null).subscribe(response => { },
-        err => this.alertService.detailedError(err));
+      this.containersService
+        .addTestParameterFiles(id, newCWL, 'CWL', tagName, null)
+        .subscribe(response => {}, err => this.alertService.detailedError(err));
     }
     const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
       // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.deleteTestParameterFiles(id, missingCWL, 'CWL', tagName).subscribe(response => { },
-        err => this.alertService.detailedError(err));
+      this.containersService
+        .deleteTestParameterFiles(id, missingCWL, 'CWL', tagName)
+        .subscribe(response => {}, err => this.alertService.detailedError(err));
     }
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
       // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, newWDL, 'WDL', tagName, null).subscribe(response => { },
-        err => this.alertService.detailedError(err));
+      this.containersService
+        .addTestParameterFiles(id, newWDL, 'WDL', tagName, null)
+        .subscribe(response => {}, err => this.alertService.detailedError(err));
     }
     const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
       // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.deleteTestParameterFiles(id, missingWDL, 'WDL', tagName).subscribe(response => { },
-        err => this.alertService.detailedError(err));
+      this.containersService
+        .deleteTestParameterFiles(id, missingWDL, 'WDL', tagName)
+        .subscribe(response => {}, err => this.alertService.detailedError(err));
     }
-    this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(response => {
-      this.tool = { ...this.tool, tags: response };
-      this.containerService.setTool(this.tool);
-      this.alertService.detailedSuccess();
-      this.matDialog.closeAll();
-    }, error => {
-      this.alertService.detailedError(error);
-      this.matDialog.closeAll();
-    });
+    this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(
+      response => {
+        this.tool = { ...this.tool, workflowVersions: response };
+        this.containerService.setTool(this.tool);
+        this.alertService.detailedSuccess();
+        this.matDialog.closeAll();
+      },
+      error => {
+        this.alertService.detailedError(error);
+        this.matDialog.closeAll();
+      }
+    );
   }
 
   onHidden() {
@@ -180,15 +200,14 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.savedWDLTestParameterFilePaths = [];
     this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL).subscribe(file => {
       this.savedCWLTestParameterFiles = file;
-      this.savedCWLTestParameterFiles.forEach((fileObject) => {
+      this.savedCWLTestParameterFiles.forEach(fileObject => {
         this.savedCWLTestParameterFilePaths.push(fileObject.path);
       });
       this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
-
     });
     this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL).subscribe(file => {
       this.savedWDLTestParameterFiles = file;
-      this.savedWDLTestParameterFiles.forEach((fileObject) => {
+      this.savedWDLTestParameterFiles.forEach(fileObject => {
         this.savedWDLTestParameterFilePaths.push(fileObject.path);
       });
       this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
@@ -245,14 +264,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
-    this.versionModalService.mode.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      (mode: TagEditorMode) => this.mode = mode);
+    this.versionModalService.mode.pipe(takeUntil(this.ngUnsubscribe)).subscribe((mode: TagEditorMode) => (this.mode = mode));
     this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => {
       this.version = version;
       this.unsavedVersion = Object.assign({}, this.version);
       this.updateDockerPullCommand();
     });
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.editMode = !publicPage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.editMode = !publicPage));
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
       this.tool = tool;
       this.updateDockerPullCommand();
@@ -260,16 +278,12 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
         this.setMode(this.mode);
       }
     });
-    this.versionModalService.unsavedTestCWLFile.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      (file: string) => {
-        this.unsavedTestCWLFile = file;
-      }
-    );
-    this.versionModalService.unsavedTestWDLFile.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      (file: string) => {
-        this.unsavedTestWDLFile = file;
-      }
-    );
+    this.versionModalService.unsavedTestCWLFile.pipe(takeUntil(this.ngUnsubscribe)).subscribe((file: string) => {
+      this.unsavedTestCWLFile = file;
+    });
+    this.versionModalService.unsavedTestWDLFile.pipe(takeUntil(this.ngUnsubscribe)).subscribe((file: string) => {
+      this.unsavedTestWDLFile = file;
+    });
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
   }

@@ -21,7 +21,6 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './docs.component.html'
 })
 export class DocsComponent implements OnInit {
-
   // Array of doc objects, where existingPath is the path on Dockstore, and newPath is the new path on the docs page
   private docMapping = [
     { existingPath: '/docs/faq', newPath: '/faq' },
@@ -43,11 +42,11 @@ export class DocsComponent implements OnInit {
 
   public redirectLink = this.getLink();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     setTimeout(() => {
-        window.location.href = this.getLink();
+      window.location.href = this.getLink();
     }, 5000);
   }
 
@@ -63,7 +62,7 @@ export class DocsComponent implements OnInit {
     const filteredPath = currentPath.replace(/\/$/, '');
 
     // Iterate over each docMapping
-    const matchingDoc = (this.docMapping.find(this.findDoc(filteredPath)));
+    const matchingDoc = this.docMapping.find(this.findDoc(filteredPath));
     if (matchingDoc != null) {
       redirectPath = matchingDoc.newPath;
     }
@@ -81,5 +80,4 @@ export class DocsComponent implements OnInit {
   getPrettyLink() {
     return this.redirectLink.replace(/(^\w+:|^)\/\//, '');
   }
-
 }

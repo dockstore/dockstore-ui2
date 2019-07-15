@@ -30,18 +30,13 @@ describe('RefreshToolOrganizationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RefreshToolOrganizationComponent],
-      imports: [
-        MatSnackBarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTooltipModule
-      ],
+      imports: [MatSnackBarModule, MatIconModule, MatButtonModule, MatTooltipModule],
       providers: [
         { provide: UsersService, useClass: UsersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
-        { provide: RefreshService, useClass: RefreshStubService }]
-    })
-      .compileComponents();
+        { provide: RefreshService, useClass: RefreshStubService }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

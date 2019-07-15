@@ -21,13 +21,15 @@ export class BannerComponent extends Base implements OnInit {
 
   constructor(private metadataService: MetadataService) {
     super();
-   }
+  }
 
   ngOnInit() {
     this.showBanner = environment.staging;
     this.versionBuiltWith = versions.version;
 
-    this.metadataService.getMetadata().pipe(takeUntil(this.ngUnsubscribe))
+    this.metadataService
+      .getMetadata()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
@@ -38,7 +40,8 @@ export class BannerComponent extends Base implements OnInit {
           } else {
             throw new Error('Version undefined');
           }
-        }, (error: HttpErrorResponse) => {
+        },
+        (error: HttpErrorResponse) => {
           console.log(error);
           this.mismatchedVersion = true;
         }

@@ -8,7 +8,5 @@ export interface Request {
  * A factory function that creates Requests
  */
 export function createRequest(params: Partial<Request>) {
-  return {
-
-  } as Request;
+  return {} as Request;
 }

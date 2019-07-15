@@ -13,7 +13,7 @@ describe('CollectionsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CollectionsService, CollectionsStore],
-      imports: [ HttpClientTestingModule, CustomMaterialModule, RouterTestingModule ]
+      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule]
     });
 
     collectionsService = TestBed.get(CollectionsService);
@@ -23,5 +23,4 @@ describe('CollectionsService', () => {
   it('should be created', () => {
     expect(collectionsService).toBeDefined();
   });
-
 });

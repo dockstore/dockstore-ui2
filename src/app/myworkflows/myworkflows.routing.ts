@@ -14,16 +14,14 @@
  *    limitations under the License.
  */
 import { RouterModule, Routes } from '@angular/router';
-
+import { EntryType } from '../shared/enum/entry-type';
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
-import { MyWorkflowsComponent } from './myworkflows.component';
-import {MyToolsComponent} from '../mytools/mytools.component';
 
-const MYTOOLS_ROUTES: Routes = [
+const routes: Routes = [
   {
-    path: '', component: MyWorkflowsComponent, data: {title: 'Dockstore | My Workflows'}, children: [
-      { path: '**', component: MyWorkflowComponent, data: {title: 'Dockstore | My Workflows'} }
-    ]
+    path: '**',
+    component: MyWorkflowComponent,
+    data: { title: 'Dockstore | My Workflows', entryType: EntryType.BioWorkflow }
   }
 ];
-export const myworkflowRouting = RouterModule.forChild(MYTOOLS_ROUTES);
+export const myworkflowRouting = RouterModule.forChild(routes);

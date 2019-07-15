@@ -15,9 +15,11 @@
  */
 import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
@@ -46,7 +48,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
-  workflow: Workflow;
+  workflow: BioWorkflow | Service;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
   public tooltip = Tooltip;
@@ -63,24 +65,29 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   canRead: boolean;
   canWrite: boolean;
   isOwner: boolean;
+  isService$: Observable<boolean>;
   @ViewChild('versionEditorForm') currentForm: NgForm;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private versionModalService: VersionModalService, private dateService: DateService,
-    private sessionQuery: SessionQuery, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery,
-    private matDialog: MatDialog, @Inject(MAT_DIALOG_DATA) public data: Dialogdata) {
-  }
+  constructor(
+    private versionModalService: VersionModalService,
+    private dateService: DateService,
+    private sessionQuery: SessionQuery,
+    private workflowQuery: WorkflowQuery,
+    private alertQuery: AlertQuery,
+    @Inject(MAT_DIALOG_DATA) public data: Dialogdata
+  ) {}
 
   ngOnInit() {
+    this.isService$ = this.sessionQuery.isService$.pipe(shareReplay());
     this.canRead = this.data.canRead;
     this.canWrite = this.data.canWrite;
     this.isOwner = this.data.isOwner;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.versionModalService.version.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(version => this.version = Object.assign({}, version));
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => this.workflow = workflow);
+    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => (this.version = Object.assign({}, version)));
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
     this.versionModalService.testParameterFiles.pipe(takeUntil(this.ngUnsubscribe)).subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];
@@ -90,7 +97,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
         this.originalTestParameterFilePaths.push(testParameterFile.path);
       }
     });
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.isPublic = publicPage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.isPublic = publicPage));
   }
 
   removeTestParameterFile(index: number) {
@@ -112,8 +119,12 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
       this.addTestParameterFile();
     }
 
-    this.versionModalService.saveVersion(this.version, this.originalTestParameterFilePaths,
-      this.testParameterFilePaths, this.workflow.mode);
+    this.versionModalService.saveVersion(
+      this.version,
+      this.originalTestParameterFilePaths,
+      this.testParameterFilePaths,
+      this.workflow.mode
+    );
   }
 
   // Validation starts here, should move most of these to a service somehow
@@ -122,15 +133,23 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   formChanged() {
-    if (this.currentForm === this.versionEditorForm) { return; }
+    if (this.currentForm === this.versionEditorForm) {
+      return;
+    }
     this.versionEditorForm = this.currentForm;
     if (this.versionEditorForm) {
-      this.versionEditorForm.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+      this.versionEditorForm.valueChanges
+        .pipe(
+          debounceTime(formInputDebounceTime),
+          takeUntil(this.ngUnsubscribe)
+        )
         .subscribe(data => this.onValueChanged(data));
     }
   }
   onValueChanged(data?: any) {
-    if (!this.versionEditorForm) { return; }
+    if (!this.versionEditorForm) {
+      return;
+    }
     const form = this.versionEditorForm.form;
     for (const field in formErrors) {
       if (formErrors.hasOwnProperty(field)) {

@@ -9,9 +9,8 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
-  imports: [ CommonModule, AlertModule.forRoot(), HeaderModule, AliasesRouting,
-    CustomMaterialModule, RefreshAlertModule, FlexLayoutModule ],
-  declarations: [ AliasesComponent ],
-  exports: [ AliasesComponent ]
+  imports: [CommonModule, AlertModule.forRoot(), HeaderModule, AliasesRouting, CustomMaterialModule, RefreshAlertModule, FlexLayoutModule],
+  declarations: [AliasesComponent],
+  exports: [AliasesComponent]
 })
-export class AliasesModule { }
+export class AliasesModule {}

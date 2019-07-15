@@ -1,5 +1,7 @@
-import { Component, Input, OnInit, OnChanges } from '@angular/core';
-
+import { Component, Input, OnChanges } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { AvailableLogsComponent } from '../../available-logs/available-logs.component';
+import { bootstrap4largeModalSize } from '../../constants';
 import { Tag, WorkflowVersion } from '../../swagger';
 import { VerifiedByService } from '../../verified-by.service';
 
@@ -9,9 +11,9 @@ import { VerifiedByService } from '../../verified-by.service';
   styleUrls: ['./verified-by.component.scss']
 })
 export class VerifiedByComponent implements OnChanges {
-  @Input() version: (WorkflowVersion | Tag);
+  @Input() version: WorkflowVersion | Tag;
   public verifiedByStringArray: Array<string> = [];
-  constructor(private verifiedByService: VerifiedByService) { }
+  constructor(private verifiedByService: VerifiedByService, private matDialog: MatDialog) {}
 
   ngOnChanges() {
     if (this.version) {
@@ -19,4 +21,12 @@ export class VerifiedByComponent implements OnChanges {
     }
   }
 
+  /**
+   * Opens the Material dialog that displays verification information and possible logs that are available
+   *
+   * @memberof VerifiedByComponent
+   */
+  openVerificationAndAvailableLogsDialog() {
+    this.matDialog.open(AvailableLogsComponent, { data: this.version, width: bootstrap4largeModalSize });
+  }
 }

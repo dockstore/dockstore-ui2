@@ -13,3 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { NgModule } from '@angular/core';
+import { SearchWorkflowsComponent } from 'app/workflows/search/search.component';
+import { WorkflowsComponent } from 'app/workflows/workflows.component';
+import { WorkflowModule } from './workflow.module';
+import { ListWorkflowsModule } from './list-workflows.module';
+
+@NgModule({
+  declarations: [WorkflowsComponent, SearchWorkflowsComponent],
+  imports: [WorkflowModule, ListWorkflowsModule],
+  exports: [WorkflowsComponent, WorkflowModule, ListWorkflowsModule]
+})
+export class WorkflowsPageModule {}

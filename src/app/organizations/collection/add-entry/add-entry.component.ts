@@ -16,11 +16,12 @@ export class AddEntryComponent implements OnInit {
   isLoading$: Observable<boolean>;
   selectedOrganizationId: number;
   selectedCollectionId: number;
-  constructor(private addEntryQuery: AddEntryQuery,
-              private addEntryService: AddEntryService,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              public dialogRef: MatDialogRef<AddEntryComponent>
-  ) { }
+  constructor(
+    private addEntryQuery: AddEntryQuery,
+    private addEntryService: AddEntryService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<AddEntryComponent>
+  ) {}
 
   ngOnInit() {
     this.isLoading$ = this.addEntryQuery.isLoading$;

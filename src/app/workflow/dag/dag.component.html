@@ -30,39 +30,42 @@
         Please ensure that the Descriptor is a valid CWL 1.0 workflow.
       </span>
     </mat-card>
-    <mat-card class="alert alert-warning" role="alert"
-      *ngIf="(missingTool$ | async) && selectedVersion?.valid">
-      <mat-icon>warning</mat-icon>&nbsp; DAG cannot be created because some required
-      tools
-      are missing from Github repo.
+    <mat-card class="alert alert-warning" role="alert" *ngIf="(missingTool$ | async) && selectedVersion?.valid">
+      <mat-icon>warning</mat-icon>&nbsp; DAG cannot be created because some required tools are missing from Github repo.
     </mat-card>
   </div>
   <div fxFlex #dagHolder id="dag-holder">
-    <div [ngClass]="{'p-3': expanded}" *ngIf="selectedVersion?.valid && !(missingTool$ | async)">
+    <div [ngClass]="{ 'p-3': expanded }" *ngIf="selectedVersion?.valid && !(missingTool$ | async)">
       <div fxLayout="row" fxLayoutAlign="space-between start">
         <div fxFlex>
           <div
-            *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'"
-            style="line-height: 20px;">
+            *ngIf="
+              enableCwlViewer &&
+              (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL &&
+              (workflow$ | async)?.source_control_provider === 'GITHUB'
+            "
+            style="line-height: 20px;"
+          >
+            <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
             <label class="radio-inline">
-              <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer">Common Workflow Language Viewer
+              <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer" />Common Workflow Language Viewer
             </label>
           </div>
-          <div *ngIf="(isWDL$ | async)" style="line-height: 20px;">
+          <div *ngIf="isWDL$ | async" style="line-height: 20px;">
+            <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
             <label class="radio-inline">
-              <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer">EPAM WDL Visualizer
+              <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer" />EPAM WDL Visualizer
             </label>
           </div>
           <div>
-            <a *ngIf="(dagType === 'classic' && (dagResult$ | async)) || (dagType === 'wdlviewer' && (wdlViewerResult$ | async))"
-              href #exportLink id="exportLink" (click)="download()">
-              <mat-icon>save</mat-icon>Save as {{dagType === 'classic' ? 'PNG' : 'SVG'}}
+            <a
+              *ngIf="(dagType === 'classic' && (dagResult$ | async)) || (dagType === 'wdlviewer' && (wdlViewerResult$ | async))"
+              href
+              #exportLink
+              id="exportLink"
+              (click)="download()"
+            >
+              <mat-icon>save</mat-icon>Save as {{ dagType === 'classic' ? 'PNG' : 'SVG' }}
             </a>
           </div>
         </div>
@@ -80,17 +83,27 @@
         </div>
       </div>
     </div>
-    <div #dagDisplay data-cy="dag-holder" [className]="expanded ? 'big': 'small'">
+    <div #dagDisplay data-cy="dag-holder" [className]="expanded ? 'big' : 'small'">
       <app-cwl-viewer
-        *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'"
-        [hidden]="dagType !== 'cwlviewer'" [selectedVersion]="selectedVersion" [refresh]="refreshCounter"
-        [expanded]="expanded">
+        *ngIf="
+          enableCwlViewer &&
+          (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL &&
+          (workflow$ | async)?.source_control_provider === 'GITHUB'
+        "
+        [hidden]="dagType !== 'cwlviewer'"
+        [selectedVersion]="selectedVersion"
+        [refresh]="refreshCounter"
+        [expanded]="expanded"
+      >
       </app-cwl-viewer>
-      <app-wdl-viewer *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'" [workflow]="(workflow$ | async)"
-        [selectedVersion]="selectedVersion" [expanded]="expanded">
+      <app-wdl-viewer
+        *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"
+        [workflow]="workflow$ | async"
+        [selectedVersion]="selectedVersion"
+        [expanded]="expanded"
+      >
       </app-wdl-viewer>
-      <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" class="h-100 w-100"
-        [hidden]="dagType !== 'classic'"></div>
+      <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" class="h-100 w-100" [hidden]="dagType !== 'classic'"></div>
     </div>
   </div>
 </div>

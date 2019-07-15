@@ -10,10 +10,12 @@ import { OrganizationMembersState, OrganizationMembersStore } from './organizati
   providedIn: 'root'
 })
 export class OrganizationMembersQuery extends QueryEntity<OrganizationMembersState, OrganizationUser> {
-  sortedOrganizationMembers$: Observable<Array<OrganizationUser>> = this.selectAll().pipe(map(organizationMembers => {
-    organizationMembers.sort((a, b) => this.sortOrganizationUser(a, b));
-    return organizationMembers;
-  }));
+  sortedOrganizationMembers$: Observable<Array<OrganizationUser>> = this.selectAll().pipe(
+    map(organizationMembers => {
+      organizationMembers.sort((a, b) => this.sortOrganizationUser(a, b));
+      return organizationMembers;
+    })
+  );
   constructor(protected store: OrganizationMembersStore) {
     super(store);
   }

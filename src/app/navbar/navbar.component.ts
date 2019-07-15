@@ -29,7 +29,7 @@ import { TrackLoginService } from './../shared/track-login.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent extends Logout implements OnInit {
   public user: User;
@@ -37,20 +37,27 @@ export class NavbarComponent extends Logout implements OnInit {
   isExtended = false;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private pagenumberService: PagenumberService,
+  constructor(
+    private pagenumberService: PagenumberService,
     trackLoginService: TrackLoginService,
     logoutService: LogoutService,
     router: Router,
-    private userQuery: UserQuery) {
+    private userQuery: UserQuery
+  ) {
     super(trackLoginService, logoutService, router);
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      this.isExtended = toExtendSite(this.router.url);
-    });
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => {
+        this.isExtended = toExtendSite(this.router.url);
+      });
   }
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
-    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
+    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => (this.extendedUser = extendedUser));
   }
 
   resetPageNumber() {

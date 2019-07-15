@@ -4,7 +4,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'versionProviderUrl'
 })
 export class VersionProviderUrlPipe implements PipeTransform {
-
   transform(providerUrl: string, versionName: string): any {
     if (providerUrl.includes('github.com') && versionName) {
       return providerUrl + '/tree/' + versionName;

@@ -7,11 +7,10 @@ describe('AddEntryQuery', () => {
   let query: AddEntryQuery;
 
   beforeEach(() => {
-    query = new AddEntryQuery(new AddEntryStore, new CurrentCollectionsQuery(new CurrentCollectionsStore));
+    query = new AddEntryQuery(new AddEntryStore(), new CurrentCollectionsQuery(new CurrentCollectionsStore()));
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

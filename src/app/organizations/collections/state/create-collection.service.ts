@@ -11,7 +11,6 @@ import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionStore } from './create-collection.store';
 
-
 export interface FormsState {
   createOrUpdateCollection: {
     name: string;
@@ -22,11 +21,16 @@ export interface FormsState {
 
 @Injectable({ providedIn: 'root' })
 export class CreateCollectionService {
-
-  constructor(private createCollectionStore: CreateCollectionStore, private organizationsService: OrganizationsService,
-    private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private matSnackBar: MatSnackBar,
-    private collectionsService: CollectionsService, private builder: FormBuilder, private alertService: AlertService) {
-  }
+  constructor(
+    private createCollectionStore: CreateCollectionStore,
+    private organizationsService: OrganizationsService,
+    private organizationQuery: OrganizationQuery,
+    private matDialog: MatDialog,
+    private matSnackBar: MatSnackBar,
+    private collectionsService: CollectionsService,
+    private builder: FormBuilder,
+    private alertService: AlertService
+  ) {}
 
   clearState() {
     // Initially set to false, loading is only after the user has filled in the form and clicked the button
@@ -49,17 +53,21 @@ export class CreateCollectionService {
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
     this.alertService.start('Creating collection');
-    this.organizationsService.createCollection(organizationID, collection).pipe(
-      finalize(() => this.createCollectionStore.setLoading(false)))
-      .subscribe((newCollection: Collection) => {
-        this.createCollectionStore.setError(false);
-        this.matDialog.closeAll();
-        this.alertService.detailedSuccess();
-        this.collectionsService.updateCollections();
-      }, (error: HttpErrorResponse) => {
-        this.createCollectionStore.setError(true);
-        this.alertService.detailedError(error);
-      });
+    this.organizationsService
+      .createCollection(organizationID, collection)
+      .pipe(finalize(() => this.createCollectionStore.setLoading(false)))
+      .subscribe(
+        (newCollection: Collection) => {
+          this.createCollectionStore.setError(false);
+          this.matDialog.closeAll();
+          this.alertService.detailedSuccess();
+          this.collectionsService.updateCollections();
+        },
+        (error: HttpErrorResponse) => {
+          this.createCollectionStore.setError(true);
+          this.alertService.detailedError(error);
+        }
+      );
   }
 
   private beforeCall() {
@@ -105,17 +113,12 @@ export class CreateCollectionService {
     }
 
     const createOrUpdateCollectionForm = this.builder.group({
-      name: [
-        name, [
-          Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)
-        ]
-      ],
+      name: [name, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
       displayName: [
-        displayName, [
-          Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)
-        ]
+        displayName,
+        [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)]
       ],
-      topic: [topic],
+      topic: [topic]
     });
     formsManager.upsert('createOrUpdateCollection', createOrUpdateCollectionForm);
     return createOrUpdateCollectionForm;
@@ -157,17 +160,20 @@ export class CreateCollectionService {
     const organizationID = this.organizationQuery.getSnapshot().organization.id;
     this.beforeCall();
     this.alertService.start('Updating collection');
-    this.organizationsService.updateCollection(organizationID, collectionID, collection).pipe(
-      finalize(() => this.createCollectionStore.setLoading(false)))
-      .subscribe((newCollection: Collection) => {
-        this.createCollectionStore.setError(false);
-        this.matDialog.closeAll();
-        this.alertService.detailedSuccess();
-        this.collectionsService.updateCollections();
-      }, error => {
-        this.createCollectionStore.setError(true);
-        this.alertService.detailedError(error);
-      });
+    this.organizationsService
+      .updateCollection(organizationID, collectionID, collection)
+      .pipe(finalize(() => this.createCollectionStore.setLoading(false)))
+      .subscribe(
+        (newCollection: Collection) => {
+          this.createCollectionStore.setError(false);
+          this.matDialog.closeAll();
+          this.alertService.detailedSuccess();
+          this.collectionsService.updateCollections();
+        },
+        error => {
+          this.createCollectionStore.setError(true);
+          this.alertService.detailedError(error);
+        }
+      );
   }
-
 }

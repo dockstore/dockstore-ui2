@@ -23,20 +23,9 @@ import { HeaderModule } from './header.module';
 import { CustomMaterialModule } from './material.module';
 
 @NgModule({
-  declarations: [
-    ListWorkflowsComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    HeaderModule,
-    CustomMaterialModule
-  ],
-  providers: [
-    PublishedWorkflowsDataSource
-  ],
-  exports: [
-    ListWorkflowsComponent
-  ]
+  declarations: [ListWorkflowsComponent],
+  imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule],
+  providers: [PublishedWorkflowsDataSource],
+  exports: [ListWorkflowsComponent]
 })
-export class ListWorkflowsModule { }
+export class ListWorkflowsModule {}

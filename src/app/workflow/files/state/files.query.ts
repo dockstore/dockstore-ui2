@@ -8,9 +8,7 @@ import { FilesState, FilesStore } from './files.store';
   providedIn: 'root'
 })
 export class FilesQuery extends QueryEntity<FilesState, FileWrapper> {
-
   constructor(protected store: FilesStore) {
     super(store);
   }
-
 }

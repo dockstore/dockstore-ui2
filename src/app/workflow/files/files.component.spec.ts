@@ -27,14 +27,10 @@ describe('FilesWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FilesWorkflowComponent ],
-      schemas: [ NO_ERRORS_SCHEMA ],
-      providers: [
-        { provide: ParamfilesService, useClass: ParamFilesStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService }
-      ]
-    })
-    .compileComponents();
+      declarations: [FilesWorkflowComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{ provide: ParamfilesService, useClass: ParamFilesStubService }, { provide: GA4GHService, useClass: GA4GHStubService }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

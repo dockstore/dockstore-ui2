@@ -4,7 +4,6 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'commitUrl'
 })
 export class CommitUrlPipe implements PipeTransform {
-
   transform(commitId: string, providerUrl: string): string {
     if (!commitId || !providerUrl) {
       console.error('commitId or providerUrl is not truthy');

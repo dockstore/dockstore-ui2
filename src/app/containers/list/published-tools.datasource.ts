@@ -23,18 +23,20 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { ProviderService } from '../../shared/provider.service';
 import { ContainersService, DockstoreTool } from '../../shared/swagger';
+import { EntryType } from 'app/shared/enum/entry-type';
 
 @Injectable()
 export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreTool> {
-
   private entriesSubject = new BehaviorSubject<ExtendedDockstoreTool[]>([]);
   private loadingSubject$ = new BehaviorSubject<boolean>(false);
   public entriesLengthSubject$ = new BehaviorSubject<number>(0);
   public loading$ = this.loadingSubject$.asObservable();
 
-  constructor(private containersService: ContainersService, private providersService: ProviderService,
-    private imageProviderService: ImageProviderService) {
-  }
+  constructor(
+    private containersService: ContainersService,
+    private providersService: ProviderService,
+    private imageProviderService: ImageProviderService
+  ) {}
 
   /**
    * Updates the datasource from the endpoint
@@ -45,24 +47,23 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
    * @param {string} sortCol  The column to sort by ("stars")
    * @memberof PublishedToolsDataSource
    */
-  loadEntries(filter: string,
-    sortDirection: 'asc' | 'desc',
-    pageIndex: number,
-    pageSize: number,
-    sortCol: string) {
+  loadEntries(entryType: EntryType, filter: string, sortDirection: 'asc' | 'desc', pageIndex: number, pageSize: number, sortCol: string) {
     this.loadingSubject$.next(true);
-    this.containersService.allPublishedContainers(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, 'response').pipe(
-      catchError(() => of([])),
-      finalize(() => this.loadingSubject$.next(false))
-    )
+    this.containersService
+      .allPublishedContainers(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, 'response')
+      .pipe(
+        catchError(() => of([])),
+        finalize(() => this.loadingSubject$.next(false))
+      )
       .subscribe((entries: HttpResponse<Array<DockstoreTool>>) => {
-        this.entriesSubject.next(entries.body.map(tool => {
-          tool = this.imageProviderService.setUpImageProvider(tool);
-          return <ExtendedDockstoreTool>this.providersService.setUpProvider(tool);
-        }));
+        this.entriesSubject.next(
+          entries.body.map(tool => {
+            tool = this.imageProviderService.setUpImageProvider(tool);
+            return <ExtendedDockstoreTool>this.providersService.setUpProvider(tool);
+          })
+        );
         this.entriesLengthSubject$.next(Number(entries.headers.get('X-total-count')));
       });
-
   }
 
   connect(collectionViewer: CollectionViewer): Observable<DockstoreTool[]> {

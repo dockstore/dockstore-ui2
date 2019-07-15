@@ -17,15 +17,14 @@ describe('DownloadCLIClientComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DownloadCLIClientComponent,
-        RouterLinkStubDirective, RouterOutletStubComponent],
+      declarations: [DownloadCLIClientComponent, RouterLinkStubDirective, RouterOutletStubComponent],
       imports: [ClipboardModule, MarkdownModule.forRoot(), MatIconModule, MatButtonModule, HttpClientTestingModule],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: GA4GHService, useClass: GA4GHStubService },
-        MetadataService]
-    })
-      .compileComponents();
+        MetadataService
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

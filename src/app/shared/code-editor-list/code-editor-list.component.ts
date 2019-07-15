@@ -50,7 +50,7 @@ export class CodeEditorListComponent {
     if (this.sourcefiles === undefined) {
       this.sourcefiles = [];
     }
-    filesToAdd.forEach((file) => {
+    filesToAdd.forEach(file => {
       this.sourcefiles.push(file);
     });
   }
@@ -162,13 +162,17 @@ export class CodeEditorListComponent {
     } else if (this.fileType === 'dockerfile') {
       return true;
     } else if (this.fileType === 'descriptor') {
-      return (this.descriptorType === ToolDescriptor.TypeEnum.CWL && type === 'DOCKSTORE_CWL')
-        || (this.descriptorType === ToolDescriptor.TypeEnum.WDL && type === 'DOCKSTORE_WDL')
-        || (this.descriptorType === ToolDescriptor.TypeEnum.NFL && (type === 'NEXTFLOW' || type === 'NEXTFLOW_CONFIG'));
+      return (
+        (this.descriptorType === ToolDescriptor.TypeEnum.CWL && type === 'DOCKSTORE_CWL') ||
+        (this.descriptorType === ToolDescriptor.TypeEnum.WDL && type === 'DOCKSTORE_WDL') ||
+        (this.descriptorType === ToolDescriptor.TypeEnum.NFL && (type === 'NEXTFLOW' || type === 'NEXTFLOW_CONFIG'))
+      );
     } else if (this.fileType === 'testParam') {
-      return (this.descriptorType ===  ToolDescriptor.TypeEnum.CWL && type === 'CWL_TEST_JSON')
-        || (this.descriptorType ===  ToolDescriptor.TypeEnum.WDL && type === 'WDL_TEST_JSON')
-        || (this.descriptorType ===  ToolDescriptor.TypeEnum.NFL && type === 'NEXTFLOW_TEST_PARAMS');
+      return (
+        (this.descriptorType === ToolDescriptor.TypeEnum.CWL && type === 'CWL_TEST_JSON') ||
+        (this.descriptorType === ToolDescriptor.TypeEnum.WDL && type === 'WDL_TEST_JSON') ||
+        (this.descriptorType === ToolDescriptor.TypeEnum.NFL && type === 'NEXTFLOW_TEST_PARAMS')
+      );
     } else {
       return true;
     }
@@ -201,7 +205,6 @@ export class CodeEditorListComponent {
     const pathToFind = 'test.' + this.descriptorType.toLowerCase() + '.json';
     return this.hasFilePath(pathToFind);
   }
-
 
   /**
    * Determines if there exists a sourcefile with the given file path

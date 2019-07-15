@@ -18,13 +18,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Organization } from './swagger';
 
-
 @Injectable()
 export class StarOrganizationService {
   private starOrganizationSource = new BehaviorSubject<any>(null);
   starOrganization$ = this.starOrganizationSource.asObservable();
-  constructor() { }
-  setOrganization(organization: { theOrganization: Organization; } ) {
+  constructor() {}
+  setOrganization(organization: { theOrganization: Organization }) {
     this.starOrganizationSource.next(organization);
   }
 }

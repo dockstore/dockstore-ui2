@@ -8,30 +8,30 @@ import { AuthConfig } from './shared/auth.model';
   providedIn: 'root'
 })
 export class ConfigurationService {
-
-  constructor(private metadataService: MetadataService, private configService: ConfigService) {
-  }
+  constructor(private metadataService: MetadataService, private configService: ConfigService) {}
 
   load(): Promise<void> {
+    return this.metadataService
+      .getConfig()
+      .toPromise()
+      .then(
+        (config: Config) => {
+          this.updateDockstoreModel(config);
 
-    return this.metadataService.getConfig().toPromise().then((config: Config) => {
-
-        this.updateDockstoreModel(config);
-
-        this.updateAuthProviders();
-      },
-      (e) => {
-        console.error('Error downloading config.json', e);
-        // Less than ideal, but just let the normal error handling in footer.component.ts kick in later.
-        Promise.resolve();
-      });
+          this.updateAuthProviders();
+        },
+        e => {
+          console.error('Error downloading config.json', e);
+          // Less than ideal, but just let the normal error handling in footer.component.ts kick in later.
+          Promise.resolve();
+        }
+      );
   }
 
   private updateDockstoreModel(config: Config) {
     Dockstore.DISCOURSE_URL = config.discourseUrl;
 
     Dockstore.DNASTACK_IMPORT_URL = config.dnaStackImportUrl;
-    Dockstore.FIRECLOUD_IMPORT_URL = config.fireCloudImportUrl;
     Dockstore.DNANEXUS_IMPORT_URL = config.dnaNexusImportUrl;
     Dockstore.TERRA_IMPORT_URL = config.terraImportUrl;
 
@@ -54,14 +54,19 @@ export class ConfigurationService {
     Dockstore.GITLAB_REDIRECT_URI = Dockstore.HOSTNAME + config.gitlabRedirectPath;
     Dockstore.GITLAB_SCOPE = config.gitlabScope;
 
+    Dockstore.ZENODO_AUTH_URL = config.zenodoAuthUrl;
+    Dockstore.ZENODO_CLIENT_ID = config.zenodoClientId;
+    Dockstore.ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + config.zenodoRedirectPath;
+    Dockstore.ZENODO_SCOPE = config.zenodoScope;
+
     Dockstore.GOOGLE_CLIENT_ID = config.googleClientId;
     Dockstore.GOOGLE_SCOPE = config.googleScope;
+    Dockstore.GOOGLE_TAG_MANAGER_ID = config.tagManagerId;
 
     Dockstore.CWL_VISUALIZER_URI = config.cwlVisualizerUri;
 
-    Dockstore.FEATURES.enableLaunchWithFireCloud = config.enableLaunchWithFireCloud;
+    Dockstore.GITHUB_APP_INSTALLATION_URL = config.gitHubAppInstallationUrl;
   }
-
 
   /**
    * In app.module.ts, the line `Ng2UiAuthModule.forRoot(AuthConfig)` in the imports section, initializes

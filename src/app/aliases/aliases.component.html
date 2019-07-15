@@ -6,19 +6,31 @@
     <mat-icon>warning</mat-icon>
     &nbsp;<strong>{{ type }}</strong> is not a valid type
   </mat-card>
-  <div *ngIf="(loading$ | async); else doneLoading">
+  <div *ngIf="loading$ | async; else doneLoading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   <ng-template #doneLoading>
-    <div *ngIf="(organization$ | async) as org" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <div *ngIf="organization$ | async as org" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       Redirecting to the organization <strong>{{ org.displayName }}</strong>
     </div>
-    <div *ngIf="(collection$ | async) as coll" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <div *ngIf="collection$ | async as coll" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       Redirecting to the collection <strong>{{ coll.displayName }}</strong>
     </div>
-    <mat-card class="alert alert-warning" role="alert" *ngIf="types.includes(type) && !(organization$ | async) && !(collection$ | async)">
+    <div *ngIf="workflow$ | async as wf" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      Redirecting to the workflow <strong>{{ wf.full_workflow_path }}</strong>
+    </div>
+    <div *ngIf="tool$ | async as tool" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      Redirecting to the tool <strong>{{ tool.tool_path }}</strong>
+    </div>
+    <mat-card
+      class="alert alert-warning"
+      role="alert"
+      *ngIf="types.includes(type) && !(organization$ | async) && !(collection$ | async) && !(workflow$ | async) && !(tool$ | async)"
+    >
       <mat-icon>warning</mat-icon>
       &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
     </mat-card>

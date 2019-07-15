@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-import { Workflow } from '../swagger';
+import { Workflow, WorkflowVersion } from '../swagger';
+import { BioWorkflow } from '../swagger/model/bioWorkflow';
+import { Service } from '../swagger/model/service';
 import { ExtendedWorkflowService } from './extended-workflow.service';
 import { WorkflowStore } from './workflow.store';
 
-
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
-  workflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted workflows
-  sharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject(null);  // This contains the list of unsorted shared workflows
+  workflows$: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of unsorted workflows
+  sharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of unsorted shared workflows
   nsSharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted shared workflows
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
-  constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {
-  }
+  constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {}
 
   @transaction()
-  setWorkflow(workflow: (Workflow | null)) {
+  setWorkflow(workflow: BioWorkflow | Service | null) {
     if (workflow) {
       this.workflowStore.createOrReplace(workflow.id, workflow);
       this.extendedWorkflowService.update(workflow);
@@ -38,11 +38,15 @@ export class WorkflowService {
     this.workflowStore.setActive(null);
   }
 
-  add(workflow: Workflow) {
+  clearVersion() {
+    this.workflowStore.updateRoot({ version: null });
+  }
+
+  add(workflow: Service | BioWorkflow) {
     this.workflowStore.add(workflow);
   }
 
-  update(id, workflow: Partial<Workflow>) {
+  update(id, workflow: Partial<Service | BioWorkflow>) {
     this.workflowStore.update(id, workflow);
   }
 
@@ -50,8 +54,12 @@ export class WorkflowService {
     this.workflowStore.remove(id);
   }
 
-  setWorkflows(workflows: Array<Workflow>) {
+  setWorkflows(workflows: BioWorkflow[] | Service[]) {
     this.workflows$.next(workflows);
+  }
+
+  setWorkflowVersion(version: WorkflowVersion) {
+    this.workflowStore.updateRoot({ version: version });
   }
 
   setSharedWorkflows(workflows: Array<any>) {
@@ -77,7 +85,7 @@ export class WorkflowService {
    * If not found will add to the workflows list (not shared workflows)
    * @param workflow Workflow to be upserted
    */
-  upsertWorkflowToWorkflow(workflow: Workflow) {
+  upsertWorkflowToWorkflow(workflow: BioWorkflow | Service) {
     const workflows = this.workflows$.getValue();
     const sharedWorkflows = this.sharedWorkflows$.getValue();
     if (workflow && workflows && sharedWorkflows) {

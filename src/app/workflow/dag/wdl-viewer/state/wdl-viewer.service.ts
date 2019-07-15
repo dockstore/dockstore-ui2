@@ -34,13 +34,17 @@ export class WdlViewerService {
   private zip: JSZip = new JSZip();
   private statusSource = new BehaviorSubject<boolean>(false);
   public status$ = this.statusSource.asObservable();
-  constructor(private gA4GHFilesQuery: GA4GHFilesQuery, private workflowsService: WorkflowsService,
-    private wdlViewerStore: WdlViewerStore) {
-  }
+  constructor(
+    private gA4GHFilesQuery: GA4GHFilesQuery,
+    private workflowsService: WorkflowsService,
+    private wdlViewerStore: WdlViewerStore
+  ) {}
 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
-    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
-      ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
+    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [
+      ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
+      ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR
+    ]);
   }
 
   /**
@@ -74,10 +78,12 @@ export class WdlViewerService {
    * @param version
    */
   createSingle(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipelineResponse> {
-    return this.workflowsService.wdl(workflow.id, version.name).pipe(switchMap(prim => {
-      // Errors thrown by the parse function are caught by the Observable being subscribed to
-      return from(pipeline.parse(prim.content));
-    }));
+    return this.workflowsService.primaryDescriptor(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL).pipe(
+      switchMap(prim => {
+        // Errors thrown by the parse function are caught by the Observable being subscribed to
+        return from(pipeline.parse(prim.content));
+      })
+    );
   }
 
   /**
@@ -87,18 +93,22 @@ export class WdlViewerService {
    * @param version
    */
   createMultiple(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipelineResponse> {
-    return forkJoin(this.workflowsService.wdl(workflow.id, version.name), this.workflowsService.secondaryWdl(workflow.id, version.name))
-      .pipe(
-        switchMap(res => {
-          // Store each secondary file in a zip object
-          res[1].forEach(file => this.zip.file(file.path, file.content));
+    return forkJoin(
+      this.workflowsService.primaryDescriptor(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL),
+      this.workflowsService.secondaryDescriptors(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL)
+    ).pipe(
+      switchMap(res => {
+        // Store each secondary file in a zip object
+        res[1].forEach(file => this.zip.file(file.path, file.content));
 
-          return from(this.zip.generateAsync({type: 'blob'})).pipe(switchMap(zip => {
+        return from(this.zip.generateAsync({ type: 'blob' })).pipe(
+          switchMap(zip => {
             // Errors thrown by the parse function are caught by the Observable being subscribed to
-            return from(pipeline.parse(res[0].content, {zipFile: zip}));
-          }));
-        })
-      );
+            return from(pipeline.parse(res[0].content, { zipFile: zip }));
+          })
+        );
+      })
+    );
   }
 
   @transaction()

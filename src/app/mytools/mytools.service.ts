@@ -15,15 +15,16 @@
  */
 
 import { Injectable } from '@angular/core';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from './../shared/myentries.service';
 
 @Injectable()
 export class MytoolsService extends MyEntriesService {
-  constructor() {
-    super();
-  }
-
   getGroupIndex(groupEntries: any[], group: string): number {
     return groupEntries.findIndex(nsContainer => nsContainer.namespace === group);
   }
+
+  getMyEntries(userId: number, entryType: EntryType) {}
+
+  registerEntry() {}
 }

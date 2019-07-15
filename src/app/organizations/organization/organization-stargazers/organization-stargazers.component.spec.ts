@@ -20,7 +20,7 @@ import { StarOrganizationService } from '../../../shared/star-organization.servi
 import { UserService } from '../../../shared/user/user.service';
 import { StarOrganizationStubService, OrganizationStarringStubService, UserStubService } from '../../../test/service-stubs';
 import { OrganizationStargazersComponent } from './organization-stargazers.component';
-import {OrganizationStarringService} from '../organization-starring/organization-starring.service';
+import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
 
 describe('OrganizationStargazersComponent', () => {
   let component: OrganizationStargazersComponent;
@@ -31,12 +31,11 @@ describe('OrganizationStargazersComponent', () => {
       declarations: [OrganizationStargazersComponent],
       imports: [MatIconModule, MatCardModule],
       providers: [
-        { provide: UserService, useClass: UserStubService},
+        { provide: UserService, useClass: UserStubService },
         { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },
-        { provide: StarOrganizationService, useClass: StarOrganizationStubService },
+        { provide: StarOrganizationService, useClass: StarOrganizationStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

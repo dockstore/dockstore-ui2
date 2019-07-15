@@ -22,6 +22,8 @@ import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { Workflow } from './../../shared/swagger/model/workflow';
 import { ToolTabService } from './tool-tab.service';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 
 @Component({
   selector: 'app-tool-tab',
@@ -29,7 +31,7 @@ import { ToolTabService } from './tool-tab.service';
   styleUrls: ['./tool-tab.component.scss']
 })
 export class ToolTabComponent extends EntryTab {
-  workflow: Workflow;
+  workflow: BioWorkflow | Service;
   toolContent: string = null;
   _selectedVersion: WorkflowVersion;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
@@ -61,9 +63,11 @@ export class ToolTabComponent extends EntryTab {
     super();
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.toolExcerptHeaderName$ = this.descriptorType$.pipe(
-      map(descriptorType => this.toolTabService.descriptorTypeToHeaderName(descriptorType)));
+      map(descriptorType => this.toolTabService.descriptorTypeToHeaderName(descriptorType))
+    );
     this.workflowExcerptRowHeading$ = this.descriptorType$.pipe(
-      map(descriptorType => this.toolTabService.descriptorTypeToWorkflowExcerptRowHeading(descriptorType)));
+      map(descriptorType => this.toolTabService.descriptorTypeToWorkflowExcerptRowHeading(descriptorType))
+    );
   }
 
   /**
@@ -76,13 +80,18 @@ export class ToolTabComponent extends EntryTab {
   getTableToolContent(workflowId: number, versionId: number): void {
     if (workflowId && versionId) {
       this.loading = true;
-      this.workflowsService.getTableToolContent(workflowId, versionId).pipe(finalize(() => this.loading = false)).subscribe(
-        (toolContent) => {
-          this.handleToolContent(toolContent);
-        }, error => {
-          console.log('Could not retrieve table tool content');
-          this.handleToolContent(null);
-        });
+      this.workflowsService
+        .getTableToolContent(workflowId, versionId)
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe(
+          toolContent => {
+            this.handleToolContent(toolContent);
+          },
+          error => {
+            console.log('Could not retrieve table tool content');
+            this.handleToolContent(null);
+          }
+        );
     } else {
       this.handleNullToolContent();
     }

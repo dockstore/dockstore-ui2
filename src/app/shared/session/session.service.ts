@@ -14,21 +14,29 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-
+import { EntryType } from '../enum/entry-type';
 import { SessionStore } from './session.store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-
-  constructor(private sessionStore: SessionStore) { }
+  constructor(private sessionStore: SessionStore) {}
 
   setPublicPage(isPublic: boolean): void {
     this.sessionStore.setState(state => {
       return {
         ...state,
         isPublic: isPublic
+      };
+    });
+  }
+
+  setEntryType(entryType: EntryType): void {
+    this.sessionStore.setState(state => {
+      return {
+        ...state,
+        entryType: entryType
       };
     });
   }

@@ -13,17 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Injectable } from '@angular/core';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { ToolDescriptor } from '../../shared/swagger';
 import { ga4ghPath } from './../../shared/constants';
 import { Dockstore } from './../../shared/dockstore.model';
-import { EntryType } from './../../shared/enum/entryType.enum';
 import { LaunchService } from './../../shared/launch.service';
-import { Injectable } from '@angular/core';
-import { ToolDescriptor } from '../../shared/swagger';
 
 @Injectable()
 export class ToolLaunchService extends LaunchService {
-
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(descriptorTypeCompatService);
   }
@@ -34,8 +32,12 @@ export class ToolLaunchService extends LaunchService {
       descriptor = ToolLaunchService.descriptorWdl;
     }
 
-    return 'dockstore tool convert entry2json' + descriptor + ` --entry ${path}:${versionName} > Dockstore.json
-            \nvim Dockstore.json`;
+    return (
+      'dockstore tool convert entry2json' +
+      descriptor +
+      ` --entry ${path}:${versionName} > Dockstore.json
+            \nvim Dockstore.json`
+    );
   }
 
   getCliString(path: string, versionName: string, currentDescriptor: string) {
@@ -48,12 +50,14 @@ export class ToolLaunchService extends LaunchService {
   }
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
-    return 'cwl-runner ' +
+    return (
+      'cwl-runner ' +
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
+      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`
+    );
   }
 
   getCheckToolString(path: string, versionName: string): string {
-    return this.getCheckEntry(path, versionName, EntryType.TOOL);
+    return this.getCheckEntry(path, versionName);
   }
 }

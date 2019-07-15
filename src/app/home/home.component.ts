@@ -30,11 +30,10 @@ import { Subject, Observable } from 'rxjs';
  * @class YoutubeComponent
  */
 @Component({
-  template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
+  template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>'
 })
 export class YoutubeComponent {
-  constructor(
-    public dialogRef: MatDialogRef<YoutubeComponent>) {}
+  constructor(public dialogRef: MatDialogRef<YoutubeComponent>) {}
 }
 
 @Component({
@@ -51,9 +50,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('youtube') youtube: ElementRef;
 
-  constructor(private dialog: MatDialog, private twitterService: TwitterService,
-    private userQuery: UserQuery, private router: Router) {
-  }
+  constructor(private dialog: MatDialog, private twitterService: TwitterService, private userQuery: UserQuery, private router: Router) {}
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
@@ -63,7 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   goToSearch(searchValue: string) {
-    this.router.navigate(['/search'], {queryParams: {search: searchValue}});
+    this.router.navigate(['/search'], { queryParams: { search: searchValue } });
   }
 
   onSelect(data: TabDirective): void {

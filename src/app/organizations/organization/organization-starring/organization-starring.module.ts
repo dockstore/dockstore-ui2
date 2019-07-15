@@ -17,24 +17,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material';
 
-import {StarOrganizationService} from '../../../shared/star-organization.service';
-import {OrganizationStarringComponent} from './organization-starring.component';
-import {OrganizationStarringService} from './organization-starring.service';
+import { StarOrganizationService } from '../../../shared/star-organization.service';
+import { OrganizationStarringComponent } from './organization-starring.component';
+import { OrganizationStarringService } from './organization-starring.service';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatIconModule
-  ],
-  declarations: [
-    OrganizationStarringComponent
-  ],
-  exports: [
-    OrganizationStarringComponent
-  ],
-  providers: [
-    OrganizationStarringService,
-    StarOrganizationService
-  ]
+  imports: [CommonModule, MatIconModule],
+  declarations: [OrganizationStarringComponent],
+  exports: [OrganizationStarringComponent],
+  providers: [OrganizationStarringService, StarOrganizationService]
 })
-export class OrganizationStarringModule { }
+export class OrganizationStarringModule {}

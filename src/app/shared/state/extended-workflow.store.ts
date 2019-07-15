@@ -21,10 +21,7 @@ import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'extendedWorkflow' })
 export class ExtendedWorkflowStore extends Store<ExtendedWorkflow> {
-
   constructor() {
     super({});
   }
-
 }
-

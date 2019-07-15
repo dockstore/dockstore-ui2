@@ -18,18 +18,14 @@ import { Subject } from 'rxjs';
 
 import { DateService } from './date.service';
 
-
 export abstract class View implements OnDestroy {
-
   @Input() version;
 
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private dateService: DateService) {
-  }
+  constructor(private dateService: DateService) {}
 
   getDateTimeMessage(timestamp) {
-
     return this.dateService.getDateTimeMessage(timestamp);
   }
 

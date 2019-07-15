@@ -38,7 +38,7 @@ export class LaunchWorkflowComponent extends EntryTab {
   @Input() basePath;
   @Input() path;
   currentDescriptor: ToolDescriptor.TypeEnum;
-  @Input() mode: (DockstoreTool.ModeEnum | Workflow.ModeEnum);
+  @Input() mode: DockstoreTool.ModeEnum | Workflow.ModeEnum;
 
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -72,14 +72,18 @@ export class LaunchWorkflowComponent extends EntryTab {
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private launchService: WorkflowLaunchService, private workflowQuery: WorkflowQuery,
-    protected gA4GHFilesService: GA4GHFilesService, private gA4GHFilesQuery: GA4GHFilesQuery,
-    private descriptorTypeCompatService: DescriptorTypeCompatService) {
+  constructor(
+    private launchService: WorkflowLaunchService,
+    private workflowQuery: WorkflowQuery,
+    protected gA4GHFilesService: GA4GHFilesService,
+    private gA4GHFilesQuery: GA4GHFilesQuery
+  ) {
     super();
     this.published$ = this.workflowQuery.workflowIsPublished$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
-    this.descriptorType$.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe((descriptorType: ToolDescriptor.TypeEnum) => this.currentDescriptor = descriptorType);
+    this.descriptorType$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((descriptorType: ToolDescriptor.TypeEnum) => (this.currentDescriptor = descriptorType));
     this.isNFL$ = this.workflowQuery.isNFL$;
   }
   reactToDescriptor(): void {
@@ -105,16 +109,20 @@ export class LaunchWorkflowComponent extends EntryTab {
    * @param versionName
    */
   updateWgetTestJsonString(workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum): void {
-      let toolFiles$: Observable<Array<ToolFile>>;
-      toolFiles$ = this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
-      toolFiles$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
-        if (toolFiles && toolFiles.length > 0) {
-          this.testParameterPath = toolFiles[0].path;
-        } else {
-          this.testParameterPath = null;
-        }
-        this.wgetTestJsonDescription = this.launchService.getTestJsonString(ga4ghWorkflowIdPrefix + workflowPath, versionName,
-          descriptorType, this.testParameterPath);
-      });
-    }
+    let toolFiles$: Observable<Array<ToolFile>>;
+    toolFiles$ = this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
+    toolFiles$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
+      if (toolFiles && toolFiles.length > 0) {
+        this.testParameterPath = toolFiles[0].path;
+      } else {
+        this.testParameterPath = null;
+      }
+      this.wgetTestJsonDescription = this.launchService.getTestJsonString(
+        ga4ghWorkflowIdPrefix + workflowPath,
+        versionName,
+        descriptorType,
+        this.testParameterPath
+      );
+    });
+  }
 }

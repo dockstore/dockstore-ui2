@@ -14,11 +14,9 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
-import { EntryType } from '../../shared/enum/entryType.enum';
 import { LaunchService } from '../../shared/launch.service';
 import { ToolDescriptor } from '../../shared/swagger';
 
@@ -50,11 +48,13 @@ export class WorkflowLaunchService extends LaunchService {
 
   getCwlString(path: string, versionName: string, mainDescriptor: string) {
     const id = encodeURIComponent(ga4ghWorkflowIdPrefix + path);
-    return `cwl-runner ${Dockstore.API_URI}${ga4ghPath}/tools/${id}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`;
+    return (
+      `cwl-runner ${Dockstore.API_URI}${ga4ghPath}/tools/${id}` +
+      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`
+    );
   }
 
   getCheckWorkflowString(path: string, versionName: string): string {
-    return this.getCheckEntry(path, versionName, EntryType.WORKFLOW);
+    return this.getCheckEntry(path, versionName);
   }
 }

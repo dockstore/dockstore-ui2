@@ -27,9 +27,7 @@ describe('SearchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [SearchService, SearchStore,
-        { provide: ProviderService, useClass: ProviderStubService }
-      ]
+      providers: [SearchService, SearchStore, { provide: ProviderService, useClass: ProviderStubService }]
     });
     searchService = TestBed.get(SearchService);
     searchStore = TestBed.get(SearchStore);

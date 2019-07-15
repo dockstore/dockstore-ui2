@@ -15,17 +15,27 @@
  */
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
+import { EntryType } from '../enum/entry-type';
 
 export interface SessionState {
-   isPublic: boolean;
+  isPublic: boolean;
+  entryType: EntryType;
 }
-​
 export function createInitialState(): SessionState {
   return {
-    isPublic: true
+    isPublic: true,
+    entryType: null
   };
 }
-​
+/**
+ * This store is for app-wide state information such as:
+ * whether the current public page or not
+ * what type of entry is currently viewed
+ * what user is logged in currently
+ * @export
+ * @class SessionStore
+ * @extends {Store<SessionState>}
+ */
 @Injectable({
   providedIn: 'root'
 })

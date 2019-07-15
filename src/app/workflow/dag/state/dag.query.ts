@@ -24,8 +24,7 @@ export class DagQuery extends Query<DagState> {
     if (!dagResults) {
       return true;
     } else {
-      return (dagResults.edges.length < 1 && dagResults.nodes.length < 1);
+      return dagResults.edges.length < 1 && dagResults.nodes.length < 1;
     }
   }
-
 }

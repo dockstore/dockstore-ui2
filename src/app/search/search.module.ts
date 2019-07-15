@@ -76,6 +76,5 @@ import { searchRouting } from './search.routing';
   ],
   providers: [AdvancedSearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
   exports: [SearchComponent]
-
 })
-export class SearchModule { }
+export class SearchModule {}

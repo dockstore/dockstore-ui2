@@ -26,9 +26,7 @@
         </button>
 
         <ng-template #loggedIn>
-          <button mat-flat-button color="accent" routerLink="/accounts" class="big-button">
-            Welcome {{ (user$ | async).username }}
-          </button>
+          <button mat-flat-button color="accent" routerLink="/accounts" class="big-button">Welcome {{ (user$ | async).username }}</button>
         </ng-template>
 
         <button mat-flat-button routerLink="/search" class="m-2 big-button">
@@ -36,15 +34,21 @@
         </button>
 
         <div class="search-holder">
-          <input id="searchBar" #search type="text" placeholder="Search..." class="fully-rounded landing-search"
-          (keyup.enter)="goToSearch(search.value)">
+          <input
+            id="searchBar"
+            #search
+            type="text"
+            placeholder="Search..."
+            class="fully-rounded landing-search"
+            (keyup.enter)="goToSearch(search.value)"
+          />
         </div>
       </div>
 
       <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px">
         <h3 class="search-title">New to Dockstore?</h3>
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">
-            <a mat-raised-button href="#overview" class="button-link">Start here</a>
+          <a mat-raised-button href="#overview" class="button-link">Start here</a>
         </div>
 
         <!-- Left the boat and truck here in case we want them back -->
@@ -52,17 +56,16 @@
           <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png">
           <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png">
         </div> -->
-
       </div>
     </div>
   </div>
 </div>
 
 <div class="header-lower" id="overview">
-  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png">
+  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" />
 
   <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-    <a class='btn youtube' role="button" (click)="openYoutube()">
+    <a class="btn youtube" role="button" (click)="openYoutube()">
       <div>
         <mat-icon>play_circle_outline</mat-icon>
         <span>&nbsp;Video Overview</span>
@@ -76,19 +79,29 @@
   <p class="lead text-center">
     Create reproducible workflows using cutting-edge technology and standards.
   </p>
-  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center"  class="content-holder">
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder">
     <div fxFlex class="small-card">
       <mat-card fxLayout="column">
         <h3 class="text-center">Reproducible environment</h3>
         <p>
-          The execution environment is described by <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer">Docker</a> and stored and built on <a href="https://quay.io/" target="_blank" rel="noopener noreferrer">Quay.io</a> or <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">Docker Hub</a>.
+          The execution environment is described by
+          <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer">Docker</a> and stored and built on
+          <a href="https://quay.io/" target="_blank" rel="noopener noreferrer">Quay.io</a> or
+          <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">Docker Hub</a>.
         </p>
       </mat-card>
     </div>
     <div fxFlex class="small-card">
       <mat-card fxLayout="column">
         <h3 class="text-center">Workflow descriptions</h3>
-        <p>Workflows are described with <a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a> or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a> and stored on <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>, <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>, <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>, or directly on Dockstore.</p>
+        <p>
+          Workflows are described with <a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>,
+          <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a> or
+          <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a> and stored on
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>,
+          <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>,
+          <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>, or directly on Dockstore.
+        </p>
       </mat-card>
     </div>
   </div>
@@ -103,7 +116,10 @@
     <div fxFlex class="small-card">
       <mat-card fxLayout="column" fxLayoutAlign="start center">
         <h3 class="text-center">Shareable</h3>
-        <p>Our implementation of community standards from the <a href="https://www.ga4gh.org/">GA4GH</a> ensures your workflows can be found with ease.</p>
+        <p>
+          Our implementation of community standards from the <a href="https://www.ga4gh.org/">GA4GH</a> ensures your workflows can be found
+          with ease.
+        </p>
       </mat-card>
     </div>
     <div fxFlex class="small-card">
@@ -131,13 +147,21 @@
     <div fxFlex class="small-card">
       <mat-card fxLayout="column">
         <h3 class="text-center">Online launch</h3>
-        <p>Select from a variety of launch partners including <a href="https://www.dnastack.com/#/" target="_blank" rel="noopener noreferrer">DNAstack</a>, <a href="https://terra.bio/" target="_blank" rel="noopener noreferrer">Terra</a>, and <a href="https://www.dnanexus.com/" target="_blank" rel="noopener noreferrer">DNAnexus</a>.</p>
+        <p>
+          Select from a variety of launch partners including
+          <a href="https://www.dnastack.com/#/" target="_blank" rel="noopener noreferrer">DNAstack</a>,
+          <a href="https://terra.bio/" target="_blank" rel="noopener noreferrer">Terra</a>, and
+          <a href="https://www.dnanexus.com/" target="_blank" rel="noopener noreferrer">DNAnexus</a>.
+        </p>
       </mat-card>
     </div>
     <div fxFlex class="small-card">
       <mat-card fxLayout="column">
         <h3 class="text-center">Local launch</h3>
-        <p>Use the <a routerLink="/quick-start" (click)="scrollToTop()">Dockstore CLI</a> to run workflows locally on Linux/Ubuntu and Mac OSX.</p>
+        <p>
+          Use the <a routerLink="/quick-start" (click)="scrollToTop()">Dockstore CLI</a> to run workflows locally on Linux/Ubuntu and Mac
+          OSX.
+        </p>
       </mat-card>
     </div>
   </div>
@@ -177,10 +201,7 @@
 
     <div fxLayout="row wrap" fxLayoutAlign="center center" class="mb-3">
       <div class="twitter twitter-container">
-        <a class="twitter-timeline"
-          data-theme="light"
-          data-height="400"
-          href="https://twitter.com/DockstoreOrg">
+        <a class="twitter-timeline" data-theme="light" data-height="400" href="https://twitter.com/DockstoreOrg">
           Tweets by DockstoreOrg
         </a>
       </div>

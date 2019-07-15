@@ -11,10 +11,9 @@ describe('MaintenanceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MaintenanceComponent ],
-      imports: [ MatCardModule, MatIconModule ]
-    })
-    .compileComponents();
+      declarations: [MaintenanceComponent],
+      imports: [MatCardModule, MatIconModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

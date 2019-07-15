@@ -13,10 +13,9 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <app-header>
-  <img src="../assets/images/dockstore/dockstore-workflows-green.png">
-  Available Workflows
+  <img src="../assets/images/dockstore/dockstore-workflows-green.png" />
+  {{ entryPageTitle$ | async | titlecase }}
 </app-header>
 <div class="container">
   <router-outlet></router-outlet>
