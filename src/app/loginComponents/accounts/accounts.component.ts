@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { MatTabChangeEvent } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import Dictionary = cytoscape.Css.Dictionary;
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html'
 })
-export class AccountsComponent implements OnInit {
+export class AccountsComponent implements OnInit, OnDestroy {
   public currentTab = 'accounts'; // default to the 'accounts' tab
   selected = new FormControl();
   validTabs = ['accounts', 'profiles', 'dockstore account controls', 'requests'];
+  subscription = null;
   constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
@@ -22,12 +22,12 @@ export class AccountsComponent implements OnInit {
   }
 
   private parseParam(params: Observable<Params>): void {
-    params.subscribe(next => {
+    this.subscription = params.subscribe(next => {
       this.setupTab(next);
     });
   }
 
-  public setupTab(u: Dictionary) {
+  public setupTab(u: Params) {
     const match: string = u['tab'];
     if (match) {
       // look for a tab name in the url
@@ -53,5 +53,9 @@ export class AccountsComponent implements OnInit {
 
   setAccountsTab() {
     this.location.replaceState('accounts?tab=' + this.currentTab);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
