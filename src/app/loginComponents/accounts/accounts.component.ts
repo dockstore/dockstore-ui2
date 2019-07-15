@@ -4,17 +4,20 @@ import { MatTabChangeEvent } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Base } from '../../shared/base';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html'
 })
-export class AccountsComponent implements OnInit, OnDestroy {
+export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
   selected = new FormControl();
   validTabs = ['accounts', 'profiles', 'dockstore account controls', 'requests'];
-  subscription = null;
-  constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
+    super();
+  }
 
   ngOnInit() {
     localStorage.setItem('page', '/accounts');
@@ -22,13 +25,13 @@ export class AccountsComponent implements OnInit, OnDestroy {
   }
 
   private parseParam(params: Observable<Params>): void {
-    this.subscription = params.subscribe(next => {
+    params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(next => {
       this.setupTab(next);
     });
   }
 
-  public setupTab(u: Params) {
-    const match: string = u['tab'];
+  public setupTab(params: Params) {
+    const match: string = params['tab'];
     if (match) {
       // look for a tab name in the url
       const tabIndex = this.validTabs.indexOf(match);
@@ -53,9 +56,5 @@ export class AccountsComponent implements OnInit, OnDestroy {
 
   setAccountsTab() {
     this.location.replaceState('accounts?tab=' + this.currentTab);
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }
