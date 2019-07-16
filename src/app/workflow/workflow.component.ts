@@ -26,7 +26,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
-import {BioschemaService} from '../shared/bioschema.service';
+import { BioschemaService } from '../shared/bioschema.service';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -91,7 +91,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
-    private bioschemaService: BioschemaService,
+    bioschemaService: BioschemaService,
     private refreshService: RefreshService,
     private workflowsService: WorkflowsService,
     trackLoginService: TrackLoginService,
@@ -116,6 +116,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       providerService,
       router,
       dateService,
+      bioschemaService,
       urlResolverService,
       activatedRoute,
       location,

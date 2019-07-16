@@ -32,6 +32,7 @@ import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
 import { Dockstore } from '../shared/dockstore.model';
+import { BioschemaService } from './bioschema.service';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
@@ -64,6 +65,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     public providerService: ProviderService,
     public router: Router,
     public dateService: DateService,
+    public bioschemaService: BioschemaService,
     public urlResolverService: UrlResolverService,
     public activatedRoute: ActivatedRoute,
     public locationService: Location,

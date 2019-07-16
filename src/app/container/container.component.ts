@@ -24,7 +24,6 @@ import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
-import {BioschemaService, BioschemaTool} from '../shared/bioschema.service';
 import { includesValidation } from '../shared/constants';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
@@ -48,6 +47,7 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
+import { BioschemaService } from '../shared/bioschema.service';
 
 @Component({
   selector: 'app-container',
@@ -78,6 +78,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
+    bioschemaService: BioschemaService,
     urlResolverService: UrlResolverService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
@@ -85,7 +86,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     private updateContainer: ContainerService,
     private containersService: ContainersService,
     private emailService: EmailService,
-    private bioschemaService: BioschemaService,
     trackLoginService: TrackLoginService,
     providerService: ProviderService,
     router: Router,
@@ -107,6 +107,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       providerService,
       router,
       dateService,
+      bioschemaService,
       urlResolverService,
       activatedRoute,
       location,

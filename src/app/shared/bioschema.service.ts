@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { DateService } from './date.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from './swagger/model/workflowVersion';
-import {Tag} from './swagger';
+import { Tag } from './swagger';
 
 export interface Person {
   '@type': string;
@@ -13,9 +13,9 @@ export interface Person {
 
 export interface BioschemaTool {
   '@type': string;
-  description: string;
+  description?: string;
   name?: string;
-  softwareVersion: string;
+  softwareVersion?: string;
   url: string;
   audience: string;
   dateModified?: string;
@@ -29,12 +29,21 @@ export class BioschemaService {
   private getBaseSchema(entry: DockstoreTool | Workflow, selectedVersion: Tag | WorkflowVersion): BioschemaTool {
     const results: BioschemaTool = {
       '@type': 'SoftwareApplication',
-      'description': entry.description,
-      'softwareVersion': selectedVersion.name,
-      'url': window.location.href,
-      'audience': 'Bioinformaticians',
-      'identifier': entry.id,
+      description: entry.description,
+      url: window.location.href,
+      // 'softwareVersion': selectedVersion.name,
+      audience: 'Bioinformaticians',
+      identifier: entry.id
     };
+    // if (entry.description) {
+    //   results.description = entry.description;
+    // }
+    // if (entry.id) {
+    //   results.identifier = entry.id;
+    // }
+    if (selectedVersion) {
+      results.softwareVersion = selectedVersion.name;
+    }
     return results;
   }
   getToolSchema(tool: DockstoreTool, selectedVersion: Tag): BioschemaTool {
@@ -47,15 +56,14 @@ export class BioschemaService {
     }
     if (tool.author) {
       results.publisher = {
-        '@type' : 'Person',
-        'name' : tool.author
+        '@type': 'Person',
+        name: tool.author
       };
       if (tool.email) {
         results.publisher.email = tool.email;
       }
     }
     return results;
-
   }
   getWorkflowSchema(workflow: Workflow, selectedVersion: WorkflowVersion): BioschemaTool {
     const results = this.getBaseSchema(workflow, selectedVersion);
@@ -67,8 +75,8 @@ export class BioschemaService {
     }
     if (workflow.author) {
       results.publisher = {
-        '@type' : 'Person',
-        'name' : workflow.author
+        '@type': 'Person',
+        name: workflow.author
       };
       if (workflow.email) {
         results.publisher.email = workflow.email;
@@ -76,7 +84,7 @@ export class BioschemaService {
     } else if (workflow.organization) {
       results.publisher = {
         '@type': 'Organization',
-        'name': workflow.organization
+        name: workflow.organization
       };
       if (workflow.email) {
         results.publisher.email = workflow.email;
