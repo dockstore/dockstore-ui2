@@ -35,12 +35,6 @@ export class BioschemaService {
       audience: 'Bioinformaticians',
       identifier: entry.id
     };
-    // if (entry.description) {
-    //   results.description = entry.description;
-    // }
-    // if (entry.id) {
-    //   results.identifier = entry.id;
-    // }
     if (selectedVersion) {
       results.softwareVersion = selectedVersion.name;
     }
