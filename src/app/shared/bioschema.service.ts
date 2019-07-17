@@ -26,7 +26,6 @@ export interface BioschemaTool {
   dateModified?: string;
   description?: string;
   downloadUrl?: string;
-  identifier?: number;
   publisher?: Person;
   softwareVersion?: string;
   softwareRequirements: string;
