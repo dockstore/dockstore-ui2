@@ -429,6 +429,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
+    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
   }
 
   setEntryTab(tabName: string): void {
