@@ -32,7 +32,7 @@
     <div fxLayout="row" fxLayoutAlign="center center" class="mt-5">
       <mat-card>
         <mat-tab-group layout-fill color="primary" mat-stretch-tabs fxFlex="400px">
-          <ng-template #templateRef>
+          <ng-template #PrivacyAndTOSDisclaimer>
             <a href="../assets/docs/Dockstore_Terms_of_Service.pdf" target="_blank" rel="noopener noreferrer">Terms of Service</a> and
             <a href="../assets/docs/Dockstore_Privacy Policy_v2.5.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
           </ng-template>
@@ -47,7 +47,7 @@
               </a>
               <p>
                 By clicking Login with GitHub or Login with Google, you agree to Dockstore's
-                <template [ngTemplateOutlet]="templateRef"></template>
+                <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template>
               </p>
             </mat-card>
           </mat-tab>
@@ -62,7 +62,7 @@
               </a>
               <p>
                 By clicking Register with GitHub or Register with Google, you agree to Dockstore's
-                <template [ngTemplateOutlet]="templateRef"></template>
+                <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template>
               </p>
 
               <!-- Attempt at using  -->
