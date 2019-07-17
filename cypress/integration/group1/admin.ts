@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort, resetDB } from '../../support/commands';
+import { resetDB, setTokenUserViewPort } from '../../support/commands';
 describe('Admin UI', () => {
   resetDB();
   setTokenUserViewPort();
@@ -29,9 +29,7 @@ describe('Admin UI', () => {
     cy.visit('');
 
     // Select dropdown
-    cy
-      .get('#dropdown-main')
-      .click();
+    cy.get('[data-cy=dropdown-main]:visible').click();
   });
 
   describe('Dropdown', () => {

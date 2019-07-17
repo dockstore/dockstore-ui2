@@ -39,9 +39,7 @@ describe('Dropdown test', () => {
     cy.visit('');
 
     // Select dropdown
-    cy
-      .get('#dropdown-main')
-      .click();
+    cy.get('[data-cy=dropdown-main]:visible').click();
   });
 
   describe('Go to starred page', () => {

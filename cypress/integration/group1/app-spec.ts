@@ -30,11 +30,11 @@ describe('Dockstore Home', () => {
 
   describe('Navigation', () => {
     it('My Tools visible', () => {
-      cy.get('[data-cy=dropdown-main]').should('be.visible').click();
+      cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
       cy.get('[data-cy=my-tools-nav-button]').should('visible');
     });
     it('My Workflows visible', () => {
-      cy.get('[data-cy=dropdown-main]')
+      cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
       cy.get('[data-cy=my-workflows-nav-button]').should('visible');
@@ -58,7 +58,7 @@ describe('Dockstore Home', () => {
   });
 
   function starColumn(url: string, type: string) {
-    if(type === 'workflow'){
+    if (type === 'workflow') {
       cy.get('#workflowTab-link')
         .click();
     }
@@ -68,7 +68,7 @@ describe('Dockstore Home', () => {
     cy.get('#starringButton')
       .click();
     cy.visit('');
-    if(type === 'workflow'){
+    if (type === 'workflow') {
       cy.get('#workflowTab-link')
         .click();
     }
