@@ -76,7 +76,7 @@ export class BioschemaService {
         results.publisher.email = tool.email;
       }
     }
-    if (tool.id && selectedVersion.id) {
+    if (tool.id && selectedVersion) {
       // set downloadUrl to the link that is opened upon clicking the 'Export as ZIP' button
       results.downloadUrl = `${this.containersService.configuration.basePath}/containers/${tool.id}/zip/${selectedVersion.id}`;
     }
@@ -108,7 +108,7 @@ export class BioschemaService {
         results.publisher.email = workflow.email;
       }
     }
-    if (workflow.id && selectedVersion.id) {
+    if (workflow.id && selectedVersion) {
       // set downloadUrl to the link that is opened upon clicking the 'Export as ZIP' button
       results.downloadUrl = `${this.workflowsService.configuration.basePath}/workflows/${workflow.id}/zip/${selectedVersion.id}`;
     }
