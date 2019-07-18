@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
+  aws-cli: circleci/aws-cli@0.1.13
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -100,49 +101,72 @@ jobs:
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
+    update_cloudfront:
+      working_directory: ~/repo
+      docker:
+        - image: circleci/python:2.7
+      - when:
+          condition: <<parameters.aws_bucket>>
+          steps:
+            - run:
+                name: Install jq
+                command: sudo apt install jq -y
+            - run:
+                name: Get and update config
+                command: scripts/updateCloudfront.sh $AWS_CLOUDFRONT_DISTRIBUTION_ID "${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)" $AWS_CLOUDFRONT_S3_ORIGIN_ID
+
+
 workflows:
   version: 2
   everything:
     jobs:
-      # Add the tags filter to all jobs so they will run before upload_to_s3
+#      # Add the tags filter to all jobs so they will run before upload_to_s3
       - lint_unit_test_coverage:
           filters:
             tags:
               only: /.*/
-      - integration_test_1:
-          filters:
-            tags:
-              only: /.*/
+# TODO Uncomment these
+#      - integration_test_1:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_unit_test_coverage
+#      - integration_test_2:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_unit_test_coverage
+#      - integration_test_3:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_unit_test_coverage
+#      - integration_test_4:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_unit_test_coverage
+#      # Upload builds for tags to s3. We can add branches later
+#      - upload_to_s3:
+#          requires:
+#            - integration_test_1
+#            - integration_test_2
+#            - integration_test_3
+#            - integration_test_4
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              only: develop
+      - update_cloudfront:
           requires:
-            - lint_unit_test_coverage
-      - integration_test_2:
+            # TODO: restore this line and delete next one
+#            upload_to_s3
           filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_unit_test_coverage
-      - integration_test_3:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_unit_test_coverage
-      - integration_test_4:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_unit_test_coverage
-      # Upload builds for tags to s3. We can add branches later
-      - upload_to_s3:
-          requires:
-            - integration_test_1
-            - integration_test_2
-            - integration_test_3
-            - integration_test_4
-          filters:
-            tags:
-              only: /.*/
             branches:
               # TODO: Change this to develop
               only: feature/SEAB-314/cd
