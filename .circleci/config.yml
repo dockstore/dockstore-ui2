@@ -118,7 +118,7 @@ jobs:
                 command: sudo apt install jq -y
             - run:
                 name: Get and update config
-                command: scripts/updateCloudfront.sh $AWS_CLOUDFRONT_DISTRIBUTION_ID "${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)" $AWS_CLOUDFRONT_S3_ORIGIN_ID
+                command: bash scripts/updateCloudfront.sh $AWS_CLOUDFRONT_DISTRIBUTION_ID "${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)" $AWS_CLOUDFRONT_S3_ORIGIN_ID
 
 
 workflows:
