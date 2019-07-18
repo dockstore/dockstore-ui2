@@ -16,7 +16,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnChanges } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -335,6 +335,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.gA4GHFilesService.updateFiles(this.tool.path, this.selectedVersion.name);
     }
     this.onTagChange(tag);
+    this.schema = this.bioschemaService.getToolSchema(this.tool, this.selectedVersion);
   }
 
   setEntryTab(tabName: string): void {

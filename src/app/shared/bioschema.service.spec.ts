@@ -86,7 +86,7 @@ describe('BioschemaService', () => {
     expect(result['@context']).toEqual('http://schema.org');
     expect(result['@type']).toEqual('SoftwareApplication');
     expect(result.operatingSystem).toEqual(['macOS', 'Linux', 'Windows']);
-    expect(result.softwareRequirements).toEqual('Docker');
+    expect(result.softwareRequirements).toEqual('Docker, CWL');
     expect(result.applicationCategory).toEqual('Bioinformatics');
     expect(result.description).toEqual('text');
     expect(result.audience).toEqual('Bioinformaticians');

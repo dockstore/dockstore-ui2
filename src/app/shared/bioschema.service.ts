@@ -54,7 +54,28 @@ export class BioschemaService {
       results.softwareVersion = selectedVersion.name;
     }
     if (entry.dbCreateDate) {
-      results.dateCreated = this.dateService.getISO8601FormatFromDate(entry.dbCreateDate);
+      results.dateCreated = this.dateService.getISO8601Format(entry.dbCreateDate);
+    }
+    const org = 'organization' in entry ? (entry as Workflow).organization : (entry as DockstoreTool).namespace;
+    if (entry.author) {
+      results.publisher = {
+        '@type': 'Person',
+        name: entry.author
+      };
+      if (entry.email) {
+        results.publisher.email = entry.email;
+      }
+    } else if (org) {
+      results.publisher = {
+        '@type': 'Organization',
+        name: org
+      };
+      if (entry.email) {
+        results.publisher.email = entry.email;
+      }
+    }
+    if (entry.descriptorType) {
+      results.softwareRequirements = results.softwareRequirements + ', ' + entry.descriptorType;
     }
     return results;
   }
@@ -65,16 +86,7 @@ export class BioschemaService {
       results.name = tool.name;
     }
     if (tool.lastUpdated) {
-      results.dateModified = this.dateService.getISO8601FormatFromDate(tool.lastUpdated);
-    }
-    if (tool.author) {
-      results.publisher = {
-        '@type': 'Person',
-        name: tool.author
-      };
-      if (tool.email) {
-        results.publisher.email = tool.email;
-      }
+      results.dateModified = this.dateService.getISO8601Format(tool.lastUpdated);
     }
     if (tool.id && selectedVersion) {
       // set downloadUrl to the link that is opened upon clicking the 'Export as ZIP' button
@@ -89,24 +101,7 @@ export class BioschemaService {
       results.name = workflow.workflowName;
     }
     if (workflow.last_modified) {
-      results.dateModified = this.dateService.getISO8601FormatFromNumber(workflow.last_modified);
-    }
-    if (workflow.author) {
-      results.publisher = {
-        '@type': 'Person',
-        name: workflow.author
-      };
-      if (workflow.email) {
-        results.publisher.email = workflow.email;
-      }
-    } else if (workflow.organization) {
-      results.publisher = {
-        '@type': 'Organization',
-        name: workflow.organization
-      };
-      if (workflow.email) {
-        results.publisher.email = workflow.email;
-      }
+      results.dateModified = this.dateService.getISO8601Format(workflow.last_modified);
     }
     if (workflow.id && selectedVersion) {
       // set downloadUrl to the link that is opened upon clicking the 'Export as ZIP' button
