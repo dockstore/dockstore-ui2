@@ -101,19 +101,19 @@ jobs:
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
-    update_cloudfront:
-      working_directory: ~/repo
-      docker:
-        - image: circleci/python:2.7
-      - when:
-          condition: <<parameters.aws_bucket>>
-          steps:
-            - run:
-                name: Install jq
-                command: sudo apt install jq -y
-            - run:
-                name: Get and update config
-                command: scripts/updateCloudfront.sh $AWS_CLOUDFRONT_DISTRIBUTION_ID "${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)" $AWS_CLOUDFRONT_S3_ORIGIN_ID
+  update_cloudfront:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python:2.7
+    - when:
+        condition: <<parameters.aws_bucket>>
+        steps:
+          - run:
+              name: Install jq
+              command: sudo apt install jq -y
+          - run:
+              name: Get and update config
+              command: scripts/updateCloudfront.sh $AWS_CLOUDFRONT_DISTRIBUTION_ID "${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)" $AWS_CLOUDFRONT_S3_ORIGIN_ID
 
 
 workflows:
