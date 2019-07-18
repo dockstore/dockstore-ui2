@@ -102,7 +102,7 @@
             class="mr-2"
             color="accent"
            (click)="requestDOIForWorkflowVersion()"
-           [disabled]="(isRefreshing$ | async) || selectedVersion.doiURL"
+           [disabled]="(isRefreshing$ | async) || selectedVersion?.doiURL"
            [matTooltip]="createdoimessage">Create DOI
           </button>
           <button
