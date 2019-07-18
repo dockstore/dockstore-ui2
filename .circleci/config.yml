@@ -105,6 +105,10 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/python:2.7
+    parameters:
+      aws_bucket:
+        type: string
+        default: "${AWS_BUCKET}"
     steps:
       - when:
           condition: <<parameters.aws_bucket>>
@@ -164,7 +168,7 @@ workflows:
 #            branches:
 #              only: develop
       - update_cloudfront:
-          requires:
+#          requires:
             # TODO: restore this line and delete next one
 #            upload_to_s3
           filters:
