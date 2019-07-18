@@ -92,9 +92,7 @@ describe('Tool, Workflow, and Organization starring', () => {
   }
 
   function starredPage(entity: string) {
-    cy
-      .get('#dropdown-main')
-      .click();
+    cy.get('[data-cy=dropdown-main]:visible').click();
     cy
       .get('#dropdown-starred')
       .click();

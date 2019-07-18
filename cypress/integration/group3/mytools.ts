@@ -55,7 +55,7 @@ describe('Dockstore my tools', () => {
     it('visit another page then come back', () => {
       cy.get('a#home-nav-button').click();
       cy.contains('Docker Tools and Workflows for the Sciences');
-      cy.get('[data-cy=dropdown-main]')
+      cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
       cy.get('[data-cy=my-tools-nav-button]').click();

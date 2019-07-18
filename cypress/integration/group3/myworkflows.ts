@@ -28,7 +28,7 @@ describe('Dockstore my workflows', () => {
       cy.visit('/my-workflows');
       cy.get('a#home-nav-button').click();
       cy.contains('Docker Tools and Workflows for the Sciences');
-      cy.get('[data-cy=dropdown-main]')
+      cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
       cy.get('[data-cy=my-workflows-nav-button]').click();
