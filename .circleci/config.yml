@@ -144,7 +144,8 @@ workflows:
             tags:
               only: /.*/
             branches:
-              only: develop
+              # TODO: Change this to develop
+              only: feature/SEAB-314/cd
 commands:
   install_container_dependencies:
     steps:
