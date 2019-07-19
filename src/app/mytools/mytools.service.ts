@@ -26,5 +26,5 @@ export class MytoolsService extends MyEntriesService {
 
   getMyEntries(userId: number, entryType: EntryType) {}
 
-  registerEntry() {}
+  registerEntry(entryType: EntryType) {}
 }

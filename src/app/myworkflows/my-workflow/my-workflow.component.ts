@@ -246,7 +246,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    this.myWorkflowsService.registerEntry();
+    this.myWorkflowsService.registerEntry(this.entryType);
   }
 
   refreshAllEntries(): void {

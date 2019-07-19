@@ -129,5 +129,5 @@ export abstract class MyEntriesService extends Base {
    * @memberof MyEntriesService
    */
   abstract getMyEntries(userId: number, entryType: EntryType): void;
-  abstract registerEntry(): void;
+  abstract registerEntry(entryType: EntryType): void;
 }
