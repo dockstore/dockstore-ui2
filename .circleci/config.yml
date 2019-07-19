@@ -134,51 +134,49 @@ workflows:
           filters:
             tags:
               only: /.*/
-# TODO Uncomment these
-#      - integration_test_1:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#      - integration_test_2:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#      - integration_test_3:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#      - integration_test_4:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#      # Upload builds for tags to s3. We can add branches later
-#      - upload_to_s3:
-#          requires:
-#            - integration_test_1
-#            - integration_test_2
-#            - integration_test_3
-#            - integration_test_4
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              only: develop
+      - integration_test_1:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      - integration_test_4:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      # Upload builds for tags to s3. We can add branches later
+      - upload_to_s3:
+          requires:
+            - integration_test_1
+            - integration_test_2
+            - integration_test_3
+            - integration_test_4
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              # Note to reviewers: will change to develop before merging, once build works off the branch
+              only: feature/SEAB-314/cd
       - update_cloudfront:
           requires:
-            # TODO: restore this line and delete next one
-#            - upload_to_s3
-            - lint_unit_test_coverage
+            - upload_to_s3
           filters:
             branches:
-              # TODO: Change this to develop
+              # Note to reviewers: will change to develop before merging, once build works off the branch
               only: feature/SEAB-314/cd
 commands:
   install_container_dependencies:
