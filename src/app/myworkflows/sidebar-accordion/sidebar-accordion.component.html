@@ -49,9 +49,14 @@
         </span>
       </div>
       <div *ngIf="(entryType$ | async) === EntryType.Service">
-        <div *ngIf="orgObj?.organization | githubNameToId | async as link">
-          <a mat-button target="_blank" rel="noopener noreferrer" [href]="link">Manage Organization on GitHub</a>
-        </div>
+        <button mat-icon-button matTooltip="Sync Organization with GitHub" (click)="syncOrganization(orgObj.organization)">
+          <mat-icon>sync</mat-icon>
+        </button>
+        <ng-container *ngIf="orgObj?.organization | githubNameToId | async as link">
+          <a mat-icon-button target="_blank" rel="noopener noreferrer" [href]="link" matTooltip="Manage Organization on GitHub"
+            ><mat-icon>add</mat-icon></a
+          >
+        </ng-container>
       </div>
     </mat-action-row>
   </mat-expansion-panel>
