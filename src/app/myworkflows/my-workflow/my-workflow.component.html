@@ -88,13 +88,15 @@
               [refreshMessage]="isRefreshing$ | async"
             ></app-sidebar-accordion>
             <br />
-            <div class="clearfix sidebar-header">
-              <h3 class="sidebar-header">Shared with me</h3>
-            </div>
-            <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
-              You have no {{ entryType$ | async }}s shared with you
-            </p>
-            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+            <ng-container *ngIf="entryType !== EntryType.Service">
+              <div class="clearfix sidebar-header">
+                <h3 class="sidebar-header">Shared with me</h3>
+              </div>
+              <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
+                You have no {{ entryType$ | async }}s shared with you
+              </p>
+              <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+            </ng-container>
           </div>
         </div>
       </mat-sidenav>
