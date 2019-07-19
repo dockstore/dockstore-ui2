@@ -182,7 +182,7 @@
           <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
-              No description associated with this workflow. See
+              No description associated with this {{ entryType$ | async }}. See
               <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
                 <a href="https://docs.dockstore.org/docs/publisher-tutorials/best-practices/#authorship-metadata">CWL Best Practices</a> and
                 <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description
@@ -196,6 +196,9 @@
                 <a href="https://docs.dockstore.org/docs/publisher-tutorials/nfl-best-practices/#authorship-metadata"
                   >Nextflow Best Practices</a
                 >.
+              </span>
+              <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.SERVICE">
+                a doctor.
               </span>
             </span>
           </div>
