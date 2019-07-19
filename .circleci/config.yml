@@ -132,7 +132,7 @@ jobs:
                 command: sudo pip install awscli --upgrade
             - run:
                 name: Invalidate Cloudfront
-                command: bash -c 'aws clouldfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
+                command: bash -c 'aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
 workflows:
   version: 2
