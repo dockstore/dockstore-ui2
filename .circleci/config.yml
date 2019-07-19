@@ -113,6 +113,8 @@ jobs:
       - when:
           condition: <<parameters.aws_bucket>>
           steps:
+            - attach_workspace:
+                at: .
             - run:
                 name: Install jq
                 command: sudo apt install jq -y
