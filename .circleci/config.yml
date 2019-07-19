@@ -173,9 +173,10 @@ workflows:
 #            branches:
 #              only: develop
       - update_cloudfront:
-#          requires:
+          requires:
             # TODO: restore this line and delete next one
-#            upload_to_s3
+#            - upload_to_s3
+            - lint_unit_test_coverage
           filters:
             branches:
               # TODO: Change this to develop
