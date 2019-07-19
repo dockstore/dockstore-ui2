@@ -89,6 +89,7 @@ jobs:
           steps:
             - attach_workspace:
                 at: .
+            # Copy to a versioned folder
             - aws-s3/copy:
                 from: dist
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)'
@@ -98,6 +99,18 @@ jobs:
             - aws-s3/copy:
                 from: dist/index.html
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
+                arguments: |
+                  --cache-control max-age=0
+            # Copy to a "live" develop folder
+            - aws-s3/copy:
+                from: dist
+                to: 's3://${AWS_BUCKET}/develop/'
+                arguments: |
+                  --recursive \
+                  --exclude index.html
+            - aws-s3/copy:
+                from: dist/index.html
+                to: 's3://${AWS_BUCKET}/develop/'
                 arguments: |
                   --cache-control max-age=0
   update_cloudfront:
@@ -115,15 +128,11 @@ jobs:
             - attach_workspace:
                 at: .
             - run:
-                name: Install jq
-                command: sudo apt install jq -y
-            - run:
                 name: Install AWS CLI
                 command: sudo pip install awscli --upgrade
             - run:
-                name: Get and update config
-                command: bash scripts/updateCloudfront.sh $AWS_CLOUDFRONT_DISTRIBUTION_ID "${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)" $AWS_CLOUDFRONT_S3_ORIGIN_ID
-
+                name: Invalidate Cloudfront
+                command: bash -c 'aws clouldfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
 workflows:
   version: 2
