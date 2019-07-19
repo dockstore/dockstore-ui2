@@ -117,7 +117,7 @@
             *ngIf="!isHosted() && canWrite"
             matTooltip="Sync the workflow with the source control repository"
           >
-            Refresh
+            {{ entryType === EntryType.Service ? 'Sync' : 'Refresh' }}
           </button>
         </div>
       </h3>
