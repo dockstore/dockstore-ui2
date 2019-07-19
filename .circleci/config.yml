@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
-  aws-cli: circleci/aws-cli@0.1.13
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -119,8 +118,8 @@ jobs:
                 name: Install jq
                 command: sudo apt install jq -y
             - run:
-                name: debug
-                command: bash -c pwd && ls
+                name: Install AWS CLI
+                command: sudo pip install awscli --upgrade
             - run:
                 name: Get and update config
                 command: bash scripts/updateCloudfront.sh $AWS_CLOUDFRONT_DISTRIBUTION_ID "${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)" $AWS_CLOUDFRONT_S3_ORIGIN_ID
