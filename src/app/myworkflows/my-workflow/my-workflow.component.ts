@@ -252,6 +252,10 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   refreshAllEntries(): void {
     this.refreshService.refreshAllWorkflows(this.user.id);
   }
+
+  sync(): void {
+    // Go to a service that performs Syncwith GitHub operation
+  }
 }
 export interface OrgWorkflowObject {
   sourceControl: string;
