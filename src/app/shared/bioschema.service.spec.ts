@@ -66,16 +66,15 @@ describe('BioschemaService', () => {
     const date: Date = new Date('2017-06-28T18:48:18.000Z');
     const workflow: Workflow = {
       // Attributes used in the method being tested
-      author: 'me',
       description: 'text',
-      email: 'me@ucsc.edu',
+      email: 'us@ucsc.edu',
       id: 1,
       last_modified: date.getTime(),
       workflowName: 'workflow',
       // Attributes not being tested, but required for a Workflow object
       gitUrl: '',
       mode: Workflow.ModeEnum.HOSTED,
-      organization: '',
+      organization: 'us',
       repository: '',
       sourceControl: '',
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
@@ -94,7 +93,7 @@ describe('BioschemaService', () => {
     expect(result.applicationSubCategory).toEqual('Workflow');
     expect(result.name).toEqual('workflow');
     expect(result.dateModified).toEqual('2017-06-28T18:48:18.000Z');
-    expect(result.publisher).toEqual({ '@type': 'Person', name: 'me', email: 'me@ucsc.edu' });
+    expect(result.publisher).toEqual({ '@type': 'Organization', name: 'us', email: 'us@ucsc.edu' });
     expect(result.downloadUrl).toContain('/workflows/1/zip/2');
   }));
 });

@@ -56,19 +56,10 @@ export class BioschemaService {
     if (entry.dbCreateDate) {
       results.dateCreated = this.dateService.getISO8601Format(entry.dbCreateDate);
     }
-    const org = 'organization' in entry ? (entry as Workflow).organization : (entry as DockstoreTool).namespace;
     if (entry.author) {
       results.publisher = {
         '@type': 'Person',
         name: entry.author
-      };
-      if (entry.email) {
-        results.publisher.email = entry.email;
-      }
-    } else if (org) {
-      results.publisher = {
-        '@type': 'Organization',
-        name: org
       };
       if (entry.email) {
         results.publisher.email = entry.email;
@@ -85,6 +76,15 @@ export class BioschemaService {
     if (tool.name) {
       results.name = tool.name;
     }
+    if (tool.namespace && !results.publisher) {
+      results.publisher = {
+        '@type': 'Organization',
+        name: tool.namespace
+      };
+      if (tool.email) {
+        results.publisher.email = tool.email;
+      }
+    }
     if (tool.lastUpdated) {
       results.dateModified = this.dateService.getISO8601Format(tool.lastUpdated);
     }
@@ -99,6 +99,15 @@ export class BioschemaService {
     results.applicationSubCategory = 'Workflow';
     if (workflow.workflowName) {
       results.name = workflow.workflowName;
+    }
+    if (workflow.organization && !results.publisher) {
+      results.publisher = {
+        '@type': 'Organization',
+        name: workflow.organization
+      };
+      if (workflow.email) {
+        results.publisher.email = workflow.email;
+      }
     }
     if (workflow.last_modified) {
       results.dateModified = this.dateService.getISO8601Format(workflow.last_modified);
