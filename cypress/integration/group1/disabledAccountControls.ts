@@ -20,7 +20,7 @@ describe('Go to disabled Dockstore Account Controls', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('');
-    cy.get('#dropdown-main').click();
+    cy.get('[data-cy=dropdown-main]:visible').click();
     cy.get('#dropdown-accounts').click();
     cy.contains('Dockstore Account Controls').click();
   });

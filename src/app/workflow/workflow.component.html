@@ -319,6 +319,7 @@
             <mat-tab id="dagTab" label="DAG">
               <ng-template matTabContent>
                 <app-dag
+                  *ngIf="selectedVersion"
                   [id]="workflow?.id"
                   [selectedVersion]="selectedVersion"
                   [canRead]="canRead"
