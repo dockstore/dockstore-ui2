@@ -28,6 +28,7 @@ export class SidebarAccordionComponent implements OnInit {
   }
 
   syncOrganization(organization: Organization) {
-    // Go to a service and then do something
+    // Placeholder
+    // Go to endpoint that performs the sync organization with GitHub operation
   }
 }

@@ -254,7 +254,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   sync(): void {
-    // Go to a service that performs Syncwith GitHub operation
+    // Placeholder
+    // Go to an endpoint that performs the sync with GitHub operation
   }
 }
 export interface OrgWorkflowObject {
