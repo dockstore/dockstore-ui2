@@ -26,6 +26,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
+import { BioschemaService } from '../shared/bioschema.service';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -90,6 +91,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
+    bioschemaService: BioschemaService,
     private refreshService: RefreshService,
     private workflowsService: WorkflowsService,
     trackLoginService: TrackLoginService,
@@ -114,6 +116,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       providerService,
       router,
       dateService,
+      bioschemaService,
       urlResolverService,
       activatedRoute,
       location,
@@ -193,11 +196,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.resetWorkflowEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
-    this.schema = {
-      '@type': 'ListItem',
-      position: this.workflow.id,
-      url: this.shareURL
-    };
+    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
   }
 
   public getDefaultVersionName(): string {
@@ -430,6 +429,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
+    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
   }
 
   setEntryTab(tabName: string): void {

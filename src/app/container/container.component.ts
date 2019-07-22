@@ -47,6 +47,7 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
+import { BioschemaService } from '../shared/bioschema.service';
 
 @Component({
   selector: 'app-container',
@@ -77,6 +78,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
+    bioschemaService: BioschemaService,
     urlResolverService: UrlResolverService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
@@ -105,6 +107,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       providerService,
       router,
       dateService,
+      bioschemaService,
       urlResolverService,
       activatedRoute,
       location,
@@ -162,11 +165,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     this.resetContainerEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
-    this.schema = {
-      '@type': 'ListItem',
-      position: this.tool.id,
-      url: this.shareURL
-    };
+    this.schema = this.bioschemaService.getToolSchema(this.tool, this.selectedVersion);
   }
 
   public subscriptions(): void {
@@ -336,6 +335,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.gA4GHFilesService.updateFiles(this.tool.path, this.selectedVersion.name);
     }
     this.onTagChange(tag);
+    this.schema = this.bioschemaService.getToolSchema(this.tool, this.selectedVersion);
   }
 
   setEntryTab(tabName: string): void {

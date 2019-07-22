@@ -40,6 +40,7 @@ import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
+import { BioschemaService } from '../bioschema.service';
 
 @NgModule({
   imports: [
@@ -89,6 +90,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     UrlDeconstructPipe,
     RouterModule
   ],
-  entryComponents: [RegisterCheckerWorkflowComponent]
+  entryComponents: [RegisterCheckerWorkflowComponent],
+  providers: [BioschemaService]
 })
 export class EntryModule {}
