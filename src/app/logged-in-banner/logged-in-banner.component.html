@@ -1,0 +1,12 @@
+<div *ngIf="user$ | async" class="flex-container">
+  <div class="flex-title-container">
+    <h1 class="title">Create, Share, Use</h1>
+    <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
+    <input id="searchBar" type="text" placeholder="Search..." class="fully-rounded landing-search" />
+  </div>
+  <div class="flex-buttons-container">
+    <button mat-flat-button color="accent" routerLink="/about" class="stacked-button">About</button>
+    <button mat-flat-button color="accent" routerLink="/quick-start" class="stacked-button">Quickstart</button>
+    <button mat-flat-button color="accent" routerLink="/accounts" class="stacked-button">Account Settings</button>
+  </div>
+</div>

@@ -96,6 +96,7 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { LoggedInBannerComponent } from './logged-in-banner/logged-in-banner.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -123,6 +124,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     HomeComponent,
     FooterComponent,
     LoginComponent,
+    LoggedInBannerComponent,
     OnboardingComponent,
     QuickStartComponent,
     AccountsComponent,

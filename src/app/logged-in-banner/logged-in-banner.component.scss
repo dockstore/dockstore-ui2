@@ -1,0 +1,61 @@
+.flex-title-container {
+  -webkit-flex-flow: row wrap;
+  flex-direction: column;
+  justify-content: center;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  display: inline-flex;
+}
+
+.flex-container {
+  clear: both;
+  -webkit-flex-flow: row wrap;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  display: inline-flex;
+
+  width: 100vw;
+  background: url('../../assets/images/dockstore/ship.png') no-repeat, url('../../assets/images/dockstore/truck.png') no-repeat, #21335b;
+  background-position: 45% 100%, 75% 100%;
+}
+
+.stacked-button {
+  margin: 0.25rem 0rem;
+  font-size: 16px;
+}
+
+.flex-buttons-container {
+  clear: both;
+  -webkit-flex-flow: row wrap;
+  flex-direction: column;
+  justify-content: center;
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  display: inline-flex;
+
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.landing-search {
+  width: 60%;
+  max-width: 600px;
+  padding-left: 30px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border: none;
+  line-height: 2em;
+  background: white url(../../../images/search-button.png) left center no-repeat;
+  background-position: 5px;
+  outline: none;
+  color: black;
+}
