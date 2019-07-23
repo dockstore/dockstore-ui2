@@ -14,7 +14,6 @@
  *     limitations under the License.
  */
 import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -22,7 +21,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { AuthService } from 'ng2-ui-auth';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
@@ -112,21 +111,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       this.tool = tool;
     });
 
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
-      if (user) {
-        this.user = user;
-        this.alertService.start('Fetching tools');
-        this.usersService.userContainers(user.id).subscribe(
-          tools => {
-            this.containerService.setTools(tools);
-            this.alertService.simpleSuccess();
-          },
-          (error: HttpErrorResponse) => {
-            this.alertService.detailedError(error);
-          }
-        );
-      }
-    });
+    this.getMyEntries();
 
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
       if (tools) {
@@ -143,6 +128,16 @@ export class MyToolComponent extends MyEntry implements OnInit {
     });
 
     this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
+  }
+
+  private getMyEntries() {
+    combineLatest(this.userQuery.user$, this.sessionQuery.entryType$)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([user, entryType]) => {
+        if (user && entryType) {
+          this.mytoolsService.getMyEntries(user.id, entryType);
+        }
+      });
   }
 
   protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {

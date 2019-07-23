@@ -18,9 +18,9 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Dockstore } from '../dockstore.model';
 import { EntryType } from '../enum/entry-type';
 import { SessionState, SessionStore } from './session.store';
-import { Dockstore } from '../dockstore.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,7 @@ export class SessionQuery extends Query<SessionState> {
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
     map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(entryType) : null))
   );
+  refreshingMyEntries$: Observable<boolean> = this.select(state => state.refreshingMyEntries);
   constructor(protected store: SessionStore) {
     super(store);
   }

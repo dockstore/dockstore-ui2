@@ -40,4 +40,13 @@ export class SessionService {
       };
     });
   }
+
+  setRefreshingMyEntries(refreshing: boolean): void {
+    this.sessionStore.setState(state => {
+      return {
+        ...state,
+        refreshingMyEntries: refreshing
+      };
+    });
+  }
 }

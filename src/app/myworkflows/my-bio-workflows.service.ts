@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
+import { SessionService } from 'app/shared/session/session.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { forkJoin, of as observableOf } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -17,7 +18,8 @@ export class MyBioWorkflowsService {
     private workflowService: WorkflowService,
     private location: Location,
     private usersService: UsersService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private sessionService: SessionService
   ) {}
   selectEntry(id: number, includesValidation: string) {
     this.workflowsService.getWorkflow(id, includesValidation).subscribe((result: Workflow) => {
@@ -28,6 +30,7 @@ export class MyBioWorkflowsService {
 
   getMyBioWorkflows(id: number): void {
     this.alertService.start('Fetching workflows');
+    this.sessionService.setRefreshingMyEntries(true);
     forkJoin(
       this.usersService.userWorkflows(id).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -42,7 +45,12 @@ export class MyBioWorkflowsService {
         })
       )
     )
-      .pipe(finalize(() => this.alertService.simpleSuccess()))
+      .pipe(
+        finalize(() => {
+          this.alertService.simpleSuccess();
+          this.sessionService.setRefreshingMyEntries(false);
+        })
+      )
       .subscribe(
         ([workflows, sharedWorkflows]) => {
           this.workflowService.setWorkflows(workflows);

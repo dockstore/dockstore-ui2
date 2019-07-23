@@ -34,6 +34,7 @@ import { UrlResolverService } from './url-resolver.service';
 @Injectable()
 export abstract class MyEntry extends Base implements OnDestroy {
   abstract readonly pageName: string;
+  protected refreshingMyEntries$: Observable<boolean>;
   oneAtATime = true;
   user: any;
   public hasGitHubToken = true;
@@ -55,6 +56,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
     super();
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.myEntryPageTitle$ = this.sessionQuery.myEntryPageTitle$;
+    this.refreshingMyEntries$ = this.sessionQuery.refreshingMyEntries$;
   }
 
   link() {

@@ -20,11 +20,13 @@ import { EntryType } from '../enum/entry-type';
 export interface SessionState {
   isPublic: boolean;
   entryType: EntryType;
+  refreshingMyEntries: boolean;
 }
 export function createInitialState(): SessionState {
   return {
     isPublic: true,
-    entryType: null
+    entryType: null,
+    refreshingMyEntries: true
   };
 }
 /**
