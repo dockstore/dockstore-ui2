@@ -84,6 +84,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   publishMessage = 'Publish the workflow to make it visible to the public';
   unpublishMessage = 'Unpublish the workflow to remove it from the public';
   viewPublicMessage = 'Go to the public page for this workflow';
+  createdoimessage = 'Create a digital object identifier (DOI) for this version';
   pubUnpubMessage: string;
   public WorkflowModel = Workflow;
   @Input() user;
@@ -349,6 +350,18 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         }
       );
     }
+  }
+
+  requestDOIForWorkflowVersion() {
+    const message = 'Creating DOI';
+    this.alertService.start(message);
+    this.workflowsService.requestDOIForWorkflowVersion(this.workflow.id, this.selectedVersion.id).subscribe(
+        (response: Array<WorkflowVersion>) => {
+          this.selectedVersion = response.find((version) => version.id === this.selectedVersion.id);
+          this.alertService.detailedSuccess();
+        }, (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        });
   }
 
   isValid() {
