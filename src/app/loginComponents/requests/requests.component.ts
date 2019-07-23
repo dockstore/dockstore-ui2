@@ -73,12 +73,22 @@ export class RequestsComponent implements OnInit {
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.userId$ = this.userQuery.userId$;
+    let isAdminOrCurator = false;
 
     this.isAdmin$.subscribe(next => {
       if (next) {
-        this.requestsService.updateCuratorOrganizations(); // requires admin permissions
+        isAdminOrCurator = true;
+      } else {
+        this.isCurator$.subscribe(another => {
+          if (another) {
+            isAdminOrCurator = true;
+          }
+        });
       }
     });
+    if (isAdminOrCurator) {
+      this.requestsService.updateCuratorOrganizations();
+    } // requires admin permissions
   }
 
   openDialog(name: string, id: number, approve: boolean): void {
