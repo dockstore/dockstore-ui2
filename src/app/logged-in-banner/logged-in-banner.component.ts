@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../shared/swagger';
 import { UserQuery } from '../shared/user/user.query';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-logged-in-banner',
