@@ -13,9 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort, resetDB } from '../../support/commands';
+import { setTokenUserViewPort } from '../../support/commands';
 describe('Verify Title Tags', () => {
-  resetDB();
   setTokenUserViewPort();
 
   describe('Dropdown links', () => {

@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { getTab, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { getTab, goToTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
-  resetDB();
   setTokenUserViewPort();
   it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl');
@@ -41,7 +40,6 @@ describe('Variations of URL', () => {
 });
 
 describe('Dockstore Workflow Details', () => {
-  resetDB();
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/workflows/github.com/A/l');
