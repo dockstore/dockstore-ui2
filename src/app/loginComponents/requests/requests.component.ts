@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { RequestsService } from '../state/requests.service';
 import { RequestsQuery } from '../state/requests.query';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { Organization, OrganizationUser } from '../../shared/swagger';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserQuery } from '../../shared/user/user.query';
@@ -78,17 +78,24 @@ export class RequestsComponent extends Base implements OnInit {
     this.isCurator$ = this.userQuery.isCurator$;
     this.userId$ = this.userQuery.userId$;
 
-    this.isAdmin$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdmin => {
-      if (isAdmin) {
-        this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
-      } else {
-        this.isCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isCurator => {
-          if (isCurator) {
-            this.requestsService.updateCuratorOrganizations();
-          }
-        });
-      }
-    });
+    // this.isAdmin$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdmin => {
+    //   if (isAdmin) {
+    //     this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
+    //   } else {
+    //     this.isCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isCurator => {
+    //       if (isCurator) {
+    //         this.requestsService.updateCuratorOrganizations();
+    //       }
+    //     });
+    //   }
+    // });
+    combineLatest(this.isAdmin$, this.isCurator$)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([isAdmin, isCurator]: [boolean, boolean]) => {
+        if (isAdmin || isCurator) {
+          this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
+        }
+      });
   }
 
   openDialog(name: string, id: number, approve: boolean): void {
