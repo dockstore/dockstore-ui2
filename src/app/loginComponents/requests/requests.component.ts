@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { Organization, OrganizationUser } from '../../shared/swagger';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserQuery } from '../../shared/user/user.query';
+import { Base } from '../../shared/base';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'organization-request-confirm-dialog',
@@ -44,7 +46,7 @@ export interface DialogData {
   templateUrl: './requests.component.html',
   styleUrls: ['./requests.component.scss']
 })
-export class RequestsComponent implements OnInit {
+export class RequestsComponent extends Base implements OnInit {
   public allPendingOrganizations$: Observable<Array<Organization>>;
   public myOrganizationInvites$: Observable<Array<OrganizationUser>>;
   public myPendingOrganizationRequests$: Observable<Array<OrganizationUser>>;
@@ -59,7 +61,9 @@ export class RequestsComponent implements OnInit {
     private requestsService: RequestsService,
     public dialog: MatDialog,
     private userQuery: UserQuery
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.isLoading$ = this.requestsQuery.isLoading$;
@@ -73,22 +77,18 @@ export class RequestsComponent implements OnInit {
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.userId$ = this.userQuery.userId$;
-    let isAdminOrCurator = false;
 
-    this.isAdmin$.subscribe(next => {
-      if (next) {
-        isAdminOrCurator = true;
+    this.isAdmin$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdmin => {
+      if (isAdmin) {
+        this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
       } else {
-        this.isCurator$.subscribe(another => {
-          if (another) {
-            isAdminOrCurator = true;
+        this.isCurator$.subscribe(isCurator => {
+          if (isCurator) {
+            this.requestsService.updateCuratorOrganizations();
           }
         });
       }
     });
-    if (isAdminOrCurator) {
-      this.requestsService.updateCuratorOrganizations();
-    } // requires admin permissions
   }
 
   openDialog(name: string, id: number, approve: boolean): void {
