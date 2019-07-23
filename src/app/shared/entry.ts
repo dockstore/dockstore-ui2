@@ -195,9 +195,9 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @memberof Entry
    */
   public selectVersion(versions: Array<WorkflowVersion | Tag>, urlVersion: string, defaultVersion: string): WorkflowVersion | Tag | null {
-    if (!versions || versions.length === 0) {
-      return null;
-    }
+    // if (!versions || versions.length === 0) {
+    //   return null;
+    // }
     let foundVersion: WorkflowVersion | Tag;
     if (urlVersion) {
       foundVersion = versions.find((version: WorkflowVersion | Tag) => version.name === urlVersion);
@@ -216,11 +216,17 @@ export abstract class Entry implements OnInit, OnDestroy {
   }
 
   selectTag(versions: Array<Tag>, urlVersion: string, defaultVersion: string): Tag {
+    if (!versions || versions.length === 0) {
+      return null;
+    }
     const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
     return selectedTag || versions.reduce((a, b) => (b.last_built > a.last_built ? b : a));
   }
 
   selectWorkflowVersion(versions: Array<WorkflowVersion>, urlVersion: string, defaultVersion: string) {
+    if (!versions || versions.length === 0) {
+      return null;
+    }
     const selectedWorkflowVersion = this.selectVersion(versions, urlVersion, defaultVersion);
     return selectedWorkflowVersion || versions.reduce((a, b) => (b.last_modified > a.last_modified ? b : a));
   }
