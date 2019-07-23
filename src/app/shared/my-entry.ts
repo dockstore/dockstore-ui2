@@ -27,14 +27,16 @@ import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
+import { MyEntriesQuery } from './state/my-entries.query';
 import { TokenQuery } from './state/token.query';
 import { Configuration, DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
+import { UserQuery } from './user/user.query';
 
 @Injectable()
 export abstract class MyEntry extends Base implements OnDestroy {
   abstract readonly pageName: string;
-  protected refreshingMyEntries$: Observable<boolean>;
+  public refreshingMyEntries$: Observable<boolean>;
   oneAtATime = true;
   user: any;
   public hasGitHubToken = true;
@@ -51,12 +53,15 @@ export abstract class MyEntry extends Base implements OnDestroy {
     protected urlResolverService: UrlResolverService,
     protected sessionQuery: SessionQuery,
     protected sessionService: SessionService,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected myEntriesQuery: MyEntriesQuery,
+    protected userQuery: UserQuery
   ) {
     super();
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.myEntryPageTitle$ = this.sessionQuery.myEntryPageTitle$;
-    this.refreshingMyEntries$ = this.sessionQuery.refreshingMyEntries$;
+    this.refreshingMyEntries$ = this.myEntriesQuery.refreshingMyEntries$;
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
   }
 
   link() {

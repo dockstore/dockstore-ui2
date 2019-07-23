@@ -20,6 +20,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
+import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -28,17 +29,14 @@ import { RegisterToolService } from '../../container/register-tool/register-tool
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { AlertService } from '../../shared/alert/state/alert.service';
 import { includesValidation } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
-import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
-import { UsersService } from '../../shared/swagger/api/users.service';
 import { Configuration } from '../../shared/swagger/configuration';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
@@ -49,7 +47,7 @@ import { MytoolsService } from '../mytools.service';
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  providers: [MytoolsService, DockstoreService]
+  providers: [MytoolsService]
 })
 export class MyToolComponent extends MyEntry implements OnInit {
   tools: any;
@@ -61,8 +59,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
-    private usersService: UsersService,
-    private userQuery: UserQuery,
+    protected userQuery: UserQuery,
     protected authService: AuthService,
     protected activatedRoute: ActivatedRoute,
     private containerService: ContainerService,
@@ -70,7 +67,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private location: Location,
     private refreshService: RefreshService,
     protected accountsService: AccountsService,
-    private alertService: AlertService,
     private registerToolService: RegisterToolService,
     protected tokenQuery: TokenQuery,
     protected sessionService: SessionService,
@@ -79,9 +75,21 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private containersService: ContainersService,
     private toolQuery: ToolQuery,
     private alertQuery: AlertQuery,
-    protected sessionQuery: SessionQuery
+    protected sessionQuery: SessionQuery,
+    protected myEntriesQuery: MyEntriesQuery
   ) {
-    super(accountsService, authService, configuration, tokenQuery, urlResolverService, sessionQuery, sessionService, activatedRoute);
+    super(
+      accountsService,
+      authService,
+      configuration,
+      tokenQuery,
+      urlResolverService,
+      sessionQuery,
+      sessionService,
+      activatedRoute,
+      myEntriesQuery,
+      userQuery
+    );
   }
 
   ngOnInit() {

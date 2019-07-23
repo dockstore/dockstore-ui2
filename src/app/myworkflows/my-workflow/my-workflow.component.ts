@@ -20,6 +20,7 @@ import { NavigationEnd, Router } from '@angular/router/';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
+import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { TokenService } from 'app/shared/state/token.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
@@ -29,10 +30,8 @@ import { filter, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { myBioWorkflowsURLSegment, myServicesURLSegment } from '../../shared/constants';
-import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
-import { ProviderService } from '../../shared/provider.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -63,8 +62,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
 @Component({
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
-  styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  providers: [ProviderService, DockstoreService]
+  styleUrls: ['../../shared/styles/my-entry.component.scss']
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Service | BioWorkflow;
@@ -83,7 +81,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   constructor(
     protected configuration: Configuration,
     protected activatedRoute: ActivatedRoute,
-    private userQuery: UserQuery,
+    protected userQuery: UserQuery,
     private workflowService: WorkflowService,
     protected authService: AuthService,
     public dialog: MatDialog,
@@ -98,9 +96,21 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     private tokenService: TokenService,
     protected sessionService: SessionService,
     protected sessionQuery: SessionQuery,
-    private myWorkflowsService: MyWorkflowsService
+    private myWorkflowsService: MyWorkflowsService,
+    protected myEntriesQuery: MyEntriesQuery
   ) {
-    super(accountsService, authService, configuration, tokenQuery, urlResolverService, sessionQuery, sessionService, activatedRoute);
+    super(
+      accountsService,
+      authService,
+      configuration,
+      tokenQuery,
+      urlResolverService,
+      sessionQuery,
+      sessionService,
+      activatedRoute,
+      myEntriesQuery,
+      userQuery
+    );
     this.entryType = this.sessionQuery.getSnapshot().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
   }
@@ -111,7 +121,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.tokenQuery.gitHubToken$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
@@ -143,7 +152,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     combineLatest(this.workflowService.workflows$, this.workflowService.sharedWorkflows$)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
-        ([workflows, sharedWorkflows]) => {
+        ([workflows, sharedWorkflows]: [Workflow[], Workflow[]]) => {
           if (workflows && sharedWorkflows) {
             this.workflows = workflows;
             const sortedWorkflows = this.myWorkflowsService.sortGroupEntries(workflows, this.user.username, EntryType.BioWorkflow);

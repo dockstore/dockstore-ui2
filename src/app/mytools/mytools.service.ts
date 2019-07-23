@@ -19,7 +19,7 @@ import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { SessionService } from 'app/shared/session/session.service';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { UsersService } from 'app/shared/swagger';
 import { finalize } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
@@ -28,9 +28,9 @@ import { MyEntriesService } from './../shared/myentries.service';
 export class MytoolsService extends MyEntriesService {
   constructor(
     private alertService: AlertService,
-    private sessionService: SessionService,
     private usersService: UsersService,
-    private containerService: ContainerService
+    private containerService: ContainerService,
+    private myEntriesService: MyEntriesStateService
   ) {
     super();
   }
@@ -40,10 +40,10 @@ export class MytoolsService extends MyEntriesService {
 
   getMyEntries(userId: number, entryType: EntryType) {
     this.alertService.start('Fetching tools');
-    this.sessionService.setRefreshingMyEntries(true);
+    this.myEntriesService.setRefreshingMyEntries(true);
     this.usersService
       .userContainers(userId)
-      .pipe(finalize(() => this.sessionService.setRefreshingMyEntries(false)))
+      .pipe(finalize(() => this.myEntriesService.setRefreshingMyEntries(false)))
       .subscribe(
         tools => {
           this.containerService.setTools(tools);

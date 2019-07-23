@@ -34,7 +34,6 @@ export class SessionQuery extends Query<SessionState> {
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
     map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(entryType) : null))
   );
-  refreshingMyEntries$: Observable<boolean> = this.select(state => state.refreshingMyEntries);
   constructor(protected store: SessionStore) {
     super(store);
   }

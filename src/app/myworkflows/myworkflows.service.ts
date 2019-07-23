@@ -32,7 +32,6 @@ import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 
 @Injectable()
 export class MyWorkflowsService extends MyEntriesService {
-  public refreshingMyEntries = true;
   constructor(
     protected userQuery: UserQuery,
     protected alertService: AlertService,

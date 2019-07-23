@@ -15,10 +15,11 @@
  */
 import { Injectable } from '@angular/core';
 import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-
 import { Tag, WorkflowVersion } from './swagger';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DockstoreService {
   constructor() {}
 

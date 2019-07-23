@@ -14,8 +14,13 @@
  *    limitations under the License.
  */
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
+import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
+import { ContainerStubService } from 'app/test/service-stubs';
 import { DockstoreTool } from '../shared/swagger';
 import { MytoolsService } from './mytools.service';
 
@@ -147,7 +152,8 @@ describe('MytoolsService', () => {
   const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MytoolsService]
+      providers: [MytoolsService, { provide: ContainerService, useClass: ContainerStubService }],
+      imports: [CustomMaterialModule, HttpClientTestingModule, MyEntriesModule]
     });
   });
   it('should ...', inject([MytoolsService], (service: MytoolsService) => {

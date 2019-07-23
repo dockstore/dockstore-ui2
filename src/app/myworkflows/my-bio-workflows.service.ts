@@ -2,16 +2,14 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { SessionService } from 'app/shared/session/session.service';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { forkJoin, of as observableOf } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { WorkflowService } from '../shared/state/workflow.service';
 import { UsersService, Workflow, WorkflowsService } from '../shared/swagger';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MyBioWorkflowsService {
   constructor(
     private workflowsService: WorkflowsService,
@@ -19,7 +17,7 @@ export class MyBioWorkflowsService {
     private location: Location,
     private usersService: UsersService,
     private alertService: AlertService,
-    private sessionService: SessionService
+    private myEntryService: MyEntriesStateService
   ) {}
   selectEntry(id: number, includesValidation: string) {
     this.workflowsService.getWorkflow(id, includesValidation).subscribe((result: Workflow) => {
@@ -30,7 +28,7 @@ export class MyBioWorkflowsService {
 
   getMyBioWorkflows(id: number): void {
     this.alertService.start('Fetching workflows');
-    this.sessionService.setRefreshingMyEntries(true);
+    this.myEntryService.setRefreshingMyEntries(true);
     forkJoin(
       this.usersService.userWorkflows(id).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -48,7 +46,7 @@ export class MyBioWorkflowsService {
       .pipe(
         finalize(() => {
           this.alertService.simpleSuccess();
-          this.sessionService.setRefreshingMyEntries(false);
+          this.myEntryService.setRefreshingMyEntries(false);
         })
       )
       .subscribe(
