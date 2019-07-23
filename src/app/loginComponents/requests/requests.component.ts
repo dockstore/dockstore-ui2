@@ -82,7 +82,7 @@ export class RequestsComponent extends Base implements OnInit {
       if (isAdmin) {
         this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
       } else {
-        this.isCurator$.subscribe(isCurator => {
+        this.isCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isCurator => {
           if (isCurator) {
             this.requestsService.updateCuratorOrganizations();
           }
