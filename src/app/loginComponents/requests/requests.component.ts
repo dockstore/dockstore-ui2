@@ -50,7 +50,6 @@ export class RequestsComponent implements OnInit {
   public myPendingOrganizationRequests$: Observable<Array<OrganizationUser>>;
   public myRejectedOrganizationRequests$: Observable<Array<OrganizationUser>>;
   isLoading$: Observable<boolean>;
-  currentOrgId: number;
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
   userId$: Observable<number>;
@@ -64,7 +63,6 @@ export class RequestsComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading$ = this.requestsQuery.isLoading$;
-    this.requestsService.updateCuratorOrganizations();
     this.requestsService.updateMyMemberships();
 
     this.allPendingOrganizations$ = this.requestsQuery.allPendingOrganizations$;
@@ -75,6 +73,12 @@ export class RequestsComponent implements OnInit {
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.userId$ = this.userQuery.userId$;
+
+    this.isAdmin$.subscribe(next => {
+      if (next) {
+        this.requestsService.updateCuratorOrganizations(); // requires admin permissions
+      }
+    });
   }
 
   openDialog(name: string, id: number, approve: boolean): void {
