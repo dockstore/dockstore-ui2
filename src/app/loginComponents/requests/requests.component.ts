@@ -78,24 +78,11 @@ export class RequestsComponent extends Base implements OnInit {
     this.isCurator$ = this.userQuery.isCurator$;
     this.userId$ = this.userQuery.userId$;
 
-    // this.isAdmin$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdmin => {
-    //   if (isAdmin) {
-    //     this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
-    //   } else {
-    //     this.isCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isCurator => {
-    //       if (isCurator) {
-    //         this.requestsService.updateCuratorOrganizations();
-    //       }
-    //     });
-    //   }
-    // });
-    combineLatest(this.isAdmin$, this.isCurator$)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(([isAdmin, isCurator]: [boolean, boolean]) => {
-        if (isAdmin || isCurator) {
-          this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
-        }
-      });
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdminOrCurator => {
+      if (isAdminOrCurator) {
+        this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
+      }
+    });
   }
 
   openDialog(name: string, id: number, approve: boolean): void {
