@@ -21,11 +21,13 @@ import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
+import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
@@ -57,7 +59,9 @@ export class ViewWorkflowComponent extends View implements OnInit {
     private workflowsService: WorkflowsService,
     private matDialog: MatDialog,
     private hostedService: HostedService,
-    dateService: DateService
+    dateService: DateService,
+    private alertService: AlertService,
+    private refreshService: RefreshService
   ) {
     super(dateService);
   }
@@ -87,6 +91,25 @@ export class ViewWorkflowComponent extends View implements OnInit {
       width: '600px',
       data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
     });
+  }
+
+  snapshotVersion(): void {
+    // Create a new version temporarily with the frozen bit set. We assume the version is
+    // not already a snapshot since the UI controls shouldn't be available for
+    // snapshotted versions.
+    var snapshot = { ...this.version };
+    snapshot['frozen'] = true;
+    this.workflowsService.updateWorkflowVersion(this.workflow.id, [snapshot]).subscribe(
+      result => {
+        this.alertService.detailedSuccess('Snapshot successfully created!');
+        this.refreshService.refreshWorkflow();
+      },
+      error => {
+        if (error) {
+          this.alertService.detailedError(error);
+        }
+      }
+    );
   }
 
   ngOnInit() {

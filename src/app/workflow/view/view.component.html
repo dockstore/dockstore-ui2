@@ -17,6 +17,9 @@
 <button type="button" mat-button color="accent" class="btn-block" (click)="showVersionModal()">
   {{ isPublic || !canWrite || (entryType$ | async) === EntryType.Service ? 'View' : 'Edit' }}
 </button>
+<button type="button" mat-button color="accent" class="btn-block" *ngIf="!version.frozen" (click)="snapshotVersion()">
+  Snapshot
+</button>
 <button
   type="button"
   mat-button
