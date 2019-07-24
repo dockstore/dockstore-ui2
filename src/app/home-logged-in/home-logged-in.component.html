@@ -16,40 +16,7 @@
 
 <div class="header">
   <div class="container">
-    <div fxLayout="row wrap" fxLayoutAlign="space-around center">
-      <div class="left-header pb-4" fxFlex>
-        <h1 class="title">Create, Share, Use</h1>
-        <h2 class="title caption">Search Docker Tools and Workflows for the Sciences:</h2>
-
-        <!--        <button *ngIf="!(user$ | async); else loggedIn" mat-flat-button color="accent" routerLink="/login" class="big-button">-->
-        <!--          Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>-->
-        <!--        </button>-->
-
-        <!--        <ng-template #loggedIn>-->
-        <!--          <button mat-flat-button color="accent" routerLink="/accounts" class="big-button">Welcome {{ (user$ | async).username }}</button>-->
-        <!--        </ng-template>-->
-
-        <!--        <button mat-flat-button routerLink="/search" class="m-2 big-button">-->
-        <!--          Browse tools and workflows-->
-        <!--        </button>-->
-
-        <input
-          id="searchBar"
-          #search
-          type="text"
-          placeholder="Search..."
-          class="fully-rounded landing-search"
-          (keyup.enter)="goToSearch(search.value)"
-        />
-      </div>
-
-      <div fxFlex class="right-header button-row py-4" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2px">
-        <a mat-raised-button color="accent" routerLink="login">Sign up to Contribute <mat-icon>chevron_right</mat-icon></a>
-        <a mat-raised-button color="accent" routerLink="quick-start">Quick Start <mat-icon>chevron_right</mat-icon></a>
-        <a mat-raised-button color="accent" routerLink="onboarding">Setup Account <mat-icon>chevron_right</mat-icon></a>
-        <a mat-raised-button color="accent" href="https://docs.dockstore.org/news/">News and Events <mat-icon>chevron_right</mat-icon></a>
-      </div>
-    </div>
+    <app-logged-in-banner></app-logged-in-banner>
     <!--      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px">-->
     <!--        <h3 class="search-title">New to Dockstore?</h3>-->
     <!--        <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">-->

@@ -1,33 +1,3 @@
-// Slightly different from home.component.scss
-// Width is 100%
-// If the same is better, move to style.scss
-.landing-search {
-  width: 100%;
-  max-width: 600px;
-  padding-left: 30px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  border: none;
-  line-height: 2em;
-  background: white url(../../../images/search-button.png) left center no-repeat;
-  background-position: 5px;
-  outline: none;
-  color: black;
-}
-
-// This is different from home.component.scss
-// Does padding/margins properly (by letting FxLayoutGap handle it)
-// Fixed size buttons
-.button-row > a {
-  width: 250px;
-  font-weight: 700;
-}
-
-// Roughly minimum width for Create, Share, Use to be on one line in Chrome
-.left-header {
-  min-width: 525px;
-}
-
 // This is a sample card and should probably be more flexible
 .random-card {
   min-height: 400px;
