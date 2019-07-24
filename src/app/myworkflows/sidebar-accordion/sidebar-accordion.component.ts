@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
+import { Organization } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
@@ -24,5 +25,10 @@ export class SidebarAccordionComponent implements OnInit {
   ngOnInit(): void {
     this.entryType$ = this.sessionQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
+  }
+
+  syncOrganization(organization: Organization) {
+    // Placeholder
+    // Go to endpoint that performs the sync organization with GitHub operation
   }
 }

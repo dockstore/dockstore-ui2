@@ -183,21 +183,27 @@
           <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
-              No description associated with this workflow. See
-              <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
-                <a href="https://docs.dockstore.org/docs/publisher-tutorials/best-practices/#authorship-metadata">CWL Best Practices</a> and
-                <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description
-                for this tool.
-              </span>
-              <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
-                <a href="https://docs.dockstore.org/docs/publisher-tutorials/wdl-best-practices/#authorship-metadata">WDL Best Practices</a
-                >.
-              </span>
-              <span *ngIf="isNFL$ | async">
-                <a href="https://docs.dockstore.org/docs/publisher-tutorials/nfl-best-practices/#authorship-metadata"
-                  >Nextflow Best Practices</a
-                >.
-              </span>
+              No description associated with this {{ entryType$ | async }}. See
+              <ng-container [ngSwitch]="descriptorType$ | async">
+                <span *ngSwitchCase="ToolDescriptor.TypeEnum.CWL">
+                  <a href="https://docs.dockstore.org/docs/publisher-tutorials/best-practices/#authorship-metadata">CWL Best Practices</a>
+                  and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a
+                  description for this tool.
+                </span>
+                <span *ngSwitchCase="ToolDescriptor.TypeEnum.WDL">
+                  <a href="https://docs.dockstore.org/docs/publisher-tutorials/wdl-best-practices/#authorship-metadata"
+                    >WDL Best Practices</a
+                  >.
+                </span>
+                <span *ngSwitchCase="ToolDescriptor.TypeEnum.NFL">
+                  <a href="https://docs.dockstore.org/docs/publisher-tutorials/nfl-best-practices/#authorship-metadata"
+                    >Nextflow Best Practices</a
+                  >.
+                </span>
+                <span *ngSwitchCase="ToolDescriptor.TypeEnum.SERVICE">
+                  ** placeholder: link to doc that describes how to set a service description **
+                </span>
+              </ng-container>
             </span>
           </div>
         </div>

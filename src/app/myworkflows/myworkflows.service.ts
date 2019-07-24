@@ -22,16 +22,20 @@ import { includesValidation } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 import { MyEntriesService } from 'app/shared/myentries.service';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
+import { Observable } from 'rxjs';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class MyWorkflowsService extends MyEntriesService {
+  gitHubAppInstallationLink$: Observable<string>;
   constructor(
     protected userQuery: UserQuery,
     protected alertService: AlertService,
@@ -40,9 +44,11 @@ export class MyWorkflowsService extends MyEntriesService {
     protected workflowsService: WorkflowsService,
     private myBioWorkflowsService: MyBioWorkflowsService,
     private myServicesService: MyServicesService,
+    private sessionQuery: SessionQuery,
     public matDialog: MatDialog
   ) {
     super();
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
   }
 
   getMyEntries(userId: number, entryType: EntryType) {
@@ -140,7 +146,12 @@ export class MyWorkflowsService extends MyEntriesService {
     return null;
   }
 
-  registerEntry() {
-    this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+  registerEntry(entryType: EntryType | null) {
+    if (entryType === EntryType.BioWorkflow) {
+      this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+    }
+    if (entryType === EntryType.Service) {
+      this.gitHubAppInstallationLink$.pipe(take(1)).subscribe(link => window.open(link));
+    }
   }
 }

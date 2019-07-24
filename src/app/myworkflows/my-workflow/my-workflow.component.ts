@@ -246,11 +246,16 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    this.myWorkflowsService.registerEntry();
+    this.myWorkflowsService.registerEntry(this.entryType);
   }
 
   refreshAllEntries(): void {
     this.refreshService.refreshAllWorkflows(this.user.id);
+  }
+
+  sync(): void {
+    // Placeholder
+    // Go to an endpoint that performs the sync with GitHub operation
   }
 }
 export interface OrgWorkflowObject {
