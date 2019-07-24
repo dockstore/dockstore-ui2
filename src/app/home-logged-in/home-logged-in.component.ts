@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from '../shared/swagger/model/user';
 import { UserQuery } from '../shared/user/user.query';
@@ -11,9 +12,13 @@ import { UserQuery } from '../shared/user/user.query';
 export class HomeLoggedInComponent implements OnInit {
   public user$: Observable<User>;
 
-  constructor(private userQuery: UserQuery) {}
+  constructor(private userQuery: UserQuery, private router: Router) {}
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
+  }
+
+  goToSearch(searchValue: string) {
+    this.router.navigate(['/search'], { queryParams: { search: searchValue } });
   }
 }
