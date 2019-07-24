@@ -38,6 +38,8 @@ import { ConfigurationService } from './configuration.service';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
+import { HomeLoggedInComponent } from './home-logged-in/home-logged-in.component';
+import { HomePageComponent } from './home-page/home-page.component';
 import { HomeComponent, YoutubeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
@@ -96,7 +98,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { HomeLoggedInComponent } from './home-logged-in/home-logged-in.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -122,6 +123,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SponsorsComponent,
     NavbarComponent,
     HomeComponent,
+    HomePageComponent,
     FooterComponent,
     LoginComponent,
     OnboardingComponent,

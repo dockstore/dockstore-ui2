@@ -16,8 +16,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
-import { HomeLoggedInComponent } from './home-logged-in/home-logged-in.component';
-import { HomeComponent } from './home/home.component';
+import { HomePageComponent } from './home-page/home-page.component';
 import { LoginComponent } from './login/login.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
@@ -32,8 +31,7 @@ import { StarredEntriesComponent } from './starredentries/starredentries.compone
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
 const APP_ROUTES: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
-  { path: 'logged-in-home', component: HomeLoggedInComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
+  { path: '', component: HomePageComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
   { path: 'docs', loadChildren: 'app/docs/docs.module#DocsModule', data: { title: 'Dockstore | Documentation' } },
   { path: 'search-containers', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools' } },
   { path: 'containers', loadChildren: 'app/containers/containers.module#ContainersModule', data: { title: 'Dockstore | Tools' } },

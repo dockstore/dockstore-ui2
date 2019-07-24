@@ -43,14 +43,7 @@
         />
       </div>
 
-      <div
-        fxFlex
-        class="right-header button-row py-4"
-        *ngIf="!(user$ | async)"
-        fxLayout="column"
-        fxLayoutAlign="center center"
-        fxLayoutGap="2px"
-      >
+      <div fxFlex class="right-header button-row py-4" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2px">
         <a mat-raised-button color="accent" routerLink="login">Sign up to Contribute <mat-icon>chevron_right</mat-icon></a>
         <a mat-raised-button color="accent" routerLink="quick-start">Quick Start <mat-icon>chevron_right</mat-icon></a>
         <a mat-raised-button color="accent" routerLink="onboarding">Setup Account <mat-icon>chevron_right</mat-icon></a>
