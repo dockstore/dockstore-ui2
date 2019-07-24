@@ -157,6 +157,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             );
             this.setGroupSharedEntriesObject(sortedSharedWorkflows);
 
+            this.fixGroupEntriesObjects();
+
             // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),
             // the url needs to be used to set the workflow onInit.
             // Otherwise, the select - tab.pipe results in really strange behaviour. Not entirely sure why.
@@ -180,6 +182,22 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );
+  }
+
+  /**
+   * This is a temporary fix to the group entries objects.
+   * It should've never been assigned a falsey value (unless maybe the call failed)
+   *
+   * @private
+   * @memberof MyWorkflowComponent
+   */
+  private fixGroupEntriesObjects() {
+    if (!this.groupEntriesObject) {
+      this.groupEntriesObject = [];
+    }
+    if (!this.groupSharedEntriesObject) {
+      this.groupSharedEntriesObject = [];
+    }
   }
 
   private getMyEntries() {
