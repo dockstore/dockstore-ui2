@@ -25,8 +25,8 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
 import { BioschemaService } from '../shared/bioschema.service';
+import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -259,6 +259,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
 
   setPublishMessage() {
     this.pubUnpubMessage = this.published ? this.unpublishMessage : this.publishMessage;
+    if (this.entryType === EntryType.Service) {
+      this.pubUnpubMessage = this.pubUnpubMessage.replace('workflow', 'service');
+    }
   }
 
   public setupPublicEntry(url: String) {
@@ -356,12 +359,14 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     const message = 'Creating DOI';
     this.alertService.start(message);
     this.workflowsService.requestDOIForWorkflowVersion(this.workflow.id, this.selectedVersion.id).subscribe(
-        (response: Array<WorkflowVersion>) => {
-          this.selectedVersion = response.find((version) => version.id === this.selectedVersion.id);
-          this.alertService.detailedSuccess();
-        }, (error: HttpErrorResponse) => {
-          this.alertService.detailedError(error);
-        });
+      (response: Array<WorkflowVersion>) => {
+        this.selectedVersion = response.find(version => version.id === this.selectedVersion.id);
+        this.alertService.detailedSuccess();
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
   }
 
   isValid() {
