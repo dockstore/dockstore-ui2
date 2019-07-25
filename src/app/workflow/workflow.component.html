@@ -96,14 +96,16 @@
           >
             View Public
           </a>
-          <button 
+          <button
             mat-flat-button
             id="DOIButton"
             class="mr-2"
             color="accent"
-           (click)="requestDOIForWorkflowVersion()"
-           [disabled]="(isRefreshing$ | async) || selectedVersion?.doiURL"
-           [matTooltip]="createdoimessage">Create DOI
+            (click)="requestDOIForWorkflowVersion()"
+            [disabled]="(isRefreshing$ | async) || selectedVersion?.doiURL"
+            [matTooltip]="createdoimessage"
+          >
+            Create DOI
           </button>
           <button
             mat-flat-button
@@ -124,7 +126,7 @@
             (click)="refresh()"
             [disabled]="isRefreshing$ | async"
             *ngIf="!isHosted() && canWrite"
-            matTooltip="Sync the workflow with the source control repository"
+            matTooltip="Sync the {{ entryType }} with the source control repository"
           >
             {{ entryType === EntryType.Service ? 'Sync' : 'Refresh' }}
           </button>
