@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
+import { setTokenUserViewPort, goToTab } from '../../support/commands';
 
 describe('Public Version Modal', () => {
-  resetDB();
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');

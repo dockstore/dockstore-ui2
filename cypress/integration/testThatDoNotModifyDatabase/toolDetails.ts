@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, goToTab, getTab } from '../../support/commands';
+import { getTab, goToTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
-  resetDB();
   setTokenUserViewPort();
   it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/containers/quay.io%2FA2%2Fa');
@@ -49,7 +48,6 @@ describe('Variations of URL', () => {
 });
 
 describe('Dockstore Tool Details of quay.io/A2/a', () => {
-  resetDB();
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/A2/a');

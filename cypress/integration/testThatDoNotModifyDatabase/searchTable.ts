@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore tool/workflow search table', () => {
-  resetDB();
   setTokenUserViewPort();
 
   // When elastic search is added to cypress testing, get rid of cy.routes, and uncomment the commented lines
@@ -73,7 +72,6 @@ describe('Dockstore tool/workflow search table', () => {
 
 //test checks if items per page for pagination persists after navigating away and back to search
 describe('search table items per page', () => {
-  resetDB();
   setTokenUserViewPort()
   it('tool items per page', () => {
     cy.server();
