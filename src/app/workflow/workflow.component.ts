@@ -70,7 +70,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public entryType: EntryType;
-  validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
+  validTabs = [];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
   protected canWrite = false;
@@ -129,8 +129,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.location = location;
     this.entryType = this.sessionQuery.getSnapshot().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else {
+      this.validTabs = ['info', 'versions', 'files'];
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
     }
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
@@ -262,6 +264,15 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     if (this.entryType === EntryType.Service) {
       this.pubUnpubMessage = this.pubUnpubMessage.replace('workflow', 'service');
     }
+  }
+
+  /**
+   * Select the Versions tab
+   *
+   * @memberof WorkflowComponent
+   */
+  public selectVersionsTab() {
+    this.selectTab(this.validTabs.indexOf('versions'));
   }
 
   public setupPublicEntry(url: String) {
