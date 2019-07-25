@@ -68,7 +68,6 @@ describe('Logged out Dockstore Home', () => {
     beforeEach(() => {
       cy.visit('');
     });
-  setTokenUserViewPort();
   describe('Landing Video', () => {
     it('video button visible', () => {
       cy
