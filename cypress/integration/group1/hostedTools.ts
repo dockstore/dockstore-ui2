@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
+import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore hosted tools', () => {
   resetDB();
@@ -189,10 +189,10 @@ describe('Dockstore hosted tools', () => {
         .get('#saveNewVersionButton')
         .click();
 
-      // Should now only be three ace editors
+      // Should now only have 1 visible editor
       cy
-        .get('.ace_editor')
-        .should('have.length', 3);
+        .get('.ace_editor:visible')
+        .should('have.length', 1);
 
       // New version should be added
       goToTab('Versions');
