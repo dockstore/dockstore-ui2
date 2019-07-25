@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-logged-in-banner',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./logged-in-banner.component.scss']
 })
 export class LoggedInBannerComponent {
-  constructor() {}
+  constructor(private router: Router) {}
+
+  goToSearch(searchValue: string) {
+    this.router.navigate(['/search'], { queryParams: { search: searchValue } });
+  }
 }

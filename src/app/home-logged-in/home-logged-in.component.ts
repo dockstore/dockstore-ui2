@@ -17,8 +17,4 @@ export class HomeLoggedInComponent implements OnInit {
   ngOnInit() {
     this.user$ = this.userQuery.user$;
   }
-
-  goToSearch(searchValue: string) {
-    this.router.navigate(['/search'], { queryParams: { search: searchValue } });
-  }
 }
