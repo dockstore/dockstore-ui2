@@ -16,10 +16,7 @@
 
 export function goToTab(tabName: string): any {
   return cy
-    .get('.mat-tab-labels')
-    .should('be.visible')
-    .contains('div', tabName)
-    .should('be.visible').click();
+    .contains('.mat-tab-label', tabName).should('be.visible').click();
 }
 
 export function getTab(tabName: string): any {
