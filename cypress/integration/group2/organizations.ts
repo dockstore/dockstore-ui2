@@ -70,7 +70,7 @@ describe('Dockstore Organizations', () => {
 
       typeInInput('Contact Email Address', 'asdf@asdf.ca');
       cy.get('.mat-error').should('be.visible');
-      clearInput('Image URL');
+      cy.get('[data-cy=image-url-input').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
     });
@@ -100,7 +100,7 @@ describe('Dockstore Organizations', () => {
       );
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#editOrgInfo').should('be.visible').click();
-      clearInput('Image URL');
+      cy.get('[data-cy=image-url-input').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#editOrgInfo').should('be.visible').click();
       cy.get('[data-cy=image-url-input').clear().type('https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
