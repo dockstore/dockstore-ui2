@@ -16,12 +16,13 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MatSnackBarModule } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
+import { MyEntriesModule } from '../../shared/modules/my-entries.module';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -44,8 +45,10 @@ import {
   WorkflowStubService
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyWorkflowComponent } from './my-workflow.component';
+import { MyBioWorkflowsService } from '../my-bio-workflows.service';
+import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
+import { MyWorkflowComponent } from './my-workflow.component';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -56,14 +59,7 @@ describe('MyWorkflowsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-        BrowserAnimationsModule,
-        MatDialogModule,
-        MatSnackBarModule,
-        CustomMaterialModule
-      ],
+      imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, CustomMaterialModule, MyEntriesModule],
       providers: [
         UserQuery,
         { provide: Configuration, useClass: ConfigurationStub },
@@ -73,6 +69,8 @@ describe('MyWorkflowsComponent', () => {
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
         MyWorkflowsService,
+        MyBioWorkflowsService,
+        MyServicesService,
         TokenQuery,
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },

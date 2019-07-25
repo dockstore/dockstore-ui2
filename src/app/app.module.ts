@@ -66,7 +66,6 @@ import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
-import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
 import { ExtendedToolsService } from './shared/extended-tools.service';
@@ -182,7 +181,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     LoginService,
     RegisterService,
     LogoutService,
-    DockstoreService,
     DateService,
     TrackLoginService,
     ListService,
