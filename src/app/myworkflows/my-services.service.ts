@@ -2,15 +2,14 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { forkJoin, of as observableOf } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class MyServicesService {
   constructor(
     private alertService: AlertService,
@@ -18,7 +17,8 @@ export class MyServicesService {
     private workflowService: WorkflowService,
     private location: Location,
     private usersService: UsersService,
-    protected userQuery: UserQuery
+    protected userQuery: UserQuery,
+    private myEntryService: MyEntriesStateService
   ) {}
   selectEntry(id: number, includesValidation: string) {
     this.workflowsService.getWorkflow(id, includesValidation).subscribe((service: Workflow) => {
@@ -29,6 +29,7 @@ export class MyServicesService {
 
   getMyServices(id: number): void {
     this.alertService.start('Fetching services');
+    this.myEntryService.setRefreshingMyEntries(true);
     forkJoin(
       this.usersService.userServices(id).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -43,7 +44,12 @@ export class MyServicesService {
         })
       )
     )
-      .pipe(finalize(() => this.alertService.simpleSuccess()))
+      .pipe(
+        finalize(() => {
+          this.alertService.simpleSuccess();
+          this.myEntryService.setRefreshingMyEntries(false);
+        })
+      )
       .subscribe(
         ([workflows, sharedWorkflows]) => {
           this.workflowService.setWorkflows(workflows);

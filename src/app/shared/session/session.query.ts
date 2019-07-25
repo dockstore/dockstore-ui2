@@ -18,9 +18,9 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Dockstore } from '../dockstore.model';
 import { EntryType } from '../enum/entry-type';
 import { SessionState, SessionStore } from './session.store';
-import { Dockstore } from '../dockstore.model';
 
 @Injectable({
   providedIn: 'root'

@@ -2,7 +2,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
+import { MyServicesService } from 'app/myworkflows/my-services.service';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
+import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { MyWorkflowComponent } from '../myworkflows/my-workflow/my-workflow.component';
 import { SidebarAccordionComponent } from '../myworkflows/sidebar-accordion/sidebar-accordion.component';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
@@ -27,7 +30,8 @@ const IMPORTS = [
   RefreshAlertModule,
   PipeModule,
   CommonModule,
-  RouterModule
+  RouterModule,
+  MyEntriesModule
 ];
 
 /**
@@ -40,7 +44,7 @@ const IMPORTS = [
 @NgModule({
   declarations: DECLARATIONS,
   imports: IMPORTS,
-  providers: [MyWorkflowsService],
+  providers: [MyWorkflowsService, MyBioWorkflowsService, MyServicesService],
   exports: DECLARATIONS.concat(IMPORTS),
   entryComponents: [RegisterWorkflowModalComponent]
 })

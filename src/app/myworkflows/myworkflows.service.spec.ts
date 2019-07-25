@@ -18,10 +18,13 @@ import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, WorkflowsService } from 'app/shared/swagger';
 import { UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { Workflow } from './../shared/swagger/model/workflow';
+import { MyBioWorkflowsService } from './my-bio-workflows.service';
+import { MyServicesService } from './my-services.service';
 import { MyWorkflowsService } from './myworkflows.service';
 
 describe('MyWorkflowsService', () => {
@@ -128,9 +131,11 @@ describe('MyWorkflowsService', () => {
   const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CustomMaterialModule, RouterTestingModule],
+      imports: [CustomMaterialModule, RouterTestingModule, MyEntriesModule],
       providers: [
         MyWorkflowsService,
+        MyBioWorkflowsService,
+        MyServicesService,
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService }

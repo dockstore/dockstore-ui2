@@ -113,6 +113,9 @@ export class DescriptorTypeCompatService {
         return 'PLAIN-CWL';
       case ToolDescriptor.TypeEnum.NFL:
         return 'PLAIN-NFL';
+      case ToolDescriptor.TypeEnum.SERVICE:
+        // TODO: Actually handle this
+        return null;
       default:
         console.error('Unhandled descriptor type: ' + typeEnum);
         return null;
