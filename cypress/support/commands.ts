@@ -14,17 +14,21 @@
  *    limitations under the License.
  */
 
-export function goToTab(tabName: string): any {
-  return cy
+export function goToTab(tabName: string): void {
+  cy
     .contains('.mat-tab-label', tabName).should('be.visible').click();
 }
 
-export function getTab(tabName: string): any {
-  return cy
+export function assertVisibleTab(tabName: string): void {
+  cy
     .get('.mat-tab-labels')
     .should('be.visible')
     .contains('div', tabName)
     .should('be.visible');
+}
+
+export function isActiveTab(tabName: string): void {
+  cy.contains('.mat-tab-label', tabName).should('have.class', 'mat-tab-label-active');
 }
 
 export function assertNoTab(tabName: string): any {
