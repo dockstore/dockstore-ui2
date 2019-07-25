@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../shared/swagger/model/user';
-import { UserQuery } from '../shared/user/user.query';
+import { User } from '../../shared/swagger/model/user';
+import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
   selector: 'home-logged-in',

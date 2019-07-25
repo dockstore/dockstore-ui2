@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TabsModule } from 'ngx-bootstrap';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatDialogModule, MatIconModule } from '@angular/material';
-import { TwitterService } from '../shared/twitter.service';
+import { TwitterService } from '../../shared/twitter.service';
 
 describe('HomeLoggedInComponent', () => {
   let component: HomeLoggedInComponent;

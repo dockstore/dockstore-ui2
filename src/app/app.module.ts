@@ -38,9 +38,8 @@ import { ConfigurationService } from './configuration.service';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
-import { HomeLoggedInComponent } from './home-logged-in/home-logged-in.component';
-import { HomePageComponent } from './home-page/home-page.component';
-import { HomeComponent, YoutubeComponent } from './home/home.component';
+import { YoutubeComponent } from './home-page/home-logged-out/home.component';
+import { HomePageModule } from './home-page/home-page.module';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -97,7 +96,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { LoggedInBannerComponent } from './logged-in-banner/logged-in-banner.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -122,11 +120,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     DeleteAccountDialogComponent,
     SponsorsComponent,
     NavbarComponent,
-    HomeComponent,
-    HomePageComponent,
     FooterComponent,
     LoginComponent,
-    LoggedInBannerComponent,
     OnboardingComponent,
     QuickStartComponent,
     AccountsComponent,
@@ -143,8 +138,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ChangeUsernameComponent,
     YoutubeComponent,
     SitemapComponent,
-    GithubCallbackComponent,
-    HomeLoggedInComponent
+    GithubCallbackComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -176,7 +170,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ApiModule2.forRoot(getApiConfig),
     CustomMaterialModule,
     RefreshAlertModule,
-    RequestsModule
+    RequestsModule,
+    HomePageModule
   ],
   providers: [
     AccountsService,
