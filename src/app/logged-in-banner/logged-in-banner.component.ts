@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { HomePageService } from 'app/home-page/home-page.service';
 
 @Component({
   selector: 'app-logged-in-banner',
@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./logged-in-banner.component.scss']
 })
 export class LoggedInBannerComponent {
-  constructor(private router: Router) {}
+  constructor(private homePageService: HomePageService) {}
 
   goToSearch(searchValue: string) {
-    this.router.navigate(['/search'], { queryParams: { search: searchValue } });
+    this.homePageService.goToSearch(searchValue);
   }
 }
