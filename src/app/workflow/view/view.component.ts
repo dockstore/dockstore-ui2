@@ -97,16 +97,18 @@ export class ViewWorkflowComponent extends View implements OnInit {
     // Create a new version temporarily with the frozen bit set. We assume the version is
     // not already a snapshot since the UI controls shouldn't be available for
     // snapshotted versions.
-    var snapshot = { ...this.version };
+    const snapshot = { ...this.version };
     snapshot['frozen'] = true;
     this.workflowsService.updateWorkflowVersion(this.workflow.id, [snapshot]).subscribe(
-      result => {
+      workflowVersions => {
         this.alertService.detailedSuccess('Snapshot successfully created!');
         this.refreshService.refreshWorkflow();
       },
       error => {
         if (error) {
           this.alertService.detailedError(error);
+        } else {
+          this.alertService.simpleError();
         }
       }
     );
