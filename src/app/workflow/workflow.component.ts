@@ -15,7 +15,6 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,7 +23,6 @@ import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
-import { AlertService } from '../shared/alert/state/alert.service';
 import { BioschemaService } from '../shared/bioschema.service';
 import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
 import { DateService } from '../shared/date.service';
@@ -35,7 +33,6 @@ import { EntryType } from '../shared/enum/entry-type';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
-import { RefreshService } from '../shared/refresh.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
@@ -43,7 +40,6 @@ import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
 import { Permission, ToolDescriptor } from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
-import { PublishRequest } from '../shared/swagger/model/publishRequest';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
@@ -78,14 +74,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   protected readers = [];
   protected writers = [];
   protected owners = [];
-  EntryType = EntryType;
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
-  publishMessage = 'Publish the workflow to make it visible to the public';
-  unpublishMessage = 'Unpublish the workflow to remove it from the public';
-  viewPublicMessage = 'Go to the public page for this workflow';
-  createdoimessage = 'Create a digital object identifier (DOI) for this version';
-  pubUnpubMessage: string;
   public WorkflowModel = Workflow;
   @Input() user;
 
@@ -93,7 +83,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private dockstoreService: DockstoreService,
     dateService: DateService,
     bioschemaService: BioschemaService,
-    private refreshService: RefreshService,
     private workflowsService: WorkflowsService,
     trackLoginService: TrackLoginService,
     providerService: ProviderService,
@@ -101,7 +90,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private workflowService: WorkflowService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
     urlResolverService: UrlResolverService,
-    private alertService: AlertService,
     location: Location,
     activatedRoute: ActivatedRoute,
     protected sessionQuery: SessionQuery,
@@ -246,7 +234,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.workflow = workflow;
       if (workflow) {
         this.published = this.workflow.is_published;
-        this.setPublishMessage();
         this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
@@ -257,13 +244,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       }
       this.setUpWorkflow(workflow);
     });
-  }
-
-  setPublishMessage() {
-    this.pubUnpubMessage = this.published ? this.unpublishMessage : this.publishMessage;
-    if (this.entryType === EntryType.Service) {
-      this.pubUnpubMessage = this.pubUnpubMessage.replace('workflow', 'service');
-    }
   }
 
   /**
@@ -327,80 +307,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
   }
 
-  publishDisable(): boolean {
-    return !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB || !this.isOwner;
-  }
-
-  publish() {
-    if (this.publishDisable()) {
-      return;
-    } else {
-      const request: PublishRequest = {
-        publish: this.published
-      };
-      const message = this.published ? 'Publishing workflow' : 'Unpublishing workflow';
-      this.alertService.start(message);
-      this.workflowsService.publish(this.workflow.id, request).subscribe(
-        (response: Workflow) => {
-          this.workflowService.upsertWorkflowToWorkflow(response);
-          this.workflowService.setWorkflow(response);
-          this.setPublishMessage();
-          this.alertService.detailedSuccess();
-          if (response.checker_id) {
-            this.workflowsService
-              .getWorkflow(response.checker_id)
-              .pipe(takeUntil(this.ngUnsubscribe))
-              .subscribe(
-                (workflow: Workflow) => {
-                  this.workflowService.upsertWorkflowToWorkflow(workflow);
-                },
-                (error: HttpErrorResponse) => this.alertService.detailedError(error)
-              );
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.published = !this.published;
-          this.alertService.detailedError(error);
-        }
-      );
-    }
-  }
-
-  requestDOIForWorkflowVersion() {
-    const message = 'Creating DOI';
-    this.alertService.start(message);
-    this.workflowsService.requestDOIForWorkflowVersion(this.workflow.id, this.selectedVersion.id).subscribe(
-      (response: Array<WorkflowVersion>) => {
-        this.selectedVersion = response.find(version => version.id === this.selectedVersion.id);
-        this.alertService.detailedSuccess();
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      }
-    );
-  }
-
-  isValid() {
-    if (!this.workflow) {
-      return false;
-    }
-    if (this.workflow.is_published) {
-      return true;
-    }
-    const versionTags = this.workflow.workflowVersions;
-
-    if (versionTags === null) {
-      return false;
-    }
-
-    for (const versionTag of versionTags) {
-      if (versionTag.valid) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   restubWorkflow() {
     this.workflowsService.restub(this.workflow.id).subscribe(response => {
       this.workflowService.setWorkflow(response);
@@ -437,11 +343,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.workflowService.setWorkflow(workflow);
       this.labelsEditMode = false;
     });
-  }
-
-  refresh() {
-    const versionName = this.selectedVersion ? this.selectedVersion.name : null;
-    this.refreshService.refreshWorkflow(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, versionName);
   }
 
   /**

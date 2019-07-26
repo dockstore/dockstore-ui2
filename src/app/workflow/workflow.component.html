@@ -83,54 +83,13 @@
     </div>
     <div *ngIf="!publicPage" class="col-md-5">
       <h3>
-        <div class="pull-right my-entry-button-group">
-          <a
-            *ngIf="workflow?.is_published"
-            [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"
-            id="viewPublicWorkflowButton"
-            mat-button
-            color="basic"
-            [disabled]="isRefreshing$ | async"
-            [matTooltip]="viewPublicMessage"
-            class="mr-2"
-          >
-            View Public
-          </a>
-          <button
-            mat-flat-button
-            id="DOIButton"
-            class="mr-2"
-            color="accent"
-            (click)="requestDOIForWorkflowVersion()"
-            [disabled]="(isRefreshing$ | async) || selectedVersion?.doiURL"
-            [matTooltip]="createdoimessage"
-          >
-            Create DOI
-          </button>
-          <button
-            mat-flat-button
-            id="publishButton"
-            class="mr-2"
-            color="accent"
-            (click)="publish()"
-            [(ngModel)]="published"
-            [disabled]="(isRefreshing$ | async) || publishDisable()"
-            [matTooltip]="pubUnpubMessage"
-            btnCheckbox
-          >
-            {{ workflow?.is_published ? 'Unpublish' : 'Publish' }}
-          </button>
-          <button
-            mat-flat-button
-            color="primary"
-            (click)="refresh()"
-            [disabled]="isRefreshing$ | async"
-            *ngIf="!isHosted() && canWrite"
-            matTooltip="Sync the {{ entryType }} with the source control repository"
-          >
-            {{ entryType === EntryType.Service ? 'Sync' : 'Refresh' }}
-          </button>
-        </div>
+        <app-workflow-actions
+          [entryType]="entryType"
+          [workflow]="workflow"
+          [selectedVersion]="selectedVersion"
+          [isOwner]="isOwner"
+          [canWrite]="canWrite"
+        ></app-workflow-actions>
       </h3>
     </div>
   </div>
