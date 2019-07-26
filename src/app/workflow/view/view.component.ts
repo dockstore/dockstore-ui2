@@ -97,7 +97,9 @@ export class ViewWorkflowComponent extends View implements OnInit {
     this.workflowsService.updateWorkflowVersion(this.workflow.id, [version]).subscribe(
       workflowVersions => {
         this.alertService.detailedSuccess('Snapshot successfully created!');
-        this.refreshService.refreshWorkflow();
+        const workflow = { ...this.workflowQuery.getActive() };
+        workflow.workflowVersions = workflowVersions;
+        this.workflowService.setWorkflow(workflow);
       },
       error => {
         if (error) {
