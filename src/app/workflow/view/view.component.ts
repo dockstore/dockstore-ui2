@@ -114,7 +114,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
     // not already a snapshot since the UI controls shouldn't be available for
     // snapshotted versions.
     const snapshot = { ...this.version };
-    snapshot['frozen'] = true;
+    snapshot.frozen = true;
     const confirmMessage = 'Snapshotting a version cannot be undone. Are you sure you want to snapshot this version?';
     const confirmSnapshot = confirm(confirmMessage);
     if (confirmSnapshot) {
