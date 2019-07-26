@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { getTab, goToTab, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
   setTokenUserViewPort();
@@ -76,7 +76,7 @@ describe('Dockstore Workflow Details', () => {
     });
 
     it('Should have Descriptor files tab selected', () => {
-      getTab('Descriptor Files').parent().should('have.class', 'mat-tab-label-active');
+      isActiveTab('Descriptor Files');
     });
 
     it('Should have content in file viewer', () => {
