@@ -84,6 +84,7 @@
     <div *ngIf="!publicPage" class="col-md-5">
       <h3>
         <app-workflow-actions
+          *ngIf="showWorkflowActions"
           [entryType]="entryType"
           [workflow]="workflow"
           [selectedVersion]="selectedVersion"

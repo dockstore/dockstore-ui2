@@ -21,7 +21,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService } from '../shared/bioschema.service';
 import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
@@ -74,6 +74,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   protected readers = [];
   protected writers = [];
   protected owners = [];
+  // Whether to show the workflow action buttons or not.
+  // Only show after getting actions is done or else the buttons will not appear all at once
+  public showWorkflowActions = false;
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   public WorkflowModel = Workflow;
@@ -206,9 +209,15 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.canRead = this.canWrite = this.isOwner = false;
       this.readers = this.writers = this.owners = [];
       if (!this.isPublic()) {
+        this.showWorkflowActions = false;
         this.workflowsService
           .getWorkflowActions(this.workflow.full_workflow_path)
-          .pipe(takeUntil(this.ngUnsubscribe))
+          .pipe(
+            finalize(() => {
+              this.showWorkflowActions = true;
+            }),
+            takeUntil(this.ngUnsubscribe)
+          )
           .subscribe((actions: Array<string>) => {
             // Alas, Swagger codegen does not generate a type for the actions
             this.canRead = actions.indexOf('READ') !== -1;
