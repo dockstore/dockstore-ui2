@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {getTab, goToTab, setTokenUserViewPortCurator} from '../../support/commands';
+import { goToTab, isActiveTab, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
@@ -100,19 +100,19 @@ describe('Dropdown test', () => {
     // Check that changing the url changes the tab
     it('Link to accounts tab', () => {
       cy.visit('/accounts?tab=accounts');
-      getTab('Accounts').parent().should('have.class', 'mat-tab-label-active');
+      isActiveTab('Accounts');
     });
     it('Link to profiles tab', () => {
       cy.visit('/accounts?tab=profiles');
-      getTab('Profiles').parent().should('have.class', 'mat-tab-label-active');
+      isActiveTab('Profiles');
     });
     it('Link to dockstore account controls tab', () => {
       cy.visit('/accounts?tab=dockstore%20account%20controls');
-      getTab('Dockstore Account Controls').parent().should('have.class', 'mat-tab-label-active');
+      isActiveTab('Dockstore Account Controls');
     });
     it('Link to requests tab', () => {
       cy.visit('/accounts?tab=requests');
-      getTab('Requests').parent().should('have.class', 'mat-tab-label-active');
+      isActiveTab('Requests');
     });
   });
 
