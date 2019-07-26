@@ -93,13 +93,8 @@ export class ViewWorkflowComponent extends View implements OnInit {
     });
   }
 
-  snapshotVersion(): void {
-    // Create a new version temporarily with the frozen bit set. We assume the version is
-    // not already a snapshot since the UI controls shouldn't be available for
-    // snapshotted versions.
-    const snapshot = { ...this.version };
-    snapshot['frozen'] = true;
-    this.workflowsService.updateWorkflowVersion(this.workflow.id, [snapshot]).subscribe(
+  private updateWorkflowToSnapshot(version): void {
+    this.workflowsService.updateWorkflowVersion(this.workflow.id, [version]).subscribe(
       workflowVersions => {
         this.alertService.detailedSuccess('Snapshot successfully created!');
         this.refreshService.refreshWorkflow();
@@ -112,6 +107,19 @@ export class ViewWorkflowComponent extends View implements OnInit {
         }
       }
     );
+  }
+
+  snapshotVersion(): void {
+    // Create a new version temporarily with the frozen bit set. We assume the version is
+    // not already a snapshot since the UI controls shouldn't be available for
+    // snapshotted versions.
+    const snapshot = { ...this.version };
+    snapshot['frozen'] = true;
+    const confirmMessage = 'Snapshotting a version cannot be undone. Are you sure you want to snapshot this version?';
+    const confirmSnapshot = confirm(confirmMessage);
+    if (confirmSnapshot) {
+      this.updateWorkflowToSnapshot(snapshot);
+    }
   }
 
   ngOnInit() {
