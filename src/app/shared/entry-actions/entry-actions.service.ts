@@ -106,17 +106,10 @@ export class EntryActionsService {
       return true;
     }
     const versionTags = entry.workflowVersions;
-
-    if (!versionTags || versionTags.length === 0) {
+    if (!versionTags) {
       return false;
     }
-
-    for (const versionTag of versionTags) {
-      if (versionTag.valid) {
-        return true;
-      }
-    }
-    return false;
+    return versionTags.some(version => version.valid);
   }
 
   publishWorkflowToggle(workflow: Workflow, isOwner: boolean, entryType: EntryType): void {
