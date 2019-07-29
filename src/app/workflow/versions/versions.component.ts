@@ -60,6 +60,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     protected sessionQuery: SessionQuery
   ) {
     super(dockstoreService, dateService, sessionQuery);
+    this.sortColumn = 'last_modified';
   }
 
   ngOnInit() {
