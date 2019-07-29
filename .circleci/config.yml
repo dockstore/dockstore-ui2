@@ -66,7 +66,7 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/testThatDoNotModifyDatabase/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/immutableDatabaseTests/**/*'
   upload_to_s3:
     working_directory: ~/repo
     docker:
