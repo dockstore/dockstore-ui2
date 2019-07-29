@@ -35,10 +35,12 @@ import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeComponent, YoutubeComponent } from './home/home.component';
+import { LoggedInBannerComponent } from './logged-in-banner/logged-in-banner.component';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -95,7 +97,6 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { LoggedInBannerComponent } from './logged-in-banner/logged-in-banner.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -140,7 +141,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ChangeUsernameComponent,
     YoutubeComponent,
     SitemapComponent,
-    GithubCallbackComponent
+    GithubCallbackComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -211,7 +213,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults }
   ],
-  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
+  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
