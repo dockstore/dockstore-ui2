@@ -63,13 +63,28 @@ describe('Dockstore Workflow Details', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=launch');
   });
 
-  it('Change tab to versions', () => {
+  it('Change tab to versions and snapshot', () => {
     goToTab('Versions');
     cy
       .get('tbody>tr')
       .should('have.length', 1); // 1 Version and no warning line
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
-  });
+
+    cy
+      .get('.dockstore-snapshot-locked').should('have.length', 0);
+
+    cy
+      .get('.dockstore-snapshot:first').click()
+
+    cy.on('window:confirm', (confirmString) => {
+      expect(confirmString).to.include('cannot be undone');
+      return true;
+    });
+
+    cy.wait(250);
+    cy
+      .get('.dockstore-snapshot-locked').should('have.length', 1);
+   });
 
   describe('Change tab to files', () => {
     beforeEach(() => {

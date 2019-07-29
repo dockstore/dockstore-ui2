@@ -150,8 +150,8 @@
             <mat-icon *ngIf="!version.verified">close</mat-icon>
           </td>
           <td>
-            <mat-icon *ngIf="version.frozen">lock</mat-icon>
-            <mat-icon *ngIf="!version.frozen">close</mat-icon>
+            <mat-icon *ngIf="version.frozen" class="dockstore-snapshot-locked">lock</mat-icon>
+            <mat-icon *ngIf="!version.frozen" class="dockstore-snapshot-unlocked">close</mat-icon>
           </td>
           <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
           <!-- <td>
