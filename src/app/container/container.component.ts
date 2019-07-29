@@ -15,7 +15,6 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +22,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
-import { AlertService } from '../shared/alert/state/alert.service';
+import { BioschemaService } from '../shared/bioschema.service';
 import { includesValidation } from '../shared/constants';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
@@ -44,10 +43,8 @@ import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool'
 import { RefreshService } from './../shared/refresh.service';
 import { ContainersService } from './../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
-import { PublishRequest } from './../shared/swagger/model/publishRequest';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { EmailService } from './email.service';
-import { BioschemaService } from '../shared/bioschema.service';
 
 @Component({
   selector: 'app-container',
@@ -68,13 +65,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema;
-  publishMessage = 'Publish the tool to make it visible to the public';
-  unpublishMessage = 'Unpublish the tool to remove it from the public';
-  viewPublicMessage = 'Go to the public page for this tool';
-  pubUnpubMessage: string;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
-
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -96,7 +88,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     protected sessionQuery: SessionQuery,
     protected gA4GHFilesService: GA4GHFilesService,
     private toolQuery: ToolQuery,
-    private alertService: AlertService,
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
@@ -117,7 +108,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     );
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
-
     this._toolType = 'containers';
     this.redirectToCanonicalURL('/my-tools');
   }
@@ -173,7 +163,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.tool = tool;
       if (tool) {
         this.published = this.tool.is_published;
-        this.setPublishMessage();
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
         } else {
@@ -219,66 +208,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     }
   }
 
-  publish() {
-    if (this.publishDisable()) {
-      return;
-    } else {
-      const request: PublishRequest = {
-        publish: this.published
-      };
-      const message = this.published ? 'Publishing workflow' : 'Unpublishing workflow';
-      this.alertService.start(message);
-      this.containersService.publish(this.tool.id, request).subscribe(
-        response => {
-          this.containerService.upsertToolToTools(response);
-          this.containerService.setTool(response);
-          this.setPublishMessage();
-          this.alertService.detailedSuccess();
-        },
-        (error: HttpErrorResponse) => {
-          this.published = !this.published;
-          this.alertService.detailedError(error);
-        }
-      );
-    }
-  }
-
-  publishDisable(): boolean {
-    return !this.isContainerValid();
-  }
-
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.tool.workflowVersions);
-  }
-
-  isContainerValid() {
-    if (!this.tool) {
-      return false;
-    }
-    if (this.tool.is_published) {
-      return true;
-    }
-
-    const versionTags = this.tool.workflowVersions;
-
-    if (versionTags === null) {
-      return false;
-    }
-
-    for (let i = 0; i < versionTags.length; i++) {
-      if (versionTags[i].valid) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  refresh() {
-    this.refreshService.refreshTool();
-  }
-
-  setPublishMessage() {
-    this.pubUnpubMessage = this.published ? this.unpublishMessage : this.publishMessage;
   }
 
   resetContainerEditData() {
@@ -382,14 +313,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
 
     if (index >= 0) {
       this.containerEditData.labels.splice(index, 1);
-    }
-  }
-
-  isHosted(): boolean {
-    if (this.tool) {
-      return this.tool.mode === DockstoreTool.ModeEnum.HOSTED;
-    } else {
-      return true;
     }
   }
 }

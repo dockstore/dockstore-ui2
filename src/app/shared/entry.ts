@@ -21,18 +21,19 @@ import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@ang
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
+import { BioschemaService } from './bioschema.service';
 import { DateService } from './date.service';
+import { EntryType } from './enum/entry-type';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { ProviderService } from './provider.service';
 import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-import { Dockstore } from '../shared/dockstore.model';
-import { BioschemaService } from './bioschema.service';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
@@ -52,6 +53,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   public validTabs;
   public currentTab = 'info';
   public urlVersion;
+  EntryType = EntryType;
   location: Location;
   public selectedVersion: WorkflowVersion | Tag | null = null;
   @Input() isWorkflowPublic = true;
@@ -122,9 +124,6 @@ export abstract class Entry implements OnInit, OnDestroy {
   abstract subscriptions(): void;
   abstract setProperties(): void;
   abstract getValidVersions(): void;
-  abstract publishDisable(): boolean;
-  abstract refresh(): void;
-  abstract publish(): void;
   abstract getDefaultVersionName(): string;
   abstract resetCopyBtn(): void;
   abstract isPublic(): boolean;

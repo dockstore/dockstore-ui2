@@ -25,8 +25,10 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RefreshAlertModule } from '../alert/alert.module';
 import { AvailableLogsModule } from '../available-logs.module';
+import { BioschemaService } from '../bioschema.service';
 import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
+import { EntryActionsService } from '../entry-actions/entry-actions.service';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
 import { CustomMaterialModule } from '../modules/material.module';
 import { CommitUrlPipe } from './commit-url.pipe';
@@ -40,7 +42,6 @@ import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
-import { BioschemaService } from '../bioschema.service';
 
 @NgModule({
   imports: [
@@ -91,6 +92,6 @@ import { BioschemaService } from '../bioschema.service';
     RouterModule
   ],
   entryComponents: [RegisterCheckerWorkflowComponent],
-  providers: [BioschemaService]
+  providers: [BioschemaService, EntryActionsService]
 })
 export class EntryModule {}
