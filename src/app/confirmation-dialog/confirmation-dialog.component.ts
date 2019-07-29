@@ -13,6 +13,7 @@ export class ConfirmationDialogComponent implements OnInit {
 }
 
 export class ConfirmationDialogData {
-  message: string;
-  title: string;
+  message?: string;
+  title?: string;
+  confirmationButtonText?: string;
 }
