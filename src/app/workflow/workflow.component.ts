@@ -84,7 +84,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public WorkflowModel = Workflow;
 
   public tokens: Token[];
-  protected zenodoAccountIsLinked = false;
+  public zenodoAccountIsLinked = false;
 
   @Input() user;
 
@@ -245,24 +245,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     }
   }
 
-  // Show linked services in the UI
-  private setAvailableTokens(tokens) {
-      const found = tokens.find(token => token.tokenSource === 'zenodo.org');
-      if (found) {
-        this.zenodoAccountIsLinked = true;
-      } else {
-        this.zenodoAccountIsLinked = false;
-      }
-  }
-
-  // Set tokens and linked services
-  private setTokens(tokens): void {
-    this.tokens = tokens;
-    if (tokens) {
-      this.setAvailableTokens(tokens);
-    }
-  }
-
   public subscriptions(): void {
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: BioWorkflow | Service) => {
       this.workflow = workflow;
@@ -279,7 +261,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.setUpWorkflow(workflow);
     });
     this.tokenQuery.tokens$.subscribe((tokens: Token[]) => {
-      this.setTokens(tokens);
+      this.zenodoAccountIsLinked = tokens.some(token => token.tokenSource === 'zenodo.org');
     });
   }
 

@@ -17,6 +17,7 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   @Input() selectedVersion: WorkflowVersion;
   @Input() isOwner: boolean;
   @Input() canWrite: boolean;
+  @Input() zenodoAccountIsLinked: boolean;
   createdoimessage = 'Create a digital object identifier (DOI) for this version';
   EntryType = EntryType;
   constructor(
