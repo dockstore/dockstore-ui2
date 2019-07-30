@@ -110,7 +110,8 @@ export class OrganizationMembersComponent extends Base implements OnInit {
   removeUserDialog(organizationUser: OrganizationUser) {
     const confirmationDialogData: ConfirmationDialogData = {
       title: 'Remove user from organization',
-      message: `Are you sure you want to <strong>remove</strong> the user <strong>${organizationUser.user.username}</strong> from the organization
+      message: `Are you sure you want to <strong>remove</strong> the user <strong>${organizationUser.user.username}</strong>
+      from the organization
     <strong>${organizationUser.organization.displayName}?`,
       cancelButtonText: 'NO THANKS',
       confirmationButtonText: 'REMOVE'
