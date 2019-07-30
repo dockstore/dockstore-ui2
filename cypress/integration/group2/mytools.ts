@@ -27,9 +27,7 @@ describe('Dockstore my tools', () => {
     cy.contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
-      .find('mat-tab-group')
-      .should('be.visible')
-      .contains('div', 'Unpublished')
+      .contains('.mat-tab-label-content', 'Unpublished')
       .should('be.visible')
       .click();
   }
