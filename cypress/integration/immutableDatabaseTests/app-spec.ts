@@ -15,7 +15,7 @@
  */
 import { setTokenUserViewPort } from '../../support/commands';
 
-describe('Dockstore Home', () => {
+describe('Logged in Dockstore Home', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('');
@@ -37,22 +37,6 @@ describe('Dockstore Home', () => {
         .should('be.visible')
         .click();
       cy.get('[data-cy=my-workflows-nav-button]').should('visible');
-    });
-  });
-
-  describe('Landing Video', () => {
-    it('video button visible', () => {
-      cy
-        .get('.btn.youtube')
-        .should('visible');
-    });
-    it('open and close video', () => {
-      cy.get('#youtubeModal').should('not.be.visible');
-      cy
-        .get('.btn.youtube').should('be.visible').click();
-      cy.get('#youtubeModal').should('be.visible');
-      cy.get('body').type('{esc}');
-      cy.get('#youtubeModal').should('not.be.visible');
     });
   });
 
@@ -78,4 +62,25 @@ describe('Dockstore Home', () => {
       .click();
   }
 
+});
+
+describe('Logged out Dockstore Home', () => {
+    beforeEach(() => {
+      cy.visit('');
+    });
+  describe('Landing Video', () => {
+    it('video button visible', () => {
+      cy
+        .get('.btn.youtube')
+        .should('visible');
+    });
+    it('open and close video', () => {
+      cy.get('#youtubeModal').should('not.be.visible');
+      cy
+        .get('.btn.youtube').should('be.visible').click();
+      cy.get('#youtubeModal').should('be.visible');
+      cy.get('body').type('{esc}');
+      cy.get('#youtubeModal').should('not.be.visible');
+    });
+  });
 });

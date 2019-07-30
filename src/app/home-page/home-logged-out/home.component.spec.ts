@@ -18,7 +18,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule, MatDialogModule, MatIconModule } from '@angular/material';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 
-import { TwitterService } from '../shared/twitter.service';
+import { TwitterService } from '../../shared/twitter.service';
 import { HomeComponent } from './home.component';
 import { RouterTestingModule } from '@angular/router/testing';
 

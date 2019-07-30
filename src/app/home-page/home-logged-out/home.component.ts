@@ -15,13 +15,12 @@
  */
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { Router } from '@angular/router';
+import { HomePageService } from 'app/home-page/home-page.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
-
-import { User } from '../shared/swagger/model/user';
-import { TwitterService } from '../shared/twitter.service';
-import { UserQuery } from '../shared/user/user.query';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { User } from '../../shared/swagger/model/user';
+import { TwitterService } from '../../shared/twitter.service';
+import { UserQuery } from '../../shared/user/user.query';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
@@ -50,7 +49,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('youtube') youtube: ElementRef;
 
-  constructor(private dialog: MatDialog, private twitterService: TwitterService, private userQuery: UserQuery, private router: Router) {}
+  constructor(
+    private dialog: MatDialog,
+    private twitterService: TwitterService,
+    private userQuery: UserQuery,
+    private homePageService: HomePageService
+  ) {}
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
@@ -60,7 +64,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   goToSearch(searchValue: string) {
-    this.router.navigate(['/search'], { queryParams: { search: searchValue } });
+    this.homePageService.goToSearch(searchValue);
   }
 
   onSelect(data: TabDirective): void {
