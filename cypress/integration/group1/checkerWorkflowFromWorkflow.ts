@@ -111,6 +111,7 @@ describe('Checker workflow test from my-workflows', () => {
       // In the parent tool right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
       // Hacky fix from https://github.com/cypress-io/cypress/issues/695
+      cy.wait(1000);
       cy.get('#publishButton')
         .invoke('width')
         .should('be.gt', 0);
@@ -132,6 +133,7 @@ describe('Checker workflow test from my-workflows', () => {
       // In the parent tool right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
       // Hacky fix from https://github.com/cypress-io/cypress/issues/695
+      cy.wait(1000)
       cy.get('#publishButton')
         .invoke('width')
         .should('be.gt', 0);
