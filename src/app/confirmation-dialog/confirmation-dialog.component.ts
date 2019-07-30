@@ -16,4 +16,5 @@ export class ConfirmationDialogData {
   message?: string;
   title?: string;
   confirmationButtonText?: string;
+  cancelButtonText?: string;
 }

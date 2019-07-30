@@ -13,11 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { ID } from '@datorama/akita';
+import { ConfirmationDialogData } from 'app/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';
+import { Base } from 'app/shared/base';
+import { bootstrap4mediumModalSize } from 'app/shared/constants';
 import { Observable } from 'rxjs';
-
+import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrganizationUser } from '../../shared/swagger';
@@ -28,36 +32,27 @@ import { OrganizationQuery } from '../state/organization.query';
 import { UpsertOrganizationMemberComponent } from '../upsert-organization-member/upsert-organization-member.component';
 
 @Component({
-  selector: 'organization-member-remove-dialog',
-  templateUrl: 'delete-username-confirm-dialog.html'
-})
-export class OrganizationMemberRemoveConfirmDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-}
-
-export interface DialogData {
-  role: OrganizationUser;
-}
-
-@Component({
   selector: 'organization-members',
   templateUrl: './organization-members.component.html',
   styleUrls: ['./organization-members.component.scss']
 })
-export class OrganizationMembersComponent implements OnInit {
+export class OrganizationMembersComponent extends Base implements OnInit {
   organizationMembers$: Observable<OrganizationUser[]>;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   canEditMembership$: Observable<boolean>;
   userId$: Observable<number>;
   constructor(
+    private confirmationDialogService: ConfirmationDialogService,
     private organizationMembersQuery: OrganizationMembersQuery,
     private organizationQuery: OrganizationQuery,
     private organizationMembersService: OrganizationMembersService,
     private matDialog: MatDialog,
     private userQuery: UserQuery,
     private alertService: AlertService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.userId$ = this.userQuery.userId$;
@@ -113,15 +108,20 @@ export class OrganizationMembersComponent implements OnInit {
    * @memberof OrganizationMembersComponent
    */
   removeUserDialog(organizationUser: OrganizationUser) {
-    const dialogRef = this.matDialog.open(OrganizationMemberRemoveConfirmDialogComponent, {
-      data: { role: organizationUser },
-      width: '600px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.organizationMembersService.removeUser(result.role);
-      }
-    });
+    const confirmationDialogData: ConfirmationDialogData = {
+      title: 'Remove user from organization',
+      message: `Are you sure you want to <strong>remove</strong> the user <strong>${organizationUser.user.username}</strong> from the organization
+    <strong>${organizationUser.organization.displayName}?`,
+      cancelButtonText: 'NO THANKS',
+      confirmationButtonText: 'REMOVE'
+    };
+    this.confirmationDialogService
+      .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.organizationMembersService.removeUser(organizationUser);
+        }
+      });
   }
 }

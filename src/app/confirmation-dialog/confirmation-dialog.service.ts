@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { bootstrap4smallModalSize } from 'app/shared/constants';
 import { Observable } from 'rxjs';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from './confirmation-dialog.component';
 
@@ -14,12 +13,13 @@ export class ConfirmationDialogService {
    * TODO: The function should probably be extended to have more parameters (sizes, colors, button text, etc)
    *
    * @param {ConfirmationDialogData} data  Data required to construct the dialog
+   * @param {string} size   Choose from bootstrap4smallModalSize, bootstrap4mediumModalSize, or bootstrap4LargeModalSize
    * @returns {Observable<boolean>}  true if 'Yes' was clicked, false if 'cancel' was clicked
    * @memberof ConfirmationDialogService
    */
-  openDialog(data: ConfirmationDialogData): Observable<boolean> {
+  openDialog(data: ConfirmationDialogData, size: string): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: bootstrap4smallModalSize,
+      width: size,
       data: data
     });
     return dialogRef.afterClosed();
