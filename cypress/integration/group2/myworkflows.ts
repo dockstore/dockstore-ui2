@@ -177,7 +177,9 @@ describe('Dockstore my workflows', () => {
       cy
         .get('#publishButton')
         .should('contain', 'Publish')
-        .click()
+        .click();
+
+      cy.get('#publishButton')
         .should('contain', 'Unpublish');
 
       cy

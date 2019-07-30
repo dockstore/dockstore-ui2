@@ -51,7 +51,9 @@
               placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
               [readonly]="(isService$ | async) || isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
             />
-            <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
+            <mat-card *ngIf="formErrors.workflow_path && !(isService$ | async)" class="alert alert-danger">
+              {{ formErrors.workflow_path }}
+            </mat-card>
           </div>
         </div>
         <div class="form-group form-group-sm" *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL">
