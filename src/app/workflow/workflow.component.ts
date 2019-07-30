@@ -38,15 +38,17 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor } from '../shared/swagger';
+import {Permission, Token, ToolDescriptor} from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
+import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
 
 import RoleEnum = Permission.RoleEnum;
+import {TokenQuery} from '../shared/state/token.query';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -80,6 +82,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   public WorkflowModel = Workflow;
+
+  public tokens: Token[];
+  protected zenodoAccountIsLinked = false;
+
   @Input() user;
 
   constructor(
@@ -101,6 +107,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private workflowQuery: WorkflowQuery,
     private alertQuery: AlertQuery,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
+    private tokenQuery: TokenQuery,
     public dialog: MatDialog
   ) {
     super(
@@ -238,6 +245,24 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     }
   }
 
+  // Show linked services in the UI
+  private setAvailableTokens(tokens) {
+      const found = tokens.find(token => token.tokenSource === 'zenodo.org');
+      if (found) {
+        this.zenodoAccountIsLinked = true;
+      } else {
+        this.zenodoAccountIsLinked = false;
+      }
+  }
+
+  // Set tokens and linked services
+  private setTokens(tokens): void {
+    this.tokens = tokens;
+    if (tokens) {
+      this.setAvailableTokens(tokens);
+    }
+  }
+
   public subscriptions(): void {
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: BioWorkflow | Service) => {
       this.workflow = workflow;
@@ -252,6 +277,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         }
       }
       this.setUpWorkflow(workflow);
+    });
+    this.tokenQuery.tokens$.subscribe((tokens: Token[]) => {
+      this.setTokens(tokens);
     });
   }
 
