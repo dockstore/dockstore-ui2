@@ -35,7 +35,7 @@
         </li>
         <li *ngIf="isPublic && isValidVersion">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
-          <a [href]="trsLink"> #workflow/{{ workflow?.full_workflow_path }} </a>
+          <a [href]="trsLink"> #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }} </a>
         </li>
         <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
           <span>
@@ -159,7 +159,7 @@
       <mat-card-subtitle class="m-0">{{ selectedVersion?.name }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="p-3">
-      <div>
+      <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <strong matTooltip="Digital Object Identifier">DOI</strong>:
         {{ selectedVersion && selectedVersion.doiURL ? selectedVersion.doiURL : 'n/a' }}
       </div>

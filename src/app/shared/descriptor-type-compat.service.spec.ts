@@ -18,8 +18,7 @@ describe('Service: DescriptorTypeCompat', () => {
       expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.CWL)).toEqual('PLAIN-CWL');
       expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.WDL)).toEqual('PLAIN-WDL');
       expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.NFL)).toEqual('PLAIN-NFL');
-      // TODO: Actually handle this
-      expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.SERVICE)).toEqual(null);
+      expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.SERVICE)).toEqual('PLAIN-SERVICE');
 
       expect(service.toolDescriptorTypeEnumToPlainTRS(<ToolDescriptor.TypeEnum>'potato')).toEqual(null);
       expect(service.toolDescriptorTypeEnumToPlainTRS(null)).toEqual(null);

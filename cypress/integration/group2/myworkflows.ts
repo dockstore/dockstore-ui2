@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { getTab, goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -154,10 +154,10 @@ describe('Dockstore my workflows', () => {
     it('Look at each tab', () => {
       const tabs = ['Info', 'Launch', 'Versions', 'Files', 'Tools', 'DAG'];
       cy.visit('/my-workflows/github.com/A/l');
-      getTab('Info').parent()
-        .should('have.class', 'mat-tab-label-active');
+      isActiveTab('Info');
       tabs.forEach(tab => {
-        goToTab(tab).parent().should('have.class', 'mat-tab-label-active');
+        goToTab(tab);
+        isActiveTab(tab);
         if (tab === 'Versions') {
           cy
             .get('table>tbody>tr')
@@ -177,7 +177,9 @@ describe('Dockstore my workflows', () => {
       cy
         .get('#publishButton')
         .should('contain', 'Publish')
-        .click()
+        .click();
+
+      cy.get('#publishButton')
         .should('contain', 'Unpublish');
 
       cy

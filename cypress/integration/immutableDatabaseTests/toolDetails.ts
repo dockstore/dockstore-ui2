@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { getTab, goToTab, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
   setTokenUserViewPort();
@@ -73,8 +73,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
     });
 
     it('Should have Dockerfile tab selected', () => {
-      getTab('Dockerfile').parent()
-        .should('have.class', 'mat-tab-label-active');
+      isActiveTab('Dockerfile');
 
       it('Should have content in file viewer', () => {
         cy
@@ -126,8 +125,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
     });
 
     it('Should have Dockerfile tab selected', () => {
-      getTab('Dockerfile').parent()
-        .should('have.class', 'mat-tab-label-active');
+      isActiveTab('Dockerfile');
 
       it('Should have content in file viewer', () => {
         cy
