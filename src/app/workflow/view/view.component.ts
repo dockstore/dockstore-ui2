@@ -27,7 +27,6 @@ import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
-import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
@@ -60,8 +59,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
     private matDialog: MatDialog,
     private hostedService: HostedService,
     dateService: DateService,
-    private alertService: AlertService,
-    private refreshService: RefreshService
+    private alertService: AlertService
   ) {
     super(dateService);
   }
