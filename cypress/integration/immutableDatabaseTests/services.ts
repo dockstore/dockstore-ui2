@@ -32,19 +32,19 @@ describe('Dockstore Home', () => {
     });
   });
 
-  // TODO: This is a fake service, need to use a more realistic one later
   describe('services', () => {
-    it('Have no services in /services', () => {
+    it('Have one services in /services', () => {
       cy.visit('/services');
       cy.url().should('contain', 'services');
       cy.get('[data-cy=header]').contains('h3', 'Available Services');
       cy.contains('Search services');
+      cy.contains('garyluu/another-test-service');
     });
     it('Have fake service in /services/{id}', () => {
-      cy.visit('/services/github.com/A/l');
-      cy.url().should('contain', '/services/github.com/A/l');
+      cy.visit('/services/github.com/garyluu/another-test-service');
+      cy.url().should('contain', '/services/github.com/garyluu/another-test-service');
       cy.get('[data-cy=header]').contains('h3', 'Available Services');
-      cy.contains('github.com/A/l:master');
+      cy.contains('github.com/garyluu/another-test-service:1.3');
       checkTabs();
       checkInfoTab();
       // TRS only visibile in public page
@@ -56,24 +56,22 @@ describe('Dockstore Home', () => {
     });
   });
 
-  // TODO: These are fake services, need to use a more realistic ones later
-  // describe('my-services', () => {
-  //   setTokenUserViewPort();
-  //   it('Have no services in /services', () => {
-  //     cy.visit('/my-services');
-  //     cy.url().should('contain', 'my-services/github.com/A/l');
-  //     cy.get('[data-cy=header]').contains('h3', 'My Services');
-  //     cy.get('#workflow-path').contains('github.com/A/l:master');
-  //     checkTabs();
-  //     checkInfoTab();
-  //     // TRS only visibile in public page
-  //     cy.contains('TRS: ').should('not.be.visible');
-  //     checkVersionsTab();
-  //     // Hidden version not visible on public page
-  //     cy.contains('td', 'test').should('be.visible');
-  //     checkFilesTab();
-  //   });
-  // });
+  describe('my-services', () => {
+    setTokenUserViewPort();
+    it('Have no services in /services', () => {
+      cy.visit('/my-services');
+      cy.url().should('contain', 'my-services/github.com/garyluu/another-test-service');
+      cy.get('[data-cy=header]').contains('h3', 'My Services');
+      // 1.3 version is selected because it's the newest version
+      cy.get('#workflow-path').contains('github.com/garyluu/another-test-service:1.3');
+      checkTabs();
+      checkInfoTab();
+      // TRS only visibile in public page
+      cy.contains('TRS: ').should('not.be.visible');
+      checkVersionsTab();
+      checkFilesTab();
+    });
+  });
   function checkTabs() {
     assertVisibleTab('Info');
     assertVisibleTab('Versions');
@@ -100,16 +98,16 @@ describe('Dockstore Home', () => {
   function checkVersionsTab() {
     goToTab('Versions');
     cy.contains('tr', 'Git Reference');
-    cy.contains('td', 'master');
+    cy.contains('td', '1.3');
     cy.contains('tr', 'Date Modified');
-    cy.contains('td', 'Nov 28, 2016, 3:01:57 PM');
+    cy.contains('td', 'Jul 19, 2019, 1:13:48 PM');
     cy.contains('tr', 'Valid');
     cy.contains('tr', 'Verified Platforms');
     cy.contains('button', 'View');
   }
   function checkFilesTab() {
     goToTab('Files');
-    cy.contains('1st-workflow.cwl');
-    cy.contains('cwlVersion: v1.0');
+    cy.contains('README.md');
+    cy.contains('# another-test-serviceaaaa');
   }
 });
