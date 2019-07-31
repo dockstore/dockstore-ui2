@@ -38,7 +38,7 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import {Permission, Token, ToolDescriptor} from '../shared/swagger';
+import {Permission, ToolDescriptor} from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
@@ -48,7 +48,6 @@ import { UrlResolverService } from '../shared/url-resolver.service';
 import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
 
 import RoleEnum = Permission.RoleEnum;
-import {TokenQuery} from '../shared/state/token.query';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -83,9 +82,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   public WorkflowModel = Workflow;
 
-  public tokens: Token[];
-  public zenodoAccountIsLinked = false;
-
   @Input() user;
 
   constructor(
@@ -107,7 +103,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private workflowQuery: WorkflowQuery,
     private alertQuery: AlertQuery,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
-    private tokenQuery: TokenQuery,
     public dialog: MatDialog
   ) {
     super(
@@ -259,9 +254,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         }
       }
       this.setUpWorkflow(workflow);
-    });
-    this.tokenQuery.tokens$.subscribe((tokens: Token[]) => {
-      this.zenodoAccountIsLinked = tokens.some(token => token.tokenSource === 'zenodo.org');
     });
   }
 
