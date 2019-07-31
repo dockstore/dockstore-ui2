@@ -91,6 +91,13 @@ export class ViewWorkflowComponent extends View implements OnInit {
     });
   }
 
+  /**
+   * Updates the workflow version and alerts the Dockstore User with success
+   * or failure.
+   *
+   * @private
+   * @memberof ViewWorkflowComponent
+   */
   private updateWorkflowToSnapshot(version): void {
     this.workflowsService.updateWorkflowVersion(this.workflow.id, [version]).subscribe(
       workflowVersions => {
@@ -108,7 +115,13 @@ export class ViewWorkflowComponent extends View implements OnInit {
       }
     );
   }
-
+  /**
+   * Opens a confirmation dialog that the Dockstore User can use to
+   * confirm they want a snapshot.
+   *
+   * @private
+   * @memberof ViewWorkflowComponent
+   */
   snapshotVersion(): void {
     // Create a new version temporarily with the frozen bit set. We assume the version is
     // not already a snapshot since the UI controls shouldn't be available for
