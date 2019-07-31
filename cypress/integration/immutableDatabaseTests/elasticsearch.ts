@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { betaMode } from 'app/shared/constants';
 import { setTokenUserViewPort } from '../../support/commands';
 
 describe('elasticsearch from logged-out homepage', () => {
@@ -27,13 +28,21 @@ describe('elasticsearch from logged-out homepage', () => {
 
 describe('elasticsearch from logged-in homepage', () => {
   setTokenUserViewPort();
-  it('Should be able to search entries for using text', () => {
-    cy.visit('/');
-    cy.get('[data-cy=loggedInSearchBar]')
-      .should('have.attr', 'placeholder', 'Search...')
-      .type('asdf{enter}');
-    cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
-  });
+  if (betaMode) {
+    it('Should be able to search entries for using text', () => {
+      cy.visit('/');
+      cy.get('[data-cy=loggedInSearchBar]')
+        .should('have.attr', 'placeholder', 'Search...')
+        .type('asdf{enter}');
+      cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
+    });
+  } else {
+    it('Should be able to search entries for using text', () => {
+      cy.visit('/');
+      cy.get('#searchBar')
+        .should('have.attr', 'placeholder', 'Search...')
+        .type('asdf{enter}');
+      cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
+    });
+  }
 });
-
-
