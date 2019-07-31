@@ -66,15 +66,7 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group3/**/*'
-  integration_test_4:
-    executor: integration_test_exec
-    working_directory: ~/repo
-    steps:
-      - setup_integration_test
-      - run:
-          name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group4/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/immutableDatabaseTests/**/*'
   upload_to_s3:
     working_directory: ~/repo
     docker:
@@ -89,6 +81,7 @@ jobs:
           steps:
             - attach_workspace:
                 at: .
+            # Copy to a versioned folder
             - aws-s3/copy:
                 from: dist
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)'
@@ -100,11 +93,44 @@ jobs:
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
+            # Copy to a "live" develop folder
+            - aws-s3/copy:
+                from: dist
+                to: 's3://${AWS_BUCKET}/develop/'
+                arguments: |
+                  --recursive \
+                  --exclude index.html
+            - aws-s3/copy:
+                from: dist/index.html
+                to: 's3://${AWS_BUCKET}/develop/'
+                arguments: |
+                  --cache-control max-age=0
+  update_cloudfront:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python:2.7
+    parameters:
+      aws_bucket:
+        type: string
+        default: "${AWS_BUCKET}"
+    steps:
+      - when:
+          condition: <<parameters.aws_bucket>>
+          steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: Install AWS CLI
+                command: sudo pip install awscli --upgrade
+            - run:
+                name: Invalidate Cloudfront
+                command: bash -c 'aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
+
 workflows:
   version: 2
   everything:
     jobs:
-      # Add the tags filter to all jobs so they will run before upload_to_s3
+#      # Add the tags filter to all jobs so they will run before upload_to_s3
       - lint_unit_test_coverage:
           filters:
             tags:
@@ -127,24 +153,25 @@ workflows:
               only: /.*/
           requires:
             - lint_unit_test_coverage
-      - integration_test_4:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_unit_test_coverage
       # Upload builds for tags to s3. We can add branches later
       - upload_to_s3:
           requires:
             - integration_test_1
             - integration_test_2
             - integration_test_3
-            - integration_test_4
           filters:
             tags:
               only: /.*/
             branches:
-              only: develop
+              # Note to reviewers: will change to develop before merging, once build works off the branch
+              only: feature/SEAB-314/cd
+      - update_cloudfront:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              # Note to reviewers: will change to develop before merging, once build works off the branch
+              only: feature/SEAB-314/cd
 commands:
   install_container_dependencies:
     steps:

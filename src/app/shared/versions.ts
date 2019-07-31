@@ -37,11 +37,9 @@ export abstract class Versions extends EntryTab {
   dtOptions;
 
   abstract setNoOrderCols(): Array<number>;
-
   constructor(protected dockstoreService: DockstoreService, private dateService: DateService, protected sessionQuery: SessionQuery) {
-    // By default, sort by last_modified, latest first
+    // By default, sort by last_built for tools and last_modified for workflows, latest first
     super();
-    this.sortColumn = 'last_modified';
     this.sortReverse = true;
   }
 

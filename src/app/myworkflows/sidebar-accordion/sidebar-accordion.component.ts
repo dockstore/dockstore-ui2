@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
+import { Organization } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
@@ -19,10 +21,22 @@ export class SidebarAccordionComponent implements OnInit {
   activeTab = 0;
   entryType$: Observable<EntryType>;
   EntryType = EntryType;
-  constructor(private workflowQuery: WorkflowQuery, public dialog: MatDialog, private sessionQuery: SessionQuery) {}
+  public isRefreshing$: Observable<boolean>;
+  constructor(
+    private workflowQuery: WorkflowQuery,
+    public dialog: MatDialog,
+    private sessionQuery: SessionQuery,
+    private alertQuery: AlertQuery
+  ) {}
 
   ngOnInit(): void {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.entryType$ = this.sessionQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
+  }
+
+  syncOrganization(organization: Organization) {
+    // Placeholder
+    // Go to endpoint that performs the sync organization with GitHub operation
   }
 }

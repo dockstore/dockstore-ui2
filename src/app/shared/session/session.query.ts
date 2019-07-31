@@ -18,6 +18,7 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Dockstore } from '../dockstore.model';
 import { EntryType } from '../enum/entry-type';
 import { SessionState, SessionStore } from './session.store';
 
@@ -47,6 +48,6 @@ export class SessionQuery extends Query<SessionState> {
   generateGitHubAppInstallationUrl(entryType: EntryType): string {
     let queryParams = new HttpParams();
     queryParams = queryParams.set('state', entryType);
-    return 'https://github.com/apps/dockstore/installations/new?' + queryParams;
+    return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams.toString();
   }
 }

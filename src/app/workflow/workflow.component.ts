@@ -15,16 +15,15 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
-import { AlertService } from '../shared/alert/state/alert.service';
+import { BioschemaService } from '../shared/bioschema.service';
 import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
@@ -34,7 +33,6 @@ import { EntryType } from '../shared/enum/entry-type';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
-import { RefreshService } from '../shared/refresh.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
@@ -42,7 +40,6 @@ import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
 import { Permission, ToolDescriptor } from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
-import { PublishRequest } from '../shared/swagger/model/publishRequest';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
@@ -69,7 +66,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public entryType: EntryType;
-  validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
+  validTabs = [];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
   protected canWrite = false;
@@ -77,20 +74,18 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   protected readers = [];
   protected writers = [];
   protected owners = [];
-  EntryType = EntryType;
+  // Whether to show the workflow action buttons or not.
+  // Only show after getting actions is done or else the buttons will not appear all at once
+  public showWorkflowActions = false;
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
-  publishMessage = 'Publish the workflow to make it visible to the public';
-  unpublishMessage = 'Unpublish the workflow to remove it from the public';
-  viewPublicMessage = 'Go to the public page for this workflow';
-  pubUnpubMessage: string;
   public WorkflowModel = Workflow;
   @Input() user;
 
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
-    private refreshService: RefreshService,
+    bioschemaService: BioschemaService,
     private workflowsService: WorkflowsService,
     trackLoginService: TrackLoginService,
     providerService: ProviderService,
@@ -98,7 +93,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private workflowService: WorkflowService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
     urlResolverService: UrlResolverService,
-    private alertService: AlertService,
     location: Location,
     activatedRoute: ActivatedRoute,
     protected sessionQuery: SessionQuery,
@@ -114,6 +108,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       providerService,
       router,
       dateService,
+      bioschemaService,
       urlResolverService,
       activatedRoute,
       location,
@@ -125,8 +120,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.location = location;
     this.entryType = this.sessionQuery.getSnapshot().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else {
+      this.validTabs = ['info', 'versions', 'files'];
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
     }
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
@@ -193,11 +190,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.resetWorkflowEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
-    this.schema = {
-      '@type': 'ListItem',
-      position: this.workflow.id,
-      url: this.shareURL
-    };
+    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
   }
 
   public getDefaultVersionName(): string {
@@ -209,16 +202,22 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.workflow = workflow;
       this.title = this.workflow.full_workflow_path;
       this.initTool();
-      this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
+      this.sortedVersions = this.getSortedWorkflowVersions(this.workflow.workflowVersions, this.defaultVersion);
       if (this.publicPage) {
         this.sortedVersions = this.dockstoreService.getValidVersions(this.sortedVersions);
       }
       this.canRead = this.canWrite = this.isOwner = false;
       this.readers = this.writers = this.owners = [];
       if (!this.isPublic()) {
+        this.showWorkflowActions = false;
         this.workflowsService
           .getWorkflowActions(this.workflow.full_workflow_path)
-          .pipe(takeUntil(this.ngUnsubscribe))
+          .pipe(
+            finalize(() => {
+              this.showWorkflowActions = true;
+            }),
+            takeUntil(this.ngUnsubscribe)
+          )
           .subscribe((actions: Array<string>) => {
             // Alas, Swagger codegen does not generate a type for the actions
             this.canRead = actions.indexOf('READ') !== -1;
@@ -244,8 +243,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.workflow = workflow;
       if (workflow) {
         this.published = this.workflow.is_published;
-        this.setPublishMessage();
-        this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
+        this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
           this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
@@ -257,8 +255,13 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     });
   }
 
-  setPublishMessage() {
-    this.pubUnpubMessage = this.published ? this.unpublishMessage : this.publishMessage;
+  /**
+   * Select the Versions tab
+   *
+   * @memberof WorkflowComponent
+   */
+  public selectVersionsTab() {
+    this.selectTab(this.validTabs.indexOf('versions'));
   }
 
   public setupPublicEntry(url: String) {
@@ -313,66 +316,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
   }
 
-  publishDisable(): boolean {
-    return !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB || !this.isOwner;
-  }
-
-  publish() {
-    if (this.publishDisable()) {
-      return;
-    } else {
-      const request: PublishRequest = {
-        publish: this.published
-      };
-      const message = this.published ? 'Publishing workflow' : 'Unpublishing workflow';
-      this.alertService.start(message);
-      this.workflowsService.publish(this.workflow.id, request).subscribe(
-        (response: Workflow) => {
-          this.workflowService.upsertWorkflowToWorkflow(response);
-          this.workflowService.setWorkflow(response);
-          this.setPublishMessage();
-          this.alertService.detailedSuccess();
-          if (response.checker_id) {
-            this.workflowsService
-              .getWorkflow(response.checker_id)
-              .pipe(takeUntil(this.ngUnsubscribe))
-              .subscribe(
-                (workflow: Workflow) => {
-                  this.workflowService.upsertWorkflowToWorkflow(workflow);
-                },
-                (error: HttpErrorResponse) => this.alertService.detailedError(error)
-              );
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.published = !this.published;
-          this.alertService.detailedError(error);
-        }
-      );
-    }
-  }
-
-  isValid() {
-    if (!this.workflow) {
-      return false;
-    }
-    if (this.workflow.is_published) {
-      return true;
-    }
-    const versionTags = this.workflow.workflowVersions;
-
-    if (versionTags === null) {
-      return false;
-    }
-
-    for (const versionTag of versionTags) {
-      if (versionTag.valid) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   restubWorkflow() {
     this.workflowsService.restub(this.workflow.id).subscribe(response => {
       this.workflowService.setWorkflow(response);
@@ -411,11 +354,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     });
   }
 
-  refresh() {
-    const versionName = this.selectedVersion ? this.selectedVersion.name : null;
-    this.refreshService.refreshWorkflow(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, versionName);
-  }
-
   /**
    * Called when the selected version is changed
    * @param {WorkflowVersion} version - New version
@@ -430,6 +368,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
+    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
   }
 
   setEntryTab(tabName: string): void {

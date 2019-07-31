@@ -44,6 +44,7 @@ import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { DateService } from '../date.service';
+import { WorkflowActionsComponent } from '../entry-actions/workflow-actions.component';
 import { FileService } from '../file.service';
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
@@ -74,6 +75,7 @@ import { getTooltipConfig } from './../tooltip';
     PermissionsComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
+    WorkflowActionsComponent,
     InfoTabComponent,
     ToolTabComponent,
     EntryFileTabComponent
@@ -113,7 +115,7 @@ import { getTooltipConfig } from './../tooltip';
     RegisterWorkflowModalService,
     VersionModalService
   ],
-  exports: [WorkflowComponent, CustomMaterialModule, EntryModule, HeaderModule, CommonModule],
+  exports: [WorkflowComponent, CustomMaterialModule, EntryModule, HeaderModule, CommonModule, WorkflowActionsComponent],
   entryComponents: [VersionModalComponent]
 })
 export class WorkflowModule {}

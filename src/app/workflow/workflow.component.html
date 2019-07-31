@@ -83,43 +83,14 @@
     </div>
     <div *ngIf="!publicPage" class="col-md-5">
       <h3>
-        <div class="pull-right my-entry-button-group">
-          <a
-            *ngIf="workflow?.is_published"
-            [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"
-            id="viewPublicWorkflowButton"
-            mat-button
-            color="basic"
-            [disabled]="isRefreshing$ | async"
-            [matTooltip]="viewPublicMessage"
-            class="mr-2"
-          >
-            View Public
-          </a>
-          <button
-            mat-flat-button
-            id="publishButton"
-            class="mr-2"
-            color="accent"
-            (click)="publish()"
-            [(ngModel)]="published"
-            [disabled]="(isRefreshing$ | async) || publishDisable()"
-            [matTooltip]="pubUnpubMessage"
-            btnCheckbox
-          >
-            {{ workflow?.is_published ? 'Unpublish' : 'Publish' }}
-          </button>
-          <button
-            mat-flat-button
-            color="primary"
-            (click)="refresh()"
-            [disabled]="isRefreshing$ | async"
-            *ngIf="!isHosted() && canWrite"
-            matTooltip="Sync the workflow with the source control repository"
-          >
-            Refresh
-          </button>
-        </div>
+        <app-workflow-actions
+          *ngIf="showWorkflowActions"
+          [entryType]="entryType"
+          [workflow]="workflow"
+          [selectedVersion]="selectedVersion"
+          [isOwner]="isOwner"
+          [canWrite]="canWrite"
+        ></app-workflow-actions>
       </h3>
     </div>
   </div>
@@ -227,7 +198,7 @@
                 <mat-card class="alert alert-info" role="alert">
                   <mat-icon>info</mat-icon>
                   <span *ngIf="entryType === EntryType.Service; else noVersionsVersionTabBioWorkflow">
-                    This service does not have any versions. Create a release/tag on GitHub with a valid .dockstore.yaml to add a new
+                    This service does not have any versions. Create a release/tag on GitHub with a valid .dockstore.yml to add a new
                     version.
                   </span>
                   <ng-template #noVersionsVersionTabBioWorkflow>
@@ -251,8 +222,8 @@
 
                 <ng-template #noVersionsFilesTab>
                   <mat-card class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> This service does not have any versions. Create a release/tag on GitHub with a valid dockstore
-                    config file to add a new version.
+                    <mat-icon>info</mat-icon> This service does not have any versions. Create a release/tag on GitHub with a valid
+                    .dockstore.yml to add a new version.
                   </mat-card>
                 </ng-template>
               </div>
@@ -310,6 +281,7 @@
             <mat-tab id="dagTab" label="DAG">
               <ng-template matTabContent>
                 <app-dag
+                  *ngIf="selectedVersion"
                   [id]="workflow?.id"
                   [selectedVersion]="selectedVersion"
                   [canRead]="canRead"
@@ -362,7 +334,7 @@
               </p>
               <hr class="m-0" />
             </span>
-            <a (click)="selectTab(2)">See all versions</a>
+            <a (click)="selectVersionsTab()">See all versions</a>
           </div>
         </div>
       </div>

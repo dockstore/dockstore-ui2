@@ -35,10 +35,12 @@ import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
-import { HomeComponent, YoutubeComponent } from './home/home.component';
+import { YoutubeComponent } from './home-page/home-logged-out/home.component';
+import { HomePageModule } from './home-page/home-page.module';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -66,7 +68,6 @@ import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
-import { DockstoreService } from './shared/dockstore.service';
 import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
 import { ExtendedToolsService } from './shared/extended-tools.service';
@@ -120,7 +121,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     DeleteAccountDialogComponent,
     SponsorsComponent,
     NavbarComponent,
-    HomeComponent,
     FooterComponent,
     LoginComponent,
     OnboardingComponent,
@@ -139,7 +139,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ChangeUsernameComponent,
     YoutubeComponent,
     SitemapComponent,
-    GithubCallbackComponent
+    GithubCallbackComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -171,7 +172,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ApiModule2.forRoot(getApiConfig),
     CustomMaterialModule,
     RefreshAlertModule,
-    RequestsModule
+    RequestsModule,
+    HomePageModule
   ],
   providers: [
     AccountsService,
@@ -180,7 +182,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     LoginService,
     RegisterService,
     LogoutService,
-    DockstoreService,
     DateService,
     TrackLoginService,
     ListService,
@@ -211,7 +212,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults }
   ],
-  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
+  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

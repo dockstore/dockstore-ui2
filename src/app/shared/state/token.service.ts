@@ -68,15 +68,19 @@ export class TokenService {
     this.tokenStore.updateRoot({ gitHubOrganizations: gitHubOrganizations });
   }
 
-  getGitHubOrganizations(token: String) {
-    const httpClient = new HttpClient(this.httpBackend);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: 'token ' + token
-      })
-    };
-    const getOrganizationUrl = 'https://api.github.com/user/orgs';
-    httpClient.get(getOrganizationUrl, httpOptions).subscribe(gitHubOrganizations => this.setGitHubOrganizations(gitHubOrganizations));
+  getGitHubOrganizations(token: string | null) {
+    if (token) {
+      const httpClient = new HttpClient(this.httpBackend);
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          Authorization: 'token ' + token
+        })
+      };
+      const getOrganizationUrl = 'https://api.github.com/user/orgs';
+      httpClient.get(getOrganizationUrl, httpOptions).subscribe(gitHubOrganizations => this.setGitHubOrganizations(gitHubOrganizations));
+    } else {
+      this.setGitHubOrganizations([]);
+    }
   }
 }

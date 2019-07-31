@@ -59,7 +59,7 @@
       <mat-hint>Once approved, this email address will be publicly visible</mat-hint>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" matInput formControlName="avatarUrl" placeholder="Image URL" />
+      <input data-cy="image-url-input" type="text" matInput formControlName="avatarUrl" placeholder="Image URL" />
       <mat-error *ngIf="avatarUrl.hasError('pattern')">Link must end in .jpg, .jpeg, .png, or .gif</mat-error>
       <mat-hint>Link to your organization's logo. Link must end in .jpg, .jpeg, .png, or .gif</mat-hint>
     </mat-form-field>

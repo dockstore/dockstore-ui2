@@ -36,10 +36,17 @@ describe('DateService', () => {
     const result = date === 'Aug. 31 2017 at 9:16:51 PM' || date === 'Aug. 31 2017 at 17:16:51';
   }));
   it('should be getAgoMessage', inject([DateService], (service: DateService) => {
-    expect(service.getAgoMessage(null)).toEqual('n/a');
+    expect(service.getAgoMessage(null)).toEqual(null);
     expect(service.getAgoMessage(1498675698000)).toContain(' days ago');
   }));
   it('should be getVerifiedLink', inject([DateService], (service: DateService) => {
     expect(service.getVerifiedLink()).toEqual('https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow');
+  }));
+  it('should be ISO8601Format when given number', inject([DateService], (service: DateService) => {
+    expect(service.getISO8601Format(1498675698000)).toEqual('2017-06-28T18:48:18.000Z');
+  }));
+  it('should be ISO8601Format when given Date', inject([DateService], (service: DateService) => {
+    const tsAsDate = new Date(1498675698000);
+    expect(service.getISO8601Format(tsAsDate)).toEqual('2017-06-28T18:48:18.000Z');
   }));
 });

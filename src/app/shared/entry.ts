@@ -21,17 +21,19 @@ import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@ang
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
+import { BioschemaService } from './bioschema.service';
 import { DateService } from './date.service';
+import { EntryType } from './enum/entry-type';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { ProviderService } from './provider.service';
 import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-import { Dockstore } from '../shared/dockstore.model';
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
@@ -51,6 +53,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   public validTabs;
   public currentTab = 'info';
   public urlVersion;
+  EntryType = EntryType;
   location: Location;
   public selectedVersion: WorkflowVersion | Tag | null = null;
   @Input() isWorkflowPublic = true;
@@ -64,6 +67,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     public providerService: ProviderService,
     public router: Router,
     public dateService: DateService,
+    public bioschemaService: BioschemaService,
     public urlResolverService: UrlResolverService,
     public activatedRoute: ActivatedRoute,
     public locationService: Location,
@@ -120,9 +124,6 @@ export abstract class Entry implements OnInit, OnDestroy {
   abstract subscriptions(): void;
   abstract setProperties(): void;
   abstract getValidVersions(): void;
-  abstract publishDisable(): boolean;
-  abstract refresh(): void;
-  abstract publish(): void;
   abstract getDefaultVersionName(): string;
   abstract resetCopyBtn(): void;
   abstract isPublic(): boolean;
@@ -193,10 +194,10 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @returns {((WorkflowVersion | Tag))}  The version to display to the user
    * @memberof Entry
    */
-  public selectVersion(versions: Array<WorkflowVersion | Tag>, urlVersion: string, defaultVersion: string): WorkflowVersion | Tag {
-    if (!versions || versions.length === 0) {
-      return null;
-    }
+  public selectVersion(versions: Array<WorkflowVersion | Tag>, urlVersion: string, defaultVersion: string): WorkflowVersion | Tag | null {
+    // if (!versions || versions.length === 0) {
+    //   return null;
+    // }
     let foundVersion: WorkflowVersion | Tag;
     if (urlVersion) {
       foundVersion = versions.find((version: WorkflowVersion | Tag) => version.name === urlVersion);
@@ -209,10 +210,25 @@ export abstract class Entry implements OnInit, OnDestroy {
       if (foundVersion) {
         return foundVersion;
       }
+    } else {
+      return null;
     }
+  }
 
-    // Select newest last_modified version, if it's the same, choose the top
-    return versions.reduce((a, b) => (b.last_modified > a.last_modified ? b : a));
+  selectTag(versions: Array<Tag>, urlVersion: string, defaultVersion: string): Tag {
+    if (!versions || versions.length === 0) {
+      return null;
+    }
+    const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
+    return selectedTag || versions.reduce((a, b) => (b.last_built > a.last_built ? b : a));
+  }
+
+  selectWorkflowVersion(versions: Array<WorkflowVersion>, urlVersion: string, defaultVersion: string) {
+    if (!versions || versions.length === 0) {
+      return null;
+    }
+    const selectedWorkflowVersion = this.selectVersion(versions, urlVersion, defaultVersion);
+    return selectedWorkflowVersion || versions.reduce((a, b) => (b.last_modified > a.last_modified ? b : a));
   }
 
   public getEntryPathFromURL(): string {
@@ -266,15 +282,39 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @param {Tag|WorkflowVersion} b - version b
    * @returns {number} - indicates order
    */
-  entryVersionSorting(a: Tag | WorkflowVersion, b: Tag | WorkflowVersion): number {
+
+  verifiedSorting(a: Tag | WorkflowVersion, b: Tag | WorkflowVersion): number {
     if (a.verified && !b.verified) {
       return -1;
     } else if (!a.verified && b.verified) {
       return 1;
     } else {
+      return 0;
+    }
+  }
+  workflowVersionSorting(a: WorkflowVersion, b: WorkflowVersion): number {
+    const verifiedSorting = this.verifiedSorting(a, b);
+    if (verifiedSorting !== 0) {
+      return verifiedSorting;
+    } else {
       if (a.last_modified > b.last_modified) {
         return -1;
       } else if (a.last_modified < b.last_modified) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  }
+
+  tagSorting(a: Tag, b: Tag): number {
+    const verifiedSorting = this.verifiedSorting(a, b);
+    if (verifiedSorting !== 0) {
+      return verifiedSorting;
+    } else {
+      if (a.last_built > b.last_built) {
+        return -1;
+      } else if (a.last_built < b.last_built) {
         return 1;
       } else {
         return 0;
@@ -292,12 +332,11 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @param {Tag|WorkflowVersion} defaultVersion - Default version of the entry
    * @returns {Array<any>} Sorted array of versions
    */
-  getSortedVersions(versions: Array<Tag | WorkflowVersion>, defaultVersion: Tag | WorkflowVersion): Array<Tag | WorkflowVersion> {
-    let sortedVersions: Array<Tag | WorkflowVersion> = [];
-
-    // Sort versions by verified date and then last_modified
-    sortedVersions = versions.slice().sort((a, b) => this.entryVersionSorting(a, b));
-
+  getSortedVersions(
+    versions: Array<Tag | WorkflowVersion>,
+    defaultVersion: Tag | WorkflowVersion,
+    sortedVersions: Array<Tag | WorkflowVersion>
+  ): Array<Tag | WorkflowVersion> {
     // Get the top 6 versions
     const recentVersions: Array<Tag | WorkflowVersion> = sortedVersions.slice(0, 6);
     const index = recentVersions.indexOf(defaultVersion);
@@ -319,6 +358,16 @@ export abstract class Entry implements OnInit, OnDestroy {
     }
 
     return recentVersions;
+  }
+
+  getSortedWorkflowVersions(versions: Array<WorkflowVersion>, defaultVersion: WorkflowVersion): Array<WorkflowVersion> {
+    const sortedWorkflowVersions: Array<WorkflowVersion> = versions.slice().sort((a, b) => this.workflowVersionSorting(a, b));
+    return this.getSortedVersions(versions, defaultVersion, sortedWorkflowVersions);
+  }
+
+  getSortedTags(versions: Array<Tag>, defaultVersion: WorkflowVersion): Array<Tag> {
+    const sortedTags: Array<Tag> = versions.slice().sort((a, b) => this.tagSorting(a, b));
+    return this.getSortedVersions(versions, defaultVersion, sortedTags);
   }
 
   /**

@@ -21,12 +21,11 @@
   <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> {{ myEntryPageTitle$ | async | titlecase }}
 </app-header>
 <button
-  *ngIf="entryType === EntryType.BioWorkflow"
   mat-fab
   color="accent"
   id="registerWorkflowButton"
   class="fab-bottom-right"
-  matTooltip="Register workflow"
+  matTooltip="Register {{ entryType$ | async }}"
   matTooltipPosition="before"
   (click)="showRegisterEntryModal()"
   [disabled]="isRefreshing$ | async"
@@ -37,7 +36,7 @@
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize class="sidebar-set-height">
-      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
+      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12" *ngIf="!(refreshingMyEntries$ | async)">
         <div id="parent">
           <div id="child">
             <div
@@ -49,10 +48,10 @@
                 <mat-toolbar-row>
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
                     <span>My {{ entryType$ | async }}s</span>
-                    <mat-menu #appMenu="matMenu">
+                    <span>
                       <button
                         *ngIf="entryType === EntryType.BioWorkflow"
-                        mat-menu-item
+                        mat-button
                         color="primary"
                         matTooltipPosition="after"
                         matTooltip="Find new workflows and sync all existing workflows"
@@ -61,20 +60,20 @@
                       >
                         Refresh All
                       </button>
-                      <a
-                        *ngIf="entryType === EntryType.Service"
-                        mat-menu-item
-                        [href]="gitHubAppInstallationLink$ | async"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >Manage on GitHub</a
-                      >
-                    </mat-menu>
-                    <button mat-icon-button [matMenuTriggerFor]="appMenu">
-                      <mat-icon>
-                        more_vert
-                      </mat-icon>
-                    </button>
+                      <ng-container *ngIf="entryType === EntryType.Service">
+                        <button mat-icon-button matTooltip="Sync with GitHub" (click)="sync()">
+                          <mat-icon>sync</mat-icon>
+                        </button>
+                        <a
+                          mat-icon-button
+                          [href]="gitHubAppInstallationLink$ | async"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          matTooltip="Manage on GitHub"
+                          ><mat-icon>add</mat-icon></a
+                        >
+                      </ng-container>
+                    </span>
                   </div>
                 </mat-toolbar-row>
               </mat-toolbar>
@@ -88,13 +87,15 @@
               [refreshMessage]="isRefreshing$ | async"
             ></app-sidebar-accordion>
             <br />
-            <div class="clearfix sidebar-header">
-              <h3 class="sidebar-header">Shared with me</h3>
-            </div>
-            <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
-              You have no {{ entryType$ | async }}s shared with you
-            </p>
-            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+            <ng-container *ngIf="entryType !== EntryType.Service">
+              <div class="clearfix sidebar-header">
+                <h3 class="sidebar-header">Shared with me</h3>
+              </div>
+              <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
+                You have no {{ entryType$ | async }}s shared with you
+              </p>
+              <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+            </ng-container>
           </div>
         </div>
       </mat-sidenav>

@@ -25,8 +25,10 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RefreshAlertModule } from '../alert/alert.module';
 import { AvailableLogsModule } from '../available-logs.module';
+import { BioschemaService } from '../bioschema.service';
 import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
+import { EntryActionsService } from '../entry-actions/entry-actions.service';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
 import { CustomMaterialModule } from '../modules/material.module';
 import { CommitUrlPipe } from './commit-url.pipe';
@@ -89,6 +91,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     UrlDeconstructPipe,
     RouterModule
   ],
-  entryComponents: [RegisterCheckerWorkflowComponent]
+  entryComponents: [RegisterCheckerWorkflowComponent],
+  providers: [BioschemaService, EntryActionsService]
 })
 export class EntryModule {}
