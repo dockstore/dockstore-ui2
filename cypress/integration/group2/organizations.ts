@@ -280,7 +280,7 @@ describe('Dockstore Organizations', () => {
 
     it('be able to Delete organization user', () => {
       cy.get('#remove-user-0').should('not.be.disabled').click();
-      cy.get('#remove-user-dialog').should('not.be.disabled').click();
+      cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
       cy.contains('mat-card-title', 'potato').should('not.be.visible');
     });
   });

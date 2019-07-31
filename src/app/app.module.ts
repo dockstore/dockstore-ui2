@@ -35,6 +35,7 @@ import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
@@ -138,7 +139,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ChangeUsernameComponent,
     YoutubeComponent,
     SitemapComponent,
-    GithubCallbackComponent
+    GithubCallbackComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -210,7 +212,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults }
   ],
-  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent],
+  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
