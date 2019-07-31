@@ -1,3 +1,6 @@
 <ng-container *ngIf="user$ | async; then loggedInHomePage; else loggedOutHomePage"></ng-container>
-<ng-template #loggedInHomePage><home-logged-in></home-logged-in></ng-template>
+<ng-template #loggedInHomePage>
+  <home-logged-in *ngIf="!betaMode"></home-logged-in>
+  <old-app-home *ngIf="betaMode"></old-app-home>
+</ng-template>
 <ng-template #loggedOutHomePage><app-home></app-home></ng-template>
