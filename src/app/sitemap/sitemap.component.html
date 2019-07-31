@@ -23,7 +23,7 @@
           Workflows
         </a>
       </li>
-      <li>
+      <li *ngIf="!betaMode">
         <a [routerLink]="['/search']" [queryParams]="{ _type: 'services', searchMode: 'files' }">
           Services
         </a>
