@@ -95,15 +95,15 @@ describe('Dockstore Organizations', () => {
       typeInInput('Location', 'UCSC Basement');
       typeInInput('Contact Email Address', 'asdf@asdf.com');
       // Verify you can add and remove and image url successfully. Add image back for further testing below.
-      cy.get('[data-cy=image-url-input').clear().type(
+      cy.get('[data-cy=image-url-input]').should('be.visible').clear().type(
         'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png'
       );
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#editOrgInfo').should('be.visible').click();
-      cy.get('[data-cy=image-url-input').clear();
+      cy.get('[data-cy=image-url-input]').should('be.visible').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#editOrgInfo').should('be.visible').click();
-      cy.get('[data-cy=image-url-input').clear().type('https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
+      cy.get('[data-cy=image-url-input]').should('be.visible').clear().type('https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe');
     });
