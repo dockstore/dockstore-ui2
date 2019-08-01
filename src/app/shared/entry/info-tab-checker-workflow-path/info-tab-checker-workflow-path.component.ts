@@ -24,6 +24,7 @@ import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 import { RegisterCheckerWorkflowComponent } from '../register-checker-workflow/register-checker-workflow.component';
 import { MatDialog } from '@angular/material';
+import { Workflow } from 'app/shared/swagger';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',
@@ -39,6 +40,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
   checkerId$: Observable<number>;
   canAdd$: Observable<boolean>;
   canView$: Observable<boolean>;
+  checkerWorkflow$: Observable<Workflow>;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
@@ -58,6 +60,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
     this.parentId$ = this.checkerWorkflowQuery.parentId$;
     this.isPublic$ = this.sessionQuery.isPublic$;
     this.isStub$ = this.checkerWorkflowQuery.isStub$;
+    this.checkerWorkflow$ = this.checkerWorkflowQuery.checkerWorkflow$;
     this.checkerWorkflowURL$ = this.checkerWorkflowService.getCheckerWorkflowURLObservable(
       this.checkerWorkflowQuery.checkerWorkflow$,
       this.isPublic$

@@ -6,7 +6,7 @@
       <a
         [routerLink]="checkerWorkflowURL$ | async"
         id="viewCheckerWorkflowButton"
-        *ngIf="(checkerId$ | async) && !(isRefreshing$ | async)"
+        *ngIf="(checkerWorkflowURL$ | async) && !(isRefreshing$ | async)"
         type="button"
         class="btn btn-link"
       >
