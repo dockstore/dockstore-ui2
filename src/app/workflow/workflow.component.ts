@@ -38,14 +38,13 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import {Permission, ToolDescriptor} from '../shared/swagger';
+import { Permission, ToolDescriptor } from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
-import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
 
 import RoleEnum = Permission.RoleEnum;
 @Component({
@@ -81,7 +80,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   public WorkflowModel = Workflow;
-
   @Input() user;
 
   constructor(
