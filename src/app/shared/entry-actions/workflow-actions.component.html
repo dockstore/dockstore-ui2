@@ -17,7 +17,7 @@
     id="DOIButton"
     color="accent"
     (click)="requestDOIForWorkflowVersion()"
-    [disabled]="(isRefreshing$ | async) || selectedVersion?.doiURL"
+    [disabled]="(isRefreshing$ | async) || selectedVersion?.doiURL || !(zenodoAccountIsLinked$ | async)"
     [matTooltip]="createdoimessage"
   >
     Create DOI

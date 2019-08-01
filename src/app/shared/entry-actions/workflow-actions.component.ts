@@ -6,6 +6,8 @@ import { RefreshService } from '../refresh.service';
 import { BioWorkflow, Service, WorkflowVersion } from '../swagger';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
+import {Observable} from 'rxjs';
+import {TokenQuery} from '../state/token.query';
 
 @Component({
   selector: 'app-workflow-actions',
@@ -19,12 +21,16 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   @Input() canWrite: boolean;
   createdoimessage = 'Create a digital object identifier (DOI) for this version';
   EntryType = EntryType;
+  zenodoAccountIsLinked$: Observable<boolean>;
+
   constructor(
     protected entryActionsService: EntryActionsService,
     protected alertQuery: AlertQuery,
+    private tokenQuery: TokenQuery,
     private refreshService: RefreshService
   ) {
     super(alertQuery, entryActionsService);
+    this.zenodoAccountIsLinked$ = this.tokenQuery.hasZenodoToken$;
   }
 
   ngOnInit() {

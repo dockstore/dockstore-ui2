@@ -13,6 +13,7 @@ export class TokenQuery extends QueryEntity<TokenState, Token> {
   tokens$: Observable<Array<Token>> = this.selectAll();
   hasGitHubToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasEntity(TokenSource.GITHUB)));
   hasGoogleToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasEntity(TokenSource.GOOGLE)));
+  hasZenodoToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasEntity(TokenSource.ZENODO)));
   gitHubToken$: Observable<string> = this.selectEntity('github.com').pipe(map((token: Token) => (token ? token.token : null)));
   gitHubOrganizations$: Observable<any> = this.select(state => state.gitHubOrganizations);
   hasSourceControlToken$: Observable<boolean> = this.tokens$.pipe(
