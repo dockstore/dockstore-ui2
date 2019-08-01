@@ -109,10 +109,10 @@ export abstract class MyEntriesService extends Base {
 
     groupEntries.forEach(groupEntry => {
       groupEntry.entries.sort((a, b) => {
-        if (a[path] < b[path]) {
+        if (a[path].toLowerCase() < b[path].toLowerCase()) {
           return -1;
         }
-        if (a[path] > b[path]) {
+        if (a[path].toLowerCase() > b[path].toLowerCase()) {
           return 1;
         }
         return 0;
