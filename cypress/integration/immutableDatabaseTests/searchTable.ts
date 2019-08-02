@@ -87,7 +87,7 @@ describe('search table items per page', () => {
       .click()
     cy.get('#mat-option-1 ')
       .click()
-    cy.get('.cdk-column-name > a ').contains('garyluu/dockstore-cgpmap/cgpmap-cramOut').should('exist')
+    cy.contains('a', 'garyluu/dockstore-cgpmap/cgpmap-cramOut')
       .click()
     cy.get('.flex-toolbar ').contains(' Search ')
       .click()

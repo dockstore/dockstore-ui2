@@ -1,19 +1,19 @@
+import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { share, takeUntil } from 'rxjs/operators';
+import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
-import { DescriptorLanguageBean, ToolDescriptor, ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
+import { Dockstore } from '../../shared/dockstore.model';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { ToolDescriptor, ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
-import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
-import { share, takeUntil } from 'rxjs/operators';
 import { DescriptorsQuery } from './state/descriptors-query';
-import { DescriptorsService } from './state/descriptors.service';
 import { DescriptorsStore } from './state/descriptors-store.';
-import { Dockstore } from '../../shared/dockstore.model';
-import { HttpUrlEncodingCodec } from '@angular/common/http';
-import { Base } from '../../shared/base';
+import { DescriptorsService } from './state/descriptors.service';
+
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 /**
@@ -117,18 +117,18 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(fileDescriptors => {
         if (fileDescriptors && fileDescriptors.length) {
-          this.workflowsService
-            .primaryDescriptor(this.workflow.id, this.selectedVersion.name, ToolDescriptor.TypeEnum.WDL)
-            .subscribe(sourceFile => {
-              this.descriptorsService.updatePrimaryDescriptor(sourceFile);
-              if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
-                this.workflowsService
-                  .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, ToolDescriptor.TypeEnum.WDL)
-                  .subscribe((sourceFiles: Array<SourceFile>) => {
-                    this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
-                  });
-              }
-            });
+          // No idea if this.workflow.descriptorType is the one that's required or if it's some other enum
+          const descriptorType: string = this.workflow.descriptorType;
+          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe(sourceFile => {
+            this.descriptorsService.updatePrimaryDescriptor(sourceFile);
+            if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
+              this.workflowsService
+                .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, descriptorType)
+                .subscribe((sourceFiles: Array<SourceFile>) => {
+                  this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
+                });
+            }
+          });
         }
       });
   }
