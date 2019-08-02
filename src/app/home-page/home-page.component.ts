@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { betaMode } from 'app/shared/constants';
+import { devMode } from 'app/shared/constants';
 import { User } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  betaMode = betaMode;
+  devMode = devMode;
   public user$: Observable<User>;
   constructor(private userQuery: UserQuery) {}
 

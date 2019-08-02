@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { betaMode } from 'app/shared/constants';
+import { devMode } from 'app/shared/constants';
 
 @Component({
   selector: 'sitemap',
@@ -7,7 +7,7 @@ import { betaMode } from 'app/shared/constants';
   styleUrls: ['./sitemap.component.css']
 })
 export class SitemapComponent implements OnInit {
-  betaMode = betaMode;
+  devMode = devMode;
   constructor() {}
 
   ngOnInit() {}

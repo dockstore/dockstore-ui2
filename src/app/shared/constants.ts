@@ -25,4 +25,4 @@ export const bootstrap4largeModalSize = '800px';
 export const myBioWorkflowsURLSegment = 'my-workflows';
 export const myServicesURLSegment = 'my-services';
 export const altAvatarImg = 'http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg';
-export const betaMode = true;
+export const devMode = false;
