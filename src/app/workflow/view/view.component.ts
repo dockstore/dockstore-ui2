@@ -18,6 +18,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { WorkflowVersion } from 'app/shared/swagger/model/workflowVersion';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -119,15 +120,14 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * Opens a confirmation dialog that the Dockstore User can use to
    * confirm they want a snapshot.
    *
-   * @private
    * @memberof ViewWorkflowComponent
    */
   snapshotVersion(): void {
-    // Create a new version temporarily with the frozen bit set. We assume the version is
-    // not already a snapshot since the UI controls shouldn't be available for
-    // snapshotted versions.
-    const snapshot = { ...this.version };
-    snapshot.frozen = true;
+    if (this.version.frozen) {
+      // Guarantee we don't snapshot a snapshot
+      return;
+    }
+    const snapshot: WorkflowVersion = { ...this.version, frozen: true };
     const confirmMessage = 'Snapshotting a version cannot be undone. Are you sure you want to snapshot this version?';
     const confirmSnapshot = confirm(confirmMessage);
     if (confirmSnapshot) {

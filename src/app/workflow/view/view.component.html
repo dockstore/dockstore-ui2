@@ -21,9 +21,10 @@
   type="button"
   mat-button
   color="accent"
-  class="btn-block dockstore-snapshot"
+  class="btn-block"
   *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
   (click)="snapshotVersion()"
+  data-cy="dockstore-snapshot"
 >
   Snapshot
 </button>

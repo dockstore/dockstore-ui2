@@ -69,14 +69,20 @@ describe('Dockstore Workflow Details', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
 
     cy
-      .get('.dockstore-snapshot-locked').should('have.length', 0);
+      .get('[data-cy=dockstore-snapshot-locked]')
+      .should('have.length', 0);
 
     cy
-      .get('.dockstore-snapshot:first').click()
+      .get('[data-cy=dockstore-snapshot-unlocked]')
+      .its('length')
+      .should('be.gt', 0);
+
+    cy
+      .get('[data-cy=dockstore-snapshot]').first().click()
 
     cy.wait(250);
     cy
-      .get('.dockstore-snapshot-locked').should('have.length', 1);
+      .get('[data-cy=dockstore-snapshot-locked').should('have.length', 1);
    });
 
   describe('Change tab to files', () => {
