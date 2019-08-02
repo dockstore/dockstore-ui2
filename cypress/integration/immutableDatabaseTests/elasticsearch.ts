@@ -27,13 +27,19 @@ describe('elasticsearch from logged-out homepage', () => {
 
 describe('elasticsearch from logged-in homepage', () => {
   setTokenUserViewPort();
-  it('Should be able to search entries for using text', () => {
-    cy.visit('/');
-    cy.get('[data-cy=loggedInSearchBar]')
-      .should('have.attr', 'placeholder', 'Search...')
-      .type('asdf{enter}');
-    cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
-  });
+  // Use this test when beta mode turned off
+    // it('Should be able to search entries for using text', () => {
+    //   cy.visit('/');
+    //   cy.get('[data-cy=loggedInSearchBar]')
+    //     .should('have.attr', 'placeholder', 'Search...')
+    //     .type('asdf{enter}');
+    //   cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
+    // });
+    it('Should be able to search entries for using text', () => {
+      cy.visit('/');
+      cy.get('#searchBar')
+        .should('have.attr', 'placeholder', 'Enter Keyword...')
+        .type('asdf{enter}');
+      cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
+    });
 });
-
-

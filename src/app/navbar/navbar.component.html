@@ -39,7 +39,7 @@
           <a mat-menu-item data-cy="my-workflows-nav-button" routerLink="/my-workflows">
             <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png" />&nbsp;My&nbsp;Workflows
           </a>
-          <a mat-menu-item data-cy="my-services-nav-button" routerLink="/my-services">
+          <a *ngIf="devMode" mat-menu-item data-cy="my-services-nav-button" routerLink="/my-services">
             <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png" />&nbsp;My&nbsp;Services
           </a>
           <mat-divider></mat-divider>

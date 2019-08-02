@@ -23,7 +23,7 @@
           Workflows
         </a>
       </li>
-      <li>
+      <li *ngIf="devMode">
         <a [routerLink]="['/services']">
           Services
         </a>
