@@ -16,6 +16,7 @@ import { DescriptorsService } from './state/descriptors.service';
 
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
+// tslint:disable:max-line-length
 /**
  *  # Overview
  *
@@ -34,7 +35,8 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
  *
  *  ### How the UI gets its configuration data
  *
- *  Configuration data is supplied to the UI via the `/metadata/config.json` endpoint in the the[Dockstore web service](https://github.com/dockstore/dockstore).
+ *  Configuration data is supplied to the UI via the `/metadata/config.json` endpoint in the
+ *  [Dockstore web service](https://github.com/dockstore/dockstore).
  *
  *  ### Update the web service
  *
@@ -58,13 +60,15 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
  *
  *  1. Ensure that the `webservice_version` in the package.json references a version that contains the merged PR from the previous section.
  *  2. Update src/app/shared/dockstore.model.ts with a new property for the external endpoint
- *  3. In src/app/configuration.service.ts, update the `updateDockstoreModel` method so that it reads the new data from `config` parameter and
+ *  3. In src/app/configuration.service.ts, update the `updateDockstoreModel` method so that it reads the new data from
+ *  `config` parameter and
  *  puts it into dockstore.model.ts. The `config` parameter has the response from the web service to fetch configuration data.
  *
  *  ### Add the button
  *
  *  1. Optionally, but preferably, add an icon for the new platform, putting it in `src/assets/images/thirdparty`.
- *  2. If the icon is an SVG, you will need to add it to the icon registry in the constructor of this class, below. Follow the existing pattern.
+ *  2. If the icon is an SVG, you will need to add it to the icon registry in the constructor of this class, below.
+ *  Follow the existing pattern.
  *  3. Add your HTML to launch-third-party.component.html, following the pattern of the existing code. There are
  *  several properties you can access from your HTML that should provide all the info needed for the new button. If
  *  additional properties are necessary, add them to this file.
@@ -81,6 +85,8 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
  *  * The `hasHttpImports$` property is specific to WDL, although it can be extended to other languages if necessary.
  *
  */
+
+// tslint:enable:max-line-length
 
 @Component({
   selector: 'app-launch-third-party',
