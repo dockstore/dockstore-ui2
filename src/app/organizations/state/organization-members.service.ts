@@ -96,7 +96,7 @@ export class OrganizationMembersService {
             const currentUserId = this.userQuery.getSnapshot().user.id;
             const canEdit = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted);
             const canEditMembers = organizationUsers.some(
-              user => user.id.userId === currentUserId && user.accepted && user.role === 'MAINTAINER'
+              user => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.MAINTAINER
             );
             this.setCanEditState(canEdit, canEditMembers);
           } else {
