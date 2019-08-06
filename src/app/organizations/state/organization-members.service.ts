@@ -92,12 +92,16 @@ export class OrganizationMembersService {
           // If you can somehow manage to change users without this function triggering again, then it may lead to issues.
           // Example: a user has permissions to edit, logs out without changing the page and running this function somehow, the controls
           // appears as if he still has permissions to edit.
-          const currentUserId = this.userQuery.getSnapshot().user.id;
-          const canEdit = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted);
-          const canEditMembers = organizationUsers.some(
-            user => user.id.userId === currentUserId && user.accepted && user.role === 'MAINTAINER'
-          );
-          this.setCanEditState(canEdit, canEditMembers);
+          if (this.userQuery.getSnapshot().user) {
+            const currentUserId = this.userQuery.getSnapshot().user.id;
+            const canEdit = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted);
+            const canEditMembers = organizationUsers.some(
+              user => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.MAINTAINER
+            );
+            this.setCanEditState(canEdit, canEditMembers);
+          } else {
+            this.setCanEditState(false, false);
+          }
           this.updateAll(organizationUsers);
           this.organizationMembersStore.setError(false);
         },
