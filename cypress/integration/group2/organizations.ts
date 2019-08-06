@@ -99,9 +99,12 @@ describe('Dockstore Organizations', () => {
         'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png'
       );
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#createOrUpdateOrganizationButton')
+        .should('not.be.visible')
       cy.get('#editOrgInfo').should('be.visible').click();
       cy.get('[data-cy=image-url-input]').should('be.visible').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#createOrUpdateOrganizationButton').should('not.be.visible');
       cy.get('#editOrgInfo').should('be.visible').click();
       cy.get('[data-cy=image-url-input]').should('be.visible').clear().type('https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
