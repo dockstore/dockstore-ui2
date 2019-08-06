@@ -40,7 +40,6 @@ import { ToolQuery } from '../shared/tool/tool.query';
 import { ToolService } from '../shared/tool/tool.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
-import { RefreshService } from './../shared/refresh.service';
 import { ContainersService } from './../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
@@ -74,7 +73,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     urlResolverService: UrlResolverService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
-    private refreshService: RefreshService,
     private updateContainer: ContainerService,
     private containersService: ContainersService,
     private emailService: EmailService,
