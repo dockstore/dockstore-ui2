@@ -29,7 +29,7 @@ import {
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;
@@ -37,7 +37,7 @@ describe('ViewWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule],
+      imports: [MatDialogModule, MatSnackBarModule],
       declarations: [ViewWorkflowComponent],
       providers: [
         { provide: WorkflowService, useClass: WorkflowStubService },

@@ -18,9 +18,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { WorkflowVersion } from 'app/shared/swagger/model/workflowVersion';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -57,7 +59,8 @@ export class ViewWorkflowComponent extends View implements OnInit {
     private workflowsService: WorkflowsService,
     private matDialog: MatDialog,
     private hostedService: HostedService,
-    dateService: DateService
+    dateService: DateService,
+    private alertService: AlertService
   ) {
     super(dateService);
   }
@@ -87,6 +90,49 @@ export class ViewWorkflowComponent extends View implements OnInit {
       width: '600px',
       data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
     });
+  }
+
+  /**
+   * Updates the workflow version and alerts the Dockstore User with success
+   * or failure.
+   *
+   * @private
+   * @memberof ViewWorkflowComponent
+   */
+  private updateWorkflowToSnapshot(version): void {
+    this.workflowsService.updateWorkflowVersion(this.workflow.id, [version]).subscribe(
+      workflowVersions => {
+        this.alertService.detailedSuccess('Snapshot successfully created!');
+        const workflow = { ...this.workflowQuery.getActive() };
+        workflow.workflowVersions = workflowVersions;
+        this.workflowService.setWorkflow(workflow);
+      },
+      error => {
+        if (error) {
+          this.alertService.detailedError(error);
+        } else {
+          this.alertService.simpleError();
+        }
+      }
+    );
+  }
+  /**
+   * Opens a confirmation dialog that the Dockstore User can use to
+   * confirm they want a snapshot.
+   *
+   * @memberof ViewWorkflowComponent
+   */
+  snapshotVersion(): void {
+    if (this.version.frozen) {
+      // Guarantee we don't snapshot a snapshot
+      return;
+    }
+    const snapshot: WorkflowVersion = { ...this.version, frozen: true };
+    const confirmMessage = 'Snapshotting a version cannot be undone. Are you sure you want to snapshot this version?';
+    const confirmSnapshot = confirm(confirmMessage);
+    if (confirmSnapshot) {
+      this.updateWorkflowToSnapshot(snapshot);
+    }
   }
 
   ngOnInit() {
