@@ -139,4 +139,28 @@ export class RefreshService {
     this.tools.push(tool);
     this.containerService.setTools(this.tools);
   }
+
+  syncServices(): void {
+    const message = 'Syncing services';
+    this.alertService.start(message);
+    this.usersService.syncUserServices().subscribe(
+      response => {
+        this.alertService.detailedSuccess();
+        this.workflowService.setWorkflows(response);
+      },
+      error => this.alertService.detailedError(error)
+    );
+  }
+
+  syncServicesForOrganziation(organization: string): void {
+    const message = 'Syncing services for organization ' + organization;
+    this.alertService.start(message);
+    this.usersService.syncUserServicesbyOrganization(organization).subscribe(
+      response => {
+        this.alertService.detailedSuccess();
+        this.workflowService.setWorkflows(response);
+      },
+      error => this.alertService.detailedError(error)
+    );
+  }
 }

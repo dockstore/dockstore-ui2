@@ -47,12 +47,55 @@ describe('Dockstore Home', () => {
       cy.contains('github.com/garyluu/another-test-service:1.3');
       checkTabs();
       checkInfoTab();
-      // TRS only visibile in public page
+      // TRS only visible in public page
       cy.contains('TRS: ').should('be.visible');
       checkVersionsTab();
       // Hidden version not visible on public page
       cy.contains('td', 'test').should('not.be.visible');
       checkFilesTab();
+    });
+  });
+
+  describe('my-services sync', () => {
+    setTokenUserViewPort();
+    it('Have no services in /my-services', () => {
+      cy.visit('/my-services');
+      cy.url().should('contain', 'my-services');
+      // No orgs
+      cy.get('mat-expansion-panel').should('have.length', 0);
+    });
+    it('Clicking sync with Github should sync', () => {
+      cy.server();
+      // This fixture has one service
+      cy.fixture('syncservices1.json').then(json => {
+        cy.route({
+          method: 'POST',
+          url: '/api/users/services/sync',
+          response: json
+        });
+      });
+      cy.get('[data-cy=sync-with-github]').click();
+      // One org
+      cy.get('mat-expansion-panel').should('have.length', 1);
+      cy.get('.mat-expansion-indicator').first().click();
+      // One repo within the org
+      cy.get('.mat-list-item-content').should('have.length', 1);
+    });
+    it('Clicking sync with GitHub organization should sync', () => {
+      cy.server();
+      // This fixture has two services, one of which is also in syncservices1.json
+      cy.fixture('syncservices2.json').then(json => {
+        cy.route({
+          method: 'POST',
+          url: '/api/users/services/dockstore-testing/sync',
+          response: json
+        });
+      });
+      cy.get('.mat-expansion-indicator').first().click();
+      cy.get('[data-cy=sync-with-github-org]').first().click();
+      cy.get('mat-expansion-panel').should('have.length', 1);
+      // Now 2 repos
+      cy.get('.mat-list-item-content').should('have.length', 2);
     });
   });
 

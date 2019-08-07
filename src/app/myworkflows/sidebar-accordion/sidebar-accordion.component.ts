@@ -7,6 +7,7 @@ import { Organization } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
+import { RefreshService } from '../../shared/refresh.service';
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -26,7 +27,8 @@ export class SidebarAccordionComponent implements OnInit {
     private workflowQuery: WorkflowQuery,
     public dialog: MatDialog,
     private sessionQuery: SessionQuery,
-    private alertQuery: AlertQuery
+    private alertQuery: AlertQuery,
+    private refreshService: RefreshService
   ) {}
 
   ngOnInit(): void {
@@ -35,8 +37,7 @@ export class SidebarAccordionComponent implements OnInit {
     this.workflowId$ = this.workflowQuery.workflowId$;
   }
 
-  syncOrganization(organization: Organization) {
-    // Placeholder
-    // Go to endpoint that performs the sync organization with GitHub operation
+  syncOrganization(organization: string) {
+    this.refreshService.syncServicesForOrganziation(organization);
   }
 }
