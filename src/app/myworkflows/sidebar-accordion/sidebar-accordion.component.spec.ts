@@ -8,9 +8,13 @@ import { GithubNameToIdPipe } from '../../github-name-to-id.pipe';
 import { ExpandPanelPipe } from '../../shared/entry/expand-panel.pipe';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
+import { RefreshStubService, RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
+import { RefreshService } from '../../shared/refresh.service';
+import { ContainerService } from '../../shared/container.service';
+import { PublishedToolsDataSource } from '../../containers/list/published-tools.datasource';
+import { ProviderService } from '../../shared/provider.service';
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
   let fixture: ComponentFixture<SidebarAccordionComponent>;
@@ -30,6 +34,10 @@ describe('SidebarAccordionComponent', () => {
           useValue: {
             close: (dialogResult: any) => {}
           }
+        },
+        {
+          provide: RefreshService,
+          useClass: RefreshStubService
         }
       ]
     }).compileComponents();
