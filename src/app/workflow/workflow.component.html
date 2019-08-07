@@ -289,6 +289,9 @@
                   [isOwner]="isOwner"
                 >
                 </app-dag>
+                <div *ngIf="!selectedVersion">
+                  <mat-card class="alert alert-warning p-3" role="alert"> <mat-icon>warning</mat-icon> No version selected. </mat-card>
+                </div>
                 <div *ngIf="isStub()" class="p-3">
                   <mat-card class="alert alert-warning" role="alert">
                     <mat-icon>warning</mat-icon> To see the DAG, please refresh the workflow.
