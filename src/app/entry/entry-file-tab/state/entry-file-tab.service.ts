@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { Base } from 'app/shared/base';
-import { ga4ghWorkflowIdPrefix } from 'app/shared/constants';
+import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from 'app/shared/constants';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
+import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
 import { GA4GHFiles } from 'app/shared/ga4gh-files/ga4gh-files.model';
 import { GA4GHFilesQuery } from 'app/shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from 'app/shared/ga4gh-files/ga4gh-files.service';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from 'app/shared/swagger';
 import { takeUntil } from 'rxjs/operators';
@@ -23,7 +25,8 @@ export class EntryFileTabService extends Base {
     private ga4ghService: GA4GHService,
     private ga4ghFilesService: GA4GHFilesService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
-    private fileService: FileService
+    private fileService: FileService,
+    private sessionQuery: SessionQuery
   ) {
     super();
   }
@@ -200,16 +203,12 @@ export class EntryFileTabService extends Base {
     const workflow = this.workflowQuery.getActive();
     const version = this.workflowQuery.getSnapshot().version;
     const path = toolFile.path;
+    const prefix = this.sessionQuery.getSnapshot().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
     const fileType = workflow.descriptorType;
     this.setFileContents(null);
     this.setLoading(true);
     this.ga4ghService
-      .toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(
-        fileType,
-        ga4ghWorkflowIdPrefix + workflow.full_workflow_path,
-        version.name,
-        path
-      )
+      .toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(fileType, prefix + workflow.full_workflow_path, version.name, path)
       .subscribe(
         (fileWrapper: FileWrapper) => {
           this.handleFileWrapperChange(fileWrapper);
@@ -261,7 +260,8 @@ export class EntryFileTabService extends Base {
       console.error('Worklow or version is not truthy');
       return null;
     }
-    const id = ga4ghWorkflowIdPrefix + entryPath;
+    const prefix = this.sessionQuery.getSnapshot().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
+    const id = prefix + entryPath;
     const versionId = version.name;
     const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(toolDescriptorType);
     const relativePath = this.entryFileTabQuery.getSnapshot().selectedFile.path;

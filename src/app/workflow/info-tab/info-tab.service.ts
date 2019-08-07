@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ga4ghPath, ga4ghWorkflowIdPrefix } from 'app/shared/constants';
+import { ga4ghPath, ga4ghWorkflowIdPrefix, ga4ghServiceIdPrefix } from 'app/shared/constants';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject } from 'rxjs';
@@ -193,9 +193,7 @@ export class InfoTabService {
    * @memberof InfoTabService
    */
   getTRSLink(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
-    // const prefix: string = entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
-    // Currently they're both using the same prefix in the webservice
-    const prefix = ga4ghWorkflowIdPrefix;
+    const prefix: string = entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
     return (
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(prefix + path)}` +
       `/versions/${encodeURIComponent(versionName)}/plain-` +

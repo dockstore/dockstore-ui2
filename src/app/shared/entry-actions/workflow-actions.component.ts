@@ -1,13 +1,14 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AlertQuery } from '../alert/state/alert.query';
-import { ga4ghWorkflowIdPrefix } from '../constants';
+import { ga4ghWorkflowIdPrefix, ga4ghServiceIdPrefix } from '../constants';
 import { EntryType } from '../enum/entry-type';
 import { RefreshService } from '../refresh.service';
 import { BioWorkflow, Service, WorkflowVersion } from '../swagger';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
-import {Observable} from 'rxjs';
-import {TokenQuery} from '../state/token.query';
+import { Observable } from 'rxjs';
+import { TokenQuery } from '../state/token.query';
+import { SessionQuery } from '../session/session.query';
 
 @Component({
   selector: 'app-workflow-actions',
@@ -27,7 +28,8 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
     protected entryActionsService: EntryActionsService,
     protected alertQuery: AlertQuery,
     private tokenQuery: TokenQuery,
-    private refreshService: RefreshService
+    private refreshService: RefreshService,
+    private sessionQuery: SessionQuery
   ) {
     super(alertQuery, entryActionsService);
     this.zenodoAccountIsLinked$ = this.tokenQuery.hasZenodoToken$;
@@ -67,6 +69,7 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
    */
   refresh() {
     const versionName = this.selectedVersion ? this.selectedVersion.name : null;
-    this.refreshService.refreshWorkflow(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, versionName);
+    const prefix = this.sessionQuery.getSnapshot().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
+    this.refreshService.refreshWorkflow(prefix + this.workflow.full_workflow_path, versionName);
   }
 }

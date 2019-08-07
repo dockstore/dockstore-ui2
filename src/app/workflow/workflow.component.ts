@@ -24,7 +24,13 @@ import { Observable } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService } from '../shared/bioschema.service';
-import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
+import {
+  ga4ghServiceIdPrefix,
+  ga4ghWorkflowIdPrefix,
+  includesValidation,
+  myBioWorkflowsURLSegment,
+  myServicesURLSegment
+} from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -246,7 +252,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
-          this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+          const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+          this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
             this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
           ]);
         }
@@ -362,7 +369,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
     if (this.selectVersion) {
-      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+      const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+      this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
         this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
       ]);
     }
