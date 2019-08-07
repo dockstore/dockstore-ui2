@@ -24,6 +24,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
+import { EntryActionsService } from '../../shared/entry-actions/entry-actions.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -50,8 +51,10 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
+  doiTooltip = 'Request a digital object identifier (DOI) for this version.';
 
   constructor(
+    private entryActionsService: EntryActionsService,
     private workflowService: WorkflowService,
     private workflowQuery: WorkflowQuery,
     private versionModalService: VersionModalService,
@@ -119,6 +122,16 @@ export class ViewWorkflowComponent extends View implements OnInit {
       }
     );
   }
+
+  /**
+   * Handles the create DOI button being clicked
+   *
+   * @memberof ViewWorkflowComponent
+   */
+  requestDOIForWorkflowVersion() {
+    this.entryActionsService.requestDOIForWorkflowVersion(this.workflow, this.version);
+  }
+
   /**
    * Opens a confirmation dialog that the Dockstore User can use to
    * confirm they want a snapshot.

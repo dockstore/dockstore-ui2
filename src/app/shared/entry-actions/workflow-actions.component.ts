@@ -20,7 +20,6 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   @Input() selectedVersion: WorkflowVersion;
   @Input() isOwner: boolean;
   @Input() canWrite: boolean;
-  createdoimessage = 'Create a digital object identifier (DOI) for this version';
   EntryType = EntryType;
   zenodoAccountIsLinked$: Observable<boolean>;
 
@@ -42,15 +41,6 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   ngOnChanges(changes: SimpleChanges): void {
     this.publishDisabled = this.entryActionsService.publishWorkflowDisabled(this.workflow, this.isOwner);
     this.commonNgOnChanges(this.workflow);
-  }
-
-  /**
-   * Handles the create DOI button being clicked
-   *
-   * @memberof EntryActionsComponent
-   */
-  requestDOIForWorkflowVersion() {
-    this.entryActionsService.requestDOIForWorkflowVersion(this.workflow, this.selectedVersion);
   }
 
   /**

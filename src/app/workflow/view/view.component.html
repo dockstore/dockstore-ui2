@@ -17,6 +17,7 @@
 <button type="button" mat-button color="accent" class="btn-block" (click)="showVersionModal()">
   {{ isPublic || !canWrite || (entryType$ | async) === EntryType.Service ? 'View' : 'Edit' }}
 </button>
+<<<<<<< HEAD
 <ng-container *ngIf="!isPublic">
   <button
     type="button"
@@ -40,3 +41,25 @@
     Delete
   </button>
 </ng-container>
+<button
+  type="button"
+  mat-button
+  color="accent"
+  class="btn-block"
+  *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
+  (click)="snapshotVersion()"
+  data-cy="dockstore-snapshot"
+>
+  Snapshot
+</button>
+<button
+  mat-button
+  id="DOIButton"
+  color="accent"
+  class="btn-block"
+  (click)="requestDOIForWorkflowVersion()"
+  [disabled]="(isRefreshing$ | async) || version.doiURL"
+  [matTooltip]="doiTooltip"
+>
+  Create DOI
+</button>
