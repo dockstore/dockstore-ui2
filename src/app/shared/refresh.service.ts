@@ -156,9 +156,9 @@ export class RefreshService {
     const message = 'Syncing services for organization ' + organization;
     this.alertService.start(message);
     this.usersService.syncUserServicesbyOrganization(organization).subscribe(
-      response => {
+      (services: Array<Workflow>) => {
         this.alertService.detailedSuccess();
-        this.workflowService.setWorkflows(response);
+        this.workflowService.setWorkflows(services);
       },
       error => this.alertService.detailedError(error)
     );
