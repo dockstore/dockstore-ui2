@@ -217,7 +217,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       if (!this.isPublic()) {
         this.showWorkflowActions = false;
         this.workflowsService
-          .getWorkflowActions(this.workflow.full_workflow_path)
+          .getWorkflowActions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
           .pipe(
             finalize(() => {
               this.showWorkflowActions = true;
@@ -233,7 +233,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             // for users that are not on FireCloud
             if (this.isOwner && this.isHosted() && this.workflow) {
               this.workflowsService
-                .getWorkflowPermissions(this.workflow.full_workflow_path)
+                .getWorkflowPermissions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
                 .pipe(takeUntil(this.ngUnsubscribe))
                 .subscribe((userPermissions: Permission[]) => {
                   this.processPermissions(userPermissions);
@@ -275,7 +275,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     if (url.includes('workflows') || url.includes('services')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation).subscribe(
+      this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation, this.entryType === EntryType.Service).subscribe(
         workflow => {
           this.workflowService.setWorkflow(workflow);
           this.selectTab(this.validTabs.indexOf(this.currentTab));

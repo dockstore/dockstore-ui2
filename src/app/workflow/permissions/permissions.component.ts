@@ -12,6 +12,8 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
 
 import RoleEnum = Permission.RoleEnum;
+import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
@@ -29,7 +31,7 @@ export class PermissionsComponent implements OnInit {
   public terraUrl = Dockstore.TERRA_IMPORT_URL.substr(0, Dockstore.TERRA_IMPORT_URL.indexOf('/#'));
   private _workflow: Workflow;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-
+  public entryType: EntryType;
   separatorKeysCodes = [ENTER, COMMA];
   addOnBlur = true;
 
@@ -47,10 +49,11 @@ export class PermissionsComponent implements OnInit {
     private snackBar: MatSnackBar,
     private alertService: AlertService,
     private tokenQuery: TokenQuery,
-    private refreshService: RefreshService
+    private sessionQuery: SessionQuery
   ) {}
 
   ngOnInit() {
+    const entryType = this.sessionQuery.getSnapshot().entryType;
     this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
       this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
     });
@@ -58,15 +61,17 @@ export class PermissionsComponent implements OnInit {
 
   remove(entity: string, permission: RoleEnum) {
     this.updating++;
-    this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, entity, permission).subscribe(
-      (userPermissions: Permission[]) => {
-        this.updating--;
-        this.processResponse(userPermissions);
-      },
-      (e: HttpErrorResponse) => {
-        this.handleError(e, `Error removing user ${entity}.`);
-      }
-    );
+    this.workflowsService
+      .removeWorkflowRole(this.workflow.full_workflow_path, entity, permission, this.entryType === EntryType.Service)
+      .subscribe(
+        (userPermissions: Permission[]) => {
+          this.updating--;
+          this.processResponse(userPermissions);
+        },
+        (e: HttpErrorResponse) => {
+          this.handleError(e, `Error removing user ${entity}.`);
+        }
+      );
   }
 
   private add(event: MatChipInputEvent, permission: RoleEnum): void {
@@ -76,15 +81,17 @@ export class PermissionsComponent implements OnInit {
     if ((value || '').trim()) {
       this.updating++;
       this.alertService.start('Updating permissions');
-      this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }).subscribe(
-        (userPermissions: Permission[]) => {
-          this.updating--;
-          this.processResponse(userPermissions);
-        },
-        (e: HttpErrorResponse) => {
-          this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with Terra`);
-        }
-      );
+      this.workflowsService
+        .addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }, this.entryType === EntryType.Service)
+        .subscribe(
+          (userPermissions: Permission[]) => {
+            this.updating--;
+            this.processResponse(userPermissions);
+          },
+          (e: HttpErrorResponse) => {
+            this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with Terra`);
+          }
+        );
     }
 
     // Reset the input value
@@ -109,7 +116,7 @@ export class PermissionsComponent implements OnInit {
     this.owners = [];
     if (this._workflow) {
       this.hosted = this.workflow.mode === 'HOSTED';
-      this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path).subscribe(
+      this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path, this.entryType === EntryType.Service).subscribe(
         (userPermissions: Permission[]) => {
           this.canViewPermissions = true;
           this.processResponse(userPermissions);
