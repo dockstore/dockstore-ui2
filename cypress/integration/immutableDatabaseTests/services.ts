@@ -70,7 +70,7 @@ describe('Dockstore Home', () => {
       cy.fixture('syncservices1.json').then(json => {
         cy.route({
           method: 'POST',
-          url: '/api/users/services/sync',
+          url: '*/users/services/sync',
           response: json
         });
       });
@@ -87,7 +87,7 @@ describe('Dockstore Home', () => {
       cy.fixture('syncservices2.json').then(json => {
         cy.route({
           method: 'POST',
-          url: '/api/users/services/dockstore-testing/sync',
+          url: '*/users/services/dockstore-testing/sync',
           response: json
         });
       });
