@@ -24,7 +24,13 @@ import { Observable } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService } from '../shared/bioschema.service';
-import { ga4ghWorkflowIdPrefix, includesValidation, myBioWorkflowsURLSegment, myServicesURLSegment } from '../shared/constants';
+import {
+  ga4ghServiceIdPrefix,
+  ga4ghWorkflowIdPrefix,
+  includesValidation,
+  myBioWorkflowsURLSegment,
+  myServicesURLSegment
+} from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -211,7 +217,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       if (!this.isPublic()) {
         this.showWorkflowActions = false;
         this.workflowsService
-          .getWorkflowActions(this.workflow.full_workflow_path)
+          .getWorkflowActions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
           .pipe(
             finalize(() => {
               this.showWorkflowActions = true;
@@ -227,7 +233,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             // for users that are not on FireCloud
             if (this.isOwner && this.isHosted() && this.workflow) {
               this.workflowsService
-                .getWorkflowPermissions(this.workflow.full_workflow_path)
+                .getWorkflowPermissions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
                 .pipe(takeUntil(this.ngUnsubscribe))
                 .subscribe((userPermissions: Permission[]) => {
                   this.processPermissions(userPermissions);
@@ -246,7 +252,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
-          this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+          const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+          this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
             this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
           ]);
         }
@@ -268,7 +275,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     if (url.includes('workflows') || url.includes('services')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation).subscribe(
+      this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation, this.entryType === EntryType.Service).subscribe(
         workflow => {
           this.workflowService.setWorkflow(workflow);
           this.selectTab(this.validTabs.indexOf(this.currentTab));
@@ -362,7 +369,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
     if (this.selectVersion) {
-      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+      const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+      this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
         this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
       ]);
     }
