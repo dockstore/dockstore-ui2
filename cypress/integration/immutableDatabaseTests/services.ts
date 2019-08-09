@@ -33,7 +33,7 @@ describe('Dockstore Home', () => {
   });
 
   describe('services', () => {
-    it('Have one services in /services', () => {
+    it('Have one service in /services', () => {
       cy.visit('/services');
       cy.url().should('contain', 'services');
       cy.get('[data-cy=header]').contains('h3', 'Available Services');
