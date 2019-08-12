@@ -58,11 +58,11 @@ describe('Dockstore Home', () => {
 
   describe('my-services sync', () => {
     setTokenUserViewPort();
-    it('Have no services in /my-services', () => {
+    it('Have one services in /my-services', () => {
       cy.visit('/my-services');
       cy.url().should('contain', 'my-services');
-      // No orgs
-      cy.get('mat-expansion-panel').should('have.length', 0);
+      // One org
+      cy.get('mat-expansion-panel').should('have.length', 1);
     });
     it('Clicking sync with Github should sync', () => {
       cy.server();
@@ -74,8 +74,10 @@ describe('Dockstore Home', () => {
           response: json
         });
       });
-      cy.get('[data-cy=sync-with-github]').click();
       // One org
+      cy.get('mat-expansion-panel').should('have.length', 1);
+      cy.get('[data-cy=sync-with-github]').click();
+      // One org but different
       cy.get('mat-expansion-panel').should('have.length', 1);
       cy.get('.mat-expansion-indicator').first().click();
       // One repo within the org
@@ -91,7 +93,7 @@ describe('Dockstore Home', () => {
           response: json
         });
       });
-      cy.get('.mat-expansion-indicator').first().click();
+      cy.get('mat-expansion-panel').should('have.length', 1);
       cy.get('[data-cy=sync-with-github-org]').first().click();
       cy.get('mat-expansion-panel').should('have.length', 1);
       // Now 2 repos
