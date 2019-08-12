@@ -51,7 +51,8 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
-  doiTooltip = 'Request a digital object identifier (DOI) for this version.';
+  doiTooltip = 'Request a Digital Object Identifier (DOI) for this version.';
+  snapshotTooltip = 'Snapshotting a version makes it read-only';
 
   constructor(
     private viewService: ViewService,

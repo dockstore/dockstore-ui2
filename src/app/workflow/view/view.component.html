@@ -48,6 +48,7 @@
   *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
   (click)="snapshotVersion()"
   data-cy="dockstore-snapshot"
+  [matTooltip]="snapshotTooltip"
 >
   Snapshot
 </button>
@@ -58,7 +59,7 @@
   class="btn-block"
   (click)="requestDOIForWorkflowVersion()"
   [disabled]="isRefreshing$ | async"
-  *ngIf="version.referenceType !== 'BRANCH' || version.doiURL"
+  *ngIf="version.referenceType !== 'BRANCH' && !version.doiURL && workflow?.is_published"
   [matTooltip]="doiTooltip"
 >
   Issue DOI
