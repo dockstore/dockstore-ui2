@@ -57,12 +57,11 @@ describe('Dockstore Home', () => {
   });
 
   describe('my-services sync', () => {
-    setTokenUserViewPort();
-    it('Have one services in /my-services', () => {
+    setTokenUserViewPortCurator();
+    it('Have no services in /my-services', () => {
       cy.visit('/my-services');
       cy.url().should('contain', 'my-services');
-      // One org
-      cy.get('mat-expansion-panel').should('have.length', 1);
+      cy.contains('You have not registered any services').should('be.visible');
     });
     it('Clicking sync with Github should sync', () => {
       cy.server();
@@ -75,7 +74,6 @@ describe('Dockstore Home', () => {
         });
       });
       // One org
-      cy.get('mat-expansion-panel').should('have.length', 1);
       cy.get('[data-cy=sync-with-github]').click();
       // One org but different
       cy.get('mat-expansion-panel').should('have.length', 1);
