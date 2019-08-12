@@ -42,35 +42,17 @@ export class ViewService {
   ) {}
 
   /**
-   * Opens a confirmation dialog that the Dockstore User can use to
-   * confirm they want a snapshot.
-   *
-   * @memberof ViewWorkflowComponent
-   */
-  snapshotVersion(workflow, version: WorkflowVersion): void {
-    if (version.frozen) {
-      // Guarantee we don't snapshot a snapshot
-      return;
-    }
-    const snapshot: WorkflowVersion = { ...version, frozen: true };
-    const confirmMessage = 'Snapshotting a version cannot be undone. Are you sure you want to snapshot this version?';
-    const confirmSnapshot = confirm(confirmMessage);
-    if (confirmSnapshot) {
-      this.updateWorkflowToSnapshot(workflow, snapshot);
-    }
-  }
-
-  /**
    * Updates the workflow version and alerts the Dockstore User with success
    * or failure.
    *
    * @private
-   * @memberof ViewWorkflowComponent
+   * @memberof ViewService
    */
-  private updateWorkflowToSnapshot(workflow, version: WorkflowVersion): void {
-    this.workflowsService.updateWorkflowVersion(workflow.id, [version]).subscribe(
+  private updateWorkflowToSnapshot(workflow: Workflow, version: WorkflowVersion, cb: Function): void {
+    const snapshot: WorkflowVersion = { ...version, frozen: true };
+    this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).subscribe(
       workflowVersions => {
-        this.alertService.detailedSuccess('Snapshot successfully created!');
+        cb(workflowVersions);
         const workflow = { ...this.workflowQuery.getActive() };
         workflow.workflowVersions = workflowVersions;
         this.workflowService.setWorkflow(workflow);
@@ -85,29 +67,40 @@ export class ViewService {
     );
   }
 
-  showSnapshotBeforeDOIDialog(workflow, version): void {
+  /**
+   * Opens a confirmation dialog that the Dockstore User can use to
+   * confirm they want before creating a DOI. Then opens the DOI dialog.
+   *
+   * @memberof ViewService
+   */
+  private showSnapshotBeforeDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
-      message:
-        'A digital object identifier (DOI) allows a version to be easily cited in publications and is only available for versions that have been snapshotted. Would you like to create a snapshot now? You will then be asked if you want to generate a DOI.',
-      title: 'Create DOI (Snapshot Version)',
+      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and is only available for versions that have been snapshotted. You will then be asked if you want to generate a DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>?`,
+      title: 'Issue DOI (Snapshot Version)',
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
     };
+
     this.confirmationDialogService.openDialog(dialogData, '500px').subscribe(confirmationResult => {
       if (confirmationResult === true) {
-        this.showRequestDOIDialog(workflow, version);
+        this.updateWorkflowToSnapshot(workflow, version, () => this.showRequestDOIDialog(workflow, version));
       } else {
         this.alertService.detailedSuccess('You cancelled DOI creation.');
       }
     });
   }
 
-  showRequestDOIDialog(workflow, version): void {
+  /**
+   * Opens a dialog to request whether the user would like to issue a DOI.
+   *
+   * @private
+   * @memberof ViewService
+   */
+  private showRequestDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
-      message:
-        "A digital object identifier (DOI) allows a version to be easily cited in publications and can't be undone. Are you sure you'd like to create a DOI for this version?",
-      title: 'Create DOI',
-      confirmationButtonText: 'Create DOI',
+      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and can't be undone. Are you sure you'd like to create a DOI for this version <b>${version.name}</b>?`,
+      title: 'Issue DOI',
+      confirmationButtonText: 'Issue DOI',
       cancelButtonText: 'Cancel'
     };
 
@@ -120,23 +113,58 @@ export class ViewService {
             errorResponse => this.alertService.detailedError(errorResponse)
           );
       } else {
-        this.alertService.detailedSuccess('You cancelled DOI creation.');
+        this.alertService.detailedSuccess('You cancelled DOI issuance.');
       }
     });
   }
 
-  requestDOISuccess(version, workflowVersions: Array<WorkflowVersion>): void {
+  /**
+   * A helper function for updating the store and relating success on DOI creation.
+   *
+   * @private
+   * @memberof ViewService
+   */
+  private requestDOISuccess(version: WorkflowVersion, workflowVersions: Array<WorkflowVersion>): void {
     const newSelectedVersion = workflowVersions.find(v => v.id === version.id);
     this.workflowService.setWorkflowVersion(newSelectedVersion);
     this.alertService.detailedSuccess();
   }
 
-  requestDOIFailure(errorResponse: HttpErrorResponse) {
-    this.alertService.detailedSuccess('You cancelled DOI creation.');
+  /**
+   * Opens a confirmation dialog that the Dockstore User can use to
+   * confirm they want a snapshot.
+   *
+   * @memberof ViewService
+   */
+  snapshotVersion(workflow: Workflow, version: WorkflowVersion): void {
+    if (version.frozen) {
+      // Guarantee we don't snapshot a snapshot
+      return;
+    }
+    const dialogData: ConfirmationDialogData = {
+      message: `Snapshotting a version will make it so it can no longer be edited and cannot be undone. <p>Are you sure you want to snapshot this version: <b>${version.name}</b>?`,
+      title: 'Snapshot',
+      confirmationButtonText: 'Snapshot Version',
+      cancelButtonText: 'Cancel'
+    };
+    this.confirmationDialogService.openDialog(dialogData, '500px').subscribe(confirmationResult => {
+      if (confirmationResult) {
+        this.updateWorkflowToSnapshot(workflow, version, () => this.alertService.detailedSuccess('Snapshot successfully created!'));
+      } else {
+        this.alertService.detailedSuccess('You cancelled creating a snapshot.');
+      }
+    });
   }
 
+  /**
+   * Entry function for issuing a DOI, opens a dialog depending on the state of the
+   * version.
+   *
+   * @memberof ViewService
+   */
   requestDOIForWorkflowVersion(workflow: Workflow, version: WorkflowVersion): void {
     // Set the dialog to open a snapshot if its not frozen
+    // TODO check to see if they have a zenodo token
     if (!version.frozen) {
       this.showSnapshotBeforeDOIDialog(workflow, version);
     } else {
