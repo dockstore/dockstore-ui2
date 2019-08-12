@@ -13,7 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { assertNoTab, assertVisibleTab, goToTab, setTokenUserViewPort } from '../../support/commands';
+import {
+  assertNoTab,
+  assertVisibleTab,
+  goToTab,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator
+} from '../../support/commands';
 
 describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
