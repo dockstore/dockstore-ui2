@@ -16,6 +16,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
+import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionService } from 'app/shared/session/session.service';
 import { User } from 'app/shared/swagger';
 import { TwitterService } from 'app/shared/twitter.service';
 import { UserQuery } from 'app/shared/user/user.query';
@@ -47,7 +49,13 @@ export class OldHomePageComponent implements OnInit, AfterViewInit {
 
   @ViewChild('youtube') youtube: ElementRef;
 
-  constructor(private dialog: MatDialog, private twitterService: TwitterService, private userQuery: UserQuery, private router: Router) {}
+  constructor(
+    private dialog: MatDialog,
+    private twitterService: TwitterService,
+    private userQuery: UserQuery,
+    private router: Router,
+    private sessionService: SessionService
+  ) {}
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
@@ -61,6 +69,7 @@ export class OldHomePageComponent implements OnInit, AfterViewInit {
   }
 
   onSelect(data: TabDirective): void {
+    this.sessionService.setEntryType(EntryType.BioWorkflow);
     this.selectedTab = data.id;
   }
 
