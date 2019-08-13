@@ -96,6 +96,7 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { PolicyUpdateComponent } from './policy-update/policy-update.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -139,7 +140,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     YoutubeComponent,
     SitemapComponent,
     GithubCallbackComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    PolicyUpdateComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

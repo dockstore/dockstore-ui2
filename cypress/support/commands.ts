@@ -49,7 +49,7 @@ export function resetDB() {
 export function setTokenUserViewPort() {
   beforeEach(() => {
     // Login by adding user obj and token to local storage
-    localStorage.setItem('dockstore.ui.userObj', '{\"id\": 1, \"username\": \"user_A\", \"isAdmin\": \"false\", \"name\": \"user_A\"}');
+    localStorage.setItem('dockstore.ui.userObj', '{\"id\": 1, \"username\": \"user_A\", \"isAdmin\": \"false\", \"name\": \"user_A\", \"tosversion\": \"TOS_VERSION_1\",\"privacypolicyversion\": \"PRIVACY_POLICY_VERSION_2_5\"}');
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken');
   });
 }
