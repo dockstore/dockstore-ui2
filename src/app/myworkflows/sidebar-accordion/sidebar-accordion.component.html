@@ -50,6 +50,7 @@
       </div>
       <div *ngIf="(entryType$ | async) === EntryType.Service">
         <button
+          data-cy="sync-with-github-org"
           [disabled]="isRefreshing$ | async"
           mat-icon-button
           matTooltip="Sync Organization with GitHub"
