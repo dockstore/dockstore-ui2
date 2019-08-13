@@ -18,7 +18,7 @@ import { MatAccordion } from '@angular/material';
 import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-
+import { AlertService } from '../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -28,8 +28,19 @@ import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
-import { AlertService } from '../shared/alert/state/alert.service';
 
+/**
+ * There are a total of 6 calls per search.
+ * 2 calls are from the tag cloud (1 for tag, 1 for workflow)
+ * 2 calls are for the sidebar bucket count (1 for all non-verified bucket count, 1 specifically for verified)
+ * 1 call for the autocomplete
+ * 1 call for the actual results
+ *
+ * @export
+ * @class SearchComponent
+ * @implements {OnInit}
+ * @implements {OnDestroy}
+ */
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -104,8 +115,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private queryBuilderService: QueryBuilderService,
     public searchService: SearchService,
     private searchQuery: SearchQuery,
-    private advancedSearchService: AdvancedSearchService,
-    private alertService: AlertService
+    private advancedSearchService: AdvancedSearchService
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
@@ -155,7 +165,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.advancedSearchService.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
-      this.updateQuery();
+      // Upon init, the user did not want to do an advanced search, but this triggers anyways.  Using toAdvanceSearch to stop it.
+      if (advancedSearch.toAdvanceSearch) {
+        this.updateQuery();
+      }
     });
   }
 
