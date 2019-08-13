@@ -61,7 +61,7 @@ describe('Dockstore Workflow Details', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=launch');
   });
 
-  it('Change tab to versions and snapshot', () => {
+  it('Change tab to versions and not see snapshot', () => {
     goToTab('Versions');
     cy
       .get('tbody>tr')
@@ -74,23 +74,6 @@ describe('Dockstore Workflow Details', () => {
       .should('be.gt', 0);
         cy.get('[data-cy=dockstore-snapshot]')
           .should('not.be.visible');
-    cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l:master?tab=versions');
-    goToTab('Versions');
-    cy
-      .get('[data-cy=dockstore-snapshot-locked]')
-      .should('have.length', 0);
-
-    cy
-      .get('[data-cy=dockstore-snapshot-unlocked]')
-      .its('length')
-      .should('be.gt', 0);
-
-    cy
-      .get('[data-cy=dockstore-snapshot]').first().click();
-
-    cy.wait(250);
-    cy
-      .get('[data-cy=dockstore-snapshot-locked').should('have.length', 1);
    });
 
   describe('Change tab to files', () => {
