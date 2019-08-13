@@ -29,6 +29,7 @@ import { Workflow } from './swagger/model/workflow';
 import { ToolQuery } from './tool/tool.query';
 import { BioWorkflow } from './swagger/model/bioWorkflow';
 import { Service } from './swagger/model/service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class RefreshService {
@@ -143,19 +144,17 @@ export class RefreshService {
   syncServices(): void {
     const message = 'Syncing services';
     this.alertService.start(message);
-    this.usersService.syncUserServices().subscribe(
-      response => {
-        this.alertService.detailedSuccess();
-        this.workflowService.setWorkflows(response);
-      },
-      error => this.alertService.detailedError(error)
-    );
+    this.updateWorkflows(this.usersService.syncUserServices());
   }
 
   syncServicesForOrganziation(organization: string): void {
     const message = 'Syncing services for organization ' + organization;
     this.alertService.start(message);
-    this.usersService.syncUserServicesbyOrganization(organization).subscribe(
+    this.updateWorkflows(this.usersService.syncUserServicesbyOrganization(organization));
+  }
+
+  private updateWorkflows(workflows: Observable<Workflow[]>): void {
+    workflows.subscribe(
       (services: Array<Workflow>) => {
         this.alertService.detailedSuccess();
         this.workflowService.setWorkflows(services);
