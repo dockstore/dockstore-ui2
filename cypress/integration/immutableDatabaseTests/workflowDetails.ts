@@ -67,7 +67,15 @@ describe('Dockstore Workflow Details', () => {
       .get('tbody>tr')
       .should('have.length', 1); // 1 Version and no warning line
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
+    cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
 
+    cy.get('[data-cy=dockstore-snapshot-unlocked]')
+      .its('length')
+      .should('be.gt', 0);
+        cy.get('[data-cy=dockstore-snapshot]')
+          .should('not.be.visible');
+    cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l:master?tab=versions');
+    goToTab('Versions');
     cy
       .get('[data-cy=dockstore-snapshot-locked]')
       .should('have.length', 0);
@@ -78,7 +86,7 @@ describe('Dockstore Workflow Details', () => {
       .should('be.gt', 0);
 
     cy
-      .get('[data-cy=dockstore-snapshot]').first().click()
+      .get('[data-cy=dockstore-snapshot]').first().click();
 
     cy.wait(250);
     cy
