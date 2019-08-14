@@ -17,24 +17,26 @@
 <button type="button" mat-button color="accent" class="btn-block" (click)="showVersionModal()">
   {{ isPublic || !canWrite || (entryType$ | async) === EntryType.Service ? 'View' : 'Edit' }}
 </button>
-<button
-  type="button"
-  mat-button
-  color="accent"
-  class="btn-block"
-  *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
-  (click)="snapshotVersion()"
-  data-cy="dockstore-snapshot"
->
-  Snapshot
-</button>
-<button
-  type="button"
-  mat-button
-  color="warn"
-  class="btn-block deleteVersionButton"
-  *ngIf="!isPublic && workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
-  (click)="deleteHostedVersion(); (false)"
->
-  Delete
-</button>
+<ng-container *ngIf="!isPublic">
+  <button
+    type="button"
+    mat-button
+    color="accent"
+    class="btn-block"
+    *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
+    (click)="snapshotVersion()"
+    data-cy="dockstore-snapshot"
+  >
+    Snapshot
+  </button>
+  <button
+    type="button"
+    mat-button
+    color="warn"
+    class="btn-block deleteVersionButton"
+    *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
+    (click)="deleteHostedVersion(); (false)"
+  >
+    Delete
+  </button>
+</ng-container>
