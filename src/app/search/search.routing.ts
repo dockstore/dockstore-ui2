@@ -15,15 +15,13 @@
  */
 
 import { RouterModule, Routes } from '@angular/router';
-
 import { SearchComponent } from './search.component';
 
 const CONTAINERS_ROUTES: Routes = [
   {
-    path: 'search',
+    path: '**',
     component: SearchComponent,
-    data: { title: 'Dockstore | Search' },
-    children: [{ path: 'search?**', component: SearchComponent }]
+    data: { title: 'Dockstore | Search' }
   }
 ];
 

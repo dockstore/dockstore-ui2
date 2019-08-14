@@ -24,7 +24,7 @@ import { SearchQuery } from './search.query';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class SearchService {
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);

@@ -66,7 +66,11 @@ const APP_ROUTES: Routes = [
   },
   { path: 'githubCallback', component: GithubCallbackComponent },
   { path: 'aliases', loadChildren: 'app/aliases/aliases.module#AliasesModule', data: { title: 'Dockstore | Aliases' } },
-  { path: 'search*', component: SearchComponent, data: { title: 'Dockstore | Search' } },
+  {
+    path: 'search',
+    loadChildren: 'app/search/search.module#SearchModule',
+    data: { title: 'Dockstore | Search' }
+  },
   { path: 'login', component: LoginComponent, data: { title: 'Dockstore | Login' } },
   { path: 'quick-start', component: QuickStartComponent, data: { title: 'Dockstore | Quick Start' } },
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Onboarding' } },
