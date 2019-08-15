@@ -138,31 +138,30 @@ workflows:
           filters:
             tags:
               only: /.*/
-#      - integration_test_1:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#      - integration_test_2:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#      - integration_test_3:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
+      - integration_test_1:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
       # Upload builds for tags to s3. We can add branches later
       - upload_to_s3:
           requires:
-                  #            - integration_test_1
-                  #            - integration_test_2
-                  #            - integration_test_3
-            - lint_unit_test_coverage
+            - integration_test_1
+            - integration_test_2
+            - integration_test_3
           filters:
             tags:
               only: /.*/
