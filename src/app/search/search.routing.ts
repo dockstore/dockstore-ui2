@@ -25,4 +25,4 @@ const CONTAINERS_ROUTES: Routes = [
   }
 ];
 
-export const searchRouting = RouterModule.forRoot(CONTAINERS_ROUTES);
+export const searchRouting = RouterModule.forChild(CONTAINERS_ROUTES);
