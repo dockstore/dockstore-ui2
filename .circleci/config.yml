@@ -177,8 +177,7 @@ workflows:
             - upload_to_s3
           filters:
             branches:
-              # Note to reviewers: will change to develop before merging, once build works off the branch
-              only: feature/SEAB-314/cd
+              only: develop
 commands:
   install_container_dependencies:
     steps:
