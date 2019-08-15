@@ -25,6 +25,9 @@ jobs:
           name: Check dependencies
           command: bash -i -c 'npm ls'
       - run:
+          name: Swap for CDN paths
+          command: bash -i -c 'find src \( -iname '*.html' -o -iname '*.ts' \) -exec sed -i 's/\.\.\/assets\//https:\/\/gui.dockstore.org\/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)\/assets\//g' {} +'
+      - run:
           name: Lint
           command: bash -i -c 'npm run lint'
       - run:
@@ -88,16 +91,6 @@ jobs:
                 arguments: |
                   --recursive \
                   --exclude index.html
-#            - aws-s3/copy:
-#                from: 's3://${AWS_BUCKET}/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)'
-#                to: 's3://${AWS_BUCKET}/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)'
-#                arguments: |
-#                  -exclude '*' \
-#                  --include '*.js' \
-#                  --no-guess-mime-type \
-#                  --content-type="application/javascript" \
-#                  --metadata-directive="REPLACE" \
-#                  --recursive
             - aws-s3/copy:
                 from: dist/index.html
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
