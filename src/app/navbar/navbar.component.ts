@@ -38,8 +38,8 @@ export class NavbarComponent extends Logout implements OnInit {
   isExtended = false;
   devMode = devMode;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
-  currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
+  private currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
+  private currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
 
   constructor(
     private pagenumberService: PagenumberService,
