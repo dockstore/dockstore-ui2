@@ -43,13 +43,13 @@ export function resetDB() {
   before(() => {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
     cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
-    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml');
+    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,alter_test_user_1.7.0 travisci/web.yml');
   });
 }
+
 export function setTokenUserViewPort() {
   beforeEach(() => {
-    // Login by adding user obj and token to local storage
-    localStorage.setItem('dockstore.ui.userObj', '{\"id\": 1, \"username\": \"user_A\", \"isAdmin\": \"false\", \"name\": \"user_A\", \"tosversion\": \"TOS_VERSION_1\",\"privacypolicyversion\": \"PRIVACY_POLICY_VERSION_2_5\"}');
+    // Login by adding token to local storage
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken');
   });
 }

@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, setTokenUserViewPortCurator } from '../../support/commands';
+import {goToTab, isActiveTab, setTokenUserViewPort} from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
-  setTokenUserViewPortCurator();
+  setTokenUserViewPort();
 
   beforeEach(() => {
     cy
@@ -33,7 +33,7 @@ describe('Dropdown test', () => {
       .route({
         method: 'GET',
         url: '*/users/user',
-        response: { id: 4, username: 'user_curator', name: 'user_curator', curator: true, isAdmin: false }
+        response: { id: 4, username: 'user_curator', name: 'user_curator', curator: true, isAdmin: false, tosversion: `TOS_VERSION_1`, privacyPolicyVersion: `PRIVACY_POLICY_VERSION_2_5` }
       });
 
     cy.visit('');
@@ -75,7 +75,7 @@ describe('Dropdown test', () => {
     it('Should show all accounts as linked (except GitLab and Bitbucket)', () => {
       everythingOk();
     });
-    setTokenUserViewPortCurator();
+    setTokenUserViewPort();
     // Check that changing the tab changes the url
     it('should default to accounts tab', () => {
       cy.visit('/accounts');
