@@ -38,7 +38,7 @@ export class LoginComponent {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer
   ) {
-    iconRegistry.addSvgIcon('google', sanitizer.bypassSecurityTrustResourceUrl('assets/svg/btn_google_light_normal_ios.svg'));
+    iconRegistry.addSvgIcon('google', sanitizer.bypassSecurityTrustResourceUrl('../assets/svg/btn_google_light_normal_ios.svg'));
   }
 
   private login(observable) {

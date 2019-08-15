@@ -156,8 +156,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     private descriptorsService: DescriptorsService
   ) {
     super();
-    iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/DX_Logo_white_alpha.svg'));
-    iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/terra.svg'));
+    iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
+    iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/terra.svg'));
   }
 
   ngOnInit(): void {
