@@ -65,12 +65,10 @@
   <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" />
 
   <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-    <a class="btn youtube" role="button" (click)="openYoutube()">
-      <div>
-        <mat-icon>play_circle_outline</mat-icon>
-        <span>&nbsp;Video Overview</span>
-      </div>
-    </a>
+    <button mat-raised-button (click)="openYoutube()">
+      <mat-icon>play_circle_outline</mat-icon>
+      <span>&nbsp;Video Overview</span>
+    </button>
   </div>
 </div>
 
