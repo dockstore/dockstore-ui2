@@ -28,7 +28,7 @@ import { SearchComponent } from './search/search.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
-import { PolicyUpdateComponent } from './policy-update/policy-update.component';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
@@ -73,7 +73,7 @@ const APP_ROUTES: Routes = [
     data: { title: 'Dockstore | Search' }
   },
   { path: 'login', component: LoginComponent, data: { title: 'Dockstore | Login' } },
-  { path: 'policy-update', component: PolicyUpdateComponent, data: { title: 'Dockstore | Policy Update' } },
+  { path: 'session-expired', component: SessionExpiredComponent, data: { title: 'Dockstore | Session Expired' } },
   { path: 'quick-start', component: QuickStartComponent, data: { title: 'Dockstore | Quick Start' } },
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Onboarding' } },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Accounts' } },

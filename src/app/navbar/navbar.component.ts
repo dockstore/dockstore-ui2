@@ -82,6 +82,6 @@ export class NavbarComponent extends Logout implements OnInit {
   }
 
   logOutUsersWithoutCurrentTOS(user: User) {
-    this.logout('/policy-update');
+    this.logout('/session-expired');
   }
 }

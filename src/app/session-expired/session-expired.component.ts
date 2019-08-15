@@ -17,8 +17,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'policy-update',
-  templateUrl: './policy-update.component.html'
+  templateUrl: './session-expired.component.html'
 })
-export class PolicyUpdateComponent {
+export class SessionExpiredComponent {
   constructor() {}
 }
