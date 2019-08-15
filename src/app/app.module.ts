@@ -63,7 +63,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './register/register.service';
-import { SearchModule } from './search/search.module';
 import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
@@ -167,7 +166,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     StargazersModule,
     MarkdownModule.forRoot(),
     ReactiveFormsModule,
-    SearchModule,
     ApiModule.forRoot(getApiConfig),
     ApiModule2.forRoot(getApiConfig),
     CustomMaterialModule,
