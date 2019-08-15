@@ -79,8 +79,8 @@ jobs:
       - when:
           condition: <<parameters.aws_bucket>>
           steps:
-            - attach_workspace:
-                at: .
+            - get_workspace
+            - install_container_dependencies
             # Build again to leverage CloudFront
             - run:
                 name: Swap for CDN paths
