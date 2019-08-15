@@ -79,4 +79,4 @@ const APP_ROUTES: Routes = [
   { path: '**', redirectTo: '' }
 ];
 
-export const routing = RouterModule.forRoot(APP_ROUTES);
+export const routing = RouterModule.forRoot(APP_ROUTES, { scrollPositionRestoration: 'enabled' });
