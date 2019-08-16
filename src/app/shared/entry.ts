@@ -223,8 +223,9 @@ export abstract class Entry implements OnInit, OnDestroy {
     return (
       selectedTag ||
       versions.reduce((a, b) => {
+        // Fall back to dbUpdateDate when there's no last_built
         if (!b.last_built && !a.last_built) {
-          return b['dbUpdateDate'] > a['dbUpdateDate'] ? b : a;
+          return b.dbUpdateDate > a.dbUpdateDate ? b : a;
         }
         return b.last_built > a.last_built ? b : a;
       })
