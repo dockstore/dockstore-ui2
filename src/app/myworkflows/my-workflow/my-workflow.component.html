@@ -61,7 +61,13 @@
                         Refresh All
                       </button>
                       <ng-container *ngIf="entryType === EntryType.Service">
-                        <button data-cy="sync-with-github" mat-icon-button matTooltip="Sync with GitHub" (click)="sync()">
+                        <button
+                          [disabled]="isRefreshing$ | async"
+                          data-cy="sync-with-github"
+                          mat-icon-button
+                          matTooltip="Sync with GitHub"
+                          (click)="sync()"
+                        >
                           <mat-icon>sync</mat-icon>
                         </button>
                         <a
