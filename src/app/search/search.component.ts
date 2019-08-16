@@ -31,7 +31,7 @@ import { SearchService } from './state/search.service';
 
 /**
  * There are a total of 6 calls per search.
- * 2 calls are from the tag cloud (1 for tag, 1 for workflow)
+ * 2 calls are from the tag cloud (1 for tool, 1 for workflow)
  * 2 calls are for the sidebar bucket count (1 for all non-verified bucket count, 1 specifically for verified)
  * 1 call for the autocomplete
  * 1 call for the actual results
