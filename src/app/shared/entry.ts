@@ -220,7 +220,16 @@ export abstract class Entry implements OnInit, OnDestroy {
       return null;
     }
     const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
-    return selectedTag || versions.reduce((a, b) => (b.last_built > a.last_built ? b : a));
+    return (
+      selectedTag ||
+      versions.reduce((a, b) => {
+        // Fall back to dbUpdateDate when there's no last_built
+        if (!b.last_built && !a.last_built) {
+          return b.dbUpdateDate > a.dbUpdateDate ? b : a;
+        }
+        return b.last_built > a.last_built ? b : a;
+      })
+    );
   }
 
   selectWorkflowVersion(versions: Array<WorkflowVersion>, urlVersion: string, defaultVersion: string) {
