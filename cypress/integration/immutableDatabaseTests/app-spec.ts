@@ -70,14 +70,13 @@ describe('Logged out Dockstore Home', () => {
     });
   describe('Landing Video', () => {
     it('video button visible', () => {
-      cy
-        .get('.btn.youtube')
-        .should('visible');
+      cy.get('[data-cy=video-overview-button]').should('visible');
     });
     it('open and close video', () => {
       cy.get('#youtubeModal').should('not.be.visible');
-      cy
-        .get('.btn.youtube').should('be.visible').click();
+      cy.get('[data-cy=video-overview-button]')
+        .should('be.visible')
+        .click();
       cy.get('#youtubeModal').should('be.visible');
       cy.get('body').type('{esc}');
       cy.get('#youtubeModal').should('not.be.visible');
