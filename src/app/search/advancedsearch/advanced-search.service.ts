@@ -14,12 +14,15 @@
  *    limitations under the License.
  */
 
-import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
-import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
 
 @Injectable()
 export class AdvancedSearchService {
+  // toAdvanceSearch is used because this is not done correctly
+  // Right now, it's used to determine whether or not to re-query elasticsearch
+  // Ideally, user actions and initalization should trigger the re-query instead
   private readonly initAdvancedSearch = {
     ANDSplitFilter: '',
     ANDNoSplitFilter: '',
