@@ -4,12 +4,12 @@
   "description": "Create, Share, Use",
   "icons": [
     {
-      "src": "assets/images/dockstore/dockstore.png",
+      "src": "../assets/images/dockstore/dockstore.png",
       "sizes": "328x328",
       "type": "image/png"
     },
     {
-      "src": "assets/images/dockstore/dockstore.png",
+      "src": "../assets/images/dockstore/dockstore.png",
       "sizes": "512x512",
       "type": "image/png"
     }
