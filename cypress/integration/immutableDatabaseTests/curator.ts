@@ -13,18 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort } from '../../support/commands';
+import {setTokenUserViewPortCurator} from '../../support/commands';
 describe('Curator UI', () => {
-  setTokenUserViewPort();
+  setTokenUserViewPortCurator();
   beforeEach(() => {
-    cy.server();
-    const userObject = { id: 1, username: 'user_A', curator: true, isAdmin: false, name: 'user_A', setupComplete: false};
-    cy.route({
-      url: '*/users/user',
-      method: 'GET',
-      status: 200,
-      response: userObject
-    });
     cy.visit('');
 
     // Select dropdown

@@ -47,6 +47,7 @@ export function resetDB() {
   });
 }
 
+// Sets it to the user where id = 1. Is an admin and curator.
 export function setTokenUserViewPort() {
   beforeEach(() => {
     // Login by adding token to local storage
@@ -54,11 +55,10 @@ export function setTokenUserViewPort() {
   });
 }
 
+// Sets it to the user where id = 4. Is a curator.
 export function setTokenUserViewPortCurator() {
   beforeEach(() => {
     // Login by adding user obj and token to local storage
-    localStorage.setItem('dockstore.ui.userObj',
-      '{\"id\": 4, \"username\": \"user_curator\", \"isAdmin\": \"false\", \"name\": \"user_curator\", \"curator\": \"true\"}');
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken2');
   });
 }

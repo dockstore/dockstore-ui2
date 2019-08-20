@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {goToTab, isActiveTab, setTokenUserViewPort} from '../../support/commands';
+import { goToTab, isActiveTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
-  setTokenUserViewPort();
+  setTokenUserViewPortCurator();
 
   beforeEach(() => {
     cy
@@ -26,14 +26,6 @@ describe('Dropdown test', () => {
         method: 'GET',
         url: /extended/,
         response: { 'canChangeUsername': true }
-      });
-
-    cy
-      .server()
-      .route({
-        method: 'GET',
-        url: '*/users/user',
-        response: { id: 4, username: 'user_curator', name: 'user_curator', curator: true, isAdmin: false, tosversion: `TOS_VERSION_1`, privacyPolicyVersion: `PRIVACY_POLICY_VERSION_2_5` }
       });
 
     cy.visit('');
