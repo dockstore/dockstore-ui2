@@ -15,7 +15,7 @@
   -->
 
 <button type="button" mat-button color="accent" class="btn-block" (click)="showVersionModal()">
-  {{ isPublic || !canWrite || (entryType$ | async) === EntryType.Service ? 'View' : 'Edit' }}
+  {{ isPublic || !canWrite ? 'View' : 'Edit' }}
 </button>
 <ng-container *ngIf="!isPublic">
   <button

@@ -29,6 +29,7 @@ export const formErrors = {
   reference: '',
   versionTag: '',
   workflow_path: '',
+  service_path: '',
   workflowName: '',
   amazonDockerRegistryPath: '',
   sevenBridgesDockerRegistryPath: ''
@@ -53,6 +54,7 @@ export const validationDescriptorPatterns = {
   versionTag: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
   reference: '[\\w-]+((/|.)[\\w-]+)*',
   workflowDescriptorPath: '^/([^\\/?:*|<>]+/)*[^\\/?:*|<>]+.(cwl|wdl|yaml|yml|config)',
+  serviceDescriptorPath: '^.([^\\/?:*|<>]+/)*[^\\/?:*|<>]+.(yml)',
   workflowName: '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
   cwlTestParameterFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
   wdlTestParameterFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
@@ -141,6 +143,12 @@ export const validationMessages = {
     minlength: 'Workflow Path is too short. (Min. 3 characters.)',
     maxlength: 'Workflow Path is too long. (Max 256 characters.)',
     pattern: `Must begin with '/' and end with '*.cwl', '*.yml', '*.yaml', '*.config', or'*.wdl' ` + 'depending on the descriptor type.'
+  },
+  service_path: {
+    required: 'This field cannot be empty.',
+    minlength: 'Workflow Path is too short. (Min. 3 characters.)',
+    maxlength: 'Workflow Path is too long. (Max 256 characters.)',
+    pattern: `Must begin with '.' and end with '*.yml' `
   },
   repository: {
     maxlength: 'Repository Name is too long. (Max 256 characters.)',
