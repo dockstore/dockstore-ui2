@@ -3,6 +3,7 @@ import { Config, MetadataService } from './shared/swagger';
 import { Dockstore } from './shared/dockstore.model';
 import { ConfigService } from 'ng2-ui-auth';
 import { AuthConfig } from './shared/auth.model';
+import { IOauth1Options, IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -74,8 +75,16 @@ export class ConfigurationService {
    * executed. Update the providers here.
    */
   private updateAuthProviders() {
-    AuthConfig.providers.github.clientId = Dockstore.GITHUB_CLIENT_ID;
-    AuthConfig.providers.google.clientId = Dockstore.GOOGLE_CLIENT_ID;
+    if (this.isIOauth2Options(AuthConfig.providers.github)) {
+      AuthConfig.providers.github.clientId = Dockstore.GITHUB_CLIENT_ID;
+    }
+    if (this.isIOauth2Options(AuthConfig.providers.google)) {
+      AuthConfig.providers.google.clientId = Dockstore.GOOGLE_CLIENT_ID;
+    }
     this.configService.updateProviders(AuthConfig.providers);
+  }
+
+  private isIOauth2Options(arg: any): arg is IOauth2Options {
+    return arg.hasOwnProperty('clientId');
   }
 }
