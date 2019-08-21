@@ -3,7 +3,7 @@ import { Config, MetadataService } from './shared/swagger';
 import { Dockstore } from './shared/dockstore.model';
 import { ConfigService } from 'ng2-ui-auth';
 import { AuthConfig } from './shared/auth.model';
-import { IOauth1Options, IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
+import { IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
 
 @Injectable({
   providedIn: 'root'
