@@ -12,6 +12,7 @@ import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
+import { Workflow } from '../../shared/swagger/model/workflow';
 
 @Component({
   selector: 'collection-entry-confirm-remove',
@@ -43,6 +44,7 @@ export interface DialogData {
   styleUrls: ['./collection.component.scss', '../organization/organization.component.scss']
 })
 export class CollectionComponent implements OnInit {
+  WorkflowMode = Workflow.ModeEnum;
   collection$: Observable<Collection>;
   loadingCollection$: Observable<boolean>;
 
