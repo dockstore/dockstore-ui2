@@ -24,7 +24,6 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-import { SearchComponent } from './search/search.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
@@ -83,4 +82,4 @@ const APP_ROUTES: Routes = [
   { path: '**', redirectTo: '' }
 ];
 
-export const routing = RouterModule.forRoot(APP_ROUTES, { scrollPositionRestoration: 'enabled' });
+export const routing = RouterModule.forRoot(APP_ROUTES, { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' });
