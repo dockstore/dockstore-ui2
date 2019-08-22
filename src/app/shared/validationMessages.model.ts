@@ -146,8 +146,8 @@ export const validationMessages = {
   },
   service_path: {
     required: 'This field cannot be empty.',
-    minlength: 'Workflow Path is too short. (Min. 3 characters.)',
-    maxlength: 'Workflow Path is too long. (Max 256 characters.)',
+    minlength: 'Service Path is too short. (Min. 3 characters.)',
+    maxlength: 'Service Path is too long. (Max 256 characters.)',
     pattern: `Must begin with '.' and end with '*.yml' `
   },
   repository: {

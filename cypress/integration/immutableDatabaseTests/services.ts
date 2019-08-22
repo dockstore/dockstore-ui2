@@ -152,7 +152,7 @@ describe('Dockstore Home', () => {
     cy.contains('td', 'Jul 19, 2019, 1:13:48 PM');
     cy.contains('tr', 'Valid');
     cy.contains('tr', 'Verified Platforms');
-    cy.contains('button', 'View');
+    cy.contains('button', 'Edit');
   }
   function checkFilesTab() {
     goToTab('Files');
