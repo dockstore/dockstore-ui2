@@ -57,6 +57,8 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('be.visible');
       checkVersionsTab();
       // Hidden version not visible on public page
+      // View button visible on public page, otherwise Edit
+      cy.contains('button', 'View');
       cy.contains('td', 'test').should('not.be.visible');
       checkFilesTab();
     });
@@ -118,6 +120,8 @@ describe('Dockstore Home', () => {
       // TRS only visibile in public page
       cy.contains('TRS: ').should('not.be.visible');
       checkVersionsTab();
+      //Edit button only in my-services
+      cy.contains('button', 'Edit');
       checkFilesTab();
     });
   });
@@ -152,7 +156,6 @@ describe('Dockstore Home', () => {
     cy.contains('td', 'Jul 19, 2019, 1:13:48 PM');
     cy.contains('tr', 'Valid');
     cy.contains('tr', 'Verified Platforms');
-    cy.contains('button', 'Edit');
   }
   function checkFilesTab() {
     goToTab('Files');
