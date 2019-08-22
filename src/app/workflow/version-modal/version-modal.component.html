@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<h4 mat-dialog-title>{{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ (isService$ | async) ? 'Service Version' : 'Version Tag' }}</h4>
+<h4 mat-dialog-title>{{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ (isService$ | async) ? 'Service Version' : 'Workflow Version' }}</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
   <fieldset [disabled]="!canWrite || isPublic">
