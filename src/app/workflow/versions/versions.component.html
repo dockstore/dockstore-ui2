@@ -155,9 +155,12 @@
               matTooltip="Version {{ version.name }} can be snapshotted."
               >close</mat-icon
             >
-            <a href="{{ version.doiURL }}" *ngIf="version.doiURL" matTooltip="Click to view this version's DOI entry information.."
-              ><mat-icon data-cy="dockstore-snapshot-locked">lock</mat-icon></a
-            >
+            <a
+              href="https://doi.org/{{ version.doiURL }}"
+              *ngIf="version.doiURL"
+              matTooltip="Click to view this version's DOI entry information.."
+              ><img src="https://sandbox.zenodo.org/badge/DOI/{{ version.doiURL }}.svg" alt="DOI"
+            /></a>
           </td>
           <td *ngIf="version">
             <app-view-workflow

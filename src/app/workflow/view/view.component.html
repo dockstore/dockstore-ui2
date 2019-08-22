@@ -21,17 +21,6 @@
   <button
     type="button"
     mat-button
-    color="accent"
-    class="btn-block"
-    *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
-    (click)="snapshotVersion()"
-    data-cy="dockstore-snapshot"
-  >
-    Snapshot
-  </button>
-  <button
-    type="button"
-    mat-button
     color="warn"
     class="btn-block deleteVersionButton"
     *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
