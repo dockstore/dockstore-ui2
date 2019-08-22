@@ -98,7 +98,7 @@ export class ViewService {
    */
   private showRequestDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
-      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and can't be undone. Are you sure you'd like to create a DOI for this version <b>${version.name}</b>?`,
+      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and can't be undone, though some metadata will remain editable. Are you sure you'd like to create a DOI for version <b>${version.name}</b>?`,
       title: 'Issue DOI',
       confirmationButtonText: 'Issue DOI',
       cancelButtonText: 'Cancel'
@@ -142,7 +142,7 @@ export class ViewService {
       return;
     }
     const dialogData: ConfirmationDialogData = {
-      message: `Snapshotting a version will make it so it can no longer be edited and cannot be undone. <p>Are you sure you want to snapshot this version: <b>${version.name}</b>?`,
+      message: `Snapshotting a version will make it so it can no longer be edited and cannot be undone. <p>Are you sure you would like to snapshot version <b>${version.name}</b>?`,
       title: 'Snapshot',
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
