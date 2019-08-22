@@ -22,8 +22,10 @@ import { CustomMaterialModule } from './../../shared/modules/material.module';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
 import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
+import { FullscreenOverlayContainer, OverlayContainer } from '@angular/cdk/overlay';
 
 @NgModule({
+  providers: [{ provide: OverlayContainer, useClass: FullscreenOverlayContainer }],
   imports: [CommonModule, FlexLayoutModule, FormsModule, MatIconModule, MatProgressBarModule, MatTooltipModule, CustomMaterialModule],
   declarations: [DagComponent, CwlViewerComponent, WdlViewerComponent],
   exports: [DagComponent]
