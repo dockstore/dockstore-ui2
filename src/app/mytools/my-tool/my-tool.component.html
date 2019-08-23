@@ -41,18 +41,26 @@
         <div id="parent">
           <div id="child">
             <div class="clearfix sidebar-header">
-              <button
-                mat-flat-button
-                color="primary"
-                [matTooltipPosition]="'after'"
-                matTooltip="Find new tools and sync all existing tools"
-                class="pull-right"
-                (click)="refreshAllEntries()"
-                [disabled]="isRefreshing$ | async"
-              >
-                Refresh All
-              </button>
-              <h3 class="sidebar-header">My tools</h3>
+              <mat-toolbar>
+                <mat-toolbar-row>
+                  <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+                    <span>My tools</span>
+                    <span>
+                      <button
+                        mat-button
+                        color="primary"
+                        [matTooltipPosition]="'after'"
+                        matTooltip="Find new tools and sync all existing tools"
+                        class="pull-right"
+                        (click)="refreshAllEntries()"
+                        [disabled]="isRefreshing$ | async"
+                      >
+                        Refresh All
+                      </button>
+                    </span>
+                  </div>
+                </mat-toolbar-row>
+              </mat-toolbar>
             </div>
             <p *ngIf="!groupEntriesObject || !groupEntriesObject.length">You have not registered any tools</p>
             <app-sidebar-accordion
