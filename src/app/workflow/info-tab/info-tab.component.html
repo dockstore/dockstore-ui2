@@ -138,8 +138,8 @@
           <li>
             <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
               <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
-              <select class="form-control input-sm" (change)="update()" [(ngModel)]="workflow.descriptorType">
-                <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{ workflow?.descriptorType }}">
+              <select class="form-control input-sm" (change)="updateDescriptorType()" [(ngModel)]="temporaryDescriptorType">
+                <option *ngFor="let descriptorLanguage of descriptorLanguages$ | async" [value]="descriptorLanguage">
                   {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}</option
                 >
               </select>
