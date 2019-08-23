@@ -28,7 +28,7 @@ import { SessionState, SessionStore } from './session.store';
 export class SessionQuery extends Query<SessionState> {
   isPublic$: Observable<boolean> = this.select(session => session.isPublic);
   entryType$: Observable<EntryType> = this.select(session => session.entryType);
-  entryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => 'available ' + entryType + 's'));
+  entryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => entryType + 's'));
   myEntryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => 'my ' + entryType + 's'));
   isService$: Observable<boolean> = this.entryType$.pipe(map(entryType => entryType === EntryType.Service));
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(

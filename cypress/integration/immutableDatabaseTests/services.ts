@@ -42,14 +42,14 @@ describe('Dockstore Home', () => {
     it('Have one service in /services', () => {
       cy.visit('/services');
       cy.url().should('contain', 'services');
-      cy.get('[data-cy=header]').contains('h3', 'Available Services');
+      cy.get('[data-cy=header]').contains('h3', 'Services');
       cy.contains('Search services');
       cy.contains('garyluu/another-test-service');
     });
     it('Have fake service in /services/{id}', () => {
       cy.visit('/services/github.com/garyluu/another-test-service');
       cy.url().should('contain', '/services/github.com/garyluu/another-test-service');
-      cy.get('[data-cy=header]').contains('h3', 'Available Services');
+      cy.get('[data-cy=header]').contains('h3', 'Services');
       cy.contains('github.com/garyluu/another-test-service:1.3');
       checkTabs();
       checkInfoTab();
