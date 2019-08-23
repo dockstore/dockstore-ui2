@@ -100,6 +100,9 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   private updateWorkflowToSnapshot(version): void {
+    // Clear sourcefiles to shrink version
+    version.sourceFiles = [];
+
     this.workflowsService.updateWorkflowVersion(this.workflow.id, [version]).subscribe(
       workflowVersions => {
         this.alertService.detailedSuccess('Snapshot successfully created!');
