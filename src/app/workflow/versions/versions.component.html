@@ -159,7 +159,7 @@
               href="https://doi.org/{{ version.doiURL }}"
               *ngIf="version.doiURL"
               matTooltip="Click to view this version's DOI entry information.."
-              ><img src="https://sandbox.zenodo.org/badge/DOI/{{ version.doiURL }}.svg" alt="DOI"
+              ><img src="{{ zenodoUrl }}/badge/DOI/{{ version.doiURL }}.svg" alt="DOI"
             /></a>
           </td>
           <td *ngIf="version">
