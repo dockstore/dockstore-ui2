@@ -23,6 +23,7 @@ import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { DateService } from '../../shared/date.service';
 import { ViewService } from './view.service';
 import { SessionQuery } from '../../shared/session/session.query';
@@ -51,10 +52,12 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
+  public isRefreshing$: Observable<boolean>;
   doiTooltip = 'Request a Digital Object Identifier (DOI) for this version.';
   snapshotTooltip = 'Snapshotting a version makes it read-only';
 
   constructor(
+    private alertQuery: AlertQuery,
     private viewService: ViewService,
     private workflowService: WorkflowService,
     private workflowQuery: WorkflowQuery,
@@ -144,6 +147,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));

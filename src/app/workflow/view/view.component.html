@@ -23,6 +23,7 @@
     mat-button
     color="warn"
     class="btn-block deleteVersionButton"
+    [disabled]="isRefreshing$ | async"
     *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
     (click)="deleteHostedVersion(); (false)"
   >
@@ -34,6 +35,7 @@
   mat-button
   color="accent"
   class="btn-block"
+  [disabled]="isRefreshing$ | async"
   *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
   (click)="snapshotVersion()"
   data-cy="dockstore-snapshot"
