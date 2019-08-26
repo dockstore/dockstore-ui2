@@ -53,9 +53,9 @@ export class ViewService {
     this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).subscribe(
       workflowVersions => {
         cb(workflowVersions);
-        const workflow = { ...this.workflowQuery.getActive() };
+        const activeWorkflow = { ...this.workflowQuery.getActive() };
         workflow.workflowVersions = workflowVersions;
-        this.workflowService.setWorkflow(workflow);
+        this.workflowService.setWorkflow(activeWorkflow);
       },
       error => {
         if (error) {
@@ -75,7 +75,9 @@ export class ViewService {
    */
   private showSnapshotBeforeDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
-      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and is only available for versions that have been snapshotted. You will then be asked if you want to generate a DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>?`,
+      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and is only
+                available for versions that have been snapshotted. You will then be asked if you want to generate a
+                DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>?`,
       title: 'Issue DOI (Snapshot Version)',
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
@@ -98,7 +100,9 @@ export class ViewService {
    */
   private showRequestDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
-      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and can't be undone, though some metadata will remain editable. Are you sure you'd like to create a DOI for version <b>${version.name}</b>?`,
+      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and can't be
+                undone, though some metadata will remain editable. Are you sure you'd like to create a DOI for version
+                <b>${version.name}</b>?`,
       title: 'Issue DOI',
       confirmationButtonText: 'Issue DOI',
       cancelButtonText: 'Cancel'
@@ -142,7 +146,8 @@ export class ViewService {
       return;
     }
     const dialogData: ConfirmationDialogData = {
-      message: `Snapshotting a version will make it so it can no longer be edited and cannot be undone. <p>Are you sure you would like to snapshot version <b>${version.name}</b>?`,
+      message: `Snapshotting a version will make it so it can no longer be edited and cannot be undone. <p>Are
+                you sure you would like to snapshot version <b>${version.name}</b>?`,
       title: 'Snapshot',
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
