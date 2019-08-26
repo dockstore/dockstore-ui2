@@ -38,6 +38,8 @@ export class NavbarComponent extends Logout implements OnInit {
   isExtended = false;
   devMode = devMode;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  private currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
+  private currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
 
   constructor(
     private pagenumberService: PagenumberService,
@@ -58,7 +60,12 @@ export class NavbarComponent extends Logout implements OnInit {
   }
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+      this.user = user;
+      if (this.user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
+        this.logOutUsersWithoutCurrentTOS();
+      }
+    });
     this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => (this.extendedUser = extendedUser));
   }
 
@@ -72,5 +79,9 @@ export class NavbarComponent extends Logout implements OnInit {
     workflowPageInfo.searchQuery = '';
     this.pagenumberService.setToolsPageInfo(toolPageInfo);
     this.pagenumberService.setWorkflowPageInfo(workflowPageInfo);
+  }
+
+  logOutUsersWithoutCurrentTOS() {
+    this.logout('/session-expired');
   }
 }

@@ -17,14 +17,6 @@ import { setTokenUserViewPort } from '../../support/commands';
 describe('Admin UI', () => {
   setTokenUserViewPort();
   beforeEach(() => {
-    cy.server();
-    const userObject = { id: 1, username: 'user_A', curator: false, isAdmin: true, name: 'user_A', setupComplete: false};
-    cy.route({
-      url: '/users/user',
-      method: 'GET',
-      status: 200,
-      response: userObject
-    });
     cy.visit('');
 
     // Select dropdown
