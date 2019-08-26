@@ -63,7 +63,7 @@ export class NavbarComponent extends Logout implements OnInit {
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
       this.user = user;
       if (this.user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
-        this.logOutUsersWithoutCurrentTOS(this.user);
+        this.logOutUsersWithoutCurrentTOS();
       }
     });
     this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => (this.extendedUser = extendedUser));
@@ -81,7 +81,7 @@ export class NavbarComponent extends Logout implements OnInit {
     this.pagenumberService.setWorkflowPageInfo(workflowPageInfo);
   }
 
-  logOutUsersWithoutCurrentTOS(user: User) {
+  logOutUsersWithoutCurrentTOS() {
     this.logout('/session-expired');
   }
 }
