@@ -81,7 +81,7 @@ export class ViewService {
       cancelButtonText: 'Cancel'
     };
 
-    this.confirmationDialogService.openDialog(dialogData, '500px').subscribe(confirmationResult => {
+    this.confirmationDialogService.openDialog(dialogData, 'bootstrap4mediumModalSize').subscribe(confirmationResult => {
       if (confirmationResult === true) {
         this.updateWorkflowToSnapshot(workflow, version, () => this.showRequestDOIDialog(workflow, version));
       } else {
@@ -104,7 +104,7 @@ export class ViewService {
       cancelButtonText: 'Cancel'
     };
 
-    this.confirmationDialogService.openDialog(dialogData, '500px').subscribe(confirmationResult => {
+    this.confirmationDialogService.openDialog(dialogData, 'bootstrap4mediumModalSize').subscribe(confirmationResult => {
       if (confirmationResult === true) {
         this.workflowsService
           .requestDOIForWorkflowVersion(workflow.id, version.id)
@@ -147,7 +147,7 @@ export class ViewService {
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
     };
-    this.confirmationDialogService.openDialog(dialogData, '500px').subscribe(confirmationResult => {
+    this.confirmationDialogService.openDialog(dialogData, 'bootstrap4mediumModalSize').subscribe(confirmationResult => {
       if (confirmationResult) {
         this.updateWorkflowToSnapshot(workflow, version, () => this.alertService.detailedSuccess('Snapshot successfully created!'));
       } else {
