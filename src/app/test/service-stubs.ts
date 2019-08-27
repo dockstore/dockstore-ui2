@@ -158,7 +158,7 @@ export class SearchStubService {
       ['Entry Type', '_type'],
       ['Registry', 'registry'],
       ['Private Access', 'private_access'],
-      ['Verified', 'tags.verified'],
+      ['Verified', 'verified'],
       ['Author', 'author'],
       ['Organization', 'namespace'],
       ['Labels', 'labels.value.keyword'],
@@ -179,7 +179,7 @@ export class SearchStubService {
       ['_type', 'Entry Type'],
       ['registry', 'Registry'],
       ['private_access', 'Private Access'],
-      ['tags.verified', 'Verified'],
+      ['verified', 'Verified'],
       ['author', 'Author'],
       ['namespace', 'Organization'],
       ['labels.value.keyword', 'Labels'],
@@ -195,14 +195,14 @@ export class SearchStubService {
       ['namespace', new SubBucket()],
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
-      ['tags.verified', new SubBucket()],
+      ['verified', new SubBucket()],
       ['tags.verifiedSource', new SubBucket()]
     ]);
   }
 
   initializeFriendlyValueNames() {
     return new Map([
-      ['tags.verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
+      ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
       ['private_access', new Map([['1', 'private'], ['0', 'public']])],
       ['registry', new Map([['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']])]
     ]);
