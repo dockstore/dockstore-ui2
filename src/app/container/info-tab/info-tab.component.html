@@ -23,19 +23,21 @@
       <mat-card-content class="p-3">
         <ul class="list-unstyled container-info">
           <li *ngIf="tool?.providerUrl">
-            <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">{{ tool?.provider }}</strong
-            >:
-            <a id="sourceRepository" [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
+            <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">Source Code</strong>:
+            <a
+              *ngIf="tool?.providerUrl"
+              id="sourceRepository"
+              [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+            >
               {{ tool?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
           </li>
           <li *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
-            <strong matTooltip="The source code for this tool is stored on Dockstore.org">Dockstore.org</strong>:
+            <strong matTooltip="The source code for this tool is stored on Dockstore.org">Source Code</strong>:
             <i>The source code for this tool is stored on Dockstore.org</i>
           </li>
           <li *ngIf="tool?.imgProviderUrl">
-            <strong matTooltip="Docker registry for the associated Docker images">{{ tool.imgProvider }}</strong
-            >:
+            <strong matTooltip="Docker registry for the associated Docker images">Docker Image</strong>:
             <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
               {{ tool?.imgProviderUrl | urlDeconstruct }}
             </a>

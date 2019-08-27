@@ -25,7 +25,7 @@ export class UrlDeconstructPipe implements PipeTransform {
       return `${split[USERNAME]}/${split[REPONAME]}:${versionName}`;
     }
     if (split) {
-      return `${split[USERNAME]}/${split[REPONAME]}`;
+      return `${split[3]}/${split[USERNAME]}/${split[REPONAME]}`;
     }
     return providerUrl.split(/https?:\/\//).pop();
   }
