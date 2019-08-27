@@ -33,7 +33,7 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
 export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['name', 'author', 'format', 'projectLinks', 'stars', 'check'];
+  public displayedColumns = ['name', 'author', 'format', 'projectLinks', 'stars', 'check_mark'];
   type: 'tool' | 'workflow' = 'tool';
   constructor(
     private dockstoreService: DockstoreService,

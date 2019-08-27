@@ -26,49 +26,47 @@
     </mat-form-field>
   </div>
   <mat-table class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
-    <ng-container matColumnDef="check">
-      <mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center; flex: 0 0 85px; padding-right: 0"
-        >Verified</mat-header-cell
-      >
-      <mat-cell *matCellDef="let tool" style="justify-content:center; align-items: center; flex: 0 0 85px">
+    <ng-container matColumnDef="check_mark">
+      <mat-header-cell class="tools-and-workflow-check_mark" *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell class="tools-and-workflow-check_mark" *matCellDef="let tool">
         <a *ngIf="getVerified(tool)" href="{{ verifiedLink }}">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center">Name</mat-header-cell>
-      <mat-cell *matCellDef="let tool" style="justify-content: center; word-break: break-word">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-cell class="tools-and-workflow-name" *matCellDef="let tool">
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
-        <a [routerLink]="'/containers/' + tool.tool_path">{{
-          tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
-        }}</a>
+        <a [routerLink]="'/containers/' + tool.tool_path">
+          {{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}
+        </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">
-      <mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center; flex: 0 0 55px">Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool" style="justify-content: center; flex: 0 0 55px">
+      <mat-header-cell class="tools-and-workflow-stars" *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-cell class="description-cell tools-and-workflow-stars" *matCellDef="let tool">
         {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
         <mat-icon class="star" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
-      <mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center">Author</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let tool" style="justify-content: center">
+      <mat-header-cell class="tools-and-workflow-author" *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
+      <mat-cell class="duration-cell tools-and-workflow-author" *matCellDef="let tool">
         {{ tool?.author || 'n/a' }}
-      </mat-cell> </ng-container
-    >ß
+      </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="format">
-      <mat-header-cell *matHeaderCellDef style="justify-content: center; flex: 0 0 75px">Format</mat-header-cell>
-      <mat-cell *matCellDef="let tool" style="justify-content: center; flex: 0 0 75px">
+      <mat-header-cell class="tools-and-workflow-format" *matHeaderCellDef>Format</mat-header-cell>
+      <mat-cell class="tools-and-workflow-format" *matCellDef="let tool">
         {{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
-      <mat-header-cell *matHeaderCellDef style="justify-content: center">Project Links</mat-header-cell>
-      <mat-cell *matCellDef="let tool" style="justify-content: center">
+      <mat-header-cell class="tools-and-workflow-project-links" *matHeaderCellDef>Project Links</mat-header-cell>
+      <mat-cell class="tools-and-workflow-project-links" *matCellDef="let tool">
         <a [href]="tool?.providerUrl"> {{ tool?.provider }}&nbsp; </a>
         <a [href]="tool?.imgProviderUrl">
           {{ tool?.imgProvider }}

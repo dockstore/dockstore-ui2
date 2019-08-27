@@ -11,39 +11,44 @@
     matSortDirection="desc"
     matSortDisableClear
   >
+    <ng-container matColumnDef="check_mark">
+      <mat-header-cell class="tools-and-workflow-check_mark" *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell class="tools-and-workflow-check_mark" *matCellDef="let workflow">
+        <a *ngIf="getVerified(workflow)" href="{{ verifiedLink }}">
+          <mat-icon matTooltip="Verified">done</mat-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let workflow">
-        <span id="verifiedIcon" *ngIf="getVerified(workflow)">
-          <a href="{{ verifiedLink }}">
-            <mat-icon matTooltip="Verified">done</mat-icon>
-          </a>
-        </span>
+      <mat-cell class="tools-and-workflow-name" *matCellDef="let workflow">
         <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
           workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
         }}</a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
+      <mat-header-cell class="tools-and-workflow-search-author" *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
+      <mat-cell class="duration-cell tools-and-workflow-search-author" *matCellDef="let workflow">
+        {{ workflow?.author || 'n/a' }}
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
       <mat-cell *matCellDef="let workflow">{{ workflow?.descriptorType | uppercase }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
-      <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
-      <mat-cell *matCellDef="let entry">
+      <mat-header-cell class="tools-and-workflow-search-project-links" *matHeaderCellDef>Project Links</mat-header-cell>
+      <mat-cell class="tools-and-workflow-search-project-links" *matCellDef="let entry">
         <a [href]="entry?.providerUrl">
           {{ entry?.provider }}
         </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="starredUsers">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let workflow"
-        >{{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
+      <mat-header-cell class="tools-and-workflow-stars" *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-cell class="description-cell tools-and-workflow-stars" *matCellDef="let workflow">
+        {{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
         <mat-icon class="star" *ngIf="workflow?.starredUsers?.length > 0">star_rate</mat-icon>
       </mat-cell>
     </ng-container>

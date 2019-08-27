@@ -1251,3 +1251,40 @@ mat-icon.star {
   outline: none;
   color: black;
 }
+
+.tools-and-workflow-stars {
+  justify-content: flex-end;
+  padding-right: 25px;
+}
+
+.tools-and-workflow-check_mark {
+  justify-content: center;
+  flex: 0 0 85px;
+  align-items: center;
+}
+
+.tools-and-workflow-author {
+  flex: 0 0 140px;
+  padding-left: 30px;
+}
+
+.tools-and-workflow-search-author {
+  padding-left: 30px;
+}
+
+.tools-and-workflow-name {
+  word-break: break-word;
+}
+
+.tools-and-workflow-format {
+  padding-left: 25px;
+}
+
+.tools-and-workflow-project-links {
+  padding-left: 30px;
+}
+
+.tools-and-workflow-search-project-links {
+  flex: 0 0 140px;
+  padding-left: 30px;
+}
