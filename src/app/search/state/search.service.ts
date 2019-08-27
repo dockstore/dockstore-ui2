@@ -15,14 +15,14 @@
  */
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router/';
+import { BehaviorSubject } from 'rxjs';
 import { Dockstore } from '../../shared/dockstore.model';
 import { SubBucket } from '../../shared/models/SubBucket';
-import { SearchStore } from './search.store';
-import { SearchQuery } from './search.query';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
+import { SearchQuery } from './search.query';
+import { SearchStore } from './search.store';
 
 @Injectable()
 export class SearchService {
@@ -38,7 +38,7 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['tags.verified', 'private_access', '_type', 'has_checker'];
+  public exclusiveFilters = ['verified', 'private_access', '_type', 'has_checker'];
 
   constructor(
     private searchStore: SearchStore,
@@ -359,7 +359,7 @@ export class SearchService {
       ['Input File Formats', 'input_file_formats.value.keyword'],
       ['Output File Formats', 'output_file_formats.value.keyword'],
       ['Private Access', 'private_access'],
-      ['VerifiedTool', 'tags.verified'],
+      ['VerifiedTool', 'verified'],
       ['Author', 'author'],
       ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
@@ -377,7 +377,7 @@ export class SearchService {
       ['registry', 'Tool: Registry'],
       ['source_control_provider.keyword', 'Workflow: Source Control'],
       ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
-      ['tags.verified', 'Verified'],
+      ['verified', 'Verified'],
       ['author', 'Author'],
       ['namespace', 'Tool: Namespace'],
       ['labels.value.keyword', 'Labels'],
@@ -401,7 +401,7 @@ export class SearchService {
       ['organization', new SubBucket()],
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
-      ['tags.verified', new SubBucket()],
+      ['verified', new SubBucket()],
       ['tags.verifiedSource', new SubBucket()],
       ['workflowVersions.verifiedSource.keyword', new SubBucket()],
       ['input_file_formats.value.keyword', new SubBucket()],

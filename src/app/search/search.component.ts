@@ -18,7 +18,6 @@ import { MatAccordion } from '@angular/material';
 import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { AlertService } from '../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -234,14 +233,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.sortModeMap.set(key, sortby);
         }
       }
-      let doc_count = bucket.doc_count;
-      if (key === 'tags.verified') {
-        if (bucket.key) {
-          doc_count = this.verifiedCount;
-        } else {
-          doc_count = this.nonVerifiedCount;
-        }
-      }
+      const doc_count = bucket.doc_count;
       if (doc_count > 0) {
         if (!this.checkboxMap.get(key)) {
           this.checkboxMap.set(key, new Map<string, boolean>());
@@ -261,53 +253,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       }
     });
-  }
-
-  /** This function takes care of the problem of non-verified items containing the set of verified items.
-   * this function calls a third elastic query which will get the correct number count of the non-verified items
-   * (without the set of verified items). So the non-verified bucket of the sidebar is getting the correct number.
-   *
-   * However, this might not be the best way to do it, a better way would be to merge this third query into the other two.
-   *
-   * **/
-  setupNonVerifiedBucketCount(sideBarQuery: string) {
-    const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(
-      this.query_size,
-      this.values,
-      this.advancedSearchObject,
-      this.searchTerm,
-      this.filters
-    );
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: queryBodyNotVerified
-    })
-      .then(nonVerifiedHits => {
-        this.nonVerifiedCount = nonVerifiedHits.hits.total;
-        this.updateSideBar(sideBarQuery);
-      })
-      .catch(error => console.log(error));
-  }
-
-  setupVerifiedBucketCount(sideBarQuery: string) {
-    const queryBodyVerified = this.queryBuilderService.getVerifiedQuery(
-      this.query_size,
-      this.values,
-      this.advancedSearchObject,
-      this.searchTerm,
-      this.filters
-    );
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: queryBodyVerified
-    })
-      .then(verifiedHits => {
-        this.verifiedCount = verifiedHits.hits.total;
-        this.setupNonVerifiedBucketCount(sideBarQuery);
-      })
-      .catch(error => console.log(error));
   }
 
   setupOrderBuckets() {
@@ -409,7 +354,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters
     );
     this.resetEntryOrder();
-    this.setupVerifiedBucketCount(sideBarQuery);
+    this.updateSideBar(sideBarQuery);
     this.updateResultsTable(tableQuery);
   }
 
