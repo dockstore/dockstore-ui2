@@ -93,6 +93,12 @@
               [refreshMessage]="isRefreshing$ | async"
             ></app-sidebar-accordion>
             <br />
+            <small
+              >Don't see an organization?
+              <a href="https://github.com/settings/connections/applications/7ad54aa857c6503013ea">Configure</a> your authorized
+              organizations.</small
+            >
+            <br />
             <ng-container *ngIf="entryType !== EntryType.Service">
               <div class="clearfix sidebar-header">
                 <h3 class="sidebar-header">Shared with me</h3>
