@@ -22,7 +22,7 @@ export class UrlDeconstructPipe implements PipeTransform {
     const split = providerUrl.match(re);
 
     if (split && versionName) {
-      return `${split[USERNAME]}/${split[REPONAME]}:${versionName}`;
+      return `${split[3]}/${split[USERNAME]}/${split[REPONAME]}:${versionName}`;
     }
     if (split) {
       return `${split[3]}/${split[USERNAME]}/${split[REPONAME]}`;
