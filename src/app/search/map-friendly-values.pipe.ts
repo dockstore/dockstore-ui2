@@ -26,7 +26,6 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * @memberof MapFriendlyValuesPipe
    */
   readonly friendlyValueNames = new Map([
-    ['workflowVersions.verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
     ['has_checker', new Map([['1', 'has a checker workflow'], ['0', 'unchecked workflow']])],
     ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
     ['private_access', new Map([['1', 'private'], ['0', 'public']])],
@@ -60,7 +59,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
         [ToolFile.FileTypeEnum.OTHER, 'Files']
       ])
-    ]
+    ],
+    ['workflowVersions.verifiedSource.keyword', new Map([['[]', 'None']])]
   ]);
 
   /**

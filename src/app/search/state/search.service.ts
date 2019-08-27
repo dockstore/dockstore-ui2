@@ -363,7 +363,6 @@ export class SearchService {
       ['Author', 'author'],
       ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['VerifiedSourceTool', 'tags.verifiedSource'],
       ['VerifiedSourceWorkflow', 'workflowVersions.verifiedSource.keyword'],
       ['HasCheckerWorkflow', 'has_checker'],
       ['Organization', 'organization']
@@ -381,10 +380,9 @@ export class SearchService {
       ['author', 'Author'],
       ['namespace', 'Tool: Namespace'],
       ['labels.value.keyword', 'Labels'],
-      ['tags.verifiedSource', 'Tool: Verified Source'],
       ['input_file_formats.value.keyword', 'Input File Formats'],
       ['output_file_formats.value.keyword', 'Output File Formats'],
-      ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
+      ['workflowVersions.verifiedSource.keyword', 'Verified Source'],
       ['has_checker', 'Has Checker Workflows'],
       ['organization', 'Workflow: Organization']
     ]);
@@ -402,7 +400,6 @@ export class SearchService {
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
       ['verified', new SubBucket()],
-      ['tags.verifiedSource', new SubBucket()],
       ['workflowVersions.verifiedSource.keyword', new SubBucket()],
       ['input_file_formats.value.keyword', new SubBucket()],
       ['output_file_formats.value.keyword', new SubBucket()],

@@ -162,7 +162,7 @@ export class SearchStubService {
       ['Author', 'author'],
       ['Organization', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['Verified Source', 'tags.verifiedSource']
+      ['Verified Source', 'verifiedSource']
     ]);
   }
 
@@ -183,7 +183,7 @@ export class SearchStubService {
       ['author', 'Author'],
       ['namespace', 'Organization'],
       ['labels.value.keyword', 'Labels'],
-      ['tags.verifiedSource', 'Verified Source']
+      ['verifiedSource', 'Verified Source']
     ]);
   }
 
@@ -196,7 +196,7 @@ export class SearchStubService {
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
       ['verified', new SubBucket()],
-      ['tags.verifiedSource', new SubBucket()]
+      ['verifiedSource', new SubBucket()]
     ]);
   }
 
