@@ -53,8 +53,6 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
   public isRefreshing$: Observable<boolean>;
-  doiTooltip = 'Request a Digital Object Identifier (DOI) for this version.';
-  snapshotTooltip = 'Snapshotting a version makes it read-only';
 
   constructor(
     private alertQuery: AlertQuery,
