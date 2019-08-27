@@ -29,9 +29,9 @@ import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
 
 /**
- * There are a total of 6 calls per search.
+ * There are a total of 5 calls per search.
  * 2 calls are from the tag cloud (1 for tool, 1 for workflow)
- * 2 calls are for the sidebar bucket count (1 for all non-verified bucket count, 1 specifically for verified)
+ * 1 calls are for the sidebar bucket count
  * 1 call for the autocomplete
  * 1 call for the actual results
  *
@@ -93,8 +93,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
-  private nonVerifiedCount: number;
-  private verifiedCount: number;
 
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode', 'toAdvanceSearch'];
 
