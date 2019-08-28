@@ -21,22 +21,37 @@
   <button
     type="button"
     mat-button
-    color="accent"
-    class="btn-block"
-    *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
-    (click)="snapshotVersion()"
-    data-cy="dockstore-snapshot"
-  >
-    Snapshot
-  </button>
-  <button
-    type="button"
-    mat-button
     color="warn"
     class="btn-block deleteVersionButton"
+    [disabled]="isRefreshing$ | async"
     *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
     (click)="deleteHostedVersion(); (false)"
   >
     Delete
   </button>
 </ng-container>
+<button
+  type="button"
+  mat-button
+  color="accent"
+  class="btn-block"
+  [disabled]="isRefreshing$ | async"
+  *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
+  (click)="snapshotVersion()"
+  data-cy="dockstore-snapshot"
+  matTooltip="Snapshotting a version makes it read-only."
+>
+  Snapshot
+</button>
+<button
+  mat-button
+  id="DOIButton"
+  color="accent"
+  class="btn-block"
+  (click)="requestDOIForWorkflowVersion()"
+  [disabled]="isRefreshing$ | async"
+  *ngIf="version.referenceType !== 'BRANCH' && !version.doiURL && workflow?.is_published"
+  matTooltip="Request a Digital Object Identifier (DOI) for this version."
+>
+  Issue DOI
+</button>

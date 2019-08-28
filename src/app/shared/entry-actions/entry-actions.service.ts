@@ -25,21 +25,6 @@ export class EntryActionsService {
     }
   }
 
-  requestDOIForWorkflowVersion(workflow: Workflow, selectedVersion: WorkflowVersion) {
-    const message = 'Creating DOI';
-    this.alertService.start(message);
-    this.workflowsService.requestDOIForWorkflowVersion(workflow.id, selectedVersion.id).subscribe(
-      (response: Array<WorkflowVersion>) => {
-        const newSelectedVersion = response.find(version => version.id === selectedVersion.id);
-        this.workflowService.setWorkflowVersion(newSelectedVersion);
-        this.alertService.detailedSuccess();
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      }
-    );
-  }
-
   /**
    * Workflow publish should be disabled if not valid or is stub or is not owner
    *

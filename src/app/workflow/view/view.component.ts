@@ -23,7 +23,9 @@ import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { DateService } from '../../shared/date.service';
+import { ViewService } from './view.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -50,8 +52,11 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
+  public isRefreshing$: Observable<boolean>;
 
   constructor(
+    private alertQuery: AlertQuery,
+    private viewService: ViewService,
     private workflowService: WorkflowService,
     private workflowQuery: WorkflowQuery,
     private versionModalService: VersionModalService,
@@ -119,6 +124,16 @@ export class ViewWorkflowComponent extends View implements OnInit {
       }
     );
   }
+
+  /**
+   * Handles the create DOI button being clicked
+   *
+   * @memberof ViewWorkflowComponent
+   */
+  requestDOIForWorkflowVersion() {
+    this.viewService.requestDOIForWorkflowVersion(this.workflow, this.version);
+  }
+
   /**
    * Opens a confirmation dialog that the Dockstore User can use to
    * confirm they want a snapshot.
@@ -126,19 +141,11 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   snapshotVersion(): void {
-    if (this.version.frozen) {
-      // Guarantee we don't snapshot a snapshot
-      return;
-    }
-    const snapshot: WorkflowVersion = { ...this.version, frozen: true };
-    const confirmMessage = 'Snapshotting a version cannot be undone. Are you sure you want to snapshot this version?';
-    const confirmSnapshot = confirm(confirmMessage);
-    if (confirmSnapshot) {
-      this.updateWorkflowToSnapshot(snapshot);
-    }
+    this.viewService.snapshotVersion(this.workflow, this.version);
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));

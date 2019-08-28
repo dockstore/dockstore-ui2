@@ -28,6 +28,7 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Versions } from '../../shared/versions';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -37,6 +38,7 @@ import { Versions } from '../../shared/versions';
 export class VersionsWorkflowComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() workflowId: number;
+  zenodoUrl: string;
   _selectedVersion: WorkflowVersion;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
@@ -64,6 +66,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   }
 
   ngOnInit() {
+    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '');
     this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
       this.workflow = workflow;

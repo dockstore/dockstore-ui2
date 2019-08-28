@@ -60,6 +60,7 @@ import { RequestsModule } from './loginComponents/requests.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ViewService } from './workflow/view/view.service';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './register/register.service';
@@ -202,6 +203,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ExtendedToolsService,
     VerifiedByService,
     Title,
+    ViewService,
     ConfigurationService,
     {
       provide: APP_INITIALIZER,
