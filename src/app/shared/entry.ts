@@ -270,18 +270,8 @@ export abstract class Entry implements OnInit, OnDestroy {
    */
   updateUrl(entryPath: string, myEntry: string, entry: string): void {
     if (this.publicPage) {
-      let currentPath = '';
-      if (this.router.url.indexOf(myEntry) !== -1) {
-        currentPath += '/' + myEntry + '/';
-      } else {
-        currentPath += '/' + entry + '/';
-      }
-      currentPath += entryPath;
-      if (this.selectedVersion !== null) {
-        currentPath += ':' + this.selectedVersion.name;
-      }
-      currentPath += '?tab=' + this.currentTab;
-      this.location.replaceState(currentPath);
+      const newPath = this.urlResolverService.getPath(entryPath, myEntry, entry, this.router.url, this.selectedVersion, this.currentTab);
+      this.location.replaceState(newPath);
     }
   }
 
