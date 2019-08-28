@@ -27,6 +27,7 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
 
 @Injectable()
 export class ViewService {
@@ -75,7 +76,7 @@ export class ViewService {
    */
   private showSnapshotBeforeDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
-      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and is only
+      message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and is only
                 available for versions that have been snapshotted. You will then be asked if you want to generate a
                 DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>?`,
       title: 'Issue DOI (Snapshot Version)',
@@ -83,8 +84,8 @@ export class ViewService {
       cancelButtonText: 'Cancel'
     };
 
-    this.confirmationDialogService.openDialog(dialogData, 'bootstrap4mediumModalSize').subscribe(confirmationResult => {
-      if (confirmationResult === true) {
+    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
+      if (confirmationResult) {
         this.updateWorkflowToSnapshot(workflow, version, () => this.showRequestDOIDialog(workflow, version));
       } else {
         this.alertService.detailedSuccess('You cancelled DOI creation.');
@@ -100,7 +101,7 @@ export class ViewService {
    */
   private showRequestDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
-      message: `A digital object identifier (DOI) allows a version to be easily cited in publications and can't be
+      message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and can't be
                 undone, though some metadata will remain editable. Are you sure you'd like to create a DOI for version
                 <b>${version.name}</b>?`,
       title: 'Issue DOI',
@@ -108,8 +109,8 @@ export class ViewService {
       cancelButtonText: 'Cancel'
     };
 
-    this.confirmationDialogService.openDialog(dialogData, 'bootstrap4mediumModalSize').subscribe(confirmationResult => {
-      if (confirmationResult === true) {
+    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
+      if (confirmationResult) {
         this.workflowsService
           .requestDOIForWorkflowVersion(workflow.id, version.id)
           .subscribe(
@@ -152,7 +153,7 @@ export class ViewService {
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
     };
-    this.confirmationDialogService.openDialog(dialogData, 'bootstrap4mediumModalSize').subscribe(confirmationResult => {
+    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
       if (confirmationResult) {
         this.updateWorkflowToSnapshot(workflow, version, () => this.alertService.detailedSuccess('Snapshot successfully created!'));
       } else {
