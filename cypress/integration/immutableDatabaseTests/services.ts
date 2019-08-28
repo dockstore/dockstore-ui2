@@ -136,7 +136,7 @@ describe('Dockstore Home', () => {
   function checkInfoTab() {
     // Info Tab Service Information
     cy.contains('Service Information');
-    cy.contains('GitHub: ').should('be.visible');
+    cy.contains('Source Code: ').should('be.visible');
     cy.contains('Workflow Path: ').should('not.be.visible');
     cy.contains('Test File Path: ').should('not.be.visible');
     cy.contains('Checker Workflow: ').should('not.be.visible');

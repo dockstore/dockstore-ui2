@@ -22,15 +22,14 @@
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
-            <strong matTooltip="Git repository for the associated descriptors">{{ workflow?.provider }}</strong
-            >:
+            <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
             <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
               {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
           </li>
         </span>
         <li *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
-          <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Dockstore.org</strong>:
+          <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Source Code</strong>:
           <i>The source code for this workflow is stored on Dockstore.org</i>
         </li>
         <li *ngIf="isPublic && isValidVersion">
