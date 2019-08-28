@@ -131,7 +131,7 @@ export class ViewService {
   private requestDOISuccess(version: WorkflowVersion, workflowVersions: Array<WorkflowVersion>): void {
     const newSelectedVersion = workflowVersions.find(v => v.id === version.id);
     this.workflowService.setWorkflowVersion(newSelectedVersion);
-    this.alertService.detailedSuccess();
+    this.alertService.simpleSuccess();
   }
 
   /**
