@@ -130,7 +130,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
           this.matSnackBar.open('Failed to relink ' + source + ' account', 'Dismiss');
         }
       );
-    this.link(source);
   }
 
   link(source: string): void {
