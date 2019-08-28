@@ -59,9 +59,9 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=my-tools-nav-button]').click();
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
-      cy.contains('GitHub');
+      cy.contains('github.com');
       cy.get('a#sourceRepository').contains('A2/b1').should('have.attr', 'href', 'https://github.com/A2/b1');
-      cy.contains('Quay.io');
+      cy.contains('quay.io');
       cy.get('a#imageRegistry').contains('A2/b1').should('have.attr', 'href', 'https://quay.io/repository/A2/b1');
       cy.contains('Last Build');
       cy.contains('Last Updated');
