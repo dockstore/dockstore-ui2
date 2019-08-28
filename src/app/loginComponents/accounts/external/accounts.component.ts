@@ -44,14 +44,14 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'GitHub',
       source: TokenSource.GITHUB,
       bold: 'One of GitHub or Google is required.',
-      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub',
+      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
       show: false
     },
     {
       name: 'Google',
       source: TokenSource.GOOGLE,
       bold: 'One of GitHub or Google is required.',
-      message: 'Google credentials are used for login purposes and integration with FireCloud.',
+      message: 'Google credentials are used for login purposes and integration with Terra.',
       show: false
     },
     {
@@ -117,6 +117,20 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
         return this.tokenService.deleteToken(token.id);
       }
     }
+  }
+
+  relink(source: string): void {
+    this.deleteToken(source)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.link(source);
+        },
+        error => {
+          this.matSnackBar.open('Failed to relink ' + source + ' account', 'Dismiss');
+        }
+      );
+    this.link(source);
   }
 
   link(source: string): void {

@@ -58,6 +58,7 @@
     </div>
     <div>
       {{ row.message }}
+      <span *ngIf="row.isLinked">If your token has expired, relink your account.</span>
     </div>
     <div>
       {{ row.bold }}
@@ -85,10 +86,21 @@
       <span *ngIf="row.isLinked; else notLinked" class="pull-right">
         <span class="mr-2">Username: {{ row.source | getTokenUsername: tokens }}</span>
         <button
+          class="relink"
+          mat-raised-button
+          color="primary"
+          [attr.id]="'relink-' + row.name"
+          (click)="relink(row.source)"
+          matTooltip="Relink the account"
+        >
+          <mat-icon>link</mat-icon>
+          <span>Relink Account</span>
+        </button>
+        <button
           mat-raised-button
           color="primary"
           [attr.id]="'unlink-' + row.name"
-          (click)="unlink(row.source)"
+          (click)="link(row.source)"
           matTooltip="Unlink the account"
         >
           <mat-icon>link_off</mat-icon>
