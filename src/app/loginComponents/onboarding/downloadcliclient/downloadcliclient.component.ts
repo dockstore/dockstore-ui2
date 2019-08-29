@@ -65,7 +65,7 @@ export class DownloadCLIClientComponent implements OnInit {
 3. Python and pip (Optional: if working with CWL)
 
 #### Part 1 - Install dependencies and Dockstore CLI
-1. Install Java (This example installs OpenJDK 11)
+1. Install Java 11 (This example installs OpenJDK 11)
 \`\`\`
 sudo add-apt-repository ppa:openjdk-r/ppa \
 && sudo apt-get update -q \
