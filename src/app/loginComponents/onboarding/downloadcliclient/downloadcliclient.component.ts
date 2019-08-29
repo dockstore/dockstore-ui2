@@ -67,8 +67,9 @@ export class DownloadCLIClientComponent implements OnInit {
 #### Part 1 - Install dependencies and Dockstore CLI
 1. Install OpenJDK 11
 \`\`\`
-sudo apt update
-sudo apt install default-jdk
+sudo add-apt-repository ppa:openjdk-r/ppa \
+&& sudo apt-get update -q \
+&& sudo apt install -y openjdk-11-jdk
 \`\`\`
 2. Install the dockstore command-line program and add it to the path.
 \`\`\`
