@@ -60,7 +60,7 @@ export class DownloadCLIClientComponent implements OnInit {
 ### Setup Command Line Interface (Ubuntu)
 ------------------------------
 #### Requirements
-1. Linux/Ubuntu (Recommended) or Mac OS X machine
+1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
 2. Java 11 (OpenJDK)
 3. Python and pip (Optional: if working with CWL)
 
