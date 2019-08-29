@@ -16,7 +16,6 @@
 
 import { Injectable } from '@angular/core';
 import * as bodybuilder from 'bodybuilder';
-
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
 
@@ -111,46 +110,6 @@ export class QueryBuilderService {
     return tableQuery;
   }
 
-  getNonVerifiedQuery(
-    query_size: number,
-    values: string,
-    advancedSearchObject: AdvancedSearchObject,
-    searchTerm: boolean,
-    filters: any
-  ): string {
-    let bodyNotVerified = bodybuilder().size(query_size);
-    bodyNotVerified = this.excludeContent(bodyNotVerified);
-    bodyNotVerified = this.appendQuery(bodyNotVerified, values, advancedSearchObject, searchTerm);
-    let key = 'tags.verified';
-    bodyNotVerified = bodyNotVerified.notFilter('term', key, true);
-    key = 'workflowVersions.verified';
-    bodyNotVerified = bodyNotVerified.notFilter('term', key, true);
-    bodyNotVerified = this.appendFilter(bodyNotVerified, null, filters);
-    const builtBodyNotVerified = bodyNotVerified.build();
-    const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
-    return queryBodyNotVerified;
-  }
-
-  getVerifiedQuery(
-    query_size: number,
-    values: string,
-    advancedSearchObject: AdvancedSearchObject,
-    searchTerm: boolean,
-    filters: any
-  ): string {
-    let bodyNotVerified = bodybuilder().size(query_size);
-    bodyNotVerified = this.excludeContent(bodyNotVerified);
-    bodyNotVerified = this.appendQuery(bodyNotVerified, values, advancedSearchObject, searchTerm);
-    let key = 'tags.verified';
-    bodyNotVerified = bodyNotVerified.orFilter('term', key, true);
-    key = 'workflowVersions.verified';
-    bodyNotVerified = bodyNotVerified.orFilter('term', key, true);
-    bodyNotVerified = this.appendFilter(bodyNotVerified, null, filters);
-    const builtBodyNotVerified = bodyNotVerified.build();
-    const queryBodyNotVerified = JSON.stringify(builtBodyNotVerified);
-    return queryBodyNotVerified;
-  }
-
   /**===============================================
    *                Append Functions
    * ==============================================
@@ -174,11 +133,11 @@ export class QueryBuilderService {
             body = body.orFilter('term', key, insideFilter);
           } else {
             // A non-verified tool means a tool that isn't verified and a workflow that is not verified a
-            if (key === 'tags.verified' && insideFilter === '0') {
-              body = body.notFilter('term', 'tags.verified', '1');
+            if (key === 'verified' && insideFilter === '0') {
+              body = body.notFilter('term', 'verified', '1');
               body = body.notFilter('term', 'workflowVersions.verified', '1');
-            } else if (key === 'tags.verified' && insideFilter === '1') {
-              body = body.orFilter('term', 'tags.verified', insideFilter);
+            } else if (key === 'verified' && insideFilter === '1') {
+              body = body.orFilter('term', 'verified', insideFilter);
               body = body.orFilter('term', 'workflowVersions.verified', insideFilter);
             } else {
               body = body.filter('term', key, insideFilter);
