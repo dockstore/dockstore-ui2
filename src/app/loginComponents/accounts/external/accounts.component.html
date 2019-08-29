@@ -86,7 +86,7 @@
       <span *ngIf="row.isLinked; else notLinked" class="pull-right">
         <span class="mr-2">Username: {{ row.source | getTokenUsername: tokens }}</span>
         <button
-          class="relink"
+          class="mr-2"
           mat-raised-button
           color="primary"
           [attr.id]="'relink-' + row.name"
