@@ -61,11 +61,11 @@ export class DownloadCLIClientComponent implements OnInit {
 ------------------------------
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
-2. Java 11 (OpenJDK)
+2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
 3. Python and pip (Optional: if working with CWL)
 
 #### Part 1 - Install dependencies and Dockstore CLI
-1. Install OpenJDK 11
+1. Install Java (This example installs OpenJDK 11)
 \`\`\`
 sudo add-apt-repository ppa:openjdk-r/ppa \
 && sudo apt-get update -q \
