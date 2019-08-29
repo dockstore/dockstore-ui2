@@ -1,0 +1,29 @@
+.mat-column-starredUsers,
+.mat-column-stars {
+  justify-content: flex-end;
+  padding-right: 25px;
+}
+
+.mat-column-verified {
+  justify-content: center;
+  flex: 0 0 85px;
+  align-items: center;
+}
+
+.mat-column-author {
+  flex: 0 0 140px;
+}
+
+.mat-column-name {
+  word-break: break-word;
+}
+
+.mat-column-descriptorType,
+.mat-column-format {
+  padding-left: 25px;
+}
+
+.mat-column-author,
+.mat-column-projectLinks {
+  padding-left: 30px;
+}
