@@ -1,7 +1,16 @@
+.mat-cell:not(:first-of-type),
+.mat-header-cell:not(:first-of-type) {
+  padding-left: 16px;
+}
+
+.mat-cell:not(:last-of-type),
+.mat-header-cell:not(:last-of-type) {
+  padding-right: 16px;
+}
+
 .mat-column-starredUsers,
 .mat-column-stars {
   justify-content: flex-end;
-  padding-left: 16px;
 }
 
 .mat-column-verified {
@@ -16,14 +25,4 @@
 
 .mat-column-name {
   word-break: break-word;
-  padding-right: 16px;
-}
-
-.mat-column-verified,
-.mat-column-descriptorType,
-.mat-column-format,
-.mat-column-author,
-.mat-column-projectLinks {
-  padding-left: 16px;
-  padding-right: 16px;
 }
