@@ -1,3 +1,17 @@
+// Material Datatable for both tool and workflow list components
+.mat-column-starredUsers,
+.mat-column-stars {
+  max-width: 75px;
+}
+.mat-column-descriptorType,
+.mat-column-format {
+  max-width: 100px;
+}
+
+.mat-column-projectLinks {
+  max-width: 175px;
+}
+
 .mat-cell:not(:first-of-type),
 .mat-header-cell:not(:first-of-type) {
   padding-left: 16px;
