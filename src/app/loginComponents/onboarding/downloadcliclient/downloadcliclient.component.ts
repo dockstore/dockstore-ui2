@@ -60,17 +60,17 @@ export class DownloadCLIClientComponent implements OnInit {
 ### Setup Command Line Interface (Ubuntu)
 ------------------------------
 #### Requirements
-1. Linux/Ubuntu (Recommended) or Mac OS X machine
-2. Java 8 (Oracle)
+1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
+2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
 3. Python and pip (Optional: if working with CWL)
 
 #### Part 1 - Install dependencies and Dockstore CLI
-1. Add the Oracle Java repo and install:
+1. Install Java 11 (This example installs OpenJDK 11)
 \`\`\`
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update && sudo apt-get install -y oracle-java8-set-default
+sudo add-apt-repository ppa:openjdk-r/ppa \
+&& sudo apt-get update -q \
+&& sudo apt install -y openjdk-11-jdk
 \`\`\`
-**Note:** that if you are installing Java by some other mechanism, you will need to install at least Java 8, Update 101 (1.8.0_101-b13). We have not tested with Java 9.
 2. Install the dockstore command-line program and add it to the path.
 \`\`\`
 mkdir -p ~/bin
@@ -113,7 +113,7 @@ pip install -r requirements.txt
 \`\`\`
 Verify using \`pip list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt.
 
-3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
+3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/install/linux/docker-ce/ubuntu/). You should have at least version 19.03.1 installed.
 Ensure that you are able to run Docker without using sudo directly with the
 [post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
 \`\`\`
@@ -127,9 +127,9 @@ exec newgrp docker
 $ dockstore --version
 Dockstore version ${this.dockstoreVersion}
 $ java -version
-java version "1.8.0_144"
-Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
-Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
+openjdk version "11.0.4" 2019-07-16
+OpenJDK Runtime Environment (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3)
+OpenJDK 64-Bit Server VM (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3, mixed mode, sharing)
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
 $ docker run hello-world
