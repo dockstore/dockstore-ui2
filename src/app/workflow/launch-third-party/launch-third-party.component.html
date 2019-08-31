@@ -53,19 +53,22 @@
             >
           </div>
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
-            <div *ngIf="hasHttpImports$ | async" class="import-warning">
-              Warning: this version of the CWL has http imports, which are not supported by the CGC. Make sure to select a version without http
-              imports in the CGC.
-            </div>
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The CWL has no content.' : ''"
+              [matTooltip]="
+                !(hasContent$ | async)
+                  ? 'The CWL has no content.'
+                  : (hasHttpImports$ | async)
+                  ? 'This version of the CWL has http imports, which are not supported by the CGC. Select a version without http imports.'
+                  : 'Export this workflow version to the CGC.'
+              "
               target="_blank"
               rel="noopener"
               [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
-              [disabled]="!(hasContent$ | async)"
+              [disabled]="!(hasContent$ | async) || (hasHttpImports$ | async)"
               color="primary"
-              ><img src="../assets/images/thirdparty/cgc.png" /> CGC </a>
+              ><img src="../assets/images/thirdparty/cgc.png" /> CGC
+            </a>
           </div>
         </div>
       </div>
