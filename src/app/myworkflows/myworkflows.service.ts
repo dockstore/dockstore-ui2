@@ -28,10 +28,10 @@ import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
-import { take } from 'rxjs/operators';
 
 @Injectable()
 export class MyWorkflowsService extends MyEntriesService {
@@ -148,7 +148,9 @@ export class MyWorkflowsService extends MyEntriesService {
 
   registerEntry(entryType: EntryType | null) {
     if (entryType === EntryType.BioWorkflow) {
-      this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+      if (this.matDialog.openDialogs.length === 0) {
+        this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+      }
     }
     if (entryType === EntryType.Service) {
       this.gitHubAppInstallationLink$.pipe(take(1)).subscribe(link => window.open(link));
