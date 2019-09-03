@@ -43,6 +43,7 @@
   </div>
   <!-- Organization header -->
   <div class="container" *ngIf="!organizationStarGazersClicked && (organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
+    <ngx-json-ld [json]="schema"></ngx-json-ld>
     <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
       <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
       <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
