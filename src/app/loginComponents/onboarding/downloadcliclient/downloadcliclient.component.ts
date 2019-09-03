@@ -94,24 +94,20 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
     this.textData3 = `
 #### Part 3 - Install cwltool (Optional)
 Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) -a reference implementation of CWL- for local execution of tools and workflows described with CWL.
-You'll need to have Python and [pip](https://pip.pypa.io/en/latest/installing/) to be installed on your machine.
+You'll need to have Python 3 and [pip3](https://pip.pypa.io/en/latest/installing/) to be installed on your machine.
 
 **Note:** cwltool must be available on your PATH.
 
 You can install the version of cwltool that we've tested for use with Dockstore using the following commands:
-1. Run this to verify that pip has been installed \`pip --version\`
+1. Run this to verify that pip has been installed \`pip3 --version\`
 2. Run these commands to install cwltool
-\`\`\`
-curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=2"
-pip install -r requirements.txt
-\`\`\`
 <!-- Workaround until https://github.com/common-workflow-language/cwltool/issues/524 is resolved -->
 If using Python 3, install cwl-avro instead of avro.  Do this by running these commands:
 \`\`\`
 curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 \`\`\`
-Verify using \`pip list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt.
+Verify using \`pip3 list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt.
 
 3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/install/linux/docker-ce/ubuntu/). You should have at least version 19.03.1 installed.
 Ensure that you are able to run Docker without using sudo directly with the
