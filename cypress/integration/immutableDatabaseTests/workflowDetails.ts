@@ -72,8 +72,7 @@ describe('Dockstore Workflow Details', () => {
     cy.get('[data-cy=dockstore-snapshot-unlocked]')
       .its('length')
       .should('be.gt', 0);
-        cy.get('[data-cy=dockstore-snapshot]')
-          .should('not.be.visible');
+
    });
 
   describe('Change tab to files', () => {
