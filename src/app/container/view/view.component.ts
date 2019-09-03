@@ -18,7 +18,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -28,8 +27,8 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
-import { VersionModalService } from '../version-modal/version-modal.service';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
+import { VersionModalService } from '../version-modal/version-modal.service';
 
 @Component({
   selector: 'app-view-container',
@@ -59,7 +58,9 @@ export class ViewContainerComponent extends View implements OnInit {
   setMode(mode: TagEditorMode) {
     this.versionModalService.setVersion(this.version);
     this.versionModalService.setCurrentMode(mode);
-    const dialogRef = this.matDialog.open(VersionModalComponent, { width: '600px' });
+    if (this.matDialog.openDialogs.length === 0) {
+      const dialogRef = this.matDialog.open(VersionModalComponent, { width: '600px' });
+    }
   }
 
   deleteTag() {

@@ -45,10 +45,12 @@ export class CurrentCollectionsComponent implements OnInit, OnChanges {
   }
 
   addEntryToCollection() {
-    this.matDialog.open(AddEntryComponent, {
-      data: { entryId: this.id },
-      width: '500px'
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(AddEntryComponent, {
+        data: { entryId: this.id },
+        width: '500px'
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

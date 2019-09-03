@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('youtube') youtube: ElementRef;
 
   constructor(
-    private dialog: MatDialog,
+    private matDialog: MatDialog,
     private twitterService: TwitterService,
     private userQuery: UserQuery,
     private homePageService: HomePageService
@@ -72,7 +72,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   openYoutube() {
-    this.dialog.open(YoutubeComponent);
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(YoutubeComponent);
+    }
   }
 
   // Router link will not scroll to top of page on change, this fixes that

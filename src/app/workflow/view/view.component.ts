@@ -18,14 +18,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { WorkflowVersion } from 'app/shared/swagger/model/workflowVersion';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AlertService } from '../../shared/alert/state/alert.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
-import { ViewService } from './view.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -35,6 +33,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
+import { ViewService } from './view.service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -91,10 +90,12 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   private openVersionModal(): void {
-    const dialogRef = this.matDialog.open(VersionModalComponent, {
-      width: '600px',
-      data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      const dialogRef = this.matDialog.open(VersionModalComponent, {
+        width: '600px',
+        data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
+      });
+    }
   }
 
   /**

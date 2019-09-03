@@ -54,10 +54,14 @@ export class CollectionsComponent implements OnInit, OnChanges {
   }
 
   editCollection(collection: Collection) {
-    this.matDialog.open(CreateCollectionComponent, { data: { collection: collection, mode: TagEditorMode.Edit }, width: '600px' });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(CreateCollectionComponent, { data: { collection: collection, mode: TagEditorMode.Edit }, width: '600px' });
+    }
   }
 
   createCollection() {
-    this.matDialog.open(CreateCollectionComponent, { data: { collection: null, mode: TagEditorMode.Add }, width: '600px' });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(CreateCollectionComponent, { data: { collection: null, mode: TagEditorMode.Add }, width: '600px' });
+    }
   }
 }

@@ -50,7 +50,7 @@ export class OldHomePageComponent implements OnInit, AfterViewInit {
   @ViewChild('youtube') youtube: ElementRef;
 
   constructor(
-    private dialog: MatDialog,
+    private matDialog: MatDialog,
     private twitterService: TwitterService,
     private userQuery: UserQuery,
     private router: Router,
@@ -74,6 +74,8 @@ export class OldHomePageComponent implements OnInit, AfterViewInit {
   }
 
   openYoutube() {
-    this.dialog.open(YoutubeComponent);
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(YoutubeComponent);
+    }
   }
 }

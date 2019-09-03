@@ -7,7 +7,7 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from './confirmat
   providedIn: 'root'
 })
 export class ConfirmationDialogService {
-  constructor(public dialog: MatDialog) {}
+  constructor(public matDialog: MatDialog) {}
   /**
    * Creates a small confirmation dialog and returns an observable to be subscribed
    * TODO: The function should probably be extended to have more parameters (sizes, colors, button text, etc)
@@ -18,7 +18,7 @@ export class ConfirmationDialogService {
    * @memberof ConfirmationDialogService
    */
   openDialog(data: ConfirmationDialogData, size: string): Observable<boolean> {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    const dialogRef = this.matDialog.open(ConfirmationDialogComponent, {
       width: size,
       data: data
     });

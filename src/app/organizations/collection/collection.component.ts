@@ -3,6 +3,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection, Organization } from '../../shared/swagger';
+import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
@@ -12,7 +13,6 @@ import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
-import { Workflow } from '../../shared/swagger/model/workflow';
 
 @Component({
   selector: 'collection-entry-confirm-remove',
@@ -61,7 +61,7 @@ export class CollectionComponent implements OnInit {
     private organizationQuery: OrganizationQuery,
     private organizationService: OrganizationService,
     private collectionsService: CollectionsService,
-    public dialog: MatDialog,
+    public matDialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userQuery: UserQuery
   ) {}
@@ -90,30 +90,36 @@ export class CollectionComponent implements OnInit {
    * @param entryName
    */
   openRemoveEntryDialog(organizationId: number, collectionId: number, entryId: number, collectionName: string, entryName: string) {
-    this.dialog.open(CollectionRemoveEntryDialogComponent, {
-      width: '500px',
-      data: {
-        collectionName: collectionName,
-        entryName: entryName,
-        collectionId: collectionId,
-        entryId: entryId,
-        organizationId: organizationId
-      }
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(CollectionRemoveEntryDialogComponent, {
+        width: '500px',
+        data: {
+          collectionName: collectionName,
+          entryName: entryName,
+          collectionId: collectionId,
+          entryId: entryId,
+          organizationId: organizationId
+        }
+      });
+    }
   }
 
   editCollection(collection: Collection) {
-    const collectionMap = { key: collection.id, value: collection };
-    const dialogRef = this.dialog.open(CreateCollectionComponent, {
-      data: { collection: collectionMap, mode: TagEditorMode.Edit },
-      width: '600px'
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      const collectionMap = { key: collection.id, value: collection };
+      const dialogRef = this.matDialog.open(CreateCollectionComponent, {
+        data: { collection: collectionMap, mode: TagEditorMode.Edit },
+        width: '600px'
+      });
+    }
   }
 
   updateDescription(description: String, collectionId: number) {
-    this.dialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
-      data: { description: description, type: 'collection', collectionId: collectionId },
-      width: '600px'
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
+        data: { description: description, type: 'collection', collectionId: collectionId },
+        width: '600px'
+      });
+    }
   }
 }

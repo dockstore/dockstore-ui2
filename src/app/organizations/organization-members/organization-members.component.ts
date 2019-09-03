@@ -82,10 +82,12 @@ export class OrganizationMembersComponent extends Base implements OnInit {
    */
   editUser(organizationUser: OrganizationUser) {
     this.alertService.clearEverything();
-    this.matDialog.open(UpsertOrganizationMemberComponent, {
-      data: { mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role },
-      width: '600px'
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(UpsertOrganizationMemberComponent, {
+        data: { mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role },
+        width: '600px'
+      });
+    }
   }
 
   /**
@@ -95,10 +97,12 @@ export class OrganizationMembersComponent extends Base implements OnInit {
    */
   addUser() {
     this.alertService.clearEverything();
-    this.matDialog.open(UpsertOrganizationMemberComponent, {
-      data: { mode: TagEditorMode.Add, username: null, role: null },
-      width: '600px'
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(UpsertOrganizationMemberComponent, {
+        data: { mode: TagEditorMode.Add, username: null, role: null },
+        width: '600px'
+      });
+    }
   }
 
   /**
@@ -108,21 +112,23 @@ export class OrganizationMembersComponent extends Base implements OnInit {
    * @memberof OrganizationMembersComponent
    */
   removeUserDialog(organizationUser: OrganizationUser) {
-    const confirmationDialogData: ConfirmationDialogData = {
-      title: 'Remove user from organization',
-      message: `Are you sure you want to <strong>remove</strong> the user <strong>${organizationUser.user.username}</strong>
+    if (this.matDialog.openDialogs.length === 0) {
+      const confirmationDialogData: ConfirmationDialogData = {
+        title: 'Remove user from organization',
+        message: `Are you sure you want to <strong>remove</strong> the user <strong>${organizationUser.user.username}</strong>
       from the organization
     <strong>${organizationUser.organization.displayName}?`,
-      cancelButtonText: 'NO THANKS',
-      confirmationButtonText: 'REMOVE'
-    };
-    this.confirmationDialogService
-      .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(result => {
-        if (result) {
-          this.organizationMembersService.removeUser(organizationUser);
-        }
-      });
+        cancelButtonText: 'NO THANKS',
+        confirmationButtonText: 'REMOVE'
+      };
+      this.confirmationDialogService
+        .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(result => {
+          if (result) {
+            this.organizationMembersService.removeUser(organizationUser);
+          }
+        });
+    }
   }
 }

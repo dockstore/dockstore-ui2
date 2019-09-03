@@ -68,19 +68,23 @@ export class OrganizationComponent implements OnInit {
    */
   editOrganization() {
     const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
-    this.matDialog.open(RegisterOrganizationComponent, {
-      data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
-      width: '600px'
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(RegisterOrganizationComponent, {
+        data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
+        width: '600px'
+      });
+    }
   }
 
   updateDescription() {
     const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
     const description = organizationSnapshot.description;
-    this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
-      data: { description: description, type: 'organization' },
-      width: '600px'
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
+        data: { description: description, type: 'organization' },
+        width: '600px'
+      });
+    }
   }
 
   organizationStarGazersChange(): void {

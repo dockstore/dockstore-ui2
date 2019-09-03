@@ -16,7 +16,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -107,6 +106,8 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   showAddTagModal() {
-    this.matDialog.open(AddTagComponent, { width: '600px' });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(AddTagComponent, { width: '600px' });
+    }
   }
 }

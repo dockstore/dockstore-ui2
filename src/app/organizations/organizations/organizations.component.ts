@@ -78,6 +78,8 @@ export class OrganizationsComponent extends Base implements OnInit {
    * @memberof OrganizationsComponent
    */
   createOrganization(): void {
-    this.matDialog.open(RegisterOrganizationComponent, { data: { organization: null, mode: TagEditorMode.Add }, width: '600px' });
+    if (this.matDialog.openDialogs.length === 0) {
+      this.matDialog.open(RegisterOrganizationComponent, { data: { organization: null, mode: TagEditorMode.Add }, width: '600px' });
+    }
   }
 }

@@ -1,12 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { RequestsService } from '../state/requests.service';
-import { RequestsQuery } from '../state/requests.query';
-import { combineLatest, Observable } from 'rxjs';
-import { Organization, OrganizationUser } from '../../shared/swagger';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { UserQuery } from '../../shared/user/user.query';
-import { Base } from '../../shared/base';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Base } from '../../shared/base';
+import { Organization, OrganizationUser } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
+import { RequestsQuery } from '../state/requests.query';
+import { RequestsService } from '../state/requests.service';
 
 @Component({
   selector: 'organization-request-confirm-dialog',
@@ -59,7 +59,7 @@ export class RequestsComponent extends Base implements OnInit {
   constructor(
     private requestsQuery: RequestsQuery,
     private requestsService: RequestsService,
-    public dialog: MatDialog,
+    public matDialog: MatDialog,
     private userQuery: UserQuery
   ) {
     super();
@@ -86,33 +86,37 @@ export class RequestsComponent extends Base implements OnInit {
   }
 
   openDialog(name: string, id: number, approve: boolean): void {
-    const dialogRef = this.dialog.open(OrganizationRequestConfirmDialogComponent, {
-      width: '400px',
-      data: { name: name, id: id, approve: approve }
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      const dialogRef = this.matDialog.open(OrganizationRequestConfirmDialogComponent, {
+        width: '400px',
+        data: { name: name, id: id, approve: approve }
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (result.approve) {
-          this.requestsService.approveOrganization(result.id);
-        } else {
-          this.requestsService.rejectOrganization(result.id);
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (result.approve) {
+            this.requestsService.approveOrganization(result.id);
+          } else {
+            this.requestsService.rejectOrganization(result.id);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   openInviteDialog(name: string, id: number, approve: boolean): void {
-    const dialogRef = this.dialog.open(OrganizationInviteConfirmDialogComponent, {
-      width: '400px',
-      data: { name: name, id: id, approve: approve }
-    });
+    if (this.matDialog.openDialogs.length === 0) {
+      const dialogRef = this.matDialog.open(OrganizationInviteConfirmDialogComponent, {
+        width: '400px',
+        data: { name: name, id: id, approve: approve }
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.requestsService.acceptOrRejectOrganizationInvite(result.id, result.approve);
-      }
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.requestsService.acceptOrRejectOrganizationInvite(result.id, result.approve);
+        }
+      });
+    }
   }
 
   rerequestReview(membership: OrganizationUser) {
