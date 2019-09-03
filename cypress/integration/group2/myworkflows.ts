@@ -51,6 +51,11 @@ describe('Dockstore my workflows', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore.cwl');
     });
+    it('should have mode tooltip', () => {
+      // .trigger('mouseover') doesn't work for some reason
+      cy.contains('Mode').trigger('mouseenter');
+      cy.get('.mat-tooltip').contains('STUB: Basic metadata pulled from source control.');
+    });
     it('add and remove test parameter file', () => {
       cy.visit('/my-workflows/github.com/A/l');
       cy.contains('Versions').click();

@@ -64,9 +64,9 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   ToolDescriptor = ToolDescriptor;
   public entryType$: Observable<EntryType>;
   public isRefreshing$: Observable<boolean>;
-  modeTooltipContent = `<b>STUB:</b> Basic metadata pulled from source control.<br />
-  <b>FULL:</b> Full content synced from source control.<br />
-  <b>HOSTED:</b> Workflow metadata and files hosted on Dockstore.`;
+  modeTooltipContent = `STUB: Basic metadata pulled from source control.
+  FULL: Full content synced from source control.
+  HOSTED: Workflow metadata and files hosted on Dockstore.`;
   constructor(
     private workflowService: WorkflowService,
     private workflowsService: ExtendedWorkflowsService,
