@@ -68,6 +68,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
+  public dagLoading$: Observable<boolean>;
   public wdlViewerResult$: Observable<boolean>;
   /**
    * Listen to when the document enters or exits fullscreen.
@@ -133,6 +134,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   }
 
   ngOnInit() {
+    this.dagLoading$ = this.dagQuery.selectLoading();
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isWDL$ = this.workflowQuery.isWDL$;
