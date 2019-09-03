@@ -118,11 +118,12 @@ describe('Dockstore my workflows', () => {
   describe('Test register workflow form validation', () => {
     it('It should have 3 seperate descriptor path validation patterns', () => {
       cy.visit('/my-workflows');
+      // Click multiple times to ensure only one dialog is open at a time
       cy
         .get('#registerWorkflowButton')
         .should('be.visible')
         .should('be.enabled')
-        .click();
+        .click().click().click().click().click();
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
       cy
@@ -170,6 +171,7 @@ describe('Dockstore my workflows', () => {
         .should('be.visible')
         .should('be.enabled')
         .click();
+      cy.get('#closeRegisterWorkflowModalButton').should('not.be.visible');
     });
   });
 
