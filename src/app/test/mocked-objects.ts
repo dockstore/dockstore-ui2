@@ -280,6 +280,128 @@ export const wdlSourceFileWithHttpImport: SourceFile = {
   type: 'DOCKSTORE_WDL'
 };
 
+export const wdlSourceFileWithCommentedHttpImport: SourceFile = {
+  content: '#import http://example.com/foo',
+  id: 2,
+  path: '/goo.wdl',
+  absolutePath: '',
+  type: 'DOCKSTORE_WDL'
+};
+
+const cwlWithNoImport = `#!/usr/bin/env cwl-runner
+cwlVersion: v1.0
+class: CommandLineTool
+baseCommand: echo
+inputs:
+  message:
+      type: string
+          inputBinding:
+                position: 1
+                outputs: []
+`;
+
+// Modified from https://www.commonwl.org/user_guide/19-custom-types/
+const cwlWithHttpsImport = `#!/usr/bin/env cwl-runner
+cwlVersion: v1.0
+class: CommandLineTool
+
+requirements:
+  InlineJavascriptRequirement: {}
+  ResourceRequirement:
+    coresMax: 1
+    ramMin: 100  # just a default, could be lowered
+  SchemaDefRequirement:
+    types:
+      - $import: https://example.com/biom-convert-table.yaml
+`;
+
+// Modified from https://www.biostars.org/p/221902/
+const cwlWithHttpsMixin = `#!/usr/bin/env cwl-runner
+cwlVersion: v1.0
+class: CommandLineTool
+baseCommand: echo
+inputs:
+  $mixin: https://example.com/input.yaml
+`;
+
+const cwlWithCommentedHttpsMixin = `#!/usr/bin/env cwl-runner
+cwlVersion: v1.0
+class: CommandLineTool
+baseCommand: echo
+inputs:
+  # $mixin: https://example.com/input.yaml
+`;
+
+// Based on https://github.com/common-workflow-language/common-workflow-language/issues/850#issuecomment-483698263
+const cwlWithHttpsInclude = `#!/usr/bin/env cwl-runner
+cwlVersion: v1.0
+class: CommandLineTool
+baseCommand: echo
+content:
+  literal: {$include: "https://example.com/something}
+`;
+
+const cwlWithSomeHttpLinks = `class: CommandLineTool
+cwlVersion: v1.0
+$namespaces:
+  sbg: 'https://sevenbridges.com'
+doc: >-
+  The DELLY workflow from the ICGC PanCancer Analysis of Whole Genomes (PCAWG)
+  project.
+
+  ![pcawg
+  logo](https://raw.githubusercontent.com/ICGC-TCGA-PanCancer/pcawg_delly_workflow/2.0.0/img/PCAWG-final-small.png
+  "pcawg logo")
+`;
+
+export const cwlSourceFileWithNoImport: SourceFile = {
+  content: cwlWithNoImport,
+  id: 3,
+  path: '/fubar.cwl',
+  absolutePath: '',
+  type: 'DOCKSTORE_CWL'
+};
+
+export const cwlSourceFileWithHttpsImport: SourceFile = {
+  content: cwlWithHttpsImport,
+  id: 3,
+  path: '/fubar.cwl',
+  absolutePath: '',
+  type: 'DOCKSTORE_CWL'
+};
+
+export const cwlSourceFileWithMixinImport: SourceFile = {
+  content: cwlWithHttpsMixin,
+  id: 3,
+  path: '/fubar.cwl',
+  absolutePath: '',
+  type: 'DOCKSTORE_CWL'
+};
+
+export const cwlSourceFileWithCommentedMixinImport: SourceFile = {
+  content: cwlWithCommentedHttpsMixin,
+  id: 3,
+  path: '/fubar.cwl',
+  absolutePath: '',
+  type: 'DOCKSTORE_CWL'
+};
+
+export const cwlSourceFileWithIncludeImport: SourceFile = {
+  content: cwlWithHttpsInclude,
+  id: 3,
+  path: '/fubar.cwl',
+  absolutePath: '',
+  type: 'DOCKSTORE_CWL'
+};
+
+export const cwlSourceFileWithSomeHttpLinks: SourceFile = {
+  content: cwlWithSomeHttpLinks,
+  id: 3,
+  path: '/fubar.cwl',
+  absolutePath: '',
+  type: 'DOCKSTORE_CWL'
+};
+
 export const sampleSourceFile: SourceFile = {
   content: 'potato',
   id: 1,
