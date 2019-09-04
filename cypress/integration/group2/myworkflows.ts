@@ -121,11 +121,9 @@ describe('Dockstore my workflows', () => {
       cy.get('#registerWorkflowButton')
         .should('be.visible')
         .should('be.enabled')
-        .click()
-        .click()
-        .click()
-        .click()
         .click();
+      cy.get('#registerWorkflowButton')
+        .should('not.be.visible');
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
       cy
