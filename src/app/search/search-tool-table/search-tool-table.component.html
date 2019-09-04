@@ -29,19 +29,20 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool">
-        <span *ngIf="getVerified(tool)">
-          <a style="text-decoration: none" matTooltip="Verified" href="{{ verifiedLink }}">
-            <span>
-              <mat-icon>check</mat-icon>
-            </span></a
-          >
-        </span>
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
         <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
           tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
         }}</a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="verified">
+      <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell *matCellDef="let tool">
+        <a *ngIf="getVerified(tool)" href="{{ verifiedLink }}">
+          <mat-icon matTooltip="Verified">check</mat-icon>
+        </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">

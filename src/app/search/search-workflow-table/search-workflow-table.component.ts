@@ -30,7 +30,7 @@ import { SearchService } from '../state/search.service';
 @Component({
   selector: 'app-search-workflow-table',
   templateUrl: './search-workflow-table.component.html',
-  styleUrls: ['./search-workflow-table.component.scss']
+  styleUrls: ['../../shared/styles/entry-table.scss', './search-workflow-table.component.scss']
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<Workflow>;
