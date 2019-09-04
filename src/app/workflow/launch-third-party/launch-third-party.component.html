@@ -55,13 +55,7 @@
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
             <a
               mat-raised-button
-              [matTooltip]="
-                !(hasContent$ | async)
-                  ? 'The CWL has no content.'
-                  : (hasHttpImports$ | async)
-                  ? 'This version of the CWL has http imports, which are not supported by the CGC. Select a version without http imports.'
-                  : 'Export this workflow version to the CGC.'
-              "
+              [matTooltip]="cgcTooltip$ | async"
               target="_blank"
               rel="noopener"
               [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"

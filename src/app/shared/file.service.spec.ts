@@ -20,10 +20,12 @@ import {
   cwlSourceFileWithIncludeImport,
   cwlSourceFileWithMixinImport,
   cwlSourceFileWithNoImport,
+  cwlSourceFileWithSomeHttpLinks,
   emptyWdlSourceFile,
   sampleSourceFile,
   sampleTag,
   wdlSourceFile,
+  wdlSourceFileWithCommentedHttpImport,
   wdlSourceFileWithHttpImport
 } from '../test/mocked-objects';
 import { ga4ghPath } from './constants';
@@ -62,6 +64,7 @@ describe('FileService', () => {
 
   it('should detect http import in WDL', inject([FileService], (fileService: FileService) => {
     expect(fileService.hasHttpImport(wdlSourceFileWithHttpImport)).toBeTruthy();
+    expect(fileService.hasHttpImport(wdlSourceFileWithCommentedHttpImport)).toBeFalsy();
     expect(fileService.hasHttpImport(emptyWdlSourceFile)).toBeFalsy();
     expect(fileService.hasHttpImport(wdlSourceFile)).toBeFalsy();
   }));
@@ -72,5 +75,6 @@ describe('FileService', () => {
     expect(fileService.hasHttpImport(cwlSourceFileWithMixinImport)).toBeTruthy();
     expect(fileService.hasHttpImport(cwlSourceFileWithCommentedMixinImport)).toBeFalsy();
     expect(fileService.hasHttpImport(cwlSourceFileWithIncludeImport)).toBeTruthy();
+    expect(fileService.hasHttpImport(cwlSourceFileWithSomeHttpLinks)).toBeFalsy();
   }));
 });

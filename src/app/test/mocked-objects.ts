@@ -280,6 +280,14 @@ export const wdlSourceFileWithHttpImport: SourceFile = {
   type: 'DOCKSTORE_WDL'
 };
 
+export const wdlSourceFileWithCommentedHttpImport: SourceFile = {
+  content: '#import http://example.com/foo',
+  id: 2,
+  path: '/goo.wdl',
+  absolutePath: '',
+  type: 'DOCKSTORE_WDL'
+};
+
 const cwlWithNoImport = `#!/usr/bin/env cwl-runner
 cwlVersion: v1.0
 class: CommandLineTool
@@ -333,6 +341,19 @@ content:
   literal: {$include: "https://example.com/something}
 `;
 
+const cwlWithSomeHttpLinks = `class: CommandLineTool
+cwlVersion: v1.0
+$namespaces:
+  sbg: 'https://sevenbridges.com'
+doc: >-
+  The DELLY workflow from the ICGC PanCancer Analysis of Whole Genomes (PCAWG)
+  project.
+
+  ![pcawg
+  logo](https://raw.githubusercontent.com/ICGC-TCGA-PanCancer/pcawg_delly_workflow/2.0.0/img/PCAWG-final-small.png
+  "pcawg logo")
+`;
+
 export const cwlSourceFileWithNoImport: SourceFile = {
   content: cwlWithNoImport,
   id: 3,
@@ -367,6 +388,14 @@ export const cwlSourceFileWithCommentedMixinImport: SourceFile = {
 
 export const cwlSourceFileWithIncludeImport: SourceFile = {
   content: cwlWithHttpsInclude,
+  id: 3,
+  path: '/fubar.cwl',
+  absolutePath: '',
+  type: 'DOCKSTORE_CWL'
+};
+
+export const cwlSourceFileWithSomeHttpLinks: SourceFile = {
+  content: cwlWithSomeHttpLinks,
   id: 3,
   path: '/fubar.cwl',
   absolutePath: '',
