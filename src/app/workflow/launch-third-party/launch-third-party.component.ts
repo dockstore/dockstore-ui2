@@ -2,7 +2,7 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-import { map, mergeMap, share, takeUntil } from 'rxjs/operators';
+import { map, share, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -13,7 +13,7 @@ import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store.';
 import { DescriptorsService } from './state/descriptors.service';
-import { Observable, of as observableOf } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 // tslint:disable:max-line-length
@@ -147,19 +147,17 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   workflowPathAsQueryValue: string;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
-  cgcTooltip$: Observable<string> = this.descriptorsQuery.hasContent$.pipe(
-    map(hasContent => (hasContent ? null : 'The CWL has no content')),
-    mergeMap(msg => {
-      if (msg) {
-        return observableOf(msg);
+  cgcTooltip$: Observable<string> = combineLatest(this.descriptorsQuery.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) => {
+      if (!hasContent) {
+        return 'The CWL has no content.';
       }
-      return this.hasHttpImports$.pipe(
-        map(hasHttpImports =>
-          hasHttpImports
-            ? 'This version of the CWL has http(s) imports, which are not supported by the CGC. Select a version without http(s) imports.'
-            : 'Export this workflow version to the CGC.'
-        )
-      );
+      if (hasHttpImports) {
+        return (
+          'This version of the CWL has http(s) imports, which are not supported by the CGC. ' + 'Select a version without http(s) imports.'
+        );
+      }
+      return 'Export this workflow version to the CGC.';
     })
   );
 
