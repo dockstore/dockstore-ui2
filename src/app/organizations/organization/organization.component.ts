@@ -67,9 +67,7 @@ export class OrganizationComponent extends Base implements OnInit {
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization: Organization) => {
-      if (organization) {
-        this.schema = this.orgschemaService.getSchema(organization);
-      }
+      this.schema = this.orgschemaService.getSchema(organization);
     });
   }
 
