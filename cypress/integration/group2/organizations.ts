@@ -154,7 +154,7 @@ describe('Dockstore Organizations', () => {
       typeInTextArea('Description', '* fake organization description');
       cy.contains('Preview Mode').click();
       cy.contains('fake organization description');
-      cy.contains('* fake organization description').should('not.exist');
+      cy.get('#cdk-overlay-9.cdk-overlay-pane').contains('* fake organization description').should('not.exist');
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#updateOrganizationDescriptionButton').should('not.be.visible');
       cy.contains('fake organization description');
