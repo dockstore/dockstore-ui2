@@ -19,6 +19,8 @@ import * as cytoscape from 'cytoscape';
 import { CytoscapeOptions } from 'cytoscape';
 import dagreExtension from 'cytoscape-dagre';
 import popperExtension from 'cytoscape-popper';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
 import { DynamicPopover } from '../dynamicPopover.model';
@@ -244,18 +246,21 @@ export class DagService {
 
   getDAGResults(workflowVersion: WorkflowVersion, workflowId: number) {
     if (workflowVersion && workflowVersion.id) {
-      this.getCurrentDAG(workflowId, workflowVersion.id).subscribe(
-        result => {
-          this.setDagResults(result);
-        },
-        error => {
-          this.setDagResults(null);
-        }
-      );
+      this.dagStore.setLoading(true);
+      this.getCurrentDAG(workflowId, workflowVersion.id)
+        .pipe(finalize(() => this.dagStore.setLoading(false)))
+        .subscribe(
+          result => {
+            this.setDagResults(result);
+          },
+          error => {
+            this.setDagResults(null);
+          }
+        );
     }
   }
 
-  getCurrentDAG(workflowId, versionId) {
+  getCurrentDAG(workflowId: number, versionId: number): Observable<string> {
     if (workflowId && versionId) {
       return this.workflowsService.getWorkflowDag(workflowId, versionId);
     } else {
