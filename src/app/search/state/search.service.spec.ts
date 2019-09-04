@@ -14,20 +14,22 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
+import { elasticSearchResponse } from '../../test/mocked-objects';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { ProviderService } from '../../shared/provider.service';
 import { ProviderStubService } from '../../test/service-stubs';
 import { SearchService } from './search.service';
 import { SearchStore } from './search.store';
+import { ImageProviderService } from '../../shared/image-provider.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SearchService', () => {
   let searchStore: SearchStore;
   let searchService: SearchService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      providers: [SearchService, SearchStore, { provide: ProviderService, useClass: ProviderStubService }]
+      imports: [RouterTestingModule, HttpClientTestingModule],
+      providers: [ImageProviderService, SearchService, SearchStore, { provide: ProviderService, useClass: ProviderStubService }]
     });
     searchService = TestBed.get(SearchService);
     searchStore = TestBed.get(SearchStore);
@@ -48,5 +50,15 @@ describe('SearchService', () => {
 
   it('should not crash on null advancedSearchObject', inject([SearchService], (service: SearchService) => {
     expect(service.hasSearchText(null, null, null)).toEqual(false);
+  }));
+
+  it('should create image provider', inject([SearchService], (service: SearchService) => {
+    const filtered: [Array<any>, Array<any>] = service.filterEntry(elasticSearchResponse, 201);
+    const tools = filtered[0];
+    expect(filtered[1].length).toBe(0);
+
+    const source = tools[0]._source;
+    expect(source.imgProvider).toBe('Docker Hub');
+    expect(source.imgProviderUrl).toBe('https://hub.docker.com/r/weischenfeldt/pcawg_delly_workflow');
   }));
 });

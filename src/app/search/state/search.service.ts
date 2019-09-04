@@ -23,6 +23,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
+import { ImageProviderService } from '../../shared/image-provider.service';
 
 @Injectable()
 export class SearchService {
@@ -44,7 +45,8 @@ export class SearchService {
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
     private providerService: ProviderService,
-    private router: Router
+    private router: Router,
+    private imageProviderService: ImageProviderService
   ) {}
 
   // Given a URL, will attempt to shorten it
@@ -108,11 +110,11 @@ export class SearchService {
    * @param {number} query_size
    * @memberof SearchService
    */
-  filterEntry(hits: Array<any>, query_size: number) {
+  filterEntry(hits: Array<any>, query_size: number): [Array<any>, Array<any>] {
     const workflowHits = [];
     const toolHits = [];
     hits.forEach(hit => {
-      hit['_source'] = this.providerService.setUpProvider(hit['_source']);
+      hit['_source'] = this.providerService.setUpProvider(this.imageProviderService.setUpImageProvider(hit['_source']));
       if (workflowHits.length + toolHits.length < query_size - 1) {
         if (hit['_type'] === 'tool') {
           toolHits.push(hit);
@@ -121,7 +123,8 @@ export class SearchService {
         }
       }
     });
-    this.setHits(toolHits, workflowHits);
+    return [toolHits, workflowHits];
+    //this.setHits(toolHits, workflowHits);
   }
 
   setHits(toolHit: any, workflowHit: any) {

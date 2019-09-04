@@ -456,3 +456,88 @@ export const testSourceFiles: Array<SourceFile> = [
     }
   }
 ];
+
+export const elasticSearchResponse = [
+  {
+    _index: 'entry',
+    _type: 'tool',
+    _id: '2313',
+    _score: 1,
+    _source: {
+      tool_maintainer_email: '',
+      aliases: {},
+      default_dockerfile_path: '/delly_docker/Dockerfile',
+      is_published: true,
+      toolname: null,
+      last_modified_date: null,
+      checker_id: null,
+      private_access: false,
+      descriptorType: ['CWL'],
+      mode: 'MANUAL_IMAGE_PATH',
+      lastBuild: null,
+      lastUpdated: 1513149095843,
+      path: 'registry.hub.docker.com/weischenfeldt/pcawg_delly_workflow',
+      defaultCWLTestParameterFile: '/test.json',
+      workflowVersions: [
+        {
+          doiURL: null,
+          dbUpdateDate: null,
+          versionEditor: null,
+          verifiedSource: null,
+          verified: false,
+          referenceType: 'UNSET',
+          frozen: false,
+          commitID: null,
+          dockerfile_path: '/delly_docker/Dockerfile',
+          last_built: null,
+          doiStatus: 'NOT_REQUESTED',
+          wdl_path: '/delly_docker/Dockstore.wdl',
+          automated: false,
+          size: 0,
+          cwl_path: '/delly_docker/Dockstore.cwl',
+          id: 8459,
+          image_id: ''
+        },
+        {
+          doiURL: null,
+          dbUpdateDate: null,
+          versionEditor: null,
+          verifiedSource: null,
+          verified: false,
+          referenceType: 'UNSET',
+          frozen: false,
+          commitID: null,
+          dockerfile_path: '/delly_docker/Dockerfile',
+          last_built: null,
+          doiStatus: 'NOT_REQUESTED',
+          wdl_path: '/delly_docker/Dockstore.wdl',
+          automated: false,
+          size: 0,
+          cwl_path: '/delly_docker/Dockstore.cwl',
+          id: 8458,
+          image_id: ''
+        }
+      ],
+      has_checker: false,
+      id: 2313,
+      last_modified: null,
+      email: 'briandoconnor@gmail.com',
+      default_wdl_path: '/delly_docker/Dockstore.wdl',
+      tool_path: 'registry.hub.docker.com/weischenfeldt/pcawg_delly_workflow',
+      registry: 'DOCKER_HUB',
+      dbUpdateDate: null,
+      author: "Brian O'Connor",
+      registry_string: 'registry.hub.docker.com',
+      tags: null,
+      dbCreateDate: null,
+      topicId: null,
+      custom_docker_registry_path: 'registry.hub.docker.com',
+      default_cwl_path: '/delly_docker/Dockstore.cwl',
+      name: 'pcawg_delly_workflow',
+      namespace: 'weischenfeldt',
+      gitUrl: 'git@bitbucket.org:weischenfeldt/pcawg_delly_workflow.git',
+      defaultWDLTestParameterFile: '/test.json',
+      defaultVersion: 'DELLYlegacy'
+    }
+  }
+];
