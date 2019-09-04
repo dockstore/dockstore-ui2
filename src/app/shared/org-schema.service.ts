@@ -19,30 +19,30 @@ export interface ContactPoint {
 }
 
 @Injectable()
-export class OrgschemaService {
+export class OrgSchemaService {
   constructor() {}
-  getSchema(org: Organization): OrganizationSchema {
+  getSchema(org: Organization): OrganizationSchema | null {
     if (!org) {
       return null;
     }
-    const results: OrganizationSchema = {
+    const schema: OrganizationSchema = {
       '@context': 'http://schema.org',
       '@type': 'Organization',
       name: org.name,
       url: org.link
     };
     if (org.avatarUrl) {
-      results.logo = org.avatarUrl; // image link
+      schema.logo = org.avatarUrl; // image link
     }
     if (org.description) {
-      results.description = org.description;
+      schema.description = org.description;
     }
     if (org.email) {
-      results.contactPoint = [{ '@type': 'ContactPoint', email: org.email }];
+      schema.contactPoint = [{ '@type': 'ContactPoint', email: org.email }];
     }
     if (org.location) {
-      results.location = org.location;
+      schema.location = org.location;
     }
-    return results;
+    return schema;
   }
 }

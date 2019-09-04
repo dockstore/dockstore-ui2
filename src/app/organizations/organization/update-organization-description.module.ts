@@ -10,11 +10,11 @@ import { OrganizationStarringService } from './organization-starring/organizatio
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 // tslint:disable-next-line: max-line-length
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
-import { OrgschemaService } from '../../shared/orgschema.service';
+import { OrgSchemaService } from '../../shared/org-schema.service';
 
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, RefreshAlertModule, ReactiveFormsModule, MarkdownModule, NgxJsonLdModule],
-  providers: [OrganizationStarringService, StarOrganizationService, OrgschemaService],
+  providers: [OrganizationStarringService, StarOrganizationService, OrgSchemaService],
   declarations: [UpdateOrganizationOrCollectionDescriptionComponent],
   entryComponents: [UpdateOrganizationOrCollectionDescriptionComponent],
   exports: [NgxJsonLdModule]

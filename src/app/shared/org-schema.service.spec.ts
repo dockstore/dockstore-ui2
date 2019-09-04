@@ -1,20 +1,18 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { BioschemaService } from './bioschema.service';
 import { Organization } from './openapi';
-import { OrgschemaService } from './orgschema.service';
-import { DateService } from './date.service';
+import { OrgSchemaService } from './org-schema.service';
 
-describe('OrgschemaService', () => {
+describe('OrgSchemaService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OrgschemaService]
+      providers: [OrgSchemaService]
     });
   });
 
-  it('should be created', inject([OrgschemaService], (service: OrgschemaService) => {
+  it('should be created', inject([OrgSchemaService], (service: OrgSchemaService) => {
     expect(service).toBeTruthy();
   }));
-  it('should have expected attributes', inject([OrgschemaService], (service: OrgschemaService) => {
+  it('should have expected attributes', inject([OrgSchemaService], (service: OrgSchemaService) => {
     const org: Organization = {
       name: 'org',
       link: 'http://org.org',
@@ -26,5 +24,10 @@ describe('OrgschemaService', () => {
     expect(schema.url).toEqual('http://org.org');
     expect(schema.logo).toEqual('http://org.org/image');
     expect(schema.contactPoint).toEqual([{ '@type': 'ContactPoint', email: 'contact@org.org' }]);
+  }));
+  it('should handle null organization', inject([OrgSchemaService], (service: OrgSchemaService) => {
+    const org: Organization = null;
+    const schema = service.getSchema(org);
+    expect(schema).toBeNull();
   }));
 });
