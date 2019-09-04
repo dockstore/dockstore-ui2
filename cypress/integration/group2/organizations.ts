@@ -154,7 +154,8 @@ describe('Dockstore Organizations', () => {
       typeInTextArea('Description', '* fake organization description');
       cy.contains('Preview Mode').click();
       cy.contains('fake organization description');
-      cy.get('#cdk-overlay-9.cdk-overlay-pane').contains('* fake organization description').should('not.exist');
+      // narrowed search to popup window so as to not search the JSON LD containing the description, which doesn't display markdown
+      cy.get('#updateOrganizationDescriptionWindow').contains('* fake organization description').should('not.exist');
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#updateOrganizationDescriptionButton').should('not.be.visible');
       cy.contains('fake organization description');
