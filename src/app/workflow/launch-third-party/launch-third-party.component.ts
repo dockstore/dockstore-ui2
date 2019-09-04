@@ -146,6 +146,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    */
   workflowPathAsQueryValue: string;
 
+  // Note: intentionally not using this.hasContent$ in the next line, as that does not work
   cgcTooltip$: Observable<string> = this.descriptorsQuery.hasContent$.pipe(
     map(hasContent => (hasContent ? null : 'The CWL has no content')),
     mergeMap(msg => {
