@@ -34,9 +34,9 @@ export class OrgschemaService {
     if (org.avatarUrl) {
       results.logo = org.avatarUrl; // image link
     }
-    // if (org.description) {
-    //   results.description = org.description;
-    // }
+    if (org.description) {
+      results.description = org.description;
+    }
     if (org.email) {
       results.contactPoint = [{ '@type': 'ContactPoint', email: org.email }];
     }
