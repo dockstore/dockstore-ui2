@@ -53,10 +53,10 @@ export class ViewService {
     const snapshot: WorkflowVersion = { ...version, frozen: true };
     this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).subscribe(
       workflowVersions => {
+        const selectedWorkflow = { ...this.workflowQuery.getActive() };
+        selectedWorkflow.workflowVersions = workflowVersions;
+        this.workflowService.setWorkflow(selectedWorkflow);
         cb(workflowVersions);
-        const activeWorkflow = { ...this.workflowQuery.getActive() };
-        workflow.workflowVersions = workflowVersions;
-        this.workflowService.setWorkflow(activeWorkflow);
       },
       error => {
         if (error) {
@@ -130,8 +130,9 @@ export class ViewService {
    * @memberof ViewService
    */
   private requestDOISuccess(version: WorkflowVersion, workflowVersions: Array<WorkflowVersion>): void {
-    const newSelectedVersion = workflowVersions.find(v => v.id === version.id);
-    this.workflowService.setWorkflowVersion(newSelectedVersion);
+    const workflow = { ...this.workflowQuery.getActive() };
+    workflow.workflowVersions = workflowVersions;
+    this.workflowService.setWorkflow(workflow);
     this.alertService.simpleSuccess();
   }
 

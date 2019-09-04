@@ -18,7 +18,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { WorkflowVersion } from 'app/shared/swagger/model/workflowVersion';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -95,34 +94,6 @@ export class ViewWorkflowComponent extends View implements OnInit {
       width: '600px',
       data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
     });
-  }
-
-  /**
-   * Updates the workflow version and alerts the Dockstore User with success
-   * or failure.
-   *
-   * @private
-   * @memberof ViewWorkflowComponent
-   */
-  private updateWorkflowToSnapshot(version): void {
-    // Clear sourcefiles to shrink version
-    version.sourceFiles = [];
-
-    this.workflowsService.updateWorkflowVersion(this.workflow.id, [version]).subscribe(
-      workflowVersions => {
-        this.alertService.detailedSuccess('Snapshot successfully created!');
-        const workflow = { ...this.workflowQuery.getActive() };
-        workflow.workflowVersions = workflowVersions;
-        this.workflowService.setWorkflow(workflow);
-      },
-      error => {
-        if (error) {
-          this.alertService.detailedError(error);
-        } else {
-          this.alertService.simpleError();
-        }
-      }
-    );
   }
 
   /**
