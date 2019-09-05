@@ -75,7 +75,7 @@ describe('Dockstore my workflows', () => {
       cy.visit('/my-workflows/github.com/A/l');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
       goToTab('Versions');
-      //cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
+      cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
 
       cy.get('[data-cy=dockstore-snapshot-unlocked]')
         .its('length')
