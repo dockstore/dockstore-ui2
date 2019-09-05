@@ -53,6 +53,8 @@ export class ViewService {
     const snapshot: WorkflowVersion = { ...version, frozen: true };
     this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).subscribe(
       (workflowVersions: Array<WorkflowVersion>) => {
+        this.alertService.detailedSuccess(`A Snapshot was successfully requested for workflow
+                                       "${workflow.workflowName}" version "${version.name}"!`);
         const selectedWorkflow = { ...this.workflowQuery.getActive() };
         if (selectedWorkflow.id === workflow.id) {
           this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: workflowVersions });
@@ -160,7 +162,10 @@ export class ViewService {
     };
     this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe((confirmationResult: Boolean) => {
       if (confirmationResult) {
-        this.updateWorkflowToSnapshot(workflow, version, () => this.alertService.detailedSuccess('Snapshot successfully created!'));
+        this.updateWorkflowToSnapshot(workflow, version, () => {
+          this.alertService.detailedSuccess(`A Snapshot was successfully requested for workflow
+                                       "${workflow.workflowName}" version "${version.name}"!`);
+        });
       } else {
         this.alertService.detailedSuccess('You cancelled creating a snapshot.');
       }
