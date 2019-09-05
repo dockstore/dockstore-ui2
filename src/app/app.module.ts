@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -98,6 +98,7 @@ import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
+import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -212,7 +213,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
       multi: true
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults }
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
+    { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true }
   ],
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent]
