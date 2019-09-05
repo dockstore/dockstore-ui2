@@ -27,7 +27,7 @@ const workflowVersionsEndpoint = /workflows\/\d+\/workflowVersions$/;
  * sizeable. This affects performance and more importantly, can run into a max
  * request limit size that we have on our nginx server.
  *
- * See dockstore/dockstore#2833
+ * See https://github.com/dockstore/dockstore/issues/2833
  */
 @Injectable()
 export class WorkflowVersionsInterceptor implements HttpInterceptor {
