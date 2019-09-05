@@ -124,7 +124,6 @@ export class SearchService {
       }
     });
     return [toolHits, workflowHits];
-    //this.setHits(toolHits, workflowHits);
   }
 
   setHits(toolHit: any, workflowHit: any) {
