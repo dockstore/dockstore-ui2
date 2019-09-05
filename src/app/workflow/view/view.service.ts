@@ -17,12 +17,10 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
@@ -37,9 +35,7 @@ export class ViewService {
     private confirmationDialogService: ConfirmationDialogService,
     private workflowQuery: WorkflowQuery,
     private workflowService: WorkflowService,
-    private workflowsService: WorkflowsService,
-    private refreshService: RefreshService,
-    private matDialog: MatDialog
+    private workflowsService: WorkflowsService
   ) {}
 
   /**
