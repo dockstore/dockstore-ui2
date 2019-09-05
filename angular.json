@@ -19,12 +19,7 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/manifest.json",
-              {
-                "glob": "worker-json.js",
-                "input": "./node_modules/ace-builds/src-min-noconflict",
-                "output": "/"
-              }
+              "src/manifest.json"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",

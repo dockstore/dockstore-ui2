@@ -47,6 +47,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const aceMode = 'ace/mode/' + this.mode;
+    ace.config.set('workerPath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/');
     this.editor = ace.edit(this.aceId, {
       mode: aceMode,
       readOnly: this.readOnly,
