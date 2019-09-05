@@ -52,13 +52,14 @@ export class ViewService {
   private updateWorkflowToSnapshot(workflow: Workflow, version: WorkflowVersion, cb: Function): void {
     const snapshot: WorkflowVersion = { ...version, frozen: true };
     this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).subscribe(
-      workflowVersions => {
+      (workflowVersions: Array<WorkflowVersion>) => {
         const selectedWorkflow = { ...this.workflowQuery.getActive() };
-        selectedWorkflow.workflowVersions = workflowVersions;
-        this.workflowService.setWorkflow(selectedWorkflow);
+        if (selectedWorkflow.id === workflow.id) {
+          this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: workflowVersions });
+        }
         cb(workflowVersions);
       },
-      error => {
+      (error: HttpErrorResponse) => {
         if (error) {
           this.alertService.detailedError(error);
         } else {
@@ -102,7 +103,8 @@ export class ViewService {
   private showRequestDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
       message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and can't be
-                undone, though some metadata will remain editable. Are you sure you'd like to create a DOI for version
+                undone, though some metadata will remain editable. It can take some time to request a DOI.
+                Are you sure you'd like to create a DOI for version
                 <b>${version.name}</b>?`,
       title: 'Issue DOI',
       confirmationButtonText: 'Issue DOI',
@@ -114,8 +116,8 @@ export class ViewService {
         this.workflowsService
           .requestDOIForWorkflowVersion(workflow.id, version.id)
           .subscribe(
-            versions => this.requestDOISuccess(version, versions),
-            errorResponse => this.alertService.detailedError(errorResponse)
+            (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
+            (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
           );
       } else {
         this.alertService.detailedSuccess('You cancelled DOI issuance.');
@@ -129,11 +131,13 @@ export class ViewService {
    * @private
    * @memberof ViewService
    */
-  private requestDOISuccess(version: WorkflowVersion, workflowVersions: Array<WorkflowVersion>): void {
-    const workflow = { ...this.workflowQuery.getActive() };
-    workflow.workflowVersions = workflowVersions;
-    this.workflowService.setWorkflow(workflow);
-    this.alertService.simpleSuccess();
+  private requestDOISuccess(workflow: Workflow, version: WorkflowVersion): void {
+    const selectedWorkflow = { ...this.workflowQuery.getActive() };
+    if (selectedWorkflow.id === workflow.id) {
+      this.workflowService.setWorkflow(workflow);
+    }
+    this.alertService.detailedSuccess(`A Digital Object Identifier (DOI) was successfully requested for workflow
+                                       "${workflow.workflowName}" version "${version.name}"!`);
   }
 
   /**
@@ -154,7 +158,7 @@ export class ViewService {
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
     };
-    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
+    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe((confirmationResult: Boolean) => {
       if (confirmationResult) {
         this.updateWorkflowToSnapshot(workflow, version, () => this.alertService.detailedSuccess('Snapshot successfully created!'));
       } else {
