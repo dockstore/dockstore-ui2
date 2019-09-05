@@ -25,6 +25,8 @@ import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 // tslint:disable-next-line: max-line-length
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
+import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'organization',
@@ -40,11 +42,13 @@ export class OrganizationComponent implements OnInit {
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
   gravatarUrl$: Observable<string>;
+  public schema$: Observable<OrganizationSchema>;
   approved = Organization.StatusEnum.APPROVED;
 
   constructor(
     private organizationQuery: OrganizationQuery,
     private organizationService: OrganizationService,
+    private orgschemaService: OrgSchemaService,
     private matDialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userQuery: UserQuery
@@ -59,6 +63,7 @@ export class OrganizationComponent implements OnInit {
     this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
+    this.schema$ = this.organization$.pipe(map(organization => this.orgschemaService.getSchema(organization)));
   }
 
   /**
