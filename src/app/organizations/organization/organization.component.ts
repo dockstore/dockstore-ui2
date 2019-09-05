@@ -52,9 +52,7 @@ export class OrganizationComponent implements OnInit {
     private matDialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userQuery: UserQuery
-  ) {
-    super();
-  }
+  ) {}
 
   ngOnInit() {
     const organizationName = this.activatedRoute.snapshot.paramMap.get('organizationName');
