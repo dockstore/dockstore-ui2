@@ -27,14 +27,13 @@ import { OrganizationService } from '../state/organization.service';
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
 import { map } from 'rxjs/operators';
-import { Base } from '../../shared/base';
 
 @Component({
   selector: 'organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss']
 })
-export class OrganizationComponent extends Base implements OnInit {
+export class OrganizationComponent implements OnInit {
   public organizationStarGazersClicked = false;
 
   organization$: Observable<Organization>;
