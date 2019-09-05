@@ -795,7 +795,8 @@ mat-panel-title.org-accordion-header {
   position: fixed !important;
   bottom: 30px;
   right: 30px;
-  z-index: 99999;
+  // Material dialog is observed to be z-index 1000. This goes underneath it
+  z-index: 980;
 }
 
 .spacer {
