@@ -49,7 +49,7 @@ export class ViewService {
     const snapshot: WorkflowVersion = { ...version, frozen: true };
     this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).subscribe(
       (workflowVersions: Array<WorkflowVersion>) => {
-        this.alertService.detailedSuccess(`A Snapshot was successfully requested for workflow
+        this.alertService.detailedSuccess(`A snapshot was created for workflow
                                        "${workflow.workflowName}" version "${version.name}"!`);
         const selectedWorkflow = { ...this.workflowQuery.getActive() };
         if (selectedWorkflow.id === workflow.id) {
@@ -134,7 +134,7 @@ export class ViewService {
     if (selectedWorkflow.id === workflow.id) {
       this.workflowService.setWorkflow(workflow);
     }
-    this.alertService.detailedSuccess(`A Digital Object Identifier (DOI) was successfully requested for workflow
+    this.alertService.detailedSuccess(`A Digital Object Identifier (DOI) was created for workflow
                                        "${workflow.workflowName}" version "${version.name}"!`);
   }
 
@@ -156,10 +156,10 @@ export class ViewService {
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
     };
-    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe((confirmationResult: Boolean) => {
+    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe((confirmationResult: boolean) => {
       if (confirmationResult) {
         this.updateWorkflowToSnapshot(workflow, version, () => {
-          this.alertService.detailedSuccess(`A Snapshot was successfully requested for workflow
+          this.alertService.detailedSuccess(`A snapshot was created for workflow
                                        "${workflow.workflowName}" version "${version.name}"!`);
         });
       } else {
