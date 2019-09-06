@@ -526,7 +526,6 @@ export const elasticSearchResponse = [
       tool_path: 'registry.hub.docker.com/weischenfeldt/pcawg_delly_workflow',
       registry: 'DOCKER_HUB',
       dbUpdateDate: null,
-      author: "Brian O'Connor",
       registry_string: 'registry.hub.docker.com',
       tags: null,
       dbCreateDate: null,
