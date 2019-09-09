@@ -26,8 +26,7 @@ import { AdvancedSearchService } from './advancedsearch/advanced-search.service'
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
-import { SearchService } from './state/search.service';
-import { Hit } from './state/search.service';
+import { Hit, SearchService } from './state/search.service';
 
 /**
  * There are a total of 5 calls per search.
