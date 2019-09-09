@@ -23,6 +23,7 @@ import { WorkflowVersion } from '../shared/swagger';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { Hit } from '../search/state/search.service';
 
 export const updatedWorkflow: Workflow = {
   descriptorType: DescriptorTypeEnum.CWL,
@@ -457,7 +458,7 @@ export const testSourceFiles: Array<SourceFile> = [
   }
 ];
 
-export const elasticSearchResponse = [
+export const elasticSearchResponse: Hit[] = [
   {
     _index: 'entry',
     _type: 'tool',
@@ -537,6 +538,58 @@ export const elasticSearchResponse = [
       gitUrl: 'git@bitbucket.org:weischenfeldt/pcawg_delly_workflow.git',
       defaultWDLTestParameterFile: '/test.json',
       defaultVersion: 'DELLYlegacy'
+    }
+  },
+  {
+    _index: 'entry',
+    _type: 'workflow',
+    _id: '2210',
+    _score: 1,
+    _source: {
+      aliases: {},
+      is_published: true,
+      last_modified_date: null,
+      is_checker: false,
+      checker_id: null,
+      type: 'BioWorkflow',
+      repository: 'Ginny-9609498',
+      source_control_provider: 'GITHUB',
+      descriptorType: 'CWL',
+      full_workflow_path: 'github.com/smc-rna-challenge/Ginny-9609498/Ginny-9609498',
+      mode: 'FULL',
+      lastUpdated: 1496192152500,
+      path: 'github.com/smc-rna-challenge/Ginny-9609498',
+      workflowVersions: [
+        {
+          doiURL: null,
+          dbUpdateDate: null,
+          subClass: null,
+          versionEditor: null,
+          verifiedSource: null,
+          verified: false,
+          frozen: false,
+          referenceType: 'UNSET',
+          commitID: null,
+          id: 8288,
+          doiStatus: 'NOT_REQUESTED'
+        }
+      ],
+      sourceControl: 'github.com',
+      has_checker: false,
+      id: 2210,
+      last_modified: null,
+      email: 'Ginny@synapse.org',
+      dbUpdateDate: null,
+      author: 'Ginny',
+      defaultTestParameterFilePath: '/test.json',
+      workflowName: 'Ginny-9609498',
+      workflow_path: '/main.cwl',
+      dbCreateDate: null,
+      topicId: null,
+      parent_id: null,
+      organization: 'smc-rna-challenge',
+      gitUrl: 'git@github.com:smc-rna-challenge/Ginny-9609498.git',
+      defaultVersion: null
     }
   }
 ];

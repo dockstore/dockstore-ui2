@@ -27,6 +27,7 @@ import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
+import { Hit } from './state/search.service';
 
 /**
  * There are a total of 5 calls per search.
@@ -61,7 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
-  public hits: Object[];
+  public hits: Hit[];
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
