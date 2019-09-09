@@ -142,12 +142,12 @@ export class SearchService {
     return [toolHits, workflowHits];
   }
 
-  setHits(toolHit: Array<Hit>, workflowHit: Array<Hit>) {
+  setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>) {
     this.searchStore.setState(state => {
       return {
         ...state,
-        toolhit: toolHit,
-        workflowhit: workflowHit
+        toolhit: toolHits,
+        workflowhit: workflowHits
       };
     });
   }
