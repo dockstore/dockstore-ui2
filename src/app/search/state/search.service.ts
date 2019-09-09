@@ -142,7 +142,7 @@ export class SearchService {
     return [toolHits, workflowHits];
   }
 
-  setHits(toolHit: any, workflowHit: any) {
+  setHits(toolHit: Array<Hit>, workflowHit: Array<Hit>) {
     this.searchStore.setState(state => {
       return {
         ...state,

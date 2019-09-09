@@ -384,7 +384,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     })
       .then(hits => {
         this.hits = hits.hits.hits;
-        const filteredHits: [Array<any>, Array<any>] = this.searchService.filterEntry(this.hits, this.query_size);
+        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
         this.searchService.setHits(filteredHits[0], filteredHits[1]);
         if (this.values.length > 0 && hits) {
           this.searchTerm = true;

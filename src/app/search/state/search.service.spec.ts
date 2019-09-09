@@ -18,7 +18,7 @@ import { elasticSearchResponse } from '../../test/mocked-objects';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ProviderService } from '../../shared/provider.service';
 import { ProviderStubService } from '../../test/service-stubs';
-import { SearchService } from './search.service';
+import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -61,7 +61,7 @@ describe('SearchService', () => {
   }));
 
   it('should create image provider', inject([SearchService], (service: SearchService) => {
-    const filtered: [Array<any>, Array<any>] = service.filterEntry(elasticSearchResponse, 201);
+    const filtered: [Array<Hit>, Array<Hit>] = service.filterEntry(elasticSearchResponse, 201);
     const tools = filtered[0];
     const workflows = filtered[1];
     const toolsSource = tools[0]._source;
