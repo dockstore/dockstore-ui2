@@ -68,6 +68,8 @@ export class Dockstore {
 
   static GITHUB_APP_INSTALLATION_URL = 'will be filled in by configuration.service';
 
+  static DOCUMENTATION_URL = 'https://docs.dockstore.org';
+
   static FEATURES = {
     enableCwlViewer: true
   };
