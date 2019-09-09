@@ -17,12 +17,10 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
@@ -37,9 +35,7 @@ export class ViewService {
     private confirmationDialogService: ConfirmationDialogService,
     private workflowQuery: WorkflowQuery,
     private workflowService: WorkflowService,
-    private workflowsService: WorkflowsService,
-    private refreshService: RefreshService,
-    private matDialog: MatDialog
+    private workflowsService: WorkflowsService
   ) {}
 
   /**
@@ -52,13 +48,16 @@ export class ViewService {
   private updateWorkflowToSnapshot(workflow: Workflow, version: WorkflowVersion, cb: Function): void {
     const snapshot: WorkflowVersion = { ...version, frozen: true };
     this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).subscribe(
-      workflowVersions => {
+      (workflowVersions: Array<WorkflowVersion>) => {
+        this.alertService.detailedSuccess(`A snapshot was created for workflow
+                                       "${workflow.workflowName}" version "${version.name}"!`);
+        const selectedWorkflow = { ...this.workflowQuery.getActive() };
+        if (selectedWorkflow.id === workflow.id) {
+          this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: workflowVersions });
+        }
         cb(workflowVersions);
-        const activeWorkflow = { ...this.workflowQuery.getActive() };
-        workflow.workflowVersions = workflowVersions;
-        this.workflowService.setWorkflow(activeWorkflow);
       },
-      error => {
+      (error: HttpErrorResponse) => {
         if (error) {
           this.alertService.detailedError(error);
         } else {
@@ -102,7 +101,8 @@ export class ViewService {
   private showRequestDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
     const dialogData: ConfirmationDialogData = {
       message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and can't be
-                undone, though some metadata will remain editable. Are you sure you'd like to create a DOI for version
+                undone, though some metadata will remain editable. It can take some time to request a DOI.
+                Are you sure you'd like to create a DOI for version
                 <b>${version.name}</b>?`,
       title: 'Issue DOI',
       confirmationButtonText: 'Issue DOI',
@@ -114,8 +114,8 @@ export class ViewService {
         this.workflowsService
           .requestDOIForWorkflowVersion(workflow.id, version.id)
           .subscribe(
-            versions => this.requestDOISuccess(version, versions),
-            errorResponse => this.alertService.detailedError(errorResponse)
+            (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
+            (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
           );
       } else {
         this.alertService.detailedSuccess('You cancelled DOI issuance.');
@@ -129,10 +129,13 @@ export class ViewService {
    * @private
    * @memberof ViewService
    */
-  private requestDOISuccess(version: WorkflowVersion, workflowVersions: Array<WorkflowVersion>): void {
-    const newSelectedVersion = workflowVersions.find(v => v.id === version.id);
-    this.workflowService.setWorkflowVersion(newSelectedVersion);
-    this.alertService.simpleSuccess();
+  private requestDOISuccess(workflow: Workflow, version: WorkflowVersion): void {
+    const selectedWorkflow = { ...this.workflowQuery.getActive() };
+    if (selectedWorkflow.id === workflow.id) {
+      this.workflowService.setWorkflow(workflow);
+    }
+    this.alertService.detailedSuccess(`A Digital Object Identifier (DOI) was created for workflow
+                                       "${workflow.workflowName}" version "${version.name}"!`);
   }
 
   /**
@@ -153,9 +156,12 @@ export class ViewService {
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
     };
-    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
+    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe((confirmationResult: boolean) => {
       if (confirmationResult) {
-        this.updateWorkflowToSnapshot(workflow, version, () => this.alertService.detailedSuccess('Snapshot successfully created!'));
+        this.updateWorkflowToSnapshot(workflow, version, () => {
+          this.alertService.detailedSuccess(`A snapshot was created for workflow
+                                       "${workflow.workflowName}" version "${version.name}"!`);
+        });
       } else {
         this.alertService.detailedSuccess('You cancelled creating a snapshot.');
       }

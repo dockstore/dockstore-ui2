@@ -70,24 +70,26 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=save-version').click();
       cy.get('[data-cy=save-version').should('not.be.visible');
     });
-    // TODO turn back on
-    // it('Should be able to snapshot', () => {
-    //   cy.visit('/my-workflows/github.com/A/l');
-    //   cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-    //   goToTab('Versions');
-    //   cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
-    //
-    //   cy.get('[data-cy=dockstore-snapshot-unlocked]')
-    //     .its('length')
-    //     .should('be.gt', 0);
-    //
-    //   cy.get('[data-cy=dockstore-snapshot]')
-    //     .first()
-    //     .click();
-    //
-    //   cy.wait(250);
-    //   cy.get('[data-cy=dockstore-snapshot-locked').should('have.length', 1);
-    // });
+
+    it('Should be able to snapshot', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
+      goToTab('Versions');
+      cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
+
+      cy.get('[data-cy=dockstore-snapshot-unlocked]')
+        .its('length')
+        .should('be.gt', 0);
+
+      cy.get('[data-cy=dockstore-snapshot]')
+        .first()
+        .click();
+
+      cy.get('[data-cy=confirm-dialog-button]').click();
+
+      cy.wait(250);
+      cy.get('[data-cy=dockstore-snapshot-locked').should('have.length', 1);
+    });
   });
 
   describe('Look at an invalid workflow', () => {
