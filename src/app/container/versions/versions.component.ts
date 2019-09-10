@@ -29,6 +29,7 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
 import { AddTagComponent } from '../add-tag/add-tag.component';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-versions-container',
@@ -37,6 +38,7 @@ import { AddTagComponent } from '../add-tag/add-tag.component';
 })
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
+  Dockstore = Dockstore;
   versionTag: Tag;
   public DockstoreToolType = DockstoreTool;
   @Input() set selectedVersion(value: Tag) {

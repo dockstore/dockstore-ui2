@@ -15,6 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Dockstore } from '../shared/dockstore.model';
 
 @Injectable()
 export class DateService {
@@ -40,7 +41,7 @@ export class DateService {
 
   /*Note: change this link if necessary */
   getVerifiedLink(): string {
-    return 'https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow';
+    return Dockstore.DOCUMENTATION_URL + '/faq/#what-is-a-verified-tool-or-workflow';
   }
 
   getAgoMessage(timestamp: number): string | null {

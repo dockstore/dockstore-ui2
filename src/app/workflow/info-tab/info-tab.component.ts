@@ -67,6 +67,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   modeTooltipContent = `STUB: Basic metadata pulled from source control.
   FULL: Full content synced from source control.
   HOSTED: Workflow metadata and files hosted on Dockstore.`;
+  Dockstore = Dockstore;
   constructor(
     private workflowService: WorkflowService,
     private workflowsService: ExtendedWorkflowsService,

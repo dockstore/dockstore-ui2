@@ -20,6 +20,7 @@ import { ContainersStubService } from '../test/service-stubs';
 import { ContainersService } from './swagger/api/containers.service';
 import { ImageProviderService } from './image-provider.service';
 import { TestBed, inject } from '@angular/core/testing';
+import { Dockstore } from '../shared/dockstore.model';
 
 describe('DateService', () => {
   beforeEach(() => {
@@ -40,7 +41,7 @@ describe('DateService', () => {
     expect(service.getAgoMessage(1498675698000)).toContain(' days ago');
   }));
   it('should be getVerifiedLink', inject([DateService], (service: DateService) => {
-    expect(service.getVerifiedLink()).toEqual('https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow');
+    expect(service.getVerifiedLink()).toEqual(Dockstore.DOCUMENTATION_URL + '/faq/#what-is-a-verified-tool-or-workflow');
   }));
   it('should be ISO8601Format when given number', inject([DateService], (service: DateService) => {
     expect(service.getISO8601Format(1498675698000)).toEqual('2017-06-28T18:48:18.000Z');

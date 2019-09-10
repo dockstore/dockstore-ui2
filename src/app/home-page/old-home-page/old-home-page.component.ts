@@ -23,6 +23,8 @@ import { TwitterService } from 'app/shared/twitter.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { Observable } from 'rxjs';
+import { Dockstore } from '../../shared/dockstore.model';
+
 /**
  * Simple youtube iframe component, too simple to have its own file
  *
@@ -46,6 +48,7 @@ export class OldHomePageComponent implements OnInit, AfterViewInit {
   public browseWorkflowsTab = 'browseWorkflowsTab';
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
+  Dockstore = Dockstore;
 
   @ViewChild('youtube') youtube: ElementRef;
 

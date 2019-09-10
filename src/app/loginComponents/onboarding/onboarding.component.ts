@@ -4,8 +4,8 @@ import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { ExtendedUserData, User, UsersService } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
-import { TokenService } from '../../shared/state/token.service';
 import { TokenQuery } from '../../shared/state/token.query';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-onboarding',
@@ -17,6 +17,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   extendedUser: ExtendedUserData;
   user: User;
   ready = false;
+  Dockstore = Dockstore;
   constructor(private userQuery: UserQuery, private usersService: UsersService, private tokenService: TokenQuery) {}
   ngOnInit() {
     localStorage.setItem('page', '/onboarding');

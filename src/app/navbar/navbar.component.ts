@@ -26,6 +26,7 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
+import { Dockstore } from '../shared/dockstore.model';
 
 @Component({
   selector: 'app-navbar',
@@ -37,6 +38,7 @@ export class NavbarComponent extends Logout implements OnInit {
   extendedUser: any;
   isExtended = false;
   devMode = devMode;
+  Dockstore = Dockstore;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   private currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
   private currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
