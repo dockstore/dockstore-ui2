@@ -54,7 +54,14 @@
               required
               [matTooltip]="tooltip.workflowPath"
               placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
-              [readonly]="(isService$ | async) || isPublic || !canWrite || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+              [readonly]="
+                (isService$ | async) ||
+                isPublic ||
+                !canWrite ||
+                workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
+                version.frozen ||
+                version.doiURL
+              "
             />
             <div *ngIf="isService$ | async" class="label-value">
               {{ version.workflow_path }}
@@ -93,7 +100,7 @@
                   title="Remove test parameter file"
                   type="button"
                   class="btn btn-default form-sm-button"
-                  *ngIf="!isPublic"
+                  *ngIf="!isPublic && !version.frozen && !version.doiURL"
                   (click)="removeTestParameterFile(i)"
                 >
                   <mat-icon>clear</mat-icon>
@@ -104,7 +111,7 @@
           <div
             class="col-sm-9 col-md-9 col-lg-9"
             [ngClass]="{ 'col-sm-offset-3': testParameterFilePaths.length > 0 }"
-            *ngIf="!isPublic && !(isService$ | async)"
+            *ngIf="!isPublic && !(isService$ | async) && !version.frozen && !version.doiURL"
           >
             <div class="input-group">
               <input
@@ -163,7 +170,13 @@
           <div class="col-sm-9 col-md-9 col-lg-9">
             <div>
               <label>
-                <input type="checkbox" name="checkbox" [(ngModel)]="version.hidden" matTooltip="Hide tag from public view." />
+                <input
+                  [disabled]="version.doiURL"
+                  type="checkbox"
+                  name="checkbox"
+                  [(ngModel)]="version.hidden"
+                  matTooltip="Hide tag from public view."
+                />
               </label>
             </div>
           </div>
