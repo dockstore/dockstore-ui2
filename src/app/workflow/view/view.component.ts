@@ -71,16 +71,21 @@ export class ViewWorkflowComponent extends View implements OnInit {
 
   showVersionModal() {
     this.versionModalService.setVersion(this.version);
+    this.alertService.start('Getting test parameter files');
     this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name).subscribe(
       items => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
         this.openVersionModal();
+        this.alertService.simpleSuccess();
       },
       error => {
-        this.openVersionModal();
-        // TODO: Find a better way to handle error
-        this.versionModalService.setTestParameterFiles([]);
+        // TODO: Figure out a better way to handle this
+        // If we were to open the modal without test parameter files and the user saves,
+        // the legit files that were already there would be wiped out
+        // This is why we're straight up not opening the modal if getting the test parameter files failed
+        // Need to figure out a way to allow the user to edit version properties without test parameter files
+        this.alertService.detailedError(error);
       }
     );
   }
