@@ -14,6 +14,7 @@ import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from 'app/shared/
 import { takeUntil } from 'rxjs/operators';
 import { EntryFileTabQuery } from './entry-file-tab.query';
 import { EntryFileTabStore } from './entry-file-tab.store';
+import { Validation } from '../../../shared/swagger/model/validation';
 
 @Injectable()
 export class EntryFileTabService extends Base {
@@ -130,6 +131,35 @@ export class EntryFileTabService extends Base {
   public changeFile(file: ToolFile) {
     this.setSelectedFile(file);
     this.getFileContents();
+    this.getValidations();
+  }
+
+  private getValidations() {
+    const version = this.workflowQuery.getSnapshot().version;
+    const file = this.entryFileTabQuery.getSnapshot().selectedFile;
+    if (version && version.validations && file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR) {
+      for (const validation of version.validations) {
+        if (validation.type === Validation.TypeEnum.DOCKSTORESERVICEYML) {
+          const validationObject = JSON.parse(validation.message);
+          if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
+            this.entryFileTabStore.setState(state => {
+              return {
+                ...state,
+                validationMessage: null
+              };
+            });
+          } else {
+            this.entryFileTabStore.setState(state => {
+              return {
+                ...state,
+                validationMessage: validationObject
+              };
+            });
+          }
+          break;
+        }
+      }
+    }
   }
 
   /**
@@ -170,6 +200,7 @@ export class EntryFileTabService extends Base {
         fileContents: null
       };
     });
+    this.getValidations();
   }
 
   /**
