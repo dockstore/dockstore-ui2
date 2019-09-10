@@ -23,6 +23,22 @@ import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
+import { ImageProviderService } from '../../shared/image-provider.service';
+import { Explanation } from 'elasticsearch';
+
+export interface Hit {
+  _index: string;
+  _type: string;
+  _id: string;
+  _score: number;
+  _source: any;
+  _version?: number;
+  _explanation?: Explanation;
+  fields?: any;
+  highlight?: any;
+  inner_hits?: any;
+  sort?: string[];
+}
 
 @Injectable()
 export class SearchService {
@@ -44,7 +60,8 @@ export class SearchService {
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
     private providerService: ProviderService,
-    private router: Router
+    private router: Router,
+    private imageProviderService: ImageProviderService
   ) {}
 
   // Given a URL, will attempt to shorten it
@@ -108,28 +125,29 @@ export class SearchService {
    * @param {number} query_size
    * @memberof SearchService
    */
-  filterEntry(hits: Array<any>, query_size: number) {
+  filterEntry(hits: Array<Hit>, query_size: number): [Array<Hit>, Array<Hit>] {
     const workflowHits = [];
     const toolHits = [];
     hits.forEach(hit => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
       if (workflowHits.length + toolHits.length < query_size - 1) {
         if (hit['_type'] === 'tool') {
+          hit['_source'] = this.imageProviderService.setUpImageProvider(hit['_source']);
           toolHits.push(hit);
         } else if (hit['_type'] === 'workflow') {
           workflowHits.push(hit);
         }
       }
     });
-    this.setHits(toolHits, workflowHits);
+    return [toolHits, workflowHits];
   }
 
-  setHits(toolHit: any, workflowHit: any) {
+  setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>) {
     this.searchStore.setState(state => {
       return {
         ...state,
-        toolhit: toolHit,
-        workflowhit: workflowHit
+        toolhit: toolHits,
+        workflowhit: workflowHits
       };
     });
   }

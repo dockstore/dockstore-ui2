@@ -26,7 +26,7 @@ import { AdvancedSearchService } from './advancedsearch/advanced-search.service'
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
-import { SearchService } from './state/search.service';
+import { Hit, SearchService } from './state/search.service';
 
 /**
  * There are a total of 5 calls per search.
@@ -61,7 +61,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
-  public hits: Object[];
+  public hits: Hit[];
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
@@ -383,7 +383,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     })
       .then(hits => {
         this.hits = hits.hits.hits;
-        this.searchService.filterEntry(this.hits, this.query_size);
+        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+        this.searchService.setHits(filteredHits[0], filteredHits[1]);
         if (this.values.length > 0 && hits) {
           this.searchTerm = true;
         }
