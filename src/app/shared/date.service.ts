@@ -41,7 +41,7 @@ export class DateService {
 
   /*Note: change this link if necessary */
   getVerifiedLink(): string {
-    return Dockstore.DOCUMENTATION_URL + '/faq/#what-is-a-verified-tool-or-workflow';
+    return Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-verified-tool-or-workflow';
   }
 
   getAgoMessage(timestamp: number): string | null {
