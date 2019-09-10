@@ -21,10 +21,9 @@ import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AlertService } from '../../shared/alert/state/alert.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
-import { ViewService } from './view.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -34,6 +33,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
+import { ViewService } from './view.service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -79,6 +79,8 @@ export class ViewWorkflowComponent extends View implements OnInit {
       },
       error => {
         this.openVersionModal();
+        // TODO: Find a better way to handle error
+        this.versionModalService.setTestParameterFiles([]);
       }
     );
   }
