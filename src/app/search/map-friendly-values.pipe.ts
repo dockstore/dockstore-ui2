@@ -60,7 +60,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [ToolFile.FileTypeEnum.OTHER, 'Files']
       ])
     ],
-    ['workflowVersions.verifiedSource.keyword', new Map([['[]', 'None']])]
+    ['verified_sources.keyword', new Map([['[]', 'None']])]
   ]);
 
   /**
