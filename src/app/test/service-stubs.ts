@@ -593,7 +593,7 @@ export class DockstoreStubService {
 
 export class DateStubService {
   getVerifiedLink() {
-    return 'https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow';
+    return Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-verified-tool-or-workflow';
   }
   getDateTimeMessage() {
     return 'a date time message';

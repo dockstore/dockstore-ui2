@@ -40,6 +40,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
   @Input() workflowId: number;
   zenodoUrl: string;
   _selectedVersion: WorkflowVersion;
+  Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this._selectedVersion = value;

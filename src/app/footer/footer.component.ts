@@ -33,6 +33,7 @@ export class FooterComponent extends Base implements OnInit {
   tag: string;
   public prod = true;
   public dsServerURI: any;
+  Dockstore = Dockstore;
 
   constructor(private metadataService: MetadataService) {
     super();

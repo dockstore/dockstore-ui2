@@ -26,7 +26,7 @@
         <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
           <mat-icon class="hidden-sm">people</mat-icon> Organizations
         </a>
-        <a mat-button class="icon" href="http://docs.dockstore.org/">
+        <a mat-button class="icon" href="{{ Dockstore.DOCUMENTATION_URL }}">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png" /> Docs
         </a>
         <span class="spacer"></span>
@@ -76,7 +76,7 @@
     <div class="container-fluid navbar-holder">
       <a mat-button class="icon icon-sm" routerLink="/search">Search</a>
       <a mat-button class="icon icon-sm" routerLink="/organizations">Organizations</a>
-      <a mat-button class="icon icon-sm" href="http://docs.dockstore.org/">Docs</a>
+      <a mat-button class="icon icon-sm" href="{{ Dockstore.DOCUMENTATION_URL }}">Docs</a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

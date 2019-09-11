@@ -67,6 +67,8 @@ export class ConfigurationService {
     Dockstore.CWL_VISUALIZER_URI = config.cwlVisualizerUri;
 
     Dockstore.GITHUB_APP_INSTALLATION_URL = config.gitHubAppInstallationUrl;
+
+    Dockstore.DOCUMENTATION_URL = config.documentationUrl;
   }
 
   /**

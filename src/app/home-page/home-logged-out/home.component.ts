@@ -21,6 +21,7 @@ import { Observable, Subject } from 'rxjs';
 import { User } from '../../shared/swagger/model/user';
 import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
+import { Dockstore } from '../../shared/dockstore.model';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  Dockstore = Dockstore;
 
   @ViewChild('youtube') youtube: ElementRef;
 

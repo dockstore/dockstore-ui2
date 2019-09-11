@@ -32,7 +32,10 @@
               >
                 Git Reference
               </label>
-              <a *ngIf="!publicPage" href="http://docs.dockstore.org/faq/#what-is-a-default-version-of-a-tool-or-workflow" target="_blank"
+              <a
+                *ngIf="!publicPage"
+                href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#what-is-a-default-version-of-a-tool-or-workflow"
+                target="_blank"
                 ><mat-icon>info</mat-icon></a
               >
             </span>

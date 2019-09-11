@@ -170,7 +170,12 @@
     <h3 class="text-center">Next steps</h3>
 
     <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="20px" class="mb-4">
-      <a mat-stroked-button href="https://docs.dockstore.org/docs/user-tutorials" target="_blank" rel="noopener noreferrer">
+      <a
+        mat-stroked-button
+        href="{{ Dockstore.DOCUMENTATION_URL }}/end-user-topics/end-user-topics.html"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         Getting Started Guide
       </a>
       <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()">
