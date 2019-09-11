@@ -13,13 +13,13 @@ import { HomePageService } from './home-page.service';
 export class HomePageComponent implements OnInit {
   devMode = devMode;
   public user$: Observable<User>;
-  public hpOrgSchema;
-  public hpWebsiteSchema;
-  constructor(private userQuery: UserQuery, private hpService: HomePageService) {}
+  public orgSchema;
+  public websiteSchema;
+  constructor(private userQuery: UserQuery, private homePageService: HomePageService) {}
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
-    this.hpOrgSchema = this.hpService.hpOrgSchema;
-    this.hpWebsiteSchema = this.hpService.hpWebsiteSchema;
+    this.orgSchema = this.homePageService.hpOrgSchema;
+    this.websiteSchema = this.homePageService.hpWebsiteSchema;
   }
 }
