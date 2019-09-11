@@ -18,13 +18,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
+import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { TokenQuery } from '../../shared/state/token.query';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
 
 @Injectable()
@@ -32,7 +33,9 @@ export class ViewService {
   version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
   constructor(
     private alertService: AlertService,
+    private accountsService: AccountsService,
     private confirmationDialogService: ConfirmationDialogService,
+    private tokenQuery: TokenQuery,
     private workflowQuery: WorkflowQuery,
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService
@@ -65,6 +68,31 @@ export class ViewService {
         }
       }
     );
+  }
+
+  /**
+   * Opens a confirmation dialog that the asks the Dockstore User if they
+   * would like to associate their Zenodo account for requesting DOIs
+   *
+   * @memberof ViewService
+   */
+  private showLinkZenodoDialog(workflow: Workflow, version: WorkflowVersion): void {
+    const dialogData: ConfirmationDialogData = {
+      message: `It looks like you have not yet linked your Zenodo and Dockstore accounts. Dockstore integrates with
+                Zenodo to make it easy to request Digital Object Identifiers (DOIs) for your workflow and only takes a moment.
+                Would you like to link a Zenodo account now?`,
+      title: 'Request DOI (Link Zenodo Account)',
+      confirmationButtonText: 'Link Zenodo Account',
+      cancelButtonText: 'Cancel'
+    };
+
+    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
+      if (confirmationResult) {
+        this.accountsService.link('zenodo.org');
+      } else {
+        this.alertService.detailedSuccess('You cancelled DOI creation.');
+      }
+    });
   }
 
   /**
@@ -176,11 +204,16 @@ export class ViewService {
    */
   requestDOIForWorkflowVersion(workflow: Workflow, version: WorkflowVersion): void {
     // Set the dialog to open a snapshot if its not frozen
-    // TODO check to see if they have a zenodo token
-    if (!version.frozen) {
-      this.showSnapshotBeforeDOIDialog(workflow, version);
-    } else {
-      this.showRequestDOIDialog(workflow, version);
-    }
+    this.tokenQuery.hasZenodoToken$.subscribe((hasZenodoToken: boolean) => {
+      if (hasZenodoToken) {
+        if (!version.frozen) {
+          this.showSnapshotBeforeDOIDialog(workflow, version);
+        } else {
+          this.showRequestDOIDialog(workflow, version);
+        }
+      } else {
+        this.showLinkZenodoDialog(workflow, version);
+      }
+    });
   }
 }
