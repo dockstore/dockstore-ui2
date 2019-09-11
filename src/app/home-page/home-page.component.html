@@ -1,4 +1,6 @@
 <ng-container *ngIf="user$ | async; then loggedInHomePage; else loggedOutHomePage"></ng-container>
+<ngx-json-ld [json]="orgSchema"></ngx-json-ld>
+<ngx-json-ld [json]="websiteSchema"></ngx-json-ld>
 <ng-template #loggedInHomePage>
   <home-logged-in *ngIf="devMode"></home-logged-in>
   <old-app-home *ngIf="!devMode"></old-app-home>

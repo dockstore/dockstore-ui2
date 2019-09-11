@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
@@ -13,8 +14,18 @@ import { HomePageComponent } from './home-page.component';
 import { OldHomePageComponent, YoutubeComponent } from './old-home-page/old-home-page.component';
 
 @NgModule({
-  imports: [CommonModule, CustomMaterialModule, FlexLayoutModule, RouterModule, ListWorkflowsModule, ListContainersModule, TabsModule],
+  imports: [
+    CommonModule,
+    CustomMaterialModule,
+    FlexLayoutModule,
+    NgxJsonLdModule,
+    RouterModule,
+    ListWorkflowsModule,
+    ListContainersModule,
+    TabsModule
+  ],
   declarations: [HomePageComponent, LoggedInBannerComponent, HomeComponent, HomeLoggedInComponent, OldHomePageComponent, YoutubeComponent],
-  entryComponents: [YoutubeComponent]
+  entryComponents: [YoutubeComponent],
+  exports: [NgxJsonLdModule]
 })
 export class HomePageModule {}
