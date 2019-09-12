@@ -16,15 +16,15 @@
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 import { Router } from '@angular/router/';
+import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
 import { Dockstore } from '../../shared/dockstore.model';
+import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
-import { ImageProviderService } from '../../shared/image-provider.service';
-import { Explanation } from 'elasticsearch';
 
 export interface Hit {
   _index: string;
@@ -38,6 +38,17 @@ export interface Hit {
   highlight?: any;
   inner_hits?: any;
   sort?: string[];
+}
+
+/**
+ * Manually set these based on the fields shown by Kibana.
+ * All of these should be 'aggregatable' in Kibana.
+ *
+ * @export
+ * @enum {number}
+ */
+export enum SearchFields {
+  VERIFIED_SOURCE = 'workflowVersions.verifiedSource.keyword'
 }
 
 @Injectable()
@@ -381,7 +392,7 @@ export class SearchService {
       ['Author', 'author'],
       ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['VerifiedSourceWorkflow', 'verified_sources.keyword'],
+      ['VerifiedSourceWorkflow', SearchFields.VERIFIED_SOURCE],
       ['HasCheckerWorkflow', 'has_checker'],
       ['Organization', 'organization'],
       ['VerifiedPlatforms', 'verified_platforms.keyword']
@@ -401,7 +412,7 @@ export class SearchService {
       ['labels.value.keyword', 'Labels'],
       ['input_file_formats.value.keyword', 'Input File Formats'],
       ['output_file_formats.value.keyword', 'Output File Formats'],
-      ['verified_sources.keyword', 'Verified Source'],
+      [SearchFields.VERIFIED_SOURCE, 'Verified Source'],
       ['has_checker', 'Has Checker Workflows'],
       ['organization', 'Workflow: Organization'],
       ['verified_platforms.keyword', 'Verified Platforms']
@@ -420,7 +431,7 @@ export class SearchService {
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
       ['verified', new SubBucket()],
-      ['verified_sources.keyword', new SubBucket()],
+      [SearchFields.VERIFIED_SOURCE, new SubBucket()],
       ['verified_platforms.keyword', new SubBucket()],
       ['input_file_formats.value.keyword', new SubBucket()],
       ['output_file_formats.value.keyword', new SubBucket()],
