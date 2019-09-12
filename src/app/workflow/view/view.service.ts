@@ -106,7 +106,7 @@ export class ViewService {
       message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and is only
                 available for versions that have been snapshotted. You will then be asked if you want to generate a
                 DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>?`,
-      title: 'Issue DOI (Snapshot Version)',
+      title: 'Request DOI (Snapshot Version)',
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
     };
@@ -121,7 +121,7 @@ export class ViewService {
   }
 
   /**
-   * Opens a dialog to request whether the user would like to issue a DOI.
+   * Opens a dialog to request whether the user would like to request a DOI.
    *
    * @private
    * @memberof ViewService
@@ -130,10 +130,10 @@ export class ViewService {
     const dialogData: ConfirmationDialogData = {
       message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and can't be
                 undone, though some metadata will remain editable. It can take some time to request a DOI.
-                Are you sure you'd like to create a DOI for version
+                Are you sure you'd like to request a DOI for version
                 <b>${version.name}</b>?`,
-      title: 'Issue DOI',
-      confirmationButtonText: 'Issue DOI',
+      title: 'Request DOI',
+      confirmationButtonText: 'Request DOI',
       cancelButtonText: 'Cancel'
     };
 
