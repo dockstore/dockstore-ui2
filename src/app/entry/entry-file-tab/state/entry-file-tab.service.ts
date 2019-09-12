@@ -137,7 +137,7 @@ export class EntryFileTabService extends Base {
   private getValidations() {
     const version = this.workflowQuery.getSnapshot().version;
     const file = this.entryFileTabQuery.getSnapshot().selectedFile;
-    if (version && version.validations && file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR) {
+    if (version && version.validations && file && file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR) {
       for (const validation of version.validations) {
         if (validation.type === Validation.TypeEnum.DOCKSTORESERVICEYML) {
           const validationObject = JSON.parse(validation.message);
