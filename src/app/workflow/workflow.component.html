@@ -217,7 +217,7 @@
             <ng-template matTabContent>
               <div *ngIf="entryType === EntryType.Service; else FilesTabBioWorkflow" class="p-3">
                 <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
-                  <app-entry-file-tab></app-entry-file-tab>
+                  <app-entry-file-tab [version]="selectedVersion"></app-entry-file-tab>
                 </div>
 
                 <ng-template #noVersionsFilesTab>

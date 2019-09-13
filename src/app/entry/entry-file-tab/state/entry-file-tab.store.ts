@@ -10,6 +10,7 @@ export interface EntryFileTabState {
   selectedFile: ToolFile;
   fileContents: string;
   downloadFilePath: string;
+  validationMessage: Object;
 }
 
 export function createInitialState(): EntryFileTabState {
@@ -20,7 +21,8 @@ export function createInitialState(): EntryFileTabState {
     files: null,
     selectedFile: null,
     fileContents: null,
-    downloadFilePath: null
+    downloadFilePath: null,
+    validationMessage: null
   };
 }
 
