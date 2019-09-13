@@ -355,6 +355,41 @@ doc: >-
   "pcawg logo")
 `;
 
+const cwlWithHttpRun = `cwlVersion: v1.0
+class: Workflow
+
+#dct:creator:
+#  '@id': http://orcid.org/0000-0002-7681-6415
+#  foaf:name: Brian O'Connor
+#  foaf:mbox: mailto:briandoconnor@gmail.com
+
+#dct:contributor:
+#  foaf:name: Denis Yuen
+#  foaf:mbox: mailto:denis.yuen@oicr.on.ca
+
+inputs:
+  input_file: File
+  expected_md5: string
+
+outputs:
+  workflow_output_file:
+    type: File
+    outputSource: checker/results_file
+
+steps:
+  md5sum:
+    run: https://raw.githubusercontent.com/dockstore-testing-organisation/md5sum/master/md5sum/md5sum.cwl
+    in:
+      input_file: input_file
+    out: [output_file]
+  checker:
+    run: https://raw.githubusercontent.com/dockstore-testing-organisation/md5sum/master/checker/md5sum_checker.cwl
+    in:
+      input_file: md5sum/output_file
+      expected_md5: expected_md5
+    out: [results_file]
+`;
+
 export const cwlSourceFileWithNoImport: SourceFile = {
   content: cwlWithNoImport,
   id: 3,
@@ -399,6 +434,14 @@ export const cwlSourceFileWithSomeHttpLinks: SourceFile = {
   content: cwlWithSomeHttpLinks,
   id: 3,
   path: '/fubar.cwl',
+  absolutePath: '',
+  type: 'DOCKSTORE_CWL'
+};
+
+export const cwlSourceFileWithHttpRun: SourceFile = {
+  content: cwlWithHttpRun,
+  id: 3,
+  path: '/checker.cwl',
   absolutePath: '',
   type: 'DOCKSTORE_CWL'
 };

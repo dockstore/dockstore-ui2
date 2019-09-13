@@ -16,6 +16,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 import {
   cwlSourceFileWithCommentedMixinImport,
+  cwlSourceFileWithHttpRun,
   cwlSourceFileWithHttpsImport,
   cwlSourceFileWithIncludeImport,
   cwlSourceFileWithMixinImport,
@@ -76,5 +77,6 @@ describe('FileService', () => {
     expect(fileService.hasHttpImport(cwlSourceFileWithCommentedMixinImport)).toBeFalsy();
     expect(fileService.hasHttpImport(cwlSourceFileWithIncludeImport)).toBeTruthy();
     expect(fileService.hasHttpImport(cwlSourceFileWithSomeHttpLinks)).toBeFalsy();
+    expect(fileService.hasHttpImport(cwlSourceFileWithHttpRun)).toBeTruthy();
   }));
 });
