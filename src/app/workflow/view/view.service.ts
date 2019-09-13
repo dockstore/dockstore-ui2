@@ -107,7 +107,7 @@ export class ViewService {
     const dialogData: ConfirmationDialogData = {
       message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and is only
                 available for versions that have been snapshotted. You will then be asked if you want to generate a
-                DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>?`,
+                DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>? <p><b>Warning: This CANNOT be undone!</b></p>`,
       title: 'Request DOI (Snapshot Version)',
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
@@ -187,8 +187,8 @@ export class ViewService {
       return;
     }
     const dialogData: ConfirmationDialogData = {
-      message: `Snapshotting a version will make it so it can no longer be edited and cannot be undone. <p>Are
-                you sure you would like to snapshot version <b>${version.name}</b>?`,
+      message: `Snapshotting a version will make it so it <b>can no longer be edited and cannot be undone</b>. <p>Are
+                you sure you would like to snapshot version <b>${version.name}</b> <p><b>Warning: This CANNOT be undone!</b></p>?`,
       title: 'Snapshot',
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
