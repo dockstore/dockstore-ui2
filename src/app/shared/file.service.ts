@@ -21,7 +21,7 @@ import { Dockstore } from './dockstore.model';
 import { SourceFile, Tag, ToolDescriptor, WorkflowVersion } from './swagger';
 
 const wdlImportHttpRegEx: RegExp = new RegExp(/^\s*import\s+"?https?/, 'm');
-const cwlImportHttpRegEx: RegExp = new RegExp(/^[^#]+\$((import)|(include)|(mixin))\s*:\s+\"?https?/, 'm');
+const cwlImportHttpRegEx: RegExp = new RegExp(/^[^#]+((run)|(\$((import)|(include)|(mixin))))\s*:\s+\"?https?/, 'm');
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
