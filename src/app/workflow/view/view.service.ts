@@ -88,13 +88,16 @@ export class ViewService {
       cancelButtonText: 'Cancel'
     };
 
-    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
-      if (confirmationResult) {
-        this.accountsService.link(TokenSource.ZENODO);
-      } else {
-        this.alertService.detailedSuccess('You cancelled DOI creation.');
-      }
-    });
+    this.confirmationDialogService
+      .openDialog(dialogData, bootstrap4mediumModalSize)
+      .pipe(first())
+      .subscribe(confirmationResult => {
+        if (confirmationResult) {
+          this.accountsService.link(TokenSource.ZENODO);
+        } else {
+          this.alertService.detailedSuccess('You cancelled DOI creation.');
+        }
+      });
   }
 
   /**
@@ -113,13 +116,16 @@ export class ViewService {
       cancelButtonText: 'Cancel'
     };
 
-    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
-      if (confirmationResult) {
-        this.updateWorkflowToSnapshot(workflow, version, () => this.showRequestDOIDialog(workflow, version));
-      } else {
-        this.alertService.detailedSuccess('You cancelled DOI creation.');
-      }
-    });
+    this.confirmationDialogService
+      .openDialog(dialogData, bootstrap4mediumModalSize)
+      .pipe(first())
+      .subscribe(confirmationResult => {
+        if (confirmationResult) {
+          this.updateWorkflowToSnapshot(workflow, version, () => this.showRequestDOIDialog(workflow, version));
+        } else {
+          this.alertService.detailedSuccess('You cancelled DOI creation.');
+        }
+      });
   }
 
   /**
@@ -141,20 +147,23 @@ export class ViewService {
 
     const workflowName: string = workflow.workflowName || workflow.repository;
 
-    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
-      if (confirmationResult) {
-        this.alertService.start(`A Digital Object Identifier (DOI) is being requested for workflow
+    this.confirmationDialogService
+      .openDialog(dialogData, bootstrap4mediumModalSize)
+      .pipe(first())
+      .subscribe(confirmationResult => {
+        if (confirmationResult) {
+          this.alertService.start(`A Digital Object Identifier (DOI) is being requested for workflow
                                        "${workflowName}" version "${version.name}"!`);
-        this.workflowsService
-          .requestDOIForWorkflowVersion(workflow.id, version.id)
-          .subscribe(
-            (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
-            (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
-          );
-      } else {
-        this.alertService.detailedSuccess('You cancelled DOI issuance.');
-      }
-    });
+          this.workflowsService
+            .requestDOIForWorkflowVersion(workflow.id, version.id)
+            .subscribe(
+              (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
+              (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
+            );
+        } else {
+          this.alertService.detailedSuccess('You cancelled DOI issuance.');
+        }
+      });
   }
 
   /**
@@ -193,17 +202,20 @@ export class ViewService {
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
     };
-    this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe((confirmationResult: boolean) => {
-      if (confirmationResult) {
-        this.updateWorkflowToSnapshot(workflow, version, () => {
-          const workflowName: string = workflow.workflowName || workflow.repository;
-          this.alertService.detailedSuccess(`A snapshot was created for workflow
+    this.confirmationDialogService
+      .openDialog(dialogData, bootstrap4mediumModalSize)
+      .pipe(first())
+      .subscribe((confirmationResult: boolean) => {
+        if (confirmationResult) {
+          this.updateWorkflowToSnapshot(workflow, version, () => {
+            const workflowName: string = workflow.workflowName || workflow.repository;
+            this.alertService.detailedSuccess(`A snapshot was created for workflow
                                        "${workflowName}" version "${version.name}"!`);
-        });
-      } else {
-        this.alertService.detailedSuccess('You cancelled creating a snapshot.');
-      }
-    });
+          });
+        } else {
+          this.alertService.detailedSuccess('You cancelled creating a snapshot.');
+        }
+      });
   }
 
   /**
