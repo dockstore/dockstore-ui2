@@ -27,10 +27,13 @@ import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-d
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export class ViewService {
   version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
+  protected ngUnsubscribe: Subject<{}> = new Subject();
+
   constructor(
     private alertService: AlertService,
     private accountsService: AccountsService,
@@ -40,6 +43,11 @@ export class ViewService {
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService
   ) {}
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   /**
    * Updates the workflow version and alerts the Dockstore User with success
@@ -212,7 +220,7 @@ export class ViewService {
    */
   requestDOIForWorkflowVersion(workflow: Workflow, version: WorkflowVersion): void {
     // Set the dialog to open a snapshot if its not frozen
-    this.tokenQuery.hasZenodoToken$.subscribe((hasZenodoToken: boolean) => {
+    this.tokenQuery.hasZenodoToken$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((hasZenodoToken: boolean) => {
       if (hasZenodoToken) {
         if (!version.frozen) {
           this.showSnapshotBeforeDOIDialog(workflow, version);
