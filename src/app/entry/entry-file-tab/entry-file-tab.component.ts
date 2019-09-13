@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectChange, MatTabChangeEvent } from '@angular/material';
 import { SafeUrl } from '@angular/platform-browser';
 import { Base } from 'app/shared/base';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
-import { ToolFile } from 'app/shared/swagger';
+import { ToolFile, WorkflowVersion } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { EntryFileTabQuery } from './state/entry-file-tab.query';
 import { EntryFileTabService } from './state/entry-file-tab.service';
@@ -25,6 +25,7 @@ import { EntryFileTabStore } from './state/entry-file-tab.store';
   providers: [EntryFileTabService, EntryFileTabStore, EntryFileTabQuery]
 })
 export class EntryFileTabComponent extends Base implements OnInit {
+  @Input() version: WorkflowVersion;
   selectedFile$: Observable<ToolFile>;
   published$: Observable<boolean>;
   downloadFilePath$: Observable<string>;
@@ -35,6 +36,7 @@ export class EntryFileTabComponent extends Base implements OnInit {
   fileContents$: Observable<string>;
   downloadButtonTooltip$: Observable<string>;
   loading$: Observable<boolean>;
+  validationMessage$: Observable<Object>;
   constructor(
     private workflowQuery: WorkflowQuery,
     private entryFileTabQuery: EntryFileTabQuery,
@@ -54,6 +56,7 @@ export class EntryFileTabComponent extends Base implements OnInit {
     this.fileTypes$ = this.entryFileTabQuery.fileTypes$;
     this.published$ = this.workflowQuery.workflowIsPublished$;
     this.loading$ = this.entryFileTabQuery.selectLoading();
+    this.validationMessage$ = this.entryFileTabQuery.validationMessage$;
     this.entryFileTabService.init();
   }
 
