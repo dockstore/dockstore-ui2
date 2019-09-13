@@ -62,7 +62,7 @@ export class DownloadCLIClientComponent implements OnInit {
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
 2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
-3. Python and pip (Optional: if working with CWL)
+3. Python3 and pip3 (Optional: if working with CWL)
 
 #### Part 1 - Install dependencies and Dockstore CLI
 1. Install Java 11 (This example installs OpenJDK 11)
@@ -102,10 +102,10 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
 #### Part 3 - Confirm installation
 1. Run our dependencies to verify that they have been installed properly.
 \`\`\`
-$ dockstore --version
-Dockstore version ${this.dockstoreVersion}
 $ java -version
 openjdk version "11.0.4" 2019-07-16
+$ dockstore --version
+Dockstore version ${this.dockstoreVersion}
 OpenJDK Runtime Environment (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3)
 OpenJDK 64-Bit Server VM (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3, mixed mode, sharing)
 $ docker run hello-world
@@ -126,7 +126,7 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
 pip3 install -r requirements.txt
 \`\`\`
-3. Verify using \`pip3 list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
+3. Verify using \`pip3 list\` that the installed pip packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
 \`\`\`
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
