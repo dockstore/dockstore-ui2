@@ -15,8 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
-import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
@@ -26,13 +25,13 @@ import { ConfirmationDialogService } from '../../confirmation-dialog/confirmatio
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { TokenQuery } from '../../shared/state/token.query';
+import { TokenSource } from '../../shared/enum/token-source.enum';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
-import { takeUntil } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 @Injectable()
 export class ViewService {
   version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
-  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(
     private alertService: AlertService,
@@ -43,11 +42,6 @@ export class ViewService {
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService
   ) {}
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
 
   /**
    * Updates the workflow version and alerts the Dockstore User with success
@@ -84,7 +78,7 @@ export class ViewService {
    *
    * @memberof ViewService
    */
-  private showLinkZenodoDialog(workflow: Workflow, version: WorkflowVersion): void {
+  private showLinkZenodoDialog(): void {
     const dialogData: ConfirmationDialogData = {
       message: `It looks like you have not yet linked your Zenodo and Dockstore accounts. Dockstore integrates with
                 Zenodo to make it easy to request Digital Object Identifiers (DOIs) for your workflow and only takes a moment.
@@ -96,7 +90,7 @@ export class ViewService {
 
     this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
       if (confirmationResult) {
-        this.accountsService.link('zenodo.org');
+        this.accountsService.link(TokenSource.ZENODO);
       } else {
         this.alertService.detailedSuccess('You cancelled DOI creation.');
       }
@@ -145,7 +139,7 @@ export class ViewService {
       cancelButtonText: 'Cancel'
     };
 
-    const workflowName: string = workflow.workflowName == null ? workflow.repository : workflow.workflowName;
+    const workflowName: string = workflow.workflowName || workflow.repository;
 
     this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe(confirmationResult => {
       if (confirmationResult) {
@@ -175,7 +169,7 @@ export class ViewService {
       this.workflowService.setWorkflow(workflow);
     }
 
-    const workflowName: string = workflow.workflowName == null ? workflow.repository : workflow.workflowName;
+    const workflowName: string = workflow.workflowName || workflow.repository;
 
     this.alertService.detailedSuccess(`A Digital Object Identifier (DOI) was created for workflow
                                        "${workflowName}" version "${version.name}"!`);
@@ -202,7 +196,7 @@ export class ViewService {
     this.confirmationDialogService.openDialog(dialogData, bootstrap4mediumModalSize).subscribe((confirmationResult: boolean) => {
       if (confirmationResult) {
         this.updateWorkflowToSnapshot(workflow, version, () => {
-          const workflowName: string = workflow.workflowName == null ? workflow.repository : workflow.workflowName;
+          const workflowName: string = workflow.workflowName || workflow.repository;
           this.alertService.detailedSuccess(`A snapshot was created for workflow
                                        "${workflowName}" version "${version.name}"!`);
         });
@@ -220,7 +214,7 @@ export class ViewService {
    */
   requestDOIForWorkflowVersion(workflow: Workflow, version: WorkflowVersion): void {
     // Set the dialog to open a snapshot if its not frozen
-    this.tokenQuery.hasZenodoToken$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((hasZenodoToken: boolean) => {
+    this.tokenQuery.hasZenodoToken$.pipe(first()).subscribe((hasZenodoToken: boolean) => {
       if (hasZenodoToken) {
         if (!version.frozen) {
           this.showSnapshotBeforeDOIDialog(workflow, version);
@@ -228,7 +222,7 @@ export class ViewService {
           this.showRequestDOIDialog(workflow, version);
         }
       } else {
-        this.showLinkZenodoDialog(workflow, version);
+        this.showLinkZenodoDialog();
       }
     });
   }
