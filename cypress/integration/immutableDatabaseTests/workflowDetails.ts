@@ -69,6 +69,7 @@ describe('Dockstore Workflow Details', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
     // Buttons to create snapshots are hidden on public
     cy.get('[data-cy=dockstore-snapshot]').should('not.be.visible');
+    cy.get('[data-cy=dockstore-request-doi-button]').should('not.be.visible');
     cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
 
     cy.get('[data-cy=dockstore-snapshot-unlocked]')
