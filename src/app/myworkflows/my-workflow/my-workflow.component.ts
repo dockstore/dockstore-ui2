@@ -171,7 +171,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),
             // the url needs to be used to set the workflow onInit.
             // Otherwise, the select - tab.pipe results in really strange behaviour. Not entirely sure why.
-            this.workflowService.setWorkflow(
+            // Changed this to invoke this.selectEntry to fix https://github.com/dockstore/dockstore/issues/2854
+            this.selectEntry(
               this.findEntryFromPath(
                 this.urlResolverService.getEntryPathFromUrl(),
                 this.groupEntriesObject.concat(this.groupSharedEntriesObject)
