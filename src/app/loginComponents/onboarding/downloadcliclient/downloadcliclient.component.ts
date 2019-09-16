@@ -104,10 +104,10 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
 \`\`\`
 $ java -version
 openjdk version "11.0.4" 2019-07-16
-$ dockstore --version
-Dockstore version ${this.dockstoreVersion}
 OpenJDK Runtime Environment (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3)
 OpenJDK 64-Bit Server VM (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3, mixed mode, sharing)
+$ dockstore --version
+Dockstore version ${this.dockstoreVersion}
 $ docker run hello-world
 Hello from Docker!
 ...
