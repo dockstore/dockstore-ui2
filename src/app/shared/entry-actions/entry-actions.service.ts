@@ -76,7 +76,9 @@ export class EntryActionsService {
       console.error('Null entryType, entryType should be present');
       return '';
     }
-    if (entry.is_published) {
+    if (!entry.workflowVersions.some(version => version.valid)) {
+      return 'Unable to publish: No valid versions found';
+    } else if (entry.is_published) {
       return `Unpublish the ${entryType} to remove it from the public`;
     } else {
       return `Publish the ${entryType} to make it visible to the public`;

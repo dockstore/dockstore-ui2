@@ -10,16 +10,17 @@
   >
     View Public
   </a>
-  <button
-    id="publishToolButton"
-    mat-flat-button
-    color="accent"
-    (click)="publishToggle()"
-    [disabled]="(isRefreshing$ | async) || publishDisabled"
-    [matTooltip]="pubUnpubMessage"
-  >
-    {{ tool?.is_published ? 'Unpublish' : 'Publish' }}
-  </button>
+  <div [matTooltip]="pubUnpubMessage">
+    <button
+      id="publishToolButton"
+      mat-flat-button
+      color="accent"
+      (click)="publishToggle()"
+      [disabled]="(isRefreshing$ | async) || publishDisabled"
+    >
+      {{ tool?.is_published ? 'Unpublish' : 'Publish' }}
+    </button>
+  </div>
   <ng-container *ngIf="tool?.is_published; then disabledDeleteButton; else enabledDeleteButton"></ng-container>
   <ng-template #disabledDeleteButton>
     <button *ngIf="tool?.is_published" mat-flat-button color="warn" disabled matTooltip="Delete the tool">
