@@ -176,17 +176,16 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
               this.groupEntriesObject.concat(this.groupSharedEntriesObject)
             );
             if (entry) {
-              // Url could have non-existent entry
-              this.workflowService.setWorkflow(entry);
               // Call this.selectEntry to fix https://github.com/dockstore/dockstore/issues/2854
               this.selectEntry(entry);
-            }
-            // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
-            if (!this.workflow) {
-              if (this.workflows.length > 0) {
-                this.selectInitialEntry(sortedWorkflows);
-              } else if (this.sharedWorkflows.length > 0) {
-                this.selectInitialEntry(sortedSharedWorkflows);
+            } else {
+              // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
+              if (!this.workflow) {
+                if (this.workflows.length > 0) {
+                  this.selectInitialEntry(sortedWorkflows);
+                } else if (this.sharedWorkflows.length > 0) {
+                  this.selectInitialEntry(sortedSharedWorkflows);
+                }
               }
             }
           }
