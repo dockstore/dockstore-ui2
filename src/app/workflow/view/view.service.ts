@@ -197,7 +197,7 @@ export class ViewService {
     }
     const dialogData: ConfirmationDialogData = {
       message: `Snapshotting a version will make it so it <b>can no longer be edited and cannot be undone</b>. <p>Are
-                you sure you would like to snapshot version <b>${version.name}</b> <p><b>Warning: This CANNOT be undone!</b></p>?`,
+                you sure you would like to snapshot version <b>${version.name}</b>? <p><b>Warning: This CANNOT be undone!</b></p>`,
       title: 'Snapshot',
       confirmationButtonText: 'Snapshot Version',
       cancelButtonText: 'Cancel'
