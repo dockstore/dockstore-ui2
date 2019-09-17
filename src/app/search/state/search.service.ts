@@ -48,7 +48,7 @@ export interface Hit {
  * @enum {number}
  */
 export enum SearchFields {
-  VERIFIED_SOURCE = 'workflowVersions.verifiedSource.keyword'
+  VERIFIED_SOURCE = 'workflowVersions.verifiedSources.keyword'
 }
 
 @Injectable()
