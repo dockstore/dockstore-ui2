@@ -59,8 +59,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
         [ToolFile.FileTypeEnum.OTHER, 'Files']
       ])
-    ],
-    ['workflowVersions.verifiedSource.keyword', new Map([['[]', 'None']])]
+    ]
   ]);
 
   /**
