@@ -4,8 +4,17 @@ import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { CustomMaterialModule } from '../modules/material.module';
 import { WorkflowService } from '../state/workflow.service';
-import { ContainersService, DockstoreTool, Entry, Tag, Workflow, WorkflowsService } from '../swagger';
+import {
+  BaseClassForVersionsOfEntriesInTheDockstore,
+  ContainersService,
+  DockstoreTool,
+  Entry,
+  Tag,
+  Workflow,
+  WorkflowsService
+} from '../swagger';
 import { EntryActionsService } from './entry-actions.service';
+import { exampleEntry } from '../../test/mocked-objects';
 
 describe('Service: EntryActionsService', () => {
   beforeEach(() => {
@@ -51,6 +60,8 @@ describe('Service: EntryActionsService', () => {
   }));
   it('should get publish message', inject([EntryActionsService], (service: EntryActionsService) => {
     const entry = <Entry>{};
+    entry.workflowVersions = [exampleEntry];
+    entry.workflowVersions[0].valid = true;
     expect(service.getPublishMessage(null, EntryType.Tool)).toBe('');
     entry.is_published = true;
     expect(service.getPublishMessage(entry, EntryType.Tool)).toBe('Unpublish the tool to remove it from the public');
@@ -95,5 +106,19 @@ describe('Service: EntryActionsService', () => {
     expect(service.getViewPublicButtonTooltip(EntryType.Tool)).toBe('Go to the public page for this tool');
     expect(service.getViewPublicButtonTooltip(EntryType.BioWorkflow)).toBe('Go to the public page for this workflow');
     expect(service.getViewPublicButtonTooltip(EntryType.Service)).toBe('Go to the public page for this service');
+  }));
+  it('should display message for disabled tooltip', inject([EntryActionsService], (service: EntryActionsService) => {
+    const entry = <Entry>{};
+    entry.workflowVersions = [];
+    expect(service.getPublishMessage(entry, EntryType.Tool)).toBe('Unable to publish: No valid versions found');
+    expect(service.getPublishMessage(entry, EntryType.BioWorkflow)).toBe('Unable to publish: No valid versions found');
+    expect(service.getPublishMessage(entry, EntryType.Service)).toBe('Unable to publish: No valid versions found');
+    expect(service.getPublishMessage(entry, null)).toBe('');
+    entry.workflowVersions = [exampleEntry];
+    entry.workflowVersions[0].valid = false;
+    expect(service.getPublishMessage(entry, EntryType.Tool)).toBe('Unable to publish: No valid versions found');
+    expect(service.getPublishMessage(entry, EntryType.BioWorkflow)).toBe('Unable to publish: No valid versions found');
+    expect(service.getPublishMessage(entry, EntryType.Service)).toBe('Unable to publish: No valid versions found');
+    expect(service.getPublishMessage(entry, null)).toBe('');
   }));
 });
