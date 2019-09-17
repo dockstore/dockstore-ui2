@@ -171,18 +171,21 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),
             // the url needs to be used to set the workflow onInit.
             // Otherwise, the select - tab.pipe results in really strange behaviour. Not entirely sure why.
-            this.workflowService.setWorkflow(
-              this.findEntryFromPath(
-                this.urlResolverService.getEntryPathFromUrl(),
-                this.groupEntriesObject.concat(this.groupSharedEntriesObject)
-              )
+            const entry = this.findEntryFromPath(
+              this.urlResolverService.getEntryPathFromUrl(),
+              this.groupEntriesObject.concat(this.groupSharedEntriesObject)
             );
-            // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
-            if (!this.workflow) {
-              if (this.workflows.length > 0) {
-                this.selectInitialEntry(sortedWorkflows);
-              } else if (this.sharedWorkflows.length > 0) {
-                this.selectInitialEntry(sortedSharedWorkflows);
+            if (entry) {
+              // Call this.selectEntry to fix https://github.com/dockstore/dockstore/issues/2854
+              this.selectEntry(entry);
+            } else {
+              // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
+              if (!this.workflow) {
+                if (this.workflows.length > 0) {
+                  this.selectInitialEntry(sortedWorkflows);
+                } else if (this.sharedWorkflows.length > 0) {
+                  this.selectInitialEntry(sortedSharedWorkflows);
+                }
               }
             }
           }
