@@ -63,7 +63,7 @@
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
       <mat-cell *matCellDef="let tool">
-        <a [href]="tool?.providerUrl"> {{ tool?.provider }}&nbsp; </a>
+        <a [href]="tool?.providerUrl"> <a class="{{ tool?.providerUrl | projectIcon }}"> </a></a>
         <a [href]="tool?.imgProviderUrl">
           {{ tool?.imgProvider }}
         </a>

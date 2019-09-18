@@ -42,6 +42,7 @@ import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
+import { ProjectLinksIconPipe } from './project-links-icon.pipe';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     PublicFileDownloadPipe,
     PrivateFileDownloadPipe,
     PrivateFilePathPipe,
-    UrlDeconstructPipe
+    UrlDeconstructPipe,
+    ProjectLinksIconPipe
   ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
@@ -89,7 +91,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     RefreshAlertModule,
     ShareButtonsModule,
     UrlDeconstructPipe,
-    RouterModule
+    RouterModule,
+    ProjectLinksIconPipe
   ],
   entryComponents: [RegisterCheckerWorkflowComponent],
   providers: [BioschemaService, EntryActionsService]
