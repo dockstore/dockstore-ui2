@@ -125,5 +125,10 @@ describe('Service: EntryActionsService', () => {
     expect(service.getPublishMessage(entry, EntryType.BioWorkflow)).toBe('Unable to publish: No valid versions found');
     expect(service.getPublishMessage(entry, EntryType.Service)).toBe('Unable to publish: No valid versions found');
     expect(service.getPublishMessage(entry, null)).toBe('');
+    const entry2 = null;
+    expect(service.getPublishMessage(entry2, EntryType.Tool)).toBe('');
+    expect(service.getPublishMessage(entry2, EntryType.BioWorkflow)).toBe('');
+    expect(service.getPublishMessage(entry2, EntryType.Service)).toBe('');
+    expect(service.getPublishMessage(entry2, null)).toBe('');
   }));
 });
