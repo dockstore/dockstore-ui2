@@ -184,6 +184,14 @@ describe('Dockstore hosted workflows', () => {
       cy.get('table')
         .find('a')
         .should('not.contain', '3');
+
+      // Reload the hosted workflow to test https://github.com/dockstore/dockstore/issues/2854
+      cy.reload();
+
+      goToTab('Files');
+      cy.contains('/Dockstore.wdl')
+        .should('be.visible');
+
     });
   });
 

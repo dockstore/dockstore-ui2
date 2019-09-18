@@ -49,9 +49,10 @@
     class="btn-block"
     (click)="requestDOIForWorkflowVersion()"
     [disabled]="isRefreshing$ | async"
+    data-cy="dockstore-request-doi-button"
     *ngIf="version.referenceType !== 'BRANCH' && !version.doiURL && workflow?.is_published"
     matTooltip="Request a Digital Object Identifier (DOI) for this version."
   >
-    Issue DOI
+    Request DOI
   </button>
 </ng-container>
