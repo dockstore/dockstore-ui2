@@ -26,7 +26,18 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showSecondRow" class="row text-center">
+  <div *ngIf="showAdditionalRows" class="row text-center">
+    <h5 style="color:#21335B">Workflow Languages</h5>
+    <br />
+    <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
+      <div *ngFor="let partner of languages" class="pb-5 px-1">
+        <a href="{{ partner.url }}" target="_blank">
+          <img [src]="partner.current" />
+        </a>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showAdditionalRows" class="row text-center">
     <h5 style="color:#21335B">Works With</h5>
     <br />
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">

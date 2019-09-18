@@ -26,10 +26,13 @@ export class SponsorsService {
     // new Sponsor('broad.png', new URL('https://www.broadinstitute.org/'))
   ];
 
-  private partners: Sponsor[] = [
+  private languages: Sponsor[] = [
     new Sponsor('cwl.png', new URL('https://www.commonwl.org')),
     new Sponsor('wdl.png', new URL('http://openwdl.org')),
-    new Sponsor('nfl.png', new URL('https://www.nextflow.io')),
+    new Sponsor('nfl.png', new URL('https://www.nextflow.io'))
+  ];
+
+  private partners: Sponsor[] = [
     new Sponsor('dnastack.png', new URL('https://dnastack.com')),
     new Sponsor('sevenbridges.png', new URL('https://www.sevenbridges.com'))
   ];
@@ -40,5 +43,9 @@ export class SponsorsService {
 
   getPartners(): Sponsor[] {
     return this.partners;
+  }
+
+  getLanguages(): Sponsor[] {
+    return this.languages;
   }
 }

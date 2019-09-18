@@ -31,7 +31,8 @@ import { SponsorsService } from './sponsors.service';
 export class SponsorsComponent extends Base implements OnInit {
   public sponsors: Sponsor[];
   public partners: Sponsor[];
-  public showSecondRow = false;
+  public languages: Sponsor[];
+  public showAdditionalRows = false;
 
   constructor(private sponsorsService: SponsorsService, private location: Location, private router: Router) {
     super();
@@ -49,15 +50,16 @@ export class SponsorsComponent extends Base implements OnInit {
     // Initialize sponsors and partners
     this.sponsors = this.sponsorsService.getSponsors();
     this.partners = this.sponsorsService.getPartners();
+    this.languages = this.sponsorsService.getLanguages();
   }
 
   hideSecondRow() {
     // Hide the second row if not on the home page
     const currentPath = this.location.prepareExternalUrl(this.location.path());
     if (currentPath === '/') {
-      this.showSecondRow = true;
+      this.showAdditionalRows = true;
     } else {
-      this.showSecondRow = false;
+      this.showAdditionalRows = false;
     }
   }
 }
