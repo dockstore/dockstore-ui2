@@ -78,6 +78,8 @@ export class EntryActionsService {
     }
     if (entry.is_published) {
       return `Unpublish the ${entryType} to remove it from the public`;
+    } else if (!entry.workflowVersions || !entry.workflowVersions.some(version => version.valid)) {
+      return 'Unable to publish: No valid versions found';
     } else {
       return `Publish the ${entryType} to make it visible to the public`;
     }

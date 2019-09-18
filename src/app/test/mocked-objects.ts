@@ -24,6 +24,7 @@ import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 import { Hit } from '../search/state/search.service';
+import { BaseClassForVersionsOfEntriesInTheDockstore } from '../shared/swagger/model/baseClassForVersionsOfEntriesInTheDockstore';
 
 export const updatedWorkflow: Workflow = {
   descriptorType: DescriptorTypeEnum.CWL,
@@ -636,3 +637,57 @@ export const elasticSearchResponse: Hit[] = [
     }
   }
 ];
+
+export const exampleEntry: BaseClassForVersionsOfEntriesInTheDockstore = {
+  commitID: null,
+  dbUpdateDate: new Date(1568664818354),
+  dirtyBit: true,
+  doiStatus: 'NOT_REQUESTED',
+  doiURL: null,
+  frozen: false,
+  hidden: false,
+  id: 25247,
+  input_file_formats: [],
+  name: 'develop',
+  output_file_formats: [],
+  reference: 'develop',
+  referenceType: 'UNSET',
+  sourceFiles: [],
+  valid: false,
+  validations: [
+    {
+      id: 21835,
+      message: '{"/Dockstore.cwl":"Primary CWL descriptor is not present."}',
+      type: 'DOCKSTORE_CWL',
+      valid: false
+    },
+    {
+      id: 21836,
+      message: '{"/Dockstore.wdl":"Primary WDL descriptor is not present."}',
+      type: 'DOCKSTORE_WDL',
+      valid: false
+    },
+    {
+      id: 21837,
+      message: '{"/Dockerfile":"Missing a Dockerfile."}',
+      type: 'DOCKERFILE',
+      valid: false
+    },
+    {
+      id: 21838,
+      message: '{}',
+      type: 'CWL_TEST_JSON',
+      valid: true
+    },
+    {
+      id: 21839,
+      message: '{}',
+      type: 'WDL_TEST_JSON',
+      valid: true
+    }
+  ],
+  verified: false,
+  verifiedSource: null,
+  versionEditor: null,
+  workingDirectory: ''
+};
