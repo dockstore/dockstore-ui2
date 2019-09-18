@@ -30,7 +30,8 @@ export class SponsorsService {
     new Sponsor('cwl.png', new URL('https://www.commonwl.org')),
     new Sponsor('wdl.png', new URL('http://openwdl.org')),
     new Sponsor('nfl.png', new URL('https://www.nextflow.io')),
-    new Sponsor('dnastack.png', new URL('https://dnastack.com'))
+    new Sponsor('dnastack.png', new URL('https://dnastack.com')),
+    new Sponsor('sevenbridges.png', new URL('https://www.sevenbridges.com'))
   ];
 
   getSponsors(): Sponsor[] {
