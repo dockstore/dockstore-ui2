@@ -5,7 +5,6 @@ import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from './swagger/model/workflowVersion';
 import { Tag } from './swagger';
 import { ExtendedWorkflowsService } from './extended-workflows.service';
-import { HttpResponse } from '@angular/common/http';
 import { ExtendedToolsService } from './extended-tools.service';
 
 export interface Person {

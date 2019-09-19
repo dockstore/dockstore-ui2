@@ -1,9 +1,8 @@
 import { refCount, publishReplay, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Metadata } from './../shared/swagger/model/metadata';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class MetadataService {

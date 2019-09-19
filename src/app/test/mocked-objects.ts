@@ -21,7 +21,6 @@ import { Workflow } from './../shared/swagger/model/workflow';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { WorkflowVersion } from '../shared/swagger';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
-import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 import { Hit } from '../search/state/search.service';
 

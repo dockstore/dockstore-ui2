@@ -19,7 +19,7 @@ import { ContainerService } from './../../shared/container.service';
 import { FileStubService, ContainerStubService, ContainersStubService } from './../../test/service-stubs';
 import { FileService } from './../../shared/file.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DockerfileComponent } from './dockerfile.component';
 class DockerFileStubService {}
 

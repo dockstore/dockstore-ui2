@@ -24,7 +24,6 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';

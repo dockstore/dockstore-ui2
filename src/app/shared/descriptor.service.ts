@@ -14,9 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { zip as observableZip } from 'rxjs';
 
-import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { SourceFile, ToolDescriptor } from './swagger';
 
 @Injectable({ providedIn: 'root' })

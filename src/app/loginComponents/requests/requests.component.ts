@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { RequestsService } from '../state/requests.service';
 import { RequestsQuery } from '../state/requests.query';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Organization, OrganizationUser } from '../../shared/swagger';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserQuery } from '../../shared/user/user.query';
