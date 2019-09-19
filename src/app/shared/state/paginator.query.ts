@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { QueryEntity, Query } from '@datorama/akita';
-import { map } from 'rxjs/operators';
+import { Query } from '@datorama/akita';
 
-import { PaginatorInfo, PaginatorState, PaginatorStore } from './paginator.store';
+import { PaginatorState, PaginatorStore } from './paginator.store';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 

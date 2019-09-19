@@ -18,10 +18,10 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { Observable, Subject } from 'rxjs';
+import { Dockstore } from '../../shared/dockstore.model';
 import { User } from '../../shared/swagger/model/user';
 import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
-import { Dockstore } from '../../shared/dockstore.model';
 
 /**
  * Simple youtube iframe component, too simple to have its own file

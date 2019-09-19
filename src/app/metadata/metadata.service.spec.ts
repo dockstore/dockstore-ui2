@@ -2,7 +2,6 @@ import { TestBed, inject } from '@angular/core/testing';
 import { MetadataService } from './metadata.service';
 import { GA4GHStubService } from './../test/service-stubs';
 import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('MetadataService', () => {
   beforeEach(() => {

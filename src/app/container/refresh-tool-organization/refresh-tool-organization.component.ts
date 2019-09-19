@@ -18,7 +18,6 @@ import { Component } from '@angular/core';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
-import { SessionQuery } from '../../shared/session/session.query';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { UserQuery } from '../../shared/user/user.query';

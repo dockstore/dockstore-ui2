@@ -16,12 +16,11 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 
-import { ContainerService } from '../container.service';
 import { DateService } from '../date.service';
 import { DockstoreService } from '../dockstore.service';
 import { ImageProviderService } from '../image-provider.service';
 import { ProviderService } from '../provider.service';
-import { DockstoreTool, ToolDescriptor } from '../swagger';
+import { DockstoreTool } from '../swagger';
 import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
 import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 

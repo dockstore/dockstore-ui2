@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store, StoreConfig, EntityStore, EntityState } from '@datorama/akita';
+import { Store, StoreConfig } from '@datorama/akita';
 
 export interface PaginatorState {
   tool: PaginatorInfo;

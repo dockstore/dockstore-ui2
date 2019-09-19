@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { Component } from '@angular/core';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './router-stubs';
 import { AppModule } from '../app.module';
 

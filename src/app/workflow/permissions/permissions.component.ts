@@ -7,7 +7,6 @@ import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
-import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
 

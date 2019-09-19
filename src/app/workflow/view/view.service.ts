@@ -15,10 +15,8 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatDialog } from '@angular/material';
-import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowService } from '../../shared/state/workflow.service';

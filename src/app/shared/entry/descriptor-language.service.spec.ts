@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 import { DescriptorLanguageService } from './descriptor-language.service';

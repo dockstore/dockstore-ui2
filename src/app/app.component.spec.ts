@@ -1,5 +1,4 @@
 import { RouterTestingModule } from '@angular/router/testing';
-import { RouterStub } from './test';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './test/router-stubs';
 import { TestBed, async } from '@angular/core/testing';
 
