@@ -126,7 +126,7 @@ Run `ng g component component-name` to generate a new component. You can also us
 Optionally override the webservice version using `npm config set dockstore-ui2:webservice_version ${WEBSERVICE_VERSION}`
 Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. 
 
-### Production Build
+### Angular Production Build
 
 For an Angular Production Build, you will need to install Nginx. 
 Replace your nginx.conf file (location depends on your installation) with this template, filling in the two paths:
