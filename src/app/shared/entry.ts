@@ -37,7 +37,7 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
-  @ViewChild('entryTabs') entryTabs: TabsetComponent;
+  @ViewChild('entryTabs', { static: false }) entryTabs: TabsetComponent;
   protected shareURL: string;
   public starGazersClicked = false;
   private totalShare = 0;

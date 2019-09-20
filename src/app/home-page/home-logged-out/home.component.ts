@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
   Dockstore = Dockstore;
 
-  @ViewChild('youtube') youtube: ElementRef;
+  @ViewChild('youtube', { static: false }) youtube: ElementRef;
 
   constructor(
     private dialog: MatDialog,

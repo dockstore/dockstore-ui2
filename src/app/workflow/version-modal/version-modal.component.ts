@@ -66,7 +66,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   canWrite: boolean;
   isOwner: boolean;
   isService$: Observable<boolean>;
-  @ViewChild('versionEditorForm') currentForm: NgForm;
+  @ViewChild('versionEditorForm', { static: true }) currentForm: NgForm;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
 

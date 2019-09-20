@@ -50,7 +50,7 @@ export class OldHomePageComponent implements OnInit, AfterViewInit {
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;
 
-  @ViewChild('youtube') youtube: ElementRef;
+  @ViewChild('youtube', { static: false }) youtube: ElementRef;
 
   constructor(
     private dialog: MatDialog,

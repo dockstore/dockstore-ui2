@@ -37,7 +37,7 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 })
 export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
-  @ViewChild('addTagForm') currentForm: NgForm;
+  @ViewChild('addTagForm', { static: true }) currentForm: NgForm;
   public DescriptorType = ToolDescriptor.TypeEnum;
   public tool;
   public formErrors = formErrors;

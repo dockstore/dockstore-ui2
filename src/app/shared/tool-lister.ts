@@ -48,9 +48,9 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   abstract type: 'tool' | 'workflow';
   abstract displayedColumns: Array<string>;
   public dataSource: PublishedWorkflowsDataSource | PublishedToolsDataSource;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('input') input: ElementRef;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('input', { static: true }) input: ElementRef;
 
   /**
    * Get whether the entry is considered verified or not

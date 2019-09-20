@@ -24,8 +24,8 @@ import { takeUntil } from 'rxjs/operators';
 import { SearchService } from './state/search.service';
 
 export abstract class SearchEntryTable extends Base implements OnInit {
-  @ViewChild(MatPaginator) protected paginator: MatPaginator;
-  @ViewChild(MatSort) protected sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) protected sort: MatSort;
   protected verifiedLink: string;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
