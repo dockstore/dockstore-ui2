@@ -155,8 +155,8 @@
             <mat-icon
               *ngIf="!version.doiURL && !version.frozen"
               data-cy="dockstore-snapshot-unlocked"
-              matTooltip="Version {{ version.name }} can be snapshotted."
-              >close</mat-icon
+              matTooltip="Version {{ version.name }} is not a snapshot."
+              >lock_open</mat-icon
             >
             <a
               href="https://doi.org/{{ version.doiURL }}"

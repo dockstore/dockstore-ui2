@@ -40,6 +40,17 @@ export interface Hit {
   sort?: string[];
 }
 
+/**
+ * Manually set these based on the fields shown by Kibana.
+ * All of these should be 'aggregatable' in Kibana.
+ *
+ * @export
+ * @enum {number}
+ */
+export enum SearchFields {
+  VERIFIED_SOURCE = 'workflowVersions.verifiedSources.keyword'
+}
+
 @Injectable()
 export class SearchService {
   private searchInfoSource = new BehaviorSubject<any>(null);
@@ -374,9 +385,10 @@ export class SearchService {
       ['Author', 'author'],
       ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['VerifiedSourceWorkflow', 'workflowVersions.verifiedSource.keyword'],
+      ['VerifiedSourceWorkflow', SearchFields.VERIFIED_SOURCE],
       ['HasCheckerWorkflow', 'has_checker'],
-      ['Organization', 'organization']
+      ['Organization', 'organization'],
+      ['VerifiedPlatforms', 'verified_platforms.keyword']
     ]);
   }
 
@@ -393,9 +405,10 @@ export class SearchService {
       ['labels.value.keyword', 'Labels'],
       ['input_file_formats.value.keyword', 'Input File Formats'],
       ['output_file_formats.value.keyword', 'Output File Formats'],
-      ['workflowVersions.verifiedSource.keyword', 'Verified Source'],
+      [SearchFields.VERIFIED_SOURCE, 'Verified Source'],
       ['has_checker', 'Has Checker Workflows'],
-      ['organization', 'Workflow: Organization']
+      ['organization', 'Workflow: Organization'],
+      ['verified_platforms.keyword', 'Verified Platforms']
     ]);
   }
 
@@ -411,7 +424,8 @@ export class SearchService {
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
       ['verified', new SubBucket()],
-      ['workflowVersions.verifiedSource.keyword', new SubBucket()],
+      [SearchFields.VERIFIED_SOURCE, new SubBucket()],
+      ['verified_platforms.keyword', new SubBucket()],
       ['input_file_formats.value.keyword', new SubBucket()],
       ['output_file_formats.value.keyword', new SubBucket()],
       ['has_checker', new SubBucket()]
