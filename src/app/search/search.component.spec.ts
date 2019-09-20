@@ -15,11 +15,11 @@
  */
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PopoverModule } from 'ngx-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { of } from 'rxjs';
-
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { ProviderService } from '../shared/provider.service';
 import { AdvancedSearchStubService, ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
@@ -57,7 +57,7 @@ describe('SearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-      imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule],
+      imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule, RouterTestingModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },

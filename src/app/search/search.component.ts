@@ -15,6 +15,7 @@
  */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -112,7 +113,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private queryBuilderService: QueryBuilderService,
     public searchService: SearchService,
     private searchQuery: SearchQuery,
-    private advancedSearchService: AdvancedSearchService
+    private advancedSearchService: AdvancedSearchService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
@@ -174,11 +176,12 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   parseParams() {
     let useAdvSearch = false;
-    const URIParams = this.searchService.createURIParams();
-    if (!URIParams.paramsMap) {
+    const paramMap: ParamMap = this.activatedRoute.snapshot.queryParamMap;
+    if (!paramMap) {
       return;
     }
-    URIParams.paramsMap.forEach((value, key) => {
+    paramMap.keys.forEach(key => {
+      const value = paramMap.getAll(key);
       if (this.friendlyNames.get(key)) {
         value.forEach(categoryValue => {
           categoryValue = decodeURIComponent(categoryValue);
