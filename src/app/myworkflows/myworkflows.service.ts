@@ -14,18 +14,122 @@
  *    limitations under the License.
  */
 
-import {Injectable} from '@angular/core';
-import { Workflow } from './../shared/swagger/model/workflow';
-import { MyEntriesService } from './../shared/myentries.service';
+import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { transaction } from '@datorama/akita';
+import { AlertService } from 'app/shared/alert/state/alert.service';
+import { includesValidation } from 'app/shared/constants';
+import { EntryType } from 'app/shared/enum/entry-type';
+import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
+import { MyEntriesService } from 'app/shared/myentries.service';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { WorkflowService } from 'app/shared/state/workflow.service';
+import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
+import { UserQuery } from 'app/shared/user/user.query';
+import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
+import { Observable } from 'rxjs';
+import { MyBioWorkflowsService } from './my-bio-workflows.service';
+import { MyServicesService } from './my-services.service';
+import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class MyWorkflowsService extends MyEntriesService {
-  constructor() {
+  gitHubAppInstallationLink$: Observable<string>;
+  constructor(
+    protected userQuery: UserQuery,
+    protected alertService: AlertService,
+    protected usersService: UsersService,
+    protected workflowService: WorkflowService,
+    protected workflowsService: WorkflowsService,
+    private myBioWorkflowsService: MyBioWorkflowsService,
+    private myServicesService: MyServicesService,
+    private sessionQuery: SessionQuery,
+    public matDialog: MatDialog
+  ) {
     super();
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+  }
+
+  getMyEntries(userId: number, entryType: EntryType) {
+    if (entryType === EntryType.BioWorkflow) {
+      this.myBioWorkflowsService.getMyBioWorkflows(userId);
+    } else {
+      this.myServicesService.getMyServices(userId);
+    }
   }
 
   getGroupIndex(groupEntries: any[], group: string): number {
     return groupEntries.findIndex(orgWorkflow => orgWorkflow.sourceControl + '/' + orgWorkflow.organization === group);
+  }
+
+  public findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow | null {
+    let matchingWorkflow: ExtendedWorkflow;
+    for (let i = 0; i < orgWorkflows.length; i++) {
+      matchingWorkflow = orgWorkflows[i].published.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
+      if (matchingWorkflow) {
+        return matchingWorkflow;
+      }
+      matchingWorkflow = orgWorkflows[i].unpublished.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
+      if (matchingWorkflow) {
+        return matchingWorkflow;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Grabs the workflow from the webservice and loads it
+   * @param workflow Selected workflow
+   */
+  selectEntry(workflow: ExtendedWorkflow | null, entryType: EntryType | null): void {
+    if (workflow && entryType) {
+      if (entryType === EntryType.BioWorkflow) {
+        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
+      } else {
+        this.myServicesService.selectEntry(workflow.id, includesValidation);
+      }
+    }
+  }
+
+  public getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow | null {
+    for (let i = 0; i < orgWorkflows.length; i++) {
+      const foundWorkflow = orgWorkflows[i]['entries'].find((workflow: Workflow) => {
+        return workflow.is_published === true;
+      });
+      if (foundWorkflow) {
+        return foundWorkflow;
+      }
+    }
+    return null;
+  }
+
+  public convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
+    const groupEntriesObject: Array<OrgWorkflowObject> = [];
+    nsWorkflows.map(nsWorkflow => {
+      const orgWorkflowObject: OrgWorkflowObject = {
+        sourceControl: '',
+        organization: '',
+        published: [],
+        unpublished: []
+      };
+      const nsWorkflowEntries: Array<Workflow> = nsWorkflow.entries;
+      orgWorkflowObject.sourceControl = nsWorkflow.sourceControl;
+      orgWorkflowObject.organization = nsWorkflow.organization;
+      orgWorkflowObject.published = nsWorkflowEntries.filter((workflow: Workflow) => workflow.is_published);
+      orgWorkflowObject.unpublished = nsWorkflowEntries.filter((workflow: Workflow) => !workflow.is_published);
+      groupEntriesObject.push(orgWorkflowObject);
+    });
+    return groupEntriesObject;
+  }
+
+  @transaction()
+  clearPartialState(): void {
+    this.workflowService.clearActive();
+    this.workflowService.clearVersion();
+    this.workflowService.setWorkflow(null);
+    this.workflowService.setWorkflows(null);
+    this.workflowService.setSharedWorkflows(null);
   }
 
   // Given enum name, returns the friendly name
@@ -40,5 +144,14 @@ export class MyWorkflowsService extends MyEntriesService {
       return 'bitbucket.org';
     }
     return null;
+  }
+
+  registerEntry(entryType: EntryType | null) {
+    if (entryType === EntryType.BioWorkflow) {
+      this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+    }
+    if (entryType === EntryType.Service) {
+      this.gitHubAppInstallationLink$.pipe(take(1)).subscribe(link => window.open(link));
+    }
   }
 }

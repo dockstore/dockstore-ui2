@@ -13,14 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MatSnackBarModule } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
-
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
+import { MyEntriesModule } from '../../shared/modules/my-entries.module';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -40,9 +42,11 @@ import {
   UrlResolverStubService,
   UsersStubService,
   WorkflowsStubService,
-  WorkflowStubService,
+  WorkflowStubService
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { MyBioWorkflowsService } from '../my-bio-workflows.service';
+import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
 
@@ -55,7 +59,7 @@ describe('MyWorkflowsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule, BrowserAnimationsModule, MatDialogModule, MatSnackBarModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, CustomMaterialModule, MyEntriesModule],
       providers: [
         UserQuery,
         { provide: Configuration, useClass: ConfigurationStub },
@@ -64,19 +68,21 @@ describe('MyWorkflowsComponent', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+        MyWorkflowsService,
+        MyBioWorkflowsService,
+        MyServicesService,
         TokenQuery,
         { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: UrlResolverService, useClass: UrlResolverStubService }, MyWorkflowsService,
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => { }
+            close: (dialogResult: any) => {}
           }
         }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

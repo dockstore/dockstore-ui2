@@ -18,11 +18,20 @@
   Organizations
 </app-header>
 <div *ngIf="!(loading$ | async)" class="container">
-  <button *ngIf="(isLoggedIn$ | async)" class="pull-right" color="primary" mat-raised-button (click)="createOrganization()" matTooltip="Create Organization Request">Create Organization Request</button>
-  <div *ngIf="(filteredOrganizations$ | async) as organizations ; else noOrganizationsFound">
+  <button
+    *ngIf="isLoggedIn$ | async"
+    class="pull-right"
+    color="primary"
+    mat-raised-button
+    (click)="createOrganization()"
+    matTooltip="Create Organization Request"
+  >
+    Create Organization Request
+  </button>
+  <div *ngIf="filteredOrganizations$ | async as organizations; else noOrganizationsFound">
     <form [formGroup]="organizationSearchForm">
       <mat-form-field>
-        <input matInput placeholder="Search organizations" formControlName="name">
+        <input matInput placeholder="Search organizations" formControlName="name" />
       </mat-form-field>
     </form>
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
@@ -30,25 +39,33 @@
         <mat-card fxFlexOffset="10px" *ngFor="let org of organizations" class="my-2">
           <mat-card-header>
             <mat-card-title>
-              <a [routerLink]="org.name" [matTooltip]="org?.name">{{org.displayName}}</a>
+              <a [routerLink]="org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
             </mat-card-title>
             <mat-card-subtitle>
-                {{ org.topic }}
+              {{ org.topic }}
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
             <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
               <span fxLayout="row" *ngIf="org?.email">
                 <mat-icon>email</mat-icon>
-                <span><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span>
+                <span
+                  ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
+                >
               </span>
               <span fxLayout="row" *ngIf="org?.link">
                 <mat-icon>link</mat-icon>
-                <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
+                <span
+                  ><a [href]="org.link" target="_blank">{{ org.link }}</a></span
+                >
               </span>
               <span fxLayout="row" *ngIf="org?.location">
                 <mat-icon>location_on</mat-icon>
                 <span class="ellipsis-lines">{{ org.location }}</span>
+              </span>
+              <span fxLayout="row" *ngIf="org?.starredUsers.length !== 0" class="pull-right">
+                <span class="ellipsis-lines">{{ org.starredUsers.length }}</span>
+                <mat-icon class="orgStar">star</mat-icon>
               </span>
             </div>
           </mat-card-content>

@@ -24,23 +24,24 @@
 
 .columns figure {
   background: #fefefe;
-  width:98%;
+  width: 98%;
   height: auto;
   padding: 0px;
-  transition: opacity .4s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
   display: inline-block;
   column-break-inside: avoid;
 }
 
 .columns figure img {
-  width: 390px; height: auto;
+  width: 390px;
+  height: auto;
   border-bottom: 1px solid #ccc;
   padding-bottom: 15px;
   margin-bottom: 5px;
 }
 
 .columns figure figcaption {
-  font-size: .9rem;
+  font-size: 0.9rem;
   color: #444;
   line-height: 1.5;
 }
@@ -55,17 +56,20 @@
 .columns small a {
   color: #666;
   text-decoration: none;
-  transition: .4s color;
+  transition: 0.4s color;
 }
 @media screen and (max-width: 750px) {
-  .columns { column-gap: 0px; }
-  .columns figure { width: 100%; }
+  .columns {
+    column-gap: 0px;
+  }
+  .columns figure {
+    width: 100%;
+  }
 }
 
-
 .starred-header {
-  margin-left:30px;
-  margin-right:30px;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .spacing {

@@ -15,6 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { devMode } from 'app/shared/constants';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
@@ -25,32 +26,49 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
+import { Dockstore } from '../shared/dockstore.model';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent extends Logout implements OnInit {
   public user: User;
   extendedUser: any;
   isExtended = false;
+  devMode = devMode;
+  Dockstore = Dockstore;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  private currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
+  private currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
 
-  constructor(private pagenumberService: PagenumberService,
+  constructor(
+    private pagenumberService: PagenumberService,
     trackLoginService: TrackLoginService,
     logoutService: LogoutService,
     router: Router,
-    private userQuery: UserQuery) {
+    private userQuery: UserQuery
+  ) {
     super(trackLoginService, logoutService, router);
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      this.isExtended = toExtendSite(this.router.url);
-    });
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => {
+        this.isExtended = toExtendSite(this.router.url);
+      });
   }
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => this.user = user);
-    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => this.extendedUser = extendedUser);
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+      this.user = user;
+      if (this.user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
+        this.logOutUsersWithoutCurrentTOS();
+      }
+    });
+    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => (this.extendedUser = extendedUser));
   }
 
   resetPageNumber() {
@@ -63,5 +81,9 @@ export class NavbarComponent extends Logout implements OnInit {
     workflowPageInfo.searchQuery = '';
     this.pagenumberService.setToolsPageInfo(toolPageInfo);
     this.pagenumberService.setWorkflowPageInfo(workflowPageInfo);
+  }
+
+  logOutUsersWithoutCurrentTOS() {
+    this.logout('/session-expired');
   }
 }

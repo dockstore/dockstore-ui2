@@ -26,8 +26,8 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
-import { WebserviceDescriptorTypeEnum } from '../../shared/descriptor-type-compat.service';
-import { ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor, ToolVersion } from '../../shared/swagger';
+import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 
 @Component({
   selector: 'app-info-tab',
@@ -54,9 +54,12 @@ export class InfoTabComponent implements OnInit, OnChanges {
   trsLinkWDL: string;
   downloadZipLink: string;
   isValidVersion = false;
-  constructor(private containerService: ContainerService, private infoTabService: InfoTabService, private sessionQuery: SessionQuery,
-    private containersService: ExtendedToolsService) {
-  }
+  constructor(
+    private containerService: ContainerService,
+    private infoTabService: InfoTabService,
+    private sessionQuery: SessionQuery,
+    private containersService: ExtendedToolsService
+  ) {}
 
   ngOnChanges() {
     this.tool = JSON.parse(JSON.stringify(this.extendedDockstoreTool));
@@ -65,13 +68,21 @@ export class InfoTabComponent implements OnInit, OnChanges {
       const found = this.validVersions.find((version: Tag) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
-      if (this.tool.descriptorType.includes(WebserviceDescriptorTypeEnum.CWL)) {
-        this.trsLinkCWL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, ToolDescriptor.TypeEnum.CWL,
-          this.currentVersion.cwl_path);
+      if (this.tool.descriptorType.includes(DescriptorTypeEnum.CWL)) {
+        this.trsLinkCWL = this.getTRSLink(
+          this.tool.tool_path,
+          this.currentVersion.name,
+          ToolDescriptor.TypeEnum.CWL,
+          this.currentVersion.cwl_path
+        );
       }
-      if (this.tool.descriptorType.includes(WebserviceDescriptorTypeEnum.WDL)) {
-        this.trsLinkWDL = this.getTRSLink(this.tool.tool_path, this.currentVersion.name, ToolDescriptor.TypeEnum.WDL,
-          this.currentVersion.wdl_path);
+      if (this.tool.descriptorType.includes(DescriptorTypeEnum.WDL)) {
+        this.trsLinkWDL = this.getTRSLink(
+          this.tool.tool_path,
+          this.currentVersion.name,
+          ToolDescriptor.TypeEnum.WDL,
+          this.currentVersion.wdl_path
+        );
       }
     } else {
       this.isValidVersion = false;
@@ -81,12 +92,12 @@ export class InfoTabComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.infoTabService.dockerFileEditing$.subscribe(editing => this.dockerFileEditing = editing);
-    this.infoTabService.cwlPathEditing$.subscribe(editing => this.cwlPathEditing = editing);
-    this.infoTabService.wdlPathEditing$.subscribe(editing => this.wdlPathEditing = editing);
-    this.infoTabService.cwlTestPathEditing$.subscribe(editing => this.cwlTestPathEditing = editing);
-    this.infoTabService.wdlTestPathEditing$.subscribe(editing => this.wdlTestPathEditing = editing);
-    this.sessionQuery.isPublic$.subscribe(publicPage => this.isPublic = publicPage);
+    this.infoTabService.dockerFileEditing$.subscribe(editing => (this.dockerFileEditing = editing));
+    this.infoTabService.cwlPathEditing$.subscribe(editing => (this.cwlPathEditing = editing));
+    this.infoTabService.wdlPathEditing$.subscribe(editing => (this.wdlPathEditing = editing));
+    this.infoTabService.cwlTestPathEditing$.subscribe(editing => (this.cwlTestPathEditing = editing));
+    this.infoTabService.wdlTestPathEditing$.subscribe(editing => (this.wdlTestPathEditing = editing));
+    this.sessionQuery.isPublic$.subscribe(publicPage => (this.isPublic = publicPage));
   }
 
   downloadZip() {
@@ -144,7 +155,6 @@ export class InfoTabComponent implements OnInit, OnChanges {
     this.infoTabService.cancelEditing();
   }
 
-
   /**
    * Returns a link to the primary descriptor for the given tool version
    * @param path tool path
@@ -152,10 +162,13 @@ export class InfoTabComponent implements OnInit, OnChanges {
    * @param descriptorType descriptor type (CWL or WDL)
    * @param descriptorPath primary descriptor path
    */
-  getTRSLink(path: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum,
-    relativePath: string): string {
-    return `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-` + descriptorType +
-      `/descriptor/` + relativePath;
+  getTRSLink(path: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum, relativePath: string): string {
+    return (
+      `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
+      `/versions/${encodeURIComponent(versionName)}/plain-` +
+      descriptorType +
+      `/descriptor/` +
+      relativePath
+    );
   }
 }

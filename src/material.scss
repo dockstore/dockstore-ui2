@@ -13,15 +13,15 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
- @import '~@angular/material/theming';
- // Plus imports for other components in your app.
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
 
- // Include the common styles for Angular Material. We include this here so that you only
- // have to load a single css file for Angular Material in your app.
- // Be sure that you only ever include this mixin once!
- @include mat-core();
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
 
- $my-blue: (
+$my-blue: (
   50: #e8ecf1,
   100: #c4cedf,
   200: #9fafc9,
@@ -50,7 +50,7 @@
     A100: white,
     A200: white,
     A400: white,
-    A700: white,
+    A700: white
   )
 );
 
@@ -83,23 +83,23 @@ $my-teal: (
     A100: white,
     A200: white,
     A400: white,
-    A700: white,
+    A700: white
   )
 );
 
- // Define the palettes for your theme using the Material Design palettes available in palette.scss
- // (imported above). For each palette, you can optionally specify a default, lighter, and darker
- // hue. Available color palettes: https://www.google.com/design/spec/style/color.html
- $candy-app-primary: mat-palette($my-blue, 900, 200, A100);
- $candy-app-accent:  mat-palette($my-teal, 800, 200, A100);
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://www.google.com/design/spec/style/color.html
+$candy-app-primary: mat-palette($my-blue, 900, 200, A100);
+$candy-app-accent: mat-palette($my-teal, 800, 200, A100);
 
- // The warn palette is optional (defaults to red).
- $candy-app-warn:    mat-palette($mat-red);
+// The warn palette is optional (defaults to red).
+$candy-app-warn: mat-palette($mat-red);
 
- // Create the theme object (a Sass map containing all of the palettes).
- $candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+// Create the theme object (a Sass map containing all of the palettes).
+$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
 
- // Include theme styles for core and each component used in your app.
- // Alternatively, you can import and @include the theme mixins for each component
- // that you are using.
- @include angular-material-theme($candy-app-theme);
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($candy-app-theme);

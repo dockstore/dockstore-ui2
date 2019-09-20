@@ -14,7 +14,7 @@ import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-acc
 })
 export class ControlsComponent implements OnInit {
   public canChangeUsername$: Observable<boolean>;
-  constructor(public dialog: MatDialog, public userQuery: UserQuery, public usersService: UsersService, public userService: UserService) { }
+  constructor(public dialog: MatDialog, public userQuery: UserQuery, public usersService: UsersService, public userService: UserService) {}
 
   ngOnInit() {
     this.userService.getExtendedUserData();
@@ -24,5 +24,4 @@ export class ControlsComponent implements OnInit {
   deleteAccount() {
     const dialogRef = this.dialog.open(DeleteAccountDialogComponent, { width: '600px' });
   }
-
 }

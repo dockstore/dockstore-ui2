@@ -1,49 +1,100 @@
+import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { map, share, takeUntil } from 'rxjs/operators';
+import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { Dockstore } from '../../shared/dockstore.model';
+import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
-import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
-import { share, takeUntil } from 'rxjs/operators';
 import { DescriptorsQuery } from './state/descriptors-query';
-import { DescriptorsService } from './state/descriptors.service';
 import { DescriptorsStore } from './state/descriptors-store.';
-import { Dockstore } from '../../shared/dockstore.model';
-import { HttpUrlEncodingCodec } from '@angular/common/http';
-import { Base } from '../../shared/base';
+import { DescriptorsService } from './state/descriptors.service';
+import { combineLatest, Observable } from 'rxjs';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
+// tslint:disable:max-line-length
 /**
+ *  # Overview
+ *
  *  A component that has buttons linking to external platforms that can launch workflows hosted on Dockstore.
  *
- *  ## Instructions for adding a new button
+ *  # Instructions for adding a button for an external platform
  *
- *  1. Update dockstore.model.ts with a new property that has the url of the external platform.
- *  2. Create a separate PR for dockstore/compose_setup repo, prompting and setting the same URL from step 1.
- *  3. Optionally, but preferably, add an icon for the new platform, putting it in `src/assets/images/thirdparty`.
- *  4. If the icon is an SVG, you will need to add it to the icon registry in the
- *  constructor of this class, below. Follow the existing pattern.
- *  5. Add your HTML to launch-third-party.component.ts, following the pattern of the existing code. There are
- *  several properties you can access from your HTML that should provide all the info needed for the new button.
- *  If some new property is required, add it, and update it (probably) in `ngOnChanges`.
+ *  ## Configuration -- optional, but highly recommended
  *
- *  ### Non WDL platforms
+ *  The endpoint of the external platform should ideally be configurable instead of hard-coded in the UI. This will allow the
+ *  staging and production instances of Dockstore to redirect to the external platform's equivalent instances.
  *
- *  The first external non WDL external platform needs to change the `*ngIf` first line of launch-third-party.component.html.
+ *  Even if the external platform only has one deployment environment, making the endpoint configurable is preferred,
+ *  as locations change, and a configurable endpoint allows Dockstore to redirect to a new endpoint without
+ *  building and deploying a new version of the software.
+ *
+ *  ### How the UI gets its configuration data
+ *
+ *  Configuration data is supplied to the UI via the `/metadata/config.json` endpoint in the
+ *  [Dockstore web service](https://github.com/dockstore/dockstore).
+ *
+ *  ### Update the web service
+ *
+ *  1. Add a new property in [DockstoreWebserviceConfiguration#UIConfig](https://github.com/dockstore/dockstore/blob/0a734abe9dbe34eed12404d4697ebc43b71da8d8/dockstore-webservice/src/main/java/io/dockstore/webservice/DockstoreWebserviceConfiguration.java#L616)
+ *  that has the endpoint.
+ *  2. Add a getter and setter for it.
+ *  3. Submit a PR for approval
+ *  3. After this PR has been merged, you will need the Dockstore team to do a Maven release that contains this change.
+ *
+ *  ### Update compose_setup
+ *
+ *  [Compose setup](https://github.com/dockstore/compose_setup) is a wrapper used around docker-compose that is used to
+ *  deploy Dockstore to staging and production environments. It prompts for configurable data and
+ *  writes out a configuration file that the dockstore web service reads upon startup.
+ *
+ *  1. Update [install_bootstrap](https://github.com/dockstore/compose_setup/blob/develop/install_bootstrap) to prompt for the endpoint
+ *  2. Update the [yml template](https://github.com/dockstore/compose_setup/blob/develop/templates/web.yml.template) for the new setting.
+ *  3. Submit a PR against the develop branch
+ *
+ *  ### Consume the configuration from the web service
+ *
+ *  1. Ensure that the `webservice_version` in the package.json references a version that contains the merged PR from the previous section.
+ *  2. Update src/app/shared/dockstore.model.ts with a new property for the external endpoint
+ *  3. In src/app/configuration.service.ts, update the `updateDockstoreModel` method so that it reads the new data from
+ *  `config` parameter and
+ *  puts it into dockstore.model.ts. The `config` parameter has the response from the web service to fetch configuration data.
+ *
+ *  ### Add the button
+ *
+ *  1. Optionally, but preferably, add an icon for the new platform, putting it in `src/assets/images/thirdparty`.
+ *  2. If the icon is an SVG, you will need to add it to the icon registry in the constructor of this class, below.
+ *  Follow the existing pattern.
+ *  3. Add your HTML to launch-third-party.component.html, following the pattern of the existing code. There are
+ *  several properties you can access from your HTML that should provide all the info needed for the new button. If
+ *  additional properties are necessary, add them to this file.
+ *  4. Add the new div and anchor to the end of the file. Currently the buttons are ordered by when they were added
+ *  to the codebase.
+ *  5. Submit a PR against the develop branch.
+ *
+ *  ## Non WDL platforms
+ *
+ *  So far Dockstore only has buttons linking to external platforms that run WDL. When buttons are added for
+ *  external platforms that support other languages, keep the following in mind:
+ *
+ *  * The first external non WDL external platform needs to change the `*ngIf` first line of launch-third-party.component.html.
+ *  * The `hasHttpImports$` property is specific to WDL, although it can be extended to other languages if necessary.
  *
  */
+
+// tslint:enable:max-line-length
 
 @Component({
   selector: 'app-launch-third-party',
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss'],
-  providers: [ DescriptorsService, DescriptorsQuery, DescriptorsStore]
+  providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore]
 })
 export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit {
-
   /**
    * The workflow
    */
@@ -95,32 +146,52 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    */
   workflowPathAsQueryValue: string;
 
-  constructor(private workflowsService: WorkflowsService, private descriptorTypeCompatService: DescriptorTypeCompatService,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer,
-              private gA4GHFilesQuery: GA4GHFilesQuery,
-              private descriptorsQuery: DescriptorsQuery,
-              private descriptorsService: DescriptorsService) {
+  // Note: intentionally not using this.hasContent$ in the next line, as that does not work
+  cgcTooltip$: Observable<string> = combineLatest(this.descriptorsQuery.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) => {
+      if (!hasContent) {
+        return 'The CWL has no content.';
+      }
+      if (hasHttpImports) {
+        return (
+          'This version of the CWL has http(s) imports, which are not supported by the CGC. ' + 'Select a version without http(s) imports.'
+        );
+      }
+      return 'Export this workflow version to the CGC.';
+    })
+  );
+
+  constructor(
+    private workflowsService: WorkflowsService,
+    private descriptorTypeCompatService: DescriptorTypeCompatService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
+    private gA4GHFilesQuery: GA4GHFilesQuery,
+    private descriptorsQuery: DescriptorsQuery,
+    private descriptorsService: DescriptorsService
+  ) {
     super();
-    iconRegistry.addSvgIcon('firecloud',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/FireCloud-white-icon.svg'));
-    iconRegistry.addSvgIcon('dnanexus',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/DX_Logo_white_alpha.svg'));
-    iconRegistry.addSvgIcon('terra',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/terra.svg'));
+    iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
+    iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/terra.svg'));
   }
 
   ngOnInit(): void {
-    this.gA4GHFilesQuery.getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
-      [FileTypeEnum.PRIMARYDESCRIPTOR, FileTypeEnum.SECONDARYDESCRIPTOR]).pipe(
-      takeUntil(this.ngUnsubscribe))
+    this.gA4GHFilesQuery
+      .getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType), [
+        FileTypeEnum.PRIMARYDESCRIPTOR,
+        FileTypeEnum.SECONDARYDESCRIPTOR
+      ])
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(fileDescriptors => {
         if (fileDescriptors && fileDescriptors.length) {
-          this.workflowsService.wdl(this.workflow.id, this.selectedVersion.name).subscribe(sourceFile => {
+          // No idea if this.workflow.descriptorType is the one that's required or if it's some other enum
+          const descriptorType: string = this.workflow.descriptorType;
+          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe(sourceFile => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
             if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
-              this.workflowsService.secondaryWdl(this.workflow.id, this.selectedVersion.name).subscribe(
-                (sourceFiles: Array<SourceFile>) => {
+              this.workflowsService
+                .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, descriptorType)
+                .subscribe((sourceFiles: Array<SourceFile>) => {
                   this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
                 });
             }
@@ -134,10 +205,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     this.trsUrl = this.trsUrlAsQueryValue = this.workflowPathAsQueryValue = null;
     if (this.workflow && this.selectedVersion) {
       this.trsUrl = this.descriptorsService.trsUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
-      this.trsUrlAsQueryValue = new HttpUrlEncodingCodec()
-        .encodeValue(this.trsUrl);
+      this.trsUrlAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.trsUrl);
       this.workflowPathAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.workflow.full_workflow_path);
     }
   }
-
 }

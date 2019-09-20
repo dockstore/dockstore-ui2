@@ -19,6 +19,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GA4GHStubService } from './../test/service-stubs';
 import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatIconModule } from '@angular/material';
 
 import { FooterComponent } from './footer.component';
 
@@ -28,11 +29,10 @@ describe('FooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FooterComponent ],
-      imports: [ RouterTestingModule ],
-      providers: [ MetadataService, {provide: GA4GHService, useClass: GA4GHStubService} ]
-    })
-    .compileComponents();
+      declarations: [FooterComponent],
+      imports: [RouterTestingModule, MatIconModule],
+      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

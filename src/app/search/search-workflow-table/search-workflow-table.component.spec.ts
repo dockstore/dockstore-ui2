@@ -10,7 +10,7 @@ import { DockstoreStubService, SearchStubService } from '../../test/service-stub
 import { DateService } from '../../shared/date.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchService } from '../state/search.service';
-import {RouterTestingModule} from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SearchWorkflowTableComponent', () => {
   let component: SearchWorkflowTableComponent;
@@ -18,13 +18,15 @@ describe('SearchWorkflowTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchWorkflowTableComponent ],
+      declarations: [SearchWorkflowTableComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
-      providers: [{provide: DockstoreService, useClass: DockstoreStubService}, DateService,
-      {provide: SearchService, useClass: SearchStubService}]
-    })
-    .compileComponents();
+      providers: [
+        { provide: DockstoreService, useClass: DockstoreStubService },
+        DateService,
+        { provide: SearchService, useClass: SearchStubService }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

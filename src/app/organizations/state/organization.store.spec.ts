@@ -10,5 +10,4 @@ describe('OrganizationStore', () => {
   it('should create an instance', () => {
     expect(store).toBeTruthy();
   });
-
 });

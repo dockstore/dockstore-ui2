@@ -15,25 +15,27 @@
  */
 
 import { Observable } from 'rxjs';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {ContainersService} from './swagger';
-import {UsersService} from './swagger/api/users.service';
-import {WorkflowsService} from './swagger/api/workflows.service';
+import { ContainersService } from './swagger';
+import { UsersService } from './swagger/api/users.service';
+import { WorkflowsService } from './swagger/api/workflows.service';
 
 @Injectable()
 export class ListService {
-
-  constructor(private containersService: ContainersService, private workflowsService: WorkflowsService,
-    private usersService: UsersService) { }
+  constructor(
+    private containersService: ContainersService,
+    private workflowsService: WorkflowsService,
+    private usersService: UsersService
+  ) {}
 
   // TODO: need someone to pick up here to connect this to the data tables pagination for
   // public tools and workflows
   getPublishedToolsByPage(toolType: any, offset: string, limit: number): Observable<any> {
     if (toolType === 'workflows') {
-        return this.workflowsService.allPublishedWorkflows(offset, limit);
+      return this.workflowsService.allPublishedWorkflows(offset, limit);
     } else {
-        return this.containersService.allPublishedContainers(offset, limit);
+      return this.containersService.allPublishedContainers(offset, limit);
     }
   }
 
@@ -52,6 +54,6 @@ export class ListService {
   }
 
   getUserTools(userId: number) {
-      return this.usersService.userContainers(userId);
-    }
+    return this.usersService.userContainers(userId);
+  }
 }

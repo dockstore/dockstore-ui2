@@ -8,15 +8,9 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { RegisterOrganizationComponent } from './registerOrganization/register-organization.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    CustomMaterialModule,
-    ReactiveFormsModule,
-    RefreshAlertModule
-  ],
+  imports: [CommonModule, FormsModule, CustomMaterialModule, ReactiveFormsModule, RefreshAlertModule],
   declarations: [RegisterOrganizationComponent],
   providers: [AlertService],
   entryComponents: [RegisterOrganizationComponent]
 })
-export class RegisterOrganizationModule { }
+export class RegisterOrganizationModule {}

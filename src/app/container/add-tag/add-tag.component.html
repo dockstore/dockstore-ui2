@@ -19,49 +19,112 @@
   <form #addTagForm="ngForm" name="addTagForm">
     <mat-form-field class="w-100">
       <mat-label>Version Tag</mat-label>
-      <input matInput id="versionTagInput" name="versionTag" [(ngModel)]="unsavedVersion.name" maxlength="128" [pattern]="validationPatterns.versionTag"
-        required title="Docker Image tag name." placeholder="e.g. develop" />
-      <mat-error *ngIf="formErrors.versionTag">{{formErrors.versionTag}}</mat-error>
+      <input
+        matInput
+        id="versionTagInput"
+        name="versionTag"
+        [(ngModel)]="unsavedVersion.name"
+        maxlength="128"
+        [pattern]="validationPatterns.versionTag"
+        required
+        title="Docker Image tag name."
+        placeholder="e.g. develop"
+      />
+      <mat-error *ngIf="formErrors.versionTag">{{ formErrors.versionTag }}</mat-error>
     </mat-form-field>
     <mat-form-field class="w-100">
       <mat-label>Git Reference</mat-label>
-      <input matInput id="gitReferenceInput" name="reference" [(ngModel)]="unsavedVersion.reference" maxlength="128" [pattern]="validationPatterns.reference"
-        title="Git branch or tag name." placeholder="e.g. develop" required />
-      <mat-error *ngIf="formErrors.reference">{{formErrors.reference}}</mat-error>
+      <input
+        matInput
+        id="gitReferenceInput"
+        name="reference"
+        [(ngModel)]="unsavedVersion.reference"
+        maxlength="128"
+        [pattern]="validationPatterns.reference"
+        title="Git branch or tag name."
+        placeholder="e.g. develop"
+        required
+      />
+      <mat-error *ngIf="formErrors.reference">{{ formErrors.reference }}</mat-error>
     </mat-form-field>
     <mat-form-field class="w-100">
       <mat-label>Dockerfile</mat-label>
-      <input matInput #name="ngModel" id="dockerfilePath" name="dockerfilePath" [(ngModel)]="unsavedVersion.dockerfile_path" minlength="3"
-        maxlength="256" [pattern]="validationPatterns.dockerfilePath" required title="Relative path to the Dockerfile in the Git repository."
-        placeholder="e.g. /Dockerfile" [disabled]="!editMode" />
-      <mat-error *ngIf="formErrors.dockerfilePath">{{formErrors.dockerfilePath}}</mat-error>
+      <input
+        matInput
+        #name="ngModel"
+        id="dockerfilePath"
+        name="dockerfilePath"
+        [(ngModel)]="unsavedVersion.dockerfile_path"
+        minlength="3"
+        maxlength="256"
+        [pattern]="validationPatterns.dockerfilePath"
+        required
+        title="Relative path to the Dockerfile in the Git repository."
+        placeholder="e.g. /Dockerfile"
+        [disabled]="!editMode"
+      />
+      <mat-error *ngIf="formErrors.dockerfilePath">{{ formErrors.dockerfilePath }}</mat-error>
     </mat-form-field>
     <mat-form-field class="w-100">
       <mat-label>CWL Descriptor</mat-label>
-      <input matInput name="cwlPath" [(ngModel)]="unsavedVersion.cwl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.cwlPath"
-        [required]="!unsavedVersion.wdl_path.length" title="Relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl"
-        [disabled]="!editMode" />
-      <mat-error *ngIf="formErrors.cwlPath">{{formErrors.cwlPath}}</mat-error>
+      <input
+        matInput
+        name="cwlPath"
+        [(ngModel)]="unsavedVersion.cwl_path"
+        minlength="3"
+        maxlength="128"
+        [pattern]="validationPatterns.cwlPath"
+        [required]="!unsavedVersion.wdl_path.length"
+        title="Relative path to the CWL Descriptor in the Git repository."
+        placeholder="e.g. /Dockstore.cwl"
+        [disabled]="!editMode"
+      />
+      <mat-error *ngIf="formErrors.cwlPath">{{ formErrors.cwlPath }}</mat-error>
     </mat-form-field>
     <mat-form-field class="w-100">
       <mat-label>WDL Descriptor</mat-label>
-      <input matInput name="wdlPath" [(ngModel)]="unsavedVersion.wdl_path" minlength="3" maxlength="128" [pattern]="validationPatterns.wdlPath"
-        [required]="!unsavedVersion.cwl_path.length" title="Relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl"
-        [disabled]="!editMode" />
-      <mat-error *ngIf="formErrors.wdlPath">{{formErrors.wdlPath}}</mat-error>
+      <input
+        matInput
+        name="wdlPath"
+        [(ngModel)]="unsavedVersion.wdl_path"
+        minlength="3"
+        maxlength="128"
+        [pattern]="validationPatterns.wdlPath"
+        [required]="!unsavedVersion.cwl_path.length"
+        title="Relative path to the WDL Descriptor in the Git repository."
+        placeholder="e.g. /Dockstore.wdl"
+        [disabled]="!editMode"
+      />
+      <mat-error *ngIf="formErrors.wdlPath">{{ formErrors.wdlPath }}</mat-error>
     </mat-form-field>
     <div class="form-group">
       <mat-label>
         CWL Test Parameter File(s):
       </mat-label>
-      <div *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index;trackBy:trackByIndex;">
+      <div *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIndex">
         <div class="input-group py-1">
-          <input [ngClass]="{ 'input-right-button' : editMode, 'input-no-button' : !editMode }" type="text" class="form-control" name="unsavedCWLTestParameterFilePaths[{{i}}]"
-            [(ngModel)]="unsavedCWLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath"
-            title="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json" disabled ng-class="editMode ? 'test_parameter_input' : ''" />
+          <input
+            [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
+            type="text"
+            class="form-control"
+            name="unsavedCWLTestParameterFilePaths[{{ i }}]"
+            [(ngModel)]="unsavedCWLTestParameterFilePaths[i]"
+            minlength="3"
+            maxlength="128"
+            [pattern]="validationPatterns.testFilePath"
+            title="Relative path to a CWL Test Parameter File in the Git repository."
+            placeholder="e.g. /test.cwl.json"
+            disabled
+            ng-class="editMode ? 'test_parameter_input' : ''"
+          />
           <span class="input-group-btn">
-            <button title="Remove CWL test parameter file" type="button" class="btn btn-default form-sm-button-material" *ngIf="editMode"
-              (click)="removeTestParameterFile(i, DescriptorType.CWL)">
+            <button
+              title="Remove CWL test parameter file"
+              type="button"
+              class="btn btn-default form-sm-button-material"
+              *ngIf="editMode"
+              (click)="removeTestParameterFile(i, DescriptorType.CWL)"
+            >
               <mat-icon>remove</mat-icon>
             </button>
           </span>
@@ -69,21 +132,45 @@
       </div>
       <div *ngIf="editMode">
         <div class="input-group py-1">
-          <input [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="cwlTestParameterFilePath"
-            [(ngModel)]="unsavedTestCWLFile" (keyup)="updateDuplicateTestJsonCheck()" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a CWL Test Parameter File in the Git repository."
-            placeholder="e.g. /test.cwl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+          <input
+            [ngClass]="{ 'input-right-button': editMode }"
+            type="text"
+            #model1="ngModel"
+            class="form-control"
+            name="cwlTestParameterFilePath"
+            [(ngModel)]="unsavedTestCWLFile"
+            (keyup)="updateDuplicateTestJsonCheck()"
+            minlength="3"
+            maxlength="128"
+            [pattern]="validationPatterns.testFilePath"
+            title="Relative path to a CWL Test Parameter File in the Git repository."
+            placeholder="e.g. /test.cwl.json"
+            [disabled]="!editMode"
+            ng-class="editMode ? 'test_parameter_input' : ''"
+          />
           <span class="input-group-btn">
-            <button title="Add CWL test parameter file" type="button" class="btn btn-default form-sm-button-material" [disabled]="hasDuplicateCWL"
-              (click)="addTestParameterFile(DescriptorType.CWL)" *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)">
+            <button
+              title="Add CWL test parameter file"
+              type="button"
+              class="btn btn-default form-sm-button-material"
+              [disabled]="hasDuplicateCWL"
+              (click)="addTestParameterFile(DescriptorType.CWL)"
+              *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)"
+            >
               <mat-icon>add</mat-icon>
             </button>
-            <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button-material" [disabled]="model1.invalid || unsavedTestCWLFile.length == 0"
-              *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length == 0)">
+            <button
+              title="Enter a valid path"
+              type="button"
+              class="btn btn-default form-sm-button-material"
+              [disabled]="model1.invalid || unsavedTestCWLFile.length == 0"
+              *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length == 0)"
+            >
               <mat-icon>add</mat-icon>
             </button>
           </span>
         </div>
-        <mat-error *ngIf="formErrors.cwlTestParameterFilePath">{{formErrors.cwlTestParameterFilePath}}</mat-error>
+        <mat-error *ngIf="formErrors.cwlTestParameterFilePath">{{ formErrors.cwlTestParameterFilePath }}</mat-error>
         <mat-error *ngIf="hasDuplicateCWL">Duplicate test json files are not allowed.</mat-error>
       </div>
       <div *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
@@ -92,14 +179,30 @@
     </div>
     <div class="form-group">
       <mat-label>WDL Test Parameter File(s):</mat-label>
-      <div *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index;trackBy:trackByIndex;">
+      <div *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index; trackBy: trackByIndex">
         <div class="input-group py-1">
-          <input [ngClass]="{ 'input-right-button' : editMode, 'input-no-button' : !editMode }" type="text" class="form-control" name="unsavedWDLTestParameterFilePaths[{{i}}]"
-            [(ngModel)]="unsavedWDLTestParameterFilePaths[i]" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath"
-            title="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json" disabled ng-class="editMode ? 'test_parameter_input' : ''" />
+          <input
+            [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
+            type="text"
+            class="form-control"
+            name="unsavedWDLTestParameterFilePaths[{{ i }}]"
+            [(ngModel)]="unsavedWDLTestParameterFilePaths[i]"
+            minlength="3"
+            maxlength="128"
+            [pattern]="validationPatterns.testFilePath"
+            title="Relative path to a WDL Test Parameter File in the Git repository."
+            placeholder="e.g. /test.wdl.json"
+            disabled
+            ng-class="editMode ? 'test_parameter_input' : ''"
+          />
           <span class="input-group-btn">
-            <button title="Remove WDL test parameter file" type="button" class="btn btn-default form-sm-button-material" *ngIf="editMode"
-              (click)="removeTestParameterFile(i, DescriptorType.WDL)">
+            <button
+              title="Remove WDL test parameter file"
+              type="button"
+              class="btn btn-default form-sm-button-material"
+              *ngIf="editMode"
+              (click)="removeTestParameterFile(i, DescriptorType.WDL)"
+            >
               <mat-icon>remove</mat-icon>
             </button>
           </span>
@@ -107,21 +210,45 @@
       </div>
       <div *ngIf="editMode">
         <div class="input-group py-1">
-          <input [ngClass]="{ 'input-right-button' : editMode }" type="text" #model1="ngModel" class="form-control" name="wdlTestParameterFilePath"
-            [(ngModel)]="unsavedTestWDLFile" (keyup)="updateDuplicateTestJsonCheck()" minlength="3" maxlength="128" [pattern]="validationPatterns.testFilePath" title="Relative path to a WDL Test Parameter File in the Git repository."
-            placeholder="e.g. /test.wdl.json" [disabled]="!editMode" ng-class="editMode ? 'test_parameter_input' : ''" />
+          <input
+            [ngClass]="{ 'input-right-button': editMode }"
+            type="text"
+            #model1="ngModel"
+            class="form-control"
+            name="wdlTestParameterFilePath"
+            [(ngModel)]="unsavedTestWDLFile"
+            (keyup)="updateDuplicateTestJsonCheck()"
+            minlength="3"
+            maxlength="128"
+            [pattern]="validationPatterns.testFilePath"
+            title="Relative path to a WDL Test Parameter File in the Git repository."
+            placeholder="e.g. /test.wdl.json"
+            [disabled]="!editMode"
+            ng-class="editMode ? 'test_parameter_input' : ''"
+          />
           <span class="input-group-btn">
-            <button title="Add WDL test parameter file" type="button" class="btn btn-default form-sm-button-material" [disabled]="hasDuplicateWDL"
-              (click)="addTestParameterFile(DescriptorType.WDL)" *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)">
+            <button
+              title="Add WDL test parameter file"
+              type="button"
+              class="btn btn-default form-sm-button-material"
+              [disabled]="hasDuplicateWDL"
+              (click)="addTestParameterFile(DescriptorType.WDL)"
+              *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)"
+            >
               <mat-icon>add</mat-icon>
             </button>
-            <button title="Enter a valid path" type="button" class="btn btn-default form-sm-button-material" [disabled]="model1.invalid || unsavedTestWDLFile.length == 0"
-              *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length == 0)">
+            <button
+              title="Enter a valid path"
+              type="button"
+              class="btn btn-default form-sm-button-material"
+              [disabled]="model1.invalid || unsavedTestWDLFile.length == 0"
+              *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length == 0)"
+            >
               <mat-icon>add</mat-icon>
             </button>
           </span>
         </div>
-        <mat-error *ngIf="formErrors.wdlTestParameterFilePath">{{formErrors.wdlTestParameterFilePath}}</mat-error>
+        <mat-error *ngIf="formErrors.wdlTestParameterFilePath">{{ formErrors.wdlTestParameterFilePath }}</mat-error>
         <mat-error *ngIf="hasDuplicateWDL">Duplicate test json files are not allowed.</mat-error>
       </div>
       <div *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">
@@ -129,7 +256,13 @@
       </div>
     </div>
     <div class="w-100">
-      <mat-checkbox ng-if="editMode" name="checkbox" [disabled]="!editMode" [(ngModel)]="unsavedVersion.hidden" title="Hide tag from public view.">
+      <mat-checkbox
+        ng-if="editMode"
+        name="checkbox"
+        [disabled]="!editMode"
+        [(ngModel)]="unsavedVersion.hidden"
+        title="Hide tag from public view."
+      >
         Hidden
       </mat-checkbox>
     </div>
@@ -142,7 +275,14 @@
 </div>
 <div mat-dialog-actions>
   <button type="button" mat-button color="secondary" mat-dialog-close>Close</button>
-  <button id="addVersionTagButton" type="button" mat-flat-button color="primary" (click)="addTag()" [disabled]="!addTagForm.form.valid || hasDuplicateCWL || hasDuplicateWDL">
+  <button
+    id="addVersionTagButton"
+    type="button"
+    mat-flat-button
+    color="primary"
+    (click)="addTag()"
+    [disabled]="!addTagForm.form.valid || hasDuplicateCWL || hasDuplicateWDL"
+  >
     Add Tag
   </button>
 </div>

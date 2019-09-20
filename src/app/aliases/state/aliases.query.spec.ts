@@ -5,11 +5,10 @@ describe('AliasesQuery', () => {
   let query: AliasesQuery;
 
   beforeEach(() => {
-    query = new AliasesQuery(new AliasesStore);
+    query = new AliasesQuery(new AliasesStore());
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

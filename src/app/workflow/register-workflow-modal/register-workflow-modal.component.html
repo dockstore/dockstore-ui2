@@ -23,13 +23,13 @@
     <mat-step>
       <ng-template matStepLabel>Workflow storage type</ng-template>
       <p>
-        You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL/NextFlow from an existing third party repository, such
-        as GitHub, Bitbucket, etc.
+        You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL/NextFlow from an existing third party
+        repository, such as GitHub, Bitbucket, etc.
       </p>
       <div class="modal-body">
         <mat-radio-group [(ngModel)]="selectedOption">
           <mat-radio-button *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
-            {{option.label}}
+            {{ option.label }}
           </mat-radio-button>
         </mat-radio-group>
       </div>
@@ -44,74 +44,161 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
-      <form fxLayout="column" fxLayoutAlign="space-evenly stretch" *ngIf="selectedOption?.value == 0" #registerWorkflowForm="ngForm" name="registerWorkflowForm"
-        (submit)="registerWorkflow()" novalidate>
+      <form
+        fxLayout="column"
+        fxLayoutAlign="space-evenly stretch"
+        *ngIf="selectedOption?.value == 0"
+        #registerWorkflowForm="ngForm"
+        name="registerWorkflowForm"
+        (submit)="registerWorkflow()"
+        novalidate
+      >
         <mat-form-field class="w-100">
           <mat-select placeholder="Source Code Provider" class="radio-group" [(ngModel)]="workflow.repository" name="repository">
             <mat-option *ngFor="let repository of friendlyRepositoryKeys()" [value]="repository">
-              {{repository}}
+              {{ repository }}
             </mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field class="w-100">
           <mat-label>Source Code Repository</mat-label>
-          <input matInput id="sourceCodeRepositoryInput" name="gitPath" [(ngModel)]="workflow.gitUrl" minlength="3" maxlength="128" [pattern]="validationPatterns.gitPath"
-            required matTooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover" />
+          <input
+            matInput
+            id="sourceCodeRepositoryInput"
+            name="gitPath"
+            [(ngModel)]="workflow.gitUrl"
+            minlength="3"
+            maxlength="128"
+            [pattern]="validationPatterns.gitPath"
+            required
+            matTooltip="Git Repository path."
+            placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
+          />
           <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
           <mat-error *ngIf="formErrors.gitPath">{{ formErrors.gitPath }}</mat-error>
         </mat-form-field>
-        <mat-radio-group class="w-100 radio-group" position="before" id="descriptorTypeRadioButtons" [(ngModel)]="workflow.descriptorType" name="descriptorTypes"
-          (change)="radioButtonChange($event)">
+        <mat-radio-group
+          class="w-100 radio-group"
+          position="before"
+          id="descriptorTypeRadioButtons"
+          [(ngModel)]="workflow.descriptorType"
+          name="descriptorTypes"
+          (change)="radioButtonChange($event)"
+        >
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button class="radio-button" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType">
-            {{'descriptor_type' | mapFriendlyValue : descriptorType}}
+          <mat-radio-button class="radio-button" *ngFor="let descriptorType of descriptorLanguages$ | async" [value]="descriptorType">
+            {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
           </mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="w-100">
           <mat-label>Workflow Path</mat-label>
           <!-- TODO: Unbold these radio buttons (font-weight: normal) -->
-          <input matInput id="sourceCodeRepositoryWorkflowPathInput" name="workflow_path" [(ngModel)]="workflow.workflow_path" minlength="3"
-            maxlength="128" [pattern]="descriptorValidationPattern" required [matTooltip]="Tooltip.workflowPath" placeholder="{{ examplePatterns[workflow.descriptorType] }}"
+          <input
+            matInput
+            id="sourceCodeRepositoryWorkflowPathInput"
+            name="workflow_path"
+            [(ngModel)]="workflow.workflow_path"
+            minlength="3"
+            maxlength="128"
+            [pattern]="descriptorValidationPattern"
+            required
+            [matTooltip]="Tooltip.workflowPath"
+            placeholder="{{ examplePatterns[workflow.descriptorType] }}"
           />
           <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
           <mat-error *ngIf="formErrors.workflow_path">{{ formErrors.workflow_path }}</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100">
           <mat-label>Test Parameter File Path</mat-label>
-          <input matInput name="testParameterFilePath" [(ngModel)]="workflow.defaultTestParameterFilePath" minlength="3" maxlength="128" [pattern]="validationPatterns.testParameterFilePath"
-            matTooltip="Relative path to a Test Parameter File in the Git repository." placeholder="e.g. /test.json" />
+          <input
+            matInput
+            name="testParameterFilePath"
+            [(ngModel)]="workflow.defaultTestParameterFilePath"
+            minlength="3"
+            maxlength="128"
+            [pattern]="validationPatterns.testParameterFilePath"
+            matTooltip="Relative path to a Test Parameter File in the Git repository."
+            placeholder="e.g. /test.json"
+          />
           <mat-error *ngIf="formErrors.testParameterFilePath">{{ formErrors.testParameterFilePath }} </mat-error>
         </mat-form-field>
         <mat-form-field class="w-100">
           <mat-label>Workflow Name</mat-label>
-          <input matInput name="workflowName" [(ngModel)]="workflow.workflowName" maxlength="256" [pattern]="validationPatterns.workflowName" [matTooltip]="Tooltip.workflowName"
-            placeholder="e.g. liftover-fast (optional)" />
+          <input
+            matInput
+            name="workflowName"
+            [(ngModel)]="workflow.workflowName"
+            maxlength="256"
+            [pattern]="validationPatterns.workflowName"
+            [matTooltip]="Tooltip.workflowName"
+            placeholder="e.g. liftover-fast (optional)"
+          />
           <mat-error *ngIf="formErrors.workflowName">{{ formErrors.workflowName }} </mat-error>
         </mat-form-field>
         <div mat-dialog-actions class="pull-right">
-          <button mat-button type="button" id="closeRegisterWorkflowModalButton" color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
+          <button
+            mat-button
+            type="button"
+            id="closeRegisterWorkflowModalButton"
+            color="secondary"
+            (click)="hideModal(); clearWorkflowRegisterError()"
+          >
             Close
           </button>
-          <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerWorkflowForm.form.valid || (isRefreshing$ | async)">
+          <button
+            id="submitButton"
+            type="submit"
+            mat-flat-button
+            color="primary"
+            [disabled]="!registerWorkflowForm.form.valid || (isRefreshing$ | async)"
+          >
             Register Workflow
           </button>
         </div>
       </form>
-      <form fxLayout="column" fxLayoutAlign="space-evenly stretch" *ngIf="selectedOption?.value == 1" #registerHostedWorkflowForm="ngForm" name="registerHostedWorkflowForm"
-        (ngSubmit)="registerHostedWorkflow()" novalidate>
-        <mat-radio-group id="descriptorTypeRadioButtons" position="before" class="radio-group" [(ngModel)]="hostedWorkflow.descriptorType" name="descriptorTypes"
-          (change)="radioButtonChange($event)">
+      <form
+        fxLayout="column"
+        fxLayoutAlign="space-evenly stretch"
+        *ngIf="selectedOption?.value == 1"
+        #registerHostedWorkflowForm="ngForm"
+        name="registerHostedWorkflowForm"
+        (ngSubmit)="registerHostedWorkflow()"
+        novalidate
+      >
+        <mat-radio-group
+          id="descriptorTypeRadioButtons"
+          position="before"
+          class="radio-group"
+          [(ngModel)]="hostedWorkflow.descriptorType"
+          name="descriptorTypes"
+          (change)="radioButtonChange($event)"
+        >
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button matTooltipPosition="after" [matTooltip]="'descriptor_tooltip' | mapFriendlyValue : descriptorType" *ngFor="let descriptorType of (descriptorLanguages$ | async)" [value]="descriptorType">
-            {{'descriptor_type' | mapFriendlyValue : descriptorType}}
+          <mat-radio-button
+            matTooltipPosition="after"
+            [matTooltip]="'descriptor_tooltip' | mapFriendlyValue: descriptorType"
+            *ngFor="let descriptorType of descriptorLanguages$ | async"
+            [value]="descriptorType"
+          >
+            {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
           </mat-radio-button>
         </mat-radio-group>
 
         <mat-form-field class="w-100">
           <mat-label>Repository</mat-label>
-          <input matInput id="hostedWorkflowRepository" name="hostedWorkflowRepository" #hostedWorkflowRepository="ngModel" [(ngModel)]="hostedWorkflow.repository" [pattern]="validationPatterns.workflowName"
-            maxlength="256" placeholder="e.g. fastqc" required [matTooltip]="Tooltip.repository"/>
-          <mat-error *ngIf="hostedWorkflowRepository?.errors?.pattern">{{validationMessage.repository.pattern}}</mat-error>
+          <input
+            matInput
+            id="hostedWorkflowRepository"
+            name="hostedWorkflowRepository"
+            #hostedWorkflowRepository="ngModel"
+            [(ngModel)]="hostedWorkflow.repository"
+            [pattern]="validationPatterns.workflowName"
+            maxlength="256"
+            placeholder="e.g. fastqc"
+            required
+            [matTooltip]="Tooltip.repository"
+          />
+          <mat-error *ngIf="hostedWorkflowRepository?.errors?.pattern">{{ validationMessage.repository.pattern }}</mat-error>
         </mat-form-field>
 
         <!-- Optional workflow name, uncomment if implemented -->

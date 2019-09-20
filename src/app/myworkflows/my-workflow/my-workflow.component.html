@@ -14,64 +14,149 @@
   ~    limitations under the License.
   -->
 <app-header>
-  <button mat-icon-button (click)="toggleSidebar()"><mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon></button>
-  <img src="../assets/images/dockstore/dockstore-workflows-green.png"> My Workflows
+  <button mat-icon-button (click)="toggleSidebar()">
+    <mat-icon *ngIf="showSidebar">chevron_left</mat-icon>
+    <mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
+  </button>
+  <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> {{ myEntryPageTitle$ | async | titlecase }}
 </app-header>
-
-<button mat-fab color="accent" id="registerWorkflowButton" class="fab-bottom-right" matTooltip="Register workflow" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="(isRefreshing$ | async)"><mat-icon>add</mat-icon></button>
-
+<button
+  mat-fab
+  color="accent"
+  id="registerWorkflowButton"
+  class="fab-bottom-right"
+  matTooltip="Register {{ entryType$ | async }}"
+  matTooltipPosition="before"
+  (click)="showRegisterEntryModal()"
+  [disabled]="isRefreshing$ | async"
+>
+  <mat-icon>add</mat-icon>
+</button>
 <div class="container-fluid sidebar-set-height">
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
     <mat-sidenav-container autosize class="sidebar-set-height">
-      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
+      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12" *ngIf="!(refreshingMyEntries$ | async)">
         <div id="parent">
           <div id="child">
-            <div class="clearfix sidebar-header" matTooltipPosition="after" [matTooltip]="(hasSourceControlToken$ | async)? '' : 'Requires source control token'">
-                <button mat-flat-button color="primary" matTooltipPosition="after" matTooltip="Find new workflows and sync all existing workflows" class="pull-right" (click)="refreshAllEntries()" [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)">
-                  Refresh All
-                </button>
-              <h3 class="sidebar-header">My workflows</h3>
+            <div
+              class="clearfix sidebar-header"
+              matTooltipPosition="after"
+              [matTooltip]="(hasSourceControlToken$ | async) ? '' : 'Requires source control token'"
+            >
+              <mat-toolbar>
+                <mat-toolbar-row>
+                  <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+                    <span>My {{ entryType$ | async }}s</span>
+                    <span>
+                      <button
+                        *ngIf="entryType === EntryType.BioWorkflow"
+                        mat-button
+                        color="primary"
+                        matTooltipPosition="after"
+                        matTooltip="Find new workflows and sync all existing workflows"
+                        (click)="refreshAllEntries()"
+                        [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)"
+                      >
+                        Refresh All
+                      </button>
+                      <ng-container *ngIf="entryType === EntryType.Service">
+                        <button
+                          [disabled]="isRefreshing$ | async"
+                          data-cy="sync-with-github"
+                          mat-icon-button
+                          matTooltip="Sync with GitHub"
+                          (click)="sync()"
+                        >
+                          <mat-icon>sync</mat-icon>
+                        </button>
+                        <a
+                          mat-icon-button
+                          [href]="gitHubAppInstallationLink$ | async"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          matTooltip="Manage on GitHub"
+                          ><mat-icon>add</mat-icon></a
+                        >
+                      </ng-container>
+                    </span>
+                  </div>
+                </mat-toolbar-row>
+              </mat-toolbar>
             </div>
-            <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">You have not registered any workflows</p>
-            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="(isRefreshing$ | async)"></app-sidebar-accordion>
-            <br>
-
-            <div class="clearfix sidebar-header">
-              <h3 class="sidebar-header">Shared with me</h3>
-            </div>
-            <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">You have no workflows shared with you</p>
-            <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+            <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">
+              You have not registered any {{ entryType$ | async }}s
+            </p>
+            <app-sidebar-accordion
+              [openOneAtATime]="oneAtATime"
+              [groupEntriesObject]="groupEntriesObject"
+              [refreshMessage]="isRefreshing$ | async"
+            ></app-sidebar-accordion>
+            <br />
+            <small
+              >Don't see an organization?
+              <a href="https://github.com/settings/connections/applications/7ad54aa857c6503013ea" target="_blank" rel="noopener noreferrer"
+                >Configure</a
+              >
+              your authorized organizations.</small
+            >
+            <br />
+            <ng-container *ngIf="entryType !== EntryType.Service">
+              <div class="clearfix sidebar-header">
+                <h3 class="sidebar-header">Shared with me</h3>
+              </div>
+              <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
+                You have no {{ entryType$ | async }}s shared with you
+              </p>
+              <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+            </ng-container>
           </div>
         </div>
       </mat-sidenav>
-      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div *ngIf="!(isRefreshing$ | async) && ((groupEntriesObject?.length == 0 || !groupEntriesObject) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))">
-            <div class="col-md-12">
-              <mat-card class="alert alert-info" role="alert">
-                <p>
-                  <mat-icon>info</mat-icon>
-                  There are currently no workflows registered under this account, to add your first workflow, do one of the following:
-                </p>
-                <ul>
-                  <li>
-                    Press the 'Refresh All' button to create workflow stubs for all of your source control repositories. Browse to the workflow stubs and
-                    refresh/publish those that correspond to real workflows.
-                  </li>
-                  <li>
-                    Press the 'Register Workflow' button to manually add a workflow.
-                  </li>
-                  <button mat-raised-button color="primary" type="button" (click)="showRegisterEntryModal()" [disabled]="(isRefreshing$ | async)">Register Workflow</button>
-                </ul>
-                <div *ngIf="!hasGitHubToken" class="mt-3">
-                  <a class="btn btn-block btn-social btn-github" (click)="link()">
-                    <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
-                  </a>
-                </div>
-              </mat-card>
-            </div>
+      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
+        <div
+          *ngIf="
+            !(isRefreshing$ | async) &&
+            ((groupEntriesObject?.length == 0 || !groupEntriesObject) &&
+              (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))
+          "
+        >
+          <div class="col-md-12">
+            <mat-card class="alert alert-info" role="alert">
+              <p>
+                <mat-icon>info</mat-icon>
+                There are currently no {{ entryType$ | async }}s registered under this account. To add your first {{ entryType$ | async }},
+                do one of the following:
+              </p>
+              <ul>
+                <li *ngIf="entryType === EntryType.Service">
+                  Press the 'Manage on GitHub' button and follow the GitHub apps web interface to create services from your GitHub
+                  repositories.
+                </li>
+                <li *ngIf="entryType === EntryType.BioWorkflow">
+                  Press the 'Refresh All' button to create workflow stubs for all of your source control repositories. Browse to the
+                  workflow stubs and refresh/publish those that correspond to real workflows.
+                </li>
+                <li>Press the 'Register {{ entryType$ | async | titlecase }}' button to manually add a {{ entryType$ | async }}.</li>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  type="button"
+                  (click)="showRegisterEntryModal()"
+                  [disabled]="isRefreshing$ | async"
+                >
+                  Register {{ entryType$ | async | titlecase }}
+                </button>
+              </ul>
+              <div *ngIf="!hasGitHubToken" class="mt-3">
+                <a class="btn btn-block btn-social btn-github" (click)="link()">
+                  <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
+                </a>
+              </div>
+            </mat-card>
           </div>
-          <app-workflow [isWorkflowPublic]="false" [user]="user"></app-workflow>
+        </div>
+        <app-workflow [isWorkflowPublic]="false" [user]="user"></app-workflow>
       </mat-sidenav-content>
     </mat-sidenav-container>
   </div>

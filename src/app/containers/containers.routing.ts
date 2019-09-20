@@ -15,16 +15,19 @@
  */
 
 import { RouterModule, Routes } from '@angular/router';
-
+import { EntryType } from 'app/shared/enum/entry-type';
+import { ContainerComponent } from '../container/container.component';
 import { ContainersComponent } from './containers.component';
 import { SearchContainersComponent } from './search/search.component';
-import { ContainerComponent } from '../container/container.component';
 
 const CONTAINERS_ROUTES: Routes = [
   {
-    path: '', component: ContainersComponent, data: { title: 'Dockstore | Tool'}, children: [
-      { path: '', component: SearchContainersComponent, data: { title: 'Dockstore | Tools'} }, // dockstore/tools
-      { path: '**', component: ContainerComponent, data: { title: 'Dockstore | Tool'} }
+    path: '',
+    component: ContainersComponent,
+    data: { title: 'Dockstore | Tool', entryType: EntryType.Tool },
+    children: [
+      { path: '', component: SearchContainersComponent, data: { title: 'Dockstore | Tools' } },
+      { path: '**', component: ContainerComponent, data: { title: 'Dockstore | Tool' } }
     ]
   }
 ];

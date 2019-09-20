@@ -28,19 +28,21 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Prerequisites
 
-Angular CLI requires Node and NPM.  See [.travis.yml](.travis.yml) for the correct versions of Node, NPM and Angular CLI.
-Then make sure Angular CLI has been properly set up.
+- Java 8+ 
+- Node and its included NPM (see [.nvmrc](.nvmrc) for the correct version of node to install)
+- wget 
 
-[Install NPM and Node](https://nodejs.org/en/download/package-manager/)
+Install NPM and Node using nvm:
 ```
-$curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-$sudo apt-get install -y nodejs
-$nodejs -v
-v7.10.0
-$npm -v
-4.2.0
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
 ```
-Follow https://docs.npmjs.com/getting-started/fixing-npm-permissions#option-two-change-npms-default-directory to fix permissions and then...
+Close current terminal and open a new one or `source ~/.bashrc`
+```
+nvm install 10.13.0
+```
+Optionally, install a global Angular CLI in order to execute `ng` commands without prepending `npx`.   
+Otherwise, prepend `npx` to every command in this README if a global @angular/cli was not installed.
+Before installing, follow https://docs.npmjs.com/getting-started/fixing-npm-permissions#option-two-change-npms-default-directory to fix permissions if needed.
 
 ```
 $npm i -g @angular/cli@1.3.1		
@@ -57,6 +59,18 @@ git pull
 
 npm ci
 ```
+`npm ci` will install all npm dependencies including Prettier and the Husky Git hook. 
+Ensure `CI=true` is not set when using `npm ci` or else the Git hook will not work.
+Prettier + Husky will automatically format changed files before each commit:
+```
+$ git commit -m "Test"
+ghusky > pre-commit (node v10.13.0)
+  ↓ Stashing changes... [skipped]
+    → No partially staged files found...
+  ✔ Running linters...
+[feature/2130/prettier b6da3e7c] Test
+```
+
 
 Check to make sure Angular CLI has been properly set up
 ```
@@ -94,18 +108,6 @@ The Dockstore class in [src/app/shared/dockstore.model.ts](src/app/shared/dockst
 
 In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to include the client IDs</b>.
 
-## Pre-build/serve
-<!-- 
-  Possible bash command
-  export WEBSERVICE_VERSION=`grep -oP 'WEBSERVICE_VERSION="\K[0-9].[0-9].[0-9]' .travis.yml`
--->
-Run `export WEBSERVICE_VERSION=`[dockstore release version](https://github.com/dockstore/dockstore-ui2/blob/develop/.travis.yml#L12), for example `export WEBSERVICE_VERSION=1.5.3`.
-
-Run `npm run prebuild` before running or building the project. This command will:
-- generate a file which contains the UI tag version 
-- download the openapi codegen
-- generate code from the swagger.yaml
-
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Run `ng serve --host 0.0.0.0` in order to serve your site to other computers on the same network. 
@@ -121,7 +123,8 @@ Run `ng g component component-name` to generate a new component. You can also us
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Optionally override the webservice version using `npm config set dockstore-ui2:webservice_version ${WEBSERVICE_VERSION}`
+Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `npm run build.prod` for a production build.
 
 ## Running unit tests
 
@@ -129,11 +132,13 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Running end-to-end tests
 
+Cypress is no longer specified in the package.json, check the `.circleci/config.yml` for the version and how to install it.
+
 Run `$(npm bin)/cypress open` or `$(npm bin)/cypress run` to execute the end-to-end tests via Cypress.io.
 Before running the tests make sure you:
-- serve the app via `ng serve`.
-- run the Dockstore webservice
-- have a webservice jar in the root directory
+- have a postgresql database
+- serve the app via `ng serve` or similar.
+- have the Dockstore webservice jar in the root directory and run it (see scripts/run-webservice-script.sh for guideline)
 
 ## Documentation Generation
 
@@ -143,7 +148,7 @@ To manually run it:
 npm install -g @compodoc/compodoc
 npm run compodoc
 ```
-Then go to `docs/index.html`
+Then open `docs/index.html` with browser
 
 ## Further help
 

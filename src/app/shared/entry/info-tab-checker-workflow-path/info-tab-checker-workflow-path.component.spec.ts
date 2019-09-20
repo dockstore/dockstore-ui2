@@ -38,8 +38,7 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
       ],
       declarations: [InfoTabCheckerWorkflowPathComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

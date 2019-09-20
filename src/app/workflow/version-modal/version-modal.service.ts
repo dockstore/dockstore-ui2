@@ -24,15 +24,17 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 
-
 @Injectable()
 export class VersionModalService {
   version: Subject<WorkflowVersion> = new BehaviorSubject<WorkflowVersion>(null);
   testParameterFiles: Subject<SourceFile[]> = new BehaviorSubject<SourceFile[]>([]);
   constructor(
-    private alertService: AlertService, private workflowQuery: WorkflowQuery, private workflowsService: WorkflowsService,
-    private refreshService: RefreshService, private matDialog: MatDialog) {
-  }
+    private alertService: AlertService,
+    private workflowQuery: WorkflowQuery,
+    private workflowsService: WorkflowsService,
+    private refreshService: RefreshService,
+    private matDialog: MatDialog
+  ) {}
 
   setVersion(version: WorkflowVersion) {
     this.version.next(version);
@@ -68,11 +70,14 @@ export class VersionModalService {
               this.alertService.detailedSuccess();
               this.refreshService.refreshWorkflow();
               this.matDialog.closeAll();
-            }, error => {
+            },
+            error => {
               this.alertService.detailedError(error);
               this.refreshService.refreshWorkflow();
-            });
-        }, error => {
+            }
+          );
+        },
+        error => {
           this.alertService.detailedError(error);
         }
       );
@@ -81,13 +86,13 @@ export class VersionModalService {
         response => {
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
-        }, error => {
+        },
+        error => {
           this.alertService.detailedError(error);
         }
       );
     }
   }
-
 
   /**
    * This modifies the test parameter file paths of a workflow version
@@ -105,8 +110,9 @@ export class VersionModalService {
     const toDelete: boolean = missingCWL && missingCWL.length > 0;
     const workflowId = this.workflowQuery.getActive().id;
     if (toDelete && toAdd) {
-      return this.workflowsService.addTestParameterFiles(workflowId, newCWL, workflowVersion.name).pipe(concatMap(() =>
-        this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name)));
+      return this.workflowsService
+        .addTestParameterFiles(workflowId, newCWL, workflowVersion.name)
+        .pipe(concatMap(() => this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name)));
     }
     if (toDelete && !toAdd) {
       return this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name);

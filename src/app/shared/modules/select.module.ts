@@ -22,17 +22,9 @@ import { CustomMaterialModule } from './../modules/material.module';
 import { SelectComponent } from '../../select/select.component';
 
 @NgModule({
-  declarations: [
-    SelectComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    CustomMaterialModule
-  ],
+  declarations: [SelectComponent],
+  imports: [CommonModule, FormsModule, CustomMaterialModule],
   providers: [],
-  exports: [
-    SelectComponent
-  ]
+  exports: [SelectComponent]
 })
-export class SelectModule { }
+export class SelectModule {}

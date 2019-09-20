@@ -29,6 +29,7 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
 import { AddTagComponent } from '../add-tag/add-tag.component';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-versions-container',
@@ -37,6 +38,7 @@ import { AddTagComponent } from '../add-tag/add-tag.component';
 })
 export class VersionsContainerComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
+  Dockstore = Dockstore;
   versionTag: Tag;
   public DockstoreToolType = DockstoreTool;
   @Input() set selectedVersion(value: Tag) {
@@ -47,11 +49,18 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   @Output() selectedVersionChange = new EventEmitter<Tag>();
   tool: ExtendedDockstoreTool;
 
-  constructor(dockstoreService: DockstoreService, private containersService: ContainersService,
-    dateService: DateService, private refreshService: RefreshService, private alertService: AlertService,
-    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery, private matDialog: MatDialog,
-    protected sessionQuery: SessionQuery) {
+  constructor(
+    dockstoreService: DockstoreService,
+    private containersService: ContainersService,
+    dateService: DateService,
+    private refreshService: RefreshService,
+    private alertService: AlertService,
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
+    private matDialog: MatDialog,
+    protected sessionQuery: SessionQuery
+  ) {
     super(dockstoreService, dateService, sessionQuery);
+    this.sortColumn = 'last_built';
   }
 
   ngOnInit() {
@@ -82,12 +91,15 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     }
     const message = 'Updating default tool version';
     this.alertService.start(message);
-    this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(response => {
-      this.alertService.detailedSuccess();
-      if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {
-        this.refreshService.refreshTool();
-      }
-    }, error => this.alertService.detailedError(error));
+    this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(
+      response => {
+        this.alertService.detailedSuccess();
+        if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {
+          this.refreshService.refreshTool();
+        }
+      },
+      error => this.alertService.detailedError(error)
+    );
   }
 
   // Updates the version and emits an event for the parent component
@@ -97,6 +109,6 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   }
 
   showAddTagModal() {
-    this.matDialog.open(AddTagComponent, {width: '600px'});
+    this.matDialog.open(AddTagComponent, { width: '600px' });
   }
 }

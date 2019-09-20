@@ -18,105 +18,75 @@
     <div [className]="isExtended ? 'container w-100 navbar-fluid' : 'container navbar-fluid'">
       <span class="flex-toolbar">
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" alt="dockstore logo">
-          <img src="../assets/images/dockstore/logo.png">
+          <img src="../assets/images/dockstore/logo.png" />
         </a>
         <a mat-button class="icon" [routerLink]="['/search']">
-          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png"> Search
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png" /> Search
         </a>
         <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
           <mat-icon class="hidden-sm">people</mat-icon> Organizations
         </a>
-        <a mat-button class="icon" href="http://docs.dockstore.org/">
-            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png"> Docs
+        <a mat-button class="icon" href="{{ Dockstore.DOCUMENTATION_URL }}">
+          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png" /> Docs
         </a>
         <span class="spacer"></span>
-        <a mat-button class="icon" id="my-tools-nav-button" *ngIf="isLoggedIn" routerLink="/my-tools">
-          <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-tools-purple.png"> My Tools
-        </a>
-        <a mat-button class="icon" id="my-workflows-nav-button" *ngIf="isLoggedIn" routerLink="/my-workflows">
-          <img class="site-icons-small hidden-sm" src="assets/images/dockstore/dockstore-workflows-purple.png"> My Workflows
-        </a>
-        <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login/Register</a>
-        <button *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
-          <mat-icon class="hidden-lg" *ngIf="user?.isAdmin">lock</mat-icon>
-          <mat-icon class="hidden-lg" *ngIf="user?.curator && !user?.isAdmin ">edit</mat-icon>
-          <mat-icon class="hidden-lg" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>
-          <span class="hidden-md hidden-sm">{{user?.username}}
-          </span>
-          <mat-icon>keyboard_arrow_down</mat-icon>
-        </button>
+        <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
+        <template [ngTemplateOutlet]="loginButton"></template>
         <mat-menu #menuLarge="matMenu">
-          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts" >
+          <a mat-menu-item data-cy="my-tools-nav-button" routerLink="/my-tools">
+            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-tools-purple.png" />&nbsp;My&nbsp;Tools
+          </a>
+          <a mat-menu-item data-cy="my-workflows-nav-button" routerLink="/my-workflows">
+            <img
+              class="site-icons-small hidden-sm"
+              src="../assets/images/dockstore/dockstore-workflows-purple.png"
+            />&nbsp;My&nbsp;Workflows
+          </a>
+          <a *ngIf="devMode" mat-menu-item data-cy="my-services-nav-button" routerLink="/my-services">
+            <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-workflows-purple.png" />&nbsp;My&nbsp;Services
+          </a>
+          <mat-divider></mat-divider>
+          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
             <mat-icon color="accent" *ngIf="user?.isAdmin">lock</mat-icon>
             <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
             <mat-icon color="accent" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>Account
           </a>
-
-          <a mat-menu-item id="dropdown-starred" routerLink="/starred">
-            <mat-icon color="accent">stars</mat-icon>Starred
-          </a>
-
-          <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding"  *ngIf="extendedUser?.canChangeUsername">
+          <a mat-menu-item id="dropdown-starred" routerLink="/starred"> <mat-icon color="accent">stars</mat-icon>Starred </a>
+          <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding" *ngIf="extendedUser?.canChangeUsername">
             <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
           </a>
-
           <mat-divider></mat-divider>
-
-          <a mat-menu-item id="dropdown-logout" (click)="logout()">
-            <mat-icon color="accent">input</mat-icon>Log out
-          </a>
+          <a mat-menu-item id="dropdown-logout" (click)="logout()"> <mat-icon color="accent">input</mat-icon>Log out </a>
         </mat-menu>
       </span>
     </div>
   </mat-toolbar-row>
   <mat-toolbar-row class="visible-xs toolbar-holder toolbar-holder-sm clearfix">
     <div class="container-fluid navbar-holder">
-      <a id="home-nav-button-mobile" (click)="resetPageNumber()" routerLink="">
-        <img src="../assets/images/dockstore/logo.png">
-      </a>
-      <span class="spacer"></span>
-      <a *ngIf="!isLoggedIn" class="pull-right" mat-raised-button color="accent" routerLink="/login">Login</a>
-      <button class="pull-right" *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main-xs" [matMenuTriggerFor]="menuMobile">
-        <mat-icon class="hidden-lg">account_circle</mat-icon>
-        <span class="hidden-md hidden-sm hidden-xs">{{user?.username}}</span>
-        <mat-icon>keyboard_arrow_down</mat-icon>
-      </button>
-      <mat-menu #menuMobile="matMenu">
-        <a mat-menu-item id="dropdown-accounts-mobile" routerLink="/accounts">
-          <mat-icon color="accent">account_circle</mat-icon>Account
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <a fxFlex id="home-nav-button-mobile" (click)="resetPageNumber()" routerLink="">
+          <img src="../assets/images/dockstore/logo.png" />
         </a>
-
-        <a mat-menu-item id="dropdown-starred-mobile"  routerLink="/starred">
-          <mat-icon color="accent">stars</mat-icon>Starred
-        </a>
-
-        <a mat-menu-item id="dropdown-onboarding-mobile" routerLink="/onboarding" *ngIf="extendedUser?.canChangeUsername">
-          <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
-        </a>
-
-        <mat-divider></mat-divider>
-
-        <a mat-menu-item id="dropdown-logout-mobile" (click)="logout()">
-          <mat-icon color="accent">input</mat-icon>Log out
-        </a>
-      </mat-menu>
+        <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
+        <template [ngTemplateOutlet]="loginButton"></template>
+      </div>
     </div>
   </mat-toolbar-row>
-
   <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
     <div class="container-fluid navbar-holder">
       <a mat-button class="icon icon-sm" routerLink="/search">Search</a>
       <a mat-button class="icon icon-sm" routerLink="/organizations">Organizations</a>
-      <a mat-button class="icon icon-sm" href="http://docs.dockstore.org/">Docs</a>
-    </div>
-  </mat-toolbar-row>
-
-  <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
-    <div class="container-fluid navbar-holder">
-      <span *ngIf="isLoggedIn">
-        <a mat-button class="icon my-icon-sm" id="my-tools-nav-button-xs" routerLink="/my-tools">My Tools</a>
-        <a mat-button class="icon my-icon-sm" id="my-workflows-nav-button-xs" routerLink="/my-workflows">My Workflows</a>
-      </span>
+      <a mat-button class="icon icon-sm" href="{{ Dockstore.DOCUMENTATION_URL }}">Docs</a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
+<!-- This is the login button used in both navbar sizes -->
+<ng-template #loginButton>
+  <button data-cy="dropdown-main" *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
+    <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="user?.isAdmin">lock</mat-icon>
+    <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
+    <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>
+    <span class="hidden-xs">{{ user?.username }} </span>
+    <mat-icon>keyboard_arrow_down</mat-icon>
+  </button>
+</ng-template>

@@ -5,11 +5,10 @@ describe('RequestsQuery', () => {
   let query: RequestsQuery;
 
   beforeEach(() => {
-    query = new RequestsQuery(new RequestsStore);
+    query = new RequestsQuery(new RequestsStore());
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

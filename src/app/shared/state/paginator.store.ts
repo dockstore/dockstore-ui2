@@ -19,10 +19,7 @@ const initialState: PaginatorState = {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'paginator' })
 export class PaginatorStore extends Store<PaginatorState> {
-
   constructor() {
     super(initialState);
   }
-
 }
-

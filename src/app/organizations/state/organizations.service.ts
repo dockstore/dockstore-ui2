@@ -7,10 +7,11 @@ import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationsStateService {
-
-  constructor(private organizationsStore: OrganizationsStore, private alertService: AlertService,
-    private organizationsService: OrganizationsService) {
-  }
+  constructor(
+    private organizationsStore: OrganizationsStore,
+    private alertService: AlertService,
+    private organizationsService: OrganizationsService
+  ) {}
 
   /**
    * Update the store with the current array of approved organizations
@@ -19,17 +20,20 @@ export class OrganizationsStateService {
    */
   updateOrganizations(): void {
     this.alertService.start('Getting approved organizations');
-    this.organizationsService.getApprovedOrganizations().pipe(
-      finalize(() => this.organizationsStore.setLoading(false)
-      ))
-      .subscribe((organizations: Array<Organization>) => {
-        this.updateOrganizationState(organizations);
-        this.alertService.simpleSuccess();
-      }, () => {
-        this.updateOrganizationState(null);
-        this.organizationsStore.setError(true);
-        this.alertService.simpleError();
-      });
+    this.organizationsService
+      .getApprovedOrganizations()
+      .pipe(finalize(() => this.organizationsStore.setLoading(false)))
+      .subscribe(
+        (organizations: Array<Organization>) => {
+          this.updateOrganizationState(organizations);
+          this.alertService.simpleSuccess();
+        },
+        () => {
+          this.updateOrganizationState(null);
+          this.organizationsStore.setError(true);
+          this.alertService.simpleError();
+        }
+      );
   }
 
   updateSearchNameState(searchName: string): void {

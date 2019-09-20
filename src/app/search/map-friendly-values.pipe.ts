@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Pipe, PipeTransform } from '@angular/core';
+import { ToolFile } from 'app/shared/swagger';
 
 @Pipe({
   name: 'mapFriendlyValue'
@@ -25,39 +26,40 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * @memberof MapFriendlyValuesPipe
    */
   readonly friendlyValueNames = new Map([
-    ['workflowVersions.verified', new Map([
-      ['1', 'verified'], ['0', 'non-verified']
-    ])],
-    ['has_checker', new Map([
-      ['1', 'has a checker workflow'], ['0', 'unchecked workflow']
-    ])],
-    ['tags.verified', new Map([
-      ['1', 'verified'], ['0', 'non-verified']
-    ])],
-    ['private_access', new Map([
-      ['1', 'private'], ['0', 'public']
-    ])],
-    ['descriptorType', new Map([
-      ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']
-    ])],
-    ['descriptor_type', new Map([
-      ['CWL', 'CWL'], ['WDL', 'WDL'],
-      ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']
-    ])],
-    ['registry', new Map([
-      ['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR'],
-      ['SEVEN_BRIDGES', 'Seven Bridges']
-    ])],
-    ['source_control_provider.keyword', new Map([
-      ['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com'], ['DOCKSTORE', 'dockstore.org']
-    ])],
-    ['descriptor_tooltip', new Map([
-      ['CWL', 'Common Workflow Language'], ['WDL', 'Workflow Description Language'],
-      ['NFL', 'Nextflow']
-    ])],
-    ['author', new Map([
-      ['', 'n/a']
-    ])],
+    ['has_checker', new Map([['1', 'has a checker workflow'], ['0', 'unchecked workflow']])],
+    ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
+    ['private_access', new Map([['1', 'private'], ['0', 'public']])],
+    ['descriptorType', new Map([['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']])],
+    [
+      'descriptor_type',
+      new Map([['CWL', 'CWL'], ['WDL', 'WDL'], ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']])
+    ],
+    [
+      'registry',
+      new Map([
+        ['QUAY_IO', 'Quay.io'],
+        ['DOCKER_HUB', 'Docker Hub'],
+        ['GITLAB', 'GitLab'],
+        ['AMAZON_ECR', 'Amazon ECR'],
+        ['SEVEN_BRIDGES', 'Seven Bridges']
+      ])
+    ],
+    [
+      'source_control_provider.keyword',
+      new Map([['GITHUB', 'github.com'], ['BITBUCKET', 'bitbucket.org'], ['GITLAB', 'gitlab.com'], ['DOCKSTORE', 'dockstore.org']])
+    ],
+    ['descriptor_tooltip', new Map([['CWL', 'Common Workflow Language'], ['WDL', 'Workflow Description Language'], ['NFL', 'Nextflow']])],
+    ['author', new Map([['', 'n/a']])],
+    [
+      'ToolFile.FileTypeEnum',
+      new Map([
+        [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR, 'Primary Descriptor'],
+        [ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR, 'Secondary Descriptors'],
+        [ToolFile.FileTypeEnum.TESTFILE, 'Test Parameter Files'],
+        [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
+        [ToolFile.FileTypeEnum.OTHER, 'Files']
+      ])
+    ]
   ]);
 
   /**

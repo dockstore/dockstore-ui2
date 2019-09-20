@@ -21,7 +21,7 @@ import {
   DateStubService,
   DockstoreStubService,
   ImageProviderStubService,
-  ProviderStubService,
+  ProviderStubService
 } from '../test/service-stubs';
 import { sampleTool2, sampleTool3 } from './../test/mocked-objects';
 import { ContainerService } from './container.service';
@@ -32,16 +32,17 @@ import { ProviderService } from './provider.service';
 import { CheckerWorkflowService } from './state/checker-workflow.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 
-
 describe('ContainerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ContainerService,
+      providers: [
+        ContainerService,
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         { provide: ProviderService, useClass: ProviderStubService },
         { provide: ImageProviderService, useClass: ImageProviderStubService },
         { provide: DateService, useClass: DateStubService },
-        { provide: DockstoreService, useClass: DockstoreStubService }],
+        { provide: DockstoreService, useClass: DockstoreStubService }
+      ]
     });
   });
 
@@ -87,5 +88,4 @@ describe('ContainerService', () => {
     service.addToTools(tools, sampleTool3);
     expect(service.tools$.getValue()).toEqual([sampleTool1, sampleTool2, sampleTool3]);
   }));
-
 });

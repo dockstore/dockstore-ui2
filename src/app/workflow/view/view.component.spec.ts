@@ -24,12 +24,13 @@ import {
   HostedStubService,
   VersionModalStubService,
   WorkflowsStubService,
-  WorkflowStubService,
+  WorkflowStubService
 } from '../../test/service-stubs';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { ViewService } from './view.service';
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;
@@ -37,23 +38,23 @@ describe('ViewWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule],
+      imports: [MatDialogModule, MatSnackBarModule],
       declarations: [ViewWorkflowComponent],
       providers: [
+        { provide: ViewService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: VersionModalService, useClass: VersionModalStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService},
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: DateService, useClass: DateStubService },
         { provide: HostedService, useClass: HostedStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewWorkflowComponent);
     component = fixture.componentInstance;
-    const workflowVersion: WorkflowVersion = {id: 5, reference: 'stuff', name: 'name'};
+    const workflowVersion: WorkflowVersion = { id: 5, reference: 'stuff', name: 'name' };
     component.version = workflowVersion;
     fixture.detectChanges();
   });

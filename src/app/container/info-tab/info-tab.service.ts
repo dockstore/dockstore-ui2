@@ -52,18 +52,23 @@ export class InfoTabService extends Base {
    * @memberof InfoTabService
    */
   private currentTool: ExtendedDockstoreTool;
-  constructor(private containersService: ContainersService, private alertService: AlertService,
-    private containerService: ContainerService, private refreshService: RefreshService,
-    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery) {
+  constructor(
+    private containersService: ContainersService,
+    private alertService: AlertService,
+    private containerService: ContainerService,
+    private refreshService: RefreshService,
+    private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery
+  ) {
     super();
-    this.extendedDockstoreToolQuery.extendedDockstoreTool$.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
+    this.extendedDockstoreToolQuery.extendedDockstoreTool$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((extendedDockstoreTool: ExtendedDockstoreTool) => {
         if (extendedDockstoreTool) {
           this.tool = extendedDockstoreTool;
           this.cancelEditing();
         }
       });
-    this.containerService.tools$.subscribe(tools => this.tools = tools);
+    this.containerService.tools$.subscribe(tools => (this.tools = tools));
   }
   setDockerFileEditing(editing: boolean) {
     this.dockerFileEditing$.next(editing);
@@ -87,17 +92,20 @@ export class InfoTabService extends Base {
 
   updateAndRefresh(tool: DockstoreTool) {
     const message = 'Tool Info';
-    tool.tags = [];
+    tool.workflowVersions = [];
     this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
       this.alertService.start('Updating ' + message);
-      this.containersService.refresh(this.tool.id).subscribe(refreshResponse => {
-        this.containerService.replaceTool(this.tools, refreshResponse);
-        this.containerService.setTool(refreshResponse);
-        this.alertService.detailedSuccess();
-      }, error => {
-        this.alertService.detailedError(error);
-        this.restoreTool();
-      });
+      this.containersService.refresh(this.tool.id).subscribe(
+        refreshResponse => {
+          this.containerService.replaceTool(this.tools, refreshResponse);
+          this.containerService.setTool(refreshResponse);
+          this.alertService.detailedSuccess();
+        },
+        error => {
+          this.alertService.detailedError(error);
+          this.restoreTool();
+        }
+      );
     });
   }
 

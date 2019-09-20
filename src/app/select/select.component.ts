@@ -21,7 +21,6 @@ import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core
   templateUrl: './select.component.html'
 })
 export class SelectComponent implements OnChanges {
-
   @Input() items: Array<any>;
   @Input() field?;
   @Input() default?: any;
@@ -38,5 +37,4 @@ export class SelectComponent implements OnChanges {
   changedSelect(obj) {
     this.select.emit(obj);
   }
-
 }

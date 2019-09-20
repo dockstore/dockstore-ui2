@@ -15,9 +15,7 @@ export class EventsComponent implements OnInit, OnChanges {
   loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
 
-  constructor(private eventsQuery: EventsQuery,
-              private eventsService: EventsService
-  ) { }
+  constructor(private eventsQuery: EventsQuery, private eventsService: EventsService) {}
 
   ngOnInit() {
     this.loading$ = this.eventsQuery.loading$;

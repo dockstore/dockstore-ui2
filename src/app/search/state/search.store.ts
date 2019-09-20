@@ -17,15 +17,16 @@ import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
 export interface SearchState {
-   shortUrl: string;
-   workflowhit: any;
-   toolhit: any;
-   showToolTagCloud: boolean;
-   showWorkflowTagCloud: boolean;
-   searchText: string;
-   filterKeys: Array<string>;
-   autocompleteTerms: Array<string>;
-   suggestTerm: string;
+  shortUrl: string;
+  workflowhit: any;
+  toolhit: any;
+  showToolTagCloud: boolean;
+  showWorkflowTagCloud: boolean;
+  searchText: string;
+  filterKeys: Array<string>;
+  autocompleteTerms: Array<string>;
+  suggestTerm: string;
+  pageSize: number;
 }
 
 export function createInitialState(): SearchState {
@@ -38,17 +39,15 @@ export function createInitialState(): SearchState {
     searchText: '',
     filterKeys: [],
     autocompleteTerms: [],
-    suggestTerm: ''
+    suggestTerm: '',
+    pageSize: 10
   };
 }
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'search' })
 export class SearchStore extends Store<SearchState> {
-
   constructor() {
     super(createInitialState());
   }
-
 }
-

@@ -6,10 +6,11 @@ import { AliasesStore, AliasesState } from './aliases.store';
 export class AliasesQuery extends Query<AliasesState> {
   organization$ = this.select(state => state.organization);
   collection$ = this.select(state => state.collection);
+  tool$ = this.select(state => state.tool);
+  workflow$ = this.select(state => state.workflow);
   loading$ = this.selectLoading();
 
   constructor(protected store: AliasesStore) {
     super(store);
   }
-
 }

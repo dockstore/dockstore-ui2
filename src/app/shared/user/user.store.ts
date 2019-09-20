@@ -3,8 +3,8 @@ import { Store, StoreConfig } from '@datorama/akita';
 import { ExtendedUserData, User } from '../swagger';
 
 export interface UserState {
-   user: User;
-   extendedUserData: ExtendedUserData;
+  user: User;
+  extendedUserData: ExtendedUserData;
 }
 
 export function createInitialState(): UserState {
@@ -17,10 +17,7 @@ export function createInitialState(): UserState {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'user' })
 export class UserStore extends Store<UserState> {
-
   constructor() {
     super(createInitialState());
   }
-
 }
-

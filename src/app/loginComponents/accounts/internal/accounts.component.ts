@@ -24,9 +24,16 @@ export class AccountsInternalComponent implements OnInit {
   hasGitHubToken$: Observable<boolean>;
   hasGoogleToken$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
-  constructor(private userService: UserService, private usersService: UsersService, private configuration: Configuration,
-    private tokenQuery: TokenQuery, private matSnackBar: MatSnackBar, private userQuery: UserQuery, private alertQuery: AlertQuery,
-    private alertService: AlertService) {
+  constructor(
+    private userService: UserService,
+    private usersService: UsersService,
+    private configuration: Configuration,
+    private tokenQuery: TokenQuery,
+    private matSnackBar: MatSnackBar,
+    private userQuery: UserQuery,
+    private alertQuery: AlertQuery,
+    private alertService: AlertService
+  ) {
     this.hasGitHubToken$ = this.tokenQuery.hasGitHubToken$;
     this.hasGoogleToken$ = this.tokenQuery.hasGoogleToken$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
@@ -40,12 +47,14 @@ export class AccountsInternalComponent implements OnInit {
    */
   sync(service: TokenSource.GOOGLE | TokenSource.GITHUB) {
     this.alertService.start('Updating user metadata');
-    this.usersService.updateLoggedInUserMetadata(service).subscribe((user: User) => {
-      this.userService.updateUser(user);
-      this.alertService.simpleSuccess();
-    }, error => {
-      this.alertService.simpleError();
-    },
+    this.usersService.updateLoggedInUserMetadata(service).subscribe(
+      (user: User) => {
+        this.userService.updateUser(user);
+        this.alertService.simpleSuccess();
+      },
+      error => {
+        this.alertService.simpleError();
+      }
     );
   }
 
@@ -66,9 +75,7 @@ export class AccountsInternalComponent implements OnInit {
           }
         }
       }
-    }
-    );
-
+    });
   }
 
   ngOnInit() {

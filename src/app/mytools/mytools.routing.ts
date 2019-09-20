@@ -14,15 +14,16 @@
  *    limitations under the License.
  */
 import { RouterModule, Routes } from '@angular/router';
-
+import { EntryType } from 'app/shared/enum/entry-type';
 import { MyToolComponent } from './my-tool/my-tool.component';
 import { MyToolsComponent } from './mytools.component';
 
 const MYTOOLS_ROUTES: Routes = [
   {
-    path: '', component: MyToolsComponent, data: {title: 'Dockstore | My Tools'}, children: [
-      { path: '**', component: MyToolComponent, data: {title: 'Dockstore | My Tools'}}
-    ]
+    path: '',
+    component: MyToolsComponent,
+    data: { title: 'Dockstore | My Tools' },
+    children: [{ path: '**', component: MyToolComponent, data: { title: 'Dockstore | My Tools', entryType: EntryType.Tool } }]
   }
 ];
 export const mytoolsRouting = RouterModule.forChild(MYTOOLS_ROUTES);

@@ -1,4 +1,4 @@
-<div *ngIf="workflow?.descriptorType === 'wdl'" class="panel panel-default">
+<div *ngIf="workflow?.descriptorType === 'WDL' || 'CWL'" class="panel panel-default">
   <div class="panel-heading">
     <h3>Launch with</h3>
   </div>
@@ -6,44 +6,63 @@
     <div class="container-source-repos">
       <div class="container-launch-with">
         <div fxLayout="row wrap">
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'wdl'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
             <div *ngIf="(hasFileImports$ | async) || (hasHttpImports$ | async)" class="import-warning">
-              Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without imports in DNAstack.
+              Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without
+              imports in DNAstack.
             </div>
-            <a mat-raised-button
-               [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ''"
-               target="_blank"
-               rel="noopener"
-               [attr.href]="config.DNASTACK_IMPORT_URL +'?descriptorType=wdl&path=' + workflowPathAsQueryValue"
-               [disabled]="!(hasContent$ | async)"
-               color="primary"><img src="../../assets/images/thirdparty/dnastack.png"> DNAstack &raquo;</a>
+            <a
+              mat-raised-button
+              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ''"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
+              [disabled]="!(hasContent$ | async)"
+              color="primary"
+              ><img src="../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
+            >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'wdl' && config.FEATURES.enableLaunchWithFireCloud">
-            <a mat-raised-button
-               [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ((hasFileImports$ | async) ? 'FireCloud does not support file-path imports in WDL. It only supports http(s) imports.' : '')"
-               target="_blank"
-               rel="noopener"
-               [attr.href]="config.FIRECLOUD_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-               [disabled]="!(hasContent$ | async) || (hasFileImports$ | async)"
-               color="primary"><mat-icon svgIcon="firecloud"></mat-icon> FireCloud &raquo;</a>
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+            <a
+              mat-raised-button
+              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ''"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
+              [disabled]="!(hasContent$ | async)"
+              color="primary"
+              ><mat-icon svgIcon="dnanexus"></mat-icon> DNAnexus &raquo;</a
+            >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'wdl'">
-            <a mat-raised-button
-               [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ''"
-               target="_blank"
-               rel="noopener"
-               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
-               [disabled]="!(hasContent$ | async)"
-               color="primary"><mat-icon svgIcon="dnanexus"></mat-icon> DNAnexus &raquo;</a>
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+            <a
+              mat-raised-button
+              [matTooltip]="
+                !(hasContent$ | async)
+                  ? 'The WDL has no content.  '
+                  : (hasFileImports$ | async)
+                  ? 'Terra does not support file-path imports in WDL. It only supports http(s) imports.'
+                  : ''
+              "
+              target="_blank"
+              rel="noopener"
+              [disabled]="!(hasContent$ | async) || (hasFileImports$ | async)"
+              [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              color="primary"
+              ><mat-icon svgIcon="terra"></mat-icon> Terra &raquo;</a
+            >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'wdl'">
-            <a mat-raised-button
-               [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.  ' : ((hasFileImports$ | async) ? 'Terra does not support file-path imports in WDL. It only supports http(s) imports.' : '')"
-               target="_blank"
-               rel="noopener"
-               [disabled]="!(hasContent$ | async) || (hasFileImports$ | async)"
-               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-               color="primary"><mat-icon svgIcon="terra"></mat-icon> Terra &raquo;</a>
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
+            <a
+              mat-raised-button
+              [matTooltip]="cgcTooltip$ | async"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
+              [disabled]="!(hasContent$ | async) || (hasHttpImports$ | async)"
+              color="primary"
+              ><img src="../assets/images/thirdparty/cgc.png" /> CGC
+            </a>
           </div>
         </div>
       </div>

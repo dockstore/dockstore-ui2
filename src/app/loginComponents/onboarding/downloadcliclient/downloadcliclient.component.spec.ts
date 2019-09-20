@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AuthService } from 'ng2-ui-auth';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxMdModule } from 'ngx-md';
 
 import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
@@ -9,6 +8,8 @@ import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../t
 import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
 import { MatIconModule, MatButtonModule } from '@angular/material';
+import { MarkdownModule } from 'ngx-markdown';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DownloadCLIClientComponent', () => {
   let component: DownloadCLIClientComponent;
@@ -16,15 +17,14 @@ describe('DownloadCLIClientComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DownloadCLIClientComponent,
-        RouterLinkStubDirective, RouterOutletStubComponent],
-      imports: [ClipboardModule, NgxMdModule.forRoot(), MatIconModule, MatButtonModule],
+      declarations: [DownloadCLIClientComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+      imports: [ClipboardModule, MarkdownModule.forRoot(), MatIconModule, MatButtonModule, HttpClientTestingModule],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: GA4GHService, useClass: GA4GHStubService },
-        MetadataService]
-    })
-      .compileComponents();
+        MetadataService
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

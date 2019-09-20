@@ -12,7 +12,7 @@ describe('OrganizationsStateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationsStateService, OrganizationsStore],
-      imports: [ HttpClientTestingModule, MatSnackBarModule ]
+      imports: [HttpClientTestingModule, MatSnackBarModule]
     });
 
     organizationsStateService = TestBed.get(OrganizationsStateService);
@@ -22,5 +22,4 @@ describe('OrganizationsStateService', () => {
   it('should be created', () => {
     expect(organizationsStateService).toBeDefined();
   });
-
 });

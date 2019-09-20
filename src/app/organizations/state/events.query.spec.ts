@@ -5,11 +5,10 @@ describe('EventsQuery', () => {
   let query: EventsQuery;
 
   beforeEach(() => {
-    query = new EventsQuery(new EventsStore);
+    query = new EventsQuery(new EventsStore());
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

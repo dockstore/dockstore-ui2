@@ -16,7 +16,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TagCloudModule } from 'angular-tag-cloud-module';
@@ -27,7 +27,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-
+import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
@@ -42,7 +42,7 @@ import { SearchToolTableComponent } from './search-tool-table/search-tool-table.
 import { SearchWorkflowTableComponent } from './search-workflow-table/search-workflow-table.component';
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
-import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { SearchService } from './state/search.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
     SearchToolTableComponent,
     SearchWorkflowTableComponent,
     BasicSearchComponent
-],
+  ],
   imports: [
     CommonModule,
     CustomMaterialModule,
@@ -72,10 +72,10 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
     searchRouting,
     HttpClientModule,
     PrivateIconModule,
+    ReactiveFormsModule,
     RefreshAlertModule
   ],
-  providers: [AdvancedSearchService, QueryBuilderService, {provide: TooltipConfig, useFactory: getTooltipConfig}],
+  providers: [SearchService, AdvancedSearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
   exports: [SearchComponent]
-
 })
-export class SearchModule { }
+export class SearchModule {}

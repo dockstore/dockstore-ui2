@@ -8,27 +8,65 @@
         <mat-toolbar-row>
           <form style="width:100%;" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)">
             <mat-form-field color="accent" style="width:40%;">
-              <input matInput [value]="sourcefile.path" (input)="sourcefile.path = $event.target.value" type="text" class="editor-file-name">
+              <input
+                matInput
+                [value]="sourcefile.path"
+                (input)="sourcefile.path = $event.target.value"
+                type="text"
+                class="editor-file-name"
+              />
             </mat-form-field>
           </form>
           <span *ngIf="!editing || isPrimaryDescriptor(sourcefile?.path) || isDockerFile(sourcefile?.path)">
-            {{sourcefile.path}}
+            {{ sourcefile.path }}
           </span>
           <span class="spacer"></span>
           <span>
-            <button mat-icon-button class="delete-editor-file mr-2" color="warn" (click)="deleteFile(i)" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)" matTooltip="Delete the file">
+            <button
+              mat-icon-button
+              class="delete-editor-file mr-2"
+              color="warn"
+              (click)="deleteFile(i)"
+              *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)"
+              matTooltip="Delete the file"
+            >
               <mat-icon>delete</mat-icon>
             </button>
             <span *ngIf="!editing">
-              <a mat-icon-button color="secondary" class="mr-2 link-button" *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="(sourcefile | publicFileDownload : entrypath: selectedVersion: descriptorType: entryType)" type="button" matTooltip="Download {{sourcefile?.path}}">
+              <a
+                mat-icon-button
+                color="secondary"
+                class="mr-2 link-button"
+                *ngIf="published$ | async; else unpublishedDownloadLink"
+                download
+                [href]="sourcefile | publicFileDownload: entrypath:selectedVersion:descriptorType:entryType"
+                type="button"
+                matTooltip="Download {{ sourcefile?.path }}"
+              >
                 <mat-icon>save_alt</mat-icon>
               </a>
               <ng-template #unpublishedDownloadLink>
-                <a mat-icon-button color="secondary" class="mr-2 link-button" [href]="(sourcefile?.content | privateFileDownload)" [download]="(sourcefile?.path | privateFilePath)" type="button" matTooltip="Download {{sourcefile?.path}}">
+                <a
+                  mat-icon-button
+                  color="secondary"
+                  class="mr-2 link-button"
+                  [href]="sourcefile?.content | privateFileDownload"
+                  [download]="sourcefile?.path | privateFilePath"
+                  type="button"
+                  matTooltip="Download {{ sourcefile?.path }}"
+                >
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>
-              <button mat-icon-button color="secondary" type="button" class="mr-2" matTooltip="Copy to clipboard" ngxClipboard [cbContent]="sourcefile?.content">
+              <button
+                mat-icon-button
+                color="secondary"
+                type="button"
+                class="mr-2"
+                matTooltip="Copy to clipboard"
+                ngxClipboard
+                [cbContent]="sourcefile?.content"
+              >
                 <mat-icon>file_copy</mat-icon>
               </button>
             </span>
@@ -38,7 +76,12 @@
       <app-code-editor [(content)]="sourcefile.content" [filepath]="sourcefile.path" [editing]="editing"></app-code-editor>
     </div>
   </div>
-  <button mat-raised-button color="primary" (click)="addFile()" *ngIf="editing && (fileType !== 'dockerfile' || (fileType === 'dockerfile' && sourcefiles?.length == 0))">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="addFile()"
+    *ngIf="editing && (fileType !== 'dockerfile' || (fileType === 'dockerfile' && sourcefiles?.length == 0))"
+  >
     Add File
   </button>
 </div>

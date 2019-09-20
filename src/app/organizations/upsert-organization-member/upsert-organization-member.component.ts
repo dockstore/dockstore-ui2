@@ -12,11 +12,12 @@ import { FormsState, UpsertOrganizationMemberService } from '../state/upsert-org
   styleUrls: ['./upsert-organization-member.component.scss']
 })
 export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
-
   roleKeys: any;
 
-  constructor(private upsertOrganizationMemberService: UpsertOrganizationMemberService,
-    private formsManager: AkitaNgFormsManager<FormsState>, @Inject(MAT_DIALOG_DATA) public data: any
+  constructor(
+    private upsertOrganizationMemberService: UpsertOrganizationMemberService,
+    private formsManager: AkitaNgFormsManager<FormsState>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.roleKeys = Object.keys(this.RoleEnum);
   }

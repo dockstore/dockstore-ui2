@@ -25,7 +25,7 @@ import {
   HostedStubService,
   MetadataStubService,
   WorkflowsStubService,
-  WorkflowStubService,
+  WorkflowStubService
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -35,24 +35,26 @@ import { ToolDescriptor } from '../../shared/swagger';
 describe('Service: RegisterWorkflowModal', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RegisterWorkflowModalService,
+      providers: [
+        RegisterWorkflowModalService,
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: MetadataService, useClass: MetadataStubService },
         { provide: HostedService, useClass: HostedStubService },
-        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-      ], imports: [RouterTestingModule, MatSnackBarModule]
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }
+      ],
+      imports: [RouterTestingModule, MatSnackBarModule]
     });
   });
   const expectedError: any = {
-    'message': 'oh no!',
-    'errorDetails': 'oh yes'
+    message: 'oh no!',
+    errorDetails: 'oh yes'
   };
   const expectedWorkflow: any = {
-    'repository': 'GitHub',
-    'descriptorType': ToolDescriptor.TypeEnum.CWL,
-    'gitUrl': 'asdf',
-    'workflowName': ''
+    repository: 'GitHub',
+    descriptorType: ToolDescriptor.TypeEnum.CWL,
+    gitUrl: 'asdf',
+    workflowName: ''
   };
 
   it('should ...', inject([RegisterWorkflowModalService], (service: RegisterWorkflowModalService) => {
@@ -74,10 +76,12 @@ describe('Service: RegisterWorkflowModal', () => {
     service.workflow.subscribe(workflow => expect(workflow).toEqual(expectedWorkflow));
   }));
 
-  it('should have not error on getDescriptorLanguageKeys()',
-    inject([RegisterWorkflowModalService], (service: RegisterWorkflowModalService) => {
+  it('should have not error on getDescriptorLanguageKeys()', inject(
+    [RegisterWorkflowModalService],
+    (service: RegisterWorkflowModalService) => {
       const descriptorLanguageKeys: Array<String> = service.getDescriptorLanguageKeys();
       expect(descriptorLanguageKeys.includes('CWL'));
       expect(descriptorLanguageKeys.includes('WDL'));
-    }));
+    }
+  ));
 });

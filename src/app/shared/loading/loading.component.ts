@@ -17,9 +17,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class LoadingComponent implements OnInit {
   @Input() loading = true;
   @Input() retainContent = false;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -1,21 +1,33 @@
 <p *ngIf="showText">
-  Your current username is <strong>{{user?.username}}</strong>. It may have been auto-generated when you initially created a Dockstore account.
-  You can update your username only if you meet certain conditions.
+  Your current username is <strong>{{ user?.username }}</strong
+  >. It may have been auto-generated when you initially created a Dockstore account. You can update your username only if you meet certain
+  conditions.
 </p>
 
-<p>You <strong>can<span *ngIf="!(canChangeUsername$ | async)">'t</span></strong> change your username.</p>
+<p>
+  You <strong>can<span *ngIf="!(canChangeUsername$ | async)">'t</span></strong> change your username.
+</p>
 
 <mat-card class="alert alert-warning" role="alert" *ngIf="showEmailWarning">
-  <mat-icon>warning</mat-icon> Your username seems to be an email. We recommend changing your username to something else so that your email is
-  not picked up by a spambot. The @ symbol is not allowed in a username, so note that once you change your username you cannot
-  change it back to your email.
+  <mat-icon>warning</mat-icon> Your username seems to be an email. We recommend changing your username to something else so that your email
+  is not picked up by a spambot. The @ symbol is not allowed in a username, so note that once you change your username you cannot change it
+  back to your email.
 </mat-card>
 
 <div class="change-username-form">
   <mat-form-field>
     <mat-label>Username</mat-label>
-    <input [errorStateMatcher]="matcher" [formControl]="usernameFormControl" matInput id="username" name="username" [(ngModel)]="username">
-    <mat-error *ngIf="usernameFormControl.hasError('pattern'); else checkRequired">Invalid Username Pattern (Only alphanumeric characters and internal underscores and dashes allowed)</mat-error>
+    <input
+      [errorStateMatcher]="matcher"
+      [formControl]="usernameFormControl"
+      matInput
+      id="username"
+      name="username"
+      [(ngModel)]="username"
+    />
+    <mat-error *ngIf="usernameFormControl.hasError('pattern'); else checkRequired"
+      >Invalid Username Pattern (Only alphanumeric characters and internal underscores and dashes allowed)</mat-error
+    >
     <ng-template #checkRequired>
       <mat-error *ngIf="usernameFormControl.hasError('required'); else checkMaxLength">Username is required</mat-error>
       <ng-template #checkMaxLength>
@@ -24,8 +36,15 @@
     </ng-template>
   </mat-form-field>
   <span class="change-username-form-buttons">
-    <button mat-raised-button color="primary" id="updateUsername" [disabled]="usernameTaken || usernameFormControl.invalid || !(canChangeUsername$ | async)"
-      (click)="updateUsername()">Update Username</button>
+    <button
+      mat-raised-button
+      color="primary"
+      id="updateUsername"
+      [disabled]="usernameTaken || usernameFormControl.invalid || !(canChangeUsername$ | async)"
+      (click)="updateUsername()"
+    >
+      Update Username
+    </button>
     <span *ngIf="(canChangeUsername$ | async) && usernameFormControl.valid">
       <span *ngIf="!checkingIfValid">
         <span *ngIf="!usernameTaken" class="vertical-center">

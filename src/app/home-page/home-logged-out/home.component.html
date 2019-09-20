@@ -1,0 +1,216 @@
+<!--
+  ~    Copyright 2019 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div class="header">
+  <div class="container">
+    <div fxLayout="column wrap" fxLayoutGap="40px" fxLayoutAlign="space-around" class="top-section">
+      <div class="text-center">
+        <h1 class="title">Create, Share, Use</h1>
+        <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
+
+        <button *ngIf="!(user$ | async); else loggedIn" mat-flat-button color="accent" routerLink="/login" class="big-button">
+          Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
+        </button>
+
+        <ng-template #loggedIn>
+          <button mat-flat-button color="accent" routerLink="/accounts" class="big-button">Welcome {{ (user$ | async).username }}</button>
+        </ng-template>
+
+        <button mat-flat-button routerLink="/search" class="m-2 big-button">
+          Browse tools and workflows
+        </button>
+
+        <div class="search-holder">
+          <input
+            id="searchBar"
+            #search
+            type="text"
+            placeholder="Search..."
+            class="fully-rounded landing-search"
+            (keyup.enter)="goToSearch(search.value)"
+          />
+        </div>
+      </div>
+
+      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px">
+        <h3 class="search-title">New to Dockstore?</h3>
+        <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">
+          <a mat-raised-button href="#overview" class="button-link">Start here</a>
+        </div>
+
+        <!-- Left the boat and truck here in case we want them back -->
+        <!-- <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="20px">
+          <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png">
+          <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png">
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="header-lower" id="overview">
+  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" />
+
+  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <button data-cy="video-overview-button" mat-raised-button (click)="openYoutube()">
+      <mat-icon>play_circle_outline</mat-icon>
+      <span>&nbsp;Video Overview</span>
+    </button>
+  </div>
+</div>
+
+<div class="container">
+  <h2 class="text-center">Create</h2>
+  <p class="lead text-center">
+    Create reproducible workflows using popular technologies and standards.
+  </p>
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder">
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column">
+        <h3 class="text-center">Reproducible environment</h3>
+        <p>
+          The execution environment is described by
+          <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer">Docker</a> and built on platforms like
+          <a href="https://quay.io/" target="_blank" rel="noopener noreferrer">Quay.io</a> or
+          <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">Docker Hub</a>.
+        </p>
+      </mat-card>
+    </div>
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column">
+        <h3 class="text-center">Workflow descriptions</h3>
+        <p>
+          Workflows are described with <a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>,
+          <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a> or
+          <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a> and stored on
+          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>,
+          <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>,
+          <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>, or directly on Dockstore.
+        </p>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div class="container stripe-holder">
+  <h2 class="text-center">Share</h2>
+  <p class="lead text-center">
+    Make your workflows more accessible to the scientific community.
+  </p>
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder container">
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column" fxLayoutAlign="start center">
+        <h3 class="text-center">Shareable</h3>
+        <p>
+          Our implementation of community standards from the <a href="https://www.ga4gh.org/">GA4GH</a> ensures your workflows are findable
+          and interoperable.
+        </p>
+      </mat-card>
+    </div>
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column">
+        <h3 class="text-center">Descriptive</h3>
+        <p>Create a landing page for your workflow to share with the community.</p>
+      </mat-card>
+    </div>
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column">
+        <h3 class="text-center">Organizations</h3>
+        <p>Create organizations for your lab, company, or university where you can have collections of workflows.</p>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <h2 class="text-center">Use</h2>
+  <p class="lead text-center">
+    Discover and launch scientific workflows locally and in the cloud.
+  </p>
+
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder container">
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column">
+        <h3 class="text-center">Online launch</h3>
+        <p>
+          Select from a variety of launch partners including
+          <a href="https://www.dnastack.com/#/" target="_blank" rel="noopener noreferrer">DNAstack</a>,
+          <a href="https://terra.bio/" target="_blank" rel="noopener noreferrer">Terra</a>, and
+          <a href="https://www.dnanexus.com/" target="_blank" rel="noopener noreferrer">DNAnexus</a>.
+        </p>
+      </mat-card>
+    </div>
+    <div fxFlex class="small-card">
+      <mat-card fxLayout="column">
+        <h3 class="text-center">Local launch</h3>
+        <p>
+          Use the <a routerLink="/quick-start" (click)="scrollToTop()">Dockstore CLI</a> to run workflows locally on Linux/Ubuntu and Mac
+          OSX.
+        </p>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div id="next-steps" class="container">
+  <div fxFlex fxLayout="column" fxLayoutGap="20px">
+    <h3 class="text-center">Next steps</h3>
+
+    <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="20px" class="mb-4">
+      <a
+        mat-stroked-button
+        href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/getting-started.html"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Developer Tutorial
+      </a>
+      <a mat-stroked-button href="{{ Dockstore.DOCUMENTATION_URL }}/launch-with/launch.html" target="_blank" rel="noopener noreferrer">
+        Launch workflows
+      </a>
+      <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()">
+        Discover Organizations
+      </button>
+      <button mat-stroked-button routerLink="/search" (click)="scrollToTop()">
+        Discover Workflows
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div fxFlex fxLayout="column" fxLayoutGap="20px">
+    <h3 class="text-center">Join the discussion</h3>
+
+    <div fxLayout="row wrap" fxLayoutAlign="center center">
+      <a mat-stroked-button href="https://discuss.dockstore.org" target="_blank" rel="noopener noreferrer" class="mr-2">
+        <mat-icon>forum</mat-icon> Discourse
+      </a>
+    </div>
+
+    <p class="text-center">
+      And
+    </p>
+
+    <div fxLayout="row wrap" fxLayoutAlign="center center" class="mb-3">
+      <div class="twitter twitter-container">
+        <a class="twitter-timeline" data-theme="light" data-height="400" href="https://twitter.com/DockstoreOrg">
+          Tweets by DockstoreOrg
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

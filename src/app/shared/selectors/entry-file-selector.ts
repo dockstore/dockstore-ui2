@@ -16,7 +16,7 @@
 import { OnDestroy } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
-import {finalize, takeUntil} from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
@@ -26,8 +26,8 @@ import { FilesService } from '../../workflow/files/state/files.service';
 import { FilesQuery } from '../../workflow/files/state/files.query';
 
 /**
-* Abstract class to be implemented by components that have select boxes for a given entry and version
-*/
+ * Abstract class to be implemented by components that have select boxes for a given entry and version
+ */
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
 
@@ -46,18 +46,22 @@ export abstract class EntryFileSelector implements OnDestroy {
   public loading = false;
   public validationMessage = null;
   abstract entrypath: string;
-  protected abstract entryType: ('tool' | 'workflow');
+  protected abstract entryType: 'tool' | 'workflow';
   content: string = null;
 
   abstract getDescriptors(version): Array<any>;
   abstract getValidDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
-  constructor(protected fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-    protected gA4GHService: GA4GHService, protected filesService: FilesService, protected filesQuery: FilesQuery) {
-  }
+  constructor(
+    protected fileService: FileService,
+    protected gA4GHFilesService: GA4GHFilesService,
+    protected gA4GHService: GA4GHService,
+    protected filesService: FilesService,
+    protected filesQuery: FilesQuery
+  ) {}
 
-  protected getDescriptorPath(path: string, entryType: ('tool' | 'workflow')): string {
+  protected getDescriptorPath(path: string, entryType: 'tool' | 'workflow'): string {
     return this.fileService.getDescriptorPath(path, this._selectedVersion, this.currentFile, this.currentDescriptor, entryType);
   }
 
@@ -89,20 +93,20 @@ export abstract class EntryFileSelector implements OnDestroy {
   }
 
   reactToDescriptor() {
-    this.getFiles(this.currentDescriptor).pipe(takeUntil(this.ngUnsubscribe))
+    this.getFiles(this.currentDescriptor)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(files => {
-          this.nullDescriptors = false;
-          this.files = files;
-          if (!this.files) {
-            this.nullDescriptors = true;
-          } else if (this.files.length) {
-            this.onFileChange(this.files[0]);
-          } else {
-            this.currentFile = null;
-            this.content = null;
-          }
+        this.nullDescriptors = false;
+        this.files = files;
+        if (!this.files) {
+          this.nullDescriptors = true;
+        } else if (this.files.length) {
+          this.onFileChange(this.files[0]);
+        } else {
+          this.currentFile = null;
+          this.content = null;
         }
-      );
+      });
   }
 
   onFileChange(file) {
@@ -149,17 +153,21 @@ export abstract class EntryFileSelector implements OnDestroy {
       this.filePath = this.fileService.getFilePath(this.currentFile);
       this.updateCustomDownloadFileButtonAttributes();
     } else {
-      this.gA4GHService.toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(this.currentDescriptor,
-        this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,
-        this._selectedVersion.name, this.currentFile.path).pipe(
-          finalize( () => this.loading = false))
+      this.gA4GHService
+        .toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(
+          this.currentDescriptor,
+          this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,
+          this._selectedVersion.name,
+          this.currentFile.path
+        )
+        .pipe(finalize(() => (this.loading = false)))
         .subscribe((file: FileWrapper) => {
           this.filesService.update(this.currentFile.path, file);
           this.content = file.content;
           this.downloadFilePath = this.getDescriptorPath(this.entrypath, this.entryType);
           this.filePath = this.fileService.getFilePath(this.currentFile);
           this.updateCustomDownloadFileButtonAttributes();
-      });
+        });
     }
   }
 
@@ -168,7 +176,7 @@ export abstract class EntryFileSelector implements OnDestroy {
    * @param isDescriptor Yes if looking at descriptor, false otherwise (test params)
    * @param version The version of interest
    */
-  checkIfValid(isDescriptor: boolean, version: (WorkflowVersion|Tag)): void {
+  checkIfValid(isDescriptor: boolean, version: WorkflowVersion | Tag): void {
     let fileEnum = null;
     if (this.currentDescriptor === ToolDescriptor.TypeEnum.CWL) {
       if (isDescriptor) {

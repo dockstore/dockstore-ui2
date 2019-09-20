@@ -13,10 +13,9 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
 <app-header>
-  <img class="site-icons-medium" src="../assets/images/dockstore/dockstore-tools-blue.png"> Available Tools
+  <img class="site-icons-medium" src="../assets/images/dockstore/dockstore-tools-blue.png" /> {{ entryPageTitle$ | async | titlecase }}
 </app-header>
 <div class="container">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

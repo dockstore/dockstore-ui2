@@ -14,11 +14,12 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
-
+import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { WorkflowQuery } from 'app/shared/state/workflow.query';
+import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { ListService } from '../../shared/list.service';
-import { PagenumberService } from '../../shared/pagenumber.service';
 import { ProviderService } from '../../shared/provider.service';
 import { PaginatorQuery } from '../../shared/state/paginator.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
@@ -28,25 +29,30 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 
 @Component({
   selector: 'app-list-workflows',
-  templateUrl: './list.component.html'
+  templateUrl: './list.component.html',
+  styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss']
 })
 export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['repository', 'author', 'descriptorType', 'projectLinks', 'stars'];
+  public displayedColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
+  public entryType$: Observable<EntryType>;
   type: 'tool' | 'workflow' = 'workflow';
   constructor(
     private dockstoreService: DockstoreService,
-    private pagenumberService: PagenumberService,
     private workflowsService: WorkflowsService,
     protected providerService: ProviderService,
-    listService: ListService, paginatorService: PaginatorService,
-    dateService: DateService, protected paginatorQuery: PaginatorQuery
+    protected workflowQuery: WorkflowQuery,
+    paginatorService: PaginatorService,
+    dateService: DateService,
+    protected paginatorQuery: PaginatorQuery,
+    protected sessionQuery: SessionQuery
   ) {
-    super(listService, paginatorService, providerService, dateService);
+    super(paginatorService, providerService, dateService, sessionQuery);
   }
 
   ngOnInit() {
+    this.entryType$ = this.sessionQuery.entryType$;
     this.pageSize$ = this.paginatorQuery.workflowPageSize$;
     this.pageIndex$ = this.paginatorQuery.workflowPageIndex$;
     this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.providerService);

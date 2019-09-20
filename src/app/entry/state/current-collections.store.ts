@@ -7,10 +7,7 @@ export interface CurrentCollectionsState extends EntityState<CollectionOrganizat
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'current-collections', idKey: 'collectionId' })
 export class CurrentCollectionsStore extends EntityStore<CurrentCollectionsState, CollectionOrganization> {
-
   constructor() {
     super();
   }
-
 }
-

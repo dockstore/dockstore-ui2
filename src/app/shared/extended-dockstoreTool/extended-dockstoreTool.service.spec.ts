@@ -21,7 +21,7 @@ import {
   DateStubService,
   DockstoreStubService,
   ImageProviderStubService,
-  ProviderStubService,
+  ProviderStubService
 } from '../../test/service-stubs';
 import { ContainerService } from '../container.service';
 import { DateService } from '../date.service';
@@ -34,13 +34,14 @@ import { ExtendedDockstoreToolService } from './extended-dockstoreTool.service';
 describe('Service: ExtendedTool', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ExtendedDockstoreToolService,
-      { provide: DateService, useClass: DateStubService},
-      { provide: DockstoreService, useClass: DockstoreStubService},
-      { provide: ContainerService, useClass: ContainerStubService},
-      { provide: ProviderService, useClass: ProviderStubService },
-      { provide: ImageProviderService, useClass: ImageProviderStubService}
-    ]
+      providers: [
+        ExtendedDockstoreToolService,
+        { provide: DateService, useClass: DateStubService },
+        { provide: DockstoreService, useClass: DockstoreStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: ProviderService, useClass: ProviderStubService },
+        { provide: ImageProviderService, useClass: ImageProviderStubService }
+      ]
     });
   });
 
@@ -55,7 +56,7 @@ describe('Service: ExtendedTool', () => {
     expect(extendedTool.lastBuildDate).toEqual('a date time message');
     expect(extendedTool.lastUpdatedDate).toEqual('a date time message');
     expect(extendedTool.versionVerified).toEqual(true);
-    expect(extendedTool.verifiedSources).toEqual([{version: 'c', verifiedSource: 'tester'}]);
+    expect(extendedTool.verifiedSources).toEqual([{ version: 'c', verifiedSource: 'tester' }]);
     expect(extendedTool.imgProviderUrl).toEqual('an image provider url');
     expect(extendedTool.provider).toEqual('a provider');
     expect(extendedTool.providerUrl).toEqual('a provider url');
@@ -63,4 +64,3 @@ describe('Service: ExtendedTool', () => {
     expect(extendedTool.buildModeTooltip).toEqual('Manual: No versions are automated builds');
   }));
 });
-

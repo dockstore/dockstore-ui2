@@ -18,9 +18,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileService } from '../../../shared/file.service';
 
-
 import { WdlViewerComponent } from './wdl-viewer.component';
-import { WdlViewerService } from './wdl-viewer.service';
+import { WdlViewerService } from './state/wdl-viewer.service';
 
 describe('WdlViewerComponent', () => {
   let component: WdlViewerComponent;
@@ -28,12 +27,11 @@ describe('WdlViewerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WdlViewerComponent ],
+      declarations: [WdlViewerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [FileService, WdlViewerService],
       imports: [HttpClientTestingModule]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

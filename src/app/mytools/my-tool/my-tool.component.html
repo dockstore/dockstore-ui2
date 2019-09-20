@@ -13,61 +13,100 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-  <app-header>
-    <button mat-icon-button (click)="toggleSidebar()"><mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon></button>
-    <img src="../assets/images/dockstore/dockstore-tools-blue.png"> My Tools
-  </app-header>
+<app-header>
+  <button mat-icon-button (click)="toggleSidebar()">
+    <mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
+  </button>
+  <img src="../assets/images/dockstore/dockstore-tools-blue.png" /> {{ myEntryPageTitle$ | async | titlecase }}
+</app-header>
 
-  <button mat-fab color="accent" id="register_tool_button" class="fab-bottom-right" matTooltip="Register tool" matTooltipPosition="before" (click)="showRegisterEntryModal()" [disabled]="(isRefreshing$ | async)"><mat-icon>add</mat-icon></button>
+<button
+  mat-fab
+  color="accent"
+  id="register_tool_button"
+  class="fab-bottom-right"
+  matTooltip="Register tool"
+  matTooltipPosition="before"
+  (click)="showRegisterEntryModal()"
+  [disabled]="isRefreshing$ | async"
+>
+  <mat-icon>add</mat-icon>
+</button>
 
-  <div class="container-fluid pt-3 sidebar-set-height">
-      <!--Tool Content Page-->
-      <div class="row containers-rsb" style="height:100%;">
-        <mat-sidenav-container autosize class="sidebar-set-height">
-          <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12">
-            <div id="parent">
-              <div id="child">
-                <div class="clearfix sidebar-header">
-                    <button mat-flat-button color="primary" [matTooltipPosition]="'after'" matTooltip="Find new tools and sync all existing tools" class="pull-right" (click)="refreshAllEntries()" [disabled]="(isRefreshing$ | async)">
-                      Refresh All
-                    </button>
-                  <h3 class="sidebar-header">My tools</h3>
-                </div>
-                <p *ngIf="!groupEntriesObject || !groupEntriesObject.length">You have not registered any tools</p>
-                <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupEntriesObject" [refreshMessage]="(isRefreshing$ | async)"></app-sidebar-accordion>
-              </div>
+<div class="container-fluid pt-3 sidebar-set-height">
+  <!--Tool Content Page-->
+  <div class="row containers-rsb" style="height:100%;">
+    <mat-sidenav-container autosize class="sidebar-set-height">
+      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12" *ngIf="!(refreshingMyEntries$ | async)">
+        <div id="parent">
+          <div id="child">
+            <div class="clearfix sidebar-header">
+              <mat-toolbar>
+                <mat-toolbar-row>
+                  <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+                    <span>My tools</span>
+                    <span>
+                      <button
+                        mat-button
+                        color="primary"
+                        [matTooltipPosition]="'after'"
+                        matTooltip="Find new tools and sync all existing tools"
+                        class="pull-right"
+                        (click)="refreshAllEntries()"
+                        [disabled]="isRefreshing$ | async"
+                      >
+                        Refresh All
+                      </button>
+                    </span>
+                  </div>
+                </mat-toolbar-row>
+              </mat-toolbar>
             </div>
-          </mat-sidenav>
-          <mat-sidenav-content [className]="showSidebar ? 'col-sm-9': 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-            <div *ngIf="!(isRefreshing$ | async) && (groupEntriesObject?.length == 0 || !groupEntriesObject)">
-              <div class="col-md-12">
-                <mat-card class="alert alert-info" role="alert">
-                  <p>
-                    <mat-icon>info</mat-icon>
-                    There are currently no tools registered under this account, to add your first tool, do one of the following:
-                  </p>
-                  <ul>
-                    <li>
-                      Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools will be synchronized
-                      in the linking process.
-                    </li>
-                    <li>
-                      Press the 'Add Tool' button to manually add a tool.
-                    </li>
-                    <button mat-raised-button color="primary" (click)="showRegisterEntryModal()" type="button" [disabled]="(isRefreshing$ | async)">
-                      Add Tool
-                    </button>
-                  </ul>
-                  <div *ngIf="!hasGitHubToken" class="mt-3">
-                      <a class="btn btn-block btn-social btn-github" (click)="link()">
-                        <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
-                      </a>
-                    </div>
-                </mat-card>
+            <p *ngIf="!groupEntriesObject || !groupEntriesObject.length">You have not registered any tools</p>
+            <app-sidebar-accordion
+              [openOneAtATime]="oneAtATime"
+              [groupEntriesObject]="groupEntriesObject"
+              [refreshMessage]="isRefreshing$ | async"
+            ></app-sidebar-accordion>
+          </div>
+        </div>
+      </mat-sidenav>
+      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
+        <div *ngIf="!(isRefreshing$ | async) && (groupEntriesObject?.length == 0 || !groupEntriesObject)">
+          <div class="col-md-12">
+            <mat-card class="alert alert-info" role="alert">
+              <p>
+                <mat-icon>info</mat-icon>
+                There are currently no tools registered under this account, to add your first tool, do one of the following:
+              </p>
+              <ul>
+                <li>
+                  Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools
+                  will be synchronized in the linking process.
+                </li>
+                <li>
+                  Press the 'Add Tool' button to manually add a tool.
+                </li>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="showRegisterEntryModal()"
+                  type="button"
+                  [disabled]="isRefreshing$ | async"
+                >
+                  Add Tool
+                </button>
+              </ul>
+              <div *ngIf="!hasGitHubToken" class="mt-3">
+                <a class="btn btn-block btn-social btn-github" (click)="link()">
+                  <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
+                </a>
               </div>
-            </div>
-            <app-container [isToolPublic]="false"></app-container>
-          </mat-sidenav-content>
-        </mat-sidenav-container>
-      </div>
-    </div>
+            </mat-card>
+          </div>
+        </div>
+        <app-container [isToolPublic]="false"></app-container>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+</div>

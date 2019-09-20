@@ -4,7 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { RefreshService } from '../../shared/refresh.service';
@@ -12,14 +12,14 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
 
 import RoleEnum = Permission.RoleEnum;
-import { AlertService } from '../../shared/alert/state/alert.service';
+import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss']
 })
 export class PermissionsComponent implements OnInit {
-
   public Role = RoleEnum;
   public canViewPermissions = false;
   public owners: string[] = [];
@@ -28,10 +28,10 @@ export class PermissionsComponent implements OnInit {
   public hosted = false;
   public updating = 0;
   public hasGoogleAccount = false;
-  public firecloudUrl = Dockstore.FIRECLOUD_IMPORT_URL.substr(0, Dockstore.FIRECLOUD_IMPORT_URL.indexOf('/#'));
+  public terraUrl = Dockstore.TERRA_IMPORT_URL.substr(0, Dockstore.TERRA_IMPORT_URL.indexOf('/#'));
   private _workflow: Workflow;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-
+  public entryType: EntryType;
   separatorKeysCodes = [ENTER, COMMA];
   addOnBlur = true;
 
@@ -44,11 +44,16 @@ export class PermissionsComponent implements OnInit {
     return this._workflow;
   }
 
-  constructor(private workflowsService: WorkflowsService, private snackBar: MatSnackBar, private alertService: AlertService,
-    private tokenQuery: TokenQuery, private refreshService: RefreshService) {
-  }
+  constructor(
+    private workflowsService: WorkflowsService,
+    private snackBar: MatSnackBar,
+    private alertService: AlertService,
+    private tokenQuery: TokenQuery,
+    private sessionQuery: SessionQuery
+  ) {}
 
   ngOnInit() {
+    const entryType = this.sessionQuery.getSnapshot().entryType;
     this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
       this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
     });
@@ -56,15 +61,17 @@ export class PermissionsComponent implements OnInit {
 
   remove(entity: string, permission: RoleEnum) {
     this.updating++;
-    this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, entity, permission).subscribe(
-      (userPermissions: Permission[]) => {
-        this.updating--;
-        this.processResponse(userPermissions);
-      },
-      (e: HttpErrorResponse) => {
-        this.handleError(e, `Error removing user ${entity}.`);
-      }
-    );
+    this.workflowsService
+      .removeWorkflowRole(this.workflow.full_workflow_path, entity, permission, this.entryType === EntryType.Service)
+      .subscribe(
+        (userPermissions: Permission[]) => {
+          this.updating--;
+          this.processResponse(userPermissions);
+        },
+        (e: HttpErrorResponse) => {
+          this.handleError(e, `Error removing user ${entity}.`);
+        }
+      );
   }
 
   private add(event: MatChipInputEvent, permission: RoleEnum): void {
@@ -74,15 +81,17 @@ export class PermissionsComponent implements OnInit {
     if ((value || '').trim()) {
       this.updating++;
       this.alertService.start('Updating permissions');
-      this.workflowsService.addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }).subscribe(
-        (userPermissions: Permission[]) => {
-          this.updating--;
-          this.processResponse(userPermissions);
-        },
-        (e: HttpErrorResponse) => {
-          this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with FireCloud`);
-        }
-      );
+      this.workflowsService
+        .addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }, this.entryType === EntryType.Service)
+        .subscribe(
+          (userPermissions: Permission[]) => {
+            this.updating--;
+            this.processResponse(userPermissions);
+          },
+          (e: HttpErrorResponse) => {
+            this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with Terra`);
+          }
+        );
     }
 
     // Reset the input value
@@ -94,7 +103,8 @@ export class PermissionsComponent implements OnInit {
   private handleError(e: HttpErrorResponse, defaultMessage: string) {
     this.updating--;
     const message = e.error || defaultMessage;
-    if (e.status === 409) { // A more severe error that deserves more attention than a disappearing snackbar
+    if (e.status === 409) {
+      // A more severe error that deserves more attention than a disappearing snackbar
       this.alertService.detailedError(e);
     } else {
       this.alertService.simpleError();
@@ -104,21 +114,20 @@ export class PermissionsComponent implements OnInit {
   private onChange() {
     this.canViewPermissions = false;
     this.owners = [];
-    this.hosted = this.workflow.mode === 'HOSTED';
-    this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path).subscribe(
-      (userPermissions: Permission[]) => {
-        this.canViewPermissions = true;
-        this.processResponse(userPermissions);
-      },
-      () => {
-      }
-    );
+    if (this._workflow) {
+      this.hosted = this.workflow.mode === 'HOSTED';
+      this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path, this.entryType === EntryType.Service).subscribe(
+        (userPermissions: Permission[]) => {
+          this.canViewPermissions = true;
+          this.processResponse(userPermissions);
+        },
+        () => {}
+      );
+    }
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
-    return permissions
-      .filter(u => u.role === role)
-      .map(c => c.email);
+    return permissions.filter(u => u.role === role).map(c => c.email);
   }
 
   private processResponse(userPermissions: Permission[]): void {
@@ -126,5 +135,4 @@ export class PermissionsComponent implements OnInit {
     this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
     this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
   }
-
 }

@@ -3,9 +3,5 @@ set -o errexit
 set -o pipefail
 set -o nounset
 set -o xtrace
-until $(curl --output /dev/null --silent --head localhost:4200); do
-    sleep 5
-done
-until $(curl --output /dev/null --silent --head localhost:8080); do
-    sleep 5
-done
+wget --output-document /dev/null --waitretry=5 --tries=10 --retry-connrefused localhost:4200 || true
+wget --output-document /dev/null --waitretry=5 --tries=10 --retry-connrefused localhost:8080 || true

@@ -1,0 +1,43 @@
+<div *ngIf="showButtons" class="flex-wrap-gap" fxLayout="row wrap" fxLayoutAlign="end start" fxLayoutGap="0.5rem">
+  <a
+    *ngIf="tool?.is_published"
+    [routerLink]="['/tools/', tool.tool_path]"
+    id="viewPublicToolButton"
+    mat-button
+    color="basic"
+    [disabled]="isRefreshing$ | async"
+    [matTooltip]="viewPublicMessage"
+  >
+    View Public
+  </a>
+  <div [matTooltip]="pubUnpubMessage">
+    <button
+      id="publishToolButton"
+      mat-flat-button
+      color="accent"
+      (click)="publishToggle()"
+      [disabled]="(isRefreshing$ | async) || publishDisabled"
+    >
+      {{ tool?.is_published ? 'Unpublish' : 'Publish' }}
+    </button>
+  </div>
+  <ng-container *ngIf="tool?.is_published; then disabledDeleteButton; else enabledDeleteButton"></ng-container>
+  <ng-template #disabledDeleteButton>
+    <button *ngIf="tool?.is_published" mat-flat-button color="warn" disabled matTooltip="Delete the tool">
+      Delete
+    </button>
+  </ng-template>
+  <ng-template #enabledDeleteButton>
+    <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="isRefreshing$ | async"></app-deregister-modal>
+  </ng-template>
+  <button
+    *ngIf="!isHosted"
+    mat-flat-button
+    color="primary"
+    (click)="refresh()"
+    [disabled]="isRefreshing$ | async"
+    matTooltip="Sync the tool with the Docker image repository, etc"
+  >
+    Refresh
+  </button>
+</div>

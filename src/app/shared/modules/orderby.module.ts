@@ -20,10 +20,7 @@ import { NgModule } from '@angular/core';
 import { OrderBy } from '../../shared/orderBy';
 
 @NgModule({
-  declarations: [
-    OrderBy
-  ],
+  declarations: [OrderBy],
   exports: [OrderBy]
 })
-export class OrderByModule {
-}
+export class OrderByModule {}

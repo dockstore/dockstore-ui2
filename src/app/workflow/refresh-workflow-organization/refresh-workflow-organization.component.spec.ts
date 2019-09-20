@@ -28,20 +28,14 @@ describe('RefreshWorkflowOrganizationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RefreshWorkflowOrganizationComponent ],
-      imports: [
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTooltipModule,
-        MatSnackBarModule
-      ],
+      declarations: [RefreshWorkflowOrganizationComponent],
+      imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule],
       providers: [
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: RefreshService, useClass: RefreshStubService }]
-    })
-    .compileComponents();
+        { provide: RefreshService, useClass: RefreshStubService }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

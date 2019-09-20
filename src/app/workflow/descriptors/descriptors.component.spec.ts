@@ -29,16 +29,15 @@ describe('DescriptorsWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DescriptorsWorkflowComponent ],
+      declarations: [DescriptorsWorkflowComponent],
       providers: [
         { provide: DescriptorService, useClass: DescriptorsStubService },
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: GA4GHService, useClass: GA4GHStubService }
       ],
-      schemas: [ NO_ERRORS_SCHEMA ]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

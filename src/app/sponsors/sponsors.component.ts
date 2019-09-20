@@ -29,32 +29,37 @@ import { SponsorsService } from './sponsors.service';
   providers: [SponsorsService]
 })
 export class SponsorsComponent extends Base implements OnInit {
-
   public sponsors: Sponsor[];
   public partners: Sponsor[];
-  public showSecondRow = false;
+  public languages: Sponsor[];
+  public showAdditionalRows = false;
 
   constructor(private sponsorsService: SponsorsService, private location: Location, private router: Router) {
     super();
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.ngUnsubscribe)).subscribe(() => {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => {
         this.hideSecondRow();
-    });
+      });
   }
 
   ngOnInit() {
     // Initialize sponsors and partners
     this.sponsors = this.sponsorsService.getSponsors();
     this.partners = this.sponsorsService.getPartners();
+    this.languages = this.sponsorsService.getLanguages();
   }
 
   hideSecondRow() {
     // Hide the second row if not on the home page
     const currentPath = this.location.prepareExternalUrl(this.location.path());
     if (currentPath === '/') {
-      this.showSecondRow = true;
+      this.showAdditionalRows = true;
     } else {
-      this.showSecondRow = false;
+      this.showAdditionalRows = false;
     }
   }
-
 }

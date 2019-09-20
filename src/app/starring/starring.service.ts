@@ -1,4 +1,3 @@
-import { StarRequest } from './../shared/swagger/model/starRequest';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,42 +13,43 @@ import { StarRequest } from './../shared/swagger/model/starRequest';
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { User } from './../shared/swagger/model/user';
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-
+import { EntryType } from 'app/shared/enum/entry-type';
+import { Observable } from 'rxjs';
 import { ContainersService, WorkflowsService } from '../shared/swagger';
 import { UsersService } from './../shared/swagger/api/users.service';
+import { StarRequest } from './../shared/swagger/model/starRequest';
+import { User } from './../shared/swagger/model/user';
 
 @Injectable()
 export class StarringService {
-  constructor(private usersService: UsersService, private containersService: ContainersService,
-    private workflowsService: WorkflowsService) { }
+  constructor(
+    private usersService: UsersService,
+    private containersService: ContainersService,
+    private workflowsService: WorkflowsService
+  ) {}
 
-  setUnstar(entryID: number, entryType: string): any {
-
-    if (entryType === 'workflows') {
+  setUnstar(entryID: number, entryType: EntryType): any {
+    if (entryType === EntryType.BioWorkflow) {
       return this.workflowsService.unstarEntry(entryID);
     } else {
       return this.containersService.unstarEntry(entryID);
     }
   }
 
-  setStar(entryID: number, entryType: string): any {
+  setStar(entryID: number, entryType: EntryType): any {
     const body: StarRequest = {
       star: true
     };
-
-    if (entryType === 'workflows') {
+    if (entryType === EntryType.BioWorkflow) {
       return this.workflowsService.starEntry(entryID, body);
     } else {
       return this.containersService.starEntry(entryID, body);
     }
   }
 
-  getStarring(entryID: number, entryType: string): Observable<Array<User>> {
-    if (entryType === 'workflows') {
+  getStarring(entryID: number, entryType: EntryType): Observable<Array<User>> {
+    if (entryType === EntryType.BioWorkflow) {
       return this.workflowsService.getStarredUsers(entryID);
     } else {
       return this.containersService.getStarredUsers(entryID);

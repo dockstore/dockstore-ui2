@@ -21,13 +21,12 @@ import { ToolService } from './tool/tool.service';
 
 @Injectable()
 export class ContainerService {
-
   private static readonly descriptorWdl = ' --descriptor wdl';
   tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
-  constructor(private toolService: ToolService) { }
+  constructor(private toolService: ToolService) {}
   setTool(tool: any) {
     this.toolService.setTool(tool);
   }
@@ -40,7 +39,7 @@ export class ContainerService {
     this.tools$.next(tools);
   }
 
-    /**
+  /**
    * Upsert the new workflow into the current list of workflows (depends on the workflow id)
    * @param tool Workflow to be upserted
    */

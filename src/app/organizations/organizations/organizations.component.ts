@@ -39,9 +39,14 @@ export class OrganizationsComponent extends Base implements OnInit {
   public loading$: Observable<boolean>;
   public isLoggedIn$: Observable<boolean>;
 
-  constructor(private organizationsStateService: OrganizationsStateService, private organizationsQuery: OrganizationsQuery,
-    private formBuilder: FormBuilder, private alertQuery: AlertQuery, private matDialog: MatDialog,
-    private trackLoginService: TrackLoginService) {
+  constructor(
+    private organizationsStateService: OrganizationsStateService,
+    private organizationsQuery: OrganizationsQuery,
+    private formBuilder: FormBuilder,
+    private alertQuery: AlertQuery,
+    private matDialog: MatDialog,
+    private trackLoginService: TrackLoginService
+  ) {
     super();
   }
 
@@ -54,13 +59,16 @@ export class OrganizationsComponent extends Base implements OnInit {
     // this.loading$ = this.organizationsQuery.loading$;
     this.organizationsStateService.updateOrganizations();
     this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
-    this.organizationSearchForm.get('name').valueChanges.pipe(
-      debounceTime(formInputDebounceTime),
-      distinctUntilChanged(),
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((searchName: string) => {
-      this.organizationsStateService.updateSearchNameState(searchName);
-    });
+    this.organizationSearchForm
+      .get('name')
+      .valueChanges.pipe(
+        debounceTime(formInputDebounceTime),
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((searchName: string) => {
+        this.organizationsStateService.updateSearchNameState(searchName);
+      });
   }
 
   /**

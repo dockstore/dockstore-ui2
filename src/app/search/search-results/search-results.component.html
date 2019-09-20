@@ -15,9 +15,9 @@
   -->
 
 <tabset class="homeComponent" type="tabs">
-  <tab id="toolTab" [active] = "(activeToolTab$ | async)" [customClass]="browseToolsTab" [disabled]="(noToolHits$ | async)">
+  <tab id="toolTab" [active]="activeToolTab$ | async" [customClass]="browseToolsTab" [disabled]="noToolHits$ | async">
     <ng-template tabHeading>
-      <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png">
+      <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-tools-blue.png" />
       Browse Tools
     </ng-template>
     <div *ngIf="toolTagCloudData">
@@ -25,13 +25,14 @@
         <i [class]="(showToolTagCloud$ | async) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
         <span>Tag Cloud</span>
       </button>
-      <div class="tagCloud tool" *ngIf="(showToolTagCloud$ | async)">
+      <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async">
         <angular-tag-cloud
           [data]="toolTagCloudData"
           [width]="options.width"
           [height]="options.height"
           [overflow]="options.overflow"
-          (clicked)="tagClicked($event)">
+          (clicked)="tagClicked($event)"
+        >
         </angular-tag-cloud>
       </div>
     </div>
@@ -41,28 +42,29 @@
     </span>
   </tab>
 
-  <tab id="workflowTab" [active] = "!(activeToolTab$ | async)" [customClass]="browseWorkflowsTab" [disabled]="(noWorkflowHits$ | async)">
+  <tab id="workflowTab" [active]="!(activeToolTab$ | async)" [customClass]="browseWorkflowsTab" [disabled]="noWorkflowHits$ | async">
     <div *ngIf="workflowTagCloudData">
       <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
         <i [class]="(showWorkflowTagCloud$ | async) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
         <span>Tag Cloud</span>
       </button>
-      <div class="tagCloud workflow" *ngIf="(showWorkflowTagCloud$ | async)">
+      <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud$ | async">
         <angular-tag-cloud
           [data]="workflowTagCloudData"
           [width]="options.width"
           [height]="options.height"
           [overflow]="options.overflow"
-          (clicked)="tagClicked($event)">
+          (clicked)="tagClicked($event)"
+        >
         </angular-tag-cloud>
       </div>
     </div>
     <ng-template tabHeading>
-      <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png">
+      <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-workflows-green.png" />
       Browse Workflows
     </ng-template>
     <span class="m-2">
-      <p> A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
+      <p>A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
       <app-search-workflow-table></app-search-workflow-table>
     </span>
   </tab>

@@ -5,18 +5,18 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
-import {MatSnackBarModule} from '@angular/material';
+import { MatSnackBarModule } from '@angular/material';
 
-@Component({selector: 'app-banner', template: ''})
+@Component({ selector: 'app-banner', template: '' })
 class BannerStubComponent {}
 
-@Component({selector: 'app-navbar', template: ''})
+@Component({ selector: 'app-navbar', template: '' })
 class NavbarStubComponent {}
 
-@Component({selector: 'app-sponsors', template: ''})
+@Component({ selector: 'app-sponsors', template: '' })
 class SponsorsStubComponent {}
 
-@Component({selector: 'app-footer', template: ''})
+@Component({ selector: 'app-footer', template: '' })
 class FooterStubComponent {}
 
 describe('AppComponent', () => {
@@ -24,8 +24,12 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        NavbarStubComponent, SponsorsStubComponent, FooterStubComponent,
-        BannerStubComponent, RouterLinkStubDirective, RouterOutletStubComponent
+        NavbarStubComponent,
+        SponsorsStubComponent,
+        FooterStubComponent,
+        BannerStubComponent,
+        RouterLinkStubDirective,
+        RouterOutletStubComponent
       ],
       imports: [RouterTestingModule, MatSnackBarModule]
     }).compileComponents();

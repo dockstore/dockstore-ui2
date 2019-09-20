@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
- .break {
-    word-break: break-word
- }
+.break {
+  word-break: break-word;
+}
 
- .add-tag {
-   margin-right: 15px;
- }
+.add-tag {
+  margin-right: 15px;
+}

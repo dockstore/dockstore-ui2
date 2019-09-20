@@ -37,10 +37,9 @@ import {
   ImageProviderStubService,
   RefreshStubService,
   WorkflowsStubService,
-  WorkflowStubService,
+  WorkflowStubService
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
-
 
 @Component({
   selector: 'app-view-workflow',
@@ -71,20 +70,26 @@ describe('VersionsWorkflowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule, MatIconModule, FontAwesomeModule],
-      declarations: [ VersionsWorkflowComponent, OrderBy, CommitUrlPipe, VerifiedPlatformsPipe, MockViewWorkflowComponent,
-        MockVersionModalComponent ],
-      providers: [DockstoreService,
-        { provide: DateService, useClass: DateStubService},
-        { provide: WorkflowService, useClass: WorkflowStubService},
-        { provide: WorkflowsService, useClass: WorkflowsStubService},
+      declarations: [
+        VersionsWorkflowComponent,
+        OrderBy,
+        CommitUrlPipe,
+        VerifiedPlatformsPipe,
+        MockViewWorkflowComponent,
+        MockVersionModalComponent
+      ],
+      providers: [
+        DockstoreService,
+        { provide: DateService, useClass: DateStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
         AlertQuery,
         ProviderService,
         WorkflowQuery,
         { provide: ImageProviderService, useClass: ImageProviderStubService },
-        { provide: RefreshService, useClass: RefreshStubService}
+        { provide: RefreshService, useClass: RefreshStubService }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -98,11 +103,10 @@ describe('VersionsWorkflowComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
   it('should get verified source', () => {
-    const source1 = {version: '1', verifiedSource: 'a'};
-    const source2 = {version: '2', verifiedSource: 'b'};
-    const source3 = {version: '3', verifiedSource: 'c'};
+    const source1 = { version: '1', verifiedSource: 'a' };
+    const source2 = { version: '2', verifiedSource: 'b' };
+    const source3 = { version: '3', verifiedSource: 'c' };
     component.verifiedSource = [source1, source2, source3];
     fixture.detectChanges();
     expect(component.getVerifiedSource('1')).toEqual('a');

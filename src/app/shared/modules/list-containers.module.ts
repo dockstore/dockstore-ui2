@@ -16,36 +16,19 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TooltipConfig } from 'ngx-bootstrap/tooltip';
+import { TabsModule } from 'ngx-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
-
 import { ListContainersComponent } from '../../containers/list/list.component';
 import { ListContainersService } from '../../containers/list/list.service';
 import { PublishedToolsDataSource } from '../../containers/list/published-tools.datasource';
 import { PrivateIconModule } from '../private-icon/private-icon.module';
-import { getTooltipConfig } from './../tooltip';
 import { HeaderModule } from './header.module';
 import { CustomMaterialModule } from './material.module';
 
 @NgModule({
-  declarations: [
-    ListContainersComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    ClipboardModule,
-    CustomMaterialModule,
-    HeaderModule,
-    PrivateIconModule
-  ],
-  providers: [
-    PublishedToolsDataSource,
-    ListContainersService
-  ],
-  exports: [
-    ListContainersComponent
-  ]
+  declarations: [ListContainersComponent],
+  imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule, TabsModule],
+  providers: [PublishedToolsDataSource, ListContainersService],
+  exports: [ListContainersComponent]
 })
-export class ListContainersModule {
-}
+export class ListContainersModule {}

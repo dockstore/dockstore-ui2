@@ -28,6 +28,7 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Versions } from '../../shared/versions';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -37,7 +38,9 @@ import { Versions } from '../../shared/versions';
 export class VersionsWorkflowComponent extends Versions implements OnInit {
   @Input() versions: Array<any>;
   @Input() workflowId: number;
+  zenodoUrl: string;
   _selectedVersion: WorkflowVersion;
+  Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {
     if (value != null) {
       this._selectedVersion = value;
@@ -50,13 +53,21 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     return [4, 5];
   }
 
-  constructor(dockstoreService: DockstoreService, dateService: DateService, private alertService: AlertService,
+  constructor(
+    dockstoreService: DockstoreService,
+    dateService: DateService,
+    private alertService: AlertService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
-    private workflowsService: WorkflowsService, private refreshService: RefreshService, protected sessionQuery: SessionQuery) {
+    private workflowsService: WorkflowsService,
+    private refreshService: RefreshService,
+    protected sessionQuery: SessionQuery
+  ) {
     super(dockstoreService, dateService, sessionQuery);
+    this.sortColumn = 'last_modified';
   }
 
   ngOnInit() {
+    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '');
     this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
       this.workflow = workflow;
@@ -82,14 +93,16 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     }
     const message = 'Updating default workflow version';
     this.alertService.start(message);
-    this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(response => {
+    this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(
+      response => {
         this.alertService.detailedSuccess();
         if (this.workflow.mode !== Workflow.ModeEnum.HOSTED) {
           this.refreshService.refreshWorkflow();
         }
-      }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
+      },
+      (error: HttpErrorResponse) => this.alertService.detailedError(error)
+    );
   }
-
 
   /**
    * Updates the version and emits an event for the parent component

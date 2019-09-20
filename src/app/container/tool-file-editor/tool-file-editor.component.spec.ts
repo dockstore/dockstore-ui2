@@ -4,8 +4,18 @@ import { ToolFileEditorComponent } from './tool-file-editor.component';
 import { TabsModule } from 'ngx-bootstrap';
 import { CodeEditorListComponent } from './../../shared/code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from './../../shared/code-editor/code-editor.component';
-import { MatButtonModule, MatTabsModule, MatToolbarModule, MatIconModule, MatInputModule,
-  MatFormFieldModule, MatSelectModule, MatTooltipModule, MatSnackBarModule, MatCardModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatIconModule,
+  MatInputModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatTooltipModule,
+  MatSnackBarModule,
+  MatCardModule
+} from '@angular/material';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { ContainerService } from './../../shared/container.service';
 import { RefreshService } from './../../shared/refresh.service';
@@ -21,7 +31,7 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 describe('ToolFileEditorComponent', () => {
   let component: ToolFileEditorComponent;
   let fixture: ComponentFixture<ToolFileEditorComponent>;
-  class FileStubService { }
+  class FileStubService {}
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -54,8 +64,7 @@ describe('ToolFileEditorComponent', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: FileService, useClass: FileStubService }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

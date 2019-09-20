@@ -15,16 +15,30 @@
   -->
 
 <!-- Button trigger modal -->
-<button type="button" mat-button color="accent" class="btn-block" *ngIf="(isPublic$ | async)" (click)="setMode(TagEditorMode.View); false">
+<button type="button" mat-button color="accent" class="btn-block" *ngIf="isPublic$ | async" (click)="setMode(TagEditorMode.View); (false)">
   View
 </button>
-<button type="button" mat-button color="accent" class="btn-block" *ngIf="!(isPublic$ | async)" (click)="setMode(TagEditorMode.Edit); false">
+<button
+  type="button"
+  mat-button
+  color="accent"
+  class="btn-block"
+  *ngIf="!(isPublic$ | async)"
+  (click)="setMode(TagEditorMode.Edit); (false)"
+>
   Edit
 </button>
-<button type="button"  mat-button color="warn" class="btn-block" *ngIf="!(isPublic$ | async) && isManualTool" (click)="deleteTag(); false">
+<button type="button" mat-button color="warn" class="btn-block" *ngIf="!(isPublic$ | async) && isManualTool" (click)="deleteTag(); (false)">
   Delete
 </button>
-<button type="button" mat-button color="warn" class="btn-block deleteVersionButton" *ngIf="!(isPublic$ | async) && tool?.mode === DockstoreToolType.ModeEnum.HOSTED" (click)="deleteHostedTag(); false">
+<button
+  type="button"
+  mat-button
+  color="warn"
+  class="btn-block deleteVersionButton"
+  *ngIf="!(isPublic$ | async) && tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+  (click)="deleteHostedTag(); (false)"
+>
   Delete
 </button>
 <!-- Modal -->

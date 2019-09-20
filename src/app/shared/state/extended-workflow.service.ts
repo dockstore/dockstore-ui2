@@ -22,13 +22,17 @@ import { ProviderService } from '../provider.service';
 import { Workflow } from '../swagger';
 import { ExtendedWorkflowStore } from './extended-workflow.store';
 import { transaction } from '@datorama/akita';
+import { Service } from '../swagger/model/service';
+import { BioWorkflow } from '../swagger/model/bioWorkflow';
 
 @Injectable({ providedIn: 'root' })
 export class ExtendedWorkflowService {
-
-  constructor(private extendedWorkflowStore: ExtendedWorkflowStore, private dockstoreService: DockstoreService,
-    private dateService: DateService, private providerService: ProviderService) {
-  }
+  constructor(
+    private extendedWorkflowStore: ExtendedWorkflowStore,
+    private dockstoreService: DockstoreService,
+    private dateService: DateService,
+    private providerService: ProviderService
+  ) {}
 
   /**
    * Updates the extendedWorkflow by extending the current workflow
@@ -37,7 +41,7 @@ export class ExtendedWorkflowService {
    * @memberof ExtendedWorkflowService
    */
   @transaction()
-  update(workflow: ExtendedWorkflow) {
+  update(workflow: Workflow) {
     if (workflow) {
       this.extendedWorkflowStore.update(this.extendWorkflow(workflow));
     } else {
@@ -57,7 +61,7 @@ export class ExtendedWorkflowService {
    * @returns {ExtendedWorkflow}
    * @memberof ExtendedWorkflowService
    */
-  extendWorkflow(workflow: Workflow): ExtendedWorkflow {
+  extendWorkflow(workflow: BioWorkflow | Service): ExtendedWorkflow {
     if (workflow) {
       let extendedWorkflow: ExtendedWorkflow = { ...workflow };
       extendedWorkflow = <ExtendedWorkflow>this.providerService.setUpProvider(extendedWorkflow);

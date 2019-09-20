@@ -13,15 +13,14 @@ describe('PermissionsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PermissionsComponent ],
-      imports: [ CustomMaterialModule ],
+      declarations: [PermissionsComponent],
+      imports: [CustomMaterialModule],
       providers: [
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: TokenService, useClass: TokenStubService },
-        { provide: RefreshService, useClass: RefreshStubService}
+        { provide: RefreshService, useClass: RefreshStubService }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

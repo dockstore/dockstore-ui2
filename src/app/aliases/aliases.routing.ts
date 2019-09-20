@@ -17,10 +17,11 @@
 import { RouterModule, Routes } from '@angular/router';
 import { AliasesComponent } from './aliases.component';
 
-
 const ALIASES_ROUTES: Routes = [
   {
-    path: ':type/:alias', component: AliasesComponent, data: { title: 'Dockstore | Aliases'}
+    path: ':type/:alias',
+    component: AliasesComponent,
+    data: { title: 'Dockstore | Aliases' }
   }
 ];
 

@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
+import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore hosted tools', () => {
   resetDB();
@@ -99,6 +99,8 @@ describe('Dockstore hosted tools', () => {
         .get('#saveNewVersionButton')
         .click();
 
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
+
       // Should have a version 1
       goToTab('Versions');
       cy
@@ -159,11 +161,12 @@ describe('Dockstore hosted tools', () => {
       cy
         .get('#saveNewVersionButton')
         .click();
-
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Should have a version 2
       goToTab('Versions');
         cy.get('table')
-        .contains('span', /\b2\b/);
+        .contains('span', /\b2\b/)
+        .click();
 
       // Should be able to publish
       cy
@@ -187,11 +190,12 @@ describe('Dockstore hosted tools', () => {
       cy
         .get('#saveNewVersionButton')
         .click();
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:3');
 
-      // Should now only be three ace editors
+      // Should now only have 1 visible editor
       cy
-        .get('.ace_editor')
-        .should('have.length', 3);
+        .get('.ace_editor:visible')
+        .should('have.length', 1);
 
       // New version should be added
       goToTab('Versions');
@@ -204,12 +208,13 @@ describe('Dockstore hosted tools', () => {
         .find('.deleteVersionButton')
         .first()
         .click();
-
-      // Version should no longer exist
+      // Automatically selects the newest version that wasn't the one that was just deleted
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
+      // Version 3 should no longer exist since it was just deleted
       goToTab('Versions');
       cy.get('table')
         .find('a')
-        .should('not.contain', '1');
+        .should('not.contain', '3');
     });
   });
 

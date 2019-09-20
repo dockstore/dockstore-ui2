@@ -1,62 +1,78 @@
 <div *ngIf="!hasGoogleAccount">
-  <p>You need to link your account with Google in order to share this workflow. Please go to the accounts
-  page to link your account with Google.</p>
-  <p>During the limited beta of sharing functionality, your Google account must also be registered with <a [href]="firecloudUrl" target="_blank">FireCloud</a>.</p>
-  <p>Any emails that you share the workflow with must also be registered with FireCloud.</p>
+  <p>
+    You need to link your account with Google in order to share this workflow. Please go to the accounts page to link your account with
+    Google.
+  </p>
+  <p>
+    During the limited beta of sharing functionality, your Google account must also be registered with
+    <a [href]="terraUrl" target="_blank">Terra</a>.
+  </p>
+  <p>Any emails that you share the workflow with must also be registered with Terra.</p>
 </div>
 <div *ngIf="hasGoogleAccount">
   <div *ngIf="!canViewPermissions">
-      <p>During the limited beta of sharing functionality, your Google account must also be registered with <a [href]="firecloudUrl" target="_blank">FireCloud</a>.</p>
+    <p>
+      During the limited beta of sharing functionality, your Google account must also be registered with
+      <a [href]="terraUrl" target="_blank">Terra</a>.
+    </p>
+    <p>
+      If your Google account is already registered with Terra, your refresh token may be expired. Please relink your Google account via the
+      Accounts page.
+    </p>
   </div>
   <div style="font-style: italic; font-size: smaller; line-height: 1.5" *ngIf="canViewPermissions">
-    Workflows can only be shared with users and user groups who are
-    registered with <a [href]="firecloudUrl">FireCloud</a>.
+    Workflows can only be shared with users and user groups who are registered with <a [href]="terraUrl">Terra</a>.
   </div>
-  <mat-progress-bar mode="indeterminate" *ngIf="updating">
-  </mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" *ngIf="updating"> </mat-progress-bar>
   <ul class="list-unstyled container-info" *ngIf="canViewPermissions">
     <li>
       <mat-form-field style="width: 100%;">
         <mat-chip-list #ownerlist>
           <mat-chip *ngFor="let owner of owners" (removed)="remove(owner, Role.OWNER)" [removable]="owners.length > 1">
-            {{owner}}
+            {{ owner }}
             <mat-icon matChipRemove *ngIf="owners.length > 1">cancel</mat-icon>
           </mat-chip>
-          <input placeholder="Owners"
-                 [matChipInputFor]="ownerlist"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event, Role.OWNER)"/>
+          <input
+            placeholder="Owners"
+            [matChipInputFor]="ownerlist"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event, Role.OWNER)"
+          />
         </mat-chip-list>
       </mat-form-field>
     </li>
     <li>
-      <mat-form-field style="width: 100%;" >
+      <mat-form-field style="width: 100%;">
         <mat-chip-list #writerlist>
           <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, Role.WRITER)" [removable]="true">
-            {{writer}}
+            {{ writer }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
-          <input placeholder="Writers"
-                 [matChipInputFor]="writerlist"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event, Role.WRITER)"/>
+          <input
+            placeholder="Writers"
+            [matChipInputFor]="writerlist"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event, Role.WRITER)"
+          />
         </mat-chip-list>
       </mat-form-field>
     </li>
     <li>
-      <mat-form-field style="width: 100%;" >
+      <mat-form-field style="width: 100%;">
         <mat-chip-list #readerlist>
           <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, Role.READER)" [removable]="true">
-            {{reader}}
+            {{ reader }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
-          <input placeholder="Readers"
-                 [matChipInputFor]="readerlist"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event, Role.READER)"/>
+          <input
+            placeholder="Readers"
+            [matChipInputFor]="readerlist"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event, Role.READER)"
+          />
         </mat-chip-list>
       </mat-form-field>
     </li>

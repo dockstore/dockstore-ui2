@@ -21,12 +21,15 @@ export interface FormsState {
 
 @Injectable({ providedIn: 'root' })
 export class UpsertOrganizationMemberService {
-
-  constructor(private upsertOrganizationMemberStore: UpsertOrganizationMemberStore,
-              private organizationMembersService: OrganizationMembersService,
-              private formBuilder: FormBuilder, private organizationsService: OrganizationsService,
-              private organizationQuery: OrganizationQuery, private matDialog: MatDialog, private alertService: AlertService) {
-  }
+  constructor(
+    private upsertOrganizationMemberStore: UpsertOrganizationMemberStore,
+    private organizationMembersService: OrganizationMembersService,
+    private formBuilder: FormBuilder,
+    private organizationsService: OrganizationsService,
+    private organizationQuery: OrganizationQuery,
+    private matDialog: MatDialog,
+    private alertService: AlertService
+  ) {}
 
   /**
    * Creates the organization (create and update) form based on the mode given
@@ -47,7 +50,7 @@ export class UpsertOrganizationMemberService {
       disabled = true;
     }
     const form = this.formBuilder.group({
-      username: new FormControl({value: username, disabled: disabled}, [
+      username: new FormControl({ value: username, disabled: disabled }, [
         Validators.required,
         Validators.maxLength(39),
         Validators.minLength(3)
@@ -87,17 +90,21 @@ export class UpsertOrganizationMemberService {
       const organizationId = this.organizationQuery.getSnapshot().organization.id;
       // Have to grab the username from data because a disabled form value isn't recorded
       const username = formState.username ? formState.username : data.username;
-      this.organizationsService.addUserToOrgByUsername(username, organizationId, formState.role)
-      .pipe(finalize(() => this.upsertOrganizationMemberStore.setLoading(false)))
-      .subscribe((organization: OrganizationUser) => {
-        this.matDialog.closeAll();
-        this.organizationMembersService.updateCanEdit(organizationId);
-        this.upsertOrganizationMemberStore.setError(false);
-        this.alertService.simpleSuccess();
-      }, (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-        this.upsertOrganizationMemberStore.setError(true);
-      });
+      this.organizationsService
+        .addUserToOrgByUsername(username, organizationId, formState.role)
+        .pipe(finalize(() => this.upsertOrganizationMemberStore.setLoading(false)))
+        .subscribe(
+          (organization: OrganizationUser) => {
+            this.matDialog.closeAll();
+            this.organizationMembersService.updateCanEdit(organizationId);
+            this.upsertOrganizationMemberStore.setError(false);
+            this.alertService.simpleSuccess();
+          },
+          (error: HttpErrorResponse) => {
+            this.alertService.detailedError(error);
+            this.upsertOrganizationMemberStore.setError(true);
+          }
+        );
     }
   }
 }

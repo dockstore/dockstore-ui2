@@ -15,15 +15,15 @@
  */
 import { Injectable } from '@angular/core';
 import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-
 import { Tag, WorkflowVersion } from './swagger';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DockstoreService {
-  constructor() {
-  }
+  constructor() {}
 
-  getValidVersions(versions: Array<WorkflowVersion|Tag>): Array<WorkflowVersion|Tag> {
+  getValidVersions(versions: Array<WorkflowVersion | Tag>): Array<WorkflowVersion | Tag> {
     return versions.filter(version => version.valid);
   }
 
@@ -34,7 +34,7 @@ export class DockstoreService {
    * @returns {boolean} Whether or not one of the versions are verified
    * @memberof DockstoreService
    */
-  getVersionVerified(versions: Array<WorkflowVersion|Tag>): boolean {
+  getVersionVerified(versions: Array<WorkflowVersion | Tag>): boolean {
     if (!versions) {
       return false;
     }
@@ -70,7 +70,7 @@ export class DockstoreService {
   getVerifiedSources(toolRef) {
     const sources = [];
     if (toolRef !== null) {
-      for (const version of toolRef.tags) {
+      for (const version of toolRef.workflowVersions) {
         if (version.verified) {
           sources.push({
             version: version.name,
@@ -79,7 +79,7 @@ export class DockstoreService {
         }
       }
     }
-    return sources.filter(function (elem, pos) {
+    return sources.filter(function(elem, pos) {
       return sources.indexOf(elem) === pos;
     });
   }
@@ -96,7 +96,7 @@ export class DockstoreService {
         }
       }
     }
-    return sources.filter(function (elem, pos) {
+    return sources.filter(function(elem, pos) {
       return sources.indexOf(elem) === pos;
     });
   }
@@ -117,8 +117,7 @@ export class DockstoreService {
 
   getIconClass(columnName: string, sortColumn: string, sortReverse: boolean): IconDefinition {
     if (sortColumn === columnName) {
-      return !sortReverse ? faSortAlphaDown :
-        faSortAlphaUp;
+      return !sortReverse ? faSortAlphaDown : faSortAlphaUp;
     } else {
       return faSort;
     }

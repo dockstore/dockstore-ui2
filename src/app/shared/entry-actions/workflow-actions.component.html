@@ -1,0 +1,34 @@
+<div *ngIf="showButtons" class="flex-wrap-gap" fxLayout="row wrap" fxLayoutAlign="end start" fxLayoutGap="0.5rem">
+  <a
+    *ngIf="workflow?.is_published"
+    [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"
+    id="viewPublicWorkflowButton"
+    mat-button
+    color="basic"
+    [disabled]="isRefreshing$ | async"
+    [matTooltip]="viewPublicMessage"
+  >
+    View Public
+  </a>
+  <div [matTooltip]="pubUnpubMessage">
+    <button
+      mat-flat-button
+      id="publishButton"
+      color="accent"
+      (click)="publishToggle()"
+      [disabled]="(isRefreshing$ | async) || publishDisabled"
+    >
+      {{ workflow?.is_published ? 'Unpublish' : 'Publish' }}
+    </button>
+  </div>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="refresh()"
+    [disabled]="isRefreshing$ | async"
+    *ngIf="!isHosted && canWrite"
+    matTooltip="Sync the {{ entryType }} with the source control repository"
+  >
+    {{ entryType === EntryType.Service ? 'Sync' : 'Refresh' }}
+  </button>
+</div>

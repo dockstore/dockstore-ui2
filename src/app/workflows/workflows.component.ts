@@ -15,9 +15,19 @@
  */
 
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { SessionService } from 'app/shared/session/session.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-workflows',
   templateUrl: './workflows.component.html'
 })
-export class WorkflowsComponent { }
+export class WorkflowsComponent {
+  public entryPageTitle$: Observable<string>;
+  constructor(private sessionQuery: SessionQuery, private sessionService: SessionService, private route: ActivatedRoute) {
+    this.sessionService.setEntryType(this.route.snapshot.data['entryType']);
+    this.entryPageTitle$ = this.sessionQuery.entryPageTitle$;
+  }
+}

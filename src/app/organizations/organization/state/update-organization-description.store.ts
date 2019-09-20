@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
 export interface UpdateOrganizationOrCollectionDescriptionState {
-   key: string;
+  key: string;
 }
 
 export function createInitialState(): UpdateOrganizationOrCollectionDescriptionState {
@@ -14,10 +14,7 @@ export function createInitialState(): UpdateOrganizationOrCollectionDescriptionS
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'update-organization-description' })
 export class UpdateOrganizationOrCollectionDescriptionStore extends Store<UpdateOrganizationOrCollectionDescriptionState> {
-
   constructor() {
     super(createInitialState());
   }
-
 }
-

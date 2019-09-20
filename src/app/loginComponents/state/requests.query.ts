@@ -19,5 +19,4 @@ export class RequestsQuery extends QueryEntity<RequestsState, Request> {
   constructor(protected store: RequestsStore) {
     super(store);
   }
-
 }

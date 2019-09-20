@@ -20,50 +20,57 @@ import { Provider } from './enum/provider.enum';
 // dockstore.model.ts.template at https://github.com/dockstore/compose_setup
 
 export class Dockstore {
-  // Please fill in HOSTNAME with your address
-  static readonly HOSTNAME = 'http://localhost';
-  static readonly API_PORT = '8080';
-  static readonly UI_PORT = '4200';
+  static readonly HOSTNAME = window.location.protocol + '//' + window.location.host;
+  static readonly API_URI = Dockstore.HOSTNAME + '/api';
+
+  // All the following properties will get updated by configuration.service.ts. You do not
+  // need to update them here. Set them in your dockstore.yml for the web service.
 
   // Discourse URL MUST end with a slash (/)
-  static readonly DISCOURSE_URL = 'http://localhost/';
+  static DISCOURSE_URL = 'http://localhost/';
 
-  static readonly LOCAL_URI = Dockstore.HOSTNAME + ':' + Dockstore.UI_PORT;
-  // @ts-ignore
-  static readonly API_URI = Dockstore.HOSTNAME + (Dockstore.API_PORT !== '443' ? (':' + Dockstore.API_PORT) : '');
-  static readonly DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
-  static readonly FIRECLOUD_IMPORT_URL = 'https://portal.firecloud.org/#import/dockstore';
-  static readonly DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
-  static readonly TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
+  static DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
+  static DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
+  static TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
+  static CGC_IMPORT_URL = 'https://cgc.sbgenomics.com/integration/trs/import';
 
-  static readonly GITHUB_CLIENT_ID = 'fill_this_in';
-  static readonly GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
+  static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
+  static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
 
-  static readonly GITHUB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITHUB;
-  static readonly GITHUB_SCOPE = 'read:org,user:email';
+  static GITHUB_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.GITHUB;
+  static GITHUB_SCOPE = 'read:org,user:email';
 
-  static readonly QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
-  static readonly QUAYIO_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.QUAY;
-  static readonly QUAYIO_SCOPE = 'repo:read,user:read';
-  static readonly QUAYIO_CLIENT_ID = 'fill_this_in';
+  static QUAYIO_AUTH_URL = 'https://quay.io/oauth/authorize';
+  static QUAYIO_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.QUAY;
+  static QUAYIO_SCOPE = 'repo:read,user:read';
+  static QUAYIO_CLIENT_ID = 'will be filled in by configuration.service';
 
-  static readonly BITBUCKET_AUTH_URL = 'https://bitbucket.org/site/oauth2/authorize';
-  static readonly BITBUCKET_CLIENT_ID = 'fill_this_in';
+  static BITBUCKET_AUTH_URL = 'https://bitbucket.org/site/oauth2/authorize';
+  static BITBUCKET_CLIENT_ID = 'will be filled in by configuration.service';
 
-  static readonly GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
-  static readonly GITLAB_CLIENT_ID = 'fill_this_in';
-  static readonly GITLAB_REDIRECT_URI = Dockstore.LOCAL_URI + '/auth/' + Provider.GITLAB;
+  static GITLAB_AUTH_URL = 'https://gitlab.com/oauth/authorize';
+  static GITLAB_CLIENT_ID = 'will be filled in by configuration.service';
+  static GITLAB_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.GITLAB;
   // getting ready for gitlab scopes, this seems to request a token with the correct scope but it doesn't work to retrieve membership
-  // static readonly GITLAB_SCOPE = 'read_user openid';
-  static readonly GITLAB_SCOPE = 'api';
+  // static GITLAB_SCOPE = 'read_user openid';
+  static GITLAB_SCOPE = 'api';
 
-  static readonly GOOGLE_CLIENT_ID = 'fill_this_in';
-  static readonly GOOGLE_SCOPE = 'profile email';
+  static ZENODO_AUTH_URL = 'https://zenodo.org/oauth/authorize';
+  static ZENODO_CLIENT_ID = 'will be filled in by configuration.service';
+  static ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.ZENODO;
+  static ZENODO_SCOPE = 'deposit:write deposit:actions';
 
-  static readonly CWL_VISUALIZER_URI = 'https://view.commonwl.org';
+  static GOOGLE_CLIENT_ID = 'will be filled in by configuration.service';
+  static GOOGLE_SCOPE = 'profile email';
+  static GOOGLE_TAG_MANAGER_ID = 'filled in by configuration service';
 
-  static readonly FEATURES = {
-    enableCwlViewer: true,
-    enableLaunchWithFireCloud: true
+  static CWL_VISUALIZER_URI = 'https://view.commonwl.org';
+
+  static GITHUB_APP_INSTALLATION_URL = 'will be filled in by configuration.service';
+
+  static DOCUMENTATION_URL = 'https://docs.dockstore.org';
+
+  static FEATURES = {
+    enableCwlViewer: true
   };
 }

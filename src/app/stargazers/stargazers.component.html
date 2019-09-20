@@ -16,18 +16,17 @@
 
 <h3 class="mt-1 mb-2">Stargazers</h3>
 <div class="panel panel-default p-3">
-  <mat-card class="alert alert-info" role="alert" *ngIf="starGazers?.length==0">
+  <mat-card class="alert alert-info" data-cy="noStargazers" role="alert" *ngIf="starGazers?.length == 0">
     <mat-icon>warning</mat-icon>
-    There are no stargazers for this entry.
+    There are no stargazers for this <span>{{ organization != null ? 'organization' : 'entry' }}.</span>
   </mat-card>
-  <div class="panel-body" *ngIf="starGazers?.length>0">
+  <div class="panel-body" *ngIf="starGazers?.length > 0">
     <div fxLayout="row wrap">
       <div *ngFor="let stargazer of starGazers">
         <div fxFlex="90%">
-          <img src="{{stargazer.avatarUrl}}" width="200" height="200" class="img-responsive stargazer-img"
-               alt="http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg"/>
+          <img src="{{ stargazer.avatarUrl }}" width="150" height="150" class="img-responsive stargazer-img" alt="{{ altAvatarImg }}" />
           <div class="caption">
-            <h5 class="text-center">{{stargazer.username}}</h5>
+            <h5 class="text-center">{{ stargazer.username }}</h5>
           </div>
         </div>
       </div>

@@ -11,10 +11,15 @@ import { AlertService } from '../alert/state/alert.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-
-  constructor(private userStore: UserStore, private authService: AuthService, private usersService: UsersService,
-    private configuration: Configuration, private refreshService: RefreshService, private tokenService: TokenService,
-    private alertService: AlertService) {
+  constructor(
+    private userStore: UserStore,
+    private authService: AuthService,
+    private usersService: UsersService,
+    private configuration: Configuration,
+    private refreshService: RefreshService,
+    private tokenService: TokenService,
+    private alertService: AlertService
+  ) {
     this.getUser();
   }
 
@@ -44,15 +49,18 @@ export class UserService {
 
   setupConfigurationToken(): void {
     const token = this.authService.getToken();
-    this.configuration.apiKeys['Authorization'] = token ? ('Bearer ' + token) : null;
+    this.configuration.apiKeys['Authorization'] = token ? 'Bearer ' + token : null;
   }
 
   getExtendedUserData(): void {
     this.setupConfigurationToken();
     if (this.configuration.apiKeys['Authorization']) {
-      this.usersService.getExtendedUserData().subscribe(
-        (extendedUserData: ExtendedUserData) => this.updateExtendedUserData(extendedUserData),
-        error => this.updateExtendedUserData(null));
+      this.usersService
+        .getExtendedUserData()
+        .subscribe(
+          (extendedUserData: ExtendedUserData) => this.updateExtendedUserData(extendedUserData),
+          error => this.updateExtendedUserData(null)
+        );
     } else {
       this.updateExtendedUserData(null);
     }
@@ -73,7 +81,8 @@ export class UserService {
         error => {
           this.updateUser(null);
           this.tokenService.removeAll();
-        });
+        }
+      );
     } else {
       this.updateUser(null);
       this.tokenService.removeAll();
@@ -100,16 +109,18 @@ export class UserService {
   }
 
   /**
- * Attempts to update the username to the new value given by the user
- */
+   * Attempts to update the username to the new value given by the user
+   */
   updateUsername(username: string): void {
     this.alertService.start('Updating username');
     this.usersService.changeUsername(username).subscribe(
       (user: User) => {
         this.getUser();
         this.alertService.detailedSuccess();
-      }, error => {
+      },
+      error => {
         this.alertService.detailedError(error);
-      });
+      }
+    );
   }
 }

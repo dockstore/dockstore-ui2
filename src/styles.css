@@ -12,7 +12,8 @@
   /*background-color: #f4f4f4;*/
 }
 
-.footer, .push {
+.footer,
+.push {
   /* .push must be the same height as .footer */
   height: 155px;
 }
@@ -21,7 +22,7 @@
 app-page img {
   max-width: 100%;
   height: auto;
-  display:block;
+  display: block;
 }
 
 /* header needs proper format */
@@ -31,14 +32,14 @@ app-header img {
 
 app-header h3 {
   font-size: 20px;
-  color: #21335B;
+  color: #21335b;
   margin: 20px 0px 15px 0px;
   display: inline;
   line-height: 55px;
 }
 
 app-header .container-fluid {
-  background-color:#eef0f6;
+  background-color: #eef0f6;
   box-shadow: 0px 3px 6px #cfd1d7;
   position: relative;
   z-index: 1;
@@ -49,12 +50,14 @@ app-header .container-fluid {
   margin-top: 20px;
 }
 
-#format > tbody > tr > th, #format > tbody > tr > td  {
+#format > tbody > tr > th,
+#format > tbody > tr > td {
   border-top: none;
 }
 
 /* Code */
-div > pre, markdown pre code {
+div > pre,
+markdown pre code {
   color: #487980;
 }
 
@@ -89,7 +92,7 @@ div > pre, markdown pre code {
   justify-content: center;
   align-items: center;
 
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100%; /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
 }
 

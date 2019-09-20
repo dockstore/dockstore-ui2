@@ -12,9 +12,8 @@ describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UpdateOrganizationOrCollectionDescriptionService, UpdateOrganizationOrCollectionDescriptionStore,
-        FormBuilder],
-      imports: [ HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule ]
+      providers: [UpdateOrganizationOrCollectionDescriptionService, UpdateOrganizationOrCollectionDescriptionStore, FormBuilder],
+      imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule]
     });
 
     updateOrganizationOrCollectionDescriptionService = TestBed.get(UpdateOrganizationOrCollectionDescriptionService);
@@ -24,5 +23,4 @@ describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
   it('should be created', () => {
     expect(updateOrganizationOrCollectionDescriptionService).toBeDefined();
   });
-
 });

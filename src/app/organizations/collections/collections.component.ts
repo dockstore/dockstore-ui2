@@ -35,9 +35,12 @@ export class CollectionsComponent implements OnInit, OnChanges {
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   collections$: Observable<HashMap<Collection>>;
-  constructor(private collectionsQuery: CollectionsQuery, private organizationQuery: OrganizationQuery,
-              private collectionsService: CollectionsService, private matDialog: MatDialog
-  ) { }
+  constructor(
+    private collectionsQuery: CollectionsQuery,
+    private organizationQuery: OrganizationQuery,
+    private collectionsService: CollectionsService,
+    private matDialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loading$ = this.collectionsQuery.loading$;
@@ -50,12 +53,11 @@ export class CollectionsComponent implements OnInit, OnChanges {
     this.collectionsService.updateCollections(this.organizationID);
   }
 
-
   editCollection(collection: Collection) {
-    this.matDialog.open(CreateCollectionComponent, {data: {collection: collection, mode: TagEditorMode.Edit}, width: '600px'});
+    this.matDialog.open(CreateCollectionComponent, { data: { collection: collection, mode: TagEditorMode.Edit }, width: '600px' });
   }
 
   createCollection() {
-    this.matDialog.open(CreateCollectionComponent, {data: {collection: null, mode: TagEditorMode.Add}, width: '600px'});
+    this.matDialog.open(CreateCollectionComponent, { data: { collection: null, mode: TagEditorMode.Add }, width: '600px' });
   }
 }

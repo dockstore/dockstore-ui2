@@ -23,7 +23,6 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { RegisterToolService } from './register-tool.service';
 
-
 @Component({
   selector: 'app-register-tool',
   templateUrl: './register-tool.component.html',
@@ -60,7 +59,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
-  constructor(private registerToolService: RegisterToolService, private alertQuery: AlertQuery, private alertService: AlertService) { }
+  constructor(private registerToolService: RegisterToolService, private alertQuery: AlertQuery, private alertService: AlertService) {}
 
   isInvalidCustomRegistry() {
     return this.registerToolService.isInvalidCustomRegistry(this.tool, this.customDockerRegistryPath);
@@ -100,7 +99,6 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     this.disablePrivateCheckbox = this.registerToolService.disabledPrivateCheckbox;
   }
 
-
   hideModal() {
     this.registerToolService.setIsModalShown(false);
     this.alertService.clearEverything();
@@ -111,20 +109,19 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
-    this.registerToolService.toolRegisterError.pipe(
-      takeUntil(this.ngUnsubscribe))
-      .subscribe(toolRegisterError => this.toolRegisterError = toolRegisterError);
-    this.registerToolService.tool.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(tool => this.tool = tool);
-    this.registerToolService.customDockerRegistryPath.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(path => this.customDockerRegistryPath = path);
-    this.registerToolService.showCustomDockerRegistryPath.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(showPath => this.showCustomDockerRegistryPath = showPath);
-    this.registerToolService.toolRegisterError.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(error => this.toolRegisterError = error);
+    this.registerToolService.toolRegisterError
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(toolRegisterError => (this.toolRegisterError = toolRegisterError));
+    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.tool = tool));
+    this.registerToolService.customDockerRegistryPath
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(path => (this.customDockerRegistryPath = path));
+    this.registerToolService.showCustomDockerRegistryPath
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(showPath => (this.showCustomDockerRegistryPath = showPath));
+    this.registerToolService.toolRegisterError.pipe(takeUntil(this.ngUnsubscribe)).subscribe(error => (this.toolRegisterError = error));
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.registerToolService.isModalShown.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => this.isModalShown = isModalShown);
+    this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => (this.isModalShown = isModalShown));
   }
 
   // Validation starts here, should move most of these to a service somehow
@@ -133,15 +130,23 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   formChanged() {
-    if (this.currentForm === this.registerToolForm) { return; }
+    if (this.currentForm === this.registerToolForm) {
+      return;
+    }
     this.registerToolForm = this.currentForm;
     if (this.registerToolForm) {
-      this.registerToolForm.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+      this.registerToolForm.valueChanges
+        .pipe(
+          debounceTime(formInputDebounceTime),
+          takeUntil(this.ngUnsubscribe)
+        )
         .subscribe(data => this.onValueChanged(data));
     }
   }
   onValueChanged(data?: any) {
-    if (!this.registerToolForm) { return; }
+    if (!this.registerToolForm) {
+      return;
+    }
     const form = this.registerToolForm.form;
     for (const field in formErrors) {
       if (formErrors.hasOwnProperty(field)) {

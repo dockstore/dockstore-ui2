@@ -14,76 +14,38 @@
   ~    limitations under the License.
   -->
 <div class="p-3">
-  <div class="row">
-    <div class="col-md-12">
-    <table class="table versions-grid table-bordered table-condensed table-striped">
-      <thead>
-        <tr>
-          <th>
-            Workflow Excerpt
-          </th>
-          <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
-            Tool Excerpt
-          </th>
-          <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
-            Task Excerpt
-          </th>
-          <th *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.NFL">
-            Process Excerpt
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngIf="!toolsContent">
-          <td colspan="10">
-            <div class="text-center">No Records Found</div>
-          </td>
-        </tr>
-        <tr *ngIf="toolsContent && toolsContent.length === 0">
-          <td colspan="10">
-            <div class="text-center">Some tools associated with this workflow are missing from Git repo.</div>
-          </td>
-        </tr>
-        <tr *ngFor="let tool of toolsContent">
-          <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
-            <strong>tool ID</strong>: {{tool?.id}}
-          </td>
-          <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
-            <strong>run</strong>: {{tool?.file}}
-            <br>
-            <strong>docker</strong>: {{tool?.docker}}
-            <br>
-            <strong>link</strong>:
-            <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
-            <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
-          </td>
-
-            <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
-              <strong>task ID</strong>: {{tool?.id}}
-              <br>
-            </td>
-            <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
-              <strong>docker</strong>: {{tool?.docker}}
-              <br>
-              <strong>link</strong>:
-              <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
-              <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
-            </td>
-
-            <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.NFL">
-              <strong>process name</strong>: {{tool?.id}}
-              <br>
-            </td>
-            <td *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.NFL">
-              <strong>docker</strong>: {{tool?.docker}}
-              <br>
-              <strong>link</strong>:
-              <a href="{{tool?.link}}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{tool?.link}}</a>
-              <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <app-loading [loading]="loading">
+    <mat-card *ngIf="nullContent" class="alert alert-warning" role="alert">
+      <mat-icon>warning</mat-icon>
+      No Records Found
+    </mat-card>
+    <mat-card *ngIf="noContent" class="alert alert-warning" role="alert">
+      <mat-icon>warning</mat-icon>
+      Some tools associated with this workflow are missing from Git repo.
+    </mat-card>
+    <table *ngIf="hasContent" mat-table [dataSource]="toolContent" class="mat-elevation-z1 w-100">
+      <ng-container matColumnDef="workflowExcerpt">
+        <th mat-header-cell *matHeaderCellDef>Workflow Excerpt</th>
+        <td mat-cell *matCellDef="let tool">
+          <strong>{{ workflowExcerptRowHeading$ | async }}</strong
+          >:&nbsp;{{ tool?.id }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="toolExcerpt">
+        <th mat-header-cell *matHeaderCellDef>{{ toolExcerptHeaderName$ | async }}</th>
+        <td mat-cell *matCellDef="let tool">
+          <div *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
+            <strong>run</strong>:&nbsp;{{ tool?.file }}
+            <br />
+          </div>
+          <strong>docker</strong>:&nbsp;{{ tool?.docker }}
+          <br />
+          <strong>link</strong>:&nbsp;<a href="{{ tool?.link }}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{ tool?.link }}</a>
+          <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </app-loading>
 </div>

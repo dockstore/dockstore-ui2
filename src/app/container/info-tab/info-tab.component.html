@@ -23,19 +23,23 @@
       <mat-card-content class="p-3">
         <ul class="list-unstyled container-info">
           <li *ngIf="tool?.providerUrl">
-            <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">{{ tool?.provider}}</strong>:
-            <a id="sourceRepository" [href]="tool?.providerUrl | versionProviderUrl : (isPublic ? selectedVersion?.name : '')">
-              {{ tool?.providerUrl | urlDeconstruct : (isPublic ? selectedVersion?.name : '') }}
+            <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">Source Code</strong>:
+            <a
+              *ngIf="tool?.providerUrl"
+              id="sourceRepository"
+              [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+            >
+              {{ tool?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
           </li>
           <li *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
-            <strong matTooltip="The source code for this tool is stored on Dockstore.org">Dockstore.org</strong>:
+            <strong matTooltip="The source code for this tool is stored on Dockstore.org">Source Code</strong>:
             <i>The source code for this tool is stored on Dockstore.org</i>
           </li>
           <li *ngIf="tool?.imgProviderUrl">
-            <strong matTooltip="Docker registry for the associated Docker images">{{tool.imgProvider}}</strong>:
+            <strong matTooltip="Docker registry for the associated Docker images">Docker Image</strong>:
             <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
-              {{ tool?.imgProviderUrl | urlDeconstruct}}
+              {{ tool?.imgProviderUrl | urlDeconstruct }}
             </a>
             <span *ngIf="privateOnlyRegistry">
               {{ tool?.imgProviderUrl }}
@@ -45,32 +49,49 @@
             <li *ngIf="trsLinkCWL">
               <strong matTooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
               <a [href]="trsLinkCWL">
-                {{tool?.tool_path}}
+                {{ tool?.tool_path }}
               </a>
             </li>
             <li *ngIf="trsLinkWDL">
               <strong matTooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
               <a [href]="trsLinkWDL">
-                {{tool?.tool_path}}
+                {{ tool?.tool_path }}
               </a>
             </li>
           </span>
-          <li *ngIf="(tool?.default_dockerfile_path || !isPublic)">
+          <li *ngIf="tool?.default_dockerfile_path || !isPublic">
             <form #editDockerfileForm="ngForm" class="form-inline">
               <div class="form-group">
                 <strong matTooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>:
                 <span *ngIf="!dockerFileEditing">{{ tool?.default_dockerfile_path }}</span>
-                <input *ngIf="dockerFileEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath"
-                  type="text" class="input-default form-control" name="contDockerfilePath" [(ngModel)]="tool.default_dockerfile_path"
-                  placeholder="e.g. /Dockerfile" />
+                <input
+                  *ngIf="dockerFileEditing"
+                  minlength="3"
+                  maxlength="256"
+                  [pattern]="validationPatterns.dockerfilePath"
+                  type="text"
+                  class="input-default form-control"
+                  name="contDockerfilePath"
+                  [(ngModel)]="tool.default_dockerfile_path"
+                  placeholder="e.g. /Dockerfile"
+                />
               </div>
-              <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group push-right" role="group"
-                aria-label="Basic example">
+              <div
+                *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
+                class="btn-group push-right"
+                role="group"
+                aria-label="Basic example"
+              >
                 <button *ngIf="!isPublic && dockerFileEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                   <mat-icon>cancel</mat-icon> Cancel
                 </button>
-                <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid))"
-                  class="btn btn-link" (click)="toggleEditDockerFile()">
+                <button
+                  *ngIf="!isPublic"
+                  type="button"
+                  [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid))"
+                  class="btn btn-link"
+                  (click)="toggleEditDockerFile()"
+                >
                   <mat-icon *ngIf="dockerFileEditing">save</mat-icon>
                   <mat-icon *ngIf="!dockerFileEditing">edit</mat-icon>
                   {{ dockerFileEditing ? 'Save' : 'Edit' }}
@@ -78,22 +99,40 @@
               </div>
             </form>
           </li>
-          <li *ngIf="(tool?.default_cwl_path || !isPublic)">
+          <li *ngIf="tool?.default_cwl_path || !isPublic">
             <form #editCWLPathForm="ngForm" class="form-inline">
               <div class="form-group">
                 <strong matTooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>:
                 <span *ngIf="!cwlPathEditing"> {{ tool?.default_cwl_path || 'n/a' }}</span>
-                <input *ngIf="cwlPathEditing" [required]="!tool?.default_wdl_path" minlength="3" maxlength="256"
-                  [pattern]="validationPatterns.cwlPath" type="text" class="input-default form-control" name="contCWLPath"
-                  [(ngModel)]="tool.default_cwl_path" [placeholder]="exampleDescriptorPatterns.cwl" />
+                <input
+                  *ngIf="cwlPathEditing"
+                  [required]="!tool?.default_wdl_path"
+                  minlength="3"
+                  maxlength="256"
+                  [pattern]="validationPatterns.cwlPath"
+                  type="text"
+                  class="input-default form-control"
+                  name="contCWLPath"
+                  [(ngModel)]="tool.default_cwl_path"
+                  [placeholder]="exampleDescriptorPatterns.cwl"
+                />
               </div>
-              <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group push-right" role="group"
-                aria-label="Basic example">
+              <div
+                *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
+                class="btn-group push-right"
+                role="group"
+                aria-label="Basic example"
+              >
                 <button *ngIf="!isPublic && cwlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                   <mat-icon>cancel</mat-icon> Cancel
                 </button>
-                <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid))"
-                  class="btn btn-link" (click)="toggleEditCWLPath()">
+                <button
+                  *ngIf="!isPublic"
+                  type="button"
+                  [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid))"
+                  class="btn btn-link"
+                  (click)="toggleEditCWLPath()"
+                >
                   <mat-icon *ngIf="cwlPathEditing">save</mat-icon>
                   <mat-icon *ngIf="!cwlPathEditing">edit</mat-icon>
                   {{ cwlPathEditing ? 'Save' : 'Edit' }}
@@ -101,22 +140,40 @@
               </div>
             </form>
           </li>
-          <li *ngIf="(tool?.default_wdl_path || !isPublic)">
+          <li *ngIf="tool?.default_wdl_path || !isPublic">
             <form #editWDLPathForm="ngForm" class="form-inline">
               <div class="form-group">
                 <strong matTooltip="Path in Git repository to main WDL descriptor file">WDL Path</strong>:
                 <span *ngIf="!wdlPathEditing">{{ tool?.default_wdl_path || 'n/a' }}</span>
-                <input *ngIf="wdlPathEditing" [required]="!tool?.default_cwl_path" minlength="3" maxlength="256"
-                  [pattern]="validationPatterns.wdlPath" type="text" class="input-default form-control" name="contWDLPath"
-                  [(ngModel)]="tool.default_wdl_path" [placeholder]="exampleDescriptorPatterns.wdl" />
+                <input
+                  *ngIf="wdlPathEditing"
+                  [required]="!tool?.default_cwl_path"
+                  minlength="3"
+                  maxlength="256"
+                  [pattern]="validationPatterns.wdlPath"
+                  type="text"
+                  class="input-default form-control"
+                  name="contWDLPath"
+                  [(ngModel)]="tool.default_wdl_path"
+                  [placeholder]="exampleDescriptorPatterns.wdl"
+                />
               </div>
-              <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group push-right" role="group"
-                aria-label="Basic example">
+              <div
+                *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
+                class="btn-group push-right"
+                role="group"
+                aria-label="Basic example"
+              >
                 <button *ngIf="!isPublic && wdlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                   <mat-icon>cancel</mat-icon> Cancel
                 </button>
-                <button *ngIf="!isPublic" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid))"
-                  class="btn btn-link" (click)="toggleEditWDLPath()">
+                <button
+                  *ngIf="!isPublic"
+                  type="button"
+                  [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid))"
+                  class="btn btn-link"
+                  (click)="toggleEditWDLPath()"
+                >
                   <mat-icon *ngIf="wdlPathEditing">save</mat-icon>
                   <mat-icon *ngIf="!wdlPathEditing">edit</mat-icon>
                   {{ wdlPathEditing ? 'Save' : 'Edit' }}
@@ -129,52 +186,77 @@
               <div class="form-group">
                 <strong matTooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path</strong>:
                 <span *ngIf="!cwlTestPathEditing"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
-                <input *ngIf="cwlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath"
-                  type="text" class="input-default form-control" name="CWLTestPath" [(ngModel)]="tool.defaultCWLTestParameterFile"
-                  placeholder="e.g. /test.cwl.json" />
+                <input
+                  *ngIf="cwlTestPathEditing"
+                  minlength="3"
+                  maxlength="256"
+                  [pattern]="validationPatterns.testFilePath"
+                  type="text"
+                  class="input-default form-control"
+                  name="CWLTestPath"
+                  [(ngModel)]="tool.defaultCWLTestParameterFile"
+                  placeholder="e.g. /test.cwl.json"
+                />
               </div>
-              <button *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" type="button" [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))"
-                class="btn btn-link push-right" (click)="toggleEditCWLTestPath()">
+              <button
+                *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
+                type="button"
+                [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))"
+                class="btn btn-link push-right"
+                (click)="toggleEditCWLTestPath()"
+              >
                 <mat-icon *ngIf="cwlTestPathEditing">save</mat-icon>
                 <mat-icon *ngIf="!cwlTestPathEditing">edit</mat-icon>
                 {{ cwlTestPathEditing ? 'Save' : 'Edit' }}
               </button>
             </form>
-
           </li>
           <li>
             <form #editWDLTestPathForm="ngForm" class="form-inline">
               <div class="form-group">
                 <strong matTooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path</strong>:
                 <span *ngIf="!wdlTestPathEditing">{{ tool?.defaultWDLTestParameterFile || 'n/a' }}</span>
-                <input *ngIf="wdlTestPathEditing" minlength="3" maxlength="256" [pattern]="validationPatterns.testFilePath"
-                  type="text" class="input-default form-control" name="WDLTestPath" [(ngModel)]="tool.defaultWDLTestParameterFile"
-                  placeholder="e.g. /test.wdl.json" />
+                <input
+                  *ngIf="wdlTestPathEditing"
+                  minlength="3"
+                  maxlength="256"
+                  [pattern]="validationPatterns.testFilePath"
+                  type="text"
+                  class="input-default form-control"
+                  name="WDLTestPath"
+                  [(ngModel)]="tool.defaultWDLTestParameterFile"
+                  placeholder="e.g. /test.wdl.json"
+                />
               </div>
-              <button *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" type="button" [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))"
-                class="btn btn-link push-right" (click)="toggleEditWDLTestPath()">
+              <button
+                *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
+                type="button"
+                [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))"
+                class="btn btn-link push-right"
+                (click)="toggleEditWDLTestPath()"
+              >
                 <mat-icon *ngIf="wdlTestPathEditing">save</mat-icon>
                 <mat-icon *ngIf="!wdlTestPathEditing">edit</mat-icon>
                 {{ wdlTestPathEditing ? 'Save' : 'Edit' }}
               </button>
             </form>
           </li>
-          <app-info-tab-checker-workflow-path *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" [canRead]="true"
-            [canWrite]="true" [isOwner]="true"></app-info-tab-checker-workflow-path>
+          <app-info-tab-checker-workflow-path
+            *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
+            [canRead]="true"
+            [canWrite]="true"
+            [isOwner]="true"
+          ></app-info-tab-checker-workflow-path>
           <!-- TODO: Remove once hosted tools support checker workflows -->
           <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
             <strong matTooltip="Currently disabled for Hosted Tools">Checker Workflow</strong>: n/a
           </div>
-          <li *ngIf="tool?.buildMode">
-            <strong matTooltip="{{tool?.buildModeTooltip}}">Build Mode</strong>: {{ tool?.buildMode }}
-          </li>
+          <li *ngIf="tool?.buildMode"><strong matTooltip="{{ tool?.buildModeTooltip }}">Build Mode</strong>: {{ tool?.buildMode }}</li>
           <li *ngIf="tool?.lastBuildDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-            <strong matTooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{
-            tool?.lastBuildDate }}
+            <strong matTooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
           </li>
           <li *ngIf="tool?.lastUpdatedDate">
-            <strong matTooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{
-            tool?.lastUpdatedDate }}
+            <strong matTooltip="Date and time of the last update to the Tool entry">Last Updated</strong>: {{ tool?.lastUpdatedDate }}
           </li>
         </ul>
       </mat-card-content>
@@ -186,12 +268,10 @@
         <mat-card-subtitle class="m-0">{{ selectedVersion?.name }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="p-3">
-        <div>
-          <strong matTooltip="Author listed in descriptor">Author</strong>: {{ tool?.author ? tool?.author : 'n/a' }}
-        </div>
+        <div><strong matTooltip="Author listed in descriptor">Author</strong>: {{ tool?.author ? tool?.author : 'n/a' }}</div>
         <div>
           <strong matTooltip="E-mail of corresponding author for tool">E-mail</strong>:
-          <a href="mailto:{{tool?.email}}" *ngIf="tool?.email">
+          <a href="mailto:{{ tool?.email }}" *ngIf="tool?.email">
             {{ tool?.email }}
           </a>
           <span *ngIf="!tool?.email">
@@ -204,11 +284,9 @@
         </span>
 
         <div *ngIf="tool?.description || !isPublic">
-          <label matTooltip="Description of tool obtained from tool descriptor">
-            Description
-          </label>:
+          <label matTooltip="Description of tool obtained from tool descriptor"> Description </label>:
           <div *ngIf="tool?.description" class="well well-sm">
-            <ngx-md [data]="tool?.description"></ngx-md>
+            <markdown [data]="tool?.description"></markdown>
           </div>
           <div *ngIf="!tool?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
@@ -216,11 +294,12 @@
               No description associated with this tool. See
               <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a>
               and
-              <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to
-              define a description for this tool.
+              <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description
+              for this tool.
             </span>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
+</div>

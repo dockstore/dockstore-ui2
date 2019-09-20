@@ -15,285 +15,479 @@
   -->
 <h4 mat-dialog-title>Register Tool</h4>
 <mat-dialog-content>
-<app-alert></app-alert>
-<mat-horizontal-stepper #stepper>
-  <ng-template matStepperIcon="edit">
-    <mat-icon>done</mat-icon>
-  </ng-template>
-  <mat-step>
-    <ng-template matStepLabel>Tool storage type</ng-template>
-    <p>
-      You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL on an existing third party repository, such
-      as GitHub, Bitbucket, etc.
-    </p>
-    <div class="modal-body">
-      <mat-radio-group class="radio-group" [(ngModel)]="selectedOption">
-        <mat-radio-button class="radio-button" *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
-          {{option.label}}
-        </mat-radio-button>
-      </mat-radio-group>
-    </div>
-    <div class="modal-footer">
-      <button mat-button color="secondary" (click)="hideModal();">
-        Close
-      </button>
-      <button mat-raised-button color="primary" matStepperNext>
-        Next
-      </button>
-    </div>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Create a tool</ng-template>
-    <form *ngIf="selectedOption?.value == 0" #registerToolForm="ngForm" name="registerToolForm" class="form-horizontal" (submit)="registerTool()"
-      novalidate>
+  <app-alert></app-alert>
+  <mat-horizontal-stepper #stepper>
+    <ng-template matStepperIcon="edit">
+      <mat-icon>done</mat-icon>
+    </ng-template>
+    <mat-step>
+      <ng-template matStepLabel>Tool storage type</ng-template>
+      <p>
+        You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL on an existing third party repository, such
+        as GitHub, Bitbucket, etc.
+      </p>
       <div class="modal-body">
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Source Code Repository:
-          </label>
-          <div class="col-sm-9">
-            <div class="input-group">
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                  {{tool.scrProvider}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li *ngFor="let repository of friendlyRepositoryKeys()">
-                    <a class="dropdown-item" (click)="tool.scrProvider = repository">
-                      {{repository}}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <input id="sourceCodeRepositoryInput" type="text" class="form-control" name="gitPath" [(ngModel)]="tool.gitPath" minlength="3" maxlength="128"
-                [pattern]="validationPatterns.gitPath" required matTooltip="Git Repository path." placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
-              />
-            </div>
-            <div *ngIf="formErrors.gitPath" class="alert alert-danger"> {{ formErrors.gitPath }} </div>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Dockerfile Path:
-          </label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="dockerfilePath" [(ngModel)]="tool.default_dockerfile_path" minlength="3" maxlength="256" [pattern]="validationPatterns.dockerfilePath"
-              required matTooltip="Default relative path to the Dockerfile in the Git repository." placeholder="e.g. /Dockerfile" />
-            <div *ngIf="formErrors.dockerfilePath" class="alert alert-danger"> {{ formErrors.dockerfilePath }} </div>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            CWL Descriptor Path:
-          </label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="cwlPath" [(ngModel)]="tool.default_cwl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.cwlPath"
-              [required]="!(tool.default_wdl_path.length)" matTooltip="Default relative path to the CWL Descriptor in the Git repository." placeholder="e.g. /Dockstore.cwl"
-            />
-            <div *ngIf="formErrors.cwlPath" class="alert alert-danger"> {{ formErrors.cwlPath }} </div>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            WDL Descriptor Path:
-          </label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="wdlPath" [(ngModel)]="tool.default_wdl_path" minlength="3" maxlength="256" [pattern]="validationPatterns.wdlPath"
-              [required]="!(tool.default_cwl_path.length)" matTooltip="Default relative path to the WDL Descriptor in the Git repository." placeholder="e.g. /Dockstore.wdl"
-            />
-            <div *ngIf="formErrors.wdlPath" class="alert alert-danger"> {{ formErrors.wdlPath }} </div>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            CWL Test Parameter File:
-          </label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="cwlTestParameterFilePath" [(ngModel)]="tool.default_cwl_test_parameter_file" minlength="3" maxlength="128"
-              [pattern]="validationPatterns.testFilePath" matTooltip="Relative path to a CWL Test Parameter File in the Git repository." placeholder="e.g. /test.cwl.json"
-            />
-            <div *ngIf="formErrors.cwlTestParameterFilePath" class="alert alert-danger"> {{ formErrors.cwlTestParameterFilePath }} </div>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            WDL Test Parameter File:
-          </label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="wdlTestParameterFilePath" [(ngModel)]="tool.default_wdl_test_parameter_file" minlength="3" maxlength="128"
-              [pattern]="validationPatterns.testFilePath" matTooltip="Relative path to a WDL Test Parameter File in the Git repository." placeholder="e.g. /test.wdl.json"
-            />
-            <div *ngIf="formErrors.wdlTestParameterFilePath" class="alert alert-danger"> {{ formErrors.wdlTestParameterFilePath }} </div>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Image Registry:
-          </label>
-          <div class="col-sm-9">
-            <div class="input-group">
-              <div class="input-group-btn">
-                <button id="imageRegistrySpinner" type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                  {{tool.irProvider}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li *ngFor="let registry of friendlyRegistryKeys()">
-                    <a [attr.id]="'imageRegistrySpinner' + registry" class="dropdown-item" (click)="tool.irProvider = registry; checkForSpecialDockerRegistry()">
-                      {{registry}}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <input id="imageRegistryInput" type="text" class="form-control" name="imagePath" [(ngModel)]="tool.imagePath" minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath"
-                required matTooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover" />
-            </div>
-            <div *ngIf="formErrors.imagePath" class="alert alert-danger"> {{ formErrors.imagePath}} </div>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Docker Registry Path:
-          </label>
-          <div class="col-sm-9">
-            <span *ngIf="showCustomDockerRegistryPath">
-              <span *ngIf="tool.irProvider === 'Amazon ECR'">
-                <input id="dockerRegistryPathInput" class="form-control" name="amazonDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256"
-                  matTooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [pattern]="validationPatterns.amazonDockerRegistryPath"
-                />
-                <div *ngIf="formErrors.amazonDockerRegistryPath" class="alert alert-danger"> {{ formErrors.amazonDockerRegistryPath}} </div>
-              </span>
-              <span *ngIf="tool.irProvider === 'Seven Bridges'">
-                <input id="dockerRegistryPathInput" class="form-control" name="sevenBridgesDockerRegistryPath" [(ngModel)]="customDockerRegistryPath" maxlength="256"
-                  matTooltip="Custom Docker registry path" placeholder="e.g. *-images.sbgenomics.com" [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"
-                />
-                <div *ngIf="formErrors.sevenBridgesDockerRegistryPath" class="alert alert-danger"> {{ formErrors.sevenBridgesDockerRegistryPath}} </div>
-              </span>
-            </span>
-            <input *ngIf="!showCustomDockerRegistryPath" id="dockerRegistryPathInput" class="form-control" name="customDockerRegistryPath" [(ngModel)]="customDockerRegistryPath"
-              maxlength="256" matTooltip="Custom Docker registry path" disabled/>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Private Image:
-          </label>
-          <div class="col-sm-9">
-            <label>
-              <input type="checkbox" [disabled]="disablePrivateCheckbox" name="tool.private_access" [(ngModel)]="tool.private_access" matTooltip="Image registry entry is private." id="privateTool"
-              />
+        <mat-radio-group class="radio-group" [(ngModel)]="selectedOption">
+          <mat-radio-button
+            class="radio-button"
+            *ngFor="let option of options"
+            [value]="option"
+            [id]="option.value + '-register-workflow-option'"
+          >
+            {{ option.label }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="modal-footer">
+        <button mat-button color="secondary" (click)="hideModal()">
+          Close
+        </button>
+        <button mat-raised-button color="primary" matStepperNext>
+          Next
+        </button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Create a tool</ng-template>
+      <form
+        *ngIf="selectedOption?.value == 0"
+        #registerToolForm="ngForm"
+        name="registerToolForm"
+        class="form-horizontal"
+        (submit)="registerTool()"
+        novalidate
+      >
+        <div class="modal-body">
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Source Code Repository:
             </label>
-          </div>
-        </div>
-        <div class="form-group form-group-sm" *ngIf="tool.private_access">
-          <label class="col-sm-3 control-label">
-            Tool Maintainer Email:
-          </label>
-          <div class="col-sm-9">
-            <input id="toolMaintainerEmailInput" type="email" class="form-control" name="toolmaintaineremail" [(ngModel)]="tool.tool_maintainer_email" maxlength="256"
-              matTooltip="Email of the tool maintainer." placeholder="e.g. example@domain.com" />
-            <div *ngIf="formErrors.email" class="alert alert-danger"> {{ formErrors.email}} </div>
-          </div>
-        </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Tool Name:
-          </label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="toolName" [(ngModel)]="tool.toolname" maxlength="256" [pattern]="validationPatterns.toolName" matTooltip="Dockstore Image path toolname suffix."
-              placeholder="e.g. liftover-fast (optional)" />
-            <div *ngIf="formErrors.toolName" class="alert alert-danger"> {{ formErrors.toolName }} </div>
-          </div>
-        </div>
-      </div>
-      <div mat-dialog-actions class="pull-right">
-        <button mat-button type="button" color="secondary" data-dismiss="modal" (click)="hideModal()">
-          Close
-        </button>
-        <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerToolForm.form.valid || savingActive || (isRefreshing$ | async) || isInvalidCustomRegistry() || isInvalidPrivateTool()">
-          Add Tool
-        </button>
-      </div>
-    </form>
-    <form *ngIf="selectedOption?.value == 1" #registerHostedToolForm="ngForm" name="registerHostedToolForm" class="form-horizontal" (ngSubmit)="registerHostedTool()"
-      novalidate>
-      <div class="modal-body">
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Image Registry:
-          </label>
-          <div class="col-sm-9">
-            <div class="input-group">
-              <div class="input-group-btn">
-                <button id="hostedImageRegistrySpinner" type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                  {{hostedTool.registryProvider}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li *ngFor="let registry of friendlyRegistryKeys()">
-                    <a [attr.id]="'hostedImageRegistrySpinner' + registry" class="dropdown-item" (click)="hostedTool.registryProvider = registry; hostedTool.registry = getToolRegistry(registry, null);">
-                      {{registry}}
-                    </a>
-                  </li>
-                </ul>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    {{ tool.scrProvider }}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let repository of friendlyRepositoryKeys()">
+                      <a class="dropdown-item" (click)="tool.scrProvider = repository">
+                        {{ repository }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <input
+                  id="sourceCodeRepositoryInput"
+                  type="text"
+                  class="form-control"
+                  name="gitPath"
+                  [(ngModel)]="tool.gitPath"
+                  minlength="3"
+                  maxlength="128"
+                  [pattern]="validationPatterns.gitPath"
+                  required
+                  matTooltip="Git Repository path."
+                  placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
+                />
               </div>
-              <input id="hostedImagePath" type="text" class="form-control" name="hostedImagePath" #hostedImagePath="ngModel" [(ngModel)]="hostedTool.path"
-                minlength="3" maxlength="128" [pattern]="validationPatterns.imagePath" required matTooltip="Docker Image Registry path." placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
+              <div *ngIf="formErrors.gitPath" class="alert alert-danger">{{ formErrors.gitPath }}</div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Dockerfile Path:
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                name="dockerfilePath"
+                [(ngModel)]="tool.default_dockerfile_path"
+                minlength="3"
+                maxlength="256"
+                [pattern]="validationPatterns.dockerfilePath"
+                required
+                matTooltip="Default relative path to the Dockerfile in the Git repository."
+                placeholder="e.g. /Dockerfile"
+              />
+              <div *ngIf="formErrors.dockerfilePath" class="alert alert-danger">{{ formErrors.dockerfilePath }}</div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              CWL Descriptor Path:
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                name="cwlPath"
+                [(ngModel)]="tool.default_cwl_path"
+                minlength="3"
+                maxlength="256"
+                [pattern]="validationPatterns.cwlPath"
+                [required]="!tool.default_wdl_path.length"
+                matTooltip="Default relative path to the CWL Descriptor in the Git repository."
+                placeholder="e.g. /Dockstore.cwl"
+              />
+              <div *ngIf="formErrors.cwlPath" class="alert alert-danger">{{ formErrors.cwlPath }}</div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              WDL Descriptor Path:
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                name="wdlPath"
+                [(ngModel)]="tool.default_wdl_path"
+                minlength="3"
+                maxlength="256"
+                [pattern]="validationPatterns.wdlPath"
+                [required]="!tool.default_cwl_path.length"
+                matTooltip="Default relative path to the WDL Descriptor in the Git repository."
+                placeholder="e.g. /Dockstore.wdl"
+              />
+              <div *ngIf="formErrors.wdlPath" class="alert alert-danger">{{ formErrors.wdlPath }}</div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              CWL Test Parameter File:
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                name="cwlTestParameterFilePath"
+                [(ngModel)]="tool.default_cwl_test_parameter_file"
+                minlength="3"
+                maxlength="128"
+                [pattern]="validationPatterns.testFilePath"
+                matTooltip="Relative path to a CWL Test Parameter File in the Git repository."
+                placeholder="e.g. /test.cwl.json"
+              />
+              <div *ngIf="formErrors.cwlTestParameterFilePath" class="alert alert-danger">{{ formErrors.cwlTestParameterFilePath }}</div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              WDL Test Parameter File:
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                name="wdlTestParameterFilePath"
+                [(ngModel)]="tool.default_wdl_test_parameter_file"
+                minlength="3"
+                maxlength="128"
+                [pattern]="validationPatterns.testFilePath"
+                matTooltip="Relative path to a WDL Test Parameter File in the Git repository."
+                placeholder="e.g. /test.wdl.json"
+              />
+              <div *ngIf="formErrors.wdlTestParameterFilePath" class="alert alert-danger">{{ formErrors.wdlTestParameterFilePath }}</div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Image Registry:
+            </label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <button id="imageRegistrySpinner" type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    {{ tool.irProvider }}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let registry of friendlyRegistryKeys()">
+                      <a
+                        [attr.id]="'imageRegistrySpinner' + registry"
+                        class="dropdown-item"
+                        (click)="tool.irProvider = registry; checkForSpecialDockerRegistry()"
+                      >
+                        {{ registry }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <input
+                  id="imageRegistryInput"
+                  type="text"
+                  class="form-control"
+                  name="imagePath"
+                  [(ngModel)]="tool.imagePath"
+                  minlength="3"
+                  maxlength="128"
+                  [pattern]="validationPatterns.imagePath"
+                  required
+                  matTooltip="Docker Image Registry path."
+                  placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
+                />
+              </div>
+              <div *ngIf="formErrors.imagePath" class="alert alert-danger">{{ formErrors.imagePath }}</div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Docker Registry Path:
+            </label>
+            <div class="col-sm-9">
+              <span *ngIf="showCustomDockerRegistryPath">
+                <span *ngIf="tool.irProvider === 'Amazon ECR'">
+                  <input
+                    id="dockerRegistryPathInput"
+                    class="form-control"
+                    name="amazonDockerRegistryPath"
+                    [(ngModel)]="customDockerRegistryPath"
+                    maxlength="256"
+                    matTooltip="Custom Docker registry path"
+                    placeholder="e.g. *.dkr.ecr.*.amazonaws.com"
+                    [pattern]="validationPatterns.amazonDockerRegistryPath"
+                  />
+                  <div *ngIf="formErrors.amazonDockerRegistryPath" class="alert alert-danger">
+                    {{ formErrors.amazonDockerRegistryPath }}
+                  </div>
+                </span>
+                <span *ngIf="tool.irProvider === 'Seven Bridges'">
+                  <input
+                    id="dockerRegistryPathInput"
+                    class="form-control"
+                    name="sevenBridgesDockerRegistryPath"
+                    [(ngModel)]="customDockerRegistryPath"
+                    maxlength="256"
+                    matTooltip="Custom Docker registry path"
+                    placeholder="e.g. *-images.sbgenomics.com"
+                    [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"
+                  />
+                  <div *ngIf="formErrors.sevenBridgesDockerRegistryPath" class="alert alert-danger">
+                    {{ formErrors.sevenBridgesDockerRegistryPath }}
+                  </div>
+                </span>
+              </span>
+              <input
+                *ngIf="!showCustomDockerRegistryPath"
+                id="dockerRegistryPathInput"
+                class="form-control"
+                name="customDockerRegistryPath"
+                [(ngModel)]="customDockerRegistryPath"
+                maxlength="256"
+                matTooltip="Custom Docker registry path"
+                disabled
               />
             </div>
-            <div *ngIf="hostedImagePath?.errors?.pattern" class="alert alert-danger">
-              The namespace and name of the image repository, separated by a '/'. Use '_' for an empty namespace.
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Private Image:
+            </label>
+            <div class="col-sm-9">
+              <label>
+                <input
+                  type="checkbox"
+                  [disabled]="disablePrivateCheckbox"
+                  name="tool.private_access"
+                  [(ngModel)]="tool.private_access"
+                  matTooltip="Image registry entry is private."
+                  id="privateTool"
+                />
+              </label>
+            </div>
+          </div>
+          <div class="form-group form-group-sm" *ngIf="tool.private_access">
+            <label class="col-sm-3 control-label">
+              Tool Maintainer Email:
+            </label>
+            <div class="col-sm-9">
+              <input
+                id="toolMaintainerEmailInput"
+                type="email"
+                class="form-control"
+                name="toolmaintaineremail"
+                [(ngModel)]="tool.tool_maintainer_email"
+                maxlength="256"
+                matTooltip="Email of the tool maintainer."
+                placeholder="e.g. example@domain.com"
+              />
+              <div *ngIf="formErrors.email" class="alert alert-danger">{{ formErrors.email }}</div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Tool Name:
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                name="toolName"
+                [(ngModel)]="tool.toolname"
+                maxlength="256"
+                [pattern]="validationPatterns.toolName"
+                matTooltip="Dockstore Image path toolname suffix."
+                placeholder="e.g. liftover-fast (optional)"
+              />
+              <div *ngIf="formErrors.toolName" class="alert alert-danger">{{ formErrors.toolName }}</div>
             </div>
           </div>
         </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Docker Registry Path:
-          </label>
-          <div class="col-sm-9">
-            <span *ngIf="hostedTool.registryProvider === 'Seven Bridges' || hostedTool.registryProvider === 'Amazon ECR'">
-              <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">
-                <input id="hostedDockerRegistryPathInput" class="form-control" name="amazonDockerRegistryPath" #amazonDockerRegistryPath="ngModel" [(ngModel)]="hostedTool.registry"
-                  maxlength="256" matTooltip="Custom Docker registry path" placeholder="e.g. *.dkr.ecr.*.amazonaws.com" [pattern]="validationPatterns.amazonDockerRegistryPath"
+        <div mat-dialog-actions class="pull-right">
+          <button mat-button type="button" color="secondary" data-dismiss="modal" (click)="hideModal()">
+            Close
+          </button>
+          <button
+            id="submitButton"
+            type="submit"
+            mat-raised-button
+            color="primary"
+            [disabled]="
+              !registerToolForm.form.valid || savingActive || (isRefreshing$ | async) || isInvalidCustomRegistry() || isInvalidPrivateTool()
+            "
+          >
+            Add Tool
+          </button>
+        </div>
+      </form>
+      <form
+        *ngIf="selectedOption?.value == 1"
+        #registerHostedToolForm="ngForm"
+        name="registerHostedToolForm"
+        class="form-horizontal"
+        (ngSubmit)="registerHostedTool()"
+        novalidate
+      >
+        <div class="modal-body">
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Image Registry:
+            </label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <button
+                    id="hostedImageRegistrySpinner"
+                    type="button"
+                    class="btn btn-default btn-sm dropdown-toggle"
+                    data-toggle="dropdown"
+                  >
+                    {{ hostedTool.registryProvider }}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li *ngFor="let registry of friendlyRegistryKeys()">
+                      <a
+                        [attr.id]="'hostedImageRegistrySpinner' + registry"
+                        class="dropdown-item"
+                        (click)="hostedTool.registryProvider = registry; hostedTool.registry = getToolRegistry(registry, null)"
+                      >
+                        {{ registry }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <input
+                  id="hostedImagePath"
+                  type="text"
+                  class="form-control"
+                  name="hostedImagePath"
+                  #hostedImagePath="ngModel"
+                  [(ngModel)]="hostedTool.path"
+                  minlength="3"
+                  maxlength="128"
+                  [pattern]="validationPatterns.imagePath"
+                  required
+                  matTooltip="Docker Image Registry path."
+                  placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
                 />
-                <div *ngIf="amazonDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
-                  Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.
-                </div>
+              </div>
+              <div *ngIf="hostedImagePath?.errors?.pattern" class="alert alert-danger">
+                The namespace and name of the image repository, separated by a '/'. Use '_' for an empty namespace.
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Docker Registry Path:
+            </label>
+            <div class="col-sm-9">
+              <span *ngIf="hostedTool.registryProvider === 'Seven Bridges' || hostedTool.registryProvider === 'Amazon ECR'">
+                <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">
+                  <input
+                    id="hostedDockerRegistryPathInput"
+                    class="form-control"
+                    name="amazonDockerRegistryPath"
+                    #amazonDockerRegistryPath="ngModel"
+                    [(ngModel)]="hostedTool.registry"
+                    maxlength="256"
+                    matTooltip="Custom Docker registry path"
+                    placeholder="e.g. *.dkr.ecr.*.amazonaws.com"
+                    [pattern]="validationPatterns.amazonDockerRegistryPath"
+                  />
+                  <div *ngIf="amazonDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
+                    Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.
+                  </div>
+                </span>
+                <span *ngIf="hostedTool.registryProvider === 'Seven Bridges'">
+                  <input
+                    id="hostedDockerRegistryPathInput"
+                    class="form-control"
+                    name="sevenBridgesDockerRegistryPath"
+                    #sevenBridgesDockerRegistryPath="ngModel"
+                    [(ngModel)]="hostedTool.registry"
+                    maxlength="256"
+                    matTooltip="Custom Docker registry path"
+                    placeholder="e.g. *-images.sbgenomics.com"
+                    [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"
+                  />
+                  <div *ngIf="sevenBridgesDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
+                    Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.
+                  </div>
+                </span>
               </span>
-              <span *ngIf="hostedTool.registryProvider === 'Seven Bridges'">
-                <input id="hostedDockerRegistryPathInput" class="form-control" name="sevenBridgesDockerRegistryPath" #sevenBridgesDockerRegistryPath="ngModel"
-                  [(ngModel)]="hostedTool.registry" maxlength="256" matTooltip="Custom Docker registry path" placeholder="e.g. *-images.sbgenomics.com"
-                  [pattern]="validationPatterns.sevenBridgesDockerRegistryPath" />
-                <div *ngIf="sevenBridgesDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
-                  Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.
-                </div>
-              </span>
-            </span>
-            <input *ngIf="hostedTool.registryProvider !== 'Seven Bridges' && hostedTool.registryProvider !== 'Amazon ECR'" id="dockerRegistryPathInput" class="form-control"
-              name="customDockerRegistryPath" [(ngModel)]="hostedTool.registry" maxlength="256" matTooltip="Custom Docker registry path" disabled/>
+              <input
+                *ngIf="hostedTool.registryProvider !== 'Seven Bridges' && hostedTool.registryProvider !== 'Amazon ECR'"
+                id="dockerRegistryPathInput"
+                class="form-control"
+                name="customDockerRegistryPath"
+                [(ngModel)]="hostedTool.registry"
+                maxlength="256"
+                matTooltip="Custom Docker registry path"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
+              Tool Name:
+            </label>
+            <div class="col-sm-9">
+              <input
+                type="text"
+                class="form-control"
+                name="toolName"
+                [(ngModel)]="hostedTool.entryName"
+                maxlength="256"
+                [pattern]="validationPatterns.toolName"
+                matTooltip="Name to distinguish between multiple tools within the same repository"
+                placeholder="e.g. liftover-fast (optional)"
+              />
+              <div *ngIf="formErrors.toolName" class="alert alert-danger">{{ formErrors.toolName }}</div>
+            </div>
           </div>
         </div>
-        <div class="form-group form-group-sm">
-          <label class="col-sm-3 control-label">
-            Tool Name:
-          </label>
-          <div class="col-sm-9">
-            <input type="text" class="form-control" name="toolName" [(ngModel)]="hostedTool.entryName" maxlength="256" [pattern]="validationPatterns.toolName" matTooltip="Name to distinguish between multiple tools within the same repository"
-              placeholder="e.g. liftover-fast (optional)" />
-            <div *ngIf="formErrors.toolName" class="alert alert-danger"> {{ formErrors.toolName }} </div>
-          </div>
+        <div mat-dialog-actions class="pull-right">
+          <button mat-button type="button" color="secondary" (click)="hideModal()">
+            Close
+          </button>
+          <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedToolForm.form.valid">
+            Add Tool
+          </button>
         </div>
-      </div>
-      <div mat-dialog-actions class="pull-right">
-        <button mat-button type="button" color="secondary" (click)="hideModal()">
-          Close
-        </button>
-        <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedToolForm.form.valid">
-          Add Tool
-        </button>
-      </div>
-    </form>
-  </mat-step>
-</mat-horizontal-stepper>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
 </mat-dialog-content>

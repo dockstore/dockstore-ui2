@@ -25,7 +25,8 @@
       <mat-icon>warning</mat-icon>
       &nbsp;
       <span *ngFor="let item of validationMessage | keyvalue">
-        <strong>{{item?.key}}</strong>: {{item?.value}}
+        <strong>{{ item?.key }}</strong
+        >: {{ item?.value }}
       </span>
     </mat-card>
   </span>
@@ -35,8 +36,12 @@
     <div *ngIf="content">
       <span class="row m-0">
         <span class="col-sm-4">
-          <app-select [placeholder]="'Descriptor Type'" [items]="descriptors"
-            [default]="currentDescriptor" (select)="onDescriptorChange($event); checkIfValid(false, _selectedVersion)">
+          <app-select
+            [placeholder]="'Descriptor Type'"
+            [items]="descriptors"
+            [default]="currentDescriptor"
+            (select)="onDescriptorChange($event); checkIfValid(false, _selectedVersion)"
+          >
           </app-select>
         </span>
       </span>
@@ -49,17 +54,31 @@
       <mat-toolbar color="primary">
         <mat-toolbar-row>
           <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-            <app-select class="longer"[items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)">
+            <app-select class="longer" [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)">
             </app-select>
             <div class="btn-group pull-right" role="group">
-              <a mat-icon-button color="secondary" class="mr-1"
-                *ngIf="(published$ | async); else unpublishedDownloadLink" download [href]="downloadFilePath"
-                type="button" title="{{filePath}}">
+              <a
+                mat-icon-button
+                color="secondary"
+                class="mr-1"
+                *ngIf="published$ | async; else unpublishedDownloadLink"
+                download
+                [href]="downloadFilePath"
+                type="button"
+                title="{{ filePath }}"
+              >
                 <mat-icon>save_alt</mat-icon>
               </a>
               <ng-template #unpublishedDownloadLink>
-                <a mat-icon-button color="secondary" class="mr-1" [href]="customDownloadHREF"
-                  [download]="customDownloadPath" type="button" title="{{filePath}}">
+                <a
+                  mat-icon-button
+                  color="secondary"
+                  class="mr-1"
+                  [href]="customDownloadHREF"
+                  [download]="customDownloadPath"
+                  type="button"
+                  title="{{ filePath }}"
+                >
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>

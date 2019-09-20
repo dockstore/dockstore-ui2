@@ -15,7 +15,7 @@
       "es2017",
       "dom"
     ],
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
       "jszip": [
         "../node_modules/jszip/dist/jszip.min.js"

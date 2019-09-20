@@ -14,29 +14,29 @@
  *    limitations under the License.
  */
 
-.tagCloud{
-    padding-left: 10%;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    &.tool {
-      background-color: #f2faff;
-      box-shadow: 0 0 10px 0px #b0e0ee;
-    }
-    &.workflow {
-      background-color: #f2fffc;
-      box-shadow: 0 0 10px 0px #b0eed7;
-    }
+.tagCloud {
+  padding-left: 10%;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  &.tool {
+    background-color: #f2faff;
+    box-shadow: 0 0 10px 0px #b0e0ee;
   }
+  &.workflow {
+    background-color: #f2fffc;
+    box-shadow: 0 0 10px 0px #b0eed7;
+  }
+}
 
-  .tagCloud-btn {
-    width:100%;
-    &.tool {
-      color: #2E629D;
-      background-color: #aadeee;
-    }
-    &.workflow {
-      color: #198055;
-      background-color: #aaeed2;
-      border-color: #3fd999;
-    }
+.tagCloud-btn {
+  width: 100%;
+  &.tool {
+    color: #2e629d;
+    background-color: #aadeee;
   }
+  &.workflow {
+    color: #198055;
+    background-color: #aaeed2;
+    border-color: #3fd999;
+  }
+}

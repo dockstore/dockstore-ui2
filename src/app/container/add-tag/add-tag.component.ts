@@ -52,26 +52,31 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   // Originally set to false because we made the defaults not duplicate of each other
   public hasDuplicateCWL = false;
   public hasDuplicateWDL = false;
-  constructor(private containerService: ContainerService, private containertagsService: ContainertagsService,
-    private containersService: ContainersService, private toolQuery: ToolQuery, private alertService: AlertService,
-    private matDialog: MatDialog) {
+  constructor(
+    private containerService: ContainerService,
+    private containertagsService: ContainertagsService,
+    private containersService: ContainersService,
+    private toolQuery: ToolQuery,
+    private alertService: AlertService,
+    private matDialog: MatDialog
+  ) {
     super();
   }
 
   initializeTag() {
     this.unsavedVersion = {
-      'name': '',
-      'reference': '',
-      'image_id': '',
-      'dockerfile_path': '',
-      'cwl_path': '',
-      'wdl_path': '',
-      'hidden': false,
-      'automated': false,
-      'dirtyBit': false,
-      'verified': false,
-      'verifiedSource': null,
-      'size': 0
+      name: '',
+      reference: '',
+      image_id: '',
+      dockerfile_path: '',
+      cwl_path: '',
+      wdl_path: '',
+      hidden: false,
+      automated: false,
+      dirtyBit: false,
+      verified: false,
+      verifiedSource: null,
+      size: 0
     };
     this.unsavedCWLTestParameterFilePaths = [];
     this.unsavedWDLTestParameterFilePaths = [];
@@ -138,39 +143,58 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
 
   addTag() {
     this.alertService.start('Adding tag');
-    this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe((tags: Tag[]) => {
-      this.tool.tags = tags;
-      const id = this.tool.id;
-      const tagName = this.unsavedVersion.name;
-      // Store the unsaved test files if valid and exist
-      if (this.unsavedTestCWLFile.length > 0) {
-        this.addTestParameterFile(this.DescriptorType.CWL);
-      }
-      if (this.unsavedTestWDLFile.length > 0) {
-        this.addTestParameterFile(this.DescriptorType.WDL);
-      }
-      this.initializeTag();
-      // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      const addCWL: Observable<SourceFile[]> =
-        this.containersService.addTestParameterFiles(id, this.unsavedCWLTestParameterFilePaths, 'CWL', tagName, null);
-      // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      const addWDL: Observable<SourceFile[]> =
-        this.containersService.addTestParameterFiles(id, this.unsavedWDLTestParameterFilePaths, 'WDL', tagName, null);
-      forkJoin(addCWL, addWDL).subscribe(() => {
-        this.containersService.refresh(id).subscribe((tool: DockstoreTool) => {
-          this.containerService.setTool(tool);
-          this.alertService.detailedSuccess();
-          this.matDialog.closeAll();
-          this.loadDefaults();
-        }, (error: HttpErrorResponse) => {
-          this.containerService.setTool(this.tool);
-          this.alertService.detailedError(error);
-        });
-      }, (error: HttpErrorResponse) => {
-        this.containerService.setTool(this.tool);
-        this.alertService.detailedError(error);
-      });
-    }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
+    this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(
+      (tags: Tag[]) => {
+        this.tool.workflowVersions = tags;
+        const id = this.tool.id;
+        const tagName = this.unsavedVersion.name;
+        // Store the unsaved test files if valid and exist
+        if (this.unsavedTestCWLFile.length > 0) {
+          this.addTestParameterFile(this.DescriptorType.CWL);
+        }
+        if (this.unsavedTestWDLFile.length > 0) {
+          this.addTestParameterFile(this.DescriptorType.WDL);
+        }
+        this.initializeTag();
+        // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+        const addCWL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
+          id,
+          this.unsavedCWLTestParameterFilePaths,
+          'CWL',
+          tagName,
+          null
+        );
+        // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
+        const addWDL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
+          id,
+          this.unsavedWDLTestParameterFilePaths,
+          'WDL',
+          tagName,
+          null
+        );
+        forkJoin(addCWL, addWDL).subscribe(
+          () => {
+            this.containersService.refresh(id).subscribe(
+              (tool: DockstoreTool) => {
+                this.containerService.setTool(tool);
+                this.alertService.detailedSuccess();
+                this.matDialog.closeAll();
+                this.loadDefaults();
+              },
+              (error: HttpErrorResponse) => {
+                this.containerService.setTool(this.tool);
+                this.alertService.detailedError(error);
+              }
+            );
+          },
+          (error: HttpErrorResponse) => {
+            this.containerService.setTool(this.tool);
+            this.alertService.detailedError(error);
+          }
+        );
+      },
+      (error: HttpErrorResponse) => this.alertService.detailedError(error)
+    );
   }
 
   // Validation starts here, should move most of these to a service somehow
@@ -179,15 +203,23 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   }
 
   formChanged() {
-    if (this.currentForm === this.addTagForm) { return; }
+    if (this.currentForm === this.addTagForm) {
+      return;
+    }
     this.addTagForm = this.currentForm;
     if (this.addTagForm) {
-      this.addTagForm.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+      this.addTagForm.valueChanges
+        .pipe(
+          debounceTime(formInputDebounceTime),
+          takeUntil(this.ngUnsubscribe)
+        )
         .subscribe(data => this.onValueChanged(data));
     }
   }
   onValueChanged(data?: any) {
-    if (!this.addTagForm) { return; }
+    if (!this.addTagForm) {
+      return;
+    }
     const form = this.addTagForm.form;
     for (const field in formErrors) {
       if (formErrors.hasOwnProperty(field)) {

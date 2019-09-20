@@ -11,8 +11,7 @@ describe('EventsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [EventsService, EventsStore],
-      imports: [ HttpClientTestingModule,
-        MatSnackBarModule ]
+      imports: [HttpClientTestingModule, MatSnackBarModule]
     });
 
     eventsService = TestBed.get(EventsService);
@@ -22,5 +21,4 @@ describe('EventsService', () => {
   it('should be created', () => {
     expect(eventsService).toBeDefined();
   });
-
 });

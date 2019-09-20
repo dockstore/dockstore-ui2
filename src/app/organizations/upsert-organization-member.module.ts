@@ -8,14 +8,8 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { UpsertOrganizationMemberComponent } from './upsert-organization-member/upsert-organization-member.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FlexLayoutModule,
-    CustomMaterialModule,
-    ReactiveFormsModule,
-    RefreshAlertModule
-   ],
-  declarations: [ UpsertOrganizationMemberComponent ],
-  entryComponents: [ UpsertOrganizationMemberComponent ]
+  imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, ReactiveFormsModule, RefreshAlertModule],
+  declarations: [UpsertOrganizationMemberComponent],
+  entryComponents: [UpsertOrganizationMemberComponent]
 })
-export class UpsertOrganizationMemberModule { }
+export class UpsertOrganizationMemberModule {}

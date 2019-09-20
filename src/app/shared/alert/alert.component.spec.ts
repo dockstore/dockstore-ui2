@@ -11,8 +11,7 @@ describe('RefreshAlertComponent', () => {
     TestBed.configureTestingModule({
       imports: [MatProgressBarModule, MatSnackBarModule, MatIconModule, MatCardModule],
       declarations: [AlertComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

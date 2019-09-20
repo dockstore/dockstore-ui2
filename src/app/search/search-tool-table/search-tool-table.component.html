@@ -17,20 +17,32 @@
   <div *ngIf="!dataSource">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <mat-table [hidden]="!dataSource" class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="starredUsers" matSortDirection="desc" matSortDisableClear>
+  <mat-table
+    [hidden]="!dataSource"
+    class="mat-elevation-z4"
+    [dataSource]="dataSource"
+    matSort
+    matSortActive="starredUsers"
+    matSortDirection="desc"
+    matSortDisableClear
+  >
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">
-        <span *ngIf="getVerified(tool)">
-          <a style="text-decoration: none" matTooltip="Verified"href= {{verifiedLink}}>
-          <span>
-              <mat-icon>check</mat-icon>
-          </span></a>
-        </span>
+      <mat-cell *matCellDef="let tool">
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
-        <a [matTooltip]="tool?.tool_path" [routerLink]="('/containers/' + tool.tool_path )">{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
+        <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
+          tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
+        }}</a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="verified">
+      <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell *matCellDef="let tool">
+        <a *ngIf="getVerified(tool)" href="{{ verifiedLink }}">
+          <mat-icon matTooltip="Verified">check</mat-icon>
+        </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
@@ -39,14 +51,12 @@
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">{{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}</mat-cell>
+      <mat-cell *matCellDef="let tool">{{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">
-        <a [href]="tool?.providerUrl">
-          {{ tool?.provider }}&nbsp;
-        </a>
+      <mat-cell *matCellDef="let tool">
+        <a [href]="tool?.providerUrl"> {{ tool?.provider }}&nbsp; </a>
         <a [href]="tool?.imgProviderUrl">
           {{ tool?.imgProvider }}
         </a>
@@ -54,12 +64,13 @@
     </ng-container>
     <ng-container matColumnDef="starredUsers">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool">{{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
-        <mat-icon class="star" *ngIf="tool?.starredUsers?.length > 0 " >star_rate</mat-icon>
+      <mat-cell class="description-cell" *matCellDef="let tool"
+        >{{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
+        <mat-icon class="star" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-  <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+  <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 50, 100]" (page)="updatePageSize($event)"></mat-paginator>
 </div>

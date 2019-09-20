@@ -18,7 +18,7 @@ import {
   DateStubService,
   ParamFilesStubService,
   RefreshStubService,
-  VersionModalStubService,
+  VersionModalStubService
 } from '../../test/service-stubs';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalComponent } from './version-modal.component';
@@ -32,19 +32,18 @@ describe('VersionModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [ VersionModalComponent],
+      declarations: [VersionModalComponent],
       imports: [FormsModule, ClipboardModule, MatSnackBarModule, MatDialogModule],
       providers: [
-        {provide: ParamfilesService, useClass: ParamFilesStubService},
-        {provide: VersionModalService, useClass: VersionModalStubService },
-        {provide: ListContainersService, useClass: ListContainersService},
-        {provide: ContainerService, useClass: ContainerStubService},
-        {provide: ContainersService, useClass: ContainersStubService},
-        {provide: ContainertagsService, useClass: ContainertagsStubService},
-        {provide: DateService, useClass: DateStubService}
+        { provide: ParamfilesService, useClass: ParamFilesStubService },
+        { provide: VersionModalService, useClass: VersionModalStubService },
+        { provide: ListContainersService, useClass: ListContainersService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: ContainersService, useClass: ContainersStubService },
+        { provide: ContainertagsService, useClass: ContainertagsStubService },
+        { provide: DateService, useClass: DateStubService }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -58,9 +57,9 @@ describe('VersionModalComponent', () => {
   });
   it('should have the correct docker pull command', () => {
     // Inject the real tool and real tag
-    const fakeTool = {...sampleTool1, path: 'quay.io\/wtsicgp\/dockstore-cgpmap'};
+    const fakeTool = { ...sampleTool1, path: 'quay.io/wtsicgp/dockstore-cgpmap' };
     component.tool = fakeTool;
-    const fakeTag = {...sampleTag, name: '3.0.0-rc8'};
+    const fakeTag = { ...sampleTag, name: '3.0.0-rc8' };
     component.version = fakeTag;
     // Manually trigger the update
     component.updateDockerPullCommand();

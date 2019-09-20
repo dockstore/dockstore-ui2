@@ -18,20 +18,26 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'ng2-ui-auth';
 import { MatSnackBar } from '@angular/material';
+import { AlertService } from '../shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class RegisterService {
-
-  constructor(private auth: AuthService, private matSnackBar: MatSnackBar) { }
+  constructor(private auth: AuthService, private matSnackBar: MatSnackBar, private alertService: AlertService) {}
 
   authenticate(provider: string): Observable<any> {
     return Observable.create(observable => {
-      return this.auth.authenticate(provider, { 'register' : true}).subscribe(user => {
-        observable.next(user);
-        observable.complete();
-      }, error => {
-        this.matSnackBar.open(error._body, 'Dismiss');
-      });
+      this.alertService.start('Register');
+      return this.auth.authenticate(provider, { register: true }).subscribe(
+        user => {
+          this.alertService.simpleSuccess();
+          observable.next(user);
+          observable.complete();
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
     });
   }
 }

@@ -16,14 +16,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-
-import {
-  RefreshToolOrganizationComponent,
-} from '../container/refresh-tool-organization/refresh-tool-organization.component';
+import { RefreshToolOrganizationComponent } from '../container/refresh-tool-organization/refresh-tool-organization.component';
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
@@ -38,13 +36,7 @@ import { mytoolsRouting } from './mytools.routing';
 import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion.component';
 
 @NgModule({
-  declarations: [
-    MyToolsComponent,
-    RegisterToolComponent,
-    RefreshToolOrganizationComponent,
-    MyToolComponent,
-    SidebarAccordionComponent
-  ],
+  declarations: [MyToolsComponent, RegisterToolComponent, RefreshToolOrganizationComponent, MyToolComponent, SidebarAccordionComponent],
   imports: [
     CommonModule,
     ContainerModule,
@@ -56,12 +48,10 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
     CustomMaterialModule,
-    PipeModule
+    PipeModule,
+    MyEntriesModule
   ],
-  providers: [
-    { provide: TooltipConfig, useFactory: getTooltipConfig },
-    RegisterToolService, AccountsService
-  ],
+  providers: [{ provide: TooltipConfig, useFactory: getTooltipConfig }, RegisterToolService, AccountsService],
   entryComponents: [RegisterToolComponent]
 })
-export class MyToolsModule { }
+export class MyToolsModule {}

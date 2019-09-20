@@ -9,12 +9,15 @@ import { CurrentCollectionsState, CurrentCollectionsStore } from './current-coll
   providedIn: 'root'
 })
 export class CurrentCollectionsQuery extends QueryEntity<CurrentCollectionsState, CollectionOrganization> {
-  currentCollectionOrganizations$ = this.selectAll().pipe(map((collectionOrganizations: Array<CollectionOrganization>) => {
-    collectionOrganizations.sort((a, b) => this.sortCollectionOrganizations(a, b));
-    return collectionOrganizations;
-  }));
+  currentCollectionOrganizations$ = this.selectAll().pipe(
+    map((collectionOrganizations: Array<CollectionOrganization>) => {
+      collectionOrganizations.sort((a, b) => this.sortCollectionOrganizations(a, b));
+      return collectionOrganizations;
+    })
+  );
   currentCollectionIds$: Observable<Array<number>> = this.currentCollectionOrganizations$.pipe(
-    map(collectionOrganizations => collectionOrganizations.map(collectionOrganization => collectionOrganization.collectionId)));
+    map(collectionOrganizations => collectionOrganizations.map(collectionOrganization => collectionOrganization.collectionId))
+  );
   constructor(protected store: CurrentCollectionsStore) {
     super(store);
   }

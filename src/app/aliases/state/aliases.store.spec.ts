@@ -10,5 +10,4 @@ describe('AliasesStore', () => {
   it('should create an instance', () => {
     expect(store).toBeTruthy();
   });
-
 });

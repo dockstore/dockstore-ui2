@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { EntryFileTabComponent } from 'app/entry/entry-file-tab/entry-file-tab.component';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -24,7 +25,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxMdModule } from 'ngx-md';
+import { MarkdownModule } from 'ngx-markdown';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
 import { AddEntryModule } from '../../organizations/collection/add-entry.module';
@@ -43,6 +44,7 @@ import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { DateService } from '../date.service';
+import { WorkflowActionsComponent } from '../entry-actions/workflow-actions.component';
 import { FileService } from '../file.service';
 import { HeaderModule } from '../modules/header.module';
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
@@ -73,8 +75,10 @@ import { getTooltipConfig } from './../tooltip';
     PermissionsComponent,
     ViewWorkflowComponent,
     VersionModalComponent,
+    WorkflowActionsComponent,
     InfoTabComponent,
-    ToolTabComponent
+    ToolTabComponent,
+    EntryFileTabComponent
   ],
   imports: [
     CommonModule,
@@ -82,7 +86,6 @@ import { getTooltipConfig } from './../tooltip';
     AlertModule.forRoot(),
     CurrentCollectionsModule,
     FlexLayoutModule,
-    NgxMdModule.forRoot(),
     HeaderModule,
     ListWorkflowsModule,
     ModalModule.forRoot(),
@@ -98,7 +101,8 @@ import { getTooltipConfig } from './../tooltip';
     StargazersModule,
     ClipboardModule,
     EntryModule,
-    AddEntryModule
+    AddEntryModule,
+    MarkdownModule
   ],
   providers: [
     { provide: TooltipConfig, useFactory: getTooltipConfig },
@@ -111,11 +115,7 @@ import { getTooltipConfig } from './../tooltip';
     RegisterWorkflowModalService,
     VersionModalService
   ],
-  exports: [
-    WorkflowComponent,
-    CustomMaterialModule,
-    EntryModule
-  ],
+  exports: [WorkflowComponent, CustomMaterialModule, EntryModule, HeaderModule, CommonModule, WorkflowActionsComponent],
   entryComponents: [VersionModalComponent]
 })
-export class WorkflowModule { }
+export class WorkflowModule {}

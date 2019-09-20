@@ -32,21 +32,14 @@ describe('NavbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [NavbarComponent],
-      imports: [
-        RouterTestingModule,
-        MatMenuModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDividerModule,
-        MatToolbarModule
-      ],
+      imports: [RouterTestingModule, MatMenuModule, MatButtonModule, MatIconModule, MatDividerModule, MatToolbarModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PagenumberService,
+      providers: [
+        PagenumberService,
         { provide: TrackLoginService, useClass: TrackLoginStubService },
         { provide: LogoutService, useClass: LogoutStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
   beforeEach(() => {
     fixture = TestBed.createComponent(NavbarComponent);

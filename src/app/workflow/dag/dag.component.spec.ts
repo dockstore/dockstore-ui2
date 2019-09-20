@@ -40,8 +40,7 @@ describe('DagComponent', () => {
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: WorkflowService, useClass: WorkflowStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -59,7 +58,7 @@ describe('DagComponent', () => {
 
   it('dagQuery should return determine whether the dagResults are missing tools', () => {
     expect(dagQuery.isMissingTool(null)).toBeTruthy();
-    expect(dagQuery.isMissingTool({ 'edges': [], 'nodes': [] })).toBeTruthy();
-    expect(dagQuery.isMissingTool({ 'edges': [1], 'nodes': [1] })).toBeFalsy();
+    expect(dagQuery.isMissingTool({ edges: [], nodes: [] })).toBeTruthy();
+    expect(dagQuery.isMissingTool({ edges: [1], nodes: [1] })).toBeFalsy();
   });
 });

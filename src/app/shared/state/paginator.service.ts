@@ -4,10 +4,7 @@ import { PaginatorStore, PaginatorInfo } from './paginator.store';
 
 @Injectable({ providedIn: 'root' })
 export class PaginatorService {
-
-  constructor(private paginatorStore: PaginatorStore,
-    private http: HttpClient) {
-  }
+  constructor(private paginatorStore: PaginatorStore, private http: HttpClient) {}
 
   setPaginator(type: 'tool' | 'workflow', pageSize: number, pageNumber): void {
     const paginatorInfo: PaginatorInfo = {
@@ -38,6 +35,4 @@ export class PaginatorService {
       };
     });
   }
-
 }
-

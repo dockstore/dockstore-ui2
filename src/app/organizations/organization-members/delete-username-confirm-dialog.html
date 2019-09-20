@@ -1,9 +1,0 @@
-<h1 mat-dialog-title>Remove user from organization</h1>
-
-<div mat-dialog-content>
-  <p>Are you sure you want to <strong>remove</strong> the user <strong>{{data.role.user.username}}</strong> from the organization <strong>{{data.role.organization.displayName}}</strong>?</p>
-</div>
-<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-  <button mat-button mat-dialog-close>No Thanks</button>
-  <button mat-flat-button color="primary" id="remove-user-dialog" [mat-dialog-close]="{ 'role': data.role }">Remove</button>
-</div>

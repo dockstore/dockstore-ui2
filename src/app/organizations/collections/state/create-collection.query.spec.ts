@@ -5,11 +5,10 @@ describe('CreateCollectionQuery', () => {
   let query: CreateCollectionQuery;
 
   beforeEach(() => {
-    query = new CreateCollectionQuery(new CreateCollectionStore);
+    query = new CreateCollectionQuery(new CreateCollectionStore());
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

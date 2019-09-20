@@ -49,8 +49,7 @@ export class ToolFileEditorComponent extends FileEditing {
     }
   }
 
-  constructor(private hostedService: HostedService, private containerService: ContainerService,
-    protected alertService: AlertService) {
+  constructor(private hostedService: HostedService, private containerService: ContainerService, protected alertService: AlertService) {
     super(alertService);
   }
 
@@ -97,9 +96,8 @@ export class ToolFileEditorComponent extends FileEditing {
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
     this.alertService.start('Updating hosted tool');
-    this.hostedService.editHostedTool(
-      this.id,
-      newSourceFiles).subscribe((editedDockstoreTool: DockstoreTool) => {
+    this.hostedService.editHostedTool(this.id, newSourceFiles).subscribe(
+      (editedDockstoreTool: DockstoreTool) => {
         if (editedDockstoreTool) {
           // Only stop editing when version change was successful (not 204)
           this.toggleEdit();
@@ -109,11 +107,13 @@ export class ToolFileEditorComponent extends FileEditing {
           // Probably encountered a 204
           this.handleNoContentResponse();
         }
-      }, error => {
+      },
+      error => {
         if (error) {
           this.alertService.detailedError(error);
         }
-      });
+      }
+    );
   }
 
   /**
@@ -134,6 +134,4 @@ export class ToolFileEditorComponent extends FileEditing {
     this.testParameterFiles = [];
     this.originalSourceFiles = [];
   }
-
-
 }

@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
+import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
-
-import { ContainerService } from '../../shared/container.service';
-import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
+import { takeUntil } from 'rxjs/operators';
 import { ToolDescriptor } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Workflow } from '../../shared/swagger/model/workflow';
@@ -25,17 +24,18 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css']
 })
-export class LaunchComponent {
+export class LaunchComponent extends Base {
   @Input() basePath: string;
   @Input() path: string;
   @Input() toolname: string;
-  @Input() mode: (DockstoreTool.ModeEnum | Workflow.ModeEnum);
+  @Input() mode: DockstoreTool.ModeEnum | Workflow.ModeEnum;
 
   _selectedVersion: Tag;
   @Input() set selectedVersion(value: Tag) {
@@ -53,9 +53,9 @@ export class LaunchComponent {
   dockstoreSupportedCwlMakeTemplate: string;
   checkEntryCommand: string;
   consonance: string;
-  descriptors: Array<ToolDescriptor.TypeEnum>;
+  descriptors: Array<Workflow.DescriptorTypeEnum>;
   filteredDescriptors: Array<string>;
-  currentDescriptor: ToolDescriptor.TypeEnum;
+  currentDescriptor: DescriptorTypeEnum;
   ToolDescriptor = ToolDescriptor;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
@@ -63,19 +63,24 @@ export class LaunchComponent {
   currentDescriptorType: ToolDescriptor.TypeEnum;
   protected published$: Observable<boolean>;
 
-  constructor(private launchService: ToolLaunchService, private toolQuery: ToolQuery,
-    private descriptorLanguageService: DescriptorLanguageService, private containerService: ContainerService,
-    private descriptorTypeCompatService: DescriptorTypeCompatService) {
-    this.descriptorLanguageService.descriptorLanguages$.subscribe((descriptors: Array<ToolDescriptor.TypeEnum>) => {
-      this.descriptors = descriptors;
-      this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
-    });
+  constructor(
+    private launchService: ToolLaunchService,
+    private toolQuery: ToolQuery,
+    private descriptorLanguageService: DescriptorLanguageService
+  ) {
+    super();
+    this.descriptorLanguageService.filteredDescriptorLanguages$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
+        this.descriptors = descriptors;
+        this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
+      });
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
   // Returns an array of descriptors that are valid for the given tool version
-  filterDescriptors(descriptors: Array<ToolDescriptor.TypeEnum>, version: Tag): Array<string> {
-    const newDescriptors: Array<ToolDescriptor.TypeEnum> = [];
+  filterDescriptors(descriptors: Array<DescriptorTypeEnum>, version: Tag): Array<string> {
+    const newDescriptors: Array<DescriptorTypeEnum> = [];
 
     // Return empty array if no descriptors present yet
     if (descriptors === undefined || version === undefined) {
@@ -96,7 +101,7 @@ export class LaunchComponent {
 
     // Create a list of valid descriptors
     for (const descriptor of descriptors) {
-      if ((descriptor === ToolDescriptor.TypeEnum.CWL && hasCwl) || (descriptor === ToolDescriptor.TypeEnum.WDL && hasWdl)) {
+      if ((descriptor === DescriptorTypeEnum.CWL && hasCwl) || (descriptor === DescriptorTypeEnum.WDL && hasWdl)) {
         newDescriptors.push(descriptor);
       }
     }

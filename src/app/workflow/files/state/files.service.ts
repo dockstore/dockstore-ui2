@@ -5,9 +5,7 @@ import { FilesStore } from './files.store';
 
 @Injectable({ providedIn: 'root' })
 export class FilesService {
-
-  constructor(private filesStore: FilesStore) {
-  }
+  constructor(private filesStore: FilesStore) {}
 
   update(id: string, file: FileWrapper) {
     this.filesStore.createOrReplace(id, file);

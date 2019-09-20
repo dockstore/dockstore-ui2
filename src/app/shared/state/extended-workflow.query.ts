@@ -26,5 +26,4 @@ export class ExtendedWorkflowQuery extends Query<ExtendedWorkflow> {
   constructor(protected store: ExtendedWorkflowStore) {
     super(store);
   }
-
 }

@@ -40,7 +40,7 @@ export class SearchResultsComponent implements OnInit {
   options: CloudOptions = {
     width: 600,
     height: 200,
-    overflow: false,
+    overflow: false
   };
   constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
     this.activeToolTab$ = this.searchQuery.activeToolTab$;
@@ -69,39 +69,39 @@ export class SearchResultsComponent implements OnInit {
       index: 'tools',
       type: 'entry',
       body: toolQuery
-    }).then(hits => {
-      let weight = 10;
-      let count = 0;
-      if (hits && hits.aggregations && hits.aggregations.tagcloud) {
-      hits.aggregations.tagcloud.buckets.forEach(
-        tag => {
-          const theTag = {
-            text: tag.key,
-            weight: weight
-          };
-          if (weight === 10) {
-            /** just for fun...**/
-            theTag['color'] = '#ffaaee';
-          }
-          if (count % 2 !== 0) {
-            weight--;
-          }
-          if (type === 'tool') {
-            if (!this.toolTagCloudData) {
-              this.toolTagCloudData = new Array<CloudData>();
+    })
+      .then(hits => {
+        let weight = 10;
+        let count = 0;
+        if (hits && hits.aggregations && hits.aggregations.tagcloud) {
+          hits.aggregations.tagcloud.buckets.forEach(tag => {
+            const theTag = {
+              text: tag.key,
+              weight: weight
+            };
+            if (weight === 10) {
+              /** just for fun...**/
+              theTag['color'] = '#ffaaee';
             }
-            this.toolTagCloudData.push(theTag);
-          } else {
-            if (!this.workflowTagCloudData) {
-              this.workflowTagCloudData = new Array<CloudData>();
+            if (count % 2 !== 0) {
+              weight--;
             }
-            this.workflowTagCloudData.push(theTag);
-          }
-          count--;
+            if (type === 'tool') {
+              if (!this.toolTagCloudData) {
+                this.toolTagCloudData = new Array<CloudData>();
+              }
+              this.toolTagCloudData.push(theTag);
+            } else {
+              if (!this.workflowTagCloudData) {
+                this.workflowTagCloudData = new Array<CloudData>();
+              }
+              this.workflowTagCloudData.push(theTag);
+            }
+            count--;
+          });
         }
-      );
-      }
-    }).catch(error => console.log(error));
+      })
+      .catch(error => console.log(error));
   }
 
   // Tells the search service to tell the search filters to save its data

@@ -43,9 +43,16 @@ export class ViewContainerComponent extends View implements OnInit {
   public DockstoreToolType = DockstoreTool;
   isPublic$: Observable<boolean>;
   isManualTool: boolean;
-  constructor(dateService: DateService, private versionModalService: VersionModalService, private sessionQuery: SessionQuery,
-    private containerService: ContainerService, private containertagsService: ContainertagsService, private hostedService: HostedService,
-    private toolQuery: ToolQuery, private matDialog: MatDialog) {
+  constructor(
+    dateService: DateService,
+    private versionModalService: VersionModalService,
+    private sessionQuery: SessionQuery,
+    private containerService: ContainerService,
+    private containertagsService: ContainertagsService,
+    private hostedService: HostedService,
+    private toolQuery: ToolQuery,
+    private matDialog: MatDialog
+  ) {
     super(dateService);
   }
 
@@ -59,13 +66,12 @@ export class ViewContainerComponent extends View implements OnInit {
     const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
-      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(
-        deleteResponse => {
-          this.containertagsService.getTagsByPath(this.tool.id).subscribe(response => {
-            this.tool.tags = response;
-            this.containerService.setTool(this.tool);
-          });
+      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(deleteResponse => {
+        this.containertagsService.getTagsByPath(this.tool.id).subscribe(response => {
+          this.tool.workflowVersions = response;
+          this.containerService.setTool(this.tool);
         });
+      });
     }
   }
 
@@ -73,9 +79,12 @@ export class ViewContainerComponent extends View implements OnInit {
     const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
-      this.hostedService.deleteHostedToolVersion(this.tool.id, this.version.name).subscribe(
-        (updatedTool: DockstoreTool) => this.containerService.setTool(updatedTool),
-        (error: HttpErrorResponse) => console.log(error));
+      this.hostedService
+        .deleteHostedToolVersion(this.tool.id, this.version.name)
+        .subscribe(
+          (updatedTool: DockstoreTool) => this.containerService.setTool(updatedTool),
+          (error: HttpErrorResponse) => console.log(error)
+        );
     }
   }
 

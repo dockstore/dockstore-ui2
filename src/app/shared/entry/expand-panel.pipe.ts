@@ -18,7 +18,7 @@ export class ExpandPanelPipe implements PipeTransform {
    * @returns {boolean}  true if open, false if not open
    * @memberof ExpandPanelPipe
    */
-  transform(orgEntriesObject: (OrgToolObject | OrgWorkflowObject), entryId: number): boolean {
+  transform(orgEntriesObject: OrgToolObject | OrgWorkflowObject, entryId: number): boolean {
     const publishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.published;
     const unpublishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.unpublished;
     if (publishedEntries.find((entry: Entry) => entry.id === entryId) || unpublishedEntries.find((entry: Entry) => entry.id === entryId)) {

@@ -37,7 +37,7 @@ export class AlertComponent implements OnInit {
   public message$: Observable<string>;
   public details$: Observable<string>;
 
-  constructor(private alertQuery: AlertQuery, private alertService: AlertService) { }
+  constructor(private alertQuery: AlertQuery, private alertService: AlertService) {}
 
   ngOnInit() {
     this.showError$ = this.alertQuery.showError$;

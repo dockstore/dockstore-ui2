@@ -23,10 +23,12 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
   createCollectionForm: FormGroup;
   public loading$: Observable<boolean>;
   public title$: Observable<string>;
-  constructor(private createCollectionQuery: CreateCollectionQuery,
-    private createCollectionService: CreateCollectionService, @Inject(MAT_DIALOG_DATA) public data: any,
+  constructor(
+    private createCollectionQuery: CreateCollectionQuery,
+    private createCollectionService: CreateCollectionService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private formsManager: AkitaNgFormsManager<FormsState>
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loading$ = this.createCollectionQuery.loading$;
@@ -51,7 +53,6 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
   get displayName(): AbstractControl {
     return this.createCollectionForm.get('displayName');
   }
-
 
   get description(): AbstractControl {
     return this.createCollectionForm.get('description');

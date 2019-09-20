@@ -20,7 +20,8 @@ import { DocsComponent } from './docs.component';
 
 const DOC_ROUTES: Routes = [
   {
-    path: '**', component: DocsComponent
+    path: '**',
+    component: DocsComponent
   }
 ];
 

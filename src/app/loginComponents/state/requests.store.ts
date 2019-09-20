@@ -24,10 +24,7 @@ export function createInitialState(): RequestsState {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'requests' })
 export class RequestsStore extends EntityStore<RequestsState, Request> {
-
   constructor() {
     super(createInitialState());
   }
-
 }
-

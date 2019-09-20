@@ -48,8 +48,13 @@ export class WorkflowFileEditorComponent extends FileEditing {
       this.loadVersionSourcefiles();
     }
   }
-  constructor(private hostedService: HostedService, private workflowService: WorkflowService,
-    private workflowsService: WorkflowsService, protected alertService: AlertService, private workflowQuery: WorkflowQuery) {
+  constructor(
+    private hostedService: HostedService,
+    private workflowService: WorkflowService,
+    private workflowsService: WorkflowsService,
+    protected alertService: AlertService,
+    private workflowQuery: WorkflowQuery
+  ) {
     super(alertService);
     this.selectedDescriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
@@ -93,28 +98,32 @@ export class WorkflowFileEditorComponent extends FileEditing {
     const combinedSourceFiles = this.getCombinedSourceFiles();
     const newSourceFiles = this.commonSaveVersion(this.originalSourceFiles, combinedSourceFiles);
     this.alertService.start('Updating hosted workflow');
-    this.hostedService.editHostedWorkflow(
-      this.id,
-      newSourceFiles).subscribe((editedWorkflow: Workflow) => {
+    this.hostedService.editHostedWorkflow(this.id, newSourceFiles).subscribe(
+      (editedWorkflow: Workflow) => {
         if (editedWorkflow) {
           // Only stop editing when version change was successful (not 204)
           this.toggleEdit();
           // TODO: Comment why workflow is explicitly gotten again when tool does not
-          this.workflowsService.getWorkflow(editedWorkflow.id).subscribe((newlyGottenWorkflow: Workflow) => {
-            this.workflowService.setWorkflow(newlyGottenWorkflow);
-            this.alertService.detailedSuccess();
-          }, error => {
-            this.alertService.detailedError(error);
-          });
+          this.workflowsService.getWorkflow(editedWorkflow.id).subscribe(
+            (newlyGottenWorkflow: Workflow) => {
+              this.workflowService.setWorkflow(newlyGottenWorkflow);
+              this.alertService.detailedSuccess();
+            },
+            error => {
+              this.alertService.detailedError(error);
+            }
+          );
         } else {
           // Probably encountered a 204
           this.handleNoContentResponse();
         }
-      }, error => {
+      },
+      error => {
         if (error) {
           this.alertService.detailedError(error);
         }
-      });
+      }
+    );
   }
 
   /**
@@ -133,5 +142,4 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.testParameterFiles = [];
     this.originalSourceFiles = [];
   }
-
 }

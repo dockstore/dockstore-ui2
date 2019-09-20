@@ -19,49 +19,32 @@ import { of as observableOf, throwError } from 'rxjs';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { WorkflowVersion, ToolDescriptor } from '../../../shared/swagger';
 import { sampleWorkflow1, sampleWorkflow2, sampleWorkflowVersion } from '../../../test/mocked-objects';
-import { WdlViewerService } from './wdl-viewer.service';
+import { WdlViewerService } from './state/wdl-viewer.service';
 
 describe('Service: WDLViewer', () => {
   let wdlViewerService: WdlViewerService;
 
   const singleResponse = {
-    'pipeline': {
-      'actions': [
-        'l',
-        'l',
-        'f'
-      ],
-      'message': '',
-      'model': [
-        'f'
-      ],
-      'status': true
+    pipeline: {
+      actions: ['l', 'l', 'f'],
+      message: '',
+      model: ['f'],
+      status: true
     }
   };
 
   const multipleResponse = {
-    'pipeline': {
-      'actions': [
-        'l',
-        'l',
-        'l',
-        'l',
-        'l',
-        'l',
-        'l',
-        'f'
-      ],
-      'message': '',
-      'model': [
-        'f'
-      ],
-      'status': true
+    pipeline: {
+      actions: ['l', 'l', 'l', 'l', 'l', 'l', 'l', 'f'],
+      message: '',
+      model: ['f'],
+      status: true
     }
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ WdlViewerService ],
+      providers: [WdlViewerService],
       imports: [HttpClientTestingModule]
     });
     wdlViewerService = TestBed.get(WdlViewerService);
@@ -78,13 +61,14 @@ describe('Service: WDLViewer', () => {
 
     spyOn(wdlViewerService, 'createSingle').and.returnValue(observableOf(singleResponse));
 
-    wdlViewerService.createSingle(workflow, version)
-      .subscribe((res) => {
-          response = res;
-        },
-        () => {
-          fail('expected success');
-        });
+    wdlViewerService.createSingle(workflow, version).subscribe(
+      res => {
+        response = res;
+      },
+      () => {
+        fail('expected success');
+      }
+    );
 
     expect(response).toEqual(singleResponse);
   });
@@ -96,13 +80,14 @@ describe('Service: WDLViewer', () => {
 
     spyOn(wdlViewerService, 'createMultiple').and.returnValue(observableOf(multipleResponse));
 
-    wdlViewerService.createMultiple(workflow, version)
-      .subscribe((res) => {
-          response = res;
-        },
-        () => {
-          fail('expected success');
-        });
+    wdlViewerService.createMultiple(workflow, version).subscribe(
+      res => {
+        response = res;
+      },
+      () => {
+        fail('expected success');
+      }
+    );
 
     expect(response).toEqual(multipleResponse);
   });
@@ -112,13 +97,14 @@ describe('Service: WDLViewer', () => {
 
     spyOn(wdlViewerService, 'getFiles').and.returnValue(throwError(empty));
 
-    wdlViewerService.getFiles(ToolDescriptor.TypeEnum.WDL)
-      .subscribe(() => {
-          fail('expected error');
-        },
-          (err) => {
-          expect(err).toEqual(empty);
-        });
+    wdlViewerService.getFiles(ToolDescriptor.TypeEnum.WDL).subscribe(
+      () => {
+        fail('expected error');
+      },
+      err => {
+        expect(err).toEqual(empty);
+      }
+    );
   });
 
   it('should handle errors if creating single-file workflow visualization fails', () => {
@@ -126,18 +112,19 @@ describe('Service: WDLViewer', () => {
     const version: WorkflowVersion = sampleWorkflowVersion;
 
     const error = {
-      'Error': 'Message Body'
+      Error: 'Message Body'
     };
 
     spyOn(wdlViewerService, 'createSingle').and.returnValue(throwError(error));
 
-    wdlViewerService.createSingle(workflow, version)
-      .subscribe(() => {
-          fail('expected error');
-        },
-          (err) => {
-          expect(err).toEqual(error);
-        });
+    wdlViewerService.createSingle(workflow, version).subscribe(
+      () => {
+        fail('expected error');
+      },
+      err => {
+        expect(err).toEqual(error);
+      }
+    );
   });
 
   it('should handle errors if creating multiple-file workflow visualization fails', () => {
@@ -145,17 +132,18 @@ describe('Service: WDLViewer', () => {
     const version: WorkflowVersion = sampleWorkflowVersion;
 
     const error = {
-      'Error': 'Message Body'
+      Error: 'Message Body'
     };
 
     spyOn(wdlViewerService, 'createMultiple').and.returnValue(throwError(error));
 
-    wdlViewerService.createMultiple(workflow, version)
-      .subscribe(() => {
-          fail('expected error');
-        },
-        (err) => {
-          expect(err).toEqual(error);
-        });
+    wdlViewerService.createMultiple(workflow, version).subscribe(
+      () => {
+        fail('expected error');
+      },
+      err => {
+        expect(err).toEqual(error);
+      }
+    );
   });
 });

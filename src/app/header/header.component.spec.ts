@@ -29,9 +29,8 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [ HeaderComponent]
-    })
-    .compileComponents();
+      declarations: [HeaderComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

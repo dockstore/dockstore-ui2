@@ -17,37 +17,62 @@
   <mat-icon>people</mat-icon>
   Organizations
 </app-header>
-<app-loading [loading]="(loading$ | async)">
+<app-loading [loading]="loading$ | async">
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
-
+  <div class="container" *ngIf="organizationStarGazersClicked && (organization$ | async) as org">
+    <div fxLayout="row">
+      <div fxFlex="70">
+        <h3>{{ org.displayName }}</h3>
+      </div>
+      <div fxFlex="30">
+        <app-organization-starring
+          *ngIf="org?.status === approved"
+          [organization]="org"
+          class="pull-right starring-button"
+          (change)="organizationStarGazersChange()"
+        ></app-organization-starring>
+      </div>
+    </div>
+    <p class="update">
+      <span [matTooltip]="org?.dbUpdateDate | date: 'medium'">Last updated: {{ org?.dbUpdateDate | timeAgoMessage }}</span>
+    </p>
+    <app-organization-stargazers></app-organization-stargazers>
+    <button mat-flat-button color="primary" id="backButton" type="button" (click)="organizationStarGazersClicked = false">
+      <mat-icon>chevron_left</mat-icon>Back to details
+    </button>
+  </div>
   <!-- Organization header -->
-  <div class="container" *ngIf="(organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
+  <div class="container" *ngIf="!organizationStarGazersClicked && (organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
+    <ngx-json-ld [json]="schema$ | async"></ngx-json-ld>
     <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
       <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
       <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
-        You can approve/reject this pending organization request on the requests tab of the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
+        You can approve/reject this pending organization request on the requests tab of the
+        <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
       </span>
       <ng-template #notAdminOrCurator>
-        You can view your pending organization requests on the requests tab of the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
+        You can view your pending organization requests on the requests tab of the
+        <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
       </ng-template>
     </mat-card>
 
     <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'REJECTED'">
-      <mat-icon>info</mat-icon> This organization has been rejected by a curator. Members can re-request approval on the <a [routerLink]="('/accounts')" style="text-decoration: underline">accounts page</a>.
+      <mat-icon>info</mat-icon> This organization has been rejected by a curator. Members can re-request approval on the
+      <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
     </mat-card>
 
     <mat-card fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
         <div>
-          <img [src]="(gravatarUrl$ | async ) || '../../../assets/images/dockstore/PlaceholderLC.png'" class = "orgLogo">
+          <img [src]="(gravatarUrl$ | async) || '../../../assets/images/dockstore/PlaceholderLC.png'" class="orgLogo" />
         </div>
         <div>
           <mat-card-header>
             <mat-card-title>
-              <h1 [matTooltip]="org?.name">{{org.displayName}}</h1>
+              <h1 [matTooltip]="org?.name">{{ org.displayName }}</h1>
             </mat-card-title>
             <mat-card-subtitle>
-              {{org.topic}}
+              {{ org.topic }}
             </mat-card-subtitle>
           </mat-card-header>
         </div>
@@ -56,26 +81,38 @@
         <div fxLayout="row wrap" fxLayout.lt-sm="column wrap" fxLayoutGap="10px" fxLayoutAlign="space-between" class="px-4 py-1">
           <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.email">
             <mat-icon>email</mat-icon>
-            <span><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span>
+            <span
+              ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
+            >
           </span>
           <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
             <mat-icon>link</mat-icon>
-            <span><a [href]="org.link" target="_blank">{{ org.link }}</a></span>
+            <span
+              ><a [href]="org.link" target="_blank" rel="noopener">{{ org?.link }}</a></span
+            >
           </span>
           <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
             <mat-icon>location_on</mat-icon>
             <span class="ellipsis-lines">{{ org.location }}</span>
           </span>
         </div>
+        <app-organization-starring
+          *ngIf="org?.status === approved"
+          [organization]="org"
+          class="pull-right starring-button"
+          (change)="organizationStarGazersChange()"
+        ></app-organization-starring>
       </mat-card-content>
-      <mat-card-actions *ngIf="(canEdit$ | async)">
+      <mat-card-actions *ngIf="canEdit$ | async">
         <div fxFlex></div>
-        <button mat-button (click)="editOrganization()" id="editOrgInfo" matTooltip="Edit the organization"><mat-icon>edit</mat-icon></button>
+        <button mat-button (click)="editOrganization()" id="editOrgInfo" matTooltip="Edit the organization">
+          <mat-icon>edit</mat-icon>
+        </button>
       </mat-card-actions>
     </mat-card>
 
     <!-- Tabs and description -->
-    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" class="my-3">
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" class="my-3" data-cy="organizationDetails">
       <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
         <mat-tab-group>
           <mat-tab label="Collections">
@@ -93,12 +130,20 @@
         <mat-card fxLayout="column" fxLayoutGap="15px" class="my-3">
           <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
             <div *ngIf="!org.description" fxFlex>
-              <div *ngIf="(canEdit$ | async)" class="text-muted">Select edit to add a markdown description</div>
+              <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
               <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
             </div>
-            <button mat-button *ngIf="(canEdit$ | async)" (click)="updateDescription()" id="editOrgDescription" matTooltip="Edit the description"><mat-icon>edit</mat-icon></button>
+            <button
+              mat-button
+              *ngIf="canEdit$ | async"
+              (click)="updateDescription()"
+              id="editOrgDescription"
+              matTooltip="Edit the description"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
           </div>
-          <ngx-md *ngIf="org.description" fxFlex [data]="org.description"></ngx-md>
+          <markdown *ngIf="org.description" fxFlex [data]="org.description"></markdown>
         </mat-card>
       </div>
     </div>

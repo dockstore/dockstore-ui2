@@ -6,10 +6,7 @@ import { CurrentCollectionsStore } from './current-collections.store';
 
 @Injectable({ providedIn: 'root' })
 export class CurrentCollectionsService {
-
-  constructor(private currentCollectionsStore: CurrentCollectionsStore, private entriesService: EntriesService,
-              private http: HttpClient) {
-  }
+  constructor(private currentCollectionsStore: CurrentCollectionsStore, private entriesService: EntriesService, private http: HttpClient) {}
 
   @transaction()
   get(id: number) {

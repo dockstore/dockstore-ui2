@@ -12,11 +12,14 @@ import { OrganizationStore } from './organization.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationMembersService {
-
-  constructor(private organizationMembersStore: OrganizationMembersStore,
-    private organizationsService: OrganizationsService, private userQuery: UserQuery, private organizationStore: OrganizationStore,
-    private alertService: AlertService, private matSnackBar: MatSnackBar) {
-  }
+  constructor(
+    private organizationMembersStore: OrganizationMembersStore,
+    private organizationsService: OrganizationsService,
+    private userQuery: UserQuery,
+    private organizationStore: OrganizationStore,
+    private alertService: AlertService,
+    private matSnackBar: MatSnackBar
+  ) {}
 
   /**
    * Update the Akita store with the latest array of organization users
@@ -55,15 +58,20 @@ export class OrganizationMembersService {
     this.alertService.start('Removing user');
     const organizationID: number = organizationUser.organization.id;
     this.beforeCall();
-    this.organizationsService.deleteUserRole(organizationUser.user.id, organizationID)
-      .pipe(finalize(() => this.organizationMembersStore.setLoading(false))).subscribe(() => {
-        this.alertService.simpleSuccess();
-        this.updateCanEdit(organizationID);
-        this.organizationMembersStore.setError(false);
-      }, error => {
-        this.alertService.detailedError(error);
-        this.organizationMembersStore.setError(true);
-      });
+    this.organizationsService
+      .deleteUserRole(organizationUser.user.id, organizationID)
+      .pipe(finalize(() => this.organizationMembersStore.setLoading(false)))
+      .subscribe(
+        () => {
+          this.alertService.simpleSuccess();
+          this.updateCanEdit(organizationID);
+          this.organizationMembersStore.setError(false);
+        },
+        error => {
+          this.alertService.detailedError(error);
+          this.organizationMembersStore.setError(true);
+        }
+      );
   }
 
   /**
@@ -75,24 +83,34 @@ export class OrganizationMembersService {
    */
   updateCanEdit(organizationID: number) {
     this.beforeCall();
-    this.organizationsService.getOrganizationMembers(organizationID)
-      .pipe(finalize(() => this.organizationMembersStore.setLoading(false))).subscribe((organizationUsers: OrganizationUser[]) => {
-        // This gets the current user's ID at this specific point in time.
-        // If you can somehow manage to change users without this function triggering again, then it may lead to issues.
-        // Example: a user has permissions to edit, logs out without changing the page and running this function somehow, the controls
-        // appears as if he still has permissions to edit.
-        const currentUserId = this.userQuery.getSnapshot().user.id;
-        const canEdit = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted);
-        const canEditMembers = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted
-          && user.role === 'MAINTAINER');
-        this.setCanEditState(canEdit, canEditMembers);
-        this.updateAll(organizationUsers);
-        this.organizationMembersStore.setError(false);
-      }, (error: HttpErrorResponse) => {
-        this.organizationMembersStore.remove();
-        this.organizationMembersStore.setError(true);
-        this.matSnackBar.open('Could not get organization members: ' + error.message);
-      });
+    this.organizationsService
+      .getOrganizationMembers(organizationID)
+      .pipe(finalize(() => this.organizationMembersStore.setLoading(false)))
+      .subscribe(
+        (organizationUsers: OrganizationUser[]) => {
+          // This gets the current user's ID at this specific point in time.
+          // If you can somehow manage to change users without this function triggering again, then it may lead to issues.
+          // Example: a user has permissions to edit, logs out without changing the page and running this function somehow, the controls
+          // appears as if he still has permissions to edit.
+          if (this.userQuery.getSnapshot().user) {
+            const currentUserId = this.userQuery.getSnapshot().user.id;
+            const canEdit = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted);
+            const canEditMembers = organizationUsers.some(
+              user => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.MAINTAINER
+            );
+            this.setCanEditState(canEdit, canEditMembers);
+          } else {
+            this.setCanEditState(false, false);
+          }
+          this.updateAll(organizationUsers);
+          this.organizationMembersStore.setError(false);
+        },
+        (error: HttpErrorResponse) => {
+          this.organizationMembersStore.remove();
+          this.organizationMembersStore.setError(true);
+          this.matSnackBar.open('Could not get organization members: ' + error.message);
+        }
+      );
   }
 
   /**
@@ -115,5 +133,4 @@ export class OrganizationMembersService {
       };
     });
   }
-
 }

@@ -13,7 +13,18 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="(isModalShown$ | async)" [config]="{ show: true}" class="modal fade" bsModal #advancedSearchModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" (onHidden)="onHidden()">
+<div
+  *ngIf="isModalShown$ | async"
+  [config]="{ show: true }"
+  class="modal fade"
+  bsModal
+  #advancedSearchModal="bs-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true"
+  (onHidden)="onHidden()"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -23,12 +34,13 @@
         </button>
       </div>
       <div class="modal-body form-horizontal">
-        <p>Find tools and workflows with
+        <p>
+          Find tools and workflows with
           <span *ngIf="searchMode === 'description'"> a </span>
           <span class="btn-group" dropdown>
-             <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
-               {{searchMode}} <span class="caret"></span>
-             </button>
+            <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">
+              {{ searchMode }} <span class="caret"></span>
+            </button>
             <ul *dropdownMenu class="dropdown-menu" role="menu">
               <li *ngIf="searchMode !== 'description'" role="menuitem">
                 <a class="dropdown-item" (click)="switchSearchMode('description')">description</a>
@@ -48,7 +60,13 @@
             All these words:
           </label>
           <div class="col-sm-8 col-md-8 col-lg-8">
-            <input [(ngModel)]="ANDSplitFilter" type="text" class="form-control" name="reference" matTooltip="Words that must appear" placeholder="e.g. bcbio"
+            <input
+              [(ngModel)]="ANDSplitFilter"
+              type="text"
+              class="form-control"
+              name="reference"
+              matTooltip="Words that must appear"
+              placeholder="e.g. bcbio"
             />
           </div>
         </div>
@@ -57,7 +75,13 @@
             The exact word or phrase:
           </label>
           <div class="col-sm-8 col-md-8 col-lg-8">
-            <input [(ngModel)]="ANDNoSplitFilter" type="text" class="form-control" name="reference" matTooltip="Phrase that must appear" placeholder="e.g. cgp"
+            <input
+              [(ngModel)]="ANDNoSplitFilter"
+              type="text"
+              class="form-control"
+              name="reference"
+              matTooltip="Phrase that must appear"
+              placeholder="e.g. cgp"
             />
           </div>
         </div>
@@ -66,7 +90,14 @@
             Any of these words:
           </label>
           <div class="col-sm-8 col-md-8 col-lg-8">
-            <input [(ngModel)]="ORFilter" type="text" class="form-control" name="reference" matTooltip="At least one of these words must appear" placeholder="e.g. wxs" />
+            <input
+              [(ngModel)]="ORFilter"
+              type="text"
+              class="form-control"
+              name="reference"
+              matTooltip="At least one of these words must appear"
+              placeholder="e.g. wxs"
+            />
           </div>
         </div>
         <div class="form-group form-group-sm">
@@ -74,7 +105,14 @@
             None of these words:
           </label>
           <div class="col-sm-8 col-md-8 col-lg-8">
-            <input [(ngModel)]="NOTFilter" type="text" class="form-control" name="reference" matTooltip="These words must not appear" placeholder="e.g. wgs" />
+            <input
+              [(ngModel)]="NOTFilter"
+              type="text"
+              class="form-control"
+              name="reference"
+              matTooltip="These words must not appear"
+              placeholder="e.g. wgs"
+            />
           </div>
         </div>
         <div class="btn-group btn-group-justified">

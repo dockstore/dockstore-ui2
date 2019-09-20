@@ -5,11 +5,9 @@ import { FileService } from '../file.service';
   name: 'privateFilePath'
 })
 export class PrivateFilePathPipe implements PipeTransform {
-
   constructor(protected fileService: FileService) {}
 
   transform(filePath: string): string {
     return this.fileService.getFileName(filePath);
   }
-
 }

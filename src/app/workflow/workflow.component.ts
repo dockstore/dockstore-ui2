@@ -15,23 +15,30 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
-import { AlertService } from '../shared/alert/state/alert.service';
-import { ga4ghWorkflowIdPrefix, includesValidation } from '../shared/constants';
+import { BioschemaService } from '../shared/bioschema.service';
+import {
+  ga4ghServiceIdPrefix,
+  ga4ghWorkflowIdPrefix,
+  includesValidation,
+  myBioWorkflowsURLSegment,
+  myServicesURLSegment
+} from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
+import { EntryType } from '../shared/enum/entry-type';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { ProviderService } from '../shared/provider.service';
-import { RefreshService } from '../shared/refresh.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
@@ -39,7 +46,6 @@ import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
 import { Permission, ToolDescriptor } from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
-import { PublishRequest } from '../shared/swagger/model/publishRequest';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
@@ -50,12 +56,12 @@ import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css'],
+  styleUrls: ['./workflow.component.css']
 })
-export class WorkflowComponent extends Entry {
+export class WorkflowComponent extends Entry implements AfterViewInit {
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
-  public workflow: ExtendedWorkflow;
+  public workflow: BioWorkflow | Service;
   public missingWarning: boolean;
   public title: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
@@ -65,7 +71,8 @@ export class WorkflowComponent extends Entry {
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
-  validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
+  public entryType: EntryType;
+  validTabs = [];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
   protected canWrite = false;
@@ -73,30 +80,74 @@ export class WorkflowComponent extends Entry {
   protected readers = [];
   protected writers = [];
   protected owners = [];
+  // Whether to show the workflow action buttons or not.
+  // Only show after getting actions is done or else the buttons will not appear all at once
+  public showWorkflowActions = false;
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
-  publishMessage = 'Publish the workflow to make it visible to the public';
-  unpublishMessage = 'Unpublish the workflow to remove it from the public';
-  viewPublicMessage = 'Go to the public page for this workflow';
-  pubUnpubMessage: string;
+  public WorkflowModel = Workflow;
   @Input() user;
 
-  constructor(private dockstoreService: DockstoreService, dateService: DateService, private refreshService: RefreshService,
-    private workflowsService: WorkflowsService, trackLoginService: TrackLoginService, providerService: ProviderService,
-    router: Router, private workflowService: WorkflowService, private extendedWorkflowQuery: ExtendedWorkflowQuery,
-    urlResolverService: UrlResolverService, private alertService: AlertService,
-    location: Location, activatedRoute: ActivatedRoute, protected sessionQuery: SessionQuery, protected sessionService: SessionService,
-    gA4GHFilesService: GA4GHFilesService, private workflowQuery: WorkflowQuery, private alertQuery: AlertQuery,
-    private descriptorTypeCompatService: DescriptorTypeCompatService, public dialog: MatDialog) {
-    super(trackLoginService, providerService, router,
-      dateService, urlResolverService, activatedRoute, location, sessionService, sessionQuery, gA4GHFilesService);
+  constructor(
+    private dockstoreService: DockstoreService,
+    dateService: DateService,
+    bioschemaService: BioschemaService,
+    private workflowsService: WorkflowsService,
+    trackLoginService: TrackLoginService,
+    providerService: ProviderService,
+    router: Router,
+    private workflowService: WorkflowService,
+    private extendedWorkflowQuery: ExtendedWorkflowQuery,
+    urlResolverService: UrlResolverService,
+    location: Location,
+    activatedRoute: ActivatedRoute,
+    protected sessionQuery: SessionQuery,
+    protected sessionService: SessionService,
+    gA4GHFilesService: GA4GHFilesService,
+    private workflowQuery: WorkflowQuery,
+    private alertQuery: AlertQuery,
+    private descriptorTypeCompatService: DescriptorTypeCompatService,
+    public dialog: MatDialog
+  ) {
+    super(
+      trackLoginService,
+      providerService,
+      router,
+      dateService,
+      bioschemaService,
+      urlResolverService,
+      activatedRoute,
+      location,
+      sessionService,
+      sessionQuery,
+      gA4GHFilesService
+    );
     this._toolType = 'workflows';
     this.location = location;
-    this.redirectAndCallDiscourse('/my-workflows');
+    this.entryType = this.sessionQuery.getSnapshot().entryType;
+    if (this.entryType === EntryType.BioWorkflow) {
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
+      this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
+    } else {
+      this.validTabs = ['info', 'versions', 'files'];
+      this.redirectToCanonicalURL('/' + myServicesURLSegment);
+    }
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
+  }
+
+  ngAfterViewInit() {
+    if (this.publicPage) {
+      this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
+        if (workflow && workflow.topicId) {
+          this.discourseHelper(workflow.topicId);
+        }
+      });
+    }
+
+    this.updateTabSelection();
   }
 
   clearState() {
@@ -110,9 +161,7 @@ export class WorkflowComponent extends Entry {
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
-    return permissions
-      .filter(u => u.role === role)
-      .map(c => c.email);
+    return permissions.filter(u => u.role === role).map(c => c.email);
   }
 
   isPublic(): boolean {
@@ -147,11 +196,7 @@ export class WorkflowComponent extends Entry {
     this.resetWorkflowEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
-    this.schema = {
-      '@type': 'ListItem',
-      'position': this.workflow.id,
-      'url': this.shareURL
-    };
+    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
   }
 
   public getDefaultVersionName(): string {
@@ -163,14 +208,22 @@ export class WorkflowComponent extends Entry {
       this.workflow = workflow;
       this.title = this.workflow.full_workflow_path;
       this.initTool();
-      this.sortedVersions = this.getSortedVersions(this.workflow.workflowVersions, this.defaultVersion);
+      this.sortedVersions = this.getSortedWorkflowVersions(this.workflow.workflowVersions, this.defaultVersion);
       if (this.publicPage) {
         this.sortedVersions = this.dockstoreService.getValidVersions(this.sortedVersions);
       }
       this.canRead = this.canWrite = this.isOwner = false;
       this.readers = this.writers = this.owners = [];
       if (!this.isPublic()) {
-        this.workflowsService.getWorkflowActions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
+        this.showWorkflowActions = false;
+        this.workflowsService
+          .getWorkflowActions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
+          .pipe(
+            finalize(() => {
+              this.showWorkflowActions = true;
+            }),
+            takeUntil(this.ngUnsubscribe)
+          )
           .subscribe((actions: Array<string>) => {
             // Alas, Swagger codegen does not generate a type for the actions
             this.canRead = actions.indexOf('READ') !== -1;
@@ -178,12 +231,13 @@ export class WorkflowComponent extends Entry {
             this.isOwner = actions.indexOf('SHARE') !== -1;
             // TODO: when expanding permissions beyond hosted workflows, this component will need to tolerate a 401
             // for users that are not on FireCloud
-            if (this.isOwner && this.isHosted()) {
-              this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path).pipe(takeUntil(this.ngUnsubscribe))
+            if (this.isOwner && this.isHosted() && this.workflow) {
+              this.workflowsService
+                .getWorkflowPermissions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
+                .pipe(takeUntil(this.ngUnsubscribe))
                 .subscribe((userPermissions: Permission[]) => {
                   this.processPermissions(userPermissions);
-                }
-                );
+                });
             }
           });
       }
@@ -191,40 +245,43 @@ export class WorkflowComponent extends Entry {
   }
 
   public subscriptions(): void {
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      workflow => {
-        this.workflow = workflow;
-        if (workflow) {
-          this.published = this.workflow.is_published;
-          this.setPublishMessage();
-          this.selectedVersion = this.selectVersion(this.workflow.workflowVersions, this.urlVersion,
-            this.workflow.defaultVersion);
-          if (this.selectedVersion) {
-            this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
-              [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
-          }
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: BioWorkflow | Service) => {
+      this.workflow = workflow;
+      if (workflow) {
+        this.published = this.workflow.is_published;
+        this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
+        if (this.selectedVersion) {
+          this.workflowService.setWorkflowVersion(this.selectedVersion);
+          const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+          this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+            this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
+          ]);
         }
-        this.setUpWorkflow(workflow);
       }
-    );
+      this.setUpWorkflow(workflow);
+    });
   }
 
-  setPublishMessage() {
-    this.pubUnpubMessage = this.published ? this.unpublishMessage : this.publishMessage;
+  /**
+   * Select the Versions tab
+   *
+   * @memberof WorkflowComponent
+   */
+  public selectVersionsTab() {
+    this.selectTab(this.validTabs.indexOf('versions'));
   }
 
   public setupPublicEntry(url: String) {
-    if (url.includes('workflows')) {
+    if (url.includes('workflows') || url.includes('services')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation)
-        .subscribe(workflow => {
+      this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation, this.entryType === EntryType.Service).subscribe(
+        workflow => {
           this.workflowService.setWorkflow(workflow);
           this.selectTab(this.validTabs.indexOf(this.currentTab));
-          if (this.workflow != null) {
-            this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-          }
-        }, error => {
+          this.updateWorkflowUrl(this.workflow);
+        },
+        error => {
           const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           if (regex.test(this.resourcePath)) {
             this.router.navigate(['../']);
@@ -240,64 +297,30 @@ export class WorkflowComponent extends Entry {
             this.githubPath += pathSuffix;
             this.bitbucketPath += pathSuffix;
           }
-        });
+        }
+      );
+    }
+  }
+  /**
+   * Updates the workflow (bio workflow or service) url and also checks for the null
+   *
+   * @private
+   * @param {(Workflow | null)} workflow
+   * @memberof WorkflowComponent
+   */
+  private updateWorkflowUrl(workflow: Workflow | null) {
+    if (workflow != null) {
+      const entryPath = workflow.full_workflow_path;
+      if (this.entryType === EntryType.BioWorkflow) {
+        this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
+      } else {
+        this.updateUrl(entryPath, myServicesURLSegment, 'services');
+      }
     }
   }
 
   getValidVersions() {
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
-  }
-
-  publishDisable(): boolean {
-    return !this.isValid() || this.workflow.mode === Workflow.ModeEnum.STUB || !this.isOwner;
-  }
-
-  publish() {
-    if (this.publishDisable()) {
-      return;
-    } else {
-      const request: PublishRequest = {
-        publish: this.published
-      };
-      const message = this.published ? 'Publishing workflow' : 'Unpublishing workflow';
-      this.alertService.start(message);
-      this.workflowsService.publish(this.workflow.id, request).subscribe(
-        (response: Workflow) => {
-          this.workflowService.upsertWorkflowToWorkflow(response);
-          this.workflowService.setWorkflow(response);
-          this.setPublishMessage();
-          this.alertService.detailedSuccess();
-          if (response.checker_id) {
-            this.workflowsService.getWorkflow(response.checker_id).pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
-              this.workflowService.upsertWorkflowToWorkflow(workflow);
-            }, (error: HttpErrorResponse) => this.alertService.detailedError(error));
-          }
-        }, (error: HttpErrorResponse) => {
-          this.published = !this.published;
-          this.alertService.detailedError(error);
-        });
-    }
-  }
-
-  isValid() {
-    if (!this.workflow) {
-      return false;
-    }
-    if (this.workflow.is_published) {
-      return true;
-    }
-    const versionTags = this.workflow.workflowVersions;
-
-    if (versionTags === null) {
-      return false;
-    }
-
-    for (const versionTag of versionTags) {
-      if (versionTag.valid) {
-        return true;
-      }
-    }
-    return false;
   }
 
   restubWorkflow() {
@@ -331,17 +354,11 @@ export class WorkflowComponent extends Entry {
   }
 
   setWorkflowLabels(): any {
-    return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', '))
-      .subscribe(workflow => {
-        this.workflow.labels = workflow.labels;
-        this.workflowService.setWorkflow(workflow);
-        this.labelsEditMode = false;
-      });
-  }
-
-  refresh() {
-    const versionName = this.selectedVersion ? this.selectedVersion.name : null;
-    this.refreshService.refreshWorkflow(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, versionName);
+    return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(workflow => {
+      this.workflow.labels = workflow.labels;
+      this.workflowService.setWorkflow(workflow);
+      this.labelsEditMode = false;
+    });
   }
 
   /**
@@ -352,19 +369,19 @@ export class WorkflowComponent extends Entry {
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
     if (this.selectVersion) {
-      this.gA4GHFilesService.updateFiles(ga4ghWorkflowIdPrefix + this.workflow.full_workflow_path, this.selectedVersion.name,
-        [this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)]);
+      const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+      this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+        this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
+      ]);
     }
-    if (this.workflow != null) {
-      this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-    }
+    this.workflowService.setWorkflowVersion(version);
+    this.updateWorkflowUrl(this.workflow);
+    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
   }
 
   setEntryTab(tabName: string): void {
     this.currentTab = tabName;
-    if (this.workflow != null) {
-      this.updateUrl(this.workflow.full_workflow_path, 'my-workflows', 'workflows');
-    }
+    this.updateWorkflowUrl(this.workflow);
   }
 
   getPageIndex(): number {

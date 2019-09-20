@@ -14,9 +14,11 @@
  *     limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { Base } from './base';
+import { EntryType } from './enum/entry-type';
 
 @Injectable()
-export abstract class MyEntriesService {
+export abstract class MyEntriesService extends Base {
   /**
    * Find the index for the group that the entry belongs to
    * @param  orgWorkflows Array of grouped entries
@@ -55,13 +57,10 @@ export abstract class MyEntriesService {
       groupEntries.splice(unIndex, 1);
     }
     if (orIndex >= 0) {
-      groupEntries.splice(
-        (unIndex < orIndex) ? orIndex - 1 : orIndex,
-        1
-      );
+      groupEntries.splice(unIndex < orIndex ? orIndex - 1 : orIndex, 1);
     }
 
-    const path = (type === 'workflow') ? 'organization' : 'namespace';
+    const path = type === 'workflow' ? 'organization' : 'namespace';
 
     sortedGroupEntries = sortedGroupEntries.concat(
       groupEntries.sort(function(a, b) {
@@ -80,7 +79,6 @@ export abstract class MyEntriesService {
     return sortedGroupEntries;
   }
 
-
   /**
    * Sorts and groups entries by source control and organization for workflows and registry and namespace
    * for tools.
@@ -89,7 +87,7 @@ export abstract class MyEntriesService {
    * @param  type     Either tool or workflow
    * @return          A sorted array of entries grouped together
    */
-  sortGroupEntries(entries: any[], username: string, type: string): any {
+  sortGroupEntries(entries: any[], username: string, type: EntryType): any {
     const groupEntries = [];
     for (let i = 0; i < entries.length; i++) {
       const prefix = entries[i].path.split('/', 2).join('/');
@@ -107,16 +105,29 @@ export abstract class MyEntriesService {
       groupEntries[pos].entries.push(entries[i]);
     }
 
-    const path = (type === 'workflow') ? 'full_workflow_path' : 'tool_path';
+    const path = type === EntryType.BioWorkflow || type === EntryType.Service ? 'full_workflow_path' : 'tool_path';
 
     groupEntries.forEach(groupEntry => {
       groupEntry.entries.sort((a, b) => {
-        if (a[path] < b[path]) { return -1; }
-        if (a[path] > b[path]) { return 1; }
+        if (a[path].toLowerCase() < b[path].toLowerCase()) {
+          return -1;
+        }
+        if (a[path].toLowerCase() > b[path].toLowerCase()) {
+          return 1;
+        }
         return 0;
       });
     });
     /* Return Namespaces w/ Nested Containers */
     return this.sortGroups(groupEntries, username, type);
   }
+
+  /**
+   * Gets all the user's current entries for a specific entry type (Tool, BioWorkflow, Service)
+   *
+   * @abstract
+   * @memberof MyEntriesService
+   */
+  abstract getMyEntries(userId: number, entryType: EntryType): void;
+  abstract registerEntry(entryType: EntryType): void;
 }

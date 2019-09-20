@@ -29,18 +29,15 @@ describe('ParamfilesWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ParamfilesWorkflowComponent
-      ],
+      declarations: [ParamfilesWorkflowComponent],
       providers: [
         { provide: ParamfilesService, useClass: ParamFilesStubService },
-        { provide: FileService, useClass: FileStubService},
-        { provide: WorkflowService, useClass: WorkflowStubService},
-        {provide: GA4GHService, useClass: GA4GHStubService}
+        { provide: FileService, useClass: FileStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: GA4GHService, useClass: GA4GHStubService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

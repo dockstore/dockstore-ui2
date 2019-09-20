@@ -1,17 +1,25 @@
 <app-header>
   <mat-icon>star</mat-icon>
-  Starred Tools and Workflows
+  My Starred
 </app-header>
 <div class="container" *ngIf="starGazersClicked">
   <app-stargazers></app-stargazers>
-  <button id="backButton" mat-flat-button color="primary" type="button" (click)="starGazersClicked=false">
+  <button id="backButton" mat-flat-button color="primary" type="button" (click)="starGazersClicked = false">
     <mat-icon>chevron_left</mat-icon>Back to details
   </button>
 </div>
 
-<div class="container" *ngIf="!starGazersClicked">
-  <div *ngIf="starredTools">
-    <div class="container">
+<div class="container" *ngIf="organizationStarGazersClicked">
+  <app-organization-stargazers></app-organization-stargazers>
+  <button id="backButton" mat-flat-button color="primary" type="button" (click)="organizationStarGazersClicked = false">
+    <mat-icon>chevron_left</mat-icon>Back to details
+  </button>
+</div>
+
+<mat-tab-group class="container" *ngIf="!starGazersClicked && !organizationStarGazersClicked">
+  <mat-tab label="Tools">
+    <div *ngIf="starredTools">
+      <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Tools</h3>
           <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredTools.length == 0">
@@ -21,51 +29,93 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let tool of starredTools; let last = last;">
+          <mat-list-item *ngFor="let tool of starredTools; let last = last">
             <h3 mat-line>
-              <a class="spacing" href="/containers/{{tool.tool_path}}">
-              {{tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')}}
+              <a class="spacing" routerLink="/containers/{{ tool.tool_path }}" target="_blank" rel="noopener">
+                {{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}
               </a>
             </h3>
             <span mat-line>
               <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
-              <span class="spacing" *ngFor="let type of tool?.descriptorType">{{type | uppercase}}</span>
-              <a class="spacing" *ngIf="tool?.provider" href="{{tool?.providerUrl}}">{{tool?.provider}}</a>
-              <a class="spacing" *ngIf="tool?.imgProvider" href="{{tool?.imgProviderUrl}}">{{tool?.imgProvider}}</a>
+              <span class="spacing" *ngFor="let type of tool?.descriptorType">{{ type | uppercase }}</span>
+              <a class="spacing" *ngIf="tool?.provider" href="{{ tool?.providerUrl }}">{{ tool?.provider }}</a>
+              <a class="spacing" *ngIf="tool?.imgProvider" href="{{ tool?.imgProviderUrl }}">{{ tool?.imgProvider }}</a>
             </span>
             <app-starring class="pull-right" style="width: 100px;" [tool]="tool" (change)="starGazersChange()"></app-starring>
             <mat-divider></mat-divider>
           </mat-list-item>
         </mat-list>
-
       </div>
-  </div>
-  <div *ngIf="starredWorkflows">
-    <div class="container">
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Workflows">
+    <div *ngIf="starredWorkflows">
+      <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Workflows</h3>
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length==0">
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length == 0">
             <mat-icon>warning</mat-icon>
             You have no starred workflows.
           </mat-card>
         </div>
 
         <mat-list>
-            <mat-list-item *ngFor="let workflow of starredWorkflows; let last = last;">
-              <h3 class="spacing" mat-line>
-                <a href="/workflows/{{workflow.full_workflow_path}}">
-                {{workflow?.organization + '/' + workflow?.repository + (workflow?.toolname ? '/' + workflow?.toolname : '')}}
-                </a>
-              </h3>
-              <span mat-line>
-                <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
-                <span class="spacing">{{workflow?.descriptorType | uppercase}}</span>
-                <a class="spacing" *ngIf="workflow?.provider" href="{{workflow?.providerUrl}}">{{workflow?.provider}}</a>
-              </span>
-              <app-starring class="pull-right" style="width: 100px;" [workflow]="workflow" (change)="starGazersChange()"></app-starring>
-              <mat-divider></mat-divider>
-            </mat-list-item>
-          </mat-list>
+          <mat-list-item *ngFor="let workflow of starredWorkflows; let last = last">
+            <h3 class="spacing" mat-line>
+              <a routerLink="/workflows/{{ workflow.full_workflow_path }}" target="_blank" rel="noopener">
+                {{ workflow?.organization + '/' + workflow?.repository + (workflow?.toolname ? '/' + workflow?.toolname : '') }}
+              </a>
+            </h3>
+            <span mat-line>
+              <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
+              <span class="spacing">{{ workflow?.descriptorType | uppercase }}</span>
+              <a class="spacing" *ngIf="workflow?.provider" href="{{ workflow?.providerUrl }}">{{ workflow?.provider }}</a>
+            </span>
+            <app-starring class="pull-right" style="width: 100px;" [workflow]="workflow" (change)="starGazersChange()"></app-starring>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
       </div>
-  </div>
-</div>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Organizations">
+    <div *ngIf="starredOrganizations">
+      <div class="container">
+        <div class="row">
+          <h3 class="starred-header">Starred Organizations</h3>
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredOrganizations.length == 0">
+            <mat-icon>warning</mat-icon>
+            You have no starred organizations.
+          </mat-card>
+        </div>
+
+        <mat-list>
+          <mat-list-item *ngFor="let organization of starredOrganizations; let last = last">
+            <h3 class="spacing" mat-line>
+              <a routerLink="/organizations/{{ organization.name }}" [matTooltip]="organization?.name" target="_blank" rel="noopener">{{
+                organization.displayName
+              }}</a>
+            </h3>
+            <span mat-line>
+              <small class="spacing" *ngIf="organization?.email"
+                >Email: <a [href]="'mailto:' + organization?.email">{{ organization.email }}</a></small
+              >
+              <small class="spacing" *ngIf="organization?.link"
+                >Website: <a [href]="organization?.link">{{ organization?.link }}</a>
+              </small>
+            </span>
+            <app-organization-starring
+              class="pull-right"
+              style="width: 100px;"
+              [organization]="organization"
+              (change)="organizationStarGazersChange()"
+            ></app-organization-starring>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

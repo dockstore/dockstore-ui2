@@ -15,7 +15,8 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-
+import { RefreshAlertModule } from '../../shared/alert/alert.module';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
@@ -27,13 +28,13 @@ describe('ToolTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToolTabComponent ],
-      imports: [FormsModule],
+      declarations: [ToolTabComponent],
+      imports: [FormsModule, CustomMaterialModule, RefreshAlertModule],
       providers: [
-        {provide: WorkflowService, useClass: WorkflowStubService},
-      {provide: WorkflowsService, useClass: WorkflowsStubService}]
-    })
-    .compileComponents();
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -47,11 +48,11 @@ describe('ToolTabComponent', () => {
   });
 
   it('should update table tool content', () => {
-    component.updateTableToolContent(1, null);
-    expect(component.toolsContent).toBe(null);
-    component.updateTableToolContent(null, 1);
-    expect(component.toolsContent).toBe(null);
-    component.updateTableToolContent(1, 1);
-    expect(component.toolsContent).toBe('tableToolContentString');
+    component.getTableToolContent(1, null);
+    expect(component.toolContent).toBe(null);
+    component.getTableToolContent(null, 1);
+    expect(component.toolContent).toBe(null);
+    component.getTableToolContent(1, 1);
+    expect(component.toolContent).toBe('tableToolContentString');
   });
 });

@@ -10,17 +10,7 @@ import { StarringService } from '../starring/starring.service';
 import { getTooltipConfig } from './../shared/tooltip';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    StargazersModule,
-    TooltipModule.forRoot(),
-    HeaderModule,
-    StarringModule
-  ],
-  providers: [
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
-    StarentryService,
-    StarringService
-  ]
+  imports: [CommonModule, StargazersModule, TooltipModule.forRoot(), HeaderModule, StarringModule],
+  providers: [{ provide: TooltipConfig, useFactory: getTooltipConfig }, StarentryService, StarringService]
 })
-export class StarredEntriesModule { }
+export class StarredEntriesModule {}

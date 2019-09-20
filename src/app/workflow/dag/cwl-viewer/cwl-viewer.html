@@ -1,16 +1,27 @@
-<div class="cwl-viewer" >
+<div class="cwl-viewer">
   <mat-card *ngIf="cwlViewerError" class="alert alert-warning">
     <mat-icon>warning</mat-icon>&nbsp;
-    <div>The Common Workflow Language Viewer was unable to process the CWL. <span *ngIf="errorMessage">It returned the following error:</span></div>
+    <div>
+      The Common Workflow Language Viewer was unable to process the CWL. <span *ngIf="errorMessage">It returned the following error:</span>
+    </div>
     <div>{{errorMessage}}</div>
   </mat-card>
   <div>
-    <span *ngIf="!cwlViewerError">See on <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank">Common Workflow Language Viewer <mat-icon>open_in_new</mat-icon></a></span>
+    <span *ngIf="!cwlViewerError"
+      >See on
+      <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank">Common Workflow Language Viewer <mat-icon>open_in_new</mat-icon></a></span
+    >
   </div>
   <div class="image">
     <div *ngIf="loading" class="text-center viewer-loading">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
-    <img [hidden]="!cwlViewerDescriptor" [style.width.%]="cwlViewerPercentageZoom" [style.height.%]="cwlViewerPercentageZoom" [src]="cwlViewerDescriptor?.svgUrl" (wheel)="onWheel($event)">
+    <img
+      [hidden]="!cwlViewerDescriptor"
+      [style.width.%]="cwlViewerPercentageZoom"
+      [style.height.%]="cwlViewerPercentageZoom"
+      [src]="cwlViewerDescriptor?.svgUrl"
+      (wheel)="onWheel($event)"
+    />
   </div>
 </div>

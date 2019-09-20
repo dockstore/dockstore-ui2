@@ -1,52 +1,192 @@
-version: 2
-jobs:
-  build:
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@1.0.0
+executors:
+  integration_test_exec: # declares a reusable executor
     docker:
-      # specify the version you desire here
-      - image: circleci/node:10.13.0-stretch
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
+      - image: circleci/buildpack-deps:18.04-browsers
+      - image: circleci/postgres:10.10-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+jobs:
+  lint_unit_test_coverage:
     working_directory: ~/repo
-
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-      - run: 
-          name: "Setup custom environment variables"
-          command: |
-            echo 'export WEBSERVICE_VERSION="1.6.0-alpha.6"' >> $BASH_ENV # Redirect MY_ENV_VAR into $BASH_ENV
-      - run: #need chrome, should be in Docker image 
-          command: |
-            sudo curl https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - \
-            && sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-            && sudo apt-get update \
-            && sudo apt-get install -y google-chrome-stable build-essential jq git openssh-server \
-            && sudo apt-get clean \
-            && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-      - run: # need java for swagger codegen
-          command: |
-            sudo apt-get update \
-            && sudo apt-get install -y openjdk-8-jdk
-      - run: # run tests
-          command: |
-            sudo npm install -g @angular/cli@6.0.2 --unsafe
-            ./scripts/install-travis-script.sh 
-            ng lint
-            ng test --watch=false --code-coverage --browsers ChromeHeadless
-            ng version
-            npm run build.prod
-
-      - save_cache:
+      - install_container_dependencies
+      - run:
+          name: Install dependencies
+          command: bash -i -c 'npm ci'
+      - run:
+          name: Check dependencies
+          command: bash -i -c 'npm ls'
+      - run:
+          name: Lint
+          command: bash -i -c 'npm run lint'
+      - run:
+          name: Build
+          command: bash -i -c 'npm run build.prod'
+      - run:
+          name: Install codecov
+          command: bash -i -c 'npm i --no-save codecov'
+      - run:
+          name: Unit Test
+          command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless'
+      - run:
+          name: Codecov
+          command: bash -i -c 'npx codecov'
+      - persist_to_workspace:
+          root: .
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - .
+  integration_test_1:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    steps:
+      - setup_integration_test
+      - run:
+          name: Test
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group1/**/*'
+  integration_test_2:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    steps:
+      - setup_integration_test
+      - run:
+          name: Test
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group2/**/*'
+  integration_test_3:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    steps:
+      - setup_integration_test
+      - run:
+          name: Test
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/immutableDatabaseTests/**/*'
+  upload_to_s3:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python:2.7
+    parameters:
+      aws_bucket:
+        type: string
+        default: "${AWS_BUCKET}"
+    steps:
+      - when:
+          condition: <<parameters.aws_bucket>>
+          steps:
+            - get_workspace
+            - install_container_dependencies
+            # Build again for the upload to s3
+            # TODO: https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7) can probably be made into a bash/circle-ci variable.
+            - run:
+                name: Swap for CDN paths
+                command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\.\./assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
+            - run:
+                name: Build
+                command: bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
+            # Copy to a versioned folder
+            - aws-s3/copy:
+                from: dist
+                to: 's3://${AWS_BUCKET}/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)'
+                arguments: |
+                  --recursive \
+                  --exclude index.html
+            - aws-s3/copy:
+                from: dist/index.html
+                to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
+                arguments: |
+                  --cache-control max-age=0
+
+workflows:
+  version: 2
+  everything:
+    jobs:
+#      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - lint_unit_test_coverage:
+          filters:
+            tags:
+              only: /.*/
+      - integration_test_1:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+      # Upload builds for tags and branches to s3.
+      - upload_to_s3:
+          requires:
+            - integration_test_1
+            - integration_test_2
+            - integration_test_3
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+commands:
+  install_container_dependencies:
+    steps:
+      - run:
+          name: Install java
+          command: |
+            sudo apt update -y
+            sudo apt install openjdk-11-jre -yq
+      - run:
+          name: Install npm
+          command: |
+            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            bash -i -c 'nvm install'
+  get_workspace:
+    steps:
+      - attach_workspace:
+          at: .
+  setup_integration_test:
+    steps:
+      - get_workspace
+      - install_container_dependencies
+      - run:
+          name: Install postgresql client
+          command: sudo apt install -y postgresql-client || true
+      - run:
+          name: Install cypress dependencies
+          command: sudo apt install libgtk2.0-0 -yq
+      - run:
+          name: Install cypress
+          command: bash -i -c 'npm i cypress@3.2.0 --no-save'
+      - run:
+          name: Prepare webservice
+          command: bash -i -c 'npm run webservice'
+      - run:
+          name: Install nginx
+          command: sudo apt install -y nginx || true
+      - run:
+          name: Prepapre nginx config
+          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+      - run:
+          name: Run nginx
+          command: sudo nginx -c `pwd`/.circleci/nginx.conf
+          background: true
+      - run:
+          name: Run webservice
+          command: java -jar dockstore-webservice.jar server travisci/web.yml 1>/dev/null
+          background: true
+      - run:
+          name: Wait for services
+          command: bash scripts/wait-for.sh

@@ -6,16 +6,26 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { DockstoreTool } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
+import { SearchService } from '../state/search.service';
+
+/**
+ * this component refers to search page not tool listing search
+ */
 
 @Component({
   selector: 'app-search-tool-table',
   templateUrl: './search-tool-table.component.html',
-  styleUrls: ['./search-tool-table.component.scss']
+  styleUrls: ['../../shared/styles/entry-table.scss', './search-tool-table.component.scss']
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<DockstoreTool>;
-  constructor(private dockstoreService: DockstoreService, protected dateService: DateService, private searchQuery: SearchQuery) {
-    super(dateService);
+  constructor(
+    private dockstoreService: DockstoreService,
+    dateService: DateService,
+    searchQuery: SearchQuery,
+    searchService: SearchService
+  ) {
+    super(dateService, searchQuery, searchService);
   }
 
   privateNgOnInit(): void {
@@ -27,7 +37,6 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
   }
 
   getVerified(tool: DockstoreTool): boolean {
-    return this.dockstoreService.getVersionVerified(tool.tags);
+    return this.dockstoreService.getVersionVerified(tool.workflowVersions);
   }
-
 }

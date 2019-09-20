@@ -20,17 +20,11 @@ describe('LaunchThirdPartyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LaunchThirdPartyComponent ],
+      declarations: [LaunchThirdPartyComponent],
       imports: [CustomMaterialModule, HttpClientModule],
-      providers: [
-        GA4GHFilesService,
-        GA4GHService,
-        GA4GHFilesStore,
-        { provide: WorkflowsService, useClass: WorkflowsStubService}
-      ],
+      providers: [GA4GHFilesService, GA4GHService, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -45,33 +39,35 @@ describe('LaunchThirdPartyComponent', () => {
 
   it('should set properties correctly', () => {
     component.ngOnChanges({
-      'workflow': new SimpleChange(null, sampleWdlWorkflow2, true),
-      'selectedVersion': new SimpleChange(null, sampleWorkflowVersion, true)
+      workflow: new SimpleChange(null, sampleWdlWorkflow2, true),
+      selectedVersion: new SimpleChange(null, sampleWorkflowVersion, true)
     });
     fixture.detectChanges();
     const nativeElement: HTMLElement = fixture.nativeElement;
 
     // Verify urls are correct; got these from prod (except for Terra, which is new) to verify there is no breakage.
     // tslint:disable:max-line-length
-    expect(nativeElement
-      .querySelector('a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'))
-      .toBeTruthy();
-    expect(nativeElement
-      .querySelector('a[href="https://portal.firecloud.org/#import/dockstore/github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl:master"]'))
-      .toBeTruthy();
+    expect(
+      nativeElement.querySelector(
+        'a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'
+      )
+    ).toBeTruthy();
     // https://platform.dnanexus.com/panx/tools/import-workflow?source=https://dockstore.org:443/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master
-    expect(nativeElement
-      .querySelector('a[href="https://platform.dnanexus.com/panx/tools/import-workflow?source='
-      +  Dockstore.API_URI
-      + '/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master"]'))
-      .toBeTruthy();
-    expect(nativeElement
-      .querySelector('a[href="https://app.terra.bio/#import-tool/dockstore/github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl:master"]'))
-      .toBeTruthy();
+    expect(
+      nativeElement.querySelector(
+        'a[href="https://platform.dnanexus.com/panx/tools/import-workflow?source=' +
+          Dockstore.API_URI +
+          '/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master"]'
+      )
+    ).toBeTruthy();
+    expect(
+      nativeElement.querySelector(
+        'a[href="https://app.terra.bio/#import-tool/dockstore/github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl:master"]'
+      )
+    ).toBeTruthy();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

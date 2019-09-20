@@ -5,11 +5,10 @@ describe('UpsertOrganizationMemberQuery', () => {
   let query: UpsertOrganizationMemberQuery;
 
   beforeEach(() => {
-    query = new UpsertOrganizationMemberQuery(new UpsertOrganizationMemberStore);
+    query = new UpsertOrganizationMemberQuery(new UpsertOrganizationMemberStore());
   });
 
   it('should create an instance', () => {
     expect(query).toBeTruthy();
   });
-
 });

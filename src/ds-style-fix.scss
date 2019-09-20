@@ -1,4 +1,3 @@
-
 /*!
  *    Copyright 2016 OICR
  *
@@ -19,16 +18,17 @@
  * CSS Style Fixes - Dockstore-Bootstrap Integration
  */
 
+.header > .container {
+  color: #ffffff;
+}
 
 .nav > li > a {
   display: block;
-  padding:10px 0;
+  padding: 10px 0;
 }
 
-span.nav-menu-usericon { display: none; }
-
-.header1 div.splash {
-  height: 300px;
+span.nav-menu-usericon {
+  display: none;
 }
 
 div.view-content {
@@ -55,15 +55,15 @@ table.containers-grid {
 }
 
 table.tokens-grid {
-    th:nth-child(1) {
-      width: 25%;
-    }
-    th:nth-child(2) {
-      width: 60%;
-    }
-    th:nth-child(3) {
-      width: 15%;
-    }
+  th:nth-child(1) {
+    width: 25%;
+  }
+  th:nth-child(2) {
+    width: 60%;
+  }
+  th:nth-child(3) {
+    width: 15%;
+  }
 }
 
 table.tool-versions-grid {
@@ -150,7 +150,7 @@ table.hosted-tool-versions-grid {
 #navbar-collapse ul.nav {
   &.auth > li {
     margin-left: 20px;
-    margin-right: 20px
+    margin-right: 20px;
   }
   &.auth > li.ds-nav-search-pr {
     margin-left: 40px;
@@ -159,7 +159,8 @@ table.hosted-tool-versions-grid {
     margin-left: 80px;
     margin-right: 20px;
   }
-  li > a:hover, li > a:focus {
+  li > a:hover,
+  li > a:focus {
     background-color: initial;
   }
   li > ul.dropdown-menu {
@@ -179,7 +180,7 @@ table.hosted-tool-versions-grid {
 }
 
 .label {
-  padding-top: .3em;
+  padding-top: 0.3em;
 }
 
 /* Bootstrap Tabs */
@@ -204,7 +205,9 @@ ul.nav-tabs {
   }
   li.active {
     background-color: #7987aa;
-    a, a:hover, a:focus {
+    a,
+    a:hover,
+    a:focus {
       color: #ffffff;
       background-color: #7987aa;
       border: none;
@@ -217,7 +220,8 @@ div.tab-content {
   background-color: #ffffff;
   padding: 8px;
   min-height: 0px;
-  .btn-primary > a, .btn-warning > a {
+  .btn-primary > a,
+  .btn-warning > a {
     color: #ffffff;
   }
   pre {
@@ -261,21 +265,20 @@ div.panel-container-label.selected {
   border-color: #ddd;
 }
 .panel.containers-accordion {
-
-  .panel-body{
+  .panel-body {
     padding: 0;
     padding-bottom: 10px;
     font-size: 12px;
   }
 }
-.panel-group{
+.panel-group {
   margin-bottom: 14px;
 }
 .panel-heading {
   border-radius: 0;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
   color: #487980;
   clear: both;
   overflow: hidden;
@@ -314,7 +317,8 @@ div.panel-container-label.selected {
         color: #487980;
       }
     }
-    div.container-label:hover, div.container-label.selected {
+    div.container-label:hover,
+    div.container-label.selected {
       background-color: #7987a5;
       color: #ffffff;
       a {
@@ -325,10 +329,13 @@ div.panel-container-label.selected {
 }
 
 @keyframes spin {
-    from { transform: scale(1) rotate(0deg);}
-    to { transform: scale(1) rotate(360deg);}
+  from {
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(360deg);
+  }
 }
-
 
 span.reg-label {
   padding-bottom: 0.2em;
@@ -346,7 +353,7 @@ div.footer > span.contact {
 
 div.footer > span.about {
   float: left;
-  padding-right:25px;
+  padding-right: 25px;
 }
 
 div.form-error-messages p {
@@ -390,8 +397,8 @@ div.container-launch-with {
   }
 }
 
-div.container-verified{
-  width:240px;
+div.container-verified {
+  width: 240px;
 }
 
 div.container-verified p {
@@ -412,7 +419,8 @@ form.edit-container {
 }
 
 .btn.btn-primary.ds-btn {
-  &, a {
+  &,
+  a {
     color: #ffffff;
   }
 }
@@ -420,14 +428,14 @@ form.edit-container {
 div.ds-holder {
   display: table;
   table-layout: fixed;
-  width:100%;
+  width: 100%;
   margin-bottom: 5px;
 }
 
-div.ds-holder div{
+div.ds-holder div {
   display: table-cell;
   padding: 5px;
-  width:33%;
+  width: 33%;
 }
 
 div.ds-descriptor-selector {
@@ -460,15 +468,15 @@ div.alert.alert-dismissable {
 .tagEditor div.form-group.form-group-sm {
   // Not sure why .form-inline is injected into .form-group, so using this to override it
   div.col-sm-9 {
-      &.test_parameter_div input {
-          width: 90%;
+    &.test_parameter_div input {
+      width: 90%;
+    }
+    div.input-group {
+      width: 100%;
+      span#clipboard {
+        width: 1%;
       }
-      div.input-group {
-          width: 100%;
-          span#clipboard {
-              width: 1%;
-          }
-      }
+    }
   }
   div.label-value {
     position: relative;
@@ -502,9 +510,15 @@ div.modal form {
 
 /* Media Queries - Lower Resolutions (width < 1200px) */
 @media (max-width: 992px) {
-  img.site-logo { width: 50px; }
-  span.nav-menu-username { display: none; }
-  span.nav-menu-usericon { display: inline; }
+  img.site-logo {
+    width: 50px;
+  }
+  span.nav-menu-username {
+    display: none;
+  }
+  span.nav-menu-usericon {
+    display: inline;
+  }
   .ns-containers-accordion div.panel {
     div.container-label {
       div.container-name-oflw {
@@ -516,17 +530,20 @@ div.modal form {
     padding-bottom: 30px;
   }
   .header .header1 {
-    img#ship, img#truck {
+    img#ship,
+    img#truck {
       bottom: 0;
       right: 22%;
     }
     img#truck {
       padding-left: 0;
-      right: 2%
+      right: 2%;
     }
   }
   ul.nav-tabs {
-    li { min-width: 110px; }
+    li {
+      min-width: 110px;
+    }
   }
   #navbar-collapse.row ul.nav {
     li {
@@ -534,7 +551,7 @@ div.modal form {
     }
     & > li {
       margin-left: 15px;
-      margin-right: 15px
+      margin-right: 15px;
     }
     & > li.ds-nav-search-pr {
       margin-left: 15px;
@@ -544,7 +561,7 @@ div.modal form {
     }
     &.auth > li {
       margin-left: 10px;
-      margin-right: 10px
+      margin-right: 10px;
     }
     &.auth > li.ds-nav-search-pr {
       margin-left: 10px;
@@ -567,7 +584,8 @@ div.modal form {
   div.side-block {
     display: none;
   }
-  table td, table th {
+  table td,
+  table th {
     padding: 6px 18px;
   }
   table.versions-grid {
@@ -585,8 +603,10 @@ div.modal form {
     }
   }
   ul.our-sponsors {
-    li:nth-child(1) { display: block; }
-    li:nth-child(n+2) {
+    li:nth-child(1) {
+      display: block;
+    }
+    li:nth-child(n + 2) {
       padding-right: 46px;
     }
   }
@@ -606,16 +626,18 @@ div.modal form {
     width: 210px;
   }
   ul.nav-tabs {
-    li { min-width: 130px; }
+    li {
+      min-width: 130px;
+    }
   }
   #navbar-collapse.row ul.nav {
     & > li {
       margin-left: 20px;
-      margin-right: 20px
+      margin-right: 20px;
     }
     &.auth > li {
       margin-left: 10px;
-      margin-right: 10px
+      margin-right: 10px;
     }
     &.auth > li.ds-nav-search-pr {
       margin-left: 20px;
@@ -642,25 +664,26 @@ div.modal form {
 }
 
 .accordion-hr {
-  margin-top:5px;
-  margin-bottom:5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-.verified-check:hover, .verified-check:visited {
-   text-decoration: none;
+.verified-check:hover,
+.verified-check:visited {
+  text-decoration: none;
 }
 
 .footer-list > li {
-  margin:0px !important;
+  margin: 0px !important;
 }
 
-@media (max-width:992px) {
+@media (max-width: 992px) {
   .home-list {
-    padding:0px;
+    padding: 0px;
   }
 
   .twitter-container {
-    margin-top:15px;
+    margin-top: 15px;
   }
 }
 
@@ -703,34 +726,27 @@ div.modal form {
   padding-bottom: 2px;
 }
 
-#support-footer-link {
-  padding-left:55px;
-}
-
 .funding-img {
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
-  max-width:350px;
+  max-width: 350px;
   padding: 10px;
 }
 
-.small-side-padding {
-  padding-left:15px;
-  padding-right: 15px;
-}
 .mat-standard-chip {
   padding: 5px 8px !important;
 }
 
-.mat-chip-list-wrapper .mat-standard-chip, .mat-chip-list-wrapper input.mat-input-element {
+.mat-chip-list-wrapper .mat-standard-chip,
+.mat-chip-list-wrapper input.mat-input-element {
   margin: 2px !important;
 }
 
 .mat-drawer-container {
   z-index: unset !important;
-  background-color: #FFF !important;
+  background-color: #fff !important;
 }
 
 .no-wrap {
@@ -746,7 +762,7 @@ div.modal form {
 
 .sidebar-set-height {
   min-height: 1000px;
-  height:100%;
+  height: 100%;
 }
 
 .register-entry-modal-button {
@@ -776,10 +792,11 @@ mat-panel-title.org-accordion-header {
 }
 
 .fab-bottom-right {
-  position:fixed !important;
-  bottom:30px;
-  right:30px;
-  z-index: 99999;
+  position: fixed !important;
+  bottom: 30px;
+  right: 30px;
+  // Material dialog is observed to be z-index 1000. This goes underneath it
+  z-index: 980;
 }
 
 .spacer {

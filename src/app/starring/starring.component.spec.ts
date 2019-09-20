@@ -25,7 +25,7 @@ import {
   StarEntryStubService,
   StarringStubService,
   TrackLoginStubService,
-  WorkflowStubService,
+  WorkflowStubService
 } from '../test/service-stubs';
 import { StarringComponent } from './starring.component';
 import { StarringService } from './starring.service';
@@ -45,8 +45,7 @@ describe('StarringComponent', () => {
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: StarentryService, useClass: StarEntryStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

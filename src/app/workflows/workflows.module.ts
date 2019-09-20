@@ -13,44 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { NgxMdModule } from 'ngx-md';
-
-import { HeaderModule } from '../shared/modules/header.module';
-import { ListWorkflowsModule } from '../shared/modules/list-workflows.module';
-import { SelectModule } from '../shared/modules/select.module';
-import { WorkflowModule } from '../shared/modules/workflow.module';
-import { getTooltipConfig } from './../shared/tooltip';
-import { SearchWorkflowsComponent } from './search/search.component';
-import { WorkflowsComponent } from './workflows.component';
+import { WorkflowsPageModule } from 'app/shared/modules/workflowsPage.module';
 import { workflowsRouting } from './workflows.routing';
 
 @NgModule({
-  declarations: [
-    WorkflowsComponent,
-    SearchWorkflowsComponent
-  ],
-  imports: [
-    CommonModule,
-    AccordionModule.forRoot(),
-    AlertModule.forRoot(),
-    HeaderModule,
-    ListWorkflowsModule,
-    NgxMdModule.forRoot(),
-    SelectModule,
-    TabsModule.forRoot(),
-    TooltipModule.forRoot(),
-    WorkflowModule,
-    workflowsRouting
-  ],
-  providers: [
-    {provide: TooltipConfig, useFactory: getTooltipConfig}
-  ]
+  declarations: [],
+  imports: [workflowsRouting, WorkflowsPageModule]
 })
-export class WorkflowsModule {
-}
+export class WorkflowsModule {}

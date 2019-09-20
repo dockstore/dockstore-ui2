@@ -41,8 +41,7 @@ export class FileEditing extends Files {
    * @return {Array<SourceFile>}      Array of test parameter files
    */
   getDockerFile(sourceFiles: Array<SourceFile>): Array<SourceFile> {
-    return sourceFiles.filter(
-      sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKERFILE);
+    return sourceFiles.filter(sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKERFILE);
   }
 
   /**
@@ -52,8 +51,14 @@ export class FileEditing extends Files {
    */
   getDescriptorFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL || sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL
-        || sourcefile.type === SourceFile.TypeEnum.NEXTFLOWCONFIG || sourcefile.type === SourceFile.TypeEnum.NEXTFLOW);
+      sourcefile =>
+        sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL ||
+        sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL ||
+        sourcefile.type === SourceFile.TypeEnum.NEXTFLOWCONFIG ||
+        // DOCKSTORE-2428 - demo how to add new workflow language
+        // sourcefile.type === SourceFile.TypeEnum.DOCKSTORESWL ||
+        sourcefile.type === SourceFile.TypeEnum.NEXTFLOW
+    );
   }
 
   /**
@@ -63,8 +68,13 @@ export class FileEditing extends Files {
    */
   getTestFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile => sourcefile.type === SourceFile.TypeEnum.WDLTESTJSON || sourcefile.type === SourceFile.TypeEnum.CWLTESTJSON
-        || sourcefile.type === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS);
+      sourcefile =>
+        sourcefile.type === SourceFile.TypeEnum.WDLTESTJSON ||
+        sourcefile.type === SourceFile.TypeEnum.CWLTESTJSON ||
+        // DOCKSTORE-2428 - demo how to add new workflow language
+        // sourcefile.type === SourceFile.TypeEnum.SWLTESTJSON ||
+        sourcefile.type === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS
+    );
   }
 
   /**

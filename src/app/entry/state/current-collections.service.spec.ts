@@ -10,7 +10,7 @@ describe('CurrentCollectionsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CurrentCollectionsService, CurrentCollectionsStore],
-      imports: [ HttpClientTestingModule ]
+      imports: [HttpClientTestingModule]
     });
 
     currentCollectionsService = TestBed.get(CurrentCollectionsService);
@@ -20,5 +20,4 @@ describe('CurrentCollectionsService', () => {
   it('should be created', () => {
     expect(currentCollectionsService).toBeDefined();
   });
-
 });

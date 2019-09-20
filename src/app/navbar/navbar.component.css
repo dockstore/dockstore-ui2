@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
- #dropdown-main {
+#dropdown-main {
   font-weight: bold;
   text-decoration: none;
   color: white;
@@ -45,15 +45,12 @@
 
 .toolbar-holder-sm {
   height: auto !important;
-  margin: 5px;
+  /* Use padding instead of margin, since margin increases innerWidth of window's content area whereas padding doesn't */
+  padding: 5px;
 }
 
 mat-menu {
   padding-right: 10px;
-}
-
-.my-icon-sm {
-  width: 50%;
 }
 
 .icon-sm {

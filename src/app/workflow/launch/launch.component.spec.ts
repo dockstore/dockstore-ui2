@@ -26,7 +26,7 @@ import {
   ContainerStubService,
   DescriptorsStubService,
   GA4GHStubService,
-  WorkflowStubService,
+  WorkflowStubService
 } from '../../test/service-stubs';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
@@ -39,14 +39,15 @@ describe('LaunchWorkflowComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LaunchWorkflowComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [WorkflowLaunchService, { provide: ContainerService, useClass: ContainerStubService },
+      providers: [
+        WorkflowLaunchService,
+        { provide: ContainerService, useClass: ContainerStubService },
         { provide: DescriptorService, useClass: DescriptorsStubService },
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService},
-        { provide: GA4GHService, useClass: GA4GHStubService}
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: GA4GHService, useClass: GA4GHStubService }
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

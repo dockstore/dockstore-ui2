@@ -15,7 +15,6 @@
  */
 
 export class ListContainersService {
-
   /**
    * This gets the docker pull command
    *
@@ -44,5 +43,4 @@ export class ListContainersService {
     }
     return dockerPullCmd;
   }
-
 }

@@ -1,0 +1,36 @@
+[
+    {
+      "filename": "1554477718978.log",
+      "logType": "FULL",
+      "runner": "cwl-runner",
+      "testFilename": "Dockerfile",
+      "toolId": "quay.io\/pancancer\/pcawg-bwa-mem-workflow",
+      "toolVersionName": "2.7.0"
+    },
+    {
+      "filename": "1554477718647.log",
+      "logType": "FULL",
+      "runner": "cwltool",
+      "testFilename": "Dockerfile",
+      "toolId": "quay.io\/pancancer\/pcawg-bwa-mem-workflow",
+      "toolVersionName": "2.7.0"
+    },
+    {
+      "filename": "1554477718979.log",
+      "logType": "FULL",
+      "runner": "cwl-runner",
+      "testFilename": "Dockstore_cwl.json",
+      "toolId": "quay.io\/pancancer\/pcawg-bwa-mem-workflow",
+      "toolVersionName": "2.7.0"
+    },
+    {
+      "filename": "1554477718648.log",
+      "logType": "FULL",
+      "runner": "cwltool",
+      "testFilename": "Dockstore_cwl.json",
+      "toolId": "quay.io\/pancancer\/pcawg-bwa-mem-workflow",
+      "toolVersionName": "2.7.0"
+    }
+  ]
+  
+  

@@ -6,8 +6,8 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { CurrentCollectionsComponent } from './current-collections/current-collections.component';
 
 @NgModule({
-  imports: [ CommonModule, CustomMaterialModule, FlexLayoutModule, RouterModule ],
-  declarations: [ CurrentCollectionsComponent ],
-  exports: [ CurrentCollectionsComponent ]
+  imports: [CommonModule, CustomMaterialModule, FlexLayoutModule, RouterModule],
+  declarations: [CurrentCollectionsComponent],
+  exports: [CurrentCollectionsComponent]
 })
-export class CurrentCollectionsModule { }
+export class CurrentCollectionsModule {}

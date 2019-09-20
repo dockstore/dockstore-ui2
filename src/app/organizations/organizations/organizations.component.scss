@@ -1,9 +1,13 @@
-@import "bootstrap4.scss";
+@import 'bootstrap4.scss';
 
 .mat-icon {
-  @extend .pr-5
+  @extend .pr-5;
 }
 
 .mat-card-title {
-  white-space: nowrap
+  white-space: nowrap;
+}
+
+.orgStar {
+  line-height: 1.1em;
 }

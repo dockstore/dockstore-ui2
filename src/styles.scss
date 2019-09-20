@@ -14,42 +14,32 @@
  *    limitations under the License.
  */
 
-@import "ds-style-fix.scss";
-@import "bootstrap4.scss";
-@import '~@ngx-share/button/styles/share-buttons';
-@import '~@ngx-share/button/styles/themes/default/default-theme';
+@import 'ds-style-fix.scss';
+@import 'bootstrap4.scss';
+@import '~@ngx-share/button/themes/default/default-theme';
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
-
 
 /* #487980 GREEN */
 
-
 /* #21335B DARK BLUE */
-
 
 /* #313131 GREY */
 
-
 /* #cfd1d7 LIGHT GREY */
-
 
 /* #f4f4f4 LIGHTEST GREY */
 
-
 /* #2a3e6b MEDIUM BLUE */
-
 
 /* #a0adcc LIGHT BLUE */
 
-
 /* #dad4d4 BEIGE */
-
 
 /* Special Fonts */
 
 /* General Layout */
 angular-tag-cloud {
-  font-family: "Helvetica", "Arial", sans-serif;
+  font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 12px !important;
   cursor: pointer;
 }
@@ -59,47 +49,85 @@ angular-tag-cloud > span > a {
   text-decoration: none;
 }
 /* font sizes */
-angular-tag-cloud > span.w10 { font-size: 280% !important;}
-angular-tag-cloud > span.w9 { font-size: 260% !important; }
-angular-tag-cloud > span.w8 { font-size: 240% !important;}
-angular-tag-cloud > span.w7 { font-size: 220% !important;}
-angular-tag-cloud > span.w6 { font-size: 200% !important;}
-angular-tag-cloud > span.w5 { font-size: 180% !important;}
-angular-tag-cloud > span.w4 { font-size: 160% !important;}
-angular-tag-cloud > span.w3 { font-size: 140% !important;}
-angular-tag-cloud > span.w2 { font-size: 120% !important;}
-angular-tag-cloud > span.w1 { font-size: 100% !important;}
+angular-tag-cloud > span.w10 {
+  font-size: 280% !important;
+}
+angular-tag-cloud > span.w9 {
+  font-size: 260% !important;
+}
+angular-tag-cloud > span.w8 {
+  font-size: 240% !important;
+}
+angular-tag-cloud > span.w7 {
+  font-size: 220% !important;
+}
+angular-tag-cloud > span.w6 {
+  font-size: 200% !important;
+}
+angular-tag-cloud > span.w5 {
+  font-size: 180% !important;
+}
+angular-tag-cloud > span.w4 {
+  font-size: 160% !important;
+}
+angular-tag-cloud > span.w3 {
+  font-size: 140% !important;
+}
+angular-tag-cloud > span.w2 {
+  font-size: 120% !important;
+}
+angular-tag-cloud > span.w1 {
+  font-size: 100% !important;
+}
 
 /* colors */
-angular-tag-cloud > span.w10:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w9:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w8:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w7:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w6:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w5:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w4:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w3:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w2:hover{ color: #ff5e86 !important; }
-angular-tag-cloud > span.w1:hover{ color: #ff5e86 !important; }
-
+angular-tag-cloud > span.w10:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w9:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w8:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w7:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w6:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w5:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w4:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w3:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w2:hover {
+  color: #ff5e86 !important;
+}
+angular-tag-cloud > span.w1:hover {
+  color: #ff5e86 !important;
+}
 
 @font-face {
   font-family: Gotham;
-  src: url("assets/fonts/Gotham-Book.otf") format("opentype");
+  src: url('assets/fonts/Gotham-Book.otf') format('opentype');
 }
 
 @font-face {
   font-family: Gotham;
   font-weight: bold;
-  src: url("assets/fonts/Gotham-Bold.otf") format("opentype");
+  src: url('assets/fonts/Gotham-Bold.otf') format('opentype');
 }
 
 @font-face {
   font-family: Gotham;
   font-style: italic;
-  src: url("assets/fonts/Gotham-BookItalic.otf") format("opentype");
+  src: url('assets/fonts/Gotham-BookItalic.otf') format('opentype');
 }
-
 
 /* Main Styles */
 
@@ -116,12 +144,12 @@ body {
 }
 
 .main-menu {
-  background-color: #21335B;
+  background-color: #21335b;
   position: relative;
 }
 
 .header {
-  background-color: #21335B;
+  background-color: #21335b;
   position: relative;
   img#ship,
   img#truck {
@@ -193,16 +221,16 @@ body {
 }
 
 nav {
-  margin:0px !important;
-  border:2px !important;
-  border-radius:0px !important;
-  min-height:50px !important;
+  margin: 0px !important;
+  border: 2px !important;
+  border-radius: 0px !important;
+  min-height: 50px !important;
   padding-bottom: 6px !important;
 }
 
 nav > .container {
   padding-bottom: 5px;
-  padding-right:0px;
+  padding-right: 0px;
 }
 
 .navbar.navbar-default {
@@ -234,7 +262,7 @@ h1.title {
 }
 
 h2.title.caption {
-  font-size: 20px;
+  font-size: 24px;
   color: #dad4d4;
   font-weight: normal;
   padding-bottom: 20px;
@@ -243,13 +271,13 @@ h2.title.caption {
 
 h3 {
   font-size: 20px;
-  color: #21335B;
+  color: #21335b;
   font-weight: normal;
 }
 
 h3.available-containers {
   font-size: 20px;
-  color: #21335B;
+  color: #21335b;
   font-weight: normal;
   margin: 20px 0px 15px 0px;
   display: inline;
@@ -336,7 +364,7 @@ a {
 }
 
 a.white-link {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 ul.more li a {
@@ -360,10 +388,9 @@ img.site-icons-tab {
 
 #homeSearch {
   background-color: #487980;
-  color: #FFFFFF;
+  color: #ffffff;
   width: 100px;
 }
-
 
 /* SEARCH BAR - - - - - - - - - - - - */
 
@@ -415,11 +442,7 @@ img.site-icons-tab {
   outline: none;
 }
 
-.search-home {
-  width: 100% !important;
-}
-
-input[type=text]:focus,
+input[type='text']:focus,
 textarea:focus {
   border: 1px solid rgba(81, 203, 238, 1);
 }
@@ -459,7 +482,6 @@ textarea:focus {
   right: 20px;
 }
 
-
 /* BUTTONS - - - - - - - - - - - - - */
 
 div.button {
@@ -491,7 +513,7 @@ div.button a {
   color: white;
   text-decoration: none;
   font-weight: bold;
-  border-radius: 8px
+  border-radius: 8px;
 }
 
 .refresh-all-holder {
@@ -507,13 +529,13 @@ table {
 }
 
 table {
-  border: 1px solid #cfd1d7
+  border: 1px solid #cfd1d7;
 }
 
 td,
 th {
   font-weight: normal;
-  border-bottom: 1px solid #cfd1d7
+  border-bottom: 1px solid #cfd1d7;
 }
 
 td,
@@ -525,19 +547,6 @@ th {
   background-color: #f4f4f4;
   text-align: left;
 }
-
-// Material Datatable for both tool and workflow list components
-.mat-column-starredUsers, .mat-column-stars {
-  max-width: 75px;
-}
-.mat-column-descriptorType, .mat-column-format {
-  max-width: 100px;
-}
-
-.mat-column-projectLinks {
-  max-width: 175px;
-}
-// End
 
 #container-pagination {
   width: 100%;
@@ -603,7 +612,7 @@ ul.our-sponsors li img {
 }
 
 #footer {
-  background-color: #21335B;
+  background-color: #21335b;
   /*width: 100%;*/
   /*padding: 0px 100px;*/
   /*position: relative;*/
@@ -658,13 +667,11 @@ code {
   padding: 3px;
 }
 
-
 /* CONTAINERS-LIST PAGE */
 
 .detail-view {
   background-color: #f4f4f4;
 }
-
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -675,13 +682,13 @@ code {
 h5,
 .h5 {
   font-size: 16px;
-  color: #21335B;
+  color: #21335b;
   font-weight: normal;
 }
 
 p.update {
   font-weight: bold;
-  color: #7987AA;
+  color: #7987aa;
 }
 
 div.side-block {
@@ -703,7 +710,7 @@ div.side-block td {
 div.side-block h3 {
   font-size: 16px;
   margin: 0px;
-  color: #21335B;
+  color: #21335b;
 }
 
 div.side-block a {
@@ -715,7 +722,7 @@ div.side-block img {
 }
 
 .mat-icon {
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 div.side-block code {
@@ -737,7 +744,7 @@ div.tabs {
   max-width: 802px;
 }
 
-div.tabs>div {
+div.tabs > div {
   display: inline-block;
   padding: 12px 0px 12px 0px;
   min-width: 156px;
@@ -761,33 +768,33 @@ div.tabs>div {
   font-weight: bold;
 }
 
-div.tabs>div>a {
+div.tabs > div > a {
   text-decoration: none;
 }
 
-div.tabs>div>div {
+div.tabs > div > div {
   text-align: left;
   padding: 25px;
   line-height: 2;
 }
 
-div.tabs>div:not(:target) {
-  background: #FFF;
+div.tabs > div:not(:target) {
+  background: #fff;
 }
 
-div.tabs>div:target,
+div.tabs > div:target,
 :target #info,
-div.tabs>div:hover {
-  background-color: #7987AA;
+div.tabs > div:hover {
+  background-color: #7987aa;
 }
 
-div.tabs>div:target>a,
-:target #info>a,
-div.tabs>div:hover>a {
+div.tabs > div:target > a,
+:target #info > a,
+div.tabs > div:hover > a {
   color: #fff;
 }
 
-div.tabs>div>div {
+div.tabs > div > div {
   background-color: #ffffff;
   z-index: -2;
   left: 0;
@@ -797,15 +804,15 @@ div.tabs>div>div {
   overflow: auto;
 }
 
-div.tabs>div:not(:target)>div {
-  position: absolute
+div.tabs > div:not(:target) > div {
+  position: absolute;
 }
 
-div.tabs>div:target>div,
- :target #info>div,
-#info>div {
+div.tabs > div:target > div,
+:target #info > div,
+#info > div {
   position: absolute;
-  z-index: -1
+  z-index: -1;
 }
 
 .starRating {
@@ -821,12 +828,12 @@ div.tabs>div:target>div,
   vertical-align: bottom;
 }
 
-.starRating:not(old)>input {
+.starRating:not(old) > input {
   margin-right: -100%;
   opacity: 0;
 }
 
-.starRating:not(old)>label {
+.starRating:not(old) > label {
   display: block;
   float: right;
   position: relative;
@@ -834,7 +841,7 @@ div.tabs>div:target>div,
   background-size: contain;
 }
 
-.starRating:not(old)>label:before {
+.starRating:not(old) > label:before {
   content: '';
   display: block;
   width: 1.5em;
@@ -845,12 +852,11 @@ div.tabs>div:target>div,
   transition: opacity 0.2s linear;
 }
 
-.starRating:not(old)>label:hover:before,
-.starRating:not(old)>label:hover~label:before,
-.starRating:not(:hover)> :checked~label:before {
+.starRating:not(old) > label:hover:before,
+.starRating:not(old) > label:hover ~ label:before,
+.starRating:not(:hover) > :checked ~ label:before {
   opacity: 1;
 }
-
 
 /* Begin Temporary Styles - Need to Refactor Later */
 
@@ -878,10 +884,9 @@ div.tabs>div:target>div,
   margin-top: 12px;
 }
 
-
 /* Dockstore Grid */
 
-.row.ds-grid-footer>div {
+.row.ds-grid-footer > div {
   margin-top: -6px;
 }
 
@@ -928,8 +933,8 @@ div.tabs>div:target>div,
 
 #label-button {
   font-weight: bold;
-  background-color: #337AB7;
-  border-color: #2E6DA4;
+  background-color: #337ab7;
+  border-color: #2e6da4;
 }
 
 .search-dropdown {
@@ -995,7 +1000,6 @@ div.tabs>div:target>div,
 
 .bootstrap-tooltip-z-index {
   z-index: 1070;
-
 }
 
 .opaq {
@@ -1073,9 +1077,8 @@ body {
 // Can't seem to modify .tab-content in homeComponent.scss
 // This contains most of .tab-holder style
 tabset.homeComponent {
-
   .tab-content {
-    border: 1px solid #CFD1D7;
+    border: 1px solid #cfd1d7;
     border-bottom-right-radius: 15px;
     border-bottom-left-radius: 15px;
     -webkit-border-top-left-radius: 0px;
@@ -1097,24 +1100,26 @@ tabset.homeComponent {
         text-align: center;
         font-size: 16px;
         font-weight: bold;
-        border: 1px solid #CFD1D7;
+        border: 1px solid #cfd1d7;
         padding-top: 3px;
-        background-color: #F4F4F4;
+        background-color: #f4f4f4;
         a.nav-link {
           background-color: inherit;
           outline: 0;
         }
         &.active {
           padding-top: 0px;
-          background-color: #FFF;
-          border-bottom: 1px solid #FFF;
+          background-color: #fff;
+          border-bottom: 1px solid #fff;
         }
         &:not(.active) {
           &:hover {
             padding-top: 4px;
             padding-bottom: 1px;
             background-color: #7987aa;
-            a, a:hover, a:focus {
+            a,
+            a:hover,
+            a:focus {
               color: #ffffff;
               background-color: #7987aa;
               border: none;
@@ -1148,8 +1153,8 @@ tabset.homeComponent {
 }
 
 /* This is for dropdown anchor to have a mouse pointer without redirecting to a different page */
-.dropdown-menu li a{
-    cursor: pointer;
+.dropdown-menu li a {
+  cursor: pointer;
 }
 /* End Temporary Styles - Need to Refactor Later */
 .changePage {
@@ -1190,13 +1195,22 @@ tabset.homeComponent {
 }
 
 // Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
-app-sidebar-accordion .mat-accordion > .mat-expansion-panel > .mat-expansion-panel-content > .mat-expansion-panel-body > .mat-tab-group > .mat-tab-header > .mat-tab-label-container > .mat-tab-list > .mat-tab-labels {
+app-sidebar-accordion
+  .mat-accordion
+  > .mat-expansion-panel
+  > .mat-expansion-panel-content
+  > .mat-expansion-panel-body
+  > .mat-tab-group
+  > .mat-tab-header
+  > .mat-tab-label-container
+  > .mat-tab-list
+  > .mat-tab-labels {
   .mat-tab-label[role^='tab'] {
     min-width: 80px;
   }
 }
 
-// Make the dropdown at least the size of the default material dropdown.  
+// Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names
 // TODO: Ideally this should stretch to the length of the longest dropdown option.
 app-select.longer {
@@ -1207,4 +1221,18 @@ app-select.longer {
 mat-icon.star {
   font-size: 16px;
   height: 16px;
+}
+
+.landing-search {
+  width: 60%;
+  max-width: 600px;
+  padding-left: 30px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border: none;
+  line-height: 2em;
+  background: white url(../images/search-button.png) left center no-repeat;
+  background-position: 5px;
+  outline: none;
+  color: black;
 }

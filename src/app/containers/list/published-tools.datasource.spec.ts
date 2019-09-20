@@ -25,8 +25,12 @@ import { ContainersStubService } from './../../test/service-stubs';
 describe('Service: PublishedToolsDataSource', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PublishedToolsDataSource, ImageProviderService, ProviderService,
-        { provide: ContainersService, useClass: ContainersStubService} ],
+      providers: [
+        PublishedToolsDataSource,
+        ImageProviderService,
+        ProviderService,
+        { provide: ContainersService, useClass: ContainersStubService }
+      ]
     });
   });
 

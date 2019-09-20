@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ace } from './../grammars/custom-grammars.js';
 
 let ACE_EDITOR_INSTANCE = 0;
@@ -48,16 +47,15 @@ export class CodeEditorComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const aceMode = 'ace/mode/' + this.mode;
-    this.editor = ace.edit(this.aceId,
-      {
-        mode: aceMode,
-        readOnly: this.readOnly,
-        showLineNumbers: true,
-        maxLines: 60,
-        theme: 'ace/theme/idle_fingers',
-        fontSize: '12pt'
-      }
-    );
+    ace.config.set('workerPath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.4/');
+    this.editor = ace.edit(this.aceId, {
+      mode: aceMode,
+      readOnly: this.readOnly,
+      showLineNumbers: true,
+      maxLines: 60,
+      theme: 'ace/theme/idle_fingers',
+      fontSize: '12pt'
+    });
 
     this.editor.getSession().on('change', () => {
       this.contentChange.emit(this.editor.getValue());
@@ -101,6 +99,10 @@ export class CodeEditorComponent implements AfterViewInit {
         this.mode = 'xml';
       } else if (filepath.endsWith('.pl')) {
         this.mode = 'perl';
+      } else if (filepath.endsWith('.md')) {
+        this.mode = 'markdown';
+      } else if (filepath.endsWith('.sh')) {
+        this.mode = 'sh';
       } else {
         this.mode = 'text';
       }
@@ -116,5 +118,4 @@ export class CodeEditorComponent implements AfterViewInit {
       this.editor.setReadOnly(readOnly);
     }
   }
-
 }

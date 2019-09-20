@@ -13,9 +13,17 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<mat-card id="launchCheckerWorkflow" *ngIf="checkerWorkflowPath$ | async" class="m-2" matTooltip="Commands for running the checker workflow of this tool/workflow through Dockstore CLI">
+<mat-card
+  id="launchCheckerWorkflow"
+  *ngIf="checkerWorkflowPath$ | async"
+  class="m-2"
+  matTooltip="Commands for running the checker workflow of this tool/workflow through Dockstore CLI"
+>
   Run a checker workflow with:
   <pre>{{ command }}</pre>
   Make a runtime JSON template and fill in desired inputs, outputs, and other parameters from the checker workflow with:
-  <pre>dockstore workflow convert entry2json --entry {{checkerWorkflowPath$ | async}}{{versionName ? ':' + versionName : ''}} > Dockstore.json</pre>
+  <pre>
+dockstore workflow convert entry2json --entry {{ checkerWorkflowPath$ | async
+    }}{{ versionName ? ':' + versionName : '' }} > Dockstore.json</pre
+  >
 </mat-card>

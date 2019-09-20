@@ -19,9 +19,7 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { GA4GHFiles } from './ga4gh-files.model';
 
 export interface GA4GHFilesState extends EntityState<GA4GHFiles> {}
-​
 const initialState: GA4GHFilesState = {};
-​
 @Injectable({
   providedIn: 'root'
 })

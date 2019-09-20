@@ -23,15 +23,13 @@
  *		Multidimensional Array Sort on multiple columns: *ngFor="let todo of todoService.todos | orderBy : ['status', '-title']"
  */
 
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'orderBy', pure: false})
+@Pipe({ name: 'orderBy', pure: false })
 export class OrderBy implements PipeTransform {
-
-  value: string [] = [];
+  value: string[] = [];
 
   static _orderByComparator(a: any, b: any): number {
-
     if (a === null || typeof a === 'undefined') {
       a = 0;
     }
@@ -39,14 +37,14 @@ export class OrderBy implements PipeTransform {
       b = 0;
     }
 
-    if (typeof(a) === 'boolean' || typeof(b) === 'boolean') {
+    if (typeof a === 'boolean' || typeof b === 'boolean') {
       if (a && !b) {
         return 1;
       }
       if (!a && b) {
         return -1;
       }
-    } else if ((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))) {
+    } else if (isNaN(parseFloat(a)) || !isFinite(a) || (isNaN(parseFloat(b)) || !isFinite(b))) {
       // Isn't a number so lowercase the string to properly compare
       if (a.toLowerCase() < b.toLowerCase()) {
         return -1;
@@ -68,9 +66,10 @@ export class OrderBy implements PipeTransform {
   }
 
   transform(input: any, config: string = '+'): any {
-
     // make a copy of the input's reference
-    if (!input || !input.length) { return; }
+    if (!input || !input.length) {
+      return;
+    }
     this.value = [...input];
     const value = this.value;
 
@@ -86,24 +85,19 @@ export class OrderBy implements PipeTransform {
       if (!propertyToCheck || propertyToCheck === '-' || propertyToCheck === '+') {
         return !desc ? value.sort() : value.sort().reverse();
       } else {
-        const property: string = propertyToCheck.substr(0, 1) === '+' || propertyToCheck.substr(0, 1) === '-'
-          ? propertyToCheck.substr(1)
-          : propertyToCheck;
+        const property: string =
+          propertyToCheck.substr(0, 1) === '+' || propertyToCheck.substr(0, 1) === '-' ? propertyToCheck.substr(1) : propertyToCheck;
 
-        return value.sort(function (a: any, b: any) {
-          return !desc
-            ? OrderBy._orderByComparator(a[property], b[property])
-            : -OrderBy._orderByComparator(a[property], b[property]);
+        return value.sort(function(a: any, b: any) {
+          return !desc ? OrderBy._orderByComparator(a[property], b[property]) : -OrderBy._orderByComparator(a[property], b[property]);
         });
       }
     } else {
       // Loop over property of the array in order and sort
-      return value.sort(function (a: any, b: any) {
+      return value.sort(function(a: any, b: any) {
         for (let i = 0; i < config.length; i++) {
           const desc = config[i].substr(0, 1) === '-';
-          const property = config[i].substr(0, 1) === '+' || config[i].substr(0, 1) === '-'
-            ? config[i].substr(1)
-            : config[i];
+          const property = config[i].substr(0, 1) === '+' || config[i].substr(0, 1) === '-' ? config[i].substr(1) : config[i];
 
           const comparison = !desc
             ? OrderBy._orderByComparator(a[property], b[property])

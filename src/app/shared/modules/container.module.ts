@@ -17,7 +17,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -25,7 +24,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxMdModule } from 'ngx-md';
+import { MarkdownModule } from 'ngx-markdown';
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
 import { DockerfileComponent } from '../../container/dockerfile/dockerfile.component';
@@ -45,6 +44,7 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { StarringService } from '../../starring/starring.service';
 import { DateService } from '../date.service';
+import { ToolActionsComponent } from '../entry-actions/tool-actions.component';
 import { FileService } from '../file.service';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
@@ -73,6 +73,7 @@ import { SelectModule } from './select.module';
     DescriptorsComponent,
     ParamfilesComponent,
     ModalComponent,
+    ToolActionsComponent,
     AddTagComponent,
     VersionModalComponent,
     InfoTabComponent,
@@ -83,7 +84,6 @@ import { SelectModule } from './select.module';
     CommonModule,
     ClipboardModule,
     CurrentCollectionsModule,
-    NgxMdModule.forRoot(),
     HeaderModule,
     SelectModule,
     ListContainersModule,
@@ -98,12 +98,12 @@ import { SelectModule } from './select.module';
     ModalModule,
     StargazersModule,
     EntryModule,
-    RouterModule,
     AddEntryModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MarkdownModule
   ],
   providers: [
-    {provide: TooltipConfig, useFactory: getTooltipConfig},
+    { provide: TooltipConfig, useFactory: getTooltipConfig },
     EmailService,
     DateService,
     FileService,
@@ -115,12 +115,7 @@ import { SelectModule } from './select.module';
     VersionModalService,
     InfoTabService
   ],
-  exports: [
-    ContainerComponent,
-    CustomMaterialModule,
-    EntryModule
-  ],
+  exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent],
   entryComponents: [VersionModalComponent, AddTagComponent]
 })
-export class ContainerModule {
-}
+export class ContainerModule {}

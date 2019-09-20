@@ -6,8 +6,7 @@ import { SourceFile, Tag, WorkflowVersion } from './swagger';
   providedIn: 'root'
 })
 export class VerifiedByService {
-
-  constructor() { }
+  constructor() {}
 
   /**
    * This converts the verified source in a version's sourcefiles into a an array of strings
@@ -52,5 +51,3 @@ export class VerifiedByService {
     }
   }
 }
-
-

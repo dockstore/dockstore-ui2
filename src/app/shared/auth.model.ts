@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 import { Dockstore } from '../shared/dockstore.model';
+import { IPartialConfigOptions } from 'ng2-ui-auth/lib/config-interfaces';
 
-export const AuthConfig = {
-  defaultHeaders: {'Content-Type': 'application/json'},
+export const AuthConfig: IPartialConfigOptions = {
   providers: {
     github: {
       url: Dockstore.API_URI + '/auth/tokens/github',
@@ -27,8 +27,10 @@ export const AuthConfig = {
       url: Dockstore.API_URI + '/auth/tokens/google',
       clientId: Dockstore.GOOGLE_CLIENT_ID,
       scope: [Dockstore.GOOGLE_SCOPE],
-      access_type: 'offline',
-      approval_prompt: 'force'
+      additionalUrlParams: {
+        access_type: 'offline',
+        prompt: 'consent'
+      }
     }
   }
 };

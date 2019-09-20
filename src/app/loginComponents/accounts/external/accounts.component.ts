@@ -44,14 +44,14 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'GitHub',
       source: TokenSource.GITHUB,
       bold: 'One of GitHub or Google is required.',
-      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub',
+      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
       show: false
     },
     {
       name: 'Google',
       source: TokenSource.GOOGLE,
       bold: 'One of GitHub or Google is required.',
-      message: 'Google credentials are used for login purposes and integration with FireCloud.',
+      message: 'Google credentials are used for login purposes and integration with Terra.',
       show: false
     },
     {
@@ -74,6 +74,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: '',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
       show: false
+    },
+    {
+      name: 'Zenodo',
+      source: TokenSource.ZENODO,
+      bold: '',
+      message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
+      show: false
     }
   ];
 
@@ -82,17 +89,24 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   public show: false;
   public dockstoreToken: string;
-  constructor(private trackLoginService: TrackLoginService, private tokenService: TokenService, private userService: UserService,
-    private activatedRoute: ActivatedRoute, private router: Router, private usersService: UsersService,
-    private authService: AuthService, private configuration: Configuration, private accountsService: AccountsService,
-    private matSnackBar: MatSnackBar, private tokenQuery: TokenQuery) {
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      state => {
-        if (!state) {
-          this.router.navigate(['']);
-        }
+  constructor(
+    private trackLoginService: TrackLoginService,
+    private tokenService: TokenService,
+    private userService: UserService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private usersService: UsersService,
+    private authService: AuthService,
+    private configuration: Configuration,
+    private accountsService: AccountsService,
+    private matSnackBar: MatSnackBar,
+    private tokenQuery: TokenQuery
+  ) {
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => {
+      if (!state) {
+        this.router.navigate(['']);
       }
-    );
+    });
     this.dockstoreToken = this.getDockstoreToken();
   }
 
@@ -105,6 +119,19 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     }
   }
 
+  relink(source: string): void {
+    this.deleteToken(source)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.link(source);
+        },
+        error => {
+          this.matSnackBar.open('Failed to relink ' + source + ' account', 'Dismiss');
+        }
+      );
+  }
+
   link(source: string): void {
     this.matSnackBar.open('Linking ' + source + ' account', 'Dismiss');
     this.accountsService.link(source);
@@ -112,24 +139,28 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   // Delete a token and unlink service in the UI
   unlink(source: string) {
-    this.deleteToken(source).pipe(
-      first()).subscribe(() => {
-        this.userService.getUser();
-        this.matSnackBar.open('Unlinked ' + source + ' account', 'Dismiss');
-      }, error => {
-        this.matSnackBar.open('Failed to unlink ' + source, 'Dismiss');
-      });
+    this.deleteToken(source)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.userService.getUser();
+          this.matSnackBar.open('Unlinked ' + source + ' account', 'Dismiss');
+        },
+        error => {
+          this.matSnackBar.open('Failed to unlink ' + source, 'Dismiss');
+        }
+      );
   }
 
   // Show linked services in the UI
   private setAvailableTokens(tokens) {
-      for (const account of this.accountsInfo) {
-        const found = tokens.find(token => token.tokenSource === account.source);
-        if (found) {
-          account.isLinked = true;
-        } else {
-          account.isLinked = false;
-        }
+    for (const account of this.accountsInfo) {
+      const found = tokens.find(token => token.tokenSource === account.source);
+      if (found) {
+        account.isLinked = true;
+      } else {
+        account.isLinked = false;
+      }
     }
   }
 
@@ -156,5 +187,4 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-
 }

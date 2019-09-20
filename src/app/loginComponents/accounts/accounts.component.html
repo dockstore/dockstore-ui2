@@ -1,9 +1,14 @@
 <app-header>
-    <mat-icon class="mb-2 align-middle">account_circle</mat-icon>
-    Profiles, Accounts and Controls
+  <mat-icon class="mb-2 align-middle">account_circle</mat-icon>
+  Profiles, Accounts and Controls
 </app-header>
 <div class="container separation">
-  <mat-tab-group>
+  <mat-tab-group
+    [selectedIndex]="selected.value"
+    (selectedIndexChange)="selected.setValue($event)"
+    (selectedTabChange)="selectedTabChange($event)"
+    mat-stretch-tabs
+  >
     <mat-tab label="Accounts">
       <app-accounts-external></app-accounts-external>
     </mat-tab>

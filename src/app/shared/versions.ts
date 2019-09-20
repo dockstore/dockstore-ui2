@@ -24,10 +24,10 @@ import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { DateService } from './date.service';
 import { SessionQuery } from './session/session.query';
 import { Tooltip } from './tooltip';
+import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 export abstract class Versions extends EntryTab {
-
-  @Input() versions: Array<(Tag | WorkflowVersion)>;
+  @Input() versions: Array<Tag | WorkflowVersion>;
   @Input() verifiedSource: Array<any>;
   sortColumn: string;
   sortReverse: boolean;
@@ -37,18 +37,15 @@ export abstract class Versions extends EntryTab {
   dtOptions;
 
   abstract setNoOrderCols(): Array<number>;
-
-  constructor(protected dockstoreService: DockstoreService,
-    private dateService: DateService, protected sessionQuery: SessionQuery) {
-    // By default, sort by last_modified, latest first
+  constructor(protected dockstoreService: DockstoreService, private dateService: DateService, protected sessionQuery: SessionQuery) {
+    // By default, sort by last_built for tools and last_modified for workflows, latest first
     super();
-    this.sortColumn = 'last_modified';
     this.sortReverse = true;
   }
 
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.publicPage = publicPage));
   }
 
   getDefaultTooltip(publicPage: boolean): string {
@@ -70,7 +67,10 @@ export abstract class Versions extends EntryTab {
   getIconClass(columnName): IconDefinition {
     return this.dockstoreService.getIconClass(columnName, this.sortColumn, this.sortReverse);
   }
-  convertSorting(): string {
+  convertSorting(mode): string | undefined {
+    if (mode && mode === DockstoreTool.ModeEnum.HOSTED) {
+      this.sortColumn = 'id';
+    }
     return this.sortReverse ? '-' + this.sortColumn : this.sortColumn;
   }
   getDateTimeString(timestamp) {

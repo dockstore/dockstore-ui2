@@ -1,56 +1,46 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
-import {
-  RefreshWorkflowOrganizationComponent,
-} from './../../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
-import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { SidebarAccordionComponent } from './sidebar-accordion.component';
-import {
-  MatButtonModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatIconModule,
-  MatExpansionModule,
-  MatListModule,
-  MatTooltipModule,
-  MatDialogRef,
-  MatDialogModule
-} from '@angular/material';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { RefreshWorkflowOrganizationComponent } from 'app/workflow/refresh-workflow-organization/refresh-workflow-organization.component';
+import { GithubNameToIdPipe } from '../../github-name-to-id.pipe';
 import { ExpandPanelPipe } from '../../shared/entry/expand-panel.pipe';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
 import { WorkflowService } from '../../shared/state/workflow.service';
-
+import { RefreshStubService, RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
+import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
+import { SidebarAccordionComponent } from './sidebar-accordion.component';
+import { RefreshService } from '../../shared/refresh.service';
+import { ContainerService } from '../../shared/container.service';
+import { PublishedToolsDataSource } from '../../containers/list/published-tools.datasource';
+import { ProviderService } from '../../shared/provider.service';
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
   let fixture: ComponentFixture<SidebarAccordionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, ExpandPanelPipe, SelectTabPipe ],
-      imports: [
-        MatDialogModule,
-        MatTabsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatExpansionModule,
-        MatListModule,
-        MatTooltipModule,
-        RouterTestingModule],
+      declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, ExpandPanelPipe, SelectTabPipe, GithubNameToIdPipe],
+      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
       providers: [
-        { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+        {
+          provide: RegisterWorkflowModalService,
+          useClass: RegisterWorkflowModalStubService
+        },
         { provide: WorkflowService, useClass: WorkflowStubService },
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => { }
+            close: (dialogResult: any) => {}
           }
+        },
+        {
+          provide: RefreshService,
+          useClass: RefreshStubService
         }
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

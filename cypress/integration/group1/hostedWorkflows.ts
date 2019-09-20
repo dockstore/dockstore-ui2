@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort, goToTab } from '../../support/commands';
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
+import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore hosted workflows', () => {
   resetDB();
@@ -56,12 +56,10 @@ describe('Dockstore hosted workflows', () => {
         .get('#downloadZipButton')
         .should('not.be.visible');
 
-      // Check content of the version tab to see a single row that says you have no versions
+      // Should have alert saying there are no versions
       goToTab('Versions');
       cy
-        .get('table > tbody')
-        .find('tr')
-        .should('have.length', 1);
+        .contains('To see versions, please add a new version.');
 
       // Add a new version with one descriptor
       goToTab('Files');
@@ -82,7 +80,7 @@ describe('Dockstore hosted workflows', () => {
       cy
         .get('#saveNewVersionButton')
         .click();
-
+      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:1');
       // Should have a version 1
       goToTab('Versions');
       cy.get('table')
@@ -138,7 +136,7 @@ describe('Dockstore hosted workflows', () => {
       cy
         .get('#saveNewVersionButton')
         .click();
-
+      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
       // Should have a version 2
       goToTab('Versions');
       cy.get('table')
@@ -161,6 +159,7 @@ describe('Dockstore hosted workflows', () => {
       cy
         .get('#saveNewVersionButton')
         .click();
+      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:3');
 
       // Should now only be two ace editors
       cy
@@ -178,12 +177,21 @@ describe('Dockstore hosted workflows', () => {
         .find('.deleteVersionButton')
         .first()
         .click();
-
-      // Version should no longer exist
+      // Automatically selects the newest version that wasn't the one that was just deleted
+      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
+      // Version 3 should no longer exist since it was just deleted
       goToTab('Versions');
       cy.get('table')
         .find('a')
-        .should('not.contain', '1');
+        .should('not.contain', '3');
+
+      // Reload the hosted workflow to test https://github.com/dockstore/dockstore/issues/2854
+      cy.reload();
+
+      goToTab('Files');
+      cy.contains('/Dockstore.wdl')
+        .should('be.visible');
+
     });
   });
 

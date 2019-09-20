@@ -32,8 +32,14 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
-  constructor(userQuery: UserQuery, private alertService: AlertService, private usersService: UsersService,
-    private containerService: ContainerService, private refreshService: RefreshService, protected alertQuery: AlertQuery) {
+  constructor(
+    userQuery: UserQuery,
+    private alertService: AlertService,
+    private usersService: UsersService,
+    private containerService: ContainerService,
+    private refreshService: RefreshService,
+    protected alertQuery: AlertQuery
+  ) {
     super(userQuery, alertQuery);
     this.buttonText = 'Refresh Namespace';
   }
@@ -47,7 +53,8 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
       (success: DockstoreTool[]) => {
         this.containerService.setTools(success);
         this.alertService.detailedSuccess();
-      }, error => this.alertService.detailedError(error));
+      },
+      error => this.alertService.detailedError(error)
+    );
   }
-
 }

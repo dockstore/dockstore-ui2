@@ -32,55 +32,70 @@ import { ToolQuery } from '../../tool/tool.query';
 
 @Injectable()
 export class RegisterCheckerWorkflowService {
-    public mode$ = new BehaviorSubject<'add' | 'edit'>('edit');
-    public entryId$: Observable<number>;
-    public entryId: number;
-    constructor(private workflowsService: WorkflowsService,
-        private containerService: ContainerService, private workflowService: WorkflowService, private refreshService: RefreshService,
-        private toolQuery: ToolQuery, private workflowQuery: WorkflowQuery, private alertService: AlertService,
-        private matDialog: MatDialog) {
-        this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter(x => x != null));
-        this.entryId$.subscribe((id: number) => {
-            this.entryId = id;
-        });
-    }
+  public mode$ = new BehaviorSubject<'add' | 'edit'>('edit');
+  public entryId$: Observable<number>;
+  public entryId: number;
+  constructor(
+    private workflowsService: WorkflowsService,
+    private containerService: ContainerService,
+    private workflowService: WorkflowService,
+    private refreshService: RefreshService,
+    private toolQuery: ToolQuery,
+    private workflowQuery: WorkflowQuery,
+    private alertService: AlertService,
+    private matDialog: MatDialog
+  ) {
+    this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter(x => x != null));
+    this.entryId$.subscribe((id: number) => {
+      this.entryId = id;
+    });
+  }
 
-    registerCheckerWorkflow(workflowPath: string, testParameterFilePath: string, lowerCaseDescriptorTypeNoNFL: 'cwl' | 'wdl'): void {
-        if (this.entryId) {
-            const message = 'Registering checker workflow';
-            this.alertService.start(message);
-            // Figure out why testParameterFilePath and descriptorType is swapped
-            this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, lowerCaseDescriptorTypeNoNFL, testParameterFilePath).
-                subscribe((entry: Entry) => {
-                    // Only update our current list of workflows when the current entry is a workflow
-                    // Switching to my-workflows will automatically update the entire list with a fresh HTTP request
-                    if (entry.hasOwnProperty('is_checker')) {
-                        this.workflowService.upsertWorkflowToWorkflow(<Workflow>entry);
-                        this.workflowService.setWorkflow(<Workflow>entry);
-                    } else {
-                        this.containerService.upsertToolToTools(<DockstoreTool>entry);
-                        this.containerService.setTool(<DockstoreTool>entry);
-                    }
-                    const refreshCheckerMessage = 'Refreshing checker workflow';
-                    this.workflowsService.refresh(entry.checker_id).pipe(first()).subscribe((workflow: Workflow) => {
-                        this.workflowService.upsertWorkflowToWorkflow(workflow);
-                        this.alertService.detailedSuccess();
-                        this.matDialog.closeAll();
-                    }, (error: HttpErrorResponse) => {
-                      this.alertService.detailedError(error);
-                    });
-            }, (error: HttpErrorResponse) => {
-              this.alertService.detailedError(error);
-            });
-        }
+  registerCheckerWorkflow(workflowPath: string, testParameterFilePath: string, lowerCaseDescriptorTypeNoNFL: 'cwl' | 'wdl'): void {
+    if (this.entryId) {
+      const message = 'Registering checker workflow';
+      this.alertService.start(message);
+      // Figure out why testParameterFilePath and descriptorType is swapped
+      this.workflowsService
+        .registerCheckerWorkflow(workflowPath, this.entryId, lowerCaseDescriptorTypeNoNFL, testParameterFilePath)
+        .subscribe(
+          (entry: Entry) => {
+            // Only update our current list of workflows when the current entry is a workflow
+            // Switching to my-workflows will automatically update the entire list with a fresh HTTP request
+            if (entry.hasOwnProperty('is_checker')) {
+              this.workflowService.upsertWorkflowToWorkflow(<Workflow>entry);
+              this.workflowService.setWorkflow(<Workflow>entry);
+            } else {
+              this.containerService.upsertToolToTools(<DockstoreTool>entry);
+              this.containerService.setTool(<DockstoreTool>entry);
+            }
+            const refreshCheckerMessage = 'Refreshing checker workflow';
+            this.workflowsService
+              .refresh(entry.checker_id)
+              .pipe(first())
+              .subscribe(
+                (workflow: Workflow) => {
+                  this.workflowService.upsertWorkflowToWorkflow(workflow);
+                  this.alertService.detailedSuccess();
+                  this.matDialog.closeAll();
+                },
+                (error: HttpErrorResponse) => {
+                  this.alertService.detailedError(error);
+                }
+              );
+          },
+          (error: HttpErrorResponse) => {
+            this.alertService.detailedError(error);
+          }
+        );
     }
+  }
 
-    add(): void {
-        this.mode$.next('add');
-    }
+  add(): void {
+    this.mode$.next('add');
+  }
 
-    delete(): void {
-        // Placeholder for endpoint
-    }
+  delete(): void {
+    // Placeholder for endpoint
+  }
 }
-

@@ -29,7 +29,8 @@ import { WorkflowService } from './workflow.service';
 describe('Service: ExtendedWorkflow', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ExtendedWorkflowService,
+      providers: [
+        ExtendedWorkflowService,
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: DateService, useClass: DateStubService },
         { provide: DockstoreService, useClass: DockstoreStubService },

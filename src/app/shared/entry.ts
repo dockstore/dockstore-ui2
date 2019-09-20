@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Location } from '@angular/common';
-import { AfterViewInit, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
@@ -25,7 +25,9 @@ import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
+import { BioschemaService } from './bioschema.service';
 import { DateService } from './date.service';
+import { EntryType } from './enum/entry-type';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { ProviderService } from './provider.service';
 import { SessionQuery } from './session/session.query';
@@ -33,9 +35,8 @@ import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
 
-
 @Injectable()
-export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
+export abstract class Entry implements OnInit, OnDestroy {
   @ViewChild('entryTabs') entryTabs: TabsetComponent;
   protected shareURL: string;
   public starGazersClicked = false;
@@ -52,22 +53,28 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   public validTabs;
   public currentTab = 'info';
   public urlVersion;
+  EntryType = EntryType;
   location: Location;
-  public selectedVersion: (WorkflowVersion | Tag | null) = null;
+  public selectedVersion: WorkflowVersion | Tag | null = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   protected selected = new FormControl(0);
-  constructor(private trackLoginService: TrackLoginService,
+  constructor(
+    private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
     public router: Router,
     public dateService: DateService,
+    public bioschemaService: BioschemaService,
     public urlResolverService: UrlResolverService,
     public activatedRoute: ActivatedRoute,
     public locationService: Location,
-    protected sessionService: SessionService, protected sessionQuery: SessionQuery, protected gA4GHFilesService: GA4GHFilesService) {
+    protected sessionService: SessionService,
+    protected sessionQuery: SessionQuery,
+    protected gA4GHFilesService: GA4GHFilesService
+  ) {
     this.location = locationService;
     this.gA4GHFilesService.clearFiles();
   }
@@ -75,15 +82,18 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.clearState();
     this.subscriptions();
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd),
-      takeUntil(this.ngUnsubscribe)).subscribe((event: RouterEvent) => {
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((event: RouterEvent) => {
         this.parseURL(event.url);
       });
     this.parseURL(this.router.url);
     this.sessionService.setPublicPage(this.isPublic());
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => this.publicPage = publicPage);
-    this.trackLoginService.isLoggedIn$.pipe(
-      takeUntil(this.ngUnsubscribe)).subscribe(state => this.isLoggedIn = state);
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.publicPage = publicPage));
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => (this.isLoggedIn = state));
   }
 
   private parseURL(url: String): void {
@@ -114,9 +124,6 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   abstract subscriptions(): void;
   abstract setProperties(): void;
   abstract getValidVersions(): void;
-  abstract publishDisable(): boolean;
-  abstract refresh(): void;
-  abstract publish(): void;
   abstract getDefaultVersionName(): string;
   abstract resetCopyBtn(): void;
   abstract isPublic(): boolean;
@@ -165,16 +172,7 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  // Embed Discourse comments into page
-  ngAfterViewInit() {
-    if (this.publicPage) {
-      (function () {
-        const d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-        d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-      })();
-    }
-
+  updateTabSelection() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
       const tabIndex = this.validTabs.indexOf(params['tab']);
       if (tabIndex > -1) {
@@ -196,26 +194,50 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @returns {((WorkflowVersion | Tag))}  The version to display to the user
    * @memberof Entry
    */
-  public selectVersion(versions: (Array<WorkflowVersion | Tag>), urlVersion: string, defaultVersion: string): (WorkflowVersion | Tag) {
-    if (!versions || versions.length === 0) {
-      return null;
-    }
-    let foundVersion: (WorkflowVersion | Tag);
+  public selectVersion(versions: Array<WorkflowVersion | Tag>, urlVersion: string, defaultVersion: string): WorkflowVersion | Tag | null {
+    // if (!versions || versions.length === 0) {
+    //   return null;
+    // }
+    let foundVersion: WorkflowVersion | Tag;
     if (urlVersion) {
-      foundVersion = versions.find((version: (WorkflowVersion | Tag)) => version.name === urlVersion);
+      foundVersion = versions.find((version: WorkflowVersion | Tag) => version.name === urlVersion);
       if (foundVersion) {
         return foundVersion;
       }
     }
     if (defaultVersion) {
-      foundVersion = versions.find((version: (WorkflowVersion | Tag)) => version.name === defaultVersion);
+      foundVersion = versions.find((version: WorkflowVersion | Tag) => version.name === defaultVersion);
       if (foundVersion) {
         return foundVersion;
       }
+    } else {
+      return null;
     }
+  }
 
-    // Select newest last_modified version, if it's the same, choose the top
-    return versions.reduce((a, b) => b.last_modified > a.last_modified ? b : a);
+  selectTag(versions: Array<Tag>, urlVersion: string, defaultVersion: string): Tag {
+    if (!versions || versions.length === 0) {
+      return null;
+    }
+    const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
+    return (
+      selectedTag ||
+      versions.reduce((a, b) => {
+        // Fall back to dbUpdateDate when there's no last_built
+        if (!b.last_built && !a.last_built) {
+          return b.dbUpdateDate > a.dbUpdateDate ? b : a;
+        }
+        return b.last_built > a.last_built ? b : a;
+      })
+    );
+  }
+
+  selectWorkflowVersion(versions: Array<WorkflowVersion>, urlVersion: string, defaultVersion: string) {
+    if (!versions || versions.length === 0) {
+      return null;
+    }
+    const selectedWorkflowVersion = this.selectVersion(versions, urlVersion, defaultVersion);
+    return selectedWorkflowVersion || versions.reduce((a, b) => (b.last_modified > a.last_modified ? b : a));
   }
 
   public getEntryPathFromURL(): string {
@@ -248,18 +270,8 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    */
   updateUrl(entryPath: string, myEntry: string, entry: string): void {
     if (this.publicPage) {
-      let currentPath = '';
-      if (this.router.url.indexOf(myEntry) !== -1) {
-        currentPath += '/' + myEntry + '/';
-      } else {
-        currentPath += '/' + entry + '/';
-      }
-      currentPath += entryPath;
-      if (this.selectedVersion !== null) {
-        currentPath += ':' + this.selectedVersion.name;
-      }
-      currentPath += '?tab=' + this.currentTab;
-      this.location.replaceState(currentPath);
+      const newPath = this.urlResolverService.getPath(entryPath, myEntry, entry, this.router.url, this.selectedVersion, this.currentTab);
+      this.location.replaceState(newPath);
     }
   }
 
@@ -269,11 +281,20 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {Tag|WorkflowVersion} b - version b
    * @returns {number} - indicates order
    */
-  entryVersionSorting(a: Tag | WorkflowVersion, b: Tag | WorkflowVersion): number {
+
+  verifiedSorting(a: Tag | WorkflowVersion, b: Tag | WorkflowVersion): number {
     if (a.verified && !b.verified) {
       return -1;
     } else if (!a.verified && b.verified) {
       return 1;
+    } else {
+      return 0;
+    }
+  }
+  workflowVersionSorting(a: WorkflowVersion, b: WorkflowVersion): number {
+    const verifiedSorting = this.verifiedSorting(a, b);
+    if (verifiedSorting !== 0) {
+      return verifiedSorting;
     } else {
       if (a.last_modified > b.last_modified) {
         return -1;
@@ -285,10 +306,24 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  tagSorting(a: Tag, b: Tag): number {
+    const verifiedSorting = this.verifiedSorting(a, b);
+    if (verifiedSorting !== 0) {
+      return verifiedSorting;
+    } else {
+      if (a.last_built > b.last_built) {
+        return -1;
+      } else if (a.last_built < b.last_built) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  }
+
   selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
     this.setEntryTab(matTabChangeEvent.tab.textLabel.toLowerCase());
   }
-
 
   /**
    * Sorts a list of versions by verified and then last_modified, returning a subset of the versions (1 default + 5 other versions max)
@@ -296,12 +331,11 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
    * @param {Tag|WorkflowVersion} defaultVersion - Default version of the entry
    * @returns {Array<any>} Sorted array of versions
    */
-  getSortedVersions(versions: Array<Tag | WorkflowVersion>, defaultVersion: Tag | WorkflowVersion): Array<Tag | WorkflowVersion> {
-    let sortedVersions: Array<Tag | WorkflowVersion> = [];
-
-    // Sort versions by verified date and then last_modified
-    sortedVersions = versions.slice().sort((a, b) => this.entryVersionSorting(a, b));
-
+  getSortedVersions(
+    versions: Array<Tag | WorkflowVersion>,
+    defaultVersion: Tag | WorkflowVersion,
+    sortedVersions: Array<Tag | WorkflowVersion>
+  ): Array<Tag | WorkflowVersion> {
     // Get the top 6 versions
     const recentVersions: Array<Tag | WorkflowVersion> = sortedVersions.slice(0, 6);
     const index = recentVersions.indexOf(defaultVersion);
@@ -323,6 +357,16 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
     }
 
     return recentVersions;
+  }
+
+  getSortedWorkflowVersions(versions: Array<WorkflowVersion>, defaultVersion: WorkflowVersion): Array<WorkflowVersion> {
+    const sortedWorkflowVersions: Array<WorkflowVersion> = versions.slice().sort((a, b) => this.workflowVersionSorting(a, b));
+    return this.getSortedVersions(versions, defaultVersion, sortedWorkflowVersions);
+  }
+
+  getSortedTags(versions: Array<Tag>, defaultVersion: WorkflowVersion): Array<Tag> {
+    const sortedTags: Array<Tag> = versions.slice().sort((a, b) => this.tagSorting(a, b));
+    return this.getSortedVersions(versions, defaultVersion, sortedTags);
   }
 
   /**
@@ -353,31 +397,35 @@ export abstract class Entry implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /**
-   * Deals with redirecting to canonical URL and running discourse call
+   * Deals with redirecting to canonical URL
    * @return {void}
    */
-  redirectAndCallDiscourse(myPage: string): void {
+  redirectToCanonicalURL(myPage: string): void {
     if (this.getIndexInURL(myPage) === -1) {
-      let trimmedURL = window.location.href;
-
       // Decode the URL
       this.decodeURL(this._toolType);
 
       // Get index of /containers or /workflows
       const pageIndex = this.getPageIndex();
-
-      // Get the URL for discourse
-      const indexOfLastColon = this.getIndexInURLFrom(':', pageIndex);
-      if (indexOfLastColon > 0) {
-        trimmedURL = window.location.href.substring(0, indexOfLastColon);
-      }
-
-      // Initialize discourse urls
-      (<any>window).DiscourseEmbed = {
-        discourseUrl: Dockstore.DISCOURSE_URL,
-        discourseEmbedUrl: decodeURIComponent(trimmedURL)
-      };
     }
+  }
+
+  /**
+   * Creates discourse embed based on topic ID
+   * @param topicId The ID of the topic on discourse
+   */
+  discourseHelper(topicId: number): void {
+    (<any>window).DiscourseEmbed = {
+      discourseUrl: Dockstore.DISCOURSE_URL,
+      topicId: topicId
+    };
+    (function() {
+      const d = document.createElement('script');
+      d.type = 'text/javascript';
+      d.async = true;
+      d.src = (<any>window).DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+    })();
   }
 
   /**

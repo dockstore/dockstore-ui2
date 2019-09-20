@@ -40,12 +40,18 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
     this.checkIfValid(true, value);
   }
 
-  protected entryType: ('tool' | 'workflow') = 'workflow';
+  protected entryType: 'tool' | 'workflow' = 'workflow';
 
-  constructor(private descriptorService: DescriptorService, public gA4GHService: GA4GHService,
-    public fileService: FileService, protected gA4GHFilesService: GA4GHFilesService,
-    private workflowQuery: WorkflowQuery, private gA4GHFilesQuery: GA4GHFilesQuery, protected filesService: FilesService,
-    protected filesQuery: FilesQuery) {
+  constructor(
+    private descriptorService: DescriptorService,
+    public gA4GHService: GA4GHService,
+    public fileService: FileService,
+    protected gA4GHFilesService: GA4GHFilesService,
+    private workflowQuery: WorkflowQuery,
+    private gA4GHFilesQuery: GA4GHFilesQuery,
+    protected filesService: FilesService,
+    protected filesQuery: FilesQuery
+  ) {
     super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
     this.published$ = this.workflowQuery.workflowIsPublished$;
   }
@@ -66,7 +72,9 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
    * @memberof DescriptorsWorkflowComponent
    */
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
-    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
-    ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR]);
+    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [
+      ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
+      ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR
+    ]);
   }
 }

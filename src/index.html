@@ -1,119 +1,62 @@
 <!DOCTYPE html>
 <html>
-<!-- note that this file is in two different places:
-https://github.com/dockstore/compose_setup/blob/develop/templates/index.html.template
-and
-https://github.com/dockstore/dockstore-ui2/blob/develop/src/index.html
+  <head>
+    <meta charset="utf-8" />
+    <title>Dockstore</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#21335B" />
+  </head>
 
-Please keep the two in sync when making changes, pending a better solution via git submodules
--->
-
-<head>
-  <meta charset="utf-8">
-  <title>Dockstore</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#21335B"/>
-  <script type="application/ld+json">
-  {
-  "@context": "http://schema.org",
-  "@type": "Organization",
-  "url": "https://dockstore.org",
-  "logo": "https://raw.githubusercontent.com/dockstore/dockstore-ui2/develop/src/assets/images/dockstore/dockstore.png",
-  "sameAs": [
-    "https://twitter.com/DockstoreOrg"
-    ]
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-  "@context": "http://schema.org",
-  "@type": "WebSite",
-  "url": "https://dockstore.org",
-  "sameAs": [
-    "https://twitter.com/DockstoreOrg"
-    ],
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://dockstore.org/search?search={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-  }
-  </script>
-
-  <script>
-  (function(w, d, s, l, i) {
-    w[l] = w[l] || [];
-    w[l].push({
-      'gtm.start': new Date().getTime(),
-      event: 'gtm.js'
-    });
-    var f = d.getElementsByTagName(s)[0],
-      j = d.createElement(s),
-      dl = l != 'dataLayer' ? '&l=' + l : '';
-    j.async = true;
-    j.src =
-      'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-    f.parentNode.insertBefore(j, f);
-  })(window, document, 'script', 'dataLayer', '{{ TAG_MANAGER_ID }}');
-  </script>
-</head>
-
-<body>
-  <app-root>
-    <style>
-      app-root {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        color: white;
-        font-family: -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            Roboto,
-            Oxygen-Sans,
-            Ubuntu,
-            Cantarell,
-            Helvetica,
-            sans-serif;
-        font-size: 2.5em;
-        text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-      }
-      body {
-        background: #21335B;
-        margin: 0;
-        padding: 0;
-      }
-      .loader {
+  <body>
+    <app-root>
+      <style>
+        app-root {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          color: white;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica, sans-serif;
+          font-size: 2.5em;
+          text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        body {
+          background: #21335b;
+          margin: 0;
+          padding: 0;
+        }
+        .loader {
           border: 8px solid #f3f3f3;
           border-top: 8px solid #487980;
           border-radius: 50%;
           width: 50px;
           height: 50px;
           animation: spin 2s linear infinite;
-          margin-top:10px;
-      }
+          margin-top: 10px;
+        }
 
-      @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-      }
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
 
-      .tagline {
-        font-size: 18px;
-      }
-    </style>
+        .tagline {
+          font-size: 18px;
+        }
+      </style>
 
-    Dockstore
-    <p class="tagline">Create, Share, Use</p>
-    <div class="loader"></div>
-
-  </app-root>
-</body>
-
+      Dockstore
+      <p class="tagline">Create, Share, Use</p>
+      <div class="loader"></div>
+    </app-root>
+  </body>
 </html>

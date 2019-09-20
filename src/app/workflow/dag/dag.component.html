@@ -13,84 +13,99 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div class="p-3" fxLayout="column" fxLayoutGap="10px">
-  <div fxFlex *ngIf="(isNFL$ | async) && dagType === 'classic'">
-    <!-- alert class not present because it adds too much margin above a DAG that actually exists -->
-    <mat-card class="alert-warning" role="alert">
-      <mat-icon>warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
-    </mat-card>
-  </div>
-  <div fxFlex *ngIf="dagType === 'classic' && !(isNFL$ | async) && !(dagResult$ | async)">
-    <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
-      <mat-icon>warning</mat-icon>&nbsp;
-      <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
-        A Descriptor associated with this workflow could not be found.
-      </span>
-      <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
-        Please ensure that the Descriptor is a valid CWL 1.0 workflow.
-      </span>
-    </mat-card>
-    <mat-card class="alert alert-warning" role="alert"
-      *ngIf="(missingTool$ | async) && selectedVersion?.valid">
-      <mat-icon>warning</mat-icon>&nbsp; DAG cannot be created because some required
-      tools
-      are missing from Github repo.
-    </mat-card>
-  </div>
-  <div fxFlex #dagHolder id="dag-holder">
-    <div [ngClass]="{'p-3': expanded}" *ngIf="selectedVersion?.valid && !(missingTool$ | async)">
-      <div fxLayout="row" fxLayoutAlign="space-between start">
-        <div fxFlex>
-          <div
-            *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'"
-            style="line-height: 20px;">
-            <label class="radio-inline">
-              <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer">Common Workflow Language Viewer
-            </label>
+<app-loading class="w-100" [loading]="dagLoading$ | async">
+  <div class="p-3" fxLayout="column" fxLayoutGap="10px">
+    <div fxFlex *ngIf="(isNFL$ | async) && dagType === 'classic'">
+      <!-- alert class not present because it adds too much margin above a DAG that actually exists -->
+      <mat-card class="alert-warning" role="alert">
+        <mat-icon>warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
+      </mat-card>
+    </div>
+    <div fxFlex *ngIf="dagType === 'classic' && !(isNFL$ | async) && !(dagResult$ | async)">
+      <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
+        <mat-icon>warning</mat-icon>&nbsp;
+        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
+          A Descriptor associated with this workflow could not be found.
+        </span>
+        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
+          Please ensure that the Descriptor is a valid CWL 1.0 workflow.
+        </span>
+      </mat-card>
+      <mat-card class="alert alert-warning" role="alert" *ngIf="(missingTool$ | async) && selectedVersion?.valid">
+        <mat-icon>warning</mat-icon>&nbsp; DAG cannot be created because some required tools are missing from Github repo.
+      </mat-card>
+    </div>
+    <div fxFlex #dagHolder id="dag-holder">
+      <div [ngClass]="{ 'p-3': expanded }" *ngIf="selectedVersion?.valid && !(missingTool$ | async)">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <div fxFlex>
+            <div
+              *ngIf="
+                enableCwlViewer &&
+                (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL &&
+                (workflow$ | async)?.source_control_provider === 'GITHUB'
+              "
+              style="line-height: 20px;"
+            >
+              <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
+              <label class="radio-inline">
+                <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer" />Common Workflow Language Viewer
+              </label>
+            </div>
+            <div *ngIf="isWDL$ | async" style="line-height: 20px;">
+              <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
+              <label class="radio-inline">
+                <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer" />EPAM WDL Visualizer
+              </label>
+            </div>
+            <div>
+              <a
+                *ngIf="(dagType === 'classic' && (dagResult$ | async)) || (dagType === 'wdlviewer' && (wdlViewerResult$ | async))"
+                href
+                #exportLink
+                id="exportLink"
+                (click)="download()"
+              >
+                <mat-icon>save</mat-icon>Save as {{ dagType === 'classic' ? 'PNG' : 'SVG' }}
+              </a>
+            </div>
           </div>
-          <div *ngIf="(isWDL$ | async)" style="line-height: 20px;">
-            <label class="radio-inline">
-              <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic">Classic
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer">EPAM WDL Visualizer
-            </label>
-          </div>
-          <div>
-            <a *ngIf="(dagType === 'classic' && (dagResult$ | async)) || (dagType === 'wdlviewer' && (wdlViewerResult$ | async))"
-              href #exportLink id="exportLink" (click)="download()">
-              <mat-icon>save</mat-icon>Save as {{dagType === 'classic' ? 'PNG' : 'SVG'}}
-            </a>
-          </div>
-        </div>
-        <!-- This following div is shared by both viewers -->
-        <div fxFlex fxFlexAlign="end">
-          <div id="DAGButtonGroup" fxLayout="row" fxLayoutAlign="end start">
-            <button mat-stroked-button id="dag_fullscreen" (click)="toggleExpand()" matTooltip="Toggle fullscreen">
-              <mat-icon id="resize-full-button" *ngIf="!expanded">fullscreen</mat-icon>
-              <mat-icon id="resize-small-button" *ngIf="expanded">fullscreen_exit</mat-icon>
-            </button>
-            <button mat-stroked-button id="dag_reload" (click)="reset()" matTooltip="Reset">
-              <mat-icon>control_camera</mat-icon>
-            </button>
+          <!-- This following div is shared by both viewers -->
+          <div fxFlex fxFlexAlign="end">
+            <div id="DAGButtonGroup" fxLayout="row" fxLayoutAlign="end start">
+              <button mat-stroked-button id="dag_fullscreen" (click)="toggleExpand()" matTooltip="Toggle fullscreen">
+                <mat-icon id="resize-full-button" *ngIf="!expanded">fullscreen</mat-icon>
+                <mat-icon id="resize-small-button" *ngIf="expanded">fullscreen_exit</mat-icon>
+              </button>
+              <button mat-stroked-button id="dag_reload" (click)="reset()" matTooltip="Reset">
+                <mat-icon>control_camera</mat-icon>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div #dagDisplay data-cy="dag-holder" [className]="expanded ? 'big': 'small'">
-      <app-cwl-viewer
-        *ngIf="enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider === 'GITHUB'"
-        [hidden]="dagType !== 'cwlviewer'" [selectedVersion]="selectedVersion" [refresh]="refreshCounter"
-        [expanded]="expanded">
-      </app-cwl-viewer>
-      <app-wdl-viewer *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'" [workflow]="(workflow$ | async)"
-        [selectedVersion]="selectedVersion" [expanded]="expanded">
-      </app-wdl-viewer>
-      <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" class="h-100 w-100"
-        [hidden]="dagType !== 'classic'"></div>
+      <div #dagDisplay data-cy="dag-holder" [className]="expanded ? 'big' : 'small'">
+        <app-cwl-viewer
+          *ngIf="
+            enableCwlViewer &&
+            (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL &&
+            (workflow$ | async)?.source_control_provider === 'GITHUB'
+          "
+          [hidden]="dagType !== 'cwlviewer'"
+          [selectedVersion]="selectedVersion"
+          [refresh]="refreshCounter"
+          [expanded]="expanded"
+        >
+        </app-cwl-viewer>
+        <app-wdl-viewer
+          *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"
+          [workflow]="workflow$ | async"
+          [selectedVersion]="selectedVersion"
+          [expanded]="expanded"
+        >
+        </app-wdl-viewer>
+        <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" class="h-100 w-100" [hidden]="dagType !== 'classic'"></div>
+      </div>
     </div>
   </div>
-</div>
+</app-loading>

@@ -40,8 +40,9 @@ export class RegisterOrganizationComponent implements OnInit, OnDestroy {
   public TagEditorMode = TagEditorMode;
   constructor(
     private registerOrganizationService: RegisterOrganizationService,
-    private formsManager: AkitaNgFormsManager<FormsState>, @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+    private formsManager: AkitaNgFormsManager<FormsState>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
 
   ngOnInit() {
     this.registerOrganizationForm = this.registerOrganizationService.createForm(this.formsManager, this.data);

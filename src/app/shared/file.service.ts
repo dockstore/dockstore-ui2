@@ -15,15 +15,17 @@
  */
 import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from './constants';
-import { Dockstore } from './dockstore.model';
-import { SourceFile, Tag, WorkflowVersion, ToolDescriptor } from './swagger';
 import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
+import { Dockstore } from './dockstore.model';
+import { SourceFile, Tag, ToolDescriptor, WorkflowVersion } from './swagger';
 
-@Injectable()
+const wdlImportHttpRegEx: RegExp = new RegExp(/^\s*import\s+"?https?/, 'm');
+const cwlImportHttpRegEx: RegExp = new RegExp(/^[^#]+((run)|(\$((import)|(include)|(mixin))))\s*:\s+\"?https?/, 'm');
+
+@Injectable({ providedIn: 'root' })
 export class FileService {
-  constructor(private sanitizer: DomSanitizer, private descriptorTypeCompatService: DescriptorTypeCompatService) { }
+  constructor(private sanitizer: DomSanitizer, private descriptorTypeCompatService: DescriptorTypeCompatService) {}
 
   /**
    * Get the download path of a descriptor
@@ -36,54 +38,45 @@ export class FileService {
    * @returns {string}                 the url to download the test parameter file
    * @memberof FileService
    */
-  getDescriptorPath(entryPath: string, entryVersion: (Tag | WorkflowVersion), sourceFile: SourceFile,
-    descriptorType: ToolDescriptor.TypeEnum, entryType: string): string {
+  getDescriptorPath(
+    entryPath: string,
+    entryVersion: Tag | WorkflowVersion,
+    sourceFile: SourceFile,
+    descriptorType: ToolDescriptor.TypeEnum,
+    entryType: string
+  ): string {
     if (!entryPath || !entryVersion || !sourceFile || !descriptorType || !entryType) {
       return null;
     } else {
-      let type = '';
-      switch (descriptorType) {
-        case ToolDescriptor.TypeEnum.WDL:
-          type = 'PLAIN-WDL';
-          break;
-        case ToolDescriptor.TypeEnum.CWL:
-          type = 'PLAIN-CWL';
-          break;
-        case ToolDescriptor.TypeEnum.NFL:
-          type = 'PLAIN-NFL';
-          break;
-        default:
-          console.error('Unhandled descriptor type: ' + descriptorType);
-          return null;
-      }
-      return this.getDownloadFilePath(entryPath, entryVersion.name, sourceFile.path, type, entryType);
+      const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(descriptorType);
+      const id = entryType === 'workflow' ? ga4ghWorkflowIdPrefix + entryPath : entryPath;
+      const versionId = entryVersion.name;
+      const relativePath = sourceFile.path;
+      return this.getDownloadFilePath(id, versionId, type, relativePath);
     }
   }
 
   /**
-   * Get the download path of a test parameter file
-   * TODO: Convert to pipe
-   * @private
-   * @param {string} entryPath         the entry's path (e.g. "quay.io/pancancer/pcawg-dkfz-workflow")
-   * @param {string} version           the version of the entry (e.g. "2.0.1_cwl1.0")
-   * @param {string} filePath          path of the file (e.g. "/Dockstore.json")
-   * @param {string} type              the string used for the GA4GH type (e.g. "PLAIN_CWL", "PLAIN_TEST_WDL_FILE")
-   * @param {string} entryType         the entry type, either "tool" or "workflow"
-   * @returns {string}
+   * Given the TRS endpoint parameters, get the download file HREF
+   *
+   * @param {string} id  The TRS id
+   * @param {string} versionId  The TRS version_id
+   * @param {string} type  The TRS type
+   * @param {string} relativePath  The TRS relative_path
+   * @returns {(string | null)}   The url to download the file, null if something went wrong
    * @memberof FileService
    */
-  private getDownloadFilePath(entryPath: string, version: string, filePath: string, type: string, entryType: string): string {
-    const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
-    let entry = '';
-    if (entryType === 'workflow') {
-      entry = encodeURIComponent(ga4ghWorkflowIdPrefix + entryPath);
-    } else {
-      entry = encodeURIComponent(entryPath);
+  public getDownloadFilePath(id: string, versionId: string, type: string, relativePath: string): string | null {
+    if (!id || !versionId || !type || !relativePath) {
+      console.error('One of the TRS endpoint parameters is not truthy');
+      return null;
     }
-    // Do not encode the filePath because webservice can handle an unencoded file path.  Also the default file name is prettier this way
-    const customPath = entry + '/versions/' + encodeURIComponent(version) + '/'
-      + type + '/descriptor/' + filePath;
-    return basepath + customPath;
+    const basepath = Dockstore.API_URI + ga4ghPath + '/';
+    // Encode the relativePath even though the webservice can handle it because the browser cannot handle '..'
+    const urlStringSegments = ['tools', id, 'versions', versionId, type, 'descriptor', relativePath].map(urlStringSegment =>
+      encodeURIComponent(urlStringSegment)
+    );
+    return basepath + urlStringSegments.join('/');
   }
 
   // Get the path of the file
@@ -119,11 +112,22 @@ export class FileService {
   getFileName(path: string): string {
     if (path) {
       let filename = 'dockstore.txt';
-      const splitFileName = (path).split('/');
+      const splitFileName = path.split('/');
       filename = splitFileName[splitFileName.length - 1];
       return filename;
     } else {
       return null;
     }
+  }
+
+  hasHttpImport(sourceFile: SourceFile): boolean {
+    if (sourceFile) {
+      if (sourceFile.type === SourceFile.TypeEnum.DOCKSTOREWDL) {
+        return wdlImportHttpRegEx.test(sourceFile.content);
+      } else if (sourceFile.type === SourceFile.TypeEnum.DOCKSTORECWL) {
+        return cwlImportHttpRegEx.test(sourceFile.content);
+      }
+    }
+    return false;
   }
 }

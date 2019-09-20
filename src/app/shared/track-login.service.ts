@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Subject ,  BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { AuthService } from 'ng2-ui-auth';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class TrackLoginService {
 
   dockstoreToken: string;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
   switchState(state: boolean) {
     this.isLoggedIn.next(state);
 

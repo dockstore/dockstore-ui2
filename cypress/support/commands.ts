@@ -14,42 +14,51 @@
  *    limitations under the License.
  */
 
-export function goToTab(tabName: string): any {
-  return cy
-    .get('.mat-tab-labels')
-    .should('be.visible')
-    .contains('div', tabName)
-    .should('be.visible').click();
+export function goToTab(tabName: string): void {
+  cy
+    .contains('.mat-tab-label', tabName).should('be.visible').click();
 }
 
-export function getTab(tabName: string): any {
-  return cy
+export function assertVisibleTab(tabName: string): void {
+  cy
     .get('.mat-tab-labels')
     .should('be.visible')
     .contains('div', tabName)
     .should('be.visible');
 }
 
+export function isActiveTab(tabName: string): void {
+  cy.contains('.mat-tab-label', tabName).should('have.class', 'mat-tab-label-active');
+}
+
+export function assertNoTab(tabName: string): any {
+  return cy
+    .get('.mat-tab-labels')
+    .should('be.visible')
+    .contains('div', tabName)
+    .should('not.be.visible');
+}
+
 export function resetDB() {
   before(() => {
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -f scripts/resetDb.sql -U dockstore -d webservice_test', { timeout: 600000 });
+    cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
     cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
-    cy.exec('java -jar dockstore-webservice-*.jar db migrate -i 1.5.0,1.6.0 travisci/web.yml');
+    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,alter_test_user_1.7.0 travisci/web.yml');
   });
 }
+
+// Sets it to the user where id = 1. Is an admin and curator.
 export function setTokenUserViewPort() {
   beforeEach(() => {
-    // Login by adding user obj and token to local storage
-    localStorage.setItem('dockstore.ui.userObj', '{\"id\": 1, \"username\": \"user_A\", \"isAdmin\": \"false\", \"name\": \"user_A\"}');
+    // Login by adding token to local storage
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken');
   });
 }
 
+// Sets it to the user where id = 4. Is a curator.
 export function setTokenUserViewPortCurator() {
   beforeEach(() => {
     // Login by adding user obj and token to local storage
-    localStorage.setItem('dockstore.ui.userObj',
-      '{\"id\": 4, \"username\": \"user_curator\", \"isAdmin\": \"false\", \"name\": \"user_curator\", \"curator\": \"true\"}');
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken2');
   });
 }
@@ -67,7 +76,8 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
     .parent()
     .parent()
     .contains('div .no-wrap', repo)
-    .should('be.visible').click();
+    .should('be.visible')
+    .click();
 }
 
 export function approvePotatoMembership() {

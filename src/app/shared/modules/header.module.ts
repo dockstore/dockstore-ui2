@@ -20,13 +20,9 @@ import { AlertModule } from 'ngx-bootstrap';
 import { RefreshAlertModule } from '../alert/alert.module';
 
 @NgModule({
-  declarations: [
-    HeaderComponent
-  ],
+  declarations: [HeaderComponent],
   imports: [RefreshAlertModule],
   providers: [],
-  exports: [
-    HeaderComponent
-  ]
+  exports: [HeaderComponent]
 })
-export class HeaderModule { }
+export class HeaderModule {}

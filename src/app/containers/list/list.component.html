@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <div>
-  <div *ngIf="(dataSource.loading$ | async); else placeholder">
+  <div *ngIf="dataSource.loading$ | async; else placeholder">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   <ng-template #placeholder>
@@ -22,27 +22,34 @@
   </ng-template>
   <div [hidden]="previewMode">
     <mat-form-field>
-      <input matInput placeholder="Search tools" #input>
+      <input matInput placeholder="Search tools" #input />
     </mat-form-field>
   </div>
   <mat-table class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">
-        <a *ngIf="getVerified(tool)" href= {{verifiedLink}}>
-          <mat-icon matTooltip="Verified">check</mat-icon>
-        </a>
+      <mat-cell *matCellDef="let tool">
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
-        <a [routerLink]="('/containers/' + tool.tool_path )">{{ tool?.namespace + '/' + tool?.name +
-                (tool?.toolname ? '/' + tool?.toolname : '') }}</a>
+        <a [routerLink]="'/containers/' + tool.tool_path">{{
+          tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
+        }}</a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="verified">
+      <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell *matCellDef="let tool">
+        <a *ngIf="getVerified(tool)" href="{{ verifiedLink }}">
+          <mat-icon matTooltip="Verified">check</mat-icon>
+        </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool">{{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
-        <mat-icon class="star" *ngIf="tool?.starredUsers?.length > 0 ">star_rate</mat-icon>
+      <mat-cell class="description-cell" *matCellDef="let tool"
+        >{{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
+        <mat-icon class="star" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
@@ -51,14 +58,12 @@
     </ng-container>
     <ng-container matColumnDef="format">
       <mat-header-cell *matHeaderCellDef>Format</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">{{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}</mat-cell>
+      <mat-cell *matCellDef="let tool">{{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
-      <mat-cell *matCellDef="let tool: Tool">
-        <a [href]="tool?.providerUrl">
-          {{ tool?.provider }}&nbsp;
-        </a>
+      <mat-cell *matCellDef="let tool">
+        <a [href]="tool?.providerUrl"> {{ tool?.provider }}&nbsp; </a>
         <a [href]="tool?.imgProviderUrl">
           {{ tool?.imgProvider }}
         </a>
@@ -70,7 +75,13 @@
       <mat-footer-cell *matFooterCellDef colspan="6">
         <div class="row col-xs-12">
           <div class="col-xs-12 col-sm-4 col-sm-offset-4">
-            <a mat-raised-button class="col-sm-12" color="primary" [routerLink]="['/search']" [queryParams]="{_type: 'tool', searchMode: 'files'}">
+            <a
+              mat-raised-button
+              class="col-sm-12"
+              color="primary"
+              [routerLink]="['/search']"
+              [queryParams]="{ _type: 'tool', searchMode: 'files' }"
+            >
               Search Tools <mat-icon>chevron_right</mat-icon>
             </a>
           </div>
@@ -80,6 +91,12 @@
     <mat-footer-row [hidden]="!previewMode" *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></mat-footer-row>
   </mat-table>
   <div [hidden]="previewMode">
-    <mat-paginator [showFirstLastButtons]="true" [length]="length$ | async" [pageIndex]="(pageIndex$ | async)" [pageSize]="(pageSize$ | async)" [pageSizeOptions]="[10, 20, 50, 100]"></mat-paginator>
+    <mat-paginator
+      [showFirstLastButtons]="true"
+      [length]="length$ | async"
+      [pageIndex]="pageIndex$ | async"
+      [pageSize]="pageSize$ | async"
+      [pageSizeOptions]="[10, 20, 50, 100]"
+    ></mat-paginator>
   </div>
 </div>

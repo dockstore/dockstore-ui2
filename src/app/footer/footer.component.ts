@@ -33,6 +33,7 @@ export class FooterComponent extends Base implements OnInit {
   tag: string;
   public prod = true;
   public dsServerURI: any;
+  Dockstore = Dockstore;
 
   constructor(private metadataService: MetadataService) {
     super();
@@ -41,7 +42,9 @@ export class FooterComponent extends Base implements OnInit {
   ngOnInit() {
     this.tag = versions.tag;
     this.dsServerURI = Dockstore.API_URI;
-    this.metadataService.getMetadata().pipe(takeUntil(this.ngUnsubscribe))
+    this.metadataService
+      .getMetadata()
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
@@ -49,9 +52,11 @@ export class FooterComponent extends Base implements OnInit {
           } else {
             throw new Error('Version undefined');
           }
-        }, (error: HttpErrorResponse) => {
+        },
+        (error: HttpErrorResponse) => {
           console.log(error);
-          if (error.status === 0 && window.location.pathname !== '/maintenance') {
+          // Angular proxy returns 504
+          if ((error.status === 0 || error.status === 504) && window.location.pathname !== '/maintenance') {
             window.location.href = '/maintenance';
           }
         }

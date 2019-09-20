@@ -15,6 +15,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
@@ -22,38 +23,39 @@ import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
-
+import { RefreshAlertModule } from '../alert/alert.module';
+import { AvailableLogsModule } from '../available-logs.module';
+import { BioschemaService } from '../bioschema.service';
 import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
+import { EntryActionsService } from '../entry-actions/entry-actions.service';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
 import { CustomMaterialModule } from '../modules/material.module';
 import { CommitUrlPipe } from './commit-url.pipe';
-import {
-  InfoTabCheckerWorkflowPathComponent,
-} from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
+import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
 import { PrivateFileDownloadPipe } from './private-file-download.pipe';
 import { PrivateFilePathPipe } from './private-file-path.pipe';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
+import { UrlDeconstructPipe } from './url-deconstruct.pipe';
 import { VerifiedByComponent } from './verified-by/verified-by.component';
 import { VerifiedDisplayComponent } from './verified-display/verified-display.component';
 import { VerifiedPlatformsPipe } from './verified-platforms.pipe';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
-import { RefreshAlertModule } from '../alert/alert.module';
-import { UrlDeconstructPipe } from './url-deconstruct.pipe';
 
 @NgModule({
   imports: [
+    AvailableLogsModule,
     CommonModule,
     TooltipModule.forRoot(),
     FormsModule,
     ModalModule,
     CustomMaterialModule,
+    FlexLayoutModule,
     NgxJsonLdModule,
     ClipboardModule,
     RouterModule,
-    RefreshAlertModule,
-    ShareButtonsModule.forRoot()
+    RefreshAlertModule
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -63,7 +65,6 @@ import { UrlDeconstructPipe } from './url-deconstruct.pipe';
     CodeEditorListComponent,
     CommitUrlPipe,
     VerifiedByComponent,
-    VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
@@ -78,6 +79,7 @@ import { UrlDeconstructPipe } from './url-deconstruct.pipe';
     CodeEditorListComponent,
     CustomMaterialModule,
     CommitUrlPipe,
+    FlexLayoutModule,
     VerifiedByComponent,
     VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
@@ -89,6 +91,7 @@ import { UrlDeconstructPipe } from './url-deconstruct.pipe';
     UrlDeconstructPipe,
     RouterModule
   ],
-  entryComponents: [RegisterCheckerWorkflowComponent]
+  entryComponents: [RegisterCheckerWorkflowComponent],
+  providers: [BioschemaService, EntryActionsService]
 })
-export class EntryModule { }
+export class EntryModule {}

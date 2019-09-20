@@ -3,9 +3,9 @@ import { Store, StoreConfig } from '@datorama/akita';
 import { Organization } from '../../shared/swagger';
 
 export interface OrganizationState {
-   organization: Organization;
-   canEdit: boolean;
-   canEditMembership: boolean;
+  organization: Organization;
+  canEdit: boolean;
+  canEditMembership: boolean;
 }
 
 export function createInitialState(): OrganizationState {
@@ -19,10 +19,7 @@ export function createInitialState(): OrganizationState {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'organization' })
 export class OrganizationStore extends Store<OrganizationState> {
-
   constructor() {
     super(createInitialState());
   }
-
 }
-

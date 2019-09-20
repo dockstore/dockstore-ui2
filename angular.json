@@ -37,6 +37,8 @@
               "node_modules/ace-builds/src-min-noconflict/mode-json.js",
               "node_modules/ace-builds/src-min-noconflict/mode-dockerfile.js",
               "node_modules/ace-builds/src-min-noconflict/mode-text.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-markdown.js",
+              "node_modules/ace-builds/src-min-noconflict/mode-sh.js",
               "node_modules/ace-builds/src-min-noconflict/mode-python.js",
               "node_modules/ace-builds/src-min-noconflict/mode-r.js",
               "node_modules/ace-builds/src-min-noconflict/mode-html.js",
@@ -113,7 +115,8 @@
               "node_modules/ace-builds/src-min-noconflict/mode-text.js",
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
-              "node_modules/bootstrap/dist/js/bootstrap.js"
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/marked/lib/marked.js"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
@@ -138,7 +141,8 @@
             ],
             "exclude": [
               "**/node_modules/**",
-              "**/src/app/shared/swagger/**"
+              "**/src/app/shared/swagger/**",
+              "**/src/app/shared/openapi/**"
             ]
           }
         }

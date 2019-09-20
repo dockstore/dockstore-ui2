@@ -24,8 +24,7 @@ import { FilesService } from '../../workflow/files/state/files.service';
   providedIn: 'root'
 })
 export class GA4GHFilesService {
-
-  constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHService, private filesService: FilesService) { }
+  constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHService, private filesService: FilesService) {}
 
   /**
    * Updates all GA4GH files from all descriptor types unless specific ones provided
@@ -44,7 +43,13 @@ export class GA4GHFilesService {
     this.clearFiles();
     this.filesService.removeAll();
     if (!descriptorTypes) {
-      descriptorTypes = [ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL];
+      descriptorTypes = [
+        ToolDescriptor.TypeEnum.CWL,
+        ToolDescriptor.TypeEnum.WDL,
+        // DOCKSTORE-2428 - demo how to add new workflow language
+        // ToolDescriptor.TypeEnum.SWL,
+        ToolDescriptor.TypeEnum.NFL
+      ];
     }
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach(descriptorType => {
@@ -52,11 +57,12 @@ export class GA4GHFilesService {
         files => {
           this.ga4ghFilesStore.setError(null);
           this.ga4ghFilesStore.createOrReplace(descriptorType, { toolFiles: files });
-          },
-        (e) => {
+        },
+        e => {
           this.ga4ghFilesStore.setError(e);
           this.ga4ghFilesStore.remove();
-        });
+        }
+      );
     });
   }
 

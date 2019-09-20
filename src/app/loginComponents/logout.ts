@@ -10,16 +10,12 @@ import { TrackLoginService } from '../shared/track-login.service';
 export class Logout extends Base {
   public isLoggedIn: boolean;
 
-  constructor(private trackLoginService: TrackLoginService,
-              private logoutService: LogoutService,
-              protected router: Router) {
-                super();
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(
-      this.ngUnsubscribe)).subscribe(state => this.isLoggedIn = state);
+  constructor(private trackLoginService: TrackLoginService, private logoutService: LogoutService, protected router: Router) {
+    super();
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => (this.isLoggedIn = state));
   }
 
-  logout() {
-    this.logoutService.logout();
+  logout(routeChange?: string) {
+    routeChange ? this.logoutService.logout(routeChange) : this.logoutService.logout();
   }
-
 }
