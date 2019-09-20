@@ -45,7 +45,7 @@
     "@ngx-share/core": "^7.1.4",
     "ace-builds": "^1.4.4",
     "acorn": "^6.1.1",
-    "angular-tag-cloud-module": "^3.4.2",
+    "angular-tag-cloud-module": "^3.8.1",
     "bodybuilder": "^2.2.0",
     "bootstrap": "^3.4.1",
     "bootstrap-social": "^5.1.1",
