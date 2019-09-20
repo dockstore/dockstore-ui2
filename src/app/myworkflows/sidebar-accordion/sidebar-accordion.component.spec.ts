@@ -12,9 +12,6 @@ import { RefreshStubService, RegisterWorkflowModalStubService, WorkflowStubServi
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
 import { RefreshService } from '../../shared/refresh.service';
-import { ContainerService } from '../../shared/container.service';
-import { PublishedToolsDataSource } from '../../containers/list/published-tools.datasource';
-import { ProviderService } from '../../shared/provider.service';
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
   let fixture: ComponentFixture<SidebarAccordionComponent>;

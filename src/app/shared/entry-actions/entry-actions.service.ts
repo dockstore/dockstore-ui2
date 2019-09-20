@@ -4,7 +4,7 @@ import { AlertService } from '../alert/state/alert.service';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { WorkflowService } from '../state/workflow.service';
-import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService, WorkflowVersion } from '../swagger';
+import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService } from '../swagger';
 
 @Injectable()
 export class EntryActionsService {

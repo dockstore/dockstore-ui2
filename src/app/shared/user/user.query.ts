@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { ExtendedUserData, User } from '../swagger';
 import { UserState, UserStore } from './user.store';
-import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserQuery extends Query<UserState> {

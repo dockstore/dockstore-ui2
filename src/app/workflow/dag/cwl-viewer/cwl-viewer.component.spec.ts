@@ -7,7 +7,7 @@ import { CwlViewerComponent } from './cwl-viewer.component';
 import { DockstoreService } from '../../../shared/dockstore.service';
 import { DateService } from '../../../shared/date.service';
 import { ProviderService } from '../../../shared/provider.service';
-import { sampleCwlExtendedWorkflow, sampleWdlWorkflow1, sampleWorkflowVersion } from '../../../test/mocked-objects';
+import { sampleCwlExtendedWorkflow, sampleWorkflowVersion } from '../../../test/mocked-objects';
 
 describe('cwl-viewerComponent', () => {
   let component: CwlViewerComponent;

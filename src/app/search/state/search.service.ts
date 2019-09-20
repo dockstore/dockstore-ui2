@@ -13,9 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
-import { Router } from '@angular/router/';
+import { Router } from '@angular/router';
 import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -241,39 +241,32 @@ export class SearchService {
   createPermalinks(searchInfo) {
     // For local testing, use LOCAL_URI, else use HOSTNAME
     const url = `${Dockstore.HOSTNAME}/search`;
-    const params = new URLSearchParams();
+    let httpParams = new HttpParams();
     const filter = searchInfo.filter;
     filter.forEach((value, key) => {
       value.forEach(subBucket => {
-        params.append(key, subBucket);
+        httpParams = httpParams.append(key, subBucket);
       });
     });
 
     if (searchInfo.searchTerm && (!searchInfo.advancedSearchObject || !searchInfo.advancedSearchObject.toAdvanceSearch)) {
-      params.append('search', searchInfo.searchValues);
+      httpParams = httpParams.append('search', searchInfo.searchValues);
     } else {
       const advSearchKeys = Object.keys(searchInfo.advancedSearchObject);
       for (let index = 0; index < advSearchKeys.length; index++) {
         const key = advSearchKeys[index];
         const val = searchInfo.advancedSearchObject[key];
         if ((key.includes('Filter') || key === 'searchMode') && val !== '') {
-          params.append(key, val);
+          httpParams = httpParams.append(key, val);
         }
       }
     }
-    return [url, params.toString()];
+    return [url, httpParams.toString()];
   }
 
   handleLink(linkArray: Array<string>) {
     this.router.navigateByUrl('search?' + linkArray[1]);
     this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
-  }
-
-  createURIParams(): URLSearchParams {
-    const curURL = this.router.url;
-    const url = curURL.substr('/search'.length + 1);
-    const params = new URLSearchParams(url);
-    return params;
   }
 
   sortByAlphabet(orderedArray, orderMode): any {

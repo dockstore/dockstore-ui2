@@ -3,7 +3,7 @@ import { Query } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CurrentCollectionsQuery } from '../../../entry/state/current-collections.query';
-import { Collection, CollectionOrganization, OrganizationUser } from '../../../shared/swagger';
+import { Collection, OrganizationUser } from '../../../shared/swagger';
 import { AddEntryState, AddEntryStore } from './add-entry.store';
 
 @Injectable({ providedIn: 'root' })

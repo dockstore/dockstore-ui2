@@ -24,7 +24,7 @@ import { StarentryService } from '../../../shared/starentry.service';
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { first, takeUntil } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { OrganizationStarringService } from './organization-starring.service';
 import { isStarredByUser } from '../../../shared/starring';
 import { Base } from '../../../shared/base';

@@ -16,7 +16,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatIconModule } from '@angular/material';
 import { CustomMaterialModule } from '../../../shared/modules/material.module';
 
 import { OrganizationStargazersComponent } from './organization-stargazers.component';
