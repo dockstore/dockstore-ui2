@@ -28,6 +28,7 @@ function testID_Alpha() {
 // Locate a hosted workflow for which to create a DOI; if the specific hosted
 // workflow is not present then create it. Then snapshot the workflow and request
 // a DOI
+// You should link your Zenodo credentials before running the test
 describe('Create Zenodo DOI for workflow version', () => {
     it('Should be able to create DOI', () => {
 
