@@ -81,7 +81,6 @@
     "@types/jquery": "^3.3.15",
     "@types/jszip": "^3.1.5",
     "@types/node": "^10.14.0",
-    "akita-schematics": "^2.0.1",
     "codelyzer": "^5.0.1",
     "husky": "^2.4.1",
     "jasmine-core": "~2.99.1",
