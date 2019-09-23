@@ -74,7 +74,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   registerWorkflowForm: NgForm;
-  @ViewChild('registerWorkflowForm') currentForm: NgForm;
+  @ViewChild('registerWorkflowForm', { static: false }) currentForm: NgForm;
 
   constructor(
     private registerWorkflowModalService: RegisterWorkflowModalService,

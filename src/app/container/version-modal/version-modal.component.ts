@@ -63,7 +63,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public version: Tag;
   public validationPatterns = validationDescriptorPatterns;
   tagEditorForm: NgForm;
-  @ViewChild('tagEditorForm') currentForm: NgForm;
+  @ViewChild('tagEditorForm', { static: false }) currentForm: NgForm;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
 

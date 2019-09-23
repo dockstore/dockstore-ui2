@@ -14,7 +14,7 @@
         <app-loading class="w-100" [loading]="loading$ | async">
           <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
             <mat-form-field *ngIf="selectedFile$ | async as selected" class="w-50">
-              <mat-select [(value)]="selected" (selectionChange)="matSelectChange($event)">
+              <mat-select [value]="selected" (selectionChange)="matSelectChange($event)">
                 <mat-option [value]="file" *ngFor="let file of files$ | async"> {{ file.path }} </mat-option>
               </mat-select>
             </mat-form-field>
@@ -52,7 +52,7 @@
         </app-loading>
       </mat-toolbar>
       <div *ngIf="fileContents$ | async as fileContents">
-        <app-code-editor [(content)]="fileContents" [filepath]="(selectedFile$ | async)?.path" [editing]="false"></app-code-editor>
+        <app-code-editor [content]="fileContents" [filepath]="(selectedFile$ | async)?.path" [editing]="false"></app-code-editor>
       </div>
     </ng-template>
   </mat-tab>

@@ -58,7 +58,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   registerToolForm: NgForm;
-  @ViewChild('registerToolForm') currentForm: NgForm;
+  @ViewChild('registerToolForm', { static: false }) currentForm: NgForm;
   constructor(private registerToolService: RegisterToolService, private alertQuery: AlertQuery, private alertService: AlertService) {}
 
   isInvalidCustomRegistry() {

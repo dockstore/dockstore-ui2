@@ -53,7 +53,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   faSortNumericDown = faSortNumericDown;
   faSortNumericUp = faSortNumericUp;
   private ngUnsubscribe: Subject<{}> = new Subject();
-  @ViewChild(MatAccordion) accordion: MatAccordion;
+  @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
   public shortUrl$: Observable<string>;
   /** current set of search results

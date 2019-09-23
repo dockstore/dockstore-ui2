@@ -25,7 +25,7 @@ import { SourceFile, VerificationInformation } from '../../swagger';
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
   @Input() sourceFiles: SourceFile[];
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   public dataSource: MatTableDataSource<any>;
   public displayedColumns = ['platform', 'platformVersion', 'path', 'metadata'];
   constructor() {
