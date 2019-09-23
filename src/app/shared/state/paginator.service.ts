@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PaginatorStore, PaginatorInfo } from './paginator.store';
+import { Injectable } from '@angular/core';
+import { PaginatorInfo, PaginatorStore } from './paginator.store';
 
 @Injectable({ providedIn: 'root' })
 export class PaginatorService {
@@ -19,7 +19,7 @@ export class PaginatorService {
   }
 
   setToolPaginatorSize(paginatorInfo: PaginatorInfo) {
-    this.paginatorStore.setState(state => {
+    this.paginatorStore.update(state => {
       return {
         ...state,
         tool: paginatorInfo
@@ -28,7 +28,7 @@ export class PaginatorService {
   }
 
   setWorkflowPaginatorSize(paginatorInfo: PaginatorInfo) {
-    this.paginatorStore.setState(state => {
+    this.paginatorStore.update(state => {
       return {
         ...state,
         workflow: paginatorInfo

@@ -15,10 +15,9 @@
  */
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
-
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
-import { Observable, from, forkJoin, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin, from, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/internal/operators';
 import { GA4GHFilesQuery } from '../../../../shared/ga4gh-files/ga4gh-files.query';
 import { ExtendedWorkflow } from '../../../../shared/models/ExtendedWorkflow';
@@ -113,7 +112,7 @@ export class WdlViewerService {
 
   @transaction()
   update(workflowId: number, versionId: number, result: WdlViewerPipelineResponse) {
-    this.wdlViewerStore.createOrReplace(versionId, result);
+    this.wdlViewerStore.upsert(versionId, result);
     this.wdlViewerStore.setActive(workflowId);
   }
 

@@ -20,7 +20,7 @@ export class WorkflowService {
   @transaction()
   setWorkflow(workflow: BioWorkflow | Service | null) {
     if (workflow) {
-      this.workflowStore.createOrReplace(workflow.id, workflow);
+      this.workflowStore.upsert(workflow.id, workflow);
       this.extendedWorkflowService.update(workflow);
       this.workflowStore.setActive(workflow.id);
     } else {
@@ -39,7 +39,7 @@ export class WorkflowService {
   }
 
   clearVersion() {
-    this.workflowStore.updateRoot({ version: null });
+    this.workflowStore.update({ version: null });
   }
 
   add(workflow: Service | BioWorkflow) {
@@ -59,7 +59,7 @@ export class WorkflowService {
   }
 
   setWorkflowVersion(version: WorkflowVersion) {
-    this.workflowStore.updateRoot({ version: version });
+    this.workflowStore.update({ version: version });
   }
 
   setSharedWorkflows(workflows: Array<any>) {

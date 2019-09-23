@@ -124,7 +124,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     );
     this._toolType = 'workflows';
     this.location = location;
-    this.entryType = this.sessionQuery.getSnapshot().entryType;
+    this.entryType = this.sessionQuery.getValue().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
       this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);

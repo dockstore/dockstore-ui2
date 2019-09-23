@@ -2,10 +2,10 @@ import { HttpBackend, HttpClient, HttpHeaders, HttpParams } from '@angular/commo
 import { Pipe, PipeTransform } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Dockstore } from './shared/dockstore.model';
 import { SessionQuery } from './shared/session/session.query';
 import { TokenQuery } from './shared/state/token.query';
 import { UserQuery } from './shared/user/user.query';
-import { Dockstore } from './shared/dockstore.model';
 
 /**
  * This converts an organization name or username to a GitHub apps installation link
@@ -26,7 +26,7 @@ export class GithubNameToIdPipe implements PipeTransform {
     private sessionQuery: SessionQuery
   ) {}
   transform(userNameOrOrganizationName: string): Observable<string> {
-    const username = this.userQuery.getSnapshot().user.name;
+    const username = this.userQuery.getValue().user.name;
     if (userNameOrOrganizationName === username) {
       return this.getIdFromUsername(username);
     }
@@ -46,7 +46,7 @@ export class GithubNameToIdPipe implements PipeTransform {
   }
 
   private idToLink(id: number): string {
-    const entryType = this.sessionQuery.getSnapshot().entryType;
+    const entryType = this.sessionQuery.getValue().entryType;
     let params = new HttpParams();
     params = params.set('state', entryType);
     params = params.set('suggested_target_id', id.toString());

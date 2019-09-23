@@ -111,7 +111,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       myEntriesQuery,
       userQuery
     );
-    this.entryType = this.sessionQuery.getSnapshot().entryType;
+    this.entryType = this.sessionQuery.getValue().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
   }
 

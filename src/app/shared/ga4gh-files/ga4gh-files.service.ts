@@ -15,10 +15,9 @@
  */
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
-
+import { FilesService } from '../../workflow/files/state/files.service';
 import { GA4GHService, ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
-import { FilesService } from '../../workflow/files/state/files.service';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +55,7 @@ export class GA4GHFilesService {
       this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(descriptorType, id, version).subscribe(
         files => {
           this.ga4ghFilesStore.setError(null);
-          this.ga4ghFilesStore.createOrReplace(descriptorType, { toolFiles: files });
+          this.ga4ghFilesStore.upsert(descriptorType, { toolFiles: files });
         },
         e => {
           this.ga4ghFilesStore.setError(e);

@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-
+import { ActiveState, EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { DockstoreTool } from '../swagger';
 
-export interface ToolState extends EntityState<DockstoreTool> {}
-const initialState: ToolState = {};
+export interface ToolState extends EntityState<DockstoreTool>, ActiveState {}
+const initialState: ToolState = {
+  active: null
+};
 @Injectable({
   providedIn: 'root'
 })

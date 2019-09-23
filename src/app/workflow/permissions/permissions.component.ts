@@ -2,6 +2,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
+import { EntryType } from 'app/shared/enum/entry-type';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -11,8 +13,6 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
 
 import RoleEnum = Permission.RoleEnum;
-import { EntryType } from 'app/shared/enum/entry-type';
-import { SessionQuery } from 'app/shared/session/session.query';
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
@@ -52,7 +52,7 @@ export class PermissionsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const entryType = this.sessionQuery.getSnapshot().entryType;
+    const entryType = this.sessionQuery.getValue().entryType;
     this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
       this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
     });

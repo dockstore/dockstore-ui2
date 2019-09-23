@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { AliasesStore } from './aliases.store';
-import {
-  OrganizationsService,
-  Organization,
-  Collection,
-  DockstoreTool,
-  ContainersService,
-  WorkflowsService,
-  Workflow
-} from '../../shared/swagger';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
+import {
+  Collection,
+  ContainersService,
+  DockstoreTool,
+  Organization,
+  OrganizationsService,
+  Workflow,
+  WorkflowsService
+} from '../../shared/swagger';
+import { AliasesStore } from './aliases.store';
 
 @Injectable({ providedIn: 'root' })
 export class AliasesService {
@@ -22,7 +22,7 @@ export class AliasesService {
   ) {}
 
   clearState(): void {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         organization: null,
@@ -52,7 +52,7 @@ export class AliasesService {
   }
 
   updateOrganization(organization: Organization) {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         organization: organization
@@ -79,7 +79,7 @@ export class AliasesService {
   }
 
   updateCollection(collection: Collection) {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         collection: collection
@@ -106,7 +106,7 @@ export class AliasesService {
   }
 
   updateTool(tool: DockstoreTool) {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         tool: tool
@@ -133,7 +133,7 @@ export class AliasesService {
   }
 
   updateWorkflow(workflow: Workflow) {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         workflow: workflow

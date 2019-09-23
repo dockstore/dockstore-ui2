@@ -91,7 +91,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
         this.selectedVersion.name,
         this.workflow.descriptorType,
         this.selectedVersion.workflow_path,
-        this.sessionQuery.getSnapshot().entryType
+        this.sessionQuery.getValue().entryType
       );
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;

@@ -42,7 +42,7 @@ export class AddEntryService {
    * @param memberships
    */
   updateMembershipsState(memberships: Array<OrganizationUser>): void {
-    this.addEntryStore.setState((state: AddEntryState) => {
+    this.addEntryStore.update((state: AddEntryState) => {
       return {
         ...state,
         memberships: memberships
@@ -81,7 +81,7 @@ export class AddEntryService {
    * @param collections
    */
   updateCollectionsState(collections: Array<Collection>): void {
-    this.addEntryStore.setState((state: AddEntryState) => {
+    this.addEntryStore.update((state: AddEntryState) => {
       return {
         ...state,
         collections: collections
