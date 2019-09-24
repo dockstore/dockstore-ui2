@@ -78,7 +78,7 @@ export class SearchService {
   // Given a URL, will attempt to shorten it
   // TODO: Find another method for shortening URLs
   setShortUrl(url: string) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         shortUrl: url
@@ -87,7 +87,7 @@ export class SearchService {
   }
 
   setPageSize(pageSize: number) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         pageSize: pageSize
@@ -96,7 +96,7 @@ export class SearchService {
   }
 
   setSearchText(text: string) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         searchText: text
@@ -105,22 +105,22 @@ export class SearchService {
   }
 
   searchSuggestTerm() {
-    const suggestTerm = this.searchQuery.getSnapshot().suggestTerm;
+    const suggestTerm = this.searchQuery.getValue().suggestTerm;
     this.setSearchText(suggestTerm);
   }
 
   setShowTagCloud(entryType: 'tool' | 'workflow') {
     if (entryType === 'tool') {
-      const showTagCloud: boolean = this.searchQuery.getSnapshot().showToolTagCloud;
-      this.searchStore.setState(state => {
+      const showTagCloud: boolean = this.searchQuery.getValue().showToolTagCloud;
+      this.searchStore.update(state => {
         return {
           ...state,
           showToolTagCloud: !showTagCloud
         };
       });
     } else {
-      const showTagCloud: boolean = this.searchQuery.getSnapshot().showWorkflowTagCloud;
-      this.searchStore.setState(state => {
+      const showTagCloud: boolean = this.searchQuery.getValue().showWorkflowTagCloud;
+      this.searchStore.update(state => {
         return {
           ...state,
           showWorkflowTagCloud: !showTagCloud
@@ -154,7 +154,7 @@ export class SearchService {
   }
 
   setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         toolhit: toolHits,
@@ -164,7 +164,7 @@ export class SearchService {
   }
 
   setFilterKeys(filters: Map<string, Set<string>>) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         filterKeys: filters ? Array.from(filters.keys()) : []
@@ -198,7 +198,7 @@ export class SearchService {
   }
 
   setSuggestTerm(suggestTerm: string) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         suggestTerm: suggestTerm
@@ -214,7 +214,7 @@ export class SearchService {
       console.error('Could not retrieve autocomplete terms');
       autocompleteTerms = [];
     }
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         autocompleteTerms: autocompleteTerms

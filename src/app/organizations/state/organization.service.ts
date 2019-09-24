@@ -29,7 +29,7 @@ export class OrganizationService {
   ) {}
 
   clearState(): void {
-    this.organizationStore.setState(state => {
+    this.organizationStore.update(state => {
       return {
         ...state,
         organization: null,
@@ -57,7 +57,7 @@ export class OrganizationService {
   }
 
   updateOrganization(organization: Organization) {
-    this.organizationStore.setState(state => {
+    this.organizationStore.update(state => {
       return {
         ...state,
         organization: organization

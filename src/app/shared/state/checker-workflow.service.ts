@@ -63,7 +63,7 @@ export class CheckerWorkflowService extends Base {
     if (checker_id) {
       this.updateCheckerWorkflow(checker_id, this.publicPage, entry);
     } else {
-      this.setState(null, entry);
+      this.update(null, entry);
     }
   }
 
@@ -89,9 +89,9 @@ export class CheckerWorkflowService extends Base {
         .pipe(first())
         .subscribe(
           (workflow: Workflow) => {
-            this.setState(workflow, entry);
+            this.update(workflow, entry);
           },
-          error => this.setState(null, entry)
+          error => this.update(null, entry)
         );
     } else {
       this.workflowsService
@@ -99,15 +99,15 @@ export class CheckerWorkflowService extends Base {
         .pipe(first())
         .subscribe(
           (workflow: Workflow) => {
-            this.setState(workflow, entry);
+            this.update(workflow, entry);
           },
-          error => this.setState(null, entry)
+          error => this.update(null, entry)
         );
     }
   }
 
-  public setState(checkerWorkflow: Workflow, entry: Entry) {
-    this.checkerWorkflowStore.setState(state => {
+  public update(checkerWorkflow: Workflow, entry: Entry) {
+    this.checkerWorkflowStore.update(state => {
       return {
         entry: entry,
         checkerWorkflow: checkerWorkflow
@@ -127,7 +127,7 @@ export class CheckerWorkflowService extends Base {
    * Go to parent entry (could be a tool or workflow)
    */
   public goToParentEntry(): void {
-    const parentId = (<BioWorkflow>this.checkerWorkflowQuery.getSnapshot().entry).parent_id;
+    const parentId = (<BioWorkflow>this.checkerWorkflowQuery.getValue().entry).parent_id;
     if (!parentId) {
       console.log('This entry is not a checker workflow and has no parent entry.');
       return;

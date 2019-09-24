@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { RequestsStore, RequestsState } from './requests.store';
-import { AlertService } from '../../shared/alert/state/alert.service';
-import { Organization, OrganizationsService, UsersService, OrganizationUser, User } from '../../shared/swagger';
 import { finalize } from 'rxjs/operators';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { Organization, OrganizationsService, OrganizationUser, User, UsersService } from '../../shared/swagger';
+import { RequestsState, RequestsStore } from './requests.store';
 
 @Injectable({ providedIn: 'root' })
 export class RequestsService {
@@ -85,7 +85,7 @@ export class RequestsService {
    * @param allPendingOrganizations Newly updated list of pending organizations
    */
   updateOrganizationState(allPendingOrganizations: Array<Organization>): void {
-    this.requestsStore.setState((state: RequestsState) => {
+    this.requestsStore.update((state: RequestsState) => {
       return {
         ...state,
         allPendingOrganizations: allPendingOrganizations
@@ -134,7 +134,7 @@ export class RequestsService {
     myPendingOrganizationRequests: Array<OrganizationUser>,
     myRejectedOrganizationRequests: Array<OrganizationUser>
   ): void {
-    this.requestsStore.setState((state: RequestsState) => {
+    this.requestsStore.update((state: RequestsState) => {
       return {
         ...state,
         myMemberships: myMemberships,

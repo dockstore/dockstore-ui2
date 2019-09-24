@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationsState, OrganizationsStore } from './organizations.store';
@@ -37,7 +36,7 @@ export class OrganizationsStateService {
   }
 
   updateSearchNameState(searchName: string): void {
-    this.organizationsStore.setState((state: OrganizationsState) => {
+    this.organizationsStore.update((state: OrganizationsState) => {
       return {
         ...state,
         searchName: searchName
@@ -46,7 +45,7 @@ export class OrganizationsStateService {
   }
 
   updateOrganizationState(organizations: Array<Organization>): void {
-    this.organizationsStore.setState((state: OrganizationsState) => {
+    this.organizationsStore.update((state: OrganizationsState) => {
       return {
         ...state,
         organizations: organizations

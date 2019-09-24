@@ -45,7 +45,7 @@ export class CollectionsService {
   // Get function
   updateCollections(organizationID?: number) {
     if (!organizationID) {
-      organizationID = this.organizationStore.getSnapshot().organization.id;
+      organizationID = this.organizationStore.getValue().organization.id;
     }
     this.collectionsStore.setLoading(true);
     const activeId: ID = this.collectionsQuery.getActiveId();
@@ -93,7 +93,7 @@ export class CollectionsService {
       .subscribe(
         (collection: Collection) => {
           this.collectionsStore.setError(false);
-          this.collectionsStore.createOrReplace(collection.id, collection);
+          this.collectionsStore.upsert(collection.id, collection);
           this.collectionsStore.setActive(collection.id);
           this.organizationService.updateOrganizationFromID(collection.organizationID);
         },
@@ -121,7 +121,7 @@ export class CollectionsService {
       .subscribe(
         (collection: Collection) => {
           this.collectionsStore.setError(false);
-          this.collectionsStore.createOrReplace(collection.id, collection);
+          this.collectionsStore.upsert(collection.id, collection);
           this.collectionsStore.setActive(collection.id);
           this.organizationService.updateOrganizationFromID(collection.organizationID);
           // Navigate to the new collectionName in case the name changes.

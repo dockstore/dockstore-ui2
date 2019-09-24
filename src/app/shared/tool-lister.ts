@@ -121,7 +121,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
         direction = 'desc';
       }
     }
-    const entryType: EntryType = this.sessionQuery.getSnapshot().entryType;
+    const entryType: EntryType = this.sessionQuery.getValue().entryType;
     this.dataSource.loadEntries(
       entryType,
       this.input.nativeElement.value,

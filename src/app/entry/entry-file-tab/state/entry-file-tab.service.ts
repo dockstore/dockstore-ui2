@@ -12,9 +12,9 @@ import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from 'app/shared/swagger';
 import { takeUntil } from 'rxjs/operators';
+import { Validation } from '../../../shared/swagger/model/validation';
 import { EntryFileTabQuery } from './entry-file-tab.query';
 import { EntryFileTabStore } from './entry-file-tab.store';
-import { Validation } from '../../../shared/swagger/model/validation';
 
 @Injectable()
 export class EntryFileTabService extends Base {
@@ -33,7 +33,7 @@ export class EntryFileTabService extends Base {
   }
 
   private setSelectedFileType(fileType: ToolFile.FileTypeEnum) {
-    this.entryFileTabStore.setState(state => {
+    this.entryFileTabStore.update(state => {
       return {
         ...state,
         selectedFileType: fileType
@@ -42,7 +42,7 @@ export class EntryFileTabService extends Base {
   }
 
   private setUnfilteredFiles(files: ToolFile[]) {
-    this.entryFileTabStore.setState(state => {
+    this.entryFileTabStore.update(state => {
       return {
         ...state,
         unfilteredFiles: files
@@ -51,7 +51,7 @@ export class EntryFileTabService extends Base {
   }
 
   private setFiles(files: ToolFile[]) {
-    this.entryFileTabStore.setState(state => {
+    this.entryFileTabStore.update(state => {
       return {
         ...state,
         files: files
@@ -60,7 +60,7 @@ export class EntryFileTabService extends Base {
   }
 
   private setSelectedFile(file: ToolFile) {
-    this.entryFileTabStore.setState(state => {
+    this.entryFileTabStore.update(state => {
       return {
         ...state,
         selectedFile: file
@@ -77,7 +77,7 @@ export class EntryFileTabService extends Base {
    */
   @transaction()
   private setFileContents(fileContents: string) {
-    this.entryFileTabStore.setState(state => {
+    this.entryFileTabStore.update(state => {
       return {
         ...state,
         fileContents: fileContents
@@ -87,7 +87,7 @@ export class EntryFileTabService extends Base {
   }
 
   private setDownloadFilePath(downloadFilePath: string) {
-    this.entryFileTabStore.setState(state => {
+    this.entryFileTabStore.update(state => {
       return {
         ...state,
         downloadFilePath: downloadFilePath
@@ -135,21 +135,21 @@ export class EntryFileTabService extends Base {
   }
 
   private getValidations() {
-    const version = this.workflowQuery.getSnapshot().version;
-    const file = this.entryFileTabQuery.getSnapshot().selectedFile;
+    const version = this.workflowQuery.getValue().version;
+    const file = this.entryFileTabQuery.getValue().selectedFile;
     if (version && version.validations && file && file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR) {
       for (const validation of version.validations) {
         if (validation.type === Validation.TypeEnum.DOCKSTORESERVICEYML) {
           const validationObject = JSON.parse(validation.message);
           if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
-            this.entryFileTabStore.setState(state => {
+            this.entryFileTabStore.update(state => {
               return {
                 ...state,
                 validationMessage: null
               };
             });
           } else {
-            this.entryFileTabStore.setState(state => {
+            this.entryFileTabStore.update(state => {
               return {
                 ...state,
                 validationMessage: validationObject
@@ -170,7 +170,7 @@ export class EntryFileTabService extends Base {
    */
   @transaction()
   public changeFileType(selectedFileType: ToolFile.FileTypeEnum) {
-    const toolFiles = this.entryFileTabQuery.getSnapshot().unfilteredFiles;
+    const toolFiles = this.entryFileTabQuery.getValue().unfilteredFiles;
     const filteredFiles = this.filterFiles(selectedFileType, toolFiles);
     const selectedFile = filteredFiles[0];
     this.setSelectedFileType(selectedFileType);
@@ -189,7 +189,7 @@ export class EntryFileTabService extends Base {
     const selectedFileType: ToolFile.FileTypeEnum = fileTypes.values().next().value;
     const files = this.filterFiles(selectedFileType, unfilteredFiles);
     const file = files[0];
-    this.entryFileTabStore.setState(state => {
+    this.entryFileTabStore.update(state => {
       return {
         ...state,
         unfilteredFiles: unfilteredFiles,
@@ -227,14 +227,14 @@ export class EntryFileTabService extends Base {
    */
   private getFileContents() {
     this.ga4ghFilesService.injectAuthorizationToken(this.ga4ghService);
-    const toolFile: ToolFile = this.entryFileTabQuery.getSnapshot().selectedFile;
+    const toolFile: ToolFile = this.entryFileTabQuery.getValue().selectedFile;
     if (!toolFile) {
       return;
     }
     const workflow = this.workflowQuery.getActive();
-    const version = this.workflowQuery.getSnapshot().version;
+    const version = this.workflowQuery.getValue().version;
     const path = toolFile.path;
-    const prefix = this.sessionQuery.getSnapshot().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
+    const prefix = this.sessionQuery.getValue().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
     const fileType = workflow.descriptorType;
     this.setFileContents(null);
     this.setLoading(true);
@@ -284,18 +284,18 @@ export class EntryFileTabService extends Base {
    */
   private getWorklowDownloadFilePath(): string | null {
     const workflow = this.workflowQuery.getActive();
-    const version = this.workflowQuery.getSnapshot().version;
+    const version = this.workflowQuery.getValue().version;
     const entryPath = workflow.full_workflow_path;
     const toolDescriptorType = <ToolDescriptor.TypeEnum>workflow.descriptorType.toUpperCase();
     if (!workflow || !version) {
       console.error('Worklow or version is not truthy');
       return null;
     }
-    const prefix = this.sessionQuery.getSnapshot().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
+    const prefix = this.sessionQuery.getValue().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
     const id = prefix + entryPath;
     const versionId = version.name;
     const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(toolDescriptorType);
-    const relativePath = this.entryFileTabQuery.getSnapshot().selectedFile.path;
+    const relativePath = this.entryFileTabQuery.getValue().selectedFile.path;
     return this.fileService.getDownloadFilePath(id, versionId, type, relativePath);
   }
 

@@ -186,6 +186,6 @@
     }
   },
   "cli": {
-    "defaultCollection": "akita-schematics"
+    "defaultCollection": "@datorama/akita"
   }
 }
