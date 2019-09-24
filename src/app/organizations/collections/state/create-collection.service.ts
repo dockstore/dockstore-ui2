@@ -50,7 +50,7 @@ export class CreateCollectionService {
       topic: collectionFormState.topic,
       displayName: collectionFormState.displayName
     };
-    const organizationID = this.organizationQuery.getSnapshot().organization.id;
+    const organizationID = this.organizationQuery.getValue().organization.id;
     this.beforeCall();
     this.alertService.start('Creating collection');
     this.organizationsService
@@ -133,7 +133,7 @@ export class CreateCollectionService {
   setTitle(data: any): void {
     const mode: TagEditorMode = data.mode;
     const title = mode === TagEditorMode.Add ? 'Create Collection' : 'Edit Collection';
-    this.createCollectionStore.setState(state => {
+    this.createCollectionStore.update(state => {
       return {
         ...state,
         title: title
@@ -157,7 +157,7 @@ export class CreateCollectionService {
       displayName: collectionFormState.displayName,
       description: collectionDescripton
     };
-    const organizationID = this.organizationQuery.getSnapshot().organization.id;
+    const organizationID = this.organizationQuery.getValue().organization.id;
     this.beforeCall();
     this.alertService.start('Updating collection');
     this.organizationsService

@@ -16,7 +16,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
 import { Organization } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
@@ -25,8 +27,6 @@ import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 // tslint:disable-next-line: max-line-length
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
-import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'organization',
@@ -72,7 +72,7 @@ export class OrganizationComponent implements OnInit {
    * @memberof OrganizationComponent
    */
   editOrganization() {
-    const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
+    const organizationSnapshot: Organization = this.organizationQuery.getValue().organization;
     this.matDialog.open(RegisterOrganizationComponent, {
       data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
       width: '600px'
@@ -80,7 +80,7 @@ export class OrganizationComponent implements OnInit {
   }
 
   updateDescription() {
-    const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
+    const organizationSnapshot: Organization = this.organizationQuery.getValue().organization;
     const description = organizationSnapshot.description;
     this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'organization' },

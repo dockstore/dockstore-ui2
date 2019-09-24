@@ -227,7 +227,7 @@ export class DagService {
   }
 
   setDagResults(results: any): void {
-    this.dagStore.setState(state => {
+    this.dagStore.update(state => {
       return {
         ...state,
         dagResults: results
@@ -339,7 +339,7 @@ export class DagService {
   }
 
   refreshDocument(cy: cytoscape.Core, element): cytoscape.Core {
-    const dagResult = JSON.parse(JSON.stringify(this.dagQuery.getSnapshot().dagResults));
+    const dagResult = JSON.parse(JSON.stringify(this.dagQuery.getValue().dagResults));
     if (dagResult) {
       const cytoscapeOptions: CytoscapeOptions = {
         container: element,

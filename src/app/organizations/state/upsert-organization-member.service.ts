@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UpsertOrganizationMemberStore } from './upsert-organization-member.store';
-import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { OrganizationUser, OrganizationsService } from '../../shared/swagger';
-import { OrganizationQuery } from './organization.query';
+import { Injectable } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { OrganizationsService, OrganizationUser } from '../../shared/swagger';
 import { OrganizationMembersService } from './organization-members.service';
+import { OrganizationQuery } from './organization.query';
+import { UpsertOrganizationMemberStore } from './upsert-organization-member.store';
 
 // This is recorded into the Akita state
 export interface FormsState {
@@ -87,7 +87,7 @@ export class UpsertOrganizationMemberService {
       this.upsertOrganizationMemberStore.setLoading(true);
       this.upsertOrganizationMemberStore.setError(false);
       this.alertService.start('Adding/updating user');
-      const organizationId = this.organizationQuery.getSnapshot().organization.id;
+      const organizationId = this.organizationQuery.getValue().organization.id;
       // Have to grab the username from data because a disabled form value isn't recorded
       const username = formState.username ? formState.username : data.username;
       this.organizationsService

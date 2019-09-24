@@ -6,7 +6,7 @@ export class MyEntriesStateService {
   constructor(private myEntriesStore: MyEntriesStore) {}
 
   setRefreshingMyEntries(refreshing: boolean): void {
-    this.myEntriesStore.setState(state => {
+    this.myEntriesStore.update(state => {
       return {
         ...state,
         refreshingMyEntries: refreshing

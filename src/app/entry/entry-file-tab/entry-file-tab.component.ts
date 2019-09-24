@@ -61,7 +61,7 @@ export class EntryFileTabComponent extends Base implements OnInit {
   }
 
   matTabChange(event: MatTabChangeEvent) {
-    const fileType: ToolFile.FileTypeEnum = this.entryFileTabQuery.getSnapshot().fileTypes[event.index];
+    const fileType: ToolFile.FileTypeEnum = this.entryFileTabQuery.getValue().fileTypes[event.index];
     this.entryFileTabService.changeFileType(fileType);
   }
 
