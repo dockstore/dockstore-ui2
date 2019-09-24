@@ -1,7 +1,8 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatChipInputEvent, MatSnackBar } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { Subject } from 'rxjs';

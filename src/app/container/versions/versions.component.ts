@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 
 import { AlertService } from '../../shared/alert/state/alert.service';

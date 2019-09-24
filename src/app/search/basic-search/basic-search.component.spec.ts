@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatAutocompleteModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ProviderService } from '../../shared/provider.service';
 import { AdvancedSearchStubService, SearchStubService } from '../../test/service-stubs';

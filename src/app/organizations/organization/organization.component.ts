@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';

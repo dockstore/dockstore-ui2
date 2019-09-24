@@ -29,7 +29,7 @@ import {
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ToolDescriptor } from '../../shared/swagger';
 
 describe('Service: RegisterWorkflowModal', () => {

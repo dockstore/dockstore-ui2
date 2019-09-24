@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 import { Organization, OrganizationsService } from '../../../shared/swagger';
 import { CollectionsService } from '../../state/collections.service';

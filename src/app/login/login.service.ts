@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 import { AlertService } from '../shared/alert/state/alert.service';
