@@ -89,7 +89,6 @@
     "karma-spec-reporter": "0.0.32",
     "lint-staged": "^8.2.1",
     "prettier": "^1.18.2",
-    "protractor": "^5.4.1",
     "rxjs-tslint": "^0.1.5",
     "rxjs-tslint-rules": "^4.10.0",
     "ts-loader": "^5.3.3",
