@@ -69,7 +69,7 @@
     "@angular/language-service": "^8.2.8",
     "@cypress/webpack-preprocessor": "^4.0.3",
     "@datorama/akita-ngdevtools": "^3.0.2",
-    "@types/cytoscape": "^3.2.8",
+    "@types/cytoscape": "^3.8.2",
     "@types/elastic.js": "^1.2.8",
     "@types/elasticsearch": "^5.0.14",
     "@types/jasmine": "~2.8.6",
