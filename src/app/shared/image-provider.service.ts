@@ -26,10 +26,14 @@ export class ImageProviderService {
   private dockerRegistryList: Array<any>;
 
   constructor(private containersService: ContainersService) {
-    this.dockerRegistryList = JSON.parse(localStorage.getItem('dockerRegistryList'));
+    this.setdockerRegistryList(JSON.parse(localStorage.getItem('dockerRegistryList')));
     if (!this.dockerRegistryList) {
       this.getDockerRegistryList();
     }
+  }
+
+  public setdockerRegistryList(dockerRegistryList: Array<any>) {
+    this.dockerRegistryList = dockerRegistryList;
   }
 
   /**
@@ -90,7 +94,7 @@ export class ImageProviderService {
 
   private getDockerRegistryList() {
     this.containersService.getDockerRegistries().subscribe(registryList => {
-      this.dockerRegistryList = registryList;
+      this.setdockerRegistryList(registryList);
       localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
     });
   }
