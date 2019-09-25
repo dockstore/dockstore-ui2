@@ -91,7 +91,7 @@
     "prettier": "^1.18.2",
     "rxjs-tslint": "^0.1.7",
     "rxjs-tslint-rules": "^4.17.0",
-    "ts-node": "~5.0.1",
+    "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.3"
