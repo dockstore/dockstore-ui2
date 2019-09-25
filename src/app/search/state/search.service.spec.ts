@@ -22,6 +22,7 @@ import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { first } from 'rxjs/operators';
 
 describe('SearchService', () => {
   let searchStore: SearchStore;
@@ -51,7 +52,7 @@ describe('SearchService', () => {
   }));
   it('should set observables', inject([SearchService], (service: SearchService) => {
     service.setSearchInfo('stuff');
-    service.searchInfo$.subscribe(result => {
+    service.searchInfo$.pipe(first()).subscribe(result => {
       expect(result).toEqual('stuff');
     });
   }));
