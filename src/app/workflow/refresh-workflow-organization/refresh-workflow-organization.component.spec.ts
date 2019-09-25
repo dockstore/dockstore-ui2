@@ -14,7 +14,11 @@
  *    limitations under the License.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule, MatIconModule, MatToolbarModule, MatTooltipModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowService } from '../../shared/state/workflow.service';

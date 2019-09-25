@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';

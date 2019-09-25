@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { PublishedToolsDataSource } from '../containers/list/published-tools.datasource';

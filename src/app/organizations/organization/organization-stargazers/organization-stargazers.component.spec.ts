@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatIconModule, MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { UserService } from '../../../shared/user/user.service';

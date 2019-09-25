@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { transaction } from '@datorama/akita';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { includesValidation } from 'app/shared/constants';

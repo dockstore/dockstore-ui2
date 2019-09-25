@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AlertQuery } from '../../shared/alert/state/alert.query';

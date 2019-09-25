@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 import { Subject } from 'rxjs';
