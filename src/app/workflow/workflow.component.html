@@ -315,6 +315,7 @@
       </div>
     </div>
     <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
+      <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
       <div class="panel panel-default mb-3">
         <div class="panel-heading">
           <h3>Recent Versions</h3>
@@ -359,7 +360,6 @@
         </div>
       </div>
       <current-collections [id]="workflow.id"></current-collections>
-      <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="workflow">
         <div class="panel-heading">
