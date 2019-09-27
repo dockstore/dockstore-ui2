@@ -59,7 +59,7 @@ describe('Service: WDLViewer', () => {
     const workflow: ExtendedWorkflow = sampleWorkflow1;
     const version: WorkflowVersion = sampleWorkflowVersion;
 
-    spyOn(wdlViewerService, 'createSingle').and.returnValue(observableOf(singleResponse));
+    spyOn(wdlViewerService, 'createSingle').and.returnValue(<any>observableOf(singleResponse));
 
     wdlViewerService.createSingle(workflow, version).subscribe(
       res => {
@@ -78,7 +78,7 @@ describe('Service: WDLViewer', () => {
     const workflow: ExtendedWorkflow = sampleWorkflow2;
     const version: WorkflowVersion = sampleWorkflowVersion;
 
-    spyOn(wdlViewerService, 'createMultiple').and.returnValue(observableOf(multipleResponse));
+    spyOn(wdlViewerService, 'createMultiple').and.returnValue(<any>observableOf(multipleResponse));
 
     wdlViewerService.createMultiple(workflow, version).subscribe(
       res => {

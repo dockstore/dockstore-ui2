@@ -13,15 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { elasticSearchResponse } from '../../test/mocked-objects';
 import { RouterTestingModule } from '@angular/router/testing';
+import { first } from 'rxjs/operators';
+import { ImageProviderService } from '../../shared/image-provider.service';
 import { ProviderService } from '../../shared/provider.service';
+import { elasticSearchResponse } from '../../test/mocked-objects';
 import { ProviderStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
-import { ImageProviderService } from '../../shared/image-provider.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SearchService', () => {
   let searchStore: SearchStore;
@@ -51,7 +52,7 @@ describe('SearchService', () => {
   }));
   it('should set observables', inject([SearchService], (service: SearchService) => {
     service.setSearchInfo('stuff');
-    service.searchInfo$.subscribe(result => {
+    service.searchInfo$.pipe(first()).subscribe(result => {
       expect(result).toEqual('stuff');
     });
   }));
@@ -60,15 +61,46 @@ describe('SearchService', () => {
     expect(service.hasSearchText(null, null, null)).toEqual(false);
   }));
 
-  it('should create image provider', inject([SearchService], (service: SearchService) => {
-    const filtered: [Array<Hit>, Array<Hit>] = service.filterEntry(elasticSearchResponse, 201);
-    const tools = filtered[0];
-    const workflows = filtered[1];
-    const toolsSource = tools[0]._source;
-    const workflowSource = workflows[0]._source;
-    expect(toolsSource.imgProvider).toBe('Docker Hub');
-    expect(toolsSource.imgProviderUrl).toBe('https://hub.docker.com/r/weischenfeldt/pcawg_delly_workflow');
-    expect(workflowSource.imgProvider).toBe(undefined);
-    expect(workflowSource.imgProviderUrl).toBe(undefined);
-  }));
+  it('should create image provider', inject(
+    [SearchService, ImageProviderService],
+    (service: SearchService, imageProviderService: ImageProviderService) => {
+      imageProviderService.setdockerRegistryList([
+        {
+          customDockerPath: 'false',
+          dockerPath: 'quay.io',
+          enum: 'QUAY_IO',
+          friendlyName: 'Quay.io',
+          privateOnly: 'false',
+          url: 'https://quay.io/repository/'
+        },
+        {
+          customDockerPath: 'false',
+          dockerPath: 'registry.hub.docker.com',
+          enum: 'DOCKER_HUB',
+          friendlyName: 'Docker Hub',
+          privateOnly: 'false',
+          url: 'https://hub.docker.com/'
+        },
+        {
+          customDockerPath: 'false',
+          dockerPath: 'registry.gitlab.com',
+          enum: 'GITLAB',
+          friendlyName: 'GitLab',
+          privateOnly: 'false',
+          url: 'https://gitlab.com/'
+        },
+        { customDockerPath: 'true', dockerPath: null, enum: 'AMAZON_ECR', friendlyName: 'Amazon ECR', privateOnly: 'true', url: null },
+        { customDockerPath: 'true', dockerPath: null, enum: 'SEVEN_BRIDGES', friendlyName: 'Seven Bridges', privateOnly: 'true', url: null }
+      ]);
+      const filtered: [Array<Hit>, Array<Hit>] = service.filterEntry(elasticSearchResponse, 201);
+      const tools = filtered[0];
+      const workflows = filtered[1];
+      const toolsSource = tools[0]._source;
+      const workflowSource = workflows[0]._source;
+      expect(toolsSource.imgProvider).toBe('Docker Hub');
+      expect(toolsSource.imgProviderUrl).toBe('https://hub.docker.com/r/weischenfeldt/pcawg_delly_workflow');
+      expect(workflowSource.imgProvider).toBe(undefined);
+      expect(workflowSource.imgProviderUrl).toBe(undefined);
+    }
+  ));
 });

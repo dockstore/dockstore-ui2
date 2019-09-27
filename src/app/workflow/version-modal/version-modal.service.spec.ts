@@ -17,7 +17,6 @@ import { inject, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -70,7 +69,7 @@ describe('Service: version-modal.service.ts', () => {
   it('should be able to save version and clear refreshing state', inject(
     [VersionModalService, AlertQuery],
     (service: VersionModalService, alertQuery: AlertQuery) => {
-      workflowQuery.getActive.and.returnValue({ id: 1 });
+      workflowQuery.getActive.and.returnValue(<any>{ id: 1 });
       service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
       // Refresh service takes modifying the refreshMessage from the third message;
       alertQuery.message$.subscribe(refreshMessage => expect(refreshMessage).toEqual(''));
