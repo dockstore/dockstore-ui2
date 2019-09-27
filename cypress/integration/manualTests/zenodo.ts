@@ -1,5 +1,5 @@
 /*
- *    Copyright 2018 OICR
+ *    Copyright 2020 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
  import { goToTab } from '../../support/commands';
 
-function testID_Alpha() {
+function createRandomString() {
   let text = 'zenodo-test-workflow';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -25,15 +25,20 @@ function testID_Alpha() {
   return text;
 }
 
-// Locate a hosted workflow for which to create a DOI; if the specific hosted
-// workflow is not present then create it. Then snapshot the workflow and request
-// a DOI
-// You should link your Zenodo credentials before running the test
+/*
+ * Locate a hosted workflow for which to create a DOI; if the specific hosted
+ * workflow is not present then create it. Then snapshot the workflow and request
+ * a DOI
+ *
+ *
+ * You should link your Zenodo credentials before running the test
+ */
 describe('Create Zenodo DOI for workflow version', () => {
     it('Should be able to create DOI', () => {
 
-      cy.visit('/login', {timeout: 30000});
-      cy.wait(2000);
+      cy.visit('/login', {timeout: 30000}).as('loginToDockstore');
+      cy.wait('@loginToDockstore');
+      // cy.wait(2000);
 
       cy.contains('Login with GitHub').click();
       cy.wait(5000);
@@ -112,7 +117,7 @@ describe('Create Zenodo DOI for workflow version', () => {
       // TODO change the wdl file name instead
       const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} }`
         + `output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } }`
-        + `workflow_` + testID_Alpha() + `ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
+        + `workflow_` + createRandomString() + `ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
 
       cy.window().then(function (window: any) {
         cy.document().then((doc) => {
