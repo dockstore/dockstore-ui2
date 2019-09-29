@@ -17,7 +17,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OrganizationStarringComponent } from './organization-starring.component';
-import { MatIconModule, MatSnackBarModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import {
   ContainerStubService,

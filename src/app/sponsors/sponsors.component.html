@@ -20,8 +20,9 @@
     <!-- TODO: Will need to adjust spacing once the Broad Logo is added -->
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
       <div *ngFor="let sponsor of sponsors" class="pb-5 px-1">
-        <a href="{{ sponsor.url }}" target="_blank">
-          <img [src]="sponsor.current" />
+        <a href="{{ sponsor.url }}" target="_blank" rel="noopener noreferrer">
+          <!-- Get the sponsor website name from its URL to use as alt text-->
+          <img [src]="sponsor.current" [alt]="sponsor.url.hostname + ' logo'" />
         </a>
       </div>
     </div>
@@ -42,8 +43,8 @@
     <br />
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
       <div *ngFor="let partner of partners" class="pb-5 px-1">
-        <a href="{{ partner.url }}" target="_blank">
-          <img [src]="partner.current" />
+        <a href="{{ partner.url }}" target="_blank" rel="noopener noreferrer">
+          <img [src]="partner.current" [alt]="partner.url.hostname + ' logo'" />
         </a>
       </div>
     </div>

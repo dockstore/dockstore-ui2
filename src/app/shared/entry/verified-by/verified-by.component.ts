@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { AvailableLogsComponent } from '../../available-logs/available-logs.component';
 import { bootstrap4largeModalSize } from '../../constants';
 import { Tag, WorkflowVersion } from '../../swagger';

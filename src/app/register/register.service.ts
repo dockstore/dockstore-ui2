@@ -17,7 +17,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from 'ng2-ui-auth';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 

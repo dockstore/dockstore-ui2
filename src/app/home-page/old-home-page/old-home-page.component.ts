@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionService } from 'app/shared/session/session.service';

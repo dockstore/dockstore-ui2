@@ -3,7 +3,7 @@ import { RequestsService } from '../state/requests.service';
 import { RequestsQuery } from '../state/requests.query';
 import { Observable } from 'rxjs';
 import { Organization, OrganizationUser } from '../../shared/swagger';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserQuery } from '../../shared/user/user.query';
 import { Base } from '../../shared/base';
 import { takeUntil } from 'rxjs/operators';
