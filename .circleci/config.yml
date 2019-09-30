@@ -17,6 +17,15 @@ jobs:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - checkout
+      - run:
+          name: Checkout merge commit (PRs only)
+          command: |
+            set -ex
+            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              git fetch origin pull/${CIRCLE_PULL_REQUEST##*/}/head:mergedBranch
+              git checkout mergedBranch
+            fi
       - install_container_dependencies
       - run:
           name: Install dependencies
