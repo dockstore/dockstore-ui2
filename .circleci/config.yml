@@ -48,6 +48,9 @@ jobs:
       - run:
           name: Codecov
           command: bash -i -c 'npx codecov'
+      - run:
+          name: Check Angular Version
+          command: bash -i -c 'ng version'
       - persist_to_workspace:
           root: .
           paths:
