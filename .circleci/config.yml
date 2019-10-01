@@ -20,11 +20,10 @@ jobs:
       - run:
           name: Checkout merge commit (PRs only)
           command: |
-            set -ex
             if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
             then
-              git fetch origin pull/${CIRCLE_PULL_REQUEST##*/}/head:mergedBranch
-              git checkout mergedBranch
+              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
+              git checkout -qf FETCH_HEAD
             fi
       - install_container_dependencies
       - run:
