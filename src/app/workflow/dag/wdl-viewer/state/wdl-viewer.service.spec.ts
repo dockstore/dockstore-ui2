@@ -32,7 +32,7 @@ describe('StarringService', () => {
   it('should be created', inject([WdlViewerService], (service: WdlViewerService) => {
     expect(service).toBeTruthy();
   }));
-  fit('should be able generate the model', inject([WdlViewerService], (service: WdlViewerService) => {
+  it('should be able generate the model', inject([WdlViewerService], (service: WdlViewerService) => {
     const content = `
     import "https://raw.githubusercontent.com/DataBiosphere/topmed-workflows/1.32.0/aligner/u_of_michigan_aligner/u_of_michigan_aligner.wdl" as TopMed_aligner
 import "https://raw.githubusercontent.com/DataBiosphere/topmed-workflows/1.32.0/aligner/u_of_michigan_aligner-checker/u_of_michigan_aligner_checker_calculation.wdl" as checker
