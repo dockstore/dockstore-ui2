@@ -16,7 +16,7 @@
  import { goToTab } from '../../support/commands';
 
 function createRandomString() {
-  let text = 'zenodo-test-workflow';
+  let text = 'zenodo_test_workflow_';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
   for (let i = 0; i < 10; i++) {
@@ -36,27 +36,25 @@ function createRandomString() {
 describe('Create Zenodo DOI for workflow version', () => {
     it('Should be able to create DOI', () => {
 
-      cy.visit('/login', {timeout: 30000}).as('loginToDockstore');
-      cy.wait('@loginToDockstore');
-      // cy.wait(2000);
+      cy.visit('/login');
+      cy.location('pathname', {timeout: 10000}).should('include', 'login');
 
       cy.contains('Login with GitHub').click();
-      cy.wait(5000);
 
       const organization = 'dockstore.org';
       const zenodoWorkflow = 'zenodo-doi-test';
       const wdlDescriptorType = 'WDL';
 
+      cy.get('[class=hidden-xs]', {timeout: 5000}).should('be.visible');
       // Get the user name from the account drop down list so
       // so we can construct a url to the hosted test workflow
       // then try to go to the hosted test workflow
-      // cy.get('[data-cy=dropdown-main]').invoke('text').then((text => {
       cy.get('[class=hidden-xs]').invoke('text').then((text => {
         const userName = text.toString().trim().substr(0, text.toString().indexOf(' '));
         cy.visit('/my-workflows/' + organization + '/' + userName + '/' + zenodoWorkflow);
         // Wait a long time for the my workflows page to load
         // Sometimes this takes longer than 30 seconds
-        cy.wait(60000);
+        cy.get('[id=workflow-path]', {timeout: 50000}).should('be.visible');
       }));
 
       // Look at the workflow path at the top of the page and check to
@@ -75,49 +73,50 @@ describe('Create Zenodo DOI for workflow version', () => {
           cy.get('[id=registerWorkflowButton]').click();
           // Select the Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.' option to create a hosted workflow
           cy.contains('Create and save CWL, WDL, or Nextflow on Dockstore.org').click();
-          // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-          cy.wait(1000);
           cy.contains('button', 'Next').click();
           cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).find('.mat-radio-container').click();
           cy.get('[id="hostedWorkflowRepository"]').type(zenodoWorkflow);
-          // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-          cy.wait(1000);
-          cy.get('[id=submitButton]').click();
-          cy.wait(5000);
-
+          cy.get('[id=submitButton]').should('be.visible').click();
           // Check that the workflow was created by looking for the test workflow
           // name in the workflow path at the top of the page
           cy.get('[id=workflow-path]').should('contain', zenodoWorkflow);
          }
       }));
 
-      goToTab('Versions');
-
-      // If there is a version of the test workflow
-      // Delete the first version of the test workflow
-      // For some reason this had to be done on the develop branch
-      // This does not have to be done on staging
-      // TODO: Remove this?
-      cy.get('[id=workflow-path]').invoke('text').then((workflowPath => {
-         const workflowVersionIndex = workflowPath.toString().lastIndexOf(':');
-         if (workflowVersionIndex > 0) {
-           const workflowVersion = workflowPath.toString().substring(workflowVersionIndex + 1);
-           cy.get('table').find('.deleteVersionButton').first().click();
-         }
-      }));
-
       goToTab('Files');
 
       cy.get('[id=editFilesButton]').click();
+      cy.get('button').should('contain', 'Add File');
       cy.contains('Add File').click();
-      cy.wait(2000);
 
       // Add a random string to the workflow name so it will be accepted; Dockstore won't accept
       // a descriptor file that is the same as a previous descriptor file
       // TODO change the wdl file name instead
-      const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} }`
-        + `output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } }`
-        + `workflow_` + createRandomString() + `ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
+      const wdlDescriptorFile = `version 1.0
+        workflow helloworld_` + createRandomString() + ` {
+            input {
+              String greeting
+            }
+            call hello {
+               input:
+                   greeting = greeting
+             }
+
+            meta {
+                author : 'John Smith'
+                email : 'jsmith@email.com'
+                description: 'This is a hello world example'
+             }
+        }
+
+        task hello {
+            input {
+              String greeting
+            }
+          command {
+            echo "\${greeting}"
+          }
+        }`;
 
       cy.window().then(function (window: any) {
         cy.document().then((doc) => {
@@ -126,9 +125,14 @@ describe('Create Zenodo DOI for workflow version', () => {
           window.ace.edit(editors[editors.length - 1]).setValue(wdlDescriptorFile, -1);
         });
       });
-      cy.wait(2000);
 
       cy.get('[id=saveNewVersionButton]').click();
+      cy.contains('Save as New Version').should('not.be.visible');
+
+      // Wait for the Publish button so it has a size greater than zero
+      // There doesn't seem to be a way around this issue
+      // https://github.com/cypress-io/cypress/issues/695
+      // cy.get('[id=publishButton]').invoke('width').should('be.greaterThan', 0)
       cy.wait(2000);
 
       cy.get('[id=publishButton]').invoke('text').then((text => {
@@ -137,14 +141,12 @@ describe('Create Zenodo DOI for workflow version', () => {
         }
       }));
 
-      cy.wait(5000);
+      cy.get('button', { timeout: 2000 }).should('contain', 'Unpublish').should('be.visible');
 
       goToTab('Versions');
-      cy.wait(2000);
 
       // There should be at least on unlock icon since we just added a new version
       // and haven't snapshotted it yet; but this will find any unsnapshotted version
-      // TODO: make this check the new version we added
       cy.get('[data-cy=dockstore-snapshot-unlocked]')
         .its('length')
         .should('be.gt', 0);
@@ -152,23 +154,41 @@ describe('Create Zenodo DOI for workflow version', () => {
       cy.get('[data-cy=dockstore-snapshot]')
         .first()
         .click();
-      cy.wait(2000);
+
+      cy.get('[data-cy=confirm-dialog-button]').should('be.visible');
 
       cy.get('[data-cy=confirm-dialog-button]').click();
-      cy.wait(2000);
 
        cy.get('[data-cy=dockstore-snapshot-locked]')
         .its('length')
         .should('be.gt', 0);
 
-      cy.get('[data-cy=dockstore-request-doi-button]').first().click();
+      // alias all of the tr's found in the Version table as 'rows'
+      cy.get('table').find('tr').as('versionrows');
+      // Cypress returns the reference to the <tr>'s
+      // which allows us to continue to chain commands
+      // finding the 1st row in the Versions table.
+      cy.get('@versionrows').first().get('[data-cy=dockstore-snapshot-locked]').should('be.visible');
+
+      cy.get('[data-cy=confirm-dialog-button]').should('not.be.visible');
+
+      // Wait for the Request DOI button so it has a size greater than zero
+      // There doesn't seem to be a way around this issue
+      // https://github.com/cypress-io/cypress/issues/695
+      // cy.get('[id=publishButton]').invoke('width').should('be.greaterThan', 0)
       cy.wait(2000);
 
+      cy.get('[data-cy=dockstore-request-doi-button]').first().click();
+
+      cy.get('[data-cy=confirm-dialog-button]').should('be.visible');
       cy.get('[data-cy=confirm-dialog-button]').click();
-      cy.wait(30000);
+      cy.get('[data-cy=confirm-dialog-button]', { timeout: 20000 }).should('not.be.visible');
+
+      cy.get('[data-cy=workflow-version-DOI-badge]').should('be.visible');
+
 
       goToTab('Info');
-      cy.wait(2000);
+      cy.get('[class=mat-card-header]').should('contain', 'Workflow Version Information');
 
       // Check that the DOI appears on the Info page for the new version
       cy.get('div').should('contain', '10.5072/zenodo.');
