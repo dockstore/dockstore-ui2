@@ -12,6 +12,7 @@ import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { TabsModule } from 'ngx-bootstrap';
 import { HomePageComponent } from './home-page.component';
 import { OldHomePageComponent, YoutubeComponent } from './old-home-page/old-home-page.component';
+import { RequestsComponent } from './widget/requests/requests.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,15 @@ import { OldHomePageComponent, YoutubeComponent } from './old-home-page/old-home
     ListContainersModule,
     TabsModule
   ],
-  declarations: [HomePageComponent, LoggedInBannerComponent, HomeComponent, HomeLoggedInComponent, OldHomePageComponent, YoutubeComponent],
+  declarations: [
+    HomePageComponent,
+    LoggedInBannerComponent,
+    HomeComponent,
+    HomeLoggedInComponent,
+    OldHomePageComponent,
+    YoutubeComponent,
+    RequestsComponent
+  ],
   entryComponents: [YoutubeComponent],
   exports: [NgxJsonLdModule]
 })
