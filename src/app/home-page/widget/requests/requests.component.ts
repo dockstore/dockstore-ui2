@@ -20,7 +20,10 @@ export class RequestsComponent implements OnInit {
     this.usersService.getUserMemberships().subscribe(
       (myMemberships: Array<OrganizationUser>) => {
         this.myOrganizationInvites = myMemberships.filter(membership => !membership.accepted);
-        this.myOrganizationRequests = myMemberships.filter(membership => membership.accepted);
+        this.myOrganizationRequests = myMemberships.filter(
+          membership =>
+            membership.accepted && (membership.organization.status === 'PENDING' || membership.organization.status === 'REJECTED')
+        );
 
         this.alertService.simpleSuccess();
       },
