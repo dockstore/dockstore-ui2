@@ -58,7 +58,7 @@
     "ngx-bootstrap": "^3.0.1",
     "ngx-clipboard": "^12.2.1",
     "ngx-markdown": "^8.1.0",
-    "pipeline-builder": "^0.3.10-dev.298",
+    "pipeline-builder": "^0.3.10-dev.313",
     "rxjs": "^6.5.3",
     "ts-md5": "^1.2.6",
     "zone.js": "~0.9.1"
