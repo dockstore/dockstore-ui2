@@ -33,9 +33,6 @@ jobs:
           name: Check dependencies
           command: bash -i -c 'npm ls'
       - run:
-          name: Check Angular Version
-          command: bash -i -c 'npx ng version'
-      - run:
           name: Lint
           command: bash -i -c 'npm run lint'
       - run:
