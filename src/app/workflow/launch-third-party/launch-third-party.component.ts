@@ -11,7 +11,7 @@ import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { DescriptorsQuery } from './state/descriptors-query';
-import { DescriptorsStore } from './state/descriptors-store.';
+import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
 import { combineLatest, Observable } from 'rxjs';
 import FileTypeEnum = ToolFile.FileTypeEnum;
