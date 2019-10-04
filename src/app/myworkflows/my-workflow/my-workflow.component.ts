@@ -138,10 +138,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       .subscribe(event => {
         const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
         if (groupEntriesObject && this.groupSharedEntriesObject) {
-          const foundWorkflow = this.findEntryFromPath(
-            this.urlResolverService.getEntryPathFromUrl(),
+          const foundWorkflow = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), <OrgWorkflowObject[]>(
             groupEntriesObject.concat(this.groupSharedEntriesObject)
-          );
+          ));
           this.selectEntry(foundWorkflow);
         }
       });
@@ -176,10 +175,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             // the url needs to be used to set the workflow onInit.
             // Otherwise, the select - tab.pipe results in really strange behaviour. Not entirely sure why.
             const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
-            const entry = this.findEntryFromPath(
-              this.urlResolverService.getEntryPathFromUrl(),
+            const entry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), <OrgWorkflowObject[]>(
               groupEntriesObject.concat(this.groupSharedEntriesObject)
-            );
+            ));
             if (entry) {
               // Call this.selectEntry to fix https://github.com/dockstore/dockstore/issues/2854
               this.selectEntry(entry);
@@ -219,7 +217,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   private getMyEntries() {
-    combineLatest(this.userQuery.user$, this.sessionQuery.entryType$)
+    combineLatest([this.userQuery.user$, this.sessionQuery.entryType$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([user, entryType]) => {
         if (user && entryType) {

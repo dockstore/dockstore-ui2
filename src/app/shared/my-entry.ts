@@ -41,9 +41,9 @@ export abstract class MyEntry extends Base implements OnDestroy {
   oneAtATime = true;
   user: any;
   public hasGitHubToken = true;
-  public groupEntriesObject$: Observable<Array<any>>;
+  public groupEntriesObject$: Observable<Array<OrgToolObject | OrgWorkflowObject>>;
   public hasGroupEntriesObject$: Observable<boolean>;
-  public groupSharedEntriesObject: Array<any>;
+  public groupSharedEntriesObject: Array<OrgToolObject | OrgWorkflowObject>;
   public myEntryPageTitle$: Observable<string>;
 
   protected ngUnsubscribe: Subject<{}> = new Subject();
@@ -167,7 +167,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
     }
   }
 
-  setGroupEntriesObject(sortedEntries: any): void {
+  setGroupEntriesObject(sortedEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>): void {
     if (sortedEntries && sortedEntries.length > 0) {
       this.myEntriesStateService.setGroupEntriesObject(this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries));
     }

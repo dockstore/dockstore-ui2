@@ -105,7 +105,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       .subscribe(() => {
         const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
         if (groupEntriesObject) {
-          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), groupEntriesObject);
+          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), <OrgToolObject[]>groupEntriesObject);
           this.selectEntry(foundTool);
         }
       });
