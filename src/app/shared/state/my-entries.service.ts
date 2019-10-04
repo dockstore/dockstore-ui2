@@ -13,4 +13,13 @@ export class MyEntriesStateService {
       };
     });
   }
+
+  setGroupEntriesObject(groupEntriesObject: Array<any>): void {
+    this.myEntriesStore.update(state => {
+      return {
+        ...state,
+        groupEntriesObject: groupEntriesObject
+      };
+    });
+  }
 }

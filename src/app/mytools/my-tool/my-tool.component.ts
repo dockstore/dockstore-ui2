@@ -21,6 +21,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -76,7 +77,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private toolQuery: ToolQuery,
     private alertQuery: AlertQuery,
     protected sessionQuery: SessionQuery,
-    protected myEntriesQuery: MyEntriesQuery
+    protected myEntriesQuery: MyEntriesQuery,
+    protected myEntriesStateService: MyEntriesStateService
   ) {
     super(
       accountsService,
@@ -88,7 +90,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
       sessionService,
       activatedRoute,
       myEntriesQuery,
-      userQuery
+      userQuery,
+      myEntriesStateService
     );
   }
 
@@ -139,7 +142,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   private getMyEntries() {
-    combineLatest(this.userQuery.user$, this.sessionQuery.entryType$)
+    combineLatest([this.userQuery.user$, this.sessionQuery.entryType$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([user, entryType]) => {
         if (user && entryType) {

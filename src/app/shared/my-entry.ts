@@ -28,6 +28,7 @@ import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
 import { MyEntriesQuery } from './state/my-entries.query';
+import { MyEntriesStateService } from './state/my-entries.service';
 import { TokenQuery } from './state/token.query';
 import { Configuration, DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
@@ -55,7 +56,8 @@ export abstract class MyEntry extends Base implements OnDestroy {
     protected sessionService: SessionService,
     protected activatedRoute: ActivatedRoute,
     protected myEntriesQuery: MyEntriesQuery,
-    protected userQuery: UserQuery
+    protected userQuery: UserQuery,
+    protected myEntriesStateService: MyEntriesStateService
   ) {
     super();
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
@@ -164,6 +166,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
   setGroupEntriesObject(sortedEntries: any): void {
     if (sortedEntries && sortedEntries.length > 0) {
       this.groupEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
+      this.myEntriesStateService.setGroupEntriesObject(this.groupEntriesObject);
     }
   }
 }

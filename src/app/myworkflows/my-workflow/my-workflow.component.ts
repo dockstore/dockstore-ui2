@@ -42,6 +42,7 @@ import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 
 /**
  * How the workflow selection works:
@@ -97,7 +98,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected sessionService: SessionService,
     protected sessionQuery: SessionQuery,
     private myWorkflowsService: MyWorkflowsService,
-    protected myEntriesQuery: MyEntriesQuery
+    protected myEntriesQuery: MyEntriesQuery,
+    protected myEntriesStateService: MyEntriesStateService
   ) {
     super(
       accountsService,
@@ -109,7 +111,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       sessionService,
       activatedRoute,
       myEntriesQuery,
-      userQuery
+      userQuery,
+      myEntriesStateService
     );
     this.entryType = this.sessionQuery.getValue().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
@@ -149,7 +152,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.getMyEntries();
 
     // Using the workflows and shared with me workflows, initialize the organization groupings and set the initial entry
-    combineLatest(this.workflowService.workflows$, this.workflowService.sharedWorkflows$)
+    combineLatest([this.workflowService.workflows$, this.workflowService.sharedWorkflows$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         ([workflows, sharedWorkflows]: [Workflow[], Workflow[]]) => {
@@ -205,7 +208,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   private fixGroupEntriesObjects() {
     if (!this.groupEntriesObject) {
-      this.groupEntriesObject = [];
+      this.myEntriesStateService.setGroupEntriesObject([]);
     }
     if (!this.groupSharedEntriesObject) {
       this.groupSharedEntriesObject = [];
