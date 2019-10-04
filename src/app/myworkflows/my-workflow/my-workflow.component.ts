@@ -136,10 +136,11 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(event => {
-        if (this.groupEntriesObject && this.groupSharedEntriesObject) {
+        const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
+        if (groupEntriesObject && this.groupSharedEntriesObject) {
           const foundWorkflow = this.findEntryFromPath(
             this.urlResolverService.getEntryPathFromUrl(),
-            this.groupEntriesObject.concat(this.groupSharedEntriesObject)
+            groupEntriesObject.concat(this.groupSharedEntriesObject)
           );
           this.selectEntry(foundWorkflow);
         }
@@ -174,9 +175,10 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             // If a user navigates directly to an unpublished workflow on their my-workflows page (via bookmark, refresh),
             // the url needs to be used to set the workflow onInit.
             // Otherwise, the select - tab.pipe results in really strange behaviour. Not entirely sure why.
+            const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
             const entry = this.findEntryFromPath(
               this.urlResolverService.getEntryPathFromUrl(),
-              this.groupEntriesObject.concat(this.groupSharedEntriesObject)
+              groupEntriesObject.concat(this.groupSharedEntriesObject)
             );
             if (entry) {
               // Call this.selectEntry to fix https://github.com/dockstore/dockstore/issues/2854
@@ -207,8 +209,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * @memberof MyWorkflowComponent
    */
   private fixGroupEntriesObjects() {
-    if (!this.groupEntriesObject) {
-      this.groupEntriesObject = [];
+    const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
+    if (!groupEntriesObject) {
       this.myEntriesStateService.setGroupEntriesObject([]);
     }
     if (!this.groupSharedEntriesObject) {

@@ -103,8 +103,9 @@ export class MyToolComponent extends MyEntry implements OnInit {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        if (this.groupEntriesObject) {
-          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
+        const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
+        if (groupEntriesObject) {
+          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), groupEntriesObject);
           this.selectEntry(foundTool);
         }
       });

@@ -84,12 +84,10 @@
                 </mat-toolbar-row>
               </mat-toolbar>
             </div>
-            <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">
-              You have not registered any {{ entryType$ | async }}s
-            </p>
+            <p *ngIf="!(hasGroupEntriesObject$ | async)">You have not registered any {{ entryType$ | async }}s</p>
             <app-sidebar-accordion
               [openOneAtATime]="oneAtATime"
-              [groupEntriesObject]="groupEntriesObject"
+              [groupEntriesObject]="groupEntriesObject$ | async"
               [refreshMessage]="isRefreshing$ | async"
             ></app-sidebar-accordion>
             <br />
@@ -117,8 +115,7 @@
         <div
           *ngIf="
             !(isRefreshing$ | async) &&
-            ((groupEntriesObject?.length == 0 || !groupEntriesObject) &&
-              (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))
+            (!(hasGroupEntriesObject$ | async) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))
           "
         >
           <div class="col-md-12">

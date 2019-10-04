@@ -41,7 +41,8 @@ export abstract class MyEntry extends Base implements OnDestroy {
   oneAtATime = true;
   user: any;
   public hasGitHubToken = true;
-  public groupEntriesObject: Array<any>;
+  public groupEntriesObject$: Observable<Array<any>>;
+  public hasGroupEntriesObject$: Observable<boolean>;
   public groupSharedEntriesObject: Array<any>;
   public myEntryPageTitle$: Observable<string>;
 
@@ -60,6 +61,8 @@ export abstract class MyEntry extends Base implements OnDestroy {
     protected myEntriesStateService: MyEntriesStateService
   ) {
     super();
+    this.groupEntriesObject$ = this.myEntriesQuery.groupEntriesObject$;
+    this.hasGroupEntriesObject$ = this.myEntriesQuery.hasGroupEntriesObject$;
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.myEntryPageTitle$ = this.sessionQuery.myEntryPageTitle$;
     this.refreshingMyEntries$ = this.myEntriesQuery.refreshingMyEntries$;
@@ -143,9 +146,10 @@ export abstract class MyEntry extends Base implements OnDestroy {
   selectInitialEntry(sortedEntries: any): void {
     /* For the first initial time, set the first entry to be the selected one */
     if (sortedEntries && sortedEntries.length > 0) {
+      const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
       const foundEntry = this.findEntryFromPath(
         this.urlResolverService.getEntryPathFromUrl(),
-        this.combineArrays(this.groupEntriesObject, this.groupSharedEntriesObject)
+        this.combineArrays(groupEntriesObject, this.groupSharedEntriesObject)
       );
       if (foundEntry) {
         this.selectEntry(foundEntry);
@@ -165,8 +169,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
 
   setGroupEntriesObject(sortedEntries: any): void {
     if (sortedEntries && sortedEntries.length > 0) {
-      this.groupEntriesObject = this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries);
-      this.myEntriesStateService.setGroupEntriesObject(this.groupEntriesObject);
+      this.myEntriesStateService.setGroupEntriesObject(this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries));
     }
   }
 }
