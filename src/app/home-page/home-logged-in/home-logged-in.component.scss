@@ -2,16 +2,32 @@
 .random-card {
   min-height: 400px;
   min-width: 300px;
-  background-color: red;
 }
 
 // This is a sample section and should probably be more flexible
 .random-section {
   min-height: 300px;
   min-width: 600px;
-  background-color: blue;
+}
+
+.random-section-sm {
+  min-height: 100px;
+  min-width: 600px;
 }
 
 .twitter {
   border: 1px solid #cfd1d7;
+}
+
+.example-container {
+  display: flex;
+  min-height: 500px;
+}
+
+.example-sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  background: whitesmoke;
 }

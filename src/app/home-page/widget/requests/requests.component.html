@@ -1,35 +1,28 @@
-<mat-card>
-  <mat-card-title>
-    Requests
-  </mat-card-title>
+<div class="p-4">
+  <h3>Requests</h3>
+  <div *ngIf="myOrganizationInvites?.length == 0 && myOrganizationRequests?.length == 0; else hasRequests">
+    <p>You have no requests</p>
+  </div>
 
-  <mat-card-content>
-    <div *ngIf="myOrganizationInvites?.length == 0 && myOrganizationRequests?.length == 0; else hasRequests">
-      <p>You have no requests</p>
-    </div>
-
-    <ng-template #hasRequests>
-      <mat-list role="list">
-        <mat-list-item role="listitem" *ngIf="myOrganizationInvites?.length > 0">
-          <mat-chip-list>
-            <mat-chip>{{ myOrganizationInvites?.length }}</mat-chip> Organization invite<span *ngIf="myOrganizationInvites?.length != 1"
-              >s</span
-            >
-          </mat-chip-list>
-        </mat-list-item>
-        <mat-list-item role="listitem" *ngIf="myOrganizationRequests?.length > 0">
-          <mat-chip-list>
-            <mat-chip>{{ myOrganizationRequests?.length }}</mat-chip> Organization request<span *ngIf="myOrganizationRequests?.length != 1"
-              >s</span
-            >
-          </mat-chip-list>
-        </mat-list-item>
-      </mat-list>
-    </ng-template>
-  </mat-card-content>
-  <mat-card-actions class="clearfix">
-    <a [routerLink]="['/accounts']" [queryParams]="{ tab: 'requests' }" class="mx-3 pull-right">
-      View requests
-    </a>
-  </mat-card-actions>
-</mat-card>
+  <ng-template #hasRequests>
+    <mat-list role="list">
+      <mat-list-item role="listitem" *ngIf="myOrganizationInvites?.length > 0">
+        <mat-chip-list>
+          <mat-chip>{{ myOrganizationInvites?.length }}</mat-chip> Organization invite<span *ngIf="myOrganizationInvites?.length != 1"
+            >s</span
+          >
+        </mat-chip-list>
+      </mat-list-item>
+      <mat-list-item role="listitem" *ngIf="myOrganizationRequests?.length > 0">
+        <mat-chip-list>
+          <mat-chip>{{ myOrganizationRequests?.length }}</mat-chip> Organization request<span *ngIf="myOrganizationRequests?.length != 1"
+            >s</span
+          >
+        </mat-chip-list>
+      </mat-list-item>
+    </mat-list>
+  </ng-template>
+  <a [routerLink]="['/accounts']" [queryParams]="{ tab: 'requests' }" class="mx-3 pull-right">
+    View requests
+  </a>
+</div>

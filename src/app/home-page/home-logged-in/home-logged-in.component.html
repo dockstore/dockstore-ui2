@@ -20,28 +20,50 @@
   </div>
 </div>
 
-<!-- This is the entire button part -->
-<div class="py-4" fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="20px">
-  <!-- This is the entire left side bar -->
-  <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px" class="py-4">
-    <!-- This is the Notifications card -->
+<mat-sidenav-container class="example-container">
+  <mat-sidenav opened mode="side" class="example-sidenav">
     <app-requests></app-requests>
-    <!-- This is the My Entries accordion -->
-    <div class="random-card"></div>
-    <!-- This is the twitter feed -->
-    <div class="twitter twitter-container">
-      <a class="twitter-timeline" data-theme="light" data-height="800" href="https://twitter.com/DockstoreOrg">
-        Tweets by DockstoreOrg
-      </a>
+    <div class="p-4">
+      <h3>Recent tools and workflows</h3>
     </div>
-  </div>
-  <!-- This is the entire right side elements -->
-  <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="py-4">
-    <!-- This is the News and Updates -->
-    <div class="random-section"></div>
-    <!-- This is the Explore Featured Content -->
-    <div class="random-section"></div>
-    <!-- This is Where to start? -->
-    <div class="random-section"></div>
-  </div>
-</div>
+
+    <div class="p-4">
+      <h3>Recent organizations</h3>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav opened mode="side" class="example-sidenav" position="end">
+    <div class="p-4">
+      <h3>Links</h3>
+      <ul>
+        <li><a routerLink="quick-start">Quickstart</a></li>
+        <li><a routerLink="accounts">My Account</a></li>
+        <li><a routerLink="starred">My Starred</a></li>
+        <li><a href="https://discuss.dockstore.org/" target="_blank" rel="noopener noreferrer">Discourse</a></li>
+      </ul>
+    </div>
+    <div class="m-4">
+      <h3>Twitter</h3>
+      <div class="twitter twitter-container">
+        <a class="twitter-timeline" data-theme="light" data-height="800" href="https://twitter.com/DockstoreOrg">
+          Tweets by DockstoreOrg
+        </a>
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content style="width: 100%">
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="p-4">
+      <!-- This is the News and Updates -->
+      <div class="random-section-sm">
+        <h3>News and Updates</h3>
+      </div>
+      <!-- This is the Explore Featured Content -->
+      <div class="random-section">
+        <h3>Explore Featured Content</h3>
+      </div>
+      <!-- This is Where to start? -->
+      <div class="random-section">
+        <h3>Recent Activity</h3>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
