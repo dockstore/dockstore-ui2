@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { createInitialState, DescriptorsState, DescriptorsStore } from './descriptors-store.';
+import { createInitialState, DescriptorsState, DescriptorsStore } from './descriptors-store';
 import { map, mergeMap } from 'rxjs/operators';
 import { Observable, of as observableOf } from 'rxjs';
 import { SourceFile } from '../../../shared/swagger';
