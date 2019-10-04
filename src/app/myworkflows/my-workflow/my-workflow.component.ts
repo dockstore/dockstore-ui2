@@ -21,6 +21,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { TokenService } from 'app/shared/state/token.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
@@ -42,7 +43,6 @@ import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
-import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 
 /**
  * How the workflow selection works:
@@ -208,6 +208,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   private fixGroupEntriesObjects() {
     if (!this.groupEntriesObject) {
+      this.groupEntriesObject = [];
       this.myEntriesStateService.setGroupEntriesObject([]);
     }
     if (!this.groupSharedEntriesObject) {
