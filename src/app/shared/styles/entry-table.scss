@@ -9,7 +9,8 @@
 }
 
 .mat-column-projectLinks {
-  max-width: 175px;
+  justify-content: center;
+  max-width: 115px;
 }
 
 .mat-cell:not(:first-of-type),
@@ -34,7 +35,7 @@
 }
 
 .mat-column-author {
-  flex: 0 0 140px;
+  flex: 0 0 180px;
 }
 
 .mat-column-name {

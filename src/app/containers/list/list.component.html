@@ -63,9 +63,12 @@
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
       <mat-cell *matCellDef="let tool">
-        <a [href]="tool?.providerUrl"> <a class="{{ tool?.providerUrl | projectIcon }}"> </a></a>
-        <a [href]="tool?.imgProviderUrl">
-          {{ tool?.imgProvider }}
+        <a [href]="tool?.providerUrl" *ngIf="tool?.providerUrl">
+          <fa-icon class="fa-lg" [icon]="tool.providerIcon" [matTooltip]="tool?.provider"> </fa-icon>
+        </a>
+        &nbsp;
+        <a [href]="tool?.imgProviderUrl" *ngIf="tool?.imgProviderUrl">
+          <fa-icon class="fa-lg" [icon]="tool.imgProviderIcon" [matTooltip]="tool?.imgProvider"> </fa-icon>
         </a>
       </mat-cell>
     </ng-container>

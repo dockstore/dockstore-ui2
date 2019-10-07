@@ -19,6 +19,10 @@ import { ContainersStubService } from '../test/service-stubs';
 import { ContainersService } from './swagger/api/containers.service';
 import { ImageProviderService } from './image-provider.service';
 import { TestBed, inject } from '@angular/core/testing';
+import { validTool } from '../test/mocked-objects';
+import { faQuay, faWhale } from './custom-icons';
+import { faDocker, faGitlab } from '@fortawesome/free-brands-svg-icons';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 
 describe('ImageProviderService', () => {
   beforeEach(() => {
@@ -89,5 +93,17 @@ describe('ImageProviderService', () => {
     expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual(
       'https://gitlab.com/dockstore-testing/dockstore-tool-bamstats/container_registry'
     );
+  }));
+  it('should display appropriate icons for imgProviders', inject([ImageProviderService], (service: ImageProviderService) => {
+    const tool: ExtendedDockstoreTool = validTool;
+    expect(service.setUpImageProvider(tool).imgProviderIcon).toEqual(faQuay);
+    tool.registry = DockstoreTool.RegistryEnum.DOCKERHUB;
+    expect(service.setUpImageProvider(tool).imgProviderIcon).toEqual(faDocker);
+    tool.registry = DockstoreTool.RegistryEnum.GITLAB;
+    expect(service.setUpImageProvider(tool).imgProviderIcon).toEqual(faGitlab);
+    tool.registry = DockstoreTool.RegistryEnum.SEVENBRIDGES;
+    expect(service.setUpImageProvider(tool).imgProviderIcon).toEqual(faWhale);
+    tool.registry = DockstoreTool.RegistryEnum.AMAZONECR;
+    expect(service.setUpImageProvider(tool).imgProviderIcon).toEqual(faWhale);
   }));
 });

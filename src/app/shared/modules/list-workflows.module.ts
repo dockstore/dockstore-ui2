@@ -21,10 +21,11 @@ import { ListWorkflowsComponent } from '../../workflows/list/list.component';
 import { PublishedWorkflowsDataSource } from '../../workflows/list/published-workflows.datasource';
 import { HeaderModule } from './header.module';
 import { CustomMaterialModule } from './material.module';
+import { EntryModule } from '../entry/entry.module';
 
 @NgModule({
   declarations: [ListWorkflowsComponent],
-  imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule, TabsModule],
+  imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule, TabsModule, EntryModule],
   providers: [PublishedWorkflowsDataSource],
   exports: [ListWorkflowsComponent]
 })

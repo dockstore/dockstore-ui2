@@ -16,6 +16,9 @@
 
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { faBitbucket, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
+import { faDockstore, faWhale } from './custom-icons';
 
 export class ProviderService {
   /* set up project provider */
@@ -24,7 +27,28 @@ export class ProviderService {
 
     tool.provider = this.getProvider(gitUrl);
     tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
+    tool.providerIcon = this.getProviderIcon(tool.providerUrl);
     return tool;
+  }
+
+  private getProviderIcon(providerUrl: string): IconDefinition {
+    if (!providerUrl) {
+      return null;
+    }
+    if (providerUrl.startsWith('https://github.com/')) {
+      return faGithub;
+    }
+    if (providerUrl.startsWith('https://bitbucket.org/')) {
+      return faBitbucket;
+    }
+    if (providerUrl.startsWith('https://gitlab.com/')) {
+      return faGitlab;
+    }
+    if (providerUrl.startsWith('https://dockstore.org')) {
+      return faDockstore;
+    } else {
+      return faWhale;
+    }
   }
 
   // TODO: Without an anchor, this looks fragile (github repo that included the string " bitbucket.org" in its name)

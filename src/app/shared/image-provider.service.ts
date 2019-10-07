@@ -16,8 +16,11 @@
 
 import { Injectable } from '@angular/core';
 
-import { ContainersService } from './swagger';
+import { ContainersService, DockstoreTool } from './swagger';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { faDocker, faGitlab, IconDefinition } from '@fortawesome/free-brands-svg-icons';
+import { faWhale, faQuay } from './custom-icons';
+import RegistryEnum = DockstoreTool.RegistryEnum;
 
 @Injectable()
 export class ImageProviderService {
@@ -49,10 +52,28 @@ export class ImageProviderService {
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
       tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+      tool.imgProviderIcon = this.getImageProviderIcon(tool.registry);
     }
     return tool;
   }
 
+  private getImageProviderIcon(registry: RegistryEnum): IconDefinition {
+    if (!registry) {
+      return null;
+    }
+    switch (registry) {
+      case RegistryEnum.QUAYIO:
+        return faQuay;
+      case RegistryEnum.DOCKERHUB:
+        return faDocker;
+      case RegistryEnum.GITLAB:
+        return faGitlab;
+      case RegistryEnum.SEVENBRIDGES: //TODO: Get SevenBridges Icon
+      case RegistryEnum.AMAZONECR: //TODO: Get AMAZON_ECR Icon
+      default:
+        return faWhale;
+    }
+  }
   private getImageProvider(imageProvider: string): any {
     if (this.dockerRegistryList) {
       return this.dockerRegistryList.find(dockerRegistry => dockerRegistry.enum === imageProvider);
