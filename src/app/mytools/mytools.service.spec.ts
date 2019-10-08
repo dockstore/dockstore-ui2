@@ -20,6 +20,7 @@ import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { ContainerStubService } from 'app/test/service-stubs';
 import { DockstoreTool } from '../shared/swagger';
 import { MytoolsService } from './mytools.service';
@@ -152,14 +153,18 @@ describe('MytoolsService', () => {
   const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MytoolsService, { provide: ContainerService, useClass: ContainerStubService }],
+      providers: [
+        MytoolsService,
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: UrlResolverService, useclass: UrlResolverService }
+      ],
       imports: [CustomMaterialModule, HttpClientTestingModule, MyEntriesModule]
     });
   });
-  it('should ...', inject([MytoolsService], (service: MytoolsService) => {
+  it('should ...', inject([MytoolsService, UrlResolverService], (service: MytoolsService) => {
     expect(service).toBeTruthy();
   }));
-  it('should ...', inject([MytoolsService], (service: MytoolsService) => {
+  it('should ...', inject([MytoolsService, UrlResolverService], (service: MytoolsService) => {
     expect(service.sortGroupEntries(tools, 'asdf', EntryType.Tool).length).toBe(3);
     expect(service.sortGroupEntries(tools, 'asdf', EntryType.Tool)).toEqual(expectedResult);
     expect(service.sortGroupEntries([], 'asdf', EntryType.Tool)).toEqual([]);
