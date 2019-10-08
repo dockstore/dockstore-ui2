@@ -39,7 +39,7 @@ export class ProviderService {
     if (provider === 'GitHub') {
       return faGithub;
     }
-    if (provider === 'BitBucket') {
+    if (provider === 'Bitbucket') {
       return faBitbucket;
     }
     if (provider === 'GitLab') {
