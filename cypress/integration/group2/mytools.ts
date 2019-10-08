@@ -24,12 +24,12 @@ describe('Dockstore my tools', () => {
   });
 
   function selectUnpublishedTab(org: string) {
-    cy.contains(org)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-tab-label-content', 'Unpublished')
-      .should('be.visible')
-      .click();
+      cy.wait(1000);
+          cy.contains(org)
+            .parentsUntil('mat-accordion')
+            .should('be.visible')
+            .contains('.mat-tab-label-content', 'Unpublished')
+            .click();
   }
 
   function selectTool(tool: string) {

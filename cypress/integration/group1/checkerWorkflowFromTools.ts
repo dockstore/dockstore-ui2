@@ -24,6 +24,7 @@ describe('Checker workflow test from my-tools', () => {
   });
 
   function goToB3() {
+    cy.wait(1000);
     cy.contains('quay.io/A2')
       .parentsUntil('accordion-group')
       .contains('div .no-wrap', /\bb3\b/)
