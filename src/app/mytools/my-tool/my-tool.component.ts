@@ -130,10 +130,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       map(combinedObservable => {
         const tools = combinedObservable[0];
         const tool = combinedObservable[1];
-        const orgToolObjects: OrgToolObject[] = this.mytoolsService.convertToolsToOrgToolObject(tools);
-        this.mytoolsService.recursiveSortOrgToolObjects(orgToolObjects);
-        this.mytoolsService.setExpand(orgToolObjects, tool);
-        return orgToolObjects;
+        return this.mytoolsService.convertToolsToOrgToolObject(tools, tool);
       })
     );
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
@@ -144,7 +141,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
   }
 
-  private getMyEntries() {
+  protected getMyEntries() {
     combineLatest([this.userQuery.user$, this.sessionQuery.entryType$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([user, entryType]) => {

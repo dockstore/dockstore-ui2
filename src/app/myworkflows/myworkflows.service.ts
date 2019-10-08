@@ -25,6 +25,7 @@ import { MyEntriesService } from 'app/shared/myentries.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
 import { Observable } from 'rxjs';
@@ -45,7 +46,8 @@ export class MyWorkflowsService extends MyEntriesService {
     private myBioWorkflowsService: MyBioWorkflowsService,
     private myServicesService: MyServicesService,
     private sessionQuery: SessionQuery,
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    public urlResolverService: UrlResolverService
   ) {
     super();
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
@@ -156,9 +158,124 @@ export class MyWorkflowsService extends MyEntriesService {
     }
   }
 
-  private convertWorkflowsToOrgWorkflowObject(workflows: Workflow[]): OrgWorkflowObject[] {
-    const orgWorkflowObjects = [];
-    workflows.forEach(workflow => {});
-    return orgWorkflowObjects;
+  recomputeWhatToolToSelect(tools: Workflow[]): Workflow | null {
+    const foundTool = this.findWorkflowFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
+    if (foundTool) {
+      return foundTool;
+    } else {
+      const initialEntry = this.getInitialEntry(tools);
+      if (initialEntry) {
+        return initialEntry;
+      } else {
+        return null;
+      }
+    }
+  }
+
+  convertToolsToOrgToolObject(tools: Workflow[], selectedTool: Workflow): OrgWorkflowObject[] {
+    if (!tools) {
+      return [];
+    }
+    const orgToolObjects: OrgWorkflowObject[] = [];
+    tools.forEach(tool => {
+      const existingOrgToolObject = orgToolObjects.find(
+        orgToolObject => orgToolObject.sourceControl === tool.sourceControl && orgToolObject.organization === tool.organization
+      );
+      if (existingOrgToolObject) {
+        if (tool.is_published) {
+          existingOrgToolObject.published.push(tool);
+        } else {
+          existingOrgToolObject.unpublished.push(tool);
+        }
+      } else {
+        const newOrgToolObject: OrgWorkflowObject = {
+          sourceControl: tool.sourceControl,
+          organization: tool.organization,
+          published: tool.is_published ? [tool] : [],
+          unpublished: tool.is_published ? [] : [tool],
+          expanded: false
+        };
+        orgToolObjects.push(newOrgToolObject);
+      }
+    });
+    this.recursiveSortOrgToolObjects(orgToolObjects);
+    this.setExpand(orgToolObjects, selectedTool);
+    return orgToolObjects;
+  }
+
+  protected recursiveSortOrgToolObjects(orgToolObjects: OrgWorkflowObject[]) {
+    orgToolObjects.forEach(orgToolObject => {
+      orgToolObject.published.sort(this.sortWorkflows);
+    });
+    orgToolObjects.sort(this.sortOrgToolObjects);
+  }
+
+  protected sortWorkflows(toolA: Workflow, toolB: Workflow): number {
+    const keyA = toolA.full_workflow_path.toLowerCase();
+    const keyB = toolB.full_workflow_path.toLowerCase();
+    if (keyA < keyB) {
+      return -1;
+    }
+    if (keyA > keyB) {
+      return 1;
+    }
+    return 0;
+  }
+
+  protected sortOrgToolObjects(orgToolObjectA: OrgWorkflowObject, orgToolObjectB: OrgWorkflowObject): number {
+    const keyA = [orgToolObjectA.sourceControl, orgToolObjectA.organization].join('/').toLowerCase();
+    const keyB = [orgToolObjectB.sourceControl, orgToolObjectB.organization].join('/').toLowerCase();
+    if (keyA < keyB) {
+      return -1;
+    }
+    if (keyA > keyB) {
+      return 1;
+    }
+    return 0;
+  }
+
+  protected setExpand(orgWorkflowObjects: OrgWorkflowObject[], selectedWorkflow: Workflow) {
+    if (!selectedWorkflow) {
+      return;
+    }
+    const foundOrgWorkflowObject = orgWorkflowObjects.find(orgToolObject => {
+      return orgToolObject.sourceControl === selectedWorkflow.sourceControl && orgToolObject.organization === selectedWorkflow.organization;
+    });
+    if (foundOrgWorkflowObject) {
+      foundOrgWorkflowObject.expanded = true;
+    }
+  }
+
+  /**
+   * Precondition: URL does not yield any useful tool
+   * Select the first published tool. If there's no published, select the first unpublished tool.
+   * @param workflows
+   */
+  protected getInitialEntry(workflows: Workflow[] | null): Workflow | null {
+    if (!workflows || workflows.length === 0) {
+      return null;
+    }
+    const publishedWorkflows = workflows.filter(workflow => workflow.is_published);
+    if (publishedWorkflows.length > 0) {
+      publishedWorkflows.sort(this.sortWorkflows);
+      return publishedWorkflows[0];
+    } else {
+      const unpublishedWorkflows = workflows.filter(workflow => !workflow.is_published);
+      if (unpublishedWorkflows.length > 0) {
+        unpublishedWorkflows.sort(this.sortWorkflows);
+        return unpublishedWorkflows[0];
+      } else {
+        return null;
+      }
+    }
+  }
+
+  private findWorkflowFromPath(path: string | null, workflows: Workflow[] | null): Workflow | null {
+    if (!path || !workflows || workflows.length === 0) {
+      return null;
+    }
+    return workflows.find(workflow => {
+      return workflow.full_workflow_path === path;
+    });
   }
 }

@@ -60,7 +60,21 @@ export class MytoolsService extends MyEntriesService {
 
   registerEntry(entryType: EntryType) {}
 
-  convertToolsToOrgToolObject(tools: DockstoreTool[]): OrgToolObject[] {
+  recomputeWhatToolToSelect(tools: DockstoreTool[]): DockstoreTool | null {
+    const foundTool = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
+    if (foundTool) {
+      return foundTool;
+    } else {
+      const initialEntry = this.getInitialEntry(tools);
+      if (initialEntry) {
+        return initialEntry;
+      } else {
+        return null;
+      }
+    }
+  }
+
+  convertToolsToOrgToolObject(tools: DockstoreTool[], selectedTool: DockstoreTool): OrgToolObject[] {
     if (!tools) {
       return [];
     }
@@ -86,17 +100,19 @@ export class MytoolsService extends MyEntriesService {
         orgToolObjects.push(newOrgToolObject);
       }
     });
+    this.recursiveSortOrgToolObjects(orgToolObjects);
+    this.setExpand(orgToolObjects, selectedTool);
     return orgToolObjects;
   }
 
-  recursiveSortOrgToolObjects(orgToolObjects: OrgToolObject[]) {
+  protected recursiveSortOrgToolObjects(orgToolObjects: OrgToolObject[]) {
     orgToolObjects.forEach(orgToolObject => {
       orgToolObject.published.sort(this.sortTools);
     });
     orgToolObjects.sort(this.sortOrgToolObjects);
   }
 
-  sortTools(toolA: DockstoreTool, toolB: DockstoreTool): number {
+  protected sortTools(toolA: DockstoreTool, toolB: DockstoreTool): number {
     const keyA = toolA.tool_path.toLowerCase();
     const keyB = toolB.tool_path.toLowerCase();
     if (keyA < keyB) {
@@ -108,7 +124,7 @@ export class MytoolsService extends MyEntriesService {
     return 0;
   }
 
-  sortOrgToolObjects(orgToolObjectA: OrgToolObject, orgToolObjectB: OrgToolObject): number {
+  protected sortOrgToolObjects(orgToolObjectA: OrgToolObject, orgToolObjectB: OrgToolObject): number {
     const keyA = [orgToolObjectA.registry, orgToolObjectA.namespace].join('/').toLowerCase();
     const keyB = [orgToolObjectB.registry, orgToolObjectB.namespace].join('/').toLowerCase();
     if (keyA < keyB) {
@@ -120,7 +136,7 @@ export class MytoolsService extends MyEntriesService {
     return 0;
   }
 
-  setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool) {
+  protected setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool) {
     if (!selectedTool) {
       return;
     }
@@ -137,7 +153,7 @@ export class MytoolsService extends MyEntriesService {
    * Select the first published tool. If there's no published, select the first unpublished tool.
    * @param tools
    */
-  getInitialEntry(tools: DockstoreTool[] | null): DockstoreTool | null {
+  protected getInitialEntry(tools: DockstoreTool[] | null): DockstoreTool | null {
     if (!tools || tools.length === 0) {
       return null;
     }
@@ -146,31 +162,17 @@ export class MytoolsService extends MyEntriesService {
       publishedTools.sort(this.sortTools);
       return publishedTools[0];
     } else {
-      const unPublishedTools = tools.filter(tool => !tool.is_published);
-      if (unPublishedTools.length > 0) {
-        unPublishedTools.sort(this.sortTools);
-        return unPublishedTools[0];
+      const unpublishedTools = tools.filter(tool => !tool.is_published);
+      if (unpublishedTools.length > 0) {
+        unpublishedTools.sort(this.sortTools);
+        return unpublishedTools[0];
       } else {
         return null;
       }
     }
   }
 
-  recomputeWhatToolToSelect(tools: DockstoreTool[]): DockstoreTool | null {
-    const foundTool = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
-    if (foundTool) {
-      return foundTool;
-    } else {
-      const initialEntry = this.getInitialEntry(tools);
-      if (initialEntry) {
-        return initialEntry;
-      } else {
-        return null;
-      }
-    }
-  }
-
-  private findToolFromPath(path: string | null, tools: DockstoreTool[] | null): DockstoreTool | null {
+  protected findToolFromPath(path: string | null, tools: DockstoreTool[] | null): DockstoreTool | null {
     if (!path || !tools || tools.length === 0) {
       return null;
     }

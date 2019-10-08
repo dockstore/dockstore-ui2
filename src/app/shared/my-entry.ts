@@ -71,6 +71,8 @@ export abstract class MyEntry extends Base implements OnDestroy {
   public abstract setRegisterEntryModalInfo(gitURLOrNamespace: String): void;
   public abstract showRegisterEntryModal(): void;
   public abstract refreshAllEntries(): void;
+  protected abstract getMyEntries(): void;
+  public abstract toggleSidebar(): void;
 
   commonMyEntriesOnInit(): void {
     localStorage.setItem('page', this.pageName);
