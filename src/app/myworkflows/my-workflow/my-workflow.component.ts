@@ -17,6 +17,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
+import { OrgToolObject } from 'app/mytools/my-tool/my-tool.component';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
@@ -116,6 +117,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     );
     this.entryType = this.sessionQuery.getValue().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
+    this.groupEntriesObject$ = this.myEntriesQuery.groupEntriesObject$;
   }
 
   ngOnInit() {
@@ -254,6 +256,34 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   /**
+   * Select the initially selected entry
+   * @param sortedEntries Array of sorted entries
+   */
+  selectInitialEntry(sortedEntries: any): void {
+    /* For the first initial time, set the first entry to be the selected one */
+    if (sortedEntries && sortedEntries.length > 0) {
+      const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
+      const foundEntry = this.findEntryFromPath(
+        this.urlResolverService.getEntryPathFromUrl(),
+        this.combineArrays(groupEntriesObject, this.groupSharedEntriesObject)
+      );
+      if (foundEntry) {
+        this.selectEntry(foundEntry);
+      } else {
+        const publishedEntry = this.getFirstPublishedEntry(sortedEntries);
+        if (publishedEntry) {
+          this.selectEntry(publishedEntry);
+        } else {
+          const theFirstEntry = sortedEntries[0].entries[0];
+          this.selectEntry(theFirstEntry);
+        }
+      }
+    } else {
+      this.selectEntry(null);
+    }
+  }
+
+  /**
    * Grabs the workflow from the webservice and loads it
    * @param workflow Selected workflow
    */
@@ -289,6 +319,12 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   sync(): void {
     this.refreshService.syncServices();
+  }
+
+  setGroupEntriesObject(sortedEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>): void {
+    if (sortedEntries && sortedEntries.length > 0) {
+      this.myEntriesStateService.setGroupEntriesObject(this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries));
+    }
   }
 }
 export interface OrgWorkflowObject {

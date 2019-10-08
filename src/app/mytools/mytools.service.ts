@@ -129,4 +129,28 @@ export class MytoolsService extends MyEntriesService {
       foundOrgToolObject.expanded = true;
     }
   }
+
+  /**
+   * Precondition: URL does not yield any useful tool
+   * Select the first published tool. If there's no published, select the first unpublished tool.
+   * @param tools
+   */
+  getInitialEntry(tools: DockstoreTool[] | null): DockstoreTool | null {
+    if (!tools || tools.length === 0) {
+      return null;
+    }
+    const publishedTools = tools.filter(tool => tool.is_published);
+    if (publishedTools.length > 0) {
+      publishedTools.sort(this.sortTools);
+      return publishedTools[0];
+    } else {
+      const unPublishedTools = tools.filter(tool => !tool.is_published);
+      if (unPublishedTools.length > 0) {
+        unPublishedTools.sort(this.sortTools);
+        return unPublishedTools[0];
+      } else {
+        return null;
+      }
+    }
+  }
 }

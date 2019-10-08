@@ -17,7 +17,6 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
@@ -96,6 +95,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
+    this.groupEntriesObject$ = this.myEntriesQuery.groupEntriesObject$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.router.events
       .pipe(
@@ -103,11 +103,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
-        if (groupEntriesObject) {
-          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), <OrgToolObject[]>groupEntriesObject);
-          this.selectEntry(foundTool);
-        }
+        this.recomputeWhatToolToSelect(this.tools);
       });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
@@ -126,16 +122,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.getMyEntries();
 
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
-      if (tools) {
-        this.tools = tools;
-        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, EntryType.Tool);
-        // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
-        if (!this.tool) {
-          if (this.tools.length > 0) {
-            this.selectInitialEntry(sortedContainers);
-          }
-        }
-      }
+      this.tools = tools;
+      this.recomputeWhatToolToSelect(tools);
     });
 
     combineLatest([this.containerService.tools$, this.toolQuery.tool$])
@@ -162,54 +150,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
       });
   }
 
-  protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {
-    const groupEntriesObject: Array<OrgToolObject> = [];
-    for (let i = 0; i < nsTools.length; i++) {
-      const orgToolObject: OrgToolObject = {
-        registry: '',
-        namespace: '',
-        published: [],
-        unpublished: [],
-        expanded: false
-      };
-      const nsTool: Array<DockstoreTool> = nsTools[i].entries;
-      orgToolObject.registry = nsTools[i].namespace;
-      orgToolObject.published = nsTool.filter((tool: DockstoreTool) => {
-        return tool.is_published;
-      });
-      orgToolObject.unpublished = nsTool.filter((tool: DockstoreTool) => {
-        return !tool.is_published;
-      });
-      groupEntriesObject.push(orgToolObject);
+  private findToolFromPath(path: string | null, tools: DockstoreTool[] | null): DockstoreTool | null {
+    if (!path || !tools || tools.length === 0) {
+      return null;
     }
-    return groupEntriesObject;
-  }
-
-  protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool | null {
-    for (let i = 0; i < orgEntries.length; i++) {
-      const foundTool = orgEntries[i]['entries'].find((entry: DockstoreTool) => {
-        return entry.is_published === true;
-      });
-      if (foundTool) {
-        return foundTool;
-      }
-    }
-    return null;
-  }
-
-  protected findEntryFromPath(path: string, orgTools: Array<OrgToolObject>): ExtendedDockstoreTool | null {
-    let matchingTool: ExtendedDockstoreTool;
-    for (let i = 0; i < orgTools.length; i++) {
-      matchingTool = orgTools[i].published.find((tool: DockstoreTool) => tool.tool_path === path);
-      if (matchingTool) {
-        return matchingTool;
-      }
-      matchingTool = orgTools[i].unpublished.find((tool: DockstoreTool) => tool.tool_path === path);
-      if (matchingTool) {
-        return matchingTool;
-      }
-    }
-    return null;
+    return tools.find(tool => {
+      return tool.tool_path === path;
+    });
   }
 
   selectEntry(tool: ExtendedDockstoreTool): void {
@@ -245,6 +192,20 @@ export class MyToolComponent extends MyEntry implements OnInit {
    */
   public toggleSidebar(): void {
     this.showSidebar = !this.showSidebar;
+  }
+
+  recomputeWhatToolToSelect(tools: DockstoreTool[]) {
+    const foundTool = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
+    if (foundTool) {
+      this.selectEntry(foundTool);
+    } else {
+      const initialEntry = this.mytoolsService.getInitialEntry(tools);
+      if (initialEntry) {
+        this.selectEntry(initialEntry);
+      } else {
+        this.selectEntry(null);
+      }
+    }
   }
 }
 

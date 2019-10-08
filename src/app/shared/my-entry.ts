@@ -30,7 +30,7 @@ import { SessionService } from './session/session.service';
 import { MyEntriesQuery } from './state/my-entries.query';
 import { MyEntriesStateService } from './state/my-entries.service';
 import { TokenQuery } from './state/token.query';
-import { Configuration, DockstoreTool, Workflow } from './swagger';
+import { Configuration } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 import { UserQuery } from './user/user.query';
 
@@ -61,7 +61,6 @@ export abstract class MyEntry extends Base implements OnDestroy {
     protected myEntriesStateService: MyEntriesStateService
   ) {
     super();
-    this.groupEntriesObject$ = this.myEntriesQuery.groupEntriesObject$;
     this.hasGroupEntriesObject$ = this.myEntriesQuery.hasGroupEntriesObject$;
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.myEntryPageTitle$ = this.sessionQuery.myEntryPageTitle$;
@@ -72,44 +71,6 @@ export abstract class MyEntry extends Base implements OnDestroy {
   link() {
     this.accountsService.link(TokenSource.GITHUB);
   }
-
-  /**
-   * Converts the deprecated nsTool object to the new groupEntriesObject contains:
-   * an array of published and unpublished tools
-   * and which tab should be opened (published or unpublished)
-   * Main reason to convert to the new object is because figuring it out which tab should be active on
-   * the fly will result in function being executed far too many times (150 times)
-   * @protected
-   * @abstract
-   * @param {Array<any>} nsObject The original nsTools or nsWorkflows object
-   * @returns {(Array<OrgToolObject> | Array<OrgWorkflowObject>)} The new object with more properties
-   * @memberof MyEntry
-   */
-  protected abstract convertOldNamespaceObjectToOrgEntriesObject(nsObject: Array<any>): Array<OrgToolObject> | Array<OrgWorkflowObject>;
-
-  /**
-   * Find the first published entry in all of the organizations
-   * @protected
-   * @abstract
-   * @param {(Array<OrgToolObject> | Array<OrgWorkflowObject>)} orgEntries The deprecated object containing all the entries
-   * @returns {((DockstoreTool | Workflow))} The first published entry found, null if there aren't any
-   * @memberof MyEntry
-   */
-  protected abstract getFirstPublishedEntry(orgEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>): DockstoreTool | Workflow | null;
-
-  /**
-   * Determines the tool to go to based on the URL
-   * Null if there's no known tool with that path
-   * @abstract
-   * @param {string} path The current URL
-   * @param {((Array<OrgToolObject> | Array<OrgWorkflowObject>))} orgEntries Object with entries seperated into published/unpublished
-   * @returns {(ExtendedDockstoreTool | ExtendedWorkflow)} The matching entry if it exists
-   * @memberof MyEntry
-   */
-  protected abstract findEntryFromPath(
-    path: string,
-    orgEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>
-  ): ExtendedDockstoreTool | ExtendedWorkflow | null;
 
   public abstract selectEntry(entry: ExtendedDockstoreTool | ExtendedWorkflow): void;
   public abstract setRegisterEntryModalInfo(gitURLOrNamespace: String): void;
@@ -137,39 +98,5 @@ export abstract class MyEntry extends Base implements OnDestroy {
     arr1 = arr1 || [];
     arr2 = arr2 || [];
     return arr1.concat(arr2);
-  }
-
-  /**
-   * Select the initially selected entry
-   * @param sortedEntries Array of sorted entries
-   */
-  selectInitialEntry(sortedEntries: any): void {
-    /* For the first initial time, set the first entry to be the selected one */
-    if (sortedEntries && sortedEntries.length > 0) {
-      const groupEntriesObject = this.myEntriesQuery.getValue().groupEntriesObject;
-      const foundEntry = this.findEntryFromPath(
-        this.urlResolverService.getEntryPathFromUrl(),
-        this.combineArrays(groupEntriesObject, this.groupSharedEntriesObject)
-      );
-      if (foundEntry) {
-        this.selectEntry(foundEntry);
-      } else {
-        const publishedEntry = this.getFirstPublishedEntry(sortedEntries);
-        if (publishedEntry) {
-          this.selectEntry(publishedEntry);
-        } else {
-          const theFirstEntry = sortedEntries[0].entries[0];
-          this.selectEntry(theFirstEntry);
-        }
-      }
-    } else {
-      this.selectEntry(null);
-    }
-  }
-
-  setGroupEntriesObject(sortedEntries: Array<OrgToolObject> | Array<OrgWorkflowObject>): void {
-    if (sortedEntries && sortedEntries.length > 0) {
-      this.myEntriesStateService.setGroupEntriesObject(this.convertOldNamespaceObjectToOrgEntriesObject(sortedEntries));
-    }
   }
 }
