@@ -68,8 +68,8 @@ export class ImageProviderService {
         return faDocker;
       case RegistryEnum.GITLAB:
         return faGitlab;
-      case RegistryEnum.SEVENBRIDGES: //TODO: Get SevenBridges Icon
-      case RegistryEnum.AMAZONECR: //TODO: Get AMAZON_ECR Icon
+      case RegistryEnum.SEVENBRIDGES: // TODO: Get SevenBridges Icon
+      case RegistryEnum.AMAZONECR: // TODO: Get AMAZON_ECR Icon
       default:
         return faWhale;
     }
