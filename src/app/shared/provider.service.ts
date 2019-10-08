@@ -36,16 +36,16 @@ export class ProviderService {
     if (!provider) {
       return null;
     }
-    if (provider == 'GitHub') {
+    if (provider === 'GitHub') {
       return faGithub;
     }
-    if (provider == 'BitBucket') {
+    if (provider === 'BitBucket') {
       return faBitbucket;
     }
-    if (provider == 'GitLab') {
+    if (provider === 'GitLab') {
       return faGitlab;
     }
-    if (provider == 'Dockstore') {
+    if (provider === 'Dockstore') {
       return faDockstore;
     } else {
       return faWhale;
