@@ -145,6 +145,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         const tool = combinedObservable[1];
         const orgToolObjects: OrgToolObject[] = this.mytoolsService.convertToolsToOrgToolObject(tools);
         this.mytoolsService.recursiveSortOrgToolObjects(orgToolObjects);
+        this.mytoolsService.setExpand(orgToolObjects, tool);
         this.myEntriesStateService.setGroupEntriesObject(orgToolObjects);
       });
 

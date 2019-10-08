@@ -119,6 +119,9 @@ export class MytoolsService extends MyEntriesService {
   }
 
   setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool) {
+    if (!selectedTool) {
+      return;
+    }
     const foundOrgToolObject = orgToolObjects.find(orgToolObject => {
       return orgToolObject.namespace === selectedTool.namespace && orgToolObject.registry === selectedTool.registry_string;
     });
