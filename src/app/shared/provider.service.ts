@@ -27,24 +27,25 @@ export class ProviderService {
 
     tool.provider = this.getProvider(gitUrl);
     tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
-    tool.providerIcon = this.getProviderIcon(tool.providerUrl);
+    tool.providerIcon = this.getProviderIcon(tool.gitUrl);
     return tool;
   }
 
   private getProviderIcon(providerUrl: string): IconDefinition {
-    if (!providerUrl) {
+    const provider = this.getProvider(providerUrl);
+    if (!provider) {
       return null;
     }
-    if (providerUrl.startsWith('https://github.com/')) {
+    if (provider == 'GitHub') {
       return faGithub;
     }
-    if (providerUrl.startsWith('https://bitbucket.org/')) {
+    if (provider == 'BitBucket') {
       return faBitbucket;
     }
-    if (providerUrl.startsWith('https://gitlab.com/')) {
+    if (provider == 'GitLab') {
       return faGitlab;
     }
-    if (providerUrl.startsWith('https://dockstore.org/')) {
+    if (provider == 'Dockstore') {
       return faDockstore;
     } else {
       return faWhale;
