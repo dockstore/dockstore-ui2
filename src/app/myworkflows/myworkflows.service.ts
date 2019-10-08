@@ -28,10 +28,10 @@ import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
-import { take } from 'rxjs/operators';
 
 @Injectable()
 export class MyWorkflowsService extends MyEntriesService {
@@ -111,7 +111,8 @@ export class MyWorkflowsService extends MyEntriesService {
         sourceControl: '',
         organization: '',
         published: [],
-        unpublished: []
+        unpublished: [],
+        expanded: false
       };
       const nsWorkflowEntries: Array<Workflow> = nsWorkflow.entries;
       orgWorkflowObject.sourceControl = nsWorkflow.sourceControl;
@@ -153,5 +154,11 @@ export class MyWorkflowsService extends MyEntriesService {
     if (entryType === EntryType.Service) {
       this.gitHubAppInstallationLink$.pipe(take(1)).subscribe(link => window.open(link));
     }
+  }
+
+  private convertWorkflowsToOrgWorkflowObject(workflows: Workflow[]): OrgWorkflowObject[] {
+    const orgWorkflowObjects = [];
+    workflows.forEach(workflow => {});
+    return orgWorkflowObjects;
   }
 }

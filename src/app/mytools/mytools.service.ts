@@ -20,9 +20,10 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
-import { UsersService } from 'app/shared/swagger';
+import { DockstoreTool, UsersService } from 'app/shared/swagger';
 import { finalize } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
+import { OrgToolObject } from './my-tool/my-tool.component';
 
 @Injectable()
 export class MytoolsService extends MyEntriesService {
@@ -56,4 +57,73 @@ export class MytoolsService extends MyEntriesService {
   }
 
   registerEntry(entryType: EntryType) {}
+
+  convertToolsToOrgToolObject(tools: DockstoreTool[]): OrgToolObject[] {
+    if (!tools) {
+      return [];
+    }
+    const orgToolObjects: OrgToolObject[] = [];
+    tools.forEach(tool => {
+      const existingOrgToolObject = orgToolObjects.find(
+        orgToolObject => orgToolObject.registry === tool.registry_string && orgToolObject.namespace === tool.namespace
+      );
+      if (existingOrgToolObject) {
+        if (tool.is_published) {
+          existingOrgToolObject.published.push(tool);
+        } else {
+          existingOrgToolObject.unpublished.push(tool);
+        }
+      } else {
+        const newOrgToolObject: OrgToolObject = {
+          registry: tool.registry_string,
+          namespace: tool.namespace,
+          published: tool.is_published ? [tool] : [],
+          unpublished: tool.is_published ? [] : [tool],
+          expanded: false
+        };
+        orgToolObjects.push(newOrgToolObject);
+      }
+    });
+    return orgToolObjects;
+  }
+
+  recursiveSortOrgToolObjects(orgToolObjects: OrgToolObject[]) {
+    orgToolObjects.forEach(orgToolObject => {
+      orgToolObject.published.sort(this.sortTools);
+    });
+    orgToolObjects.sort(this.sortOrgToolObjects);
+  }
+
+  sortTools(toolA: DockstoreTool, toolB: DockstoreTool): number {
+    const keyA = toolA.tool_path.toLowerCase();
+    const keyB = toolB.tool_path.toLowerCase();
+    if (keyA < keyB) {
+      return -1;
+    }
+    if (keyA > keyB) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sortOrgToolObjects(orgToolObjectA: OrgToolObject, orgToolObjectB: OrgToolObject): number {
+    const keyA = [orgToolObjectA.registry, orgToolObjectA.namespace].join('/').toLowerCase();
+    const keyB = [orgToolObjectB.registry, orgToolObjectB.namespace].join('/').toLowerCase();
+    if (keyA < keyB) {
+      return -1;
+    }
+    if (keyA > keyB) {
+      return 1;
+    }
+    return 0;
+  }
+
+  setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool) {
+    const foundOrgToolObject = orgToolObjects.find(orgToolObject => {
+      return orgToolObject.namespace === selectedTool.namespace && orgToolObject.registry === selectedTool.registry_string;
+    });
+    if (foundOrgToolObject) {
+      foundOrgToolObject.expanded = true;
+    }
+  }
 }

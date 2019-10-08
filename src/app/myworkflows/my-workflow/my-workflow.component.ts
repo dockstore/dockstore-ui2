@@ -296,4 +296,5 @@ export interface OrgWorkflowObject {
   organization: string;
   published: Array<Workflow>;
   unpublished: Array<Workflow>;
+  expanded: boolean;
 }

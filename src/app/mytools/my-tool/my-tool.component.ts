@@ -129,7 +129,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
       if (tools) {
         this.tools = tools;
         const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, EntryType.Tool);
-        this.setGroupEntriesObject(sortedContainers);
         // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
         if (!this.tool) {
           if (this.tools.length > 0) {
@@ -138,6 +137,16 @@ export class MyToolComponent extends MyEntry implements OnInit {
         }
       }
     });
+
+    combineLatest([this.containerService.tools$, this.toolQuery.tool$])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(combinedObservable => {
+        const tools = combinedObservable[0];
+        const tool = combinedObservable[1];
+        const orgToolObjects: OrgToolObject[] = this.mytoolsService.convertToolsToOrgToolObject(tools);
+        this.mytoolsService.recursiveSortOrgToolObjects(orgToolObjects);
+        this.myEntriesStateService.setGroupEntriesObject(orgToolObjects);
+      });
 
     this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
   }
@@ -156,13 +165,14 @@ export class MyToolComponent extends MyEntry implements OnInit {
     const groupEntriesObject: Array<OrgToolObject> = [];
     for (let i = 0; i < nsTools.length; i++) {
       const orgToolObject: OrgToolObject = {
+        registry: '',
         namespace: '',
-        organization: '',
         published: [],
-        unpublished: []
+        unpublished: [],
+        expanded: false
       };
       const nsTool: Array<DockstoreTool> = nsTools[i].entries;
-      orgToolObject.namespace = nsTools[i].namespace;
+      orgToolObject.registry = nsTools[i].namespace;
       orgToolObject.published = nsTool.filter((tool: DockstoreTool) => {
         return tool.is_published;
       });
@@ -238,8 +248,9 @@ export class MyToolComponent extends MyEntry implements OnInit {
 }
 
 export interface OrgToolObject {
+  registry: string;
   namespace: string;
-  organization: string;
-  published: Array<ExtendedDockstoreTool>;
-  unpublished: Array<ExtendedDockstoreTool>;
+  published: Array<DockstoreTool>;
+  unpublished: Array<DockstoreTool>;
+  expanded: boolean;
 }
