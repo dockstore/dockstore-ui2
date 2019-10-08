@@ -21,6 +21,7 @@ import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { DockstoreTool, UsersService } from 'app/shared/swagger';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { finalize } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
 import { OrgToolObject } from './my-tool/my-tool.component';
@@ -31,7 +32,8 @@ export class MytoolsService extends MyEntriesService {
     private alertService: AlertService,
     private usersService: UsersService,
     private containerService: ContainerService,
-    private myEntriesService: MyEntriesStateService
+    private myEntriesService: MyEntriesStateService,
+    private urlResolverService: UrlResolverService
   ) {
     super();
   }
@@ -152,5 +154,28 @@ export class MytoolsService extends MyEntriesService {
         return null;
       }
     }
+  }
+
+  recomputeWhatToolToSelect(tools: DockstoreTool[]): DockstoreTool | null {
+    const foundTool = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
+    if (foundTool) {
+      return foundTool;
+    } else {
+      const initialEntry = this.getInitialEntry(tools);
+      if (initialEntry) {
+        return initialEntry;
+      } else {
+        return null;
+      }
+    }
+  }
+
+  private findToolFromPath(path: string | null, tools: DockstoreTool[] | null): DockstoreTool | null {
+    if (!path || !tools || tools.length === 0) {
+      return null;
+    }
+    return tools.find(tool => {
+      return tool.tool_path === path;
+    });
   }
 }

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { OrgToolObject } from 'app/mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from 'app/myworkflows/my-workflow/my-workflow.component';
 import { MyEntriesStore } from './my-entries.store';
 
@@ -16,7 +15,7 @@ export class MyEntriesStateService {
     });
   }
 
-  setGroupEntriesObject(groupEntriesObject: Array<OrgToolObject | OrgWorkflowObject>): void {
+  setGroupEntriesObject(groupEntriesObject: Array<OrgWorkflowObject>): void {
     this.myEntriesStore.update(state => {
       return {
         ...state,

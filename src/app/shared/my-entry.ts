@@ -19,8 +19,6 @@ import { AuthService } from 'ng2-ui-auth';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
-import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
-import { OrgWorkflowObject } from '../myworkflows/my-workflow/my-workflow.component';
 import { Base } from './base';
 import { TokenSource } from './enum/token-source.enum';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
@@ -41,9 +39,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
   oneAtATime = true;
   user: any;
   public hasGitHubToken = true;
-  public groupEntriesObject$: Observable<Array<OrgToolObject | OrgWorkflowObject>>;
   public hasGroupEntriesObject$: Observable<boolean>;
-  public groupSharedEntriesObject: Array<OrgToolObject | OrgWorkflowObject>;
   public myEntryPageTitle$: Observable<string>;
 
   protected ngUnsubscribe: Subject<{}> = new Subject();
@@ -61,7 +57,6 @@ export abstract class MyEntry extends Base implements OnDestroy {
     protected myEntriesStateService: MyEntriesStateService
   ) {
     super();
-    this.hasGroupEntriesObject$ = this.myEntriesQuery.hasGroupEntriesObject$;
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.myEntryPageTitle$ = this.sessionQuery.myEntryPageTitle$;
     this.refreshingMyEntries$ = this.myEntriesQuery.refreshingMyEntries$;

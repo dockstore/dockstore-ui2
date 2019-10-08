@@ -23,7 +23,7 @@ import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { Tool } from '../../container/register-tool/tool';
@@ -56,6 +56,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   private registerTool: Tool;
   public showSidebar = true;
+  public groupEntriesObject$: Observable<Array<OrgToolObject>>;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
@@ -95,7 +96,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
-    this.groupEntriesObject$ = this.myEntriesQuery.groupEntriesObject$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.router.events
       .pipe(
@@ -103,7 +103,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        this.recomputeWhatToolToSelect(this.tools);
+        this.selectEntry(this.mytoolsService.recomputeWhatToolToSelect(this.tools));
       });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
@@ -123,20 +123,24 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
       this.tools = tools;
-      this.recomputeWhatToolToSelect(tools);
+      this.selectEntry(this.mytoolsService.recomputeWhatToolToSelect(tools));
     });
 
-    combineLatest([this.containerService.tools$, this.toolQuery.tool$])
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(combinedObservable => {
+    this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(
+      map(combinedObservable => {
         const tools = combinedObservable[0];
         const tool = combinedObservable[1];
         const orgToolObjects: OrgToolObject[] = this.mytoolsService.convertToolsToOrgToolObject(tools);
         this.mytoolsService.recursiveSortOrgToolObjects(orgToolObjects);
         this.mytoolsService.setExpand(orgToolObjects, tool);
-        this.myEntriesStateService.setGroupEntriesObject(orgToolObjects);
-      });
-
+        return orgToolObjects;
+      })
+    );
+    this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
+      map((orgToolObjects: OrgToolObject[]) => {
+        return orgToolObjects && orgToolObjects.length !== 0;
+      })
+    );
     this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
   }
 
@@ -148,15 +152,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
           this.mytoolsService.getMyEntries(user.id, entryType);
         }
       });
-  }
-
-  private findToolFromPath(path: string | null, tools: DockstoreTool[] | null): DockstoreTool | null {
-    if (!path || !tools || tools.length === 0) {
-      return null;
-    }
-    return tools.find(tool => {
-      return tool.tool_path === path;
-    });
   }
 
   selectEntry(tool: ExtendedDockstoreTool): void {
@@ -192,20 +187,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
    */
   public toggleSidebar(): void {
     this.showSidebar = !this.showSidebar;
-  }
-
-  recomputeWhatToolToSelect(tools: DockstoreTool[]) {
-    const foundTool = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
-    if (foundTool) {
-      this.selectEntry(foundTool);
-    } else {
-      const initialEntry = this.mytoolsService.getInitialEntry(tools);
-      if (initialEntry) {
-        this.selectEntry(initialEntry);
-      } else {
-        this.selectEntry(null);
-      }
-    }
   }
 }
 

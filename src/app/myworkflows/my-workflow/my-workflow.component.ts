@@ -80,6 +80,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
   public gitHubAppInstallationLink$: Observable<string>;
+  public groupEntriesObject$: Observable<Array<OrgWorkflowObject>>;
+  public groupSharedEntriesObject: Array<OrgWorkflowObject>;
   constructor(
     protected configuration: Configuration,
     protected activatedRoute: ActivatedRoute,
@@ -115,6 +117,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       userQuery,
       myEntriesStateService
     );
+    this.hasGroupEntriesObject$ = this.myEntriesQuery.hasGroupEntriesObject$;
     this.entryType = this.sessionQuery.getValue().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
     this.groupEntriesObject$ = this.myEntriesQuery.groupEntriesObject$;
