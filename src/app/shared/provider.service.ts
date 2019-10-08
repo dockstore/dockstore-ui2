@@ -44,7 +44,7 @@ export class ProviderService {
     if (providerUrl.startsWith('https://gitlab.com/')) {
       return faGitlab;
     }
-    if (providerUrl.startsWith('https://dockstore.org')) {
+    if (providerUrl.startsWith('https://dockstore.org/')) {
       return faDockstore;
     } else {
       return faWhale;
