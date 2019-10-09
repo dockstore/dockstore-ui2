@@ -103,21 +103,17 @@
               <div class="clearfix sidebar-header">
                 <h3 class="sidebar-header">Shared with me</h3>
               </div>
-              <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
-                You have no {{ entryType$ | async }}s shared with you
-              </p>
-              <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+              <p *ngIf="!(hasGroupSharedEntriesObject$ | async)">You have no {{ entryType$ | async }}s shared with you</p>
+              <app-sidebar-accordion
+                [openOneAtATime]="oneAtATime"
+                [groupEntriesObject]="groupSharedEntriesObject$ | async"
+              ></app-sidebar-accordion>
             </ng-container>
           </div>
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div
-          *ngIf="
-            !(isRefreshing$ | async) &&
-            (!(hasGroupEntriesObject$ | async) && (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))
-          "
-        >
+        <div *ngIf="!(isRefreshing$ | async) && (!(hasGroupEntriesObject$ | async) && !(hasGroupSharedEntriesObject$ | async))">
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>

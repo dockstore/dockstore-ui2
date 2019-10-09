@@ -16,12 +16,12 @@
 
 import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EntryType } from 'app/shared/enum/entry-type';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, WorkflowsService } from 'app/shared/swagger';
-import { UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
+import { UrlResolverStubService, UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
@@ -136,6 +136,7 @@ describe('MyWorkflowsService', () => {
         MyWorkflowsService,
         MyBioWorkflowsService,
         MyServicesService,
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService }
@@ -144,10 +145,5 @@ describe('MyWorkflowsService', () => {
   });
   it('should be truthy', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
     expect(service).toBeTruthy();
-  }));
-  it('should ...', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
-    expect(service.sortGroupEntries(tools, 'asdf', EntryType.BioWorkflow).length).toBe(3);
-    expect(service.sortGroupEntries(tools, 'asdf', EntryType.BioWorkflow)).toEqual(expectedResult);
-    expect(service.sortGroupEntries([], 'asdf', EntryType.BioWorkflow)).toEqual([]);
   }));
 });

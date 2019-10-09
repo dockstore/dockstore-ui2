@@ -13,7 +13,6 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -29,14 +28,11 @@ import { RegisterToolService } from '../../container/register-tool/register-tool
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { includesValidation } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
-import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
-import { DockstoreTool } from '../../shared/swagger';
-import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
@@ -65,7 +61,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     protected activatedRoute: ActivatedRoute,
     private containerService: ContainerService,
     private dialog: MatDialog,
-    private location: Location,
     private refreshService: RefreshService,
     protected accountsService: AccountsService,
     private registerToolService: RegisterToolService,
@@ -73,7 +68,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     protected sessionService: SessionService,
     protected urlResolverService: UrlResolverService,
     private router: Router,
-    private containersService: ContainersService,
     private toolQuery: ToolQuery,
     private alertQuery: AlertQuery,
     protected sessionQuery: SessionQuery,
@@ -150,17 +144,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
         }
       });
   }
-
-  selectEntry(tool: ExtendedDockstoreTool): void {
-    if (tool !== null) {
-      this.containersService
-        .getContainer(tool.id, includesValidation)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(result => {
-          this.location.go(this.pageName + '/' + result.tool_path);
-          this.containerService.setTool(result);
-        });
-    }
+  selectEntry(tool: DockstoreTool | Workflow): void {
+    this.mytoolsService.selectEntry(tool);
   }
 
   setRegisterEntryModalInfo(namespace: string): void {

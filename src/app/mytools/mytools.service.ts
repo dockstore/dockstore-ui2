@@ -14,13 +14,15 @@
  *    limitations under the License.
  */
 
+import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
+import { includesValidation } from 'app/shared/constants';
 import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
-import { DockstoreTool, UsersService } from 'app/shared/swagger';
+import { ContainersService, DockstoreTool, UsersService, Workflow } from 'app/shared/swagger';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { finalize } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
@@ -33,12 +35,11 @@ export class MytoolsService extends MyEntriesService {
     private usersService: UsersService,
     private containerService: ContainerService,
     private myEntriesService: MyEntriesStateService,
-    private urlResolverService: UrlResolverService
+    private location: Location,
+    protected urlResolverService: UrlResolverService,
+    private containersService: ContainersService
   ) {
-    super();
-  }
-  getGroupIndex(groupEntries: any[], group: string): number {
-    return groupEntries.findIndex(nsContainer => nsContainer.namespace === group);
+    super(urlResolverService);
   }
 
   getMyEntries(userId: number, entryType: EntryType) {
@@ -57,22 +58,15 @@ export class MytoolsService extends MyEntriesService {
         }
       );
   }
-
-  registerEntry(entryType: EntryType) {}
-
-  recomputeWhatToolToSelect(tools: DockstoreTool[]): DockstoreTool | null {
-    const foundTool = this.findToolFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
-    if (foundTool) {
-      return foundTool;
-    } else {
-      const initialEntry = this.getInitialEntry(tools);
-      if (initialEntry) {
-        return initialEntry;
-      } else {
-        return null;
-      }
+  selectEntry(tool: DockstoreTool | Workflow): void {
+    if (tool !== null) {
+      this.containersService.getContainer(tool.id, includesValidation).subscribe(result => {
+        this.location.go('/my-tools/' + result.tool_path);
+        this.containerService.setTool(result);
+      });
     }
   }
+  registerEntry(entryType: EntryType) {}
 
   convertToolsToOrgToolObject(tools: DockstoreTool[], selectedTool: DockstoreTool): OrgToolObject[] {
     if (!tools) {
@@ -107,33 +101,15 @@ export class MytoolsService extends MyEntriesService {
 
   protected recursiveSortOrgToolObjects(orgToolObjects: OrgToolObject[]) {
     orgToolObjects.forEach(orgToolObject => {
-      orgToolObject.published.sort(this.sortTools);
+      orgToolObject.published.sort(this.sortEntry);
     });
     orgToolObjects.sort(this.sortOrgToolObjects);
-  }
-
-  protected sortTools(toolA: DockstoreTool, toolB: DockstoreTool): number {
-    const keyA = toolA.tool_path.toLowerCase();
-    const keyB = toolB.tool_path.toLowerCase();
-    if (keyA < keyB) {
-      return -1;
-    }
-    if (keyA > keyB) {
-      return 1;
-    }
-    return 0;
   }
 
   protected sortOrgToolObjects(orgToolObjectA: OrgToolObject, orgToolObjectB: OrgToolObject): number {
     const keyA = [orgToolObjectA.registry, orgToolObjectA.namespace].join('/').toLowerCase();
     const keyB = [orgToolObjectB.registry, orgToolObjectB.namespace].join('/').toLowerCase();
-    if (keyA < keyB) {
-      return -1;
-    }
-    if (keyA > keyB) {
-      return 1;
-    }
-    return 0;
+    return keyA.localeCompare(keyB);
   }
 
   protected setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool) {
@@ -146,38 +122,5 @@ export class MytoolsService extends MyEntriesService {
     if (foundOrgToolObject) {
       foundOrgToolObject.expanded = true;
     }
-  }
-
-  /**
-   * Precondition: URL does not yield any useful tool
-   * Select the first published tool. If there's no published, select the first unpublished tool.
-   * @param tools
-   */
-  protected getInitialEntry(tools: DockstoreTool[] | null): DockstoreTool | null {
-    if (!tools || tools.length === 0) {
-      return null;
-    }
-    const publishedTools = tools.filter(tool => tool.is_published);
-    if (publishedTools.length > 0) {
-      publishedTools.sort(this.sortTools);
-      return publishedTools[0];
-    } else {
-      const unpublishedTools = tools.filter(tool => !tool.is_published);
-      if (unpublishedTools.length > 0) {
-        unpublishedTools.sort(this.sortTools);
-        return unpublishedTools[0];
-      } else {
-        return null;
-      }
-    }
-  }
-
-  protected findToolFromPath(path: string | null, tools: DockstoreTool[] | null): DockstoreTool | null {
-    if (!path || !tools || tools.length === 0) {
-      return null;
-    }
-    return tools.find(tool => {
-      return tool.tool_path === path;
-    });
   }
 }

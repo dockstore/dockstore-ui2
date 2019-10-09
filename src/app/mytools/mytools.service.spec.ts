@@ -16,8 +16,8 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ContainerService } from 'app/shared/container.service';
-import { EntryType } from 'app/shared/enum/entry-type';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
@@ -158,15 +158,10 @@ describe('MytoolsService', () => {
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: UrlResolverService, useclass: UrlResolverService }
       ],
-      imports: [CustomMaterialModule, HttpClientTestingModule, MyEntriesModule]
+      imports: [RouterTestingModule, CustomMaterialModule, HttpClientTestingModule, MyEntriesModule]
     });
   });
-  it('should ...', inject([MytoolsService, UrlResolverService], (service: MytoolsService) => {
+  it('should ...', inject([MytoolsService], (service: MytoolsService) => {
     expect(service).toBeTruthy();
-  }));
-  it('should ...', inject([MytoolsService, UrlResolverService], (service: MytoolsService) => {
-    expect(service.sortGroupEntries(tools, 'asdf', EntryType.Tool).length).toBe(3);
-    expect(service.sortGroupEntries(tools, 'asdf', EntryType.Tool)).toEqual(expectedResult);
-    expect(service.sortGroupEntries([], 'asdf', EntryType.Tool)).toEqual([]);
   }));
 });

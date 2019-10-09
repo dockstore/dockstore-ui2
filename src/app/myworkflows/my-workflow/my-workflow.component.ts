@@ -30,13 +30,12 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { Workflow } from '../../shared/swagger';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
@@ -79,7 +78,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   hasSourceControlToken$: Observable<boolean>;
   public gitHubAppInstallationLink$: Observable<string>;
   public groupEntriesObject$: Observable<Array<OrgWorkflowObject>>;
-  public groupSharedEntriesObject: Array<OrgWorkflowObject>;
+  public groupSharedEntriesObject$: Observable<Array<OrgWorkflowObject>>;
+  public hasGroupSharedEntriesObject$: Observable<boolean>;
   constructor(
     protected configuration: Configuration,
     protected activatedRoute: ActivatedRoute,
@@ -139,7 +139,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(event => {
-        this.selectEntry(this.myWorkflowsService.recomputeWhatToolToSelect(this.workflows.concat(this.sharedWorkflows)));
+        this.selectEntry(this.myWorkflowsService.recomputeWhatToolToSelect([...(this.workflows || []), ...(this.sharedWorkflows || [])]));
       });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
@@ -155,27 +155,36 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         ([workflows, sharedWorkflows]: [Workflow[], Workflow[]]) => {
           if (workflows && sharedWorkflows) {
             this.workflows = workflows;
-            this.selectEntry(this.myWorkflowsService.recomputeWhatToolToSelect(workflows.concat(sharedWorkflows)));
+            this.sharedWorkflows = sharedWorkflows;
+            this.selectEntry(this.myWorkflowsService.recomputeWhatToolToSelect([...(workflows || []), ...(sharedWorkflows || [])]));
           }
         },
         error => {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );
-    this.groupEntriesObject$ = combineLatest([
-      this.workflowService.workflows$,
-      this.workflowService.sharedWorkflows$,
-      this.workflowQuery.selectActive()
-    ]).pipe(
+    this.groupEntriesObject$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.selectActive()]).pipe(
       map(combinedObservable => {
         const workflows = combinedObservable[0];
-        const sharedWorkflows = combinedObservable[1];
-        const workflow = combinedObservable[2];
-        return this.myWorkflowsService.convertToolsToOrgToolObject(workflows.concat(sharedWorkflows), workflow);
+        const workflow = combinedObservable[1];
+        return this.myWorkflowsService.convertToolsToOrgToolObject(workflows, workflow);
+      })
+    );
+
+    this.groupSharedEntriesObject$ = combineLatest([this.workflowService.sharedWorkflows$, this.workflowQuery.selectActive()]).pipe(
+      map(combinedObservable => {
+        const workflows = combinedObservable[0];
+        const workflow = combinedObservable[1];
+        return this.myWorkflowsService.convertToolsToOrgToolObject(workflows, workflow);
       })
     );
 
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
+      map((orgToolObjects: OrgWorkflowObject[]) => {
+        return orgToolObjects && orgToolObjects.length !== 0;
+      })
+    );
+    this.hasGroupSharedEntriesObject$ = this.groupSharedEntriesObject$.pipe(
       map((orgToolObjects: OrgWorkflowObject[]) => {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
@@ -196,7 +205,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    * Grabs the workflow from the webservice and loads it
    * @param workflow Selected workflow
    */
-  selectEntry(workflow: ExtendedWorkflow | null): void {
+  selectEntry(workflow: Workflow | DockstoreTool | null): void {
     this.myWorkflowsService.selectEntry(workflow, this.entryType);
   }
 
