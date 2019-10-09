@@ -58,7 +58,7 @@ export class MytoolsService extends MyEntriesService {
         }
       );
   }
-  selectEntry(tool: DockstoreTool | Workflow): void {
+  selectEntry(tool: DockstoreTool | Workflow | null): void {
     if (tool !== null) {
       this.containersService.getContainer(tool.id, includesValidation).subscribe(result => {
         this.location.go('/my-tools/' + result.tool_path);
@@ -94,18 +94,13 @@ export class MytoolsService extends MyEntriesService {
         orgToolObjects.push(newOrgToolObject);
       }
     });
-    console.log(orgToolObjects);
     this.recursiveSortOrgToolObjects(orgToolObjects);
-    console.log(orgToolObjects);
     this.setExpand(orgToolObjects, selectedTool);
     return orgToolObjects;
   }
 
   protected recursiveSortOrgToolObjects(orgToolObjects: OrgToolObject[]) {
-    orgToolObjects.forEach(orgToolObject => {
-      orgToolObject.published.sort(this.sortEntry);
-      orgToolObject.unpublished.sort(this.sortEntry);
-    });
+    this.sortEntriesOfOrgEntryObjects(orgToolObjects);
     orgToolObjects.sort(this.sortOrgToolObjects);
   }
 
@@ -115,6 +110,15 @@ export class MytoolsService extends MyEntriesService {
     return keyA.localeCompare(keyB);
   }
 
+  /**
+   * Set the expanded property on the OrgToolObjects
+   *
+   * @protected
+   * @param {OrgToolObject[]} orgToolObjects
+   * @param {DockstoreTool} selectedTool
+   * @returns
+   * @memberof MytoolsService
+   */
   protected setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool) {
     if (!selectedTool) {
       return;

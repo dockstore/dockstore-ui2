@@ -97,7 +97,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        this.selectEntry(this.mytoolsService.recomputeWhatToolToSelect(this.tools));
+        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.tools));
       });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
@@ -117,7 +117,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
       this.tools = tools;
-      this.selectEntry(this.mytoolsService.recomputeWhatToolToSelect(tools));
+      this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(tools));
     });
 
     this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(

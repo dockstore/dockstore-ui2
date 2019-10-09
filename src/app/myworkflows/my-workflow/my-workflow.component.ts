@@ -139,7 +139,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(event => {
-        this.selectEntry(this.myWorkflowsService.recomputeWhatToolToSelect([...(this.workflows || []), ...(this.sharedWorkflows || [])]));
+        this.selectEntry(this.myWorkflowsService.recomputeWhatEntryToSelect([...(this.workflows || []), ...(this.sharedWorkflows || [])]));
       });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
@@ -156,7 +156,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           if (workflows && sharedWorkflows) {
             this.workflows = workflows;
             this.sharedWorkflows = sharedWorkflows;
-            this.selectEntry(this.myWorkflowsService.recomputeWhatToolToSelect([...(workflows || []), ...(sharedWorkflows || [])]));
+            this.selectEntry(this.myWorkflowsService.recomputeWhatEntryToSelect([...(workflows || []), ...(sharedWorkflows || [])]));
           }
         },
         error => {

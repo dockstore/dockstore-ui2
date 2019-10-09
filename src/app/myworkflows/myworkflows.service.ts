@@ -106,63 +106,58 @@ export class MyWorkflowsService extends MyEntriesService {
     }
   }
 
-  convertWorkflowsToOrgWorkflowObject(tools: Workflow[], selectedTool: Workflow): OrgWorkflowObject[] {
-    if (!tools) {
+  convertWorkflowsToOrgWorkflowObject(workflows: Workflow[], selectedWorkflow: Workflow): OrgWorkflowObject[] {
+    if (!workflows) {
       return [];
     }
-    const orgToolObjects: OrgWorkflowObject[] = [];
-    tools.forEach(tool => {
-      const existingOrgToolObject = orgToolObjects.find(
-        orgToolObject => orgToolObject.sourceControl === tool.sourceControl && orgToolObject.organization === tool.organization
+    const orgWorkflowObjects: OrgWorkflowObject[] = [];
+    workflows.forEach(workflow => {
+      const existingOrgWorkflowObject = orgWorkflowObjects.find(
+        orgWorkflowObject =>
+          orgWorkflowObject.sourceControl === workflow.sourceControl && orgWorkflowObject.organization === workflow.organization
       );
-      if (existingOrgToolObject) {
-        if (tool.is_published) {
-          existingOrgToolObject.published.push(tool);
+      if (existingOrgWorkflowObject) {
+        if (workflow.is_published) {
+          existingOrgWorkflowObject.published.push(workflow);
         } else {
-          existingOrgToolObject.unpublished.push(tool);
+          existingOrgWorkflowObject.unpublished.push(workflow);
         }
       } else {
         const newOrgToolObject: OrgWorkflowObject = {
-          sourceControl: tool.sourceControl,
-          organization: tool.organization,
-          published: tool.is_published ? [tool] : [],
-          unpublished: tool.is_published ? [] : [tool],
+          sourceControl: workflow.sourceControl,
+          organization: workflow.organization,
+          published: workflow.is_published ? [workflow] : [],
+          unpublished: workflow.is_published ? [] : [workflow],
           expanded: false
         };
-        orgToolObjects.push(newOrgToolObject);
+        orgWorkflowObjects.push(newOrgToolObject);
       }
     });
-    this.recursiveSortOrgToolObjects(orgToolObjects);
-    this.setExpand(orgToolObjects, selectedTool);
-    return orgToolObjects;
+    this.recursiveSortOrgToolObjects(orgWorkflowObjects);
+    this.setExpand(orgWorkflowObjects, selectedWorkflow);
+    return orgWorkflowObjects;
   }
 
-  protected recursiveSortOrgToolObjects(orgToolObjects: OrgWorkflowObject[]) {
-    orgToolObjects.forEach(orgToolObject => {
-      orgToolObject.published.sort(this.sortEntry);
-      orgToolObject.unpublished.sort(this.sortEntry);
-    });
-    orgToolObjects.sort(this.sortOrgWorkflowObjects);
+  protected recursiveSortOrgToolObjects(orgWorkflowObjects: OrgWorkflowObject[]) {
+    this.sortEntriesOfOrgEntryObjects(orgWorkflowObjects);
+    orgWorkflowObjects.sort(this.sortOrgWorkflowObjects);
   }
 
-  protected sortOrgWorkflowObjects(orgToolObjectA: OrgWorkflowObject, orgToolObjectB: OrgWorkflowObject): number {
-    const keyA = [orgToolObjectA.sourceControl, orgToolObjectA.organization].join('/').toLowerCase();
-    const keyB = [orgToolObjectB.sourceControl, orgToolObjectB.organization].join('/').toLowerCase();
-    if (keyA < keyB) {
-      return -1;
-    }
-    if (keyA > keyB) {
-      return 1;
-    }
-    return 0;
+  protected sortOrgWorkflowObjects(orgWorkflowObjectA: OrgWorkflowObject, orgWorkflowObjectB: OrgWorkflowObject): number {
+    const keyA = [orgWorkflowObjectA.sourceControl, orgWorkflowObjectA.organization].join('/').toLowerCase();
+    const keyB = [orgWorkflowObjectB.sourceControl, orgWorkflowObjectB.organization].join('/').toLowerCase();
+    return keyA.localeCompare(keyB);
   }
 
   protected setExpand(orgWorkflowObjects: OrgWorkflowObject[], selectedWorkflow: Workflow) {
     if (!selectedWorkflow) {
       return;
     }
-    const foundOrgWorkflowObject = orgWorkflowObjects.find(orgToolObject => {
-      return orgToolObject.sourceControl === selectedWorkflow.sourceControl && orgToolObject.organization === selectedWorkflow.organization;
+    const foundOrgWorkflowObject = orgWorkflowObjects.find(orgWorkflowObject => {
+      return (
+        orgWorkflowObject.sourceControl === selectedWorkflow.sourceControl &&
+        orgWorkflowObject.organization === selectedWorkflow.organization
+      );
     });
     if (foundOrgWorkflowObject) {
       foundOrgWorkflowObject.expanded = true;

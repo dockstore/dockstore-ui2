@@ -13,6 +13,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { OrgToolObject } from 'app/mytools/my-tool/my-tool.component';
+import { OrgWorkflowObject } from 'app/myworkflows/my-workflow/my-workflow.component';
 import { Base } from './base';
 import { EntryType } from './enum/entry-type';
 import { DockstoreTool, Workflow } from './swagger';
@@ -74,7 +76,14 @@ export abstract class MyEntriesService extends Base {
     return keyA.localeCompare(keyB);
   }
 
-  recomputeWhatToolToSelect(tools: Workflow[] | DockstoreTool[]): DockstoreTool | Workflow | null {
+  protected sortEntriesOfOrgEntryObjects(orgEntryObjects: OrgToolObject[] | OrgWorkflowObject[]) {
+    orgEntryObjects.forEach((orgEntryObject: OrgToolObject | OrgWorkflowObject) => {
+      orgEntryObject.published.sort(this.sortEntry);
+      orgEntryObject.unpublished.sort(this.sortEntry);
+    });
+  }
+
+  recomputeWhatEntryToSelect(tools: Workflow[] | DockstoreTool[]): DockstoreTool | Workflow | null {
     const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
     if (foundTool) {
       return foundTool;
