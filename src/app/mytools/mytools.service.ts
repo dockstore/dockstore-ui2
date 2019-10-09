@@ -94,7 +94,9 @@ export class MytoolsService extends MyEntriesService {
         orgToolObjects.push(newOrgToolObject);
       }
     });
+    console.log(orgToolObjects);
     this.recursiveSortOrgToolObjects(orgToolObjects);
+    console.log(orgToolObjects);
     this.setExpand(orgToolObjects, selectedTool);
     return orgToolObjects;
   }
@@ -102,6 +104,7 @@ export class MytoolsService extends MyEntriesService {
   protected recursiveSortOrgToolObjects(orgToolObjects: OrgToolObject[]) {
     orgToolObjects.forEach(orgToolObject => {
       orgToolObject.published.sort(this.sortEntry);
+      orgToolObject.unpublished.sort(this.sortEntry);
     });
     orgToolObjects.sort(this.sortOrgToolObjects);
   }

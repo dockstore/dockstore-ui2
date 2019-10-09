@@ -167,7 +167,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       map(combinedObservable => {
         const workflows = combinedObservable[0];
         const workflow = combinedObservable[1];
-        return this.myWorkflowsService.convertToolsToOrgToolObject(workflows, workflow);
+        return this.myWorkflowsService.convertWorkflowsToOrgWorkflowObject(workflows, workflow);
       })
     );
 
@@ -175,7 +175,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       map(combinedObservable => {
         const workflows = combinedObservable[0];
         const workflow = combinedObservable[1];
-        return this.myWorkflowsService.convertToolsToOrgToolObject(workflows, workflow);
+        return this.myWorkflowsService.convertWorkflowsToOrgWorkflowObject(workflows, workflow);
       })
     );
 

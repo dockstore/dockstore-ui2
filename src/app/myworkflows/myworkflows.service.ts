@@ -106,7 +106,7 @@ export class MyWorkflowsService extends MyEntriesService {
     }
   }
 
-  convertToolsToOrgToolObject(tools: Workflow[], selectedTool: Workflow): OrgWorkflowObject[] {
+  convertWorkflowsToOrgWorkflowObject(tools: Workflow[], selectedTool: Workflow): OrgWorkflowObject[] {
     if (!tools) {
       return [];
     }
@@ -140,6 +140,7 @@ export class MyWorkflowsService extends MyEntriesService {
   protected recursiveSortOrgToolObjects(orgToolObjects: OrgWorkflowObject[]) {
     orgToolObjects.forEach(orgToolObject => {
       orgToolObject.published.sort(this.sortEntry);
+      orgToolObject.unpublished.sort(this.sortEntry);
     });
     orgToolObjects.sort(this.sortOrgWorkflowObjects);
   }

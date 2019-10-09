@@ -25,6 +25,7 @@ import { UrlResolverStubService, UsersStubService, WorkflowsStubService, Workflo
 import { Workflow } from './../shared/swagger/model/workflow';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
+import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
 
 describe('MyWorkflowsService', () => {
@@ -107,28 +108,28 @@ describe('MyWorkflowsService', () => {
     source_control_provider: 'GITHUB'
   };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
-  const expectedResult1 = {
-    entries: [tool5, tool6],
-    isFirstOpen: false,
-    namespace: 'github.com/aa',
+  const expectedResult1: OrgWorkflowObject = {
+    unpublished: [tool5, tool6],
+    published: [],
+    expanded: false,
     sourceControl: 'github.com',
     organization: 'aa'
   };
-  const expectedResult2 = {
-    entries: [tool3, tool4],
-    isFirstOpen: false,
-    namespace: 'github.com/bb',
+  const expectedResult2: OrgWorkflowObject = {
+    unpublished: [tool3, tool4],
+    published: [],
+    expanded: false,
     sourceControl: 'github.com',
     organization: 'bb'
   };
-  const expectedResult3 = {
-    entries: [tool1, tool2],
-    isFirstOpen: false,
-    namespace: 'github.com/cc',
+  const expectedResult3: OrgWorkflowObject = {
+    unpublished: [tool1, tool2],
+    published: [],
+    expanded: true,
     sourceControl: 'github.com',
     organization: 'cc'
   };
-  const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
+  const expectedResult: OrgWorkflowObject[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CustomMaterialModule, RouterTestingModule, MyEntriesModule],
@@ -145,5 +146,10 @@ describe('MyWorkflowsService', () => {
   });
   it('should be truthy', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
     expect(service).toBeTruthy();
+  }));
+  it('should convert workflows to OrgWorkflowObjects', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
+    expect(service.convertWorkflowsToOrgWorkflowObject(tools, tool1).length).toBe(3);
+    expect(service.convertWorkflowsToOrgWorkflowObject(tools, tool1)).toEqual(expectedResult);
+    expect(service.convertWorkflowsToOrgWorkflowObject([], tool1)).toEqual([]);
   }));
 });
