@@ -7,12 +7,12 @@
 // This is a sample section and should probably be more flexible
 .random-section {
   min-height: 300px;
-  min-width: 600px;
+  width: 100%;
 }
 
 .random-section-sm {
   min-height: 100px;
-  min-width: 600px;
+  width: 100%;
 }
 
 .twitter {
@@ -21,10 +21,11 @@
 
 .example-container {
   display: flex;
-  min-height: 500px;
+  min-height: 1000px;
+  height: 100%;
 }
 
-.example-sidenav {
+.homepage-sidebar {
   display: flex;
   align-items: center;
   justify-content: center;
