@@ -28,7 +28,7 @@ import { SessionService } from './session/session.service';
 import { MyEntriesQuery } from './state/my-entries.query';
 import { MyEntriesStateService } from './state/my-entries.service';
 import { TokenQuery } from './state/token.query';
-import { Configuration } from './swagger';
+import { Configuration, DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 import { UserQuery } from './user/user.query';
 
@@ -96,4 +96,10 @@ export abstract class MyEntry extends Base implements OnDestroy {
     arr2 = arr2 || [];
     return arr1.concat(arr2);
   }
+}
+
+export interface OrgEntryObject<T extends DockstoreTool | Workflow> {
+  published: Array<T>;
+  unpublished: Array<T>;
+  expanded: boolean;
 }

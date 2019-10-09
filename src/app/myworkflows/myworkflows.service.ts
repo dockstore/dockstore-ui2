@@ -34,7 +34,7 @@ import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 
 @Injectable()
-export class MyWorkflowsService extends MyEntriesService {
+export class MyWorkflowsService extends MyEntriesService<Workflow> {
   gitHubAppInstallationLink$: Observable<string>;
   constructor(
     protected userQuery: UserQuery,
@@ -126,9 +126,7 @@ export class MyWorkflowsService extends MyEntriesService {
         const newOrgToolObject: OrgWorkflowObject = {
           sourceControl: workflow.sourceControl,
           organization: workflow.organization,
-          published: workflow.is_published ? [workflow] : [],
-          unpublished: workflow.is_published ? [] : [workflow],
-          expanded: false
+          ...this.createOrgEntriesObject(workflow)
         };
         orgWorkflowObjects.push(newOrgToolObject);
       }
@@ -162,5 +160,9 @@ export class MyWorkflowsService extends MyEntriesService {
     if (foundOrgWorkflowObject) {
       foundOrgWorkflowObject.expanded = true;
     }
+  }
+
+  getPath(entry: Workflow): string {
+    return entry.full_workflow_path;
   }
 }

@@ -29,7 +29,7 @@ import { MyEntriesService } from './../shared/myentries.service';
 import { OrgToolObject } from './my-tool/my-tool.component';
 
 @Injectable()
-export class MytoolsService extends MyEntriesService {
+export class MytoolsService extends MyEntriesService<DockstoreTool> {
   constructor(
     private alertService: AlertService,
     private usersService: UsersService,
@@ -87,9 +87,7 @@ export class MytoolsService extends MyEntriesService {
         const newOrgToolObject: OrgToolObject = {
           registry: tool.registry_string,
           namespace: tool.namespace,
-          published: tool.is_published ? [tool] : [],
-          unpublished: tool.is_published ? [] : [tool],
-          expanded: false
+          ...this.createOrgEntriesObject(tool)
         };
         orgToolObjects.push(newOrgToolObject);
       }
@@ -129,5 +127,9 @@ export class MytoolsService extends MyEntriesService {
     if (foundOrgToolObject) {
       foundOrgToolObject.expanded = true;
     }
+  }
+
+  getPath(entry: DockstoreTool): string {
+    return entry.tool_path;
   }
 }
