@@ -106,7 +106,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow> {
     }
   }
 
-  convertWorkflowsToOrgWorkflowObject(workflows: Workflow[], selectedWorkflow: Workflow): OrgWorkflowObject[] {
+  convertWorkflowsToOrgWorkflowObject(workflows: Workflow[] | null, selectedWorkflow: Workflow): OrgWorkflowObject[] {
     if (!workflows) {
       return [];
     }
@@ -147,7 +147,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow> {
     return keyA.localeCompare(keyB);
   }
 
-  protected setExpand(orgWorkflowObjects: OrgWorkflowObject[], selectedWorkflow: Workflow) {
+  protected setExpand(orgWorkflowObjects: OrgWorkflowObject[], selectedWorkflow: Workflow | null) {
     if (!selectedWorkflow) {
       return;
     }

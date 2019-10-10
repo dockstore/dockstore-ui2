@@ -68,7 +68,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool> {
   }
   registerEntry(entryType: EntryType) {}
 
-  convertToolsToOrgToolObject(tools: DockstoreTool[], selectedTool: DockstoreTool): OrgToolObject[] {
+  convertToolsToOrgToolObject(tools: DockstoreTool[] | null, selectedTool: DockstoreTool): OrgToolObject[] {
     if (!tools) {
       return [];
     }
@@ -117,7 +117,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool> {
    * @returns
    * @memberof MytoolsService
    */
-  protected setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool) {
+  protected setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool | null) {
     if (!selectedTool) {
       return;
     }
