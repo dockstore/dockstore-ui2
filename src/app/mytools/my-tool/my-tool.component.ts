@@ -172,6 +172,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 }
 
+/**
+ * When using this, T should always be DockstoreTool
+ *
+ * @export
+ * @interface OrgToolObject
+ * @template T
+ */
 export interface OrgToolObject<T> {
   registry: string;
   namespace: string;

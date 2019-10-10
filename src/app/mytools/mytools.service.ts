@@ -78,9 +78,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     return {
       registry: tool.registry_string,
       namespace: tool.namespace,
-      published: tool.is_published ? [tool] : [],
-      unpublished: tool.is_published ? [] : [tool],
-      expanded: false
+      ...this.createPartial(tool)
     };
   }
 

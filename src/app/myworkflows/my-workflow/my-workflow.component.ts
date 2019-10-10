@@ -231,6 +231,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 }
 
+/**
+ * When using this, T should always be Workflow
+ *
+ * @export
+ * @interface OrgWorkflowObject
+ * @template T
+ */
 export interface OrgWorkflowObject<T> {
   sourceControl: string;
   organization: string;

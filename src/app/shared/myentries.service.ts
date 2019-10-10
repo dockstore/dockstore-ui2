@@ -20,9 +20,53 @@ import { EntryType } from './enum/entry-type';
 import { DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 
-export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U extends OrgToolObject<E> | OrgWorkflowObject<E>> extends Base {
+export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O extends OrgToolObject<E> | OrgWorkflowObject<E>> extends Base {
   constructor(protected urlResolverService: UrlResolverService) {
     super();
+  }
+
+  recomputeWhatEntryToSelect(entries: E[]): E | null {
+    const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), entries);
+    if (foundEntry) {
+      return foundEntry;
+    } else {
+      const initialEntry = this.getInitialEntry(entries);
+      if (initialEntry) {
+        return initialEntry;
+      } else {
+        return null;
+      }
+    }
+  }
+
+  convertEntriesToOrgEntryObject(entries: E[] | null, selectedEntry: E): O[] {
+    if (!entries) {
+      return [];
+    }
+    const orgEntryObjects: O[] = [];
+    entries.forEach(entry => {
+      const existingOrgEntryObject = this.matchingOrgEntryObject(orgEntryObjects, entry);
+      if (existingOrgEntryObject) {
+        if (entry.is_published) {
+          existingOrgEntryObject.published.push(entry);
+        } else {
+          existingOrgEntryObject.unpublished.push(entry);
+        }
+      } else {
+        orgEntryObjects.push(this.createNewOrgEntryObject(entry));
+      }
+    });
+    this.recursiveSortOrgEntryObjects(orgEntryObjects);
+    this.setExpand(orgEntryObjects, selectedEntry);
+    return orgEntryObjects;
+  }
+
+  protected createPartial(entry: E) {
+    return {
+      published: entry.is_published ? [entry] : [],
+      unpublished: entry.is_published ? [] : [entry],
+      expanded: false
+    };
   }
 
   /**
@@ -41,11 +85,11 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U ext
     return entries.find(entry => this.getPath(entry) === path);
   }
 
-  abstract getPath(entry: DockstoreTool | Workflow): string;
+  abstract getPath(entry: E): string;
 
   /**
-   * Precondition: URL does not yield any useful tool
-   * Select the first published tool. If there's no published, select the first unpublished tool.
+   * Precondition: URL does not yield any useful entry
+   * Select the first published entry. If there's no published, select the first unpublished entry.
    * @param entries
    */
   protected getInitialEntry(entries: Array<E> | null): E | null {
@@ -61,8 +105,8 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U ext
     }
   }
 
-  protected sortEntriesOfOrgEntryObjects(orgEntryObjects: U[]) {
-    orgEntryObjects.forEach((orgEntryObject: U) => {
+  protected sortEntriesOfOrgEntryObjects(orgEntryObjects: O[]) {
+    orgEntryObjects.forEach((orgEntryObject: O) => {
       orgEntryObject.published.sort(this.sortEntry);
       orgEntryObject.unpublished.sort(this.sortEntry);
     });
@@ -70,59 +114,24 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U ext
 
   protected abstract sortEntry(entryA: E, entryB: E): number;
 
-  protected recursiveSortOrgToolObjects(orgWorkflowObjects: U[]) {
-    this.sortEntriesOfOrgEntryObjects(orgWorkflowObjects);
-    orgWorkflowObjects.sort(this.sortOrgEntryObjects);
+  protected recursiveSortOrgEntryObjects(orgEntriesObjects: O[]) {
+    this.sortEntriesOfOrgEntryObjects(orgEntriesObjects);
+    orgEntriesObjects.sort(this.sortOrgEntryObjects);
   }
 
-  protected abstract sortOrgEntryObjects(thing: U, thing2: U): number;
+  protected abstract sortOrgEntryObjects(orgEntryObjectA: O, orgEntryObjectB: O): number;
 
-  recomputeWhatEntryToSelect(tools: E[]): E | null {
-    const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
-    if (foundTool) {
-      return foundTool;
-    } else {
-      const initialEntry = this.getInitialEntry(tools);
-      if (initialEntry) {
-        return initialEntry;
-      } else {
-        return null;
-      }
-    }
-  }
-  convertEntriesToOrgEntryObject(workflows: E[] | null, selectedWorkflow: E): U[] {
-    if (!workflows) {
-      return [];
-    }
-    const orgWorkflowObjects: U[] = [];
-    workflows.forEach(workflow => {
-      const existingOrgWorkflowObject = this.matchingOrgEntryObject(orgWorkflowObjects, workflow);
-      if (existingOrgWorkflowObject) {
-        if (workflow.is_published) {
-          existingOrgWorkflowObject.published.push(workflow);
-        } else {
-          existingOrgWorkflowObject.unpublished.push(workflow);
-        }
-      } else {
-        orgWorkflowObjects.push(this.createNewOrgEntryObject(workflow));
-      }
-    });
-    this.recursiveSortOrgToolObjects(orgWorkflowObjects);
-    this.setExpand(orgWorkflowObjects, selectedWorkflow);
-    return orgWorkflowObjects;
-  }
+  protected abstract createNewOrgEntryObject(entry: E): O;
 
-  protected abstract createNewOrgEntryObject(entry: E): U;
-
-  protected setExpand(orgWorkflowObjects: U[], selectedWorkflow: E | null) {
-    if (!selectedWorkflow) {
+  protected setExpand(orgEntryObjects: O[], selectedEntry: E | null) {
+    if (!selectedEntry) {
       return;
     }
-    const foundOrgWorkflowObject = this.matchingOrgEntryObject(orgWorkflowObjects, selectedWorkflow);
-    if (foundOrgWorkflowObject) {
-      foundOrgWorkflowObject.expanded = true;
+    const foundOrgEntryObject = this.matchingOrgEntryObject(orgEntryObjects, selectedEntry);
+    if (foundOrgEntryObject) {
+      foundOrgEntryObject.expanded = true;
     }
   }
 
-  protected abstract matchingOrgEntryObject(orgEntryObjects: U[], selectedEntry: E): U;
+  protected abstract matchingOrgEntryObject(orgEntryObjects: O[], selectedEntry: E): O;
 }

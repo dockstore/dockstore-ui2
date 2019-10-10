@@ -110,9 +110,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     return {
       sourceControl: workflow.sourceControl,
       organization: workflow.organization,
-      published: workflow.is_published ? [workflow] : [],
-      unpublished: workflow.is_published ? [] : [workflow],
-      expanded: false
+      ...this.createPartial(workflow)
     };
   }
 
