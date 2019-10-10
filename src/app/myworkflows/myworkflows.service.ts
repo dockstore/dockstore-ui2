@@ -138,28 +138,22 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
 
   protected recursiveSortOrgToolObjects(orgWorkflowObjects: OrgWorkflowObject[]) {
     this.sortEntriesOfOrgEntryObjects(orgWorkflowObjects);
-    orgWorkflowObjects.sort(this.sortOrgWorkflowObjects);
+    orgWorkflowObjects.sort(this.sortOrgEntryObjects);
   }
 
-  protected sortOrgWorkflowObjects(orgWorkflowObjectA: OrgWorkflowObject, orgWorkflowObjectB: OrgWorkflowObject): number {
+  protected sortOrgEntryObjects(orgWorkflowObjectA: OrgWorkflowObject, orgWorkflowObjectB: OrgWorkflowObject): number {
     const keyA = [orgWorkflowObjectA.sourceControl, orgWorkflowObjectA.organization].join('/').toLowerCase();
     const keyB = [orgWorkflowObjectB.sourceControl, orgWorkflowObjectB.organization].join('/').toLowerCase();
     return keyA.localeCompare(keyB);
   }
 
-  protected setExpand(orgWorkflowObjects: OrgWorkflowObject[], selectedWorkflow: Workflow | null) {
-    if (!selectedWorkflow) {
-      return;
-    }
-    const foundOrgWorkflowObject = orgWorkflowObjects.find(orgWorkflowObject => {
+  matchingOrgEntryObject(orgWorkflowObjects: OrgWorkflowObject[], selectedWorkflow: Workflow): OrgWorkflowObject {
+    return orgWorkflowObjects.find(orgWorkflowObject => {
       return (
         orgWorkflowObject.sourceControl === selectedWorkflow.sourceControl &&
         orgWorkflowObject.organization === selectedWorkflow.organization
       );
     });
-    if (foundOrgWorkflowObject) {
-      foundOrgWorkflowObject.expanded = true;
-    }
   }
 
   getPath(entry: Workflow): string {

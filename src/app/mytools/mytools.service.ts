@@ -99,34 +99,19 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
 
   protected recursiveSortOrgToolObjects(orgToolObjects: OrgToolObject[]) {
     this.sortEntriesOfOrgEntryObjects(orgToolObjects);
-    orgToolObjects.sort(this.sortOrgToolObjects);
+    orgToolObjects.sort(this.sortOrgEntryObjects);
   }
 
-  protected sortOrgToolObjects(orgToolObjectA: OrgToolObject, orgToolObjectB: OrgToolObject): number {
+  protected sortOrgEntryObjects(orgToolObjectA: OrgToolObject, orgToolObjectB: OrgToolObject): number {
     const keyA = [orgToolObjectA.registry, orgToolObjectA.namespace].join('/').toLowerCase();
     const keyB = [orgToolObjectB.registry, orgToolObjectB.namespace].join('/').toLowerCase();
     return keyA.localeCompare(keyB);
   }
 
-  /**
-   * Set the expanded property on the OrgToolObjects
-   *
-   * @protected
-   * @param {OrgToolObject[]} orgToolObjects
-   * @param {DockstoreTool} selectedTool
-   * @returns
-   * @memberof MytoolsService
-   */
-  protected setExpand(orgToolObjects: OrgToolObject[], selectedTool: DockstoreTool | null) {
-    if (!selectedTool) {
-      return;
-    }
-    const foundOrgToolObject = orgToolObjects.find(orgToolObject => {
-      return orgToolObject.namespace === selectedTool.namespace && orgToolObject.registry === selectedTool.registry_string;
+  matchingOrgEntryObject(orgToolObjects: OrgToolObject[], selectedEntry: DockstoreTool): OrgToolObject {
+    return orgToolObjects.find(orgToolObject => {
+      return orgToolObject.namespace === selectedEntry.namespace && orgToolObject.registry === selectedEntry.registry_string;
     });
-    if (foundOrgToolObject) {
-      foundOrgToolObject.expanded = true;
-    }
   }
 
   getPath(entry: DockstoreTool): string {

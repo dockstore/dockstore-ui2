@@ -92,4 +92,16 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U ext
       expanded: false
     };
   }
+
+  protected setExpand(orgWorkflowObjects: U[], selectedWorkflow: E | null) {
+    if (!selectedWorkflow) {
+      return;
+    }
+    const foundOrgWorkflowObject = this.matchingOrgEntryObject(orgWorkflowObjects, selectedWorkflow);
+    if (foundOrgWorkflowObject) {
+      foundOrgWorkflowObject.expanded = true;
+    }
+  }
+
+  protected abstract matchingOrgEntryObject(orgEntryObjects: U[], selectedEntry: E): U;
 }
