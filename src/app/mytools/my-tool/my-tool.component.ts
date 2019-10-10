@@ -29,7 +29,7 @@ import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ContainerService } from '../../shared/container.service';
-import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
+import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool, Workflow } from '../../shared/swagger';
@@ -52,7 +52,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   private registerTool: Tool;
   public showSidebar = true;
-  public groupEntriesObject$: Observable<Array<OrgToolObject>>;
+  public groupEntriesObject$: Observable<Array<OrgToolObject<DockstoreTool>>>;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
@@ -124,11 +124,11 @@ export class MyToolComponent extends MyEntry implements OnInit {
       map(combinedObservable => {
         const tools = combinedObservable[0];
         const tool = combinedObservable[1];
-        return this.mytoolsService.convertToolsToOrgToolObject(tools, tool);
+        return this.mytoolsService.convertEntriesToOrgEntryObject(tools, tool);
       })
     );
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
-      map((orgToolObjects: OrgToolObject[]) => {
+      map((orgToolObjects: OrgToolObject<DockstoreTool>[]) => {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
     );
@@ -172,7 +172,10 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 }
 
-export interface OrgToolObject extends OrgEntryObject<DockstoreTool> {
+export interface OrgToolObject<T> {
   registry: string;
   namespace: string;
+  published: Array<T>;
+  unpublished: Array<T>;
+  expanded: boolean;
 }

@@ -30,7 +30,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
+import { MyEntry } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -77,8 +77,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
   public gitHubAppInstallationLink$: Observable<string>;
-  public groupEntriesObject$: Observable<Array<OrgWorkflowObject>>;
-  public groupSharedEntriesObject$: Observable<Array<OrgWorkflowObject>>;
+  public groupEntriesObject$: Observable<Array<OrgWorkflowObject<Workflow>>>;
+  public groupSharedEntriesObject$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   public hasGroupSharedEntriesObject$: Observable<boolean>;
   constructor(
     protected configuration: Configuration,
@@ -115,10 +115,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       userQuery,
       myEntriesStateService
     );
-    this.hasGroupEntriesObject$ = this.myEntriesQuery.hasGroupEntriesObject$;
     this.entryType = this.sessionQuery.getValue().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
-    this.groupEntriesObject$ = this.myEntriesQuery.groupEntriesObject$;
   }
 
   ngOnInit() {
@@ -167,7 +165,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       map(combinedObservable => {
         const workflows = combinedObservable[0];
         const workflow = combinedObservable[1];
-        return this.myWorkflowsService.convertWorkflowsToOrgWorkflowObject(workflows, workflow);
+        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
       })
     );
 
@@ -175,17 +173,17 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
       map(combinedObservable => {
         const workflows = combinedObservable[0];
         const workflow = combinedObservable[1];
-        return this.myWorkflowsService.convertWorkflowsToOrgWorkflowObject(workflows, workflow);
+        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
       })
     );
 
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
-      map((orgToolObjects: OrgWorkflowObject[]) => {
+      map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
     );
     this.hasGroupSharedEntriesObject$ = this.groupSharedEntriesObject$.pipe(
-      map((orgToolObjects: OrgWorkflowObject[]) => {
+      map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
     );
@@ -233,7 +231,10 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 }
 
-export interface OrgWorkflowObject extends OrgEntryObject<Workflow> {
+export interface OrgWorkflowObject<T> {
   sourceControl: string;
   organization: string;
+  published: Array<T>;
+  unpublished: Array<T>;
+  expanded: boolean;
 }

@@ -185,7 +185,7 @@ export const sampleTool3: DockstoreTool = {
 };
 
 // Case 1: sampleTool1 in published entries, unpublished doesn't matter
-export const orgObj1: OrgToolObject = {
+export const orgObj1: OrgToolObject<DockstoreTool> = {
   registry: 'beef',
   namespace: 'stew',
   published: [sampleTool1],
@@ -193,7 +193,7 @@ export const orgObj1: OrgToolObject = {
   expanded: false
 };
 // Case 2: sampleTool1 in unpublished entries, published doesn't matter
-export const orgObj2: OrgToolObject = {
+export const orgObj2: OrgToolObject<DockstoreTool> = {
   registry: 'beef',
   namespace: 'stew',
   published: [sampleTool2, sampleTool3],
@@ -202,7 +202,7 @@ export const orgObj2: OrgToolObject = {
 };
 
 // Case 3: sampleTool1 in neither, published has something
-export const orgObj3: OrgToolObject = {
+export const orgObj3: OrgToolObject<DockstoreTool> = {
   registry: 'beef',
   namespace: 'stew',
   published: [sampleTool2],
@@ -211,7 +211,7 @@ export const orgObj3: OrgToolObject = {
 };
 
 // Case 4: sampleTool1 in neither, published has nothing
-export const orgObj4: OrgToolObject = {
+export const orgObj4: OrgToolObject<DockstoreTool> = {
   registry: 'beef',
   namespace: 'stew',
   published: [],

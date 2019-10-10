@@ -29,7 +29,7 @@ import { MyEntriesService } from './../shared/myentries.service';
 import { OrgToolObject } from './my-tool/my-tool.component';
 
 @Injectable()
-export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObject> {
+export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObject<DockstoreTool>> {
   constructor(
     private alertService: AlertService,
     private usersService: UsersService,
@@ -68,47 +68,23 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
   }
   registerEntry(entryType: EntryType) {}
 
-  convertToolsToOrgToolObject(tools: DockstoreTool[] | null, selectedTool: DockstoreTool): OrgToolObject[] {
-    if (!tools) {
-      return [];
-    }
-    const orgToolObjects: OrgToolObject[] = [];
-    tools.forEach(tool => {
-      const existingOrgToolObject = orgToolObjects.find(
-        orgToolObject => orgToolObject.registry === tool.registry_string && orgToolObject.namespace === tool.namespace
-      );
-      if (existingOrgToolObject) {
-        if (tool.is_published) {
-          existingOrgToolObject.published.push(tool);
-        } else {
-          existingOrgToolObject.unpublished.push(tool);
-        }
-      } else {
-        const newOrgToolObject: OrgToolObject = {
-          registry: tool.registry_string,
-          namespace: tool.namespace,
-          ...this.createOrgEntriesObject(tool)
-        };
-        orgToolObjects.push(newOrgToolObject);
-      }
-    });
-    this.recursiveSortOrgToolObjects(orgToolObjects);
-    this.setExpand(orgToolObjects, selectedTool);
-    return orgToolObjects;
-  }
-
-  protected recursiveSortOrgToolObjects(orgToolObjects: OrgToolObject[]) {
-    this.sortEntriesOfOrgEntryObjects(orgToolObjects);
-    orgToolObjects.sort(this.sortOrgEntryObjects);
-  }
-
-  protected sortOrgEntryObjects(orgToolObjectA: OrgToolObject, orgToolObjectB: OrgToolObject): number {
+  protected sortOrgEntryObjects(orgToolObjectA: OrgToolObject<DockstoreTool>, orgToolObjectB: OrgToolObject<DockstoreTool>): number {
     const keyA = [orgToolObjectA.registry, orgToolObjectA.namespace].join('/').toLowerCase();
     const keyB = [orgToolObjectB.registry, orgToolObjectB.namespace].join('/').toLowerCase();
     return keyA.localeCompare(keyB);
   }
 
-  matchingOrgEntryObject(orgToolObjects: OrgToolObject[], selectedEntry: DockstoreTool): OrgToolObject {
+  createNewOrgEntryObject(tool: DockstoreTool): OrgToolObject<DockstoreTool> {
+    return {
+      registry: tool.registry_string,
+      namespace: tool.namespace,
+      published: tool.is_published ? [tool] : [],
+      unpublished: tool.is_published ? [] : [tool],
+      expanded: false
+    };
+  }
+
+  matchingOrgEntryObject(orgToolObjects: OrgToolObject<DockstoreTool>[], selectedEntry: DockstoreTool): OrgToolObject<DockstoreTool> {
     return orgToolObjects.find(orgToolObject => {
       return orgToolObject.namespace === selectedEntry.namespace && orgToolObject.registry === selectedEntry.registry_string;
     });

@@ -130,28 +130,28 @@ describe('MytoolsService', () => {
     path: 'quay.io/aa/ee'
   };
   const tools: DockstoreTool[] = [tool1, tool2, tool4, tool3, tool5, tool6];
-  const expectedResult1: OrgToolObject = {
+  const expectedResult1: OrgToolObject<DockstoreTool> = {
     unpublished: [tool5, tool6],
     expanded: false,
     namespace: 'aa',
     registry: 'quay.io',
     published: []
   };
-  const expectedResult2: OrgToolObject = {
+  const expectedResult2: OrgToolObject<DockstoreTool> = {
     unpublished: [tool3, tool4],
     expanded: false,
     namespace: 'bb',
     registry: 'quay.io',
     published: []
   };
-  const expectedResult3: OrgToolObject = {
+  const expectedResult3: OrgToolObject<DockstoreTool> = {
     unpublished: [tool1, tool2],
     expanded: true,
     registry: 'quay.io',
     namespace: 'cc',
     published: []
   };
-  const expectedResult: OrgToolObject[] = [expectedResult1, expectedResult2, expectedResult3];
+  const expectedResult: OrgToolObject<DockstoreTool>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -166,8 +166,8 @@ describe('MytoolsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should convert tools to OrgToolObjects', inject([MytoolsService], (service: MytoolsService) => {
-    expect(service.convertToolsToOrgToolObject(tools, tool1).length).toBe(3);
-    expect(service.convertToolsToOrgToolObject(tools, tool1)).toEqual(expectedResult);
-    expect(service.convertToolsToOrgToolObject([], tool1)).toEqual([]);
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1).length).toBe(3);
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1)).toEqual(expectedResult);
+    expect(service.convertEntriesToOrgEntryObject([], tool1)).toEqual([]);
   }));
 });

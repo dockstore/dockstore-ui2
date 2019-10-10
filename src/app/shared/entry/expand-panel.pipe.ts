@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
 import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
-import { Entry } from '../swagger';
+import { DockstoreTool, Entry, Workflow } from '../swagger';
 
 @Pipe({
   name: 'expandPanel'
@@ -18,7 +17,7 @@ export class ExpandPanelPipe implements PipeTransform {
    * @returns {boolean}  true if open, false if not open
    * @memberof ExpandPanelPipe
    */
-  transform(orgEntriesObject: OrgToolObject | OrgWorkflowObject, entryId: number): boolean {
+  transform(orgEntriesObject: OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>, entryId: number): boolean {
     const publishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.published;
     const unpublishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.unpublished;
     if (publishedEntries.find((entry: Entry) => entry.id === entryId) || unpublishedEntries.find((entry: Entry) => entry.id === entryId)) {

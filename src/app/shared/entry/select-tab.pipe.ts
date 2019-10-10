@@ -14,12 +14,11 @@
  *    limitations under the License.
  */
 import { Pipe, PipeTransform } from '@angular/core';
-
 import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
-import { Entry } from '../swagger';
+import { DockstoreTool, Entry, Workflow } from '../swagger';
 
 @Pipe({
   name: 'selectTab'
@@ -36,7 +35,7 @@ export class SelectTabPipe implements PipeTransform {
    * @returns {number}  0 if published, 1 if unpublished
    * @memberof SelectTabPipe
    */
-  transform(orgEntriesObject: OrgToolObject | OrgWorkflowObject, entryId: number): number {
+  transform(orgEntriesObject: OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>, entryId: number): number {
     const publishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.published;
     const unpublishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.unpublished;
     if (publishedEntries.find((entry: Entry) => entry.id === entryId)) {

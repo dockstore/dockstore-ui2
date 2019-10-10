@@ -17,11 +17,10 @@ import { OrgToolObject } from 'app/mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from 'app/myworkflows/my-workflow/my-workflow.component';
 import { Base } from './base';
 import { EntryType } from './enum/entry-type';
-import { OrgEntryObject } from './my-entry';
 import { DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 
-export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U extends OrgToolObject | OrgWorkflowObject> extends Base {
+export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U extends OrgToolObject<E> | OrgWorkflowObject<E>> extends Base {
   constructor(protected urlResolverService: UrlResolverService) {
     super();
   }
@@ -62,14 +61,21 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U ext
     }
   }
 
-  protected sortEntriesOfOrgEntryObjects(orgEntryObjects: OrgEntryObject<E>[]) {
-    orgEntryObjects.forEach((orgEntryObject: OrgEntryObject<E>) => {
+  protected sortEntriesOfOrgEntryObjects(orgEntryObjects: U[]) {
+    orgEntryObjects.forEach((orgEntryObject: U) => {
       orgEntryObject.published.sort(this.sortEntry);
       orgEntryObject.unpublished.sort(this.sortEntry);
     });
   }
 
   protected abstract sortEntry(entryA: E, entryB: E): number;
+
+  protected recursiveSortOrgToolObjects(orgWorkflowObjects: U[]) {
+    this.sortEntriesOfOrgEntryObjects(orgWorkflowObjects);
+    orgWorkflowObjects.sort(this.sortOrgEntryObjects);
+  }
+
+  protected abstract sortOrgEntryObjects(thing: U, thing2: U): number;
 
   recomputeWhatEntryToSelect(tools: E[]): E | null {
     const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
@@ -84,14 +90,29 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U ext
       }
     }
   }
-
-  createOrgEntriesObject(entry: E): OrgEntryObject<E> {
-    return {
-      published: entry.is_published ? [entry] : [],
-      unpublished: entry.is_published ? [] : [entry],
-      expanded: false
-    };
+  convertEntriesToOrgEntryObject(workflows: E[] | null, selectedWorkflow: E): U[] {
+    if (!workflows) {
+      return [];
+    }
+    const orgWorkflowObjects: U[] = [];
+    workflows.forEach(workflow => {
+      const existingOrgWorkflowObject = this.matchingOrgEntryObject(orgWorkflowObjects, workflow);
+      if (existingOrgWorkflowObject) {
+        if (workflow.is_published) {
+          existingOrgWorkflowObject.published.push(workflow);
+        } else {
+          existingOrgWorkflowObject.unpublished.push(workflow);
+        }
+      } else {
+        orgWorkflowObjects.push(this.createNewOrgEntryObject(workflow));
+      }
+    });
+    this.recursiveSortOrgToolObjects(orgWorkflowObjects);
+    this.setExpand(orgWorkflowObjects, selectedWorkflow);
+    return orgWorkflowObjects;
   }
+
+  protected abstract createNewOrgEntryObject(entry: E): U;
 
   protected setExpand(orgWorkflowObjects: U[], selectedWorkflow: E | null) {
     if (!selectedWorkflow) {

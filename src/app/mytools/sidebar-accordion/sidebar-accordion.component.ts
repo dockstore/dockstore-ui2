@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DockstoreTool } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
-
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { OrgToolObject } from '../my-tool/my-tool.component';
 
@@ -11,7 +11,7 @@ import { OrgToolObject } from '../my-tool/my-tool.component';
 })
 export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
-  @Input() groupEntriesObject: OrgToolObject[];
+  @Input() groupEntriesObject: OrgToolObject<DockstoreTool>[];
   @Input() refreshMessage;
 
   public toolId$: Observable<number>;

@@ -34,7 +34,7 @@ import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 
 @Injectable()
-export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowObject> {
+export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowObject<Workflow>> {
   gitHubAppInstallationLink$: Observable<string>;
   constructor(
     protected userQuery: UserQuery,
@@ -106,48 +106,23 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     }
   }
 
-  convertWorkflowsToOrgWorkflowObject(workflows: Workflow[] | null, selectedWorkflow: Workflow): OrgWorkflowObject[] {
-    if (!workflows) {
-      return [];
-    }
-    const orgWorkflowObjects: OrgWorkflowObject[] = [];
-    workflows.forEach(workflow => {
-      const existingOrgWorkflowObject = orgWorkflowObjects.find(
-        orgWorkflowObject =>
-          orgWorkflowObject.sourceControl === workflow.sourceControl && orgWorkflowObject.organization === workflow.organization
-      );
-      if (existingOrgWorkflowObject) {
-        if (workflow.is_published) {
-          existingOrgWorkflowObject.published.push(workflow);
-        } else {
-          existingOrgWorkflowObject.unpublished.push(workflow);
-        }
-      } else {
-        const newOrgToolObject: OrgWorkflowObject = {
-          sourceControl: workflow.sourceControl,
-          organization: workflow.organization,
-          ...this.createOrgEntriesObject(workflow)
-        };
-        orgWorkflowObjects.push(newOrgToolObject);
-      }
-    });
-    this.recursiveSortOrgToolObjects(orgWorkflowObjects);
-    this.setExpand(orgWorkflowObjects, selectedWorkflow);
-    return orgWorkflowObjects;
+  createNewOrgEntryObject(workflow: Workflow): OrgWorkflowObject<Workflow> {
+    return {
+      sourceControl: workflow.sourceControl,
+      organization: workflow.organization,
+      published: workflow.is_published ? [workflow] : [],
+      unpublished: workflow.is_published ? [] : [workflow],
+      expanded: false
+    };
   }
 
-  protected recursiveSortOrgToolObjects(orgWorkflowObjects: OrgWorkflowObject[]) {
-    this.sortEntriesOfOrgEntryObjects(orgWorkflowObjects);
-    orgWorkflowObjects.sort(this.sortOrgEntryObjects);
-  }
-
-  protected sortOrgEntryObjects(orgWorkflowObjectA: OrgWorkflowObject, orgWorkflowObjectB: OrgWorkflowObject): number {
+  protected sortOrgEntryObjects(orgWorkflowObjectA: OrgWorkflowObject<Workflow>, orgWorkflowObjectB: OrgWorkflowObject<Workflow>): number {
     const keyA = [orgWorkflowObjectA.sourceControl, orgWorkflowObjectA.organization].join('/').toLowerCase();
     const keyB = [orgWorkflowObjectB.sourceControl, orgWorkflowObjectB.organization].join('/').toLowerCase();
     return keyA.localeCompare(keyB);
   }
 
-  matchingOrgEntryObject(orgWorkflowObjects: OrgWorkflowObject[], selectedWorkflow: Workflow): OrgWorkflowObject {
+  matchingOrgEntryObject(orgWorkflowObjects: OrgWorkflowObject<Workflow>[], selectedWorkflow: Workflow): OrgWorkflowObject<Workflow> {
     return orgWorkflowObjects.find(orgWorkflowObject => {
       return (
         orgWorkflowObject.sourceControl === selectedWorkflow.sourceControl &&

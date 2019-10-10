@@ -108,28 +108,28 @@ describe('MyWorkflowsService', () => {
     source_control_provider: 'GITHUB'
   };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
-  const expectedResult1: OrgWorkflowObject = {
+  const expectedResult1: OrgWorkflowObject<Workflow> = {
     unpublished: [tool5, tool6],
     published: [],
     expanded: false,
     sourceControl: 'github.com',
     organization: 'aa'
   };
-  const expectedResult2: OrgWorkflowObject = {
+  const expectedResult2: OrgWorkflowObject<Workflow> = {
     unpublished: [tool3, tool4],
     published: [],
     expanded: false,
     sourceControl: 'github.com',
     organization: 'bb'
   };
-  const expectedResult3: OrgWorkflowObject = {
+  const expectedResult3: OrgWorkflowObject<Workflow> = {
     unpublished: [tool1, tool2],
     published: [],
     expanded: true,
     sourceControl: 'github.com',
     organization: 'cc'
   };
-  const expectedResult: OrgWorkflowObject[] = [expectedResult1, expectedResult2, expectedResult3];
+  const expectedResult: OrgWorkflowObject<Workflow>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CustomMaterialModule, RouterTestingModule, MyEntriesModule],
@@ -148,8 +148,8 @@ describe('MyWorkflowsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should convert workflows to OrgWorkflowObjects', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
-    expect(service.convertWorkflowsToOrgWorkflowObject(tools, tool1).length).toBe(3);
-    expect(service.convertWorkflowsToOrgWorkflowObject(tools, tool1)).toEqual(expectedResult);
-    expect(service.convertWorkflowsToOrgWorkflowObject([], tool1)).toEqual([]);
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1).length).toBe(3);
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1)).toEqual(expectedResult);
+    expect(service.convertEntriesToOrgEntryObject([], tool1)).toEqual([]);
   }));
 });
