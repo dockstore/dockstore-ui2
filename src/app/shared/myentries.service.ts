@@ -21,7 +21,7 @@ import { OrgEntryObject } from './my-entry';
 import { DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 
-export abstract class MyEntriesService<R extends DockstoreTool | Workflow> extends Base {
+export abstract class MyEntriesService<E extends DockstoreTool | Workflow, U extends OrgToolObject | OrgWorkflowObject> extends Base {
   constructor(protected urlResolverService: UrlResolverService) {
     super();
   }
@@ -35,7 +35,7 @@ export abstract class MyEntriesService<R extends DockstoreTool | Workflow> exten
   abstract getMyEntries(userId: number, entryType: EntryType): void;
   abstract registerEntry(entryType: EntryType): void;
 
-  protected findEntryFromPath(path: string | null, entries: Array<R> | null): R | null {
+  protected findEntryFromPath(path: string | null, entries: Array<E> | null): E | null {
     if (!path || !entries || entries.length === 0) {
       return null;
     }
@@ -49,7 +49,7 @@ export abstract class MyEntriesService<R extends DockstoreTool | Workflow> exten
    * Select the first published tool. If there's no published, select the first unpublished tool.
    * @param entries
    */
-  protected getInitialEntry(entries: Array<R> | null): R | null {
+  protected getInitialEntry(entries: Array<E> | null): E | null {
     if (!entries || entries.length === 0) {
       return null;
     }
@@ -61,26 +61,17 @@ export abstract class MyEntriesService<R extends DockstoreTool | Workflow> exten
       return entries[0];
     }
   }
-  isWorkflow(entry: DockstoreTool | Workflow): entry is Workflow {
-    return (entry as Workflow).full_workflow_path !== undefined;
-  }
-  protected sortEntry(entryA: DockstoreTool | Workflow, toolB: DockstoreTool | Workflow): number {
-    function isWorkflow(entry: DockstoreTool | Workflow): entry is Workflow {
-      return (entry as Workflow).full_workflow_path !== undefined;
-    }
-    const keyA = isWorkflow(entryA) ? entryA.full_workflow_path.toLowerCase() : entryA.tool_path.toLowerCase();
-    const keyB = isWorkflow(toolB) ? toolB.full_workflow_path.toLowerCase() : toolB.tool_path.toLowerCase();
-    return keyA.localeCompare(keyB);
-  }
 
-  protected sortEntriesOfOrgEntryObjects(orgEntryObjects: OrgToolObject[] | OrgWorkflowObject[]) {
-    orgEntryObjects.forEach((orgEntryObject: OrgToolObject | OrgWorkflowObject) => {
+  protected sortEntriesOfOrgEntryObjects(orgEntryObjects: OrgEntryObject<E>[]) {
+    orgEntryObjects.forEach((orgEntryObject: OrgEntryObject<E>) => {
       orgEntryObject.published.sort(this.sortEntry);
       orgEntryObject.unpublished.sort(this.sortEntry);
     });
   }
 
-  recomputeWhatEntryToSelect(tools: R[]): R | null {
+  protected abstract sortEntry(entryA: E, entryB: E): number;
+
+  recomputeWhatEntryToSelect(tools: E[]): E | null {
     const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), tools);
     if (foundTool) {
       return foundTool;
@@ -94,7 +85,7 @@ export abstract class MyEntriesService<R extends DockstoreTool | Workflow> exten
     }
   }
 
-  createOrgEntriesObject<T extends DockstoreTool | Workflow>(entry: T): OrgEntryObject<T> {
+  createOrgEntriesObject(entry: E): OrgEntryObject<E> {
     return {
       published: entry.is_published ? [entry] : [],
       unpublished: entry.is_published ? [] : [entry],

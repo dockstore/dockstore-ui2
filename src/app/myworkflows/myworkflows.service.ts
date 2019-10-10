@@ -34,7 +34,7 @@ import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 
 @Injectable()
-export class MyWorkflowsService extends MyEntriesService<Workflow> {
+export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowObject> {
   gitHubAppInstallationLink$: Observable<string>;
   constructor(
     protected userQuery: UserQuery,
@@ -164,5 +164,11 @@ export class MyWorkflowsService extends MyEntriesService<Workflow> {
 
   getPath(entry: Workflow): string {
     return entry.full_workflow_path;
+  }
+
+  sortEntry(entryA: Workflow, entryB: Workflow): number {
+    const keyA = entryA.full_workflow_path.toLowerCase();
+    const keyB = entryB.full_workflow_path.toLowerCase();
+    return keyA.localeCompare(keyB);
   }
 }

@@ -29,7 +29,7 @@ import { MyEntriesService } from './../shared/myentries.service';
 import { OrgToolObject } from './my-tool/my-tool.component';
 
 @Injectable()
-export class MytoolsService extends MyEntriesService<DockstoreTool> {
+export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObject> {
   constructor(
     private alertService: AlertService,
     private usersService: UsersService,
@@ -131,5 +131,11 @@ export class MytoolsService extends MyEntriesService<DockstoreTool> {
 
   getPath(entry: DockstoreTool): string {
     return entry.tool_path;
+  }
+
+  sortEntry(entryA: DockstoreTool, entryB: DockstoreTool): number {
+    const keyA = entryA.tool_path.toLowerCase();
+    const keyB = entryB.tool_path.toLowerCase();
+    return keyA.localeCompare(keyB);
   }
 }
