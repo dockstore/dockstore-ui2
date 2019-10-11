@@ -65,7 +65,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
    * @param workflow Selected workflow
    */
   selectEntry(workflow: DockstoreTool | Workflow | null, entryType: EntryType | null): void {
-    if (workflow && entryType) {
+    if (workflow && entryType && workflow.id) {
       if (entryType === EntryType.BioWorkflow) {
         this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
       } else {
@@ -120,7 +120,10 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     return keyA.localeCompare(keyB);
   }
 
-  matchingOrgEntryObject(orgWorkflowObjects: OrgWorkflowObject<Workflow>[], selectedWorkflow: Workflow): OrgWorkflowObject<Workflow> {
+  matchingOrgEntryObject(
+    orgWorkflowObjects: OrgWorkflowObject<Workflow>[],
+    selectedWorkflow: Workflow
+  ): OrgWorkflowObject<Workflow> | undefined {
     return orgWorkflowObjects.find(orgWorkflowObject => {
       return (
         orgWorkflowObject.sourceControl === selectedWorkflow.sourceControl &&
@@ -130,12 +133,12 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   }
 
   getPath(entry: Workflow): string {
-    return entry.full_workflow_path;
+    return entry.full_workflow_path || '';
   }
 
   sortEntry(entryA: Workflow, entryB: Workflow): number {
-    const keyA = entryA.full_workflow_path.toLowerCase();
-    const keyB = entryB.full_workflow_path.toLowerCase();
+    const keyA = (entryA.full_workflow_path || '').toLowerCase();
+    const keyB = (entryB.full_workflow_path || '').toLowerCase();
     return keyA.localeCompare(keyB);
   }
 }

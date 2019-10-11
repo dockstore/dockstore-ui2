@@ -59,7 +59,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
       );
   }
   selectEntry(tool: DockstoreTool | Workflow | null): void {
-    if (tool !== null) {
+    if (tool && tool.id) {
       this.containersService.getContainer(tool.id, includesValidation).subscribe(result => {
         this.location.go('/my-tools/' + result.tool_path);
         this.containerService.setTool(result);
@@ -82,19 +82,22 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     };
   }
 
-  matchingOrgEntryObject(orgToolObjects: OrgToolObject<DockstoreTool>[], selectedEntry: DockstoreTool): OrgToolObject<DockstoreTool> {
+  matchingOrgEntryObject(
+    orgToolObjects: OrgToolObject<DockstoreTool>[],
+    selectedEntry: DockstoreTool
+  ): OrgToolObject<DockstoreTool> | undefined {
     return orgToolObjects.find(orgToolObject => {
       return orgToolObject.namespace === selectedEntry.namespace && orgToolObject.registry === selectedEntry.registry_string;
     });
   }
 
   getPath(entry: DockstoreTool): string {
-    return entry.tool_path;
+    return entry.tool_path || '';
   }
 
   sortEntry(entryA: DockstoreTool, entryB: DockstoreTool): number {
-    const keyA = entryA.tool_path.toLowerCase();
-    const keyB = entryB.tool_path.toLowerCase();
+    const keyA = (entryA.tool_path || '').toLowerCase();
+    const keyB = (entryB.tool_path || '').toLowerCase();
     return keyA.localeCompare(keyB);
   }
 }

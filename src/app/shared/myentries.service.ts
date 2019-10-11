@@ -78,7 +78,7 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
   abstract getMyEntries(userId: number, entryType: EntryType): void;
   abstract registerEntry(entryType: EntryType): void;
 
-  protected findEntryFromPath(path: string | null, entries: Array<E> | null): E | null {
+  protected findEntryFromPath(path: string | null, entries: Array<E> | null): E | null | undefined {
     if (!path || !entries || entries.length === 0) {
       return null;
     }
@@ -133,5 +133,5 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
     }
   }
 
-  protected abstract matchingOrgEntryObject(orgEntryObjects: O[], selectedEntry: E): O;
+  protected abstract matchingOrgEntryObject(orgEntryObjects: O[], selectedEntry: E): O | undefined;
 }
