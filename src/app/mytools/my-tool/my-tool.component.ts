@@ -121,9 +121,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     });
 
     this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(
-      map(combinedObservable => {
-        const tools = combinedObservable[0];
-        const tool = combinedObservable[1];
+      map(([tools, tool]) => {
         return this.mytoolsService.convertEntriesToOrgEntryObject(tools, tool);
       })
     );

@@ -162,17 +162,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         }
       );
     this.groupEntriesObject$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.selectActive()]).pipe(
-      map(combinedObservable => {
-        const workflows = combinedObservable[0];
-        const workflow = combinedObservable[1];
+      map(([workflows, workflow]) => {
         return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
       })
     );
 
     this.groupSharedEntriesObject$ = combineLatest([this.workflowService.sharedWorkflows$, this.workflowQuery.selectActive()]).pipe(
-      map(combinedObservable => {
-        const workflows = combinedObservable[0];
-        const workflow = combinedObservable[1];
+      map(([workflows, workflow]) => {
         return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
       })
     );
