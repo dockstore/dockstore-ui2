@@ -97,3 +97,9 @@ export abstract class MyEntry extends Base implements OnDestroy {
     return arr1.concat(arr2);
   }
 }
+
+export interface OrgEntryObject<T> {
+  published: Array<T>;
+  unpublished: Array<T>;
+  expanded: boolean;
+}

@@ -30,7 +30,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { MyEntry } from '../../shared/my-entry';
+import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -238,10 +238,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
  * @interface OrgWorkflowObject
  * @template T
  */
-export interface OrgWorkflowObject<T> {
+export interface OrgWorkflowObject<T> extends OrgEntryObject<T> {
   sourceControl: string;
   organization: string;
-  published: Array<T>;
-  unpublished: Array<T>;
-  expanded: boolean;
 }

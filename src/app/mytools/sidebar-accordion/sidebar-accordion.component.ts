@@ -10,14 +10,13 @@ import { OrgToolObject } from '../my-tool/my-tool.component';
   styleUrls: ['./sidebar-accordion.component.scss']
 })
 export class SidebarAccordionComponent implements OnInit {
+  constructor(private toolQuery: ToolQuery) {}
   @Input() openOneAtATime;
   @Input() groupEntriesObject: OrgToolObject<DockstoreTool>[];
   @Input() refreshMessage;
 
   public toolId$: Observable<number>;
   activeTab = 0;
-
-  constructor(private toolQuery: ToolQuery) {}
 
   ngOnInit(): void {
     this.toolId$ = this.toolQuery.toolId$;

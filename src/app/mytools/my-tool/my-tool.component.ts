@@ -29,7 +29,7 @@ import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ContainerService } from '../../shared/container.service';
-import { MyEntry } from '../../shared/my-entry';
+import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool, Workflow } from '../../shared/swagger';
@@ -179,10 +179,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
  * @interface OrgToolObject
  * @template T
  */
-export interface OrgToolObject<T> {
+export interface OrgToolObject<T> extends OrgEntryObject<T> {
   registry: string;
   namespace: string;
-  published: Array<T>;
-  unpublished: Array<T>;
-  expanded: boolean;
 }
