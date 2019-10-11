@@ -20,6 +20,14 @@ import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faBitbucket, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 import { faDockstore, faWhale } from './custom-icons';
 
+const GITHUB = 'GitHub';
+
+const BITBUCKET = 'Bitbucket';
+
+const GITLAB = 'GitLab';
+
+const DOCKSTORE = 'Dockstore';
+
 export class ProviderService {
   /* set up project provider */
   setUpProvider(tool: ExtendedDockstoreTool | ExtendedWorkflow): ExtendedDockstoreTool | ExtendedWorkflow {
@@ -31,43 +39,42 @@ export class ProviderService {
     return tool;
   }
 
-  private getProviderIcon(providerUrl: string): IconDefinition {
+  private getProviderIcon(providerUrl: string | null): IconDefinition | null {
     const provider = this.getProvider(providerUrl);
     if (!provider) {
       return null;
     }
-    if (provider === 'GitHub') {
-      return faGithub;
-    }
-    if (provider === 'Bitbucket') {
-      return faBitbucket;
-    }
-    if (provider === 'GitLab') {
-      return faGitlab;
-    }
-    if (provider === 'Dockstore') {
-      return faDockstore;
-    } else {
-      return faWhale;
+    switch (provider) {
+      case GITHUB:
+        return faGithub;
+      case BITBUCKET:
+        return faBitbucket;
+      case GITLAB:
+        return faGitlab;
+      case DOCKSTORE:
+        return faDockstore;
+      default:
+        return faWhale;
     }
   }
 
   // TODO: Without an anchor, this looks fragile (github repo that included the string " bitbucket.org" in its name)
+
   private getProvider(gitUrl: string): string {
     if (gitUrl.startsWith('git@github.com')) {
-      return 'GitHub';
+      return GITHUB;
     }
 
     if (gitUrl.startsWith('git@bitbucket.org')) {
-      return 'Bitbucket';
+      return BITBUCKET;
     }
 
     if (gitUrl.startsWith('git@gitlab.com')) {
-      return 'GitLab';
+      return GITLAB;
     }
 
     if (gitUrl.startsWith('git@dockstore.org')) {
-      return 'Dockstore';
+      return DOCKSTORE;
     }
 
     return null;

@@ -20,7 +20,7 @@ import { ContainersService } from './swagger/api/containers.service';
 import { ImageProviderService } from './image-provider.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { validTool } from '../test/mocked-objects';
-import { faQuay, faWhale } from './custom-icons';
+import { faAmazonECR, faQuay, faWhale } from './custom-icons';
 import { faDocker, faGitlab } from '@fortawesome/free-brands-svg-icons';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 
@@ -104,6 +104,6 @@ describe('ImageProviderService', () => {
     tool.registry = DockstoreTool.RegistryEnum.SEVENBRIDGES;
     expect(service.setUpImageProvider(tool).imgProviderIcon).toEqual(faWhale);
     tool.registry = DockstoreTool.RegistryEnum.AMAZONECR;
-    expect(service.setUpImageProvider(tool).imgProviderIcon).toEqual(faWhale);
+    expect(service.setUpImageProvider(tool).imgProviderIcon).toEqual(faAmazonECR);
   }));
 });
