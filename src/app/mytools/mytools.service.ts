@@ -96,6 +96,18 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
   }
 
   sortEntry(entryA: DockstoreTool, entryB: DockstoreTool): number {
+    const registryA = entryA.registry_string.toLowerCase();
+    const registryB = entryB.registry_string.toLowerCase();
+    const compareRegistry = registryA.localeCompare(registryB);
+    if (compareRegistry) {
+      return compareRegistry;
+    }
+    const namespaceA = entryA.namespace.toLowerCase();
+    const namespaceB = entryB.namespace.toLowerCase();
+    const compareNamespace = namespaceA.localeCompare(namespaceB);
+    if (compareNamespace) {
+      return compareNamespace;
+    }
     const keyA = (entryA.tool_path || '').toLowerCase();
     const keyB = (entryB.tool_path || '').toLowerCase();
     return keyA.localeCompare(keyB);

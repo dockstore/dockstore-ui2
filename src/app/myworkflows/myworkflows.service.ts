@@ -137,6 +137,18 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   }
 
   sortEntry(entryA: Workflow, entryB: Workflow): number {
+    const sourceControlA = entryA.sourceControl.toLowerCase();
+    const sourceControlB = entryB.sourceControl.toLowerCase();
+    const compareSourceControl = sourceControlA.localeCompare(sourceControlB);
+    if (compareSourceControl) {
+      return compareSourceControl;
+    }
+    const organizationA = entryA.organization.toLowerCase();
+    const organizationB = entryB.organization.toLowerCase();
+    const compareOrganization = organizationA.localeCompare(organizationB);
+    if (compareOrganization) {
+      return compareOrganization;
+    }
     const keyA = (entryA.full_workflow_path || '').toLowerCase();
     const keyB = (entryB.full_workflow_path || '').toLowerCase();
     return keyA.localeCompare(keyB);

@@ -96,9 +96,9 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
     if (!entries || entries.length === 0) {
       return null;
     }
+    entries.sort(this.sortEntry);
     const publishedEntries = entries.filter(entry => entry.is_published);
     if (publishedEntries.length > 0) {
-      publishedEntries.sort(this.sortEntry);
       return publishedEntries[0];
     } else {
       return entries[0];
