@@ -24,7 +24,6 @@ describe('Checker workflow test from my-tools', () => {
   });
 
   function goToB3() {
-    cy.wait(1000);
     cy.contains('quay.io/A2')
       .parentsUntil('accordion-group')
       .contains('div .no-wrap', /\bb3\b/)
@@ -34,6 +33,9 @@ describe('Checker workflow test from my-tools', () => {
 
   describe('Should be able to register and publish a checker workflow from a tool', () => {
     it('visit a tool and have the correct buttons and be able to register a checker workflow', () => {
+      cy.server();
+      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.wait('@getTool');
       goToB3();
 
       cy.get('#viewCheckerWorkflowButton').should('not.be.visible');
@@ -54,6 +56,9 @@ describe('Checker workflow test from my-tools', () => {
       cy.get('#viewCheckerWorkflowButton').should('be.visible');
     });
     it('visit the tool and its checker workflow and have the correct buttons', () => {
+      cy.server();
+      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.wait('@getTool');
       goToB3();
       // In the parent tool right now
       // Didn't change the tool path upon entry or select
@@ -85,6 +90,9 @@ describe('Checker workflow test from my-tools', () => {
       cy.get('#viewCheckerWorkflowButton').should('visible');
     });
     it('visit the tool and have its publish/unpublish reflected in the checker workflow', () => {
+      cy.server();
+      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.wait('@getTool');
       goToB3();
       // In the parent tool right now
       // Didn't change the tool path upon entry or select
