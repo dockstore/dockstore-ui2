@@ -21,11 +21,8 @@ import { faBitbucket, faGithub, faGitlab } from '@fortawesome/free-brands-svg-ic
 import { faDockstore, faWhale } from './custom-icons';
 
 const GITHUB = 'GitHub';
-
 const BITBUCKET = 'Bitbucket';
-
 const GITLAB = 'GitLab';
-
 const DOCKSTORE = 'Dockstore';
 
 export class ProviderService {
@@ -35,12 +32,11 @@ export class ProviderService {
 
     tool.provider = this.getProvider(gitUrl);
     tool.providerUrl = this.getProviderUrl(gitUrl, tool.provider);
-    tool.providerIcon = this.getProviderIcon(tool.gitUrl);
+    tool.providerIcon = this.getProviderIcon(tool.provider);
     return tool;
   }
 
-  private getProviderIcon(providerUrl: string | null): IconDefinition | null {
-    const provider = this.getProvider(providerUrl);
+  private getProviderIcon(provider: string | null): IconDefinition | null {
     if (!provider) {
       return null;
     }
