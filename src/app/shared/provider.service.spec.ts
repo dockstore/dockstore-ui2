@@ -17,6 +17,11 @@
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ProviderService } from './provider.service';
 import { inject, TestBed } from '@angular/core/testing';
+import { ImageProviderService } from './image-provider.service';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { validTool } from '../test/mocked-objects';
+import { faDockstore } from './custom-icons';
+import { faBitbucket, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 
 describe('ProviderService', () => {
   beforeEach(() => {
@@ -66,5 +71,15 @@ describe('ProviderService', () => {
     const tool7 = tool;
     tool7.gitUrl = 'git@dockstore.org:garyluu/dockstore-tool-md5sum.git';
     expect(service.setUpProvider(tool7).providerUrl).toContain('https://dockstore.org/');
+  }));
+  it('should display appropriate icons for providers', inject([ProviderService], (service: ProviderService) => {
+    const tool: ExtendedDockstoreTool = validTool;
+    expect(service.setUpProvider(tool).providerIcon).toEqual(faGithub);
+    tool.gitUrl = 'git@bitbucket.org:garyluu/dockstore-tool-md5sum.git';
+    expect(service.setUpProvider(tool).providerIcon).toEqual(faBitbucket);
+    tool.gitUrl = 'git@gitlab.com:garyluu/dockstore-tool-md5sum.git';
+    expect(service.setUpProvider(tool).providerIcon).toEqual(faGitlab);
+    tool.gitUrl = 'git@dockstore.org:garyluu/dockstore-tool-md5sum.git';
+    expect(service.setUpProvider(tool).providerIcon).toEqual(faDockstore);
   }));
 });
