@@ -58,7 +58,9 @@ export class RequestsComponent extends Base implements OnInit {
         this.myOrganizationInvites = myMemberships.filter(membership => !membership.accepted);
         this.myOrganizationRequests = myMemberships.filter(
           membership =>
-            membership.accepted && (membership.organization.status === 'PENDING' || membership.organization.status === 'REJECTED')
+            membership.accepted &&
+            (membership.organization.status === Organization.StatusEnum.PENDING ||
+              membership.organization.status === Organization.StatusEnum.REJECTED)
         );
 
         this.alertService.simpleSuccess();

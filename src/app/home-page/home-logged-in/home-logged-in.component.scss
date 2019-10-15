@@ -1,17 +1,5 @@
-// This is a sample card and should probably be more flexible
-.random-card {
-  min-height: 400px;
-  min-width: 300px;
-}
-
-// This is a sample section and should probably be more flexible
-.random-section {
+.widget-section {
   min-height: 300px;
-  width: 100%;
-}
-
-.random-section-sm {
-  min-height: 100px;
   width: 100%;
 }
 
@@ -19,7 +7,7 @@
   border: 1px solid #cfd1d7;
 }
 
-.example-container {
+mat-sidenav-container {
   display: flex;
   min-height: 1000px;
   height: 100%;

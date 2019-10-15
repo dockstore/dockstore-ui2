@@ -1,18 +1,18 @@
-<div class="px-4 py-2">
+<div>
   <h3>Requests</h3>
-  <div *ngIf="myOrganizationInvites?.length == 0 && myOrganizationRequests?.length == 0; else hasRequests">
+  <div *ngIf="myOrganizationInvites?.length === 0 && myOrganizationRequests?.length === 0; else hasRequests">
     <p>You have no requests</p>
   </div>
 
   <ng-template #hasRequests>
     <p *ngIf="myOrganizationInvites?.length > 0">
-      {{ myOrganizationInvites?.length }} organization invite<span *ngIf="myOrganizationInvites?.length != 1">s</span>
+      {{ myOrganizationInvites?.length }} organization invite<span *ngIf="myOrganizationInvites?.length !== 1">s</span>
     </p>
     <p *ngIf="myOrganizationRequests?.length > 0">
-      {{ myOrganizationRequests?.length }} organization request<span *ngIf="myOrganizationRequests?.length != 1">s</span>
+      {{ myOrganizationRequests?.length }} organization request<span *ngIf="myOrganizationRequests?.length !== 1">s</span>
     </p>
     <p *ngIf="myPendingOrganizationRequests?.length > 0">
-      {{ myPendingOrganizationRequests?.length }} organization request<span *ngIf="myPendingOrganizationRequests?.length != 1">s</span>
+      {{ myPendingOrganizationRequests?.length }} organization request<span *ngIf="myPendingOrganizationRequests?.length !== 1">s</span>
       requiring action
     </p>
   </ng-template>
