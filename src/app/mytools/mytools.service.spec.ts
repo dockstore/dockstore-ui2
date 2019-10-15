@@ -16,12 +16,14 @@
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ContainerService } from 'app/shared/container.service';
-import { EntryType } from 'app/shared/enum/entry-type';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { ContainerStubService } from 'app/test/service-stubs';
 import { DockstoreTool } from '../shared/swagger';
+import { OrgToolObject } from './my-tool/my-tool.component';
 import { MytoolsService } from './mytools.service';
 
 describe('MytoolsService', () => {
@@ -124,44 +126,48 @@ describe('MytoolsService', () => {
     registry_string: 'quay.io',
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: '1',
-    tool_path: 'quay.io/aa/ee',
+    tool_path: 'quay.io/aa/ee/1',
     path: 'quay.io/aa/ee'
   };
   const tools: DockstoreTool[] = [tool1, tool2, tool4, tool3, tool5, tool6];
-  const expectedResult1 = {
-    entries: [tool5, tool6],
-    isFirstOpen: false,
-    namespace: 'quay.io/aa',
-    sourceControl: 'quay.io',
-    organization: 'aa'
+  const expectedResult1: OrgToolObject<DockstoreTool> = {
+    unpublished: [tool5, tool6],
+    expanded: false,
+    namespace: 'aa',
+    registry: 'quay.io',
+    published: []
   };
-  const expectedResult2 = {
-    entries: [tool3, tool4],
-    isFirstOpen: false,
-    namespace: 'quay.io/bb',
-    sourceControl: 'quay.io',
-    organization: 'bb'
+  const expectedResult2: OrgToolObject<DockstoreTool> = {
+    unpublished: [tool3, tool4],
+    expanded: false,
+    namespace: 'bb',
+    registry: 'quay.io',
+    published: []
   };
-  const expectedResult3 = {
-    entries: [tool1, tool2],
-    isFirstOpen: false,
-    namespace: 'quay.io/cc',
-    sourceControl: 'quay.io',
-    organization: 'cc'
+  const expectedResult3: OrgToolObject<DockstoreTool> = {
+    unpublished: [tool1, tool2],
+    expanded: true,
+    registry: 'quay.io',
+    namespace: 'cc',
+    published: []
   };
-  const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
+  const expectedResult: OrgToolObject<DockstoreTool>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MytoolsService, { provide: ContainerService, useClass: ContainerStubService }],
-      imports: [CustomMaterialModule, HttpClientTestingModule, MyEntriesModule]
+      providers: [
+        MytoolsService,
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: UrlResolverService, useclass: UrlResolverService }
+      ],
+      imports: [RouterTestingModule, CustomMaterialModule, HttpClientTestingModule, MyEntriesModule]
     });
   });
   it('should ...', inject([MytoolsService], (service: MytoolsService) => {
     expect(service).toBeTruthy();
   }));
-  it('should ...', inject([MytoolsService], (service: MytoolsService) => {
-    expect(service.sortGroupEntries(tools, 'asdf', EntryType.Tool).length).toBe(3);
-    expect(service.sortGroupEntries(tools, 'asdf', EntryType.Tool)).toEqual(expectedResult);
-    expect(service.sortGroupEntries([], 'asdf', EntryType.Tool)).toEqual([]);
+  it('should convert tools to OrgToolObjects', inject([MytoolsService], (service: MytoolsService) => {
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1).length).toBe(3);
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1)).toEqual(expectedResult);
+    expect(service.convertEntriesToOrgEntryObject([], tool1)).toEqual([]);
   }));
 });

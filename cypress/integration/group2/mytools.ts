@@ -51,12 +51,15 @@ describe('Dockstore my tools', () => {
 
   describe('Should contain extended DockstoreTool properties', () => {
     it('visit another page then come back', () => {
+      cy.server();
+      cy.route('api/containers/*?include=validations').as('getTool');
       cy.get('a#home-nav-button').click();
       cy.contains('Docker Tools and Workflows for the Sciences');
       cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
       cy.get('[data-cy=my-tools-nav-button]').click();
+      cy.wait('@getTool');
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
       cy.contains('github.com');
@@ -82,6 +85,9 @@ describe('Dockstore my tools', () => {
       cy.contains('/Dockerfile');
     });
     it('add and remove test parameter file', () => {
+      cy.server();
+      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.wait('@getTool');
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
       cy.contains('Versions').click();
@@ -101,6 +107,9 @@ describe('Dockstore my tools', () => {
 
   describe('publish a tool', () => {
     it('publish and unpublish', () => {
+      cy.server();
+      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.wait('@getTool');
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
 

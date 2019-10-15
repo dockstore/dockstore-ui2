@@ -15,14 +15,13 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ToolService } from './tool/tool.service';
 
 @Injectable()
 export class ContainerService {
   private static readonly descriptorWdl = ' --descriptor wdl';
-  tools$ = new BehaviorSubject<any>(null); // This contains the list of unsorted tools
+  tools$ = new BehaviorSubject<DockstoreTool[]>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs

@@ -1,5 +1,5 @@
 <mat-accordion multi-true>
-  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj | expandPanel: (workflowId$ | async)">
+  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj.expanded">
     <mat-expansion-panel-header>
       <mat-panel-title class="org-accordion-header">
         {{ orgObj?.sourceControl + '/' + orgObj?.organization }}

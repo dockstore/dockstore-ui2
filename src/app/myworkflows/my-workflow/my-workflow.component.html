@@ -84,12 +84,10 @@
                 </mat-toolbar-row>
               </mat-toolbar>
             </div>
-            <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">
-              You have not registered any {{ entryType$ | async }}s
-            </p>
+            <p *ngIf="!(hasGroupEntriesObject$ | async)">You have not registered any {{ entryType$ | async }}s</p>
             <app-sidebar-accordion
               [openOneAtATime]="oneAtATime"
-              [groupEntriesObject]="groupEntriesObject"
+              [groupEntriesObject]="groupEntriesObject$ | async"
               [refreshMessage]="isRefreshing$ | async"
             ></app-sidebar-accordion>
             <br />
@@ -105,22 +103,17 @@
               <div class="clearfix sidebar-header">
                 <h3 class="sidebar-header">Shared with me</h3>
               </div>
-              <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
-                You have no {{ entryType$ | async }}s shared with you
-              </p>
-              <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+              <p *ngIf="!(hasGroupSharedEntriesObject$ | async)">You have no {{ entryType$ | async }}s shared with you</p>
+              <app-sidebar-accordion
+                [openOneAtATime]="oneAtATime"
+                [groupEntriesObject]="groupSharedEntriesObject$ | async"
+              ></app-sidebar-accordion>
             </ng-container>
           </div>
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div
-          *ngIf="
-            !(isRefreshing$ | async) &&
-            ((groupEntriesObject?.length == 0 || !groupEntriesObject) &&
-              (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))
-          "
-        >
+        <div *ngIf="!(isRefreshing$ | async) && (!(hasGroupEntriesObject$ | async) && !(hasGroupSharedEntriesObject$ | async))">
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>
