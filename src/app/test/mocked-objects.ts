@@ -16,6 +16,7 @@
 
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { Hit } from '../search/state/search.service';
+import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { WorkflowVersion } from '../shared/swagger';
 import { BaseClassForVersionsOfEntriesInTheDockstore } from '../shared/swagger/model/baseClassForVersionsOfEntriesInTheDockstore';
@@ -693,4 +694,22 @@ export const exampleEntry: BaseClassForVersionsOfEntriesInTheDockstore = {
   verifiedSource: null,
   versionEditor: null,
   workingDirectory: ''
+};
+
+export const validTool: ExtendedDockstoreTool = {
+  defaultCWLTestParameterFile: '',
+  defaultWDLTestParameterFile: '',
+  default_cwl_path: '',
+  default_dockerfile_path: '',
+  default_wdl_path: '',
+  gitUrl: 'git@github.com:denis-yuen/dockstore-tool-bamstats.git',
+  mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
+  tool_path: 'quay.io/potato/beef/stew',
+  path: 'quay.io/dockstore-testing/dockstore-tool-bamstats',
+  name: '',
+  namespace: '',
+  private_access: false,
+  registry_string: 'quay.io',
+  registry: DockstoreTool.RegistryEnum.QUAYIO,
+  toolname: null
 };

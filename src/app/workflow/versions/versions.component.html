@@ -161,6 +161,7 @@
             <a
               href="https://doi.org/{{ version.doiURL }}"
               *ngIf="version.doiURL"
+              data-cy="workflow-version-DOI-badge"
               matTooltip="Click to view this version's DOI entry information."
               target="_blank"
               ><img src="{{ zenodoUrl }}/badge/DOI/{{ version.doiURL }}.svg" alt="DOI"

@@ -60,8 +60,8 @@
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
       <mat-cell *matCellDef="let entry">
-        <a [href]="entry?.providerUrl">
-          {{ entry?.provider }}
+        <a [href]="entry?.providerUrl" *ngIf="entry.providerUrl">
+          <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"> </fa-icon>
         </a>
       </mat-cell>
     </ng-container>
