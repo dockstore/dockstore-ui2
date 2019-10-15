@@ -35,11 +35,4 @@ describe('elasticsearch from logged-in homepage', () => {
     //     .type('asdf{enter}');
     //   cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
     // });
-    it('Should be able to search entries for using text', () => {
-      cy.visit('/');
-      cy.get('#searchBar')
-        .should('have.attr', 'placeholder', 'Enter Keyword...')
-        .type('asdf{enter}');
-      cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
-    });
 });
