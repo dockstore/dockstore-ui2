@@ -20,19 +20,6 @@
   <img src="../assets/images/dockstore/dockstore-tools-blue.png" /> {{ myEntryPageTitle$ | async | titlecase }}
 </app-header>
 
-<button
-  mat-fab
-  color="accent"
-  id="register_tool_button"
-  class="fab-bottom-right"
-  matTooltip="Register tool"
-  matTooltipPosition="before"
-  (click)="showRegisterEntryModal()"
-  [disabled]="isRefreshing$ | async"
->
-  <mat-icon>add</mat-icon>
-</button>
-
 <div class="container-fluid pt-3 sidebar-set-height">
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
@@ -51,11 +38,21 @@
                         color="primary"
                         [matTooltipPosition]="'after'"
                         matTooltip="Find new tools and sync all existing tools"
-                        class="pull-right"
                         (click)="refreshAllEntries()"
                         [disabled]="isRefreshing$ | async"
                       >
                         Refresh All
+                      </button>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        id="register_tool_button"
+                        matTooltip="Register tool"
+                        matTooltipPosition="after"
+                        (click)="showRegisterEntryModal()"
+                        [disabled]="isRefreshing$ | async"
+                      >
+                        <mat-icon>add</mat-icon>
                       </button>
                     </span>
                   </div>
