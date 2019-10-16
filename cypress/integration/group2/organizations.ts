@@ -125,6 +125,7 @@ describe('Dockstore Organizations', () => {
       cy.visit('/');
       cy.contains('1 organization request');
       cy.contains('1 organization request requiring action');
+      cy.visit('/organizations/Potatoe');
     });
   });
 
