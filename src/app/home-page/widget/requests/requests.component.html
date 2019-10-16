@@ -1,6 +1,11 @@
 <div>
   <h3>Requests</h3>
-  <div *ngIf="myOrganizationInvites?.length === 0 && myOrganizationRequests?.length === 0; else hasRequests">
+  <div
+    *ngIf="
+      myOrganizationInvites?.length === 0 && myOrganizationRequests?.length === 0 && myPendingOrganizationRequests?.length === 0;
+      else hasRequests
+    "
+  >
     <p>You have no requests</p>
   </div>
 

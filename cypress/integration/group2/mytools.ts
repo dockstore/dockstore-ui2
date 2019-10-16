@@ -52,6 +52,9 @@ describe('Dockstore my tools', () => {
   describe('Should contain extended DockstoreTool properties', () => {
     it('visit another page then come back', () => {
       cy.get('a#home-nav-button').click();
+      cy.contains('Twitter');
+      cy.contains('Requests');
+      cy.contains('You have no requests');
       cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
