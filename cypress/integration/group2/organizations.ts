@@ -42,7 +42,6 @@ describe('Dockstore Organizations', () => {
   describe('Should be able to request new organization', () => {
     it('visit the organizations page from the home page', () => {
       cy.visit('/');
-      cy.contains('You have no requests');
       cy.contains('a', 'Organizations').should('be.visible').should('have.attr', 'href', '/organizations').click();
       cy.contains('No organizations found');
     });

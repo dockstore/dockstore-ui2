@@ -28,8 +28,6 @@ describe('Dockstore my workflows', () => {
       cy.visit('/my-workflows');
       cy.get('a#home-nav-button').click();
       cy.contains('Twitter');
-      cy.contains('Requests');
-      cy.contains('You have no requests');
       cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
