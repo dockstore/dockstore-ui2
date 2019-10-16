@@ -264,6 +264,9 @@ export class UsersStubService {
   getExtendedUserData() {
     return observableOf(null);
   }
+  getUserMemberships() {
+    return observableOf([]);
+  }
   checkUserExists(username) {
     return observableOf([]);
   }

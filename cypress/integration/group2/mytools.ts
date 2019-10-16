@@ -54,7 +54,7 @@ describe('Dockstore my tools', () => {
       cy.server();
       cy.route('api/containers/*?include=validations').as('getTool');
       cy.get('a#home-nav-button').click();
-      cy.contains('Docker Tools and Workflows for the Sciences');
+      cy.contains('Twitter');
       cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();

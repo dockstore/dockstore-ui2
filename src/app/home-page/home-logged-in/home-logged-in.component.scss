@@ -1,13 +1,22 @@
-// This is a sample card and should probably be more flexible
-.random-card {
-  min-height: 400px;
-  min-width: 300px;
-  background-color: red;
+.widget-section {
+  min-height: 300px;
+  width: 100%;
 }
 
-// This is a sample section and should probably be more flexible
-.random-section {
-  min-height: 300px;
-  min-width: 600px;
-  background-color: blue;
+.twitter {
+  border: 1px solid #cfd1d7;
+}
+
+mat-sidenav-container {
+  display: flex;
+  min-height: 1000px;
+  height: 100%;
+}
+
+.homepage-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  background: whitesmoke;
 }
