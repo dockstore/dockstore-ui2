@@ -20,18 +20,6 @@
   </button>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> {{ myEntryPageTitle$ | async | titlecase }}
 </app-header>
-<button
-  mat-fab
-  color="accent"
-  id="registerWorkflowButton"
-  class="fab-bottom-right"
-  matTooltip="Register {{ entryType$ | async }}"
-  matTooltipPosition="before"
-  (click)="showRegisterEntryModal()"
-  [disabled]="isRefreshing$ | async"
->
-  <mat-icon>add</mat-icon>
-</button>
 <div class="container-fluid sidebar-set-height">
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
@@ -49,17 +37,29 @@
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
                     <span>My {{ entryType$ | async }}s</span>
                     <span>
-                      <button
-                        *ngIf="entryType === EntryType.BioWorkflow"
-                        mat-button
-                        color="primary"
-                        matTooltipPosition="after"
-                        matTooltip="Find new workflows and sync all existing workflows"
-                        (click)="refreshAllEntries()"
-                        [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)"
-                      >
-                        Refresh All
-                      </button>
+                      <span *ngIf="entryType === EntryType.BioWorkflow">
+                        <button
+                          mat-icon-button
+                          color="primary"
+                          matTooltipPosition="after"
+                          matTooltip="Find new workflows and sync all existing workflows"
+                          (click)="refreshAllEntries()"
+                          [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)"
+                        >
+                          <mat-icon>sync</mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          color="primary"
+                          id="registerWorkflowButton"
+                          matTooltip="Register {{ entryType$ | async }}"
+                          matTooltipPosition="after"
+                          (click)="showRegisterEntryModal()"
+                          [disabled]="isRefreshing$ | async"
+                        >
+                          <mat-icon>add</mat-icon>
+                        </button>
+                      </span>
                       <ng-container *ngIf="entryType === EntryType.Service">
                         <button
                           [disabled]="isRefreshing$ | async"
