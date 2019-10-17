@@ -1,0 +1,24 @@
+<ng-template #loading>Loading...</ng-template>
+
+<div *ngIf="!(isLoading$ | async); else loading">
+  <div>
+    <mat-form-field>
+      <mat-label>Git Registry</mat-label>
+      <mat-select [(ngModel)]="selectedGitRegistry" name="registry" (ngModelChange)="getOrganizations($event)">
+        <mat-option *ngFor="let registry of gitRegistries$ | async" [value]="registry">
+          {{ registry }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="selectedGitRegistry !== null">
+    <mat-form-field>
+      <mat-label>Organization</mat-label>
+      <mat-select [(ngModel)]="selectedGitOrganization" name="organization" (ngModelChange)="getRepositories($event)">
+        <mat-option *ngFor="let organization of gitOrganizations$ | async" [value]="organization">
+          {{ organization }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

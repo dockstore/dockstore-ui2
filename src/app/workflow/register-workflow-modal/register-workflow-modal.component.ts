@@ -62,12 +62,16 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   };
   public options = [
     {
-      label: 'Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.',
+      label: 'Quickly register workflows from GitHub, Bitbucket, etc.',
       value: 0
     },
     {
-      label: 'Create and save CWL, WDL, or Nextflow on Dockstore.org',
+      label: 'Create non-standard workflows from GitHub, Bitbucket, etc.',
       value: 1
+    },
+    {
+      label: 'Create and save workflows on Dockstore.org',
+      value: 2
     }
   ];
   public selectedOption = this.options[0];
