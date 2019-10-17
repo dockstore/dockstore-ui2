@@ -39,6 +39,8 @@ export class EntryWizardComponent implements OnInit {
   toggleRepo(event) {
     if (event.checked) {
       this.entryWizardService.addWorkflow(this.selectedGitRegistry, event.source.name);
+    } else if (!event.checked) {
+      this.entryWizardService.removeWorkflow(this.selectedGitRegistry, event.source.name);
     }
   }
 }
