@@ -14,6 +14,7 @@ export class EntryWizardComponent implements OnInit {
   isLoading$: Observable<boolean>;
   gitRegistries$: Observable<string[]>;
   gitOrganizations$: Observable<string[]>;
+  gitRepositories$: Observable<string[]>;
   selectedGitRegistry: string = null;
   selectedGitOrganization: string = null;
 
@@ -23,15 +24,21 @@ export class EntryWizardComponent implements OnInit {
     this.entryWizardService.updateGitRegistries();
     this.isLoading$ = this.entryWizardQuery.selectLoading();
     this.gitRegistries$ = this.entryWizardQuery.selectGitRegistries$;
-    this.gitOrganizations$ = this.entryWizardQuery.selectGitOrganization$;
+    this.gitOrganizations$ = this.entryWizardQuery.selectGitOrganizations$;
+    this.gitRepositories$ = this.entryWizardQuery.selectGitRepositories$;
   }
 
   getOrganizations(selectedRegistry) {
-    this.selectedGitOrganization = null;
     this.entryWizardService.updateGitOrganizations(selectedRegistry);
   }
 
   getRepositories(selectedOrganization) {
-    console.log(selectedOrganization);
+    this.entryWizardService.updateGitRepositories(this.selectedGitRegistry, selectedOrganization);
+  }
+
+  toggleRepo(event) {
+    if (event.checked) {
+      this.entryWizardService.addWorkflow(this.selectedGitRegistry, event.source.name);
+    }
   }
 }

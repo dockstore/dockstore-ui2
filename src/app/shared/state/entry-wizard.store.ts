@@ -5,12 +5,14 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 export interface EntryWizardState extends EntityState<EntryWizard> {
   gitRegistries: string[];
   gitOrganizations: string[];
+  gitRepositories: string[];
 }
 
 export function createInitialState(): EntryWizardState {
   return {
     gitRegistries: [],
-    gitOrganizations: []
+    gitOrganizations: [],
+    gitRepositories: []
   };
 }
 

@@ -5,7 +5,8 @@ import { EntryWizardStore, EntryWizardState } from './entry-wizard.store';
 @Injectable({ providedIn: 'root' })
 export class EntryWizardQuery extends QueryEntity<EntryWizardState> {
   selectGitRegistries$ = this.select('gitRegistries');
-  selectGitOrganization$ = this.select('gitOrganizations');
+  selectGitOrganizations$ = this.select('gitOrganizations');
+  selectGitRepositories$ = this.select('gitRepositories');
 
   constructor(protected store: EntryWizardStore) {
     super(store);

@@ -1,6 +1,8 @@
 <ng-template #loading>Loading...</ng-template>
 
 <div *ngIf="!(isLoading$ | async); else loading">
+  <p>Toggle repositories on to create workflows from the associated git repository. Once added, these workflows can be customized.</p>
+  <p>This approach is best for git repositories with only one workflow.</p>
   <div>
     <mat-form-field>
       <mat-label>Git Registry</mat-label>
@@ -20,5 +22,11 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
+      <div *ngFor="let repo of gitRepositories$ | async">
+        <mat-slide-toggle (change)="toggleRepo($event)" [name]="repo">{{ repo }}</mat-slide-toggle>
+      </div>
+    </div>
   </div>
 </div>
