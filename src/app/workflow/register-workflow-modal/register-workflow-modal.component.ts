@@ -18,7 +18,7 @@ import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -32,6 +32,9 @@ import {
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { UserQuery } from 'app/shared/user/user.query';
 
 export interface HostedWorkflowObject {
   name: string;
@@ -85,7 +88,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     private registerWorkflowModalService: RegisterWorkflowModalService,
     public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>,
     private alertQuery: AlertQuery,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private myWorkflowsService: MyWorkflowsService,
+    private sessionQuery: SessionQuery,
+    private userQuery: UserQuery
   ) {}
 
   friendlyRepositoryKeys(): Array<string> {
@@ -236,6 +242,14 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
         this.descriptorValidationPattern = '.*';
       }
     }
+  }
+
+  getMyEntries() {
+    combineLatest([this.userQuery.user$, this.sessionQuery.entryType$]).subscribe(([user, entryType]) => {
+      if (user && entryType) {
+        this.myWorkflowsService.getMyEntries(user.id, entryType);
+      }
+    });
   }
 
   ngOnDestroy() {
