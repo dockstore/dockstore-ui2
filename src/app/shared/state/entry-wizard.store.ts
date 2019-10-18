@@ -11,9 +11,9 @@ export interface EntryWizardState extends EntityState<EntryWizard> {
 
 export function createInitialState(): EntryWizardState {
   return {
-    gitRegistries: [],
-    gitOrganizations: [],
-    gitRepositories: []
+    gitRegistries: undefined,
+    gitOrganizations: undefined,
+    gitRepositories: undefined
   };
 }
 

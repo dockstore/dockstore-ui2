@@ -244,6 +244,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     }
   }
 
+  /**
+   * Updates list of entries for the logged in user
+   */
   getMyEntries() {
     combineLatest([this.userQuery.user$, this.sessionQuery.entryType$]).subscribe(([user, entryType]) => {
       if (user && entryType) {

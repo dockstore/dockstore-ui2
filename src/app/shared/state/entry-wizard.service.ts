@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { EntryWizardStore } from './entry-wizard.store';
 import { DefaultService, BioWorkflow } from '../openapi';
 import { AlertService } from '../alert/state/alert.service';
-import { forkJoin, Observable } from 'rxjs';
 import { Repository } from '../openapi/model/repository';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,8 @@ export class EntryWizardService {
         this.entryWizardStore.update({ gitRegistries: registries });
         this.entryWizardStore.setLoading(false);
       },
-      () => {
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
         this.entryWizardStore.setLoading(false);
       }
     );
@@ -33,14 +34,15 @@ export class EntryWizardService {
    */
   updateGitOrganizations(registry: string) {
     this.entryWizardStore.setLoading(true);
-    this.entryWizardStore.update({ gitOrganizations: [], gitRepositories: [] });
+    this.entryWizardStore.update({ gitOrganizations: undefined, gitRepositories: undefined });
     const registryEnum = this.convertSourceControlStringToEnum(registry);
     this.defaultService.getUserOrganizations(registryEnum).subscribe(
       (organizations: Array<string>) => {
         this.entryWizardStore.update({ gitOrganizations: organizations });
         this.entryWizardStore.setLoading(false);
       },
-      () => {
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
         this.entryWizardStore.setLoading(false);
       }
     );
@@ -60,7 +62,8 @@ export class EntryWizardService {
         this.entryWizardStore.update({ gitRepositories: repositories });
         this.entryWizardStore.setLoading(false);
       },
-      () => {
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
         this.entryWizardStore.setLoading(false);
       }
     );
@@ -82,8 +85,8 @@ export class EntryWizardService {
         this.alertService.detailedSuccess('Workflow ' + registry + '/' + path + ' has been added');
         this.entryWizardStore.setLoading(false);
       },
-      () => {
-        this.alertService.simpleError();
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
         this.entryWizardStore.setLoading(false);
       }
     );
@@ -105,8 +108,8 @@ export class EntryWizardService {
         this.alertService.detailedSuccess('Workflow ' + registry + '/' + path + ' has been deleted');
         this.entryWizardStore.setLoading(false);
       },
-      () => {
-        this.alertService.simpleError();
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
         this.entryWizardStore.setLoading(false);
       }
     );
