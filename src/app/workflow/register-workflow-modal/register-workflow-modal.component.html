@@ -46,9 +46,10 @@
       <ng-template matStepLabel>Create a workflow</ng-template>
       <div *ngIf="selectedOption?.value == 0">
         <entry-wizard></entry-wizard>
-        <div mat-dialog-actions>
-          <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
-            Close
+        <div class="modal-footer">
+          <button mat-button color="secondary" matStepperPrevious>Back</button>
+          <button type="button" mat-flat-button color="primary" (click)="hideModal(); clearWorkflowRegisterError()">
+            Finish
           </button>
         </div>
       </div>

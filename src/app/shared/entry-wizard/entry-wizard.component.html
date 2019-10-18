@@ -24,7 +24,9 @@
 
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
       <div *ngFor="let repo of gitRepositories$ | async">
-        <mat-slide-toggle (change)="toggleRepo($event)" [name]="repo">{{ repo }}</mat-slide-toggle>
+        <mat-slide-toggle (change)="toggleRepo($event)" [name]="repo" [checked]="!(gitRepositoriesNotInDatabase$ | async).includes(repo)">{{
+          repo
+        }}</mat-slide-toggle>
       </div>
     </div>
   </div>

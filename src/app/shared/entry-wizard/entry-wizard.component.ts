@@ -15,6 +15,7 @@ export class EntryWizardComponent implements OnInit {
   gitRegistries$: Observable<string[]>;
   gitOrganizations$: Observable<string[]>;
   gitRepositories$: Observable<string[]>;
+  gitRepositoriesNotInDatabase$: Observable<string[]>;
   selectedGitRegistry: string = null;
   selectedGitOrganization: string = null;
 
@@ -26,6 +27,7 @@ export class EntryWizardComponent implements OnInit {
     this.gitRegistries$ = this.entryWizardQuery.selectGitRegistries$;
     this.gitOrganizations$ = this.entryWizardQuery.selectGitOrganizations$;
     this.gitRepositories$ = this.entryWizardQuery.selectGitRepositories$;
+    this.gitRepositoriesNotInDatabase$ = this.entryWizardQuery.selectGitRepositoriesNotInDatabase$;
   }
 
   getOrganizations(selectedRegistry) {

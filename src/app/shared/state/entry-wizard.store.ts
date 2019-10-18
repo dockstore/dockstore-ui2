@@ -6,13 +6,15 @@ export interface EntryWizardState extends EntityState<EntryWizard> {
   gitRegistries: string[];
   gitOrganizations: string[];
   gitRepositories: string[];
+  gitRepositoriesNotInDatabase: string[];
 }
 
 export function createInitialState(): EntryWizardState {
   return {
     gitRegistries: [],
     gitOrganizations: [],
-    gitRepositories: []
+    gitRepositories: [],
+    gitRepositoriesNotInDatabase: []
   };
 }
 
