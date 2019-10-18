@@ -7,7 +7,6 @@ export class EntryWizardQuery extends QueryEntity<EntryWizardState> {
   selectGitRegistries$ = this.select('gitRegistries');
   selectGitOrganizations$ = this.select('gitOrganizations');
   selectGitRepositories$ = this.select('gitRepositories');
-  selectGitRepositoriesNotInDatabase$ = this.select('gitRepositoriesNotInDatabase');
 
   constructor(protected store: EntryWizardStore) {
     super(store);

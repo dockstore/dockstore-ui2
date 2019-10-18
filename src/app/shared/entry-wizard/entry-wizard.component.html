@@ -3,7 +3,7 @@
   <p>Toggle repositories on to create workflows from the associated git repository. Once added, these workflows can be customized.</p>
   <p>This approach is best for git repositories with only one workflow.</p>
   <div>
-    <mat-form-field>
+    <mat-form-field class="w-100">
       <mat-label>Git Registry</mat-label>
       <mat-select [(ngModel)]="selectedGitRegistry" name="registry" (ngModelChange)="getOrganizations($event)">
         <mat-option *ngFor="let registry of gitRegistries$ | async" [value]="registry">
@@ -13,7 +13,7 @@
     </mat-form-field>
   </div>
   <div *ngIf="selectedGitRegistry !== null">
-    <mat-form-field>
+    <mat-form-field class="w-100">
       <mat-label>Organization</mat-label>
       <mat-select [(ngModel)]="selectedGitOrganization" name="organization" (ngModelChange)="getRepositories($event)">
         <mat-option *ngFor="let organization of gitOrganizations$ | async" [value]="organization">
@@ -24,9 +24,7 @@
 
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
       <div *ngFor="let repo of gitRepositories$ | async">
-        <mat-slide-toggle (change)="toggleRepo($event)" [name]="repo" [checked]="!(gitRepositoriesNotInDatabase$ | async).includes(repo)">{{
-          repo
-        }}</mat-slide-toggle>
+        <mat-slide-toggle (change)="toggleRepo($event)" [name]="repo.path" [checked]="repo.present">{{ repo.path }}</mat-slide-toggle>
       </div>
     </div>
   </div>

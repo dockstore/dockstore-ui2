@@ -3,6 +3,7 @@ import { EntryWizardStore } from './entry-wizard.store';
 import { DefaultService, BioWorkflow } from '../openapi';
 import { AlertService } from '../alert/state/alert.service';
 import { forkJoin, Observable } from 'rxjs';
+import { Repository } from '../openapi/model/repository';
 
 @Injectable({
   providedIn: 'root'
@@ -54,12 +55,9 @@ export class EntryWizardService {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
 
-    forkJoin([
-      this.defaultService.getUserOrganizationRepositories(registryEnum, organization),
-      this.defaultService.getUserOrganizationRepositoriesNotInDatabase(registryEnum, organization)
-    ]).subscribe(
-      (value: [Array<string>, Array<string>]) => {
-        this.entryWizardStore.update({ gitRepositories: value[0], gitRepositoriesNotInDatabase: value[1] });
+    this.defaultService.getUserOrganizationRepositories(registryEnum, organization).subscribe(
+      (repositories: Array<Repository>) => {
+        this.entryWizardStore.update({ gitRepositories: repositories });
         this.entryWizardStore.setLoading(false);
       },
       () => {

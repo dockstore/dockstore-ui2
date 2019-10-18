@@ -4,6 +4,7 @@ import { EntryWizardQuery } from '../state/entry-wizard.query';
 import { EntryWizard } from '../state/entry-wizard.model';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
+import { Repository } from '../openapi/model/repository';
 
 @Component({
   selector: 'entry-wizard',
@@ -14,8 +15,7 @@ export class EntryWizardComponent implements OnInit {
   isLoading$: Observable<boolean>;
   gitRegistries$: Observable<string[]>;
   gitOrganizations$: Observable<string[]>;
-  gitRepositories$: Observable<string[]>;
-  gitRepositoriesNotInDatabase$: Observable<string[]>;
+  gitRepositories$: Observable<Repository[]>;
   selectedGitRegistry: string = null;
   selectedGitOrganization: string = null;
 
@@ -27,7 +27,6 @@ export class EntryWizardComponent implements OnInit {
     this.gitRegistries$ = this.entryWizardQuery.selectGitRegistries$;
     this.gitOrganizations$ = this.entryWizardQuery.selectGitOrganizations$;
     this.gitRepositories$ = this.entryWizardQuery.selectGitRepositories$;
-    this.gitRepositoriesNotInDatabase$ = this.entryWizardQuery.selectGitRepositoriesNotInDatabase$;
   }
 
   getOrganizations(selectedRegistry) {
