@@ -144,7 +144,7 @@
           />
           <mat-error *ngIf="formErrors.workflowName">{{ formErrors.workflowName }} </mat-error>
         </mat-form-field>
-        <div mat-dialog-actions class="pull-right">
+        <div class="modal-footer">
           <button
             mat-button
             type="button"
@@ -218,7 +218,7 @@
           <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
         </mat-form-field> -->
 
-        <div mat-dialog-actions class="pull-right">
+        <div class="modal-footer">
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>
