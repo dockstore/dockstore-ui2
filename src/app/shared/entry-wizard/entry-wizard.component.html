@@ -1,7 +1,7 @@
 <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
 <div>
-  <p>Toggle repositories on to create workflows from the associated git repository. Once added, these workflows can be customized.</p>
-  <p>This approach is best for git repositories with only one workflow.</p>
+  <p>Toggle repositories on to create workflows from the associated Git repository. Once added, these workflows can be customized.</p>
+  <p>This approach is best for Git repositories with only one workflow.</p>
   <div>
     <mat-form-field class="w-100">
       <mat-label>Git Registry</mat-label>
@@ -24,7 +24,13 @@
 
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
       <div *ngFor="let repo of gitRepositories$ | async">
-        <mat-slide-toggle (change)="toggleRepo($event)" [name]="repo.path" [checked]="repo.present">{{ repo.path }}</mat-slide-toggle>
+        <mat-slide-toggle
+          (change)="toggleRepo($event)"
+          [name]="repo.path"
+          [checked]="repo.present"
+          [disabled]="!repo.canDelete && repo.present"
+          >{{ repo.path }}</mat-slide-toggle
+        >
       </div>
     </div>
   </div>
