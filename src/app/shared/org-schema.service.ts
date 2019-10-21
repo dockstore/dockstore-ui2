@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Organization } from './openapi';
+import { Organization } from './swagger';
 
 export interface OrganizationSchema {
   '@context': string;

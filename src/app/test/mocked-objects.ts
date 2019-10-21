@@ -19,12 +19,12 @@ import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { WorkflowVersion } from '../shared/swagger';
-import { BaseClassForVersionsOfEntriesInTheDockstore } from '../shared/swagger/model/baseClassForVersionsOfEntriesInTheDockstore';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { Version } from 'app/shared/openapi';
 
 export const updatedWorkflow: Workflow = {
   descriptorType: DescriptorTypeEnum.CWL,
@@ -642,7 +642,7 @@ export const elasticSearchResponse: Hit[] = [
   }
 ];
 
-export const exampleEntry: BaseClassForVersionsOfEntriesInTheDockstore = {
+export const exampleEntry: Version = {
   commitID: null,
   dbUpdateDate: new Date(1568664818354),
   dirtyBit: true,
