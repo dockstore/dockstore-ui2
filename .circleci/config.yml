@@ -17,9 +17,6 @@ jobs:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - dep-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -29,6 +26,9 @@ jobs:
               git checkout -qf FETCH_HEAD
             fi
       - install_container_dependencies
+      - restore_cache:
+          key:
+            - dep-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           command: |
