@@ -34,6 +34,7 @@ describe('Dockstore my tools', () => {
 
   function selectTool(tool: string) {
     cy.get('mat-list-item')
+      .should('be.visible')
       .contains('.no-wrap', tool)
       .should('be.visible')
       .click();
