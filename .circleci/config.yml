@@ -38,7 +38,7 @@ jobs:
               fi
       - save_cache:
           key:
-            - dep-cache-{{ checksum "package-lock.json" }}
+            - dep-cache-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
       - run:
