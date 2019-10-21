@@ -37,8 +37,7 @@ jobs:
                 bash -i -c 'npm ci'
               fi
       - save_cache:
-          keys:
-            - dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
       - run:
