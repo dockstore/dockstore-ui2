@@ -17,6 +17,9 @@ jobs:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - dep-cache-{{ checksum "package-lock.json" }}
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -28,7 +31,16 @@ jobs:
       - install_container_dependencies
       - run:
           name: Install dependencies
-          command: bash -i -c 'npm ci'
+          command: |
+              if [ ! -d "./node_modules" ]
+              then
+                bash -i -c 'npm ci'
+              fi
+      - save_cache:
+          key:
+            - dep-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: Check dependencies
           command: bash -i -c 'npm ls'
