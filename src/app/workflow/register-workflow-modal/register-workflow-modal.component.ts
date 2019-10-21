@@ -65,11 +65,11 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   };
   public options = [
     {
-      label: 'Quickly register workflows from GitHub, Bitbucket, etc.',
+      label: 'Quickly register workflows from GitHub, Bitbucket, and GitLab',
       value: 0
     },
     {
-      label: 'Create non-standard workflows from GitHub, Bitbucket, etc.',
+      label: 'Create non-standard workflows from GitHub, Bitbucket, and GitLab',
       value: 1
     },
     {
