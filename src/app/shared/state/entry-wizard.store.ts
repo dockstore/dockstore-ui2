@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { EntryWizard } from './entry-wizard.model';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { EntityStore, StoreConfig } from '@datorama/akita';
 import { Repository } from '../openapi/model/repository';
 
-export interface EntryWizardState extends EntityState<EntryWizard> {
+export interface EntryWizardState {
   gitRegistries: string[];
   gitOrganizations: string[];
   gitRepositories: Repository[];
