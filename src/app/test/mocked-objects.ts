@@ -24,7 +24,7 @@ import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
-import { Version } from 'app/shared/openapi';
+import { Version } from 'app/shared/swagger/model/version';
 
 export const updatedWorkflow: Workflow = {
   descriptorType: DescriptorTypeEnum.CWL,
