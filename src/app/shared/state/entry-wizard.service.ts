@@ -72,17 +72,15 @@ export class EntryWizardService {
   /**
    * Adds a workflow for the given git repository
    * @param registry git registry
-   * @param path git path (ex. dockstore/dockstore-ui2)
+   * @param organization git organization
+   * @param repositoryName git repository name
    */
-  addWorkflow(registry: string, path: string) {
+  addWorkflow(registry: string, organization: string, repositoryName: string) {
     this.entryWizardStore.setLoading(true);
-    const splitPath = path.split('/');
-    const org = splitPath[0];
-    const repo = splitPath[1];
     const registryEnum = this.convertSourceControlStringToEnum(registry);
-    this.defaultService.addWorkflow(registryEnum, org, repo).subscribe(
+    this.defaultService.addWorkflow(registryEnum, organization, repositoryName).subscribe(
       (workflow: BioWorkflow) => {
-        this.alertService.detailedSuccess('Workflow ' + registry + '/' + path + ' has been added');
+        this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been added');
         this.entryWizardStore.setLoading(false);
       },
       (error: HttpErrorResponse) => {
@@ -95,17 +93,15 @@ export class EntryWizardService {
   /**
    * Removes a workflow for the given git repository
    * @param registry git registry
-   * @param path git path (ex. dockstore/dockstore-ui2)
+   * @param organization git organization
+   * @param repositoryName git repository name
    */
-  removeWorkflow(registry: string, path: string) {
+  removeWorkflow(registry: string, organization: string, repositoryName: string) {
     this.entryWizardStore.setLoading(true);
-    const splitPath = path.split('/');
-    const org = splitPath[0];
-    const repo = splitPath[1];
     const registryEnum = this.convertSourceControlStringToEnum(registry);
-    this.defaultService.deleteWorkflow(registryEnum, org, repo).subscribe(
+    this.defaultService.deleteWorkflow(registryEnum, organization, repositoryName).subscribe(
       (workflow: BioWorkflow) => {
-        this.alertService.detailedSuccess('Workflow ' + registry + '/' + path + ' has been deleted');
+        this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been deleted');
         this.entryWizardStore.setLoading(false);
       },
       (error: HttpErrorResponse) => {

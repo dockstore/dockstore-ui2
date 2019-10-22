@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EntryWizardService } from '../state/entry-wizard.service';
 import { EntryWizardQuery } from '../state/entry-wizard.query';
-import { EntryWizard } from '../state/entry-wizard.model';
 import { Observable } from 'rxjs';
 import { Repository } from '../openapi/model/repository';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -51,9 +50,9 @@ export class EntryWizardComponent implements OnInit {
    */
   toggleRepo(event: MatSlideToggleChange) {
     if (event.checked) {
-      this.entryWizardService.addWorkflow(this.selectedGitRegistry, event.source.name);
-    } else if (!event.checked) {
-      this.entryWizardService.removeWorkflow(this.selectedGitRegistry, event.source.name);
+      this.entryWizardService.addWorkflow(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
+    } else {
+      this.entryWizardService.removeWorkflow(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
     }
   }
 }
