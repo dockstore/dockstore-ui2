@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';

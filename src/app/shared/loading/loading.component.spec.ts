@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { LoadingComponent } from './loading.component';
-import { MatProgressBarModule } from '@angular/material';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 describe('LoadingComponent', () => {
   let component: LoadingComponent;

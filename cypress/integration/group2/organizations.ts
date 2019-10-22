@@ -119,6 +119,13 @@ describe('Dockstore Organizations', () => {
       cy.contains('asdf@asdf.com');
       cy.get('.orgLogo').should('have.attr', 'src').should('include', 'https://www.gravatar.com/avatar/000?d=https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
     });
+
+    it('have request shown on homepage', () => {
+      cy.visit('/');
+      cy.contains('1 organization request');
+      cy.contains('1 organization request requiring action');
+      cy.visit('/organizations/Potatoe');
+    });
   });
 
   describe('Should be able to add/update collection', () => {

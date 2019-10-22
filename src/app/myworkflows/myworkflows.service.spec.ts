@@ -16,15 +16,16 @@
 
 import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EntryType } from 'app/shared/enum/entry-type';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, WorkflowsService } from 'app/shared/swagger';
-import { UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
+import { UrlResolverStubService, UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
+import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
 
 describe('MyWorkflowsService', () => {
@@ -107,28 +108,28 @@ describe('MyWorkflowsService', () => {
     source_control_provider: 'GITHUB'
   };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
-  const expectedResult1 = {
-    entries: [tool5, tool6],
-    isFirstOpen: false,
-    namespace: 'github.com/aa',
+  const expectedResult1: OrgWorkflowObject<Workflow> = {
+    unpublished: [tool5, tool6],
+    published: [],
+    expanded: false,
     sourceControl: 'github.com',
     organization: 'aa'
   };
-  const expectedResult2 = {
-    entries: [tool3, tool4],
-    isFirstOpen: false,
-    namespace: 'github.com/bb',
+  const expectedResult2: OrgWorkflowObject<Workflow> = {
+    unpublished: [tool3, tool4],
+    published: [],
+    expanded: false,
     sourceControl: 'github.com',
     organization: 'bb'
   };
-  const expectedResult3 = {
-    entries: [tool1, tool2],
-    isFirstOpen: false,
-    namespace: 'github.com/cc',
+  const expectedResult3: OrgWorkflowObject<Workflow> = {
+    unpublished: [tool1, tool2],
+    published: [],
+    expanded: true,
     sourceControl: 'github.com',
     organization: 'cc'
   };
-  const expectedResult: any = [expectedResult1, expectedResult2, expectedResult3];
+  const expectedResult: OrgWorkflowObject<Workflow>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CustomMaterialModule, RouterTestingModule, MyEntriesModule],
@@ -136,6 +137,7 @@ describe('MyWorkflowsService', () => {
         MyWorkflowsService,
         MyBioWorkflowsService,
         MyServicesService,
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService }
@@ -145,9 +147,9 @@ describe('MyWorkflowsService', () => {
   it('should be truthy', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
     expect(service).toBeTruthy();
   }));
-  it('should ...', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
-    expect(service.sortGroupEntries(tools, 'asdf', EntryType.BioWorkflow).length).toBe(3);
-    expect(service.sortGroupEntries(tools, 'asdf', EntryType.BioWorkflow)).toEqual(expectedResult);
-    expect(service.sortGroupEntries([], 'asdf', EntryType.BioWorkflow)).toEqual([]);
+  it('should convert workflows to OrgWorkflowObjects', inject([MyWorkflowsService], (service: MyWorkflowsService) => {
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1).length).toBe(3);
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1)).toEqual(expectedResult);
+    expect(service.convertEntriesToOrgEntryObject([], tool1)).toEqual([]);
   }));
 });

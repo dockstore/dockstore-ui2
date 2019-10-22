@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { sampleTool1, sampleWorkflow1 } from '../test/mocked-objects';

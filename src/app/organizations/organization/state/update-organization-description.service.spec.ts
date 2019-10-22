@@ -4,7 +4,8 @@ import { UpdateOrganizationOrCollectionDescriptionService } from './update-organ
 import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organization-description.store';
 import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
   let updateOrganizationOrCollectionDescriptionService: UpdateOrganizationOrCollectionDescriptionService;

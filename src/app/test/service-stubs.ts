@@ -264,6 +264,9 @@ export class UsersStubService {
   getExtendedUserData() {
     return observableOf(null);
   }
+  getUserMemberships() {
+    return observableOf([]);
+  }
   checkUserExists(username) {
     return observableOf([]);
   }
@@ -368,6 +371,14 @@ export class MetadataStubService {
       privateOnly: 'true',
       customDockerPath: 'true',
       enum: 'AMAZON_ECR'
+    },
+    {
+      dockerPath: null,
+      friendlyName: 'Seven Bridges',
+      url: null,
+      privateOnly: 'true',
+      customDockerPath: 'true',
+      enum: 'SEVEN_BRIDGES'
     }
   ]);
 
@@ -769,6 +780,14 @@ export class ContainersStubService {
         privateOnly: 'true',
         enum: 'AMAZON_ECR',
         friendlyName: 'Amazon ECR',
+        url: null
+      },
+      {
+        dockerPath: null,
+        customDockerPath: 'true',
+        privateOnly: 'true',
+        enum: 'SEVEN_BRIDGES',
+        friendlyName: 'Seven Bridges',
         url: null
       }
     ]);

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { devMode } from 'app/shared/constants';
 import { User } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
@@ -11,7 +10,6 @@ import { HomePageService } from './home-page.service';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  devMode = devMode;
   public user$: Observable<User>;
   public orgSchema;
   public websiteSchema;

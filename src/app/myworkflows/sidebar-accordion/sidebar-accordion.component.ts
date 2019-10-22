@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
+import { Workflow } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
+import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
-import { RefreshService } from '../../shared/refresh.service';
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -15,7 +16,7 @@ import { RefreshService } from '../../shared/refresh.service';
 })
 export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
-  @Input() groupEntriesObject: OrgWorkflowObject[];
+  @Input() groupEntriesObject: OrgWorkflowObject<Workflow>[];
   @Input() refreshMessage;
   public workflowId$: Observable<number>;
   activeTab = 0;

@@ -16,8 +16,11 @@
 
 import { Injectable } from '@angular/core';
 
-import { ContainersService } from './swagger';
+import { ContainersService, DockstoreTool } from './swagger';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { faDocker, faGitlab, IconDefinition } from '@fortawesome/free-brands-svg-icons';
+import { faWhale, faQuay, faAmazonECR } from './custom-icons';
+import RegistryEnum = DockstoreTool.RegistryEnum;
 
 @Injectable()
 export class ImageProviderService {
@@ -26,10 +29,14 @@ export class ImageProviderService {
   private dockerRegistryList: Array<any>;
 
   constructor(private containersService: ContainersService) {
-    this.dockerRegistryList = JSON.parse(localStorage.getItem('dockerRegistryList'));
+    this.setdockerRegistryList(JSON.parse(localStorage.getItem('dockerRegistryList')));
     if (!this.dockerRegistryList) {
       this.getDockerRegistryList();
     }
+  }
+
+  public setdockerRegistryList(dockerRegistryList: Array<any>) {
+    this.dockerRegistryList = dockerRegistryList;
   }
 
   /**
@@ -45,10 +52,29 @@ export class ImageProviderService {
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
       tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+      tool.imgProviderIcon = this.getImageProviderIcon(tool.registry);
     }
     return tool;
   }
 
+  private getImageProviderIcon(registry: RegistryEnum | null): IconDefinition | null {
+    if (!registry) {
+      return null;
+    }
+    switch (registry) {
+      case RegistryEnum.QUAYIO:
+        return faQuay;
+      case RegistryEnum.DOCKERHUB:
+        return faDocker;
+      case RegistryEnum.GITLAB:
+        return faGitlab;
+      case RegistryEnum.AMAZONECR:
+        return faAmazonECR;
+      case RegistryEnum.SEVENBRIDGES: // TODO: Get SevenBridges Icon
+      default:
+        return faWhale;
+    }
+  }
   private getImageProvider(imageProvider: string): any {
     if (this.dockerRegistryList) {
       return this.dockerRegistryList.find(dockerRegistry => dockerRegistry.enum === imageProvider);
@@ -90,7 +116,7 @@ export class ImageProviderService {
 
   private getDockerRegistryList() {
     this.containersService.getDockerRegistries().subscribe(registryList => {
-      this.dockerRegistryList = registryList;
+      this.setdockerRegistryList(registryList);
       localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
     });
   }

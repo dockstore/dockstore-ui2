@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { BehaviorSubject, Observable } from 'rxjs';

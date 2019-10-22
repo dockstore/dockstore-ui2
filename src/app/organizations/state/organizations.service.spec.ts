@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { OrganizationsStateService } from './organizations.service';
 import { OrganizationsStore } from './organizations.store';

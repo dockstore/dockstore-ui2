@@ -36,6 +36,7 @@
         <div class="search-holder">
           <input
             id="searchBar"
+            aria-label="Search"
             #search
             type="text"
             placeholder="Search..."
@@ -62,7 +63,7 @@
 </div>
 
 <div class="header-lower" id="overview">
-  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" />
+  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" alt="blue rectangle" />
 
   <div fxFlex fxLayout="column" fxLayoutAlign="center center">
     <button data-cy="video-overview-button" mat-raised-button (click)="openYoutube()">

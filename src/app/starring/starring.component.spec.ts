@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatIconModule, MatSnackBarModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';

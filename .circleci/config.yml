@@ -17,6 +17,14 @@ jobs:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - checkout
+      - run:
+          name: Checkout merge commit (PRs only)
+          command: |
+            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
+              git checkout -qf FETCH_HEAD
+            fi
       - install_container_dependencies
       - run:
           name: Install dependencies
@@ -169,7 +177,7 @@ commands:
           command: sudo apt install libgtk2.0-0 -yq
       - run:
           name: Install cypress
-          command: bash -i -c 'npm i cypress@3.2.0 --no-save'
+          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'

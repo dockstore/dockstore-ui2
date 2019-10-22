@@ -15,7 +15,6 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { devMode } from 'app/shared/constants';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
@@ -37,7 +36,6 @@ export class NavbarComponent extends Logout implements OnInit {
   public user: User;
   extendedUser: any;
   isExtended = false;
-  devMode = devMode;
   Dockstore = Dockstore;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   private currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;

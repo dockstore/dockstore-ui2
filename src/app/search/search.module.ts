@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';

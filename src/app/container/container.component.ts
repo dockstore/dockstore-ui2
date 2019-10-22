@@ -16,7 +16,8 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
-import { MatChipInputEvent, MatDialog } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

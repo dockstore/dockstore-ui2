@@ -20,18 +20,6 @@
   </button>
   <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> {{ myEntryPageTitle$ | async | titlecase }}
 </app-header>
-<button
-  mat-fab
-  color="accent"
-  id="registerWorkflowButton"
-  class="fab-bottom-right"
-  matTooltip="Register {{ entryType$ | async }}"
-  matTooltipPosition="before"
-  (click)="showRegisterEntryModal()"
-  [disabled]="isRefreshing$ | async"
->
-  <mat-icon>add</mat-icon>
-</button>
 <div class="container-fluid sidebar-set-height">
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height:100%;">
@@ -49,17 +37,29 @@
                   <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
                     <span>My {{ entryType$ | async }}s</span>
                     <span>
-                      <button
-                        *ngIf="entryType === EntryType.BioWorkflow"
-                        mat-button
-                        color="primary"
-                        matTooltipPosition="after"
-                        matTooltip="Find new workflows and sync all existing workflows"
-                        (click)="refreshAllEntries()"
-                        [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)"
-                      >
-                        Refresh All
-                      </button>
+                      <span *ngIf="entryType === EntryType.BioWorkflow">
+                        <button
+                          mat-icon-button
+                          color="primary"
+                          matTooltipPosition="after"
+                          matTooltip="Find new workflows and sync all existing workflows"
+                          (click)="refreshAllEntries()"
+                          [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)"
+                        >
+                          <mat-icon>sync</mat-icon>
+                        </button>
+                        <button
+                          mat-icon-button
+                          color="primary"
+                          id="registerWorkflowButton"
+                          matTooltip="Register {{ entryType$ | async }}"
+                          matTooltipPosition="after"
+                          (click)="showRegisterEntryModal()"
+                          [disabled]="isRefreshing$ | async"
+                        >
+                          <mat-icon>add</mat-icon>
+                        </button>
+                      </span>
                       <ng-container *ngIf="entryType === EntryType.Service">
                         <button
                           [disabled]="isRefreshing$ | async"
@@ -84,12 +84,10 @@
                 </mat-toolbar-row>
               </mat-toolbar>
             </div>
-            <p *ngIf="groupEntriesObject == undefined || groupEntriesObject == null || groupEntriesObject.length == 0">
-              You have not registered any {{ entryType$ | async }}s
-            </p>
+            <p *ngIf="!(hasGroupEntriesObject$ | async)">You have not registered any {{ entryType$ | async }}s</p>
             <app-sidebar-accordion
               [openOneAtATime]="oneAtATime"
-              [groupEntriesObject]="groupEntriesObject"
+              [groupEntriesObject]="groupEntriesObject$ | async"
               [refreshMessage]="isRefreshing$ | async"
             ></app-sidebar-accordion>
             <br />
@@ -105,22 +103,17 @@
               <div class="clearfix sidebar-header">
                 <h3 class="sidebar-header">Shared with me</h3>
               </div>
-              <p *ngIf="groupSharedEntriesObject == undefined || groupSharedEntriesObject == null || groupSharedEntriesObject.length == 0">
-                You have no {{ entryType$ | async }}s shared with you
-              </p>
-              <app-sidebar-accordion [openOneAtATime]="oneAtATime" [groupEntriesObject]="groupSharedEntriesObject"></app-sidebar-accordion>
+              <p *ngIf="!(hasGroupSharedEntriesObject$ | async)">You have no {{ entryType$ | async }}s shared with you</p>
+              <app-sidebar-accordion
+                [openOneAtATime]="oneAtATime"
+                [groupEntriesObject]="groupSharedEntriesObject$ | async"
+              ></app-sidebar-accordion>
             </ng-container>
           </div>
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div
-          *ngIf="
-            !(isRefreshing$ | async) &&
-            ((groupEntriesObject?.length == 0 || !groupEntriesObject) &&
-              (groupSharedEntriesObject?.length == 0 || !groupSharedEntriesObject))
-          "
-        >
+        <div *ngIf="!(isRefreshing$ | async) && (!(hasGroupEntriesObject$ | async) && !(hasGroupSharedEntriesObject$ | async))">
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>

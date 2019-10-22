@@ -4,17 +4,15 @@ import { WorkflowFileEditorComponent } from './workflow-file-editor.component';
 import { TabsModule } from 'ngx-bootstrap';
 import { CodeEditorListComponent } from './../../shared/code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from './../../shared/code-editor/code-editor.component';
-import {
-  MatButtonModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatIconModule,
-  MatInputModule,
-  MatFormFieldModule,
-  MatTooltipModule,
-  MatSnackBarModule,
-  MatCardModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { RefreshService } from './../../shared/refresh.service';
 import { HostedStubService, WorkflowStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';

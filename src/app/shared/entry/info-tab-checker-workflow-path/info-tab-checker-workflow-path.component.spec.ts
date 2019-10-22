@@ -23,7 +23,7 @@ import { CheckerWorkflowStubService, RegisterCheckerWorkflowStubService } from '
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path.component';
-import { MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('InfoTabCheckerWorkflowPathComponent', () => {
   let component: InfoTabCheckerWorkflowPathComponent;

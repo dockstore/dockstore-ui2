@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { Observable, Subject } from 'rxjs';

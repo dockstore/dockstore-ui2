@@ -13,30 +13,26 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { includesValidation } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
-import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
-import { MyEntry } from '../../shared/my-entry';
+import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
-import { DockstoreTool } from '../../shared/swagger';
-import { ContainersService } from '../../shared/swagger/api/containers.service';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
@@ -56,6 +52,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   readonly pageName = '/my-tools';
   private registerTool: Tool;
   public showSidebar = true;
+  public groupEntriesObject$: Observable<Array<OrgToolObject<DockstoreTool>>>;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
@@ -64,7 +61,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     protected activatedRoute: ActivatedRoute,
     private containerService: ContainerService,
     private dialog: MatDialog,
-    private location: Location,
     private refreshService: RefreshService,
     protected accountsService: AccountsService,
     private registerToolService: RegisterToolService,
@@ -72,11 +68,11 @@ export class MyToolComponent extends MyEntry implements OnInit {
     protected sessionService: SessionService,
     protected urlResolverService: UrlResolverService,
     private router: Router,
-    private containersService: ContainersService,
     private toolQuery: ToolQuery,
     private alertQuery: AlertQuery,
     protected sessionQuery: SessionQuery,
-    protected myEntriesQuery: MyEntriesQuery
+    protected myEntriesQuery: MyEntriesQuery,
+    protected myEntriesStateService: MyEntriesStateService
   ) {
     super(
       accountsService,
@@ -88,7 +84,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
       sessionService,
       activatedRoute,
       myEntriesQuery,
-      userQuery
+      userQuery,
+      myEntriesStateService
     );
   }
 
@@ -100,10 +97,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        if (this.groupEntriesObject) {
-          const foundTool = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), this.groupEntriesObject);
-          this.selectEntry(foundTool);
-        }
+        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.tools));
       });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
@@ -122,24 +116,25 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.getMyEntries();
 
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
-      if (tools) {
-        this.tools = tools;
-        const sortedContainers = this.mytoolsService.sortGroupEntries(tools, this.user.username, EntryType.Tool);
-        this.setGroupEntriesObject(sortedContainers);
-        // Only select initial entry if there current is no selected entry.  Otherwise, leave as is.
-        if (!this.tool) {
-          if (this.tools.length > 0) {
-            this.selectInitialEntry(sortedContainers);
-          }
-        }
-      }
+      this.tools = tools;
+      this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(tools));
     });
 
+    this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(
+      map(([tools, tool]) => {
+        return this.mytoolsService.convertEntriesToOrgEntryObject(tools, tool);
+      })
+    );
+    this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
+      map((orgToolObjects: OrgToolObject<DockstoreTool>[]) => {
+        return orgToolObjects && orgToolObjects.length !== 0;
+      })
+    );
     this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
   }
 
-  private getMyEntries() {
-    combineLatest(this.userQuery.user$, this.sessionQuery.entryType$)
+  protected getMyEntries() {
+    combineLatest([this.userQuery.user$, this.sessionQuery.entryType$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([user, entryType]) => {
         if (user && entryType) {
@@ -147,66 +142,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
         }
       });
   }
-
-  protected convertOldNamespaceObjectToOrgEntriesObject(nsTools: Array<any>): Array<OrgToolObject> {
-    const groupEntriesObject: Array<OrgToolObject> = [];
-    for (let i = 0; i < nsTools.length; i++) {
-      const orgToolObject: OrgToolObject = {
-        namespace: '',
-        organization: '',
-        published: [],
-        unpublished: []
-      };
-      const nsTool: Array<DockstoreTool> = nsTools[i].entries;
-      orgToolObject.namespace = nsTools[i].namespace;
-      orgToolObject.published = nsTool.filter((tool: DockstoreTool) => {
-        return tool.is_published;
-      });
-      orgToolObject.unpublished = nsTool.filter((tool: DockstoreTool) => {
-        return !tool.is_published;
-      });
-      groupEntriesObject.push(orgToolObject);
-    }
-    return groupEntriesObject;
-  }
-
-  protected getFirstPublishedEntry(orgEntries: Array<OrgToolObject>): DockstoreTool | null {
-    for (let i = 0; i < orgEntries.length; i++) {
-      const foundTool = orgEntries[i]['entries'].find((entry: DockstoreTool) => {
-        return entry.is_published === true;
-      });
-      if (foundTool) {
-        return foundTool;
-      }
-    }
-    return null;
-  }
-
-  protected findEntryFromPath(path: string, orgTools: Array<OrgToolObject>): ExtendedDockstoreTool | null {
-    let matchingTool: ExtendedDockstoreTool;
-    for (let i = 0; i < orgTools.length; i++) {
-      matchingTool = orgTools[i].published.find((tool: DockstoreTool) => tool.tool_path === path);
-      if (matchingTool) {
-        return matchingTool;
-      }
-      matchingTool = orgTools[i].unpublished.find((tool: DockstoreTool) => tool.tool_path === path);
-      if (matchingTool) {
-        return matchingTool;
-      }
-    }
-    return null;
-  }
-
-  selectEntry(tool: ExtendedDockstoreTool): void {
-    if (tool !== null) {
-      this.containersService
-        .getContainer(tool.id, includesValidation)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(result => {
-          this.location.go(this.pageName + '/' + result.tool_path);
-          this.containerService.setTool(result);
-        });
-    }
+  selectEntry(tool: DockstoreTool | Workflow): void {
+    this.mytoolsService.selectEntry(tool);
   }
 
   setRegisterEntryModalInfo(namespace: string): void {
@@ -233,9 +170,14 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 }
 
-export interface OrgToolObject {
+/**
+ * When using this, T should always be DockstoreTool
+ *
+ * @export
+ * @interface OrgToolObject
+ * @template T
+ */
+export interface OrgToolObject<T> extends OrgEntryObject<T> {
+  registry: string;
   namespace: string;
-  organization: string;
-  published: Array<ExtendedDockstoreTool>;
-  unpublished: Array<ExtendedDockstoreTool>;
 }

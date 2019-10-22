@@ -1,6 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { map, share, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
@@ -11,7 +11,7 @@ import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { DescriptorsQuery } from './state/descriptors-query';
-import { DescriptorsStore } from './state/descriptors-store.';
+import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
 import { combineLatest, Observable } from 'rxjs';
 import FileTypeEnum = ToolFile.FileTypeEnum;

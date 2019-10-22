@@ -124,7 +124,73 @@ Run `ng g component component-name` to generate a new component. You can also us
 ## Build
 
 Optionally override the webservice version using `npm config set dockstore-ui2:webservice_version ${WEBSERVICE_VERSION}`
-Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `npm run build.prod` for a production build.
+Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. 
+
+### Angular Production Build
+
+For an Angular Production Build, you will need to install Nginx. 
+Replace your nginx.conf file (location depends on your installation) with this template, filling in the two paths:
+```
+events {
+}
+http {
+  include       /usr/local/etc/nginx/mime.types;
+  server {
+    listen 4200;
+      location = /swagger.json {
+        proxy_pass  http://localhost:8080/swagger.json;
+      }
+    location /api/ {
+          rewrite ^ $request_uri;
+          rewrite ^/api/(.*) $1 break;
+          return 400;
+          proxy_pass     http://localhost:8080/$uri;
+    }
+    location / {
+        root  /<path to>/dockstore-ui2/dist; # FILL IN
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html =404;
+    }
+  }
+  server {
+    listen 5200;
+    location / {
+        root  /<path to>/dockstore-ui2/dist; # FILL IN
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html =404;
+        if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            #
+            # Custom headers and headers various browsers *should* be OK with but aren't
+            #
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+            #
+            # Tell client that this pre-flight info is valid for 20 days
+            #
+            add_header 'Access-Control-Max-Age' 1728000;
+            add_header 'Content-Type' 'text/plain; charset=utf-8';
+            add_header 'Content-Length' 0;
+            return 204;
+         }
+         if ($request_method = 'POST') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+            add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+         }
+         if ($request_method = 'GET') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+            add_header 'Access-Control-Expose-Headers' 'Content-Length,Content-Range';
+         }
+      }
+    }
+}
+```
+Use `npm run build.prod` for an Angular Production Build and start it with `nginx`. localhost:4200 should be available immediately.
+
 
 ## Running unit tests
 

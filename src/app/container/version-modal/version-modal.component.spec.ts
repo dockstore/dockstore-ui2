@@ -20,7 +20,8 @@ import {
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalComponent } from './version-modal.component';
 import { VersionModalService } from './version-modal.service';
-import { MatSnackBarModule, MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('VersionModalComponent', () => {
   let component: VersionModalComponent;

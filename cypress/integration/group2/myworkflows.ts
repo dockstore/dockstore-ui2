@@ -27,7 +27,7 @@ describe('Dockstore my workflows', () => {
     it('visit another page then come back', () => {
       cy.visit('/my-workflows');
       cy.get('a#home-nav-button').click();
-      cy.contains('Docker Tools and Workflows for the Sciences');
+      cy.contains('Twitter');
       cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
@@ -127,8 +127,6 @@ describe('Dockstore my workflows', () => {
         .should('be.visible')
         .should('be.enabled')
         .click();
-      cy.get('#registerWorkflowButton')
-        .should('not.be.visible');
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
       cy

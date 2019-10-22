@@ -29,7 +29,8 @@ import {
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ViewService } from './view.service';
 
 describe('ViewWorkflowComponent', () => {

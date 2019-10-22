@@ -15,7 +15,8 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialogRef, MatRadioChange } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';

@@ -7,7 +7,8 @@ import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
 import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
-import { MatIconModule, MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MarkdownModule } from 'ngx-markdown';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
