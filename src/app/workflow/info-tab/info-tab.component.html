@@ -147,7 +147,7 @@
           </li>
           <div>
             <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
-            {{ workflow && workflow.conceptDoi ? workflow.conceptDoi : 'n/a' }}
+            {{ (workflow && workflow.conceptDoi) || 'n/a' }}
           </div>
         </div>
       </ul>
