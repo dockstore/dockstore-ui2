@@ -21,7 +21,7 @@ export class EntryWizardComponent implements OnInit {
   constructor(private entryWizardQuery: EntryWizardQuery, private entryWizardService: EntryWizardService) {}
 
   ngOnInit() {
-    this.entryWizardService.updateGitRegistries();
+    this.entryWizardService.updateGitRegistryStore();
     this.isLoading$ = this.entryWizardQuery.selectLoading();
     this.gitRegistries$ = this.entryWizardQuery.selectGitRegistries$;
     this.gitOrganizations$ = this.entryWizardQuery.selectGitOrganizations$;
@@ -33,7 +33,7 @@ export class EntryWizardComponent implements OnInit {
    * @param selectedRegistry the selected registry
    */
   getOrganizations(selectedRegistry: string) {
-    this.entryWizardService.updateGitOrganizations(selectedRegistry);
+    this.entryWizardService.updateGitOrganizationStore(selectedRegistry);
   }
 
   /**
@@ -41,7 +41,7 @@ export class EntryWizardComponent implements OnInit {
    * @param selectedOrganization the seleceted organization
    */
   getRepositories(selectedOrganization: string) {
-    this.entryWizardService.updateGitRepositories(this.selectedGitRegistry, selectedOrganization);
+    this.entryWizardService.updateGitRepositoryStore(this.selectedGitRegistry, selectedOrganization);
   }
 
   /**
@@ -50,9 +50,9 @@ export class EntryWizardComponent implements OnInit {
    */
   toggleRepo(event: MatSlideToggleChange) {
     if (event.checked) {
-      this.entryWizardService.addWorkflow(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
+      this.entryWizardService.addWorkflowToDatabase(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
     } else {
-      this.entryWizardService.removeWorkflow(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
+      this.entryWizardService.removeWorkflowToDatabase(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
     }
   }
 }

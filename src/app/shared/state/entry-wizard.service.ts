@@ -15,7 +15,7 @@ export class EntryWizardService {
   /**
    * Updates the list of git registries
    */
-  updateGitRegistries() {
+  updateGitRegistryStore() {
     this.entryWizardStore.setLoading(true);
     this.defaultService
       .getUserRegistries()
@@ -34,7 +34,7 @@ export class EntryWizardService {
    * Updates the list of organizations based on the given git registry
    * @param registry git registry
    */
-  updateGitOrganizations(registry: string) {
+  updateGitOrganizationStore(registry: string) {
     this.entryWizardStore.setLoading(true);
     this.entryWizardStore.update({ gitOrganizations: undefined, gitRepositories: undefined });
     const registryEnum = this.convertSourceControlStringToEnum(registry);
@@ -56,7 +56,7 @@ export class EntryWizardService {
    * @param registry git registry
    * @param organization git organization
    */
-  updateGitRepositories(registry: string, organization: string) {
+  updateGitRepositoryStore(registry: string, organization: string) {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
 
@@ -79,7 +79,7 @@ export class EntryWizardService {
    * @param organization git organization
    * @param repositoryName git repository name
    */
-  addWorkflow(registry: string, organization: string, repositoryName: string) {
+  addWorkflowToDatabase(registry: string, organization: string, repositoryName: string) {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
     this.defaultService
@@ -88,9 +88,11 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been added');
+          this.updateGitRepositoryStore(registry, organization);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
+          this.updateGitRepositoryStore(registry, organization);
         }
       );
   }
@@ -101,7 +103,7 @@ export class EntryWizardService {
    * @param organization git organization
    * @param repositoryName git repository name
    */
-  removeWorkflow(registry: string, organization: string, repositoryName: string) {
+  removeWorkflowToDatabase(registry: string, organization: string, repositoryName: string) {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
     this.defaultService
@@ -110,9 +112,11 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been deleted');
+          this.updateGitRepositoryStore(registry, organization);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
+          this.updateGitRepositoryStore(registry, organization);
         }
       );
   }

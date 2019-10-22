@@ -23,6 +23,7 @@
     </mat-form-field>
 
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
+      <mat-label *ngIf="gitRepositories$ | async">Repositories</mat-label>
       <div *ngFor="let repo of gitRepositories$ | async">
         <mat-slide-toggle
           (change)="toggleRepo($event)"
