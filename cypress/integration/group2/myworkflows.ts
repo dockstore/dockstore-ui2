@@ -120,6 +120,66 @@ describe('Dockstore my workflows', () => {
       .should('not.be.visible');
   }
 
+  describe('Test workflow wizard form', () => {
+    it('It should be able to add workflows to ', () => {
+      // Mock endpoints
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: 'api/users/registries',
+          response: [ 'github.com', 'bitbucket.org' ]
+        })
+        .route({
+          method: 'GET',
+          url: 'api/users/registries/github.com/organizations',
+          response: [ 'foobar', 'lorem' ]
+        })
+        .route({
+          method: 'GET',
+          url: 'api/users/registries/github.com/organizations/foobar',
+          response: [
+            {'organization': 'foobar', 'repositoryName': 'canDeleteMe', 'gitRegistry': 'github.com', 'present': true, 'canDelete': true, 'path': 'foobar/canDeleteMe'},
+            {'organization': 'foobar', 'repositoryName': 'cannotDeleteMe', 'gitRegistry': 'github.com', 'present': true, 'canDelete': false, 'path': 'foobar/cannotDeleteMe'},
+            {'organization': 'foobar', 'repositoryName': 'doesNotExist', 'gitRegistry': 'github.com', 'present': false, 'canDelete': false, 'path': 'foobar/doesNotExist'}
+        ]
+        })
+
+      cy.visit('/my-workflows');
+      cy.get('#registerWorkflowButton')
+        .should('be.visible')
+        .should('be.enabled')
+        .click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
+      cy
+        .get('#0-register-workflow-option')
+        .click();
+      cy
+        .contains('button', 'Next')
+        .click();
+
+      // Select github.com in git registry
+      cy.get('entry-wizard').within(() => {
+        cy
+          .get('mat-select').eq(0).click().type('{enter}')
+        cy
+          .get('mat-select').eq(1).click().type('{enter}')
+
+        // foobar/canDeleteMe should be on and not disabled
+        cy
+          .get('mat-slide-toggle').eq(0).should('not.have.class', 'mat-disabled').should('have.class', 'mat-checked')
+        // foobar/cannotDeleteMe should be on and disabled
+        cy
+          .get('mat-slide-toggle').eq(1).should('have.class', 'mat-disabled').should('have.class', 'mat-checked')
+
+        // foobar/doesNotExist should be off and not disabled
+        cy
+          .get('mat-slide-toggle').eq(2).should('not.have.class', 'mat-disabled').should('not.have.class', 'mat-checked')
+      })
+    });
+  });
+
   describe('Test register workflow form validation', () => {
     it('It should have 3 seperate descriptor path validation patterns', () => {
       cy.visit('/my-workflows');
@@ -129,6 +189,9 @@ describe('Dockstore my workflows', () => {
         .click();
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
+      cy
+        .get('#1-register-workflow-option')
+        .click()
       cy
         .contains('button', 'Next')
         .click();
