@@ -124,12 +124,12 @@ describe('Dockstore Organizations', () => {
       cy.visit('/');
       cy.contains('1 organization request');
       cy.contains('1 organization request requiring action');
-      cy.visit('/organizations/Potatoe');
     });
   });
 
   describe('Should be able to add/update collection', () => {
     it('be able to add a collection', () => {
+      cy.visit('/organizations/Potatoe');
       cy.get('#createCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'fakeCollectionName');
