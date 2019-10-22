@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { Repository } from '../../../src/app/shared/openapi/model/repository';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -123,8 +124,7 @@ describe('Dockstore my workflows', () => {
   describe('Test workflow wizard form', () => {
     it('It should be able to add workflows to ', () => {
       // Mock endpoints
-      // Type is Repository
-      const canDeleteMe = {
+      const canDeleteMe: Repository = {
         organization: 'foobar',
         repositoryName: 'canDeleteMe',
         gitRegistry: 'github.com',
@@ -132,7 +132,7 @@ describe('Dockstore my workflows', () => {
         canDelete: true,
         path: 'foobar/canDeleteMe'
       };
-      const cannotDeleteMe = {
+      const cannotDeleteMe: Repository = {
         organization: 'foobar',
         repositoryName: 'cannotDeleteMe',
         gitRegistry: 'github.com',
@@ -140,7 +140,7 @@ describe('Dockstore my workflows', () => {
         canDelete: false,
         path: 'foobar/cannotDeleteMe'
       };
-      const doesNotExist = {
+      const doesNotExist: Repository = {
         organization: 'foobar',
         repositoryName: 'doesNotExist',
         gitRegistry: 'github.com',
