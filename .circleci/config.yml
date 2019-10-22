@@ -27,10 +27,10 @@ jobs:
             fi
       - install_container_dependencies
       - restore_cache:
-          keys:
-            - dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
+          #Only run 'npm ci' if node_modules was not restored from cache
           command: |
               if [ ! -d "./node_modules" ]
               then
