@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { Repository } from 'app/shared/openapi';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -123,6 +124,31 @@ describe('Dockstore my workflows', () => {
   describe('Test workflow wizard form', () => {
     it('It should be able to add workflows to ', () => {
       // Mock endpoints
+      const canDeleteMe: Repository = {
+        organization: 'foobar',
+        repositoryName: 'canDeleteMe',
+        gitRegistry: 'github.com',
+        present: true,
+        canDelete: true,
+        path: 'foobar/canDeleteMe'
+      };
+      const cannotDeleteMe: Repository = {
+        organization: 'foobar',
+        repositoryName: 'cannotDeleteMe',
+        gitRegistry: 'github.com',
+        present: true,
+        canDelete: false,
+        path: 'foobar/cannotDeleteMe'
+      };
+      const doesNotExist: Repository = {
+        organization: 'foobar',
+        repositoryName: 'doesNotExist',
+        gitRegistry: 'github.com',
+        present: false,
+        canDelete: false,
+        path: 'foobar/doesNotExist'
+      };
+
       cy
         .server()
         .route({
@@ -139,10 +165,10 @@ describe('Dockstore my workflows', () => {
           method: 'GET',
           url: 'api/users/registries/github.com/organizations/foobar',
           response: [
-            {'organization': 'foobar', 'repositoryName': 'canDeleteMe', 'gitRegistry': 'github.com', 'present': true, 'canDelete': true, 'path': 'foobar/canDeleteMe'},
-            {'organization': 'foobar', 'repositoryName': 'cannotDeleteMe', 'gitRegistry': 'github.com', 'present': true, 'canDelete': false, 'path': 'foobar/cannotDeleteMe'},
-            {'organization': 'foobar', 'repositoryName': 'doesNotExist', 'gitRegistry': 'github.com', 'present': false, 'canDelete': false, 'path': 'foobar/doesNotExist'}
-        ]
+            canDeleteMe,
+            cannotDeleteMe,
+            doesNotExist
+          ]
         })
 
       cy.visit('/my-workflows');

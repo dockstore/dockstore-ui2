@@ -4,6 +4,7 @@ import { DefaultService, BioWorkflow } from '../openapi';
 import { AlertService } from '../alert/state/alert.service';
 import { Repository } from '../openapi/model/repository';
 import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +17,17 @@ export class EntryWizardService {
    */
   updateGitRegistries() {
     this.entryWizardStore.setLoading(true);
-    this.defaultService.getUserRegistries().subscribe(
-      (registries: Array<string>) => {
-        this.entryWizardStore.update({ gitRegistries: registries });
-        this.entryWizardStore.setLoading(false);
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-        this.entryWizardStore.setLoading(false);
-      }
-    );
+    this.defaultService
+      .getUserRegistries()
+      .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
+      .subscribe(
+        (registries: Array<string>) => {
+          this.entryWizardStore.update({ gitRegistries: registries });
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
   }
 
   /**
@@ -36,16 +38,17 @@ export class EntryWizardService {
     this.entryWizardStore.setLoading(true);
     this.entryWizardStore.update({ gitOrganizations: undefined, gitRepositories: undefined });
     const registryEnum = this.convertSourceControlStringToEnum(registry);
-    this.defaultService.getUserOrganizations(registryEnum).subscribe(
-      (organizations: Array<string>) => {
-        this.entryWizardStore.update({ gitOrganizations: organizations });
-        this.entryWizardStore.setLoading(false);
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-        this.entryWizardStore.setLoading(false);
-      }
-    );
+    this.defaultService
+      .getUserOrganizations(registryEnum)
+      .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
+      .subscribe(
+        (organizations: Array<string>) => {
+          this.entryWizardStore.update({ gitOrganizations: organizations });
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
   }
 
   /**
@@ -57,16 +60,17 @@ export class EntryWizardService {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
 
-    this.defaultService.getUserOrganizationRepositories(registryEnum, organization).subscribe(
-      (repositories: Array<Repository>) => {
-        this.entryWizardStore.update({ gitRepositories: repositories });
-        this.entryWizardStore.setLoading(false);
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-        this.entryWizardStore.setLoading(false);
-      }
-    );
+    this.defaultService
+      .getUserOrganizationRepositories(registryEnum, organization)
+      .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
+      .subscribe(
+        (repositories: Array<Repository>) => {
+          this.entryWizardStore.update({ gitRepositories: repositories });
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
   }
 
   /**
@@ -78,16 +82,17 @@ export class EntryWizardService {
   addWorkflow(registry: string, organization: string, repositoryName: string) {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
-    this.defaultService.addWorkflow(registryEnum, organization, repositoryName).subscribe(
-      (workflow: BioWorkflow) => {
-        this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been added');
-        this.entryWizardStore.setLoading(false);
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-        this.entryWizardStore.setLoading(false);
-      }
-    );
+    this.defaultService
+      .addWorkflow(registryEnum, organization, repositoryName)
+      .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
+      .subscribe(
+        (workflow: BioWorkflow) => {
+          this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been added');
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
   }
 
   /**
@@ -99,16 +104,17 @@ export class EntryWizardService {
   removeWorkflow(registry: string, organization: string, repositoryName: string) {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
-    this.defaultService.deleteWorkflow(registryEnum, organization, repositoryName).subscribe(
-      (workflow: BioWorkflow) => {
-        this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been deleted');
-        this.entryWizardStore.setLoading(false);
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-        this.entryWizardStore.setLoading(false);
-      }
-    );
+    this.defaultService
+      .deleteWorkflow(registryEnum, organization, repositoryName)
+      .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
+      .subscribe(
+        (workflow: BioWorkflow) => {
+          this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been deleted');
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
   }
 
   /**

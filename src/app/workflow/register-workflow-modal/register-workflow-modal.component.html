@@ -48,7 +48,13 @@
         <entry-wizard></entry-wizard>
         <div class="modal-footer">
           <button mat-button color="secondary" matStepperPrevious>Back</button>
-          <button type="button" mat-flat-button color="primary" (click)="hideModal(); clearWorkflowRegisterError(); getMyEntries()">
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            [mat-dialog-close]="true"
+            (click)="clearWorkflowRegisterError(); getMyEntries()"
+          >
             Finish
           </button>
         </div>
