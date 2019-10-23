@@ -88,7 +88,6 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been added');
-          this.updateGitRepositoryStore(registry, organization);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
@@ -103,7 +102,7 @@ export class EntryWizardService {
    * @param organization git organization
    * @param repositoryName git repository name
    */
-  removeWorkflowToDatabase(registry: string, organization: string, repositoryName: string) {
+  removeWorkflowFromDatabase(registry: string, organization: string, repositoryName: string) {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
     this.defaultService
@@ -112,7 +111,6 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been deleted');
-          this.updateGitRepositoryStore(registry, organization);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);

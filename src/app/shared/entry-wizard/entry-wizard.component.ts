@@ -52,7 +52,7 @@ export class EntryWizardComponent implements OnInit {
     if (event.checked) {
       this.entryWizardService.addWorkflowToDatabase(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
     } else {
-      this.entryWizardService.removeWorkflowToDatabase(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
+      this.entryWizardService.removeWorkflowFromDatabase(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
     }
   }
 }
