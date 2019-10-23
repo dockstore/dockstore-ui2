@@ -26,9 +26,20 @@ jobs:
               git checkout -qf FETCH_HEAD
             fi
       - install_container_dependencies
+      - restore_cache:
+          key: dep-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
-          command: bash -i -c 'npm ci'
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+              if [ ! -d "./node_modules" ]
+              then
+                bash -i -c 'npm ci'
+              fi
+      - save_cache:
+          key: dep-cache-{{ checksum "./package-lock.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: Check dependencies
           command: bash -i -c 'npm ls'
