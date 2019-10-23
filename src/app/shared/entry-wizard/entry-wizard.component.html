@@ -26,7 +26,7 @@
       <mat-label *ngIf="gitRepositories$ | async">Repositories</mat-label>
       <div *ngFor="let repo of gitRepositories$ | async">
         <mat-slide-toggle
-          (change)="toggleRepo($event)"
+          (change)="toggleRepo($event, repo)"
           [name]="repo.repositoryName"
           [checked]="repo.present"
           [disabled]="!repo.canDelete && repo.present"

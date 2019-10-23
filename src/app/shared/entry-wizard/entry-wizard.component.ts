@@ -48,11 +48,11 @@ export class EntryWizardComponent implements OnInit {
    * Called on slide toggle to add or remove workflow
    * @param event toggle event
    */
-  toggleRepo(event: MatSlideToggleChange) {
+  toggleRepo(event: MatSlideToggleChange, repo: Repository) {
     if (event.checked) {
-      this.entryWizardService.addWorkflowToDatabase(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
+      this.entryWizardService.addWorkflowToDatabase(repo, event.source);
     } else {
-      this.entryWizardService.removeWorkflowFromDatabase(this.selectedGitRegistry, this.selectedGitOrganization, event.source.name);
+      this.entryWizardService.removeWorkflowFromDatabase(repo, event.source);
     }
   }
 }

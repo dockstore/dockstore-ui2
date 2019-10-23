@@ -5,12 +5,19 @@ import { AlertService } from '../alert/state/alert.service';
 import { Repository } from '../openapi/model/repository';
 import { HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
+import { EntryWizardQuery } from './entry-wizard.query';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EntryWizardService {
-  constructor(private entryWizardStore: EntryWizardStore, private defaultService: DefaultService, private alertService: AlertService) {}
+  constructor(
+    private entryWizardStore: EntryWizardStore,
+    private entryWizardQuery: EntryWizardQuery,
+    private defaultService: DefaultService,
+    private alertService: AlertService
+  ) {}
 
   /**
    * Updates the list of git registries
@@ -75,48 +82,71 @@ export class EntryWizardService {
 
   /**
    * Adds a workflow for the given git repository
-   * @param registry git registry
-   * @param organization git organization
-   * @param repositoryName git repository name
+   * @param repository git repository
    */
-  addWorkflowToDatabase(registry: string, organization: string, repositoryName: string) {
+  addWorkflowToDatabase(repository: Repository, matSlideToggle: MatSlideToggle) {
     this.entryWizardStore.setLoading(true);
-    const registryEnum = this.convertSourceControlStringToEnum(registry);
+    const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
     this.defaultService
-      .addWorkflow(registryEnum, organization, repositoryName)
+      .addWorkflow(registryEnum, repository.organization, repository.repositoryName)
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(
         (workflow: BioWorkflow) => {
-          this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been added');
+          this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been added');
+          this.updateRepoIsPresent(repository, true, true);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
-          this.updateGitRepositoryStore(registry, organization);
+          matSlideToggle.toggle();
         }
       );
   }
 
   /**
    * Removes a workflow for the given git repository
-   * @param registry git registry
-   * @param organization git organization
-   * @param repositoryName git repository name
+   * @param repository git repository
    */
-  removeWorkflowFromDatabase(registry: string, organization: string, repositoryName: string) {
+  removeWorkflowFromDatabase(repository: Repository, matSlideToggle: MatSlideToggle) {
     this.entryWizardStore.setLoading(true);
-    const registryEnum = this.convertSourceControlStringToEnum(registry);
+    const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
     this.defaultService
-      .deleteWorkflow(registryEnum, organization, repositoryName)
+      .deleteWorkflow(registryEnum, repository.organization, repository.repositoryName)
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(
         (workflow: BioWorkflow) => {
-          this.alertService.detailedSuccess('Workflow ' + registry + '/' + organization + '/' + repositoryName + ' has been deleted');
+          this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been deleted');
+          this.updateRepoIsPresent(repository, false, false);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
-          this.updateGitRepositoryStore(registry, organization);
+          matSlideToggle.toggle();
         }
       );
+  }
+
+  /**
+   * Updates the given repository in the store with the new isPresent value
+   * @param repository repository to update
+   * @param isPresent whether or not workflow now exists in database
+   * @param canDelete whether or not workflow can now be deleted
+   */
+  updateRepoIsPresent(repository: Repository, isPresent: boolean, canDelete: boolean) {
+    const state = this.entryWizardQuery.getValue();
+    const gitRepos = state.gitRepositories;
+    const index = gitRepos.indexOf(repository);
+
+    const newRepository: Repository = {
+      organization: repository.organization,
+      repositoryName: repository.repositoryName,
+      gitRegistry: repository.gitRegistry,
+      canDelete: canDelete,
+      present: isPresent,
+      path: repository.path
+    };
+
+    const updatedGitRepos = Object.assign([], gitRepos);
+    updatedGitRepos[index] = newRepository;
+    this.entryWizardStore.update({ gitRepositories: updatedGitRepos });
   }
 
   /**
