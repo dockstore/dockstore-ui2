@@ -145,6 +145,10 @@
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
             </div>
           </li>
+          <div>
+            <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
+            {{ (workflow && workflow.conceptDoi) || 'n/a' }}
+          </div>
         </div>
       </ul>
     </mat-card-content>
