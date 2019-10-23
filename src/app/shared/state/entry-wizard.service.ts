@@ -85,6 +85,7 @@ export class EntryWizardService {
    * @param repository git repository
    */
   addWorkflowToDatabase(repository: Repository, matSlideToggle: MatSlideToggle) {
+    this.updateRepoIsPresent(repository, true, true);
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
     this.defaultService
@@ -93,11 +94,10 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been added');
-          this.updateRepoIsPresent(repository, true, true);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
-          matSlideToggle.toggle();
+          this.updateRepoIsPresent(repository, false, false);
         }
       );
   }
@@ -107,6 +107,7 @@ export class EntryWizardService {
    * @param repository git repository
    */
   removeWorkflowFromDatabase(repository: Repository, matSlideToggle: MatSlideToggle) {
+    this.updateRepoIsPresent(repository, false, false);
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
     this.defaultService
@@ -115,11 +116,12 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been deleted');
-          this.updateRepoIsPresent(repository, false, false);
+          // move this to be called right away
+          // on error, will revert state back
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
-          matSlideToggle.toggle();
+          this.updateRepoIsPresent(repository, true, true);
         }
       );
   }
@@ -133,7 +135,9 @@ export class EntryWizardService {
   updateRepoIsPresent(repository: Repository, isPresent: boolean, canDelete: boolean) {
     const state = this.entryWizardQuery.getValue();
     const gitRepos = state.gitRepositories;
-    const index = gitRepos.indexOf(repository);
+    const index = gitRepos.findIndex(repo => {
+      return repository.path === repo.path && repository.gitRegistry === repo.gitRegistry;
+    });
 
     const newRepository: Repository = {
       organization: repository.organization,
