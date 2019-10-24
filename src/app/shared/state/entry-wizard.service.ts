@@ -84,7 +84,7 @@ export class EntryWizardService {
    * Adds a workflow for the given git repository
    * @param repository git repository
    */
-  addWorkflowToDatabase(repository: Repository, matSlideToggle: MatSlideToggle) {
+  addWorkflowToDatabase(repository: Repository) {
     this.updateRepoIsPresent(repository, true, true);
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
@@ -106,7 +106,7 @@ export class EntryWizardService {
    * Removes a workflow for the given git repository
    * @param repository git repository
    */
-  removeWorkflowFromDatabase(repository: Repository, matSlideToggle: MatSlideToggle) {
+  removeWorkflowFromDatabase(repository: Repository) {
     this.updateRepoIsPresent(repository, false, false);
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
@@ -171,7 +171,9 @@ export class EntryWizardService {
       case BioWorkflow.SourceControlEnum.DockstoreOrg: {
         return BioWorkflow.SourceControlEnum.DockstoreOrg;
       }
+      default:
+        console.error(sourceControl + ' is not a valid Source Control.');
+        return null;
     }
-    return null;
   }
 }

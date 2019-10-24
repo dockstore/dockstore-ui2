@@ -12,7 +12,7 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div *ngIf="selectedGitRegistry !== null && (gitOrganizations$ | async)">
+  <div *ngIf="selectedGitRegistry && (gitOrganizations$ | async)">
     <mat-form-field class="w-100">
       <mat-label>Organization</mat-label>
       <mat-select [(ngModel)]="selectedGitOrganization" name="organization" (ngModelChange)="getRepositories($event)">

@@ -15,8 +15,8 @@ export class EntryWizardComponent implements OnInit {
   gitRegistries$: Observable<string[]>;
   gitOrganizations$: Observable<string[]>;
   gitRepositories$: Observable<Repository[]>;
-  selectedGitRegistry: string = null;
-  selectedGitOrganization: string = null;
+  selectedGitRegistry: string = undefined;
+  selectedGitOrganization: string = undefined;
 
   constructor(private entryWizardQuery: EntryWizardQuery, private entryWizardService: EntryWizardService) {}
 
@@ -50,9 +50,9 @@ export class EntryWizardComponent implements OnInit {
    */
   toggleRepo(event: MatSlideToggleChange, repo: Repository) {
     if (event.checked) {
-      this.entryWizardService.addWorkflowToDatabase(repo, event.source);
+      this.entryWizardService.addWorkflowToDatabase(repo);
     } else {
-      this.entryWizardService.removeWorkflowFromDatabase(repo, event.source);
+      this.entryWizardService.removeWorkflowFromDatabase(repo);
     }
   }
 }
