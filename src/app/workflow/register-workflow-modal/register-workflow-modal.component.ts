@@ -32,6 +32,9 @@ import {
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
+import { SessionQuery } from 'app/shared/session/session.query';
+import { UserQuery } from 'app/shared/user/user.query';
 
 export interface HostedWorkflowObject {
   name: string;
@@ -62,12 +65,16 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   };
   public options = [
     {
-      label: 'Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.',
+      label: 'Quickly register workflows from GitHub, Bitbucket, and GitLab',
       value: 0
     },
     {
-      label: 'Create and save CWL, WDL, or Nextflow on Dockstore.org',
+      label: 'Create non-standard workflows from GitHub, Bitbucket, and GitLab',
       value: 1
+    },
+    {
+      label: 'Create and save workflows on Dockstore.org',
+      value: 2
     }
   ];
   public selectedOption = this.options[0];
@@ -81,7 +88,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     private registerWorkflowModalService: RegisterWorkflowModalService,
     public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>,
     private alertQuery: AlertQuery,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private myWorkflowsService: MyWorkflowsService,
+    private sessionQuery: SessionQuery,
+    private userQuery: UserQuery
   ) {}
 
   friendlyRepositoryKeys(): Array<string> {
@@ -231,6 +241,17 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
         console.log('Unrecognized descriptor type: ' + descriptorType);
         this.descriptorValidationPattern = '.*';
       }
+    }
+  }
+
+  /**
+   * Updates list of entries for the logged in user
+   */
+  getMyEntries() {
+    const user = this.userQuery.getValue().user;
+    const entryType = this.sessionQuery.getValue().entryType;
+    if (user && entryType) {
+      this.myWorkflowsService.getMyEntries(user.id, entryType);
     }
   }
 

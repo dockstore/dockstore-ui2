@@ -23,7 +23,7 @@
     <mat-step>
       <ng-template matStepLabel>Workflow storage type</ng-template>
       <p>
-        You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL/NextFlow from an existing third party
+        You can write your workflows and store them on Dockstore.org, or you can register a workflow from an existing third party
         repository, such as GitHub, Bitbucket, etc.
       </p>
       <div class="modal-body">
@@ -44,10 +44,25 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
+      <div *ngIf="selectedOption?.value == 0">
+        <entry-wizard></entry-wizard>
+        <div class="modal-footer">
+          <button mat-button color="secondary" matStepperPrevious>Back</button>
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            [mat-dialog-close]="true"
+            (click)="clearWorkflowRegisterError(); getMyEntries()"
+          >
+            Finish
+          </button>
+        </div>
+      </div>
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 0"
+        *ngIf="selectedOption?.value == 1"
         #registerWorkflowForm="ngForm"
         name="registerWorkflowForm"
         (submit)="registerWorkflow()"
@@ -135,7 +150,7 @@
           />
           <mat-error *ngIf="formErrors.workflowName">{{ formErrors.workflowName }} </mat-error>
         </mat-form-field>
-        <div mat-dialog-actions class="pull-right">
+        <div class="modal-footer">
           <button
             mat-button
             type="button"
@@ -159,7 +174,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value == 2"
         #registerHostedWorkflowForm="ngForm"
         name="registerHostedWorkflowForm"
         (ngSubmit)="registerHostedWorkflow()"
@@ -209,7 +224,7 @@
           <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
         </mat-form-field> -->
 
-        <div mat-dialog-actions class="pull-right">
+        <div class="modal-footer">
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>
