@@ -6,7 +6,6 @@ import { Repository } from '../openapi/model/repository';
 import { HttpErrorResponse } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { EntryWizardQuery } from './entry-wizard.query';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Injectable({
   providedIn: 'root'
