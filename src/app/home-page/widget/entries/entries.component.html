@@ -1,0 +1,21 @@
+<div class="w-100">
+  <h3>My Entries</h3>
+  <mat-form-field class="w-100">
+    <input matInput [(ngModel)]="entryFilterText" (keyup)="onTextChange($event)" placeholder="Find entry..." />
+  </mat-form-field>
+
+  <div *ngFor="let entry of myEntries; let i = index" class="w-100">
+    <a *ngIf="entry.entryType == entryTypeEnum.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
+      entry.path
+    }}</a>
+    <a
+      *ngIf="entry.entryType == entryTypeEnum.WORKFLOW"
+      [routerLink]="'/my-workflows/' + entry.path"
+      routerLinkActive="router-link-active"
+      >{{ entry.path }}</a
+    >
+    <a *ngIf="entry.entryType == entryTypeEnum.SERVICE" [routerLink]="'/my-services/' + entry.path" routerLinkActive="router-link-active">{{
+      entry.path
+    }}</a>
+  </div>
+</div>

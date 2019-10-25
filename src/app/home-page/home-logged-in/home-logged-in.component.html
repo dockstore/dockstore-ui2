@@ -17,21 +17,9 @@
 <mat-sidenav-container>
   <mat-sidenav [opened]="!mobileQuery.matches" mode="side" class="homepage-sidebar">
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 1 100%" class="px-4">
+      <app-entries class="w-100"></app-entries>
       <div>
-        <h3>Tools and workflows</h3>
-      </div>
-
-      <div>
-        <h3>Organizations</h3>
-      </div>
-
-      <div>
-        <h3>Twitter</h3>
-        <div class="twitter twitter-container">
-          <a class="twitter-timeline" data-theme="light" data-height="800" href="https://twitter.com/DockstoreOrg">
-            Tweets by DockstoreOrg
-          </a>
-        </div>
+        <h3>My Organizations</h3>
       </div>
     </div>
   </mat-sidenav>
@@ -46,21 +34,9 @@
         </div>
       </div>
       <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 1 100%" class="px-4" *ngIf="mobileQuery.matches">
+        <app-entries></app-entries>
         <div>
-          <h3>Tools and workflows</h3>
-        </div>
-
-        <div>
-          <h3>Organizations</h3>
-        </div>
-
-        <div>
-          <h3>Twitter</h3>
-          <div class="twitter twitter-container">
-            <a class="twitter-timeline" data-theme="light" data-height="800" href="https://twitter.com/DockstoreOrg">
-              Tweets by DockstoreOrg
-            </a>
-          </div>
+          <h3>My Organizations</h3>
         </div>
       </div>
 
@@ -78,6 +54,14 @@
               <li><a routerLink="starred">My Starred</a></li>
               <li><a href="https://discuss.dockstore.org/" target="_blank" rel="noopener noreferrer">Discourse</a></li>
             </ul>
+          </div>
+          <div>
+            <h3>Twitter</h3>
+            <div class="twitter twitter-container">
+              <a class="twitter-timeline" data-theme="light" data-height="800" href="https://twitter.com/DockstoreOrg">
+                Tweets by DockstoreOrg
+              </a>
+            </div>
           </div>
         </div>
       </div>
