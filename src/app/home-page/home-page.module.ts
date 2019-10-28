@@ -13,6 +13,7 @@ import { HomePageComponent } from './home-page.component';
 import { RequestsComponent } from './widget/requests/requests.component';
 import { EntriesComponent } from './widget/entries/entries.component';
 import { FormsModule } from '@angular/forms';
+import { OrganizationsComponent } from './widget/organizations/organizations.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { FormsModule } from '@angular/forms';
     TabsModule,
     FormsModule
   ],
-  declarations: [HomePageComponent, HomeComponent, HomeLoggedInComponent, RequestsComponent, EntriesComponent],
+  declarations: [HomePageComponent, HomeComponent, HomeLoggedInComponent, RequestsComponent, EntriesComponent, OrganizationsComponent],
   entryComponents: [],
   exports: [NgxJsonLdModule]
 })

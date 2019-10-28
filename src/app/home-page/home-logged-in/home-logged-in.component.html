@@ -18,9 +18,7 @@
   <mat-sidenav [opened]="!mobileQuery.matches" mode="side" class="homepage-sidebar">
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 1 100%" class="px-4">
       <app-entries class="w-100"></app-entries>
-      <div>
-        <h3>My Organizations</h3>
-      </div>
+      <app-organizations class="w-100"></app-organizations>
     </div>
   </mat-sidenav>
   <mat-sidenav-content fxFlex>
@@ -41,10 +39,8 @@
         class="px-4 w-100"
         *ngIf="mobileQuery.matches"
       >
-        <app-entries></app-entries>
-        <div>
-          <h3>My Organizations</h3>
-        </div>
+        <app-entries class="w-100"></app-entries>
+        <app-organizations class="w-100"></app-organizations>
       </div>
 
       <div fxFlex="1 3 100%">
@@ -52,7 +48,7 @@
           <div>
             <h3>News and Updates</h3>
           </div>
-          <app-requests></app-requests>
+          <app-requests class="w-100"></app-requests>
           <div>
             <h3>Links</h3>
             <ul>
