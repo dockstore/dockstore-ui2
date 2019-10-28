@@ -25,7 +25,7 @@
   </mat-sidenav>
   <mat-sidenav-content fxFlex>
     <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4" fxFlex="1 1 100%">
+      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlex="1 1 100%">
         <div class="widget-section">
           <h3>Explore Featured Content</h3>
         </div>
@@ -33,7 +33,14 @@
           <h3>Recent Activity</h3>
         </div>
       </div>
-      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 1 100%" class="px-4" *ngIf="mobileQuery.matches">
+      <div
+        fxLayout="column"
+        fxLayoutAlign="start start"
+        fxLayoutGap="20px"
+        fxFlex="1 1 100%"
+        class="px-4 w-100"
+        *ngIf="mobileQuery.matches"
+      >
         <app-entries></app-entries>
         <div>
           <h3>My Organizations</h3>
@@ -41,7 +48,7 @@
       </div>
 
       <div fxFlex="1 3 100%">
-        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4">
+        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100">
           <div>
             <h3>News and Updates</h3>
           </div>
