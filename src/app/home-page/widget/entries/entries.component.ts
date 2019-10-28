@@ -15,6 +15,7 @@ export class EntriesComponent implements OnInit {
   public myEntries;
   public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
   public entryFilterText;
+  public hasEntries = false;
   userId$: Observable<number>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -24,6 +25,9 @@ export class EntriesComponent implements OnInit {
     this.userId$ = this.userQuery.userId$;
     this.userQuery.userId$.subscribe((userId: number) => {
       this.getMyEntries(userId);
+      if (this.myEntries && this.myEntries.length > 0) {
+        this.hasEntries = true;
+      }
     });
   }
 

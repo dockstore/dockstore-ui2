@@ -1,10 +1,17 @@
 <div class="w-100">
   <h3>My Organizations</h3>
-  <mat-form-field class="w-100">
-    <input matInput [(ngModel)]="organizationFilterText" (keyup)="onTextChange($event)" placeholder="Find organization..." />
-  </mat-form-field>
-
-  <div *ngFor="let organization of myOrganizations; let i = index" class="w-100">
-    <a [routerLink]="'/organizations/' + organization.name" routerLinkActive="router-link-active">{{ organization.displayName }}</a>
+  <div *ngIf="!hasOrganizations; else hasOrganizations">
+    <p>You have no organizations</p>
   </div>
+
+  <ng-template #hasOrganizations>
+    <mat-form-field class="w-100">
+      <input matInput [(ngModel)]="organizationFilterText" (keyup)="onTextChange($event)" placeholder="Find organization..." />
+    </mat-form-field>
+
+    <div *ngFor="let organization of myOrganizations; let i = index" class="w-100">
+      <a [routerLink]="'/organizations/' + organization.name" routerLinkActive="router-link-active">{{ organization.displayName }}</a>
+    </div>
+    <p *ngIf="myOrganizations && myOrganizations.length === 0">No matching organizations</p>
+  </ng-template>
 </div>

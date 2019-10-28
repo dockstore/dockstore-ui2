@@ -14,6 +14,7 @@ import { formInputDebounceTime } from 'app/shared/constants';
 export class OrganizationsComponent implements OnInit {
   public myOrganizations;
   public organizationFilterText;
+  public hasOrganizations = false;
   userId$: Observable<number>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -23,6 +24,9 @@ export class OrganizationsComponent implements OnInit {
     this.userId$ = this.userQuery.userId$;
     this.userQuery.userId$.subscribe((userId: number) => {
       this.getMyOrganizations(userId);
+      if (this.myOrganizations && this.myOrganizations.length > 0) {
+        this.hasOrganizations = true;
+      }
     });
   }
 
