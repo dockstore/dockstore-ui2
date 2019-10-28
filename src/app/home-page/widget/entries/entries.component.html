@@ -7,7 +7,7 @@
 
   <ng-template #hasEntries>
     <mat-form-field class="w-100">
-      <input matInput [(ngModel)]="entryFilterText" (keyup)="onTextChange($event)" placeholder="Find entry..." />
+      <input matInput [(ngModel)]="entryFilterText" (keyup)="onTextChange($event)" placeholder="Filter entries..." />
     </mat-form-field>
 
     <div *ngFor="let entry of myEntries; let i = index" class="w-100">

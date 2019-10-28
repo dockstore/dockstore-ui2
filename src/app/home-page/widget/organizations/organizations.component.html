@@ -6,7 +6,7 @@
 
   <ng-template #hasOrganizations>
     <mat-form-field class="w-100">
-      <input matInput [(ngModel)]="organizationFilterText" (keyup)="onTextChange($event)" placeholder="Find organization..." />
+      <input matInput [(ngModel)]="organizationFilterText" (keyup)="onTextChange($event)" placeholder="Filter organizations..." />
     </mat-form-field>
 
     <div *ngFor="let organization of myOrganizations; let i = index" class="w-100">
