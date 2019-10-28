@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserQuery } from 'app/shared/user/user.query';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { DefaultService } from 'app/shared/openapi';
 import { EntryUpdateTime } from 'app/shared/openapi/model/entryUpdateTime';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { formInputDebounceTime } from 'app/shared/constants';
 
 @Component({
   selector: 'app-entries',
@@ -14,6 +16,7 @@ export class EntriesComponent implements OnInit {
   public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
   public entryFilterText;
   userId$: Observable<number>;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private userQuery: UserQuery, private defaultService: DefaultService) {}
 
@@ -25,12 +28,18 @@ export class EntriesComponent implements OnInit {
   }
 
   getMyEntries(userId: number): void {
-    this.defaultService.getUserEntries(userId, 10, this.entryFilterText).subscribe(
-      (myWorkflows: Array<EntryUpdateTime>) => {
-        this.myEntries = myWorkflows;
-      },
-      () => {}
-    );
+    this.defaultService
+      .getUserEntries(userId, 10, this.entryFilterText)
+      .pipe(
+        debounceTime(formInputDebounceTime),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(
+        (myWorkflows: Array<EntryUpdateTime>) => {
+          this.myEntries = myWorkflows;
+        },
+        () => {}
+      );
   }
 
   onTextChange(event: any) {
