@@ -16,6 +16,7 @@ export class EntriesComponent implements OnInit {
   public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
   public entryFilterText;
   public hasEntries = false;
+  public firstCall = true;
   userId$: Observable<number>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -24,23 +25,24 @@ export class EntriesComponent implements OnInit {
   ngOnInit() {
     this.userId$ = this.userQuery.userId$;
     this.userQuery.userId$.subscribe((userId: number) => {
-      this.getMyEntries(userId);
-      if (this.myEntries && this.myEntries.length > 0) {
-        this.hasEntries = true;
-      }
+      this.getMyEntries();
     });
   }
 
-  getMyEntries(userId: number): void {
+  getMyEntries(): void {
     this.defaultService
-      .getUserEntries(userId, 10, this.entryFilterText)
+      .getUserEntries(10, this.entryFilterText)
       .pipe(
         debounceTime(formInputDebounceTime),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(
-        (myWorkflows: Array<EntryUpdateTime>) => {
-          this.myEntries = myWorkflows;
+        (myEntries: Array<EntryUpdateTime>) => {
+          this.myEntries = myEntries;
+          if (this.firstCall && this.myEntries && this.myEntries.length > 0) {
+            this.hasEntries = true;
+            this.firstCall = false;
+          }
         },
         () => {}
       );
@@ -48,7 +50,7 @@ export class EntriesComponent implements OnInit {
 
   onTextChange(event: any) {
     this.userQuery.userId$.subscribe((userId: number) => {
-      this.getMyEntries(userId);
+      this.getMyEntries();
     });
   }
 }

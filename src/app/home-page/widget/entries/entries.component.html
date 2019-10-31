@@ -1,11 +1,10 @@
 <div class="w-100">
   <h3>My Entries</h3>
-
-  <div *ngIf="!hasEntries; else hasEntries">
+  <div *ngIf="!hasEntries; else userHasEntries">
     <p>You have no entries</p>
   </div>
 
-  <ng-template #hasEntries>
+  <ng-template #userHasEntries>
     <mat-form-field class="w-100">
       <input matInput [(ngModel)]="entryFilterText" (keyup)="onTextChange($event)" placeholder="Filter entries..." />
     </mat-form-field>

@@ -1,10 +1,10 @@
 <div class="w-100">
   <h3>My Organizations</h3>
-  <div *ngIf="!hasOrganizations; else hasOrganizations">
+  <div *ngIf="!hasOrganizations; else userHasOrganizations">
     <p>You have no organizations</p>
   </div>
 
-  <ng-template #hasOrganizations>
+  <ng-template #userHasOrganizations>
     <mat-form-field class="w-100">
       <input matInput [(ngModel)]="organizationFilterText" (keyup)="onTextChange($event)" placeholder="Filter organizations..." />
     </mat-form-field>

@@ -15,6 +15,7 @@ export class OrganizationsComponent implements OnInit {
   public myOrganizations;
   public organizationFilterText;
   public hasOrganizations = false;
+  public firstCall = true;
   userId$: Observable<number>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -23,16 +24,13 @@ export class OrganizationsComponent implements OnInit {
   ngOnInit() {
     this.userId$ = this.userQuery.userId$;
     this.userQuery.userId$.subscribe((userId: number) => {
-      this.getMyOrganizations(userId);
-      if (this.myOrganizations && this.myOrganizations.length > 0) {
-        this.hasOrganizations = true;
-      }
+      this.getMyOrganizations();
     });
   }
 
-  getMyOrganizations(userId: number): void {
+  getMyOrganizations(): void {
     this.defaultService
-      .getUserDockstoreOrganizations(userId, 10, this.organizationFilterText)
+      .getUserDockstoreOrganizations(10, this.organizationFilterText)
       .pipe(
         debounceTime(formInputDebounceTime),
         takeUntil(this.ngUnsubscribe)
@@ -40,6 +38,10 @@ export class OrganizationsComponent implements OnInit {
       .subscribe(
         (myOrganizations: Array<OrganizationUpdateTime>) => {
           this.myOrganizations = myOrganizations;
+          if (this.firstCall && this.myOrganizations && this.myOrganizations.length > 0) {
+            this.hasOrganizations = true;
+            this.firstCall = false;
+          }
         },
         () => {}
       );
@@ -47,7 +49,7 @@ export class OrganizationsComponent implements OnInit {
 
   onTextChange(event: any) {
     this.userQuery.userId$.subscribe((userId: number) => {
-      this.getMyOrganizations(userId);
+      this.getMyOrganizations();
     });
   }
 }

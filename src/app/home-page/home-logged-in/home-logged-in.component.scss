@@ -13,14 +13,10 @@ mat-sidenav-container {
   height: 100%;
 }
 
-.homepage-sidebar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 350px;
-  background: whitesmoke;
-}
-
 .side-column {
   background-color: #f6f8fa;
+}
+
+#column-holder {
+  min-height: 900px;
 }
