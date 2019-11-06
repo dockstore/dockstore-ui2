@@ -125,6 +125,16 @@ describe('Dockstore Organizations', () => {
       cy.contains('1 organization request');
       cy.contains('1 organization request requiring action');
     });
+
+    it('have organization shown on the homepage', () => {
+      cy.visit('/');
+      cy.contains('Potatoe');
+      cy.contains('Filter organizations');
+      cy.get('#mat-input-0').type('Po');
+      cy.contains('Potatoe');
+      cy.get('#mat-input-0').type('r');
+      cy.contains('No matching organizations');
+    });
   });
 
   describe('Should be able to add/update collection', () => {
