@@ -1,15 +1,15 @@
 <div class="w-100">
   <h3>My Entries</h3>
-  <div *ngIf="!hasEntries; else userHasEntries">
+  <div *ngIf="!hasItems; else userHasEntries">
     <p>You have no entries</p>
   </div>
 
   <ng-template #userHasEntries>
     <mat-form-field class="w-100">
-      <input matInput [(ngModel)]="entryFilterText" (keyup)="onTextChange($event)" placeholder="Filter entries..." />
+      <input matInput [(ngModel)]="filterText" (keyup)="onTextChange($event)" placeholder="Filter entries..." />
     </mat-form-field>
 
-    <div *ngFor="let entry of myEntries; let i = index" class="w-100">
+    <div *ngFor="let entry of myItems" class="w-100">
       <a *ngIf="entry.entryType == entryTypeEnum.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
         entry.path
       }}</a>
@@ -26,6 +26,6 @@
         >{{ entry.path }}</a
       >
     </div>
-    <p *ngIf="myEntries && myEntries.length === 0">No matching entries</p>
+    <p *ngIf="myItems && myItems.length === 0">No matching entries</p>
   </ng-template>
 </div>
