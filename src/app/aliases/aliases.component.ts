@@ -3,7 +3,7 @@ import { AliasesService } from './state/aliases.service';
 import { AliasesQuery } from './state/aliases.query';
 import { ActivatedRoute, Router } from '../test';
 import { Observable } from 'rxjs';
-import { Organization, Collection, Workflow, DockstoreTool } from '../shared/swagger';
+import { Organization, Collection, Workflow, WorkflowVersionPathInfo, DockstoreTool } from '../shared/swagger';
 import { Base } from '../shared/base';
 import { takeUntil } from 'rxjs/operators';
 
@@ -17,13 +17,14 @@ export class AliasesComponent extends Base implements OnInit {
   organization$: Observable<Organization | null>;
   collection$: Observable<Collection | null>;
   workflow$: Observable<Workflow | null>;
+  workflowVersionPathInfo$: Observable<WorkflowVersionPathInfo | null>;
   tool$: Observable<DockstoreTool | null>;
 
   public type: string | null;
   public alias: string | null;
   public validType: boolean;
   // Types contains resource types that support aliases
-  public types = ['organizations', 'collections', 'workflows', 'tools', 'containers'];
+  public types = ['organizations', 'collections', 'workflows', 'tools', 'containers', 'workflow-versions'];
   constructor(
     private aliasesQuery: AliasesQuery,
     private aliasesService: AliasesService,
@@ -53,6 +54,14 @@ export class AliasesComponent extends Base implements OnInit {
       this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
         if (collection) {
           this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
+        }
+      });
+    } else if (this.type === 'workflow-versions' && this.alias) {
+      this.aliasesService.updateWorkflowVersionPathInfoFromAlias(this.alias);
+      this.workflowVersionPathInfo$ = this.aliasesQuery.workflowVersionPathInfo$
+      this.workflowVersionPathInfo$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflowVersionPathInfo: WorkflowVersionPathInfo) => {
+        if (workflowVersionPathInfo) {
+          this.router.navigate(['/workflows', workflowVersionPathInfo.fullWorkflowPath + ':' + workflowVersionPathInfo.tagName]);
         }
       });
     } else if (this.type === 'workflows' && this.alias) {
