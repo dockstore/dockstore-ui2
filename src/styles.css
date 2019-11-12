@@ -18,6 +18,13 @@
   height: 155px;
 }
 
+/*.content{*/
+/*  flex-shrink: 1;*/
+/*  flex-grow: 1;*/
+/*  position: relative;*/
+/*  overflow-y: auto;*/
+/*}*/
+
 /* pages generated from markdown needs to have responsive images */
 app-page img {
   max-width: 100%;

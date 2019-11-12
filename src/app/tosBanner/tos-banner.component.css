@@ -1,0 +1,6 @@
+.tos-banner {
+  flex-shrink: 0;
+  flex-grow: 0;
+  background-color: #3b4045;
+  padding: 3px 15px;
+}

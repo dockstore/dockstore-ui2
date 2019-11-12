@@ -650,6 +650,36 @@ ul.our-sponsors li img {
   margin-right: 10px;
 }
 
+.tos-banner {
+  flex-shrink: 0;
+  flex-grow: 0;
+  padding: 3px 15px;
+  color: white;
+  height: 50px;
+}
+
+.tos-banner.p {
+  margin: 0;
+}
+
+.push-tos {
+  height: 50px;
+}
+
+.sticky {
+  background-color: #3b4045;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.dismiss {
+  color: white;
+  opacity: 0.8;
+}
+
 pre {
   color: #487980;
   font-size: 86.66%;
