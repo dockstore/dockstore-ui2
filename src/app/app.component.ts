@@ -15,7 +15,6 @@ import { TosBannerQuery } from './tosBanner/state/tos-banner.query';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public isLoggedIn$: Observable<boolean>;
-  public dismissed: boolean;
   public dismissedTOS$: Observable<boolean>;
   constructor(
     private router: Router,
@@ -50,11 +49,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.titleService.setTitle(event['title']);
         this.alertService.clearEverything();
       });
-
-    this.dismissed = JSON.parse(localStorage.getItem('dismissedTOS'));
-    if (this.dismissed === null) {
-      localStorage.setItem('dismissedTOS', 'false');
-    }
   }
 
   ngOnDestroy(): void {

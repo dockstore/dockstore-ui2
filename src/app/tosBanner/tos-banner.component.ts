@@ -11,7 +11,6 @@ import { TrackLoginService } from '../shared/track-login.service';
 export class TosBannerComponent implements OnInit {
   public isLoggedIn$: Observable<boolean>;
   public dismissedTOS$: Observable<boolean>;
-  public dismissed: boolean;
   constructor(
     private tosBannerService: TosBannerService,
     private tosBannerQuery: TosBannerQuery,
@@ -21,15 +20,13 @@ export class TosBannerComponent implements OnInit {
   ngOnInit(): void {
     this.dismissedTOS$ = this.tosBannerQuery.dismissedTOS$;
     this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
-    this.dismissed = JSON.parse(localStorage.getItem('dismissedTOS'));
-    if (this.dismissed === null) {
+    if (!this.dismissedTOS$) {
       localStorage.setItem('dismissedTOS', 'false');
+      this.dismissedTOS$ = this.tosBannerQuery.dismissedTOS$;
     }
   }
 
   dismissTOS(): void {
-    localStorage.setItem('dismissedTOS', 'true');
     this.tosBannerService.dismissTOS();
-    this.dismissed = true;
   }
 }
