@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<div class="container" *ngIf="!user || !isHomePage">
+<div class="container" *ngIf="!(user$ | async) || !isHomePage">
   <div class="row text-center">
     <h5 style="color:#21335B">In Affiliation With</h5>
     <br />

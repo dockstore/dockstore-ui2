@@ -16,8 +16,8 @@
 
 <div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px">
   <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 2 100%" class="px-4 side-column" fxFlexAlign="stretch">
-    <app-entries class="w-100"></app-entries>
-    <app-organizations class="w-100"></app-organizations>
+    <app-entries *ngIf="user$ | async" class="w-100"></app-entries>
+    <app-organizations *ngIf="user$ | async" class="w-100"></app-organizations>
   </div>
 
   <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlex="1 1 100%" fxFlexAlign="stretch">
@@ -34,7 +34,7 @@
       <div>
         <h3>News and Updates</h3>
       </div>
-      <app-requests class="w-100"></app-requests>
+      <app-requests *ngIf="user$ | async" class="w-100"></app-requests>
       <div>
         <h3>Links</h3>
         <ul>

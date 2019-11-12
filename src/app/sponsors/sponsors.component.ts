@@ -23,6 +23,7 @@ import { Sponsor } from './sponsor.model';
 import { SponsorsService } from './sponsors.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { User } from 'app/shared/openapi';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sponsors',
@@ -31,7 +32,7 @@ import { User } from 'app/shared/openapi';
   providers: [SponsorsService]
 })
 export class SponsorsComponent extends Base implements OnInit {
-  public user: User;
+  public user$: Observable<User>;
   public sponsors: Sponsor[];
   public partners: Sponsor[];
   public languages: Sponsor[];
@@ -55,9 +56,7 @@ export class SponsorsComponent extends Base implements OnInit {
     this.partners = this.sponsorsService.getPartners();
     this.languages = this.sponsorsService.getLanguages();
 
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
-      this.user = user;
-    });
+    this.user$ = this.userQuery.user$;
   }
 
   hideSecondRow() {

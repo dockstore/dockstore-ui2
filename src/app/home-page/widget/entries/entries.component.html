@@ -10,17 +10,17 @@
     </mat-form-field>
 
     <div *ngFor="let entry of myItems" class="w-100">
-      <a *ngIf="entry.entryType == entryTypeEnum.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
+      <a *ngIf="entry.entryType === entryTypeEnum.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
         entry.path
       }}</a>
       <a
-        *ngIf="entry.entryType == entryTypeEnum.WORKFLOW"
+        *ngIf="entry.entryType === entryTypeEnum.WORKFLOW"
         [routerLink]="'/my-workflows/' + entry.path"
         routerLinkActive="router-link-active"
         >{{ entry.path }}</a
       >
       <a
-        *ngIf="entry.entryType == entryTypeEnum.SERVICE"
+        *ngIf="entry.entryType === entryTypeEnum.SERVICE"
         [routerLink]="'/my-services/' + entry.path"
         routerLinkActive="router-link-active"
         >{{ entry.path }}</a
