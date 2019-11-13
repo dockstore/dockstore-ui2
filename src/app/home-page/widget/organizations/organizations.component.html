@@ -12,6 +12,6 @@
     <div *ngFor="let organization of myItems" class="w-100">
       <a [routerLink]="'/organizations/' + organization.name" routerLinkActive="router-link-active">{{ organization.displayName }}</a>
     </div>
-    <p *ngIf="myItems && myItems.length === 0">No matching organizations</p>
+    <p *ngIf="!myItems || myItems.length === 0">No matching organizations</p>
   </ng-template>
 </div>
