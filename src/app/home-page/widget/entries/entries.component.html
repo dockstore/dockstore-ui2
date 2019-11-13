@@ -26,6 +26,6 @@
         >{{ entry.path }}</a
       >
     </div>
-    <p *ngIf="myItems && myItems.length === 0">No matching entries</p>
+    <p *ngIf="!myItems || myItems.length === 0">No matching entries</p>
   </ng-template>
 </div>
