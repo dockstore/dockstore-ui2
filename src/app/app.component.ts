@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public dismissedLatestPrivacyPolicy$: Observable<User.PrivacyPolicyVersionEnum>;
   public currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   public currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
-  // private currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
