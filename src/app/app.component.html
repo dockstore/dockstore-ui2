@@ -1,4 +1,11 @@
-<div *ngIf="!(isLoggedIn$ | async) && (dismissedTOS$ | async) !== true" class="push-tos">
+<!--<div *ngIf="!(isLoggedIn$ | async) && (dismissedTOS$ | async) !== true" class="push-tos">-->
+<div
+  *ngIf="
+    !(isLoggedIn$ | async) &&
+    ((dismissedLatestTOS$ | async) !== currentTOSVersion || (dismissedLatestPrivacyPolicy$ | async) !== currentPrivacyPolicyVersion)
+  "
+  class="push-tos"
+>
   <app-tos-banner class="sticky"></app-tos-banner>
 </div>
 <div class="wrapper">

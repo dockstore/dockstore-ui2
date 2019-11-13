@@ -14,6 +14,8 @@
  *     limitations under the License.
  */
 
+import { User } from './openapi/model/user';
+
 export const ga4ghPath = '/api/ga4gh/v2';
 export const formInputDebounceTime = 250;
 export const ga4ghWorkflowIdPrefix = '#workflow/';
@@ -30,3 +32,5 @@ export const servicesURLSegment = 'services';
 export const toolsURLSegment = 'tools';
 export const altAvatarImg = 'http://www.imcslc.ca/imc/includes/themes/imc/images/layout/img_placeholder_avatar.jpg';
 export const devMode = false;
+export const currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
+export const currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;

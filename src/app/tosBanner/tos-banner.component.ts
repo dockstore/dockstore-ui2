@@ -20,10 +20,10 @@ export class TosBannerComponent implements OnInit {
   ngOnInit(): void {
     this.dismissedTOS$ = this.tosBannerQuery.dismissedTOS$;
     this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
-    if (!this.dismissedTOS$) {
-      localStorage.setItem('dismissedTOS', 'false');
-      this.dismissedTOS$ = this.tosBannerQuery.dismissedTOS$;
-    }
+    // if (!this.dismissedTOS$) {
+    //   localStorage.setItem('dismissedTOS', 'false');
+    //   this.dismissedTOS$ = this.tosBannerQuery.dismissedTOS$;
+    // }
   }
 
   dismissTOS(): void {
