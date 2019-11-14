@@ -39,8 +39,8 @@ export class NavbarComponent extends Logout implements OnInit {
   isExtended = false;
   Dockstore = Dockstore;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  private currentTOSVersion: User.TosversionEnum = currentTOSVersion;
-  private currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
+  private readonly currentTOSVersion: User.TosversionEnum = currentTOSVersion;
+  private readonly currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
 
   constructor(
     private pagenumberService: PagenumberService,
