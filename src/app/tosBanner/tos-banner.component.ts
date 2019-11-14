@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tos-banner',
-  templateUrl: './tos-banner.component.html'
+  templateUrl: './tos-banner.component.html',
+  styleUrls: ['./tos-banner.component.css']
 })
 export class TosBannerComponent {
   public isLoggedIn$: Observable<boolean>;
