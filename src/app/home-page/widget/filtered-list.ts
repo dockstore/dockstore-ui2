@@ -2,11 +2,12 @@ import { OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { UserQuery } from 'app/shared/user/user.query';
 import { DefaultService } from 'app/shared/openapi';
+import { Base } from 'app/shared/base';
 
 /**
  * Base class for logged in homepage widgets that have a filter list
  */
-export abstract class FilteredList implements OnInit {
+export abstract class FilteredList extends Base implements OnInit {
   userId$: Observable<number>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   public hasItems = false;
@@ -14,7 +15,9 @@ export abstract class FilteredList implements OnInit {
   public myItems;
   public filterText;
 
-  constructor(protected userQuery: UserQuery, protected defaultService: DefaultService) {}
+  constructor(protected userQuery: UserQuery, protected defaultService: DefaultService) {
+    super();
+  }
 
   ngOnInit() {
     this.getMyList();
