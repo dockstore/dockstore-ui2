@@ -18,7 +18,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -56,6 +56,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
   public advancedSearchObject: AdvancedSearchObject;
   public shortUrl$: Observable<string>;
+  public aNDSplitFilterText$: Observable<string>;
+  public aNDNoSplitFilterText$: Observable<string>;
+  public oRFilterText$: Observable<string>;
+  public nOTFilterText$: Observable<string>;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
@@ -162,6 +166,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     };
     this.parseParams();
 
+    this.aNDSplitFilterText$ = this.advancedSearchService.advancedSearch$.pipe(
+      map((advancedSearchObject: AdvancedSearchObject) => this.searchService.joinComma(advancedSearchObject.ANDSplitFilter))
+    );
+    this.aNDNoSplitFilterText$ = this.advancedSearchService.advancedSearch$.pipe(
+      map((advancedSearchObject: AdvancedSearchObject) => this.searchService.joinComma(advancedSearchObject.ANDNoSplitFilter))
+    );
+    this.oRFilterText$ = this.advancedSearchService.advancedSearch$.pipe(
+      map((advancedSearchObject: AdvancedSearchObject) => this.searchService.joinComma(advancedSearchObject.ORFilter))
+    );
+    this.nOTFilterText$ = this.advancedSearchService.advancedSearch$.pipe(
+      map((advancedSearchObject: AdvancedSearchObject) => this.searchService.joinComma(advancedSearchObject.NOTFilter))
+    );
     this.advancedSearchService.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
       // Upon init, the user did not want to do an advanced search, but this triggers anyways.  Using toAdvanceSearch to stop it.
