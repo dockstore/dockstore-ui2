@@ -1,5 +1,5 @@
 import { OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserQuery } from 'app/shared/user/user.query';
 import { DefaultService } from 'app/shared/openapi';
 import { Base } from 'app/shared/base';
@@ -9,7 +9,6 @@ import { Base } from 'app/shared/base';
  */
 export abstract class FilteredList extends Base implements OnInit {
   userId$: Observable<number>;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
   public hasItems = false;
   public firstCall = true;
   public myItems;
