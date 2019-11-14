@@ -6,6 +6,7 @@
     <mat-icon>warning</mat-icon>
     {{ message$ | async }}
   </p>
+  <p class="error-output">{{ details$ | async }}</p>
 </mat-card>
 <div *ngIf="showInfo$ | async; else placeholder">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>

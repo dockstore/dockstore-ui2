@@ -101,6 +101,7 @@ import { StarringModule } from './starring/starring.module';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
 import { TosBannerComponent } from './tosBanner/tos-banner.component';
+import { TosBannerService } from './tosBanner/state/tos-banner.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -208,6 +209,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     VerifiedByService,
     Title,
     ViewService,
+    TosBannerService,
     ConfigurationService,
     {
       provide: APP_INITIALIZER,

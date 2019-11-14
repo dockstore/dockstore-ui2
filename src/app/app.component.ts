@@ -17,7 +17,6 @@ import { currentTOSVersion, currentPrivacyPolicyVersion } from './shared/constan
 })
 export class AppComponent implements OnInit, OnDestroy {
   public isLoggedIn$: Observable<boolean>;
-  public dismissedTOS$: Observable<boolean>;
   public dismissedLatestTOS$: Observable<User.TosversionEnum>;
   public dismissedLatestPrivacyPolicy$: Observable<User.PrivacyPolicyVersionEnum>;
   public currentTOSVersion: User.TosversionEnum = currentTOSVersion;
@@ -38,7 +37,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
-    this.dismissedTOS$ = this.tosBannerQuery.dismissedTOS$;
     this.dismissedLatestTOS$ = this.tosBannerQuery.dismissedLatestTOS$;
     this.dismissedLatestPrivacyPolicy$ = this.tosBannerQuery.dismissedLatestPrivacyPolicy$;
     this.router.events
