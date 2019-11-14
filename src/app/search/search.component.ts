@@ -129,8 +129,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.entryOrder = this.searchService.initializeEntryOrder();
   }
 
-  getKeys(map: Map<any, any>): Array<string> {
-    return Array.from(map.keys());
+  getKeys(bucketMap: Map<any, any>): Array<string> {
+    return Array.from(bucketMap.keys());
   }
 
   ngOnDestroy() {
