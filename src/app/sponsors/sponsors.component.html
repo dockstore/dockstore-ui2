@@ -13,7 +13,8 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div class="container">
+
+<div class="container" *ngIf="!(user$ | async) || !isHomePage">
   <div class="row text-center">
     <h5 style="color:#21335B">In Affiliation With</h5>
     <br />
@@ -27,7 +28,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showAdditionalRows" class="row text-center">
+  <div *ngIf="isHomePage" class="row text-center">
     <h5 style="color:#21335B">Workflow Languages</h5>
     <br />
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
@@ -38,7 +39,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showAdditionalRows" class="row text-center">
+  <div *ngIf="isHomePage" class="row text-center">
     <h5 style="color:#21335B">Works With</h5>
     <br />
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">

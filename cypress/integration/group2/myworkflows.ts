@@ -23,6 +23,15 @@ describe('Dockstore my workflows', () => {
   const cwlDescriptorType = 'CWL';
   const wdlDescriptorType = 'WDL';
   const nextflowDescriptorType = 'Nextflow';
+  it('have entries shown on the homepage', () => {
+    cy.visit('/');
+    cy.contains('github.com/A/l');
+    cy.contains('Filter entries');
+    cy.get('#mat-input-0').type('bit');
+    cy.contains('bitbucket.org/a/a');
+    cy.get('#mat-input-0').type('r');
+    cy.contains('No matching entries');
+  });
 
   describe('Should contain extended Workflow properties', () => {
     it('visit another page then come back', () => {
