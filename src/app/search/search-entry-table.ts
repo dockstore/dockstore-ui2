@@ -33,6 +33,32 @@ export abstract class SearchEntryTable extends Base implements OnInit {
 
   public readonly displayedColumns = ['name', 'verified', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
   abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
+
+  static compareAttributes(a: DockstoreTool | Workflow, b: DockstoreTool | Workflow, attribute: string, direction: string) {
+    let aVal = a[attribute];
+    let bVal = b[attribute];
+    console.log(attribute);
+
+    // regardless of sort direction, null or empty values go at the end
+    if (!aVal) {
+      return 1;
+    }
+    if (!bVal) {
+      return -1;
+    }
+
+    // ignore case when sorting by author or name
+    if (attribute === 'author' || attribute === 'name') {
+      aVal = aVal.toLowerCase();
+      bVal = bVal.toLowerCase();
+    }
+    if (direction === 'asc') {
+      return aVal < bVal ? -1 : 1;
+    } else if (direction === 'desc') {
+      return aVal < bVal ? 1 : -1;
+    }
+  }
+
   abstract privateNgOnInit(): void;
 
   constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {

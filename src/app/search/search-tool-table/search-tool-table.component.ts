@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { takeUntil } from 'rxjs/operators';
 import { DateService } from '../../shared/date.service';
@@ -7,6 +7,7 @@ import { DockstoreTool } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
+import { MatSort } from '@angular/material';
 
 /**
  * this component refers to search page not tool listing search
@@ -34,6 +35,11 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
         this.dataSource.data = entries;
       }
     });
+    this.dataSource.sortData = (data: DockstoreTool[], sort: MatSort) => {
+      return data.slice().sort((a, b) => {
+        return SearchEntryTable.compareAttributes(a, b, sort.active, sort.direction);
+      });
+    };
   }
 
   getVerified(tool: DockstoreTool): boolean {

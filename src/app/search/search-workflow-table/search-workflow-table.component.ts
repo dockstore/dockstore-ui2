@@ -18,10 +18,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { takeUntil } from 'rxjs/operators';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { Workflow } from '../../shared/swagger';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
+import { MatSort } from '@angular/material';
 
 /**
  * this component refers to search page not workflow listing search
@@ -49,6 +50,11 @@ export class SearchWorkflowTableComponent extends SearchEntryTable implements On
         this.dataSource.data = entries;
       }
     });
+    this.dataSource.sortData = (data: Workflow[], sort: MatSort) => {
+      return data.slice().sort((a, b) => {
+        return SearchEntryTable.compareAttributes(a, b, sort.active, sort.direction);
+      });
+    };
   }
 
   getVerified(workflow: Workflow): boolean {
