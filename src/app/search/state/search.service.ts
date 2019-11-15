@@ -271,10 +271,17 @@ export class SearchService {
 
   sortByAlphabet(orderedArray, orderMode): any {
     orderedArray = orderedArray.sort((a, b) => {
+      if (!a.key) {
+        return 1;
+      } // always put null/empty values at the end regardless of sort direction
+      if (!b.key) {
+        return -1;
+      }
+
       if (orderMode) {
-        return a.key > b.key ? 1 : -1;
+        return a.key.toLowerCase() > b.key.toLowerCase() ? 1 : -1; // ascending
       } else {
-        return a.key < b.key ? 1 : -1;
+        return a.key.toLowerCase() < b.key.toLowerCase() ? 1 : -1; // descending
       }
     });
     return orderedArray;
