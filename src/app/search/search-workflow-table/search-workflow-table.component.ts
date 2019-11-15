@@ -18,7 +18,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { takeUntil } from 'rxjs/operators';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { Workflow } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
