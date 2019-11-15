@@ -25,6 +25,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
 
 export interface Hit {
   _index: string;
@@ -74,6 +75,38 @@ export class SearchService {
     private router: Router,
     private imageProviderService: ImageProviderService
   ) {}
+
+  /**
+   * Return -1 if a sorts before b, 1 if b sorts before a, and 0 if they are the same,
+   * comparing based on the given attribute and direction
+   * @param a: DockstoreTool or Workflow
+   * @param b: DockstoreTool or Workflow
+   * @param attribute: workflow or tool property to sort by
+   * @param direction: 'asc' or 'desc'
+   */
+  static compareAttributes(a: DockstoreTool | Workflow, b: DockstoreTool | Workflow, attribute: string, direction: string) {
+    let aVal = a[attribute];
+    let bVal = b[attribute];
+
+    // regardless of sort direction, null or empty values go at the end
+    if (!aVal) {
+      return 1;
+    }
+    if (!bVal) {
+      return -1;
+    }
+
+    // ignore case when sorting by author or name
+    if (attribute === 'author' || attribute === 'name') {
+      aVal = aVal.toLowerCase();
+      bVal = bVal.toLowerCase();
+    }
+    if (direction === 'asc') {
+      return aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+    } else if (direction === 'desc') {
+      return aVal < bVal ? 1 : aVal > bVal ? -1 : 0;
+    }
+  }
 
   // Given a URL, will attempt to shorten it
   // TODO: Find another method for shortening URLs

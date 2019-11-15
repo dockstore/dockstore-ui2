@@ -23,6 +23,7 @@ import { elasticSearchResponse } from '../../test/mocked-objects';
 import { ProviderStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
+import { Workflow } from '../../shared/swagger';
 
 describe('SearchService', () => {
   let searchStore: SearchStore;
@@ -103,4 +104,46 @@ describe('SearchService', () => {
       expect(workflowSource.imgProviderUrl).toBe(undefined);
     }
   ));
+  it('should sort workflows correctly', inject([SearchService], (service: SearchService) => {
+    const a: Workflow = {
+      author: 'a',
+      gitUrl: 'https://giturl',
+      mode: 'FULL',
+      organization: '',
+      repository: '',
+      sourceControl: '',
+      descriptorType: 'CWL',
+      workflow_path: '',
+      defaultTestParameterFilePath: ''
+    };
+
+    const b: Workflow = {
+      author: 'B',
+      gitUrl: 'https://giturl',
+      mode: 'FULL',
+      organization: '',
+      repository: '',
+      sourceControl: '',
+      descriptorType: 'CWL',
+      workflow_path: '',
+      defaultTestParameterFilePath: ''
+    };
+
+    const c: Workflow = {
+      author: null,
+      gitUrl: 'https://giturl',
+      mode: 'FULL',
+      organization: '',
+      repository: '',
+      sourceControl: '',
+      descriptorType: 'CWL',
+      workflow_path: '',
+      defaultTestParameterFilePath: ''
+    };
+
+    expect(SearchService.compareAttributes(a, b, 'author', 'asc')).toEqual(-1);
+    expect(SearchService.compareAttributes(a, b, 'author', 'desc')).toEqual(1);
+    expect(SearchService.compareAttributes(b, c, 'author', 'asc')).toEqual(-1);
+    expect(SearchService.compareAttributes(b, c, 'author', 'desc')).toEqual(-1);
+  }));
 });
