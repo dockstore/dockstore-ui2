@@ -17,24 +17,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TosBannerStore } from './tos-banner.store';
-import { User } from '../../shared/swagger';
-import { currentTOSVersion, currentPrivacyPolicyVersion } from '../../shared/constants';
+import { currentTOSVersion, currentPrivacyPolicyVersion, dismissedLatestTOS, dismissedLatestPrivacyPolicy } from '../../shared/constants';
 
 @Injectable({ providedIn: 'root' })
 export class TosBannerService {
-  private currentTOSVersion: User.TosversionEnum = currentTOSVersion;
-  private currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
-
   constructor(private tosBannerStore: TosBannerStore, private http: HttpClient) {}
 
   dismissTOS() {
-    localStorage.setItem('dismissedLatestTOS', JSON.stringify(this.currentTOSVersion));
-    localStorage.setItem('dismissedLatestPrivacyPolicy', JSON.stringify(this.currentPrivacyPolicyVersion));
+    localStorage.setItem(dismissedLatestTOS, JSON.stringify(currentTOSVersion));
+    localStorage.setItem(dismissedLatestPrivacyPolicy, JSON.stringify(currentPrivacyPolicyVersion));
     this.tosBannerStore.update(state => {
       return {
         ...state,
-        dismissedLatestTOS: this.currentTOSVersion,
-        dismissedLatestPrivacyPolicy: this.currentPrivacyPolicyVersion
+        dismissedLatestTOS: currentTOSVersion,
+        dismissedLatestPrivacyPolicy: currentPrivacyPolicyVersion
       };
     });
   }

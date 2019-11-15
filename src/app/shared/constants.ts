@@ -34,3 +34,5 @@ export const altAvatarImg = 'http://www.imcslc.ca/imc/includes/themes/imc/images
 export const devMode = false;
 export const currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
 export const currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
+export const dismissedLatestTOS = 'dismissedLatestTOS';
+export const dismissedLatestPrivacyPolicy = 'dismissedLatestPrivacyPolicy';
