@@ -15,21 +15,20 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ContainerService } from 'app/shared/container.service';
 import { takeUntil } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
+import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
-import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
 import { AddTagComponent } from '../add-tag/add-tag.component';
-import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-versions-container',
@@ -53,11 +52,11 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     dockstoreService: DockstoreService,
     private containersService: ContainersService,
     dateService: DateService,
-    private refreshService: RefreshService,
     private alertService: AlertService,
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
     private matDialog: MatDialog,
-    protected sessionQuery: SessionQuery
+    protected sessionQuery: SessionQuery,
+    private containerService: ContainerService
   ) {
     super(dockstoreService, dateService, sessionQuery);
     this.sortColumn = 'last_built';
@@ -94,9 +93,8 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(
       response => {
         this.alertService.detailedSuccess();
-        if (this.tool.mode !== this.DockstoreToolType.ModeEnum.HOSTED) {
-          this.refreshService.refreshTool();
-        }
+        this.containerService.replaceTool(null, response);
+        this.containerService.setTool(response);
       },
       error => this.alertService.detailedError(error)
     );
