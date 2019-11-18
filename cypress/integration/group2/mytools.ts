@@ -95,7 +95,7 @@ describe('Dockstore my tools', () => {
         .click();
       cy.get('button')
         .contains('Save')
-        .should('not.be.visible');
+        .should('not.exist');
     });
     it('add and remove test parameter file', () => {
       cy.server();
