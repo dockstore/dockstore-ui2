@@ -88,9 +88,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
-   * @type {Map<String, Set<string>>}
+   * @type {Map<string, Set<string>>}
    */
-  public filters: Map<String, Set<string>> = new Map<string, Set<string>>();
+  public filters: Map<string, Set<string>> = new Map<string, Set<string>>();
   /**
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
