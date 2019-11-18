@@ -84,6 +84,19 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools/quay.io/A2/b1');
       cy.contains('/Dockerfile');
     });
+    it('should be able to add labels', () => {
+      cy.contains('quay.io/A2/a:latest');
+      cy.get('button')
+        .contains('Manage labels')
+        .click();
+      cy.get('input').type('potato');
+      cy.get('button')
+        .contains('Save')
+        .click();
+      cy.get('button')
+        .contains('Save')
+        .should('not.be.visible');
+    });
     it('add and remove test parameter file', () => {
       cy.server();
       cy.route('api/containers/*?include=validations').as('getTool');

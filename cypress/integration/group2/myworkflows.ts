@@ -66,6 +66,19 @@ describe('Dockstore my workflows', () => {
       cy.contains('Mode').trigger('mouseenter');
       cy.get('.mat-tooltip').contains('STUB: Basic metadata pulled from source control.');
     });
+    it('should be able to add labels', () => {
+      cy.contains('github.com/A/g');
+      cy.get('button')
+        .contains('Manage labels')
+        .click();
+      cy.get('input').type('potato');
+      cy.get('button')
+        .contains('Save')
+        .click();
+      cy.get('button')
+        .contains('Save')
+        .should('not.be.visible');
+    });
     it('add and remove test parameter file', () => {
       cy.visit('/my-workflows/github.com/A/l');
       cy.contains('Versions').click();
