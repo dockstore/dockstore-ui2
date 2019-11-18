@@ -52,7 +52,7 @@ export class SearchWorkflowTableComponent extends SearchEntryTable implements On
     });
     this.dataSource.sortData = (data: Workflow[], sort: MatSort) => {
       return data.slice().sort((a, b) => {
-        return SearchService.compareAttributes(a, b, sort.active, sort.direction);
+        return this.searchService.compareAttributes(a, b, sort.active, sort.direction);
       });
     };
   }

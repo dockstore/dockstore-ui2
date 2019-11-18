@@ -108,42 +108,24 @@ describe('SearchService', () => {
     const a: Workflow = {
       author: 'a',
       gitUrl: 'https://giturl',
-      mode: 'FULL',
+      mode: Workflow.ModeEnum.FULL,
       organization: '',
       repository: '',
       sourceControl: '',
-      descriptorType: 'CWL',
+      descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
       defaultTestParameterFilePath: ''
     };
 
-    const b: Workflow = {
-      author: 'B',
-      gitUrl: 'https://giturl',
-      mode: 'FULL',
-      organization: '',
-      repository: '',
-      sourceControl: '',
-      descriptorType: 'CWL',
-      workflow_path: '',
-      defaultTestParameterFilePath: ''
-    };
+    const b: Workflow = { ...a, author: 'B' };
 
-    const c: Workflow = {
-      author: null,
-      gitUrl: 'https://giturl',
-      mode: 'FULL',
-      organization: '',
-      repository: '',
-      sourceControl: '',
-      descriptorType: 'CWL',
-      workflow_path: '',
-      defaultTestParameterFilePath: ''
-    };
+    const c: Workflow = { ...a, author: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
 
-    expect(SearchService.compareAttributes(a, b, 'author', 'asc')).toEqual(-1);
-    expect(SearchService.compareAttributes(a, b, 'author', 'desc')).toEqual(1);
-    expect(SearchService.compareAttributes(b, c, 'author', 'asc')).toEqual(-1);
-    expect(SearchService.compareAttributes(b, c, 'author', 'desc')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'author', 'asc')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'author', 'desc')).toEqual(1);
+    expect(searchService.compareAttributes(b, c, 'author', 'asc')).toEqual(-1);
+    expect(searchService.compareAttributes(b, c, 'author', 'desc')).toEqual(-1);
+    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc')).toEqual(0);
   }));
 });

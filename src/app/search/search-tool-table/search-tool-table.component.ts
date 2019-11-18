@@ -37,7 +37,7 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
     });
     this.dataSource.sortData = (data: DockstoreTool[], sort: MatSort) => {
       return data.slice().sort((a, b) => {
-        return SearchService.compareAttributes(a, b, sort.active, sort.direction);
+        return this.searchService.compareAttributes(a, b, sort.active, sort.direction);
       });
     };
   }
