@@ -33,7 +33,6 @@ export abstract class SearchEntryTable extends Base implements OnInit {
 
   public readonly displayedColumns = ['name', 'verified', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
   abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
-
   abstract privateNgOnInit(): void;
 
   constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
