@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
-import { AdvancedSearchService } from '../advancedsearch/advanced-search.service';
+import { AdvancedSearchService } from '../advancedsearch/state/advanced-search.service';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 

@@ -15,15 +15,16 @@
  */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
+import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.query';
+import { AdvancedSearchService } from './advancedsearch/state/advanced-search.service';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
@@ -118,7 +119,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     public searchService: SearchService,
     private searchQuery: SearchQuery,
     private advancedSearchService: AdvancedSearchService,
-    private activatedRoute: ActivatedRoute
+    private advancedSearchQuery: AdvancedSearchQuery,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
@@ -139,7 +142,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
+    this.this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
         this.searchService.toSaveSearch$.next(false);
@@ -166,19 +169,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     };
     this.parseParams();
 
-    this.aNDSplitFilterText$ = this.advancedSearchService.advancedSearch$.pipe(
-      map((advancedSearchObject: AdvancedSearchObject) => this.searchService.joinComma(advancedSearchObject.ANDSplitFilter))
-    );
-    this.aNDNoSplitFilterText$ = this.advancedSearchService.advancedSearch$.pipe(
-      map((advancedSearchObject: AdvancedSearchObject) => this.searchService.joinComma(advancedSearchObject.ANDNoSplitFilter))
-    );
-    this.oRFilterText$ = this.advancedSearchService.advancedSearch$.pipe(
-      map((advancedSearchObject: AdvancedSearchObject) => this.searchService.joinComma(advancedSearchObject.ORFilter))
-    );
-    this.nOTFilterText$ = this.advancedSearchService.advancedSearch$.pipe(
-      map((advancedSearchObject: AdvancedSearchObject) => this.searchService.joinComma(advancedSearchObject.NOTFilter))
-    );
-    this.advancedSearchService.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
+    this.aNDSplitFilterText$ = this.advancedSearchQuery.aNDSplitFilterText$;
+    this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
+    this.oRFilterText$ = this.advancedSearchQuery.oRFilterText$;
+    this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
+    this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
       // Upon init, the user did not want to do an advanced search, but this triggers anyways.  Using toAdvanceSearch to stop it.
       if (advancedSearch.toAdvanceSearch) {
