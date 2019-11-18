@@ -124,7 +124,13 @@
             >
           </mat-chip-list>
         </mat-form-field>
-        <button type="button" (click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
+        <button
+          type="button"
+          (click)="cancelLabelChanges()"
+          class="btn btn-link"
+          *ngIf="labelsEditMode && !isWorkflowPublic"
+          [disabled]="labelFormControl.hasError('pattern')"
+        >
           <mat-icon>cancel</mat-icon>Cancel
         </button>
         <button type="button" (click)="submitWorkflowEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
