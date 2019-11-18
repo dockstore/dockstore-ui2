@@ -63,7 +63,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   protected selected = new FormControl(0);
-  labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z]*(,[a-zA-Z]*)*$')]);
+  labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   constructor(
     private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
