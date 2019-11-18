@@ -113,11 +113,13 @@
             </mat-chip>
             <input
               placeholder="New label..."
+              [formControl]="labelFormControl"
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="true"
               (matChipInputTokenEnd)="addToLabels($event)"
             />
+            <mat-error *ngIf="labelFormControl.hasError('pattern')">Must contain only alphabets and be comma seperated</mat-error>
           </mat-chip-list>
         </mat-form-field>
         <button type="button" (click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
