@@ -351,6 +351,17 @@ export class SearchService {
     return filters;
   }
 
+  updateFiltersFromParameter(category: string, categoryValue: string, filters: Map<string, Set<string>>): Map<string, Set<string>> {
+    if (typeof categoryValue === 'number') {
+      categoryValue = String(categoryValue);
+    }
+    if (!filters.has(category)) {
+      filters.set(category, new Set<string>());
+    }
+    filters.get(category).add(categoryValue);
+    return filters;
+  }
+
   sortCategoryValue(valueMap: any, sortMode: boolean, orderMode: boolean): any {
     let orderedArray = <any>[];
     valueMap.forEach((value, key) => {

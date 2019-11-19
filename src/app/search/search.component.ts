@@ -15,7 +15,7 @@
  */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -89,6 +89,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
+   * This is temporary and UI only. Modifying this should immediately cause a route change which changes everything
    * @type {Map<string, Set<string>>}
    */
   public filters: Map<string, Set<string>> = new Map<string, Set<string>>();
@@ -120,8 +121,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private searchQuery: SearchQuery,
     private advancedSearchService: AdvancedSearchService,
     private advancedSearchQuery: AdvancedSearchQuery,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
+    private activatedRoute: ActivatedRoute
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
@@ -142,6 +142,17 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.advancedSearchObject = {
+      ANDSplitFilter: '',
+      ANDNoSplitFilter: '',
+      ORFilter: '',
+      NOTFilter: '',
+      searchMode: 'files',
+      toAdvanceSearch: false
+    };
+    this.activatedRoute.queryParams.subscribe(thing => {
+      this.parseParams();
+    });
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
@@ -159,15 +170,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.onKey();
       });
     this.hits = [];
-    this.advancedSearchObject = {
-      ANDSplitFilter: '',
-      ANDNoSplitFilter: '',
-      ORFilter: '',
-      NOTFilter: '',
-      searchMode: 'files',
-      toAdvanceSearch: false
-    };
-    this.parseParams();
 
     this.aNDSplitFilterText$ = this.advancedSearchQuery.aNDSplitFilterText$;
     this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
@@ -175,10 +177,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
     this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
-      // Upon init, the user did not want to do an advanced search, but this triggers anyways.  Using toAdvanceSearch to stop it.
-      if (advancedSearch.toAdvanceSearch) {
-        this.updateQuery();
-      }
     });
   }
 
@@ -191,12 +189,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!paramMap) {
       return;
     }
+    let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
     paramMap.keys.forEach(key => {
       const value = paramMap.getAll(key);
       if (this.friendlyNames.get(key)) {
         value.forEach(categoryValue => {
           categoryValue = decodeURIComponent(categoryValue);
-          this.filters = this.searchService.handleFilters(key, categoryValue, this.filters);
+          newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
       } else if (key === 'search') {
         this.searchTerm = true;
@@ -211,7 +210,9 @@ export class SearchComponent implements OnInit, OnDestroy {
           if (value[0] !== 'files' && value[0] !== 'description') {
             this.advancedSearchObject[key] = 'files';
           } else {
-            this.advancedSearchObject[key] = value[0];
+            if (this.advancedSearchObject) {
+              this.advancedSearchObject = { ...this.advancedSearchObject, searchMode: value[0] };
+            }
           }
         }
       }
@@ -222,6 +223,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.advancedSearchObject.toAdvanceSearch = true;
       this.advancedSearchService.setAdvancedSearch(this.advancedSearchObject);
     }
+    this.filters = newFilters;
+    this.searchService.setFilterKeys(this.filters);
+    this.updateQuery();
   }
 
   /**===============================================
@@ -283,6 +287,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @memberof SearchComponent
    */
   setupAllBuckets(hits: any) {
+    this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
     Object.entries(aggregations).forEach(([key, value]) => {
       if (value['buckets'] != null) {
@@ -345,7 +350,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // Called when any change to the search is made to update the results
   updateQuery() {
-    this.updatePermalink();
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -487,7 +491,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
     }
-    this.updateQuery();
+    this.updatePermalink();
   }
 
   clickExpand(key: string) {
