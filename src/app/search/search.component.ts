@@ -177,6 +177,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
     this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
       this.advancedSearchObject = advancedSearch;
+      if (this.advancedSearchObject.toAdvanceSearch) {
+        this.updatePermalink();
+      }
     });
   }
 
@@ -204,11 +207,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
         if (key.includes('Filter')) {
           useAdvSearch = true;
-          this.advancedSearchObject[key] = value[0];
+          this.advancedSearchObject = { ...this.advancedSearchObject, [key]: value[0] };
         } else if (key === 'searchMode') {
           useAdvSearch = true;
           if (value[0] !== 'files' && value[0] !== 'description') {
-            this.advancedSearchObject[key] = 'files';
+            this.advancedSearchObject = { ...this.advancedSearchObject, [key]: 'files' };
           } else {
             if (this.advancedSearchObject) {
               this.advancedSearchObject = { ...this.advancedSearchObject, searchMode: value[0] };
@@ -418,16 +421,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ==============================================
    */
   resetFilters() {
-    this.values = '';
-    this.searchTerm = false;
-    this.filters.clear();
-    this.checkboxMap.clear();
-    this.sortModeMap.clear();
-    this.setFilter = false;
-    this.hits = [];
-    this.searchService.setSearchInfo(null);
-    this.resetEntryOrder();
-    this.advancedSearchService.clear();
+    this.searchService.reset();
   }
 
   resetEntryOrder() {

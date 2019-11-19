@@ -269,6 +269,10 @@ export class SearchService {
     this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
   }
 
+  reset() {
+    this.router.navigateByUrl('search');
+  }
+
   sortByAlphabet(orderedArray, orderMode): any {
     orderedArray = orderedArray.sort((a, b) => {
       if (orderMode) {
@@ -331,7 +335,7 @@ export class SearchService {
    * @param categoryValue
    * @param filter
    */
-  handleFilters(category: string, categoryValue: string, filters: any) {
+  handleFilters(category: string, categoryValue: string | number, filters: Map<string, Set<string>>) {
     if (typeof categoryValue === 'number') {
       categoryValue = String(categoryValue);
     }
@@ -480,7 +484,7 @@ export class SearchService {
   /**
    * Returns true if at least one filter is set
    */
-  hasFilters(filters: any) {
+  hasFilters(filters: Map<string, Set<string>>) {
     let count = 0;
     filters.forEach(filter => {
       count += filter.size;
@@ -491,7 +495,7 @@ export class SearchService {
   /**
    * Returns true if any search filters have been applied, false otherwise
    */
-  hasNarrowedSearch(advancedSearchObject: any, searchTerm: boolean, hits: any, filters: any) {
+  hasNarrowedSearch(advancedSearchObject: any, searchTerm: boolean, hits: any, filters: Map<string, Set<string>>) {
     return this.hasSearchText(advancedSearchObject, searchTerm, hits) || this.hasFilters(filters);
   }
 
