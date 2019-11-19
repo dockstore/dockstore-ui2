@@ -119,7 +119,7 @@
         Reset Filters
       </button>
     </div>
-    <div class="col-md-9 containers-rsb">
+    <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
         <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
           Sorry, no matches found for <strong>{{ searchService.joinComma(values) }}</strong
@@ -169,15 +169,7 @@
               <strong>Search: </strong> contains one of <strong>"{{ searchService.joinComma(values) }}"</strong>
             </span>
 
-            <span
-              *ngIf="
-                advancedSearchObject?.toAdvanceSearch &&
-                (advancedSearchObject?.ANDSplitFilter ||
-                  advancedSearchObject?.ANDNoSplitFilter ||
-                  advancedSearchObject?.ORFilter ||
-                  advancedSearchObject?.NOTFilter)
-              "
-            >
+            <span *ngIf="hasAdvancedSearchText$ | async">
               <strong>Search: </strong>
               <span *ngIf="advancedSearchObject.ANDSplitFilter"
                 >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong

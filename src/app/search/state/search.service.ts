@@ -16,6 +16,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
 import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -452,7 +453,7 @@ export class SearchService {
    * Returns true if either basic search is set and has results, or advanced search is set
    * (though not just the searchMode, which is set by default)
    */
-  hasSearchText(advancedSearchObject: any, searchTerm: boolean, hits: any) {
+  hasSearchText(advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, hits: any) {
     let advSearchSet;
     if (!advancedSearchObject) {
       advSearchSet = false;
