@@ -22,8 +22,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { of } from 'rxjs';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { ProviderService } from '../shared/provider.service';
-import { AdvancedSearchStubService, ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
+import { ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
@@ -62,7 +61,6 @@ describe('SearchComponent', () => {
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService },
         { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select']) }
       ]
     }).compileComponents();

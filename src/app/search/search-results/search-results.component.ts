@@ -16,7 +16,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { Observable } from 'rxjs';
-
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';

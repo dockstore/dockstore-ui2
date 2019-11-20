@@ -159,24 +159,18 @@ export class QueryBuilderService {
   appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
     if (values.toString().length > 0) {
-      if (advancedSearchObject && !advancedSearchObject.toAdvanceSearch) {
-        advancedSearchObject.ORFilter = values;
-        this.searchEverything(body, values);
-        advancedSearchObject.ORFilter = '';
-      }
+      this.searchEverything(body, values);
     } else {
       body = body.query('match_all', {});
     }
     if (advancedSearchObject) {
-      if (advancedSearchObject.toAdvanceSearch) {
-        if (advancedSearchObject.searchMode === 'description') {
-          this.advancedSearchDescription(body, advancedSearchObject);
-        } else if (advancedSearchObject.searchMode === 'files') {
-          this.advancedSearchFiles(body, advancedSearchObject);
-        }
-        values = '';
-        searchTerm = false;
+      if (advancedSearchObject.searchMode === 'description') {
+        this.advancedSearchDescription(body, advancedSearchObject);
+      } else if (advancedSearchObject.searchMode === 'files') {
+        this.advancedSearchFiles(body, advancedSearchObject);
       }
+      values = '';
+      searchTerm = false;
     }
     return body;
   }

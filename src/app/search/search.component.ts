@@ -24,7 +24,6 @@ import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
 import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.query';
-import { AdvancedSearchService } from './advancedsearch/state/advanced-search.service';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
@@ -102,7 +101,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public friendlyNames: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
 
-  private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode', 'toAdvanceSearch'];
+  private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
 
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
@@ -120,7 +119,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     private queryBuilderService: QueryBuilderService,
     public searchService: SearchService,
     private searchQuery: SearchQuery,
-    private advancedSearchService: AdvancedSearchService,
     private advancedSearchQuery: AdvancedSearchQuery,
     private activatedRoute: ActivatedRoute
   ) {
@@ -162,9 +160,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       )
       .subscribe((value: string) => {
         this.values = value;
-        if (value) {
-          this.advancedSearchService.clear();
-        }
         this.onKey();
       });
     this.hits = [];
@@ -174,10 +169,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.oRFilterText$ = this.advancedSearchQuery.oRFilterText$;
     this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
     this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
-      // The only reason it's here is because of the template
-      if (advancedSearch.toAdvanceSearch) {
-        this.updatePermalink();
-      }
+      this.updatePermalink();
     });
   }
 
@@ -194,8 +186,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       ANDNoSplitFilter: '',
       ORFilter: '',
       NOTFilter: '',
-      searchMode: 'files',
-      toAdvanceSearch: false
+      searchMode: 'files'
     };
     let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
     paramMap.keys.forEach(key => {
@@ -207,25 +198,22 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
       } else if (key === 'search') {
         this.searchTerm = true;
-        newAdvancedSearchObject.toAdvanceSearch = false;
         this.searchService.setSearchText(value[0]);
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
         if (key.includes('Filter')) {
-          newAdvancedSearchObject.toAdvanceSearch = true;
           this.searchTerm = false;
           newAdvancedSearchObject[key] = value[0];
         } else if (key === 'searchMode') {
           this.searchTerm = false;
-          newAdvancedSearchObject.toAdvanceSearch = true;
           // If it's description, change to description. Otherwise, leave it as the 'files' default
           if (value[0] === 'description') {
             newAdvancedSearchObject.searchMode = 'description';
           }
         }
+        this.searchService.setAdvancedSearch(newAdvancedSearchObject);
       }
     });
 
-    this.advancedSearchService.setAdvancedSearch(newAdvancedSearchObject);
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
     this.updateQuery();
@@ -337,10 +325,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // Updates the permalink to reflect changes to search
   updatePermalink() {
-    const advancedSearchObject: AdvancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const values = this.searchQuery.getValue().searchText;
     const searchInfo = {
       filter: this.filters,
-      searchValues: this.values,
+      searchValues: values,
       advancedSearchObject: advancedSearchObject,
       searchTerm: this.searchTerm
     };
@@ -470,7 +459,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!this.values || 0 === this.values.length) {
       this.searchTerm = false;
     }
-    this.updateQuery();
+    this.updatePermalink();
   }
 
   searchSuggestTerm() {

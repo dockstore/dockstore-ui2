@@ -20,5 +20,4 @@ export class AdvancedSearchObject {
   ORFilter: string;
   NOTFilter: string;
   searchMode: string;
-  toAdvanceSearch: boolean;
 }

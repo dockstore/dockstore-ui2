@@ -16,6 +16,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { transaction } from '@datorama/akita';
 import { AdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
 import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
@@ -25,7 +26,7 @@ import { SubBucket } from '../../shared/models/SubBucket';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
-import { SearchStore } from './search.store';
+import { initialAdvancedSearchObject, SearchStore } from './search.store';
 
 export interface Hit {
   _index: string;
@@ -67,7 +68,6 @@ export class SearchService {
    * @memberof SearchService
    */
   public exclusiveFilters = ['verified', 'private_access', '_type', 'has_checker'];
-
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
@@ -96,6 +96,7 @@ export class SearchService {
     });
   }
 
+  @transaction()
   setSearchText(text: string) {
     this.searchStore.update(state => {
       return {
@@ -103,6 +104,9 @@ export class SearchService {
         searchText: text
       };
     });
+    if (text) {
+      this.clear();
+    }
   }
 
   searchSuggestTerm() {
@@ -239,7 +243,7 @@ export class SearchService {
   }
 
   // Given a search info object, will create the permalink for the current search
-  createPermalinks(searchInfo) {
+  createPermalinks(searchInfo): string[] {
     // For local testing, use LOCAL_URI, else use HOSTNAME
     const url = `${Dockstore.HOSTNAME}/search`;
     let httpParams = new HttpParams();
@@ -249,8 +253,7 @@ export class SearchService {
         httpParams = httpParams.append(key, subBucket);
       });
     });
-
-    if (searchInfo.searchTerm && (!searchInfo.advancedSearchObject || !searchInfo.advancedSearchObject.toAdvanceSearch)) {
+    if (searchInfo.searchValues) {
       httpParams = httpParams.append('search', searchInfo.searchValues);
     } else {
       const advSearchKeys = Object.keys(searchInfo.advancedSearchObject);
@@ -459,7 +462,7 @@ export class SearchService {
       advSearchSet = false;
     } else {
       advSearchSet =
-        advancedSearchObject.toAdvanceSearch &&
+        advancedSearchObject &&
         (advancedSearchObject.ANDSplitFilter ||
           advancedSearchObject.ANDNoSplitFilter ||
           advancedSearchObject.ORFilter ||
@@ -505,5 +508,37 @@ export class SearchService {
       .trim()
       .split(' ')
       .join(', ');
+  }
+
+  setAdvancedSearch(advancedSearch: AdvancedSearchObject): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        advancedSearch: advancedSearch,
+        searchText: ''
+      };
+    });
+  }
+
+  setShowModal(showModal: boolean): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        showModal: showModal
+      };
+    });
+  }
+
+  goToCleanSearch() {
+    this.router.navigateByUrl('search');
+  }
+
+  clear(): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        advancedSearch: initialAdvancedSearchObject
+      };
+    });
   }
 }

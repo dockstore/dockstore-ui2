@@ -18,9 +18,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
+import { SearchService } from '../state/search.service';
 import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
 import { AdvancedSearchQuery } from './state/advanced-search.query';
-import { AdvancedSearchService } from './state/advanced-search.service';
 
 @Component({
   selector: 'app-advancedsearch',
@@ -34,7 +34,7 @@ export class AdvancedSearchComponent extends Base implements OnInit {
   ORFilter: string;
   isModalShown$: Observable<boolean>;
   searchMode = 'files';
-  constructor(private advancedSearchService: AdvancedSearchService, private advancedSearchQuery: AdvancedSearchQuery) {
+  constructor(private searchService: SearchService, private advancedSearchQuery: AdvancedSearchQuery) {
     super();
   }
 
@@ -50,7 +50,7 @@ export class AdvancedSearchComponent extends Base implements OnInit {
   }
 
   public onHidden(): void {
-    this.advancedSearchService.setShowModal(false);
+    this.searchService.setShowModal(false);
   }
 
   advancedSearch(): void {
@@ -59,18 +59,17 @@ export class AdvancedSearchComponent extends Base implements OnInit {
       ANDSplitFilter: this.ANDSplitFilter,
       ORFilter: this.ORFilter,
       NOTFilter: this.NOTFilter,
-      searchMode: this.searchMode,
-      toAdvanceSearch: true
+      searchMode: this.searchMode
     };
-    this.advancedSearchService.setAdvancedSearch(advancedSearch);
+    this.searchService.setAdvancedSearch(advancedSearch);
     this.onHidden();
   }
 
   clearAll(): void {
-    this.advancedSearchService.clear();
+    this.searchService.clear();
     // No easy and correct way to get searchInfo for `this.searchService.createPermalinks(searchInfo)` without major changes
     // because it's not in the state
-    this.advancedSearchService.goToCleanSearch();
+    this.searchService.goToCleanSearch();
     this.onHidden();
   }
 

@@ -466,11 +466,6 @@ export class TokensStubService {
   }
 }
 
-export class AdvancedSearchStubService {
-  showModal$ = observableOf(true);
-  advancedSearch$ = observableOf({});
-}
-
 export class StarringStubService {
   getStarring(id: any, type: any): Observable<Array<User>> {
     return observableOf([]);

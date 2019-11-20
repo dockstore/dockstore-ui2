@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Query } from '@datorama/akita';
-import { SearchStore, SearchState } from './search.store';
-import { Workflow, DockstoreTool } from '../../shared/swagger';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { Query } from '@datorama/akita';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { SearchState, SearchStore } from './search.store';
 
 @Injectable({ providedIn: 'root' })
 export class SearchQuery extends Query<SearchState> {
@@ -21,7 +21,7 @@ export class SearchQuery extends Query<SearchState> {
       elasticSearchResults ? elasticSearchResults.map(elasticSearchResult => elasticSearchResult._source) : null
     )
   );
-  public activeToolTab$: Observable<boolean> = combineLatest(this.tools$, this.workflows$).pipe(
+  public activeToolTab$: Observable<boolean> = combineLatest([this.tools$, this.workflows$]).pipe(
     map(([tools, workflows]) => this.setTabActive(tools, workflows))
   );
   public noToolHits$: Observable<boolean> = this.tools$.pipe(map((tools: Array<DockstoreTool>) => this.haveNoHits(tools)));
@@ -34,6 +34,15 @@ export class SearchQuery extends Query<SearchState> {
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map(terms => terms.length > 0));
   public suggestTerm$: Observable<string> = this.select(state => state.suggestTerm);
   public pageSize$: Observable<number> = this.select(state => state.pageSize);
+  public noBasicSearchHits$: Observable<boolean> = combineLatest([this.noToolHits$, this.noWorkflowHits$, this.searchText$]).pipe(
+    map(([noToolHits, noWorkflowHits, searchText]) => {
+      if (!searchText) {
+        return false;
+      } else {
+        return noToolHits && noWorkflowHits;
+      }
+    })
+  );
 
   constructor(protected store: SearchStore, private route: ActivatedRoute) {
     super(store);
