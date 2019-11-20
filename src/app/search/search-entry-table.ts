@@ -48,7 +48,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
       this.dataSource.paginator.pageSize = pageSize;
       this.privateNgOnInit();
     });
-    this.dataSource.sortData = (data: DockstoreTool[], sort: MatSort) => {
+    this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
       return data.slice().sort((a, b) => {
         return this.searchService.compareAttributes(a, b, sort.active, sort.direction);
       });

@@ -91,15 +91,15 @@ export class SearchService {
     const sortFactor = direction === 'asc' ? 1 : -1;
 
     // regardless of sort direction, null or empty values go at the end
-    if (!aVal) {
+    if (!aVal || aVal === '') {
       return 1;
     }
-    if (!bVal) {
+    if (!bVal || bVal === '') {
       return -1;
     }
 
     // ignore case when sorting by a string and handle characters with accents, etc
-    if (aVal instanceof String && bVal instanceof String) {
+    if (typeof aVal === 'string' && typeof bVal === 'string') {
       aVal = aVal.toLowerCase();
       bVal = bVal.toLowerCase();
       return aVal.localeCompare(bVal) * sortFactor;
@@ -304,10 +304,16 @@ export class SearchService {
 
   sortByAlphabet(orderedArray, orderMode): any {
     orderedArray = orderedArray.sort((a, b) => {
+      if (!a || a === '') {
+        return 1;
+      }
+      if (!b || b === '') {
+        return -1;
+      }
       if (orderMode) {
-        return a.key > b.key ? 1 : -1;
+        return a.key.toLowerCase() > b.key.toLowerCase() ? 1 : -1;
       } else {
-        return a.key < b.key ? 1 : -1;
+        return a.key.toLowerCase() < b.key.toLowerCase() ? 1 : -1;
       }
     });
     return orderedArray;

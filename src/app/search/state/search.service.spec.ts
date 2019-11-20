@@ -118,6 +118,7 @@ describe('SearchService', () => {
     };
 
     const b: Workflow = { ...a, author: 'B' };
+    console.log(b);
 
     const c: Workflow = { ...a, author: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
 
@@ -126,6 +127,6 @@ describe('SearchService', () => {
     expect(searchService.compareAttributes(b, c, 'author', 'asc')).toEqual(-1);
     expect(searchService.compareAttributes(b, c, 'author', 'desc')).toEqual(-1);
     expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc')).toEqual(0);
+    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc')).toEqual(-0);
   }));
 });
