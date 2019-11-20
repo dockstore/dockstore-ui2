@@ -24,6 +24,7 @@ import { ProviderStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
 import { Workflow } from '../../shared/swagger';
+import { User } from '../../shared/openapi';
 
 describe('SearchService', () => {
   let searchStore: SearchStore;
@@ -117,8 +118,7 @@ describe('SearchService', () => {
       defaultTestParameterFilePath: ''
     };
 
-    const b: Workflow = { ...a, author: 'B' };
-    console.log(b);
+    const b: Workflow = { ...a, author: 'B', starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }] };
 
     const c: Workflow = { ...a, author: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
 
@@ -128,5 +128,6 @@ describe('SearchService', () => {
     expect(searchService.compareAttributes(b, c, 'author', 'desc')).toEqual(-1);
     expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc')).toEqual(-1);
     expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc')).toEqual(-0);
+    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc')).toEqual(-1);
   }));
 });
