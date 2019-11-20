@@ -143,9 +143,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.advancedSearchObject$ = this.advancedSearchQuery.advancedSearch$;
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
-    this.activatedRoute.queryParams.subscribe(thing => {
-      this.parseParams();
-    });
+    this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
@@ -200,15 +198,16 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchTerm = true;
         this.searchService.setSearchText(value[0]);
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
+        this.searchTerm = false;
         if (key.includes('Filter')) {
-          this.searchTerm = false;
           newAdvancedSearchObject[key] = value[0];
         } else if (key === 'searchMode') {
-          this.searchTerm = false;
           // If it's description, change to description. Otherwise, leave it as the 'files' default
           if (value[0] === 'description') {
             newAdvancedSearchObject.searchMode = 'description';
           }
+        } else {
+          console.error('Unexpected query parameter that does not match the known advanced search query parameters');
         }
         this.searchService.setAdvancedSearch(newAdvancedSearchObject);
       }
