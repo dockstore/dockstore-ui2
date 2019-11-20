@@ -25,7 +25,7 @@ export function createInitialState(): AdvancedSearchState {
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'advanced-search' })
+@StoreConfig({ name: 'advanced-search', resettable: true })
 export class AdvancedSearchStore extends Store<AdvancedSearchState> {
   constructor() {
     super(createInitialState());

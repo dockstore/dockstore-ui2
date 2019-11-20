@@ -156,7 +156,8 @@ export class QueryBuilderService {
    * @returns {*} the new body builder object
    * @memberof SearchComponent
    */
-  appendQuery(body: any, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
+  appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
+    const advancedSearchObject = { ...oldAdvancedSearchObject };
     if (values.toString().length > 0) {
       if (advancedSearchObject && !advancedSearchObject.toAdvanceSearch) {
         advancedSearchObject.ORFilter = values;

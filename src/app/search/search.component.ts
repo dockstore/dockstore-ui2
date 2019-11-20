@@ -162,6 +162,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       )
       .subscribe((value: string) => {
         this.values = value;
+        if (value) {
+          this.advancedSearchService.clear();
+        }
         this.onKey();
       });
     this.hits = [];
@@ -463,7 +466,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.setAutoCompleteTerms(hits);
       })
       .catch(error => console.log(error));
-    this.advancedSearchService.clear();
     this.searchTerm = true;
     if (!this.values || 0 === this.values.length) {
       this.searchTerm = false;

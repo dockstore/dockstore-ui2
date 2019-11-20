@@ -19,8 +19,8 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
-import { AdvancedSearchService } from './state/advanced-search.service';
 import { AdvancedSearchQuery } from './state/advanced-search.query';
+import { AdvancedSearchService } from './state/advanced-search.service';
 
 @Component({
   selector: 'app-advancedsearch',
@@ -67,19 +67,14 @@ export class AdvancedSearchComponent extends Base implements OnInit {
   }
 
   clearAll(): void {
-    const advancedSearch: AdvancedSearchObject = {
-      ANDNoSplitFilter: '',
-      ANDSplitFilter: '',
-      ORFilter: '',
-      NOTFilter: '',
-      searchMode: 'files',
-      toAdvanceSearch: false
-    };
-    this.advancedSearchService.setAdvancedSearch(advancedSearch);
+    this.advancedSearchService.clear();
+    // No easy and correct way to get searchInfo for `this.searchService.createPermalinks(searchInfo)` without major changes
+    // because it's not in the state
+    this.advancedSearchService.goToCleanSearch();
     this.onHidden();
   }
 
-  switchSearchMode(searchMode): void {
+  switchSearchMode(searchMode: string): void {
     this.searchMode = searchMode;
   }
 }
