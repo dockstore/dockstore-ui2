@@ -90,12 +90,22 @@ export class SearchService {
     let bVal = b[attribute];
     const sortFactor = direction === 'asc' ? 1 : -1;
 
-    // regardless of sort direction, null or empty values go at the end
-    if (!aVal || aVal === '') {
-      return 1;
-    }
-    if (!bVal || bVal === '') {
-      return -1;
+    // if sorting the stars column, consider 'undefined' stars to be 0
+    if (attribute === 'starredUsers') {
+      if (!aVal) {
+        aVal = [];
+      }
+      if (!bVal) {
+        bVal = [];
+      }
+    } else {
+      // otherwise, regardless of sort direction, null or empty values go at the end
+      if (!aVal) {
+        return 1;
+      }
+      if (!bVal) {
+        return -1;
+      }
     }
 
     // ignore case when sorting by a string and handle characters with accents, etc
@@ -304,10 +314,10 @@ export class SearchService {
 
   sortByAlphabet(orderedArray, orderMode): any {
     orderedArray = orderedArray.sort((a, b) => {
-      if (!a || a === '') {
+      if (!a.key) {
         return 1;
       }
-      if (!b || b === '') {
+      if (!b.key) {
         return -1;
       }
       if (orderMode) {
