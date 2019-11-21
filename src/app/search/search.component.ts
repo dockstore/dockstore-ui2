@@ -161,6 +161,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
     this.oRFilterText$ = this.advancedSearchQuery.oRFilterText$;
     this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
+    this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.updatePermalink();
+    });
   }
 
   /**
@@ -201,7 +204,10 @@ export class SearchComponent implements OnInit, OnDestroy {
         } else {
           console.error('Unexpected query parameter that does not match the known advanced search query parameters');
         }
-        this.searchService.setAdvancedSearch(newAdvancedSearchObject);
+        const currentAdvancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+        if (JSON.stringify(currentAdvancedSearchObject) !== JSON.stringify(newAdvancedSearchObject)) {
+          this.searchService.setAdvancedSearch(newAdvancedSearchObject);
+        }
       }
     });
 
