@@ -99,3 +99,41 @@ markdown pre code {
 .starring-button {
   margin-top: 20px;
 }
+
+.feat-content-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.feat-content-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  text-align: center;
+  justify-content: center;
+  background-color: #eef0f6;
+  padding: 10px;
+  margin: 10px;
+  flex: 1;
+}
+
+a.cardClick {
+  display: block;
+  color: #313131;
+  height: 100%;
+  width: 100%;
+}
+
+a.cardClick:hover {
+  text-decoration: none;
+}
+
+h3.feat-content-title {
+  color: #487980;
+}
+
+@media all and (max-width: 500px) {
+  .feat-content-container {
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}

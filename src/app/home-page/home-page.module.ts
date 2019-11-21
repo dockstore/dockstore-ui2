@@ -14,6 +14,8 @@ import { RequestsComponent } from './widget/requests/requests.component';
 import { EntriesComponent } from './widget/entries/entries.component';
 import { FormsModule } from '@angular/forms';
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
+import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -25,9 +27,19 @@ import { OrganizationsComponent } from './widget/organizations/organizations.com
     ListWorkflowsModule,
     ListContainersModule,
     TabsModule,
-    FormsModule
+    FormsModule,
+    TabsModule,
+    HttpClientModule
   ],
-  declarations: [HomePageComponent, HomeComponent, HomeLoggedInComponent, RequestsComponent, EntriesComponent, OrganizationsComponent],
+  declarations: [
+    HomePageComponent,
+    HomeComponent,
+    HomeLoggedInComponent,
+    RequestsComponent,
+    EntriesComponent,
+    OrganizationsComponent,
+    FeaturedContentComponent
+  ],
   entryComponents: [],
   exports: [NgxJsonLdModule]
 })
