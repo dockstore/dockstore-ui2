@@ -193,8 +193,9 @@ export class SearchService {
       }
     })
       .then(hits => {
-        if (hits['suggest']['do_you_mean'][0].options.length > 0) {
-          this.setSuggestTerm(hits['suggest']['do_you_mean'][0].options[0].text);
+        const suggestions: Array<any> = hits['suggest']['do_you_mean'];
+        if (suggestions.length > 0) {
+          this.setSuggestTerm(suggestions[0].text);
         } else {
           this.setSuggestTerm('');
         }

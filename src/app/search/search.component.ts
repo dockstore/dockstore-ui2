@@ -105,12 +105,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
-  /**
-   * The current text search
-   * @type {string}
-   */
-  public values = '';
-
+  public values$: Observable<string>;
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -143,6 +138,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.advancedSearchObject$ = this.advancedSearchQuery.advancedSearch$;
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
+    this.values$ = this.searchQuery.searchText$;
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
@@ -156,9 +152,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe((value: string) => {
-        this.values = value;
-        this.onKey();
+      .subscribe((searchText: string) => {
+        this.onKey(searchText);
       });
     this.hits = [];
 
@@ -312,9 +307,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   // Saves the current search filter and passes to search service for sharing with advanced search
   saveSearchFilter() {
     const advancedSearchObject: AdvancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const values = this.searchQuery.getValue().searchText;
     const searchInfo = {
       filter: this.filters,
-      searchValues: this.values,
+      searchValues: values,
       checkbox: this.checkboxMap,
       sortModeMap: this.sortModeMap,
       advancedSearchObject: advancedSearchObject
@@ -346,10 +342,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    const advancedSearchObject: AdvancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
       this.query_size,
-      this.values,
+      values,
       advancedSearchObject,
       this.searchTerm,
       this.bucketStubs,
@@ -358,7 +355,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     );
     const tableQuery = this.queryBuilderService.getResultQuery(
       this.query_size,
-      this.values,
+      values,
       advancedSearchObject,
       this.searchTerm,
       this.filters
@@ -396,12 +393,13 @@ export class SearchComponent implements OnInit, OnDestroy {
       .then(hits => {
         this.hits = hits.hits.hits;
         const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+        const searchText = this.searchQuery.getValue().searchText;
         this.searchService.setHits(filteredHits[0], filteredHits[1]);
-        if (this.values.length > 0 && hits) {
+        if (searchText.length > 0 && hits) {
           this.searchTerm = true;
         }
         if (this.searchTerm && this.hits.length === 0) {
-          this.searchService.suggestSearchTerm(this.values);
+          this.searchService.suggestSearchTerm(searchText);
         }
       })
       .catch(error => console.log(error));
@@ -426,9 +424,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ==============================================
    */
 
-  onKey() {
+  onKey(searchText: string) {
     /*TODO: FOR DEMO USE, make this better later...*/
-    const pattern = this.values + '.*';
+    const pattern = searchText + '.*';
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
@@ -455,7 +453,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       })
       .catch(error => console.log(error));
     this.searchTerm = true;
-    if (!this.values || 0 === this.values.length) {
+    if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
     }
     this.updatePermalink();
