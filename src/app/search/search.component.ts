@@ -161,9 +161,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
     this.oRFilterText$ = this.advancedSearchQuery.oRFilterText$;
     this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
-    this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
-      this.updatePermalink();
-    });
   }
 
   /**
