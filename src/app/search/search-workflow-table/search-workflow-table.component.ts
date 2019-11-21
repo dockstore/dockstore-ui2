@@ -22,7 +22,6 @@ import { Workflow } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
-import { MatSort } from '@angular/material';
 
 /**
  * this component refers to search page not workflow listing search
