@@ -192,7 +192,8 @@ export class QueryBuilderService {
         .orFilter('bool', descriptionFilter => descriptionFilter.filter('match_phrase', 'description', searchString))
         .orFilter('bool', labelsFilter => labelsFilter.filter('match_phrase', 'labels', searchString))
         .orFilter('bool', authorFilter => authorFilter.filter('match_phrase', 'author', searchString))
-        .orFilter('bool', pathFilter => pathFilter.filter('match_phrase', 'path', searchString))
+        .orFilter('bool', pathFilter => pathFilter.filter('match_phrase', 'tool_path', searchString))
+        .orFilter('bool', pathFilter => pathFilter.filter('match_phrase', 'full_workflow_path', searchString))
     );
   }
 
