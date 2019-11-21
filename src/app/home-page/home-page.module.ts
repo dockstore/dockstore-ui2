@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
 import { HttpClientModule } from '@angular/common/http';
+import { RefreshAlertModule } from '../shared/alert/alert.module';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     TabsModule,
     FormsModule,
     TabsModule,
-    HttpClientModule
+    HttpClientModule,
+    RefreshAlertModule
   ],
   declarations: [
     HomePageComponent,

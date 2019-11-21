@@ -69,7 +69,7 @@ export class ConfigurationService {
     Dockstore.GITHUB_APP_INSTALLATION_URL = config.gitHubAppInstallationUrl;
 
     Dockstore.DOCUMENTATION_URL = config.documentationUrl;
-    // Dockstore.FEATURED_CONTENT_URL = config.feat
+    Dockstore.FEATURED_CONTENT_URL = config.featuredContentUrl;
   }
 
   /**
