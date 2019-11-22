@@ -152,6 +152,8 @@ export class SearchStubService {
     return true;
   }
 
+  setFilterKeys(filters: Map<string, Set<string>>) {}
+
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([

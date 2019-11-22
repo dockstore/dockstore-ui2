@@ -61,7 +61,7 @@ describe('SearchComponent', () => {
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select']) }
+        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) }
       ]
     }).compileComponents();
   }));
@@ -70,7 +70,21 @@ describe('SearchComponent', () => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
     searchQuery = TestBed.get(SearchQuery);
-    (searchQuery as any).searchText$ = of('');
+    searchQuery.searchText$ = of('');
+    searchQuery.getValue.and.returnValue({
+      shortUrl: null,
+      workflowhit: null,
+      toolhit: null,
+      showToolTagCloud: false,
+      showWorkflowTagCloud: false,
+      searchText: '',
+      filterKeys: [],
+      autocompleteTerms: [],
+      suggestTerm: '',
+      pageSize: 10,
+      advancedSearch: null,
+      showModal: false
+    });
     fixture.detectChanges();
   });
 
