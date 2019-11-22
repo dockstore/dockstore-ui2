@@ -27,6 +27,7 @@ export class SearchQuery extends Query<SearchState> {
   public noToolHits$: Observable<boolean> = this.tools$.pipe(map((tools: Array<DockstoreTool>) => this.haveNoHits(tools)));
   public noWorkflowHits$: Observable<boolean> = this.workflows$.pipe(map((workflows: Array<Workflow>) => this.haveNoHits(workflows)));
   public searchText$: Observable<string> = this.select(state => state.searchText);
+  public basicSearchText$: Observable<string> = this.searchText$.pipe(map(searchText => this.joinComma(searchText)));
   public showToolTagCloud$: Observable<boolean> = this.select(state => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select(state => state.showWorkflowTagCloud);
   public filterKeys$: Observable<Array<string>> = this.select(state => state.filterKeys);
@@ -74,5 +75,12 @@ export class SearchQuery extends Query<SearchState> {
 
   haveNoHits(object: Array<any>): boolean {
     return !object || object.length === 0;
+  }
+
+  joinComma(searchTerm: string): string {
+    return searchTerm
+      .trim()
+      .split(' ')
+      .join(', ');
   }
 }

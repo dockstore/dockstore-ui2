@@ -504,13 +504,6 @@ export class SearchService {
     return this.hasSearchText(advancedSearchObject, searchTerm, hits) || this.hasFilters(filters);
   }
 
-  joinComma(searchTerm: string): string {
-    return searchTerm
-      .trim()
-      .split(' ')
-      .join(', ');
-  }
-
   setAdvancedSearch(advancedSearch: AdvancedSearchObject): void {
     this.searchStore.update(state => {
       return {

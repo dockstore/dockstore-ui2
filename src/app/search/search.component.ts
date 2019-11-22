@@ -100,7 +100,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
-
+  public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
 
   public filterKeys$: Observable<Array<string>>;
@@ -139,6 +139,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.advancedSearchObject$ = this.advancedSearchQuery.advancedSearch$;
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
+    this.basicSearchText$ = this.searchQuery.basicSearchText$;
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
