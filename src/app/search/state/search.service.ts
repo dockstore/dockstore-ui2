@@ -321,9 +321,9 @@ export class SearchService {
         return -1;
       }
       if (orderMode) {
-        return a.key.toLowerCase() > b.key.toLowerCase() ? 1 : -1;
+        return a.key.toLowerCase().localeCompare(b.key.toLowerCase());
       } else {
-        return a.key.toLowerCase() < b.key.toLowerCase() ? 1 : -1;
+        return b.key.toLowerCase().localeCompare(a.key.toLowerCase());
       }
     });
     return orderedArray;
