@@ -464,11 +464,10 @@ export class SearchService {
       advSearchSet = false;
     } else {
       advSearchSet =
-        advancedSearchObject &&
-        (advancedSearchObject.ANDSplitFilter ||
-          advancedSearchObject.ANDNoSplitFilter ||
-          advancedSearchObject.ORFilter ||
-          advancedSearchObject.NOTFilter);
+        advancedSearchObject.ANDSplitFilter ||
+        advancedSearchObject.ANDNoSplitFilter ||
+        advancedSearchObject.ORFilter ||
+        advancedSearchObject.NOTFilter;
     }
     return this.hasResults(searchTerm, hits) || advSearchSet;
   }
