@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { DockstoreTool } from '../../shared/swagger';
@@ -28,12 +28,8 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
     super(dateService, searchQuery, searchService);
   }
 
-  privateNgOnInit(): void {
-    this.searchQuery.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entries: Array<DockstoreTool>) => {
-      if (entries) {
-        this.dataSource.data = entries;
-      }
-    });
+  privateNgOnInit(): Observable<Array<DockstoreTool>> {
+    return this.searchQuery.tools$;
   }
 
   getVerified(tool: DockstoreTool): boolean {

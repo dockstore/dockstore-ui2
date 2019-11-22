@@ -34,6 +34,7 @@ export class SearchQuery extends Query<SearchState> {
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map(terms => terms.length > 0));
   public suggestTerm$: Observable<string> = this.select(state => state.suggestTerm);
   public pageSize$: Observable<number> = this.select(state => state.pageSize);
+  public pageIndex$: Observable<number> = this.select(state => state.pageIndex);
   public noBasicSearchHits$: Observable<boolean> = combineLatest([this.noToolHits$, this.noWorkflowHits$, this.searchText$]).pipe(
     map(([noToolHits, noWorkflowHits, searchText]) => {
       if (!searchText) {

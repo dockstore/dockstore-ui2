@@ -28,6 +28,7 @@ export interface SearchState {
   autocompleteTerms: Array<string>;
   suggestTerm: string;
   pageSize: number;
+  pageIndex: number;
   advancedSearch: AdvancedSearchObject;
   showModal: boolean;
 }
@@ -53,7 +54,8 @@ export function createInitialState(): SearchState {
     suggestTerm: '',
     pageSize: 10,
     advancedSearch: initialAdvancedSearchObject,
-    showModal: false
+    showModal: false,
+    pageIndex: 0
   };
 }
 

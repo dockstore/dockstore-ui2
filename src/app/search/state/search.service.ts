@@ -87,11 +87,12 @@ export class SearchService {
     });
   }
 
-  setPageSize(pageSize: number) {
+  setPageSizeAndIndex(pageSize: number, pageIndex: number) {
     this.searchStore.update(state => {
       return {
         ...state,
-        pageSize: pageSize
+        pageSize: pageSize,
+        pageIndex: pageIndex
       };
     });
   }

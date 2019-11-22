@@ -82,6 +82,7 @@ describe('SearchComponent', () => {
       autocompleteTerms: [],
       suggestTerm: '',
       pageSize: 10,
+      pageIndex: 0,
       advancedSearch: null,
       showModal: false
     });

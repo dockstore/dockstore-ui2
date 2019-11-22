@@ -53,5 +53,9 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-  <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 50, 100]" (page)="updatePageSize($event)"></mat-paginator>
+  <mat-paginator
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="[10, 20, 50, 100]"
+    (page)="updatePageSizeAndIndex($event)"
+  ></mat-paginator>
 </div>
