@@ -122,6 +122,7 @@ export class SearchStubService {
   searchInfo$ = observableOf({});
   toSaveSearch$ = observableOf(false);
   values$ = observableOf('');
+  setSearchText(searchText: string) {}
   joinComma(searchTerm: string): string {
     return searchTerm
       .trim()

@@ -182,6 +182,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       searchMode: 'files'
     };
     let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
+    // URL is gospel, if it doesn't have a search term, then there's no search term
+    if (!paramMap.has('search')) {
+      this.searchService.setSearchText('');
+    }
     paramMap.keys.forEach(key => {
       const value = paramMap.getAll(key);
       if (this.friendlyNames.get(key)) {
