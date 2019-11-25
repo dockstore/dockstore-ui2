@@ -17,7 +17,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { transaction } from '@datorama/akita';
-import { AdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
+import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
 import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -26,7 +26,7 @@ import { SubBucket } from '../../shared/models/SubBucket';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
-import { initialAdvancedSearchObject, SearchStore } from './search.store';
+import { SearchStore } from './search.store';
 
 export interface Hit {
   _index: string;

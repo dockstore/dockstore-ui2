@@ -20,7 +20,7 @@ import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumeri
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../shared/constants';
-import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
+import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
 import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.query';
@@ -162,6 +162,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
     this.oRFilterText$ = this.advancedSearchQuery.oRFilterText$;
     this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
+    // The reason why we have this here is because the updatePermalink function isn't in a service...
+    // because the function modifies something that's in this component and not in the state.
+    // TODO:move it to the state
     this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.updatePermalink();
     });
@@ -175,13 +178,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!paramMap) {
       return;
     }
-    const newAdvancedSearchObject: AdvancedSearchObject = {
-      ANDSplitFilter: '',
-      ANDNoSplitFilter: '',
-      ORFilter: '',
-      NOTFilter: '',
-      searchMode: 'files'
-    };
+    const newAdvancedSearchObject: AdvancedSearchObject = initialAdvancedSearchObject;
     let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
     // URL is gospel, if it doesn't have a search term, then there's no search term
     if (!paramMap.has('search')) {

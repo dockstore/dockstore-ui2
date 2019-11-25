@@ -21,3 +21,11 @@ export class AdvancedSearchObject {
   NOTFilter: string;
   searchMode: string;
 }
+
+export const initialAdvancedSearchObject: AdvancedSearchObject = {
+  ANDSplitFilter: '',
+  ANDNoSplitFilter: '',
+  ORFilter: '',
+  NOTFilter: '',
+  searchMode: 'files'
+};

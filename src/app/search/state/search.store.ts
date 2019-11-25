@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { AdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
+import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
 
 export interface SearchState {
   shortUrl: string;
@@ -32,14 +32,6 @@ export interface SearchState {
   advancedSearch: AdvancedSearchObject;
   showModal: boolean;
 }
-
-export const initialAdvancedSearchObject: AdvancedSearchObject = {
-  ANDSplitFilter: '',
-  ANDNoSplitFilter: '',
-  ORFilter: '',
-  NOTFilter: '',
-  searchMode: 'files'
-};
 
 export function createInitialState(): SearchState {
   return {
