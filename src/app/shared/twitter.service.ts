@@ -17,6 +17,13 @@
 import { ElementRef, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+/**
+ * Handle twitter-related actions
+ * See https://github.com/ABD-dev/ngx-twitter-timeline
+ *
+ * @export
+ * @class TwitterService
+ */
 @Injectable()
 export class TwitterService {
   private TWITTER_SCRIPT_ID = 'twitter-wjs';
@@ -37,8 +44,8 @@ export class TwitterService {
 
   private startScriptLoad() {
     window['twttr'] = (function(d, s, id, url) {
-      let script,
-        firstScriptEl = d.getElementsByTagName(s)[0],
+      let script;
+      const firstScriptEl = d.getElementsByTagName(s)[0],
         twitterScript = window['twttr'] || {};
       if (d.getElementById(id)) {
         return twitterScript;
