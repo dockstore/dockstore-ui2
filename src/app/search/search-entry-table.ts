@@ -44,18 +44,14 @@ export abstract class SearchEntryTable extends Base implements OnInit {
     this.dataSource = new MatTableDataSource();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    combineLatest([this.searchQuery.pageSize$, this.searchQuery.pageIndex$])
+    combineLatest([this.searchQuery.pageSize$, this.searchQuery.pageIndex$, this.privateNgOnInit()])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(([pageSize, pageIndex]) => {
+      .subscribe(([pageSize, pageIndex, entries]) => {
         this.dataSource.paginator.pageSize = pageSize;
-        this.privateNgOnInit()
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((entries: (DockstoreTool | Workflow)[]) => {
-            if (entries) {
-              this.dataSource.data = entries;
-              this.dataSource.paginator.pageIndex = pageIndex;
-            }
-          });
+        if (entries) {
+          this.dataSource.data = entries;
+          this.dataSource.paginator.pageIndex = pageIndex;
+        }
       });
     this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
       return data.slice().sort((a, b) => {
