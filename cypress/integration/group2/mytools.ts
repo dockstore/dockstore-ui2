@@ -193,7 +193,7 @@ describe('Dockstore my tools', () => {
         .wait(1000);
 
       cy
-        .get('#imageRegistrySpinner')
+        .get('[data-cy=imageRegistryProviderSelect]')
         .click();
       cy
         .contains('Amazon ECR')
@@ -247,10 +247,7 @@ describe('Dockstore my tools', () => {
       //     .click()
 
       // This is deactivated because:
-      // Registering a tool also refreshes it.
-      // Refresh results in an error so it is mocked.
-      // The mocked results has an id that is not correct
-      // The deregister uses this mocked id to deregister but since the id is incorrect, it can't deregister
+      // onlyThe deregister uses this mocked id to deregister but since the id is incorrect, it can't deregister
       // cy
       // .get('#tool-path')
       // .should('not.contain', 'amazon.dkr.ecr.test.amazonaws.com/testnamespace/testname')
@@ -283,6 +280,7 @@ describe('Dockstore my tools', () => {
           url: /cwl/,
           response: { 'content': '#!/usr/bin/env cwl-runner\n\nclass: CommandLineTool\n\ndct:contributor:\n  foaf:name: Andy Yang\n  foaf:mbox: mailto:ayang@oicr.on.ca\ndct:creator:\n  \'@id\': http://orcid.org/0000-0001-9102-5681\n  foaf:name: Andrey Kartashov\n  foaf:mbox: mailto:Andrey.Kartashov@cchmc.org\ndct:description: \'Developed at Cincinnati Children’s Hospital Medical Center for the\n  CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows\'\ncwlVersion: v1.0\n\nrequirements:\n- class: DockerRequirement\n  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-rmdup:1.0\ninputs:\n  single_end:\n    type: boolean\n    default: false\n    doc: |\n      rmdup for SE reads\n  input:\n    type: File\n    inputBinding:\n      position: 2\n\n    doc: |\n      Input bam file.\n  output_name:\n    type: string\n    inputBinding:\n      position: 3\n\n  pairend_as_se:\n    type: boolean\n    default: false\n    doc: |\n      treat PE reads as SE in rmdup (force -s)\noutputs:\n  rmdup:\n    type: File\n    outputBinding:\n      glob: $(inputs.output_name)\n\n    doc: File with removed duplicates\nbaseCommand: [samtools, rmdup]\ndoc: |\n  Remove potential PCR duplicates: if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality. In the paired-end mode, this command ONLY works with FR orientation and requires ISIZE is correctly set. It does not work for unpaired reads (e.g. two ends mapped to different chromosomes or orphan reads).\n\n  Usage: samtools rmdup [-sS] <input.srt.bam> <out.bam>\n  Options:\n    -s       Remove duplicates for single-end reads. By default, the command works for paired-end reads only.\n    -S       Treat paired-end reads and single-end reads.\n\n', 'path': '/Dockstore.cwl' }
         });
+      cy.get('#tool-path').should('be.visible');
       cy
         .get('#register_tool_button')
         .click();
@@ -299,13 +297,8 @@ describe('Dockstore my tools', () => {
         .type('testnamespace/testname')
         .wait(1000);
 
-      cy
-        .get('#imageRegistrySpinner')
-        .click();
-      cy
-        .contains('Seven Bridges')
-        .click();
-
+      cy.get('[data-cy=imageRegistryProviderSelect]').click();
+      cy.contains('mat-option', 'Seven Bridges').click();
       cy
         .get('#dockerRegistryPathInput')
         .type('images.sbgenomics.com');

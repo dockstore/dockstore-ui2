@@ -194,41 +194,39 @@
           </div>
           <div class="form-group form-group-sm">
             <label class="col-sm-3 control-label">
+              Image Registry Provider:
+            </label>
+            <div class="col-sm-9">
+              <mat-form-field class="w-100">
+                <mat-select [(value)]="tool.irProvider" data-cy="imageRegistryProviderSelect">
+                  <mat-option
+                    *ngFor="let registry of friendlyRegistryKeys()"
+                    value="{{ registry }}"
+                    (click)="tool.irProvider = registry; checkForSpecialDockerRegistry()"
+                    >{{ registry }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 control-label">
               Image Registry:
             </label>
             <div class="col-sm-9">
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button id="imageRegistrySpinner" type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                    {{ tool.irProvider }}
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li *ngFor="let registry of friendlyRegistryKeys()">
-                      <a
-                        [attr.id]="'imageRegistrySpinner' + registry"
-                        class="dropdown-item"
-                        (click)="tool.irProvider = registry; checkForSpecialDockerRegistry()"
-                      >
-                        {{ registry }}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <input
-                  id="imageRegistryInput"
-                  type="text"
-                  class="form-control"
-                  name="imagePath"
-                  [(ngModel)]="tool.imagePath"
-                  minlength="3"
-                  maxlength="128"
-                  [pattern]="validationPatterns.imagePath"
-                  required
-                  matTooltip="Docker Image Registry path."
-                  placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
-                />
-              </div>
+              <input
+                id="imageRegistryInput"
+                type="text"
+                class="form-control"
+                name="imagePath"
+                [(ngModel)]="tool.imagePath"
+                minlength="3"
+                maxlength="128"
+                [pattern]="validationPatterns.imagePath"
+                required
+                matTooltip="Docker Image Registry path."
+                placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
+              />
               <div *ngIf="formErrors.imagePath" class="alert alert-danger">{{ formErrors.imagePath }}</div>
             </div>
           </div>
