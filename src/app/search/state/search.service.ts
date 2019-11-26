@@ -27,6 +27,8 @@ import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { SortDirection } from '@angular/material';
 
 export interface Hit {
   _index: string;
@@ -75,6 +77,47 @@ export class SearchService {
     private router: Router,
     private imageProviderService: ImageProviderService
   ) {}
+
+  /**
+   * Return a negative number if a sorts before b, positive if b sorts before a, and 0 if they are the same,
+   * comparing based on the given attribute and direction
+   * @param a: DockstoreTool or Workflow
+   * @param b: DockstoreTool or Workflow
+   * @param attribute: workflow or tool property to sort by
+   * @param direction: 'asc' or 'desc'
+   */
+  compareAttributes(a: DockstoreTool | Workflow, b: DockstoreTool | Workflow, attribute: string, direction: SortDirection) {
+    let aVal = a[attribute];
+    let bVal = b[attribute];
+    const sortFactor = direction === 'asc' ? 1 : -1;
+
+    // if sorting the stars column, consider 'undefined' stars to be 0
+    if (attribute === 'starredUsers') {
+      if (!aVal) {
+        aVal = [];
+      }
+      if (!bVal) {
+        bVal = [];
+      }
+    } else {
+      // otherwise, regardless of sort direction, null or empty values go at the end
+      if (!aVal) {
+        return 1;
+      }
+      if (!bVal) {
+        return -1;
+      }
+    }
+
+    // ignore case when sorting by a string and handle characters with accents, etc
+    if (typeof aVal === 'string' && typeof bVal === 'string') {
+      aVal = aVal.toLowerCase();
+      bVal = bVal.toLowerCase();
+      return aVal.localeCompare(bVal) * sortFactor;
+    } else {
+      return (aVal < bVal ? -1 : aVal > bVal ? 1 : 0) * sortFactor;
+    }
+  }
 
   // Given a URL, will attempt to shorten it
   // TODO: Find another method for shortening URLs
@@ -281,10 +324,16 @@ export class SearchService {
 
   sortByAlphabet(orderedArray, orderMode): any {
     orderedArray = orderedArray.sort((a, b) => {
+      if (!a.key) {
+        return 1;
+      }
+      if (!b.key) {
+        return -1;
+      }
       if (orderMode) {
-        return a.key > b.key ? 1 : -1;
+        return a.key.toLowerCase().localeCompare(b.key.toLowerCase());
       } else {
-        return a.key < b.key ? 1 : -1;
+        return b.key.toLowerCase().localeCompare(a.key.toLowerCase());
       }
     });
     return orderedArray;
