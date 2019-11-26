@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
+import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -178,7 +178,7 @@ describe('Dockstore my workflows', () => {
             cannotDeleteMe,
             doesNotExist
           ]
-        })
+        });
 
       cy.visit('/my-workflows');
       cy.get('#registerWorkflowButton')
@@ -197,21 +197,21 @@ describe('Dockstore my workflows', () => {
       // Select github.com in git registry
       cy.get('entry-wizard').within(() => {
         cy
-          .get('mat-select').eq(0).click().type('{enter}')
+          .get('mat-select').eq(0).click().type('{enter}');
         cy
-          .get('mat-select').eq(1).click().type('{enter}')
+          .get('mat-select').eq(1).click().type('{enter}');
 
         // foobar/canDeleteMe should be on and not disabled
         cy
-          .get('mat-slide-toggle').eq(0).should('not.have.class', 'mat-disabled').should('have.class', 'mat-checked')
+          .get('mat-slide-toggle').eq(0).should('not.have.class', 'mat-disabled').should('have.class', 'mat-checked');
         // foobar/cannotDeleteMe should be on and disabled
         cy
-          .get('mat-slide-toggle').eq(1).should('have.class', 'mat-disabled').should('have.class', 'mat-checked')
+          .get('mat-slide-toggle').eq(1).should('have.class', 'mat-disabled').should('have.class', 'mat-checked');
 
         // foobar/doesNotExist should be off and not disabled
         cy
-          .get('mat-slide-toggle').eq(2).should('not.have.class', 'mat-disabled').should('not.have.class', 'mat-checked')
-      })
+          .get('mat-slide-toggle').eq(2).should('not.have.class', 'mat-disabled').should('not.have.class', 'mat-checked');
+      });
     });
   });
 
@@ -226,7 +226,7 @@ describe('Dockstore my workflows', () => {
       cy.wait(1000);
       cy
         .get('#1-register-workflow-option')
-        .click()
+        .click();
       cy
         .contains('button', 'Next')
         .click();
@@ -277,7 +277,7 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Look at a published workflow', () => {
-    it('Look at each tab', () => {
+    it.only('Look at each tab', () => {
       const tabs = ['Info', 'Launch', 'Versions', 'Files', 'Tools', 'DAG'];
       cy.visit('/my-workflows/github.com/A/l');
       isActiveTab('Info');
@@ -300,8 +300,8 @@ describe('Dockstore my workflows', () => {
         .get('#viewPublicWorkflowButton')
         .should('not.be.visible');
 
-      cy
-        .get('#publishButton')
+      cy.get('#publishButton')
+        .should('be.visible')
         .should('contain', 'Publish')
         .click();
 
