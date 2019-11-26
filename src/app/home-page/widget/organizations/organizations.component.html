@@ -6,7 +6,13 @@
 
   <ng-template #userHasOrganizations>
     <mat-form-field class="w-100">
-      <input matInput [(ngModel)]="filterText" (keyup)="onTextChange($event)" placeholder="Filter organizations..." />
+      <input
+        data-cy="filterOrganizationsInput"
+        matInput
+        [(ngModel)]="filterText"
+        (keyup)="onTextChange($event)"
+        placeholder="Filter organizations..."
+      />
     </mat-form-field>
 
     <div *ngFor="let organization of myItems" class="w-100">
