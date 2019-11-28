@@ -38,6 +38,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-my-tool',
@@ -70,6 +71,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private router: Router,
     private toolQuery: ToolQuery,
     private alertQuery: AlertQuery,
+    private alertService: AlertService,
     protected sessionQuery: SessionQuery,
     protected myEntriesQuery: MyEntriesQuery,
     protected myEntriesStateService: MyEntriesStateService
@@ -102,6 +104,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
         const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
+        dialogRef
+          .afterClosed()
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(result => {
+            this.alertService.clearEverything();
+          });
       } else {
         this.dialog.closeAll();
       }
