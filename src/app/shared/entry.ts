@@ -15,7 +15,7 @@
  */
 import { Location } from '@angular/common';
 import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
@@ -63,6 +63,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   protected selected = new FormControl(0);
+  labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   constructor(
     private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
