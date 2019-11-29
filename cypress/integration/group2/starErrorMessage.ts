@@ -53,7 +53,7 @@ describe('Tool and workflow starring error messages', () => {
     cy.server();
     cy.route({
       url: routePath,
-      method: 'DELETE',
+      method: 'PUT',
       status: 400,
       response: 'You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.'
     });
@@ -107,7 +107,7 @@ describe('Tool and workflow starring error messages', () => {
     });
 
     it('Workflow cannot be unstarred if not already starred.', () => {
-      unstarringError('/workflows/github.com/A/l', 'workflow', '*/workflows/11/unstar', 'github.com/A/l');
+      unstarringError('/workflows/github.com/A/l', 'workflow', '*/workflows/11/star', 'github.com/A/l');
     });
   });
 
@@ -120,7 +120,7 @@ describe('Tool and workflow starring error messages', () => {
     });
 
     it('Tool cannot be unstarred if not already starred.', () => {
-      unstarringError('/containers/quay.io/A2/a:latest?tab=info', 'tool', '*/containers/5/unstar', 'quay.io/A2/a');
+      unstarringError('/containers/quay.io/A2/a:latest?tab=info', 'tool', '*/containers/5/star', 'quay.io/A2/a');
     });
   });
 });
