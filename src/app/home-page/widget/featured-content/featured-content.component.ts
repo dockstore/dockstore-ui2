@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
   `
 })
 export class FeaturedContentComponent implements OnInit {
-  private myExternalHTML: any = '';
+  public myExternalHTML: any = '';
 
   constructor(private http: HttpClient, private alertService: AlertService) {}
   ngOnInit() {
