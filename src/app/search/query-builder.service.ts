@@ -156,26 +156,21 @@ export class QueryBuilderService {
    * @returns {*} the new body builder object
    * @memberof SearchComponent
    */
-  appendQuery(body: any, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
+  appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
+    const advancedSearchObject = { ...oldAdvancedSearchObject };
     if (values.toString().length > 0) {
-      if (advancedSearchObject && !advancedSearchObject.toAdvanceSearch) {
-        advancedSearchObject.ORFilter = values;
-        this.searchEverything(body, values);
-        advancedSearchObject.ORFilter = '';
-      }
+      this.searchEverything(body, values);
     } else {
       body = body.query('match_all', {});
     }
     if (advancedSearchObject) {
-      if (advancedSearchObject.toAdvanceSearch) {
-        if (advancedSearchObject.searchMode === 'description') {
-          this.advancedSearchDescription(body, advancedSearchObject);
-        } else if (advancedSearchObject.searchMode === 'files') {
-          this.advancedSearchFiles(body, advancedSearchObject);
-        }
-        values = '';
-        searchTerm = false;
+      if (advancedSearchObject.searchMode === 'description') {
+        this.advancedSearchDescription(body, advancedSearchObject);
+      } else if (advancedSearchObject.searchMode === 'files') {
+        this.advancedSearchFiles(body, advancedSearchObject);
       }
+      values = '';
+      searchTerm = false;
     }
     return body;
   }
@@ -197,7 +192,8 @@ export class QueryBuilderService {
         .orFilter('bool', descriptionFilter => descriptionFilter.filter('match_phrase', 'description', searchString))
         .orFilter('bool', labelsFilter => labelsFilter.filter('match_phrase', 'labels', searchString))
         .orFilter('bool', authorFilter => authorFilter.filter('match_phrase', 'author', searchString))
-        .orFilter('bool', pathFilter => pathFilter.filter('match_phrase', 'path', searchString))
+        .orFilter('bool', pathFilter => pathFilter.filter('match_phrase', 'tool_path', searchString))
+        .orFilter('bool', pathFilter => pathFilter.filter('match_phrase', 'full_workflow_path', searchString))
     );
   }
 

@@ -15,6 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
+import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
 
 export interface SearchState {
   shortUrl: string;
@@ -27,6 +28,9 @@ export interface SearchState {
   autocompleteTerms: Array<string>;
   suggestTerm: string;
   pageSize: number;
+  pageIndex: number;
+  advancedSearch: AdvancedSearchObject;
+  showModal: boolean;
 }
 
 export function createInitialState(): SearchState {
@@ -40,7 +44,10 @@ export function createInitialState(): SearchState {
     filterKeys: [],
     autocompleteTerms: [],
     suggestTerm: '',
-    pageSize: 10
+    pageSize: 10,
+    advancedSearch: initialAdvancedSearchObject,
+    showModal: false,
+    pageIndex: 0
   };
 }
 

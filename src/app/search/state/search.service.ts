@@ -16,6 +16,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { transaction } from '@datorama/akita';
+import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
 import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -68,7 +70,6 @@ export class SearchService {
    * @memberof SearchService
    */
   public exclusiveFilters = ['verified', 'private_access', '_type', 'has_checker'];
-
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
@@ -129,15 +130,17 @@ export class SearchService {
     });
   }
 
-  setPageSize(pageSize: number) {
+  setPageSizeAndIndex(pageSize: number, pageIndex: number) {
     this.searchStore.update(state => {
       return {
         ...state,
-        pageSize: pageSize
+        pageSize: pageSize,
+        pageIndex: pageIndex
       };
     });
   }
 
+  @transaction()
   setSearchText(text: string) {
     this.searchStore.update(state => {
       return {
@@ -145,6 +148,9 @@ export class SearchService {
         searchText: text
       };
     });
+    if (text) {
+      this.clear();
+    }
   }
 
   searchSuggestTerm() {
@@ -231,8 +237,9 @@ export class SearchService {
       }
     })
       .then(hits => {
-        if (hits['suggest']['do_you_mean'][0].options.length > 0) {
-          this.setSuggestTerm(hits['suggest']['do_you_mean'][0].options[0].text);
+        const suggestions: Array<any> = hits['suggest']['do_you_mean'][0].options;
+        if (suggestions.length > 0) {
+          this.setSuggestTerm(suggestions[0].text);
         } else {
           this.setSuggestTerm('');
         }
@@ -281,7 +288,7 @@ export class SearchService {
   }
 
   // Given a search info object, will create the permalink for the current search
-  createPermalinks(searchInfo) {
+  createPermalinks(searchInfo): string[] {
     // For local testing, use LOCAL_URI, else use HOSTNAME
     const url = `${Dockstore.HOSTNAME}/search`;
     let httpParams = new HttpParams();
@@ -291,8 +298,7 @@ export class SearchService {
         httpParams = httpParams.append(key, subBucket);
       });
     });
-
-    if (searchInfo.searchTerm && (!searchInfo.advancedSearchObject || !searchInfo.advancedSearchObject.toAdvanceSearch)) {
+    if (searchInfo.searchValues) {
       httpParams = httpParams.append('search', searchInfo.searchValues);
     } else {
       const advSearchKeys = Object.keys(searchInfo.advancedSearchObject);
@@ -310,6 +316,10 @@ export class SearchService {
   handleLink(linkArray: Array<string>) {
     this.router.navigateByUrl('search?' + linkArray[1]);
     this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
+  }
+
+  reset() {
+    this.router.navigateByUrl('search');
   }
 
   sortByAlphabet(orderedArray, orderMode): any {
@@ -380,7 +390,7 @@ export class SearchService {
    * @param categoryValue
    * @param filter
    */
-  handleFilters(category: string, categoryValue: string, filters: any) {
+  handleFilters(category: string, categoryValue: string | number, filters: Map<string, Set<string>>) {
     if (typeof categoryValue === 'number') {
       categoryValue = String(categoryValue);
     }
@@ -397,6 +407,17 @@ export class SearchService {
       filters.get(category).add(categoryValue);
     }
     this.setFilterKeys(filters);
+    return filters;
+  }
+
+  updateFiltersFromParameter(category: string, categoryValue: string, filters: Map<string, Set<string>>): Map<string, Set<string>> {
+    if (typeof categoryValue === 'number') {
+      categoryValue = String(categoryValue);
+    }
+    if (!filters.has(category)) {
+      filters.set(category, new Set<string>());
+    }
+    filters.get(category).add(categoryValue);
     return filters;
   }
 
@@ -486,17 +507,16 @@ export class SearchService {
    * Returns true if either basic search is set and has results, or advanced search is set
    * (though not just the searchMode, which is set by default)
    */
-  hasSearchText(advancedSearchObject: any, searchTerm: boolean, hits: any) {
+  hasSearchText(advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, hits: any) {
     let advSearchSet;
     if (!advancedSearchObject) {
       advSearchSet = false;
     } else {
       advSearchSet =
-        advancedSearchObject.toAdvanceSearch &&
-        (advancedSearchObject.ANDSplitFilter ||
-          advancedSearchObject.ANDNoSplitFilter ||
-          advancedSearchObject.ORFilter ||
-          advancedSearchObject.NOTFilter);
+        advancedSearchObject.ANDSplitFilter ||
+        advancedSearchObject.ANDNoSplitFilter ||
+        advancedSearchObject.ORFilter ||
+        advancedSearchObject.NOTFilter;
     }
     return this.hasResults(searchTerm, hits) || advSearchSet;
   }
@@ -518,7 +538,7 @@ export class SearchService {
   /**
    * Returns true if at least one filter is set
    */
-  hasFilters(filters: any) {
+  hasFilters(filters: Map<string, Set<string>>) {
     let count = 0;
     filters.forEach(filter => {
       count += filter.size;
@@ -529,14 +549,39 @@ export class SearchService {
   /**
    * Returns true if any search filters have been applied, false otherwise
    */
-  hasNarrowedSearch(advancedSearchObject: any, searchTerm: boolean, hits: any, filters: any) {
+  hasNarrowedSearch(advancedSearchObject: any, searchTerm: boolean, hits: any, filters: Map<string, Set<string>>) {
     return this.hasSearchText(advancedSearchObject, searchTerm, hits) || this.hasFilters(filters);
   }
 
-  joinComma(searchTerm: string): string {
-    return searchTerm
-      .trim()
-      .split(' ')
-      .join(', ');
+  setAdvancedSearch(advancedSearch: AdvancedSearchObject): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        advancedSearch: advancedSearch,
+        searchText: ''
+      };
+    });
+  }
+
+  setShowModal(showModal: boolean): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        showModal: showModal
+      };
+    });
+  }
+
+  goToCleanSearch() {
+    this.router.navigateByUrl('search');
+  }
+
+  clear(): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        advancedSearch: initialAdvancedSearchObject
+      };
+    });
   }
 }
