@@ -58,7 +58,7 @@ export class AliasesComponent extends Base implements OnInit {
       });
     } else if (this.type === 'workflow-versions' && this.alias) {
       this.aliasesService.updateWorkflowVersionPathInfoFromAlias(this.alias);
-      this.workflowVersionPathInfo$ = this.aliasesQuery.workflowVersionPathInfo$
+      this.workflowVersionPathInfo$ = this.aliasesQuery.workflowVersionPathInfo$;
       this.workflowVersionPathInfo$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflowVersionPathInfo: WorkflowVersionPathInfo) => {
         if (workflowVersionPathInfo) {
           this.router.navigate(['/workflows', workflowVersionPathInfo.fullWorkflowPath + ':' + workflowVersionPathInfo.tagName]);
