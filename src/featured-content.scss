@@ -1,0 +1,43 @@
+/*
+The following classes are used style the featured content external html
+ */
+
+.feat-content-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.feat-content-card {
+  box-shadow: 0 0.4rem 0.8rem 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  text-align: center;
+  justify-content: center;
+  min-width: 20rem;
+  background-color: #eef0f6;
+  padding: 1rem;
+  margin: 1rem;
+  flex: 1;
+}
+
+a.cardClick {
+  display: block;
+  color: #313131;
+  height: 100%;
+  width: 100%;
+}
+
+a.cardClick:hover {
+  text-decoration: none;
+}
+
+h3.feat-content-title {
+  color: #487980;
+  margin-top: 1rem;
+}
+
+@media (max-width: 50rem) {
+  .feat-content-container {
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}
