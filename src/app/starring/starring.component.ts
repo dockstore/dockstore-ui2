@@ -15,7 +15,7 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { ContainerService } from '../shared/container.service';
@@ -126,12 +126,8 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
       );
     }
   }
-  setStar(): any {
-    if (this.rate) {
-      return this.starringService.setUnstar(this.entry.id, this.entryType);
-    } else {
-      return this.starringService.setStar(this.entry.id, this.entryType);
-    }
+  setStar(): Observable<any> {
+    return this.starringService.putStar(this.entry.id, this.entryType, !this.rate);
   }
   getStarredUsers(): any {
     if (this.entry && this.entryType) {
