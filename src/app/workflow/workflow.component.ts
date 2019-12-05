@@ -356,7 +356,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
 
   setWorkflowLabels(): any {
     return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(workflow => {
-      this.workflow.labels = workflow.labels;
       this.workflowService.setWorkflow(workflow);
       this.labelsEditMode = false;
     });

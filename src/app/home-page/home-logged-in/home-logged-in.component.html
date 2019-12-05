@@ -14,73 +14,40 @@
   ~    limitations under the License.
   -->
 
-<mat-sidenav-container>
-  <mat-sidenav [opened]="!mobileQuery.matches" mode="side" class="homepage-sidebar">
-    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 1 100%" class="px-4">
-      <div>
-        <h3>Tools and workflows</h3>
-      </div>
+<div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+  <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 2 100%" class="px-4 side-column" fxFlexAlign="stretch">
+    <app-entries *ngIf="user$ | async" class="w-100"></app-entries>
+    <app-organizations *ngIf="user$ | async" class="w-100"></app-organizations>
+  </div>
 
-      <div>
-        <h3>Organizations</h3>
-      </div>
+  <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlex="1 1 100%" fxFlexAlign="stretch">
+    <div class="widget-section">
+      <h3>Explore Featured Content</h3>
+    </div>
+    <div class="widget-section">
+      <h3>Recent Activity</h3>
+    </div>
+  </div>
 
+  <div fxFlex="1 2 100%">
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlexAlign="stretch">
+      <div>
+        <h3>News and Updates</h3>
+      </div>
+      <app-requests *ngIf="user$ | async" class="w-100"></app-requests>
+      <div>
+        <h3>Links</h3>
+        <ul>
+          <li><a routerLink="quick-start">Quickstart</a></li>
+          <li><a routerLink="accounts">My Account</a></li>
+          <li><a routerLink="starred">My Starred</a></li>
+          <li><a href="https://discuss.dockstore.org/" target="_blank" rel="noopener noreferrer">Discourse</a></li>
+        </ul>
+      </div>
       <div>
         <h3>Twitter</h3>
-        <div class="twitter twitter-container">
-          <a class="twitter-timeline" data-theme="light" data-height="800" href="https://twitter.com/DockstoreOrg">
-            Tweets by DockstoreOrg
-          </a>
-        </div>
+        <div class="my-3 twitter" #twitter></div>
       </div>
     </div>
-  </mat-sidenav>
-  <mat-sidenav-content fxFlex>
-    <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4" fxFlex="1 1 100%">
-        <div class="widget-section">
-          <h3>Explore Featured Content</h3>
-        </div>
-        <div class="widget-section">
-          <h3>Recent Activity</h3>
-        </div>
-      </div>
-      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 1 100%" class="px-4" *ngIf="mobileQuery.matches">
-        <div>
-          <h3>Tools and workflows</h3>
-        </div>
-
-        <div>
-          <h3>Organizations</h3>
-        </div>
-
-        <div>
-          <h3>Twitter</h3>
-          <div class="twitter twitter-container">
-            <a class="twitter-timeline" data-theme="light" data-height="800" href="https://twitter.com/DockstoreOrg">
-              Tweets by DockstoreOrg
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div fxFlex="1 3 100%">
-        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4">
-          <div>
-            <h3>News and Updates</h3>
-          </div>
-          <app-requests></app-requests>
-          <div>
-            <h3>Links</h3>
-            <ul>
-              <li><a routerLink="quick-start">Quickstart</a></li>
-              <li><a routerLink="accounts">My Account</a></li>
-              <li><a routerLink="starred">My Starred</a></li>
-              <li><a href="https://discuss.dockstore.org/" target="_blank" rel="noopener noreferrer">Discourse</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>

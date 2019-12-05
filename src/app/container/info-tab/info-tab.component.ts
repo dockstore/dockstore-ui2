@@ -54,6 +54,7 @@ export class InfoTabComponent implements OnInit, OnChanges {
   trsLinkWDL: string;
   downloadZipLink: string;
   isValidVersion = false;
+  Dockstore = Dockstore;
   constructor(
     private containerService: ContainerService,
     private infoTabService: InfoTabService,

@@ -650,6 +650,51 @@ ul.our-sponsors li img {
   margin-right: 10px;
 }
 
+.tos-banner {
+  flex-shrink: 0;
+  flex-grow: 0;
+  padding: 3px 15px;
+  color: white;
+}
+
+@media (max-width: 992px) {
+  .tos-banner {
+    height: 75px;
+    line-height: 250%;
+  }
+
+  .push-tos {
+    height: 75px;
+  }
+}
+
+@media (min-width: 992px) {
+  .tos-banner {
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .push-tos {
+    height: 50px;
+  }
+}
+
+.tos-banner a {
+  color: white;
+  text-decoration: underline;
+}
+
+// Makes the tos banner stick to the top of the page even while scrolling. Also sets z-index so it is
+// in front of all the other items (like container headers and mat-cards) on a page.
+.scroll-tos-banner {
+  background-color: #3b4045;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  z-index: 3;
+}
+
 pre {
   color: #487980;
   font-size: 86.66%;

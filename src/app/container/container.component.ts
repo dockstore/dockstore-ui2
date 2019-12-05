@@ -232,7 +232,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   }
   setContainerLabels(): any {
     return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels.join(', ')).subscribe(tool => {
-      this.tool.labels = tool.labels;
       this.updateContainer.setTool(tool);
       this.labelsEditMode = false;
     });

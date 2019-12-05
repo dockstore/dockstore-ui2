@@ -46,10 +46,6 @@ app-header .container-fluid {
   padding-top: 5px;
 }
 
-.separation {
-  margin-top: 20px;
-}
-
 #format > tbody > tr > th,
 #format > tbody > tr > td {
   border-top: none;

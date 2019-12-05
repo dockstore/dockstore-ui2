@@ -180,25 +180,25 @@
             >
               <strong>Search: </strong>
               <span *ngIf="advancedSearchObject.ANDSplitFilter"
-                >contains all of <strong>"{{ searchService.joinComma(advancedSearchObject.ANDSplitFilter) }}"</strong
+                >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong
                 ><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter">
-                  AND</span
-                ></span
+                  AND
+                </span></span
               >
               <span *ngIf="advancedSearchObject.ANDNoSplitFilter"
-                >contains exactly <strong>"{{ searchService.joinComma(advancedSearchObject.ANDNoSplitFilter) }}"</strong
-                ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span
+                >contains exactly <strong>"{{ aNDNoSplitFilterText$ | async }}"</strong
+                ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND </span></span
               >
               <span *ngIf="advancedSearchObject.ORFilter"
-                >contains one of <strong>"{{ searchService.joinComma(advancedSearchObject.ORFilter) }}"</strong
-                ><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span
+                >contains one of <strong>"{{ oRFilterText$ | async }}"</strong
+                ><span *ngIf="advancedSearchObject.NOTFilter"> AND </span></span
               >
               <span *ngIf="advancedSearchObject.NOTFilter"
-                >does not contain <strong>"{{ searchService.joinComma(advancedSearchObject.NOTFilter) }}"</strong></span
+                >does not contain <strong>"{{ nOTFilterText$ | async }}"</strong></span
               >
             </span>
             <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-              >AND
+              >&nbsp;AND
             </span>
             <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
               >Search:

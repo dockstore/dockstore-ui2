@@ -100,6 +100,8 @@ import { StarredEntriesComponent } from './starredentries/starredentries.compone
 import { StarringModule } from './starring/starring.module';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
+import { TosBannerComponent } from './tosBanner/tos-banner.component';
+import { TosBannerService } from './tosBanner/state/tos-banner.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -144,7 +146,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SitemapComponent,
     GithubCallbackComponent,
     ConfirmationDialogComponent,
-    SessionExpiredComponent
+    SessionExpiredComponent,
+    TosBannerComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -206,6 +209,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     VerifiedByService,
     Title,
     ViewService,
+    TosBannerService,
     ConfigurationService,
     {
       provide: APP_INITIALIZER,

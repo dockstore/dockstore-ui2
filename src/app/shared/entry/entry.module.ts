@@ -16,7 +16,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { ShareButtonsModule } from '@ngx-share/buttons';
@@ -55,6 +55,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     NgxJsonLdModule,
     ClipboardModule,
     RouterModule,
+    ReactiveFormsModule,
     RefreshAlertModule
   ],
   declarations: [
@@ -89,7 +90,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     RefreshAlertModule,
     ShareButtonsModule,
     UrlDeconstructPipe,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   entryComponents: [RegisterCheckerWorkflowComponent],
   providers: [BioschemaService, EntryActionsService]
