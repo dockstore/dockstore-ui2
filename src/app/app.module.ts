@@ -38,6 +38,7 @@ import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
@@ -127,6 +128,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SponsorsComponent,
     NavbarComponent,
     FooterComponent,
+    NotificationsComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,
