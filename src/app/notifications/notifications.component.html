@@ -1,0 +1,10 @@
+<div class="container text-center notification-bar">
+  <div *ngFor="let notification of allNotifications$ | async">
+    <div class="container-fluid text-center notification" *ngIf="!notificationDismissed(notification)">
+      {{ notification.message }}
+      <button mat-button data-dismiss="alert" (click)="respondClick(notification)">
+        <mat-icon> clear </mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
