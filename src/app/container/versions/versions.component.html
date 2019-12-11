@@ -123,7 +123,9 @@
               ><span>{{ version.reference || 'n/a' }}</span></ng-template
             >
           </td>
-          <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">{{ version.last_built | date: 'medium' }}</td>
+          <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+            <span matTooltip="{{ version.last_built | date: 'medium' }}">{{ version.last_built | date: 'mediumDate' }}</span>
+          </td>
           <td>
             <mat-icon *ngIf="version.valid">check</mat-icon>
             <mat-icon *ngIf="!version.valid">close</mat-icon>
