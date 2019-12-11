@@ -103,6 +103,8 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   // Updates the version and emits an event for the parent component
   setVersion(version: Tag) {
     this.versionTag = version;
+    this.alertService.start('Changing version to ' + version.name);
+    this.alertService.detailedSuccess();
     this.selectedVersionChange.emit(this.versionTag);
   }
 

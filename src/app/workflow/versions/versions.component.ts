@@ -109,6 +109,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
    */
   setVersion(version: WorkflowVersion): void {
     this._selectedVersion = version;
+    this.alertService.start('Changing version to ' + version.name);
+    this.alertService.detailedSuccess();
     this.selectedVersionChange.emit(this._selectedVersion);
   }
 }
