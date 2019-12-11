@@ -129,7 +129,9 @@
             >
           </td>
           <td *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">{{ version?.versionEditor?.name }}</td>
-          <td>{{ version.last_modified | date: 'medium' }}</td>
+          <td>
+            <span matTooltip="{{ version.last_modified | date: 'medium' }}">{{ version.last_modified | date: 'mediumDate' }}</span>
+          </td>
           <td>
             <mat-icon *ngIf="version.valid">check</mat-icon>
             <mat-icon *ngIf="!version.valid">close</mat-icon>
