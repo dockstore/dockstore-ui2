@@ -11,19 +11,19 @@
 
     <div *ngFor="let entry of myItems" class="w-100">
       <a *ngIf="entry.entryType === entryTypeEnum.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
-        entry.path
+        entry.prettyPath
       }}</a>
       <a
         *ngIf="entry.entryType === entryTypeEnum.WORKFLOW"
         [routerLink]="'/my-workflows/' + entry.path"
         routerLinkActive="router-link-active"
-        >{{ entry.path }}</a
+        >{{ entry.prettyPath }}</a
       >
       <a
         *ngIf="entry.entryType === entryTypeEnum.SERVICE"
         [routerLink]="'/my-services/' + entry.path"
         routerLinkActive="router-link-active"
-        >{{ entry.path }}</a
+        >{{ entry.prettyPath }}</a
       >
     </div>
     <p *ngIf="!myItems || myItems.length === 0">No matching entries</p>
