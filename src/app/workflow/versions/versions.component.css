@@ -13,3 +13,44 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+.mat-row,
+.mat-header-row {
+  min-width: 1400px;
+  width: 100%;
+}
+
+.mat-header-row {
+  white-space: nowrap;
+}
+
+.mat-table {
+  overflow-x: scroll;
+}
+
+.mat-cell:not(:first-of-type),
+.mat-header-cell:not(:first-of-type) {
+  padding-left: 16px;
+}
+
+.mat-cell:not(:last-of-type),
+.mat-header-cell:not(:last-of-type) {
+  padding-right: 16px;
+}
+
+.mat-column-name {
+  max-width: 150px;
+}
+
+.mat-column-name,
+.mat-column-last_modified {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mat-column-verified,
+.mat-column-valid,
+.mat-column-snapshot {
+  text-align: center;
+}

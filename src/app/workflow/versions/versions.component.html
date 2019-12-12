@@ -181,5 +181,122 @@
         </tr>
       </tbody>
     </table>
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      class="mat-elevation-z8 w-100"
+      matSort
+      matSortActive="last_modified"
+      matSortDisableClear
+      matSortDirection="desc"
+    >
+      <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Git Reference</th>
+        <td mat-cell *matCellDef="let version">
+          <span *ngIf="publicPage && defaultVersion === version.name" class="label label-primary">Default</span>
+          <input
+            class="radio-button-reference"
+            *ngIf="version.name !== 'latest' && !publicPage"
+            type="radio"
+            name="defaultVersion"
+            [(ngModel)]="defaultVersion"
+            [value]="version.name"
+            (click)="updateDefaultVersion(version.name)"
+            [tooltip]="getDefaultTooltip(publicPage)"
+          />&nbsp;
+          <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
+          <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
+          <span
+            *ngIf="version.commitID && (version.commitID | commitUrl: workflow?.providerUrl); else noCommitID"
+            [tooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''"
+          >
+            &nbsp;<a [href]="version.commitID | commitUrl: workflow?.providerUrl">{{ version?.name }}</a>
+          </span>
+          <ng-template #noCommitID
+            ><span>{{ version?.name }}</span></ng-template
+          >
+        </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="last_modified">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Date Modified</th>
+        <td mat-cell *matCellDef="let version">
+          <span matTooltip="{{ version.last_modified | date: 'medium' }}">{{ version.last_modified | date: 'mediumDate' }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="valid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Valid</th>
+        <td mat-cell *matCellDef="let version">
+          <mat-icon *ngIf="version.valid">check</mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="hidden">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hidden</th>
+        <td mat-cell *matCellDef="let version">
+          <mat-icon *ngIf="version.hidden">check</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="verified">
+        <th mat-header-cell *matHeaderCellDef>Verified Platforms</th>
+        <td mat-cell *matCellDef="let version">
+          <a href="{{ verifiedLink }}" *ngIf="version.verified" matTooltip="{{ getVerifiedSource(version.name) }}">
+            <mat-icon>check</mat-icon>
+          </a>
+          {{ version?.sourceFiles | verifiedPlatforms }}
+        </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="snapshot">
+        <th mat-header-cell *matHeaderCellDef>Snapshot</th>
+        <td mat-cell *matCellDef="let version">
+          <mat-icon
+            *ngIf="!version.doiURL && version.frozen"
+            data-cy="dockstore-snapshot-locked"
+            matTooltip="Version {{ version.name }} is a snapshot."
+            >lock</mat-icon
+          >
+          <mat-icon
+            *ngIf="!version.doiURL && !version.frozen"
+            data-cy="dockstore-snapshot-unlocked"
+            matTooltip="Version {{ version.name }} is not a snapshot."
+            >lock_open</mat-icon
+          >
+          <a
+            href="https://doi.org/{{ version.doiURL }}"
+            *ngIf="version.doiURL"
+            data-cy="workflow-version-DOI-badge"
+            matTooltip="Click to view this version's DOI entry information."
+            target="_blank"
+            ><img src="{{ zenodoUrl }}/badge/DOI/{{ version.doiURL }}.svg" alt="DOI"
+          /></a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let version">
+          <app-view-workflow
+            [version]="version"
+            [workflowId]="this.workflowId"
+            [canRead]="canRead"
+            [canWrite]="canWrite"
+            [isOwner]="isOwner"
+          ></app-view-workflow>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
   </div>
 </div>

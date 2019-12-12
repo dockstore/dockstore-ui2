@@ -37,6 +37,7 @@ export abstract class Versions extends EntryTab {
   dtOptions;
 
   abstract setNoOrderCols(): Array<number>;
+  abstract setDisplayColumns(publicPage: boolean): void;
   constructor(protected dockstoreService: DockstoreService, private dateService: DateService, protected sessionQuery: SessionQuery) {
     // By default, sort by last_built for tools and last_modified for workflows, latest first
     super();
@@ -45,7 +46,10 @@ export abstract class Versions extends EntryTab {
 
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.publicPage = publicPage));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => {
+      this.publicPage = publicPage;
+      this.setDisplayColumns(publicPage);
+    });
   }
 
   getDefaultTooltip(publicPage: boolean): string {
