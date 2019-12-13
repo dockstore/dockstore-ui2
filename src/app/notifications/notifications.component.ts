@@ -31,7 +31,7 @@ export class NotificationsComponent implements OnInit {
   removeExpiredDisabledNotifications(notificationsStored: Array<DismissedNotification>) {
     const today = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     this.dismissedNotifications = this.dismissedNotifications.filter(notification => {
-      return formatDate(notification.expiration, 'yyyy-MM-dd', 'en') < today;
+      return formatDate(notification.expiration, 'yyyy-MM-dd', 'en') > today;
     });
     localStorage.setItem(this.storageKey, JSON.stringify(this.dismissedNotifications));
   }
