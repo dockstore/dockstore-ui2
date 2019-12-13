@@ -14,45 +14,47 @@
   ~    limitations under the License.
   -->
 
-<button type="button" mat-button color="accent" class="btn-block" (click)="showVersionModal()">
-  {{ isPublic || !canWrite || version.frozen ? 'View' : 'Edit' }}
-</button>
-<ng-container *ngIf="!isPublic">
-  <button
-    type="button"
-    mat-button
-    color="warn"
-    class="btn-block deleteVersionButton"
-    [disabled]="isRefreshing$ | async"
-    *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
-    (click)="deleteHostedVersion(); (false)"
-  >
-    Delete
+<button mat-button [matMenuTriggerFor]="menu">Actions...</button>
+<mat-menu #menu="matMenu">
+  <button type="button" mat-menu-item color="accent" class="btn-block" (click)="showVersionModal()">
+    {{ isPublic || !canWrite ? 'View' : 'Edit' }}
   </button>
-  <button
-    type="button"
-    mat-button
-    color="accent"
-    class="btn-block"
-    [disabled]="isRefreshing$ | async"
-    *ngIf="!version.frozen && version.referenceType !== 'BRANCH'"
-    (click)="snapshotVersion()"
-    data-cy="dockstore-snapshot"
-    matTooltip="Snapshotting a version makes it read-only."
-  >
-    Snapshot
-  </button>
-  <button
-    mat-button
-    id="DOIButton"
-    color="accent"
-    class="btn-block"
-    (click)="requestDOIForWorkflowVersion()"
-    [disabled]="isRefreshing$ | async"
-    data-cy="dockstore-request-doi-button"
-    *ngIf="version.referenceType !== 'BRANCH' && !version.doiURL && workflow?.is_published"
-    matTooltip="Request a Digital Object Identifier (DOI) for this version."
-  >
-    Request DOI
-  </button>
-</ng-container>
+  <ng-container *ngIf="!isPublic">
+    <button
+      type="button"
+      mat-menu-item
+      color="warn"
+      class="btn-block deleteVersionButton"
+      [disabled]="isRefreshing$ | async"
+      *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
+      (click)="deleteHostedVersion(); (false)"
+    >
+      Delete
+    </button>
+    <button
+      type="button"
+      mat-menu-item
+      color="accent"
+      class="btn-block"
+      [disabled]="(isRefreshing$ | async) || !(!version.frozen && version.referenceType !== 'BRANCH')"
+      (click)="snapshotVersion()"
+      data-cy="dockstore-snapshot"
+      matTooltip="Snapshotting a version makes it read-only."
+    >
+      Snapshot
+    </button>
+    <button
+      mat-menu-item
+      id="DOIButton"
+      color="accent"
+      class="btn-block"
+      (click)="requestDOIForWorkflowVersion()"
+      [disabled]="isRefreshing$ | async"
+      data-cy="dockstore-request-doi-button"
+      *ngIf="version.referenceType !== 'BRANCH' && !version.doiURL && workflow?.is_published"
+      matTooltip="Request a Digital Object Identifier (DOI) for this version."
+    >
+      Request DOI
+    </button>
+  </ng-container>
+</mat-menu>
