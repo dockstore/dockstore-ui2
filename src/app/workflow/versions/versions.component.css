@@ -16,16 +16,11 @@
 
 .mat-row,
 .mat-header-row {
-  min-width: 1400px;
   width: 100%;
 }
 
 .mat-header-row {
   white-space: nowrap;
-}
-
-.mat-table {
-  overflow-x: scroll;
 }
 
 .mat-cell:not(:first-of-type),
@@ -38,12 +33,8 @@
   padding-right: 16px;
 }
 
-.mat-column-name {
-  max-width: 150px;
-}
-
 .mat-column-name,
-.mat-column-last_modified {
+.mat-header-date {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
