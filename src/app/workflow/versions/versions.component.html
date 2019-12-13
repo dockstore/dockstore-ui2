@@ -202,22 +202,27 @@
         Git Reference
       </th>
       <td mat-cell *matCellDef="let version">
-        <div>
+        <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
           <span *ngIf="defaultVersion === version.name" class="label label-primary">Default</span>
           <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
           <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
-          <a (click)="setVersion(version)">{{ version?.name }}</a>
+          <a
+            *ngIf="_selectedVersion?.name !== version?.name; else alreadySelected"
+            matTooltip="Click to select version"
+            (click)="setVersion(version)"
+            >{{ version?.name }}</a
+          >
           <a target="_blank" [href]="version.commitID | commitUrl: workflow?.providerUrl">
             <mat-icon
-              *ngIf="version.commitID && (version.commitID | commitUrl: workflow?.providerUrl); else noCommitID"
+              *ngIf="version.commitID && (version.commitID | commitUrl: workflow?.providerUrl)"
               [matTooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''"
               >open_in_new</mat-icon
             ></a
           >
-          <ng-template #noCommitID
-            ><span>{{ version?.name }}</span></ng-template
-          >
-        </div>
+        </span>
+        <ng-template #alreadySelected>
+          <span>{{ version?.name }}</span>
+        </ng-template>
       </td>
     </ng-container>
 
