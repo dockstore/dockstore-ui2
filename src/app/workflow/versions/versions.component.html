@@ -308,6 +308,10 @@
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr
+      [ngClass]="{ highlight: version.name === _selectedVersion.name }"
+      mat-row
+      *matRowDef="let row; columns: displayedColumns; let version"
+    ></tr>
   </table>
 </div>
