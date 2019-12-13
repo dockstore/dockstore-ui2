@@ -1,0 +1,11 @@
+.org-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media screen and (min-width: 992px) {
+  .org-holder {
+    max-width: 350px;
+  }
+}

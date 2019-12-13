@@ -1,4 +1,4 @@
-<div class="w-100">
+<div class="w-100 org-holder">
   <h3>My Organizations</h3>
   <div *ngIf="!hasItems; else userHasOrganizations">
     <p>You have no organizations</p>
@@ -15,8 +15,10 @@
       />
     </mat-form-field>
 
-    <div *ngFor="let organization of myItems" class="w-100">
-      <a [routerLink]="'/organizations/' + organization.name" routerLinkActive="router-link-active">{{ organization.displayName }}</a>
+    <div *ngFor="let organization of myItems" class="w-100 org-item">
+      <span [matTooltip]="organization.name">
+        <a [routerLink]="'/organizations/' + organization.name" routerLinkActive="router-link-active">{{ organization.displayName }}</a>
+      </span>
     </div>
     <p *ngIf="!myItems || myItems.length === 0">No matching organizations</p>
   </ng-template>
