@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatTooltipModule } from '@angular/material';
 
 describe('EntriesComponent', () => {
   let component: EntriesComponent;
@@ -13,7 +14,7 @@ describe('EntriesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EntriesComponent],
-      imports: [RouterTestingModule, MatFormFieldModule, FormsModule, HttpClientTestingModule]
+      imports: [RouterTestingModule, MatFormFieldModule, FormsModule, HttpClientTestingModule, MatTooltipModule]
     }).compileComponents();
   }));
 

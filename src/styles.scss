@@ -1285,3 +1285,9 @@ mat-icon.star {
   outline: none;
   color: black;
 }
+
+.ellipsis-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -15,28 +15,36 @@
   -->
 
 <div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-  <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 2 100%" class="px-4 side-column" fxFlexAlign="stretch">
+  <div
+    fxLayout="column"
+    fxLayoutAlign="start start"
+    fxLayoutGap="20px"
+    fxFlex="1 2 100%"
+    class="px-4 side-column left-side-column"
+    fxFlexAlign="stretch"
+  >
     <app-entries *ngIf="user$ | async" class="w-100"></app-entries>
     <app-organizations *ngIf="user$ | async" class="w-100"></app-organizations>
   </div>
-  <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlex="1 1 100%" fxFlexAlign="stretch">
-    <div class="widget-section">
-      <h3>Explore Featured Content</h3>
-      <app-alert></app-alert>
-      <featured-content></featured-content>
-    </div>
-    <div class="widget-section">
-      <h3>Recent Activity</h3>
-    </div>
-  </div>
 
-  <div fxFlex="1 2 100%">
-    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlexAlign="stretch">
-      <div>
+  <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start start" fxLayoutGap="10px" class="w-100" fxFlex="1 1 100%">
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlex="1 1 100%" fxFlexAlign="stretch">
+      <div class="widget-section">
+        <h3>Explore Featured Content</h3>
+        <app-alert></app-alert>
+        <featured-content></featured-content>
+      </div>
+      <div class="widget-section">
+        <h3>Recent Activity</h3>
+      </div>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 2 100%" class="px-4 side-column" fxFlexAlign="stretch">
+      <div class="w-100">
         <h3>News and Updates</h3>
       </div>
       <app-requests *ngIf="user$ | async" class="w-100"></app-requests>
-      <div>
+      <div class="w-100">
         <h3>Links</h3>
         <ul>
           <li><a routerLink="quick-start">Quickstart</a></li>
@@ -45,7 +53,7 @@
           <li><a href="https://discuss.dockstore.org/" target="_blank" rel="noopener noreferrer">Discourse</a></li>
         </ul>
       </div>
-      <div>
+      <div class="w-100">
         <h3>Twitter</h3>
         <div class="my-3 twitter" #twitter></div>
       </div>

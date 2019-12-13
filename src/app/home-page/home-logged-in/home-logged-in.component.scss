@@ -13,8 +13,14 @@ mat-sidenav-container {
   height: 100%;
 }
 
-.side-column {
+.left-side-column {
   background-color: #f6f8fa;
+}
+
+@media screen and (min-width: 992px) {
+  .side-column {
+    max-width: 35rem !important;
+  }
 }
 
 #column-holder {
