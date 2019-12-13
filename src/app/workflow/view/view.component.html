@@ -56,7 +56,7 @@
     >
       Request DOI
     </button>
-    <button mat-menu-item [disabled]="isRefreshing$ | async" (click)="updateDefaultVersion()">
+    <button mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion" (click)="updateDefaultVersion()">
       Set as Default Version
     </button>
   </ng-container>
