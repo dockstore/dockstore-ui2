@@ -9,7 +9,7 @@
       <input matInput [(ngModel)]="filterText" (keyup)="onTextChange($event)" placeholder="Filter entries..." />
     </mat-form-field>
 
-    <div *ngFor="let entry of myItems" class="w-100 entry-item">
+    <div *ngFor="let entry of myItems" class="w-100 ellipsis-overflow">
       <span [matTooltip]="entry.prettyPath">
         <a *ngIf="entry.entryType === entryTypeEnum.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
           entry.prettyPath

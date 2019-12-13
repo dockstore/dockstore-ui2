@@ -1,11 +1,5 @@
-.entry-item {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 @media screen and (min-width: 992px) {
   .entry-holder {
-    max-width: 350px;
+    max-width: 35rem;
   }
 }
