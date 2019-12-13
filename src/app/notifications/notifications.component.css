@@ -3,6 +3,17 @@
   width: 100%;
 }
 
-.notification {
+.LOW {
+  background-color: black;
+  color: white;
+}
+
+.MEDIUM {
+  background-color: yellow;
+  color: black;
+}
+
+.CRITICAL {
+  background-color: red;
   color: white;
 }
