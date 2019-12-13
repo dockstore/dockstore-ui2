@@ -72,6 +72,20 @@ export class ViewService {
     );
   }
 
+  updateDefaultVersion(newDefaultVersion: string): void {
+    const workflowId = this.workflowQuery.getActive().id;
+    const message = 'Updating default workflow version';
+    this.alertService.start(message);
+    this.workflowsService.updateWorkflowDefaultVersion(workflowId, newDefaultVersion).subscribe(
+      updatedWorkflow => {
+        this.alertService.detailedSuccess();
+        this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
+        this.workflowService.setWorkflow(updatedWorkflow);
+      },
+      (error: HttpErrorResponse) => this.alertService.detailedError(error)
+    );
+  }
+
   /**
    * Opens a confirmation dialog that the asks the Dockstore User if they
    * would like to associate their Zenodo account for requesting DOIs

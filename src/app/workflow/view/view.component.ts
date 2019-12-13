@@ -34,6 +34,7 @@ import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewService } from './view.service';
+import { WorkflowVersion } from 'app/shared/swagger';
 
 @Component({
   selector: 'app-view-workflow',
@@ -88,6 +89,10 @@ export class ViewWorkflowComponent extends View implements OnInit {
         this.alertService.detailedError(error);
       }
     );
+  }
+
+  updateDefaultVersion() {
+    this.viewService.updateDefaultVersion(this.version.name);
   }
 
   /**
