@@ -55,6 +55,9 @@ describe('Notifications Banner', () => {
 
       cy.visit('/my-workflows');
       verifyNotificationExist();
+
+      cy.visit('/starred');
+      verifyNotificationExist();
     });
   });
 
@@ -85,6 +88,9 @@ describe('Notifications Banner', () => {
       verifyNotificationAbsent();
 
       cy.visit('/my-workflows');
+      verifyNotificationAbsent();
+
+      cy.visit('/starred');
       verifyNotificationAbsent();
     });
   });
