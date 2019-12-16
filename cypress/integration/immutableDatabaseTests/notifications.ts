@@ -33,6 +33,15 @@ describe('Notifications Banner', () => {
 
   describe('Sitewide notification is displayed when when it is not dismissed', () => {
     it('should be appearing on any page before it is dismissed', () => {
+      cy.server();
+      cy.fixture('notification1.json').then(json => {
+        cy.route({
+          method: 'POST',
+          url: '/*',
+          response: json
+        });
+      });
+
       verifyNotificationExist();
 
       cy.visit('/search');
@@ -51,6 +60,15 @@ describe('Notifications Banner', () => {
 
   describe('Sitewide notification is not displayed when it is dismissed', () => {
     it('should not be appearing on any page when it is dismissed', () => {
+      cy.server();
+      cy.fixture('notification1.json').then(json => {
+        cy.route({
+          method: 'POST',
+          url: '/*',
+          response: json
+        });
+      });
+
       cy
         .get('[data-cy=dismiss-notification')
         .click();
