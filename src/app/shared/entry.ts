@@ -417,6 +417,10 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @param topicId The ID of the topic on discourse
    */
   discourseHelper(topicId: number): void {
+    const element = document.getElementById('discourse-embed-frame');
+    if (element !== null) {
+      element.remove();
+    }
     (<any>window).DiscourseEmbed = {
       discourseUrl: Dockstore.DISCOURSE_URL,
       topicId: topicId
