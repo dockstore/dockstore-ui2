@@ -30,7 +30,7 @@
           [name]="repo.repositoryName"
           [checked]="repo.present"
           [disabled]="!repo.canDelete && repo.present"
-          [matTooltip]="!repo.canDelete && repo.present ? 'This workflow is full so it cannot be deleted.' : ''"
+          [matTooltip]="!repo.canDelete && repo.present ? 'Only workflow stubs can be deleted.' : ''"
           >{{ repo.path }}</mat-slide-toggle
         >
       </div>
