@@ -110,21 +110,6 @@ In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to
 
 ## Development server
 
-Setup your proxy.conf.json. 
-```
-{
-  "/api": {
-    "target": "http://<hostname>:8080",
-    "pathRewrite": {
-      "^/api" : ""
-    }
-  },
-  "/swagger.json": {
-    "target": "http://<hostname>:8080"
-  }
-}
-```
-
 Run `npm run start -- --host=<host>` for a dev server. Navigate to `http://<host>:4200/`. The app will automatically reload if you change any of the source files. 
 
 ## Updating dependencies
