@@ -106,7 +106,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
         .subscribe(reloadEntries => {
           if (reloadEntries) {
             const user = this.userQuery.getValue().user;
-            if (user && entryType) {
+            if (user) {
               this.getMyEntries(user.id, entryType);
             }
           }
