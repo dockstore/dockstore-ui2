@@ -28,7 +28,7 @@ import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
@@ -99,7 +99,19 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
 
   registerEntry(entryType: EntryType | null) {
     if (entryType === EntryType.BioWorkflow) {
-      this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+      const dialogRef = this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+      dialogRef
+        .afterClosed()
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(result => {
+          if (result) {
+            const user = this.userQuery.getValue().user;
+            const entryType = this.sessionQuery.getValue().entryType;
+            if (user && entryType) {
+              this.getMyEntries(user.id, entryType);
+            }
+          }
+        });
     }
     if (entryType === EntryType.Service) {
       this.gitHubAppInstallationLink$.pipe(take(1)).subscribe(link => window.open(link));
