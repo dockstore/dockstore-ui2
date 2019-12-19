@@ -103,10 +103,9 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
       dialogRef
         .afterClosed()
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(result => {
-          if (result) {
+        .subscribe(reloadEntries => {
+          if (reloadEntries) {
             const user = this.userQuery.getValue().user;
-            const entryType = this.sessionQuery.getValue().entryType;
             if (user && entryType) {
               this.getMyEntries(user.id, entryType);
             }
