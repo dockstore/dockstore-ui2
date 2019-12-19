@@ -64,8 +64,12 @@ export class WorkflowFileEditorComponent extends FileEditing {
     if (!this.versions || this.versions.length === 0) {
       return true;
     }
-    const mostRecentId = this.versions.reduce((max, n) => Math.max(max, n.id), this.versions[0].id);
+    const mostRecentId = this.getIdOfNewestVersion(this.versions);
     return this._selectedVersion.id === mostRecentId;
+  }
+
+  getIdOfNewestVersion(versions: Array<WorkflowVersion>): number {
+    return versions.reduce((max, n) => Math.max(max, n.id), this.versions[0].id);
   }
 
   /**
@@ -107,10 +111,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
           this.workflowsService.getWorkflow(editedWorkflow.id).subscribe(
             (newlyGottenWorkflow: Workflow) => {
               this.workflowService.setWorkflow(newlyGottenWorkflow);
-              const mostRecentId = newlyGottenWorkflow.workflowVersions.reduce(
-                (max, n) => Math.max(max, n.id),
-                newlyGottenWorkflow.workflowVersions[0].id
-              );
+              const mostRecentId = this.getIdOfNewestVersion(newlyGottenWorkflow.workflowVersions);
               const updatedVersion = newlyGottenWorkflow.workflowVersions.find(v => v.id === mostRecentId);
               this.alertService.detailedSuccess(
                 'Saved version ' + updatedVersion.name + ' of hosted workflow ' + newlyGottenWorkflow.repository
