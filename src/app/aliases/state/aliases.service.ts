@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 import {
+  AliasesService as WorkflowVersionsAliasService,
   Collection,
   ContainersService,
   DockstoreTool,
   Organization,
   OrganizationsService,
   Workflow,
+  WorkflowVersionPathInfo,
   WorkflowsService
 } from '../../shared/swagger';
 import { AliasesStore } from './aliases.store';
@@ -18,7 +20,8 @@ export class AliasesService {
     private aliasesStore: AliasesStore,
     private organizationsService: OrganizationsService,
     private toolsService: ContainersService,
-    private workflowsService: WorkflowsService
+    private workflowsService: WorkflowsService,
+    private workflowVersionsService: WorkflowVersionsAliasService
   ) {}
 
   clearState(): void {
@@ -28,7 +31,8 @@ export class AliasesService {
         organization: null,
         collection: null,
         tool: null,
-        workflow: null
+        workflow: null,
+        workflowVersion: null
       };
     });
   }
@@ -140,4 +144,32 @@ export class AliasesService {
       };
     });
   }
+
+  @transaction()
+  updateWorkflowVersionPathInfoFromAlias(alias: string): void {
+    this.clearState();
+    this.aliasesStore.setLoading(true);
+    this.workflowVersionsService
+      .getWorkflowVersionPathInfoByAlias(alias)
+      .pipe(finalize(() => this.aliasesStore.setLoading(false)))
+      .subscribe(
+        (workflowVersionPathInfo: WorkflowVersionPathInfo) => {
+          this.aliasesStore.setError(false);
+          this.updateWorkflowVersionPathInfo(workflowVersionPathInfo);
+        },
+        () => {
+          this.aliasesStore.setError(true);
+        }
+      );
+  }
+
+  updateWorkflowVersionPathInfo(workflowVersionPathInfo: WorkflowVersionPathInfo) {
+    this.aliasesStore.update(state => {
+      return {
+        ...state,
+        workflowVersionPathInfo: workflowVersionPathInfo
+      };
+    });
+  }
+
 }

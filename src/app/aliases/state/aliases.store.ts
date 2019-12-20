@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { Organization, Collection, DockstoreTool, Workflow } from '../../shared/swagger';
+import {Organization, Collection, DockstoreTool, Workflow, WorkflowVersionPathInfo} from '../../shared/swagger';
 
 export interface AliasesState {
   organization: Organization | null;
   collection: Collection | null;
   tool: DockstoreTool | null;
   workflow: Workflow | null;
+  workflowVersionPathInfo: WorkflowVersionPathInfo | null;
 }
 
 export function createInitialState(): AliasesState {
@@ -14,7 +15,8 @@ export function createInitialState(): AliasesState {
     organization: null,
     collection: null,
     tool: null,
-    workflow: null
+    workflow: null,
+    workflowVersionPathInfo: null
   };
 }
 
