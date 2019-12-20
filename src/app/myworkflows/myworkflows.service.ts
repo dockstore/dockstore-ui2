@@ -99,7 +99,15 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
 
   registerEntry(entryType: EntryType | null) {
     if (entryType === EntryType.BioWorkflow) {
-      this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+      const dialogRef = this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+      dialogRef.afterClosed().subscribe(reloadEntries => {
+        if (reloadEntries) {
+          const user = this.userQuery.getValue().user;
+          if (user) {
+            this.getMyEntries(user.id, entryType);
+          }
+        }
+      });
     }
     if (entryType === EntryType.Service) {
       this.gitHubAppInstallationLink$.pipe(take(1)).subscribe(link => window.open(link));
