@@ -33,7 +33,7 @@ export class HomeLoggedInComponent extends Base implements OnInit, AfterViewInit
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         () => {
-          this.twitterService.createTimeline(this.twitterElement, 800);
+          this.twitterService.createTimeline(this.twitterElement, 3);
         },
         err => console.error(err)
       );
