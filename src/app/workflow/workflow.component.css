@@ -22,7 +22,3 @@ pre {
   white-space: pre-wrap;
   word-break: normal;
 }
-
-#workflow-path {
-  overflow-wrap: break-word;
-}
