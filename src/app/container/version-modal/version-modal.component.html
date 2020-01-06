@@ -33,7 +33,7 @@
               ng-maxlength="128"
               required
               title="Docker Image tag name."
-              placeholder="e.g. develop"
+              placeholder="e.g. 1.0.0"
               [disabled]="!(mode == 'Add')"
             />
           </div>
@@ -53,7 +53,7 @@
               ng-maxlength="128"
               [pattern]="validationPatterns.reference"
               title="Git branch or tag name."
-              placeholder="e.g. develop"
+              placeholder="e.g. 1.0.0"
               [disabled]="!editMode || (editMode && unsavedVersion.automated) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
             />
             <div *ngIf="formErrors.reference" class="form-error-messages alert alert-danger">
