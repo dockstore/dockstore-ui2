@@ -75,7 +75,7 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         () => {
-          this.twitterService.createTimeline(this.twitterElement, 400);
+          this.twitterService.createTimeline(this.twitterElement, 2);
         },
         err => console.error(err)
       );

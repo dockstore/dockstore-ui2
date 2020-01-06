@@ -66,13 +66,13 @@ export class TwitterService {
     })(document, 'script', this.TWITTER_SCRIPT_ID, this.TWITTER_WIDGET_URL);
   }
 
-  createTimeline(element: ElementRef, height: number) {
+  createTimeline(element: ElementRef, tweetLimit: number) {
     const nativeElement = element.nativeElement;
     nativeElement.innerHTML = '';
     window['twttr'].widgets
       .createTimeline({ sourceType: 'url', url: 'https://twitter.com/dockstoreOrg' }, nativeElement, {
         theme: 'light',
-        height: height
+        tweetLimit: tweetLimit
       })
       .then(embed => {
         // console.log(embed);
