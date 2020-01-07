@@ -1,7 +1,8 @@
-{
-  "expiration": 1924454710210,
-  "id": 15,
-  "message": "Notification test",
-  "priority": "CRITICAL",
-  "type": "SITEWIDE"
-}
+[
+  {
+    "message": "Notification test modified",
+    "expiration": "2030-12-25T18:45:10.210Z",
+    "type": "SITEWIDE",
+    "priority": "CRITICAL"
+  }
+]
