@@ -99,6 +99,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
+  public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
@@ -124,6 +125,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
+    this.toolTips = this.searchService.initializeToolTips();
   }
 
   getKeys(bucketMap: Map<any, any>): Array<string> {
