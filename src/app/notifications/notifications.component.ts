@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Notification } from '../shared/swagger/model/notification';
 import { NotificationsQuery } from './state/notifications.query';
 import { NotificationsService } from './state/notifications.service';
@@ -13,13 +13,14 @@ interface DismissedNotification {
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.css']
+  styleUrls: ['./notifications.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NotificationsComponent implements OnInit {
   constructor(private notificationsQuery: NotificationsQuery, private notificationsService: NotificationsService) {}
   message: string;
   public allNotifications$: Observable<Array<Notification>>;
-  private storageKey = 'dismissedNotifications';
+  private readonly storageKey = 'dismissedNotifications';
   public dismissedNotifications: Array<DismissedNotification> = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
 
   ngOnInit() {
@@ -29,9 +30,9 @@ export class NotificationsComponent implements OnInit {
   }
 
   removeExpiredDisabledNotifications(notificationsStored: Array<DismissedNotification>) {
-    const today = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+    const today = Date.now();
     this.dismissedNotifications = this.dismissedNotifications.filter(notification => {
-      return formatDate(notification.expiration, 'yyyy-MM-dd', 'en') > today;
+      return notification.expiration.getTime() > today;
     });
     localStorage.setItem(this.storageKey, JSON.stringify(this.dismissedNotifications));
   }

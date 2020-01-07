@@ -1,19 +1,28 @@
+.notification-display {
+  display: inline-block;
+}
+
+.notification-display p {
+  font-size: 20px;
+}
+
 .notification-bar {
   background-color: #3b4045;
   width: 100%;
 }
 
-.LOW {
+.low {
+  font-size: 30px;
   background-color: black;
   color: white;
 }
 
-.MEDIUM {
+.medium {
   background-color: yellow;
   color: black;
 }
 
-.CRITICAL {
+.critical {
   background-color: red;
   color: white;
 }
