@@ -15,20 +15,19 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { WorkflowService } from 'app/shared/state/workflow.service';
 import { takeUntil } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
+import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
-import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Versions } from '../../shared/versions';
-import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -59,7 +58,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     private alertService: AlertService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
     private workflowsService: WorkflowsService,
-    private refreshService: RefreshService,
+    private workflowService: WorkflowService,
     protected sessionQuery: SessionQuery
   ) {
     super(dockstoreService, dateService, sessionQuery);
@@ -94,11 +93,10 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     const message = 'Updating default workflow version';
     this.alertService.start(message);
     this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(
-      response => {
+      updatedWorkflow => {
         this.alertService.detailedSuccess();
-        if (this.workflow.mode !== Workflow.ModeEnum.HOSTED) {
-          this.refreshService.refreshWorkflow();
-        }
+        this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
+        this.workflowService.setWorkflow(updatedWorkflow);
       },
       (error: HttpErrorResponse) => this.alertService.detailedError(error)
     );

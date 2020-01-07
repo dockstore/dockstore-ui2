@@ -38,10 +38,10 @@ describe('StarringService', () => {
     expect(service).toBeTruthy();
   }));
   it('should call everything', inject([StarringService], (service: StarringService) => {
-    service.setStar(1, EntryType.BioWorkflow);
-    service.setStar(1, EntryType.Tool);
-    service.setUnstar(1, EntryType.BioWorkflow);
-    service.setUnstar(1, EntryType.Tool);
+    service.putStar(1, EntryType.BioWorkflow, true);
+    service.putStar(1, EntryType.Tool, true);
+    service.putStar(1, EntryType.BioWorkflow, false);
+    service.putStar(1, EntryType.Tool, false);
     service.getStarring(1, EntryType.BioWorkflow);
     service.getStarring(1, EntryType.Tool);
     service.getStarredTools();

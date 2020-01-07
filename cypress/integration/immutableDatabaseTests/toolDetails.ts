@@ -55,7 +55,12 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
     cy.get('.mat-tab-label').should('have.length', 4);
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=info');
   });
-
+  it('should have sharebuttons', () => {
+    cy.get('.sb-facebook').should('be.visible');
+    cy.get('.sb-twitter').should('be.visible');
+    cy.get('.sb-linkedin').should('be.visible');
+    cy.get('.sb-reddit').should('be.visible');
+  });
   it('Change tab to launch', () => {
     goToTab('Launch');
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=launch');

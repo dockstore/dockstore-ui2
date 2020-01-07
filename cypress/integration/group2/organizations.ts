@@ -130,9 +130,9 @@ describe('Dockstore Organizations', () => {
       cy.visit('/');
       cy.contains('Potatoe');
       cy.contains('Filter organizations');
-      cy.get('#mat-input-0').type('Po');
+      cy.get('[data-cy=filterOrganizationsInput]').type('Po');
       cy.contains('Potatoe');
-      cy.get('#mat-input-0').type('r');
+      cy.get('[data-cy=filterOrganizationsInput]').type('r');
       cy.contains('No matching organizations');
     });
   });

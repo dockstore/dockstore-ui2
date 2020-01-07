@@ -19,6 +19,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
@@ -90,7 +91,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
-    private toolService: ToolService
+    private toolService: ToolService,
+    private alertService: AlertService
   ) {
     super(
       trackLoginService,
@@ -230,12 +232,20 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.setContainerLabels();
     }
   }
-  setContainerLabels(): any {
-    return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels.join(', ')).subscribe(tool => {
-      this.tool.labels = tool.labels;
-      this.updateContainer.setTool(tool);
-      this.labelsEditMode = false;
-    });
+
+  // TODO: Move most of this function to the service, sadly 'this.labelsEditMode' makes it more difficult
+  setContainerLabels() {
+    this.alertService.start('Setting labels');
+    return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels.join(', ')).subscribe(
+      tool => {
+        this.updateContainer.setTool(tool);
+        this.labelsEditMode = false;
+        this.alertService.simpleSuccess();
+      },
+      error => {
+        this.alertService.detailedError(error);
+      }
+    );
   }
 
   cancelLabelChanges(): void {

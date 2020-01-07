@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Query } from '@datorama/akita';
-import { SearchStore, SearchState } from './search.store';
-import { Workflow, DockstoreTool } from '../../shared/swagger';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { Query } from '@datorama/akita';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { SearchState, SearchStore } from './search.store';
 
 @Injectable({ providedIn: 'root' })
 export class SearchQuery extends Query<SearchState> {
@@ -21,12 +21,13 @@ export class SearchQuery extends Query<SearchState> {
       elasticSearchResults ? elasticSearchResults.map(elasticSearchResult => elasticSearchResult._source) : null
     )
   );
-  public activeToolTab$: Observable<boolean> = combineLatest(this.tools$, this.workflows$).pipe(
+  public activeToolTab$: Observable<boolean> = combineLatest([this.tools$, this.workflows$]).pipe(
     map(([tools, workflows]) => this.setTabActive(tools, workflows))
   );
   public noToolHits$: Observable<boolean> = this.tools$.pipe(map((tools: Array<DockstoreTool>) => this.haveNoHits(tools)));
   public noWorkflowHits$: Observable<boolean> = this.workflows$.pipe(map((workflows: Array<Workflow>) => this.haveNoHits(workflows)));
   public searchText$: Observable<string> = this.select(state => state.searchText);
+  public basicSearchText$: Observable<string> = this.searchText$.pipe(map(searchText => this.joinComma(searchText)));
   public showToolTagCloud$: Observable<boolean> = this.select(state => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select(state => state.showWorkflowTagCloud);
   public filterKeys$: Observable<Array<string>> = this.select(state => state.filterKeys);
@@ -34,6 +35,16 @@ export class SearchQuery extends Query<SearchState> {
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map(terms => terms.length > 0));
   public suggestTerm$: Observable<string> = this.select(state => state.suggestTerm);
   public pageSize$: Observable<number> = this.select(state => state.pageSize);
+  public pageIndex$: Observable<number> = this.select(state => state.pageIndex);
+  public noBasicSearchHits$: Observable<boolean> = combineLatest([this.noToolHits$, this.noWorkflowHits$, this.searchText$]).pipe(
+    map(([noToolHits, noWorkflowHits, searchText]) => {
+      if (!searchText) {
+        return false;
+      } else {
+        return noToolHits && noWorkflowHits;
+      }
+    })
+  );
 
   constructor(protected store: SearchStore, private route: ActivatedRoute) {
     super(store);
@@ -64,5 +75,12 @@ export class SearchQuery extends Query<SearchState> {
 
   haveNoHits(object: Array<any>): boolean {
     return !object || object.length === 0;
+  }
+
+  joinComma(searchTerm: string): string {
+    return searchTerm
+      .trim()
+      .split(' ')
+      .join(', ');
   }
 }

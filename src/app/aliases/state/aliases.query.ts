@@ -8,6 +8,7 @@ export class AliasesQuery extends Query<AliasesState> {
   collection$ = this.select(state => state.collection);
   tool$ = this.select(state => state.tool);
   workflow$ = this.select(state => state.workflow);
+  workflowVersionPathInfo$ = this.select(state => state.workflowVersionPathInfo);
   loading$ = this.selectLoading();
 
   constructor(protected store: AliasesStore) {

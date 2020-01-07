@@ -14,15 +14,15 @@
  *     limitations under the License.
  */
 import { OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Base } from '../shared/base';
 import { DateService } from '../shared/date.service';
 import { DockstoreTool, Workflow } from '../shared/swagger';
 import { SearchQuery } from './state/search.query';
-import { Base } from '../shared/base';
-import { takeUntil } from 'rxjs/operators';
 import { SearchService } from './state/search.service';
 
 export abstract class SearchEntryTable extends Base implements OnInit {
@@ -33,7 +33,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
 
   public readonly displayedColumns = ['name', 'verified', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
   abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
-  abstract privateNgOnInit(): void;
+  abstract privateNgOnInit(): Observable<(DockstoreTool | Workflow)[]>;
 
   constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
     super();
@@ -44,10 +44,15 @@ export abstract class SearchEntryTable extends Base implements OnInit {
     this.dataSource = new MatTableDataSource();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.searchQuery.pageSize$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(pageSize => {
-      this.dataSource.paginator.pageSize = pageSize;
-      this.privateNgOnInit();
-    });
+    combineLatest([this.searchQuery.pageSize$, this.searchQuery.pageIndex$, this.privateNgOnInit()])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([pageSize, pageIndex, entries]) => {
+        this.dataSource.paginator.pageSize = pageSize;
+        if (entries) {
+          this.dataSource.data = entries;
+          this.dataSource.paginator.pageIndex = pageIndex;
+        }
+      });
     this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
       return data.slice().sort((a, b) => {
         return this.searchService.compareAttributes(a, b, sort.active, sort.direction);
@@ -55,7 +60,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
     };
   }
 
-  updatePageSize($event: any) {
-    this.searchService.setPageSize($event.pageSize);
+  updatePageSizeAndIndex($event: PageEvent) {
+    this.searchService.setPageSizeAndIndex($event.pageSize, $event.pageIndex);
   }
 }

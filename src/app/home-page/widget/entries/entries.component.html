@@ -1,4 +1,4 @@
-<div class="w-100">
+<div class="w-100 entry-holder">
   <h3>My Entries</h3>
   <div *ngIf="!hasItems; else userHasEntries">
     <p>You have no entries</p>
@@ -9,22 +9,25 @@
       <input matInput [(ngModel)]="filterText" (keyup)="onTextChange($event)" placeholder="Filter entries..." />
     </mat-form-field>
 
-    <div *ngFor="let entry of myItems" class="w-100">
-      <a *ngIf="entry.entryType === entryTypeEnum.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
-        entry.path
-      }}</a>
-      <a
-        *ngIf="entry.entryType === entryTypeEnum.WORKFLOW"
-        [routerLink]="'/my-workflows/' + entry.path"
-        routerLinkActive="router-link-active"
-        >{{ entry.path }}</a
-      >
-      <a
-        *ngIf="entry.entryType === entryTypeEnum.SERVICE"
-        [routerLink]="'/my-services/' + entry.path"
-        routerLinkActive="router-link-active"
-        >{{ entry.path }}</a
-      >
+    <div *ngFor="let entry of myItems" class="w-100 ellipsis-overflow">
+      <span [matTooltip]="entry.prettyPath">
+        <a *ngIf="entry.entryType === entryTypeEnum.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
+          entry.prettyPath
+        }}</a>
+
+        <a
+          *ngIf="entry.entryType === entryTypeEnum.WORKFLOW"
+          [routerLink]="'/my-workflows/' + entry.path"
+          routerLinkActive="router-link-active"
+          >{{ entry.prettyPath }}</a
+        >
+        <a
+          *ngIf="entry.entryType === entryTypeEnum.SERVICE"
+          [routerLink]="'/my-services/' + entry.path"
+          routerLinkActive="router-link-active"
+          >{{ entry.prettyPath }}</a
+        >
+      </span>
     </div>
     <p *ngIf="!myItems || myItems.length === 0">No matching entries</p>
   </ng-template>

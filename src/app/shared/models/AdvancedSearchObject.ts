@@ -20,5 +20,12 @@ export class AdvancedSearchObject {
   ORFilter: string;
   NOTFilter: string;
   searchMode: string;
-  toAdvanceSearch: boolean;
 }
+
+export const initialAdvancedSearchObject: AdvancedSearchObject = {
+  ANDSplitFilter: '',
+  ANDNoSplitFilter: '',
+  ORFilter: '',
+  NOTFilter: '',
+  searchMode: 'files'
+};

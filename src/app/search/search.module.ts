@@ -33,7 +33,6 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
 import { getTooltipConfig } from '../shared/tooltip';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
 import { BasicSearchComponent } from './basic-search/basic-search.component';
 import { QueryBuilderService } from './query-builder.service';
@@ -75,7 +74,7 @@ import { SearchService } from './state/search.service';
     ReactiveFormsModule,
     RefreshAlertModule
   ],
-  providers: [SearchService, AdvancedSearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
+  providers: [SearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
   exports: [SearchComponent]
 })
 export class SearchModule {}

@@ -14,35 +14,69 @@
  *    limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
+/**
+ * Handle twitter-related actions
+ * See https://github.com/ABD-dev/ngx-twitter-timeline
+ *
+ * @export
+ * @class TwitterService
+ */
 @Injectable()
 export class TwitterService {
-  constructor() {}
-  runScript() {
-    // https://stackoverflow.com/questions/42993859/twitter-widget-on-angular-2
-    (<any>window).twttr = (function(d, s, id) {
-      let js: any;
-      const fjs = d.getElementsByTagName(s)[0];
-      const t = (<any>window).twttr || {};
-      if (d.getElementById(id)) {
-        return t;
-      }
-      js = d.createElement(s);
-      js.id = id;
-      js.src = 'https://platform.twitter.com/widgets.js';
-      fjs.parentNode.insertBefore(js, fjs);
+  private TWITTER_SCRIPT_ID = 'twitter-wjs';
+  private TWITTER_WIDGET_URL = 'https://platform.twitter.com/widgets.js';
 
-      t._e = [];
-      t.ready = function(f: any) {
-        t._e.push(f);
+  constructor() {}
+
+  loadScript(): Observable<any> {
+    return Observable.create(observer => {
+      this.startScriptLoad();
+
+      window['twttr'].ready(twttr => {
+        observer.next(twttr);
+        observer.complete();
+      });
+    });
+  }
+
+  private startScriptLoad() {
+    window['twttr'] = (function(d, s, id, url) {
+      let script;
+      const firstScriptEl = d.getElementsByTagName(s)[0],
+        twitterScript = window['twttr'] || {};
+      if (d.getElementById(id)) {
+        return twitterScript;
+      }
+
+      script = d.createElement(s);
+      script.id = id;
+      script.src = url;
+      firstScriptEl.parentNode.insertBefore(script, firstScriptEl);
+
+      twitterScript._e = [];
+
+      twitterScript.ready = function(f) {
+        twitterScript._e.push(f);
       };
 
-      return t;
-    })(document, 'script', 'twitter-wjs');
+      return twitterScript;
+    })(document, 'script', this.TWITTER_SCRIPT_ID, this.TWITTER_WIDGET_URL);
+  }
 
-    if ((<any>window).twttr.ready()) {
-      (<any>window).twttr.widgets.load();
-    }
+  createTimeline(element: ElementRef, tweetLimit: number) {
+    const nativeElement = element.nativeElement;
+    nativeElement.innerHTML = '';
+    window['twttr'].widgets
+      .createTimeline({ sourceType: 'url', url: 'https://twitter.com/dockstoreOrg' }, nativeElement, {
+        theme: 'light',
+        tweetLimit: tweetLimit
+      })
+      .then(embed => {
+        // console.log(embed);
+      })
+      .catch(error => console.error(error));
   }
 }

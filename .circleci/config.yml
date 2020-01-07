@@ -69,7 +69,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group1/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   integration_test_2:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -77,7 +81,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group2/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   integration_test_3:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -85,7 +93,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/immutableDatabaseTests/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   upload_to_s3:
     working_directory: ~/repo
     docker:
@@ -176,6 +188,16 @@ commands:
     steps:
       - attach_workspace:
           at: .
+  upload_artifacts:
+    steps:
+      - store_test_results:
+          path: integration-tests/test-results
+      - store_artifacts:
+          path: integration-tests/test-results
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
   setup_integration_test:
     steps:
       - get_workspace
@@ -206,6 +228,7 @@ commands:
           name: Run webservice
           command: java -jar dockstore-webservice.jar server travisci/web.yml 1>/dev/null
           background: true
+      - run: mkdir -p integration-tests/test-results/junit
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh

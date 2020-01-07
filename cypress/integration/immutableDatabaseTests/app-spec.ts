@@ -27,6 +27,11 @@ describe('Logged in Dockstore Home', () => {
     // expect(browser.getLocationAbsUrl()).toMatch("/");
   });
 
+  it('should have the twitter timeline', () => {
+    cy.scrollTo('bottom');
+    cy.get('.twitter-timeline').should('be.visible');
+  });
+
   describe('Navigation', () => {
     it('My Tools visible', () => {
       cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
@@ -80,6 +85,10 @@ describe('Logged out Dockstore Home', () => {
       cy.get('#youtubeModal').should('be.visible');
       cy.get('body').type('{esc}');
       cy.get('#youtubeModal').should('not.be.visible');
+    });
+    it('should have the twitter timeline', () => {
+      cy.scrollTo('bottom');
+      cy.get('.twitter-timeline').should('be.visible');
     });
   });
 });

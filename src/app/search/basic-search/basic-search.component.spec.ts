@@ -4,8 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ProviderService } from '../../shared/provider.service';
-import { AdvancedSearchStubService, SearchStubService } from '../../test/service-stubs';
-import { AdvancedSearchService } from '../advancedsearch/advanced-search.service';
+import { SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
 import { BasicSearchComponent } from './basic-search.component';
 
@@ -18,11 +17,7 @@ describe('BasicSearchComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [MatAutocompleteModule, RouterTestingModule],
       declarations: [BasicSearchComponent],
-      providers: [
-        ProviderService,
-        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService },
-        { provide: SearchService, useClass: SearchStubService }
-      ]
+      providers: [ProviderService, { provide: SearchService, useClass: SearchStubService }]
     }).compileComponents();
   }));
 

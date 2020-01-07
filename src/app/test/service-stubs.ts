@@ -122,6 +122,7 @@ export class SearchStubService {
   searchInfo$ = observableOf({});
   toSaveSearch$ = observableOf(false);
   values$ = observableOf('');
+  setSearchText(searchText: string) {}
   joinComma(searchTerm: string): string {
     return searchTerm
       .trim()
@@ -151,6 +152,8 @@ export class SearchStubService {
   hasResults(searchTerm: string, hits: any) {
     return true;
   }
+
+  setFilterKeys(filters: Map<string, Set<string>>) {}
 
   // Initialization Functions
   initializeCommonBucketStubs() {
@@ -464,11 +467,6 @@ export class TokensStubService {
   public deleteToken(tokenId: number, extraHttpRequestParams?: any): Observable<{}> {
     return observableOf({});
   }
-}
-
-export class AdvancedSearchStubService {
-  showModal$ = observableOf(true);
-  advancedSearch$ = observableOf({});
 }
 
 export class StarringStubService {

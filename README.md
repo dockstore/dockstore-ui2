@@ -110,8 +110,7 @@ In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Run `ng serve --host 0.0.0.0` in order to serve your site to other computers on the same network. 
-
+Run `npm run start -- --host=<host>` for a dev server. Navigate to `http://<host>:4200/`. The app will automatically reload if you change any of the source files. 
 
 ## Updating dependencies
 
