@@ -15,7 +15,7 @@
   -->
 
 <button type="button" mat-button color="accent" class="btn-block" (click)="showVersionModal()">
-  {{ isPublic || !canWrite ? 'View' : 'Edit' }}
+  {{ isPublic || !canWrite || version.frozen ? 'View' : 'Edit' }}
 </button>
 <ng-container *ngIf="!isPublic">
   <button
