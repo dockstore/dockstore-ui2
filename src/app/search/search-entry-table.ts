@@ -49,8 +49,8 @@ export abstract class SearchEntryTable extends Base implements OnInit {
       .subscribe(([pageSize, pageIndex, entries]) => {
         this.dataSource.paginator.pageSize = pageSize;
         if (entries) {
-          this.dataSource.data = entries;
           this.dataSource.paginator.pageIndex = pageIndex;
+          this.dataSource.data = entries;
         }
       });
     this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
