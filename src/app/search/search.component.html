@@ -30,6 +30,7 @@
         <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
           <mat-expansion-panel-header>
             {{ friendlyNames.get(key) }}
+            <mat-icon *ngIf="toolTips.get(key) !== undefined" matTooltip="{{ toolTips.get(key) }}">help_outline</mat-icon>
           </mat-expansion-panel-header>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button

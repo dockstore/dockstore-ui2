@@ -482,6 +482,20 @@ export class SearchService {
     ]);
   }
 
+  initializeToolTips() {
+    return new Map([
+      ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
+      ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly ran by our team or an outside party.'],
+      [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
+      [
+        'has_checker',
+        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
+          'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.'
+      ],
+      ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.']
+    ]);
+  }
+
   initializeEntryOrder() {
     return new Map([
       ['_type', new SubBucket()],
