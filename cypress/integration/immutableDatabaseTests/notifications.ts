@@ -1,5 +1,5 @@
  /*
- *    Copyright 2019 OICR
+ *    Copyright 2020 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,6 +15,15 @@
  * */
 
 describe('Notifications Banner', () => {
+
+  const dockstorePaths = [
+    '/search',
+    '/organizations',
+    '/my-services',
+    '/my-workflows',
+    '/starred'
+  ];
+
   function verifyNotificationExist() {
     cy
       .get('[data-cy=notification-banner]')
@@ -44,20 +53,11 @@ describe('Notifications Banner', () => {
 
       verifyNotificationExist();
 
-      cy.visit('/search');
-      verifyNotificationExist();
+      dockstorePaths.forEach(path => {
+        cy.visit(path);
+        verifyNotificationExist();
+      });
 
-      cy.visit('/organizations');
-      verifyNotificationExist();
-
-      cy.visit('/my-services');
-      verifyNotificationExist();
-
-      cy.visit('/my-workflows');
-      verifyNotificationExist();
-
-      cy.visit('/starred');
-      verifyNotificationExist();
     });
   });
 
@@ -78,20 +78,11 @@ describe('Notifications Banner', () => {
 
       verifyNotificationAbsent();
 
-      cy.visit('/search');
-      verifyNotificationAbsent();
+      dockstorePaths.forEach(path => {
+        cy.visit(path);
+        verifyNotificationAbsent();
+      });
 
-      cy.visit('/organizations');
-      verifyNotificationAbsent();
-
-      cy.visit('/my-services');
-      verifyNotificationAbsent();
-
-      cy.visit('/my-workflows');
-      verifyNotificationAbsent();
-
-      cy.visit('/starred');
-      verifyNotificationAbsent();
     });
   });
 });
