@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { Event, EventsService } from 'app/shared/swagger';
+import { Event, EventsService } from 'app/shared/openapi';
 import { tap } from 'rxjs/operators';
 import { RecentEventsStore } from './recent-events.store';
 

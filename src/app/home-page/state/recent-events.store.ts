@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { Event } from 'app/shared/swagger';
+import { Event } from 'app/shared/openapi';
 
 export interface RecentEventsState extends EntityState<Event> {}
 
