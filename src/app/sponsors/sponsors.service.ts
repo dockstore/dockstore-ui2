@@ -23,7 +23,6 @@ export class SponsorsService {
     new Sponsor('oicr.png', new URL('https://oicr.on.ca/')),
     new Sponsor('ga4gh.png', new URL('https://genomicsandhealth.org/')),
     new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/'))
-    // new Sponsor('broad.png', new URL('https://www.broadinstitute.org/'))
   ];
 
   private languages: Sponsor[] = [
