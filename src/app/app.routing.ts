@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, PreloadAllModules, Routes } from '@angular/router';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeLoggedInComponent } from './home-page/home-logged-in/home-logged-in.component';
@@ -112,4 +112,8 @@ const APP_ROUTES: Routes = [
   { path: '**', redirectTo: '' }
 ];
 
-export const routing = RouterModule.forRoot(APP_ROUTES, { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' });
+export const routing = RouterModule.forRoot(APP_ROUTES, {
+  scrollPositionRestoration: 'enabled',
+  anchorScrolling: 'enabled',
+  preloadingStrategy: PreloadAllModules
+});
