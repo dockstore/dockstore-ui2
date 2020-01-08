@@ -48,13 +48,13 @@ export abstract class SearchEntryTable extends Base implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([pageSize, pageIndex, entries]) => {
         this.dataSource.paginator.pageSize = pageSize;
-        if (entries) {
-          this.dataSource.paginator.pageIndex = pageIndex;
-          this.dataSource.data = entries;
-        }
+        this.dataSource.paginator.pageIndex = pageIndex;
+        // Must set data after paginator, just a material datatables thing.
+        // See https://inneka.com/programming/angular/angular-matpaginator-not-working/ solution 14
+        this.dataSource.data = entries || [];
       });
     this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
-      return data.slice().sort((a, b) => {
+      return data.slice().sort((a: Workflow | DockstoreTool, b: Workflow | DockstoreTool) => {
         return this.searchService.compareAttributes(a, b, sort.active, sort.direction);
       });
     };
