@@ -2,10 +2,6 @@
   display: inline-block;
 }
 
-.notification-display p {
-  font-size: 20px;
-}
-
 .notification-bar {
   background-color: #3b4045;
   width: 100%;
