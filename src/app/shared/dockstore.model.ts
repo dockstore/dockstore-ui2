@@ -33,6 +33,7 @@ export class Dockstore {
   static DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
   static TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
   static CGC_IMPORT_URL = 'https://cgc.sbgenomics.com/integration/trs/import';
+  static ANVIL_IMPORT_URL = 'https://anvil.terra.bio/#import-tool/dockstore';
 
   static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
