@@ -34,7 +34,8 @@ export class SponsorsService {
 
   private partners: Sponsor[] = [
     new Sponsor('dnastack.png', new URL('https://dnastack.com')),
-    new Sponsor('sevenbridges.png', new URL('https://www.sevenbridges.com'))
+    new Sponsor('sevenbridges.png', new URL('https://www.sevenbridges.com')),
+    new Sponsor('terra.png', new URL('https://terra.bio'))
   ];
 
   getSponsors(): Sponsor[] {
