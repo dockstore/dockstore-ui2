@@ -1291,3 +1291,8 @@ mat-icon.star {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+#workflow-path,
+#tool-path {
+  overflow-wrap: break-word;
+}
