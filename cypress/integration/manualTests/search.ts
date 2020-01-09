@@ -52,13 +52,12 @@ describe('Admin UI', () => {
       cy.get('a')
         .contains('Organizations')
         .click();
-      cy.get('a')
-        .contains('Search')
-        .click();
+      cy.go('back');
       cy.contains('21 - 40');
       cy.get('[data-cy=search-tool-table-paginator]').contains(20);
+      cy.contains('pancancer/pcawg-dkfz-workflow').should('not.exist');
     });
-    it.only('should have basic search and advanced search mutually exclusive', () => {
+    it('should have basic search and advanced search mutually exclusive', () => {
       cy.get('[data-cy=basic-search]').type('dockstore_');
       cy.contains('Open Advanced Search').click();
       cy.contains('button', /^Advanced Search$/).should('be.visible').click();

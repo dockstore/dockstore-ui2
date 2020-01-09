@@ -1296,3 +1296,8 @@ mat-icon.star {
   text-align: center;
   font-size: 18px;
 }
+
+#workflow-path,
+#tool-path {
+  overflow-wrap: break-word;
+}

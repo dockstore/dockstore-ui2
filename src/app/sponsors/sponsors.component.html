@@ -13,10 +13,9 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
-<div class="container" *ngIf="!(user$ | async) || !isHomePage">
+<div class="container">
   <div class="row text-center">
-    <h5 style="color:#21335B">In Affiliation With</h5>
+    <h5>In Affiliation With</h5>
     <br />
     <!-- TODO: Will need to adjust spacing once the Broad Logo is added -->
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
@@ -28,8 +27,8 @@
       </div>
     </div>
   </div>
-  <div *ngIf="isHomePage" class="row text-center">
-    <h5 style="color:#21335B">Workflow Languages</h5>
+  <div *ngIf="!(user$ | async) && isHomePage" class="row text-center">
+    <h5>Workflow Languages</h5>
     <br />
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
       <div *ngFor="let partner of languages" class="pb-5 px-1">
@@ -39,8 +38,8 @@
       </div>
     </div>
   </div>
-  <div *ngIf="isHomePage" class="row text-center">
-    <h5 style="color:#21335B">Works With</h5>
+  <div *ngIf="!(user$ | async) && isHomePage" class="row text-center">
+    <h5>Works With</h5>
     <br />
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
       <div *ngFor="let partner of partners" class="pb-5 px-1">
