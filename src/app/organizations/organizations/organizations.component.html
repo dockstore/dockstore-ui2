@@ -46,7 +46,7 @@
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+            <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutGap="10px" fxLayoutAlign="space-between" class="mx-4">
               <span fxLayout="row" *ngIf="org?.email">
                 <mat-icon>email</mat-icon>
                 <span
@@ -64,8 +64,8 @@
                 <span class="ellipsis-lines">{{ org.location }}</span>
               </span>
               <span fxLayout="row" *ngIf="org?.starredUsers.length !== 0" class="pull-right">
-                <span class="ellipsis-lines">{{ org.starredUsers.length }}</span>
                 <mat-icon class="orgStar">star</mat-icon>
+                <span class="ellipsis-lines">{{ org.starredUsers.length }}</span>
               </span>
             </div>
           </mat-card-content>
