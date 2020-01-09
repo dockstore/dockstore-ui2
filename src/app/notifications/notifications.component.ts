@@ -13,7 +13,7 @@ interface DismissedNotification {
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.css']
+  styleUrls: ['./notifications.component.scss']
 })
 export class NotificationsComponent implements OnInit {
   constructor(private notificationsQuery: NotificationsQuery, private notificationsService: NotificationsService) {

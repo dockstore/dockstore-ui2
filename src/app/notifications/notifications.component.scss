@@ -1,24 +1,23 @@
-.notification-display {
-  display: inline-block;
-}
-
 .notification-bar {
   background-color: #3b4045;
   width: 100%;
 }
 
 .low {
-  font-size: 30px;
-  background-color: black;
+  background-color: #3b4045;
   color: white;
 }
 
 .medium {
-  background-color: yellow;
+  background-color: #ffff4d;
   color: black;
 }
 
 .critical {
-  background-color: red;
+  background-color: #bd0f0f;
   color: white;
+}
+
+.mat-icon {
+  font-size: 18px;
 }
