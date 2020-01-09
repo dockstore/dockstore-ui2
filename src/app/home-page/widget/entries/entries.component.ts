@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { UserQuery } from 'app/shared/user/user.query';
-import { DefaultService } from 'app/shared/openapi';
 import { EntryUpdateTime } from 'app/shared/openapi/model/entryUpdateTime';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from 'app/shared/constants';
 import { FilteredList } from '../filtered-list';
+import { EntriesService, UsersService } from '../../../shared/openapi';
 
 @Component({
   selector: 'app-entries',
@@ -13,12 +13,12 @@ import { FilteredList } from '../filtered-list';
 })
 export class EntriesComponent extends FilteredList {
   public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
-  constructor(userQuery: UserQuery, defaultService: DefaultService) {
-    super(userQuery, defaultService);
+  constructor(userQuery: UserQuery, usersService: UsersService, entriesService: EntriesService) {
+    super(userQuery, entriesService, usersService);
   }
 
   getMyList(): void {
-    this.defaultService
+    this.usersService
       .getUserEntries(10, this.filterText)
       .pipe(
         debounceTime(formInputDebounceTime),
