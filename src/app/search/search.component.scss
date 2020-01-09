@@ -89,10 +89,14 @@
   &.active {
     background-color: #f4f4f4;
     color: #3b769a;
+    font-weight: bold;
   }
   &:not(.active) {
     &:hover {
       background-color: #f8f8f8;
+    }
+    .ng-fa-icon {
+      display: none;
     }
   }
 }
