@@ -17,13 +17,13 @@ describe('NotificationsComponent', () => {
 
   it('should be dismissed when close button is clicked', inject([NotificationsComponent], (component: NotificationsComponent) => {
     component.dismissedNotifications = [];
-    component.respondClick(mockedNotification);
+    component.dismissNotification(mockedNotification);
     expect(component.dismissedNotifications[0]).toEqual({ id: mockedNotification.id, expiration: mockedNotification.expiration });
   }));
 
   it('should be removed from local storage if expired', inject([NotificationsComponent], (component: NotificationsComponent) => {
     component.dismissedNotifications = [];
-    component.respondClick(expiredMockNotification);
+    component.dismissNotification(expiredMockNotification);
     component.removeExpiredDisabledNotifications(component.dismissedNotifications);
     expect(component.dismissedNotifications[0]).toEqual(undefined);
   }));
