@@ -9,6 +9,7 @@ export class RecentEventsService {
   constructor(private recentEventsStore: RecentEventsStore, private eventsService: EventsService) {}
 
   get() {
+    this.recentEventsStore.setLoading(true);
     return this.eventsService.getEvents('ALL_STARRED').pipe(
       tap(allStarredEvents => {
         this.recentEventsStore.set(allStarredEvents);
