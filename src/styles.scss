@@ -1305,3 +1305,13 @@ mat-icon.star {
 #tool-path {
   overflow-wrap: break-word;
 }
+
+.notification-display p {
+  text-align: center;
+  display: inline-block;
+}
+
+//removes the 10px margin added to p element on markdown component
+.markdown-remove-pmargin p {
+  margin-bottom: 0px;
+}
