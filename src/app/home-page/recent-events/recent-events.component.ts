@@ -14,6 +14,7 @@ export class RecentEventsComponent implements OnInit {
   events$: Observable<Event[]>;
   loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
+  homepage = true;
   constructor(private recentEventsQuery: RecentEventsQuery, private recentEventsService: RecentEventsService) {}
 
   ngOnInit() {
