@@ -1294,7 +1294,11 @@ mat-icon.star {
 
 .notification-display p {
   text-align: center;
-  font-size: 18px;
+  display: inline-block;
+}
+//removes the 10px margin added to p element on markdown component
+.markdown-remove-pmargin p {
+  margin-bottom: 0px;
 }
 
 #workflow-path,
