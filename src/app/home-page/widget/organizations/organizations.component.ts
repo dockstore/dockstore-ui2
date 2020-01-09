@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { UserQuery } from 'app/shared/user/user.query';
-import { DefaultService } from 'app/shared/openapi';
 import { OrganizationUpdateTime } from 'app/shared/openapi/model/organizationUpdateTime';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from 'app/shared/constants';
 import { FilteredList } from '../filtered-list';
+import { EntriesService, UsersService } from '../../../shared/openapi';
 
 @Component({
   selector: 'app-organizations',
@@ -12,12 +12,12 @@ import { FilteredList } from '../filtered-list';
   styleUrls: ['./organizations.component.scss']
 })
 export class OrganizationsComponent extends FilteredList {
-  constructor(userQuery: UserQuery, defaultService: DefaultService) {
-    super(userQuery, defaultService);
+  constructor(userQuery: UserQuery, usersService: UsersService, entriesService: EntriesService) {
+    super(userQuery, entriesService, usersService);
   }
 
   getMyList(): void {
-    this.defaultService
+    this.usersService
       .getUserDockstoreOrganizations(10, this.filterText)
       .pipe(
         debounceTime(formInputDebounceTime),
