@@ -16,16 +16,16 @@ interface DismissedNotification {
   styleUrls: ['./notifications.component.css']
 })
 export class NotificationsComponent implements OnInit {
-  constructor(private notificationsQuery: NotificationsQuery, private notificationsService: NotificationsService) {}
+  constructor(private notificationsQuery: NotificationsQuery, private notificationsService: NotificationsService) {
+    this.allNotifications$ = this.notificationsQuery.allNotifications$;
+  }
   message: string;
   public allNotifications$: Observable<Array<Notification>>;
-  public activeNotifications$: Observable<Array<Notification>>;
   private readonly storageKey = 'dismissedNotifications';
   public dismissedNotifications: Array<DismissedNotification> = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
 
   ngOnInit() {
     this.notificationsService.getNotifications();
-    this.allNotifications$ = this.notificationsQuery.allNotifications$;
     this.removeExpiredDisabledNotifications(this.dismissedNotifications);
   }
 
