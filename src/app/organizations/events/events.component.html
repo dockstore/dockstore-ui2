@@ -1,13 +1,18 @@
 <app-loading [loading]="loading$ | async">
   <mat-card>
-    <div fxLayout="column wrap">
-      <div *ngIf="(!(events$ | async) || (events$ | async).length === 0) && homepage">
-        <mat-card class="alert alert-info mx-1" role="alert">
-          <mat-icon>info</mat-icon> No events found. Star entries or organizations to see events for them. See
-          https://docs.dockstore.org/en/develop/end-user-topics/starring.html#starring-tools-and-workflows for how to star
-          entries.</mat-card
+    <div *ngIf="(!(events$ | async) || (events$ | async).length === 0) && homepage">
+      <mat-card class="alert alert-info mx-1" role="alert">
+        <mat-icon>info</mat-icon> No events found. Star entries or organizations to see events for them. Read
+        <a
+          href="https://docs.dockstore.org/en/develop/end-user-topics/starring.html#starring-tools-and-workflows"
+          target="_blank"
+          rel="noopener noreferrer"
+          >https://docs.dockstore.org/en/develop/end-user-topics/starring.html#starring-tools-and-workflows</a
         >
-      </div>
+        to learn how to star entries.</mat-card
+      >
+    </div>
+    <div fxLayout="column wrap">
       <span *ngFor="let event of events$ | async">
         <div *ngIf="event?.type === EventType.CREATEORG" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
