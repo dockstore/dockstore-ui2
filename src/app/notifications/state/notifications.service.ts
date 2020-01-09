@@ -10,14 +10,9 @@ export class NotificationsService {
   constructor(private notificationsStore: NotificationsStore, private curationService: CurationService) {}
 
   getNotifications() {
-    this.curationService.getActiveNotifications().subscribe((notificationsCollection: Array<Notification>) => {
-      this.notificationsStore.update(state => {
-        return {
-          ...state,
-          notifications: notificationsCollection
-        };
-      });
-    });
+    this.curationService
+      .getActiveNotifications()
+      .subscribe((notificationsCollection: Array<Notification>) => this.notificationsStore.set(notificationsCollection));
   }
 
   add(notification: Notification) {

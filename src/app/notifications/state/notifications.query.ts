@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationsQuery extends QueryEntity<NotificationsState> {
-  allNotifications$: Observable<Array<Notification>> = this.select(state => state.notifications);
+  allNotifications$: Observable<Array<Notification>> = this.selectAll();
 
   constructor(protected store: NotificationsStore) {
     super(store);
