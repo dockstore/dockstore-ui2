@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { HttpClient } from '@angular/common/http';
 import { NotificationsStore } from './notifications.store';
 import { Notification } from '../../shared/swagger/model/notification';
 import { CurationService } from '../../shared/swagger/api/curation.service';
