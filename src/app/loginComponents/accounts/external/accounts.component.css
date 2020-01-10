@@ -12,3 +12,26 @@
 mat-card-footer {
   padding: 24px;
 }
+
+.account-logo {
+  width: 100px;
+  margin-right: 20px;
+}
+
+.account-logo-div {
+  /* only has an effect when logo is shorter than neighboring div, like for Zenodo, or if we make them smaller */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 120px;
+}
+
+.account {
+  display: flex;
+}
+
+.login-button {
+  /* make this item right- and bottom-justified while others stay towards the left */
+  margin-left: auto;
+  align-self: flex-end;
+}
