@@ -31,6 +31,7 @@ export class EntriesComponent extends FilteredList {
             this.hasItems = true;
             this.firstCall = false;
           }
+          this.isLoading = false;
         },
         () => {}
       );

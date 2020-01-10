@@ -13,6 +13,7 @@ export abstract class FilteredList extends Base implements OnInit {
   public firstCall = true;
   public myItems;
   public filterText;
+  public isLoading = true;
 
   constructor(protected userQuery: UserQuery, protected entriesService: EntriesService, protected usersService: UsersService) {
     super();
