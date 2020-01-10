@@ -14,11 +14,16 @@
   ~    limitations under the License.
   -->
 <app-header>
-  <button mat-icon-button (click)="toggleSidebar()">
-    <mat-icon *ngIf="showSidebar">chevron_left</mat-icon>
-    <mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
-  </button>
-  <img src="../assets/images/dockstore/dockstore-workflows-green.png" /> {{ myEntryPageTitle$ | async | titlecase }}
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <button mat-icon-button (click)="toggleSidebar()">
+      <mat-icon *ngIf="showSidebar">chevron_left</mat-icon>
+      <mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
+    </button>
+    <img src="../assets/images/dockstore/dockstore-workflows-green.png" /><span
+      >&nbsp;{{ myEntryPageTitle$ | async | titlecase }}&nbsp;</span
+    >
+    <div *ngIf="(myEntryPageTitle$ | async | titlecase) === 'My Services'" class="beta-label">preview</div>
+  </div>
 </app-header>
 <div class="container-fluid sidebar-set-height">
   <!--Tool Content Page-->
