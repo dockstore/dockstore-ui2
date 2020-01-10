@@ -11,3 +11,7 @@
 .orgStar {
   line-height: 1.1em;
 }
+
+::ng-deep .mat-card-header-text {
+  width: 100%;
+}
