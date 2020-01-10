@@ -1,12 +1,18 @@
 <div class="w-100 entry-holder">
   <h3>My Entries</h3>
   <div *ngIf="!hasItems; else userHasEntries">
-    <p>You have no entries</p>
+    <small
+      >You have no entries. Read our
+      <a href="https://docs.dockstore.org/en/develop/getting-started/getting-started.html" target="_blank" rel="noopener noreferrer"
+        >docs</a
+      >
+      to learn more.</small
+    >
   </div>
 
   <ng-template #userHasEntries>
     <mat-form-field class="w-100">
-      <input matInput [(ngModel)]="filterText" (keyup)="onTextChange($event)" placeholder="Filter entries..." />
+      <input matInput [(ngModel)]="filterText" (keyup)="onTextChange($event)" placeholder="Find entries..." />
     </mat-form-field>
 
     <div *ngFor="let entry of myItems" class="w-100 ellipsis-overflow">

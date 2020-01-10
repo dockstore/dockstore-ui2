@@ -129,7 +129,7 @@ describe('Dockstore Organizations', () => {
     it('have organization shown on the homepage', () => {
       cy.visit('/');
       cy.contains('Potatoe');
-      cy.contains('Filter organizations');
+      cy.contains('Find organizations');
       cy.get('[data-cy=filterOrganizationsInput]').type('Po');
       cy.contains('Potatoe');
       cy.get('[data-cy=filterOrganizationsInput]').type('r');

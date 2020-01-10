@@ -26,7 +26,7 @@ describe('Dockstore my workflows', () => {
   it('have entries shown on the homepage', () => {
     cy.visit('/');
     cy.contains('A/l');
-    cy.contains('Filter entries');
+    cy.contains('Find entries');
     cy.get('#mat-input-0').type('bit');
     cy.contains('a/a');
     cy.get('#mat-input-0').type('r');
@@ -37,7 +37,6 @@ describe('Dockstore my workflows', () => {
     it('visit another page then come back', () => {
       cy.visit('/my-workflows');
       cy.get('a#home-nav-button').click();
-      cy.contains('Twitter');
       cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
