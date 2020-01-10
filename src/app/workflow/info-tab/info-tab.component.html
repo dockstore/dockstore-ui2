@@ -163,13 +163,15 @@
         <strong matTooltip="Digital Object Identifier">DOI</strong>:
         {{ selectedVersion && selectedVersion.doiURL ? selectedVersion.doiURL : 'n/a' }}
       </div>
-      <div><strong matTooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author ? workflow?.author : 'n/a' }}</div>
+      <div>
+        <strong matTooltip="Author listed in descriptor">Author</strong>: {{ selectedVersion?.author ? selectedVersion?.author : 'n/a' }}
+      </div>
       <div>
         <strong matTooltip="E-mail of corresponding author for workflow">E-mail</strong>:
-        <a href="mailto:{{ workflow?.email }}" *ngIf="workflow?.email">
+        <a href="mailto:{{ selectedVersion?.email }}" *ngIf="selectedVersion?.email">
           {{ workflow?.email }}
         </a>
-        <span *ngIf="!workflow?.email">
+        <span *ngIf="!selectedVersion?.email">
           n/a
         </span>
       </div>
@@ -178,12 +180,12 @@
         <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-raised-button>Export as ZIP</a>
       </span>
       <div>
-        <div *ngIf="workflow?.description || !isPublic">
+        <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
-          <div *ngIf="workflow?.description" class="well well-sm">
-            <markdown [data]="workflow?.description"></markdown>
+          <div *ngIf="selectedVersion?.description" class="well well-sm">
+            <markdown [data]="selectedVersion?.description"></markdown>
           </div>
-          <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
+          <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
               No description associated with this {{ entryType$ | async }}. See
