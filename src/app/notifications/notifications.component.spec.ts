@@ -24,7 +24,7 @@ describe('NotificationsComponent', () => {
   it('should be removed from local storage if expired', inject([NotificationsComponent], (component: NotificationsComponent) => {
     component.dismissedNotifications = [];
     component.dismissNotification(expiredMockNotification);
-    component.removeExpiredDisabledNotifications(component.dismissedNotifications);
+    component.removeExpiredDisabledNotifications();
     expect(component.dismissedNotifications[0]).toEqual(undefined);
   }));
 });
