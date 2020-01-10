@@ -59,6 +59,8 @@ export class DownloadCLIClientComponent implements OnInit {
     this.textData1 = `
 ### Setup Command Line Interface (Ubuntu)
 ------------------------------
+Setup our Dockstore CLI application to start launching workflows from the command line.
+
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
 2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
