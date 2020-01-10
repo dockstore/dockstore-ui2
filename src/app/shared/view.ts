@@ -15,11 +15,11 @@
  */
 import { Input, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-
 import { DateService } from './date.service';
+import { Tag, WorkflowVersion } from './swagger';
 
 export abstract class View implements OnDestroy {
-  @Input() version;
+  @Input() version: WorkflowVersion | Tag;
 
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
