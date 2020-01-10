@@ -1,34 +1,36 @@
 <div class="w-100 org-holder">
   <h3>My Organizations</h3>
-  <div *ngIf="!hasItems; else userHasOrganizations">
-    <small
-      >You have no organizations. Read our
-      <a
-        href="https://docs.dockstore.org/en/develop/advanced-topics/organizations-and-collections.html"
-        target="_blank"
-        rel="noopener noreferrer"
-        >docs</a
+  <app-loading [loading]="isLoading" [retainContent]="false">
+    <div *ngIf="!hasItems; else userHasOrganizations">
+      <small
+        >You have no organizations. Read our
+        <a
+          href="https://docs.dockstore.org/en/develop/advanced-topics/organizations-and-collections.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          >docs</a
+        >
+        to learn more.</small
       >
-      to learn more.</small
-    >
-  </div>
-
-  <ng-template #userHasOrganizations>
-    <mat-form-field class="w-100">
-      <input
-        data-cy="filterOrganizationsInput"
-        matInput
-        [(ngModel)]="filterText"
-        (keyup)="onTextChange($event)"
-        placeholder="Find organizations..."
-      />
-    </mat-form-field>
-
-    <div *ngFor="let organization of myItems" class="w-100 ellipsis-overflow">
-      <span [matTooltip]="organization.displayName">
-        <a [routerLink]="'/organizations/' + organization.name" routerLinkActive="router-link-active">{{ organization.displayName }}</a>
-      </span>
     </div>
-    <p *ngIf="!myItems || myItems.length === 0">No matching organizations</p>
-  </ng-template>
+
+    <ng-template #userHasOrganizations>
+      <mat-form-field class="w-100">
+        <input
+          data-cy="filterOrganizationsInput"
+          matInput
+          [(ngModel)]="filterText"
+          (keyup)="onTextChange($event)"
+          placeholder="Find organizations..."
+        />
+      </mat-form-field>
+
+      <div *ngFor="let organization of myItems" class="w-100 ellipsis-overflow">
+        <span [matTooltip]="organization.displayName">
+          <a [routerLink]="'/organizations/' + organization.name" routerLinkActive="router-link-active">{{ organization.displayName }}</a>
+        </span>
+      </div>
+      <p *ngIf="!myItems || myItems.length === 0">No matching organizations</p>
+    </ng-template>
+  </app-loading>
 </div>

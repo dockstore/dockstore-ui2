@@ -13,6 +13,7 @@ import { EntriesService, UsersService } from '../../../shared/openapi';
 })
 export class EntriesComponent extends FilteredList {
   public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
+  isLoading = true;
   constructor(userQuery: UserQuery, usersService: UsersService, entriesService: EntriesService) {
     super(userQuery, entriesService, usersService);
   }
@@ -31,6 +32,7 @@ export class EntriesComponent extends FilteredList {
             this.hasItems = true;
             this.firstCall = false;
           }
+          this.isLoading = false;
         },
         () => {}
       );

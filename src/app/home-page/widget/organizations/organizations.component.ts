@@ -12,6 +12,7 @@ import { EntriesService, UsersService } from '../../../shared/openapi';
   styleUrls: ['./organizations.component.scss']
 })
 export class OrganizationsComponent extends FilteredList {
+  isLoading = true;
   constructor(userQuery: UserQuery, usersService: UsersService, entriesService: EntriesService) {
     super(userQuery, entriesService, usersService);
   }
@@ -30,6 +31,7 @@ export class OrganizationsComponent extends FilteredList {
             this.hasItems = true;
             this.firstCall = false;
           }
+          this.isLoading = false;
         },
         () => {}
       );
