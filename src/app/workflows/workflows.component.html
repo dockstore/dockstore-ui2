@@ -14,8 +14,11 @@
   ~    limitations under the License.
   -->
 <app-header>
-  <img src="../assets/images/dockstore/dockstore-workflows-green.png" />
-  {{ entryPageTitle$ | async | titlecase }}
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <img src="../assets/images/dockstore/dockstore-workflows-green.png" />
+    <span>&nbsp;{{ entryPageTitle$ | async | titlecase }}&nbsp;</span>
+    <div *ngIf="(entryPageTitle$ | async | titlecase) === 'Services'" class="beta-label">preview</div>
+  </div>
 </app-header>
 <div class="container">
   <router-outlet></router-outlet>

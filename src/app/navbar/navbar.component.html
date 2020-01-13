@@ -53,6 +53,7 @@
               src="../assets/images/dockstore/dockstore-workflows-purple.png"
               alt="square and circle logo"
             />&nbsp;My&nbsp;Services
+            <div class="beta-label">preview</div>
           </a>
           <mat-divider></mat-divider>
           <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
@@ -60,7 +61,7 @@
             <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
             <mat-icon color="accent" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>Account
           </a>
-          <a mat-menu-item id="dropdown-starred" routerLink="/starred"> <mat-icon color="accent">stars</mat-icon>Starred </a>
+          <a mat-menu-item id="dropdown-starred" routerLink="/starred"> <mat-icon color="accent">stars</mat-icon>Starred</a>
           <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding" *ngIf="extendedUser?.canChangeUsername">
             <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
           </a>
