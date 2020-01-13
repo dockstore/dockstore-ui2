@@ -15,8 +15,8 @@
 -->
 
 <div class="p-3">
-  <mat-card class="mb-2 account" *ngIf="dockstoreToken">
-    <div class="account-logo-div">
+  <mat-card class="mb-2" fxLayout="row" *ngIf="dockstoreToken">
+    <div fxLayout="column" fxLayoutAlign="center">
       <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="account-logo" />
     </div>
     <div>
@@ -49,8 +49,8 @@
 </div>
 
 <div *ngFor="let row of accountsInfo" class="p-3">
-  <mat-card class="mb-2 account">
-    <div class="account-logo-div">
+  <mat-card class="mb-2" fxLayout="row">
+    <div fxLayout="column" fxLayoutAlign="center">
       <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="account-logo" />
     </div>
     <div>
@@ -91,7 +91,7 @@
         <span *ngIf="row.show" style="overflow: auto;">{{ row.source | getTokenContent: tokens }}</span>
       </span>
     </div>
-    <div class="login-button">
+    <div fxFlexAlign="end" style="margin-left: auto">
       <mat-card-footer class="clearfix">
         <span *ngIf="row.isLinked; else notLinked" class="pull-right">
           <span class="mr-2">Username: {{ row.source | getTokenUsername: tokens }}</span>
