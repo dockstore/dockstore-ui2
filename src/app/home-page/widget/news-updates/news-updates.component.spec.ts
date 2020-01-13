@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewsUpdatesComponent } from './news-updates.component';
+import { MarkdownModule } from 'ngx-markdown';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('NewsUpdatesComponent', () => {
   let component: NewsUpdatesComponent;
@@ -8,7 +10,8 @@ describe('NewsUpdatesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [NewsUpdatesComponent]
+      declarations: [NewsUpdatesComponent],
+      imports: [MarkdownModule, HttpClientTestingModule]
     }).compileComponents();
   }));
 
