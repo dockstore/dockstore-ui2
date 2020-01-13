@@ -88,8 +88,13 @@
         down your search.
       </p>
       <div class="button-row">
-        <a mat-raised-button [routerLink]="['/search']">Search for tools and workflows</a>
-        <a mat-raised-button target="_blank" rel="noopener noreferrer" href="{{ Dockstore.DOCUMENTATION_URL }}/launch-with/launch.html"
+        <a mat-button color="accent" [routerLink]="['/search']">Search for tools and workflows</a>
+        <a
+          mat-button
+          color="accent"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="{{ Dockstore.DOCUMENTATION_URL }}/launch-with/launch.html"
           >Learn how to launch tools and workflows <mat-icon>open_in_new</mat-icon></a
         >
       </div>
@@ -102,14 +107,13 @@
       </p>
       <div class="button-row">
         <a
-          mat-raised-button
+          mat-button
+          color="accent"
           target="_blank"
           rel="noopener noreferrer"
           href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/getting-started.html"
           >Learn how to register content <mat-icon>open_in_new</mat-icon></a
         >
-        <a mat-raised-button [routerLink]="['/my-tools']">My tools</a>
-        <a mat-raised-button [routerLink]="['/my-workflows']">My workflows</a>
       </div>
       <mat-divider></mat-divider>
 
@@ -120,18 +124,12 @@
       </p>
       <div class="button-row">
         <a
-          mat-raised-button
+          mat-button
+          color="accent"
           target="_blank"
           rel="noopener noreferrer"
           href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/organizations-and-collections.html"
-          >Learn about organizations <mat-icon>open_in_new</mat-icon></a
-        >
-        <a
-          mat-raised-button
-          target="_blank"
-          rel="noopener noreferrer"
-          href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/organizations-and-collections.html#collections"
-          >Learn about collections <mat-icon>open_in_new</mat-icon></a
+          >Read about organizations and collections <mat-icon>open_in_new</mat-icon></a
         >
       </div>
       <mat-divider></mat-divider>
@@ -142,10 +140,10 @@
         Dockstore developers and the general Dockstore audience.
       </p>
       <div class="button-row">
-        <a mat-raised-button target="_blank" rel="noopener noreferrer" href="{{ Dockstore.DOCUMENTATION_URL }}"
+        <a mat-button color="accent" target="_blank" rel="noopener noreferrer" href="{{ Dockstore.DOCUMENTATION_URL }}"
           >Documentation <mat-icon> open_in_new</mat-icon></a
         >
-        <a mat-raised-button target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org"
+        <a mat-button color="accent" target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org"
           >Forum <mat-icon>open_in_new </mat-icon></a
         >
       </div>
