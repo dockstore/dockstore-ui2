@@ -151,6 +151,7 @@
 
 .search-facet-holder {
   display: flex;
+  padding-top: 0.25em;
 }
 
 .search-facet-left {
@@ -159,4 +160,10 @@
 
 .search-facet-right {
   justify-content: flex-end;
+  line-height: normal;
+  p {
+    margin-bottom: 0px;
+    margin-left: 1em;
+    text-align: right;
+  }
 }

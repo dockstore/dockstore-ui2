@@ -252,6 +252,14 @@ div.panel-container-label {
   }
 }
 
+.mat-checkbox-layout .mat-checkbox-label {
+  line-height: 14px !important;
+  font-weight: normal !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  padding-bottom: 0.1em;
+}
+
 div.panel-container-label:hover,
 div.panel-container-label.selected {
   background-color: #7987a5;
