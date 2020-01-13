@@ -30,6 +30,12 @@
   <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start start" fxLayoutGap="10px" class="w-100" fxFlex="1 1 100%">
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlex="1 1 100%" fxFlexAlign="stretch">
       <div class="widget-section">
+        <h3>News and Updates</h3>
+        <div class="news-container">
+          <app-news-updates data-cy="news-updates-container"></app-news-updates>
+        </div>
+      </div>
+      <div class="widget-section">
         <h3>Explore Featured Content</h3>
         <app-alert></app-alert>
         <featured-content></featured-content>
@@ -40,9 +46,6 @@
     </div>
 
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 2 100%" class="px-4 side-column" fxFlexAlign="stretch">
-      <div class="w-100">
-        <h3>News and Updates</h3>
-      </div>
       <app-requests *ngIf="user$ | async" class="w-100"></app-requests>
       <div class="w-100">
         <h3>Links</h3>

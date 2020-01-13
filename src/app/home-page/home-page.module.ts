@@ -17,6 +17,8 @@ import { OrganizationsComponent } from './widget/organizations/organizations.com
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { NewsUpdatesComponent } from './widget/news-updates/news-updates.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   imports: [
@@ -31,7 +33,8 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
     FormsModule,
     TabsModule,
     HttpClientModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    MarkdownModule
   ],
   declarations: [
     HomePageComponent,
@@ -40,7 +43,8 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
     RequestsComponent,
     EntriesComponent,
     OrganizationsComponent,
-    FeaturedContentComponent
+    FeaturedContentComponent,
+    NewsUpdatesComponent
   ],
   entryComponents: [],
   exports: [NgxJsonLdModule]
