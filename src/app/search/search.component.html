@@ -63,9 +63,7 @@
                   </mat-checkbox>
                 </span>
               </div>
-              <div class="search-facet-right">
-                <p>{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</p>
-              </div>
+              <span>{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
             </div>
           </div>
           <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items); let i = index">
@@ -78,9 +76,7 @@
                     </mat-checkbox>
                   </span>
                 </div>
-                <div class="search-facet-right">
-                  <p>{{ orderedBuckets.get(key).Items.get(subBucket) }}</p>
-                </div>
+                <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
@@ -96,9 +92,7 @@
                     </mat-checkbox>
                   </span>
                 </div>
-                <div class="search-facet-right">
-                  <p>{{ orderedBuckets.get(key).Items.get(subBucket) }}</p>
-                </div>
+                <p>{{ orderedBuckets.get(key).Items.get(subBucket) }}</p>
               </div>
             </div>
           </div>
