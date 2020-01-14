@@ -17,7 +17,6 @@
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('News and Updates Widget', () => {
-  resetDB();
   setTokenUserViewPort();
 
   it('News and updates widget appears on logged-in homepage', () => {
