@@ -42,10 +42,11 @@
       </div>
       <div class="widget-section">
         <h3>Recent Activity</h3>
-        <recent-events></recent-events>
+        <div class="m-auto" style="max-width: 70rem">
+          <recent-events></recent-events>
+        </div>
       </div>
     </div>
-
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 2 100%" class="px-4 side-column" fxFlexAlign="stretch">
       <app-requests *ngIf="user$ | async" class="w-100"></app-requests>
       <div class="w-100">
