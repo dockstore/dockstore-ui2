@@ -14,7 +14,7 @@
 *    limitations under the License.
 * */
 
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { setTokenUserViewPort } from '../../support/commands';
 
 describe('News and Updates Widget', () => {
   setTokenUserViewPort();
@@ -29,7 +29,7 @@ describe('News and Updates Widget', () => {
       });
     });
     cy.visit('/');
-    //make sure items are in proper sort order
+    // make sure items are in proper sort order
     cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]')
       .eq(0).contains('First Newsbody Item');
     cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]')

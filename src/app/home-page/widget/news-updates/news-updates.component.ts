@@ -11,7 +11,6 @@ import { Observable } from 'rxjs';
 })
 export class NewsUpdatesComponent implements OnInit {
   constructor(private notificationsQuery: NotificationsQuery, private notificationsService: NotificationsService) {}
-  public message: string;
   public allNotifications$: Observable<Array<Notification>>;
   public notificationTypeEnum = Notification.TypeEnum;
 
