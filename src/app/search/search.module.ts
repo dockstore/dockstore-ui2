@@ -42,6 +42,7 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { SearchService } from './state/search.service';
     HttpClientModule,
     PrivateIconModule,
     ReactiveFormsModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    FlexLayoutModule
   ],
   providers: [SearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
   exports: [SearchComponent]

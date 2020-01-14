@@ -55,8 +55,8 @@
             </button>
           </div>
           <div *ngFor="let subBucket of getBucketKeys(key); let i = index">
-            <div class="panel-container-label selected-item search-facet-holder">
-              <div class="container-name-oflw search-facet-left">
+            <div class="panel-container-label selected-item search-facet-holder" fxLayout="row" fxLayoutAlign="space-between center">
+              <div class="container-name-oflw">
                 <span>
                   <mat-checkbox type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key, subBucket)">
                     {{ key | mapFriendlyValue: subBucket }}
@@ -69,9 +69,9 @@
             </div>
           </div>
           <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items); let i = index">
-            <div class="panel-container-label" fxLayoutAlign="space-between center">
-              <div *ngIf="i < 5" class="search-facet-holder">
-                <div class="container-name-oflw search-facet-left">
+            <div class="panel-container-label">
+              <div *ngIf="i < 5" class="search-facet-holder" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="container-name-oflw">
                   <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
                     <mat-checkbox type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key, subBucket)">
                       {{ key | mapFriendlyValue: subBucket }}
@@ -82,8 +82,8 @@
                   <p>{{ orderedBuckets.get(key).Items.get(subBucket) }}</p>
                 </div>
               </div>
-              <div *ngIf="i >= 5 && fullyExpandMap.get(key)" class="search-facet-holder">
-                <div class="container-name-oflw search-facet-left">
+              <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="container-name-oflw">
                   <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
                     <mat-checkbox
                       matTooltip="{{ subBucket }}"
@@ -102,7 +102,6 @@
               </div>
             </div>
           </div>
-
           <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
             <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
               <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>

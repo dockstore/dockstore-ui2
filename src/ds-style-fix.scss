@@ -252,12 +252,13 @@ div.panel-container-label {
   }
 }
 
+// Bootstrap applies bold font-weight and material checkbox automatically sets a line height and default overflow
+// behaviour that needs to be overridden.
 .mat-checkbox-layout .mat-checkbox-label {
-  line-height: 14px !important;
+  line-height: 18px !important;
   font-weight: normal !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  padding-bottom: 0.1em;
 }
 
 div.panel-container-label:hover,

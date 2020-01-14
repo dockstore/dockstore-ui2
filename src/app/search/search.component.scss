@@ -150,20 +150,15 @@
 }
 
 .search-facet-holder {
-  display: flex;
-  padding-top: 0.25em;
-}
-
-.search-facet-left {
-  justify-content: flex-start;
-}
-
-.search-facet-right {
-  justify-content: flex-end;
+  padding-top: 0.35em;
   line-height: normal;
   p {
     margin-bottom: 0px;
-    margin-left: 1em;
-    text-align: right;
+    vertical-align: middle;
   }
+}
+
+.search-facet-right {
+  line-height: 14px;
+  margin-bottom: 0.2em;
 }
