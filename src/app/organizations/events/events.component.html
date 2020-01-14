@@ -35,7 +35,7 @@
         <div *ngIf="event?.type === EventType.ADDVERSIONTOENTRY" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
-            &nbsp;updated&nbsp;the&nbsp;entry&nbsp;
+            &nbsp;added&nbsp;a&nbsp;version&nbsp;to&nbsp;the&nbsp;entry&nbsp;
             <mat-chip>{{ event?.tool?.tool_path || event?.workflow?.full_workflow_path }}</mat-chip>
           </mat-chip-list>
         </div>
