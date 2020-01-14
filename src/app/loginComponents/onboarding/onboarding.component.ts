@@ -9,7 +9,8 @@ import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-onboarding',
-  templateUrl: './onboarding.component.html'
+  templateUrl: './onboarding.component.html',
+  styleUrls: ['./onboarding.component.scss']
 })
 export class OnboardingComponent implements OnInit, OnDestroy {
   public tokenSetComplete;

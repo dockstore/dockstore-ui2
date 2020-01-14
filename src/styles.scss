@@ -38,6 +38,19 @@
 
 /* Special Fonts */
 
+.beta-label {
+  display: inline-block;
+  height: 2.5rem;
+  width: 7rem;
+  background: #424242;
+  color: #fff;
+  line-height: 2.5rem;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
 /* General Layout */
 angular-tag-cloud {
   font-family: 'Helvetica', 'Arial', sans-serif;
