@@ -25,7 +25,7 @@
         <button mat-raised-button color="accent" (click)="accordion.openAll()">Expand All<mat-icon>unfold_more</mat-icon></button>
         <button mat-raised-button color="accent" (click)="accordion.closeAll()">Collapse All<mat-icon>unfold_less</mat-icon></button>
       </div>
-      <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 mt-3 mb-3">
+      <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 my-3">
         Reset Filters
       </button>
       <mat-accordion multi>
@@ -58,7 +58,12 @@
             <div class="panel-container-label selected-item search-facet-holder" fxLayout="row" fxLayoutAlign="space-between center">
               <div class="container-name-oflw">
                 <span>
-                  <mat-checkbox type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key, subBucket)">
+                  <mat-checkbox
+                    class="search-facet-checkboxes"
+                    type="checkbox"
+                    [checked]="checkboxMap.get(key).get(subBucket)"
+                    (change)="onClick(key, subBucket)"
+                  >
                     {{ key | mapFriendlyValue: subBucket }}
                   </mat-checkbox>
                 </span>
@@ -71,7 +76,12 @@
               <div *ngIf="i < 5" class="search-facet-holder" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
                   <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
-                    <mat-checkbox type="checkbox" [checked]="checkboxMap.get(key).get(subBucket)" (change)="onClick(key, subBucket)">
+                    <mat-checkbox
+                      class="search-facet-checkboxes"
+                      type="checkbox"
+                      [checked]="checkboxMap.get(key).get(subBucket)"
+                      (change)="onClick(key, subBucket)"
+                    >
                       {{ key | mapFriendlyValue: subBucket }}
                     </mat-checkbox>
                   </span>
@@ -82,6 +92,7 @@
                 <div class="container-name-oflw">
                   <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
                     <mat-checkbox
+                      class="search-facet-checkboxes"
                       matTooltip="{{ subBucket }}"
                       [matTooltipPosition]="'after'"
                       type="checkbox"
@@ -92,7 +103,7 @@
                     </mat-checkbox>
                   </span>
                 </div>
-                <p>{{ orderedBuckets.get(key).Items.get(subBucket) }}</p>
+                {{ orderedBuckets.get(key).Items.get(subBucket) }}
               </div>
             </div>
           </div>
@@ -107,7 +118,7 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-      <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 mt-3 mb-3">
+      <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 my-3">
         Reset Filters
       </button>
     </div>
