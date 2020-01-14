@@ -1,5 +1,4 @@
 .widget-section {
-  min-height: 300px;
   width: 100%;
 }
 
@@ -30,4 +29,7 @@ mat-sidenav-container {
 ul {
   list-style: none;
   padding-left: 0;
+}
+.news-container {
+  border-top: 0.1rem solid #e0e1e2;
 }
