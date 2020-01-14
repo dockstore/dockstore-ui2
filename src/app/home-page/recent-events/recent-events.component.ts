@@ -7,8 +7,8 @@ import { RecentEventsService } from '../state/recent-events.service';
 
 @Component({
   selector: 'recent-events',
-  templateUrl: '../../organizations/events/events.component.html',
-  styleUrls: ['../../organizations/events/events.component.scss']
+  templateUrl: './recent-events.component.html',
+  styleUrls: ['./recent-events.component.scss']
 })
 export class RecentEventsComponent implements OnInit {
   events$: Observable<Event[]>;

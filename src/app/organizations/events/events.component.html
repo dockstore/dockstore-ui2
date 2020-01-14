@@ -17,26 +17,33 @@
         <div *ngIf="event?.type === EventType.CREATEORG" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
-            &nbsp;created&nbsp;the&nbsp;organization
+            &nbsp;created&nbsp;the&nbsp;organization<span
+              >&nbsp;<mat-chip *ngIf="homepage">{{ event.organization.displayName }}</mat-chip></span
+            >
           </mat-chip-list>
         </div>
         <div *ngIf="event?.type === EventType.APPROVEORGINVITE" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
-            &nbsp;joined&nbsp;the&nbsp;organization
+            &nbsp;joined&nbsp;the&nbsp;organization<span
+              >&nbsp;<mat-chip *ngIf="homepage">{{ event.organization.displayName }}</mat-chip></span
+            >
           </mat-chip-list>
         </div>
         <div *ngIf="event?.type === EventType.MODIFYORG" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
             <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
-            &nbsp;updated&nbsp;the&nbsp;organization
+            &nbsp;updated&nbsp;the&nbsp;organization<span
+              >&nbsp;<mat-chip *ngIf="homepage">{{ event.organization.displayName }}</mat-chip></span
+            >
           </mat-chip-list>
         </div>
-        <div *ngIf="event?.type === EventType.ADDVERSIONTOENTRY" class="my-3">
+        <div *ngIf="event?.type === EventType.ADDVERSIONTOENTRY && event.version?.name" class="my-3">
           <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
-            <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
-            &nbsp;added&nbsp;a&nbsp;version&nbsp;to&nbsp;the&nbsp;entry&nbsp;
             <mat-chip>{{ event?.tool?.tool_path || event?.workflow?.full_workflow_path }}</mat-chip>
+            &nbsp;has&nbsp;a&nbsp;new&nbsp;{{ event.version?.referenceType | lowercase }}&nbsp;<mat-chip>{{
+              event.version?.name
+            }}</mat-chip>
           </mat-chip-list>
         </div>
         <div *ngIf="event?.type === EventType.CREATECOLLECTION" class="my-3">
