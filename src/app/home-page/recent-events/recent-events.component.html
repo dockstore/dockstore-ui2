@@ -11,58 +11,60 @@
       to learn how to star entries.</mat-card
     >
   </div>
-  <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
-    <mat-card *ngFor="let event of events$ | async">
-      <div [ngSwitch]="event?.type">
-        <div *ngSwitchCase="EventType.CREATEORG">
-          <mat-chip-list>
-            {{ event.initiatorUser.username }}&nbsp;created&nbsp;the&nbsp;organization<span
-              >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
-            >
-          </mat-chip-list>
-          <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
-        </div>
-        <div *ngSwitchCase="EventType.APPROVEORGINVITE">
-          <mat-chip-list>
-            {{ event.initiatorUser.username }}&nbsp;joined&nbsp;the&nbsp;organization<span
-              >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
-            >
-          </mat-chip-list>
-          <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
-        </div>
-        <div *ngSwitchCase="EventType.MODIFYORG">
-          <mat-chip-list>
-            {{ event.initiatorUser.username }}&nbsp;updated&nbsp;the&nbsp;organization<span
-              >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
-            >
-          </mat-chip-list>
-          <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
-        </div>
-        <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
-          <mat-chip-list>
-            <mat-chip>{{ event?.tool?.tool_path || event?.workflow?.full_workflow_path }}</mat-chip>
-            &nbsp;has&nbsp;a&nbsp;new&nbsp;{{ event.version?.referenceType | lowercase }}&nbsp;<mat-chip>{{
-              event.version?.name
-            }}</mat-chip>
-          </mat-chip-list>
-          <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
-        </div>
-        <div *ngSwitchCase="EventType.CREATECOLLECTION">
-          <mat-chip-list>
-            {{ event.initiatorUser.username }}&nbsp;created&nbsp;the&nbsp;collection&nbsp;
-            <mat-chip>{{ event.collection.name }}</mat-chip>
-            &nbsp;in&nbsp;organization<mat-chip>{{ event.organization.displayName }}</mat-chip>
-          </mat-chip-list>
-          <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
-        </div>
-        <div *ngSwitchDefault>
-          <mat-chip-list>
-            {{ event.initiatorUser.username }}&nbsp;updated&nbsp;the&nbsp;collection&nbsp; <mat-chip>{{ event.collection.name }}</mat-chip
-            >&nbsp;in&nbsp;organization<mat-chip>{{ event.organization.displayName }}</mat-chip>
-          </mat-chip-list>
-          <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+  <mat-card>
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+      <div *ngFor="let event of events$ | async">
+        <div [ngSwitch]="event?.type">
+          <div *ngSwitchCase="EventType.CREATEORG">
+            <mat-chip-list>
+              {{ event.initiatorUser.username }}&nbsp;created&nbsp;the&nbsp;organization<span
+                >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
+              >
+            </mat-chip-list>
+            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+          </div>
+          <div *ngSwitchCase="EventType.APPROVEORGINVITE">
+            <mat-chip-list>
+              {{ event.initiatorUser.username }}&nbsp;joined&nbsp;the&nbsp;organization<span
+                >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
+              >
+            </mat-chip-list>
+            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+          </div>
+          <div *ngSwitchCase="EventType.MODIFYORG">
+            <mat-chip-list>
+              {{ event.initiatorUser.username }}&nbsp;updated&nbsp;the&nbsp;organization<span
+                >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
+              >
+            </mat-chip-list>
+            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+          </div>
+          <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
+            <mat-chip-list>
+              <mat-chip>{{ event?.tool?.tool_path || event?.workflow?.full_workflow_path }}</mat-chip>
+              &nbsp;has&nbsp;a&nbsp;new&nbsp;{{ event.version?.referenceType | lowercase }}&nbsp;<mat-chip>{{
+                event.version?.name
+              }}</mat-chip>
+            </mat-chip-list>
+            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+          </div>
+          <div *ngSwitchCase="EventType.CREATECOLLECTION">
+            <mat-chip-list>
+              {{ event.initiatorUser.username }}&nbsp;created&nbsp;the&nbsp;collection&nbsp;
+              <mat-chip>{{ event.collection.name }}</mat-chip>
+              &nbsp;in&nbsp;organization<mat-chip>{{ event.organization.displayName }}</mat-chip>
+            </mat-chip-list>
+            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+          </div>
+          <div *ngSwitchDefault>
+            <mat-chip-list>
+              {{ event.initiatorUser.username }}&nbsp;updated&nbsp;the&nbsp;collection&nbsp; <mat-chip>{{ event.collection.name }}</mat-chip
+              >&nbsp;in&nbsp;organization<mat-chip>{{ event.organization.displayName }}</mat-chip>
+            </mat-chip-list>
+            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+          </div>
         </div>
       </div>
-    </mat-card>
-  </div>
+    </div>
+  </mat-card>
 </app-loading>
