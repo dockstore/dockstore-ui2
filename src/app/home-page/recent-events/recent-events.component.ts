@@ -5,6 +5,13 @@ import { Observable } from 'rxjs';
 import { RecentEventsQuery } from '../state/recent-events.query';
 import { RecentEventsService } from '../state/recent-events.service';
 
+/**
+ * Shows recent events related to starred organization and entries
+ * Only shows when a child has been added to parent (version added to entry, collection added to organization, entry added to collection)
+ * TODO: collapse events with the same date (refresh all adding multiple versions at the same time)
+ * TODO: Remove non-tag versions added to entry
+ * TODO: Actually link out to the organization, collection, or entry when a child has been added to it
+ */
 @Component({
   selector: 'recent-events',
   templateUrl: './recent-events.component.html',
