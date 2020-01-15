@@ -16,20 +16,21 @@
       <div *ngFor="let event of events$ | async; last as last">
         <div [ngSwitch]="event?.type">
           <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
+            <strong>{{ event.initiatorUser?.username }} </strong> has created the {{ event.version?.referenceType | lowercase }}
+            <strong>{{ event.version?.name }}</strong> in entry
             <strong>{{ (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) }}</strong>
-            has a new {{ event.version?.referenceType | lowercase }} <strong>{{ event.version?.name }}</strong>
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             <mat-divider *ngIf="!last"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.CREATECOLLECTION">
-            <strong>{{ event.initiatorUser?.username }}</strong> created the collection <strong>{{ event.collection?.name }} </strong> in
-            organization
+            <strong>{{ event.initiatorUser?.username }}</strong> has created the collection
+            <strong>{{ event.collection?.name }} </strong> in organization
             <strong>{{ event.organization?.displayName }}</strong>
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             <mat-divider *ngIf="!last"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
-            <strong>{{ event.initiatorUser.username }} </strong>added
+            <strong>{{ event.initiatorUser.username }} </strong> has added the entry
             <strong>{{ (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) }}</strong>
             to the collection <strong>{{ event.collection?.name }}</strong> in organization
             <strong>{{ event.organization?.displayName }}</strong>
