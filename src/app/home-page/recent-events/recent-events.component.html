@@ -18,22 +18,33 @@
           <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
             <strong>{{ event.initiatorUser?.username }} </strong> has created the {{ event.version?.referenceType | lowercase }}
             <strong>{{ event.version?.name }}</strong> in entry
-            <strong>{{ (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) }}</strong>
+            <a [routerLink]="event?.tool ? '/tools/' + event?.tool.tool_path : '/workflows/' + event?.workflow.full_workflow_path">{{
+              (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName)
+            }}</a>
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             <mat-divider *ngIf="!last"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.CREATECOLLECTION">
             <strong>{{ event.initiatorUser?.username }}</strong> has created the collection
-            <strong>{{ event.collection?.name }} </strong> in organization
-            <strong>{{ event.organization?.displayName }}</strong>
+            <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+              >{{ event.collection?.name }}
+            </a>
+            in organization
+            <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             <mat-divider *ngIf="!last"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
             <strong>{{ event.initiatorUser.username }} </strong> has added the entry
-            <strong>{{ (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) }}</strong>
-            to the collection <strong>{{ event.collection?.name }}</strong> in organization
-            <strong>{{ event.organization?.displayName }}</strong>
+            <a [routerLink]="event?.tool ? '/tools/' + event?.tool.tool_path : '/workflows/' + event?.workflow.full_workflow_path">{{
+              (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName)
+            }}</a>
+            to the collection
+            <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+              >{{ event.collection?.name }}
+            </a>
+            in organization
+            <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             <mat-divider *ngIf="!last"></mat-divider>
           </div>
