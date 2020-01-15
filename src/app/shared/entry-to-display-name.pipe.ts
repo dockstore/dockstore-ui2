@@ -1,15 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DockstoreTool, Workflow } from './swagger';
 
+/**
+ * This pipe converts and entry (DockstoreTool or Workflow) to a name that is missing the registry or source control
+ * TODO: Better type checking
+ */
 @Pipe({
   name: 'entryToDisplayName'
 })
 export class EntryToDisplayNamePipe implements PipeTransform {
-  transform(entry: any): string {
+  transform(entry: DockstoreTool | Workflow): string {
     if (!entry) {
       return '';
     }
-    if (entry.organization) {
+    if ((entry as Workflow).organization) {
       const workflow = entry as Workflow;
       const displayNameArray = [];
       displayNameArray.push(workflow.organization);
