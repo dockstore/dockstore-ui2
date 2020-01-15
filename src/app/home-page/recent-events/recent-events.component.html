@@ -11,7 +11,7 @@
       to learn how to star entries.</mat-card
     >
   </div>
-  <mat-card>
+  <mat-card *ngIf="events$ | async">
     <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="1rem">
       <div *ngFor="let event of events$ | async; last as last">
         <div [ngSwitch]="event?.type">

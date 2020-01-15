@@ -26,11 +26,7 @@ export class RecentEventsComponent implements OnInit {
     this.events$ = this.recentEventsQuery.selectAll();
     this.loading$ = this.recentEventsQuery.selectLoading();
 
-    this.recentEventsService.get().subscribe({
-      error(err) {
-        this.error = err;
-      }
-    });
+    this.recentEventsService.get();
   }
 
   add(recentEvent: Event) {
