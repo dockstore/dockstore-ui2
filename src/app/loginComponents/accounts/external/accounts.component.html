@@ -90,7 +90,7 @@
         </button>
         <span *ngIf="row.show" style="overflow: auto;">{{ row.source | getTokenContent: tokens }}</span>
         <span *ngIf="row.isLinked" class="pull-right">
-          <span class="mr-2 ml-2">
+          <span class="mx-2">
             <strong>Username: </strong>
             {{ row.source | getTokenUsername: tokens }}
           </span>
