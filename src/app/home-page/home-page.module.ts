@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from 'app/home-page/home-logged-out/home.component';
+import { EntryToDisplayNamePipe } from 'app/shared/entry-to-display-name.pipe';
 import { ListContainersModule } from 'app/shared/modules/list-containers.module';
 import { ListWorkflowsModule } from 'app/shared/modules/list-workflows.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
@@ -48,7 +49,8 @@ import { RequestsComponent } from './widget/requests/requests.component';
     OrganizationsComponent,
     FeaturedContentComponent,
     NewsUpdatesComponent,
-    GettingStartedComponent
+    GettingStartedComponent,
+    EntryToDisplayNamePipe
   ],
   entryComponents: [],
   exports: [NgxJsonLdModule]
