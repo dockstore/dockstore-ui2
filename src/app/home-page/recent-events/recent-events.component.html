@@ -12,56 +12,29 @@
     >
   </div>
   <mat-card>
-    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
-      <div *ngFor="let event of events$ | async">
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="1rem">
+      <div *ngFor="let event of events$ | async; last as last">
         <div [ngSwitch]="event?.type">
-          <div *ngSwitchCase="EventType.CREATEORG">
-            <mat-chip-list>
-              {{ event.initiatorUser.username }}&nbsp;created&nbsp;the&nbsp;organization<span
-                >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
-              >
-            </mat-chip-list>
-            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
-          </div>
-          <div *ngSwitchCase="EventType.APPROVEORGINVITE">
-            <mat-chip-list>
-              {{ event.initiatorUser.username }}&nbsp;joined&nbsp;the&nbsp;organization<span
-                >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
-              >
-            </mat-chip-list>
-            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
-          </div>
-          <div *ngSwitchCase="EventType.MODIFYORG">
-            <mat-chip-list>
-              {{ event.initiatorUser.username }}&nbsp;updated&nbsp;the&nbsp;organization<span
-                >&nbsp;<mat-chip>{{ event.organization.displayName }}</mat-chip></span
-              >
-            </mat-chip-list>
-            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
-          </div>
           <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
-            <mat-chip-list>
-              <mat-chip>{{ event?.tool?.tool_path || event?.workflow?.full_workflow_path }}</mat-chip>
-              &nbsp;has&nbsp;a&nbsp;new&nbsp;{{ event.version?.referenceType | lowercase }}&nbsp;<mat-chip>{{
-                event.version?.name
-              }}</mat-chip>
-            </mat-chip-list>
-            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+            <strong>{{ (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) }}</strong>
+            has a new {{ event.version?.referenceType | lowercase }} <strong>{{ event.version?.name }}</strong>
+            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+            <mat-divider *ngIf="!last"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.CREATECOLLECTION">
-            <mat-chip-list>
-              {{ event.initiatorUser.username }}&nbsp;created&nbsp;the&nbsp;collection&nbsp;
-              <mat-chip>{{ event.collection.name }}</mat-chip>
-              &nbsp;in&nbsp;organization<mat-chip>{{ event.organization.displayName }}</mat-chip>
-            </mat-chip-list>
-            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+            <strong>{{ event.initiatorUser?.username }}</strong> created the collection <strong>{{ event.collection?.name }} </strong> in
+            organization
+            <strong>{{ event.organization?.displayName }}</strong>
+            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+            <mat-divider *ngIf="!last"></mat-divider>
           </div>
-          <div *ngSwitchDefault>
-            <mat-chip-list>
-              {{ event.initiatorUser.username }}&nbsp;updated&nbsp;the&nbsp;collection&nbsp; <mat-chip>{{ event.collection.name }}</mat-chip
-              >&nbsp;in&nbsp;organization<mat-chip>{{ event.organization.displayName }}</mat-chip>
-            </mat-chip-list>
-            <span class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</span>
+          <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
+            <strong>{{ event.initiatorUser.username }} </strong>added
+            <strong>{{ (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) }}</strong>
+            to the collection <strong>{{ event.collection?.name }}</strong> in organization
+            <strong>{{ event.organization?.displayName }}</strong>
+            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+            <mat-divider *ngIf="!last"></mat-divider>
           </div>
         </div>
       </div>
