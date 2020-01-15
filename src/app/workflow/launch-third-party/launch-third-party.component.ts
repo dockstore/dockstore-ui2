@@ -161,6 +161,20 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     })
   );
 
+  dataStageTooltip$: Observable<string> = combineLatest(this.descriptorsQuery.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) => {
+      if (!hasContent) {
+        return 'The CWL has no content.';
+      }
+      if (hasHttpImports) {
+        return (
+          'This version of the CWL has http(s) imports, which are not supported by the DataSTAGE. ' + 'Select a version without http(s) imports.'
+        );
+      }
+      return 'Export this workflow version to the DataSTAGE.';
+    })
+  );
+
   constructor(
     private workflowsService: WorkflowsService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,

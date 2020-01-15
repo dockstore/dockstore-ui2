@@ -82,6 +82,18 @@
               ><mat-icon class="anvil-icon" svgIcon="anvil"></mat-icon> AnVIL &raquo;</a
             >
           </div>
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
+            <a
+              mat-raised-button
+              [matTooltip]="dataStageTooltip$ | async"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="config.DATASTAGE_IMPORT_URL + '?trs=' + trsUrl"
+              [disabled]="!(hasContent$ | async) || (hasHttpImports$ | async)"
+              color="primary"
+            > DataSTAGE
+            </a>
+          </div>
         </div>
       </div>
     </div>
