@@ -55,7 +55,7 @@
             </button>
           </div>
           <div *ngFor="let subBucket of getBucketKeys(key); let i = index">
-            <div class="panel-container-label selected-item search-facet-holder" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="panel-container-label selected-item" fxLayout="row" fxLayoutAlign="space-between center">
               <div class="container-name-oflw">
                 <span>
                   <mat-checkbox
@@ -73,7 +73,7 @@
           </div>
           <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items); let i = index">
             <div class="panel-container-label">
-              <div *ngIf="i < 5" class="search-facet-holder" fxLayout="row" fxLayoutAlign="space-between center">
+              <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
                   <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
                     <mat-checkbox
