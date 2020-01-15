@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatTooltipModule } from '@angular/material';
+import { MatTooltipModule, MatProgressBarModule } from '@angular/material';
+import { LoadingComponent } from 'app/shared/loading/loading.component';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
@@ -13,8 +14,8 @@ describe('OrganizationsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OrganizationsComponent],
-      imports: [RouterTestingModule, MatFormFieldModule, FormsModule, HttpClientTestingModule, MatTooltipModule]
+      declarations: [OrganizationsComponent, LoadingComponent],
+      imports: [RouterTestingModule, MatFormFieldModule, FormsModule, HttpClientTestingModule, MatTooltipModule, MatProgressBarModule]
     }).compileComponents();
   }));
 

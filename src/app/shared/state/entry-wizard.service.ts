@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntryWizardStore } from './entry-wizard.store';
-import { DefaultService, BioWorkflow } from '../openapi';
+import { BioWorkflow, WorkflowsService, UsersService } from '../openapi';
 import { AlertService } from '../alert/state/alert.service';
 import { Repository } from '../openapi/model/repository';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -14,8 +14,9 @@ export class EntryWizardService {
   constructor(
     private entryWizardStore: EntryWizardStore,
     private entryWizardQuery: EntryWizardQuery,
-    private defaultService: DefaultService,
-    private alertService: AlertService
+    private usersService: UsersService,
+    private alertService: AlertService,
+    private workflowsService: WorkflowsService
   ) {}
 
   /**
@@ -23,7 +24,7 @@ export class EntryWizardService {
    */
   updateGitRegistryStore() {
     this.entryWizardStore.setLoading(true);
-    this.defaultService
+    this.usersService
       .getUserRegistries()
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(
@@ -44,7 +45,7 @@ export class EntryWizardService {
     this.entryWizardStore.setLoading(true);
     this.entryWizardStore.update({ gitOrganizations: undefined, gitRepositories: undefined });
     const registryEnum = this.convertSourceControlStringToEnum(registry);
-    this.defaultService
+    this.usersService
       .getUserOrganizations(registryEnum)
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(
@@ -66,7 +67,7 @@ export class EntryWizardService {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(registry);
 
-    this.defaultService
+    this.usersService
       .getUserOrganizationRepositories(registryEnum, organization)
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(
@@ -87,7 +88,7 @@ export class EntryWizardService {
     this.updateRepoIsPresent(repository, true, true);
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
-    this.defaultService
+    this.workflowsService
       .addWorkflow(registryEnum, repository.organization, repository.repositoryName)
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(
@@ -109,7 +110,7 @@ export class EntryWizardService {
     this.updateRepoIsPresent(repository, false, false);
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
-    this.defaultService
+    this.workflowsService
       .deleteWorkflow(registryEnum, repository.organization, repository.repositoryName)
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(

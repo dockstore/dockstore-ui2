@@ -19,6 +19,7 @@ import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { WorkflowVersion } from '../shared/swagger';
+import { Notification } from '../shared/swagger/model/notification';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
@@ -712,4 +713,20 @@ export const validTool: ExtendedDockstoreTool = {
   registry_string: 'quay.io',
   registry: DockstoreTool.RegistryEnum.QUAYIO,
   toolname: null
+};
+
+export const mockedNotification: Notification = {
+  id: 123,
+  message: 'TestingTesting123',
+  type: 'SITEWIDE',
+  priority: 'LOW',
+  expiration: null
+};
+
+export const expiredMockNotification: Notification = {
+  id: 121,
+  message: 'Testing123',
+  type: 'SITEWIDE',
+  priority: 'LOW',
+  expiration: new Date('2018-11-25T00:00:00')
 };

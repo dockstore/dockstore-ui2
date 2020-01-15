@@ -40,13 +40,18 @@
           <mat-card-header>
             <mat-card-title>
               <a [routerLink]="org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
+
+              <span fxLayout="row" *ngIf="org?.starredUsers.length !== 0" class="pull-right">
+                <mat-icon class="orgStar">star</mat-icon>
+                <span class="ellipsis-lines">{{ org.starredUsers.length }}</span>
+              </span>
             </mat-card-title>
             <mat-card-subtitle>
               {{ org.topic }}
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+            <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-between" class="mx-4">
               <span fxLayout="row" *ngIf="org?.email">
                 <mat-icon>email</mat-icon>
                 <span
@@ -62,10 +67,6 @@
               <span fxLayout="row" *ngIf="org?.location">
                 <mat-icon>location_on</mat-icon>
                 <span class="ellipsis-lines">{{ org.location }}</span>
-              </span>
-              <span fxLayout="row" *ngIf="org?.starredUsers.length !== 0" class="pull-right">
-                <span class="ellipsis-lines">{{ org.starredUsers.length }}</span>
-                <mat-icon class="orgStar">star</mat-icon>
               </span>
             </div>
           </mat-card-content>

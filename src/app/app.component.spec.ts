@@ -23,6 +23,9 @@ class FooterStubComponent {}
 @Component({ selector: 'app-tos-banner', template: '' })
 class TosBannerStubComponent {}
 
+@Component({ selector: 'app-notifications', template: '' })
+class NotificationStubComponent {}
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -34,7 +37,8 @@ describe('AppComponent', () => {
         BannerStubComponent,
         RouterLinkStubDirective,
         RouterOutletStubComponent,
-        TosBannerStubComponent
+        TosBannerStubComponent,
+        NotificationStubComponent
       ],
       imports: [RouterTestingModule, MatSnackBarModule],
       providers: [{ provide: TrackLoginService, useClass: TrackLoginStubService }]
