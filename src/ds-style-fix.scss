@@ -252,6 +252,18 @@ div.panel-container-label {
   }
 }
 
+// Bootstrap applies bold font-weight and material checkbox automatically sets a line height and default overflow
+// behaviour that needs to be overridden.
+.search-facet-checkboxes .mat-checkbox-layout .mat-checkbox-label {
+  font-weight: normal !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+label.mat-checkbox-layout {
+  margin-bottom: 0 !important;
+}
+
 div.panel-container-label:hover,
 div.panel-container-label.selected {
   background-color: #7987a5;
