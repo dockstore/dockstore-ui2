@@ -59,19 +59,28 @@ export class DownloadCLIClientComponent implements OnInit {
     this.textData1 = `
 ### Setup Command Line Interface (Ubuntu)
 ------------------------------
+Setup our Dockstore CLI application to start launching workflows from the command line.
+
 #### Requirements
-1. Linux/Ubuntu (Recommended) or Mac OS X machine
-2. Java 8 (Oracle)
-3. Python and pip (Optional: if working with CWL)
+1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
+2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
+3. Python3 and pip3 (Optional: if working with CWL)
 
 #### Part 1 - Install dependencies and Dockstore CLI
-1. Add the Oracle Java repo and install:
+1. Install Java 11 (This example installs OpenJDK 11)
 \`\`\`
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update && sudo apt-get install -y oracle-java8-set-default
+sudo add-apt-repository ppa:openjdk-r/ppa \
+&& sudo apt-get update -q \
+&& sudo apt install -y openjdk-11-jdk
 \`\`\`
-**Note:** that if you are installing Java by some other mechanism, you will need to install at least Java 8, Update 101 (1.8.0_101-b13). We have not tested with Java 9.
-2. Install the dockstore command-line program and add it to the path.
+2. Install Docker following the instructions on [Docker's website](https://docs.docker.com/install/linux/docker-ce/ubuntu/). You should have at least version 19.03.1 installed.
+Ensure that you are able to run Docker without using sudo directly with the
+[post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
+\`\`\`
+sudo usermod -aG docker $USER
+exec newgrp docker
+\`\`\`
+3. Install the dockstore command-line program and add it to the path.
 \`\`\`
 mkdir -p ~/bin
 curl -L -o ~/bin/dockstore ${this.downloadCli}
@@ -92,49 +101,37 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
 2. Alternatively, copy this content to your config file directly.
 `;
     this.textData3 = `
-#### Part 3 - Install cwltool (Optional)
+#### Part 3 - Confirm installation
+1. Run our dependencies to verify that they have been installed properly.
+\`\`\`
+$ java -version
+openjdk version "11.0.4" 2019-07-16
+OpenJDK Runtime Environment (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3)
+OpenJDK 64-Bit Server VM (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3, mixed mode, sharing)
+$ dockstore --version
+Dockstore version ${this.dockstoreVersion}
+$ docker run hello-world
+Hello from Docker!
+...
+\`\`\`
+
+#### Part 4 - Install cwltool (Optional)
 Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) -a reference implementation of CWL- for local execution of tools and workflows described with CWL.
-You'll need to have Python and [pip](https://pip.pypa.io/en/latest/installing/) to be installed on your machine.
+You'll need to have Python 3 and [pip3](https://pip.pypa.io/en/latest/installing/) to be installed on your machine.
 
 **Note:** cwltool must be available on your PATH.
 
 You can install the version of cwltool that we've tested for use with Dockstore using the following commands:
-1. Run this to verify that pip has been installed \`pip --version\`
+1. Run this to verify that pip has been installed \`pip3 --version\`
 2. Run these commands to install cwltool
 \`\`\`
-curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=2"
-pip install -r requirements.txt
-\`\`\`
-<!-- Workaround until https://github.com/common-workflow-language/cwltool/issues/524 is resolved -->
-If using Python 3, install cwl-avro instead of avro.  Do this by running these commands:
-\`\`\`
 curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 \`\`\`
-Verify using \`pip list\` that the installed pip packages matches the ones specified in the downloaded requirements.txt.
-
-3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
-Ensure that you are able to run Docker without using sudo directly with the
-[post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
+3. Verify using \`pip3 list\` that the installed pip packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
 \`\`\`
-sudo usermod -aG docker $USER
-exec newgrp docker
-\`\`\`
-
-#### Part 4 - Confirm installation
-1. Run our dependencies to verify that they have been installed properly.
-\`\`\`
-$ dockstore --version
-Dockstore version ${this.dockstoreVersion}
-$ java -version
-java version "1.8.0_144"
-Java(TM) SE Runtime Environment (build 1.8.0_144-b01)
-Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
-$ docker run hello-world
-Hello from Docker!
-...
 \`\`\`
 `;
   }

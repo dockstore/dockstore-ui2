@@ -21,7 +21,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, ToolVersion, WorkflowVersion, Tag } from '../swagger';
+import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, WorkflowVersion, Tag } from '../swagger';
 import { FilesService } from '../../workflow/files/state/files.service';
 import { FilesQuery } from '../../workflow/files/state/files.query';
 

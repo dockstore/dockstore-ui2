@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { AliasesStore } from './aliases.store';
-import {
-  OrganizationsService,
-  Organization,
-  Collection,
-  DockstoreTool,
-  ContainersService,
-  WorkflowsService,
-  Workflow
-} from '../../shared/swagger';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
+import {
+  AliasesService as WorkflowVersionsAliasService,
+  Collection,
+  ContainersService,
+  DockstoreTool,
+  Organization,
+  OrganizationsService,
+  Workflow,
+  WorkflowVersionPathInfo,
+  WorkflowsService
+} from '../../shared/swagger';
+import { AliasesStore } from './aliases.store';
 
 @Injectable({ providedIn: 'root' })
 export class AliasesService {
@@ -18,17 +20,19 @@ export class AliasesService {
     private aliasesStore: AliasesStore,
     private organizationsService: OrganizationsService,
     private toolsService: ContainersService,
-    private workflowsService: WorkflowsService
+    private workflowsService: WorkflowsService,
+    private workflowVersionsService: WorkflowVersionsAliasService
   ) {}
 
   clearState(): void {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         organization: null,
         collection: null,
         tool: null,
-        workflow: null
+        workflow: null,
+        workflowVersion: null
       };
     });
   }
@@ -52,7 +56,7 @@ export class AliasesService {
   }
 
   updateOrganization(organization: Organization) {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         organization: organization
@@ -79,7 +83,7 @@ export class AliasesService {
   }
 
   updateCollection(collection: Collection) {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         collection: collection
@@ -106,7 +110,7 @@ export class AliasesService {
   }
 
   updateTool(tool: DockstoreTool) {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         tool: tool
@@ -133,11 +137,39 @@ export class AliasesService {
   }
 
   updateWorkflow(workflow: Workflow) {
-    this.aliasesStore.setState(state => {
+    this.aliasesStore.update(state => {
       return {
         ...state,
         workflow: workflow
       };
     });
   }
+
+  @transaction()
+  updateWorkflowVersionPathInfoFromAlias(alias: string): void {
+    this.clearState();
+    this.aliasesStore.setLoading(true);
+    this.workflowVersionsService
+      .getWorkflowVersionPathInfoByAlias(alias)
+      .pipe(finalize(() => this.aliasesStore.setLoading(false)))
+      .subscribe(
+        (workflowVersionPathInfo: WorkflowVersionPathInfo) => {
+          this.aliasesStore.setError(false);
+          this.updateWorkflowVersionPathInfo(workflowVersionPathInfo);
+        },
+        () => {
+          this.aliasesStore.setError(true);
+        }
+      );
+  }
+
+  updateWorkflowVersionPathInfo(workflowVersionPathInfo: WorkflowVersionPathInfo) {
+    this.aliasesStore.update(state => {
+      return {
+        ...state,
+        workflowVersionPathInfo: workflowVersionPathInfo
+      };
+    });
+  }
+
 }

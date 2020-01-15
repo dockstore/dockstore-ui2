@@ -14,7 +14,21 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
-import { sampleSourceFile, sampleTag } from '../test/mocked-objects';
+import {
+  cwlSourceFileWithCommentedMixinImport,
+  cwlSourceFileWithHttpRun,
+  cwlSourceFileWithHttpsImport,
+  cwlSourceFileWithIncludeImport,
+  cwlSourceFileWithMixinImport,
+  cwlSourceFileWithNoImport,
+  cwlSourceFileWithSomeHttpLinks,
+  emptyWdlSourceFile,
+  sampleSourceFile,
+  sampleTag,
+  wdlSourceFile,
+  wdlSourceFileWithCommentedHttpImport,
+  wdlSourceFileWithHttpImport
+} from '../test/mocked-objects';
 import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
 import { FileService } from './file.service';
@@ -47,5 +61,22 @@ describe('FileService', () => {
         // tslint:disable-next-line: max-line-length
         '/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN-WDL/descriptor/HISAT2.wdl'
     );
+  }));
+
+  it('should detect http import in WDL', inject([FileService], (fileService: FileService) => {
+    expect(fileService.hasHttpImport(wdlSourceFileWithHttpImport)).toBeTruthy();
+    expect(fileService.hasHttpImport(wdlSourceFileWithCommentedHttpImport)).toBeFalsy();
+    expect(fileService.hasHttpImport(emptyWdlSourceFile)).toBeFalsy();
+    expect(fileService.hasHttpImport(wdlSourceFile)).toBeFalsy();
+  }));
+
+  it('should detect http import in CWL', inject([FileService], (fileService: FileService) => {
+    expect(fileService.hasHttpImport(cwlSourceFileWithNoImport)).toBeFalsy();
+    expect(fileService.hasHttpImport(cwlSourceFileWithHttpsImport)).toBeTruthy();
+    expect(fileService.hasHttpImport(cwlSourceFileWithMixinImport)).toBeTruthy();
+    expect(fileService.hasHttpImport(cwlSourceFileWithCommentedMixinImport)).toBeFalsy();
+    expect(fileService.hasHttpImport(cwlSourceFileWithIncludeImport)).toBeTruthy();
+    expect(fileService.hasHttpImport(cwlSourceFileWithSomeHttpLinks)).toBeFalsy();
+    expect(fileService.hasHttpImport(cwlSourceFileWithHttpRun)).toBeTruthy();
   }));
 });

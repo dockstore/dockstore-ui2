@@ -21,7 +21,12 @@
         <ul class="footer-list m-0">
           <li class="m-0">Dockstore</li>
           <li class="m-0">
-            <a href="https://docs.dockstore.org/docs/" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <a
+              href="{{ Dockstore.DOCUMENTATION_URL }}/dockstore-introduction.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
               <small>About</small>
             </a>
           </li>
@@ -39,7 +44,10 @@
               <small>{{ version }} </small>
             </a>
             <a href="https://status.dockstore.org/" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <img src="https://img.shields.io/uptimerobot/status/m779655940-a297af07d1cac2d6ad40c491.svg" />
+              <img
+                src="https://img.shields.io/uptimerobot/status/m779655940-a297af07d1cac2d6ad40c491.svg"
+                alt="dockstore status indicator"
+              />
             </a>
           </li>
           <li class="m-0">
@@ -57,6 +65,11 @@
               <small><mat-icon>rss_feed</mat-icon>RSS</small>
             </a>
           </li>
+          <li class="m-0">
+            <a routerLink="/sitemap" target="_blank" rel="noopener noreferrer" class="footer-link">
+              <small>Sitemap</small>
+            </a>
+          </li>
         </ul>
       </div>
       <div fxFlex="25%">
@@ -66,17 +79,35 @@
           </li>
           <li class="m-0">
             <a href="https://github.com/ga4gh/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/github-mark-light.png" /><small> Github</small>
+              <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/github-mark-light.png" alt="small GitHub logo" /><small>
+                Github</small
+              >
             </a>
           </li>
           <li class="m-0">
             <a href="https://twitter.com/DockstoreOrg" target="_blank" rel="noopener noreferrer" class="footer-link icon">
-              <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/twitter-logo-white.png" /><small> @DockstoreOrg</small>
+              <img
+                class="site-icons-tab hidden-sm"
+                src="../assets/images/dockstore/twitter-logo-white.png"
+                alt="small Twitter logo"
+              /><small> @DockstoreOrg</small>
             </a>
           </li>
           <li class="m-0">
             <a href="https://gitter.im/ga4gh/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/gitter.png" /><small> Gitter</small>
+              <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/gitter.png" alt="small Gitter logo" /><small>
+                Gitter</small
+              >
+            </a>
+          </li>
+          <li class="m-0">
+            <a
+              href="https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              <small><mat-icon>contact_support</mat-icon> Help Desk</small>
             </a>
           </li>
         </ul>
@@ -111,7 +142,7 @@
     </div>
   </div>
   <div class="row" fxLayoutAlign="center center">
-    <a [routerLink]="['/funding']" class="footer-link">
+    <a [routerLink]="['/funding']" class="footer-link p-4">
       <small
         >Support for Dockstore is provided by grants from Genome Canada, the National Institutes of Health, and the Province of
         Ontario.</small

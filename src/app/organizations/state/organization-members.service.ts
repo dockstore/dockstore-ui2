@@ -1,9 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { OrganizationsService, OrganizationUser } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
@@ -32,7 +31,7 @@ export class OrganizationMembersService {
     // Can't use set because Akita isn't able to figure out the entity id
     this.organizationMembersStore.remove();
     organizationUsers.forEach(organizationUser => {
-      this.organizationMembersStore.createOrReplace(organizationUser.id.userId, organizationUser);
+      this.organizationMembersStore.upsert(organizationUser.id.userId, organizationUser);
     });
   }
 
@@ -92,8 +91,8 @@ export class OrganizationMembersService {
           // If you can somehow manage to change users without this function triggering again, then it may lead to issues.
           // Example: a user has permissions to edit, logs out without changing the page and running this function somehow, the controls
           // appears as if he still has permissions to edit.
-          if (this.userQuery.getSnapshot().user) {
-            const currentUserId = this.userQuery.getSnapshot().user.id;
+          if (this.userQuery.getValue().user) {
+            const currentUserId = this.userQuery.getValue().user.id;
             const canEdit = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted);
             const canEditMembers = organizationUsers.some(
               user => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.MAINTAINER
@@ -125,7 +124,7 @@ export class OrganizationMembersService {
   }
 
   setCanEditState(canEdit: boolean, canEditMembers: boolean) {
-    this.organizationStore.setState(state => {
+    this.organizationStore.update(state => {
       return {
         ...state,
         canEdit: canEdit,

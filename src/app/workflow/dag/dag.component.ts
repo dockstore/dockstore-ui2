@@ -51,10 +51,10 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   @Input() id: number;
   @Input() selectedVersion: WorkflowVersion;
 
-  @ViewChild('exportLink') exportLink: ElementRef;
-  @ViewChild('cy') cyElement: ElementRef;
-  @ViewChild(WdlViewerComponent) wdlViewer: WdlViewerComponent;
-  @ViewChild('dagHolder') dagHolderElement: ElementRef;
+  @ViewChild('exportLink', { static: false }) exportLink: ElementRef;
+  @ViewChild('cy', { static: false }) cyElement: ElementRef;
+  @ViewChild(WdlViewerComponent, { static: false }) wdlViewer: WdlViewerComponent;
+  @ViewChild('dagHolder', { static: true }) dagHolderElement: ElementRef;
 
   public dagResult$: Observable<any>;
   private cy: cytoscape.Core;
@@ -68,6 +68,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public enableCwlViewer = Dockstore.FEATURES.enableCwlViewer;
   ToolDescriptor = ToolDescriptor;
   public refreshCounter = 1;
+  public dagLoading$: Observable<boolean>;
   public wdlViewerResult$: Observable<boolean>;
   /**
    * Listen to when the document enters or exits fullscreen.
@@ -133,6 +134,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   }
 
   ngOnInit() {
+    this.dagLoading$ = this.dagQuery.selectLoading();
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isWDL$ = this.workflowQuery.isWDL$;

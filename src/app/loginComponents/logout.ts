@@ -15,7 +15,7 @@ export class Logout extends Base {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => (this.isLoggedIn = state));
   }
 
-  logout() {
-    this.logoutService.logout();
+  logout(routeChange?: string) {
+    routeChange ? this.logoutService.logout(routeChange) : this.logoutService.logout();
   }
 }

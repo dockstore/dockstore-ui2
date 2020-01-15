@@ -99,6 +99,8 @@ describe('Dockstore hosted tools', () => {
         .get('#saveNewVersionButton')
         .click();
 
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
+
       // Should have a version 1
       goToTab('Versions');
       cy
@@ -159,7 +161,7 @@ describe('Dockstore hosted tools', () => {
       cy
         .get('#saveNewVersionButton')
         .click();
-
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Should have a version 2
       goToTab('Versions');
         cy.get('table')
@@ -188,6 +190,7 @@ describe('Dockstore hosted tools', () => {
       cy
         .get('#saveNewVersionButton')
         .click();
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:3');
 
       // Should now only have 1 visible editor
       cy
@@ -205,12 +208,13 @@ describe('Dockstore hosted tools', () => {
         .find('.deleteVersionButton')
         .first()
         .click();
-
-      // Version should no longer exist
+      // Automatically selects the newest version that wasn't the one that was just deleted
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
+      // Version 3 should no longer exist since it was just deleted
       goToTab('Versions');
       cy.get('table')
         .find('a')
-        .should('not.contain', '1');
+        .should('not.contain', '3');
     });
   });
 

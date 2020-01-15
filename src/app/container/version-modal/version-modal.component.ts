@@ -24,7 +24,6 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { RefreshService } from '../../shared/refresh.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
@@ -35,7 +34,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-version-modal',
@@ -64,7 +63,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public version: Tag;
   public validationPatterns = validationDescriptorPatterns;
   tagEditorForm: NgForm;
-  @ViewChild('tagEditorForm') currentForm: NgForm;
+  @ViewChild('tagEditorForm', { static: false }) currentForm: NgForm;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
 

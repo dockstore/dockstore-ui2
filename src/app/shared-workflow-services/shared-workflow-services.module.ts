@@ -15,6 +15,7 @@ import { WorkflowModule } from '../shared/modules/workflow.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { RefreshWorkflowOrganizationComponent } from '../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
 import { RegisterWorkflowModalComponent } from '../workflow/register-workflow-modal/register-workflow-modal.component';
+import { EntryWizardModule } from 'app/shared/entry-wizard.module';
 
 const DECLARATIONS: any[] = [
   MyWorkflowComponent,
@@ -31,7 +32,8 @@ const IMPORTS = [
   PipeModule,
   CommonModule,
   RouterModule,
-  MyEntriesModule
+  MyEntriesModule,
+  EntryWizardModule
 ];
 
 /**

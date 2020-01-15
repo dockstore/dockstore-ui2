@@ -1,19 +1,19 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { share, takeUntil } from 'rxjs/operators';
+import { map, share, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
-import { ToolDescriptor, ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
+import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { DescriptorsQuery } from './state/descriptors-query';
-import { DescriptorsStore } from './state/descriptors-store.';
+import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
-
+import { combineLatest, Observable } from 'rxjs';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 // tslint:disable:max-line-length
@@ -146,6 +146,21 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    */
   workflowPathAsQueryValue: string;
 
+  // Note: intentionally not using this.hasContent$ in the next line, as that does not work
+  cgcTooltip$: Observable<string> = combineLatest(this.descriptorsQuery.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) => {
+      if (!hasContent) {
+        return 'The CWL has no content.';
+      }
+      if (hasHttpImports) {
+        return (
+          'This version of the CWL has http(s) imports, which are not supported by the CGC. ' + 'Select a version without http(s) imports.'
+        );
+      }
+      return 'Export this workflow version to the CGC.';
+    })
+  );
+
   constructor(
     private workflowsService: WorkflowsService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
@@ -156,8 +171,9 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     private descriptorsService: DescriptorsService
   ) {
     super();
-    iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/DX_Logo_white_alpha.svg'));
-    iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('assets/images/thirdparty/terra.svg'));
+    iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
+    iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/terra.svg'));
+    iconRegistry.addSvgIcon('anvil', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/anvil.svg'));
   }
 
   ngOnInit(): void {

@@ -39,7 +39,7 @@ export class WdlViewerComponent implements AfterViewInit, OnDestroy {
     this.loading = true;
     this.onVersionChange(value);
   }
-  @ViewChild('diagram') diagram: ElementRef;
+  @ViewChild('diagram', { static: true }) diagram: ElementRef;
 
   public errorMessage;
   public loading = true;

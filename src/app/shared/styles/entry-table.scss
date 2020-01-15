@@ -1,0 +1,43 @@
+// Material Datatable for both tool and workflow list components
+.mat-column-starredUsers,
+.mat-column-stars {
+  max-width: 75px;
+}
+.mat-column-descriptorType,
+.mat-column-format {
+  max-width: 100px;
+}
+
+.mat-column-projectLinks {
+  justify-content: center;
+  max-width: 115px;
+}
+
+.mat-cell:not(:first-of-type),
+.mat-header-cell:not(:first-of-type) {
+  padding-left: 16px;
+}
+
+.mat-cell:not(:last-of-type),
+.mat-header-cell:not(:last-of-type) {
+  padding-right: 16px;
+}
+
+.mat-column-starredUsers,
+.mat-column-stars {
+  justify-content: flex-end;
+}
+
+.mat-column-verified {
+  justify-content: center;
+  flex: 0 0 75px;
+  align-items: center;
+}
+
+.mat-column-author {
+  flex: 0 0 180px;
+}
+
+.mat-column-name {
+  word-break: break-word;
+}

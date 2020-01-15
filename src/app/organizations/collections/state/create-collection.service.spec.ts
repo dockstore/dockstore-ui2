@@ -16,7 +16,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of as observableOf, throwError } from 'rxjs';
 import { OrganizationsService } from '../../../shared/swagger';
@@ -37,7 +38,7 @@ describe('CreateCollectionService', () => {
 
   beforeEach(() => {
     const organizationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createCollection', 'updateCollection']);
-    const organizationQueryStub = jasmine.createSpyObj('OrganizationQuery', ['getSnapshot']);
+    const organizationQueryStub = jasmine.createSpyObj('OrganizationQuery', ['getValue']);
     const collectionsServiceStub = jasmine.createSpyObj('CollectionsService', ['updateCollections']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
     TestBed.configureTestingModule({
@@ -66,7 +67,7 @@ describe('CreateCollectionService', () => {
   });
 
   it('should try to add a collection', () => {
-    organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
+    organizationQuerySpy.getValue.and.returnValue(<any>{ organization: { id: 1 } });
     organizationsServiceSpy.createCollection.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
@@ -79,7 +80,7 @@ describe('CreateCollectionService', () => {
   });
 
   it('should handle error when adding a collection', () => {
-    organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
+    organizationQuerySpy.getValue.and.returnValue(<any>{ organization: { id: 1 } });
     organizationsServiceSpy.createCollection.and.returnValue(throwError('test 404 error'));
 
     createCollectionService.createCollection(exampleFormState);
@@ -91,7 +92,7 @@ describe('CreateCollectionService', () => {
   });
 
   it('should try to update a collection', () => {
-    organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
+    organizationQuerySpy.getValue.and.returnValue(<any>{ organization: { id: 1 } });
     organizationsServiceSpy.updateCollection.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
@@ -104,7 +105,7 @@ describe('CreateCollectionService', () => {
   });
 
   it('should handle error when updating a collection', () => {
-    organizationQuerySpy.getSnapshot.and.returnValue({ organization: { id: 1 } });
+    organizationQuerySpy.getValue.and.returnValue(<any>{ organization: { id: 1 } });
     organizationsServiceSpy.updateCollection.and.returnValue(throwError('test 404 error'));
 
     createCollectionService.updateCollection(exampleFormState, 1, 'description');

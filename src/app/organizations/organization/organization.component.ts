@@ -14,9 +14,11 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
 import { Organization } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
@@ -40,11 +42,13 @@ export class OrganizationComponent implements OnInit {
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
   gravatarUrl$: Observable<string>;
+  public schema$: Observable<OrganizationSchema>;
   approved = Organization.StatusEnum.APPROVED;
 
   constructor(
     private organizationQuery: OrganizationQuery,
     private organizationService: OrganizationService,
+    private orgschemaService: OrgSchemaService,
     private matDialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userQuery: UserQuery
@@ -59,6 +63,7 @@ export class OrganizationComponent implements OnInit {
     this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
+    this.schema$ = this.organization$.pipe(map(organization => this.orgschemaService.getSchema(organization)));
   }
 
   /**
@@ -67,7 +72,7 @@ export class OrganizationComponent implements OnInit {
    * @memberof OrganizationComponent
    */
   editOrganization() {
-    const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
+    const organizationSnapshot: Organization = this.organizationQuery.getValue().organization;
     this.matDialog.open(RegisterOrganizationComponent, {
       data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
       width: '600px'
@@ -75,7 +80,7 @@ export class OrganizationComponent implements OnInit {
   }
 
   updateDescription() {
-    const organizationSnapshot: Organization = this.organizationQuery.getSnapshot().organization;
+    const organizationSnapshot: Organization = this.organizationQuery.getValue().organization;
     const description = organizationSnapshot.description;
     this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'organization' },

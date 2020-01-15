@@ -36,6 +36,7 @@
         <div class="search-holder">
           <input
             id="searchBar"
+            aria-label="Search"
             #search
             type="text"
             placeholder="Search..."
@@ -62,15 +63,13 @@
 </div>
 
 <div class="header-lower" id="overview">
-  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" />
+  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" alt="blue rectangle" />
 
   <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-    <a class="btn youtube" role="button" (click)="openYoutube()">
-      <div>
-        <mat-icon>play_circle_outline</mat-icon>
-        <span>&nbsp;Video Overview</span>
-      </div>
-    </a>
+    <button data-cy="video-overview-button" mat-raised-button (click)="openYoutube()">
+      <mat-icon>play_circle_outline</mat-icon>
+      <span>&nbsp;Video Overview</span>
+    </button>
   </div>
 </div>
 
@@ -172,8 +171,16 @@
     <h3 class="text-center">Next steps</h3>
 
     <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="20px" class="mb-4">
-      <a mat-stroked-button href="https://docs.dockstore.org/docs/user-tutorials" target="_blank" rel="noopener noreferrer">
-        Getting Started Guide
+      <a
+        mat-stroked-button
+        href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/getting-started.html"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Developer tutorial
+      </a>
+      <a mat-stroked-button href="{{ Dockstore.DOCUMENTATION_URL }}/launch-with/launch.html" target="_blank" rel="noopener noreferrer">
+        Launch workflows
       </a>
       <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()">
         Discover Organizations
@@ -200,11 +207,7 @@
     </p>
 
     <div fxLayout="row wrap" fxLayoutAlign="center center" class="mb-3">
-      <div class="twitter twitter-container">
-        <a class="twitter-timeline" data-theme="light" data-height="400" href="https://twitter.com/DockstoreOrg">
-          Tweets by DockstoreOrg
-        </a>
-      </div>
+      <div class="my-3 twitter" #twitter></div>
     </div>
   </div>
 </div>

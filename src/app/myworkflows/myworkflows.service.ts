@@ -15,26 +15,26 @@
  */
 
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { transaction } from '@datorama/akita';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { includesValidation } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 import { MyEntriesService } from 'app/shared/myentries.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
+import { DockstoreTool, UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
-import { take } from 'rxjs/operators';
 
 @Injectable()
-export class MyWorkflowsService extends MyEntriesService {
+export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowObject<Workflow>> {
   gitHubAppInstallationLink$: Observable<string>;
   constructor(
     protected userQuery: UserQuery,
@@ -45,9 +45,10 @@ export class MyWorkflowsService extends MyEntriesService {
     private myBioWorkflowsService: MyBioWorkflowsService,
     private myServicesService: MyServicesService,
     private sessionQuery: SessionQuery,
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    protected urlResolverService: UrlResolverService
   ) {
-    super();
+    super(urlResolverService);
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
   }
 
@@ -59,68 +60,18 @@ export class MyWorkflowsService extends MyEntriesService {
     }
   }
 
-  getGroupIndex(groupEntries: any[], group: string): number {
-    return groupEntries.findIndex(orgWorkflow => orgWorkflow.sourceControl + '/' + orgWorkflow.organization === group);
-  }
-
-  public findEntryFromPath(path: string, orgWorkflows: Array<OrgWorkflowObject>): ExtendedWorkflow | null {
-    let matchingWorkflow: ExtendedWorkflow;
-    for (let i = 0; i < orgWorkflows.length; i++) {
-      matchingWorkflow = orgWorkflows[i].published.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
-      if (matchingWorkflow) {
-        return matchingWorkflow;
-      }
-      matchingWorkflow = orgWorkflows[i].unpublished.find((workflow: ExtendedWorkflow) => workflow.full_workflow_path === path);
-      if (matchingWorkflow) {
-        return matchingWorkflow;
-      }
-    }
-    return null;
-  }
-
   /**
    * Grabs the workflow from the webservice and loads it
    * @param workflow Selected workflow
    */
-  selectEntry(workflow: ExtendedWorkflow | null, entryType: EntryType | null): void {
-    if (workflow && entryType) {
+  selectEntry(workflow: DockstoreTool | Workflow | null, entryType: EntryType | null): void {
+    if (workflow && entryType && workflow.id) {
       if (entryType === EntryType.BioWorkflow) {
         this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
       } else {
         this.myServicesService.selectEntry(workflow.id, includesValidation);
       }
     }
-  }
-
-  public getFirstPublishedEntry(orgWorkflows: Array<OrgWorkflowObject>): Workflow | null {
-    for (let i = 0; i < orgWorkflows.length; i++) {
-      const foundWorkflow = orgWorkflows[i]['entries'].find((workflow: Workflow) => {
-        return workflow.is_published === true;
-      });
-      if (foundWorkflow) {
-        return foundWorkflow;
-      }
-    }
-    return null;
-  }
-
-  public convertOldNamespaceObjectToOrgEntriesObject(nsWorkflows: Array<any>): Array<OrgWorkflowObject> {
-    const groupEntriesObject: Array<OrgWorkflowObject> = [];
-    nsWorkflows.map(nsWorkflow => {
-      const orgWorkflowObject: OrgWorkflowObject = {
-        sourceControl: '',
-        organization: '',
-        published: [],
-        unpublished: []
-      };
-      const nsWorkflowEntries: Array<Workflow> = nsWorkflow.entries;
-      orgWorkflowObject.sourceControl = nsWorkflow.sourceControl;
-      orgWorkflowObject.organization = nsWorkflow.organization;
-      orgWorkflowObject.published = nsWorkflowEntries.filter((workflow: Workflow) => workflow.is_published);
-      orgWorkflowObject.unpublished = nsWorkflowEntries.filter((workflow: Workflow) => !workflow.is_published);
-      groupEntriesObject.push(orgWorkflowObject);
-    });
-    return groupEntriesObject;
   }
 
   @transaction()
@@ -148,10 +99,66 @@ export class MyWorkflowsService extends MyEntriesService {
 
   registerEntry(entryType: EntryType | null) {
     if (entryType === EntryType.BioWorkflow) {
-      this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+      const dialogRef = this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
+      dialogRef.afterClosed().subscribe(reloadEntries => {
+        if (reloadEntries) {
+          const user = this.userQuery.getValue().user;
+          if (user) {
+            this.getMyEntries(user.id, entryType);
+          }
+        }
+      });
     }
     if (entryType === EntryType.Service) {
       this.gitHubAppInstallationLink$.pipe(take(1)).subscribe(link => window.open(link));
     }
+  }
+
+  createNewOrgEntryObject(workflow: Workflow): OrgWorkflowObject<Workflow> {
+    return {
+      sourceControl: workflow.sourceControl,
+      organization: workflow.organization,
+      ...this.createPartial(workflow)
+    };
+  }
+
+  protected sortOrgEntryObjects(orgWorkflowObjectA: OrgWorkflowObject<Workflow>, orgWorkflowObjectB: OrgWorkflowObject<Workflow>): number {
+    const keyA = [orgWorkflowObjectA.sourceControl, orgWorkflowObjectA.organization].join('/').toLowerCase();
+    const keyB = [orgWorkflowObjectB.sourceControl, orgWorkflowObjectB.organization].join('/').toLowerCase();
+    return keyA.localeCompare(keyB);
+  }
+
+  matchingOrgEntryObject(
+    orgWorkflowObjects: OrgWorkflowObject<Workflow>[],
+    selectedWorkflow: Workflow
+  ): OrgWorkflowObject<Workflow> | undefined {
+    return orgWorkflowObjects.find(orgWorkflowObject => {
+      return (
+        orgWorkflowObject.sourceControl === selectedWorkflow.sourceControl &&
+        orgWorkflowObject.organization === selectedWorkflow.organization
+      );
+    });
+  }
+
+  getPath(entry: Workflow): string {
+    return entry.full_workflow_path || '';
+  }
+
+  sortEntry(entryA: Workflow, entryB: Workflow): number {
+    const sourceControlA = entryA.sourceControl.toLowerCase();
+    const sourceControlB = entryB.sourceControl.toLowerCase();
+    const compareSourceControl = sourceControlA.localeCompare(sourceControlB);
+    if (compareSourceControl) {
+      return compareSourceControl;
+    }
+    const organizationA = entryA.organization.toLowerCase();
+    const organizationB = entryB.organization.toLowerCase();
+    const compareOrganization = organizationA.localeCompare(organizationB);
+    if (compareOrganization) {
+      return compareOrganization;
+    }
+    const keyA = (entryA.full_workflow_path || '').toLowerCase();
+    const keyB = (entryB.full_workflow_path || '').toLowerCase();
+    return keyA.localeCompare(keyB);
   }
 }

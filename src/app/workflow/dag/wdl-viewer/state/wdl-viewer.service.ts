@@ -15,10 +15,9 @@
  */
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
-
 import * as JSZip from 'jszip';
 import * as pipeline from 'pipeline-builder';
-import { Observable, from, forkJoin, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin, from, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/internal/operators';
 import { GA4GHFilesQuery } from '../../../../shared/ga4gh-files/ga4gh-files.query';
 import { ExtendedWorkflow } from '../../../../shared/models/ExtendedWorkflow';
@@ -81,7 +80,7 @@ export class WdlViewerService {
     return this.workflowsService.primaryDescriptor(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL).pipe(
       switchMap(prim => {
         // Errors thrown by the parse function are caught by the Observable being subscribed to
-        return from(pipeline.parse(prim.content));
+        return <Observable<WdlViewerPipelineResponse>>from(pipeline.parse(prim.content));
       })
     );
   }
@@ -93,10 +92,10 @@ export class WdlViewerService {
    * @param version
    */
   createMultiple(workflow: ExtendedWorkflow, version: WorkflowVersion): Observable<WdlViewerPipelineResponse> {
-    return forkJoin(
+    return forkJoin([
       this.workflowsService.primaryDescriptor(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL),
       this.workflowsService.secondaryDescriptors(workflow.id, version.name, ToolDescriptor.TypeEnum.WDL)
-    ).pipe(
+    ]).pipe(
       switchMap(res => {
         // Store each secondary file in a zip object
         res[1].forEach(file => this.zip.file(file.path, file.content));
@@ -104,7 +103,7 @@ export class WdlViewerService {
         return from(this.zip.generateAsync({ type: 'blob' })).pipe(
           switchMap(zip => {
             // Errors thrown by the parse function are caught by the Observable being subscribed to
-            return from(pipeline.parse(res[0].content, { zipFile: zip }));
+            return <Observable<WdlViewerPipelineResponse>>from(pipeline.parse(res[0].content, { zipFile: zip }));
           })
         );
       })
@@ -113,7 +112,7 @@ export class WdlViewerService {
 
   @transaction()
   update(workflowId: number, versionId: number, result: WdlViewerPipelineResponse) {
-    this.wdlViewerStore.createOrReplace(versionId, result);
+    this.wdlViewerStore.upsert(versionId, result);
     this.wdlViewerStore.setActive(workflowId);
   }
 

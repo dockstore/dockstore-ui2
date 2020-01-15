@@ -14,22 +14,33 @@
  *    limitations under the License.
  */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatAccordion } from '@angular/material';
+import { MatAccordion } from '@angular/material/expansion';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-
 import { formInputDebounceTime } from '../shared/constants';
-import { AdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
+import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
+import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.query';
 import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
-import { SearchService } from './state/search.service';
-import { AlertService } from '../shared/alert/state/alert.service';
+import { Hit, SearchService } from './state/search.service';
 
+/**
+ * There are a total of 5 calls per search.
+ * 2 calls are from the tag cloud (1 for tool, 1 for workflow)
+ * 1 calls are for the sidebar bucket count
+ * 1 call for the autocomplete
+ * 1 call for the actual results
+ *
+ * @export
+ * @class SearchComponent
+ * @implements {OnInit}
+ * @implements {OnDestroy}
+ */
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -42,16 +53,21 @@ export class SearchComponent implements OnInit, OnDestroy {
   faSortNumericDown = faSortNumericDown;
   faSortNumericUp = faSortNumericUp;
   private ngUnsubscribe: Subject<{}> = new Subject();
-  @ViewChild(MatAccordion) accordion: MatAccordion;
-  public advancedSearchObject: AdvancedSearchObject;
+  @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
+  public advancedSearchObject$: Observable<AdvancedSearchObject>;
+  public hasAdvancedSearchText$: Observable<boolean>;
   public shortUrl$: Observable<string>;
+  public aNDSplitFilterText$: Observable<string>;
+  public aNDNoSplitFilterText$: Observable<string>;
+  public oRFilterText$: Observable<string>;
+  public nOTFilterText$: Observable<string>;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
    */
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
-  public hits: Object[];
+  public hits: Hit[];
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
@@ -73,29 +89,24 @@ export class SearchComponent implements OnInit, OnDestroy {
   /**
    * this stores the set of active (non-text search) filters
    * Maps from filter -> values that have been chosen to filter by
-   * @type {Map<String, Set<string>>}
+   * This is temporary and UI only. Modifying this should immediately cause a route change which changes everything
+   * @type {Map<string, Set<string>>}
    */
-  public filters: Map<String, Set<string>> = new Map<string, Set<string>>();
+  public filters: Map<string, Set<string>> = new Map<string, Set<string>>();
   /**
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
    */
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
+  public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
-  private nonVerifiedCount: number;
-  private verifiedCount: number;
-
-  private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode', 'toAdvanceSearch'];
+  public basicSearchText$: Observable<string>;
+  private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
 
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
-  /**
-   * The current text search
-   * @type {string}
-   */
-  public values = '';
-
+  public values$: Observable<string>;
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -104,8 +115,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private queryBuilderService: QueryBuilderService,
     public searchService: SearchService,
     private searchQuery: SearchQuery,
-    private advancedSearchService: AdvancedSearchService,
-    private alertService: AlertService
+    private advancedSearchQuery: AdvancedSearchQuery,
+    private activatedRoute: ActivatedRoute
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
@@ -114,10 +125,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
+    this.toolTips = this.searchService.initializeToolTips();
   }
 
-  getKeys(map: Map<any, any>): Array<string> {
-    return Array.from(map.keys());
+  getKeys(bucketMap: Map<any, any>): Array<string> {
+    return Array.from(bucketMap.keys());
   }
 
   ngOnDestroy() {
@@ -126,6 +138,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.advancedSearchObject$ = this.advancedSearchQuery.advancedSearch$;
+    this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
+    this.values$ = this.searchQuery.searchText$;
+    this.basicSearchText$ = this.searchQuery.basicSearchText$;
+    this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
       if (toSaveSearch) {
         this.saveSearchFilter();
@@ -138,24 +155,20 @@ export class SearchComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe((value: string) => {
-        this.values = value;
-        this.onKey();
+      .subscribe((searchText: string) => {
+        this.onKey(searchText);
       });
     this.hits = [];
-    this.advancedSearchObject = {
-      ANDSplitFilter: '',
-      ANDNoSplitFilter: '',
-      ORFilter: '',
-      NOTFilter: '',
-      searchMode: 'files',
-      toAdvanceSearch: false
-    };
-    this.parseParams();
 
-    this.advancedSearchService.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((advancedSearch: AdvancedSearchObject) => {
-      this.advancedSearchObject = advancedSearch;
-      this.updateQuery();
+    this.aNDSplitFilterText$ = this.advancedSearchQuery.aNDSplitFilterText$;
+    this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
+    this.oRFilterText$ = this.advancedSearchQuery.oRFilterText$;
+    this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
+    // The reason why we have this here is because the updatePermalink function isn't in a service...
+    // because the function modifies something that's in this component and not in the state.
+    // TODO:move it to the state
+    this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.updatePermalink();
     });
   }
 
@@ -163,41 +176,48 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Applies parameters from the permalink to the search
    */
   parseParams() {
-    let useAdvSearch = false;
-    const URIParams = this.searchService.createURIParams();
-    if (!URIParams.paramsMap) {
+    const paramMap: ParamMap = this.activatedRoute.snapshot.queryParamMap;
+    if (!paramMap) {
       return;
     }
-    URIParams.paramsMap.forEach((value, key) => {
+    const newAdvancedSearchObject: AdvancedSearchObject = initialAdvancedSearchObject;
+    let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
+    // URL is gospel, if it doesn't have a search term, then there's no search term
+    if (!paramMap.has('search')) {
+      this.searchService.setSearchText('');
+    }
+    paramMap.keys.forEach(key => {
+      const value = paramMap.getAll(key);
       if (this.friendlyNames.get(key)) {
         value.forEach(categoryValue => {
           categoryValue = decodeURIComponent(categoryValue);
-          this.filters = this.searchService.handleFilters(key, categoryValue, this.filters);
+          newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
       } else if (key === 'search') {
         this.searchTerm = true;
-        this.advancedSearchObject.toAdvanceSearch = false;
         this.searchService.setSearchText(value[0]);
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
+        this.searchTerm = false;
         if (key.includes('Filter')) {
-          useAdvSearch = true;
-          this.advancedSearchObject[key] = value[0];
+          newAdvancedSearchObject[key] = value[0];
         } else if (key === 'searchMode') {
-          useAdvSearch = true;
-          if (value[0] !== 'files' && value[0] !== 'description') {
-            this.advancedSearchObject[key] = 'files';
-          } else {
-            this.advancedSearchObject[key] = value[0];
+          // If it's description, change to description. Otherwise, leave it as the 'files' default
+          if (value[0] === 'description') {
+            newAdvancedSearchObject.searchMode = 'description';
           }
+        } else {
+          console.error('Unexpected query parameter that does not match the known advanced search query parameters');
+        }
+        const currentAdvancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+        if (JSON.stringify(currentAdvancedSearchObject) !== JSON.stringify(newAdvancedSearchObject)) {
+          this.searchService.setAdvancedSearch(newAdvancedSearchObject);
         }
       }
     });
 
-    if (useAdvSearch) {
-      this.searchTerm = false;
-      this.advancedSearchObject.toAdvanceSearch = true;
-      this.advancedSearchService.setAdvancedSearch(this.advancedSearchObject);
-    }
+    this.filters = newFilters;
+    this.searchService.setFilterKeys(this.filters);
+    this.updateQuery();
   }
 
   /**===============================================
@@ -221,14 +241,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.sortModeMap.set(key, sortby);
         }
       }
-      let doc_count = bucket.doc_count;
-      if (key === 'tags.verified') {
-        if (bucket.key) {
-          doc_count = this.verifiedCount;
-        } else {
-          doc_count = this.nonVerifiedCount;
-        }
-      }
+      const doc_count = bucket.doc_count;
       if (doc_count > 0) {
         if (!this.checkboxMap.get(key)) {
           this.checkboxMap.set(key, new Map<string, boolean>());
@@ -250,53 +263,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** This function takes care of the problem of non-verified items containing the set of verified items.
-   * this function calls a third elastic query which will get the correct number count of the non-verified items
-   * (without the set of verified items). So the non-verified bucket of the sidebar is getting the correct number.
-   *
-   * However, this might not be the best way to do it, a better way would be to merge this third query into the other two.
-   *
-   * **/
-  setupNonVerifiedBucketCount(sideBarQuery: string) {
-    const queryBodyNotVerified = this.queryBuilderService.getNonVerifiedQuery(
-      this.query_size,
-      this.values,
-      this.advancedSearchObject,
-      this.searchTerm,
-      this.filters
-    );
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: queryBodyNotVerified
-    })
-      .then(nonVerifiedHits => {
-        this.nonVerifiedCount = nonVerifiedHits.hits.total;
-        this.updateSideBar(sideBarQuery);
-      })
-      .catch(error => console.log(error));
-  }
-
-  setupVerifiedBucketCount(sideBarQuery: string) {
-    const queryBodyVerified = this.queryBuilderService.getVerifiedQuery(
-      this.query_size,
-      this.values,
-      this.advancedSearchObject,
-      this.searchTerm,
-      this.filters
-    );
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: queryBodyVerified
-    })
-      .then(verifiedHits => {
-        this.verifiedCount = verifiedHits.hits.total;
-        this.setupNonVerifiedBucketCount(sideBarQuery);
-      })
-      .catch(error => console.log(error));
-  }
-
   setupOrderBuckets() {
     this.entryOrder.forEach((value, key) => {
       if (value.Items.size > 0 || value.SelectedItems.size > 0) {
@@ -313,6 +279,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @memberof SearchComponent
    */
   setupAllBuckets(hits: any) {
+    this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
     Object.entries(aggregations).forEach(([key, value]) => {
       if (value['buckets'] != null) {
@@ -346,22 +313,26 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // Saves the current search filter and passes to search service for sharing with advanced search
   saveSearchFilter() {
+    const advancedSearchObject: AdvancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const values = this.searchQuery.getValue().searchText;
     const searchInfo = {
       filter: this.filters,
-      searchValues: this.values,
+      searchValues: values,
       checkbox: this.checkboxMap,
       sortModeMap: this.sortModeMap,
-      advancedSearchObject: this.advancedSearchObject
+      advancedSearchObject: advancedSearchObject
     };
     this.searchService.setSearchInfo(searchInfo);
   }
 
   // Updates the permalink to reflect changes to search
   updatePermalink() {
+    const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const values = this.searchQuery.getValue().searchText;
     const searchInfo = {
       filter: this.filters,
-      searchValues: this.values,
-      advancedSearchObject: Object.assign({}, this.advancedSearchObject),
+      searchValues: values,
+      advancedSearchObject: advancedSearchObject,
       searchTerm: this.searchTerm
     };
     const linkArray = this.searchService.createPermalinks(searchInfo);
@@ -375,14 +346,15 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // Called when any change to the search is made to update the results
   updateQuery() {
-    this.updatePermalink();
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
+    const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
       this.query_size,
-      this.values,
-      this.advancedSearchObject,
+      values,
+      advancedSearchObject,
       this.searchTerm,
       this.bucketStubs,
       this.filters,
@@ -390,13 +362,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     );
     const tableQuery = this.queryBuilderService.getResultQuery(
       this.query_size,
-      this.values,
-      this.advancedSearchObject,
+      values,
+      advancedSearchObject,
       this.searchTerm,
       this.filters
     );
     this.resetEntryOrder();
-    this.setupVerifiedBucketCount(sideBarQuery);
+    this.updateSideBar(sideBarQuery);
     this.updateResultsTable(tableQuery);
   }
 
@@ -427,12 +399,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     })
       .then(hits => {
         this.hits = hits.hits.hits;
-        this.searchService.filterEntry(this.hits, this.query_size);
-        if (this.values.length > 0 && hits) {
+        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+        const searchText = this.searchQuery.getValue().searchText;
+        this.searchService.setHits(filteredHits[0], filteredHits[1]);
+        if (searchText.length > 0 && hits) {
           this.searchTerm = true;
         }
         if (this.searchTerm && this.hits.length === 0) {
-          this.searchService.suggestSearchTerm(this.values);
+          this.searchService.suggestSearchTerm(searchText);
         }
       })
       .catch(error => console.log(error));
@@ -443,16 +417,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ==============================================
    */
   resetFilters() {
-    this.values = '';
-    this.searchTerm = false;
-    this.filters.clear();
-    this.checkboxMap.clear();
-    this.sortModeMap.clear();
-    this.setFilter = false;
-    this.hits = [];
-    this.searchService.setSearchInfo(null);
-    this.resetEntryOrder();
-    this.advancedSearchService.clear();
+    this.searchService.reset();
   }
 
   resetEntryOrder() {
@@ -466,9 +431,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ==============================================
    */
 
-  onKey() {
+  onKey(searchText: string) {
     /*TODO: FOR DEMO USE, make this better later...*/
-    const pattern = this.values + '.*';
+    const pattern = searchText + '.*';
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
@@ -494,12 +459,11 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.setAutoCompleteTerms(hits);
       })
       .catch(error => console.log(error));
-    this.advancedSearchObject = { ...this.advancedSearchObject, toAdvanceSearch: false };
     this.searchTerm = true;
-    if (!this.values || 0 === this.values.length) {
+    if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
     }
-    this.updateQuery();
+    this.updatePermalink();
   }
 
   searchSuggestTerm() {
@@ -516,7 +480,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
     }
-    this.updateQuery();
+    this.updatePermalink();
   }
 
   clickExpand(key: string) {

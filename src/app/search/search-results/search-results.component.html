@@ -17,7 +17,7 @@
 <tabset class="homeComponent" type="tabs">
   <tab id="toolTab" [active]="activeToolTab$ | async" [customClass]="browseToolsTab" [disabled]="noToolHits$ | async">
     <ng-template tabHeading>
-      <img class="site-icons-tab" src="assets/images/dockstore/dockstore-tools-blue.png" />
+      <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-tools-blue.png" />
       Browse Tools
     </ng-template>
     <div *ngIf="toolTagCloudData">
@@ -60,7 +60,7 @@
       </div>
     </div>
     <ng-template tabHeading>
-      <img class="site-icons-tab" src="assets/images/dockstore/dockstore-workflows-green.png" />
+      <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-workflows-green.png" />
       Browse Workflows
     </ng-template>
     <span class="m-2">

@@ -14,14 +14,17 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let workflow">
-        <span id="verifiedIcon" *ngIf="getVerified(workflow)">
-          <a href="{{ verifiedLink }}">
-            <mat-icon matTooltip="Verified">done</mat-icon>
-          </a>
-        </span>
         <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
           workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
         }}</a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="verified">
+      <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell *matCellDef="let workflow">
+        <a *ngIf="getVerified(workflow)" href="{{ verifiedLink }}">
+          <mat-icon matTooltip="Verified">done</mat-icon>
+        </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
@@ -35,8 +38,8 @@
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
       <mat-cell *matCellDef="let entry">
-        <a [href]="entry?.providerUrl">
-          {{ entry?.provider }}
+        <a [href]="entry?.providerUrl" *ngIf="entry?.providerUrl">
+          <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"></fa-icon>
         </a>
       </mat-cell>
     </ng-container>
@@ -50,5 +53,10 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-  <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="[10, 20, 50, 100]" (page)="updatePageSize($event)"></mat-paginator>
+  <mat-paginator
+    data-cy="search-workflow-table-paginator"
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="[10, 20, 50, 100]"
+    (page)="updatePageSizeAndIndex($event)"
+  ></mat-paginator>
 </div>

@@ -32,7 +32,11 @@
               >
                 Git Reference
               </label>
-              <a *ngIf="!publicPage" href="http://docs.dockstore.org/faq/#what-is-a-default-version-of-a-tool-or-workflow" target="_blank"
+              <a
+                *ngIf="!publicPage"
+                href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#what-is-a-default-version-of-a-tool-or-workflow"
+                target="_blank"
+                rel="noopener noreferrer"
                 ><mat-icon>info</mat-icon></a
               >
             </span>
@@ -74,13 +78,6 @@
               Verified Platforms
             </label>
           </th>
-          <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
-          <!-- <th>
-        <label placement="top" matTooltip="Link to DOI entry for the given version">
-          DOI
-        </label>
-      </th> -->
-
           <th>
             <label
               placement="top"
@@ -150,13 +147,27 @@
             <mat-icon *ngIf="!version.verified">close</mat-icon>
           </td>
           <td>
-            <mat-icon *ngIf="version.frozen" data-cy="dockstore-snapshot-locked">lock</mat-icon>
-            <mat-icon *ngIf="!version.frozen" data-cy="dockstore-snapshot-unlocked">close</mat-icon>
+            <mat-icon
+              *ngIf="!version.doiURL && version.frozen"
+              data-cy="dockstore-snapshot-locked"
+              matTooltip="Version {{ version.name }} is a snapshot."
+              >lock</mat-icon
+            >
+            <mat-icon
+              *ngIf="!version.doiURL && !version.frozen"
+              data-cy="dockstore-snapshot-unlocked"
+              matTooltip="Version {{ version.name }} is not a snapshot."
+              >lock_open</mat-icon
+            >
+            <a
+              href="https://doi.org/{{ version.doiURL }}"
+              *ngIf="version.doiURL"
+              data-cy="workflow-version-DOI-badge"
+              matTooltip="Click to view this version's DOI entry information."
+              target="_blank"
+              ><img src="{{ zenodoUrl }}/badge/DOI/{{ version.doiURL }}.svg" alt="DOI"
+            /></a>
           </td>
-          <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
-          <!-- <td>
-        <a href="https://zenodo.org/record/">Placeholder</a>
-      </td> -->
           <td *ngIf="version">
             <app-view-workflow
               [version]="version"

@@ -1,43 +1,25 @@
 <!DOCTYPE html>
-<html>
-  <!-- note that this file is in two different places:
-https://github.com/dockstore/compose_setup/blob/develop/templates/index.html.template
-and
-https://github.com/dockstore/dockstore-ui2/blob/develop/src/index.html
-
-Please keep the two in sync when making changes, pending a better solution via git submodules
--->
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Dockstore</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap" rel="stylesheet" />
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#21335B" />
-    <script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "Organization",
-        "url": "https://dockstore.org",
-        "logo": "https://raw.githubusercontent.com/dockstore/dockstore-ui2/develop/src/assets/images/dockstore/dockstore.png",
-        "sameAs": ["https://twitter.com/DockstoreOrg"]
-      }
-    </script>
-    <script type="application/ld+json">
-      {
-        "@context": "http://schema.org",
-        "@type": "WebSite",
-        "url": "https://dockstore.org",
-        "sameAs": ["https://twitter.com/DockstoreOrg"],
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://dockstore.org/search?search={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      }
-    </script>
+    <meta
+      name="Description"
+      content="Dockstore, developed by the Cancer Genome Collaboratory, is an open platform used
+     by the GA4GH for sharing Docker-based tools described with the Common Workflow Language (CWL), the Workflow
+     Description Language (WDL), or Nextflow (NFL)"
+    />
+
+    <!--As suggested by Google Lighthouse audit, preload fonts-->
+    <!--    <link rel="preload" href="src/assets/fonts/Gotham-Book.otf" as="font" crossorigin>-->
+    <!--    <link rel="preload" href="src/assets/fonts/Gotham-Bold.otf" as="font" crossorigin>-->
+    <!--    <link rel="preload" href="node_modules/font-awesome/fonts/fontawesome-webfont.woff2" as="font" type="font/woff2" crossorigin>-->
   </head>
 
   <body>

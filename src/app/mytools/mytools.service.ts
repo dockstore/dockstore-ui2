@@ -14,28 +14,32 @@
  *    limitations under the License.
  */
 
+import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
+import { includesValidation } from 'app/shared/constants';
 import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
-import { UsersService } from 'app/shared/swagger';
+import { ContainersService, DockstoreTool, UsersService, Workflow } from 'app/shared/swagger';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { finalize } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
+import { OrgToolObject } from './my-tool/my-tool.component';
 
 @Injectable()
-export class MytoolsService extends MyEntriesService {
+export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObject<DockstoreTool>> {
   constructor(
     private alertService: AlertService,
     private usersService: UsersService,
     private containerService: ContainerService,
-    private myEntriesService: MyEntriesStateService
+    private myEntriesService: MyEntriesStateService,
+    private location: Location,
+    protected urlResolverService: UrlResolverService,
+    private containersService: ContainersService
   ) {
-    super();
-  }
-  getGroupIndex(groupEntries: any[], group: string): number {
-    return groupEntries.findIndex(nsContainer => nsContainer.namespace === group);
+    super(urlResolverService);
   }
 
   getMyEntries(userId: number, entryType: EntryType) {
@@ -54,6 +58,58 @@ export class MytoolsService extends MyEntriesService {
         }
       );
   }
-
+  selectEntry(tool: DockstoreTool | Workflow | null): void {
+    if (tool && tool.id) {
+      this.containersService.getContainer(tool.id, includesValidation).subscribe(result => {
+        this.location.go('/my-tools/' + result.tool_path);
+        this.containerService.setTool(result);
+      });
+    }
+  }
   registerEntry(entryType: EntryType) {}
+
+  protected sortOrgEntryObjects(orgToolObjectA: OrgToolObject<DockstoreTool>, orgToolObjectB: OrgToolObject<DockstoreTool>): number {
+    const keyA = [orgToolObjectA.registry, orgToolObjectA.namespace].join('/').toLowerCase();
+    const keyB = [orgToolObjectB.registry, orgToolObjectB.namespace].join('/').toLowerCase();
+    return keyA.localeCompare(keyB);
+  }
+
+  createNewOrgEntryObject(tool: DockstoreTool): OrgToolObject<DockstoreTool> {
+    return {
+      registry: tool.registry_string,
+      namespace: tool.namespace,
+      ...this.createPartial(tool)
+    };
+  }
+
+  matchingOrgEntryObject(
+    orgToolObjects: OrgToolObject<DockstoreTool>[],
+    selectedEntry: DockstoreTool
+  ): OrgToolObject<DockstoreTool> | undefined {
+    return orgToolObjects.find(orgToolObject => {
+      return orgToolObject.namespace === selectedEntry.namespace && orgToolObject.registry === selectedEntry.registry_string;
+    });
+  }
+
+  getPath(entry: DockstoreTool): string {
+    return entry.tool_path || '';
+  }
+
+  sortEntry(entryA: DockstoreTool, entryB: DockstoreTool): number {
+    const registryA = entryA.registry_string.toLowerCase();
+    const registryB = entryB.registry_string.toLowerCase();
+    const compareRegistry = registryA.localeCompare(registryB);
+    if (compareRegistry) {
+      return compareRegistry;
+    }
+    const namespaceA = entryA.namespace.toLowerCase();
+    const namespaceB = entryB.namespace.toLowerCase();
+    const compareNamespace = namespaceA.localeCompare(namespaceB);
+    if (compareNamespace) {
+      return compareNamespace;
+    }
+    const keyA = (entryA.tool_path || '').toLowerCase();
+    const keyB = (entryB.tool_path || '').toLowerCase();
+    return keyA.localeCompare(keyB);
+  }
 }

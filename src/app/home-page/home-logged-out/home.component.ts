@@ -14,10 +14,13 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomePageService } from 'app/home-page/home-page.service';
+import { Base } from 'app/shared/base';
 import { TabDirective } from 'ngx-bootstrap/tabs';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Dockstore } from '../../shared/dockstore.model';
 import { User } from '../../shared/swagger/model/user';
 import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
@@ -40,27 +43,42 @@ export class YoutubeComponent {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent extends Base implements OnInit, AfterViewInit {
   public browseToolsTab = 'browseToolsTab';
   public browseWorkflowsTab = 'browseWorkflowsTab';
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
-  protected ngUnsubscribe: Subject<{}> = new Subject();
+  Dockstore = Dockstore;
+  @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
 
-  @ViewChild('youtube') youtube: ElementRef;
+  @ViewChild('youtube', { static: false }) youtube: ElementRef;
 
   constructor(
     private dialog: MatDialog,
     private twitterService: TwitterService,
     private userQuery: UserQuery,
     private homePageService: HomePageService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {
-    this.twitterService.runScript();
+    this.loadTwitterWidget();
+  }
+
+  loadTwitterWidget() {
+    this.twitterService
+      .loadScript()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        () => {
+          this.twitterService.createTimeline(this.twitterElement, 2);
+        },
+        err => console.error(err)
+      );
   }
 
   goToSearch(searchValue: string) {

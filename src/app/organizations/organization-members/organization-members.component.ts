@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { ConfirmationDialogData } from 'app/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';

@@ -1,13 +1,35 @@
-// This is a sample card and should probably be more flexible
-.random-card {
-  min-height: 400px;
-  min-width: 300px;
-  background-color: red;
+.widget-section {
+  width: 100%;
 }
 
-// This is a sample section and should probably be more flexible
-.random-section {
-  min-height: 300px;
-  min-width: 600px;
-  background-color: blue;
+.twitter {
+  border: 1px solid #cfd1d7;
+}
+
+mat-sidenav-container {
+  display: flex;
+  min-height: 1000px;
+  height: 100%;
+}
+
+.left-side-column {
+  background-color: #f6f8fa;
+}
+
+@media screen and (min-width: 992px) {
+  .side-column {
+    max-width: 35rem !important;
+  }
+}
+
+#column-holder {
+  min-height: 900px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+.news-container {
+  border-top: 0.1rem solid #e0e1e2;
 }

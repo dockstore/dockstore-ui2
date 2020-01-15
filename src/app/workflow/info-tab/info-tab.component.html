@@ -22,15 +22,14 @@
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
-            <strong matTooltip="Git repository for the associated descriptors">{{ workflow?.provider }}</strong
-            >:
+            <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
             <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
               {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
           </li>
         </span>
         <li *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
-          <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Dockstore.org</strong>:
+          <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Source Code</strong>:
           <i>The source code for this workflow is stored on Dockstore.org</i>
         </li>
         <li *ngIf="isPublic && isValidVersion">
@@ -121,10 +120,7 @@
             <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
           </div>
           <li *ngIf="!isPublic">
-            <ng-template #modeTooltip>
-              <div [innerHtml]="modeTooltipContent"></div>
-            </ng-template>
-            <strong [matTooltip]="modeTooltip">Mode</strong>: {{ workflow?.mode }}
+            <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ workflow?.mode }}
             <button
               class="btn btn-link push-right"
               type="button"
@@ -138,8 +134,8 @@
           <li>
             <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
               <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
-              <select class="form-control input-sm" (change)="update()" [(ngModel)]="workflow.descriptorType">
-                <option *ngFor="let descriptorLanguage of descriptorLanguages()" value="{{ descriptorLanguage | lowercase }}">
+              <select class="form-control input-sm" (change)="updateDescriptorType()" [(ngModel)]="temporaryDescriptorType">
+                <option *ngFor="let descriptorLanguage of descriptorLanguages$ | async" [value]="descriptorLanguage">
                   {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}</option
                 >
               </select>
@@ -149,6 +145,10 @@
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
             </div>
           </li>
+          <div>
+            <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
+            {{ (workflow && workflow.conceptDoi) || 'n/a' }}
+          </div>
         </div>
       </ul>
     </mat-card-content>
@@ -189,17 +189,28 @@
               No description associated with this {{ entryType$ | async }}. See
               <ng-container [ngSwitch]="descriptorType$ | async">
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.CWL">
-                  <a href="https://docs.dockstore.org/docs/publisher-tutorials/best-practices/#authorship-metadata">CWL Best Practices</a>
+                  <a
+                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/best-practices.html#authorship-metadata"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >CWL Best Practices</a
+                  >
                   and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a
                   description for this tool.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.WDL">
-                  <a href="https://docs.dockstore.org/docs/publisher-tutorials/wdl-best-practices/#authorship-metadata"
+                  <a
+                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >WDL Best Practices</a
                   >.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.NFL">
-                  <a href="https://docs.dockstore.org/docs/publisher-tutorials/nfl-best-practices/#authorship-metadata"
+                  <a
+                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >Nextflow Best Practices</a
                   >.
                 </span>

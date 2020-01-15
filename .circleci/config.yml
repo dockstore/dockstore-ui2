@@ -5,7 +5,7 @@ executors:
   integration_test_exec: # declares a reusable executor
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
-      - image: circleci/postgres:9.6-alpine
+      - image: circleci/postgres:10.10-alpine
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
@@ -17,10 +17,29 @@ jobs:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - checkout
+      - run:
+          name: Checkout merge commit (PRs only)
+          command: |
+            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
+              git checkout -qf FETCH_HEAD
+            fi
       - install_container_dependencies
+      - restore_cache:
+          key: dep-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
-          command: bash -i -c 'npm ci'
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+              if [ ! -d "./node_modules" ]
+              then
+                bash -i -c 'npm ci'
+              fi
+      - save_cache:
+          key: dep-cache-{{ checksum "./package-lock.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: Check dependencies
           command: bash -i -c 'npm ls'
@@ -50,7 +69,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group1/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   integration_test_2:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -58,7 +81,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group2/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   integration_test_3:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -66,7 +93,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/immutableDatabaseTests/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   upload_to_s3:
     working_directory: ~/repo
     docker:
@@ -79,8 +110,16 @@ jobs:
       - when:
           condition: <<parameters.aws_bucket>>
           steps:
-            - attach_workspace:
-                at: .
+            - get_workspace
+            - install_container_dependencies
+            # Build again for the upload to s3
+            # TODO: https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7) can probably be made into a bash/circle-ci variable.
+            - run:
+                name: Swap for CDN paths
+                command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\.\./assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
+            - run:
+                name: Build
+                command: bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
             # Copy to a versioned folder
             - aws-s3/copy:
                 from: dist
@@ -93,38 +132,6 @@ jobs:
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
-            # Copy to a "live" develop folder
-            - aws-s3/copy:
-                from: dist
-                to: 's3://${AWS_BUCKET}/develop/'
-                arguments: |
-                  --recursive \
-                  --exclude index.html
-            - aws-s3/copy:
-                from: dist/index.html
-                to: 's3://${AWS_BUCKET}/develop/'
-                arguments: |
-                  --cache-control max-age=0
-  update_cloudfront:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/python:2.7
-    parameters:
-      aws_bucket:
-        type: string
-        default: "${AWS_BUCKET}"
-    steps:
-      - when:
-          condition: <<parameters.aws_bucket>>
-          steps:
-            - attach_workspace:
-                at: .
-            - run:
-                name: Install AWS CLI
-                command: sudo pip install awscli --upgrade
-            - run:
-                name: Invalidate Cloudfront
-                command: bash -c 'aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
 workflows:
   version: 2
@@ -153,7 +160,7 @@ workflows:
               only: /.*/
           requires:
             - lint_unit_test_coverage
-      # Upload builds for tags to s3. We can add branches later
+      # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
             - integration_test_1
@@ -163,15 +170,7 @@ workflows:
             tags:
               only: /.*/
             branches:
-              # Note to reviewers: will change to develop before merging, once build works off the branch
-              only: feature/SEAB-314/cd
-      - update_cloudfront:
-          requires:
-            - upload_to_s3
-          filters:
-            branches:
-              # Note to reviewers: will change to develop before merging, once build works off the branch
-              only: feature/SEAB-314/cd
+              only: /.*/
 commands:
   install_container_dependencies:
     steps:
@@ -189,6 +188,16 @@ commands:
     steps:
       - attach_workspace:
           at: .
+  upload_artifacts:
+    steps:
+      - store_test_results:
+          path: integration-tests/test-results
+      - store_artifacts:
+          path: integration-tests/test-results
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
   setup_integration_test:
     steps:
       - get_workspace
@@ -201,7 +210,7 @@ commands:
           command: sudo apt install libgtk2.0-0 -yq
       - run:
           name: Install cypress
-          command: bash -i -c 'npm i cypress@3.2.0 --no-save'
+          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
@@ -219,6 +228,7 @@ commands:
           name: Run webservice
           command: java -jar dockstore-webservice.jar server travisci/web.yml 1>/dev/null
           background: true
+      - run: mkdir -p integration-tests/test-results/junit
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh

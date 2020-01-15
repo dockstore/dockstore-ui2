@@ -13,433 +13,435 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<h4 mat-dialog-title>{{ TagEditorMode[mode] }} Version Tag</h4>
-<div mat-dialog-content>
-  <app-alert></app-alert>
-  <form *ngIf="unsavedVersion" #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
-    <div class="modal-body tagEditor">
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Version Tag:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <input
-            id="versionTagInput"
-            type="text"
-            class="form-control"
-            name="name"
-            [(ngModel)]="unsavedVersion.name"
-            ng-maxlength="128"
-            required
-            title="Docker Image tag name."
-            placeholder="e.g. develop"
-            [disabled]="!(mode == 'Add')"
-          />
-        </div>
-      </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Git Reference:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <input
-            id="gitReferenceInput"
-            type="text"
-            class="form-control"
-            name="reference"
-            [(ngModel)]="unsavedVersion.reference"
-            ng-minlength="3"
-            ng-maxlength="128"
-            [pattern]="validationPatterns.reference"
-            title="Git branch or tag name."
-            placeholder="e.g. develop"
-            [disabled]="!editMode || (editMode && unsavedVersion.automated) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-          />
-          <div *ngIf="formErrors.reference" class="form-error-messages alert alert-danger">
-            {{ formErrors.reference }}
-          </div>
-        </div>
-      </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Image ID:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <input
-            type="text"
-            class="form-control"
-            name="image_id"
-            [(ngModel)]="unsavedVersion.image_id"
-            title="Docker Image ID."
-            placeholder="e.g. 28d30887157514b6047c9"
-            [disabled]="true"
-          />
-        </div>
-      </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Dockerfile:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <input
-            type="text"
-            class="form-control"
-            #name="ngModel"
-            id="dockerfilePath"
-            name="dockerfilePath"
-            [(ngModel)]="unsavedVersion.dockerfile_path"
-            minlength="3"
-            maxlength="256"
-            [pattern]="validationPatterns.dockerfilePath"
-            required
-            title="Relative path to the Dockerfile in the Git repository."
-            placeholder="e.g. /Dockerfile"
-            [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-          />
-          <div *ngIf="formErrors.dockerfilePath" class="form-error-messages alert alert-danger">
-            {{ formErrors.dockerfilePath }}
-          </div>
-        </div>
-      </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          CWL Descriptor:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <input
-            type="text"
-            class="form-control"
-            name="cwlPath"
-            [(ngModel)]="unsavedVersion.cwl_path"
-            minlength="3"
-            maxlength="128"
-            [pattern]="validationPatterns.cwlPath"
-            [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)"
-            title="Relative path to the CWL Descriptor in the Git repository."
-            placeholder="e.g. /Dockstore.cwl"
-            [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-          />
-          <div *ngIf="formErrors.cwlPath" class="form-error-messages alert alert-danger">
-            {{ formErrors.cwlPath }}
-          </div>
-        </div>
-      </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          WDL Descriptor:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <input
-            type="text"
-            class="form-control"
-            name="wdlPath"
-            [(ngModel)]="unsavedVersion.wdl_path"
-            minlength="3"
-            maxlength="128"
-            [pattern]="validationPatterns.wdlPath"
-            [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)"
-            title="Relative path to the WDL Descriptor in the Git repository."
-            placeholder="e.g. /Dockstore.wdl"
-            [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-          />
-          <div *ngIf="formErrors.wdlPath" class="form-error-messages alert alert-danger">
-            {{ formErrors.wdlPath }}
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          CWL Test Parameter File(s):
-        </label>
-        <div
-          class="col-sm-9 col-md-9 col-lg-9 form-margin"
-          [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-          *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIndex"
-        >
-          <div class="input-group">
+<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <h4 mat-dialog-title>{{ TagEditorMode[mode] }} Version Tag</h4>
+  <div mat-dialog-content>
+    <app-alert></app-alert>
+    <form *ngIf="unsavedVersion" #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
+      <div class="modal-body tagEditor">
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Version Tag:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
             <input
-              [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
+              id="versionTagInput"
               type="text"
               class="form-control"
-              name="unsavedCWLTestParameterFilePaths[{{ i }}]"
-              [(ngModel)]="unsavedCWLTestParameterFilePaths[i]"
-              minlength="3"
-              maxlength="128"
-              [pattern]="validationPatterns.testFilePath"
-              title="Relative path to a CWL Test Parameter File in the Git repository."
-              placeholder="e.g. /test.cwl.json"
-              disabled
-              ng-class="editMode ? 'test_parameter_input' : ''"
+              name="name"
+              [(ngModel)]="unsavedVersion.name"
+              ng-maxlength="128"
+              required
+              title="Docker Image tag name."
+              placeholder="e.g. 1.0.0"
+              [disabled]="!(mode == 'Add')"
             />
-            <span class="input-group-btn">
-              <button
-                id="removeCWLTestParameterFileButton"
-                title="Remove CWL test parameter file"
-                type="button"
-                class="btn btn-default form-sm-button"
-                *ngIf="editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
-                (click)="removeTestParameterFile(i, DescriptorType.CWL)"
-              >
-                <mat-icon>clear</mat-icon>
-              </button>
-            </span>
           </div>
         </div>
-        <div
-          class="col-sm-9 col-md-9 col-lg-9"
-          [ngClass]="{ 'col-sm-offset-3': unsavedCWLTestParameterFilePaths.length > 0 }"
-          *ngIf="editMode"
-        >
-          <div class="input-group">
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Git Reference:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
             <input
-              id="addCWLField"
-              [ngClass]="{ 'input-right-button': editMode }"
+              id="gitReferenceInput"
               type="text"
-              #model1="ngModel"
               class="form-control"
-              name="cwlTestParameterFilePath"
-              [(ngModel)]="unsavedTestCWLFile"
+              name="reference"
+              [(ngModel)]="unsavedVersion.reference"
+              ng-minlength="3"
+              ng-maxlength="128"
+              [pattern]="validationPatterns.reference"
+              title="Git branch or tag name."
+              placeholder="e.g. 1.0.0"
+              [disabled]="!editMode || (editMode && unsavedVersion.automated) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+            />
+            <div *ngIf="formErrors.reference" class="form-error-messages alert alert-danger">
+              {{ formErrors.reference }}
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Image ID:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <input
+              type="text"
+              class="form-control"
+              name="image_id"
+              [(ngModel)]="unsavedVersion.image_id"
+              title="Docker Image ID."
+              placeholder="e.g. 28d30887157514b6047c9"
+              [disabled]="true"
+            />
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Dockerfile:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <input
+              type="text"
+              class="form-control"
+              #name="ngModel"
+              id="dockerfilePath"
+              name="dockerfilePath"
+              [(ngModel)]="unsavedVersion.dockerfile_path"
               minlength="3"
-              maxlength="128"
-              [pattern]="validationPatterns.testFilePath"
-              title="Relative path to a CWL Test Parameter File in the Git repository."
-              placeholder="e.g. /test.cwl.json"
+              maxlength="256"
+              [pattern]="validationPatterns.dockerfilePath"
+              required
+              title="Relative path to the Dockerfile in the Git repository."
+              placeholder="e.g. /Dockerfile"
               [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-              ng-class="editMode ? 'test_parameter_input' : ''"
             />
-            <span class="input-group-btn">
-              <button
-                title="Add CWL test parameter file"
-                type="button"
-                class="btn btn-default form-sm-button"
-                [disabled]="hasDuplicateTestJson(DescriptorType.CWL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-                (click)="addTestParameterFile(DescriptorType.CWL)"
-                *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-              <button
-                title="Enter a valid path"
-                type="button"
-                class="btn btn-default form-sm-button"
-                [disabled]="model1.invalid || unsavedTestCWLFile.length == 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-                *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length == 0)"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-            </span>
-          </div>
-          <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
-            <mat-card class="alert alert-danger" role="alert">
-              <mat-icon>error</mat-icon> {{ formErrors.cwlTestParameterFilePath }}
-            </mat-card>
-          </div>
-          <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
-            <mat-card class="alert alert-danger" role="alert">
-              <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
-            </mat-card>
+            <div *ngIf="formErrors.dockerfilePath" class="form-error-messages alert alert-danger">
+              {{ formErrors.dockerfilePath }}
+            </div>
           </div>
         </div>
-        <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
-          <input class="form-control" placeholder="None provided" [disabled]="true" />
-        </div>
-      </div>
-
-      <div class="form-group form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          WDL Test Parameter File(s):
-        </label>
-        <div
-          class="col-sm-9 col-md-9 col-lg-9 form-margin"
-          [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-          *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index; trackBy: trackByIndex"
-        >
-          <div class="input-group">
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            CWL Descriptor:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
             <input
-              [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
               type="text"
               class="form-control"
-              name="unsavedWDLTestParameterFilePaths[{{ i }}]"
-              [(ngModel)]="unsavedWDLTestParameterFilePaths[i]"
+              name="cwlPath"
+              [(ngModel)]="unsavedVersion.cwl_path"
               minlength="3"
               maxlength="128"
-              [pattern]="validationPatterns.testFilePath"
-              title="Relative path to a WDL Test Parameter File in the Git repository."
-              placeholder="e.g. /test.wdl.json"
-              disabled
-              ng-class="editMode ? 'test_parameter_input' : ''"
-            />
-            <span class="input-group-btn">
-              <button
-                id="removeWDLTestParameterFileButton"
-                title="Remove WDL test parameter file"
-                type="button"
-                class="btn btn-default form-sm-button"
-                *ngIf="editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
-                (click)="removeTestParameterFile(i, DescriptorType.WDL)"
-              >
-                <mat-icon>clear</mat-icon>
-              </button>
-            </span>
-          </div>
-        </div>
-        <div
-          class="col-sm-9 col-md-9 col-lg-9"
-          [ngClass]="{ 'col-sm-offset-3': unsavedWDLTestParameterFilePaths.length > 0 }"
-          *ngIf="editMode"
-        >
-          <div class="input-group">
-            <input
-              id="addWDLField"
-              [ngClass]="{ 'input-right-button': editMode }"
-              type="text"
-              #model1="ngModel"
-              class="form-control"
-              name="wdlTestParameterFilePath"
-              [(ngModel)]="unsavedTestWDLFile"
-              minlength="3"
-              maxlength="128"
-              [pattern]="validationPatterns.testFilePath"
-              title="Relative path to a WDL Test Parameter File in the Git repository."
-              placeholder="e.g. /test.wdl.json"
+              [pattern]="validationPatterns.cwlPath"
+              [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)"
+              title="Relative path to the CWL Descriptor in the Git repository."
+              placeholder="e.g. /Dockstore.cwl"
               [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-              ng-class="editMode ? 'test_parameter_input' : ''"
             />
-            <span class="input-group-btn">
-              <button
-                title="Add WDL test parameter file"
-                type="button"
-                class="btn btn-default form-sm-button"
-                [disabled]="hasDuplicateTestJson(DescriptorType.WDL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-                (click)="addTestParameterFile(DescriptorType.WDL)"
-                *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-              <button
-                title="Enter a valid path"
-                type="button"
-                class="btn btn-default form-sm-button"
-                [disabled]="model1.invalid || unsavedTestWDLFile.length == 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-                *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length == 0)"
-              >
-                <mat-icon>add</mat-icon>
-              </button>
-            </span>
-          </div>
-          <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
-            <mat-card class="alert alert-danger" role="alert">
-              <mat-icon>error</mat-icon> {{ formErrors.wdlTestParameterFilePath }}
-            </mat-card>
-          </div>
-          <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)">
-            <mat-card class="alert alert-danger" role="alert">
-              <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
-            </mat-card>
+            <div *ngIf="formErrors.cwlPath" class="form-error-messages alert alert-danger">
+              {{ formErrors.cwlPath }}
+            </div>
           </div>
         </div>
-        <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">
-          <input class="form-control" placeholder="None provided" [disabled]="true" />
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            WDL Descriptor:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <input
+              type="text"
+              class="form-control"
+              name="wdlPath"
+              [(ngModel)]="unsavedVersion.wdl_path"
+              minlength="3"
+              maxlength="128"
+              [pattern]="validationPatterns.wdlPath"
+              [required]="!(unsavedVersion.cwl_path?.length || unsavedVersion.wdl_path?.length)"
+              title="Relative path to the WDL Descriptor in the Git repository."
+              placeholder="e.g. /Dockstore.wdl"
+              [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+            />
+            <div *ngIf="formErrors.wdlPath" class="form-error-messages alert alert-danger">
+              {{ formErrors.wdlPath }}
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="form-group form-group-sm" *ngIf="editMode" style="clear:both;">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Hidden:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <div>
-            <label>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            CWL Test Parameter File(s):
+          </label>
+          <div
+            class="col-sm-9 col-md-9 col-lg-9 form-margin"
+            [ngClass]="{ 'col-sm-offset-3': i > 0 }"
+            *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIndex"
+          >
+            <div class="input-group">
               <input
-                type="checkbox"
-                name="checkbox"
-                [disabled]="!editMode"
-                [(ngModel)]="unsavedVersion.hidden"
-                title="Hide tag from public view."
+                [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
+                type="text"
+                class="form-control"
+                name="unsavedCWLTestParameterFilePaths[{{ i }}]"
+                [(ngModel)]="unsavedCWLTestParameterFilePaths[i]"
+                minlength="3"
+                maxlength="128"
+                [pattern]="validationPatterns.testFilePath"
+                title="Relative path to a CWL Test Parameter File in the Git repository."
+                placeholder="e.g. /test.cwl.json"
+                disabled
+                ng-class="editMode ? 'test_parameter_input' : ''"
               />
-            </label>
+              <span class="input-group-btn">
+                <button
+                  id="removeCWLTestParameterFileButton"
+                  title="Remove CWL test parameter file"
+                  type="button"
+                  class="btn btn-default form-sm-button"
+                  *ngIf="editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
+                  (click)="removeTestParameterFile(i, DescriptorType.CWL)"
+                >
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </span>
+            </div>
+          </div>
+          <div
+            class="col-sm-9 col-md-9 col-lg-9"
+            [ngClass]="{ 'col-sm-offset-3': unsavedCWLTestParameterFilePaths.length > 0 }"
+            *ngIf="editMode"
+          >
+            <div class="input-group">
+              <input
+                id="addCWLField"
+                [ngClass]="{ 'input-right-button': editMode }"
+                type="text"
+                #model1="ngModel"
+                class="form-control"
+                name="cwlTestParameterFilePath"
+                [(ngModel)]="unsavedTestCWLFile"
+                minlength="3"
+                maxlength="128"
+                [pattern]="validationPatterns.testFilePath"
+                title="Relative path to a CWL Test Parameter File in the Git repository."
+                placeholder="e.g. /test.cwl.json"
+                [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                ng-class="editMode ? 'test_parameter_input' : ''"
+              />
+              <span class="input-group-btn">
+                <button
+                  title="Add CWL test parameter file"
+                  type="button"
+                  class="btn btn-default form-sm-button"
+                  [disabled]="hasDuplicateTestJson(DescriptorType.CWL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                  (click)="addTestParameterFile(DescriptorType.CWL)"
+                  *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button
+                  title="Enter a valid path"
+                  type="button"
+                  class="btn btn-default form-sm-button"
+                  [disabled]="model1.invalid || unsavedTestCWLFile.length == 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                  *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length == 0)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </span>
+            </div>
+            <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
+              <mat-card class="alert alert-danger" role="alert">
+                <mat-icon>error</mat-icon> {{ formErrors.cwlTestParameterFilePath }}
+              </mat-card>
+            </div>
+            <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
+              <mat-card class="alert alert-danger" role="alert">
+                <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
+              </mat-card>
+            </div>
+          </div>
+          <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
+            <input class="form-control" placeholder="None provided" [disabled]="true" />
+          </div>
+        </div>
+
+        <div class="form-group form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            WDL Test Parameter File(s):
+          </label>
+          <div
+            class="col-sm-9 col-md-9 col-lg-9 form-margin"
+            [ngClass]="{ 'col-sm-offset-3': i > 0 }"
+            *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index; trackBy: trackByIndex"
+          >
+            <div class="input-group">
+              <input
+                [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
+                type="text"
+                class="form-control"
+                name="unsavedWDLTestParameterFilePaths[{{ i }}]"
+                [(ngModel)]="unsavedWDLTestParameterFilePaths[i]"
+                minlength="3"
+                maxlength="128"
+                [pattern]="validationPatterns.testFilePath"
+                title="Relative path to a WDL Test Parameter File in the Git repository."
+                placeholder="e.g. /test.wdl.json"
+                disabled
+                ng-class="editMode ? 'test_parameter_input' : ''"
+              />
+              <span class="input-group-btn">
+                <button
+                  id="removeWDLTestParameterFileButton"
+                  title="Remove WDL test parameter file"
+                  type="button"
+                  class="btn btn-default form-sm-button"
+                  *ngIf="editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
+                  (click)="removeTestParameterFile(i, DescriptorType.WDL)"
+                >
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </span>
+            </div>
+          </div>
+          <div
+            class="col-sm-9 col-md-9 col-lg-9"
+            [ngClass]="{ 'col-sm-offset-3': unsavedWDLTestParameterFilePaths.length > 0 }"
+            *ngIf="editMode"
+          >
+            <div class="input-group">
+              <input
+                id="addWDLField"
+                [ngClass]="{ 'input-right-button': editMode }"
+                type="text"
+                #model1="ngModel"
+                class="form-control"
+                name="wdlTestParameterFilePath"
+                [(ngModel)]="unsavedTestWDLFile"
+                minlength="3"
+                maxlength="128"
+                [pattern]="validationPatterns.testFilePath"
+                title="Relative path to a WDL Test Parameter File in the Git repository."
+                placeholder="e.g. /test.wdl.json"
+                [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                ng-class="editMode ? 'test_parameter_input' : ''"
+              />
+              <span class="input-group-btn">
+                <button
+                  title="Add WDL test parameter file"
+                  type="button"
+                  class="btn btn-default form-sm-button"
+                  [disabled]="hasDuplicateTestJson(DescriptorType.WDL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                  (click)="addTestParameterFile(DescriptorType.WDL)"
+                  *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button
+                  title="Enter a valid path"
+                  type="button"
+                  class="btn btn-default form-sm-button"
+                  [disabled]="model1.invalid || unsavedTestWDLFile.length == 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                  *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length == 0)"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </span>
+            </div>
+            <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
+              <mat-card class="alert alert-danger" role="alert">
+                <mat-icon>error</mat-icon> {{ formErrors.wdlTestParameterFilePath }}
+              </mat-card>
+            </div>
+            <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)">
+              <mat-card class="alert alert-danger" role="alert">
+                <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
+              </mat-card>
+            </div>
+          </div>
+          <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">
+            <input class="form-control" placeholder="None provided" [disabled]="true" />
+          </div>
+        </div>
+
+        <div class="form-group form-group-sm" *ngIf="editMode" style="clear:both;">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Hidden:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  name="checkbox"
+                  [disabled]="!editMode"
+                  [(ngModel)]="unsavedVersion.hidden"
+                  title="Hide tag from public view."
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Automated:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <div class="label-value">
+              {{ unsavedVersion.automated ? 'Yes' : 'No' }}
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Image Size:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <div class="label-value">
+              {{ unsavedVersion.size ? getSizeString(unsavedVersion.size) : 'n/a' }}
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Last Modified:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <div class="label-value">
+              {{ getDateTimeMessage(unsavedVersion.last_modified) }}
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Valid:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9">
+            <div class="label-value">
+              {{ unsavedVersion.valid ? 'Yes' : 'No' }}
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
+          <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+            Docker Pull:
+          </label>
+          <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tool">
+            <div class="input-group">
+              <input
+                type="text"
+                id="dockerPullCommand"
+                class="form-control"
+                value="{{ dockerPullCommand }}"
+                aria-describedby="clipboard"
+                #inputTarget
+                disabled
+              />
+              <span class="input-group-btn" id="clipboard">
+                <button class="btn btn-default btn-sm form-sm-button" type="button" [ngxClipboard]="inputTarget">
+                  <mat-icon>file_copy</mat-icon>
+                </button>
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Automated:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <div class="label-value">
-            {{ unsavedVersion.automated ? 'Yes' : 'No' }}
-          </div>
-        </div>
+      <div class="modal-footer">
+        <button type="button" mat-button color="secondary" (click)="onHidden()">Cancel</button>
+        <button
+          id="saveVersionModal"
+          type="button"
+          (click)="onSubmit()"
+          mat-flat-button
+          color="primary"
+          *ngIf="mode == TagEditorMode.Edit"
+          [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
+          data-dismiss="modal"
+        >
+          Save Changes
+        </button>
       </div>
-      <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Image Size:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <div class="label-value">
-            {{ unsavedVersion.size ? getSizeString(unsavedVersion.size) : 'n/a' }}
-          </div>
-        </div>
-      </div>
-      <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Last Modified:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <div class="label-value">
-            {{ getDateTimeMessage(unsavedVersion.last_modified) }}
-          </div>
-        </div>
-      </div>
-      <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Valid:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9">
-          <div class="label-value">
-            {{ unsavedVersion.valid ? 'Yes' : 'No' }}
-          </div>
-        </div>
-      </div>
-      <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
-        <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-          Docker Pull:
-        </label>
-        <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tool">
-          <div class="input-group">
-            <input
-              type="text"
-              id="dockerPullCommand"
-              class="form-control"
-              value="{{ dockerPullCommand }}"
-              aria-describedby="clipboard"
-              #inputTarget
-              disabled
-            />
-            <span class="input-group-btn" id="clipboard">
-              <button class="btn btn-default btn-sm form-sm-button" type="button" [ngxClipboard]="inputTarget">
-                <mat-icon>file_copy</mat-icon>
-              </button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" mat-button color="secondary" (click)="onHidden()">Close</button>
-      <button
-        id="saveVersionModal"
-        type="button"
-        (click)="onSubmit()"
-        mat-flat-button
-        color="primary"
-        *ngIf="mode == TagEditorMode.Edit"
-        [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
-        data-dismiss="modal"
-      >
-        Save Changes
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>

@@ -100,7 +100,7 @@ describe('Dockstore Organizations', () => {
       );
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#createOrUpdateOrganizationButton')
-        .should('not.be.visible')
+        .should('not.be.visible');
       cy.get('#editOrgInfo').should('be.visible').click();
       cy.get('[data-cy=image-url-input]').should('be.visible').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
@@ -119,10 +119,27 @@ describe('Dockstore Organizations', () => {
       cy.contains('asdf@asdf.com');
       cy.get('.orgLogo').should('have.attr', 'src').should('include', 'https://www.gravatar.com/avatar/000?d=https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png');
     });
+
+    it('have request shown on homepage', () => {
+      cy.visit('/');
+      cy.contains('1 organization request');
+      cy.contains('1 organization request requiring action');
+    });
+
+    it('have organization shown on the homepage', () => {
+      cy.visit('/');
+      cy.contains('Potatoe');
+      cy.contains('Find organizations');
+      cy.get('[data-cy=filterOrganizationsInput]').type('Po');
+      cy.contains('Potatoe');
+      cy.get('[data-cy=filterOrganizationsInput]').type('r');
+      cy.contains('No matching organizations');
+    });
   });
 
   describe('Should be able to add/update collection', () => {
     it('be able to add a collection', () => {
+      cy.visit('/organizations/Potatoe');
       cy.get('#createCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'fakeCollectionName');
@@ -154,11 +171,12 @@ describe('Dockstore Organizations', () => {
       typeInTextArea('Description', '* fake organization description');
       cy.contains('Preview Mode').click();
       cy.contains('fake organization description');
-      cy.contains('* fake organization description').should('not.exist');
+      // narrowed search to popup window so as to not search the JSON LD containing the description, which doesn't display markdown
+      cy.get('[data-cy=updateOrganizationDescriptionWindow]').contains('* fake organization description').should('not.exist');
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#updateOrganizationDescriptionButton').should('not.be.visible');
       cy.contains('fake organization description');
-      cy.contains('* fake organization description').should('not.exist');
+      cy.get('[data-cy=organizationDetails]').contains('* fake organization description').should('not.exist');
     });
   });
 

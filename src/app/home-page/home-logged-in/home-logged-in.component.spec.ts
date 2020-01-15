@@ -4,7 +4,9 @@ import { HomeLoggedInComponent } from './home-logged-in.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TabsModule } from 'ngx-bootstrap';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, MatDialogModule, MatIconModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { TwitterService } from '../../shared/twitter.service';
 
 describe('HomeLoggedInComponent', () => {

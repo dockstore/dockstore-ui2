@@ -26,9 +26,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * @memberof MapFriendlyValuesPipe
    */
   readonly friendlyValueNames = new Map([
-    ['workflowVersions.verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
     ['has_checker', new Map([['1', 'has a checker workflow'], ['0', 'unchecked workflow']])],
-    ['tags.verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
+    ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
     ['private_access', new Map([['1', 'private'], ['0', 'public']])],
     ['descriptorType', new Map([['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']])],
     [

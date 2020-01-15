@@ -21,6 +21,9 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { Sponsor } from './sponsor.model';
 import { SponsorsService } from './sponsors.service';
+import { UserQuery } from 'app/shared/user/user.query';
+import { User } from 'app/shared/openapi';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sponsors',
@@ -29,11 +32,13 @@ import { SponsorsService } from './sponsors.service';
   providers: [SponsorsService]
 })
 export class SponsorsComponent extends Base implements OnInit {
+  public user$: Observable<User>;
   public sponsors: Sponsor[];
   public partners: Sponsor[];
-  public showSecondRow = false;
+  public languages: Sponsor[];
+  public isHomePage = false;
 
-  constructor(private sponsorsService: SponsorsService, private location: Location, private router: Router) {
+  constructor(private sponsorsService: SponsorsService, private location: Location, private router: Router, private userQuery: UserQuery) {
     super();
     this.router.events
       .pipe(
@@ -49,15 +54,18 @@ export class SponsorsComponent extends Base implements OnInit {
     // Initialize sponsors and partners
     this.sponsors = this.sponsorsService.getSponsors();
     this.partners = this.sponsorsService.getPartners();
+    this.languages = this.sponsorsService.getLanguages();
+
+    this.user$ = this.userQuery.user$;
   }
 
   hideSecondRow() {
     // Hide the second row if not on the home page
     const currentPath = this.location.prepareExternalUrl(this.location.path());
     if (currentPath === '/') {
-      this.showSecondRow = true;
+      this.isHomePage = true;
     } else {
-      this.showSecondRow = false;
+      this.isHomePage = false;
     }
   }
 }

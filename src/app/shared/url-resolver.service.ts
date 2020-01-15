@@ -1,9 +1,39 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Tag, WorkflowVersion } from './swagger';
 
 @Injectable()
 export class UrlResolverService {
   constructor(private router: Router) {}
+
+  /**
+   * Gets the updated path that has the tab and versioninformation
+   *
+   * @param {string} entryPath  Path of the entry ('quay.io/pancancer/pcawg-dkfz-workflow')
+   * @param {string} myEntryString  Either 'my-tools', 'my-workflows', or 'my-services'. 'my-containers' is deprecated
+   * @param {string} entryString  Either 'tools', 'workflows', or 'services'. 'containers' is deprecated
+   * @param {string} currentUrl  '/tools/quay.io/pancancer/pcawg-dkfz-workflow:2.2.0?tab=info'
+   * @param {(WorkflowVersion | Tag | null)} selectedVersion  The version that's currently selected
+   * @param {string} tabName  Name of the currently selected tab ('info', 'launch')
+   * @returns {string}  The path that reflects the current state
+   * @memberof UrlResolverService
+   */
+  getPath(
+    entryPath: string,
+    myEntryString: string,
+    entryString: string,
+    currentUrl: string,
+    selectedVersion: WorkflowVersion | Tag | null,
+    tabName: string
+  ): string {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.set('tab', tabName);
+    const baseRoute = currentUrl.includes(myEntryString) ? myEntryString : entryString;
+    const fullEntryPath = selectedVersion !== null ? entryPath + ':' + selectedVersion.name : entryPath;
+    const newUrl = `/${[baseRoute, fullEntryPath].join('/')}?${queryParams.toString()}`;
+    return newUrl;
+  }
 
   public getEntryPathFromUrl(): string {
     const url = this.router.url;

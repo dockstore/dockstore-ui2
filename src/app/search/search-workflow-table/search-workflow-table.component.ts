@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
-import { takeUntil } from 'rxjs/operators';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { Workflow } from '../../shared/swagger';
@@ -30,7 +30,7 @@ import { SearchService } from '../state/search.service';
 @Component({
   selector: 'app-search-workflow-table',
   templateUrl: './search-workflow-table.component.html',
-  styleUrls: ['./search-workflow-table.component.scss']
+  styleUrls: ['../../shared/styles/entry-table.scss', './search-workflow-table.component.scss']
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
   public dataSource: MatTableDataSource<Workflow>;
@@ -43,12 +43,8 @@ export class SearchWorkflowTableComponent extends SearchEntryTable implements On
     super(dateService, searchQuery, searchService);
   }
 
-  privateNgOnInit(): void {
-    this.searchQuery.workflows$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entries: Array<Workflow>) => {
-      if (entries) {
-        this.dataSource.data = entries;
-      }
-    });
+  privateNgOnInit(): Observable<Array<Workflow>> {
+    return this.searchQuery.workflows$;
   }
 
   getVerified(workflow: Workflow): boolean {

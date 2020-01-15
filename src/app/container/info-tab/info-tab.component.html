@@ -23,19 +23,21 @@
       <mat-card-content class="p-3">
         <ul class="list-unstyled container-info">
           <li *ngIf="tool?.providerUrl">
-            <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">{{ tool?.provider }}</strong
-            >:
-            <a id="sourceRepository" [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
+            <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">Source Code</strong>:
+            <a
+              *ngIf="tool?.providerUrl"
+              id="sourceRepository"
+              [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+            >
               {{ tool?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
           </li>
           <li *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
-            <strong matTooltip="The source code for this tool is stored on Dockstore.org">Dockstore.org</strong>:
+            <strong matTooltip="The source code for this tool is stored on Dockstore.org">Source Code</strong>:
             <i>The source code for this tool is stored on Dockstore.org</i>
           </li>
           <li *ngIf="tool?.imgProviderUrl">
-            <strong matTooltip="Docker registry for the associated Docker images">{{ tool.imgProvider }}</strong
-            >:
+            <strong matTooltip="Docker registry for the associated Docker images">Docker Image</strong>:
             <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
               {{ tool?.imgProviderUrl | urlDeconstruct }}
             </a>
@@ -290,10 +292,17 @@
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
               No description associated with this tool. See
-              <a href="https://dockstore.org/docs/getting-started-with-cwl">Dockstore's Getting Started With CWL</a>
+              <a
+                href="{{ Dockstore.DOCUMENTATION_URL }}/en/develop/getting-started/getting-started-with-cwl.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Dockstore's Getting Started With CWL</a
+              >
               and
-              <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a description
-              for this tool.
+              <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool" target="_blank" rel="noopener noreferrer"
+                >commonwl.org</a
+              >
+              for how to define a description for this tool.
             </span>
           </div>
         </div>

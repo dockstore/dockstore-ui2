@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
-import { AdvancedSearchService } from '../advancedsearch/advanced-search.service';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 
@@ -14,11 +13,7 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./basic-search.component.scss']
 })
 export class BasicSearchComponent extends Base implements OnInit {
-  constructor(
-    private advancedSearchService: AdvancedSearchService,
-    private searchService: SearchService,
-    private searchQuery: SearchQuery
-  ) {
+  constructor(private searchService: SearchService, private searchQuery: SearchQuery) {
     super();
   }
   public searchFormControl = new FormControl();
@@ -54,6 +49,6 @@ export class BasicSearchComponent extends Base implements OnInit {
    * @memberof BasicSearchComponent
    */
   openAdvancedSearch(): void {
-    this.advancedSearchService.setShowModal(true);
+    this.searchService.setShowModal(true);
   }
 }

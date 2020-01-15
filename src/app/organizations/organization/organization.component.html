@@ -43,6 +43,7 @@
   </div>
   <!-- Organization header -->
   <div class="container" *ngIf="!organizationStarGazersClicked && (organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
+    <ngx-json-ld [json]="schema$ | async"></ngx-json-ld>
     <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
       <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
       <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
@@ -111,7 +112,7 @@
     </mat-card>
 
     <!-- Tabs and description -->
-    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" class="my-3">
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" class="my-3" data-cy="organizationDetails">
       <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
         <mat-tab-group>
           <mat-tab label="Collections">

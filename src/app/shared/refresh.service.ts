@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AlertService } from './alert/state/alert.service';
 import { ContainerService } from './container.service';
@@ -29,6 +29,7 @@ import { Workflow } from './swagger/model/workflow';
 import { ToolQuery } from './tool/tool.query';
 import { BioWorkflow } from './swagger/model/bioWorkflow';
 import { Service } from './swagger/model/service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class RefreshService {
@@ -138,5 +139,27 @@ export class RefreshService {
     this.tools = this.tools.filter(obj => obj.id !== tool.id);
     this.tools.push(tool);
     this.containerService.setTools(this.tools);
+  }
+
+  syncServices(): void {
+    const message = 'Syncing services';
+    this.alertService.start(message);
+    this.updateWorkflows(this.usersService.syncUserServices());
+  }
+
+  syncServicesForOrganziation(organization: string): void {
+    const message = 'Syncing services for organization ' + organization;
+    this.alertService.start(message);
+    this.updateWorkflows(this.usersService.syncUserServicesbyOrganization(organization));
+  }
+
+  private updateWorkflows(workflows: Observable<Workflow[]>): void {
+    workflows.subscribe(
+      (services: Array<Workflow>) => {
+        this.alertService.detailedSuccess();
+        this.workflowService.setWorkflows(services);
+      },
+      error => this.alertService.detailedError(error)
+    );
   }
 }

@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-onboarding',
@@ -22,6 +23,7 @@ import { Component, OnInit } from '@angular/core';
 export class QuickStartComponent implements OnInit {
   public curStep = 1;
   public tokenSetComplete;
+  Dockstore = Dockstore;
   constructor() {}
   ngOnInit() {
     localStorage.setItem('page', '/quick-start');

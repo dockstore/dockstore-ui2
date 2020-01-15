@@ -1,7 +1,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 
 import { DescriptorsService } from './descriptors.service';
-import { DescriptorsStore } from './descriptors-store.';
+import { DescriptorsStore } from './descriptors-store';
 import { Dockstore } from '../../../shared/dockstore.model';
 
 describe('DescriptorsService', () => {

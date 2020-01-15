@@ -17,7 +17,6 @@ import { Component, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';

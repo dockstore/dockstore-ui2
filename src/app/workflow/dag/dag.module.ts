@@ -13,18 +13,32 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { FullscreenOverlayContainer, OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule, MatProgressBarModule, MatTooltipModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RefreshAlertModule } from 'app/shared/alert/alert.module';
 import { CustomMaterialModule } from './../../shared/modules/material.module';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
 import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
 @NgModule({
-  imports: [CommonModule, FlexLayoutModule, FormsModule, MatIconModule, MatProgressBarModule, MatTooltipModule, CustomMaterialModule],
+  providers: [{ provide: OverlayContainer, useClass: FullscreenOverlayContainer }],
+  imports: [
+    CommonModule,
+    FlexLayoutModule,
+    FormsModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatTooltipModule,
+    CustomMaterialModule,
+    RefreshAlertModule
+  ],
   declarations: [DagComponent, CwlViewerComponent, WdlViewerComponent],
   exports: [DagComponent]
 })

@@ -7,6 +7,7 @@ import { Base } from '../../shared/base';
 import { Provider } from '../../shared/enum/provider.enum';
 import { TokenService } from '../../shared/state/token.service';
 import { UserService } from '../../shared/user/user.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-auth',
@@ -17,7 +18,8 @@ export class AuthComponent extends Base implements OnInit {
     private tokenService: TokenService,
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {
     super();
   }
@@ -82,6 +84,7 @@ export class AuthComponent extends Base implements OnInit {
         },
         error => {
           this.router.navigate([`${prevPage}`]);
+          this.alertService.detailedSnackBarError(error);
         }
       );
   }

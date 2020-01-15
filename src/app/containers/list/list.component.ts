@@ -28,12 +28,13 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
 
 @Component({
   selector: 'app-list-containers',
-  templateUrl: './list.component.html'
+  templateUrl: './list.component.html',
+  styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss']
 })
 export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['name', 'author', 'format', 'projectLinks', 'stars'];
+  public displayedColumns = ['name', 'verified', 'author', 'format', 'projectLinks', 'stars'];
   type: 'tool' | 'workflow' = 'tool';
   constructor(
     private dockstoreService: DockstoreService,

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { sampleTool1, sampleWorkflow1 } from '../test/mocked-objects';
@@ -33,10 +33,9 @@ import { DateService } from './date.service';
 import { DockstoreService } from './dockstore.service';
 import { ProviderService } from './provider.service';
 import { RefreshService } from './refresh.service';
-import { SessionQuery } from './session/session.query';
 import { WorkflowQuery } from './state/workflow.query';
 import { WorkflowService } from './state/workflow.service';
-import { GA4GHService, ToolVersion } from './swagger';
+import { GA4GHService } from './swagger';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';

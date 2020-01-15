@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
-
-import { OrganizationsService, Organization } from '../../../shared/swagger';
+import { Organization, OrganizationsService } from '../../../shared/swagger';
+import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { OrganizationService } from '../../state/organization.service';
 import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organization-description.store';
-import { CollectionsService } from '../../state/collections.service';
 
 @Injectable({ providedIn: 'root' })
 export class UpdateOrganizationOrCollectionDescriptionService {
@@ -33,7 +32,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
 
   updateCollectionDescription(formGroup: FormGroup, collectionId: number): void {
     const newDescription = formGroup.get('description').value || '';
-    const organizationID = this.organizationQuery.getSnapshot().organization.id;
+    const organizationID = this.organizationQuery.getValue().organization.id;
     this.updateOrganizationOrCollectionDescriptionStore.setError(false);
     this.updateOrganizationOrCollectionDescriptionStore.setLoading(true);
     this.organizationsService
@@ -52,7 +51,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
 
   updateOrganizationDescription(formGroup: FormGroup): void {
     const newDescription = formGroup.get('description').value || '';
-    const organizationID = this.organizationQuery.getSnapshot().organization.id;
+    const organizationID = this.organizationQuery.getValue().organization.id;
     this.updateOrganizationOrCollectionDescriptionStore.setError(false);
     this.updateOrganizationOrCollectionDescriptionStore.setLoading(true);
     this.organizationsService

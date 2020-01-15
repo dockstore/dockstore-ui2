@@ -10,28 +10,17 @@
   >
     View Public
   </a>
-
-  <button
-    *ngIf="entryType === EntryType.BioWorkflow"
-    mat-flat-button
-    id="DOIButton"
-    color="accent"
-    (click)="requestDOIForWorkflowVersion()"
-    [disabled]="(isRefreshing$ | async) || selectedVersion?.doiURL || !(zenodoAccountIsLinked$ | async)"
-    [matTooltip]="createdoimessage"
-  >
-    Create DOI
-  </button>
-  <button
-    mat-flat-button
-    id="publishButton"
-    color="accent"
-    (click)="publishToggle()"
-    [disabled]="(isRefreshing$ | async) || publishDisabled"
-    [matTooltip]="pubUnpubMessage"
-  >
-    {{ workflow?.is_published ? 'Unpublish' : 'Publish' }}
-  </button>
+  <div [matTooltip]="pubUnpubMessage">
+    <button
+      mat-flat-button
+      id="publishButton"
+      color="accent"
+      (click)="publishToggle()"
+      [disabled]="(isRefreshing$ | async) || publishDisabled"
+    >
+      {{ workflow?.is_published ? 'Unpublish' : 'Publish' }}
+    </button>
+  </div>
   <button
     mat-flat-button
     color="primary"

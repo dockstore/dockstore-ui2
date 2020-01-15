@@ -1,13 +1,11 @@
 import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
-import { forkJoin, of as observableOf } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 @Injectable()
 export class MyServicesService {
@@ -30,33 +28,23 @@ export class MyServicesService {
   getMyServices(id: number): void {
     this.alertService.start('Fetching services');
     this.myEntryService.setRefreshingMyEntries(true);
-    forkJoin(
-      this.usersService.userServices(id).pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.alertService.detailedSnackBarError(error);
-          return observableOf([]);
-        })
-      ),
-      this.workflowsService.sharedWorkflows().pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.alertService.detailedSnackBarError(error);
-          return observableOf([]);
-        })
-      )
-    )
+    this.usersService
+      .userServices(id)
       .pipe(
         finalize(() => {
-          this.alertService.simpleSuccess();
           this.myEntryService.setRefreshingMyEntries(false);
         })
       )
       .subscribe(
-        ([workflows, sharedWorkflows]) => {
-          this.workflowService.setWorkflows(workflows);
-          this.workflowService.setSharedWorkflows(sharedWorkflows);
+        (services: Array<Workflow>) => {
+          this.workflowService.setWorkflows(services);
+          this.workflowService.setSharedWorkflows([]);
+          this.alertService.simpleSuccess();
         },
         error => {
-          console.error('This should be impossible because both errors are caught already');
+          this.workflowService.setWorkflows([]);
+          this.workflowService.setSharedWorkflows([]);
+          this.alertService.detailedSnackBarError(error);
         }
       );
   }

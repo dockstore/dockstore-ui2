@@ -17,7 +17,6 @@ import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { SessionQuery } from '../session/session.query';
 import { UserQuery } from '../user/user.query';
 import { AlertQuery } from '../alert/state/alert.query';
 

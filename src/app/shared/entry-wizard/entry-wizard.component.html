@@ -1,0 +1,39 @@
+<mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
+<div>
+  <p>Toggle repositories on to create workflows from the associated Git repository. Once added, these workflows can be customized.</p>
+  <p>This approach is best for Git repositories with only one workflow.</p>
+  <div>
+    <mat-form-field class="w-100">
+      <mat-label>Git Registry</mat-label>
+      <mat-select [(ngModel)]="selectedGitRegistry" name="registry" (ngModelChange)="getOrganizations($event)">
+        <mat-option *ngFor="let registry of gitRegistries$ | async" [value]="registry">
+          {{ registry }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div *ngIf="selectedGitRegistry && (gitOrganizations$ | async)">
+    <mat-form-field class="w-100">
+      <mat-label>Organization</mat-label>
+      <mat-select [(ngModel)]="selectedGitOrganization" name="organization" (ngModelChange)="getRepositories($event)">
+        <mat-option *ngFor="let organization of gitOrganizations$ | async" [value]="organization">
+          {{ organization }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
+      <mat-label *ngIf="gitRepositories$ | async">Repositories</mat-label>
+      <div *ngFor="let repo of gitRepositories$ | async">
+        <mat-slide-toggle
+          (change)="toggleRepo($event, repo)"
+          [name]="repo.repositoryName"
+          [checked]="repo.present"
+          [disabled]="!repo.canDelete && repo.present"
+          [matTooltip]="!repo.canDelete && repo.present ? 'Only workflow stubs can be deleted.' : ''"
+          >{{ repo.path }}</mat-slide-toggle
+        >
+      </div>
+    </div>
+  </div>
+</div>

@@ -32,6 +32,7 @@ import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleW
 
 import RoleEnum = Permission.RoleEnum;
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { SearchFields } from '../search/state/search.service';
 
 export class ContainerStubService {
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -122,6 +123,7 @@ export class SearchStubService {
   searchInfo$ = observableOf({});
   toSaveSearch$ = observableOf(false);
   values$ = observableOf('');
+  setSearchText(searchText: string) {}
   joinComma(searchTerm: string): string {
     return searchTerm
       .trim()
@@ -152,17 +154,19 @@ export class SearchStubService {
     return true;
   }
 
+  setFilterKeys(filters: Map<string, Set<string>>) {}
+
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([
       ['Entry Type', '_type'],
       ['Registry', 'registry'],
       ['Private Access', 'private_access'],
-      ['Verified', 'tags.verified'],
+      ['Verified', 'verified'],
       ['Author', 'author'],
       ['Organization', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['Verified Source', 'tags.verifiedSource']
+      ['Verified Source', 'verifiedSource']
     ]);
   }
 
@@ -179,11 +183,27 @@ export class SearchStubService {
       ['_type', 'Entry Type'],
       ['registry', 'Registry'],
       ['private_access', 'Private Access'],
-      ['tags.verified', 'Verified'],
+      ['verified', 'Verified'],
       ['author', 'Author'],
       ['namespace', 'Organization'],
       ['labels.value.keyword', 'Labels'],
-      ['tags.verifiedSource', 'Verified Source']
+      ['verifiedSource', 'Verified Source']
+    ]);
+  }
+
+  initializeToolTips() {
+    return new Map([
+      // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
+      /* tslint:disable-next-line:quotemark*/
+      ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
+      ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
+      [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
+      [
+        'has_checker',
+        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
+          'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.'
+      ],
+      ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.']
     ]);
   }
 
@@ -195,14 +215,14 @@ export class SearchStubService {
       ['namespace', new SubBucket()],
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
-      ['tags.verified', new SubBucket()],
-      ['tags.verifiedSource', new SubBucket()]
+      ['verified', new SubBucket()],
+      ['verifiedSource', new SubBucket()]
     ]);
   }
 
   initializeFriendlyValueNames() {
     return new Map([
-      ['tags.verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
+      ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
       ['private_access', new Map([['1', 'private'], ['0', 'public']])],
       ['registry', new Map([['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']])]
     ]);
@@ -263,6 +283,9 @@ export class UsersStubService {
   }
   getExtendedUserData() {
     return observableOf(null);
+  }
+  getUserMemberships() {
+    return observableOf([]);
   }
   checkUserExists(username) {
     return observableOf([]);
@@ -368,6 +391,14 @@ export class MetadataStubService {
       privateOnly: 'true',
       customDockerPath: 'true',
       enum: 'AMAZON_ECR'
+    },
+    {
+      dockerPath: null,
+      friendlyName: 'Seven Bridges',
+      url: null,
+      privateOnly: 'true',
+      customDockerPath: 'true',
+      enum: 'SEVEN_BRIDGES'
     }
   ]);
 
@@ -453,11 +484,6 @@ export class TokensStubService {
   public deleteToken(tokenId: number, extraHttpRequestParams?: any): Observable<{}> {
     return observableOf({});
   }
-}
-
-export class AdvancedSearchStubService {
-  showModal$ = observableOf(true);
-  advancedSearch$ = observableOf({});
 }
 
 export class StarringStubService {
@@ -593,7 +619,7 @@ export class DockstoreStubService {
 
 export class DateStubService {
   getVerifiedLink() {
-    return 'https://docs.dockstore.org/faq/#what-is-a-verified-tool-or-workflow';
+    return Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-verified-tool-or-workflow';
   }
   getDateTimeMessage() {
     return 'a date time message';
@@ -769,6 +795,14 @@ export class ContainersStubService {
         privateOnly: 'true',
         enum: 'AMAZON_ECR',
         friendlyName: 'Amazon ECR',
+        url: null
+      },
+      {
+        dockerPath: null,
+        customDockerPath: 'true',
+        privateOnly: 'true',
+        enum: 'SEVEN_BRIDGES',
+        friendlyName: 'Seven Bridges',
         url: null
       }
     ]);

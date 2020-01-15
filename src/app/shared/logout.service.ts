@@ -29,12 +29,12 @@ export class LogoutService {
     private auth: AuthService
   ) {}
 
-  logout() {
+  logout(routeChange?: string) {
     this.auth.logout().subscribe({
       complete: () => {
         this.userService.remove();
         this.trackLoginService.switchState(false);
-        this.router.navigate(['/login']);
+        routeChange ? this.router.navigate([routeChange]) : this.router.navigate(['/login']);
       }
     });
   }

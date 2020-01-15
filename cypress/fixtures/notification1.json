@@ -1,0 +1,8 @@
+[
+  {
+    "message": "Notification test modified",
+    "expiration": "2030-12-25T18:45:10.210Z",
+    "type": "SITEWIDE",
+    "priority": "CRITICAL"
+  }
+]

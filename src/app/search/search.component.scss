@@ -33,6 +33,12 @@
   width: 450px;
 }
 
+.mat-icon {
+  font-size: 18px;
+  margin-top: 0.25em;
+  margin-left: 0.25em;
+}
+
 /* Source: https://codepen.io/shidhincr/pen/ICLBD */
 .redfamily {
   color: red;
@@ -87,12 +93,16 @@
   font-size: 12px;
   background-color: #ffffff;
   &.active {
-    background-color: #f4f4f4;
-    color: #3b769a;
+    background-color: #487980;
+    color: #ffffff;
+    font-weight: bold;
   }
   &:not(.active) {
     &:hover {
       background-color: #f8f8f8;
+    }
+    .ng-fa-icon {
+      display: none;
     }
   }
 }

@@ -15,15 +15,14 @@
  */
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PopoverModule } from 'ngx-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { of } from 'rxjs';
-
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { ProviderService } from '../shared/provider.service';
-import { AdvancedSearchStubService, ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
+import { ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
@@ -57,13 +56,12 @@ describe('SearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-      imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule],
+      imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule, RouterTestingModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: AdvancedSearchService, useClass: AdvancedSearchStubService },
-        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select']) }
+        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) }
       ]
     }).compileComponents();
   }));
@@ -72,7 +70,22 @@ describe('SearchComponent', () => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
     searchQuery = TestBed.get(SearchQuery);
-    (searchQuery as any).searchText$ = of('');
+    searchQuery.searchText$ = of('');
+    searchQuery.getValue.and.returnValue({
+      shortUrl: null,
+      workflowhit: null,
+      toolhit: null,
+      showToolTagCloud: false,
+      showWorkflowTagCloud: false,
+      searchText: '',
+      filterKeys: [],
+      autocompleteTerms: [],
+      suggestTerm: '',
+      pageSize: 10,
+      pageIndex: 0,
+      advancedSearch: null,
+      showModal: false
+    });
     fixture.detectChanges();
   });
 

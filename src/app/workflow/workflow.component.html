@@ -113,17 +113,27 @@
             </mat-chip>
             <input
               placeholder="New label..."
+              [formControl]="labelFormControl"
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="true"
               (matChipInputTokenEnd)="addToLabels($event)"
             />
+            <mat-error *ngIf="labelFormControl.hasError('pattern')"
+              >Only comma-separated labels with alphanumeric characters and internal dashes allowed</mat-error
+            >
           </mat-chip-list>
         </mat-form-field>
         <button type="button" (click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
           <mat-icon>cancel</mat-icon>Cancel
         </button>
-        <button type="button" (click)="submitWorkflowEdits()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
+        <button
+          type="button"
+          (click)="submitWorkflowEdits()"
+          class="btn btn-link"
+          *ngIf="labelsEditMode && !isWorkflowPublic"
+          [disabled]="labelFormControl.hasError('pattern')"
+        >
           <mat-icon>save</mat-icon> Save
         </button>
       </span>
@@ -217,7 +227,7 @@
             <ng-template matTabContent>
               <div *ngIf="entryType === EntryType.Service; else FilesTabBioWorkflow" class="p-3">
                 <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
-                  <app-entry-file-tab></app-entry-file-tab>
+                  <app-entry-file-tab [version]="selectedVersion"></app-entry-file-tab>
                 </div>
 
                 <ng-template #noVersionsFilesTab>
@@ -289,6 +299,9 @@
                   [isOwner]="isOwner"
                 >
                 </app-dag>
+                <div *ngIf="!selectedVersion">
+                  <mat-card class="alert alert-warning p-3" role="alert"> <mat-icon>warning</mat-icon> No version selected. </mat-card>
+                </div>
                 <div *ngIf="isStub()" class="p-3">
                   <mat-card class="alert alert-warning" role="alert">
                     <mat-icon>warning</mat-icon> To see the DAG, please refresh the workflow.
@@ -312,6 +325,7 @@
       </div>
     </div>
     <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
+      <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
       <div class="panel panel-default mb-3">
         <div class="panel-heading">
           <h3>Recent Versions</h3>
@@ -356,7 +370,6 @@
         </div>
       </div>
       <current-collections [id]="workflow.id"></current-collections>
-      <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="workflow">
         <div class="panel-heading">

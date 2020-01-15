@@ -15,8 +15,9 @@
  */
 import { Location } from '@angular/common';
 import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
+import { FormControl, Validators } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
@@ -37,7 +38,7 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
-  @ViewChild('entryTabs') entryTabs: TabsetComponent;
+  @ViewChild('entryTabs', { static: false }) entryTabs: TabsetComponent;
   protected shareURL: string;
   public starGazersClicked = false;
   private totalShare = 0;
@@ -62,6 +63,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   protected selected = new FormControl(0);
+  labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   constructor(
     private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
@@ -220,7 +222,16 @@ export abstract class Entry implements OnInit, OnDestroy {
       return null;
     }
     const selectedTag = this.selectVersion(versions, urlVersion, defaultVersion);
-    return selectedTag || versions.reduce((a, b) => (b.last_built > a.last_built ? b : a));
+    return (
+      selectedTag ||
+      versions.reduce((a, b) => {
+        // Fall back to dbUpdateDate when there's no last_built
+        if (!b.last_built && !a.last_built) {
+          return b.dbUpdateDate > a.dbUpdateDate ? b : a;
+        }
+        return b.last_built > a.last_built ? b : a;
+      })
+    );
   }
 
   selectWorkflowVersion(versions: Array<WorkflowVersion>, urlVersion: string, defaultVersion: string) {
@@ -261,18 +272,8 @@ export abstract class Entry implements OnInit, OnDestroy {
    */
   updateUrl(entryPath: string, myEntry: string, entry: string): void {
     if (this.publicPage) {
-      let currentPath = '';
-      if (this.router.url.indexOf(myEntry) !== -1) {
-        currentPath += '/' + myEntry + '/';
-      } else {
-        currentPath += '/' + entry + '/';
-      }
-      currentPath += entryPath;
-      if (this.selectedVersion !== null) {
-        currentPath += ':' + this.selectedVersion.name;
-      }
-      currentPath += '?tab=' + this.currentTab;
-      this.location.replaceState(currentPath);
+      const newPath = this.urlResolverService.getPath(entryPath, myEntry, entry, this.router.url, this.selectedVersion, this.currentTab);
+      this.location.replaceState(newPath);
     }
   }
 
@@ -416,6 +417,10 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @param topicId The ID of the topic on discourse
    */
   discourseHelper(topicId: number): void {
+    const element = document.getElementById('discourse-embed-frame');
+    if (element !== null) {
+      element.remove();
+    }
     (<any>window).DiscourseEmbed = {
       discourseUrl: Dockstore.DISCOURSE_URL,
       topicId: topicId

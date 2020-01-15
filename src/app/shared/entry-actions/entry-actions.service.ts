@@ -4,7 +4,7 @@ import { AlertService } from '../alert/state/alert.service';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { WorkflowService } from '../state/workflow.service';
-import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService, WorkflowVersion } from '../swagger';
+import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService } from '../swagger';
 
 @Injectable()
 export class EntryActionsService {
@@ -23,21 +23,6 @@ export class EntryActionsService {
     } else {
       return `Go to the public page for this ${entryType}`;
     }
-  }
-
-  requestDOIForWorkflowVersion(workflow: Workflow, selectedVersion: WorkflowVersion) {
-    const message = 'Creating DOI';
-    this.alertService.start(message);
-    this.workflowsService.requestDOIForWorkflowVersion(workflow.id, selectedVersion.id).subscribe(
-      (response: Array<WorkflowVersion>) => {
-        const newSelectedVersion = response.find(version => version.id === selectedVersion.id);
-        this.workflowService.setWorkflowVersion(newSelectedVersion);
-        this.alertService.detailedSuccess();
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      }
-    );
   }
 
   /**
@@ -93,6 +78,8 @@ export class EntryActionsService {
     }
     if (entry.is_published) {
       return `Unpublish the ${entryType} to remove it from the public`;
+    } else if (!entry.workflowVersions || !entry.workflowVersions.some(version => version.valid)) {
+      return 'Unable to publish: No valid versions found';
     } else {
       return `Publish the ${entryType} to make it visible to the public`;
     }

@@ -15,6 +15,7 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
@@ -52,6 +53,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   public WorkflowType = Workflow;
   public tooltip = Tooltip;
   workflowPathEditing: boolean;
+  temporaryDescriptorType: Workflow.DescriptorTypeEnum;
+  descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   defaultTestFilePathEditing: boolean;
   isPublic: boolean;
   trsLink: string;
@@ -61,16 +64,18 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   ToolDescriptor = ToolDescriptor;
   public entryType$: Observable<EntryType>;
   public isRefreshing$: Observable<boolean>;
-  modeTooltipContent = `<b>STUB:</b> Basic metadata pulled from source control.<br />
-  <b>FULL:</b> Full content synced from source control.<br />
-  <b>HOSTED:</b> Workflow metadata and files hosted on Dockstore.`;
+  modeTooltipContent = `STUB: Basic metadata pulled from source control.
+  FULL: Full content synced from source control.
+  HOSTED: Workflow metadata and files hosted on Dockstore.`;
+  Dockstore = Dockstore;
   constructor(
     private workflowService: WorkflowService,
     private workflowsService: ExtendedWorkflowsService,
     private sessionQuery: SessionQuery,
     private infoTabService: InfoTabService,
     private alertQuery: AlertQuery,
-    private workflowQuery: WorkflowQuery
+    private workflowQuery: WorkflowQuery,
+    private descriptorLanguageService: DescriptorLanguageService
   ) {
     super();
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay());
@@ -78,6 +83,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.workflow = JSON.parse(JSON.stringify(this.extendedWorkflow));
+    this.temporaryDescriptorType = this.workflow.descriptorType;
     if (this.selectedVersion && this.workflow) {
       this.currentVersion = this.selectedVersion;
       this.trsLink = this.infoTabService.getTRSLink(
@@ -85,7 +91,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
         this.selectedVersion.name,
         this.workflow.descriptorType,
         this.selectedVersion.workflow_path,
-        this.sessionQuery.getSnapshot().entryType
+        this.sessionQuery.getValue().entryType
       );
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
@@ -97,6 +103,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
@@ -150,6 +157,10 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.infoTabService.update(this.workflow);
   }
 
+  updateDescriptorType() {
+    this.infoTabService.updateDescriptorType(this.workflow, this.temporaryDescriptorType);
+  }
+
   /**
    * Cancel button function
    *
@@ -157,9 +168,5 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
-  }
-
-  descriptorLanguages(): Array<string> {
-    return this.infoTabService.descriptorLanguageMap;
   }
 }

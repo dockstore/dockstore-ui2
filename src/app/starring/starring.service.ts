@@ -29,17 +29,9 @@ export class StarringService {
     private workflowsService: WorkflowsService
   ) {}
 
-  setUnstar(entryID: number, entryType: EntryType): any {
-    if (entryType === EntryType.BioWorkflow) {
-      return this.workflowsService.unstarEntry(entryID);
-    } else {
-      return this.containersService.unstarEntry(entryID);
-    }
-  }
-
-  setStar(entryID: number, entryType: EntryType): any {
+  putStar(entryID: number, entryType: EntryType, toStar: boolean): Observable<any> {
     const body: StarRequest = {
-      star: true
+      star: toStar
     };
     if (entryType === EntryType.BioWorkflow) {
       return this.workflowsService.starEntry(entryID, body);

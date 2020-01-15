@@ -1,4 +1,4 @@
-<div *ngIf="workflow?.descriptorType === 'WDL' || 'CWL'" class="panel panel-default">
+<div *ngIf="workflow?.descriptorType === 'WDL' || workflow?.descriptorType === 'CWL'" class="panel panel-default">
   <div class="panel-heading">
     <h3>Launch with</h3>
   </div>
@@ -19,7 +19,7 @@
               [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
               [disabled]="!(hasContent$ | async)"
               color="primary"
-              ><img src="../../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
+              ><img src="../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
             >
           </div>
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
@@ -53,19 +53,34 @@
             >
           </div>
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
-            <div *ngIf="hasHttpImports$ | async" class="import-warning">
-              Warning: this version of the CWL has http imports, which are not supported by the CGC. Make sure to select a version without http
-              imports in the CGC.
-            </div>
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The CWL has no content.' : ''"
+              [matTooltip]="cgcTooltip$ | async"
               target="_blank"
               rel="noopener"
               [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
-              [disabled]="!(hasContent$ | async)"
+              [disabled]="!(hasContent$ | async) || (hasHttpImports$ | async)"
               color="primary"
-              ><img src="../assets/images/thirdparty/cgc.png" /> CGC </a>
+              ><img src="../assets/images/thirdparty/cgc.png" /> CGC
+            </a>
+          </div>
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+            <a
+              mat-raised-button
+              [matTooltip]="
+                !(hasContent$ | async)
+                  ? 'The WDL has no content.  '
+                  : (hasFileImports$ | async)
+                  ? 'AnVIL does not support file-path imports in WDL. It only supports http(s) imports.'
+                  : ''
+              "
+              target="_blank"
+              rel="noopener"
+              [disabled]="!(hasContent$ | async) || (hasFileImports$ | async)"
+              [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              color="primary"
+              ><mat-icon class="anvil-icon" svgIcon="anvil"></mat-icon> AnVIL &raquo;</a
+            >
           </div>
         </div>
       </div>

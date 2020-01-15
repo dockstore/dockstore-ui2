@@ -13,11 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBarConfig, MatTooltipDefaultOptions, MAT_SNACK_BAR_DEFAULT_OPTIONS, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
+import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -37,6 +38,7 @@ import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
@@ -60,10 +62,10 @@ import { RequestsModule } from './loginComponents/requests.module';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ViewService } from './workflow/view/view.service';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './register/register.service';
-import { SearchModule } from './search/search.module';
 import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
@@ -97,6 +99,10 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
+import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
+import { TosBannerComponent } from './tosBanner/tos-banner.component';
+import { TosBannerService } from './tosBanner/state/tos-banner.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -122,6 +128,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SponsorsComponent,
     NavbarComponent,
     FooterComponent,
+    NotificationsComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,
@@ -140,7 +147,9 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     YoutubeComponent,
     SitemapComponent,
     GithubCallbackComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    SessionExpiredComponent,
+    TosBannerComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -167,7 +176,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     StargazersModule,
     MarkdownModule.forRoot(),
     ReactiveFormsModule,
-    SearchModule,
     ApiModule.forRoot(getApiConfig),
     ApiModule2.forRoot(getApiConfig),
     CustomMaterialModule,
@@ -202,6 +210,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ExtendedToolsService,
     VerifiedByService,
     Title,
+    ViewService,
+    TosBannerService,
     ConfigurationService,
     {
       provide: APP_INITIALIZER,
@@ -210,7 +220,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
       multi: true
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults }
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
+    { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true }
   ],
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent]

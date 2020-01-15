@@ -27,7 +27,8 @@ import { RefreshService } from '../../refresh.service';
 import { WorkflowsService } from '../../swagger/api/workflows.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 import { WorkflowService } from '../../state/workflow.service';
-import { MatSnackBarModule, MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('Service: RegisterCheckerWorkflow', () => {
   beforeEach(() => {

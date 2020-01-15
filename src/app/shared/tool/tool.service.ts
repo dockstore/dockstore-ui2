@@ -33,7 +33,7 @@ export class ToolService {
   @transaction()
   setTool(tool: DockstoreTool | null) {
     if (tool) {
-      this.toolStore.createOrReplace(tool.id, tool);
+      this.toolStore.upsert(tool.id, tool);
       this.extendedDockstoreToolService.update(tool);
       this.toolStore.setActive(tool.id);
     } else {

@@ -1,14 +1,14 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
-import { ga4ghWorkflowIdPrefix, ga4ghServiceIdPrefix } from '../constants';
+import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../constants';
 import { EntryType } from '../enum/entry-type';
 import { RefreshService } from '../refresh.service';
+import { SessionQuery } from '../session/session.query';
+import { TokenQuery } from '../state/token.query';
 import { BioWorkflow, Service, WorkflowVersion } from '../swagger';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
-import { Observable } from 'rxjs';
-import { TokenQuery } from '../state/token.query';
-import { SessionQuery } from '../session/session.query';
 
 @Component({
   selector: 'app-workflow-actions',
@@ -20,7 +20,6 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   @Input() selectedVersion: WorkflowVersion;
   @Input() isOwner: boolean;
   @Input() canWrite: boolean;
-  createdoimessage = 'Create a digital object identifier (DOI) for this version';
   EntryType = EntryType;
   zenodoAccountIsLinked$: Observable<boolean>;
 
@@ -45,15 +44,6 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   }
 
   /**
-   * Handles the create DOI button being clicked
-   *
-   * @memberof EntryActionsComponent
-   */
-  requestDOIForWorkflowVersion() {
-    this.entryActionsService.requestDOIForWorkflowVersion(this.workflow, this.selectedVersion);
-  }
-
-  /**
    * Handles the publish/unpublish button being clicked
    *
    * @memberof EntryActionsComponent
@@ -69,7 +59,7 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
    */
   refresh() {
     const versionName = this.selectedVersion ? this.selectedVersion.name : null;
-    const prefix = this.sessionQuery.getSnapshot().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
+    const prefix = this.sessionQuery.getValue().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
     this.refreshService.refreshWorkflow(prefix + this.workflow.full_workflow_path, versionName);
   }
 }

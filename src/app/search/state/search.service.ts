@@ -13,18 +13,49 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
+import { Router } from '@angular/router';
+import { transaction } from '@datorama/akita';
+import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
+import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router/';
 import { Dockstore } from '../../shared/dockstore.model';
+import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
-import { SearchStore } from './search.store';
-import { SearchQuery } from './search.query';
 import { ProviderService } from '../../shared/provider.service';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
+import { SearchQuery } from './search.query';
+import { SearchStore } from './search.store';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { SortDirection } from '@angular/material';
 
-@Injectable({ providedIn: 'root' })
+export interface Hit {
+  _index: string;
+  _type: string;
+  _id: string;
+  _score: number;
+  _source: any;
+  _version?: number;
+  _explanation?: Explanation;
+  fields?: any;
+  highlight?: any;
+  inner_hits?: any;
+  sort?: string[];
+}
+
+/**
+ * Manually set these based on the fields shown by Kibana.
+ * All of these should be 'aggregatable' in Kibana.
+ *
+ * @export
+ * @enum {number}
+ */
+export enum SearchFields {
+  VERIFIED_SOURCE = 'workflowVersions.verifiedSources.keyword'
+}
+
+@Injectable()
 export class SearchService {
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
@@ -38,19 +69,60 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['tags.verified', 'private_access', '_type', 'has_checker'];
-
+  public exclusiveFilters = ['verified', 'private_access', '_type', 'has_checker'];
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
     private providerService: ProviderService,
-    private router: Router
+    private router: Router,
+    private imageProviderService: ImageProviderService
   ) {}
+
+  /**
+   * Return a negative number if a sorts before b, positive if b sorts before a, and 0 if they are the same,
+   * comparing based on the given attribute and direction
+   * @param a: DockstoreTool or Workflow
+   * @param b: DockstoreTool or Workflow
+   * @param attribute: workflow or tool property to sort by
+   * @param direction: 'asc' or 'desc'
+   */
+  compareAttributes(a: DockstoreTool | Workflow, b: DockstoreTool | Workflow, attribute: string, direction: SortDirection) {
+    let aVal = a[attribute];
+    let bVal = b[attribute];
+    const sortFactor = direction === 'asc' ? 1 : -1;
+
+    // if sorting the stars column, consider 'undefined' stars to be 0
+    if (attribute === 'starredUsers') {
+      if (!aVal) {
+        aVal = [];
+      }
+      if (!bVal) {
+        bVal = [];
+      }
+    } else {
+      // otherwise, regardless of sort direction, null or empty values go at the end
+      if (!aVal) {
+        return 1;
+      }
+      if (!bVal) {
+        return -1;
+      }
+    }
+
+    // ignore case when sorting by a string and handle characters with accents, etc
+    if (typeof aVal === 'string' && typeof bVal === 'string') {
+      aVal = aVal.toLowerCase();
+      bVal = bVal.toLowerCase();
+      return aVal.localeCompare(bVal) * sortFactor;
+    } else {
+      return (aVal < bVal ? -1 : aVal > bVal ? 1 : 0) * sortFactor;
+    }
+  }
 
   // Given a URL, will attempt to shorten it
   // TODO: Find another method for shortening URLs
   setShortUrl(url: string) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         shortUrl: url
@@ -58,41 +130,46 @@ export class SearchService {
     });
   }
 
-  setPageSize(pageSize: number) {
-    this.searchStore.setState(state => {
+  setPageSizeAndIndex(pageSize: number, pageIndex: number) {
+    this.searchStore.update(state => {
       return {
         ...state,
-        pageSize: pageSize
+        pageSize: pageSize,
+        pageIndex: pageIndex
       };
     });
   }
 
+  @transaction()
   setSearchText(text: string) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         searchText: text
       };
     });
+    if (text) {
+      this.clear();
+    }
   }
 
   searchSuggestTerm() {
-    const suggestTerm = this.searchQuery.getSnapshot().suggestTerm;
+    const suggestTerm = this.searchQuery.getValue().suggestTerm;
     this.setSearchText(suggestTerm);
   }
 
   setShowTagCloud(entryType: 'tool' | 'workflow') {
     if (entryType === 'tool') {
-      const showTagCloud: boolean = this.searchQuery.getSnapshot().showToolTagCloud;
-      this.searchStore.setState(state => {
+      const showTagCloud: boolean = this.searchQuery.getValue().showToolTagCloud;
+      this.searchStore.update(state => {
         return {
           ...state,
           showToolTagCloud: !showTagCloud
         };
       });
     } else {
-      const showTagCloud: boolean = this.searchQuery.getSnapshot().showWorkflowTagCloud;
-      this.searchStore.setState(state => {
+      const showTagCloud: boolean = this.searchQuery.getValue().showWorkflowTagCloud;
+      this.searchStore.update(state => {
         return {
           ...state,
           showWorkflowTagCloud: !showTagCloud
@@ -108,34 +185,35 @@ export class SearchService {
    * @param {number} query_size
    * @memberof SearchService
    */
-  filterEntry(hits: Array<any>, query_size: number) {
+  filterEntry(hits: Array<Hit>, query_size: number): [Array<Hit>, Array<Hit>] {
     const workflowHits = [];
     const toolHits = [];
     hits.forEach(hit => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
       if (workflowHits.length + toolHits.length < query_size - 1) {
         if (hit['_type'] === 'tool') {
+          hit['_source'] = this.imageProviderService.setUpImageProvider(hit['_source']);
           toolHits.push(hit);
         } else if (hit['_type'] === 'workflow') {
           workflowHits.push(hit);
         }
       }
     });
-    this.setHits(toolHits, workflowHits);
+    return [toolHits, workflowHits];
   }
 
-  setHits(toolHit: any, workflowHit: any) {
-    this.searchStore.setState(state => {
+  setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>) {
+    this.searchStore.update(state => {
       return {
         ...state,
-        toolhit: toolHit,
-        workflowhit: workflowHit
+        toolhit: toolHits,
+        workflowhit: workflowHits
       };
     });
   }
 
   setFilterKeys(filters: Map<string, Set<string>>) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         filterKeys: filters ? Array.from(filters.keys()) : []
@@ -159,8 +237,9 @@ export class SearchService {
       }
     })
       .then(hits => {
-        if (hits['suggest']['do_you_mean'][0].options.length > 0) {
-          this.setSuggestTerm(hits['suggest']['do_you_mean'][0].options[0].text);
+        const suggestions: Array<any> = hits['suggest']['do_you_mean'][0].options;
+        if (suggestions.length > 0) {
+          this.setSuggestTerm(suggestions[0].text);
         } else {
           this.setSuggestTerm('');
         }
@@ -169,7 +248,7 @@ export class SearchService {
   }
 
   setSuggestTerm(suggestTerm: string) {
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         suggestTerm: suggestTerm
@@ -185,7 +264,7 @@ export class SearchService {
       console.error('Could not retrieve autocomplete terms');
       autocompleteTerms = [];
     }
-    this.searchStore.setState(state => {
+    this.searchStore.update(state => {
       return {
         ...state,
         autocompleteTerms: autocompleteTerms
@@ -209,30 +288,29 @@ export class SearchService {
   }
 
   // Given a search info object, will create the permalink for the current search
-  createPermalinks(searchInfo) {
+  createPermalinks(searchInfo): string[] {
     // For local testing, use LOCAL_URI, else use HOSTNAME
     const url = `${Dockstore.HOSTNAME}/search`;
-    const params = new URLSearchParams();
+    let httpParams = new HttpParams();
     const filter = searchInfo.filter;
     filter.forEach((value, key) => {
       value.forEach(subBucket => {
-        params.append(key, subBucket);
+        httpParams = httpParams.append(key, subBucket);
       });
     });
-
-    if (searchInfo.searchTerm && (!searchInfo.advancedSearchObject || !searchInfo.advancedSearchObject.toAdvanceSearch)) {
-      params.append('search', searchInfo.searchValues);
+    if (searchInfo.searchValues) {
+      httpParams = httpParams.append('search', searchInfo.searchValues);
     } else {
       const advSearchKeys = Object.keys(searchInfo.advancedSearchObject);
       for (let index = 0; index < advSearchKeys.length; index++) {
         const key = advSearchKeys[index];
         const val = searchInfo.advancedSearchObject[key];
         if ((key.includes('Filter') || key === 'searchMode') && val !== '') {
-          params.append(key, val);
+          httpParams = httpParams.append(key, val);
         }
       }
     }
-    return [url, params.toString()];
+    return [url, httpParams.toString()];
   }
 
   handleLink(linkArray: Array<string>) {
@@ -240,19 +318,22 @@ export class SearchService {
     this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
   }
 
-  createURIParams(): URLSearchParams {
-    const curURL = this.router.url;
-    const url = curURL.substr('/search'.length + 1);
-    const params = new URLSearchParams(url);
-    return params;
+  reset() {
+    this.router.navigateByUrl('search');
   }
 
   sortByAlphabet(orderedArray, orderMode): any {
     orderedArray = orderedArray.sort((a, b) => {
+      if (!a.key) {
+        return 1;
+      }
+      if (!b.key) {
+        return -1;
+      }
       if (orderMode) {
-        return a.key > b.key ? 1 : -1;
+        return a.key.toLowerCase().localeCompare(b.key.toLowerCase());
       } else {
-        return a.key < b.key ? 1 : -1;
+        return b.key.toLowerCase().localeCompare(a.key.toLowerCase());
       }
     });
     return orderedArray;
@@ -309,7 +390,7 @@ export class SearchService {
    * @param categoryValue
    * @param filter
    */
-  handleFilters(category: string, categoryValue: string, filters: any) {
+  handleFilters(category: string, categoryValue: string | number, filters: Map<string, Set<string>>) {
     if (typeof categoryValue === 'number') {
       categoryValue = String(categoryValue);
     }
@@ -326,6 +407,17 @@ export class SearchService {
       filters.get(category).add(categoryValue);
     }
     this.setFilterKeys(filters);
+    return filters;
+  }
+
+  updateFiltersFromParameter(category: string, categoryValue: string, filters: Map<string, Set<string>>): Map<string, Set<string>> {
+    if (typeof categoryValue === 'number') {
+      categoryValue = String(categoryValue);
+    }
+    if (!filters.has(category)) {
+      filters.set(category, new Set<string>());
+    }
+    filters.get(category).add(categoryValue);
     return filters;
   }
 
@@ -359,14 +451,14 @@ export class SearchService {
       ['Input File Formats', 'input_file_formats.value.keyword'],
       ['Output File Formats', 'output_file_formats.value.keyword'],
       ['Private Access', 'private_access'],
-      ['VerifiedTool', 'tags.verified'],
+      ['VerifiedTool', 'verified'],
       ['Author', 'author'],
       ['Namespace', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['VerifiedSourceTool', 'tags.verifiedSource'],
-      ['VerifiedSourceWorkflow', 'workflowVersions.verifiedSource.keyword'],
+      ['VerifiedSourceWorkflow', SearchFields.VERIFIED_SOURCE],
       ['HasCheckerWorkflow', 'has_checker'],
-      ['Organization', 'organization']
+      ['Organization', 'organization'],
+      ['VerifiedPlatforms', 'verified_platforms.keyword']
     ]);
   }
 
@@ -377,16 +469,32 @@ export class SearchService {
       ['registry', 'Tool: Registry'],
       ['source_control_provider.keyword', 'Workflow: Source Control'],
       ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
-      ['tags.verified', 'Verified'],
+      ['verified', 'Verified'],
       ['author', 'Author'],
       ['namespace', 'Tool: Namespace'],
       ['labels.value.keyword', 'Labels'],
-      ['tags.verifiedSource', 'Tool: Verified Source'],
       ['input_file_formats.value.keyword', 'Input File Formats'],
       ['output_file_formats.value.keyword', 'Output File Formats'],
-      ['workflowVersions.verifiedSource.keyword', 'Workflow: Verified Source'],
+      [SearchFields.VERIFIED_SOURCE, 'Verified Source'],
       ['has_checker', 'Has Checker Workflows'],
-      ['organization', 'Workflow: Organization']
+      ['organization', 'Workflow: Organization'],
+      ['verified_platforms.keyword', 'Verified Platforms']
+    ]);
+  }
+
+  initializeToolTips() {
+    return new Map([
+      // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
+      /* tslint:disable-next-line:quotemark*/
+      ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
+      ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
+      [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
+      [
+        'has_checker',
+        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
+          'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.'
+      ],
+      ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.']
     ]);
   }
 
@@ -401,9 +509,9 @@ export class SearchService {
       ['organization', new SubBucket()],
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
-      ['tags.verified', new SubBucket()],
-      ['tags.verifiedSource', new SubBucket()],
-      ['workflowVersions.verifiedSource.keyword', new SubBucket()],
+      ['verified', new SubBucket()],
+      [SearchFields.VERIFIED_SOURCE, new SubBucket()],
+      ['verified_platforms.keyword', new SubBucket()],
       ['input_file_formats.value.keyword', new SubBucket()],
       ['output_file_formats.value.keyword', new SubBucket()],
       ['has_checker', new SubBucket()]
@@ -415,17 +523,16 @@ export class SearchService {
    * Returns true if either basic search is set and has results, or advanced search is set
    * (though not just the searchMode, which is set by default)
    */
-  hasSearchText(advancedSearchObject: any, searchTerm: boolean, hits: any) {
+  hasSearchText(advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, hits: any) {
     let advSearchSet;
     if (!advancedSearchObject) {
       advSearchSet = false;
     } else {
       advSearchSet =
-        advancedSearchObject.toAdvanceSearch &&
-        (advancedSearchObject.ANDSplitFilter ||
-          advancedSearchObject.ANDNoSplitFilter ||
-          advancedSearchObject.ORFilter ||
-          advancedSearchObject.NOTFilter);
+        advancedSearchObject.ANDSplitFilter ||
+        advancedSearchObject.ANDNoSplitFilter ||
+        advancedSearchObject.ORFilter ||
+        advancedSearchObject.NOTFilter;
     }
     return this.hasResults(searchTerm, hits) || advSearchSet;
   }
@@ -447,7 +554,7 @@ export class SearchService {
   /**
    * Returns true if at least one filter is set
    */
-  hasFilters(filters: any) {
+  hasFilters(filters: Map<string, Set<string>>) {
     let count = 0;
     filters.forEach(filter => {
       count += filter.size;
@@ -458,14 +565,39 @@ export class SearchService {
   /**
    * Returns true if any search filters have been applied, false otherwise
    */
-  hasNarrowedSearch(advancedSearchObject: any, searchTerm: boolean, hits: any, filters: any) {
+  hasNarrowedSearch(advancedSearchObject: any, searchTerm: boolean, hits: any, filters: Map<string, Set<string>>) {
     return this.hasSearchText(advancedSearchObject, searchTerm, hits) || this.hasFilters(filters);
   }
 
-  joinComma(searchTerm: string): string {
-    return searchTerm
-      .trim()
-      .split(' ')
-      .join(', ');
+  setAdvancedSearch(advancedSearch: AdvancedSearchObject): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        advancedSearch: advancedSearch,
+        searchText: ''
+      };
+    });
+  }
+
+  setShowModal(showModal: boolean): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        showModal: showModal
+      };
+    });
+  }
+
+  goToCleanSearch() {
+    this.router.navigateByUrl('search');
+  }
+
+  clear(): void {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        advancedSearch: initialAdvancedSearchObject
+      };
+    });
   }
 }

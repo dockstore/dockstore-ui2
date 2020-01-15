@@ -20,6 +20,9 @@ import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';
 import { SourceFile, Tag, ToolDescriptor, WorkflowVersion } from './swagger';
 
+const wdlImportHttpRegEx: RegExp = new RegExp(/^\s*import\s+"?https?/, 'm');
+const cwlImportHttpRegEx: RegExp = new RegExp(/^[^#]+((run)|(\$((import)|(include)|(mixin))))\s*:\s+\"?https?/, 'm');
+
 @Injectable({ providedIn: 'root' })
 export class FileService {
   constructor(private sanitizer: DomSanitizer, private descriptorTypeCompatService: DescriptorTypeCompatService) {}
@@ -115,5 +118,16 @@ export class FileService {
     } else {
       return null;
     }
+  }
+
+  hasHttpImport(sourceFile: SourceFile): boolean {
+    if (sourceFile) {
+      if (sourceFile.type === SourceFile.TypeEnum.DOCKSTOREWDL) {
+        return wdlImportHttpRegEx.test(sourceFile.content);
+      } else if (sourceFile.type === SourceFile.TypeEnum.DOCKSTORECWL) {
+        return cwlImportHttpRegEx.test(sourceFile.content);
+      }
+    }
+    return false;
   }
 }

@@ -30,6 +30,7 @@
         <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
           <mat-expansion-panel-header>
             {{ friendlyNames.get(key) }}
+            <mat-icon *ngIf="toolTips.get(key)" matTooltip="{{ toolTips.get(key) }}">help_outline</mat-icon>
           </mat-expansion-panel-header>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button
@@ -119,10 +120,10 @@
         Reset Filters
       </button>
     </div>
-    <div class="col-md-9 containers-rsb">
+    <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
         <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
-          Sorry, no matches found for <strong>{{ searchService.joinComma(values) }}</strong
+          Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
           >.
           <span *ngIf="suggestTerm$ | async"
             >Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{ suggestTerm$ | async }}</strong
@@ -166,39 +167,31 @@
             </button>
 
             <span *ngIf="searchService.hasResults(searchTerm, hits)">
-              <strong>Search: </strong> contains one of <strong>"{{ searchService.joinComma(values) }}"</strong>
+              <strong>Search: </strong> contains one of <strong>"{{ basicSearchText$ | async }}"</strong>
             </span>
 
-            <span
-              *ngIf="
-                advancedSearchObject?.toAdvanceSearch &&
-                (advancedSearchObject?.ANDSplitFilter ||
-                  advancedSearchObject?.ANDNoSplitFilter ||
-                  advancedSearchObject?.ORFilter ||
-                  advancedSearchObject?.NOTFilter)
-              "
-            >
+            <span *ngIf="hasAdvancedSearchText$ | async">
               <strong>Search: </strong>
               <span *ngIf="advancedSearchObject.ANDSplitFilter"
-                >contains all of <strong>"{{ searchService.joinComma(advancedSearchObject.ANDSplitFilter) }}"</strong
+                >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong
                 ><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter">
-                  AND</span
-                ></span
+                  AND
+                </span></span
               >
               <span *ngIf="advancedSearchObject.ANDNoSplitFilter"
-                >contains exactly <strong>"{{ searchService.joinComma(advancedSearchObject.ANDNoSplitFilter) }}"</strong
-                ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND</span></span
+                >contains exactly <strong>"{{ aNDNoSplitFilterText$ | async }}"</strong
+                ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND </span></span
               >
               <span *ngIf="advancedSearchObject.ORFilter"
-                >contains one of <strong>"{{ searchService.joinComma(advancedSearchObject.ORFilter) }}"</strong
-                ><span *ngIf="advancedSearchObject.NOTFilter"> AND</span></span
+                >contains one of <strong>"{{ oRFilterText$ | async }}"</strong
+                ><span *ngIf="advancedSearchObject.NOTFilter"> AND </span></span
               >
               <span *ngIf="advancedSearchObject.NOTFilter"
-                >does not contain <strong>"{{ searchService.joinComma(advancedSearchObject.NOTFilter) }}"</strong></span
+                >does not contain <strong>"{{ nOTFilterText$ | async }}"</strong></span
               >
             </span>
             <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-              >AND
+              >&nbsp;AND
             </span>
             <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
               >Search:

@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ga4ghPath, ga4ghWorkflowIdPrefix, ga4ghServiceIdPrefix } from 'app/shared/constants';
+import { ga4ghPath, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from 'app/shared/constants';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject } from 'rxjs';
@@ -94,6 +94,19 @@ export class InfoTabService {
         }
       );
     });
+  }
+
+  /**
+   * Update only the descriptor type.
+   * TODO: Handle update error (revert the dropdown when failed)
+   *
+   * @param {Workflow} workflow  The current workflow (supposed to be update to date)
+   * @param {Workflow.DescriptorTypeEnum} descriptorType  The descriptor type to change it to
+   * @memberof InfoTabService
+   */
+  updateDescriptorType(workflow: Workflow, descriptorType: Workflow.DescriptorTypeEnum) {
+    const newWorkflow = { ...workflow, descriptorType: descriptorType };
+    this.update(newWorkflow);
   }
 
   /**

@@ -15,13 +15,13 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { WorkflowVersion } from 'app/shared/swagger/model/workflowVersion';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
@@ -33,6 +33,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
+import { ViewService } from './view.service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -50,8 +51,11 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
+  public isRefreshing$: Observable<boolean>;
 
   constructor(
+    private alertQuery: AlertQuery,
+    private viewService: ViewService,
     private workflowService: WorkflowService,
     private workflowQuery: WorkflowQuery,
     private versionModalService: VersionModalService,
@@ -67,14 +71,21 @@ export class ViewWorkflowComponent extends View implements OnInit {
 
   showVersionModal() {
     this.versionModalService.setVersion(this.version);
+    this.alertService.start('Getting test parameter files');
     this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name).subscribe(
       items => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
         this.openVersionModal();
+        this.alertService.simpleSuccess();
       },
       error => {
-        this.openVersionModal();
+        // TODO: Figure out a better way to handle this
+        // If we were to open the modal without test parameter files and the user saves,
+        // the legit files that were already there would be wiped out
+        // This is why we're straight up not opening the modal if getting the test parameter files failed
+        // Need to figure out a way to allow the user to edit version properties without test parameter files
+        this.alertService.detailedError(error);
       }
     );
   }
@@ -88,34 +99,19 @@ export class ViewWorkflowComponent extends View implements OnInit {
   private openVersionModal(): void {
     const dialogRef = this.matDialog.open(VersionModalComponent, {
       width: '600px',
-      data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
+      data: { canRead: this.canRead, canWrite: this.canWrite && !this.version.frozen, isOwner: this.isOwner }
     });
   }
 
   /**
-   * Updates the workflow version and alerts the Dockstore User with success
-   * or failure.
+   * Handles the create DOI button being clicked
    *
-   * @private
    * @memberof ViewWorkflowComponent
    */
-  private updateWorkflowToSnapshot(version): void {
-    this.workflowsService.updateWorkflowVersion(this.workflow.id, [version]).subscribe(
-      workflowVersions => {
-        this.alertService.detailedSuccess('Snapshot successfully created!');
-        const workflow = { ...this.workflowQuery.getActive() };
-        workflow.workflowVersions = workflowVersions;
-        this.workflowService.setWorkflow(workflow);
-      },
-      error => {
-        if (error) {
-          this.alertService.detailedError(error);
-        } else {
-          this.alertService.simpleError();
-        }
-      }
-    );
+  requestDOIForWorkflowVersion() {
+    this.viewService.requestDOIForWorkflowVersion(this.workflow, this.version);
   }
+
   /**
    * Opens a confirmation dialog that the Dockstore User can use to
    * confirm they want a snapshot.
@@ -123,19 +119,11 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   snapshotVersion(): void {
-    if (this.version.frozen) {
-      // Guarantee we don't snapshot a snapshot
-      return;
-    }
-    const snapshot: WorkflowVersion = { ...this.version, frozen: true };
-    const confirmMessage = 'Snapshotting a version cannot be undone. Are you sure you want to snapshot this version?';
-    const confirmSnapshot = confirm(confirmMessage);
-    if (confirmSnapshot) {
-      this.updateWorkflowToSnapshot(snapshot);
-    }
+    this.viewService.snapshotVersion(this.workflow, this.version);
   }
 
   ngOnInit() {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));

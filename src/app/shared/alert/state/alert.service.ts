@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertQuery } from './alert.query';
 import { AlertStore } from './alert.store';
 
@@ -46,7 +46,7 @@ export class AlertService {
     if (message) {
       this.matSnackBar.open(message, 'Dismiss');
     } else {
-      const previousMessage = this.alertQuery.getSnapshot().message;
+      const previousMessage = this.alertQuery.getValue().message;
       this.matSnackBar.open(previousMessage + ' succeeded', 'Dismiss');
     }
     this.setInfo('');
@@ -78,7 +78,7 @@ export class AlertService {
       details =
         '[HTTP ' + error.status + '] ' + error.statusText + ': ' + (error.error && error.error.message ? error.error.message : error.error);
     }
-    const previousMessage = this.alertQuery.getSnapshot().message;
+    const previousMessage = this.alertQuery.getValue().message;
     this.setError(message, details);
     this.matSnackBar.open(previousMessage + ' failed', 'Dismiss');
   }
@@ -103,7 +103,7 @@ export class AlertService {
    * @memberof AlertService
    */
   public simpleError() {
-    const previousMessage = this.alertQuery.getSnapshot().message;
+    const previousMessage = this.alertQuery.getValue().message;
     this.clearEverything();
     this.matSnackBar.open(previousMessage + ' failed', 'Dismiss');
   }
@@ -114,7 +114,7 @@ export class AlertService {
    * @memberof AlertService
    */
   public clearEverything() {
-    this.alertStore.setState(state => {
+    this.alertStore.update(state => {
       return {
         ...state,
         message: '',
@@ -132,7 +132,7 @@ export class AlertService {
    * @memberof AlertService
    */
   private setError(message: string, details: string) {
-    this.alertStore.setState(state => {
+    this.alertStore.update(state => {
       return {
         ...state,
         message: message,
@@ -150,7 +150,7 @@ export class AlertService {
    * @memberof AlertService
    */
   private setInfo(message: string) {
-    this.alertStore.setState(state => {
+    this.alertStore.update(state => {
       return {
         ...state,
         message: message,

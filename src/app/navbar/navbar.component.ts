@@ -15,7 +15,6 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { devMode } from 'app/shared/constants';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
@@ -26,6 +25,8 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
+import { Dockstore } from '../shared/dockstore.model';
+import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 
 @Component({
   selector: 'app-navbar',
@@ -36,8 +37,10 @@ export class NavbarComponent extends Logout implements OnInit {
   public user: User;
   extendedUser: any;
   isExtended = false;
-  devMode = devMode;
+  Dockstore = Dockstore;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  private readonly currentTOSVersion: User.TosversionEnum = currentTOSVersion;
+  private readonly currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
 
   constructor(
     private pagenumberService: PagenumberService,
@@ -58,7 +61,12 @@ export class NavbarComponent extends Logout implements OnInit {
   }
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+      this.user = user;
+      if (this.user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
+        this.logOutUsersWithoutCurrentTOS();
+      }
+    });
     this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => (this.extendedUser = extendedUser));
   }
 
@@ -72,5 +80,9 @@ export class NavbarComponent extends Logout implements OnInit {
     workflowPageInfo.searchQuery = '';
     this.pagenumberService.setToolsPageInfo(toolPageInfo);
     this.pagenumberService.setWorkflowPageInfo(workflowPageInfo);
+  }
+
+  logOutUsersWithoutCurrentTOS() {
+    this.logout('/session-expired');
   }
 }

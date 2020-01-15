@@ -13,7 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { assertNoTab, assertVisibleTab, goToTab, setTokenUserViewPort } from '../../support/commands';
+import {
+  assertNoTab,
+  assertVisibleTab,
+  goToTab,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator
+} from '../../support/commands';
 
 describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
@@ -36,23 +42,68 @@ describe('Dockstore Home', () => {
     it('Have one service in /services', () => {
       cy.visit('/services');
       cy.url().should('contain', 'services');
-      cy.get('[data-cy=header]').contains('h3', 'Available Services');
+      cy.get('[data-cy=header]').contains('h3', 'Services');
       cy.contains('Search services');
       cy.contains('garyluu/another-test-service');
     });
     it('Have fake service in /services/{id}', () => {
       cy.visit('/services/github.com/garyluu/another-test-service');
       cy.url().should('contain', '/services/github.com/garyluu/another-test-service');
-      cy.get('[data-cy=header]').contains('h3', 'Available Services');
+      cy.get('[data-cy=header]').contains('h3', 'Services');
       cy.contains('github.com/garyluu/another-test-service:1.3');
       checkTabs();
       checkInfoTab();
-      // TRS only visibile in public page
+      // TRS only visible in public page
       cy.contains('TRS: ').should('be.visible');
       checkVersionsTab();
       // Hidden version not visible on public page
+      // View button visible on public page, otherwise Edit
+      cy.contains('button', 'View');
       cy.contains('td', 'test').should('not.be.visible');
       checkFilesTab();
+    });
+  });
+
+  describe('my-services sync', () => {
+    setTokenUserViewPortCurator();
+    it('Have no services in /my-services', () => {
+      cy.visit('/my-services');
+      cy.url().should('contain', 'my-services');
+      cy.contains('You have not registered any services').should('be.visible');
+    });
+    it('Clicking sync with Github should sync', () => {
+      cy.server();
+      // This fixture has one service
+      cy.fixture('syncservices1.json').then(json => {
+        cy.route({
+          method: 'POST',
+          url: '*/users/services/sync',
+          response: json
+        });
+      });
+      // One org
+      cy.get('[data-cy=sync-with-github]').click();
+      // One org but different
+      cy.get('mat-expansion-panel').should('have.length', 1);
+      cy.get('.mat-expansion-indicator').first().click();
+      // One repo within the org
+      cy.get('.mat-list-item-content').should('have.length', 1);
+    });
+    it('Clicking sync with GitHub organization should sync', () => {
+      cy.server();
+      // This fixture has two services, one of which is also in syncservices1.json
+      cy.fixture('syncservices2.json').then(json => {
+        cy.route({
+          method: 'POST',
+          url: '*/users/services/dockstore-testing/sync',
+          response: json
+        });
+      });
+      cy.get('mat-expansion-panel').should('have.length', 1);
+      cy.get('[data-cy=sync-with-github-org]').first().click();
+      cy.get('mat-expansion-panel').should('have.length', 1);
+      // Now 2 repos
+      cy.get('.mat-list-item-content').should('have.length', 2);
     });
   });
 
@@ -69,6 +120,8 @@ describe('Dockstore Home', () => {
       // TRS only visibile in public page
       cy.contains('TRS: ').should('not.be.visible');
       checkVersionsTab();
+      // Edit button only in my-services
+      cy.contains('button', 'Edit');
       checkFilesTab();
     });
   });
@@ -83,7 +136,7 @@ describe('Dockstore Home', () => {
   function checkInfoTab() {
     // Info Tab Service Information
     cy.contains('Service Information');
-    cy.contains('GitHub: ').should('be.visible');
+    cy.contains('Source Code: ').should('be.visible');
     cy.contains('Workflow Path: ').should('not.be.visible');
     cy.contains('Test File Path: ').should('not.be.visible');
     cy.contains('Checker Workflow: ').should('not.be.visible');
@@ -103,7 +156,6 @@ describe('Dockstore Home', () => {
     cy.contains('td', 'Jul 19, 2019, 1:13:48 PM');
     cy.contains('tr', 'Valid');
     cy.contains('tr', 'Verified Platforms');
-    cy.contains('button', 'View');
   }
   function checkFilesTab() {
     goToTab('Files');

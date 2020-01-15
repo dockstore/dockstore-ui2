@@ -87,10 +87,20 @@
                 <mat-card-header>
                   <mat-card-title>
                     <h4>
-                      <a *ngIf="entry?.full_workflow_path" [routerLink]="['/workflows/', entry.full_workflow_path]">
-                        {{ entry.full_workflow_path }}
-                      </a>
-                      <a *ngIf="entry?.tool_path" [routerLink]="['/tools/', entry.tool_path]">
+                      <span *ngIf="entry?.full_workflow_path">
+                        <a
+                          *ngIf="entry?.mode === WorkflowMode.SERVICE; else workflow"
+                          [routerLink]="['/services/', entry.full_workflow_path]"
+                        >
+                          {{ entry.full_workflow_path }}
+                        </a>
+                        <ng-template #workflow>
+                          <a [routerLink]="['/workflows/', entry.full_workflow_path]">
+                            {{ entry.full_workflow_path }}
+                          </a>
+                        </ng-template>
+                      </span>
+                      <a *ngIf="entry?.tool_path" [routerLink]="['/containers/', entry.tool_path]">
                         {{ entry.tool_path }}
                       </a>
                     </h4>

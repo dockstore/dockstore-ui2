@@ -42,25 +42,23 @@ export function assertNoTab(tabName: string): any {
 export function resetDB() {
   before(() => {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore')
-      .its('stdout').should('contain', 'ALTER TABLE');
-    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0 travisci/web.yml')
-      .its('stdout').should('contain', 'Successfully released change log lock');
+    cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
+    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,alter_test_user_1.7.0,1.8.0 travisci/web.yml');
   });
 }
+
+// Sets it to the user where id = 1. Is an admin and curator.
 export function setTokenUserViewPort() {
   beforeEach(() => {
-    // Login by adding user obj and token to local storage
-    localStorage.setItem('dockstore.ui.userObj', '{\"id\": 1, \"username\": \"user_A\", \"isAdmin\": \"false\", \"name\": \"user_A\"}');
+    // Login by adding token to local storage
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken');
   });
 }
 
+// Sets it to the user where id = 4. Is a curator.
 export function setTokenUserViewPortCurator() {
   beforeEach(() => {
     // Login by adding user obj and token to local storage
-    localStorage.setItem('dockstore.ui.userObj',
-      '{\"id\": 4, \"username\": \"user_curator\", \"isAdmin\": \"false\", \"name\": \"user_curator\", \"curator\": \"true\"}');
     localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken2');
   });
 }

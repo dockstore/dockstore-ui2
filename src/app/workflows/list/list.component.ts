@@ -29,12 +29,13 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 
 @Component({
   selector: 'app-list-workflows',
-  templateUrl: './list.component.html'
+  templateUrl: './list.component.html',
+  styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss']
 })
 export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['repository', 'author', 'descriptorType', 'projectLinks', 'stars'];
+  public displayedColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
   public entryType$: Observable<EntryType>;
   type: 'tool' | 'workflow' = 'workflow';
   constructor(
