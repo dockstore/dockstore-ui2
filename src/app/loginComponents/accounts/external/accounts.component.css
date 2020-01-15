@@ -1,14 +1,4 @@
-/* Can't seem to make an extra small text field otherwise.
- * Using small text field causes header to resize
- */
-.input-xs {
-  height: 23px;
-  padding: 2px 5px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
-}
-
-mat-card-footer {
-  padding: 24px;
+.account-logo {
+  width: 7em;
+  margin-right: 1.5em;
 }

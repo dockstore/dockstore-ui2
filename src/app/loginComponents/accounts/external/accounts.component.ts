@@ -45,42 +45,48 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       source: TokenSource.GITHUB,
       bold: 'One of GitHub or Google is required.',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
-      show: false
+      show: false,
+      logo: 'github.svg'
     },
     {
       name: 'Google',
       source: TokenSource.GOOGLE,
       bold: 'One of GitHub or Google is required.',
       message: 'Google credentials are used for login purposes and integration with Terra.',
-      show: false
+      show: false,
+      logo: 'google.svg'
     },
     {
       name: 'Quay',
       source: TokenSource.QUAY,
       bold: '',
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
-      show: false
+      show: false,
+      logo: 'quay.svg'
     },
     {
       name: 'Bitbucket',
       source: TokenSource.BITBUCKET,
       bold: '',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
-      show: false
+      show: false,
+      logo: 'bitbucket.svg'
     },
     {
       name: 'GitLab',
       source: TokenSource.GITLAB,
       bold: '',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
-      show: false
+      show: false,
+      logo: 'gitlab.svg'
     },
     {
       name: 'Zenodo',
       source: TokenSource.ZENODO,
       bold: '',
       message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
-      show: false
+      show: false,
+      logo: 'zenodo.jpg'
     }
   ];
 
