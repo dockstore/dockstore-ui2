@@ -35,7 +35,7 @@ export class DownloadCLIClientComponent implements OnInit {
       (resultFromApi: Metadata) => {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
-        this.downloadCli = `https://github.com/dockstore/dockstore-cli/releases/download/${apiVersion}/dockstore`;
+        this.downloadCli = `https://github.com/dockstore/dockstore/releases/download/${apiVersion}/dockstore`;
         this.metadataService
           .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
           .pipe(finalize(() => this.generateMarkdown()))
