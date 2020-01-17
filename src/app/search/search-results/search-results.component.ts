@@ -20,20 +20,21 @@ import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
+import { Base } from '../../shared/base';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss']
 })
-export class SearchResultsComponent implements OnInit {
-  public browseToolsTab = 'browseToolsTab';
-  public browseWorkflowsTab = 'browseWorkflowsTab';
+export class SearchResultsComponent extends Base implements OnInit {
   public activeToolTab$: Observable<boolean>;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
+  public selectedIndex = 0;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   options: CloudOptions = {
@@ -42,6 +43,7 @@ export class SearchResultsComponent implements OnInit {
     overflow: false
   };
   constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
+    super();
     this.activeToolTab$ = this.searchQuery.activeToolTab$;
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
     this.noToolHits$ = this.searchQuery.noToolHits$;
@@ -52,6 +54,7 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
+    this.activeToolTab$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toolsActive => (this.selectedIndex = toolsActive ? 0 : 1));
   }
 
   createTagCloud(type: string) {

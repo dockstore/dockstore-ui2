@@ -14,6 +14,19 @@
  *    limitations under the License.
  */
 
+mat-tab-group.homeComponent {
+  border: 1px solid #cfd1d7;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.mat-tab-content {
+  display: block;
+  background-color: #fff;
+  margin: 30px 10px 20px;
+  padding: 8px;
+}
+
 .tagCloud {
   padding-left: 10%;
   margin-bottom: 30px;
