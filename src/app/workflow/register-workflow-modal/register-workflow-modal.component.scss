@@ -18,6 +18,6 @@
   flex-direction: column;
 }
 
-::ng-deep .mat-radio-label {
-  white-space: normal !important;
+.extended-label {
+  color: #777777;
 }

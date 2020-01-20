@@ -46,11 +46,15 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   };
   public options = [
     {
-      label: 'Use CWL or WDL from GitHub, BitBucket, etc.',
+      label: 'Create tool with descriptor(s) on remote sites',
+      extendedLabel:
+        'Manually add individual tools with descriptor(s) from sites like GitHub, BitBucket, and GitLab. Docker images are stored on sites like Quay.io and DockerHub.',
       value: 0
     },
     {
-      label: 'Create and save CWL or WDL on Dockstore.org',
+      label: 'Create tool with descriptor(s) on Dockstore.org',
+      extendedLabel:
+        'Manually add individual tools with descriptor(s) stored on Dockstore.org. Docker images are stored on sites like Quay.io and DockerHub.',
       value: 1
     }
   ];

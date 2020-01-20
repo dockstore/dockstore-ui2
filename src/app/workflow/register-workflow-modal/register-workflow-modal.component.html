@@ -23,13 +23,18 @@
     <mat-step>
       <ng-template matStepLabel>Workflow storage type</ng-template>
       <p>
-        You can write your workflows and store them on Dockstore.org, or you can register a workflow from an existing third party
-        repository, such as GitHub, Bitbucket, etc.
+        Workflows are collections of tools and workflows that are connected to one another. They consist of a set of descriptor files
+        describing how the workflow is run.
       </p>
       <div class="modal-body">
         <mat-radio-group [(ngModel)]="selectedOption">
           <mat-radio-button *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
-            {{ option.label }}
+            <span class="text-wrap">
+              {{ option.label }}
+              <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
+                {{ selectedOption.extendedLabel }}
+              </div>
+            </span>
           </mat-radio-button>
         </mat-radio-group>
       </div>

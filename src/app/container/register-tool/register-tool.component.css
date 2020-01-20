@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-::ng-deep .mat-radio-label {
-  white-space: normal !important;
+.extended-label {
+  color: #777777;
 }
