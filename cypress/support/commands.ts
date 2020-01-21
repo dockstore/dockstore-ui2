@@ -27,6 +27,16 @@ export function assertVisibleTab(tabName: string): void {
     .should('be.visible');
 }
 
+/**
+ * Could not find a better way to cancel the dropdown.
+ * Tried:
+ * - cy.get('body').type('{esc}');
+ * - clicking the button again
+ */
+export function cancelMatMenu(): void {
+  cy.reload();
+}
+
 export function isActiveTab(tabName: string): void {
   cy.contains('.mat-tab-label', tabName).should('have.class', 'mat-tab-label-active');
 }

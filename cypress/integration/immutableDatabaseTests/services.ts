@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { assertNoTab, assertVisibleTab, goToTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import { assertNoTab, assertVisibleTab, cancelMatMenu, goToTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
@@ -55,8 +55,7 @@ describe('Dockstore Home', () => {
       cy.contains('Actions...').click();
       cy.contains('button', 'View');
       cy.contains('td', 'test').should('not.be.visible');
-      cy.get('body').type('{esc}');
-      cy.contains('button', 'View').should('not.be.visible');
+      cancelMatMenu();
       checkFilesTab();
     });
   });
@@ -120,8 +119,7 @@ describe('Dockstore Home', () => {
       // Edit button only in my-services
       cy.contains('Actions...').click();
       cy.contains('button', 'Edit');
-      cy.get('body').type('{esc}');
-      cy.contains('button', 'Edit').should('not.be.visible');
+      cancelMatMenu();
       checkFilesTab();
     });
   });
