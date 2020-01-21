@@ -50,8 +50,7 @@
   text-overflow: ellipsis;
 }
 
-/* Center columns with only icons */
-.mat-column-valid,
+/* Center columns with only icons and cannot be sorted (because the sorting icon takes up space so it doesn't look center anymore) */
 .mat-column-snapshot {
   text-align: center;
 }
