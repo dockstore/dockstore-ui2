@@ -107,9 +107,11 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       goToTab('Versions');
+      cy.contains('Actions...').click();
       cy.contains('View').should('be.visible');
       cy.contains('Edit').should('not.be.visible');
       cy.contains('Delete').should('not.be.visible');
+      cy.get('body').type('{esc}');
 
       goToTab('Files');
       cy.contains('Edit Files').should('not.be.visible');
@@ -122,9 +124,11 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       goToTab('Versions');
+      cy.contains('Actions...').click();
       cy.contains('View').should('not.be.visible');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
+      cy.get('body').type('{esc}');
 
       goToTab('Files');
       cy.contains('Edit Files').should('be.visible');
@@ -137,9 +141,11 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('not.be.disabled');
 
       goToTab('Versions');
+      cy.contains('Actions...').click();
       cy.contains('View').should('not.be.visible');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
+      cy.get('body').type('{esc}');
 
       goToTab('Files');
       cy.contains('Edit Files').should('be.visible');
