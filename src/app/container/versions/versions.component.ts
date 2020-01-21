@@ -72,6 +72,13 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     });
   }
 
+  /**
+   * This is currently a placeholder for tools until it's actually implemented
+   * TODO: Implement this properly
+   * @param publicPage Whether this is on the public page or not
+   */
+  setDisplayColumns(publicPage: boolean) {}
+
   isManualMode() {
     if (this.tool && this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH) {
       return true;

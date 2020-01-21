@@ -50,7 +50,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   public WorkflowType = Workflow;
-  displayedColumns: string[];
   workflow: ExtendedWorkflow;
   setNoOrderCols(): Array<number> {
     return [4, 5];
@@ -86,7 +85,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngOnInit() {
-    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '');
+    // this.zenodoUrl = Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '');
     this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
       this.workflow = workflow;
