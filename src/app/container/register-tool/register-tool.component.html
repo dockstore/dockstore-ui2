@@ -23,8 +23,7 @@
     <mat-step>
       <ng-template matStepLabel>Tool storage type</ng-template>
       <p>
-        You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL on an existing third party repository, such
-        as GitHub, Bitbucket, etc.
+        Tools are a combination of Docker images describing the tool environment and descriptor files describing how the tool is run.
       </p>
       <div class="modal-body">
         <mat-radio-group class="radio-group" [(ngModel)]="selectedOption">
@@ -34,7 +33,12 @@
             [value]="option"
             [id]="option.value + '-register-workflow-option'"
           >
-            {{ option.label }}
+            <span class="text-wrap">
+              {{ option.label }}
+              <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
+                {{ selectedOption.extendedLabel }}
+              </div>
+            </span>
           </mat-radio-button>
         </mat-radio-group>
       </div>
@@ -58,6 +62,10 @@
         novalidate
       >
         <div class="modal-body">
+          <p>
+            Manually register a tool with a custom Docker image and Git repository pairing. Use the optional tool name field to handle
+            multiple tools with the same Docker image.
+          </p>
           <div class="form-group form-group-sm">
             <label class="col-sm-3 control-label">
               Source Code Repository:
@@ -359,6 +367,10 @@
         novalidate
       >
         <div class="modal-body">
+          <p>
+            Create a tool with all descriptor files stored and edited on Dockstore.org. Docker images are stored on sites like Quay.io and
+            DockerHub.
+          </p>
           <div class="form-group form-group-sm">
             <label class="col-sm-3 control-label">
               Image Registry:

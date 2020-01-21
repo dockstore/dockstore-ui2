@@ -62,15 +62,18 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   };
   public options = [
     {
-      label: 'Quickly register workflows from GitHub, Bitbucket, and GitLab',
+      label: 'Quickly register remote workflows',
+      extendedLabel: 'Toggle repositories from GitHub, Bitbucket, and GitLab to quickly create workflows on Dockstore.',
       value: 0
     },
     {
-      label: 'Create non-standard workflows from GitHub, Bitbucket, and GitLab',
+      label: 'Register custom remote workflows',
+      extendedLabel: 'Manually add individual workflows at custom file paths from repositories on GitHub, Bitbucket, and GitLab.',
       value: 1
     },
     {
-      label: 'Create and save workflows on Dockstore.org',
+      label: 'Create workflows on Dockstore.org',
+      extendedLabel: 'All workflow files are created and stored directly on Dockstore.',
       value: 2
     }
   ];
