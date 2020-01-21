@@ -68,7 +68,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     },
     {
       label: 'Register custom remote workflows',
-      extendedLabel: 'Manually add individual workflows with custom metadata from repositories on GitHub, Bitbucket, and GitLab.',
+      extendedLabel: 'Manually add individual workflows at custom file paths from repositories on GitHub, Bitbucket, and GitLab.',
       value: 1
     },
     {
