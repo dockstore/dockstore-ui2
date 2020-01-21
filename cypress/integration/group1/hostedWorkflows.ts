@@ -172,11 +172,8 @@ describe('Dockstore hosted workflows', () => {
         .contains('span', /\b3\b/);
 
       // Delete a version
-      cy
-        .get('table')
-        .find('.deleteVersionButton')
-        .first()
-        .click();
+      cy.contains('Actions...').click();
+      cy.contains('Delete').click();
       // Automatically selects the newest version that wasn't the one that was just deleted
       cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
       // Version 3 should no longer exist since it was just deleted
