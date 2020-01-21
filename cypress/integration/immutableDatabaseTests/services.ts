@@ -52,8 +52,11 @@ describe('Dockstore Home', () => {
       checkVersionsTab();
       // Hidden version not visible on public page
       // View button visible on public page, otherwise Edit
+      cy.contains('Actions...').click();
       cy.contains('button', 'View');
       cy.contains('td', 'test').should('not.be.visible');
+      cy.get('body').type('{esc}');
+      cy.contains('button', 'View').should('not.be.visible');
       checkFilesTab();
     });
   });
@@ -115,7 +118,10 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('not.be.visible');
       checkVersionsTab();
       // Edit button only in my-services
+      cy.contains('Actions...').click();
       cy.contains('button', 'Edit');
+      cy.get('body').type('{esc}');
+      cy.contains('button', 'Edit').should('not.be.visible');
       checkFilesTab();
     });
   });

@@ -112,6 +112,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.contains('Edit').should('not.be.visible');
       cy.contains('Delete').should('not.be.visible');
       cy.get('body').type('{esc}');
+      cy.contains('View').should('not.be.visible');
 
       goToTab('Files');
       cy.contains('Edit Files').should('not.be.visible');
@@ -129,6 +130,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
       cy.get('body').type('{esc}');
+      cy.contains('Delete').should('not.be.visible');
 
       goToTab('Files');
       cy.contains('Edit Files').should('be.visible');
@@ -146,6 +148,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
       cy.get('body').type('{esc}');
+      cy.contains('Delete').should('not.be.visible');
 
       goToTab('Files');
       cy.contains('Edit Files').should('be.visible');
