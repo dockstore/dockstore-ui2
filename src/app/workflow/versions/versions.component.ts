@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource } from '@angular/material';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -28,7 +29,6 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Versions } from '../../shared/versions';
-import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -86,7 +86,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngOnInit() {
-    // this.zenodoUrl = Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '');
+    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '');
     this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
       this.workflow = workflow;
