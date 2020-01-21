@@ -34,7 +34,6 @@ import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewService } from './view.service';
-import { WorkflowVersion } from 'app/shared/swagger';
 
 @Component({
   selector: 'app-view-workflow',
