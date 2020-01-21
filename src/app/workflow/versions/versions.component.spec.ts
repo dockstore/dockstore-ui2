@@ -16,12 +16,10 @@
 import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { TooltipModule } from 'ngx-bootstrap';
-
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -71,7 +69,7 @@ describe('VersionsWorkflowComponent', () => {
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule, MatIconModule, FontAwesomeModule],
+      imports: [CustomMaterialModule, FormsModule, TooltipModule, FontAwesomeModule, BrowserAnimationsModule],
       declarations: [
         VersionsWorkflowComponent,
         OrderBy,

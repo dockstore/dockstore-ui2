@@ -14,8 +14,9 @@
  *    limitations under the License.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { DateService } from '../../shared/date.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
@@ -28,9 +29,6 @@ import {
 } from '../../test/service-stubs';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
-import { WorkflowService } from '../../shared/state/workflow.service';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ViewService } from './view.service';
 
 describe('ViewWorkflowComponent', () => {
@@ -39,7 +37,7 @@ describe('ViewWorkflowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatSnackBarModule],
+      imports: [CustomMaterialModule],
       declarations: [ViewWorkflowComponent],
       providers: [
         { provide: ViewService },
