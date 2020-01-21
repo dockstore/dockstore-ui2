@@ -85,7 +85,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngOnInit() {
-    // this.zenodoUrl = Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '');
+    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
       this.workflow = workflow;
