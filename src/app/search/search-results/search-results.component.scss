@@ -15,16 +15,20 @@
  */
 
 mat-tab-group.homeComponent {
-  border: 1px solid #cfd1d7;
-  border-bottom-right-radius: 15px;
-  border-bottom-left-radius: 15px;
+  border: 0.0625rem solid #cfd1d7;
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+::ng-deep .mat-tab-header-pagination {
+  display: none !important;
 }
 
 .mat-tab-content {
   display: block;
   background-color: #fff;
-  margin: 30px 10px 20px;
-  padding: 8px;
+  margin: 3rem 1rem 2rem;
+  padding: 0.8rem;
 }
 
 .tagCloud {

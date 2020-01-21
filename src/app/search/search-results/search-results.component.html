@@ -18,7 +18,7 @@
   <mat-tab [disabled]="noToolHits$ | async">
     <ng-template mat-tab-label>
       <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-tools-blue.png" />
-      Browse Tools
+      Tools
     </ng-template>
     <div class="mat-tab-content">
       <div *ngIf="toolTagCloudData">
@@ -47,7 +47,7 @@
   <mat-tab class="browserWorkflowsTab" [disabled]="noWorkflowHits$ | async">
     <ng-template mat-tab-label>
       <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-workflows-green.png" />
-      Browse Workflows
+      Workflows
     </ng-template>
     <div class="mat-tab-content">
       <div *ngIf="workflowTagCloudData">

@@ -51,10 +51,15 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.showWorkflowTagCloud$ = this.searchQuery.showWorkflowTagCloud$;
   }
 
+  private readonly TOOLS_TAB_INDEX = 0;
+  private readonly WORKFLOWS_TAB_INDEX = 1;
+
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
-    this.activeToolTab$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toolsActive => (this.selectedIndex = toolsActive ? 0 : 1));
+    this.activeToolTab$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(toolsActive => (this.selectedIndex = toolsActive ? this.TOOLS_TAB_INDEX : this.WORKFLOWS_TAB_INDEX));
   }
 
   createTagCloud(type: string) {
