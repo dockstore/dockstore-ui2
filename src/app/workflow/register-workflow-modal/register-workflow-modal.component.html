@@ -23,8 +23,8 @@
     <mat-step>
       <ng-template matStepLabel>Workflow storage type</ng-template>
       <p>
-        Workflows are collections of tools and workflows that are connected to one another. They consist of a set of descriptor files
-        describing how the workflow is run.
+        Workflows are collections of tools that are connected to one another. They consist of a set of descriptor files describing how the
+        workflow is run.
       </p>
       <div class="modal-body">
         <mat-radio-group [(ngModel)]="selectedOption">
@@ -67,6 +67,10 @@
         (submit)="registerWorkflow()"
         novalidate
       >
+        <p>
+          Manually register a workflow with custom values. Use the optional workflow name field to handle repositories with multiple
+          workflows.
+        </p>
         <mat-form-field class="w-100">
           <mat-select placeholder="Source Code Provider" class="radio-group" [(ngModel)]="workflow.repository" name="repository">
             <mat-option *ngFor="let repository of friendlyRepositoryKeys()" [value]="repository">
@@ -179,6 +183,10 @@
         (ngSubmit)="registerHostedWorkflow()"
         novalidate
       >
+        <p>
+          Create a workflow with all descriptor files created and stored on Dockstore.org.
+        </p>
+
         <mat-radio-group
           id="descriptorTypeRadioButtons"
           position="before"
