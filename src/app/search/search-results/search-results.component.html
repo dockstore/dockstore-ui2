@@ -15,7 +15,7 @@
   -->
 
 <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedIndex" class="homeComponent">
-  <mat-tab [disabled]="noToolHits$ | async">
+  <mat-tab [disabled]="noToolHits$ | async" data-cy="tools-tab">
     <ng-template mat-tab-label>
       <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-tools-blue.png" />
       Tools
@@ -44,7 +44,7 @@
     </div>
   </mat-tab>
 
-  <mat-tab class="browserWorkflowsTab" [disabled]="noWorkflowHits$ | async">
+  <mat-tab class="browserWorkflowsTab" [disabled]="noWorkflowHits$ | async" data-cy="workflows-tab">
     <ng-template mat-tab-label>
       <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-workflows-green.png" />
       Workflows
