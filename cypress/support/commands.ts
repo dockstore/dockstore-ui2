@@ -37,6 +37,10 @@ export function cancelMatMenu(): void {
   cy.reload();
 }
 
+export function clickFirstActionsButton(): void {
+  cy.get('button').contains('Actions').click();
+}
+
 export function isActiveTab(tabName: string): void {
   cy.contains('.mat-tab-label', tabName).should('have.class', 'mat-tab-label-active');
 }

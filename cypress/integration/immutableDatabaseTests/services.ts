@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { assertNoTab, assertVisibleTab, cancelMatMenu, goToTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import { assertNoTab, assertVisibleTab, cancelMatMenu, clickFirstActionsButton, goToTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
@@ -52,7 +52,7 @@ describe('Dockstore Home', () => {
       checkVersionsTab();
       // Hidden version not visible on public page
       // View button visible on public page, otherwise Edit
-      cy.contains('Actions...').click();
+      clickFirstActionsButton();
       cy.contains('button', 'View');
       cy.contains('td', 'test').should('not.be.visible');
       cancelMatMenu();
@@ -117,7 +117,7 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('not.be.visible');
       checkVersionsTab();
       // Edit button only in my-services
-      cy.contains('Actions...').click();
+      clickFirstActionsButton();
       cy.contains('button', 'Edit');
       cancelMatMenu();
       checkFilesTab();
