@@ -151,7 +151,7 @@ describe('Dockstore Home', () => {
     cy.contains('tr', 'Git Reference');
     cy.contains('td', '1.3');
     cy.contains('tr', 'Date Modified');
-    cy.contains('td', 'Jul 19, 2019');
+    cy.contains('td', '2019-07-19 13:13');
     cy.contains('tr', 'Valid');
     cy.contains('tr', 'Verified Platforms');
   }
