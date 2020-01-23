@@ -90,6 +90,10 @@ export class ViewWorkflowComponent extends View implements OnInit {
     );
   }
 
+  updateDefaultVersion() {
+    this.viewService.updateDefaultVersion(this.version.name);
+  }
+
   /**
    * Opens the version modal
    *

@@ -72,6 +72,13 @@ export class VersionsContainerComponent extends Versions implements OnInit {
     });
   }
 
+  /**
+   * This is currently a placeholder for tools until it's actually implemented
+   * TODO: Implement this properly
+   * @param publicPage Whether this is on the public page or not
+   */
+  setDisplayColumns(publicPage: boolean) {}
+
   isManualMode() {
     if (this.tool && this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH) {
       return true;
@@ -103,6 +110,8 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   // Updates the version and emits an event for the parent component
   setVersion(version: Tag) {
     this.versionTag = version;
+    this.alertService.start('Changing version to ' + version.name);
+    this.alertService.detailedSuccess();
     this.selectedVersionChange.emit(this.versionTag);
   }
 

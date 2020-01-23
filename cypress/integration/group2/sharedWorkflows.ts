@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { cancelMatMenu, clickFirstActionsButton, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Shared with me workflow test from my-workflows', () => {
   resetDB();
@@ -107,10 +107,11 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       goToTab('Versions');
+      clickFirstActionsButton();
       cy.contains('View').should('be.visible');
       cy.contains('Edit').should('not.be.visible');
       cy.contains('Delete').should('not.be.visible');
-
+      cancelMatMenu();
       goToTab('Files');
       cy.contains('Edit Files').should('not.be.visible');
     });
@@ -122,10 +123,12 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       goToTab('Versions');
+      clickFirstActionsButton();
       cy.contains('View').should('not.be.visible');
-      cy.contains('Edit').should('be.visible');
+      cy.contains('Edit')
+        .should('be.visible');
       cy.contains('Delete').should('be.visible');
-
+      cancelMatMenu();
       goToTab('Files');
       cy.contains('Edit Files').should('be.visible');
     });
@@ -137,10 +140,11 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('not.be.disabled');
 
       goToTab('Versions');
+      clickFirstActionsButton();
       cy.contains('View').should('not.be.visible');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
-
+      cancelMatMenu();
       goToTab('Files');
       cy.contains('Edit Files').should('be.visible');
     });

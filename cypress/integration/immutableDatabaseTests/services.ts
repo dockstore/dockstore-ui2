@@ -13,13 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {
-  assertNoTab,
-  assertVisibleTab,
-  goToTab,
-  setTokenUserViewPort,
-  setTokenUserViewPortCurator
-} from '../../support/commands';
+import { assertNoTab, assertVisibleTab, cancelMatMenu, clickFirstActionsButton, goToTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
@@ -58,8 +52,10 @@ describe('Dockstore Home', () => {
       checkVersionsTab();
       // Hidden version not visible on public page
       // View button visible on public page, otherwise Edit
+      clickFirstActionsButton();
       cy.contains('button', 'View');
       cy.contains('td', 'test').should('not.be.visible');
+      cancelMatMenu();
       checkFilesTab();
     });
   });
@@ -121,7 +117,9 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('not.be.visible');
       checkVersionsTab();
       // Edit button only in my-services
+      clickFirstActionsButton();
       cy.contains('button', 'Edit');
+      cancelMatMenu();
       checkFilesTab();
     });
   });
@@ -153,7 +151,7 @@ describe('Dockstore Home', () => {
     cy.contains('tr', 'Git Reference');
     cy.contains('td', '1.3');
     cy.contains('tr', 'Date Modified');
-    cy.contains('td', 'Jul 19, 2019, 1:13:48 PM');
+    cy.contains('td', '2019-07-19 13:13');
     cy.contains('tr', 'Valid');
     cy.contains('tr', 'Verified Platforms');
   }
