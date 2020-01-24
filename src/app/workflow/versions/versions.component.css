@@ -54,6 +54,7 @@ th {
 }
 
 /* Highlight row with the selected version */
+/* The mat-row is so that this is more specific and able to override the hover style above */
 tr.mat-row.highlight {
   background-color: rgba(0, 0, 0, 0.12);
 }
