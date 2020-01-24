@@ -13,7 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { assertNoTab, assertVisibleTab, cancelMatMenu, clickFirstActionsButton, goToTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import {
+  assertNoTab,
+  assertVisibleTab,
+  cancelMatMenu,
+  clickFirstActionsButton,
+  goToTab,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator
+} from '../../support/commands';
 
 describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
@@ -81,7 +89,9 @@ describe('Dockstore Home', () => {
       cy.get('[data-cy=sync-with-github]').click();
       // One org but different
       cy.get('mat-expansion-panel').should('have.length', 1);
-      cy.get('.mat-expansion-indicator').first().click();
+      cy.get('.mat-expansion-indicator')
+        .first()
+        .click();
       // One repo within the org
       cy.get('.mat-list-item-content').should('have.length', 1);
     });
@@ -96,7 +106,9 @@ describe('Dockstore Home', () => {
         });
       });
       cy.get('mat-expansion-panel').should('have.length', 1);
-      cy.get('[data-cy=sync-with-github-org]').first().click();
+      cy.get('[data-cy=sync-with-github-org]')
+        .first()
+        .click();
       cy.get('mat-expansion-panel').should('have.length', 1);
       // Now 2 repos
       cy.get('.mat-list-item-content').should('have.length', 2);

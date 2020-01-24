@@ -105,6 +105,10 @@
     "src/**/*.{ts,html,js,css,scss,json,md}": [
       "prettier --write",
       "git add"
+    ],
+    "cypress/**/*.{ts,js}": [
+      "prettier --write",
+      "git add"
     ]
   }
 }

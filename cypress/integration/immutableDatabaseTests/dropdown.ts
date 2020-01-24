@@ -20,13 +20,11 @@ describe('Dropdown test', () => {
   setTokenUserViewPortCurator();
 
   beforeEach(() => {
-    cy
-      .server()
-      .route({
-        method: 'GET',
-        url: /extended/,
-        response: { 'canChangeUsername': true }
-      });
+    cy.server().route({
+      method: 'GET',
+      url: /extended/,
+      response: { canChangeUsername: true }
+    });
 
     cy.visit('');
 
@@ -37,18 +35,12 @@ describe('Dropdown test', () => {
   describe('Go to starred page', () => {
     beforeEach(() => {
       // Select dropdown tokens
-      cy
-        .get('#dropdown-starred')
-        .click();
+      cy.get('#dropdown-starred').click();
     });
 
     it('Should have nothing starred', () => {
-      cy
-        .get('#starCountButton')
-        .should('not.be.visible');
-      cy
-        .get('#starringButton')
-        .should('not.be.visible');
+      cy.get('#starCountButton').should('not.be.visible');
+      cy.get('#starringButton').should('not.be.visible');
     });
 
     it('cy.should - assert that <title> is correct', () => {
@@ -59,9 +51,7 @@ describe('Dropdown test', () => {
   describe('Go to accounts page', () => {
     beforeEach(() => {
       // Select dropdown accounts
-      cy
-        .get('#dropdown-accounts')
-        .click();
+      cy.get('#dropdown-accounts').click();
     });
 
     it('Should show all accounts as linked (except GitLab and Bitbucket)', () => {
@@ -108,51 +98,39 @@ describe('Dropdown test', () => {
     });
   });
 
-  describe('Go to requests page', ()  => {
-
+  describe('Go to requests page', () => {
     beforeEach(() => {
       // Pending orgs starts with two
-      const pendingOrganizations = [
-        { id: 1000, name: 'OrgOne', status: 'PENDING' },
-        { id: 1001, name: 'OrgTwo', status: 'PENDING' }
-      ];
+      const pendingOrganizations = [{ id: 1000, name: 'OrgOne', status: 'PENDING' }, { id: 1001, name: 'OrgTwo', status: 'PENDING' }];
 
-      cy
-        .server()
-        .route({
-          method: 'GET',
-          url: '*/organizations/all?type=pending',
-          response: pendingOrganizations
-        });
+      cy.server().route({
+        method: 'GET',
+        url: '*/organizations/all?type=pending',
+        response: pendingOrganizations
+      });
 
       // Logged in user has two memberships, one is not accepted
       const memberships = [
-        {id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne'}},
-        {id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo'}},
-        {id: 3, role: 'MAINTAINER', accepted: true, organization: { id: 1002, status: 'REJECTED', name: 'orgThree'}}
+        { id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
+        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
+        { id: 3, role: 'MAINTAINER', accepted: true, organization: { id: 1002, status: 'REJECTED', name: 'orgThree' } }
       ];
-      cy
-        .server()
-        .route({
-          method: 'GET',
-          url: '*/users/user/memberships',
-          response: memberships
+      cy.server().route({
+        method: 'GET',
+        url: '*/users/user/memberships',
+        response: memberships
       });
       // Choose dropdown
-      cy
-        .get('#dropdown-accounts')
-        .click();
+      cy.get('#dropdown-accounts').click();
       cy.contains('Requests').click();
     });
 
     it('Should have one rejected org', () => {
       // Mock request re-review
-      cy
-        .server()
-        .route({
-          method: 'POST',
-          url: '*/organizations/1002/request',
-          response: { id: 1002, name: 'OrgThree', status: 'PENDING' }
+      cy.server().route({
+        method: 'POST',
+        url: '*/organizations/1002/request',
+        response: { id: 1002, name: 'OrgThree', status: 'PENDING' }
       });
 
       // Mock new pending orgs
@@ -162,26 +140,22 @@ describe('Dropdown test', () => {
         { id: 1002, name: 'OrgThree', status: 'PENDING' }
       ];
 
-      cy
-        .server()
-        .route({
-          method: 'GET',
-          url: '*/organizations/all?type=pending',
-          response: pendingOrganizations
-        });
+      cy.server().route({
+        method: 'GET',
+        url: '*/organizations/all?type=pending',
+        response: pendingOrganizations
+      });
 
       // Mock new my pending orgs
       const memberships = [
-        {id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne'}},
-        {id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo'}},
-        {id: 3, role: 'MAINTAINER', accepted: true, organization: { id: 1002, status: 'PENDING', name: 'orgThree'}}
+        { id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
+        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
+        { id: 3, role: 'MAINTAINER', accepted: true, organization: { id: 1002, status: 'PENDING', name: 'orgThree' } }
       ];
-      cy
-        .server()
-        .route({
-          method: 'GET',
-          url: '*/users/user/memberships',
-          response: memberships
+      cy.server().route({
+        method: 'GET',
+        url: '*/users/user/memberships',
+        response: memberships
       });
 
       // Ensure that there is one org
@@ -189,7 +163,9 @@ describe('Dropdown test', () => {
       cy.get('#my-rejected-org-card-1').should('not.be.visible');
 
       // Request re-review
-      cy.get('#request-re-review-0').should('be.visible').click();
+      cy.get('#request-re-review-0')
+        .should('be.visible')
+        .click();
       cy.get('#my-rejected-org-card-0').should('not.be.visible');
 
       // Should now have org in pending (3 Total)
@@ -205,18 +181,14 @@ describe('Dropdown test', () => {
     it('Should have two pending orgs', () => {
       // Endpoint should return only one pending organization after approval
       const pendingOrganizations = [{ id: 1001, name: 'OrgTwo', status: 'PENDING' }];
-      cy
-        .server()
-        .route({
-          method: 'GET',
-          url: '*/organizations/all?type=pending',
-          response: pendingOrganizations
-        });
+      cy.server().route({
+        method: 'GET',
+        url: '*/organizations/all?type=pending',
+        response: pendingOrganizations
+      });
 
       // Stub approve response
-      cy
-      .server()
-      .route({
+      cy.server().route({
         method: 'POST',
         url: '*/organizations/1000/approve',
         response: []
@@ -228,8 +200,12 @@ describe('Dropdown test', () => {
 
       // Accept first org
       cy.get('#reject-pending-org-0').should('be.visible');
-      cy.get('#approve-pending-org-0').should('be.visible').click();
-      cy.get('#approve-pending-org-dialog').should('be.visible').click();
+      cy.get('#approve-pending-org-0')
+        .should('be.visible')
+        .click();
+      cy.get('#approve-pending-org-dialog')
+        .should('be.visible')
+        .click();
 
       // Ensure that only one org exists now
       cy.get('#pending-org-card-0').should('be.visible');
@@ -238,25 +214,21 @@ describe('Dropdown test', () => {
 
     it('Should have a pending invite', () => {
       // Stub the accept invite response
-      cy
-        .server()
-        .route({
-          method: 'POST',
-          url: '*/organizations/1000/invitation?accept=true',
-          response: []
+      cy.server().route({
+        method: 'POST',
+        url: '*/organizations/1000/invitation?accept=true',
+        response: []
       });
 
       // Membership should have two accepted entries
       const memberships = [
-        { id: 1, role: 'MAINTAINER', accepted: true, organization: { id: 1000, status: 'PENDING',  name: 'orgOne' }},
-        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' }}
+        { id: 1, role: 'MAINTAINER', accepted: true, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
+        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } }
       ];
-      cy
-        .server()
-        .route({
-          method: 'GET',
-          url: '*/users/user/memberships',
-          response: memberships
+      cy.server().route({
+        method: 'GET',
+        url: '*/users/user/memberships',
+        response: memberships
       });
 
       // One invite should be visible
@@ -264,8 +236,12 @@ describe('Dropdown test', () => {
 
       // Accept org invite
       cy.get('#reject-invite-org-0').should('be.visible');
-      cy.get('#accept-invite-org-0').should('be.visible').click();
-      cy.get('#accept-pending-org-dialog').should('be.visible').click();
+      cy.get('#accept-invite-org-0')
+        .should('be.visible')
+        .click();
+      cy.get('#accept-pending-org-dialog')
+        .should('be.visible')
+        .click();
 
       // Should have two orgs in pending list
       cy.get('#my-pending-org-card-0').should('be.visible');
@@ -273,38 +249,38 @@ describe('Dropdown test', () => {
     });
 
     it('Should have a pending org request', () => {
-     // One pending org request should be visible
-     cy.get('#my-pending-org-card-0').should('be.visible');
+      // One pending org request should be visible
+      cy.get('#my-pending-org-card-0').should('be.visible');
     });
-
-
   });
 
   describe('Go to enabled Dockstore Account Controls', () => {
     beforeEach(() => {
       // Select dropdown accounts
-      cy
-        .server()
-        .route({
-          method: 'DELETE',
-          url: '*/users/user',
-          response: 'true'
-        });
-      cy
-        .get('#dropdown-accounts')
-        .click();
+      cy.server().route({
+        method: 'DELETE',
+        url: '*/users/user',
+        response: 'true'
+      });
+      cy.get('#dropdown-accounts').click();
       cy.contains('Dockstore Account Controls').click();
     });
     it('Should have the danger alert', () => {
       cy.get('.alert-danger').should('be.visible');
     });
     it('Should have the delete button enabled', () => {
-      cy.contains('Delete Dockstore Account').should('not.be.disabled').click();
+      cy.contains('Delete Dockstore Account')
+        .should('not.be.disabled')
+        .click();
       cy.contains('Yes, delete my account').should('be.disabled');
       cy.get('#deleteUserUsernameInput').type('potato');
       cy.contains('Yes, delete my account').should('be.disabled');
-      cy.get('#deleteUserUsernameInput').clear().type('user_curator');
-      cy.contains('Yes, delete my account').should('not.be.disabled').click();
+      cy.get('#deleteUserUsernameInput')
+        .clear()
+        .type('user_curator');
+      cy.contains('Yes, delete my account')
+        .should('not.be.disabled')
+        .click();
       cy.url().should('eq', Cypress.config().baseUrl + '/login');
     });
     it('Should have the change username button enabled', () => {
@@ -319,42 +295,22 @@ describe('Dropdown test', () => {
   };
 
   const goToAccountsOnboarding = () => {
-    cy
-      .contains('Link External Accounts')
-      .click();
+    cy.contains('Link External Accounts').click();
   };
   describe('Go to setup page', () => {
     beforeEach(() => {
-
       // Select dropdown setup
-      cy
-        .get('#dropdown-onboarding')
-        .click();
+      cy.get('#dropdown-onboarding').click();
     });
 
     it('Should let you change your username if possible', () => {
-
-      cy
-        .get('#updateUsername')
-        .should('not.be.disabled');
-      cy
-        .get('#username')
-        .type('-');
-      cy
-        .get('#updateUsername')
-        .should('be.disabled');
-      cy
-        .get('#username')
-        .type('a');
-      cy
-        .get('#updateUsername')
-        .should('not.be.disabled');
-      cy
-        .get('#username')
-        .type('@');
-      cy
-        .get('#updateUsername')
-        .should('be.disabled');
+      cy.get('#updateUsername').should('not.be.disabled');
+      cy.get('#username').type('-');
+      cy.get('#updateUsername').should('be.disabled');
+      cy.get('#username').type('a');
+      cy.get('#updateUsername').should('not.be.disabled');
+      cy.get('#username').type('@');
+      cy.get('#updateUsername').should('be.disabled');
     });
 
     it('Should show all accounts as linked (except GitLab and Bitbucket)', () => {
@@ -370,25 +326,25 @@ describe('Dropdown test', () => {
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit('/auth/bitbucket.org?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+      cy.visit('/auth/bitbucket.org?code=somefakeid', { failOnStatusCode: false }).then(resp => {
         expect(resp.status).to.eq('');
       });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit('/auth/potato.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+      cy.visit('/auth/potato.com?code=somefakeid', { failOnStatusCode: false }).then(resp => {
         expect(resp.status).to.eq('');
       });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit('/auth/github.com?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+      cy.visit('/auth/github.com?code=somefakeid', { failOnStatusCode: false }).then(resp => {
         expect(resp.status).to.eq('');
       });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
-      cy.visit('/auth/quay.io?code=somefakeid', { 'failOnStatusCode': false }).then((resp) => {
+      cy.visit('/auth/quay.io?code=somefakeid', { failOnStatusCode: false }).then(resp => {
         expect(resp.status).to.eq('');
       });
       goToAccountsOnboarding();

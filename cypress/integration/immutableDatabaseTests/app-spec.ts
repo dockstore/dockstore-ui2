@@ -34,7 +34,9 @@ describe('Logged in Dockstore Home', () => {
 
   describe('Navigation', () => {
     it('My Tools visible', () => {
-      cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
+      cy.get('[data-cy=dropdown-main]:visible')
+        .should('be.visible')
+        .click();
       cy.get('[data-cy=my-tools-nav-button]').should('visible');
     });
     it('My Workflows visible', () => {
@@ -47,32 +49,25 @@ describe('Logged in Dockstore Home', () => {
 
   function starColumn(url: string, type: string) {
     if (type === 'workflow') {
-      cy.get('#workflowTab-link')
-        .click();
+      cy.get('#workflowTab-link').click();
     }
-    cy.get('.mat-icon.star')
-      .should('not.exist');
+    cy.get('.mat-icon.star').should('not.exist');
     cy.visit(url);
-    cy.get('#starringButton')
-      .click();
+    cy.get('#starringButton').click();
     cy.visit('');
     if (type === 'workflow') {
-      cy.get('#workflowTab-link')
-        .click();
+      cy.get('#workflowTab-link').click();
     }
-    cy.get('.mat-icon.star')
-      .should('exist');
+    cy.get('.mat-icon.star').should('exist');
     cy.visit(url);
-    cy.get('#starringButton')
-      .click();
+    cy.get('#starringButton').click();
   }
-
 });
 
 describe('Logged out Dockstore Home', () => {
-    beforeEach(() => {
-      cy.visit('');
-    });
+  beforeEach(() => {
+    cy.visit('');
+  });
   describe('Landing Video', () => {
     it('video button visible', () => {
       cy.get('[data-cy=video-overview-button]').should('visible');

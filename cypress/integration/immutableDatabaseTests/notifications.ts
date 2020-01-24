@@ -1,4 +1,4 @@
- /*
+/*
  *    Copyright 2020 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,25 +15,14 @@
  * */
 
 describe('Notifications Banner', () => {
-
-  const dockstorePaths = [
-    '/search',
-    '/organizations',
-    '/my-services',
-    '/my-workflows',
-    '/starred'
-  ];
+  const dockstorePaths = ['/search', '/organizations', '/my-services', '/my-workflows', '/starred'];
 
   function verifyNotificationExist() {
-    cy
-      .get('[data-cy=notification-banner]')
-      .should('exist');
+    cy.get('[data-cy=notification-banner]').should('exist');
   }
 
   function verifyNotificationAbsent() {
-    cy
-      .get('[data-cy=notification-banner]')
-      .should('not.exist');
+    cy.get('[data-cy=notification-banner]').should('not.exist');
   }
 
   beforeEach(() => {
@@ -57,15 +46,12 @@ describe('Notifications Banner', () => {
         cy.visit(path);
         verifyNotificationExist();
       });
-
     });
   });
 
   describe('Sitewide notification is not displayed when it is dismissed', () => {
     it('should not be appearing on any page when it is dismissed', () => {
-      cy
-        .get('[data-cy=dismiss-notification')
-        .click();
+      cy.get('[data-cy=dismiss-notification').click();
 
       verifyNotificationAbsent();
 
@@ -73,7 +59,6 @@ describe('Notifications Banner', () => {
         cy.visit(path);
         verifyNotificationAbsent();
       });
-
     });
   });
 });

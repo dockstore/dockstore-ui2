@@ -23,15 +23,13 @@ describe('Dockstore hosted tools', () => {
   beforeEach(() => {
     cy.visit('/my-tools');
 
-    cy
-      .server();
+    cy.server();
 
     cy.route({
       method: 'GET',
       url: /containers\/.+\/zip\/.+/,
       response: 200
     }).as('downloadZip');
-
   });
 
   function getTool() {
@@ -45,166 +43,126 @@ describe('Dockstore hosted tools', () => {
       getTool();
 
       // Should not be able to publish (No valid versions)
-      cy
-        .get('#publishToolButton')
-        .should('be.disabled');
+      cy.get('#publishToolButton').should('be.disabled');
 
       // Should not be able to download zip
-      cy
-        .get('#downloadZipButton')
-        .should('not.be.visible');
+      cy.get('#downloadZipButton').should('not.be.visible');
 
       // Check content of the version tab
       goToTab('Versions');
-        cy.get('table > tbody')
+      cy.get('table > tbody')
         .find('tr')
         .should('have.length', 1);
 
       // Add a new version with one descriptor and dockerfile
       goToTab('Files');
 
-      cy
-        .get('#editFilesButton')
-        .click();
+      cy.get('#editFilesButton').click();
 
-      cy
-        .contains('Add File')
-        .click();
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
+      cy.contains('Add File').click();
+      cy.window().then(function(window: any) {
+        cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const dockerfile = `FROM ubuntu:latest`;
           window.ace.edit(editors[0]).setValue(dockerfile, -1);
         });
       });
 
-      cy
-        .get('#descriptorFilesTab-link')
-        .click();
+      cy.get('#descriptorFilesTab-link').click();
       cy.wait(500);
 
-      cy
-        .get('#descriptorFilesTab')
+      cy.get('#descriptorFilesTab')
         .contains('Add File')
         .click();
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
+      cy.window().then(function(window: any) {
+        cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
           window.ace.edit(editors[1]).setValue(cwlDescriptor, -1);
         });
       });
 
-      cy
-        .get('#saveNewVersionButton')
-        .click();
+      cy.get('#saveNewVersionButton').click();
 
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
 
       // Should have a version 1
       goToTab('Versions');
-      cy
-        .get('table')
-        .contains('span', /\b1\b/);
+      cy.get('table').contains('span', /\b1\b/);
 
       // Should be able to download zip
       goToTab('Info');
-      cy
-        .get('#downloadZipButton')
-        .should('be.visible');
+      cy.get('#downloadZipButton').should('be.visible');
 
       // Verify that clicking calls the correct endpoint
       // https://github.com/ga4gh/dockstore/issues/2050
-      cy
-        .get('#downloadZipButton')
-        .click();
+      cy.get('#downloadZipButton').click();
 
-      cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
+      cy.wait('@downloadZip')
+        .its('url')
+        .should('include', Dockstore.API_URI);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
-      cy
-        .get('#editFilesButton')
-        .click();
-      cy
-        .get('#descriptorFilesTab-link')
-        .click();
+      cy.get('#editFilesButton').click();
+      cy.get('#descriptorFilesTab-link').click();
       cy.wait(500);
-      cy
-        .get('#descriptorFilesTab')
+      cy.get('#descriptorFilesTab')
         .contains('Add File')
         .click();
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
+      cy.window().then(function(window: any) {
+        cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
           window.ace.edit(editors[2]).setValue(cwlDescriptor, -1);
         });
       });
 
-      cy
-        .get('#testParameterFilesTab-link')
-        .click();
+      cy.get('#testParameterFilesTab-link').click();
       cy.wait(500);
-      cy
-        .get('#testParameterFilesTab')
+      cy.get('#testParameterFilesTab')
         .contains('Add File')
         .click();
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
+      cy.window().then(function(window: any) {
+        cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const testParameterFile = '{}';
           window.ace.edit(editors[3]).setValue(testParameterFile, -1);
         });
       });
 
-      cy
-        .get('#saveNewVersionButton')
-        .click();
+      cy.get('#saveNewVersionButton').click();
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Should have a version 2
       goToTab('Versions');
-        cy.get('table')
+      cy.get('table')
         .contains('span', /\b2\b/)
         .click();
 
       // Should be able to publish
-      cy
-        .get('#publishButton')
-        .should('not.be.disabled');
+      cy.get('#publishButton').should('not.be.disabled');
 
       // Try deleting a file (.cwl file)
       goToTab('Files');
-      cy
-        .get('#editFilesButton')
-        .click();
-      cy
-        .get('#descriptorFilesTab-link')
-        .click();
+      cy.get('#editFilesButton').click();
+      cy.get('#descriptorFilesTab-link').click();
       cy.wait(500);
-      cy
-        .get('#descriptorFilesTab')
+      cy.get('#descriptorFilesTab')
         .find('.delete-editor-file')
         .first()
         .click();
-      cy
-        .get('#saveNewVersionButton')
-        .click();
+      cy.get('#saveNewVersionButton').click();
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:3');
 
       // Should now only have 1 visible editor
-      cy
-        .get('.ace_editor:visible')
-        .should('have.length', 1);
+      cy.get('.ace_editor:visible').should('have.length', 1);
 
       // New version should be added
       goToTab('Versions');
-      cy.get('table')
-        .contains('span', /\b3\b/);
+      cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
-      cy
-        .get('table')
+      cy.get('table')
         .find('.deleteVersionButton')
         .first()
         .click();
@@ -217,5 +175,4 @@ describe('Dockstore hosted tools', () => {
         .should('not.contain', '3');
     });
   });
-
 });

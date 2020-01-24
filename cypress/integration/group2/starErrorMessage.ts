@@ -29,16 +29,11 @@ describe('Tool and workflow starring error messages', () => {
       response: 'You cannot star the ' + type + ' ' + name + ' because you have not unstarred it.'
     });
 
-    cy
-      .get('#starringButtonIcon')
-      .click();
+    cy.get('#starringButtonIcon').click();
 
-    cy
-      .get('.alert')
-      .should('exist');
+    cy.get('.alert').should('exist');
 
-    cy
-      .get('.error-output')
+    cy.get('.error-output')
       .contains('You cannot star the ' + type + ' ' + name + ' because you have not unstarred it.')
       .should('exist');
   }
@@ -46,9 +41,7 @@ describe('Tool and workflow starring error messages', () => {
   function unstarringError(url: string, type: string, routePath: string, name: string) {
     cy.visit(url);
 
-    cy
-      .get('#starringButtonIcon')
-      .click();
+    cy.get('#starringButtonIcon').click();
 
     cy.server();
     cy.route({
@@ -58,16 +51,11 @@ describe('Tool and workflow starring error messages', () => {
       response: 'You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.'
     });
 
-    cy
-      .get('#unstarringButtonIcon')
-      .click();
+    cy.get('#unstarringButtonIcon').click();
 
-    cy
-      .get('.alert')
-      .should('exist');
+    cy.get('.alert').should('exist');
 
-    cy
-      .get('.error-output')
+    cy.get('.error-output')
       .contains('You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.')
       .should('exist');
   }
@@ -83,16 +71,11 @@ describe('Tool and workflow starring error messages', () => {
       response: {}
     });
 
-    cy
-      .get('#starringButtonIcon')
-      .click();
+    cy.get('#starringButtonIcon').click();
 
-    cy
-      .get('.alert')
-      .should('exist');
+    cy.get('.alert').should('exist');
 
-    cy
-      .get('.error-output')
+    cy.get('.error-output')
       .contains('[HTTP 500] Internal Server Error:')
       .should('exist');
   }
@@ -124,5 +107,3 @@ describe('Tool and workflow starring error messages', () => {
     });
   });
 });
-
-
