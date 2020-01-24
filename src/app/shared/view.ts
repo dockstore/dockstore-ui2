@@ -14,16 +14,19 @@
  *    limitations under the License.
  */
 import { Input, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { AlertQuery } from './alert/state/alert.query';
 import { DateService } from './date.service';
 import { Tag, WorkflowVersion } from './swagger';
 
 export abstract class View implements OnDestroy {
   @Input() version: WorkflowVersion | Tag;
-
+  protected isRefreshing$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor(private dateService: DateService) {}
+  constructor(private dateService: DateService, private alertQuery: AlertQuery) {
+    this.isRefreshing$ = this.alertQuery.showInfo$;
+  }
 
   getDateTimeMessage(timestamp) {
     return this.dateService.getDateTimeMessage(timestamp);

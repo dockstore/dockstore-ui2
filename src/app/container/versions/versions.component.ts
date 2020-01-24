@@ -109,22 +109,6 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
     return [5, 6];
   }
 
-  updateDefaultVersion(newDefaultVersion: string): void {
-    if (this.publicPage) {
-      return;
-    }
-    const message = 'Updating default tool version';
-    this.alertService.start(message);
-    this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(
-      response => {
-        this.alertService.detailedSuccess();
-        this.containerService.replaceTool(null, response);
-        this.containerService.setTool(response);
-      },
-      error => this.alertService.detailedError(error)
-    );
-  }
-
   // Updates the version and emits an event for the parent component
   setVersion(version: Tag) {
     this.versionTag = version;
