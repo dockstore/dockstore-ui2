@@ -83,6 +83,7 @@
           </label>
           <div class="col-sm-9 col-md-9 col-lg-9">
             <input
+              data-cy="dockerfilePath"
               type="text"
               class="form-control"
               #name="ngModel"
@@ -194,7 +195,7 @@
           >
             <div class="input-group">
               <input
-                id="addCWLField"
+                data-cy="addCWLField"
                 [ngClass]="{ 'input-right-button': editMode }"
                 type="text"
                 #model1="ngModel"
@@ -292,7 +293,7 @@
           >
             <div class="input-group">
               <input
-                id="addWDLField"
+                data-cy="addWDLField"
                 [ngClass]="{ 'input-right-button': editMode }"
                 type="text"
                 #model1="ngModel"
