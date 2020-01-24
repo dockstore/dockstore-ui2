@@ -77,11 +77,6 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
     });
   }
 
-  /**
-   * This is currently a placeholder for tools until it's actually implemented
-   * TODO: Implement this properly
-   * @param publicPage Whether this is on the public page or not
-   */
   setDisplayColumns(publicPage: boolean) {
     if (publicPage) {
       this.displayedColumns = this.displayedColumns.filter(column => column !== 'hidden');

@@ -26,13 +26,13 @@
   white-space: nowrap;
 }
 
-/* Material says it should have 16dp to the left and right, sadly Angualar Material does not */
+/* Material says it should have 16dp to the left and right, sadly Angular Material does not */
 .mat-cell:not(:first-of-type),
 .mat-header-cell:not(:first-of-type) {
   padding-left: 1.6rem;
 }
 
-/* Material says it should have 16dp to the left and right, sadly Angualar Material does not */
+/* Material says it should have 16dp to the left and right, sadly Angular Material does not */
 .mat-cell:not(:last-of-type),
 .mat-header-cell:not(:last-of-type) {
   padding-right: 1.6rem;
