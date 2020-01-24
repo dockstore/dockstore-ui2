@@ -13,7 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 import { ContainerService } from 'app/shared/container.service';
 import { takeUntil } from 'rxjs/operators';
@@ -33,13 +34,15 @@ import { AddTagComponent } from '../add-tag/add-tag.component';
 @Component({
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
-  styleUrls: ['./versions.component.css']
+  styleUrls: ['./../../workflow/versions/versions.component.css']
 })
-export class VersionsContainerComponent extends Versions implements OnInit {
+export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
   Dockstore = Dockstore;
   versionTag: Tag;
   public DockstoreToolType = DockstoreTool;
+  dataSource = new MatTableDataSource(this.versions);
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
   @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this.versionTag = value;
@@ -60,6 +63,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
   ) {
     super(dockstoreService, dateService, sessionQuery);
     this.sortColumn = 'last_built';
+    this.displayedColumns = ['name', 'reference', 'last_built', 'valid', 'hidden', 'verified', 'actions'];
   }
 
   ngOnInit() {
@@ -68,6 +72,7 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       this.tool = tool;
       if (tool) {
         this.defaultVersion = tool.defaultVersion;
+        this.setDisplayedColumnsFromTool(tool);
       }
     });
   }
@@ -77,7 +82,25 @@ export class VersionsContainerComponent extends Versions implements OnInit {
    * TODO: Implement this properly
    * @param publicPage Whether this is on the public page or not
    */
-  setDisplayColumns(publicPage: boolean) {}
+  setDisplayColumns(publicPage: boolean) {
+    if (publicPage) {
+      this.displayedColumns = this.displayedColumns.filter(column => column !== 'hidden');
+    }
+  }
+
+  setDisplayedColumnsFromTool(tool: ExtendedDockstoreTool) {
+    if (tool.mode === DockstoreTool.ModeEnum.HOSTED) {
+      this.displayedColumns = this.displayedColumns.filter(column => column !== 'last_built');
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
+
+  ngOnChanges() {
+    this.dataSource.data = this.versions;
+  }
 
   isManualMode() {
     if (this.tool && this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH) {

@@ -15,153 +15,119 @@
   -->
 
 <div class="p-3">
-  <div class="table-responsive">
-    <table
-      class="m-0 table table-bordered table-condensed table-striped"
-      [ngClass]="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED ? 'tool-versions-grid' : 'hosted-tool-versions-grid'"
-    >
-      <thead>
-        <tr>
-          <th>
-            <label
-              placement="top"
-              matTooltip="Tags from Docker repository: The selected tag will be used
+  <table
+    aria-describedby="Version Information"
+    mat-table
+    [dataSource]="dataSource"
+    class="w-100"
+    matSort
+    matSortActive="last_built"
+    matSortDisableClear
+    matSortDirection="desc"
+  >
+    <ng-container matColumnDef="name">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        matTooltip="Tags from Docker repository: The selected tag will be used
           to populate the Info tab including 'Launch With'"
-            >
-              Version
-            </label>
-            <a
-              *ngIf="!publicPage"
-              href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#what-is-a-default-version-of-a-tool-or-workflow"
-              target="_blank"
-              rel="noopener noreferrer"
-              ><mat-icon>info</mat-icon></a
-            >
-            <fa-icon class="pull-right" [icon]="getIconClass('name')" (click)="clickSortColumn('name')"></fa-icon>
-          </th>
-          <th *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
-            <fa-icon class="pull-right" [icon]="getIconClass('author')" (click)="clickSortColumn('author')"></fa-icon>
-            <label placement="top" matTooltip="The editing author as collected by Dockstore">Author</label>
-          </th>
-          <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-            <label placement="top" matTooltip="Git branches/tags">
-              Git Reference
-            </label>
-            <fa-icon class="pull-right" [icon]="getIconClass('reference')" (click)="clickSortColumn('reference')"></fa-icon>
-          </th>
-          <th *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-            <label placement="top" matTooltip="Date of last build of the Docker image">Date Built</label>
-            <fa-icon class="pull-right" [icon]="getIconClass('last_built')" (click)="clickSortColumn('last_built')"></fa-icon>
-          </th>
-          <th>
-            <label placement="top" matTooltip="A version is valid if it has at least one valid descriptor file and Dockerfile">
-              Valid
-            </label>
-            <fa-icon class="pull-right" [icon]="getIconClass('valid')" (click)="clickSortColumn('valid')"></fa-icon>
-          </th>
-          <th *ngIf="!publicPage">
-            <label placement="top" matTooltip="A hidden tag is only visible on the my tools page and not publicly.">
-              Hidden
-            </label>
-            <fa-icon class="pull-right" [icon]="getIconClass('hidden')" (click)="clickSortColumn('hidden')"></fa-icon>
-          </th>
-          <th>
-            <label placement="top" matTooltip="A version is verified if it has been verified to work by a person/group">
-              Verified Platforms
-            </label>
-            <fa-icon class="pull-right" [icon]="getIconClass('verified')" (click)="clickSortColumn('verified')"></fa-icon>
-          </th>
-          <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
-          <!-- <th>
-          <label placement="top" matTooltip="Link to DOI entry for the given version">
-            DOI
-          </label>
-        </th> -->
-          <th>
-            <label placement="top" matTooltip="View more information about the given version">
-              Actions
-            </label>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngIf="versions?.length === 0">
-          <td colspan="8">
-            <div class="text-center">No Records Found</div>
-          </td>
-        </tr>
-        <tr
-          (click)="setVersion(version)"
-          *ngFor="let version of versions | orderBy: convertSorting(tool?.mode)"
-          [ngClass]="{ info: versionTag != null && version != null && versionTag.id == version.id }"
+      >
+        Version
+        <a
+          *ngIf="!publicPage"
+          href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#what-is-a-default-version-of-a-tool-or-workflow"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><mat-icon>info</mat-icon></a
         >
-          <td class="break">
-            <span *ngIf="publicPage && defaultVersion === version.name" class="label label-primary">Default</span>
-            <input
-              class="radio-button-reference"
-              *ngIf="version.name !== 'latest' && !publicPage"
-              type="radio"
-              name="defaultVersion"
-              [(ngModel)]="defaultVersion"
-              [value]="version.name"
-              (click)="updateDefaultVersion(version.name)"
-              [tooltip]="getDefaultTooltip(publicPage)"
-            />
-            <span>&nbsp;{{ version?.name }}</span>
-          </td>
-          <td *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">{{ version?.versionEditor?.name }}</td>
-          <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-            <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
-            <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
-            <span
-              *ngIf="version.commitID && (version.commitID | commitUrl: tool?.providerUrl); else noCommitID"
-              [tooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''"
-            >
-              &nbsp;<a [href]="version.commitID | commitUrl: tool?.providerUrl">{{ version.reference || 'n/a' }}</a>
-            </span>
-            <ng-template #noCommitID
-              ><span>{{ version.reference || 'n/a' }}</span></ng-template
-            >
-          </td>
-          <td *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-            <span matTooltip="{{ version.last_built | date: 'medium' }}">{{ version.last_built | date: 'mediumDate' }}</span>
-          </td>
-          <td>
-            <mat-icon *ngIf="version.valid">check</mat-icon>
-            <mat-icon *ngIf="!version.valid">close</mat-icon>
-          </td>
-          <td *ngIf="!publicPage">
-            <mat-icon *ngIf="version.hidden">check</mat-icon>
-            <mat-icon *ngIf="!version.hidden">close</mat-icon>
-          </td>
-          <td>
-            <a *ngIf="version.verified" href="{{ verifiedLink }}" matTooltip="{{ getVerifiedSource(version.name) }}">
-              <mat-icon>check</mat-icon>
-            </a>
-            {{ version?.sourceFiles | verifiedPlatforms }}
-          </td>
-          <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
-          <!-- <td>
-          <a href="https://zenodo.org/record/">Placeholder</a>
-        </td> -->
-          <td class="tag-actions">
-            <app-view-container [version]="version"></app-view-container>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="row">
-    <button
-      id="addTagButton"
-      type="button"
-      class="pull-right add-tag"
-      *ngIf="!publicPage && isManualMode()"
-      mat-flat-button
-      color="primary"
-      (click)="showAddTagModal()"
-    >
-      Add Tag
-    </button>
-  </div>
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+          <span *ngIf="defaultVersion === version.name" class="label label-primary">Default</span>
+          <a *ngIf="selectedVersion?.name !== version?.name" matTooltip="Click to select version" (click)="setVersion(version)">{{
+            version?.name
+          }}</a>
+          <span *ngIf="selectedVersion?.name === version?.name">{{ version?.name }}</span>
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="reference">
+      <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="">Git Reference</th>
+      <td mat-cell *matCellDef="let version">
+        <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
+          {{ version?.versionEditor?.name }}
+        </div>
+        <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
+          <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
+          <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
+          <span
+            *ngIf="version.commitID && (version.commitID | commitUrl: tool?.providerUrl); else noCommitID"
+            [matTooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''"
+          >
+            &nbsp;<a [href]="version.commitID | commitUrl: tool?.providerUrl">{{ version.reference || 'n/a' }}</a>
+          </span>
+          <ng-template #noCommitID
+            ><span>{{ version.reference || 'n/a' }}</span></ng-template
+          >
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="last_built">
+      <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="">Date Built</th>
+      <td mat-cell *matCellDef="let version">
+        {{ version.last_built | date: 'yyyy-MM-dd HH:mm' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="valid">
+      <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="">Valid</th>
+      <td mat-cell *matCellDef="let version">
+        <mat-icon *ngIf="version.valid">check</mat-icon>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="hidden">
+      <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="">Hidden</th>
+      <td mat-cell *matCellDef="let version">
+        <mat-icon *ngIf="version.hidden">check</mat-icon>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="verified">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        matTooltip="A version is verified if it has been verified to work by a person/group."
+      >
+        Verified Platforms
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <span matTooltip="{{ getVerifiedSource(version.name) }}">{{ version?.sourceFiles | verifiedPlatforms }}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th scope="col" mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let version">
+        <app-view-container [version]="version"></app-view-container>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      [ngClass]="{ highlight: version.name === versionTag.name }"
+      mat-row
+      *matRowDef="let row; columns: displayedColumns; let version"
+    ></tr>
+  </table>
+
+  <button
+    id="addTagButton"
+    type="button"
+    class="pull-right mr-1 my-3"
+    *ngIf="!publicPage && isManualMode()"
+    mat-flat-button
+    color="primary"
+    (click)="showAddTagModal()"
+  >
+    Add Tag
+  </button>
 </div>

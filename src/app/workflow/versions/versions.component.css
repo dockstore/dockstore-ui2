@@ -21,11 +21,6 @@
 - Move some of these classes to scss so that it's easier to apply to all future tables and maintain consistent styling
   */
 
-/* Full width table */
-.mat-table {
-  width: 100%;
-}
-
 /* Don't have multi-line headers */
 .mat-header-row {
   white-space: nowrap;
@@ -43,13 +38,6 @@
   padding-right: 1.6rem;
 }
 
-/* Use ellipsis on overflow with name (which can potentially get really long */
-.mat-column-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 /* Center columns with only icons and cannot be sorted (because the sorting icon takes up space so it doesn't look center anymore) */
 .mat-column-snapshot {
   text-align: center;
@@ -57,7 +45,7 @@
 
 /* Material says it should highlight on hover, sadly Angular Material does not */
 .mat-row:hover {
-  background-color: whitesmoke;
+  background-color: rgba(0, 0, 0, 0.04);
 }
 
 /* Overwrite the bootstrap class */
@@ -66,6 +54,6 @@ th {
 }
 
 /* Highlight row with the selected version */
-tr.mat-header-row.highlight {
-  background-color: lightgrey;
+tr.mat-row.highlight {
+  background-color: rgba(0, 0, 0, 0.12);
 }

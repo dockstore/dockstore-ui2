@@ -56,9 +56,7 @@
           <a *ngIf="_selectedVersion?.name !== version?.name" matTooltip="Click to select version" (click)="setVersion(version)">{{
             version?.name
           }}</a>
-          <span *ngIf="_selectedVersion?.name === version?.name"
-            ><strong>{{ version?.name }}</strong></span
-          >
+          <span *ngIf="_selectedVersion?.name === version?.name">{{ version?.name }}</span>
           <a target="_blank" rel="noopener noreferrer" [href]="version.commitID | commitUrl: workflow?.providerUrl">
             <mat-icon
               *ngIf="version.commitID && (version.commitID | commitUrl: workflow?.providerUrl)"
