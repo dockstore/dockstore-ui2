@@ -177,14 +177,16 @@
           </mat-tab>
           <mat-tab id="versionTab" label="Versions">
             <div *ngIf="validVersions">
-              <app-versions-container
-                [versions]="tool?.workflowVersions"
-                (selectedVersionChange)="onSelectedVersionChange($event)"
-                id="versionsTab"
-                [verifiedSource]="(extendedTool$ | async)?.verifiedSources"
-                [selectedVersion]="selectedVersion"
-              >
-              </app-versions-container>
+              <div *ngIf="tool?.workflowVersions?.length > 0; else noVersions">
+                <app-versions-container
+                  [versions]="tool?.workflowVersions"
+                  (selectedVersionChange)="onSelectedVersionChange($event)"
+                  id="versionsTab"
+                  [verifiedSource]="(extendedTool$ | async)?.verifiedSources"
+                  [selectedVersion]="selectedVersion"
+                >
+                </app-versions-container>
+              </div>
             </div>
           </mat-tab>
           <mat-tab label="Files">
@@ -347,3 +349,16 @@
     </div>
   </div>
 </div>
+<ng-template #noVersions>
+  <div class="p-3">
+    <mat-card class="alert alert-info p-3" role="alert">
+      <mat-icon>info</mat-icon>
+      <span *ngIf="tool?.mode === ModeEnum.HOSTED">
+        To see versions, please add a new version.
+      </span>
+      <span *ngIf="tool?.mode !== ModeEnum.HOSTED">
+        To see versions, please refresh the tool.
+      </span>
+    </mat-card>
+  </div>
+</ng-template>

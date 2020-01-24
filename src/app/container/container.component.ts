@@ -56,6 +56,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
+  ModeEnum = DockstoreTool.ModeEnum;
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
