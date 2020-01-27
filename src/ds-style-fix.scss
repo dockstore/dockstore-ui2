@@ -252,6 +252,18 @@ div.panel-container-label {
   }
 }
 
+// Bootstrap applies bold font-weight and material checkbox automatically sets a line height and default overflow
+// behaviour that needs to be overridden.
+.search-facet-checkboxes .mat-checkbox-layout .mat-checkbox-label {
+  font-weight: normal !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+label.mat-checkbox-layout {
+  margin-bottom: 0 !important;
+}
+
 div.panel-container-label:hover,
 div.panel-container-label.selected {
   background-color: #7987a5;
@@ -681,10 +693,6 @@ div.modal form {
   .home-list {
     padding: 0px;
   }
-
-  .twitter-container {
-    margin-top: 15px;
-  }
 }
 
 .input-right-button {
@@ -789,14 +797,6 @@ mat-panel-title.org-accordion-header {
 
 .add-entry-button {
   margin-left: 5px;
-}
-
-.fab-bottom-right {
-  position: fixed !important;
-  bottom: 30px;
-  right: 30px;
-  // Material dialog is observed to be z-index 1000. This goes underneath it
-  z-index: 980;
 }
 
 .spacer {

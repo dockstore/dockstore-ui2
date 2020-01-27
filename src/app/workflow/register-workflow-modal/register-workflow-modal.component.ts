@@ -15,7 +15,8 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialogRef, MatRadioChange } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -61,12 +62,19 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   };
   public options = [
     {
-      label: 'Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.',
+      label: 'Quickly register remote workflows',
+      extendedLabel: 'Toggle repositories from GitHub, Bitbucket, and GitLab to quickly create workflows on Dockstore.',
       value: 0
     },
     {
-      label: 'Create and save CWL, WDL, or Nextflow on Dockstore.org',
+      label: 'Register custom remote workflows',
+      extendedLabel: 'Manually add individual workflows at custom file paths from repositories on GitHub, Bitbucket, and GitLab.',
       value: 1
+    },
+    {
+      label: 'Create workflows on Dockstore.org',
+      extendedLabel: 'All workflow files are created and stored directly on Dockstore.',
+      value: 2
     }
   ];
   public selectedOption = this.options[0];
@@ -74,7 +82,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   registerWorkflowForm: NgForm;
-  @ViewChild('registerWorkflowForm') currentForm: NgForm;
+  @ViewChild('registerWorkflowForm', { static: false }) currentForm: NgForm;
 
   constructor(
     private registerWorkflowModalService: RegisterWorkflowModalService,

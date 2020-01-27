@@ -1,13 +1,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { ListContainersService } from '../../containers/list/list.service';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
-import { RefreshService } from '../../shared/refresh.service';
 import { ContainersService } from '../../shared/swagger';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { sampleTag, sampleTool1 } from '../../test/mocked-objects';
@@ -17,13 +15,13 @@ import {
   ContainertagsStubService,
   DateStubService,
   ParamFilesStubService,
-  RefreshStubService,
   VersionModalStubService
 } from '../../test/service-stubs';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalComponent } from './version-modal.component';
 import { VersionModalService } from './version-modal.service';
-import { MatSnackBarModule, MatDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('VersionModalComponent', () => {
   let component: VersionModalComponent;

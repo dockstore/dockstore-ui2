@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
@@ -22,12 +23,20 @@ describe('Dockstore my workflows', () => {
   const cwlDescriptorType = 'CWL';
   const wdlDescriptorType = 'WDL';
   const nextflowDescriptorType = 'Nextflow';
+  it('have entries shown on the homepage', () => {
+    cy.visit('/');
+    cy.contains('A/l');
+    cy.contains('Find entries');
+    cy.get('#mat-input-0').type('bit');
+    cy.contains('a/a');
+    cy.get('#mat-input-0').type('r');
+    cy.contains('No matching entries');
+  });
 
   describe('Should contain extended Workflow properties', () => {
     it('visit another page then come back', () => {
       cy.visit('/my-workflows');
       cy.get('a#home-nav-button').click();
-      cy.contains('Docker Tools and Workflows for the Sciences');
       cy.get('[data-cy=dropdown-main]:visible')
         .should('be.visible')
         .click();
@@ -55,6 +64,19 @@ describe('Dockstore my workflows', () => {
       // .trigger('mouseover') doesn't work for some reason
       cy.contains('Mode').trigger('mouseenter');
       cy.get('.mat-tooltip').contains('STUB: Basic metadata pulled from source control.');
+    });
+    it('should be able to add labels', () => {
+      cy.contains('github.com/A/g');
+      cy.get('button')
+        .contains('Manage labels')
+        .click();
+      cy.get('input').type('potato');
+      cy.get('button')
+        .contains('Save')
+        .click();
+      cy.get('button')
+        .contains('Save')
+        .should('not.exist');
     });
     it('add and remove test parameter file', () => {
       cy.visit('/my-workflows/github.com/A/l');
@@ -120,6 +142,91 @@ describe('Dockstore my workflows', () => {
       .should('not.be.visible');
   }
 
+  describe('Test workflow wizard form', () => {
+    it('It should be able to add workflows to ', () => {
+      // Mock endpoints
+      const canDeleteMe: Repository = {
+        organization: 'foobar',
+        repositoryName: 'canDeleteMe',
+        gitRegistry: 'github.com',
+        present: true,
+        canDelete: true,
+        path: 'foobar/canDeleteMe'
+      };
+      const cannotDeleteMe: Repository = {
+        organization: 'foobar',
+        repositoryName: 'cannotDeleteMe',
+        gitRegistry: 'github.com',
+        present: true,
+        canDelete: false,
+        path: 'foobar/cannotDeleteMe'
+      };
+      const doesNotExist: Repository = {
+        organization: 'foobar',
+        repositoryName: 'doesNotExist',
+        gitRegistry: 'github.com',
+        present: false,
+        canDelete: false,
+        path: 'foobar/doesNotExist'
+      };
+
+      cy
+        .server()
+        .route({
+          method: 'GET',
+          url: 'api/users/registries',
+          response: [ 'github.com', 'bitbucket.org' ]
+        })
+        .route({
+          method: 'GET',
+          url: 'api/users/registries/github.com/organizations',
+          response: [ 'foobar', 'lorem' ]
+        })
+        .route({
+          method: 'GET',
+          url: 'api/users/registries/github.com/organizations/foobar',
+          response: [
+            canDeleteMe,
+            cannotDeleteMe,
+            doesNotExist
+          ]
+        });
+
+      cy.visit('/my-workflows');
+      cy.get('#registerWorkflowButton')
+        .should('be.visible')
+        .should('be.enabled')
+        .click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
+      cy
+        .get('#0-register-workflow-option')
+        .click();
+      cy
+        .contains('button', 'Next')
+        .click();
+
+      // Select github.com in git registry
+      cy.get('entry-wizard').within(() => {
+        cy
+          .get('mat-select').eq(0).click().type('{enter}');
+        cy
+          .get('mat-select').eq(1).click().type('{enter}');
+
+        // foobar/canDeleteMe should be on and not disabled
+        cy
+          .get('mat-slide-toggle').eq(0).should('not.have.class', 'mat-disabled').should('have.class', 'mat-checked');
+        // foobar/cannotDeleteMe should be on and disabled
+        cy
+          .get('mat-slide-toggle').eq(1).should('have.class', 'mat-disabled').should('have.class', 'mat-checked');
+
+        // foobar/doesNotExist should be off and not disabled
+        cy
+          .get('mat-slide-toggle').eq(2).should('not.have.class', 'mat-disabled').should('not.have.class', 'mat-checked');
+      });
+    });
+  });
+
   describe('Test register workflow form validation', () => {
     it('It should have 3 seperate descriptor path validation patterns', () => {
       cy.visit('/my-workflows');
@@ -127,10 +234,11 @@ describe('Dockstore my workflows', () => {
         .should('be.visible')
         .should('be.enabled')
         .click();
-      cy.get('#registerWorkflowButton')
-        .should('not.be.visible');
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
+      cy
+        .get('#1-register-workflow-option')
+        .click();
       cy
         .contains('button', 'Next')
         .click();
@@ -181,7 +289,7 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Look at a published workflow', () => {
-    it('Look at each tab', () => {
+    it.only('Look at each tab', () => {
       const tabs = ['Info', 'Launch', 'Versions', 'Files', 'Tools', 'DAG'];
       cy.visit('/my-workflows/github.com/A/l');
       isActiveTab('Info');
@@ -204,8 +312,8 @@ describe('Dockstore my workflows', () => {
         .get('#viewPublicWorkflowButton')
         .should('not.be.visible');
 
-      cy
-        .get('#publishButton')
+      cy.get('#publishButton')
+        .should('be.visible')
         .should('contain', 'Publish')
         .click();
 

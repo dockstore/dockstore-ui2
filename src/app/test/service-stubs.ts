@@ -32,6 +32,7 @@ import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleW
 
 import RoleEnum = Permission.RoleEnum;
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { SearchFields } from '../search/state/search.service';
 
 export class ContainerStubService {
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -122,6 +123,7 @@ export class SearchStubService {
   searchInfo$ = observableOf({});
   toSaveSearch$ = observableOf(false);
   values$ = observableOf('');
+  setSearchText(searchText: string) {}
   joinComma(searchTerm: string): string {
     return searchTerm
       .trim()
@@ -151,6 +153,8 @@ export class SearchStubService {
   hasResults(searchTerm: string, hits: any) {
     return true;
   }
+
+  setFilterKeys(filters: Map<string, Set<string>>) {}
 
   // Initialization Functions
   initializeCommonBucketStubs() {
@@ -184,6 +188,22 @@ export class SearchStubService {
       ['namespace', 'Organization'],
       ['labels.value.keyword', 'Labels'],
       ['verifiedSource', 'Verified Source']
+    ]);
+  }
+
+  initializeToolTips() {
+    return new Map([
+      // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
+      /* tslint:disable-next-line:quotemark*/
+      ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
+      ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
+      [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
+      [
+        'has_checker',
+        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
+          'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.'
+      ],
+      ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.']
     ]);
   }
 
@@ -263,6 +283,9 @@ export class UsersStubService {
   }
   getExtendedUserData() {
     return observableOf(null);
+  }
+  getUserMemberships() {
+    return observableOf([]);
   }
   checkUserExists(username) {
     return observableOf([]);
@@ -368,6 +391,14 @@ export class MetadataStubService {
       privateOnly: 'true',
       customDockerPath: 'true',
       enum: 'AMAZON_ECR'
+    },
+    {
+      dockerPath: null,
+      friendlyName: 'Seven Bridges',
+      url: null,
+      privateOnly: 'true',
+      customDockerPath: 'true',
+      enum: 'SEVEN_BRIDGES'
     }
   ]);
 
@@ -453,11 +484,6 @@ export class TokensStubService {
   public deleteToken(tokenId: number, extraHttpRequestParams?: any): Observable<{}> {
     return observableOf({});
   }
-}
-
-export class AdvancedSearchStubService {
-  showModal$ = observableOf(true);
-  advancedSearch$ = observableOf({});
 }
 
 export class StarringStubService {
@@ -769,6 +795,14 @@ export class ContainersStubService {
         privateOnly: 'true',
         enum: 'AMAZON_ECR',
         friendlyName: 'Amazon ECR',
+        url: null
+      },
+      {
+        dockerPath: null,
+        customDockerPath: 'true',
+        privateOnly: 'true',
+        enum: 'SEVEN_BRIDGES',
+        friendlyName: 'Seven Bridges',
         url: null
       }
     ]);

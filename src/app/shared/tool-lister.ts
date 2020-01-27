@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { PublishedToolsDataSource } from '../containers/list/published-tools.datasource';
@@ -48,9 +49,9 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   abstract type: 'tool' | 'workflow';
   abstract displayedColumns: Array<string>;
   public dataSource: PublishedWorkflowsDataSource | PublishedToolsDataSource;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('input') input: ElementRef;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('input', { static: true }) input: ElementRef;
 
   /**
    * Get whether the entry is considered verified or not
@@ -121,7 +122,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
         direction = 'desc';
       }
     }
-    const entryType: EntryType = this.sessionQuery.getSnapshot().entryType;
+    const entryType: EntryType = this.sessionQuery.getValue().entryType;
     this.dataSource.loadEntries(
       entryType,
       this.input.nativeElement.value,

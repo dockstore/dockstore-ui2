@@ -36,6 +36,7 @@
                 *ngIf="!publicPage"
                 href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#what-is-a-default-version-of-a-tool-or-workflow"
                 target="_blank"
+                rel="noopener noreferrer"
                 ><mat-icon>info</mat-icon></a
               >
             </span>
@@ -161,6 +162,7 @@
             <a
               href="https://doi.org/{{ version.doiURL }}"
               *ngIf="version.doiURL"
+              data-cy="workflow-version-DOI-badge"
               matTooltip="Click to view this version's DOI entry information."
               target="_blank"
               ><img src="{{ zenodoUrl }}/badge/DOI/{{ version.doiURL }}.svg" alt="DOI"

@@ -29,7 +29,7 @@ export class AvailableLogsService {
             // Need to set a unique ID for each entity
             let id = 0;
             entities.forEach((entity: ToolTesterLog) => {
-              this.availableLogsStore.createOrReplace(id, entity);
+              this.availableLogsStore.upsert(id, entity);
               id = id + 1;
             });
             this.availableLogsStore.setLoading(false);

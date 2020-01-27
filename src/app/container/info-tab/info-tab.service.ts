@@ -16,7 +16,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { ContainerService } from '../../shared/container.service';
@@ -90,23 +89,54 @@ export class InfoTabService extends Base {
     this.wdlTestPathEditing$.next(editing);
   }
 
-  updateAndRefresh(tool: DockstoreTool) {
+  updateAndRefresh(tool: ExtendedDockstoreTool) {
     const message = 'Tool Info';
-    tool.workflowVersions = [];
-    this.containersService.updateContainer(this.tool.id, tool).subscribe(response => {
-      this.alertService.start('Updating ' + message);
-      this.containersService.refresh(this.tool.id).subscribe(
-        refreshResponse => {
-          this.containerService.replaceTool(this.tools, refreshResponse);
-          this.containerService.setTool(refreshResponse);
-          this.alertService.detailedSuccess();
-        },
-        error => {
-          this.alertService.detailedError(error);
-          this.restoreTool();
-        }
-      );
-    });
+    const partialTool = this.getPartialToolForUpdate(tool);
+    this.alertService.start('Updating ' + message);
+    this.containersService.updateContainer(this.tool.id, partialTool).subscribe(
+      response => {
+        this.alertService.start('Refreshing ' + message);
+        this.containersService.refresh(this.tool.id).subscribe(
+          refreshResponse => {
+            this.containerService.replaceTool(this.tools, refreshResponse);
+            this.containerService.setTool(refreshResponse);
+            this.alertService.detailedSuccess();
+          },
+          error => {
+            this.alertService.detailedError(error);
+            this.restoreTool();
+          }
+        );
+      },
+      error => {
+        this.alertService.detailedError(error);
+        this.restoreTool();
+      }
+    );
+  }
+
+  /**
+   * PUT /containers/{containerId} only allows the updating of selected properties.
+   * Sending back only the ones relevant.
+   * Additionally, the webservice does not appear to understand starredUsers which causes an error.
+   */
+  private getPartialToolForUpdate(tool: ExtendedDockstoreTool): DockstoreTool {
+    const partialTool: DockstoreTool = {
+      gitUrl: tool.gitUrl,
+      mode: tool.mode,
+      name: tool.name,
+      private_access: tool.private_access,
+      namespace: tool.namespace,
+      registry_string: tool.registry_string,
+      tool_maintainer_email: tool.tool_maintainer_email,
+      defaultVersion: tool.defaultVersion,
+      default_cwl_path: tool.default_cwl_path,
+      default_wdl_path: tool.default_wdl_path,
+      defaultCWLTestParameterFile: tool.defaultCWLTestParameterFile,
+      defaultWDLTestParameterFile: tool.defaultWDLTestParameterFile,
+      default_dockerfile_path: tool.default_dockerfile_path
+    };
+    return partialTool;
   }
 
   get tool(): ExtendedDockstoreTool {

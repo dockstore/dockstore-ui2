@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatSelectChange, MatTabChangeEvent } from '@angular/material';
+import { MatSelectChange } from '@angular/material/select';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SafeUrl } from '@angular/platform-browser';
 import { Base } from 'app/shared/base';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
@@ -61,7 +62,7 @@ export class EntryFileTabComponent extends Base implements OnInit {
   }
 
   matTabChange(event: MatTabChangeEvent) {
-    const fileType: ToolFile.FileTypeEnum = this.entryFileTabQuery.getSnapshot().fileTypes[event.index];
+    const fileType: ToolFile.FileTypeEnum = this.entryFileTabQuery.getValue().fileTypes[event.index];
     this.entryFileTabService.changeFileType(fileType);
   }
 

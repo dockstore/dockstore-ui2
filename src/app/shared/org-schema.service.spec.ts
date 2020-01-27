@@ -1,5 +1,5 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { Organization } from './openapi';
+import { Organization } from './swagger';
 import { OrgSchemaService } from './org-schema.service';
 
 describe('OrgSchemaService', () => {
@@ -17,7 +17,9 @@ describe('OrgSchemaService', () => {
       name: 'org',
       link: 'http://org.org',
       avatarUrl: 'http://org.org/image',
-      email: 'contact@org.org'
+      email: 'contact@org.org',
+      status: 'APPROVED',
+      users: []
     };
     const schema = service.getSchema(org);
     expect(schema.name).toEqual('org');

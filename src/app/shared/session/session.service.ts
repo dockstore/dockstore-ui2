@@ -24,7 +24,7 @@ export class SessionService {
   constructor(private sessionStore: SessionStore) {}
 
   setPublicPage(isPublic: boolean): void {
-    this.sessionStore.setState(state => {
+    this.sessionStore.update(state => {
       return {
         ...state,
         isPublic: isPublic
@@ -33,7 +33,7 @@ export class SessionService {
   }
 
   setEntryType(entryType: EntryType): void {
-    this.sessionStore.setState(state => {
+    this.sessionStore.update(state => {
       return {
         ...state,
         entryType: entryType

@@ -1,4 +1,4 @@
-<div *ngIf="workflow?.descriptorType === 'WDL' || 'CWL'" class="panel panel-default">
+<div *ngIf="workflow?.descriptorType === 'WDL' || workflow?.descriptorType === 'CWL'" class="panel panel-default">
   <div class="panel-heading">
     <h3>Launch with</h3>
   </div>
@@ -63,6 +63,24 @@
               color="primary"
               ><img src="../assets/images/thirdparty/cgc.png" /> CGC
             </a>
+          </div>
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+            <a
+              mat-raised-button
+              [matTooltip]="
+                !(hasContent$ | async)
+                  ? 'The WDL has no content.  '
+                  : (hasFileImports$ | async)
+                  ? 'AnVIL does not support file-path imports in WDL. It only supports http(s) imports.'
+                  : ''
+              "
+              target="_blank"
+              rel="noopener"
+              [disabled]="!(hasContent$ | async) || (hasFileImports$ | async)"
+              [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              color="primary"
+              ><mat-icon class="anvil-icon" svgIcon="anvil"></mat-icon> AnVIL &raquo;</a
+            >
           </div>
         </div>
       </div>

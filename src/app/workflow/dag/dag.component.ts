@@ -51,10 +51,10 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   @Input() id: number;
   @Input() selectedVersion: WorkflowVersion;
 
-  @ViewChild('exportLink') exportLink: ElementRef;
-  @ViewChild('cy') cyElement: ElementRef;
-  @ViewChild(WdlViewerComponent) wdlViewer: WdlViewerComponent;
-  @ViewChild('dagHolder') dagHolderElement: ElementRef;
+  @ViewChild('exportLink', { static: false }) exportLink: ElementRef;
+  @ViewChild('cy', { static: false }) cyElement: ElementRef;
+  @ViewChild(WdlViewerComponent, { static: false }) wdlViewer: WdlViewerComponent;
+  @ViewChild('dagHolder', { static: true }) dagHolderElement: ElementRef;
 
   public dagResult$: Observable<any>;
   private cy: cytoscape.Core;

@@ -23,13 +23,18 @@
     <mat-step>
       <ng-template matStepLabel>Workflow storage type</ng-template>
       <p>
-        You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL/NextFlow from an existing third party
-        repository, such as GitHub, Bitbucket, etc.
+        Workflows are collections of tools that are connected to one another. They consist of a set of descriptor files describing how the
+        workflow is run.
       </p>
       <div class="modal-body">
         <mat-radio-group [(ngModel)]="selectedOption">
           <mat-radio-button *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
-            {{ option.label }}
+            <span class="text-wrap">
+              {{ option.label }}
+              <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
+                {{ selectedOption.extendedLabel }}
+              </div>
+            </span>
           </mat-radio-button>
         </mat-radio-group>
       </div>
@@ -44,15 +49,28 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
+      <div *ngIf="selectedOption?.value == 0">
+        <entry-wizard></entry-wizard>
+        <div class="modal-footer">
+          <button mat-button color="secondary" matStepperPrevious>Back</button>
+          <button type="button" mat-flat-button color="primary" [mat-dialog-close]="true" (click)="clearWorkflowRegisterError()">
+            Finish
+          </button>
+        </div>
+      </div>
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 0"
+        *ngIf="selectedOption?.value == 1"
         #registerWorkflowForm="ngForm"
         name="registerWorkflowForm"
         (submit)="registerWorkflow()"
         novalidate
       >
+        <p>
+          Manually register a workflow with custom file paths. Use the optional workflow name field to handle repositories with multiple
+          workflows.
+        </p>
         <mat-form-field class="w-100">
           <mat-select placeholder="Source Code Provider" class="radio-group" [(ngModel)]="workflow.repository" name="repository">
             <mat-option *ngFor="let repository of friendlyRepositoryKeys()" [value]="repository">
@@ -135,7 +153,7 @@
           />
           <mat-error *ngIf="formErrors.workflowName">{{ formErrors.workflowName }} </mat-error>
         </mat-form-field>
-        <div mat-dialog-actions class="pull-right">
+        <div class="modal-footer">
           <button
             mat-button
             type="button"
@@ -159,12 +177,16 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value == 2"
         #registerHostedWorkflowForm="ngForm"
         name="registerHostedWorkflowForm"
         (ngSubmit)="registerHostedWorkflow()"
         novalidate
       >
+        <p>
+          Create a workflow with all descriptor files created and stored on Dockstore.org.
+        </p>
+
         <mat-radio-group
           id="descriptorTypeRadioButtons"
           position="before"
@@ -209,7 +231,7 @@
           <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
         </mat-form-field> -->
 
-        <div mat-dialog-actions class="pull-right">
+        <div class="modal-footer">
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
             Close
           </button>

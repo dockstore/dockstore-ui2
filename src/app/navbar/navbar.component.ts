@@ -15,7 +15,6 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { devMode } from 'app/shared/constants';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
@@ -27,6 +26,7 @@ import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
 import { Dockstore } from '../shared/dockstore.model';
+import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 
 @Component({
   selector: 'app-navbar',
@@ -37,11 +37,10 @@ export class NavbarComponent extends Logout implements OnInit {
   public user: User;
   extendedUser: any;
   isExtended = false;
-  devMode = devMode;
   Dockstore = Dockstore;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  private currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVERSION1;
-  private currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
+  private readonly currentTOSVersion: User.TosversionEnum = currentTOSVersion;
+  private readonly currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
 
   constructor(
     private pagenumberService: PagenumberService,

@@ -16,7 +16,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatSnackBarModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { CheckerWorkflowStubService, DescriptorLanguageStubService, RegisterCheckerWorkflowStubService } from '../../../test/service-stubs';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';

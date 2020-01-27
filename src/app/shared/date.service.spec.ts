@@ -15,10 +15,6 @@
  */
 
 import { DateService } from './date.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { ContainersStubService } from '../test/service-stubs';
-import { ContainersService } from './swagger/api/containers.service';
-import { ImageProviderService } from './image-provider.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { Dockstore } from '../shared/dockstore.model';
 

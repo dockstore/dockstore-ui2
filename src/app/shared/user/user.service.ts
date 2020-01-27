@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { AuthService } from 'ng2-ui-auth';
-
-import { Configuration, ExtendedUserData, User, UsersService } from '../swagger';
-import { UserStore } from './user.store';
 import { Md5 } from 'ts-md5/dist/md5';
+import { AlertService } from '../alert/state/alert.service';
 import { RefreshService } from '../refresh.service';
 import { TokenService } from '../state/token.service';
-import { AlertService } from '../alert/state/alert.service';
+import { Configuration, ExtendedUserData, User, UsersService } from '../swagger';
+import { UserStore } from './user.store';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -24,7 +23,7 @@ export class UserService {
   }
 
   updateUser(user: User) {
-    this.userStore.setState(state => {
+    this.userStore.update(state => {
       return {
         ...state,
         user: user
@@ -33,7 +32,7 @@ export class UserService {
   }
 
   updateExtendedUserData(extendeduserData: ExtendedUserData) {
-    this.userStore.setState(state => {
+    this.userStore.update(state => {
       return {
         ...state,
         extendedUserData: extendeduserData

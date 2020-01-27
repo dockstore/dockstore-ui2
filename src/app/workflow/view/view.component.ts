@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
@@ -99,7 +99,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   private openVersionModal(): void {
     const dialogRef = this.matDialog.open(VersionModalComponent, {
       width: '600px',
-      data: { canRead: this.canRead, canWrite: this.canWrite, isOwner: this.isOwner }
+      data: { canRead: this.canRead, canWrite: this.canWrite && !this.version.frozen, isOwner: this.isOwner }
     });
   }
 

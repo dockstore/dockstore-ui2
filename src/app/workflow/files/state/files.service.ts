@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { FileWrapper } from '../../../shared/swagger';
 import { FilesStore } from './files.store';
 
@@ -8,7 +7,7 @@ export class FilesService {
   constructor(private filesStore: FilesStore) {}
 
   update(id: string, file: FileWrapper) {
-    this.filesStore.createOrReplace(id, file);
+    this.filesStore.upsert(id, file);
   }
 
   remove(id: string) {

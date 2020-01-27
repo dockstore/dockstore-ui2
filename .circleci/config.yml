@@ -17,10 +17,29 @@ jobs:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - checkout
+      - run:
+          name: Checkout merge commit (PRs only)
+          command: |
+            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
+              git checkout -qf FETCH_HEAD
+            fi
       - install_container_dependencies
+      - restore_cache:
+          key: dep-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
-          command: bash -i -c 'npm ci'
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+              if [ ! -d "./node_modules" ]
+              then
+                bash -i -c 'npm ci'
+              fi
+      - save_cache:
+          key: dep-cache-{{ checksum "./package-lock.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: Check dependencies
           command: bash -i -c 'npm ls'
@@ -50,7 +69,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group1/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   integration_test_2:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -58,7 +81,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/group2/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   integration_test_3:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -66,7 +93,11 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --spec cypress/integration/immutableDatabaseTests/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
   upload_to_s3:
     working_directory: ~/repo
     docker:
@@ -85,7 +116,7 @@ jobs:
             # TODO: https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7) can probably be made into a bash/circle-ci variable.
             - run:
                 name: Swap for CDN paths
-                command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\.\./assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
+                command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\(\.\./\)\+assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
             - run:
                 name: Build
                 command: bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
@@ -157,6 +188,16 @@ commands:
     steps:
       - attach_workspace:
           at: .
+  upload_artifacts:
+    steps:
+      - store_test_results:
+          path: integration-tests/test-results
+      - store_artifacts:
+          path: integration-tests/test-results
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
   setup_integration_test:
     steps:
       - get_workspace
@@ -169,7 +210,7 @@ commands:
           command: sudo apt install libgtk2.0-0 -yq
       - run:
           name: Install cypress
-          command: bash -i -c 'npm i cypress@3.2.0 --no-save'
+          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
@@ -187,6 +228,7 @@ commands:
           name: Run webservice
           command: java -jar dockstore-webservice.jar server travisci/web.yml 1>/dev/null
           background: true
+      - run: mkdir -p integration-tests/test-results/junit
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh

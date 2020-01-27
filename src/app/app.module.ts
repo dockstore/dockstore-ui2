@@ -17,7 +17,8 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBarConfig, MatTooltipDefaultOptions, MAT_SNACK_BAR_DEFAULT_OPTIONS, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material';
+import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -37,6 +38,7 @@ import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
@@ -99,6 +101,8 @@ import { StarredEntriesComponent } from './starredentries/starredentries.compone
 import { StarringModule } from './starring/starring.module';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
+import { TosBannerComponent } from './tosBanner/tos-banner.component';
+import { TosBannerService } from './tosBanner/state/tos-banner.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -124,6 +128,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SponsorsComponent,
     NavbarComponent,
     FooterComponent,
+    NotificationsComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,
@@ -143,7 +148,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SitemapComponent,
     GithubCallbackComponent,
     ConfirmationDialogComponent,
-    SessionExpiredComponent
+    SessionExpiredComponent,
+    TosBannerComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -205,6 +211,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     VerifiedByService,
     Title,
     ViewService,
+    TosBannerService,
     ConfigurationService,
     {
       provide: APP_INITIALIZER,

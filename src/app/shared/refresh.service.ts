@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AlertService } from './alert/state/alert.service';
 import { ContainerService } from './container.service';

@@ -120,7 +120,7 @@ describe('Dockstore Home', () => {
       // TRS only visibile in public page
       cy.contains('TRS: ').should('not.be.visible');
       checkVersionsTab();
-      //Edit button only in my-services
+      // Edit button only in my-services
       cy.contains('button', 'Edit');
       checkFilesTab();
     });

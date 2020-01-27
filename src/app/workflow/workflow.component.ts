@@ -16,8 +16,10 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { AfterViewInit, Component, Input } from '@angular/core';
-import { MatChipInputEvent, MatDialog } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
@@ -107,7 +109,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private workflowQuery: WorkflowQuery,
     private alertQuery: AlertQuery,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private alertService: AlertService
   ) {
     super(
       trackLoginService,
@@ -124,7 +127,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     );
     this._toolType = 'workflows';
     this.location = location;
-    this.entryType = this.sessionQuery.getSnapshot().entryType;
+    this.entryType = this.sessionQuery.getValue().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
       this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
@@ -353,12 +356,19 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.labelsEditMode = false;
   }
 
-  setWorkflowLabels(): any {
-    return this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(workflow => {
-      this.workflow.labels = workflow.labels;
-      this.workflowService.setWorkflow(workflow);
-      this.labelsEditMode = false;
-    });
+  // TODO: Move most of this function to the service, sadly 'this.labelsEditMode' makes it more difficult
+  setWorkflowLabels() {
+    this.alertService.start('Setting labels');
+    this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(
+      workflow => {
+        this.workflowService.setWorkflow(workflow);
+        this.labelsEditMode = false;
+        this.alertService.simpleSuccess();
+      },
+      error => {
+        this.alertService.detailedError(error);
+      }
+    );
   }
 
   /**

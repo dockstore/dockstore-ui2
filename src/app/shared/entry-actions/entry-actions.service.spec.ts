@@ -4,15 +4,7 @@ import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { CustomMaterialModule } from '../modules/material.module';
 import { WorkflowService } from '../state/workflow.service';
-import {
-  BaseClassForVersionsOfEntriesInTheDockstore,
-  ContainersService,
-  DockstoreTool,
-  Entry,
-  Tag,
-  Workflow,
-  WorkflowsService
-} from '../swagger';
+import { ContainersService, DockstoreTool, Entry, Tag, Workflow, WorkflowsService } from '../swagger';
 import { EntryActionsService } from './entry-actions.service';
 import { exampleEntry } from '../../test/mocked-objects';
 

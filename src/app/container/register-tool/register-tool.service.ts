@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -23,7 +23,6 @@ import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { Repository } from '../../shared/enum/Repository.enum';
-import { ToolDescriptor } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';

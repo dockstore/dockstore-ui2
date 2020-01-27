@@ -14,7 +14,7 @@
     <hr />
 
     <app-change-username showText="true"></app-change-username>
-    <button mat-raised-button color="primary" matStepperNext class="pull-right mt-2">Next<mat-icon>navigate_next</mat-icon></button>
+    <button mat-raised-button matStepperNext class="pull-right mt-2">Next<mat-icon>navigate_next </mat-icon></button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Link External Accounts</ng-template>
@@ -59,21 +59,97 @@
       prototype workflows in private or with team-members in the near future.
     </p>
     <app-accounts-external></app-accounts-external>
-    <button mat-raised-button color="primary" matStepperNext class="pull-right mt-2 ml-1">Next<mat-icon>navigate_next</mat-icon></button>
-    <button mat-raised-button color="primary" matStepperPrevious class="pull-right mt-2"><mat-icon>navigate_before</mat-icon>Back</button>
+    <button mat-raised-button matStepperNext class="pull-right mt-2 ml-1">Next<mat-icon>navigate_next </mat-icon></button>
+    <button mat-raised-button matStepperPrevious class="pull-right mt-2"><mat-icon>navigate_before</mat-icon>Back</button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Setup Dockstore CLI</ng-template>
     <app-downloadcliclient></app-downloadcliclient>
-    <span class="mt-2">
-      <a
-        mat-raised-button
-        color="primary"
-        href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/getting-started-with-docker.html"
-        class="pull-right ml-1"
-        >Go to Docs<mat-icon>navigate_next</mat-icon></a
-      >
-      <button mat-raised-button color="primary" matStepperPrevious class="pull-right"><mat-icon>navigate_before</mat-icon>Back</button>
-    </span>
+    <button mat-raised-button matStepperNext class="pull-right mt-2 ml-1">Next<mat-icon>navigate_next </mat-icon></button>
+    <button mat-raised-button matStepperPrevious class="pull-right mt-2"><mat-icon>navigate_before</mat-icon>Back</button>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Next Steps</ng-template>
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="20px">
+      <h3>
+        Where To Go Next
+        <hr />
+      </h3>
+      <h4>You have completed the onboarding process</h4>
+      <p>
+        Now that you have created an account and have the Dockstore CLI running locally, you can start exploring Dockstore. Below are some
+        ideas to get you started!
+      </p>
+
+      <h4>Next Steps</h4>
+      <h5>Search for tools and workflows to launch</h5>
+      <p>
+        Use our search page to find tools and workflows to launch locally or in a cloud environment. Use advanced search to help you narrow
+        down your search.
+      </p>
+      <div class="button-row">
+        <a mat-button color="accent" [routerLink]="['/search']">Search for tools and workflows</a>
+        <a
+          mat-button
+          color="accent"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="{{ Dockstore.DOCUMENTATION_URL }}/launch-with/launch.html"
+          >Learn how to launch tools and workflows <mat-icon>open_in_new</mat-icon></a
+        >
+      </div>
+      <mat-divider></mat-divider>
+
+      <h5>Register and publish your own tools and workflows</h5>
+      <p>
+        Dockstore supports the registering of tools and workflows from a variety of third-party sites. This includes sites like Quay.io,
+        DockerHub, GitHub, Bitbucket, and GitLab.
+      </p>
+      <div class="button-row">
+        <a
+          mat-button
+          color="accent"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/getting-started.html"
+          >Learn how to register content <mat-icon>open_in_new</mat-icon></a
+        >
+      </div>
+      <mat-divider></mat-divider>
+
+      <h5>Create an organization and add some collections</h5>
+      <p>
+        Users can create organizations for labs, institutions, companies, etc. that let them showcase tools and workflows. Collections can
+        be added to organizations to further group together related tools and workflows.
+      </p>
+      <div class="button-row">
+        <a
+          mat-button
+          color="accent"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/organizations-and-collections.html"
+          >Read about organizations and collections <mat-icon>open_in_new</mat-icon></a
+        >
+      </div>
+      <mat-divider></mat-divider>
+
+      <h5>Check out our documentation and our discussion forum</h5>
+      <p>
+        We have lots of helpful documentation to help you get the most out of Dockstore. We also have a forum where you can ask questions to
+        Dockstore developers and the general Dockstore audience.
+      </p>
+      <div class="button-row">
+        <a mat-button color="accent" target="_blank" rel="noopener noreferrer" href="{{ Dockstore.DOCUMENTATION_URL }}"
+          >Documentation <mat-icon> open_in_new</mat-icon></a
+        >
+        <a mat-button color="accent" target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org"
+          >Forum <mat-icon>open_in_new </mat-icon></a
+        >
+      </div>
+      <span class="mt-2">
+        <button mat-raised-button matStepperPrevious class="pull-right"><mat-icon>navigate_before</mat-icon>Back</button>
+      </span>
+    </div>
   </mat-step>
 </mat-horizontal-stepper>

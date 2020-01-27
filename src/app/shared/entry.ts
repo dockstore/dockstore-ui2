@@ -15,8 +15,9 @@
  */
 import { Location } from '@angular/common';
 import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatChipInputEvent, MatTabChangeEvent } from '@angular/material';
+import { FormControl, Validators } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
@@ -37,7 +38,7 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
-  @ViewChild('entryTabs') entryTabs: TabsetComponent;
+  @ViewChild('entryTabs', { static: false }) entryTabs: TabsetComponent;
   protected shareURL: string;
   public starGazersClicked = false;
   private totalShare = 0;
@@ -62,6 +63,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   protected selected = new FormControl(0);
+  labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   constructor(
     private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
@@ -415,6 +417,10 @@ export abstract class Entry implements OnInit, OnDestroy {
    * @param topicId The ID of the topic on discourse
    */
   discourseHelper(topicId: number): void {
+    const element = document.getElementById('discourse-embed-frame');
+    if (element !== null) {
+      element.remove();
+    }
     (<any>window).DiscourseEmbed = {
       discourseUrl: Dockstore.DISCOURSE_URL,
       topicId: topicId

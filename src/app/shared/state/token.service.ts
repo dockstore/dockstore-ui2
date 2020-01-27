@@ -65,7 +65,7 @@ export class TokenService {
   }
 
   setGitHubOrganizations(gitHubOrganizations: any) {
-    this.tokenStore.updateRoot({ gitHubOrganizations: gitHubOrganizations });
+    this.tokenStore.update({ gitHubOrganizations: gitHubOrganizations });
   }
 
   getGitHubOrganizations(token: string | null) {

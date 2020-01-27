@@ -24,10 +24,11 @@ import { PublishedToolsDataSource } from '../../containers/list/published-tools.
 import { PrivateIconModule } from '../private-icon/private-icon.module';
 import { HeaderModule } from './header.module';
 import { CustomMaterialModule } from './material.module';
+import { EntryModule } from '../entry/entry.module';
 
 @NgModule({
   declarations: [ListContainersComponent],
-  imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule, TabsModule],
+  imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule, TabsModule, EntryModule],
   providers: [PublishedToolsDataSource, ListContainersService],
   exports: [ListContainersComponent]
 })

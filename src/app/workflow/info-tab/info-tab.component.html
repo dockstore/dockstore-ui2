@@ -145,6 +145,10 @@
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
             </div>
           </li>
+          <div>
+            <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
+            {{ (workflow && workflow.conceptDoi) || 'n/a' }}
+          </div>
         </div>
       </ul>
     </mat-card-content>
@@ -185,19 +189,28 @@
               No description associated with this {{ entryType$ | async }}. See
               <ng-container [ngSwitch]="descriptorType$ | async">
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.CWL">
-                  <a href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/best-practices.html#authorship-metadata"
+                  <a
+                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/best-practices.html#authorship-metadata"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >CWL Best Practices</a
                   >
                   and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a
                   description for this tool.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.WDL">
-                  <a href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata"
+                  <a
+                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >WDL Best Practices</a
                   >.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.NFL">
-                  <a href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata"
+                  <a
+                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     >Nextflow Best Practices</a
                   >.
                 </span>

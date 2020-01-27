@@ -36,6 +36,7 @@
         <div class="search-holder">
           <input
             id="searchBar"
+            aria-label="Search"
             #search
             type="text"
             placeholder="Search..."
@@ -62,7 +63,7 @@
 </div>
 
 <div class="header-lower" id="overview">
-  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" />
+  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" alt="blue rectangle" />
 
   <div fxFlex fxLayout="column" fxLayoutAlign="center center">
     <button data-cy="video-overview-button" mat-raised-button (click)="openYoutube()">
@@ -176,10 +177,10 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        Developer Tutorial
+        Developer tutorial <mat-icon>open_in_new</mat-icon>
       </a>
       <a mat-stroked-button href="{{ Dockstore.DOCUMENTATION_URL }}/launch-with/launch.html" target="_blank" rel="noopener noreferrer">
-        Launch workflows
+        Launch workflows <mat-icon>open_in_new</mat-icon>
       </a>
       <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()">
         Discover Organizations
@@ -197,7 +198,7 @@
 
     <div fxLayout="row wrap" fxLayoutAlign="center center">
       <a mat-stroked-button href="https://discuss.dockstore.org" target="_blank" rel="noopener noreferrer" class="mr-2">
-        <mat-icon>forum</mat-icon> Discourse
+        Discourse <mat-icon>open_in_new</mat-icon>
       </a>
     </div>
 
@@ -206,11 +207,7 @@
     </p>
 
     <div fxLayout="row wrap" fxLayoutAlign="center center" class="mb-3">
-      <div class="twitter twitter-container">
-        <a class="twitter-timeline" data-theme="light" data-height="400" href="https://twitter.com/DockstoreOrg">
-          Tweets by DockstoreOrg
-        </a>
-      </div>
+      <div class="my-3 twitter" #twitter></div>
     </div>
   </div>
 </div>

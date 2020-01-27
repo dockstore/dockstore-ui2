@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -33,7 +33,6 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
 import { getTooltipConfig } from '../shared/tooltip';
-import { AdvancedSearchService } from './advancedsearch/advanced-search.service';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
 import { BasicSearchComponent } from './basic-search/basic-search.component';
 import { QueryBuilderService } from './query-builder.service';
@@ -43,6 +42,7 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -73,9 +73,10 @@ import { SearchService } from './state/search.service';
     HttpClientModule,
     PrivateIconModule,
     ReactiveFormsModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    FlexLayoutModule
   ],
-  providers: [SearchService, AdvancedSearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
+  providers: [SearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
   exports: [SearchComponent]
 })
 export class SearchModule {}

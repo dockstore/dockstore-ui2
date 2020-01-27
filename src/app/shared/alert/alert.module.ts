@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule, MatProgressBarModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CustomMaterialModule } from './../modules/material.module';
 
 import { AlertComponent } from './alert.component';

@@ -21,7 +21,7 @@ import { ContainersService } from './../../shared/swagger/api/containers.service
 import { WorkflowsStubService, ContainersStubService, RefreshStubService } from './../../test/service-stubs';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { ParamfilesService } from './paramfiles.service';
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { ToolDescriptor } from './../../shared/swagger';
 
 describe('Service: paramFiles.service.ts', () => {

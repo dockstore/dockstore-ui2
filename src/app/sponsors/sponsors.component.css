@@ -41,3 +41,7 @@ a {
 img:hover {
   filter: none;
 }
+
+h5 {
+  color: '#21335';
+}

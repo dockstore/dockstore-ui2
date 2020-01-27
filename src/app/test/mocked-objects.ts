@@ -14,17 +14,18 @@
  *    limitations under the License.
  */
 
+import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
+import { Hit } from '../search/state/search.service';
+import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
+import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
+import { WorkflowVersion } from '../shared/swagger';
+import { Notification } from '../shared/swagger/model/notification';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
-import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
-import { WorkflowVersion } from '../shared/swagger';
-import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
-import { WebserviceDescriptorTypeEnum } from '../shared/descriptor-type-compat.service';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
-import { Hit } from '../search/state/search.service';
-import { BaseClassForVersionsOfEntriesInTheDockstore } from '../shared/swagger/model/baseClassForVersionsOfEntriesInTheDockstore';
+import { Version } from 'app/shared/swagger/model/version';
 
 export const updatedWorkflow: Workflow = {
   descriptorType: DescriptorTypeEnum.CWL,
@@ -186,34 +187,38 @@ export const sampleTool3: DockstoreTool = {
 };
 
 // Case 1: sampleTool1 in published entries, unpublished doesn't matter
-export const orgObj1: OrgToolObject = {
-  namespace: 'beef',
-  organization: 'stew',
+export const orgObj1: OrgToolObject<DockstoreTool> = {
+  registry: 'beef',
+  namespace: 'stew',
   published: [sampleTool1],
-  unpublished: [sampleTool2, sampleTool3]
+  unpublished: [sampleTool2, sampleTool3],
+  expanded: false
 };
 // Case 2: sampleTool1 in unpublished entries, published doesn't matter
-export const orgObj2: OrgToolObject = {
-  namespace: 'beef',
-  organization: 'stew',
+export const orgObj2: OrgToolObject<DockstoreTool> = {
+  registry: 'beef',
+  namespace: 'stew',
   published: [sampleTool2, sampleTool3],
-  unpublished: [sampleTool1]
+  unpublished: [sampleTool1],
+  expanded: false
 };
 
 // Case 3: sampleTool1 in neither, published has something
-export const orgObj3: OrgToolObject = {
-  namespace: 'beef',
-  organization: 'stew',
+export const orgObj3: OrgToolObject<DockstoreTool> = {
+  registry: 'beef',
+  namespace: 'stew',
   published: [sampleTool2],
-  unpublished: [sampleTool3]
+  unpublished: [sampleTool3],
+  expanded: false
 };
 
 // Case 4: sampleTool1 in neither, published has nothing
-export const orgObj4: OrgToolObject = {
-  namespace: 'beef',
-  organization: 'stew',
+export const orgObj4: OrgToolObject<DockstoreTool> = {
+  registry: 'beef',
+  namespace: 'stew',
   published: [],
-  unpublished: []
+  unpublished: [],
+  expanded: false
 };
 
 export const gitLabToken: Token = {
@@ -638,7 +643,7 @@ export const elasticSearchResponse: Hit[] = [
   }
 ];
 
-export const exampleEntry: BaseClassForVersionsOfEntriesInTheDockstore = {
+export const exampleEntry: Version = {
   commitID: null,
   dbUpdateDate: new Date(1568664818354),
   dirtyBit: true,
@@ -690,4 +695,38 @@ export const exampleEntry: BaseClassForVersionsOfEntriesInTheDockstore = {
   verifiedSource: null,
   versionEditor: null,
   workingDirectory: ''
+};
+
+export const validTool: ExtendedDockstoreTool = {
+  defaultCWLTestParameterFile: '',
+  defaultWDLTestParameterFile: '',
+  default_cwl_path: '',
+  default_dockerfile_path: '',
+  default_wdl_path: '',
+  gitUrl: 'git@github.com:denis-yuen/dockstore-tool-bamstats.git',
+  mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
+  tool_path: 'quay.io/potato/beef/stew',
+  path: 'quay.io/dockstore-testing/dockstore-tool-bamstats',
+  name: '',
+  namespace: '',
+  private_access: false,
+  registry_string: 'quay.io',
+  registry: DockstoreTool.RegistryEnum.QUAYIO,
+  toolname: null
+};
+
+export const mockedNotification: Notification = {
+  id: 123,
+  message: 'TestingTesting123',
+  type: 'SITEWIDE',
+  priority: 'LOW',
+  expiration: null
+};
+
+export const expiredMockNotification: Notification = {
+  id: 121,
+  message: 'Testing123',
+  type: 'SITEWIDE',
+  priority: 'LOW',
+  expiration: new Date('2018-11-25T00:00:00')
 };

@@ -1,8 +1,8 @@
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj | expandPanel: (toolId$ | async)">
+  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj.expanded">
     <mat-expansion-panel-header>
       <mat-panel-title class="org-accordion-header">
-        {{ orgObj?.namespace }}
+        {{ orgObj.registry + '/' + orgObj?.namespace }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 

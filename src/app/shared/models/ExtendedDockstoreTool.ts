@@ -1,4 +1,6 @@
 import { DockstoreTool } from './../swagger/model/dockstoreTool';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+
 export interface ExtendedDockstoreTool extends DockstoreTool {
   agoMessage?: string;
   // Stripped of 'mailto:'
@@ -11,6 +13,8 @@ export interface ExtendedDockstoreTool extends DockstoreTool {
   verifiedSources?: any;
   imgProvider?: string;
   imgProviderUrl?: string;
+  providerIcon?: IconProp;
+  imgProviderIcon?: IconProp;
   // The transformed git url
   provider?: string;
   providerUrl?: string;

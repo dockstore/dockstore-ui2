@@ -16,7 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -37,7 +37,7 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 })
 export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
-  @ViewChild('addTagForm') currentForm: NgForm;
+  @ViewChild('addTagForm', { static: true }) currentForm: NgForm;
   public DescriptorType = ToolDescriptor.TypeEnum;
   public tool;
   public formErrors = formErrors;

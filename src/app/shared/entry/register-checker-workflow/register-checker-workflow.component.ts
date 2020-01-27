@@ -59,7 +59,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   private entry: Entry;
   registerCheckerWorkflowForm: NgForm;
   isWorkflow = false;
-  @ViewChild('registerCheckerWorkflowForm') currentForm: NgForm;
+  @ViewChild('registerCheckerWorkflowForm', { static: true }) currentForm: NgForm;
 
   ngOnInit() {
     this.clearForm();

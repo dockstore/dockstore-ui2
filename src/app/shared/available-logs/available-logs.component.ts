@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

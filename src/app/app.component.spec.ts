@@ -1,11 +1,12 @@
 import { RouterTestingModule } from '@angular/router/testing';
-import { RouterStub } from './test';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './test/router-stubs';
 import { TestBed, async } from '@angular/core/testing';
 
 import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TrackLoginService } from './shared/track-login.service';
+import { TrackLoginStubService } from './test/service-stubs';
 
 @Component({ selector: 'app-banner', template: '' })
 class BannerStubComponent {}
@@ -19,6 +20,12 @@ class SponsorsStubComponent {}
 @Component({ selector: 'app-footer', template: '' })
 class FooterStubComponent {}
 
+@Component({ selector: 'app-tos-banner', template: '' })
+class TosBannerStubComponent {}
+
+@Component({ selector: 'app-notifications', template: '' })
+class NotificationStubComponent {}
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,9 +36,12 @@ describe('AppComponent', () => {
         FooterStubComponent,
         BannerStubComponent,
         RouterLinkStubDirective,
-        RouterOutletStubComponent
+        RouterOutletStubComponent,
+        TosBannerStubComponent,
+        NotificationStubComponent
       ],
-      imports: [RouterTestingModule, MatSnackBarModule]
+      imports: [RouterTestingModule, MatSnackBarModule],
+      providers: [{ provide: TrackLoginService, useClass: TrackLoginStubService }]
     }).compileComponents();
   }));
 

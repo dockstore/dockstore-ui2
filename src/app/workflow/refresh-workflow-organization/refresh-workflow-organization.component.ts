@@ -18,7 +18,6 @@ import { Component } from '@angular/core';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
-import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { Workflow } from '../../shared/swagger/model/workflow';

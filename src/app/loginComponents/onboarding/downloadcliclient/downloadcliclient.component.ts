@@ -35,9 +35,9 @@ export class DownloadCLIClientComponent implements OnInit {
       (resultFromApi: Metadata) => {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
-        this.downloadCli = `https://github.com/ga4gh/dockstore/releases/download/${apiVersion}/dockstore`;
+        this.downloadCli = `https://github.com/dockstore/dockstore/releases/download/${apiVersion}/dockstore`;
         this.metadataService
-          .getRunnerDependencies(apiVersion, '2', 'cwltool', 'json')
+          .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
           .pipe(finalize(() => this.generateMarkdown()))
           .subscribe(
             (json: any) => {
@@ -59,6 +59,8 @@ export class DownloadCLIClientComponent implements OnInit {
     this.textData1 = `
 ### Setup Command Line Interface (Ubuntu)
 ------------------------------
+Setup our Dockstore CLI application to start launching workflows from the command line.
+
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
 2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
