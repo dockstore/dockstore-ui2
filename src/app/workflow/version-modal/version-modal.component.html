@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+<div>
   <h4 mat-dialog-title>
     {{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ (isService$ | async) ? 'Service Version' : 'Workflow Version' }}
   </h4>

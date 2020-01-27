@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { NewsUpdatesComponent } from './widget/news-updates/news-updates.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { GettingStartedComponent } from './widget/getting-started/getting-started.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { MarkdownModule } from 'ngx-markdown';
     EntriesComponent,
     OrganizationsComponent,
     FeaturedContentComponent,
-    NewsUpdatesComponent
+    NewsUpdatesComponent,
+    GettingStartedComponent
   ],
   entryComponents: [],
   exports: [NgxJsonLdModule]
