@@ -21,7 +21,7 @@
     [dataSource]="dataSource"
     class="w-100"
     matSort
-    matSortActive="last_built"
+    [matSortActive]="tool?.mode === DockstoreToolType.ModeEnum.HOSTED ? 'name' : 'last_built'"
     matSortDisableClear
     matSortDirection="desc"
   >
