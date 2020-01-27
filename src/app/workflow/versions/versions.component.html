@@ -53,9 +53,14 @@
           >
           <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
           <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
-          <a *ngIf="_selectedVersion?.name !== version?.name" matTooltip="Click to select version" (click)="setVersion(version)">{{
-            version?.name
-          }}</a>
+          <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->
+          <a
+            href="javascript:undefined"
+            *ngIf="_selectedVersion?.name !== version?.name"
+            matTooltip="Click to select version"
+            (click)="setVersion(version)"
+            >{{ version?.name }}</a
+          >
           <span *ngIf="_selectedVersion?.name === version?.name">{{ version?.name }}</span>
           <a target="_blank" rel="noopener noreferrer" [href]="version.commitID | commitUrl: workflow?.providerUrl">
             <mat-icon

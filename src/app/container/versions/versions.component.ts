@@ -37,13 +37,13 @@ import { AddTagComponent } from '../add-tag/add-tag.component';
 export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
   Dockstore = Dockstore;
-  versionTag: Tag;
+  selectedTag: Tag;
   public DockstoreToolType = DockstoreTool;
   dataSource = new MatTableDataSource(this.versions);
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @Input() set selectedVersion(value: Tag) {
     if (value != null) {
-      this.versionTag = value;
+      this.selectedTag = value;
     }
   }
   @Output() selectedVersionChange = new EventEmitter<Tag>();
@@ -107,10 +107,10 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
 
   // Updates the version and emits an event for the parent component
   setVersion(version: Tag) {
-    this.versionTag = version;
+    this.selectedTag = version;
     this.alertService.start('Changing version to ' + version.name);
     this.alertService.detailedSuccess();
-    this.selectedVersionChange.emit(this.versionTag);
+    this.selectedVersionChange.emit(this.selectedTag);
   }
 
   showAddTagModal() {

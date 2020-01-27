@@ -46,10 +46,15 @@
       <td mat-cell *matCellDef="let version">
         <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
           <span *ngIf="defaultVersion === version.name" class="label label-primary">Default</span>
-          <a *ngIf="selectedVersion?.name !== version?.name" matTooltip="Click to select version" (click)="setVersion(version)">{{
-            version?.name
-          }}</a>
-          <span *ngIf="selectedVersion?.name === version?.name">{{ version?.name }}</span>
+          <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->
+          <a
+            href="javascript:undefined"
+            *ngIf="selectedTag?.name !== version?.name"
+            matTooltip="Click to select version"
+            (click)="setVersion(version)"
+            >{{ version?.name }}</a
+          >
+          <span *ngIf="selectedTag?.name === version?.name">{{ version?.name }}</span>
         </span>
       </td>
     </ng-container>
@@ -113,7 +118,7 @@
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr
-      [ngClass]="{ highlight: version.name === versionTag.name }"
+      [ngClass]="{ highlight: version.name === selectedTag.name }"
       mat-row
       *matRowDef="let row; columns: displayedColumns; let version"
     ></tr>
