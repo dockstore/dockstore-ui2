@@ -268,13 +268,15 @@
         <mat-card-subtitle class="m-0">{{ selectedVersion?.name }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content class="p-3">
-        <div><strong matTooltip="Author listed in descriptor">Author</strong>: {{ tool?.author ? tool?.author : 'n/a' }}</div>
+        <div>
+          <strong matTooltip="Author listed in descriptor">Author</strong>: {{ selectedVersion?.author ? selectedVersion?.author : 'n/a' }}
+        </div>
         <div>
           <strong matTooltip="E-mail of corresponding author for tool">E-mail</strong>:
-          <a href="mailto:{{ tool?.email }}" *ngIf="tool?.email">
-            {{ tool?.email }}
+          <a href="mailto:{{ selectedVersion?.email }}" *ngIf="selectedVersion?.email">
+            {{ selectedVersion?.email }}
           </a>
-          <span *ngIf="!tool?.email">
+          <span *ngIf="!selectedVersion?.email">
             n/a
           </span>
         </div>
@@ -283,12 +285,12 @@
           <a [href]="downloadZipLink" *ngIf="tool?.is_published" mat-raised-button>Export as ZIP</a>
         </span>
 
-        <div *ngIf="tool?.description || !isPublic">
+        <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of tool obtained from tool descriptor"> Description </label>:
-          <div *ngIf="tool?.description" class="well well-sm">
-            <markdown [data]="tool?.description"></markdown>
+          <div *ngIf="selectedVersion?.description" class="well well-sm">
+            <markdown [data]="selectedVersion?.description"></markdown>
           </div>
-          <div *ngIf="!tool?.description && !isPublic" class="well well-sm">
+          <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
               No description associated with this tool. See
