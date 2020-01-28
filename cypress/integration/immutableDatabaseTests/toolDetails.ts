@@ -81,9 +81,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
       isActiveTab('Dockerfile');
 
       it('Should have content in file viewer', () => {
-        cy
-          .get('.ace_content')
-          .should('be.visible');
+        cy.get('.ace_content').should('be.visible');
       });
     });
 
@@ -93,9 +91,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
       });
 
       it('Should have content in file viewer', () => {
-        cy
-          .get('.ace_content')
-          .should('be.visible');
+        cy.get('.ace_content').should('be.visible');
       });
     });
 
@@ -105,11 +101,8 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
       });
 
       it('Should not have content in file viewer', () => {
-        cy
-          .get('.ace_content')
-          .should('not.be.visible');
-        cy
-          .contains('A Test Parameter File associated with this Docker container, descriptor type and version could not be found.');
+        cy.get('.ace_content').should('not.be.visible');
+        cy.contains('A Test Parameter File associated with this Docker container, descriptor type and version could not be found.');
       });
     });
   });
@@ -120,9 +113,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
   beforeEach(() => {
     cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
     cy.get('.mat-tab-label').should('have.length', 4);
-
   });
-
 
   describe('Change tab to files', () => {
     beforeEach(() => {
@@ -133,9 +124,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
       isActiveTab('Dockerfile');
 
       it('Should have content in file viewer', () => {
-        cy
-          .get('.ace_content')
-          .should('be.visible');
+        cy.get('.ace_content').should('be.visible');
       });
     });
 
@@ -145,9 +134,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
       });
 
       it('Should have content in file viewer', () => {
-        cy
-          .get('.ace_content')
-          .should('be.visible');
+        cy.get('.ace_content').should('be.visible');
       });
     });
 
@@ -157,9 +144,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
       });
 
       it('Should have content in file viewer', () => {
-        cy
-          .get('.ace_content')
-          .should('be.visible');
+        cy.get('.ace_content').should('be.visible');
       });
     });
   });
@@ -169,9 +154,7 @@ describe('Dockstore Tool Details of quay.io/A2/b3', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/A2/b3');
-    cy
-      .get('.mat-tab-label')
-      .should('have.length', 4);
+    cy.get('.mat-tab-label').should('have.length', 4);
   });
 
   it('Change tab to versions, should only have one visible', () => {
@@ -179,11 +162,8 @@ describe('Dockstore Tool Details of quay.io/A2/b3', () => {
 
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=versions');
 
-    cy
-      .get('tbody>tr')
-      .should('have.length', 1);
+    cy.get('tbody>tr').should('have.length', 1);
   });
-
 });
 
 describe('Find tool by alias', () => {
@@ -193,7 +173,7 @@ describe('Find tool by alias', () => {
       url: '*/containers/fakeAlias/aliases',
       method: 'GET',
       status: 200,
-      response: { 'tool_path': 'quay.io/A2/b3' }
+      response: { tool_path: 'quay.io/A2/b3' }
     });
     cy.visit('/aliases/tools/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3');

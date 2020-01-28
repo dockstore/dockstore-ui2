@@ -35,13 +35,10 @@ describe('Dockstore tool list page', () => {
     });
     // a, b3, dockstore-cgpmap
     it('Should have 3 tools', () => {
-      cy
-        .get('mat-row')
-        .should('have.length', 3);
+      cy.get('mat-row').should('have.length', 3);
     });
     it('Should be able to go to the quay.io/A2/a tool', () => {
-      cy
-        .get('mat-cell')
+      cy.get('mat-cell')
         .find('a')
         .contains(/\ba\b/)
         .first()

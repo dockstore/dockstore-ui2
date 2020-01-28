@@ -43,133 +43,98 @@ describe('Dockstore hosted workflows', () => {
       getWorkflow();
 
       // Should not be able to publish (No valid versions)
-      cy
-        .get('#publishButton')
-        .should('be.disabled');
+      cy.get('#publishButton').should('be.disabled');
 
       // Check content of the info tab
-      cy
-        .contains('Mode: HOSTED');
+      cy.contains('Mode: HOSTED');
 
       // Should not be able to download zip
-      cy
-        .get('#downloadZipButton')
-        .should('not.be.visible');
+      cy.get('#downloadZipButton').should('not.be.visible');
 
       // Should have alert saying there are no versions
       goToTab('Versions');
-      cy
-        .contains('To see versions, please add a new version.');
+      cy.contains('To see versions, please add a new version.');
 
       // Add a new version with one descriptor
       goToTab('Files');
-      cy
-        .get('#editFilesButton')
-        .click();
-      cy
-        .contains('Add File')
-        .click();
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
+      cy.get('#editFilesButton').click();
+      cy.contains('Add File').click();
+      cy.window().then(function(window: any) {
+        cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
           window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
         });
       });
 
-      cy
-        .get('#saveNewVersionButton')
-        .click();
+      cy.get('#saveNewVersionButton').click();
       cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:1');
       // Should have a version 1
       goToTab('Versions');
-      cy.get('table')
-        .contains('span', /\b1\b/);
+      cy.get('table').contains('span', /\b1\b/);
 
       // Should be able to download zip
       goToTab('Info');
 
-      cy
-        .get('#downloadZipButton')
-        .should('be.visible');
+      cy.get('#downloadZipButton').should('be.visible');
 
       // Verify that clicking calls the correct endpoint
       // https://github.com/ga4gh/dockstore/issues/2050
-      cy
-        .get('#downloadZipButton')
-        .click();
+      cy.get('#downloadZipButton').click();
 
-      cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
+      cy.wait('@downloadZip')
+        .its('url')
+        .should('include', Dockstore.API_URI);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
-      cy
-        .get('#editFilesButton')
-        .click();
-      cy
-        .contains('Add File')
-        .click();
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
+      cy.get('#editFilesButton').click();
+      cy.contains('Add File').click();
+      cy.window().then(function(window: any) {
+        cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
           window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
         });
       });
 
-      cy
-        .get('#testParameterFilesTab-link')
-        .click();
+      cy.get('#testParameterFilesTab-link').click();
       cy.wait(500);
-      cy
-        .get('#testParameterFilesTab')
+      cy.get('#testParameterFilesTab')
         .contains('Add File')
         .click();
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
+      cy.window().then(function(window: any) {
+        cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const testParameterFile = '{}';
           window.ace.edit(editors[2]).setValue(testParameterFile, -1);
         });
       });
 
-      cy
-        .get('#saveNewVersionButton')
-        .click();
+      cy.get('#saveNewVersionButton').click();
       cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
       // Should have a version 2
       goToTab('Versions');
-      cy.get('table')
-        .contains('span', /\b2\b/);
+      cy.get('table').contains('span', /\b2\b/);
 
       // Should be able to publish
-      cy
-        .get('#publishButton')
-        .should('not.be.disabled');
+      cy.get('#publishButton').should('not.be.disabled');
 
       // Try deleting a file (.wdl file)
       goToTab('Files');
-      cy
-        .get('#editFilesButton')
-        .click();
-      cy
-        .get('.delete-editor-file')
+      cy.get('#editFilesButton').click();
+      cy.get('.delete-editor-file')
         .first()
         .click();
-      cy
-        .get('#saveNewVersionButton')
-        .click();
+      cy.get('#saveNewVersionButton').click();
       cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:3');
 
       // Should now only be two ace editors
-      cy
-        .get('.ace_editor')
-        .should('have.length', 2);
+      cy.get('.ace_editor').should('have.length', 2);
 
       // New version should be added
       goToTab('Versions');
-      cy.get('table')
-        .contains('span', /\b3\b/);
+      cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
       clickFirstActionsButton();
@@ -186,10 +151,7 @@ describe('Dockstore hosted workflows', () => {
       cy.reload();
 
       goToTab('Files');
-      cy.contains('/Dockstore.wdl')
-        .should('be.visible');
-
+      cy.contains('/Dockstore.wdl').should('be.visible');
     });
   });
-
 });
