@@ -170,10 +170,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.updatePermalink();
     });
-    this.keyUp$.pipe(
-      debounceTime(formInputDebounceTime),
-      distinctUntilChanged(),
-      takeUntil(this.ngUnsubscribe)).subscribe(() => this.onKey());
   }
 
   /**
@@ -468,21 +464,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm = false;
     }
     this.updatePermalink();
-  }
-
-  /**
-   * Sets autocomplete terms based on the elasticsearch results
-   *
-   * @param {*} hits  Elasticsearch results
-   * @memberof SearchComponent
-   */
-  setAutocompleteTerms(hits: any): void {
-    try {
-      this.autocompleteTerms = hits.aggregations.autocomplete.buckets.map(term => term.key);
-    } catch (error) {
-      console.error('Could not retrieve autocomplete terms');
-      this.autocompleteTerms = [];
-    }
   }
 
   searchSuggestTerm() {
