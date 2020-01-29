@@ -41,12 +41,12 @@ export class LoginComponent {
     iconRegistry.addSvgIcon('google', sanitizer.bypassSecurityTrustResourceUrl('../assets/svg/btn_google_light_normal_ios.svg'));
   }
 
-  private login(observable) {
+  private login(observable, page) {
     observable.subscribe(
       response => {
         this.trackLoginService.switchState(true);
         this.userService.getUser();
-        this.router.navigate(['/onboarding']);
+        this.router.navigate([page]);
       },
       error => {
         console.log('Authentication error: ' + error);
@@ -61,7 +61,7 @@ export class LoginComponent {
    * @memberof LoginComponent
    */
   loginWith(service: string): void {
-    this.login(this.loginService.authenticate(service));
+    this.login(this.loginService.authenticate(service), '/');
   }
 
   /**
@@ -71,6 +71,6 @@ export class LoginComponent {
    * @memberof LoginComponent
    */
   registerWith(service: string): void {
-    this.login(this.registerService.authenticate(service));
+    this.login(this.registerService.authenticate(service), '/onboarding');
   }
 }
