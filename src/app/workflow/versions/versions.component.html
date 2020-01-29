@@ -116,12 +116,7 @@
     </ng-container>
 
     <ng-container matColumnDef="verified">
-      <th
-        scope="col"
-        mat-header-cell
-        *matHeaderCellDef
-        matTooltip="A version is verified if it has been verified to work by a person/group."
-      >
+      <th scope="col" mat-header-cell *matHeaderCellDef [matTooltip]="verifiedVersionTooltip">
         Verified Platforms
         <a class="ds-green" [href]="verifiedLink" target="_blank" rel="noopener noreferrer"><mat-icon>info</mat-icon></a>
       </th>
