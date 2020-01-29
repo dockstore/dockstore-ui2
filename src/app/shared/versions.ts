@@ -35,7 +35,7 @@ export abstract class Versions extends EntryTab {
   verifiedLink: string;
   dtOptions;
   displayedColumns: string[];
-  readonly verifiedVersionTooltip = 'A version is verified if it has been verified to work by a third party';
+  readonly verifiedVersionTooltip = 'A version has a verified platform if it has been verified to work by a third party';
 
   abstract setNoOrderCols(): Array<number>;
   abstract setDisplayColumns(publicPage: boolean): void;
