@@ -11,13 +11,14 @@
       to learn how to star entries.</mat-card
     >
   </div>
+  <!-- Possible changes: Toggle highlighting of verbs and nouns. Toggle dates into a separate column to the left -->
   <mat-card *ngIf="(events$ | async)?.length > 0">
     <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="1rem">
       <div *ngFor="let event of events$ | async; last as last">
         <div [ngSwitch]="event?.type">
           <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
             <strong>{{ event.initiatorUser?.username }} </strong> has created the {{ event.version?.referenceType | lowercase }}
-            <strong>{{ event.version?.name }}</strong> in entry
+            <strong>{{ event.version?.name }}</strong> in {{ event?.tool ? 'tool' : 'workflow' }}
             <a [routerLink]="event?.tool ? '/tools/' + event?.tool.tool_path : '/workflows/' + event?.workflow.full_workflow_path">{{
               (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName)
             }}</a>
@@ -35,7 +36,7 @@
             <mat-divider *ngIf="!last"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
-            <strong>{{ event.initiatorUser.username }} </strong> has added the entry
+            <strong>{{ event.initiatorUser.username }} </strong> has added the {{ event?.tool ? 'tool' : 'workflow' }}
             <a [routerLink]="event?.tool ? '/tools/' + event?.tool.tool_path : '/workflows/' + event?.workflow.full_workflow_path">{{
               (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName)
             }}</a>
