@@ -20,10 +20,13 @@ export class RecentEventsComponent implements OnInit {
   loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
   homepage = true;
+  readonly supportedEventTypes = [Event.TypeEnum.ADDVERSIONTOENTRY, Event.TypeEnum.CREATECOLLECTION, Event.TypeEnum.ADDTOCOLLECTION];
   constructor(private recentEventsQuery: RecentEventsQuery, private recentEventsService: RecentEventsService) {}
 
   ngOnInit() {
-    this.events$ = this.recentEventsQuery.selectAll();
+    this.events$ = this.recentEventsQuery.selectAll({
+      filterBy: entity => this.supportedEventTypes.includes(entity.type)
+    });
     this.loading$ = this.recentEventsQuery.selectLoading();
 
     this.recentEventsService.get();
