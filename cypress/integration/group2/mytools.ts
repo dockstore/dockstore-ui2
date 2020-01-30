@@ -112,8 +112,12 @@ describe('Dockstore my tools', () => {
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
       cy.contains('Versions').click();
-      cy.contains('button', 'Actions').should('be.visible').click();
-      cy.contains('button:visible', 'Edit').should('be.visible').click();
+      cy.contains('button', 'Actions')
+        .should('be.visible')
+        .click();
+      cy.contains('button:visible', 'Edit')
+        .should('be.visible')
+        .click();
       cy.get('[data-cy=addWDLField]').type('/test.wdl.json');
       cy.get('[data-cy=addCWLField]').type('/test.cwl.json');
       cy.get('#saveVersionModal').click();
@@ -408,4 +412,4 @@ describe('Dockstore my tools', () => {
       // .should('not.contain', 'images.sbgenomics.com/testnamespace/testname')
     });
   });
-);
+});
