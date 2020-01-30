@@ -26,6 +26,12 @@ import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBea
 @Injectable()
 export class DescriptorLanguageService {
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
+  // This converts the descriptor language beans into a human readable list of short names for use in tooltips and such
+  // E.g. "CWL, WDL, and NFL"
+  public shortDescriptorLanguageString$: Observable<string>;
+  // This converts the descriptor language beans into a human readable list of friendly names for use in tooltips and such
+  // (e.g. "Common Workflow Language, Workflow Description Language, and Nextflow")
+  public friendlyDescriptorLanguageString$: Observable<string>;
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
   public filteredDescriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   constructor(private metadataService: MetadataService, private sessionQuery: SessionQuery) {
@@ -37,6 +43,8 @@ export class DescriptorLanguageService {
         }
       })
     );
+    this.shortDescriptorLanguageString$ = this.descriptorLanguagesBean$.pipe(map(beans => this.convertBeansToShortNames(beans)));
+    this.friendlyDescriptorLanguageString$ = this.descriptorLanguagesBean$.pipe(map(bean => this.convertBeansToFriendlyNames(bean)));
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
   }
@@ -44,6 +52,32 @@ export class DescriptorLanguageService {
     this.metadataService.getDescriptorLanguages().subscribe((languageBeans: Array<DescriptorLanguageBean>) => {
       this.descriptorLanguagesBean$.next(languageBeans);
     });
+  }
+
+  convertBeansToShortNames(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
+    const numberOfLanguages = descriptorLanguageBeans.length;
+    if (numberOfLanguages === 1) {
+      return descriptorLanguageBeans[0].value;
+    }
+    if (numberOfLanguages === 2) {
+      return descriptorLanguageBeans[0].value + ' and ' + descriptorLanguageBeans[1].value;
+    }
+    const listOfShortNames: string[] = descriptorLanguageBeans.map(descriptorLanguageBean => descriptorLanguageBean.value);
+    listOfShortNames.splice(listOfShortNames.length - 1, 0, 'and');
+    return listOfShortNames.join(', ');
+  }
+
+  convertBeansToFriendlyNames(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
+    const numberOfLanguages = descriptorLanguageBeans.length;
+    if (numberOfLanguages === 1) {
+      return descriptorLanguageBeans[0].friendlyName;
+    }
+    if (numberOfLanguages === 2) {
+      return descriptorLanguageBeans[0].friendlyName + ' and ' + descriptorLanguageBeans[1].friendlyName;
+    }
+    const listOfShortNames: string[] = descriptorLanguageBeans.map(descriptorLanguageBean => descriptorLanguageBean.friendlyName);
+    listOfShortNames.splice(listOfShortNames.length - 1, 0, 'and');
+    return listOfShortNames.join(', ');
   }
 
   /**
