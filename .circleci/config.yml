@@ -5,6 +5,8 @@ executors:
   integration_test_exec: # declares a reusable executor
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        environment:
+          JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
       - image: circleci/postgres:10.10-alpine
         environment:
           POSTGRES_USER: postgres

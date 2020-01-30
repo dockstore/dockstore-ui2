@@ -48,11 +48,9 @@ describe('Dockstore hosted tools', () => {
       // Should not be able to download zip
       cy.get('#downloadZipButton').should('not.be.visible');
 
-      // Check content of the version tab
+      // Check content of the version tab. New hosted tool, there's no versions
       goToTab('Versions');
-      cy.get('table > tbody')
-        .find('tr')
-        .should('have.length', 1);
+      cy.contains('To see versions, please add a new version');
 
       // Add a new version with one descriptor and dockerfile
       goToTab('Files');
@@ -162,9 +160,8 @@ describe('Dockstore hosted tools', () => {
       cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
-      cy.get('table')
-        .find('.deleteVersionButton')
-        .first()
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('.deleteVersionButton')
         .click();
       // Automatically selects the newest version that wasn't the one that was just deleted
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');

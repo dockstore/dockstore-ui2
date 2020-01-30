@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort, goToTab } from '../../support/commands';
+import { goToTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Public Version Modal', () => {
   setTokenUserViewPort();
@@ -24,8 +24,10 @@ describe('Public Version Modal', () => {
 
   it('Change tab to versions', () => {
     goToTab('Versions');
-
-    cy.contains('View').click();
+    cy.contains('button', 'Actions').should('be.visible').click();
+    cy.contains('button:visible', 'View')
+      .should('be.visible')
+      .click();
     cy.get('form');
     cy.get('#dockerPullCommand')
       .should('be.visible')

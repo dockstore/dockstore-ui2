@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { WorkflowService } from 'app/shared/state/workflow.service';
@@ -103,22 +102,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         ]
       };
     });
-  }
-
-  updateDefaultVersion(newDefaultVersion: string): void {
-    if (this.publicPage) {
-      return;
-    }
-    const message = 'Updating default workflow version';
-    this.alertService.start(message);
-    this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(
-      updatedWorkflow => {
-        this.alertService.detailedSuccess();
-        this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
-        this.workflowService.setWorkflow(updatedWorkflow);
-      },
-      (error: HttpErrorResponse) => this.alertService.detailedError(error)
-    );
   }
 
   /**
