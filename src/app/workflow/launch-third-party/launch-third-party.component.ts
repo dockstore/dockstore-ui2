@@ -2,6 +2,7 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { combineLatest, Observable } from 'rxjs';
 import { map, share, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
@@ -13,7 +14,6 @@ import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
-import { combineLatest, Observable } from 'rxjs';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 // tslint:disable:max-line-length
@@ -147,7 +147,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   workflowPathAsQueryValue: string;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
-  cgcTooltip$: Observable<string> = combineLatest(this.descriptorsQuery.hasContent$, this.hasHttpImports$).pipe(
+  cgcTooltip$: Observable<string> = combineLatest([this.descriptorsQuery.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) => {
       if (!hasContent) {
         return 'The CWL has no content.';

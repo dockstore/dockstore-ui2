@@ -99,7 +99,7 @@ describe('Service: CWLViewer', () => {
 
   if (Dockstore.FEATURES.enableCwlViewer) {
     it('should fail if POST returns 400', done => {
-      cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(null, () => done());
+      cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(() => done(), () => done());
       const response400 = httpMock.expectOne(commonWlEndpoint);
       response400.flush(null, { status: 400, statusText: 'Bad Request' });
       httpMock.verify();

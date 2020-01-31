@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
-
-import { ExtendedUserData, User, UsersService } from '../../shared/swagger';
-import { UserQuery } from '../../shared/user/user.query';
-import { TokenQuery } from '../../shared/state/token.query';
 import { Dockstore } from '../../shared/dockstore.model';
+import { TokenQuery } from '../../shared/state/token.query';
+import { ExtendedUserData, User } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
   selector: 'app-onboarding',
@@ -19,7 +18,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   user: User;
   ready = false;
   Dockstore = Dockstore;
-  constructor(private userQuery: UserQuery, private usersService: UsersService, private tokenService: TokenQuery) {}
+  constructor(private userQuery: UserQuery, private tokenService: TokenQuery) {}
   ngOnInit() {
     localStorage.setItem('page', '/onboarding');
     this.tokenService.userTokenStatusSet$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokenStatusSet => {
@@ -27,7 +26,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
         this.tokenSetComplete = tokenStatusSet.github;
       }
     });
-    combineLatest(this.userQuery.user$, this.userQuery.extendedUserData$)
+    combineLatest([this.userQuery.user$, this.userQuery.extendedUserData$])
       .pipe(
         distinctUntilChanged(),
         takeUntil(this.ngUnsubscribe)
