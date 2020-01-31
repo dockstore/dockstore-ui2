@@ -19,14 +19,11 @@ import { Observable } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
-import { ContainerService } from '../../../shared/container.service';
 import { StarOrganizationService } from '../../../shared/star-organization.service';
-import { StarentryService } from '../../../shared/starentry.service';
 import { isStarredByUser } from '../../../shared/starring';
 import { Organization, User } from '../../../shared/swagger';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
-import { StarringService } from '../../../starring/starring.service';
 import { OrganizationStarringService } from './organization-starring.service';
 
 @Component({
@@ -46,9 +43,6 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
   constructor(
     private trackLoginService: TrackLoginService,
     private userQuery: UserQuery,
-    private containerService: ContainerService,
-    private starringService: StarringService,
-    private starentryService: StarentryService,
     private starOrganizationService: StarOrganizationService,
     private organizationStarringService: OrganizationStarringService,
     private alertService: AlertService

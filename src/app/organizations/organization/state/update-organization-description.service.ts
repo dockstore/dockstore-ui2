@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +12,6 @@ import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organiz
 export class UpdateOrganizationOrCollectionDescriptionService {
   constructor(
     private updateOrganizationOrCollectionDescriptionStore: UpdateOrganizationOrCollectionDescriptionStore,
-    private http: HttpClient,
     private formBuilder: FormBuilder,
     private organizationsService: OrganizationsService,
     private organizationQuery: OrganizationQuery,

@@ -104,7 +104,7 @@ export class CollectionComponent implements OnInit {
 
   editCollection(collection: Collection) {
     const collectionMap = { key: collection.id, value: collection };
-    const dialogRef = this.dialog.open(CreateCollectionComponent, {
+    this.dialog.open(CreateCollectionComponent, {
       data: { collection: collectionMap, mode: TagEditorMode.Edit },
       width: '600px'
     });

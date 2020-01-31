@@ -15,19 +15,16 @@
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
-
 import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
 import { TokenService } from '../../../shared/state/token.service';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserService } from '../../../shared/user/user.service';
-import { UsersService } from './../../../shared/swagger/api/users.service';
-import { Configuration } from './../../../shared/swagger/configuration';
 import { Token } from './../../../shared/swagger/model/token';
 import { AccountsService } from './accounts.service';
 
@@ -91,7 +88,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   ];
 
   public tokens: Token[];
-  private userId;
   private ngUnsubscribe: Subject<{}> = new Subject();
   public show: false;
   public dockstoreToken: string;
@@ -99,11 +95,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private trackLoginService: TrackLoginService,
     private tokenService: TokenService,
     private userService: UserService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private usersService: UsersService,
     private authService: AuthService,
-    private configuration: Configuration,
     private accountsService: AccountsService,
     private matSnackBar: MatSnackBar,
     private tokenQuery: TokenQuery

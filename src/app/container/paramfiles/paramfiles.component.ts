@@ -15,13 +15,11 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import { ContainerService } from '../../shared/container.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { ContainersService, GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
+import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { FilesQuery } from '../../workflow/files/state/files.query';
@@ -46,8 +44,6 @@ export class ParamfilesComponent extends EntryFileSelector {
   protected entryType: 'tool' | 'workflow' = 'tool';
   public downloadFilePath: string;
   constructor(
-    private containerService: ContainerService,
-    private containersService: ContainersService,
     protected gA4GHService: GA4GHService,
     private paramfilesService: ParamfilesService,
     protected gA4GHFilesService: GA4GHFilesService,
