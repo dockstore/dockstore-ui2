@@ -99,7 +99,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   private openVersionModal(): void {
-    const dialogRef = this.matDialog.open(VersionModalComponent, {
+    this.matDialog.open(VersionModalComponent, {
       width: '600px',
       data: { canRead: this.canRead, canWrite: this.canWrite && !this.version.frozen, isOwner: this.isOwner }
     });

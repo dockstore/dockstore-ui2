@@ -17,7 +17,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
@@ -41,7 +40,6 @@ export class RegisterWorkflowModalService {
   workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(this.sampleWorkflow);
   constructor(
     private workflowsService: WorkflowsService,
-    private descriptorTypeCompatService: DescriptorTypeCompatService,
     private workflowService: WorkflowService,
     private router: Router,
     private alertService: AlertService,

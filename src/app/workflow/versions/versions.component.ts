@@ -15,7 +15,6 @@
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
-import { WorkflowService } from 'app/shared/state/workflow.service';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
@@ -24,7 +23,6 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Versions } from '../../shared/versions';
@@ -59,8 +57,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     dateService: DateService,
     private alertService: AlertService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
-    private workflowsService: WorkflowsService,
-    private workflowService: WorkflowService,
     protected sessionQuery: SessionQuery
   ) {
     super(dockstoreService, dateService, sessionQuery);

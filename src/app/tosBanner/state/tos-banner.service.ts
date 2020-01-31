@@ -14,14 +14,13 @@
  *    limitations under the License.
  */
 
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { currentPrivacyPolicyVersion, currentTOSVersion, dismissedLatestPrivacyPolicy, dismissedLatestTOS } from '../../shared/constants';
 import { TosBannerStore } from './tos-banner.store';
 
 @Injectable({ providedIn: 'root' })
 export class TosBannerService {
-  constructor(private tosBannerStore: TosBannerStore, private http: HttpClient) {}
+  constructor(private tosBannerStore: TosBannerStore) {}
 
   dismissTOS() {
     localStorage.setItem(dismissedLatestTOS, JSON.stringify(currentTOSVersion));

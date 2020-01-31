@@ -59,6 +59,7 @@ export class VersionModalService {
    */
   saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles, workflowMode: String) {
     const message1 = 'Saving workflow version';
+    // TODO: Use or delete this second message
     const message2 = 'Modifying test parameter files';
     const workflowId = this.workflowQuery.getActive().id;
     this.alertService.start(message1);

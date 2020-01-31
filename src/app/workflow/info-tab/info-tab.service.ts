@@ -33,7 +33,6 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 export class InfoTabService {
   public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private workflows: Workflow[];
   public descriptorLanguageMap = [];
 
   /**
@@ -67,7 +66,6 @@ export class InfoTabService {
       this.cancelEditing();
     });
     this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe(map => (this.descriptorLanguageMap = map));
-    this.workflowService.workflows$.subscribe(workflows => (this.workflows = workflows));
   }
   setWorkflowPathEditing(editing: boolean) {
     this.workflowPathEditing$.next(editing);
