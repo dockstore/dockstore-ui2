@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ID } from '@datorama/akita';
+import { Dockstore } from 'app/shared/dockstore.model';
 import { Event } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { RecentEventsQuery } from '../state/recent-events.query';
@@ -19,6 +20,7 @@ export class RecentEventsComponent implements OnInit {
   events$: Observable<Event[]>;
   loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
+  readonly starringDocUrl = `${Dockstore.DOCUMENTATION_URL}/end-user-topics/starring.html#starring-tools-and-workflows`;
   homepage = true;
   readonly supportedEventTypes = [Event.TypeEnum.ADDVERSIONTOENTRY, Event.TypeEnum.CREATECOLLECTION, Event.TypeEnum.ADDTOCOLLECTION];
   constructor(private recentEventsQuery: RecentEventsQuery, private recentEventsService: RecentEventsService) {}
