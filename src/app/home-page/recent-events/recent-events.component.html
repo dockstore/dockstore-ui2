@@ -13,7 +13,7 @@
   </div>
   <!-- Possible changes: Toggle highlighting of verbs and nouns. Toggle dates into a separate column to the left -->
   <mat-card *ngIf="(events$ | async)?.length > 0">
-    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="1rem">
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="1.6rem">
       <div *ngFor="let event of events$ | async; last as last">
         <div [ngSwitch]="event?.type">
           <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
@@ -23,7 +23,7 @@
               (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName)
             }}</a>
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-            <mat-divider *ngIf="!last"></mat-divider>
+            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.CREATECOLLECTION">
             <strong>{{ event.initiatorUser?.username }}</strong> created the collection
@@ -33,7 +33,7 @@
             in organization
             <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-            <mat-divider *ngIf="!last"></mat-divider>
+            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
             <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool ? 'tool' : 'workflow' }}
@@ -47,7 +47,7 @@
             in organization
             <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-            <mat-divider *ngIf="!last"></mat-divider>
+            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
           </div>
         </div>
       </div>
