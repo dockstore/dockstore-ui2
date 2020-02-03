@@ -17,7 +17,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil, map } from 'rxjs/operators';
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { formInputDebounceTime } from '../../constants';
@@ -56,6 +56,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   public mode$: Observable<'add' | 'edit'>;
   public descriptorType: ToolDescriptor.TypeEnum;
   public descriptorLanguages: Array<string>;
+  public placeholderDescriptorPath$: Observable<string>;
   private entry: Entry;
   registerCheckerWorkflowForm: NgForm;
   isWorkflow = false;
@@ -69,7 +70,8 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
         this.isWorkflow = this.checkerWorkflowQuery.isEntryAWorkflow(entry);
         this.testParameterFilePath = this.getTestParameterFileDefault(entry, this.descriptorType);
         if (this.isWorkflow) {
-          this.descriptorType = this.descriptorTypeCompatService.stringToDescriptorType((<Workflow>this.entry).descriptorType);
+          const workflowDescriptorTypeEnum = (<Workflow>this.entry).descriptorType;
+          this.descriptorType = this.descriptorTypeCompatService.stringToDescriptorType(workflowDescriptorTypeEnum);
         }
       } else {
         this.testParameterFilePath = null;
@@ -78,12 +80,26 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
       }
     });
     this.mode$ = this.registerCheckerWorkflowService.mode$;
-
     this.syncTestJson = false;
     this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
       this.descriptorLanguages = descriptorLanguages.filter((language: string) => language !== ToolDescriptor.TypeEnum.NFL);
     });
     this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.placeholderDescriptorPath$ = this.checkerWorkflowQuery.entry$.pipe(
+      map(entry => {
+        if (entry) {
+          const isWorkflow = this.checkerWorkflowQuery.isEntryAWorkflow(entry);
+          if (isWorkflow) {
+            const workflowDescriptorTypeEnum = (<Workflow>this.entry).descriptorType;
+            return this.descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(workflowDescriptorTypeEnum);
+          } else {
+            return '';
+          }
+        } else {
+          return '';
+        }
+      })
+    );
   }
 
   private clearForm(): void {

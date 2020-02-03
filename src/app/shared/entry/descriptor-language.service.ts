@@ -66,6 +66,24 @@ export class DescriptorLanguageService {
     });
   }
 
+  workflowDescriptorTypeEnumToPlaceholderDescriptor(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum): string {
+    switch (workflowDescriptorTypeEnum) {
+      case Workflow.DescriptorTypeEnum.CWL: {
+        return 'e.g. /Dockstore.cwl';
+      }
+      case Workflow.DescriptorTypeEnum.WDL: {
+        return 'e.g. /Dockstore.wdl';
+      }
+      case Workflow.DescriptorTypeEnum.NFL: {
+        return 'e.g. /nextflow.config';
+      }
+      default: {
+        console.error('Unhandled descriptor type: ' + workflowDescriptorTypeEnum);
+        return '';
+      }
+    }
+  }
+
   getHomepageInnerHTML(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
     const innerHTMLArray = [];
     descriptorLanguageBeans.forEach(descriptorLanguageBean => {
@@ -139,7 +157,7 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   convertDescriptorLanguageBeanToToolDescriptorTypeEnum(descriptorLanguageBean: DescriptorLanguageBean): ToolDescriptor.TypeEnum {
-    if (descriptorLanguageBean.value === this.serviceValue) {
+    if (descriptorLanguageBean.value === this.knownServiceValue) {
       return ToolDescriptor.TypeEnum.SERVICE;
     } else {
       return <ToolDescriptor.TypeEnum>descriptorLanguageBean.value.toString();
@@ -147,7 +165,7 @@ export class DescriptorLanguageService {
   }
 
   filterService(beans: DescriptorLanguageBean[]): DescriptorLanguageBean[] {
-    return beans.filter(bean => bean.value !== this.serviceValue);
+    return beans.filter(bean => bean.value !== this.knownServiceValue);
   }
 
   /**

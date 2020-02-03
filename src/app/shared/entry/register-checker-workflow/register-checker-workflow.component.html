@@ -24,8 +24,8 @@
             maxlength="256"
             [pattern]="validationDescriptorPatterns.workflowDescriptorPath"
             required
-            matTooltip="Default relative path to the CWL Descriptor in the Git repository."
-            placeholder="e.g. /Dockstore.cwl"
+            matTooltip="Default relative path to the descriptor in the Git repository."
+            [placeholder]="placeholderDescriptorPath$ | async"
           />
           <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
         </div>
@@ -45,7 +45,7 @@
             maxlength="256"
             [pattern]="validationDescriptorPatterns.testParameterFilePath"
             required
-            matTooltip="Default relative path to the WDL Descriptor in the Git repository."
+            matTooltip="Default relative path to the test parameter file in the Git repository."
             placeholder="e.g. /test.json"
           />
           <mat-card *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </mat-card>
