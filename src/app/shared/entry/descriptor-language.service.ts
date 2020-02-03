@@ -37,7 +37,7 @@ export class DescriptorLanguageService {
         }
       })
     );
-    const combined$ = combineLatest(this.descriptorLanguages$, this.sessionQuery.entryType$);
+    const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
   }
   update() {

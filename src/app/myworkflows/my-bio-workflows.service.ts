@@ -38,7 +38,7 @@ export class MyBioWorkflowsService {
   getMyBioWorkflows(id: number): void {
     this.alertService.start('Fetching workflows');
     this.myEntryService.setRefreshingMyEntries(true);
-    forkJoin(
+    forkJoin([
       this.usersService.userWorkflows(id).pipe(
         catchError((error: HttpErrorResponse) => {
           return observableOf(error);
@@ -49,7 +49,7 @@ export class MyBioWorkflowsService {
           return observableOf(error);
         })
       )
-    )
+    ])
       .pipe(
         finalize(() => {
           this.alertService.simpleSuccess();

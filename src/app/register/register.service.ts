@@ -14,19 +14,18 @@
  *    limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AuthService } from 'ng2-ui-auth';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { AlertService } from '../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { AuthService } from 'ng2-ui-auth';
+import { Observable } from 'rxjs';
+import { AlertService } from '../shared/alert/state/alert.service';
 
 @Injectable()
 export class RegisterService {
-  constructor(private auth: AuthService, private matSnackBar: MatSnackBar, private alertService: AlertService) {}
+  constructor(private auth: AuthService, private alertService: AlertService) {}
 
   authenticate(provider: string): Observable<any> {
-    return Observable.create(observable => {
+    return new Observable(observable => {
       this.alertService.start('Register');
       return this.auth.authenticate(provider, { register: true }).subscribe(
         user => {
