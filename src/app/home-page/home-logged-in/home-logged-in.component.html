@@ -41,11 +41,12 @@
         <featured-content></featured-content>
       </div>
       <div class="widget-section">
-        <h3>Getting Started?</h3>
-        <app-getting-started></app-getting-started>
+        <h3>Recent Activity</h3>
+        <div class="m-auto mw-macbook-13">
+          <recent-events></recent-events>
+        </div>
       </div>
     </div>
-
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 2 100%" class="px-4 side-column" fxFlexAlign="stretch">
       <app-requests *ngIf="user$ | async" class="w-100"></app-requests>
       <div class="w-100">
