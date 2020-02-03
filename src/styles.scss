@@ -1243,3 +1243,9 @@ mat-icon.star {
 .text-wrap {
   white-space: normal;
 }
+
+mat-tab-group.no-pagination {
+  .mat-tab-header-pagination {
+    display: none;
+  }
+}

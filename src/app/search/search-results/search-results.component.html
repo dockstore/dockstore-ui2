@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedIndex" class="homeComponent">
+<mat-tab-group class="homeComponent no-pagination" animationDuration="0ms" [selectedIndex]="(selectedIndex$ | async).active">
   <mat-tab [disabled]="noToolHits$ | async" data-cy="tools-tab">
     <ng-template mat-tab-label>
       <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-tools-blue.png" />

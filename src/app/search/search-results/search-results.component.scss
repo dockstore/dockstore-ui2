@@ -20,10 +20,6 @@ mat-tab-group.homeComponent {
   border-bottom-left-radius: 1rem;
 }
 
-::ng-deep .mat-tab-header-pagination {
-  display: none !important;
-}
-
 .mat-tab-content {
   display: block;
   background-color: #fff;

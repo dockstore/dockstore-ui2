@@ -21,7 +21,7 @@ import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 import { Base } from '../../shared/base';
-import { takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-results',
@@ -34,7 +34,7 @@ export class SearchResultsComponent extends Base implements OnInit {
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
-  public selectedIndex = 0;
+  public selectedIndex$: Observable<any>;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   options: CloudOptions = {
@@ -42,6 +42,7 @@ export class SearchResultsComponent extends Base implements OnInit {
     height: 200,
     overflow: false
   };
+
   constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
     super();
     this.activeToolTab$ = this.searchQuery.activeToolTab$;
@@ -57,9 +58,11 @@ export class SearchResultsComponent extends Base implements OnInit {
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
-    this.activeToolTab$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(toolsActive => (this.selectedIndex = toolsActive ? this.TOOLS_TAB_INDEX : this.WORKFLOWS_TAB_INDEX));
+    this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
+      map(activeToolTab => {
+        return { active: activeToolTab ? this.TOOLS_TAB_INDEX : this.WORKFLOWS_TAB_INDEX };
+      })
+    );
   }
 
   createTagCloud(type: string) {
