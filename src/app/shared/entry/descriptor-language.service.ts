@@ -25,6 +25,12 @@ import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBea
 
 @Injectable()
 export class DescriptorLanguageService {
+  // Known value for the DescriptorLanguageBeans
+  readonly knownCWLValue = 'CWL';
+  readonly knownWDLValue = 'WDL';
+  readonly knownNFLValue = 'NFL';
+  readonly knownServiceValue = 'service';
+
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   // This converts the descriptor language beans into a human readable list of short names for use in tooltips and such
   // E.g. "CWL, WDL, and NFL"
@@ -32,6 +38,8 @@ export class DescriptorLanguageService {
   // This converts the descriptor language beans into a human readable list of friendly names for use in tooltips and such
   // (e.g. "Common Workflow Language, Workflow Description Language, and Nextflow")
   public friendlyDescriptorLanguageString$: Observable<string>;
+  public homepageInnerHTML$: Observable<string>;
+  public noService$: Observable<DescriptorLanguageBean[]>;
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
   public filteredDescriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   constructor(private metadataService: MetadataService, private sessionQuery: SessionQuery) {
@@ -45,6 +53,10 @@ export class DescriptorLanguageService {
     );
     this.shortDescriptorLanguageString$ = this.descriptorLanguagesBean$.pipe(map(beans => this.convertBeansToShortNames(beans)));
     this.friendlyDescriptorLanguageString$ = this.descriptorLanguagesBean$.pipe(map(bean => this.convertBeansToFriendlyNames(bean)));
+    this.noService$ = this.descriptorLanguagesBean$.pipe(map(beans => this.filterService(beans)));
+    this.homepageInnerHTML$ = this.noService$.pipe(
+      map((descriptorLanguageBeans: DescriptorLanguageBean[]) => this.getHomepageInnerHTML(descriptorLanguageBeans))
+    );
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
   }
@@ -52,6 +64,44 @@ export class DescriptorLanguageService {
     this.metadataService.getDescriptorLanguages().subscribe((languageBeans: Array<DescriptorLanguageBean>) => {
       this.descriptorLanguagesBean$.next(languageBeans);
     });
+  }
+
+  getHomepageInnerHTML(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
+    const innerHTMLArray = [];
+    descriptorLanguageBeans.forEach(descriptorLanguageBean => {
+      switch (descriptorLanguageBean.value) {
+        case this.knownCWLValue: {
+          innerHTMLArray.push('<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>');
+          break;
+        }
+        case this.knownWDLValue: {
+          innerHTMLArray.push('<a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>');
+          break;
+        }
+        case this.knownNFLValue: {
+          innerHTMLArray.push('<a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>');
+          break;
+        }
+        default: {
+          console.error('Unrecognized descriptor language bean value');
+        }
+      }
+    });
+    const length = innerHTMLArray.length;
+    if (length === 0) {
+      console.error('Something has gone terribly wrong. Could not get corresponding link to descriptor language');
+      return 'descriptor languages';
+    }
+    if (length === 1) {
+      return innerHTMLArray[0];
+    }
+    if (length === 2) {
+      return innerHTMLArray.join(' and ');
+    }
+    if (length >= 3) {
+      innerHTMLArray[length - 1] = 'or ' + innerHTMLArray[length - 1];
+      return innerHTMLArray.join(', ');
+    }
   }
 
   convertBeansToShortNames(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
@@ -89,11 +139,15 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   convertDescriptorLanguageBeanToToolDescriptorTypeEnum(descriptorLanguageBean: DescriptorLanguageBean): ToolDescriptor.TypeEnum {
-    if (descriptorLanguageBean.value === 'service') {
+    if (descriptorLanguageBean.value === this.serviceValue) {
       return ToolDescriptor.TypeEnum.SERVICE;
     } else {
       return <ToolDescriptor.TypeEnum>descriptorLanguageBean.value.toString();
     }
+  }
+
+  filterService(beans: DescriptorLanguageBean[]): DescriptorLanguageBean[] {
+    return beans.filter(bean => bean.value !== this.serviceValue);
   }
 
   /**

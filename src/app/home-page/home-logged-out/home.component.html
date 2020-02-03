@@ -94,9 +94,7 @@
       <mat-card fxLayout="column">
         <h3 class="text-center">Workflow descriptions</h3>
         <p>
-          Workflows are described with <a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>,
-          <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a> or
-          <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a> and stored on
+          Workflows are described with <span [innerHTML]="homepageInnerHTML$ | async"></span> and stored on
           <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>,
           <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>,
           <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>, or directly on Dockstore.
