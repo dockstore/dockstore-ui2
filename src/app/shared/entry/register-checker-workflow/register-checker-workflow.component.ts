@@ -17,7 +17,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime, takeUntil, map } from 'rxjs/operators';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { formInputDebounceTime } from '../../constants';
@@ -46,8 +46,8 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
     super();
   }
   public registerError: HttpErrorResponse;
-  public workflowPath: string;
-  public testParameterFilePath: string;
+  public workflowPath = '';
+  public testParameterFilePath = '';
   public syncTestJson: boolean;
   public formErrors = formErrors;
   public validationDescriptorPatterns = validationDescriptorPatterns;
@@ -63,7 +63,6 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   @ViewChild('registerCheckerWorkflowForm', { static: true }) currentForm: NgForm;
 
   ngOnInit() {
-    this.clearForm();
     this.checkerWorkflowQuery.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) => {
       this.entry = entry;
       if (entry) {
@@ -71,7 +70,11 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
         this.testParameterFilePath = this.getTestParameterFileDefault(entry, this.descriptorType);
         if (this.isWorkflow) {
           const workflowDescriptorTypeEnum = (<Workflow>this.entry).descriptorType;
+          // Set checker workflow descriptor type to the same as the current workflow
           this.descriptorType = this.descriptorTypeCompatService.stringToDescriptorType(workflowDescriptorTypeEnum);
+        } else {
+          // Set checker workflow descriptor type to CWL for now. TODO: Solve this once webservice changes are known.
+          this.descriptorType = ToolDescriptor.TypeEnum.CWL;
         }
       } else {
         this.testParameterFilePath = null;
@@ -102,12 +105,6 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
         }
       })
     );
-  }
-
-  private clearForm(): void {
-    this.workflowPath = '';
-    this.testParameterFilePath = '';
-    this.descriptorType = ToolDescriptor.TypeEnum.CWL;
   }
 
   /**
