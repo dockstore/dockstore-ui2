@@ -20,6 +20,7 @@ import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
 import { ToolDescriptor } from '../swagger';
 import { Workflow } from '../swagger/model/workflow';
+import { validationDescriptorPatterns } from '../validationMessages.model';
 import { MetadataService } from './../swagger/api/metadata.service';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 
@@ -66,6 +67,27 @@ export class DescriptorLanguageService {
     });
   }
 
+  getDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): string {
+    switch (descriptorType) {
+      case ToolDescriptor.TypeEnum.CWL: {
+        return validationDescriptorPatterns.cwlPath;
+      }
+      case ToolDescriptor.TypeEnum.WDL: {
+        return validationDescriptorPatterns.wdlPath;
+      }
+      case ToolDescriptor.TypeEnum.NFL: {
+        return validationDescriptorPatterns.nflPath;
+      }
+      case ToolDescriptor.TypeEnum.SERVICE: {
+        return '*';
+      }
+      default: {
+        this.genericUnhandledTypeError(descriptorType);
+        return '*';
+      }
+    }
+  }
+
   workflowDescriptorTypeEnumToPlaceholderDescriptor(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum): string {
     switch (workflowDescriptorTypeEnum) {
       case Workflow.DescriptorTypeEnum.CWL: {
@@ -78,10 +100,14 @@ export class DescriptorLanguageService {
         return 'e.g. /nextflow.config';
       }
       default: {
-        console.error('Unhandled descriptor type: ' + workflowDescriptorTypeEnum);
+        this.genericUnhandledTypeError(workflowDescriptorTypeEnum);
         return '';
       }
     }
+  }
+
+  genericUnhandledTypeError(type: any): void {
+    console.error('Unhandled descriptor type: ' + type);
   }
 
   getHomepageInnerHTML(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
@@ -101,7 +127,7 @@ export class DescriptorLanguageService {
           break;
         }
         default: {
-          console.error('Unrecognized descriptor language bean value');
+          this.genericUnhandledTypeError(descriptorLanguageBean.value);
         }
       }
     });

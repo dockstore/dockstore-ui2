@@ -12,7 +12,7 @@
         [(ngModel)]="workflowPath"
         minlength="3"
         maxlength="256"
-        [pattern]="validationDescriptorPatterns.workflowDescriptorPath"
+        [pattern]="descriptorPattern"
         required
         matTooltip="Default relative path to the descriptor in the Git repository."
         [placeholder]="placeholderDescriptorPath$ | async"

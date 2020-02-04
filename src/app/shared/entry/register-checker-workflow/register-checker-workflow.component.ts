@@ -57,6 +57,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   public descriptorType: ToolDescriptor.TypeEnum;
   public descriptorLanguages: Array<string>;
   public placeholderDescriptorPath$: Observable<string>;
+  public descriptorPattern = validationDescriptorPatterns.workflowDescriptorPath;
   private entry: Entry;
   registerCheckerWorkflowForm: NgForm;
   isWorkflow = false;
@@ -72,9 +73,11 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
           const workflowDescriptorTypeEnum = (<Workflow>this.entry).descriptorType;
           // Set checker workflow descriptor type to the same as the current workflow
           this.descriptorType = this.descriptorTypeCompatService.stringToDescriptorType(workflowDescriptorTypeEnum);
+          this.updateDescriptorPattern(this.descriptorType);
         } else {
           // Set checker workflow descriptor type to CWL for now. TODO: Solve this once webservice changes are known.
           this.descriptorType = ToolDescriptor.TypeEnum.CWL;
+          this.updateDescriptorPattern(this.descriptorType);
         }
       } else {
         this.testParameterFilePath = null;
@@ -105,6 +108,10 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
         }
       })
     );
+  }
+
+  updateDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): void {
+    this.descriptorPattern = this.descriptorLanguageService.getDescriptorPattern(descriptorType);
   }
 
   /**
@@ -159,6 +166,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
    */
   public onDescriptorTypeChange(descriptorType: ToolDescriptor.TypeEnum): void {
     this.testParameterFilePath = this.getTestParameterFileDefault(this.entry, descriptorType);
+    this.updateDescriptorPattern(descriptorType);
   }
 
   // Validation starts here, should move most of these to a service somehow
