@@ -109,6 +109,10 @@
     "cypress/**/*.{ts,js}": [
       "prettier --write",
       "git add"
+    ],
+    "*.ts": [
+      "tslint --fix",
+      "git add"
     ]
   }
 }
