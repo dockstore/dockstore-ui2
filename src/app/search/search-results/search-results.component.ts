@@ -119,6 +119,14 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.searchService.toSaveSearch$.next(true);
   }
 
+  saveTabIndex(tab) {
+    if (tab.index === 0) {
+      this.searchService.saveCurrentTab(true);
+    } else {
+      this.searchService.saveCurrentTab(false);
+    }
+  }
+
   tagClicked(clicked: CloudData) {
     this.searchService.searchTerm$.next(true);
     this.searchService.setSearchText(clicked.text);

@@ -21,6 +21,7 @@ export class SearchQuery extends Query<SearchState> {
       elasticSearchResults ? elasticSearchResults.map(elasticSearchResult => elasticSearchResult._source) : null
     )
   );
+  public savedTabIndex$: Observable<boolean> = this.select(state => state.currentTabIndex);
   public activeToolTab$: Observable<boolean> = combineLatest([this.tools$, this.workflows$]).pipe(
     map(([tools, workflows]) => this.setTabActive(tools, workflows))
   );
@@ -45,6 +46,7 @@ export class SearchQuery extends Query<SearchState> {
       }
     })
   );
+  public index: boolean;
 
   constructor(protected store: SearchStore, private route: ActivatedRoute) {
     super(store);
@@ -68,9 +70,18 @@ export class SearchQuery extends Query<SearchState> {
       return true;
     } else if (workflows.length === 0 && param === 'workflow') {
       return false;
+    } else if (workflows.length > 0 && tools.length > 0) {
+      this.savedTabIndex$.subscribe(index => {
+        this.returnSavedTabIndex(index);
+      });
+      return this.index;
     } else {
       return true;
     }
+  }
+
+  returnSavedTabIndex(index) {
+    this.index = index;
   }
 
   haveNoHits(object: Array<any>): boolean {

@@ -588,6 +588,15 @@ export class SearchService {
     });
   }
 
+  saveCurrentTab(index: boolean) {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        currentTabIndex: index
+      };
+    });
+  }
+
   goToCleanSearch() {
     this.router.navigateByUrl('search');
   }
