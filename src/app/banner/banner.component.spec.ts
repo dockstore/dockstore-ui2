@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BannerComponent } from './banner.component';
 import { MetadataService } from '../metadata/metadata.service';
-import { GA4GHStubService } from './../test/service-stubs';
 import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
+import { GA4GHStubService } from './../test/service-stubs';
+import { BannerComponent } from './banner.component';
 
 describe('BannerComponent', () => {
   let component: BannerComponent;

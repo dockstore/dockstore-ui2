@@ -16,15 +16,15 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { MatDialog } from '@angular/material/dialog';
+import { Workflow } from 'app/shared/swagger';
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { SessionQuery } from '../../session/session.query';
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
-import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 import { RegisterCheckerWorkflowComponent } from '../register-checker-workflow/register-checker-workflow.component';
-import { MatDialog } from '@angular/material/dialog';
-import { Workflow } from 'app/shared/swagger';
+import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',

@@ -15,15 +15,15 @@
  */
 import { Injectable } from '@angular/core';
 
+import { transaction } from '@datorama/akita';
 import { DateService } from '../date.service';
 import { DockstoreService } from '../dockstore.service';
 import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
 import { ProviderService } from '../provider.service';
 import { Workflow } from '../swagger';
-import { ExtendedWorkflowStore } from './extended-workflow.store';
-import { transaction } from '@datorama/akita';
-import { Service } from '../swagger/model/service';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
+import { Service } from '../swagger/model/service';
+import { ExtendedWorkflowStore } from './extended-workflow.store';
 
 @Injectable({ providedIn: 'root' })
 export class ExtendedWorkflowService {

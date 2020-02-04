@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Base } from '../../shared/base';
 import { takeUntil } from 'rxjs/operators';
+import { Base } from '../../shared/base';
 
 @Component({
   selector: 'app-accounts',

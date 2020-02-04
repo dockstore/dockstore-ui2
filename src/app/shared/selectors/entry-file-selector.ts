@@ -18,12 +18,12 @@ import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
+import { FilesQuery } from '../../workflow/files/state/files.query';
+import { FilesService } from '../../workflow/files/state/files.service';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, WorkflowVersion, Tag } from '../swagger';
-import { FilesService } from '../../workflow/files/state/files.service';
-import { FilesQuery } from '../../workflow/files/state/files.query';
+import { FileWrapper, GA4GHService, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
 
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version

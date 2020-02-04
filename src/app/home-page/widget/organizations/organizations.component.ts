@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { UserQuery } from 'app/shared/user/user.query';
-import { OrganizationUpdateTime } from 'app/shared/openapi/model/organizationUpdateTime';
-import { debounceTime, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from 'app/shared/constants';
-import { FilteredList } from '../filtered-list';
+import { OrganizationUpdateTime } from 'app/shared/openapi/model/organizationUpdateTime';
+import { UserQuery } from 'app/shared/user/user.query';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { EntriesService, UsersService } from '../../../shared/openapi';
+import { FilteredList } from '../filtered-list';
 
 @Component({
   selector: 'app-organizations',

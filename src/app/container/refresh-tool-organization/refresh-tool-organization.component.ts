@@ -15,6 +15,7 @@
  */
 import { Component } from '@angular/core';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
@@ -22,7 +23,6 @@ import { UsersService } from '../../shared/swagger/api/users.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { UserQuery } from '../../shared/user/user.query';
 import { RefreshService } from './../../shared/refresh.service';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-refresh-tool-organization',

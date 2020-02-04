@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { HeaderModule } from '../shared/modules/header.module';
 import { docsRouting } from './docs.routing';
 

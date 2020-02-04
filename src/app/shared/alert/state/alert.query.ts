@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { AlertStore, AlertState } from './alert.store';
 import { Observable } from 'rxjs';
+import { AlertState, AlertStore } from './alert.store';
 
 @Injectable({ providedIn: 'root' })
 export class AlertQuery extends Query<AlertState> {

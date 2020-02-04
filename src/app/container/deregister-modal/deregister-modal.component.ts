@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 
+import { Component, Input, OnInit } from '@angular/core';
 import { RegisterToolService } from './../register-tool/register-tool.service';
-import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-deregister-modal',

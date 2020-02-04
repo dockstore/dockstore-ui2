@@ -1,8 +1,8 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { VerifiedByService } from './verified-by.service';
+import { async, inject, TestBed } from '@angular/core/testing';
 import { testSourceFiles } from '../test/mocked-objects';
+import { VerifiedByService } from './verified-by.service';
 
 describe('Service: VerifiedBy', () => {
   beforeEach(() => {

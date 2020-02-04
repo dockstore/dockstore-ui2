@@ -9,8 +9,8 @@ import {
   Organization,
   OrganizationsService,
   Workflow,
-  WorkflowVersionPathInfo,
-  WorkflowsService
+  WorkflowsService,
+  WorkflowVersionPathInfo
 } from '../../shared/swagger';
 import { AliasesStore } from './aliases.store';
 
@@ -171,5 +171,4 @@ export class AliasesService {
       };
     });
   }
-
 }

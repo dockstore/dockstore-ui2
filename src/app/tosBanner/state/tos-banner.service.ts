@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { currentPrivacyPolicyVersion, currentTOSVersion, dismissedLatestPrivacyPolicy, dismissedLatestTOS } from '../../shared/constants';
 import { TosBannerStore } from './tos-banner.store';
-import { currentTOSVersion, currentPrivacyPolicyVersion, dismissedLatestTOS, dismissedLatestPrivacyPolicy } from '../../shared/constants';
 
 @Injectable({ providedIn: 'root' })
 export class TosBannerService {

@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 
+import { AlertQuery } from '../../../shared/alert/state/alert.query';
+import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
 import { Configuration, Profile, User } from '../../../shared/swagger';
 import { UsersService } from '../../../shared/swagger/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
-import { AlertService } from '../../../shared/alert/state/alert.service';
-import { AlertQuery } from '../../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-accounts-internal',

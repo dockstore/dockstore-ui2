@@ -19,10 +19,10 @@ import { transaction } from '@datorama/akita';
 import { DateService } from '../date.service';
 import { DockstoreService } from '../dockstore.service';
 import { ImageProviderService } from '../image-provider.service';
+import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 import { ProviderService } from '../provider.service';
 import { DockstoreTool } from '../swagger';
 import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
-import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 
 @Injectable({
   providedIn: 'root'

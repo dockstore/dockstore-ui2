@@ -14,15 +14,15 @@
  *    limitations under the License.
  */
 
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { ContainersStubService } from '../test/service-stubs';
-import { ContainersService } from './swagger/api/containers.service';
-import { ImageProviderService } from './image-provider.service';
-import { TestBed, inject } from '@angular/core/testing';
-import { validTool } from '../test/mocked-objects';
-import { faAmazonECR, faQuay, faWhale } from './custom-icons';
+import { inject, TestBed } from '@angular/core/testing';
 import { faDocker, faGitlab } from '@fortawesome/free-brands-svg-icons';
+import { validTool } from '../test/mocked-objects';
+import { ContainersStubService } from '../test/service-stubs';
+import { faAmazonECR, faQuay, faWhale } from './custom-icons';
+import { ImageProviderService } from './image-provider.service';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { ContainersService } from './swagger/api/containers.service';
+import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 describe('ImageProviderService', () => {
   beforeEach(() => {

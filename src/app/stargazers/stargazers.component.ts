@@ -16,12 +16,12 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
+import { StarEntry } from 'app/starring/StarEntry';
 import { Base } from '../shared/base';
+import { altAvatarImg } from '../shared/constants';
 import { StarentryService } from '../shared/starentry.service';
 import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
-import { altAvatarImg } from '../shared/constants';
-import { StarEntry } from 'app/starring/StarEntry';
 
 @Component({
   selector: 'app-stargazers',

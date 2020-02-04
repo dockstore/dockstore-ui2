@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EventsStore } from './events.store';
+import { Injectable } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 import { Event } from '../../shared/swagger';
 import { OrganizationsService } from '../../shared/swagger';
-import { finalize } from 'rxjs/operators';
+import { EventsStore } from './events.store';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {

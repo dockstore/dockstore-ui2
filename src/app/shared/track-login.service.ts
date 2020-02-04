@@ -15,8 +15,8 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
 import { AuthService } from 'ng2-ui-auth';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable()
 export class TrackLoginService {

@@ -17,9 +17,9 @@ import { inject, TestBed } from '@angular/core/testing';
 
 import { Dockstore } from '../../shared/dockstore.model';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { ToolDescriptor } from '../../shared/swagger';
 import { WorkflowStubService } from '../../test/service-stubs';
 import { WorkflowLaunchService } from './workflow-launch.service';
-import { ToolDescriptor } from '../../shared/swagger';
 
 describe('WorkflowLaunchService', () => {
   beforeEach(() => {

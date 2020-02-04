@@ -1,7 +1,7 @@
-import { inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { inject, TestBed } from '@angular/core/testing';
+import { expiredMockNotification, mockedNotification } from '../test/mocked-objects';
 import { NotificationsComponent } from './notifications.component';
-import { mockedNotification, expiredMockNotification } from '../test/mocked-objects';
 
 describe('NotificationsComponent', () => {
   beforeEach(() => {

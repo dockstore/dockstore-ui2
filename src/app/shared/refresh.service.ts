@@ -16,6 +16,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Observable } from 'rxjs';
 import { AlertService } from './alert/state/alert.service';
 import { ContainerService } from './container.service';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
@@ -24,12 +25,11 @@ import { WorkflowService } from './state/workflow.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
+import { BioWorkflow } from './swagger/model/bioWorkflow';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { Service } from './swagger/model/service';
 import { Workflow } from './swagger/model/workflow';
 import { ToolQuery } from './tool/tool.query';
-import { BioWorkflow } from './swagger/model/bioWorkflow';
-import { Service } from './swagger/model/service';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class RefreshService {

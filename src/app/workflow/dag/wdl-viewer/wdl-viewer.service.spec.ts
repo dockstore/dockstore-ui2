@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { of as observableOf, throwError } from 'rxjs';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-import { WorkflowVersion, ToolDescriptor } from '../../../shared/swagger';
+import { ToolDescriptor, WorkflowVersion } from '../../../shared/swagger';
 import { sampleWorkflow1, sampleWorkflow2, sampleWorkflowVersion } from '../../../test/mocked-objects';
 import { WdlViewerService } from './state/wdl-viewer.service';
 
