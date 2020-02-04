@@ -67,6 +67,25 @@ export class DescriptorLanguageService {
     });
   }
 
+  toolDescriptorTypeEnumToWeirdCheckerRegisterString(descriptorType: ToolDescriptor.TypeEnum): 'cwl' | 'wdl' | null {
+    let descriptorTypeNoNFL: 'cwl' | 'wdl';
+    switch (descriptorType) {
+      case ToolDescriptor.TypeEnum.CWL: {
+        descriptorTypeNoNFL = 'cwl';
+        break;
+      }
+      case ToolDescriptor.TypeEnum.WDL: {
+        descriptorTypeNoNFL = 'wdl';
+        break;
+      }
+      default: {
+        this.genericUnhandledTypeError(descriptorType);
+        return null;
+      }
+    }
+    return descriptorTypeNoNFL;
+  }
+
   getDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): string {
     switch (descriptorType) {
       case ToolDescriptor.TypeEnum.CWL: {
