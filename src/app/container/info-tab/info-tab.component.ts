@@ -64,8 +64,7 @@ export class InfoTabComponent implements OnInit, OnChanges {
     this.tool = JSON.parse(JSON.stringify(this.extendedDockstoreTool));
     if (this.selectedVersion && this.tool) {
       this.currentVersion = this.selectedVersion;
-      const found = this.validVersions.find((version: Tag) => version.id === this.selectedVersion.id);
-      this.isValidVersion = !!found;
+      this.isValidVersion = this.validVersions.some((version: Tag) => version.id === this.selectedVersion.id);
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
       if (this.tool.descriptorType.includes(DescriptorTypeEnum.CWL)) {
         this.trsLinkCWL = this.getTRSLink(
