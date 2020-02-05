@@ -588,7 +588,7 @@ export class SearchService {
     });
   }
 
-  saveCurrentTab(index: boolean) {
+  saveCurrentTab(index: number) {
     this.searchStore.update(state => {
       return {
         ...state,

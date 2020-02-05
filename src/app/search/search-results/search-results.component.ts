@@ -29,7 +29,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./search-results.component.scss']
 })
 export class SearchResultsComponent extends Base implements OnInit {
-  public activeToolTab$: Observable<boolean>;
+  public activeToolTab$: Observable<number>;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
@@ -52,15 +52,12 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.showWorkflowTagCloud$ = this.searchQuery.showWorkflowTagCloud$;
   }
 
-  private readonly TOOLS_TAB_INDEX = 0;
-  private readonly WORKFLOWS_TAB_INDEX = 1;
-
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
     this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
       map(activeToolTab => {
-        return { active: activeToolTab ? this.TOOLS_TAB_INDEX : this.WORKFLOWS_TAB_INDEX };
+        return { active: activeToolTab };
       })
     );
   }
@@ -120,11 +117,7 @@ export class SearchResultsComponent extends Base implements OnInit {
   }
 
   saveTabIndex(tab) {
-    if (tab.index === 0) {
-      this.searchService.saveCurrentTab(true);
-    } else {
-      this.searchService.saveCurrentTab(false);
-    }
+    this.searchService.saveCurrentTab(tab.index);
   }
 
   tagClicked(clicked: CloudData) {
