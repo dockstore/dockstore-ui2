@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { EntryWizardStore, EntryWizardState } from './entry-wizard.store';
+import { EntryWizardState, EntryWizardStore } from './entry-wizard.store';
 
 @Injectable({ providedIn: 'root' })
 export class EntryWizardQuery extends Query<EntryWizardState> {

@@ -1,6 +1,6 @@
-import { ContainersService } from './../shared/swagger/api/containers.service';
+import { HttpEvent, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HttpResponse, HttpEvent } from '@angular/common/http';
+import { ContainersService } from './../shared/swagger/api/containers.service';
 
 /**
  * This is an extension of the generated swagger code. The reason it exists is that for zip download to work,

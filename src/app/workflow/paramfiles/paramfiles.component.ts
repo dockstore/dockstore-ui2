@@ -24,8 +24,8 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { FilesService } from '../files/state/files.service';
 import { FilesQuery } from '../files/state/files.query';
+import { FilesService } from '../files/state/files.service';
 
 @Component({
   selector: 'app-paramfiles-workflow',

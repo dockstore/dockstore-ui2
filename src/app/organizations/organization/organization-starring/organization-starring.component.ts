@@ -15,19 +15,19 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
+import { AlertService } from '../../../shared/alert/state/alert.service';
+import { Base } from '../../../shared/base';
+import { ContainerService } from '../../../shared/container.service';
+import { StarOrganizationService } from '../../../shared/star-organization.service';
+import { StarentryService } from '../../../shared/starentry.service';
+import { isStarredByUser } from '../../../shared/starring';
 import { Organization, User } from '../../../shared/swagger';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
-import { ContainerService } from '../../../shared/container.service';
 import { StarringService } from '../../../starring/starring.service';
-import { StarentryService } from '../../../shared/starentry.service';
-import { StarOrganizationService } from '../../../shared/star-organization.service';
-import { AlertService } from '../../../shared/alert/state/alert.service';
-import { first, takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { OrganizationStarringService } from './organization-starring.service';
-import { isStarredByUser } from '../../../shared/starring';
-import { Base } from '../../../shared/base';
 
 @Component({
   selector: 'app-organization-starring',

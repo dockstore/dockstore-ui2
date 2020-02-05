@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { createInitialState, DescriptorsState, DescriptorsStore } from './descriptors-store';
-import { map, mergeMap } from 'rxjs/operators';
 import { Observable, of as observableOf } from 'rxjs';
-import { SourceFile } from '../../../shared/swagger';
+import { map, mergeMap } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
+import { SourceFile } from '../../../shared/swagger';
+import { createInitialState, DescriptorsState, DescriptorsStore } from './descriptors-store';
 
 @Injectable()
 export class DescriptorsQuery extends Query<DescriptorsState> {

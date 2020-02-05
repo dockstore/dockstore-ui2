@@ -1,9 +1,9 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { By } from '@angular/platform-browser';
 import { MaintenanceComponent } from './maintenance.component';
 
 describe('MaintenanceComponent', () => {

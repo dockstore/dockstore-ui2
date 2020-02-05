@@ -22,14 +22,14 @@ import { first, takeUntil } from 'rxjs/operators';
 
 import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
+import { TokenQuery } from '../../../shared/state/token.query';
+import { TokenService } from '../../../shared/state/token.service';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserService } from '../../../shared/user/user.service';
 import { UsersService } from './../../../shared/swagger/api/users.service';
 import { Configuration } from './../../../shared/swagger/configuration';
 import { Token } from './../../../shared/swagger/model/token';
 import { AccountsService } from './accounts.service';
-import { TokenService } from '../../../shared/state/token.service';
-import { TokenQuery } from '../../../shared/state/token.query';
 
 @Component({
   selector: 'app-accounts-external',

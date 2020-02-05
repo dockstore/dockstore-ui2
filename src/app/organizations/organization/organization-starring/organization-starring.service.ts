@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Organization, User } from '../../../shared/swagger';
 import { OrganizationsService } from '../../../shared/swagger';

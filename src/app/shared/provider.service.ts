@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 
-import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
-import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faBitbucket, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 import { faDockstore, faWhale } from './custom-icons';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 
 const GITHUB = 'GitHub';
 const BITBUCKET = 'Bitbucket';

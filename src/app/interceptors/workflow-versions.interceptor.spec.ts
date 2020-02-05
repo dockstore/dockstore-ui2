@@ -1,7 +1,7 @@
-import { WorkflowVersionsInterceptor } from './workflow-versions.interceptor';
-import { inject, TestBed } from '@angular/core/testing';
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
+import { inject, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs';
+import { WorkflowVersionsInterceptor } from './workflow-versions.interceptor';
 
 class SourcefilesEmptyChecker extends HttpHandler {
   handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {

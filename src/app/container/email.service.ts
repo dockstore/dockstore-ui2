@@ -1,6 +1,6 @@
-import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
-import { DockstoreService } from './../shared/dockstore.service';
 import { Injectable } from '@angular/core';
+import { DockstoreService } from './../shared/dockstore.service';
+import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 
 @Injectable()
 export class EmailService {

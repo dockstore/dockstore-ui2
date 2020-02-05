@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Notification } from '../shared/swagger/model/notification';
 import { NotificationsQuery } from './state/notifications.query';
 import { NotificationsService } from './state/notifications.service';
-import { Observable } from 'rxjs';
 
 interface DismissedNotification {
   id: number;

@@ -24,9 +24,9 @@ import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { ContainersService, GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
-import { ParamfilesService } from './paramfiles.service';
-import { FilesService } from '../../workflow/files/state/files.service';
 import { FilesQuery } from '../../workflow/files/state/files.query';
+import { FilesService } from '../../workflow/files/state/files.service';
+import { ParamfilesService } from './paramfiles.service';
 
 @Component({
   selector: 'app-paramfiles-container',

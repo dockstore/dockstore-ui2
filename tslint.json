@@ -8,6 +8,7 @@
     "node_modules/rxjs-tslint"
   ],
   "rules": {
+    "ordered-imports": true,
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,

@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GettingStartedComponent } from './getting-started.component';
-import { RouterLinkStubDirective } from '../../../test';
 import { MatButtonModule, MatIconModule } from '@angular/material';
+import { RouterLinkStubDirective } from '../../../test';
+import { GettingStartedComponent } from './getting-started.component';
 
 describe('GettingStartedComponent', () => {
   let component: GettingStartedComponent;

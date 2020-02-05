@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { UpsertOrganizationMemberStore, UpsertOrganizationMemberState } from './upsert-organization-member.store';
+import { UpsertOrganizationMemberState, UpsertOrganizationMemberStore } from './upsert-organization-member.store';
 
 @Injectable({ providedIn: 'root' })
 export class UpsertOrganizationMemberQuery extends Query<UpsertOrganizationMemberState> {

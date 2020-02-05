@@ -1,12 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { RequestsService } from '../state/requests.service';
-import { RequestsQuery } from '../state/requests.query';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { Organization, OrganizationUser } from '../../shared/swagger';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserQuery } from '../../shared/user/user.query';
-import { Base } from '../../shared/base';
 import { takeUntil } from 'rxjs/operators';
+import { Base } from '../../shared/base';
+import { Organization, OrganizationUser } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
+import { RequestsQuery } from '../state/requests.query';
+import { RequestsService } from '../state/requests.service';
 
 @Component({
   selector: 'organization-request-confirm-dialog',

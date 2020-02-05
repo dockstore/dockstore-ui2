@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig, ActiveState } from '@datorama/akita';
+import { ActiveState, EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Collection } from '../../shared/swagger';
 
 export interface CollectionsState extends EntityState<Collection>, ActiveState {}

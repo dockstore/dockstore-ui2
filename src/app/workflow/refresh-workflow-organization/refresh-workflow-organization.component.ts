@@ -16,13 +16,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-refresh-workflow-organization',

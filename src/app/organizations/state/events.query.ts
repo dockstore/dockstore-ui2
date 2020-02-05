@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { EventsStore, EventsState } from './events.store';
-import { Event } from '../../shared/swagger';
 import { Observable } from 'rxjs';
+import { Event } from '../../shared/swagger';
+import { EventsState, EventsStore } from './events.store';
 
 @Injectable({
   providedIn: 'root'

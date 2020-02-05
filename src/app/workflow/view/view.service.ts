@@ -13,21 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
+import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { TokenSource } from '../../shared/enum/token-source.enum';
+import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
-import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
-import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
-import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
-import { TokenQuery } from '../../shared/state/token.query';
-import { TokenSource } from '../../shared/enum/token-source.enum';
-import { bootstrap4mediumModalSize } from '../../shared/constants';
-import { first } from 'rxjs/operators';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 
 @Injectable()
 export class ViewService {

@@ -20,9 +20,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 
+import { RouterTestingModule } from '@angular/router/testing';
 import { TwitterService } from '../../shared/twitter.service';
 import { HomeComponent } from './home.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

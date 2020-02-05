@@ -15,11 +15,11 @@
  */
 import { Injectable } from '@angular/core';
 
-import { ToolDescriptor, SourceFile, Validation } from '../../shared/swagger';
+import { SourceFile, ToolDescriptor, Validation } from '../../shared/swagger';
 import { ContainersService } from './../../shared/swagger/api/containers.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { Tag } from './../../shared/swagger/model/tag';
+import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
 @Injectable()
 export class ParamfilesService {

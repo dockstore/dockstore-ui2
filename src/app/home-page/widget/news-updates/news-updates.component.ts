@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { NotificationsQuery } from '../../../notifications/state/notifications.query';
 import { NotificationsService } from '../../../notifications/state/notifications.service';
 import { Notification } from '../../../shared/swagger';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-news-updates',

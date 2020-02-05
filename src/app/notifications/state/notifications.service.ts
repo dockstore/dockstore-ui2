@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { NotificationsStore } from './notifications.store';
-import { Notification } from '../../shared/swagger/model/notification';
 import { CurationService } from '../../shared/swagger/api/curation.service';
+import { Notification } from '../../shared/swagger/model/notification';
+import { NotificationsStore } from './notifications.store';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationsService {

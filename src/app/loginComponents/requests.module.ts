@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  RequestsComponent,
-  OrganizationRequestConfirmDialogComponent,
-  OrganizationInviteConfirmDialogComponent
-} from './requests/requests.component';
-import { CustomMaterialModule } from './../shared/modules/material.module';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterModule } from '@angular/router';
+import { CustomMaterialModule } from './../shared/modules/material.module';
+import {
+  OrganizationInviteConfirmDialogComponent,
+  OrganizationRequestConfirmDialogComponent,
+  RequestsComponent
+} from './requests/requests.component';
 @NgModule({
   imports: [CommonModule, CustomMaterialModule, RouterModule, FlexLayoutModule],
   declarations: [RequestsComponent, OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent],

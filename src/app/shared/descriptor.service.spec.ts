@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-import { DescriptorService } from './descriptor.service';
-import { TestBed, inject } from '@angular/core/testing';
-import { ToolDescriptor } from './swagger';
+import { inject, TestBed } from '@angular/core/testing';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
+import { DescriptorService } from './descriptor.service';
+import { ToolDescriptor } from './swagger';
 
 describe('DescriptorService', () => {
   beforeEach(() => {

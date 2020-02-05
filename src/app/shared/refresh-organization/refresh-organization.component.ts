@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { UserQuery } from '../user/user.query';
 import { AlertQuery } from '../alert/state/alert.query';
+import { UserQuery } from '../user/user.query';
 
 @Injectable()
 export class RefreshOrganizationComponent implements OnInit, OnDestroy {

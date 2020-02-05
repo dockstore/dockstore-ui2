@@ -18,8 +18,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileService } from '../../../shared/file.service';
 
-import { WdlViewerComponent } from './wdl-viewer.component';
 import { WdlViewerService } from './state/wdl-viewer.service';
+import { WdlViewerComponent } from './wdl-viewer.component';
 
 describe('WdlViewerComponent', () => {
   let component: WdlViewerComponent;

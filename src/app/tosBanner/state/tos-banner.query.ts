@@ -16,9 +16,9 @@
 
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { TosBannerStore, TosBannerState } from './tos-banner.store';
 import { Observable } from 'rxjs';
 import { User } from '../../shared/openapi/model/user';
+import { TosBannerState, TosBannerStore } from './tos-banner.store';
 
 @Injectable({ providedIn: 'root' })
 export class TosBannerQuery extends Query<TosBannerState> {

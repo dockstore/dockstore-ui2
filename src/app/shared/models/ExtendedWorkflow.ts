@@ -1,5 +1,5 @@
-import { Workflow } from './../swagger/model/workflow';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { Workflow } from './../swagger/model/workflow';
 
 export interface ExtendedWorkflow extends Workflow {
   agoMessage?: string;

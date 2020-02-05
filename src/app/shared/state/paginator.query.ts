@@ -16,9 +16,9 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 
-import { PaginatorState, PaginatorStore } from './paginator.store';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { PaginatorState, PaginatorStore } from './paginator.store';
 
 @Injectable({ providedIn: 'root' })
 export class PaginatorQuery extends Query<PaginatorState> {

@@ -16,6 +16,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -42,7 +43,6 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [

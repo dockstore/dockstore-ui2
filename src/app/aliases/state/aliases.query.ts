@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { AliasesStore, AliasesState } from './aliases.store';
+import { AliasesState, AliasesStore } from './aliases.store';
 
 @Injectable({ providedIn: 'root' })
 export class AliasesQuery extends Query<AliasesState> {

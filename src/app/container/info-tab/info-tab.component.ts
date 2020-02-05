@@ -22,11 +22,11 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
+import { ToolDescriptor, ToolVersion } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
-import { ToolDescriptor, ToolVersion } from '../../shared/swagger';
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 
 @Component({

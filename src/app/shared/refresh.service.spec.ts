@@ -28,6 +28,7 @@ import {
   UsersStubService,
   WorkflowsStubService
 } from '../test/service-stubs';
+import { AlertQuery } from './alert/state/alert.query';
 import { ContainerService } from './container.service';
 import { DateService } from './date.service';
 import { DockstoreService } from './dockstore.service';
@@ -42,7 +43,6 @@ import { WorkflowsService } from './swagger/api/workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from './swagger/model/workflow';
 import { ToolQuery } from './tool/tool.query';
-import { AlertQuery } from './alert/state/alert.query';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 describe('RefreshService', () => {

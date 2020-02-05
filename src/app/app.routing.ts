@@ -24,10 +24,10 @@ import { AuthComponent } from './loginComponents/auth/auth.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
-import { SessionExpiredComponent } from './session-expired/session-expired.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 

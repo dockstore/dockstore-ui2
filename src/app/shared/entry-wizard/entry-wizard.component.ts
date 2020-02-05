@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { EntryWizardService } from '../state/entry-wizard.service';
-import { EntryWizardQuery } from '../state/entry-wizard.query';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Observable } from 'rxjs';
 import { Repository } from '../openapi/model/repository';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { EntryWizardQuery } from '../state/entry-wizard.query';
+import { EntryWizardService } from '../state/entry-wizard.service';
 
 @Component({
   selector: 'entry-wizard',

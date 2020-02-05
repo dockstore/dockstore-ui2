@@ -1,8 +1,8 @@
-import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
-import { EventsService } from '../state/events.service';
-import { EventsQuery } from '../state/events.query';
-import { Event } from '../../shared/swagger';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Event } from '../../shared/swagger';
+import { EventsQuery } from '../state/events.query';
+import { EventsService } from '../state/events.service';
 
 @Component({
   selector: 'events',
