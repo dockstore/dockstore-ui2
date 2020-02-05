@@ -85,7 +85,7 @@ describe('SearchComponent', () => {
       pageIndex: 0,
       advancedSearch: null,
       showModal: false,
-      currentTabIndex: true
+      currentTabIndex: 0
     });
     fixture.detectChanges();
   });
