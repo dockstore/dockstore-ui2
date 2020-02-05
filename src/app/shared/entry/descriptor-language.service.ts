@@ -33,12 +33,6 @@ export class DescriptorLanguageService {
   readonly knownServiceValue = 'service';
 
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
-  // This converts the descriptor language beans into a human readable list of short names for use in tooltips and such
-  // E.g. "CWL, WDL, and NFL"
-  public shortDescriptorLanguageString$: Observable<string>;
-  // This converts the descriptor language beans into a human readable list of friendly names for use in tooltips and such
-  // (e.g. "Common Workflow Language, Workflow Description Language, and Nextflow")
-  public friendlyDescriptorLanguageString$: Observable<string>;
   public homepageInnerHTML$: Observable<string>;
   public noService$: Observable<DescriptorLanguageBean[]>;
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
@@ -52,8 +46,6 @@ export class DescriptorLanguageService {
         }
       })
     );
-    this.shortDescriptorLanguageString$ = this.descriptorLanguagesBean$.pipe(map(beans => this.convertBeansToShortNames(beans)));
-    this.friendlyDescriptorLanguageString$ = this.descriptorLanguagesBean$.pipe(map(bean => this.convertBeansToFriendlyNames(bean)));
     this.noService$ = this.descriptorLanguagesBean$.pipe(map(beans => this.filterService(beans)));
     this.homepageInnerHTML$ = this.noService$.pipe(
       map((descriptorLanguageBeans: DescriptorLanguageBean[]) => this.getHomepageInnerHTML(descriptorLanguageBeans))
@@ -98,11 +90,11 @@ export class DescriptorLanguageService {
         return validationDescriptorPatterns.nflPath;
       }
       case ToolDescriptor.TypeEnum.SERVICE: {
-        return '*';
+        return '.*';
       }
       default: {
         this.genericUnhandledTypeError(descriptorType);
-        return '*';
+        return '.*';
       }
     }
   }
@@ -159,38 +151,12 @@ export class DescriptorLanguageService {
       return innerHTMLArray[0];
     }
     if (length === 2) {
-      return innerHTMLArray.join(' and ');
+      return innerHTMLArray.join(' or ');
     }
     if (length >= 3) {
       innerHTMLArray[length - 1] = 'or ' + innerHTMLArray[length - 1];
       return innerHTMLArray.join(', ');
     }
-  }
-
-  convertBeansToShortNames(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
-    const numberOfLanguages = descriptorLanguageBeans.length;
-    if (numberOfLanguages === 1) {
-      return descriptorLanguageBeans[0].value;
-    }
-    if (numberOfLanguages === 2) {
-      return descriptorLanguageBeans[0].value + ' and ' + descriptorLanguageBeans[1].value;
-    }
-    const listOfShortNames: string[] = descriptorLanguageBeans.map(descriptorLanguageBean => descriptorLanguageBean.value);
-    listOfShortNames.splice(listOfShortNames.length - 1, 0, 'and');
-    return listOfShortNames.join(', ');
-  }
-
-  convertBeansToFriendlyNames(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
-    const numberOfLanguages = descriptorLanguageBeans.length;
-    if (numberOfLanguages === 1) {
-      return descriptorLanguageBeans[0].friendlyName;
-    }
-    if (numberOfLanguages === 2) {
-      return descriptorLanguageBeans[0].friendlyName + ' and ' + descriptorLanguageBeans[1].friendlyName;
-    }
-    const listOfShortNames: string[] = descriptorLanguageBeans.map(descriptorLanguageBean => descriptorLanguageBean.friendlyName);
-    listOfShortNames.splice(listOfShortNames.length - 1, 0, 'and');
-    return listOfShortNames.join(', ');
   }
 
   /**
