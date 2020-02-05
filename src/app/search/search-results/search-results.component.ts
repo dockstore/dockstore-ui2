@@ -16,12 +16,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Base } from '../../shared/base';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
-import { Base } from '../../shared/base';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search-results',
