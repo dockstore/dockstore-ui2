@@ -15,8 +15,6 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import { ContainerService } from '../../shared/container.service';
 import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
@@ -46,7 +44,6 @@ export class DescriptorsComponent extends EntryFileSelector {
   protected entryType: 'tool' | 'workflow' = 'tool';
 
   constructor(
-    private containerService: ContainerService,
     private descriptorsService: DescriptorService,
     protected gA4GHService: GA4GHService,
     private toolQuery: ToolQuery,

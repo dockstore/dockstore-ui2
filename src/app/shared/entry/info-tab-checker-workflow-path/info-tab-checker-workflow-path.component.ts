@@ -14,10 +14,9 @@
  *    limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-
 import { MatDialog } from '@angular/material/dialog';
 import { Workflow } from 'app/shared/swagger';
+import { Observable } from 'rxjs';
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { SessionQuery } from '../../session/session.query';
@@ -71,7 +70,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
 
   add(): void {
     this.registerCheckerWorkflowService.add();
-    const dialogRef = this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px' });
+    this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px' });
   }
 
   delete(): void {

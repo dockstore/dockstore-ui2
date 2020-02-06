@@ -19,10 +19,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
-import { Repository } from '../../shared/enum/Repository.enum';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
@@ -34,7 +32,6 @@ import { Tool } from './tool';
 export class RegisterToolService {
   toolRegisterError: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   customDockerRegistryPath: BehaviorSubject<string> = new BehaviorSubject<string>('quay.io');
-  private repositories = Repository;
   public showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public disabledPrivateCheckbox = false;
   private dockerRegistryMap = [];

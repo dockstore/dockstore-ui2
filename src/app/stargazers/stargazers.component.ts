@@ -14,9 +14,8 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-
 import { StarEntry } from 'app/starring/StarEntry';
+import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { altAvatarImg } from '../shared/constants';
 import { StarentryService } from '../shared/starentry.service';
@@ -30,7 +29,7 @@ import { StarringService } from '../starring/starring.service';
 })
 export class StargazersComponent extends Base implements OnInit {
   starGazers: any;
-  private altAvatarImg = altAvatarImg;
+  public altAvatarImg = altAvatarImg;
 
   constructor(private starringService: StarringService, private userService: UserService, private starentryService: StarentryService) {
     super();

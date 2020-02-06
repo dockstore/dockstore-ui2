@@ -21,7 +21,6 @@ import { Base } from '../../shared/base';
 import { ContainerService } from '../../shared/container.service';
 import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
-import { RefreshService } from '../../shared/refresh.service';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
@@ -55,7 +54,6 @@ export class InfoTabService extends Base {
     private containersService: ContainersService,
     private alertService: AlertService,
     private containerService: ContainerService,
-    private refreshService: RefreshService,
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery
   ) {
     super();

@@ -18,7 +18,6 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, merge as observableMerge, Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
-
 import { AlertService } from '../../alert/state/alert.service';
 import { ContainerService } from '../../container.service';
 import { RefreshService } from '../../refresh.service';
@@ -69,6 +68,7 @@ export class RegisterCheckerWorkflowService {
               this.containerService.upsertToolToTools(<DockstoreTool>entry);
               this.containerService.setTool(<DockstoreTool>entry);
             }
+            // TODO: Use the message or remove it
             const refreshCheckerMessage = 'Refreshing checker workflow';
             this.workflowsService
               .refresh(entry.checker_id)

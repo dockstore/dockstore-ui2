@@ -18,7 +18,6 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable, Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
 import { isStarredByUser } from '../shared/starring';
 import { User } from '../shared/swagger/model/user';
@@ -48,7 +47,6 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private trackLoginService: TrackLoginService,
     private userQuery: UserQuery,
-    private containerService: ContainerService,
     private starringService: StarringService,
     private starentryService: StarentryService,
     private alertService: AlertService

@@ -17,8 +17,6 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-
-import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
 import { ToolDescriptor, ToolFile } from '../swagger';
 import { GA4GHFiles } from './ga4gh-files.model';
 import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
@@ -50,7 +48,7 @@ export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
       return observableOf([]);
     }
   }
-  constructor(protected store: GA4GHFilesStore, private descriptorTypeCompatService: DescriptorTypeCompatService) {
+  constructor(protected store: GA4GHFilesStore) {
     super(store);
   }
 }

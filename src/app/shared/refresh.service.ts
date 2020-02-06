@@ -14,8 +14,6 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { Observable } from 'rxjs';
 import { AlertService } from './alert/state/alert.service';
 import { ContainerService } from './container.service';
@@ -36,7 +34,6 @@ export class RefreshService {
   public tool: DockstoreTool;
   private tools;
   private workflow: Service | BioWorkflow;
-  private workflows;
   constructor(
     private workflowsService: WorkflowsService,
     private containerService: ContainerService,
@@ -44,7 +41,6 @@ export class RefreshService {
     private workflowService: WorkflowService,
     private containersService: ContainersService,
     private usersService: UsersService,
-    private snackBar: MatSnackBar,
     private toolQuery: ToolQuery,
     private gA4GHFilesService: GA4GHFilesService,
     private workflowQuery: WorkflowQuery
@@ -52,7 +48,6 @@ export class RefreshService {
     this.toolQuery.tool$.subscribe(tool => (this.tool = tool));
     this.workflowQuery.workflow$.subscribe(workflow => (this.workflow = workflow));
     this.containerService.tools$.subscribe(tools => (this.tools = tools));
-    this.workflowService.workflows$.subscribe(workflows => (this.workflows = workflows));
   }
 
   /**

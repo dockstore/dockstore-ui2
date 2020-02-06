@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../../shared/alert/state/alert.service';
@@ -27,7 +26,6 @@ export class CreateCollectionService {
     private organizationsService: OrganizationsService,
     private organizationQuery: OrganizationQuery,
     private matDialog: MatDialog,
-    private matSnackBar: MatSnackBar,
     private collectionsService: CollectionsService,
     private builder: FormBuilder,
     private alertService: AlertService
