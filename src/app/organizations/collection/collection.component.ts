@@ -13,6 +13,7 @@ import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
+import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 
 @Component({
   selector: 'collection-entry-confirm-remove',
@@ -45,6 +46,7 @@ export interface DialogData {
 })
 export class CollectionComponent implements OnInit {
   WorkflowMode = Workflow.ModeEnum;
+  DescriptorType = ToolDescriptor.TypeEnum;
   collection$: Observable<Collection>;
   loadingCollection$: Observable<boolean>;
 
