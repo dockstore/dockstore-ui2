@@ -99,15 +99,15 @@ export class DescriptorLanguageService {
     }
   }
 
-  workflowDescriptorTypeEnumToPlaceholderDescriptor(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum): string {
+  workflowDescriptorTypeEnumToPlaceholderDescriptor(workflowDescriptorTypeEnum: ToolDescriptor.TypeEnum): string {
     switch (workflowDescriptorTypeEnum) {
-      case Workflow.DescriptorTypeEnum.CWL: {
+      case ToolDescriptor.TypeEnum.CWL: {
         return 'e.g. /Dockstore.cwl';
       }
-      case Workflow.DescriptorTypeEnum.WDL: {
+      case ToolDescriptor.TypeEnum.WDL: {
         return 'e.g. /Dockstore.wdl';
       }
-      case Workflow.DescriptorTypeEnum.NFL: {
+      case ToolDescriptor.TypeEnum.NFL: {
         return 'e.g. /nextflow.config';
       }
       default: {

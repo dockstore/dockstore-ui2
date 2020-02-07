@@ -15,7 +15,7 @@
  */
 import { of as observableOf } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { ToolDescriptor, Workflow } from '../swagger';
+import { ToolDescriptor } from '../swagger';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 import { DescriptorLanguageService } from './descriptor-language.service';
 
@@ -76,17 +76,15 @@ describe('Service: DescriptorLanguage', () => {
     const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
-    let placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(Workflow.DescriptorTypeEnum.CWL);
+    let placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.CWL);
     expect(placeholder).toEqual('e.g. /Dockstore.cwl');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(Workflow.DescriptorTypeEnum.WDL);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.WDL);
     expect(placeholder).toEqual('e.g. /Dockstore.wdl');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(Workflow.DescriptorTypeEnum.NFL);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.NFL);
     expect(placeholder).toEqual('e.g. /nextflow.config');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(Workflow.DescriptorTypeEnum.Service);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual('');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(<Workflow.DescriptorTypeEnum>(
-      'UnrecognizedType'
-    ));
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(<ToolDescriptor.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual('');
   });
   it('should be able to get descriptor path pattern', () => {

@@ -17,7 +17,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { formInputDebounceTime } from '../../constants';
@@ -56,7 +56,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   public mode$: Observable<'add' | 'edit'>;
   public descriptorType: ToolDescriptor.TypeEnum;
   public descriptorLanguages: Array<string>;
-  public placeholderDescriptorPath$: Observable<string>;
+  public descriptorPathPlaceholder: string;
   public descriptorPattern = validationDescriptorPatterns.workflowDescriptorPath;
   private entry: Entry;
   registerCheckerWorkflowForm: NgForm;
@@ -95,24 +95,10 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
         );
       });
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.placeholderDescriptorPath$ = this.checkerWorkflowQuery.entry$.pipe(
-      map(entry => {
-        if (entry) {
-          const isWorkflow = this.checkerWorkflowQuery.isEntryAWorkflow(entry);
-          if (isWorkflow) {
-            const workflowDescriptorTypeEnum = (<Workflow>this.entry).descriptorType;
-            return this.descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(workflowDescriptorTypeEnum);
-          } else {
-            return '';
-          }
-        } else {
-          return '';
-        }
-      })
-    );
   }
 
   updateDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): void {
+    this.descriptorPathPlaceholder = this.descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType);
     this.descriptorPattern = this.descriptorLanguageService.getDescriptorPattern(descriptorType);
   }
 

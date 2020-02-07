@@ -15,7 +15,7 @@
         [pattern]="descriptorPattern"
         required
         matTooltip="Default relative path to the descriptor in the Git repository."
-        [placeholder]="placeholderDescriptorPath$ | async"
+        [placeholder]="descriptorPathPlaceholder"
       />
       <mat-error *ngIf="formErrors.workflow_path"> {{ formErrors.workflow_path }} </mat-error>
     </mat-form-field>
