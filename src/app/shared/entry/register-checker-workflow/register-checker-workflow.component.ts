@@ -87,11 +87,13 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
     });
     this.mode$ = this.registerCheckerWorkflowService.mode$;
     this.syncTestJson = false;
-    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((descriptorLanguages: Array<Workflow.DescriptorTypeEnum>) => {
-      this.descriptorLanguages = descriptorLanguages.filter(
-        (language: Workflow.DescriptorTypeEnum) => language !== ToolDescriptor.TypeEnum.NFL
-      );
-    });
+    this.descriptorLanguageService.filteredDescriptorLanguages$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((descriptorLanguages: Array<Workflow.DescriptorTypeEnum>) => {
+        this.descriptorLanguages = descriptorLanguages.filter(
+          (language: Workflow.DescriptorTypeEnum) => language !== ToolDescriptor.TypeEnum.NFL
+        );
+      });
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.placeholderDescriptorPath$ = this.checkerWorkflowQuery.entry$.pipe(
       map(entry => {
