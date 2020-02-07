@@ -35,6 +35,7 @@ describe('Dockstore my tools', () => {
   }
 
   function selectTool(tool: string) {
+    cy.get('#tool-path').should('be.visible');
     cy.contains('div .no-wrap', tool)
       .should('be.visible')
       .click();
