@@ -212,7 +212,7 @@ commands:
           command: sudo apt install libgtk2.0-0 -yq
       - run:
           name: Install cypress
-          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
+          command: bash -i -c 'npm i cypress@4.0.0 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
