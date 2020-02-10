@@ -50,7 +50,7 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;
-  homepageInnerHTML$: Observable<string>;
+  descriptorLanguagesInnerHTML$: Observable<string>;
 
   @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
 
@@ -67,7 +67,7 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.homepageInnerHTML$ = this.descriptorLanguageService.homepageInnerHTML$;
+    this.descriptorLanguagesInnerHTML$ = this.descriptorLanguageService.descriptorLanguagesInnerHTML$;
     this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {

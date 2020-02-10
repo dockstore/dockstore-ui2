@@ -54,20 +54,20 @@ describe('Service: DescriptorLanguage', () => {
 
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
-    let innerHTML = descriptorLanguageService.getHomepageInnerHTML(descriptorLanguageBeans);
+    let innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(`<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>`);
     descriptorLanguageBeans.push({ friendlyName: 'beef', value: 'WDL' });
-    innerHTML = descriptorLanguageService.getHomepageInnerHTML(descriptorLanguageBeans);
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
       `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a> or <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>`
     );
     descriptorLanguageBeans.push({ friendlyName: 'stew', value: 'NFL' });
-    innerHTML = descriptorLanguageService.getHomepageInnerHTML(descriptorLanguageBeans);
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
       `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
     );
     descriptorLanguageBeans.push({ friendlyName: 'hmm', value: 'service' });
-    innerHTML = descriptorLanguageService.getHomepageInnerHTML(descriptorLanguageBeans);
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
       `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
     );

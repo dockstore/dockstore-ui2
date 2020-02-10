@@ -33,7 +33,7 @@ export class DescriptorLanguageService {
   readonly knownServiceValue = 'service';
 
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
-  public homepageInnerHTML$: Observable<string>;
+  public descriptorLanguagesInnerHTML$: Observable<string>;
   public noService$: Observable<DescriptorLanguageBean[]>;
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
   public filteredDescriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
@@ -47,8 +47,8 @@ export class DescriptorLanguageService {
       })
     );
     this.noService$ = this.descriptorLanguagesBean$.pipe(map(beans => this.filterService(beans)));
-    this.homepageInnerHTML$ = this.noService$.pipe(
-      map((descriptorLanguageBeans: DescriptorLanguageBean[]) => this.getHomepageInnerHTML(descriptorLanguageBeans))
+    this.descriptorLanguagesInnerHTML$ = this.noService$.pipe(
+      map((descriptorLanguageBeans: DescriptorLanguageBean[]) => this.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans))
     );
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
@@ -59,6 +59,15 @@ export class DescriptorLanguageService {
     });
   }
 
+  /**
+   * Registering checker workflow has another weird set of accepted string values for descriptor type.
+   * It doesn't use ToolDescriptor.TypeEnum, Workflow.DescriptorTypeEnum, or a string.
+   * It only accepts 'cwl' or 'wdl' (not even capitals)
+   * This function converts ToolDesriptor.TypeEnum to it
+   * @param {ToolDescriptor.TypeEnum} descriptorType Descriptor type from ToolDescriptor.TypeEnum
+   * @returns {('cwl' | 'wdl' | null)} The weird values accepted by register checker workflow endpoint
+   * @memberof DescriptorLanguageService
+   */
   toolDescriptorTypeEnumToWeirdCheckerRegisterString(descriptorType: ToolDescriptor.TypeEnum): 'cwl' | 'wdl' | null {
     let descriptorTypeNoNFL: 'cwl' | 'wdl';
     switch (descriptorType) {
@@ -78,6 +87,13 @@ export class DescriptorLanguageService {
     return descriptorTypeNoNFL;
   }
 
+  /**
+   * Returns the validation pattern for the descriptor path associated with the descriptor type
+   *
+   * @param {ToolDescriptor.TypeEnum} descriptorType  Descriptor type from ToolDescriptor.TypeEnum
+   * @returns {string}  The validation pattern
+   * @memberof DescriptorLanguageService
+   */
   getDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): string {
     switch (descriptorType) {
       case ToolDescriptor.TypeEnum.CWL: {
@@ -99,8 +115,15 @@ export class DescriptorLanguageService {
     }
   }
 
-  workflowDescriptorTypeEnumToPlaceholderDescriptor(workflowDescriptorTypeEnum: ToolDescriptor.TypeEnum): string {
-    switch (workflowDescriptorTypeEnum) {
+  /**
+   * Returns the placeholder descriptor path associated with the descriptor type
+   *
+   * @param {ToolDescriptor.TypeEnum} descriptorType  Descriptor type from ToolDescriptor.TypeEnum
+   * @returns {string}  Placeholder descriptor path
+   * @memberof DescriptorLanguageService
+   */
+  workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum): string {
+    switch (descriptorType) {
       case ToolDescriptor.TypeEnum.CWL: {
         return 'e.g. /Dockstore.cwl';
       }
@@ -111,7 +134,7 @@ export class DescriptorLanguageService {
         return 'e.g. /nextflow.config';
       }
       default: {
-        this.genericUnhandledTypeError(workflowDescriptorTypeEnum);
+        this.genericUnhandledTypeError(descriptorType);
         return '';
       }
     }
@@ -121,7 +144,14 @@ export class DescriptorLanguageService {
     console.error('Unhandled descriptor type: ' + type);
   }
 
-  getHomepageInnerHTML(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
+  /**
+   * This gets the human-readable innerHTML of the list of descriptor languages with anchors links
+   *
+   * @param {DescriptorLanguageBean[]} descriptorLanguageBeans
+   * @returns {string}
+   * @memberof DescriptorLanguageService
+   */
+  getDescriptorLanguagesInnerHTML(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
     const innerHTMLArray = [];
     descriptorLanguageBeans.forEach(descriptorLanguageBean => {
       switch (descriptorLanguageBean.value) {
@@ -130,7 +160,7 @@ export class DescriptorLanguageService {
           break;
         }
         case this.knownWDLValue: {
-          innerHTMLArray.push('<a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>');
+          innerHTMLArray.push('<a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>');
           break;
         }
         case this.knownNFLValue: {
@@ -175,6 +205,13 @@ export class DescriptorLanguageService {
     }
   }
 
+  /**
+   * Certain pages ignore the 'service' descriptor language completely, this filters it out of the known languages
+   *
+   * @param {DescriptorLanguageBean[]} beans  Descriptor language bean returned from the metadata endpoint
+   * @returns {DescriptorLanguageBean[]}   Filtered list of languages that do not have 'service' in it
+   * @memberof DescriptorLanguageService
+   */
   filterService(beans: DescriptorLanguageBean[]): DescriptorLanguageBean[] {
     return beans.filter(bean => bean.value !== this.knownServiceValue);
   }
