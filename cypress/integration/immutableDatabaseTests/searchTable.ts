@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { setTokenUserViewPort } from '../../support/commands';
+import { goToTab } from "../../support/commands";
 
 describe('Dockstore tool/workflow search table', () => {
   setTokenUserViewPort();
@@ -339,7 +340,7 @@ describe('Dockstore tool/workflow search table', () => {
     cy.visit('/search');
 
     if (type === 'workflow') {
-      cy.get('#workflowTab-link').click();
+      goToTab('Workflows');
     }
     cy.get('.mat-icon.star').should('not.exist');
     // cy.visit(url);
@@ -357,7 +358,7 @@ describe('Dockstore tool/workflow search table', () => {
 
     cy.visit('/search');
     if (type === 'workflow') {
-      cy.get('#workflowTab-link').click();
+      goToTab('Workflows');
     }
     cy.get('.mat-icon.star').should('exist');
     // cy.visit(url);

@@ -16,6 +16,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Base } from '../../shared/base';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
@@ -26,14 +28,13 @@ import { SearchService } from '../state/search.service';
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss']
 })
-export class SearchResultsComponent implements OnInit {
-  public browseToolsTab = 'browseToolsTab';
-  public browseWorkflowsTab = 'browseWorkflowsTab';
-  public activeToolTab$: Observable<boolean>;
+export class SearchResultsComponent extends Base implements OnInit {
+  public activeToolTab$: Observable<number>;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
+  public selectedIndex$: Observable<any>;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   options: CloudOptions = {
@@ -41,7 +42,9 @@ export class SearchResultsComponent implements OnInit {
     height: 200,
     overflow: false
   };
+
   constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
+    super();
     this.activeToolTab$ = this.searchQuery.activeToolTab$;
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
     this.noToolHits$ = this.searchQuery.noToolHits$;
@@ -52,6 +55,11 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
+    this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
+      map(activeToolTab => {
+        return { active: activeToolTab };
+      })
+    );
   }
 
   createTagCloud(type: string) {
@@ -106,6 +114,10 @@ export class SearchResultsComponent implements OnInit {
   // Tells the search service to tell the search filters to save its data
   saveSearchFilter() {
     this.searchService.toSaveSearch$.next(true);
+  }
+
+  saveTabIndex(tab) {
+    this.searchService.saveCurrentTab(tab.index);
   }
 
   tagClicked(clicked: CloudData) {

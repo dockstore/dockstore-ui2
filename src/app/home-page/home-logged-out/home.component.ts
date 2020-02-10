@@ -44,8 +44,6 @@ export class YoutubeComponent {
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent extends Base implements OnInit, AfterViewInit {
-  public browseToolsTab = 'browseToolsTab';
-  public browseWorkflowsTab = 'browseWorkflowsTab';
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;

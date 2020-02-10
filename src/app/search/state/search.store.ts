@@ -31,6 +31,7 @@ export interface SearchState {
   pageIndex: number;
   advancedSearch: AdvancedSearchObject;
   showModal: boolean;
+  currentTabIndex: number;
 }
 
 export function createInitialState(): SearchState {
@@ -47,7 +48,8 @@ export function createInitialState(): SearchState {
     pageSize: 10,
     advancedSearch: initialAdvancedSearchObject,
     showModal: false,
-    pageIndex: 0
+    pageIndex: 0,
+    currentTabIndex: 0
   };
 }
 

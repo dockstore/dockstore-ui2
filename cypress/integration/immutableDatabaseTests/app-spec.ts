@@ -49,14 +49,14 @@ describe('Logged in Dockstore Home', () => {
 
   function starColumn(url: string, type: string) {
     if (type === 'workflow') {
-      cy.get('#workflowTab-link').click();
+      cy.get('[data-cy=workflows-tab]').click();
     }
     cy.get('.mat-icon.star').should('not.exist');
     cy.visit(url);
     cy.get('#starringButton').click();
     cy.visit('');
     if (type === 'workflow') {
-      cy.get('#workflowTab-link').click();
+      cy.get('[data-cy=workflows-tab]').click();
     }
     cy.get('.mat-icon.star').should('exist');
     cy.visit(url);
