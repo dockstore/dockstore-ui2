@@ -15,10 +15,9 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subject, forkJoin } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-
 import { MatDialog } from '@angular/material/dialog';
+import { forkJoin, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../../containers/list/list.service';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
