@@ -15,7 +15,7 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, forkJoin } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -58,7 +58,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public unsavedTestWDLFile = '';
   public dockerPullCommand = '';
   public DockstoreToolType = DockstoreTool;
-
+  public loading = true;
   public formErrors = formErrors;
   public version: Tag;
   public validationPatterns = validationDescriptorPatterns;
@@ -193,23 +193,27 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   setMode(mode: TagEditorMode) {
+    this.loading = true;
     this.unsavedCWLTestParameterFilePaths = [];
     this.unsavedWDLTestParameterFilePaths = [];
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
-    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL).subscribe(file => {
-      this.savedCWLTestParameterFiles = file;
+
+    forkJoin([
+      this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL),
+      this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL)
+    ]).subscribe(([cwlFile, wdlFile]) => {
+      this.savedCWLTestParameterFiles = cwlFile;
       this.savedCWLTestParameterFiles.forEach(fileObject => {
         this.savedCWLTestParameterFilePaths.push(fileObject.path);
       });
       this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
-    });
-    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL).subscribe(file => {
-      this.savedWDLTestParameterFiles = file;
+      this.savedWDLTestParameterFiles = wdlFile;
       this.savedWDLTestParameterFiles.forEach(fileObject => {
         this.savedWDLTestParameterFilePaths.push(fileObject.path);
       });
       this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
+      this.loading = false;
     });
   }
 
