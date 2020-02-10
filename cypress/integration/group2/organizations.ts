@@ -123,6 +123,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#editOrgInfo')
         .should('be.visible')
         .click();
+      cy.wait(5000);
       typeInInput('Name', 'Potatoe');
       typeInInput('Display Name', 'Potatoe');
       typeInInput('Topic', 'Boil them, mash them, stick them in a stew');
@@ -143,6 +144,8 @@ describe('Dockstore Organizations', () => {
       cy.get('#editOrgInfo')
         .should('be.visible')
         .click();
+      // I don't even
+      cy.wait(5000);
       cy.get('[data-cy=image-url-input]')
         .should('be.visible')
         .clear();
@@ -221,6 +224,7 @@ describe('Dockstore Organizations', () => {
 
     it('be able to update a collection', () => {
       cy.get('#editCollection').click();
+      cy.wait(5000);
       cy.get('#createOrUpdateCollectionButton')
         .should('be.visible')
         .should('not.be.disabled');
@@ -241,6 +245,7 @@ describe('Dockstore Organizations', () => {
     it('be able to update an organization description with markdown', () => {
       cy.visit('/organizations/Potatoe');
       cy.get('#editOrgDescription').click();
+      cy.wait(5000);
       cy.get('#updateOrganizationDescriptionButton')
         .should('be.visible')
         .should('not.be.disabled');
@@ -311,6 +316,7 @@ describe('Dockstore Organizations', () => {
     it('be able to edit collection information', () => {
       // Should be able to edit the collection topic and see the changes reflected
       cy.get('#editCollection').click();
+      cy.wait(5000);
       cy.get('#createOrUpdateCollectionButton')
         .should('be.visible')
         .should('not.be.disabled');
