@@ -59,17 +59,17 @@ describe('Service: DescriptorLanguage', () => {
     descriptorLanguageBeans.push({ friendlyName: 'beef', value: 'WDL' });
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
-      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a> or <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>`
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a> or <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>`
     );
     descriptorLanguageBeans.push({ friendlyName: 'stew', value: 'NFL' });
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
-      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
     );
     descriptorLanguageBeans.push({ friendlyName: 'hmm', value: 'service' });
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
-      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="http://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
     );
   });
   it('should be able to get descriptor path placeholder', () => {
