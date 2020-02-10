@@ -96,7 +96,7 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools/quay.io/A2/b1');
       cy.contains('/Dockerfile');
     });
-    it('should be able to add labels', () => {
+    it.only('should be able to add labels', () => {
       cy.contains('quay.io/A2/a:latest');
       cy.get('button')
         .contains('Manage labels')
@@ -109,7 +109,7 @@ describe('Dockstore my tools', () => {
         .contains('Save')
         .should('not.exist');
     });
-    it('add and remove test parameter file', () => {
+    it.only('add and remove test parameter file', () => {
       cy.server();
       cy.route('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
@@ -122,8 +122,12 @@ describe('Dockstore my tools', () => {
       cy.contains('button:visible', 'Edit')
         .should('be.visible')
         .click();
-      cy.get('[data-cy=addWDLField]').type('/test.wdl.json');
-      cy.get('[data-cy=addCWLField]').type('/test.cwl.json');
+      cy.get('input[data-cy=addWDLField]')
+        .should('be.visible')
+        .type('/test.wdl.json');
+      cy.get('input[data-cy=addCWLField]')
+        .should('be.visible')
+        .type('/test.cwl.json');
       cy.get('#saveVersionModal').click();
       cy.get('#saveVersionModal').should('not.exist');
       cy.contains('button', 'Actions')

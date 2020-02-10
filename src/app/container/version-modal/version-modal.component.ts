@@ -16,7 +16,8 @@
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { forkJoin, Subject } from 'rxjs';
+import { Base } from 'app/shared/base';
+import { forkJoin } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../../containers/list/list.service';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -40,15 +41,13 @@ import { VersionModalService } from './version-modal.service';
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css']
 })
-export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class VersionModalComponent extends Base implements OnInit, AfterViewChecked, OnDestroy {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = ToolDescriptor.TypeEnum;
   public editMode: boolean;
   public mode: TagEditorMode;
   public tool: DockstoreTool;
   public unsavedVersion;
-  private savedCWLTestParameterFiles: Array<any>;
-  private savedWDLTestParameterFiles: Array<any>;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
   public unsavedCWLTestParameterFilePaths: Array<string> = [];
@@ -64,8 +63,6 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm', { static: false }) currentForm: NgForm;
 
-  private ngUnsubscribe: Subject<{}> = new Subject();
-
   constructor(
     private paramfilesService: ParamfilesService,
     private versionModalService: VersionModalService,
@@ -78,7 +75,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     private dateService: DateService,
     private matDialog: MatDialog,
     private toolQuery: ToolQuery
-  ) {}
+  ) {
+    super();
+  }
 
   // Almost all these functions should be moved to a service
   getSizeString(size) {
@@ -94,6 +93,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   formChanged() {
+    console.log('formCh;anged');
     if (this.currentForm === this.tagEditorForm) {
       return;
     }
@@ -197,20 +197,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.unsavedWDLTestParameterFilePaths = [];
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
-
     forkJoin([
       this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL),
       this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL)
-    ]).subscribe(([cwlFile, wdlFile]) => {
-      this.savedCWLTestParameterFiles = cwlFile;
-      this.savedCWLTestParameterFiles.forEach(fileObject => {
-        this.savedCWLTestParameterFilePaths.push(fileObject.path);
-      });
+    ]).subscribe(([cwlFiles, wdlFiles]) => {
+      this.savedCWLTestParameterFilePaths = cwlFiles.map(cwlFile => cwlFile.path);
       this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
-      this.savedWDLTestParameterFiles = wdlFile;
-      this.savedWDLTestParameterFiles.forEach(fileObject => {
-        this.savedWDLTestParameterFilePaths.push(fileObject.path);
-      });
+      this.savedWDLTestParameterFilePaths = wdlFiles.map(wdlFile => wdlFile.path);
       this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
       this.loading = false;
     });
