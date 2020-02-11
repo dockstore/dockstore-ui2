@@ -33,11 +33,10 @@ jobs:
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
-          command: |
-              if [ ! -d "./node_modules" ]
-              then
-                bash -i -c 'npm ci'
-              fi
+          command: bash -i -c 'npm ci'
+#              if [ ! -d "./node_modules" ]
+#              then
+#              fi
       - save_cache:
           key: dep-cache-{{ checksum "./package-lock.json" }}
           paths:
