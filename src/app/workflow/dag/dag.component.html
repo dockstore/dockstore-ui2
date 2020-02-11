@@ -25,7 +25,7 @@
       <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
         <mat-icon>warning</mat-icon>&nbsp;
         <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
-          A Descriptor associated with this workflow could not be found.
+          Please ensure that the Descriptor is a valid WDL workflow.
         </span>
         <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
           Please ensure that the Descriptor is a valid CWL 1.0 workflow.
