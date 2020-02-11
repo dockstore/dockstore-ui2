@@ -28,8 +28,8 @@ jobs:
               git checkout -qf FETCH_HEAD
             fi
       - install_container_dependencies
-      - restore_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+#      - restore_cache:
+#          key: dep-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
@@ -42,6 +42,7 @@ jobs:
           key: dep-cache-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
+            - /home/circleci/.cache/Cypress
       - run:
           name: Check dependencies
           command: bash -i -c 'npm ls'
