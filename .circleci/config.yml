@@ -211,9 +211,6 @@ commands:
           name: Install cypress dependencies
           command: sudo apt install libgtk2.0-0 -yq
       - run:
-          name: Install cypress
-          command: bash -i -c 'npm i cypress@4.0.1 --no-save'
-      - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
       - run:
