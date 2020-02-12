@@ -37,7 +37,6 @@ jobs:
               if [ ! -d "./node_modules" ]
               then
                 bash -i -c 'npm ci'
-                bash -i -c 'cypress install'
               fi
       - save_cache:
           key: binary-dep-cache1-{{ checksum "./package-lock.json" }}
