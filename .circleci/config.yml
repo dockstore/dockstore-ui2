@@ -74,7 +74,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          - key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
@@ -88,7 +88,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          - key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
@@ -102,7 +102,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          - key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
