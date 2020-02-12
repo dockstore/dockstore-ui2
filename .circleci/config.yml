@@ -42,6 +42,10 @@ jobs:
           key: dep-cache-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
+      - save_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          paths:
+            - ~/.cache
       - run:
           name: Check dependencies
           command: bash -i -c 'npm ls'
@@ -69,6 +73,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
@@ -81,6 +87,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
@@ -93,6 +101,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
@@ -210,9 +220,6 @@ commands:
       - run:
           name: Install cypress dependencies
           command: sudo apt install libgtk2.0-0 -yq
-      - run:
-          name: Install cypress
-          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
