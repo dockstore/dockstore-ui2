@@ -37,16 +37,10 @@
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
             <a
               mat-raised-button
-              [matTooltip]="
-                !(hasContent$ | async)
-                  ? 'The WDL has no content.  '
-                  : (hasFileImports$ | async)
-                  ? 'Terra does not support file-path imports in WDL. It only supports http(s) imports.'
-                  : ''
-              "
+              [matTooltip]="terraTooltip$ | async"
               target="_blank"
               rel="noopener"
-              [disabled]="!(hasContent$ | async) || (hasFileImports$ | async)"
+              [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               color="primary"
               ><mat-icon svgIcon="terra"></mat-icon> Terra &raquo;</a
@@ -59,7 +53,7 @@
               target="_blank"
               rel="noopener"
               [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
-              [disabled]="!(hasContent$ | async) || (hasHttpImports$ | async)"
+              [disabled]="disableSevenBridgesPlatform$ | async"
               color="primary"
               ><img src="../assets/images/thirdparty/cgc.png" /> CGC
             </a>
@@ -71,7 +65,7 @@
               target="_blank"
               rel="noopener"
               [attr.href]="config.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL + '?trs=' + trsUrl"
-              [disabled]="!(hasContent$ | async) || (hasHttpImports$ | async)"
+              [disabled]="disableSevenBridgesPlatform$ | async"
               color="primary"
               >NHLBI BioData Catalyst
             </a>
@@ -79,16 +73,10 @@
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
             <a
               mat-raised-button
-              [matTooltip]="
-                !(hasContent$ | async)
-                  ? 'The WDL has no content.  '
-                  : (hasFileImports$ | async)
-                  ? 'AnVIL does not support file-path imports in WDL. It only supports http(s) imports.'
-                  : ''
-              "
+              [matTooltip]="anvilTooltip$ | async"
               target="_blank"
               rel="noopener"
-              [disabled]="!(hasContent$ | async) || (hasFileImports$ | async)"
+              [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               color="primary"
               ><mat-icon class="anvil-icon" svgIcon="anvil"></mat-icon> AnVIL &raquo;</a
@@ -97,16 +85,10 @@
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
             <a
               mat-raised-button
-              [matTooltip]="
-                !(hasContent$ | async)
-                  ? 'The WDL has no content.  '
-                  : (hasFileImports$ | async)
-                  ? 'BioData Catalyst powered by Terra does not support file-path imports in WDL. It only supports http(s) imports.'
-                  : 'NHLBI BioData Catalyst powered by Terra'
-              "
+              [matTooltip]="bdCatalystTerraTooltip$ | async"
               target="_blank"
               rel="noopener"
-              [disabled]="!(hasContent$ | async) || (hasFileImports$ | async)"
+              [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               color="primary"
               >NHLBI BioData Catalyst</a

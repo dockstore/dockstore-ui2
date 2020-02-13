@@ -147,12 +147,34 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   workflowPathAsQueryValue: string;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
-  cgcTooltip$: Observable<string> = combineLatest(this.descriptorsQuery.hasContent$, this.hasHttpImports$).pipe(
+  cgcTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'the CGC'))
   );
 
-  bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest(this.descriptorsQuery.hasContent$, this.hasHttpImports$).pipe(
-    map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'BioData Catalyst powered by Seven Bridges'))
+  disableSevenBridgesPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) => !hasContent || hasHttpImports)
+  );
+
+  bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) =>
+      this.sevenBridgesTooltip(hasContent, hasHttpImports, 'NHLBI BioData Catalyst powered by Seven Bridges')
+    )
+  );
+
+  terraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'Terra'))
+  );
+
+  anvilTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'AnVIL'))
+  );
+
+  bdCatalystTerraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra'))
+  );
+
+  disableTerraPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+    map(([hasContent, hasFileImports]) => !hasContent || hasFileImports)
   );
 
   constructor(
@@ -168,11 +190,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
     iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/terra.svg'));
     iconRegistry.addSvgIcon('anvil', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/anvil.svg'));
-    iconRegistry.addSvgIcon('bdc_terra', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/bdc_terra.svg'));
-    iconRegistry.addSvgIcon(
-      'bdc_seven_bridges',
-      sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/bdc_seven_bridges.svg')
-    );
   }
 
   ngOnInit(): void {
@@ -216,6 +233,16 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     }
     if (hasHttpImports) {
       return `This version of the CWL has http(s) imports, which are not supported by ${platform}. Select a version without http(s) imports.`;
+    }
+    return `Export this workflow version to ${platform}.`;
+  }
+
+  private terraTooltip(hasContent: boolean, hasFileImports, platform: string): string {
+    if (!hasContent) {
+      return 'The WDL has no content.';
+    }
+    if (hasFileImports) {
+      return `${platform} does not support file-path imports in WDL. It only supports http(s) imports.`;
     }
     return `Export this workflow version to ${platform}.`;
   }
