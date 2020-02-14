@@ -93,7 +93,6 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
   }
 
   formChanged() {
-    console.log('formCh;anged');
     if (this.currentForm === this.tagEditorForm) {
       return;
     }
