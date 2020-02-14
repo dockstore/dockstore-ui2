@@ -24,8 +24,13 @@
     <div fxFlex *ngIf="dagType === 'classic' && !(isNFL$ | async) && !(dagResult$ | async)">
       <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
         <mat-icon>warning</mat-icon>&nbsp;
-        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
-          Please ensure that the Descriptor is a valid WDL workflow.
+        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && isPublic">
+          The DAG cannot be displayed because the descriptor is either missing or not valid.
+          Click on the Files tab for more information.
+        </span>
+        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && !isPublic">
+          The DAG cannot be displayed because the descriptor missing or is not a valid WDL workflow.
+          Ensure the descriptor exists and is valid. Click on the Files tab for more information.
         </span>
         <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
           Please ensure that the Descriptor is a valid CWL 1.0 workflow.
