@@ -17,6 +17,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -47,6 +48,8 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;
+  descriptorLanguagesInnerHTML$: Observable<string>;
+
   @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
 
   @ViewChild('youtube', { static: false }) youtube: ElementRef;
@@ -55,12 +58,14 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private twitterService: TwitterService,
     private userQuery: UserQuery,
-    private homePageService: HomePageService
+    private homePageService: HomePageService,
+    private descriptorLanguageService: DescriptorLanguageService
   ) {
     super();
   }
 
   ngOnInit() {
+    this.descriptorLanguagesInnerHTML$ = this.descriptorLanguageService.descriptorLanguagesInnerHTML$;
     this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {

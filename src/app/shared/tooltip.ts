@@ -1,6 +1,6 @@
 import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 export const Tooltip = {
-  testParameterFile: 'Relative path to a WDL/CWL Test Parameter File in the Git repository',
+  testParameterFile: 'Relative path to a Test Parameter File in the Git repository',
   workflowPath: 'Path in Git repository to main descriptor file',
   defaultVersionUser: 'The branch that the tool/workflow author intends others to use',
   defaultVersionAuthor:

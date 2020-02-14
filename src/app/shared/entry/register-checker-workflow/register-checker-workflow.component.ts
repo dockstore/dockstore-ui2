@@ -46,8 +46,8 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
     super();
   }
   public registerError: HttpErrorResponse;
-  public workflowPath: string;
-  public testParameterFilePath: string;
+  public workflowPath = '';
+  public testParameterFilePath = '';
   public syncTestJson: boolean;
   public formErrors = formErrors;
   public validationDescriptorPatterns = validationDescriptorPatterns;
@@ -56,20 +56,28 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   public mode$: Observable<'add' | 'edit'>;
   public descriptorType: ToolDescriptor.TypeEnum;
   public descriptorLanguages: Array<string>;
+  public descriptorPathPlaceholder: string;
+  public descriptorPattern = validationDescriptorPatterns.workflowDescriptorPath;
   private entry: Entry;
   registerCheckerWorkflowForm: NgForm;
   isWorkflow = false;
   @ViewChild('registerCheckerWorkflowForm', { static: true }) currentForm: NgForm;
 
   ngOnInit() {
-    this.clearForm();
     this.checkerWorkflowQuery.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) => {
       this.entry = entry;
       if (entry) {
         this.isWorkflow = this.checkerWorkflowQuery.isEntryAWorkflow(entry);
         this.testParameterFilePath = this.getTestParameterFileDefault(entry, this.descriptorType);
         if (this.isWorkflow) {
-          this.descriptorType = this.descriptorTypeCompatService.stringToDescriptorType((<Workflow>this.entry).descriptorType);
+          const workflowDescriptorTypeEnum = (<Workflow>this.entry).descriptorType;
+          // Set checker workflow descriptor type to the same as the current workflow
+          this.descriptorType = this.descriptorTypeCompatService.stringToDescriptorType(workflowDescriptorTypeEnum);
+          this.updateDescriptorPattern(this.descriptorType);
+        } else {
+          // Set checker workflow descriptor type to CWL for now. TODO: Solve this once webservice changes are known.
+          this.descriptorType = ToolDescriptor.TypeEnum.CWL;
+          this.updateDescriptorPattern(this.descriptorType);
         }
       } else {
         this.testParameterFilePath = null;
@@ -78,18 +86,20 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
       }
     });
     this.mode$ = this.registerCheckerWorkflowService.mode$;
-
     this.syncTestJson = false;
-    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((descriptorLanguages: Array<string>) => {
-      this.descriptorLanguages = descriptorLanguages.filter((language: string) => language !== ToolDescriptor.TypeEnum.NFL);
-    });
+    this.descriptorLanguageService.filteredDescriptorLanguages$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((descriptorLanguages: Array<Workflow.DescriptorTypeEnum>) => {
+        this.descriptorLanguages = descriptorLanguages.filter(
+          (language: Workflow.DescriptorTypeEnum) => language !== ToolDescriptor.TypeEnum.NFL
+        );
+      });
     this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
-  private clearForm(): void {
-    this.workflowPath = '';
-    this.testParameterFilePath = '';
-    this.descriptorType = ToolDescriptor.TypeEnum.CWL;
+  updateDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): void {
+    this.descriptorPathPlaceholder = this.descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType);
+    this.descriptorPattern = this.descriptorLanguageService.getDescriptorPattern(descriptorType);
   }
 
   /**
@@ -120,22 +130,10 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   }
 
   registerCheckerWorkflow(): void {
-    let descriptorTypeNoNFL: 'cwl' | 'wdl';
-    switch (this.descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL: {
-        descriptorTypeNoNFL = 'cwl';
-        break;
-      }
-      case ToolDescriptor.TypeEnum.WDL: {
-        descriptorTypeNoNFL = 'wdl';
-        break;
-      }
-      default: {
-        console.error('Unrecognized descriptor type: ' + this.descriptorType);
-        return;
-      }
+    const weirdDescriptorType = this.descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(this.descriptorType);
+    if (weirdDescriptorType) {
+      this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, weirdDescriptorType);
     }
-    this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, descriptorTypeNoNFL);
   }
 
   /**
@@ -144,6 +142,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
    */
   public onDescriptorTypeChange(descriptorType: ToolDescriptor.TypeEnum): void {
     this.testParameterFilePath = this.getTestParameterFileDefault(this.entry, descriptorType);
+    this.updateDescriptorPattern(descriptorType);
   }
 
   // Validation starts here, should move most of these to a service somehow

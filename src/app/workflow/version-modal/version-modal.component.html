@@ -123,12 +123,12 @@
                   type="text"
                   #model1="ngModel"
                   class="form-control"
-                  name="cwlTestParameterFilePath"
+                  name="testParameterFilePath"
                   [(ngModel)]="testParameterFilePath"
                   minlength="3"
                   maxlength="128"
                   [pattern]="validationPatterns.testFilePath"
-                  placeholder="e.g. /test.cwl.json"
+                  placeholder="e.g. /test.json"
                   [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
                   [matTooltip]="tooltip.testParameterFile"
                 />
@@ -154,8 +154,8 @@
                   </button>
                 </span>
               </div>
-              <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
-                {{ formErrors.cwlTestParameterFilePath }}
+              <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages alert alert-danger">
+                {{ formErrors.testParameterFilePath }}
               </div>
               <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
                 Duplicate test json files are not allowed.
