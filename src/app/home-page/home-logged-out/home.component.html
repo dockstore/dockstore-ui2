@@ -21,18 +21,6 @@
         <h1 class="title">Create, Share, Use</h1>
         <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
 
-        <button *ngIf="!(user$ | async); else loggedIn" mat-flat-button color="accent" routerLink="/login" class="big-button">
-          Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
-        </button>
-
-        <ng-template #loggedIn>
-          <button mat-flat-button color="accent" routerLink="/accounts" class="big-button">Welcome {{ (user$ | async).username }}</button>
-        </ng-template>
-
-        <button mat-flat-button routerLink="/search" class="m-2 big-button">
-          Browse tools and workflows
-        </button>
-
         <div class="search-holder">
           <input
             id="searchBar"
@@ -44,9 +32,21 @@
             (keyup.enter)="goToSearch(search.value)"
           />
         </div>
+
+        <button *ngIf="!(user$ | async); else loggedIn" mat-flat-button color="accent" routerLink="/login" class="big-button">
+          Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
+        </button>
+
+        <ng-template #loggedIn>
+          <button mat-flat-button color="accent" routerLink="/accounts" class="big-button">Welcome {{ (user$ | async).username }}</button>
+        </ng-template>
+
+        <button mat-flat-button routerLink="/search" class="m-2 big-button">
+          Browse tools and workflows
+        </button>
       </div>
 
-      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px">
+      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px" class="pb-3">
         <h4 class="title caption text-center" style="max-width: 700px;">
           Dockstore, developed by the
           <a class="white-link" href="https://www.cancercollaboratory.org/" target="_blank">Cancer Genome Collaboratory</a>, is an open
@@ -57,20 +57,14 @@
           <a class="white-link" href="https://www.nextflow.io/" target="_blank">Nextflow</a>
         </h4>
       </div>
-
-      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px">
-        <h3 class="search-title">New to Dockstore?</h3>
-        <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">
-          <a mat-raised-button href="#overview" class="button-link">Start here</a>
-        </div>
-      </div>
-    </div>
-    <!-- Left the boat and truck here in case we want them back -->
-    <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="20px">
-      <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png" />
-      <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png" />
     </div>
   </div>
+</div>
+
+<!-- Left the boat and truck here in case we want them back -->
+<div class="header-lower boat-header" fxLayout="row wrap" fxLayoutAlign="end" fxLayoutGap="20px" fxShow fxHide.lt-md>
+  <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png" />
+  <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png" class="pr-2" />
 </div>
 
 <div class="header-lower" id="overview">
