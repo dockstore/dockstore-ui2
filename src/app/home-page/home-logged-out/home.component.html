@@ -21,18 +21,6 @@
         <h1 class="title">Create, Share, Use</h1>
         <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
 
-        <div class="search-holder">
-          <input
-            id="searchBar"
-            aria-label="Search"
-            #search
-            type="text"
-            placeholder="Search..."
-            class="fully-rounded landing-search"
-            (keyup.enter)="goToSearch(search.value)"
-          />
-        </div>
-
         <button *ngIf="!(user$ | async); else loggedIn" mat-flat-button color="accent" routerLink="/login" class="big-button">
           Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
         </button>
@@ -44,6 +32,18 @@
         <button mat-flat-button routerLink="/search" class="m-2 big-button">
           Browse tools and workflows
         </button>
+
+        <div class="search-holder">
+          <input
+            id="searchBar"
+            aria-label="Search"
+            #search
+            type="text"
+            placeholder="Search..."
+            class="fully-rounded landing-search"
+            (keyup.enter)="goToSearch(search.value)"
+          />
+        </div>
       </div>
 
       <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px" class="pb-3">
