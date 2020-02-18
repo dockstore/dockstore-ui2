@@ -240,7 +240,7 @@
               <ng-template #FilesTabBioWorkflow>
                 <div *ngIf="validVersions && !isStub() && !isHosted()">
                   <app-files-workflow
-                    *ngIf="validVersions"
+                    *ngIf="validVersions && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
                     [entrypath]="workflow.full_workflow_path"
                     [id]="workflow?.id"
                     [versions]="validVersions"
@@ -252,6 +252,10 @@
                     [isOwner]="isOwner"
                   >
                   </app-files-workflow>
+                  <app-entry-file-tab
+                    [version]="selectedVersion"
+                    *ngIf="workflow?.mode === WorkflowModel.ModeEnum.DOCKSTOREYML"
+                  ></app-entry-file-tab>
                 </div>
                 <div *ngIf="validVersions && isHosted()">
                   <app-workflow-file-editor
