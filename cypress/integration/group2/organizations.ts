@@ -15,8 +15,7 @@
  */
 import { approvePotatoMembership, resetDB, setTokenUserViewPort } from '../../support/commands';
 
-const imageURL =
-  'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png';
+const imageURL = 'https://fakeUrl.com/potato.png';
 describe('Dockstore Organizations', () => {
   resetDB();
   setTokenUserViewPort();
@@ -71,7 +70,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton')
         .should('be.visible')
         .should('be.disabled');
-      typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
+      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
       cy.get('#createOrUpdateOrganizationButton')
         .should('be.visible')
         .should('not.be.disabled');
@@ -110,7 +109,7 @@ describe('Dockstore Organizations', () => {
   describe('Should be able to view new unapproved organization', () => {
     it('have the fields just entered in during registration', () => {
       cy.contains('Potato');
-      cy.contains('Boil \'em, mash \'em, stick \'em in a stew');
+      cy.contains("Boil 'em, mash 'em, stick 'em in a stew");
       cy.contains('https://www.google.ca');
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
@@ -181,10 +180,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('asdf@asdf.com');
       cy.get('.orgLogo')
         .should('have.attr', 'src')
-        .should(
-          'include',
-          'https://www.gravatar.com/avatar/000?d=https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png'
-        );
+        .should('include', 'https://www.gravatar.com/avatar/000?d=' + imageURL);
     });
 
     it('have request shown on homepage', () => {
