@@ -71,7 +71,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public refreshCounter = 1;
   public dagLoading$: Observable<boolean>;
   public wdlViewerResult$: Observable<boolean>;
-  public isPublic: Boolean = false;
+  public isPublic$: Observable<boolean>;
   /**
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
@@ -146,9 +146,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     this.missingTool$ = this.dagQuery.missingTool$;
     this.dagService.loadExtensions();
     this.wdlViewerResult$ = this.wdlViewerService.status$;
-
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
-
+    this.isPublic$ = this.sessionQuery.isPublic$;
   }
 
   ngAfterViewInit(): void {

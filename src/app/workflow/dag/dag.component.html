@@ -26,7 +26,7 @@
         <mat-icon>warning</mat-icon>&nbsp;
         <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
           The DAG cannot be displayed because the descriptor is either missing or not valid.
-          {{ (isPublic ? "Click on the Files tab for more information."
+          {{ ((isPublic$ | async) ? "Click on the Files tab for more information."
           :  "Ensure the descriptor exists and is valid. Click on the Files tab for more information.") }}
         </span>
         <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
