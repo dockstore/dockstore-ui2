@@ -98,7 +98,7 @@ describe('Dockstore hosted workflows', () => {
         });
       });
 
-      cy.get('#testParameterFilesTab-link').click();
+      cy.get('[data-cy=testParameterFilesTab]').click();
       cy.wait(500);
       cy.get('#testParameterFilesTab')
         .contains('Add File')
