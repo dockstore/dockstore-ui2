@@ -9,6 +9,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TabsModule } from 'ngx-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -49,7 +50,8 @@ describe('WorkflowFileEditorComponent', () => {
         MatTooltipModule,
         ClipboardModule,
         MatSnackBarModule,
-        MatCardModule
+        MatCardModule,
+        BrowserAnimationsModule
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },
