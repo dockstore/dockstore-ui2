@@ -13,6 +13,24 @@ executors:
           POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
 jobs:
+  uptime_monitor:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
+    steps:
+      - get_workspace
+      - install_container_dependencies
+      - setup_integration_test
+      - run:
+          name: Install cypress dependencies
+          command: sudo apt install libgtk2.0-0 -yq
+      - run:
+          name: Install cypress
+          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
+      - run:
+          name: Run remote verification test
+          command: cypress run -C cypress-remote.json -s "cypress/integration/manualTests/search.ts"
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
@@ -173,6 +191,16 @@ workflows:
               only: /.*/
             branches:
               only: /.*/
+  nightly:
+    triggers:
+      - schedule:
+          cron: "5,20,35,50 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - uptime_monitor
 commands:
   install_container_dependencies:
     steps:
