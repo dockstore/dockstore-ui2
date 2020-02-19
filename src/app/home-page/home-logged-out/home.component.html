@@ -46,20 +46,24 @@
         </div>
       </div>
 
-      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px">
-        <h3 class="search-title">New to Dockstore?</h3>
-        <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px" class="pb-5">
-          <a mat-raised-button href="#overview" class="button-link">Start here</a>
-        </div>
-
-        <!-- Left the boat and truck here in case we want them back -->
-        <!-- <div fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="20px">
-          <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png">
-          <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png">
-        </div> -->
+      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px" class="pb-3">
+        <h4 class="title caption text-center landing-message">
+          Dockstore, developed by the
+          <a class="white-link" href="https://www.cancercollaboratory.org/" target="_blank">Cancer Genome Collaboratory</a>, is an open
+          platform used by the <a class="white-link" href="https://genomicsandhealth.org/" target="_blank">GA4GH</a> for sharing
+          Docker-based tools described with either the
+          <a class="white-link" href="http://www.commonwl.org/" target="_blank">Common Workflow Language (CWL)</a>, the
+          <a class="white-link" href="https://software.broadinstitute.org/wdl/" target="_blank">Workflow Description Language (WDL)</a>, or
+          <a class="white-link" href="https://www.nextflow.io/" target="_blank">Nextflow</a>
+        </h4>
       </div>
     </div>
   </div>
+</div>
+
+<div class="header-lower boat-header" fxLayout="row wrap" fxLayoutAlign="end" fxLayoutGap="20px" fxShow fxHide.lt-md>
+  <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png" />
+  <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png" class="pr-2" />
 </div>
 
 <div class="header-lower" id="overview">

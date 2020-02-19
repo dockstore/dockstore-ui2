@@ -113,20 +113,24 @@ span {
 }
 
 .top-section {
-  min-height: 800px;
-}
-
-.search-holder {
-  margin-top: 40px;
+  min-height: 500px;
 }
 
 .header-lower {
   min-height: 200px;
 }
 
+.boat-header {
+  background-color: #21335b;
+}
+
 .content-holder {
   padding: 40px 0px 40px 0px;
   min-height: 300px;
+}
+
+.landing-message {
+  max-width: 700px;
 }
 
 .stripe-holder {

@@ -2,6 +2,7 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { combineLatest, Observable } from 'rxjs';
 import { map, share, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
@@ -13,7 +14,6 @@ import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
-import { combineLatest, Observable } from 'rxjs';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 // tslint:disable:max-line-length
@@ -147,18 +147,34 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   workflowPathAsQueryValue: string;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
-  cgcTooltip$: Observable<string> = combineLatest(this.descriptorsQuery.hasContent$, this.hasHttpImports$).pipe(
-    map(([hasContent, hasHttpImports]) => {
-      if (!hasContent) {
-        return 'The CWL has no content.';
-      }
-      if (hasHttpImports) {
-        return (
-          'This version of the CWL has http(s) imports, which are not supported by the CGC. ' + 'Select a version without http(s) imports.'
-        );
-      }
-      return 'Export this workflow version to the CGC.';
-    })
+  cgcTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'the CGC'))
+  );
+
+  disableSevenBridgesPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) => !hasContent || hasHttpImports)
+  );
+
+  bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+    map(([hasContent, hasHttpImports]) =>
+      this.sevenBridgesTooltip(hasContent, hasHttpImports, 'NHLBI BioData Catalyst powered by Seven Bridges')
+    )
+  );
+
+  terraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'Terra'))
+  );
+
+  anvilTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'AnVIL'))
+  );
+
+  bdCatalystTerraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra'))
+  );
+
+  disableTerraPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+    map(([hasContent, hasFileImports]) => !hasContent || hasFileImports)
   );
 
   constructor(
@@ -209,5 +225,25 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       this.trsUrlAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.trsUrl);
       this.workflowPathAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.workflow.full_workflow_path);
     }
+  }
+
+  private sevenBridgesTooltip(hasContent: boolean, hasHttpImports, platform: string): string {
+    if (!hasContent) {
+      return 'The CWL has no content.';
+    }
+    if (hasHttpImports) {
+      return `This version of the CWL has http(s) imports, which are not supported by ${platform}. Select a version without http(s) imports.`;
+    }
+    return `Export this workflow version to ${platform}.`;
+  }
+
+  private terraTooltip(hasContent: boolean, hasFileImports, platform: string): string {
+    if (!hasContent) {
+      return 'The WDL has no content.';
+    }
+    if (hasFileImports) {
+      return `${platform} does not support file-path imports in WDL. It only supports http(s) imports.`;
+    }
+    return `Export this workflow version to ${platform}.`;
   }
 }
