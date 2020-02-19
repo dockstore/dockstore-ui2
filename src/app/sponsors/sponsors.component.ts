@@ -17,13 +17,13 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { User } from 'app/shared/openapi';
+import { UserQuery } from 'app/shared/user/user.query';
+import { Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { Sponsor } from './sponsor.model';
 import { SponsorsService } from './sponsors.service';
-import { UserQuery } from 'app/shared/user/user.query';
-import { User } from 'app/shared/openapi';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sponsors',

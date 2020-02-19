@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 
+import { MarkdownModule } from 'ngx-markdown';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { CollectionComponent, CollectionRemoveEntryDialogComponent } from './collection/collection.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
-import { MarkdownModule } from 'ngx-markdown';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
 
 @NgModule({

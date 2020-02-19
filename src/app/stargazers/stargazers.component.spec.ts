@@ -15,13 +15,13 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { StarentryService } from '../shared/starentry.service';
 import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
 import { StarEntryStubService, StarringStubService, UserStubService } from '../test/service-stubs';
 import { StargazersComponent } from './stargazers.component';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 
 describe('StargazersComponent', () => {
   let component: StargazersComponent;

@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UserQuery } from 'app/shared/user/user.query';
 import { Base } from 'app/shared/base';
+import { UserQuery } from 'app/shared/user/user.query';
+import { Observable } from 'rxjs';
 import { EntriesService, UsersService } from '../../shared/openapi';
 
 /**

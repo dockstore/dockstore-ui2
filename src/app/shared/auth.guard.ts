@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-import { RouterStateSnapshot, ActivatedRouteSnapshot, Router, CanActivate } from '@angular/router';
-import { AuthService } from 'ng2-ui-auth';
 import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { AuthService } from 'ng2-ui-auth';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

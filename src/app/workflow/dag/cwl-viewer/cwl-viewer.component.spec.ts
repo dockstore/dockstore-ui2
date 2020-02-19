@@ -2,12 +2,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { WorkflowService } from '../../../shared/state/workflow.service';
-import { CwlViewerComponent } from './cwl-viewer.component';
-import { DockstoreService } from '../../../shared/dockstore.service';
 import { DateService } from '../../../shared/date.service';
+import { DockstoreService } from '../../../shared/dockstore.service';
 import { ProviderService } from '../../../shared/provider.service';
+import { WorkflowService } from '../../../shared/state/workflow.service';
 import { sampleCwlExtendedWorkflow, sampleWorkflowVersion } from '../../../test/mocked-objects';
+import { CwlViewerComponent } from './cwl-viewer.component';
 
 describe('cwl-viewerComponent', () => {
   let component: CwlViewerComponent;

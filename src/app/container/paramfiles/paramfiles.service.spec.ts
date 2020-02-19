@@ -15,14 +15,14 @@ import { RefreshService } from './../../shared/refresh.service';
  *    limitations under the License.
  */
 
-import { Tag } from './../../shared/swagger/model/tag';
-import { SourceFile } from './../../shared/swagger/model/sourceFile';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { WorkflowsStubService, ContainersStubService, RefreshStubService } from './../../test/service-stubs';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { ParamfilesService } from './paramfiles.service';
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { ToolDescriptor } from './../../shared/swagger';
+import { ContainersService } from './../../shared/swagger/api/containers.service';
+import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { SourceFile } from './../../shared/swagger/model/sourceFile';
+import { Tag } from './../../shared/swagger/model/tag';
+import { ContainersStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
+import { ParamfilesService } from './paramfiles.service';
 
 describe('Service: paramFiles.service.ts', () => {
   beforeEach(() => {

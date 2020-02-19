@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from 'ng2-ui-auth';
 

@@ -62,7 +62,7 @@ export class ViewContainerComponent extends View implements OnInit {
   setMode(mode: TagEditorMode) {
     this.versionModalService.setVersion(this.version);
     this.versionModalService.setCurrentMode(mode);
-    const dialogRef = this.matDialog.open(VersionModalComponent, { width: '600px' });
+    this.matDialog.open(VersionModalComponent, { width: '600px' });
   }
 
   deleteTag() {

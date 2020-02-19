@@ -20,6 +20,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
+import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor } from '../../shared/swagger';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
@@ -70,6 +71,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public refreshCounter = 1;
   public dagLoading$: Observable<boolean>;
   public wdlViewerResult$: Observable<boolean>;
+  public isPublic$: Observable<boolean>;
   /**
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
@@ -100,6 +102,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     private workflowQuery: WorkflowQuery,
     private dagQuery: DagQuery,
     private ngZone: NgZone,
+    private sessionQuery: SessionQuery,
     private wdlViewerService: WdlViewerService
   ) {
     super();
@@ -143,6 +146,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     this.missingTool$ = this.dagQuery.missingTool$;
     this.dagService.loadExtensions();
     this.wdlViewerResult$ = this.wdlViewerService.status$;
+    this.isPublic$ = this.sessionQuery.isPublic$;
   }
 
   ngAfterViewInit(): void {

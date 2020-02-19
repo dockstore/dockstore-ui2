@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+import { Version } from 'app/shared/swagger/model/version';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
@@ -24,8 +24,8 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { Token } from './../shared/swagger/model/token';
 import { Workflow } from './../shared/swagger/model/workflow';
-import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
-import { Version } from 'app/shared/swagger/model/version';
+
+const DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export const updatedWorkflow: Workflow = {
   descriptorType: DescriptorTypeEnum.CWL,

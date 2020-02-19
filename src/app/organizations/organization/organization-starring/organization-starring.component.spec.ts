@@ -16,10 +16,13 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrganizationStarringComponent } from './organization-starring.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ContainerService } from '../../../shared/container.service';
+import { StarOrganizationService } from '../../../shared/star-organization.service';
+import { StarentryService } from '../../../shared/starentry.service';
 import { TrackLoginService } from '../../../shared/track-login.service';
+import { StarringService } from '../../../starring/starring.service';
 import {
   ContainerStubService,
   OrganizationStarringStubService,
@@ -28,11 +31,8 @@ import {
   StarringStubService,
   TrackLoginStubService
 } from '../../../test/service-stubs';
+import { OrganizationStarringComponent } from './organization-starring.component';
 import { OrganizationStarringService } from './organization-starring.service';
-import { StarentryService } from '../../../shared/starentry.service';
-import { ContainerService } from '../../../shared/container.service';
-import { StarringService } from '../../../starring/starring.service';
-import { StarOrganizationService } from '../../../shared/star-organization.service';
 
 describe('OrganizationStarringComponent', () => {
   let component: OrganizationStarringComponent;

@@ -16,8 +16,8 @@
 import { NgModule } from '@angular/core';
 import { SearchWorkflowsComponent } from 'app/workflows/search/search.component';
 import { WorkflowsComponent } from 'app/workflows/workflows.component';
-import { WorkflowModule } from './workflow.module';
 import { ListWorkflowsModule } from './list-workflows.module';
+import { WorkflowModule } from './workflow.module';
 
 @NgModule({
   declarations: [WorkflowsComponent, SearchWorkflowsComponent],

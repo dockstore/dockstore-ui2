@@ -19,7 +19,6 @@ import { Observable } from 'rxjs';
 import { finalize, first } from 'rxjs/operators';
 
 import { ga4ghPath } from '../../shared/constants';
-import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
 import { ContainersService } from '../../shared/swagger';
@@ -48,12 +47,7 @@ export class DockerfileComponent {
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
   public loading = true;
-  constructor(
-    public fileService: FileService,
-    private toolQuery: ToolQuery,
-    private containerService: ContainerService,
-    private containersService: ContainersService
-  ) {
+  constructor(public fileService: FileService, private toolQuery: ToolQuery, private containersService: ContainersService) {
     this.filePath = '/Dockerfile';
     this.published$ = this.toolQuery.toolIsPublished$;
   }

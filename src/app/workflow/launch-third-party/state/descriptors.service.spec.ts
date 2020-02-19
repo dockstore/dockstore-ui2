@@ -1,8 +1,8 @@
 import { inject, TestBed } from '@angular/core/testing';
 
-import { DescriptorsService } from './descriptors.service';
-import { DescriptorsStore } from './descriptors-store';
 import { Dockstore } from '../../../shared/dockstore.model';
+import { DescriptorsStore } from './descriptors-store';
+import { DescriptorsService } from './descriptors.service';
 
 describe('DescriptorsService', () => {
   beforeEach(() => {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import {
-  UpdateOrganizationOrCollectionDescriptionStore,
-  UpdateOrganizationOrCollectionDescriptionState
+  UpdateOrganizationOrCollectionDescriptionState,
+  UpdateOrganizationOrCollectionDescriptionStore
 } from './update-organization-description.store';
 
 @Injectable({ providedIn: 'root' })

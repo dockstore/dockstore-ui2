@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-import { RouterLinkStubDirective, RouterOutletStubComponent } from './../test/router-stubs';
-import { HeaderModule } from './../shared/modules/header.module';
 import { async, TestBed } from '@angular/core/testing';
+import { HeaderModule } from './../shared/modules/header.module';
+import { RouterLinkStubDirective, RouterOutletStubComponent } from './../test/router-stubs';
 import { DocsComponent } from './docs.component';
 
 // Most of the testing code in this file was commented out because the DocsComponent would redirect

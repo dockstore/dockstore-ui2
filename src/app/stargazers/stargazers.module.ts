@@ -20,8 +20,8 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { StarentryService } from '../shared/starentry.service';
 import { StarringService } from '../starring/starring.service';
-import { StargazersComponent } from './stargazers.component';
 import { CustomMaterialModule } from './../shared/modules/material.module';
+import { StargazersComponent } from './stargazers.component';
 
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, MatIconModule, CustomMaterialModule],

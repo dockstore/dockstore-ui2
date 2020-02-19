@@ -18,10 +18,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { FileService } from '../../shared/file.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { GA4GHService } from '../../shared/swagger';
 import { FileStubService, GA4GHStubService, ParamFilesStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ParamfilesWorkflowComponent } from './paramfiles.component';
-import { WorkflowService } from '../../shared/state/workflow.service';
 
 describe('ParamfilesWorkflowComponent', () => {
   let component: ParamfilesWorkflowComponent;

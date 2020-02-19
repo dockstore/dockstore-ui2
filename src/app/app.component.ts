@@ -4,11 +4,11 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { AlertService } from './shared/alert/state/alert.service';
+import { currentPrivacyPolicyVersion, currentTOSVersion } from './shared/constants';
 import { Dockstore } from './shared/dockstore.model';
+import { User } from './shared/openapi/model/user';
 import { TrackLoginService } from './shared/track-login.service';
 import { TosBannerQuery } from './tosBanner/state/tos-banner.query';
-import { User } from './shared/openapi/model/user';
-import { currentTOSVersion, currentPrivacyPolicyVersion } from './shared/constants';
 
 @Component({
   selector: 'app-root',

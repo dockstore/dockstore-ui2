@@ -16,10 +16,10 @@
 
 import { Injectable } from '@angular/core';
 
-import { ContainersService, DockstoreTool } from './swagger';
-import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { faDocker, faGitlab, IconDefinition } from '@fortawesome/free-brands-svg-icons';
-import { faWhale, faQuay, faAmazonECR } from './custom-icons';
+import { faAmazonECR, faQuay, faWhale } from './custom-icons';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { ContainersService, DockstoreTool } from './swagger';
 import RegistryEnum = DockstoreTool.RegistryEnum;
 
 @Injectable()

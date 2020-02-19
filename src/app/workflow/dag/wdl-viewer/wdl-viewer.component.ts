@@ -17,7 +17,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as pipeline from 'pipeline-builder';
 import { Subject } from 'rxjs';
-import { take, takeUntil, delay } from 'rxjs/operators';
+import { delay, take, takeUntil } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
 import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';

@@ -15,6 +15,7 @@
  */
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SortDirection } from '@angular/material';
 import { Router } from '@angular/router';
 import { transaction } from '@datorama/akita';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
@@ -24,11 +25,10 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
 import { ProviderService } from '../../shared/provider.service';
+import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
-import { DockstoreTool, Workflow } from '../../shared/swagger';
-import { SortDirection } from '@angular/material';
 
 export interface Hit {
   _index: string;
@@ -584,6 +584,15 @@ export class SearchService {
       return {
         ...state,
         showModal: showModal
+      };
+    });
+  }
+
+  saveCurrentTab(index: number) {
+    this.searchStore.update(state => {
+      return {
+        ...state,
+        currentTabIndex: index
       };
     });
   }

@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewsUpdatesComponent } from './news-updates.component';
-import { MarkdownModule } from 'ngx-markdown';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MarkdownModule } from 'ngx-markdown';
+import { NewsUpdatesComponent } from './news-updates.component';
 
 describe('NewsUpdatesComponent', () => {
   let component: NewsUpdatesComponent;

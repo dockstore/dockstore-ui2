@@ -1,72 +1,49 @@
 <h4 mat-dialog-title>Register Checker Workflow</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <form
-    #registerCheckerWorkflowForm="ngForm"
-    name="registerCheckerWorkflowForm"
-    class="form-horizontal"
-    (submit)="registerCheckerWorkflow()"
-    novalidate
-  >
-    <div class="modal-body">
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 control-label">
-          Default Descriptor Path:
-        </label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            id="checkerWorkflowPath"
-            class="form-control"
-            name="workflow_path"
-            [(ngModel)]="workflowPath"
-            minlength="3"
-            maxlength="256"
-            [pattern]="validationDescriptorPatterns.workflowDescriptorPath"
-            required
-            matTooltip="Default relative path to the CWL Descriptor in the Git repository."
-            placeholder="e.g. /Dockstore.cwl"
-          />
-          <mat-card *ngIf="formErrors.workflow_path" class="alert alert-danger"> {{ formErrors.workflow_path }} </mat-card>
-        </div>
-      </div>
-      <div class="form-group form-group-sm">
-        <label class="col-sm-3 control-label">
-          Default Test Parameter File Path:
-        </label>
-        <div class="col-sm-9">
-          <input
-            type="text"
-            id="checkerWorkflowTestParameterFilePath"
-            class="form-control"
-            name="testParameterFilePath"
-            [(ngModel)]="testParameterFilePath"
-            minlength="3"
-            maxlength="256"
-            [pattern]="validationDescriptorPatterns.testParameterFilePath"
-            required
-            matTooltip="Default relative path to the WDL Descriptor in the Git repository."
-            placeholder="e.g. /test.json"
-          />
-          <mat-card *ngIf="formErrors.testParameterFilePath" class="alert alert-danger"> {{ formErrors.testParameterFilePath }} </mat-card>
-        </div>
-      </div>
-      <div class="form-group form-group-sm" *ngIf="!isWorkflow">
-        <label class="col-sm-3 control-label" matTooltip="Type of descriptor language used">Descriptor Type: </label>
-        <div class="col-sm-9">
-          <select
-            class="form-control input-sm"
-            [(ngModel)]="descriptorType"
-            (ngModelChange)="onDescriptorTypeChange($event)"
-            name="descriptorType"
-          >
-            <option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{ descriptorLanguage }}">{{
-              descriptorLanguage
-            }}</option>
-          </select>
-        </div>
-      </div>
-    </div>
+  <form #registerCheckerWorkflowForm="ngForm" name="registerCheckerWorkflowForm" (submit)="registerCheckerWorkflow()" novalidate>
+    <mat-form-field class="w-100">
+      <mat-label>Default Descriptor Path</mat-label>
+      <input
+        matInput
+        type="text"
+        id="checkerWorkflowPath"
+        name="workflow_path"
+        [(ngModel)]="workflowPath"
+        minlength="3"
+        maxlength="256"
+        [pattern]="descriptorPattern"
+        required
+        matTooltip="Default relative path to the descriptor in the Git repository."
+        [placeholder]="descriptorPathPlaceholder"
+      />
+      <mat-error *ngIf="formErrors.workflow_path"> {{ formErrors.workflow_path }} </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <mat-label>Default Test Parameter File Path:</mat-label>
+      <input
+        matInput
+        type="text"
+        id="checkerWorkflowTestParameterFilePath"
+        name="testParameterFilePath"
+        [(ngModel)]="testParameterFilePath"
+        minlength="3"
+        maxlength="256"
+        [pattern]="validationDescriptorPatterns.testParameterFilePath"
+        required
+        matTooltip="Default relative path to the test parameter file in the Git repository."
+        placeholder="e.g. /test.json"
+      />
+      <mat-error *ngIf="formErrors.testParameterFilePath"> {{ formErrors.testParameterFilePath }} </mat-error>
+    </mat-form-field>
+    <mat-form-field *ngIf="!isWorkflow" class="w-100">
+      <mat-label>Descriptor Type</mat-label>
+      <mat-select [(ngModel)]="descriptorType" (ngModelChange)="onDescriptorTypeChange($event)" name="descriptorType">
+        <mat-option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{ descriptorLanguage }}">{{
+          descriptorLanguage
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <div class="modal-footer">
       <button type="button" mat-button color="secondary" data-dismiss="modal" mat-dialog-close>
         Close

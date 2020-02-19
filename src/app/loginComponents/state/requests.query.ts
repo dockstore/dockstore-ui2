@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { RequestsStore, RequestsState } from './requests.store';
-import { Request } from './request.model';
-import { Organization, OrganizationUser } from '../../shared/swagger';
 import { Observable } from 'rxjs';
+import { Organization, OrganizationUser } from '../../shared/swagger';
+import { Request } from './request.model';
+import { RequestsState, RequestsStore } from './requests.store';
 
 @Injectable({
   providedIn: 'root'

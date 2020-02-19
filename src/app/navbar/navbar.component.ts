@@ -18,6 +18,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
+import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
+import { Dockstore } from '../shared/dockstore.model';
 import { toExtendSite } from '../shared/helpers';
 import { UserQuery } from '../shared/user/user.query';
 import { LogoutService } from './../shared/logout.service';
@@ -25,8 +27,6 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
-import { Dockstore } from '../shared/dockstore.model';
-import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 
 @Component({
   selector: 'app-navbar',

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-
 import { UsersService } from '../../../shared/swagger';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
@@ -22,6 +21,6 @@ export class ControlsComponent implements OnInit {
   }
 
   deleteAccount() {
-    const dialogRef = this.dialog.open(DeleteAccountDialogComponent, { width: '600px' });
+    this.dialog.open(DeleteAccountDialogComponent, { width: '600px' });
   }
 }
