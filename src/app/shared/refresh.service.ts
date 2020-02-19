@@ -144,13 +144,11 @@ export class RefreshService {
   syncServices(): void {
     const message = 'Syncing services';
     this.alertService.start(message);
-    this.updateWorkflows(this.usersService.syncUserServices());
+    this.updateWorkflows(this.usersService.syncUserWithGitHub());
   }
 
   syncServicesForOrganziation(organization: string): void {
-    const message = 'Syncing services for organization ' + organization;
-    this.alertService.start(message);
-    this.updateWorkflows(this.usersService.syncUserServicesbyOrganization(organization));
+    this.syncServices();
   }
 
   private updateWorkflows(workflows: Observable<Workflow[]>): void {

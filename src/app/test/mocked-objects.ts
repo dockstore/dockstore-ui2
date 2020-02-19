@@ -37,7 +37,8 @@ export const updatedWorkflow: Workflow = {
   workflowVersions: [],
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
-  source_control_provider: 'GITHUB'
+  source_control_provider: 'GITHUB',
+  descriptorTypeSubclass: 'NOT_APPLICABLE'
 };
 
 export const sampleWorkflow1: Workflow = {
@@ -51,7 +52,8 @@ export const sampleWorkflow1: Workflow = {
   workflowVersions: [],
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
-  source_control_provider: 'GITHUB'
+  source_control_provider: 'GITHUB',
+  descriptorTypeSubclass: 'NOT_APPLICABLE'
 };
 
 export const sampleWorkflow2: Workflow = {
@@ -65,7 +67,8 @@ export const sampleWorkflow2: Workflow = {
   workflowVersions: [],
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
-  source_control_provider: 'GITHUB'
+  source_control_provider: 'GITHUB',
+  descriptorTypeSubclass: 'NOT_APPLICABLE'
 };
 
 export const sampleWorkflow3: Workflow = {
@@ -80,7 +83,8 @@ export const sampleWorkflow3: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  full_workflow_path: 'github.com/sampleWorkflowPath'
+  full_workflow_path: 'github.com/sampleWorkflowPath',
+  descriptorTypeSubclass: 'NOT_APPLICABLE'
 };
 
 export const sampleWdlWorkflow1: Workflow = {
@@ -95,7 +99,8 @@ export const sampleWdlWorkflow1: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence'
+  full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence',
+  descriptorTypeSubclass: 'NOT_APPLICABLE'
 };
 
 export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
@@ -110,7 +115,8 @@ export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
   defaultTestParameterFilePath: '/md5sum/md5sum-input-cwl.json',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  full_workflow_path: 'github.com/dockstore-testing/md5sum-checker'
+  full_workflow_path: 'github.com/dockstore-testing/md5sum-checker',
+  descriptorTypeSubclass: 'NOT_APPLICABLE'
 };
 
 export const sampleWdlWorkflow2: Workflow = {
@@ -125,7 +131,8 @@ export const sampleWdlWorkflow2: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl'
+  full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl',
+  descriptorTypeSubclass: 'NOT_APPLICABLE'
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {
