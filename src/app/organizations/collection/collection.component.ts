@@ -5,7 +5,6 @@ import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection, Organization } from '../../shared/swagger';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { Workflow } from '../../shared/swagger/model/workflow';
-import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
