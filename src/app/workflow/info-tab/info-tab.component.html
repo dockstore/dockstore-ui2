@@ -56,7 +56,7 @@
                   />
                 </div>
                 <div
-                  *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED"
+                  *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
                   class="btn-group push-right"
                   role="group"
                   aria-label="Basic example"
@@ -93,7 +93,7 @@
                     placeholder="e.g. /Dockstore.cwl"
                   />
                 </div>
-                <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+                <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                   <button
                     *ngIf="!isPublic"
                     type="button"
