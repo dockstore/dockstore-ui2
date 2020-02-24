@@ -22,12 +22,13 @@ export enum WebserviceDescriptorTypeEnum {
   WDL = 'wdl',
   // DOCKSTORE-2428 - demo how to add new workflow language
   // SWL = 'swl',
+  GALAXY = 'gxformat2',
   NFL = 'nfl',
   SERVICE = 'service'
 }
 
 /**
- * This service is for maintaining compatatibility until descriptor types are standardized across all of Dockstore
+ * This service is for maintaining compatibility until descriptor types are standardized across all of Dockstore
  *
  * @export
  * @class DescriptorTypeCompatService
@@ -54,6 +55,8 @@ export class DescriptorTypeCompatService {
       return ToolDescriptor.TypeEnum.NFL;
     } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.Service) {
       return ToolDescriptor.TypeEnum.SERVICE;
+    } else if (descriptorType.toUpperCase() === DescriptorTypeEnum.Gxformat2) {
+      return ToolDescriptor.TypeEnum.GXFORMAT2;
     }
 
     // the following probably needs cleanup, not sure if it covers any cases the above doesn't
@@ -81,6 +84,13 @@ export class DescriptorTypeCompatService {
       }
       case WebserviceDescriptorTypeEnum.SERVICE: {
         return ToolDescriptor.TypeEnum.SERVICE;
+      }
+      case WebserviceDescriptorTypeEnum.GALAXY: {
+        return ToolDescriptor.TypeEnum.GXFORMAT2;
+      }
+      case ToolDescriptor.TypeEnum.GXFORMAT2: {
+        console.log('Unneeded conversion');
+        return ToolDescriptor.TypeEnum.GXFORMAT2;
       }
 
       // DOCKSTORE-2428 - demo how to add new workflow language
@@ -115,6 +125,8 @@ export class DescriptorTypeCompatService {
         return 'PLAIN-NFL';
       case ToolDescriptor.TypeEnum.SERVICE:
         return 'PLAIN-SERVICE';
+      case ToolDescriptor.TypeEnum.GXFORMAT2:
+        return 'PLAIN-GXFORMAT2';
       default:
         console.error('Unhandled descriptor type: ' + typeEnum);
         return null;
