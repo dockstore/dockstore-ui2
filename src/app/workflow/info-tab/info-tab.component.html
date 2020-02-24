@@ -39,7 +39,7 @@
         <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
           <span>
             <li *ngIf="workflow?.workflow_path || !isPublic">
-              <form #editWorkflowPathForm="ngForm" class="form-inline">
+              <form #editWorkflowPathForm="ngForm" class="form-inline" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                 <div class="form-group">
                   <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
                   <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
@@ -56,7 +56,7 @@
                   />
                 </div>
                 <div
-                  *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+                  *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED"
                   class="btn-group push-right"
                   role="group"
                   aria-label="Basic example"
@@ -77,7 +77,11 @@
                   </button>
                 </div>
               </form>
-              <form #editTestFilePathForm="ngForm" class="form-inline" *ngIf="!(isNFL$ | async)">
+              <form
+                #editTestFilePathForm="ngForm"
+                class="form-inline"
+                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+              >
                 <div class="form-group">
                   <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
                   <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
@@ -93,7 +97,7 @@
                     placeholder="e.g. /Dockstore.cwl"
                   />
                 </div>
-                <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
+                <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
                   <button
                     *ngIf="!isPublic"
                     type="button"
