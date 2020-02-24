@@ -15,6 +15,7 @@
  */
 import { approvePotatoMembership, resetDB, setTokenUserViewPort } from '../../support/commands';
 
+const imageURL = 'https://fakeUrl.com/potato.png';
 describe('Dockstore Organizations', () => {
   resetDB();
   setTokenUserViewPort();
@@ -121,6 +122,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#editOrgInfo')
         .should('be.visible')
         .click();
+      cy.wait(5000);
       typeInInput('Name', 'Potatoe');
       typeInInput('Display Name', 'Potatoe');
       typeInInput('Topic', 'Boil them, mash them, stick them in a stew');
@@ -131,9 +133,22 @@ describe('Dockstore Organizations', () => {
       cy.get('[data-cy=image-url-input]')
         .should('be.visible')
         .clear()
-        .type(
-          'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png'
-        );
+        .type(imageURL);
+      cy.get('[data-cy=image-url-input]').should('have.value', imageURL);
+      cy.get('#createOrUpdateOrganizationButton')
+        .should('be.visible')
+        .should('not.be.disabled')
+        .click();
+      cy.get('#createOrUpdateOrganizationButton').should('not.be.visible');
+      cy.get('#editOrgInfo')
+        .should('be.visible')
+        .click();
+      // I don't even
+      cy.wait(5000);
+      cy.get('[data-cy=image-url-input]')
+        .should('be.visible')
+        .clear();
+      cy.get('[data-cy=image-url-input]').should('not.have.value', imageURL);
       cy.get('#createOrUpdateOrganizationButton')
         .should('be.visible')
         .should('not.be.disabled')
@@ -145,20 +160,11 @@ describe('Dockstore Organizations', () => {
       cy.get('[data-cy=image-url-input]')
         .should('be.visible')
         .clear();
-      cy.get('#createOrUpdateOrganizationButton')
-        .should('be.visible')
-        .should('not.be.disabled')
-        .click();
-      cy.get('#createOrUpdateOrganizationButton').should('not.be.visible');
-      cy.get('#editOrgInfo')
-        .should('be.visible')
-        .click();
+      cy.get('[data-cy=image-url-input]').should('not.have.value', imageURL);
       cy.get('[data-cy=image-url-input]')
         .should('be.visible')
-        .clear()
-        .type(
-          'https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png'
-        );
+        .type(imageURL);
+      cy.get('[data-cy=image-url-input]').should('have.value', imageURL);
       cy.get('#createOrUpdateOrganizationButton')
         .should('be.visible')
         .should('not.be.disabled')
@@ -174,10 +180,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('asdf@asdf.com');
       cy.get('.orgLogo')
         .should('have.attr', 'src')
-        .should(
-          'include',
-          'https://www.gravatar.com/avatar/000?d=https://res.cloudinary.com/hellofresh/image/upload/f_auto,fl_lossy,q_auto,w_640/v1/hellofresh_s3/image/554a3abff8b25e1d268b456d.png'
-        );
+        .should('include', 'https://www.gravatar.com/avatar/000?d=' + imageURL);
     });
 
     it('have request shown on homepage', () => {
@@ -217,6 +220,7 @@ describe('Dockstore Organizations', () => {
 
     it('be able to update a collection', () => {
       cy.get('#editCollection').click();
+      cy.wait(5000);
       cy.get('#createOrUpdateCollectionButton')
         .should('be.visible')
         .should('not.be.disabled');
@@ -237,6 +241,7 @@ describe('Dockstore Organizations', () => {
     it('be able to update an organization description with markdown', () => {
       cy.visit('/organizations/Potatoe');
       cy.get('#editOrgDescription').click();
+      cy.wait(5000);
       cy.get('#updateOrganizationDescriptionButton')
         .should('be.visible')
         .should('not.be.disabled');
@@ -307,6 +312,7 @@ describe('Dockstore Organizations', () => {
     it('be able to edit collection information', () => {
       // Should be able to edit the collection topic and see the changes reflected
       cy.get('#editCollection').click();
+      cy.wait(5000);
       cy.get('#createOrUpdateCollectionButton')
         .should('be.visible')
         .should('not.be.disabled');
