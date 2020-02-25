@@ -52,6 +52,8 @@ export class ParamfilesService {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.WDL);
         } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.NFL)) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.NFL);
+        } else if (type === 'GXFORMAT2_TEST_FILE' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.GXFORMAT2)) {
+          descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.GXFORMAT2);
         }
         // DOCKSTORE-2428 - demo how to add new workflow language
         // else if (type === 'SWL_TEST_JSON' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.SWL)) {
@@ -81,6 +83,10 @@ export class ParamfilesService {
 
         if (this.checkValidFileType(version, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.NEXTFLOWCONFIG)) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
+        }
+
+        if (this.checkValidFileType(version, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2)) {
+          descriptorTypes.push(ToolDescriptor.TypeEnum.GXFORMAT2);
         }
         // DOCKSTORE-2428 - demo how to add new workflow language
         // if (this.checkValidFileType(version, SourceFile.TypeEnum.SWLTESTJSON, SourceFile.TypeEnum.DOCKSTORESWL)) {

@@ -24,6 +24,8 @@ export class ToolTabService {
         return 'Process Excerpt';
       case ToolDescriptor.TypeEnum.SERVICE:
         return 'Service';
+      case ToolDescriptor.TypeEnum.GXFORMAT2:
+        return 'Tool Excerpt';
       default:
         console.error('Unknown descriptor type found: ' + descriptorType);
         return 'Tool Excerpt';
@@ -46,6 +48,8 @@ export class ToolTabService {
         return 'task\xa0ID';
       case ToolDescriptor.TypeEnum.NFL:
         return 'process\xa0name';
+      case ToolDescriptor.TypeEnum.GXFORMAT2:
+        return 'tool\xa0ID';
       default:
         console.error('Unknown descriptor type found: ' + descriptorType);
         return 'tool\xa0ID';

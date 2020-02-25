@@ -39,6 +39,8 @@ export class DescriptorService {
           descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
         } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
+        } else if (element === SourceFile.TypeEnum.DOCKSTOREGXFORMAT2) {
+          descriptorTypes.push(ToolDescriptor.TypeEnum.GXFORMAT2);
         }
         // DOCKSTORE-2428 - demo how to add new workflow language
         // else if (element === SourceFile.TypeEnum.DOCKSTORESWL) {
@@ -78,6 +80,13 @@ export class DescriptorService {
         });
         if (nflValidation && nflValidation.valid) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
+        }
+
+        const galaxyValidation = version.validations.find(validation => {
+          return validation.type === SourceFile.TypeEnum.DOCKSTOREGXFORMAT2;
+        });
+        if (galaxyValidation && galaxyValidation.valid) {
+          descriptorTypes.push(ToolDescriptor.TypeEnum.GXFORMAT2);
         }
 
         // DOCKSTORE-2428 - demo how to add new workflow language

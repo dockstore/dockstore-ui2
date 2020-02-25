@@ -24,7 +24,9 @@ describe('Dockstore my tools', () => {
   });
 
   function selectUnpublishedTab(org: string) {
-    cy.contains(org)
+    cy.get('#tool-path').should('be.visible');
+    cy.get('mat-panel-title')
+      .contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
       .contains('.mat-tab-label-content', 'Unpublished')
@@ -33,9 +35,11 @@ describe('Dockstore my tools', () => {
   }
 
   function selectTool(tool: string) {
+    cy.get('#tool-path').should('be.visible');
     cy.contains('div .no-wrap', tool)
       .should('be.visible')
       .click();
+    cy.get('#tool-path').contains(tool);
   }
 
   describe('Go to published tool A2/b3', () => {
@@ -118,8 +122,16 @@ describe('Dockstore my tools', () => {
       cy.contains('button:visible', 'Edit')
         .should('be.visible')
         .click();
-      cy.get('[data-cy=addWDLField]').type('/test.wdl.json');
-      cy.get('[data-cy=addCWLField]').type('/test.cwl.json');
+      // For some unknown reason, Cypress likes to type '/test.wdl.json' in the wrong place
+      cy.wait(5000);
+      cy.get('input[data-cy=addWDLField]')
+        .should('be.visible')
+        .should('have.value', '')
+        .type('/test.wdl.json');
+      cy.get('input[data-cy=addCWLField]')
+        .should('be.visible')
+        .should('have.value', '')
+        .type('/test.cwl.json');
       cy.get('#saveVersionModal').click();
       cy.get('#saveVersionModal').should('not.exist');
       cy.contains('button', 'Actions')
