@@ -109,7 +109,8 @@ describe('RefreshService', () => {
         workflowVersions: [],
         defaultTestParameterFilePath: 'refreshedDefaultTestParameterFilePath',
         sourceControl: 'github.com',
-        source_control_provider: 'GITHUB'
+        source_control_provider: 'GITHUB',
+        descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
       };
       workflowService.setWorkflows([]);
       workflowService.setWorkflow(sampleWorkflow1);

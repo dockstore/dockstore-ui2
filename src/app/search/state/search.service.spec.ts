@@ -115,7 +115,8 @@ describe('SearchService', () => {
       sourceControl: '',
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
-      defaultTestParameterFilePath: ''
+      defaultTestParameterFilePath: '',
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
     };
 
     const b: Workflow = { ...a, author: 'B', starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }] };
