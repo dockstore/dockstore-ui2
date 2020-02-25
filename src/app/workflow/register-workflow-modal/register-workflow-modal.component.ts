@@ -17,7 +17,6 @@ import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
-import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 import { superDescriptorLanguages, superUnknown } from 'app/entry/superDescriptorLanguage';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable, Subject } from 'rxjs';
@@ -58,7 +57,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public Tooltip = Tooltip;
   public hostedWorkflow = {
     repository: '',
-    descriptorType: DescriptorTypeEnum.CWL,
+    descriptorType: Workflow.DescriptorTypeEnum.CWL,
     entryName: null
   };
   public options = [
@@ -113,7 +112,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
       .subscribe(isModalShown => (this.isModalShown = isModalShown));
     this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
-    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<DescriptorTypeEnum>) => {
+    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<Workflow.DescriptorTypeEnum>) => {
       if (languages && languages.length > 0) {
         // Set the initial descriptor type selected
         this.workflow.descriptorType = languages[0];
@@ -224,21 +223,21 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * @param {ToolDescriptor.TypeEnum} descriptorType  The current selected descriptor type
    * @memberof RegisterWorkflowModalComponent
    */
-  changeDescriptorType(descriptorType: DescriptorTypeEnum): void {
+  changeDescriptorType(descriptorType: Workflow.DescriptorTypeEnum): void {
     switch (descriptorType) {
-      case DescriptorTypeEnum.CWL: {
+      case Workflow.DescriptorTypeEnum.CWL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.cwlPath;
         break;
       }
-      case DescriptorTypeEnum.WDL: {
+      case Workflow.DescriptorTypeEnum.WDL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
         break;
       }
-      case DescriptorTypeEnum.NFL: {
+      case Workflow.DescriptorTypeEnum.NFL: {
         this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
         break;
       }
-      case DescriptorTypeEnum.Service: {
+      case Workflow.DescriptorTypeEnum.Service: {
         this.descriptorValidationPattern = validationDescriptorPatterns.testParameterFilePath;
         break;
       }
