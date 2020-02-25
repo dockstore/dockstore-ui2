@@ -26,12 +26,19 @@
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
+              data-cy="footer-about-link"
             >
               <small>About</small>
             </a>
           </li>
           <li class="m-0">
-            <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <a
+              [href]="dsServerURI + '/static/swagger-ui/index.html#'"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+              data-cy="footer-api-link"
+            >
               <small>API </small>
             </a>
             -
@@ -61,7 +68,13 @@
             </a>
           </li>
           <li class="m-0">
-            <a [href]="dsServerURI + '/metadata/rss'" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <a
+              [href]="dsServerURI + '/metadata/rss'"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+              data-cy="footer-rss-link"
+            >
               <small><mat-icon>rss_feed</mat-icon>RSS</small>
             </a>
           </li>
