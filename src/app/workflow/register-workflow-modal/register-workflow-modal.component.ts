@@ -17,6 +17,8 @@ import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { superDescriptorLanguages, superUnknown } from 'app/entry/superDescriptorLanguage';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -31,7 +33,6 @@ import {
   validationMessages
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export interface HostedWorkflowObject {
   name: string;
@@ -151,6 +152,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   // Validation starts here, should move most of these to a HostedWorkflowService somehow
   ngAfterViewChecked() {
     this.formChanged();
+  }
+
+  getWorkflowPathPlaceholder() {
+    const foundSuperDescriptorLanguage = superDescriptorLanguages.find(
+      superDescriptorLanguage => superDescriptorLanguage.workflowDescriptorEnum === this.workflow.descriptorType
+    );
+    return foundSuperDescriptorLanguage.descriptorPathPlaceholder || superUnknown.descriptorPathPlaceholder;
   }
 
   formChanged() {

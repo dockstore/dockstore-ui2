@@ -121,7 +121,7 @@
             [pattern]="descriptorValidationPattern"
             required
             [matTooltip]="Tooltip.workflowPath"
-            placeholder="{{ examplePatterns[workflow.descriptorType] }}"
+            placeholder="{{ getWorkflowPathPlaceholder() }}"
           />
           <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
           <mat-error *ngIf="formErrors.workflow_path">{{ formErrors.workflow_path }}</mat-error>
