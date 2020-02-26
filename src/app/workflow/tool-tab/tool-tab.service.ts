@@ -20,9 +20,9 @@ export class ToolTabService {
       extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
     if (foundExtendedDescriptorLanguage) {
-      return foundExtendedDescriptorLanguage.toolTab.secondColumnHeading;
+      return foundExtendedDescriptorLanguage.toolTab.workflowStepHeader;
     }
-    return extendedUnknownDescriptor.toolTab.secondColumnHeading;
+    return extendedUnknownDescriptor.toolTab.workflowStepHeader;
   }
 
   /**

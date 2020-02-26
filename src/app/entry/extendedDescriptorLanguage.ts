@@ -13,7 +13,8 @@ export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
   toolTab: {
     // Example: If rowIdentifier is "tool ID", then the the first column of each row will say something like "tool ID: hello-world"
     rowIdentifier: string;
-    secondColumnHeading: string;
+    // This is the heading that goes in the second column of the tool tab (Tool Excerpt)
+    workflowStepHeader: string;
   };
 }
 
@@ -28,7 +29,7 @@ const superCWL: ExtendedDescriptorLanguage = {
   sourceFileTypeEnum: [SourceFile.TypeEnum.DOCKSTORECWL],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
-    secondColumnHeading: 'Tool Excerpt'
+    workflowStepHeader: 'Tool Excerpt'
   }
 };
 
@@ -43,7 +44,7 @@ const superWDL: ExtendedDescriptorLanguage = {
   sourceFileTypeEnum: [SourceFile.TypeEnum.DOCKSTOREWDL],
   toolTab: {
     rowIdentifier: 'task\xa0ID',
-    secondColumnHeading: 'Task Excerpt'
+    workflowStepHeader: 'Task Excerpt'
   }
 };
 
@@ -58,7 +59,7 @@ const superNFL: ExtendedDescriptorLanguage = {
   sourceFileTypeEnum: [SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.NEXTFLOWCONFIG],
   toolTab: {
     rowIdentifier: 'process\xa0name',
-    secondColumnHeading: 'Process Excerpt'
+    workflowStepHeader: 'Process Excerpt'
   }
 };
 
@@ -74,7 +75,7 @@ const superService: ExtendedDescriptorLanguage = {
   sourceFileTypeEnum: [],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
-    secondColumnHeading: 'Service'
+    workflowStepHeader: 'Service'
   }
 };
 
@@ -89,7 +90,7 @@ const superGalaxy: ExtendedDescriptorLanguage = {
   sourceFileTypeEnum: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
-    secondColumnHeading: 'Tool Excerpt'
+    workflowStepHeader: 'Tool Excerpt'
   }
 };
 
@@ -104,7 +105,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
   sourceFileTypeEnum: [],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
-    secondColumnHeading: 'Tool Excerpt'
+    workflowStepHeader: 'Tool Excerpt'
   }
 };
 export const extendedDescriptorLanguages: ExtendedDescriptorLanguage[] = [superCWL, superWDL, superNFL, superService, superGalaxy];
