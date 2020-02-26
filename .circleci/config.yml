@@ -146,6 +146,8 @@ jobs:
                   --cache-control max-age=0
   check_build_develop:
     working_directory: ~/repo
+    docker:
+      - image: circleci/python:2.7
     steps:
       - get_workspace
       - install_container_dependencies
