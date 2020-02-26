@@ -146,19 +146,19 @@ jobs:
                   --cache-control max-age=0
   check_build_develop:
     working_directory: ~/repo
-      steps:
-        - get_workspace
-        - install_container_dependencies
+    steps:
+      - get_workspace
+      - install_container_dependencies
         # Override the webservice version in package.json to instead use develop version
-        - run:
-            name: set webservice to develop
-            command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
-        - run:
-            name: Build
-            command: bash -i -c 'npm run build'
-        - run:
-            name: Build
-            command: bash -i -c 'npm run build.prod
+      - run:
+          name: set webservice to develop
+          command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+      - run:
+          name: Build
+          command: bash -i -c 'npm run build'
+      - run:
+          name: Build
+          command: bash -i -c 'npm run build.prod
 
 workflows:
   version: 2
