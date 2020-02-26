@@ -13,7 +13,7 @@ export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
   toolTab: {
     // Example: If rowIdentifier is "tool ID", then the the first column of each row will say something like "tool ID: hello-world"
     rowIdentifier: string;
-    // This is the heading that goes in the second column of the tool tab (Tool Excerpt)
+    // This is the header that goes in the second column of the tool tab table (Example: Tool Excerpt)
     workflowStepHeader: string;
   };
 }
