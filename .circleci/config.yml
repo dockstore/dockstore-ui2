@@ -156,9 +156,6 @@ jobs:
       - run:
           name: Build
           command: bash -i -c 'npm run build'
-      - run:
-          name: Build
-          command: bash -i -c 'npm run build.prod
 
 workflows:
   version: 2
