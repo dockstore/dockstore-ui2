@@ -151,7 +151,7 @@ jobs:
     steps:
       - get_workspace
       - install_container_dependencies
-        # Override the webservice version in package.json to instead use develop version
+        # Override the webservice version in package.json to instead build against develop webservice
       - run:
           name: set webservice to develop
           command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
@@ -201,11 +201,8 @@ workflows:
           requires:
             - upload_to_s3
           filters:
-            # all for testing, change to develop before PR
             branches:
-              only: /.*/
-#            branches:
-#              only: /^develop/
+              only: /^develop/
 commands:
   install_container_dependencies:
     steps:
