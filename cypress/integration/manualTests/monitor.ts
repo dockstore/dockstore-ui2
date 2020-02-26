@@ -9,7 +9,9 @@ function checkLink(selector: string, url: string): void {
 function checkExternalLink(selector: string, url: string): void {
   it('Check External links', () => {
     cy.visit('');
-    cy.get(selector).should('have.attr', 'href').and('include', url);
+    cy.get(selector)
+      .should('have.attr', 'href')
+      .and('include', url);
   });
   return;
 }
@@ -26,7 +28,6 @@ const externalLinkTuples = [
   ['[data-cy=footer-about-link]', '/dockstore-introduction.html']
 ];
 
-
 before(() => {
   cy.visit('');
 });
@@ -42,16 +43,10 @@ describe('Monitor homepage links', () => {
   describe('Test RSS feed', () => {
     it('access RSS feed', () => {
       cy.get('[data-cy=footer-rss-link]').then(t => {
-        cy.request(t.prop('href')).its('body').should('include', '<rss version="2.0">');
+        cy.request(t.prop('href'))
+          .its('body')
+          .should('include', '<rss version="2.0">');
       });
     });
   });
-
 });
-
-
-before(() => {
-  cy.visit('');
-});
-
-
