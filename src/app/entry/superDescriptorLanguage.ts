@@ -82,7 +82,7 @@ const superGalaxy: SuperDescriptorLanguage = {
   value: 'gxformat2',
   friendlyName: 'Galaxy Workflow Format 2',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(ga|yaml|yml)',
-  descriptorPathPlaceholder: '/Dockstore.cwl',
+  descriptorPathPlaceholder: '/Dockstore.ga',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.GXFORMAT2,
   workflowDescriptorEnum: null,
   plainTRS: '<FILL-IN>',
