@@ -17,7 +17,7 @@ import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
-import { superDescriptorLanguages, superUnknown } from 'app/entry/superDescriptorLanguage';
+import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -55,6 +55,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public descriptorValidationPattern;
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
+  public workflowPathPlaceholder: string;
   public hostedWorkflow = {
     repository: '',
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
@@ -101,9 +102,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
 
   ngOnInit() {
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.registerWorkflowModalService.workflow
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((workflow: Service | BioWorkflow) => (this.workflow = workflow));
+    this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {
+      this.workflow = workflow;
+      this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
+    });
     this.registerWorkflowModalService.workflowRegisterError$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(workflowRegisterError => (this.workflowRegisterError = workflowRegisterError));
@@ -153,14 +155,14 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.formChanged();
   }
 
-  getWorkflowPathPlaceholder() {
-    const foundSuperDescriptorLanguage = superDescriptorLanguages.find(
-      superDescriptorLanguage => superDescriptorLanguage.workflowDescriptorEnum === this.workflow.descriptorType
+  getWorkflowPathPlaceholder(descriptorType: Workflow.DescriptorTypeEnum): string {
+    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
-    if (foundSuperDescriptorLanguage) {
-      return foundSuperDescriptorLanguage.descriptorPathPlaceholder;
+    if (foundExtendedDescriptorLanguage) {
+      return foundExtendedDescriptorLanguage.descriptorPathPlaceholder;
     }
-    return superUnknown.descriptorPathPlaceholder;
+    return extendedUnknownDescriptor.descriptorPathPlaceholder;
   }
 
   formChanged() {
@@ -227,14 +229,16 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * @memberof RegisterWorkflowModalComponent
    */
   changeDescriptorType(descriptorType: Workflow.DescriptorTypeEnum): void {
-    const foundSuperDescriptorLanguage = superDescriptorLanguages.find(
-      superDescriptorLanguage => superDescriptorLanguage.workflowDescriptorEnum === descriptorType
+    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
-    if (foundSuperDescriptorLanguage) {
-      this.descriptorValidationPattern = foundSuperDescriptorLanguage.descriptorPathPattern;
+    if (foundExtendedDescriptorLanguage) {
+      this.descriptorValidationPattern = foundExtendedDescriptorLanguage.descriptorPathPattern;
     } else {
       this.descriptorValidationPattern = '.*';
     }
+    console.log(this.workflow.descriptorType);
+    this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
   }
 
   ngOnDestroy() {

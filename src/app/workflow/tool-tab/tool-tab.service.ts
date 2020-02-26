@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { superDescriptorLanguages, superUnknown } from 'app/entry/superDescriptorLanguage';
+import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { ToolDescriptor } from '../../shared/swagger';
 
 @Injectable({
@@ -16,13 +16,13 @@ export class ToolTabService {
    * @memberof ToolTabService
    */
   descriptorTypeToHeaderName(descriptorType: ToolDescriptor.TypeEnum): string {
-    const foundSuperDescriptorLanguage = superDescriptorLanguages.find(
-      superDescriptorLanguage => superDescriptorLanguage.toolDescriptorEnum === descriptorType
+    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
-    if (foundSuperDescriptorLanguage) {
-      return foundSuperDescriptorLanguage.toolTab.secondColumnHeading;
+    if (foundExtendedDescriptorLanguage) {
+      return foundExtendedDescriptorLanguage.toolTab.secondColumnHeading;
     }
-    return superUnknown.toolTab.secondColumnHeading;
+    return extendedUnknownDescriptor.toolTab.secondColumnHeading;
   }
 
   /**
@@ -34,12 +34,12 @@ export class ToolTabService {
    * @memberof ToolTabService
    */
   descriptorTypeToWorkflowExcerptRowHeading(descriptorType: ToolDescriptor.TypeEnum): string {
-    const foundSuperDescriptorLanguage = superDescriptorLanguages.find(
-      superDescriptorLanguage => superDescriptorLanguage.toolDescriptorEnum === descriptorType
+    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
-    if (foundSuperDescriptorLanguage) {
-      return foundSuperDescriptorLanguage.toolTab.rowIdentifier;
+    if (foundExtendedDescriptorLanguage) {
+      return foundExtendedDescriptorLanguage.toolTab.rowIdentifier;
     }
-    return superUnknown.toolTab.rowIdentifier;
+    return extendedUnknownDescriptor.toolTab.rowIdentifier;
   }
 }

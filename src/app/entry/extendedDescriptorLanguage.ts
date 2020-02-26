@@ -3,7 +3,7 @@ import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'ap
 /**
  * Use the value property to map the DescriptorLanguageBean to this
  */
-export interface SuperDescriptorLanguage extends DescriptorLanguageBean {
+export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
   descriptorPathPattern: string;
   descriptorPathPlaceholder: string;
   toolDescriptorEnum: ToolDescriptor.TypeEnum;
@@ -17,7 +17,7 @@ export interface SuperDescriptorLanguage extends DescriptorLanguageBean {
   };
 }
 
-const superCWL: SuperDescriptorLanguage = {
+const superCWL: ExtendedDescriptorLanguage = {
   value: 'CWL',
   friendlyName: 'Workflow Descriptor ',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)',
@@ -32,7 +32,7 @@ const superCWL: SuperDescriptorLanguage = {
   }
 };
 
-const superWDL: SuperDescriptorLanguage = {
+const superWDL: ExtendedDescriptorLanguage = {
   value: 'WDL',
   friendlyName: 'Workflow Description Language',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$',
@@ -47,7 +47,7 @@ const superWDL: SuperDescriptorLanguage = {
   }
 };
 
-const superNFL: SuperDescriptorLanguage = {
+const superNFL: ExtendedDescriptorLanguage = {
   value: 'NFL',
   friendlyName: 'Nextflow',
   descriptorPathPattern: '^^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)',
@@ -62,7 +62,7 @@ const superNFL: SuperDescriptorLanguage = {
   }
 };
 
-const superService: SuperDescriptorLanguage = {
+const superService: ExtendedDescriptorLanguage = {
   value: 'service',
   friendlyName: 'generic placeholder for services',
   // This is not really applicable
@@ -78,13 +78,13 @@ const superService: SuperDescriptorLanguage = {
   }
 };
 
-const superGalaxy: SuperDescriptorLanguage = {
+const superGalaxy: ExtendedDescriptorLanguage = {
   value: 'gxformat2',
   friendlyName: 'Galaxy Workflow Format 2',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(ga|yaml|yml)',
-  descriptorPathPlaceholder: '/Dockstore.ga',
+  descriptorPathPlaceholder: '/Dockstore.yml',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.GXFORMAT2,
-  workflowDescriptorEnum: null,
+  workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Gxformat2,
   plainTRS: '<FILL-IN>',
   sourceFileTypeEnum: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
   toolTab: {
@@ -93,7 +93,7 @@ const superGalaxy: SuperDescriptorLanguage = {
   }
 };
 
-export const superUnknown: SuperDescriptorLanguage = {
+export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
   value: null,
   friendlyName: null,
   descriptorPathPattern: '.*',
@@ -107,4 +107,4 @@ export const superUnknown: SuperDescriptorLanguage = {
     secondColumnHeading: 'Tool Excerpt'
   }
 };
-export const superDescriptorLanguages: SuperDescriptorLanguage[] = [superCWL, superWDL, superNFL, superService, superGalaxy];
+export const extendedDescriptorLanguages: ExtendedDescriptorLanguage[] = [superCWL, superWDL, superNFL, superService, superGalaxy];

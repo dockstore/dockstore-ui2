@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 
-import { superDescriptorLanguages } from 'app/entry/superDescriptorLanguage';
+import { extendedDescriptorLanguages } from 'app/entry/extendedDescriptorLanguage';
 import { SourceFile, ToolDescriptor } from './swagger';
 
 @Injectable({ providedIn: 'root' })
@@ -34,9 +34,9 @@ export class DescriptorService {
     if (version) {
       const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
       unique.forEach((element: SourceFile.TypeEnum) => {
-        superDescriptorLanguages.forEach(superDescriptorLanguage => {
-          if (superDescriptorLanguage.sourceFileTypeEnum.includes(element)) {
-            descriptorTypes.push(superDescriptorLanguage.toolDescriptorEnum);
+        extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
+          if (extendedDescriptorLanguage.sourceFileTypeEnum.includes(element)) {
+            descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);
           }
         });
       });
@@ -53,12 +53,12 @@ export class DescriptorService {
   getValidDescriptors(version): Array<ToolDescriptor.TypeEnum> {
     const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
     if (version && version.validations) {
-      superDescriptorLanguages.forEach(superDescriptorLanguage => {
+      extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
         const cwlValidation = version.validations.find(validation => {
-          return superDescriptorLanguage.sourceFileTypeEnum.includes(validation.type);
+          return extendedDescriptorLanguage.sourceFileTypeEnum.includes(validation.type);
         });
         if (cwlValidation && cwlValidation.valid) {
-          descriptorTypes.push(superDescriptorLanguage.toolDescriptorEnum);
+          descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);
         }
       });
     }

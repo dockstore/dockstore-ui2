@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { superDescriptorLanguages, superUnknown } from 'app/entry/superDescriptorLanguage';
+import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { ToolDescriptor, Workflow } from './swagger';
 
 /**
@@ -37,19 +37,19 @@ export class DescriptorTypeCompatService {
    * @memberof LaunchComponent
    */
   public stringToDescriptorType(descriptorType: string | Workflow.DescriptorTypeEnum): ToolDescriptor.TypeEnum | null {
-    const foundSuperDescriptorLanguageFromValue = superDescriptorLanguages.find(
-      superDescriptorLanguage => superDescriptorLanguage.toolDescriptorEnum === descriptorType
+    const foundextendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
-    if (foundSuperDescriptorLanguageFromValue) {
-      return foundSuperDescriptorLanguageFromValue.toolDescriptorEnum;
+    if (foundextendedDescriptorLanguageFromValue) {
+      return foundextendedDescriptorLanguageFromValue.toolDescriptorEnum;
     }
-    const foundSuperDescriptorLanguageFromWorkflowDescriptorType = superDescriptorLanguages.find(
-      superDescriptorLanguage => superDescriptorLanguage.workflowDescriptorEnum === descriptorType
+    const foundExtendedDescriptorLanguageFromWorkflowDescriptorType = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
-    if (foundSuperDescriptorLanguageFromWorkflowDescriptorType) {
-      return foundSuperDescriptorLanguageFromWorkflowDescriptorType.toolDescriptorEnum;
+    if (foundExtendedDescriptorLanguageFromWorkflowDescriptorType) {
+      return foundExtendedDescriptorLanguageFromWorkflowDescriptorType.toolDescriptorEnum;
     }
-    return superUnknown.toolDescriptorEnum;
+    return extendedUnknownDescriptor.toolDescriptorEnum;
   }
 
   /**
@@ -60,12 +60,12 @@ export class DescriptorTypeCompatService {
    * @memberof DescriptorTypeCompatService
    */
   public toolDescriptorTypeEnumToPlainTRS(typeEnum: ToolDescriptor.TypeEnum): string | null {
-    const foundSuperDescriptorLanguage = superDescriptorLanguages.find(
-      superDescriptorLanguage => superDescriptorLanguage.toolDescriptorEnum === typeEnum
+    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === typeEnum
     );
-    if (foundSuperDescriptorLanguage) {
-      return foundSuperDescriptorLanguage.plainTRS;
+    if (foundExtendedDescriptorLanguage) {
+      return foundExtendedDescriptorLanguage.plainTRS;
     }
-    return superUnknown.plainTRS;
+    return extendedUnknownDescriptor.plainTRS;
   }
 }

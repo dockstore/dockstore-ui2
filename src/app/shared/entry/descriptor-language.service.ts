@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { superDescriptorLanguages, superUnknown } from 'app/entry/superDescriptorLanguage';
+import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
@@ -124,13 +124,13 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum): string {
-    const foundSuperDescriptorLanguageFromValue = superDescriptorLanguages.find(
-      superDescriptorLanguage => superDescriptorLanguage.toolDescriptorEnum === descriptorType
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
-    if (foundSuperDescriptorLanguageFromValue) {
-      return foundSuperDescriptorLanguageFromValue.descriptorPathPlaceholder;
+    if (foundExtendedDescriptorLanguageFromValue) {
+      return foundExtendedDescriptorLanguageFromValue.descriptorPathPlaceholder;
     }
-    return superUnknown.descriptorPathPlaceholder;
+    return extendedUnknownDescriptor.descriptorPathPlaceholder;
   }
 
   genericUnhandledTypeError(type: any): void {
