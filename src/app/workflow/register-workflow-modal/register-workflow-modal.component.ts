@@ -157,7 +157,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     const foundSuperDescriptorLanguage = superDescriptorLanguages.find(
       superDescriptorLanguage => superDescriptorLanguage.workflowDescriptorEnum === this.workflow.descriptorType
     );
-    return foundSuperDescriptorLanguage.descriptorPathPlaceholder || superUnknown.descriptorPathPlaceholder;
+    if (foundSuperDescriptorLanguage) {
+      return foundSuperDescriptorLanguage.descriptorPathPlaceholder;
+    }
+    return superUnknown.descriptorPathPlaceholder;
   }
 
   formChanged() {
@@ -224,27 +227,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * @memberof RegisterWorkflowModalComponent
    */
   changeDescriptorType(descriptorType: Workflow.DescriptorTypeEnum): void {
-    switch (descriptorType) {
-      case Workflow.DescriptorTypeEnum.CWL: {
-        this.descriptorValidationPattern = validationDescriptorPatterns.cwlPath;
-        break;
-      }
-      case Workflow.DescriptorTypeEnum.WDL: {
-        this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
-        break;
-      }
-      case Workflow.DescriptorTypeEnum.NFL: {
-        this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
-        break;
-      }
-      case Workflow.DescriptorTypeEnum.Service: {
-        this.descriptorValidationPattern = validationDescriptorPatterns.testParameterFilePath;
-        break;
-      }
-      default: {
-        console.log('Unrecognized descriptor type: ' + descriptorType);
-        this.descriptorValidationPattern = '.*';
-      }
+    const foundSuperDescriptorLanguage = superDescriptorLanguages.find(
+      superDescriptorLanguage => superDescriptorLanguage.workflowDescriptorEnum === descriptorType
+    );
+    if (foundSuperDescriptorLanguage) {
+      this.descriptorValidationPattern = foundSuperDescriptorLanguage.descriptorPathPattern;
+    } else {
+      this.descriptorValidationPattern = '.*';
     }
   }
 
