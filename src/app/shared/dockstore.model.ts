@@ -61,6 +61,11 @@ export class Dockstore {
   static ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.ZENODO;
   static ZENODO_SCOPE = 'deposit:write deposit:actions';
 
+  static ORCID_AUTH_URL = 'https://orcid.org/oauth/authorize';
+  static ORCID_CLIENT_ID = 'will be filled in by configuration.service';
+  static ORCID_SCOPE = '/authenticate';
+  static ORCID_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.ORCID;
+
   static GOOGLE_CLIENT_ID = 'will be filled in by configuration.service';
   static GOOGLE_SCOPE = 'profile email';
   static GOOGLE_TAG_MANAGER_ID = 'filled in by configuration service';
