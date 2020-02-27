@@ -144,6 +144,20 @@ jobs:
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
+  check_build_develop:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python:2.7
+    steps:
+      - get_workspace
+      - install_container_dependencies
+        # Override the webservice version in package.json to instead build against develop webservice
+      - run:
+          name: set webservice to develop
+          command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+      - run:
+          name: Build
+          command: bash -i -c 'npm run build'
 
 workflows:
   version: 2
@@ -183,6 +197,12 @@ workflows:
               only: /.*/
             branches:
               only: /.*/
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
 commands:
   install_container_dependencies:
     steps:
