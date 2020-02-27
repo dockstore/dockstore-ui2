@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
@@ -123,21 +124,13 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum): string {
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL: {
-        return 'e.g. /Dockstore.cwl';
-      }
-      case ToolDescriptor.TypeEnum.WDL: {
-        return 'e.g. /Dockstore.wdl';
-      }
-      case ToolDescriptor.TypeEnum.NFL: {
-        return 'e.g. /nextflow.config';
-      }
-      default: {
-        this.genericUnhandledTypeError(descriptorType);
-        return '';
-      }
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
+    );
+    if (foundExtendedDescriptorLanguageFromValue) {
+      return foundExtendedDescriptorLanguageFromValue.descriptorPathPlaceholder;
     }
+    return extendedUnknownDescriptor.descriptorPathPlaceholder;
   }
 
   genericUnhandledTypeError(type: any): void {

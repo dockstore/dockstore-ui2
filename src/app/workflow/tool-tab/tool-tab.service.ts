@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { ToolDescriptor } from '../../shared/swagger';
 
 @Injectable({
@@ -15,21 +16,13 @@ export class ToolTabService {
    * @memberof ToolTabService
    */
   descriptorTypeToHeaderName(descriptorType: ToolDescriptor.TypeEnum): string {
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL:
-        return 'Tool Excerpt';
-      case ToolDescriptor.TypeEnum.WDL:
-        return 'Task Excerpt';
-      case ToolDescriptor.TypeEnum.NFL:
-        return 'Process Excerpt';
-      case ToolDescriptor.TypeEnum.SERVICE:
-        return 'Service';
-      case ToolDescriptor.TypeEnum.GXFORMAT2:
-        return 'Tool Excerpt';
-      default:
-        console.error('Unknown descriptor type found: ' + descriptorType);
-        return 'Tool Excerpt';
+    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
+    );
+    if (foundExtendedDescriptorLanguage) {
+      return foundExtendedDescriptorLanguage.toolTab.workflowStepHeader;
     }
+    return extendedUnknownDescriptor.toolTab.workflowStepHeader;
   }
 
   /**
@@ -41,18 +34,12 @@ export class ToolTabService {
    * @memberof ToolTabService
    */
   descriptorTypeToWorkflowExcerptRowHeading(descriptorType: ToolDescriptor.TypeEnum): string {
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL:
-        return 'tool\xa0ID';
-      case ToolDescriptor.TypeEnum.WDL:
-        return 'task\xa0ID';
-      case ToolDescriptor.TypeEnum.NFL:
-        return 'process\xa0name';
-      case ToolDescriptor.TypeEnum.GXFORMAT2:
-        return 'tool\xa0ID';
-      default:
-        console.error('Unknown descriptor type found: ' + descriptorType);
-        return 'tool\xa0ID';
+    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
+    );
+    if (foundExtendedDescriptorLanguage) {
+      return foundExtendedDescriptorLanguage.toolTab.rowIdentifier;
     }
+    return extendedUnknownDescriptor.toolTab.rowIdentifier;
   }
 }

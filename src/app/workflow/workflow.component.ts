@@ -256,9 +256,14 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
           const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
-          this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
-            this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
-          ]);
+          const compatType = this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType);
+          if (compatType) {
+            this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [compatType]);
+          } else {
+            this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+              this.workflow.descriptorType
+            ]);
+          }
         }
       }
       this.setUpWorkflow(workflow);

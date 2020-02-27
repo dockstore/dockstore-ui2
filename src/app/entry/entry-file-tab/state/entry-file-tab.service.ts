@@ -295,6 +295,9 @@ export class EntryFileTabService extends Base {
     const id = prefix + entryPath;
     const versionId = version.name;
     const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(toolDescriptorType);
+    if (!type) {
+      return null;
+    }
     const relativePath = this.entryFileTabQuery.getValue().selectedFile.path;
     return this.fileService.getDownloadFilePath(id, versionId, type, relativePath);
   }

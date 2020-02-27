@@ -49,6 +49,9 @@ export class FileService {
       return null;
     } else {
       const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(descriptorType);
+      if (type === null) {
+        return null;
+      }
       const id = entryType === 'workflow' ? ga4ghWorkflowIdPrefix + entryPath : entryPath;
       const versionId = entryVersion.name;
       const relativePath = sourceFile.path;
