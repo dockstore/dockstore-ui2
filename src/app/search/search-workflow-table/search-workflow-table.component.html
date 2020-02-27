@@ -21,8 +21,8 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
-      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef>Verified</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm *matCellDef="let workflow">
+      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-md *matCellDef="let workflow">
         <a *ngIf="getVerified(workflow)" href="{{ verifiedLink }}">
           <mat-icon matTooltip="Verified">done</mat-icon>
         </a>
@@ -33,8 +33,8 @@
       <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-md *matCellDef="let workflow">{{ workflow?.descriptorType | uppercase }}</mat-cell>
+      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-sm *matCellDef="let workflow">{{ workflow?.descriptorType | uppercase }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Project Links</mat-header-cell>

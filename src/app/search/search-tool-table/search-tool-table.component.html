@@ -38,8 +38,8 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
-      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef>Verified</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm *matCellDef="let tool">
+      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
         <a *ngIf="getVerified(tool)" href="{{ verifiedLink }}">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
@@ -50,8 +50,8 @@
       <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let tool">{{ tool?.author || 'n/a' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">{{
+      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-sm *matCellDef="let tool">{{
         tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : ''
       }}</mat-cell>
     </ng-container>
