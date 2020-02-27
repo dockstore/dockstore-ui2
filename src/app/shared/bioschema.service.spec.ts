@@ -79,7 +79,8 @@ describe('BioschemaService', () => {
       sourceControl: '',
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
-      defaultTestParameterFilePath: ''
+      defaultTestParameterFilePath: '',
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
     };
     const result: BioschemaTool = service.getWorkflowSchema(workflow, version);
     expect(result['@context']).toEqual('http://schema.org');

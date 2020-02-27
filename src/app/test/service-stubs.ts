@@ -686,7 +686,8 @@ export class WorkflowsStubService {
       workflowVersions: [],
       defaultTestParameterFilePath: 'refreshedDefaultTestParameterFilePath',
       sourceControl: 'github.com',
-      source_control_provider: 'GITHUB'
+      source_control_provider: 'GITHUB',
+      descriptorTypeSubclass: 'NOT_APPLICABLE'
     };
     return observableOf(refreshedWorkflow);
   }

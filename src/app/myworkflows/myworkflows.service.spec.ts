@@ -40,7 +40,8 @@ describe('MyWorkflowsService', () => {
     sourceControl: 'github.com',
     path: 'github.com/cc/aa',
     full_workflow_path: 'github.com/cc/aa',
-    source_control_provider: 'GITHUB'
+    source_control_provider: 'GITHUB',
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
   };
   const tool2: Workflow = {
     defaultTestParameterFilePath: '',
@@ -53,7 +54,8 @@ describe('MyWorkflowsService', () => {
     sourceControl: 'github.com',
     path: 'github.com/cc/bb',
     full_workflow_path: 'github.com/cc/bb',
-    source_control_provider: 'GITHUB'
+    source_control_provider: 'GITHUB',
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
   };
   const tool3: Workflow = {
     defaultTestParameterFilePath: '',
@@ -66,7 +68,8 @@ describe('MyWorkflowsService', () => {
     sourceControl: 'github.com',
     path: 'github.com/bb/cc',
     full_workflow_path: 'github.com/bb/cc',
-    source_control_provider: 'GITHUB'
+    source_control_provider: 'GITHUB',
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
   };
   const tool4: Workflow = {
     defaultTestParameterFilePath: '',
@@ -79,7 +82,8 @@ describe('MyWorkflowsService', () => {
     sourceControl: 'github.com',
     path: 'github.com/bb/dd',
     full_workflow_path: 'github.com/bb/dd',
-    source_control_provider: 'GITHUB'
+    source_control_provider: 'GITHUB',
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
   };
   const tool5: Workflow = {
     defaultTestParameterFilePath: '',
@@ -92,7 +96,8 @@ describe('MyWorkflowsService', () => {
     sourceControl: 'github.com',
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
-    source_control_provider: 'GITHUB'
+    source_control_provider: 'GITHUB',
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
   };
   const tool6: Workflow = {
     defaultTestParameterFilePath: '',
@@ -105,7 +110,8 @@ describe('MyWorkflowsService', () => {
     sourceControl: 'github.com',
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
-    source_control_provider: 'GITHUB'
+    source_control_provider: 'GITHUB',
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
   };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
   const expectedResult1: OrgWorkflowObject<Workflow> = {

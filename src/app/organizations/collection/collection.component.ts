@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection, Organization } from '../../shared/swagger';
+import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
@@ -45,6 +46,7 @@ export interface DialogData {
 })
 export class CollectionComponent implements OnInit {
   WorkflowMode = Workflow.ModeEnum;
+  DescriptorType = ToolDescriptor.TypeEnum;
   collection$: Observable<Collection>;
   loadingCollection$: Observable<boolean>;
 

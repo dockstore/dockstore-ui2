@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../alert/state/alert.service';
-import { BioWorkflow, UsersService, WorkflowsService } from '../openapi';
+import { BioWorkflow, UsersService, Workflow, WorkflowsService } from '../openapi';
 import { Repository } from '../openapi/model/repository';
 import { EntryWizardQuery } from './entry-wizard.query';
 import { EntryWizardStore } from './entry-wizard.store';
@@ -157,19 +157,19 @@ export class EntryWizardService {
    * Converts a string source control to a Source Control enum
    * @param sourceControl source control string
    */
-  convertSourceControlStringToEnum(sourceControl: string): BioWorkflow.SourceControlEnum {
+  convertSourceControlStringToEnum(sourceControl: string): Workflow.SourceControlEnum {
     switch (sourceControl) {
-      case BioWorkflow.SourceControlEnum.GithubCom: {
-        return BioWorkflow.SourceControlEnum.GithubCom;
+      case Workflow.SourceControlEnum.GithubCom: {
+        return Workflow.SourceControlEnum.GithubCom;
       }
-      case BioWorkflow.SourceControlEnum.GitlabCom: {
-        return BioWorkflow.SourceControlEnum.GitlabCom;
+      case Workflow.SourceControlEnum.GitlabCom: {
+        return Workflow.SourceControlEnum.GitlabCom;
       }
-      case BioWorkflow.SourceControlEnum.BitbucketOrg: {
-        return BioWorkflow.SourceControlEnum.BitbucketOrg;
+      case Workflow.SourceControlEnum.BitbucketOrg: {
+        return Workflow.SourceControlEnum.BitbucketOrg;
       }
-      case BioWorkflow.SourceControlEnum.DockstoreOrg: {
-        return BioWorkflow.SourceControlEnum.DockstoreOrg;
+      case Workflow.SourceControlEnum.DockstoreOrg: {
+        return Workflow.SourceControlEnum.DockstoreOrg;
       }
       default:
         console.error(sourceControl + ' is not a valid Source Control.');

@@ -62,6 +62,7 @@
                   isPublic ||
                   !canWrite ||
                   workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
+                  workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML ||
                   version.frozen ||
                   version.doiURL
                 "
@@ -97,7 +98,7 @@
                   disabled
                   readonly
                 />
-                <span class="input-group-btn">
+                <span class="input-group-btn" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                   <button
                     data-cy="remove-test-parameter-file-button"
                     title="Remove test parameter file"
@@ -116,7 +117,7 @@
               [ngClass]="{ 'col-sm-offset-3': testParameterFilePaths.length > 0 }"
               *ngIf="!isPublic && !(isService$ | async) && !version.frozen"
             >
-              <div class="input-group">
+              <div class="input-group" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                 <input
                   data-cy="test-parameter-file-input"
                   [ngClass]="{ 'input-right-button': !isPublic }"
@@ -147,7 +148,12 @@
                     title="Enter a valid path"
                     type="button"
                     class="btn btn-default form-sm-button"
-                    [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+                    [disabled]="
+                      model1.invalid ||
+                      testParameterFilePath.length == 0 ||
+                      workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
+                    "
                     *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)"
                   >
                     <mat-icon>add</mat-icon>

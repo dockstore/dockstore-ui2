@@ -22,7 +22,7 @@
     "lastUpdated": 1565209302223,
     "last_modified": null,
     "last_modified_date": null,
-    "mode": "SERVICE",
+    "mode": "DOCKSTORE_YML",
     "organization": "dockstore-testing",
     "output_file_formats": [],
     "parentEntry": null,
@@ -35,7 +35,8 @@
     "users": null,
     "workflowName": null,
     "workflowVersions": [],
-    "workflow_path": ".dockstore.yml"
+    "workflow_path": ".dockstore.yml",
+    "descriptorTypeSubclass": "n/a"
   },
   {
     "type": "Service",
@@ -60,7 +61,7 @@
     "lastUpdated": 1565209303044,
     "last_modified": null,
     "last_modified_date": null,
-    "mode": "SERVICE",
+    "mode": "DOCKSTORE_YML",
     "organization": "dockstore-testing",
     "output_file_formats": [],
     "parentEntry": null,
@@ -73,6 +74,7 @@
     "users": null,
     "workflowName": null,
     "workflowVersions": [],
-    "workflow_path": ".dockstore.yml"
+    "workflow_path": ".dockstore.yml",
+    "descriptorTypeSubclass": "n/a"
   }
 ]
