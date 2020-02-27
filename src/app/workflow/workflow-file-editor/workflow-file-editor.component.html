@@ -15,7 +15,7 @@
   -->
 
 <mat-tab-group mat-stretch-tabs>
-  <mat-tab label="Descriptor Files" id="descriptorFilesTab" data-cy="descriptorFilesTab">
+  <mat-tab label="Descriptor Files" id="descriptorFilesTab">
     <app-code-editor-list
       [sourcefiles]="descriptorFiles"
       [editing]="editing"
@@ -26,7 +26,7 @@
       [entrypath]="entrypath"
     ></app-code-editor-list>
   </mat-tab>
-  <mat-tab label="Test Parameter Files" id="testParameterFilesTab" data-cy="testParameterFilesTab">
+  <mat-tab label="Test Parameter Files" id="testParameterFilesTab">
     <app-code-editor-list
       *ngIf="!(isNFL$ | async)"
       [sourcefiles]="testParameterFiles"
