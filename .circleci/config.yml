@@ -7,11 +7,12 @@ executors:
       - image: circleci/buildpack-deps:18.04-browsers
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
-      - image: circleci/postgres:10.10-alpine
+      - image: circleci/postgres:11.6-alpine-ram
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
   lint_unit_test_coverage:
     working_directory: ~/repo
