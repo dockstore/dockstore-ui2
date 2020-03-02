@@ -35,7 +35,7 @@ export class GA4GHFilesService {
    * @memberof GA4GHFilesService
    */
   @transaction()
-  updateFiles(id: string, version: string, descriptorTypes?: Array<ToolDescriptor.TypeEnum>) {
+  updateFiles(id: string, version: string, descriptorTypes?: Array<string>) {
     if (!version) {
       return;
     }

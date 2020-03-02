@@ -89,7 +89,7 @@
                     <h4>
                       <span *ngIf="entry?.full_workflow_path">
                         <a
-                          *ngIf="entry?.mode === WorkflowMode.SERVICE; else workflow"
+                          *ngIf="entry?.descriptorType === DescriptorType.SERVICE; else workflow"
                           [routerLink]="['/services/', entry.full_workflow_path]"
                         >
                           {{ entry.full_workflow_path }}

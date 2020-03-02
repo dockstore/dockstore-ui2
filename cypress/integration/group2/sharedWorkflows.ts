@@ -94,7 +94,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       defaultTestParameterFilePath: '/test.json',
       defaultVersion: null,
       description: null,
-      descriptorType: 'wdl',
+      descriptorType: 'WDL',
       email: null,
       full_workflow_path: 'dockstore.org/user_B/' + name,
       gitUrl: '',
@@ -135,7 +135,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           sourceFiles: [
             {
               content:
-                "task hello {\n  String pattern\n  File in\n\n  command {\n    egrep '${pattern}' '${in}'\n  }\n\n  runtime {\n    docker: \"broadinstitute/my_image\"\n  }\n\n  output {\n    Array[String] matches = read_lines(stdout())\n  }\n}\n\nworkflow wf {\n  call hello\n}",
+                'task hello {\n  String pattern\n  File in\n\n  command {\n    egrep \'${pattern}\' \'${in}\'\n  }\n\n  runtime {\n    docker: "broadinstitute/my_image"\n  }\n\n  output {\n    Array[String] matches = read_lines(stdout())\n  }\n}\n\nworkflow wf {\n  call hello\n}',
               id: 1,
               path: '/Dockstore.wdl',
               type: 'DOCKSTORE_WDL',
@@ -165,7 +165,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           sourceFiles: [
             {
               content:
-                "task hello {\n  String pattern\n  File in\n\n  command {\n    egrep '${pattern}' '${in}'\n  }\n\n  runtime {\n    docker: \"broadinstitute/my_image\"\n  }\n\n  output {\n    Array[String] varmatches = read_lines(stdout())\n  }\n}\n\nworkflow wf {\n  call hello\n}",
+                'task hello {\n  String pattern\n  File in\n\n  command {\n    egrep \'${pattern}\' \'${in}\'\n  }\n\n  runtime {\n    docker: "broadinstitute/my_image"\n  }\n\n  output {\n    Array[String] varmatches = read_lines(stdout())\n  }\n}\n\nworkflow wf {\n  call hello\n}',
               id: 2,
               path: '/Dockstore.wdl',
               type: 'DOCKSTORE_WDL',

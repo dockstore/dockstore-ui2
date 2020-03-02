@@ -35,6 +35,8 @@ export class ConfigurationService {
     Dockstore.DNASTACK_IMPORT_URL = config.dnaStackImportUrl;
     Dockstore.DNANEXUS_IMPORT_URL = config.dnaNexusImportUrl;
     Dockstore.TERRA_IMPORT_URL = config.terraImportUrl;
+    Dockstore.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = config.bdCatalystSevenBridgesImportUrl;
+    Dockstore.BD_CATALYST_TERRA_IMPORT_URL = config.bdCatalystTerraImportUrl;
 
     Dockstore.GITHUB_CLIENT_ID = config.githubClientId;
     Dockstore.GITHUB_AUTH_URL = config.gitHubAuthUrl;

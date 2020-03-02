@@ -83,7 +83,9 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.NFL);
     expect(placeholder).toEqual('e.g. /nextflow.config');
     placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SERVICE);
-    expect(placeholder).toEqual('');
+    expect(placeholder).toEqual('e.g. /.dockstore.yml');
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.GXFORMAT2);
+    expect(placeholder).toEqual('e.g. /Dockstore.yml');
     placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(<ToolDescriptor.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual('');
   });

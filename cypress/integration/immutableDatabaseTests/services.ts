@@ -81,7 +81,7 @@ describe('Dockstore Home', () => {
       cy.fixture('syncservices1.json').then(json => {
         cy.route({
           method: 'POST',
-          url: '*/users/services/sync',
+          url: '*/users/github/sync',
           response: json
         });
       });
@@ -94,24 +94,6 @@ describe('Dockstore Home', () => {
         .click();
       // One repo within the org
       cy.get('.mat-list-item-content').should('have.length', 1);
-    });
-    it('Clicking sync with GitHub organization should sync', () => {
-      cy.server();
-      // This fixture has two services, one of which is also in syncservices1.json
-      cy.fixture('syncservices2.json').then(json => {
-        cy.route({
-          method: 'POST',
-          url: '*/users/services/dockstore-testing/sync',
-          response: json
-        });
-      });
-      cy.get('mat-expansion-panel').should('have.length', 1);
-      cy.get('[data-cy=sync-with-github-org]')
-        .first()
-        .click();
-      cy.get('mat-expansion-panel').should('have.length', 1);
-      // Now 2 repos
-      cy.get('.mat-list-item-content').should('have.length', 2);
     });
   });
 

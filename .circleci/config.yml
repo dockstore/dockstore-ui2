@@ -7,11 +7,12 @@ executors:
       - image: circleci/buildpack-deps:18.04-browsers
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
-      - image: circleci/postgres:10.10-alpine
+      - image: circleci/postgres:11.6-alpine-ram
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
   lint_unit_test_coverage:
     working_directory: ~/repo
@@ -42,6 +43,10 @@ jobs:
           key: dep-cache-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
+      - save_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          paths:
+            - ~/.cache
       - run:
           name: Check dependencies
           command: bash -i -c 'npm ls'
@@ -69,6 +74,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
@@ -81,6 +88,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
@@ -93,6 +102,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
@@ -134,6 +145,20 @@ jobs:
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
+  check_build_develop:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python:2.7
+    steps:
+      - get_workspace
+      - install_container_dependencies
+        # Override the webservice version in package.json to instead build against develop webservice
+      - run:
+          name: set webservice to develop
+          command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+      - run:
+          name: Build
+          command: bash -i -c 'npm run build'
 
 workflows:
   version: 2
@@ -173,6 +198,12 @@ workflows:
               only: /.*/
             branches:
               only: /.*/
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
 commands:
   install_container_dependencies:
     steps:
@@ -210,9 +241,6 @@ commands:
       - run:
           name: Install cypress dependencies
           command: sudo apt install libgtk2.0-0 -yq
-      - run:
-          name: Install cypress
-          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'

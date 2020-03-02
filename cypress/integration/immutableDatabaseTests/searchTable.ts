@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { setTokenUserViewPort } from '../../support/commands';
-import { goToTab } from "../../support/commands";
+import { goToTab } from '../../support/commands';
 
 describe('Dockstore tool/workflow search table', () => {
   setTokenUserViewPort();

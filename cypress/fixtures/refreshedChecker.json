@@ -10,18 +10,19 @@
   "defaultVersion": null,
   "description": null,
   "descriptorType": "cwl",
+  "descriptorTypeSubclass": "n/a",
   "email": null,
   "full_workflow_path": "github.com\/A\/l\/_cwl_checker",
   "gitUrl": "git@github.com:A\/l.git",
   "has_checker": false,
   "id": 103,
   "input_file_formats": [
-    
+
   ],
   "is_checker": true,
   "is_published": true,
   "labels": [
-    
+
   ],
   "lastUpdated": 1480363257688,
   "last_modified": null,
@@ -29,7 +30,7 @@
   "mode": "STUB",
   "organization": "A",
   "output_file_formats": [
-    
+
   ],
   "parent_id": 11,
   "path": "github.com\/A\/l",
@@ -37,7 +38,7 @@
   "sourceControl": "github.com",
   "source_control_provider": "GITHUB",
   "starredUsers": [
-    
+
   ],
   "users": [
     {
@@ -53,7 +54,7 @@
   ],
   "workflowName": "_cwl_checker",
   "workflowVersions": [
-    
+
   ],
   "workflow_path": "\/Dockstore.cwl"
 }

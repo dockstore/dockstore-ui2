@@ -225,7 +225,14 @@
           </mat-tab>
           <mat-tab id="fileTab" label="Files">
             <ng-template matTabContent>
-              <div *ngIf="entryType === EntryType.Service; else FilesTabBioWorkflow" class="p-3">
+              <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new plugin -->
+              <div
+                *ngIf="
+                  workflow.descriptorType !== 'CWL' && workflow.descriptorType !== 'WDL' && workflow.descriptorType !== 'NFL';
+                  else FilesTabBioWorkflow
+                "
+                class="p-3"
+              >
                 <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
                   <app-entry-file-tab [version]="selectedVersion"></app-entry-file-tab>
                 </div>
@@ -240,7 +247,7 @@
               <ng-template #FilesTabBioWorkflow>
                 <div *ngIf="validVersions && !isStub() && !isHosted()">
                   <app-files-workflow
-                    *ngIf="validVersions"
+                    *ngIf="validVersions && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
                     [entrypath]="workflow.full_workflow_path"
                     [id]="workflow?.id"
                     [versions]="validVersions"
@@ -252,6 +259,10 @@
                     [isOwner]="isOwner"
                   >
                   </app-files-workflow>
+                  <app-entry-file-tab
+                    [version]="selectedVersion"
+                    *ngIf="workflow?.mode === WorkflowModel.ModeEnum.DOCKSTOREYML"
+                  ></app-entry-file-tab>
                 </div>
                 <div *ngIf="validVersions && isHosted()">
                   <app-workflow-file-editor

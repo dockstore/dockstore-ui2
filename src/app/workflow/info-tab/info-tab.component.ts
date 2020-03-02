@@ -59,7 +59,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   isPublic: boolean;
   trsLink: string;
   EntryType = EntryType;
-  descriptorType$: Observable<ToolDescriptor.TypeEnum>;
+  descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
   public entryType$: Observable<EntryType>;
