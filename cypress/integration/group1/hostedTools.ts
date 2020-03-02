@@ -14,68 +14,82 @@
  *    limitations under the License.
  */
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
-import { clickFirstActionsButton, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
-describe('Dockstore hosted workflows', () => {
+describe('Dockstore hosted tools', () => {
   resetDB();
   setTokenUserViewPort();
 
   beforeEach(() => {
-    cy.visit('/my-workflows');
+    cy.visit('/my-tools');
 
     cy.server();
 
     cy.route({
       method: 'GET',
-      url: /workflows\/.+\/zip\/.+/,
+      url: /containers\/.+\/zip\/.+/,
       response: 200
     }).as('downloadZip');
   });
 
-  function getWorkflow() {
-    goToUnexpandedSidebarEntry('dockstore.org/A', /hosted/);
+  function getTool() {
+    goToUnexpandedSidebarEntry('quay.io/hosted-tool', 'ht');
   }
 
-  // Ensure tabs are correct for the hosted workflow, try adding a version
-  describe('Should be able to register a hosted workflow and add files to it', () => {
-    it('Register the workflow', () => {
-      // Select the hosted workflow
-      getWorkflow();
+  // Ensure tabs are correct for the hosted tool, try adding a version
+  describe('Should be able to register a hosted tool and add files to it', () => {
+    it('Register the tool', () => {
+      // Select the hosted tool
+      getTool();
 
       // Should not be able to publish (No valid versions)
-      cy.get('#publishButton').should('be.disabled');
-
-      // Check content of the info tab
-      cy.contains('Mode: HOSTED');
+      cy.get('#publishToolButton').should('be.disabled');
 
       // Should not be able to download zip
       cy.get('#downloadZipButton').should('not.be.visible');
 
-      // Should have alert saying there are no versions
+      // Check content of the version tab. New hosted tool, there's no versions
       goToTab('Versions');
-      cy.contains('To see versions, please add a new version.');
+      cy.contains('To see versions, please add a new version');
 
-      // Add a new version with one descriptor
+      // Add a new version with one descriptor and dockerfile
       goToTab('Files');
+
       cy.get('#editFilesButton').click();
+
       cy.contains('Add File').click();
       cy.window().then(function(window: any) {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
-          const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
-          window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
+          const dockerfile = `FROM ubuntu:latest`;
+          window.ace.edit(editors[0]).setValue(dockerfile, -1);
+        });
+      });
+
+      cy.get('#descriptorFilesTab-link').click();
+      cy.wait(500);
+
+      cy.get('#descriptorFilesTab')
+        .contains('Add File')
+        .click();
+      cy.window().then(function(window: any) {
+        cy.document().then(doc => {
+          const editors = doc.getElementsByClassName('ace_editor');
+          const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
+          window.ace.edit(editors[1]).setValue(cwlDescriptor, -1);
         });
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:1');
+
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
+
       // Should have a version 1
       goToTab('Versions');
       cy.get('table').contains('span', /\b1\b/);
 
       // Should be able to download zip
       goToTab('Info');
-
       cy.get('#downloadZipButton').should('be.visible');
 
       // Verify that clicking calls the correct endpoint
@@ -89,67 +103,74 @@ describe('Dockstore hosted workflows', () => {
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
       cy.get('#editFilesButton').click();
-      cy.contains('Add File').click();
+      cy.get('#descriptorFilesTab-link').click();
+      cy.wait(500);
+      cy.get('#descriptorFilesTab')
+        .contains('Add File')
+        .click();
       cy.window().then(function(window: any) {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
-          const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
-          window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
+          const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
+          window.ace.edit(editors[2]).setValue(cwlDescriptor, -1);
         });
       });
 
-      goToTab('Test Parameter Files');
+      cy.get('#testParameterFilesTab-link').click();
       cy.wait(500);
-      cy.contains('Add File').click();
+      cy.get('#testParameterFilesTab')
+        .contains('Add File')
+        .click();
       cy.window().then(function(window: any) {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const testParameterFile = '{}';
-          window.ace.edit(editors[2]).setValue(testParameterFile, -1);
+          window.ace.edit(editors[3]).setValue(testParameterFile, -1);
         });
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Should have a version 2
       goToTab('Versions');
-      cy.get('table').contains('span', /\b2\b/);
+      cy.get('table')
+        .contains('span', /\b2\b/)
+        .click();
 
       // Should be able to publish
       cy.get('#publishButton').should('not.be.disabled');
 
-      // Try deleting a file (.wdl file)
+      // Try deleting a file (.cwl file)
       goToTab('Files');
       cy.get('#editFilesButton').click();
-      cy.get('.delete-editor-file')
+      cy.get('#descriptorFilesTab-link').click();
+      cy.wait(500);
+      cy.get('#descriptorFilesTab')
+        .find('.delete-editor-file')
         .first()
         .click();
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:3');
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:3');
 
-      // Testing for one ace editor as mat-tab hides the second element due to it being in a different tab
-      cy.get('.ace_editor').should('have.length', 1);
+      // Should now only have 1 visible editor
+      cy.get('.ace_editor:visible').should('have.length', 1);
 
       // New version should be added
       goToTab('Versions');
       cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
-      clickFirstActionsButton();
-      cy.contains('Delete').click();
+      cy.contains('button', 'Actions')
+        .should('be.visible')
+        .click();
+      cy.get('.deleteVersionButton').click();
       // Automatically selects the newest version that wasn't the one that was just deleted
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
+      cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Version 3 should no longer exist since it was just deleted
       goToTab('Versions');
       cy.get('table')
         .find('a')
         .should('not.contain', '3');
-
-      // Reload the hosted workflow to test https://github.com/dockstore/dockstore/issues/2854
-      cy.reload();
-
-      goToTab('Files');
-      cy.contains('/Dockstore.wdl').should('be.visible');
     });
   });
 });
