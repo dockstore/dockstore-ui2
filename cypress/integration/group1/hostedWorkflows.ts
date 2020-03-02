@@ -110,7 +110,6 @@ describe('Dockstore hosted workflows', () => {
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.get('.ace_editor');
       cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
       // Should have a version 2
       goToTab('Versions');
@@ -121,7 +120,6 @@ describe('Dockstore hosted workflows', () => {
 
       // Try deleting a file (.wdl file)
       goToTab('Files');
-      cy.get('.ace_editor');
       cy.get('#editFilesButton').click();
       cy.get('.delete-editor-file')
         .first()
