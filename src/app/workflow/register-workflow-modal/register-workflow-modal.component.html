@@ -117,7 +117,7 @@
             name="workflow_path"
             [(ngModel)]="workflow.workflow_path"
             minlength="3"
-            maxlength="255"
+            maxlength="1000"
             [pattern]="descriptorValidationPattern"
             required
             [matTooltip]="Tooltip.workflowPath"
@@ -133,7 +133,7 @@
             name="testParameterFilePath"
             [(ngModel)]="workflow.defaultTestParameterFilePath"
             minlength="3"
-            maxlength="255"
+            maxlength="1000"
             [pattern]="validationPatterns.testParameterFilePath"
             matTooltip="Relative path to a Test Parameter File in the Git repository."
             placeholder="e.g. /test.json"
