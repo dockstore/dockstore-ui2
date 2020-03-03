@@ -79,7 +79,7 @@ export class CodeEditorComponent implements AfterViewInit {
         this.mode = 'wdl';
       } else if (filepath.includes('Dockerfile')) {
         this.mode = 'dockerfile';
-      } else if (filepath.endsWith('.json')) {
+      } else if (filepath.endsWith('.json') || filepath.endsWith('.ga')) {
         this.mode = 'json';
       } else if (filepath.endsWith('.yml') || filepath.endsWith('.yaml')) {
         this.mode = 'yaml';
