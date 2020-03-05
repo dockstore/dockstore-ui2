@@ -14,8 +14,8 @@
   ~    limitations under the License.
   -->
 
-<tabset [justified]="true">
-  <tab heading="Dockerfile" id="dockerfileTab">
+<mat-tab-group mat-stretch-tabs>
+  <mat-tab label="Dockerfile" id="dockerfileTab">
     <app-code-editor-list
       [sourcefiles]="dockerFile"
       [editing]="editing"
@@ -24,8 +24,8 @@
       [entryType]="'tool'"
       [entrypath]="entrypath"
     ></app-code-editor-list>
-  </tab>
-  <tab heading="Descriptor Files" id="descriptorFilesTab">
+  </mat-tab>
+  <mat-tab label="Descriptor Files" id="descriptorFilesTab">
     <mat-form-field>
       <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
         <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
@@ -42,8 +42,8 @@
       [entryType]="'tool'"
       [entrypath]="entrypath"
     ></app-code-editor-list>
-  </tab>
-  <tab heading="Test Parameter Files" id="testParameterFilesTab">
+  </mat-tab>
+  <mat-tab label="Test Parameter Files" id="testParameterFilesTab">
     <mat-form-field>
       <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
         <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
@@ -60,8 +60,8 @@
       [entryType]="'tool'"
       [entrypath]="entrypath"
     ></app-code-editor-list>
-  </tab>
-</tabset>
+  </mat-tab>
+</mat-tab-group>
 <div class="editor-button-container p-2" *ngIf="!publicPage && isNewestVersion">
   <span *ngIf="!editing">
     <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">

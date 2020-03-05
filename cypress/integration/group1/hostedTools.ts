@@ -66,12 +66,10 @@ describe('Dockstore hosted tools', () => {
         });
       });
 
-      cy.get('#descriptorFilesTab-link').click();
+      goToTab('Descriptor Files');
       cy.wait(500);
 
-      cy.get('#descriptorFilesTab')
-        .contains('Add File')
-        .click();
+      cy.contains('Add File').click();
       cy.window().then(function(window: any) {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
@@ -103,11 +101,9 @@ describe('Dockstore hosted tools', () => {
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
       cy.get('#editFilesButton').click();
-      cy.get('#descriptorFilesTab-link').click();
+      goToTab('Descriptor Files');
       cy.wait(500);
-      cy.get('#descriptorFilesTab')
-        .contains('Add File')
-        .click();
+      cy.contains('Add File').click();
       cy.window().then(function(window: any) {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
@@ -116,11 +112,9 @@ describe('Dockstore hosted tools', () => {
         });
       });
 
-      cy.get('#testParameterFilesTab-link').click();
+      goToTab('Test Parameter Files');
       cy.wait(500);
-      cy.get('#testParameterFilesTab')
-        .contains('Add File')
-        .click();
+      cy.contains('Add File').click();
       cy.window().then(function(window: any) {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
@@ -143,10 +137,9 @@ describe('Dockstore hosted tools', () => {
       // Try deleting a file (.cwl file)
       goToTab('Files');
       cy.get('#editFilesButton').click();
-      cy.get('#descriptorFilesTab-link').click();
+      goToTab('Descriptor Files');
       cy.wait(500);
-      cy.get('#descriptorFilesTab')
-        .find('.delete-editor-file')
+      cy.get('.delete-editor-file')
         .first()
         .click();
       cy.get('#saveNewVersionButton').click();
