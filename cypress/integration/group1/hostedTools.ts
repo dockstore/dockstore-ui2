@@ -79,6 +79,7 @@ describe('Dockstore hosted tools', () => {
       });
 
       cy.get('#saveNewVersionButton').click();
+      cy.wait(500);
 
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
 
