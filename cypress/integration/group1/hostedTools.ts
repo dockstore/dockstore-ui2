@@ -30,6 +30,10 @@ describe('Dockstore hosted tools', () => {
       url: /containers\/.+\/zip\/.+/,
       response: 200
     }).as('downloadZip');
+
+    cy.route({
+      url: /quay.io\/hosted-tool\/ht:1/
+    }).as('ht1');
   });
 
   function getTool() {
@@ -79,8 +83,7 @@ describe('Dockstore hosted tools', () => {
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.wait(1000);
-
+      cy.wait('@ht1');
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
 
       // Should have a version 1
