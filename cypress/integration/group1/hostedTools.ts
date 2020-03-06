@@ -30,10 +30,6 @@ describe('Dockstore hosted tools', () => {
       url: /containers\/.+\/zip\/.+/,
       response: 200
     }).as('downloadZip');
-
-    cy.route({
-      url: /quay.io\/hosted-tool\/ht:1/
-    }).as('ht1');
   });
 
   function getTool() {
@@ -78,12 +74,13 @@ describe('Dockstore hosted tools', () => {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
+          // cy.log(cwlDescriptor);
+          cy.wait(500);
           window.ace.edit(editors[1]).setValue(cwlDescriptor, -1);
         });
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.wait('@ht1');
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
 
       // Should have a version 1
