@@ -23,7 +23,6 @@ import { AuthService } from 'ng2-ui-auth';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { MyEntriesModule } from '../../shared/modules/my-entries.module';
-import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
@@ -37,7 +36,6 @@ import {
   AccountsStubService,
   AuthStubService,
   ConfigurationStub,
-  RefreshStubService,
   RegisterWorkflowModalStubService,
   UrlResolverStubService,
   UsersStubService,
@@ -54,7 +52,6 @@ describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
   let fixture: ComponentFixture<MyWorkflowComponent>;
   let registerWorkflowModalService: RegisterWorkflowModalService;
-  let refreshService: RefreshService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
@@ -66,7 +63,6 @@ describe('MyWorkflowsComponent', () => {
         { provide: UsersService, useClass: UsersStubService },
         { provide: AuthService, useClass: AuthStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
         { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
         MyWorkflowsService,
         MyBioWorkflowsService,
@@ -100,12 +96,5 @@ describe('MyWorkflowsComponent', () => {
     spyOn(registerWorkflowModalService, 'setWorkflowRepository');
     component.setRegisterEntryModalInfo('a/b');
     expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
-  });
-  it('should refresh workflows', () => {
-    component.user = { id: 1 };
-    refreshService = fixture.debugElement.injector.get(RefreshService);
-    spyOn(refreshService, 'refreshAllWorkflows');
-    component.refreshAllEntries();
-    expect(refreshService.refreshAllWorkflows).toHaveBeenCalled();
   });
 });
