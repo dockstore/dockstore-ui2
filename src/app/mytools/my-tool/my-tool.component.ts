@@ -166,10 +166,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.registerToolService.setIsModalShown(true);
   }
 
-  refreshAllEntries(): void {
-    this.refreshService.refreshAllTools(this.user.id);
-  }
-
   /**
    * Toggles the sidebar
    */

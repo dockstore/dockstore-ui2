@@ -46,16 +46,6 @@
                         <button
                           mat-icon-button
                           color="primary"
-                          matTooltipPosition="after"
-                          matTooltip="Find new workflows and sync all existing workflows"
-                          (click)="refreshAllEntries()"
-                          [disabled]="(isRefreshing$ | async) || !(hasSourceControlToken$ | async)"
-                        >
-                          <mat-icon>sync</mat-icon>
-                        </button>
-                        <button
-                          mat-icon-button
-                          color="primary"
                           id="registerWorkflowButton"
                           matTooltip="Register {{ entryType$ | async }}"
                           matTooltipPosition="after"
