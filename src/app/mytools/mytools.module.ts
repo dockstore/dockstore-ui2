@@ -34,6 +34,7 @@ import { getTooltipConfig } from './../shared/tooltip';
 import { MyToolComponent } from './my-tool/my-tool.component';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
+import { MytoolsService } from './mytools.service';
 import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion.component';
 
 @NgModule({
@@ -53,7 +54,7 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     MyEntriesModule,
     RefreshWizardModule
   ],
-  providers: [{ provide: TooltipConfig, useFactory: getTooltipConfig }, RegisterToolService, AccountsService],
+  providers: [{ provide: TooltipConfig, useFactory: getTooltipConfig }, RegisterToolService, AccountsService, MytoolsService],
   entryComponents: [RegisterToolComponent]
 })
 export class MyToolsModule {}

@@ -17,7 +17,7 @@ export function createInitialState(): RefreshWizardState {
   };
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 @StoreConfig({ name: 'refresh-wizard' })
 export class RefreshWizardStore extends Store<RefreshWizardState> {
   constructor() {

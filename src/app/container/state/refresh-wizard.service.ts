@@ -2,15 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { transaction } from '@datorama/akita';
+import { MytoolsService } from 'app/mytools/mytools.service';
+import { ContainerService } from 'app/shared/container.service';
 import { TokenSource } from 'app/shared/enum/token-source.enum';
 import { UsersService } from 'app/shared/openapi';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { UsersService as SwaggerUsersService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { finalize } from 'rxjs/operators';
 import { RefreshWizardQuery } from './refresh-wizard.query';
 import { RefreshWizardStore } from './refresh-wizard.store';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class RefreshWizardService {
   constructor(
     private refreshWizardStore: RefreshWizardStore,
@@ -18,7 +21,9 @@ export class RefreshWizardService {
     private swaggerUsersService: SwaggerUsersService,
     private userQuery: UserQuery,
     private refreshWizardQuery: RefreshWizardQuery,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private thing: MytoolsService,
+    private sessionQuery: SessionQuery
   ) {}
   getOrganizations(dockerRegistry: string) {
     this.refreshWizardStore.setLoading(true);
@@ -43,16 +48,19 @@ export class RefreshWizardService {
 
   refreshRepository(repository: string) {
     this.setRepositoryLoading(true);
+    const userId = this.userQuery.getValue().user.id;
+    const entryType = this.sessionQuery.getValue().entryType;
     const selectedOrganization = this.refreshWizardQuery.getValue().selectedOrganization;
     this.swaggerUsersService
-      .refreshToolsByOrganization(this.userQuery.getValue().user.id, selectedOrganization, repository)
+      .refreshToolsByOrganization(userId, selectedOrganization, repository)
       .pipe(finalize(() => this.setRepositoryLoading(false)))
       .subscribe(
         () => {
-          this.matSnackBar.open('Refreshing tool succeeded');
+          this.matSnackBar.open('Synchronizing tool succeeded');
+          this.thing.getMyEntries(userId, entryType);
         },
         error => {
-          this.matSnackBar.open('Refreshing tool failed');
+          this.matSnackBar.open('Synchronizing tool failed');
         }
       );
   }

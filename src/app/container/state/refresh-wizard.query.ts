@@ -3,7 +3,7 @@ import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { RefreshWizardState, RefreshWizardStore } from './refresh-wizard.store';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class RefreshWizardQuery extends Query<RefreshWizardState> {
   organizations$: Observable<string[]> = this.select(state => state.organizations);
   repositories$: Observable<string[]> = this.select(state => state.repositories);

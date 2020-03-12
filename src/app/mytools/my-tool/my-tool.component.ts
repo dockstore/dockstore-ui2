@@ -43,8 +43,7 @@ import { MytoolsService } from '../mytools.service';
 @Component({
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
-  styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  providers: [MytoolsService]
+  styleUrls: ['../../shared/styles/my-entry.component.scss']
 })
 export class MyToolComponent extends MyEntry implements OnInit {
   tools: any;
