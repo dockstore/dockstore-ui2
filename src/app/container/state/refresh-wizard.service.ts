@@ -1,9 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { transaction } from '@datorama/akita';
 import { MytoolsService } from 'app/mytools/mytools.service';
-import { ContainerService } from 'app/shared/container.service';
 import { TokenSource } from 'app/shared/enum/token-source.enum';
 import { UsersService } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -68,7 +66,7 @@ export class RefreshWizardService {
   getRepositories(organization: string) {
     this.refreshWizardStore.setLoading(true);
     this.dockerRegistriesService
-      .getDockerRegistriesOrganization1(TokenSource.QUAY, organization)
+      .getDockerRegistryOrganizationRepositories(TokenSource.QUAY, organization)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
       .subscribe(repositories => {
         this.setSelectedOrganization(organization);
