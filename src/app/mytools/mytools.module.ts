@@ -16,6 +16,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RefreshWizardModule } from 'app/container/refresh-wizard.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -49,7 +50,8 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     TooltipModule.forRoot(),
     CustomMaterialModule,
     PipeModule,
-    MyEntriesModule
+    MyEntriesModule,
+    RefreshWizardModule
   ],
   providers: [{ provide: TooltipConfig, useFactory: getTooltipConfig }, RegisterToolService, AccountsService],
   entryComponents: [RegisterToolComponent]

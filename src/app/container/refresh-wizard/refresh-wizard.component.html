@@ -1,0 +1,58 @@
+<div class="modal-body">
+  <mat-progress-bar
+    style="position: sticky; position: -webkit-sticky;"
+    *ngIf="repositoryLoading$ | async"
+    mode="indeterminate"
+  ></mat-progress-bar>
+  <p>
+    Click the sync icon next to a Quay.io repository to automatically register the tool on Dockstore. Requires a Quay.io token on Dockstore
+    and also Git build triggers to be present on the repository.
+  </p>
+  <app-loading [loading]="loading$ | async">
+    <div *ngIf="organizations$ | async as organizations">
+      <div *ngIf="organizations === undefined">
+        I don't know how you got passed the loading bar
+      </div>
+      <div *ngIf="organizations === null">
+        Problems getting organizations
+      </div>
+      <div *ngIf="organizations && organizations.length === 0">
+        Could not get any organizations, try relinking the Quay.io token in the accounts page.
+      </div>
+      <div *ngIf="organizations && organizations.length > 0">
+        <mat-form-field class="w-100">
+          <mat-label>Select namespace</mat-label>
+          <mat-select (selectionChange)="selectOrganization($event.value)">
+            <mat-option *ngFor="let organization of organizations" [value]="organization">
+              {{ organization }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div *ngIf="repositories$ | async as repositories">
+          <div *ngIf="repositories">
+            <div *ngFor="let repository of repositories">
+              <button
+                mat-icon-button
+                color="primary"
+                aria-label="Example icon-button with a heart icon"
+                (click)="refreshRepository(repository)"
+                [disabled]="(loading$ | async) || (repositoryLoading$ | async)"
+                matTooltip="Sync with Dockstore"
+              >
+                <mat-icon>sync</mat-icon>
+              </button>
+              {{ repository }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </app-loading>
+
+  <div class="modal-footer">
+    <button mat-button color="secondary" matStepperPrevious>Back</button>
+    <button type="button" mat-flat-button color="primary" [mat-dialog-close]="true" (click)="clearWorkflowRegisterError()">
+      Finish
+    </button>
+  </div>
+</div>

@@ -498,6 +498,9 @@
           </button>
         </div>
       </form>
+      <div *ngIf="selectedOption?.value == 2">
+        <refresh-wizard></refresh-wizard>
+      </div>
     </mat-step>
   </mat-horizontal-stepper>
 </mat-dialog-content>

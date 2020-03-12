@@ -56,6 +56,11 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
       extendedLabel:
         'Manually add individual tools with descriptor(s) stored on Dockstore.org. Docker images are stored on sites like Quay.io and DockerHub.',
       value: 1
+    },
+    {
+      label: 'Quickly register remote tools',
+      extendedLabel: 'Toggle organizations from Quay.io to quickly create tools on Dockstore.',
+      value: 2
     }
   ];
   public selectedOption = this.options[0];
