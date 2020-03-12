@@ -137,8 +137,12 @@ export class EntryFileTabService extends Base {
   private getValidations() {
     const version = this.workflowQuery.getValue().version;
     const file = this.entryFileTabQuery.getValue().selectedFile;
-    if (version && version.validations && file &&
-      (file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR || file.file_type === ToolFile.FileTypeEnum.OTHER)) {
+    if (
+      version &&
+      version.validations &&
+      file &&
+      (file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR || file.file_type === ToolFile.FileTypeEnum.OTHER)
+    ) {
       for (const validation of version.validations) {
         if (validation.type === Validation.TypeEnum.DOCKSTORESERVICEYML) {
           const validationObject = JSON.parse(validation.message);
@@ -188,7 +192,8 @@ export class EntryFileTabService extends Base {
   private setAlmostEverything(unfilteredFiles: ToolFile[]) {
     const fileTypes = this.getFileTypes(unfilteredFiles);
     const previousFileType = this.entryFileTabQuery.getValue().selectedFileType;
-    const selectedFileType: ToolFile.FileTypeEnum = previousFileType ? previousFileType : fileTypes[0];
+    const validPreviousFileType = fileTypes.filter(fileType => fileType === previousFileType).length === 1;
+    const selectedFileType: ToolFile.FileTypeEnum = validPreviousFileType ? previousFileType : fileTypes[0];
     const files = this.filterFiles(selectedFileType, unfilteredFiles);
     const file = files[0];
     this.entryFileTabStore.update(state => {
