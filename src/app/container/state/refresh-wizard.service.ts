@@ -31,7 +31,6 @@ export class RefreshWizardService {
       .getDockerRegistriesOrganization(dockerRegistry)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
       .subscribe(organizations => {
-        console.log(organizations);
         this.setOrganizations(organizations);
       });
   }
