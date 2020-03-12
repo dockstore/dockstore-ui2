@@ -46,20 +46,20 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   };
   public options = [
     {
+      label: 'Quickly register remote tools',
+      extendedLabel: 'Toggle organizations from Quay.io to quickly create tools on Dockstore.',
+      value: 0
+    },
+    {
       label: 'Create tool with descriptor(s) on remote sites',
       extendedLabel:
         'Manually add individual tools with descriptor(s) from sites like GitHub, BitBucket, and GitLab. Docker images are stored on sites like Quay.io and DockerHub.',
-      value: 0
+      value: 1
     },
     {
       label: 'Create tool with descriptor(s) on Dockstore.org',
       extendedLabel:
         'Manually add individual tools with descriptor(s) stored on Dockstore.org. Docker images are stored on sites like Quay.io and DockerHub.',
-      value: 1
-    },
-    {
-      label: 'Quickly register remote tools',
-      extendedLabel: 'Toggle organizations from Quay.io to quickly create tools on Dockstore.',
       value: 2
     }
   ];

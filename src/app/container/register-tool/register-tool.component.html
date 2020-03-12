@@ -53,8 +53,11 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a tool</ng-template>
+      <div *ngIf="selectedOption?.value === 0">
+        <refresh-wizard></refresh-wizard>
+      </div>
       <form
-        *ngIf="selectedOption?.value == 0"
+        *ngIf="selectedOption?.value == 1"
         #registerToolForm="ngForm"
         name="registerToolForm"
         class="form-horizontal"
@@ -359,7 +362,7 @@
         </div>
       </form>
       <form
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value == 2"
         #registerHostedToolForm="ngForm"
         name="registerHostedToolForm"
         class="form-horizontal"
@@ -498,9 +501,6 @@
           </button>
         </div>
       </form>
-      <div *ngIf="selectedOption?.value == 2">
-        <refresh-wizard></refresh-wizard>
-      </div>
     </mat-step>
   </mat-horizontal-stepper>
 </mat-dialog-content>
