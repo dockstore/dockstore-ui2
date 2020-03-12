@@ -5,8 +5,8 @@
     mode="indeterminate"
   ></mat-progress-bar>
   <p>
-    Click the sync icon next to a Quay.io repository to automatically register or sync the tool on Dockstore. Requires a Quay.io account
-    linked on Dockstore and also Git build triggers to be present on the repository.
+    Select a Quay.io namespace and then click the sync icon next to a repository to automatically register or sync the tool on Dockstore.
+    Requires a Quay.io account linked on Dockstore and also Git build triggers to be present on the repository.
   </p>
   <app-loading [loading]="loading$ | async">
     <div *ngIf="organizations$ | async as organizations">
