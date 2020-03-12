@@ -3,11 +3,13 @@ import { TokenSource } from 'app/shared/enum/token-source.enum';
 import { Observable } from 'rxjs';
 import { RefreshWizardQuery } from '../state/refresh-wizard.query';
 import { RefreshWizardService } from '../state/refresh-wizard.service';
+import { RefreshWizardStore } from '../state/refresh-wizard.store';
 
 @Component({
   selector: 'refresh-wizard',
   templateUrl: './refresh-wizard.component.html',
-  styleUrls: ['./refresh-wizard.component.scss']
+  styleUrls: ['./refresh-wizard.component.scss'],
+  providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService]
 })
 export class RefreshWizardComponent implements OnInit {
   loading$: Observable<boolean>;

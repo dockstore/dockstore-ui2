@@ -10,7 +10,6 @@ import { RefreshWizardStore } from './state/refresh-wizard.store';
 @NgModule({
   imports: [CommonModule, RefreshAlertModule, CustomMaterialModule],
   declarations: [RefreshWizardComponent],
-  providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService],
   exports: [RefreshWizardComponent]
 })
 export class RefreshWizardModule {}
