@@ -187,7 +187,8 @@ export class EntryFileTabService extends Base {
    */
   private setAlmostEverything(unfilteredFiles: ToolFile[]) {
     const fileTypes = this.getFileTypes(unfilteredFiles);
-    const selectedFileType: ToolFile.FileTypeEnum = fileTypes[0];
+    const previousFileType = this.entryFileTabQuery.getValue().selectedFileType;
+    const selectedFileType: ToolFile.FileTypeEnum = previousFileType ? previousFileType : fileTypes[0];
     const files = this.filterFiles(selectedFileType, unfilteredFiles);
     const file = files[0];
     this.entryFileTabStore.update(state => {
