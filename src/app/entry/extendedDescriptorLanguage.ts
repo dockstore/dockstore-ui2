@@ -16,6 +16,7 @@ export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
     // This is the header that goes in the second column of the tool tab table (Example: Tool Excerpt)
     workflowStepHeader: string;
   };
+  launchSupport: boolean;
 }
 
 const superCWL: ExtendedDescriptorLanguage = {
@@ -30,7 +31,8 @@ const superCWL: ExtendedDescriptorLanguage = {
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'
-  }
+  },
+  launchSupport: true
 };
 
 const superWDL: ExtendedDescriptorLanguage = {
@@ -45,7 +47,8 @@ const superWDL: ExtendedDescriptorLanguage = {
   toolTab: {
     rowIdentifier: 'task\xa0ID',
     workflowStepHeader: 'Task Excerpt'
-  }
+  },
+  launchSupport: true
 };
 
 const superNFL: ExtendedDescriptorLanguage = {
@@ -60,7 +63,8 @@ const superNFL: ExtendedDescriptorLanguage = {
   toolTab: {
     rowIdentifier: 'process\xa0name',
     workflowStepHeader: 'Process Excerpt'
-  }
+  },
+  launchSupport: true
 };
 
 const superService: ExtendedDescriptorLanguage = {
@@ -76,7 +80,8 @@ const superService: ExtendedDescriptorLanguage = {
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Service'
-  }
+  },
+  launchSupport: true
 };
 
 const superGalaxy: ExtendedDescriptorLanguage = {
@@ -91,7 +96,8 @@ const superGalaxy: ExtendedDescriptorLanguage = {
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'
-  }
+  },
+  launchSupport: false
 };
 
 export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
@@ -106,6 +112,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'
-  }
+  },
+  launchSupport: false
 };
 export const extendedDescriptorLanguages: ExtendedDescriptorLanguage[] = [superCWL, superWDL, superNFL, superService, superGalaxy];

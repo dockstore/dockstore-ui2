@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
+import { ExtendedDescriptorLanguage, extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
-import { ToolDescriptor } from '../swagger';
+import { ToolDescriptor, Workflow } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
 import { WorkflowState, WorkflowStore } from './workflow.store';
@@ -14,6 +15,7 @@ import { WorkflowState, WorkflowStore } from './workflow.store';
 export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkflow> {
   public workflow$: Observable<Service | BioWorkflow> = this.selectActive();
   public workflowId$: Observable<number> = this.workflow$.pipe(map((workflow: Service | BioWorkflow) => (workflow ? workflow.id : null)));
+
   public workflowIsPublished$: Observable<boolean> = this.workflow$.pipe(
     map((workflow: Service | BioWorkflow) => (workflow ? workflow.is_published : null))
   );
@@ -21,6 +23,12 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
     map((workflow: Service | BioWorkflow) =>
       workflow ? this.descriptorTypeCompatService.stringToDescriptorType(workflow.descriptorType) : null
     )
+  );
+  public extendedDescriptorLanguageBean$: Observable<ExtendedDescriptorLanguage> = this.workflow$.pipe(
+    map(workflow => this.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflow.descriptorType))
+  );
+  public launchSupport$: Observable<boolean> = this.extendedDescriptorLanguageBean$.pipe(
+    map(extendedDescriptorLanguage => extendedDescriptorLanguage.launchSupport)
   );
   public isNFL$: Observable<boolean> = this.descriptorType$.pipe(
     map((descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.NFL)
@@ -30,5 +38,24 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
   );
   constructor(protected store: WorkflowStore, private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(store);
+  }
+
+  /**
+   * Checks if the descriptor type string is valid
+   *
+   * @private
+   * @param {string} descriptor
+   * @memberof LaunchComponent
+   */
+  private workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+    descriptorType: Workflow.DescriptorTypeEnum
+  ): ExtendedDescriptorLanguage {
+    const foundextendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
+    );
+    if (foundextendedDescriptorLanguageFromValue) {
+      return foundextendedDescriptorLanguageFromValue;
+    }
+    return extendedUnknownDescriptor;
   }
 }
