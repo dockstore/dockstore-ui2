@@ -41,11 +41,12 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
   }
 
   /**
-   * Checks if the descriptor type string is valid
+   * Converts the Workflow.DescriptorTypeEnum to the ExtendedDescriptorLanguage that's used throughout the frontend
    *
    * @private
-   * @param {string} descriptor
-   * @memberof LaunchComponent
+   * @param {Workflow.DescriptorTypeEnum} descriptorType  Typically the "workflow.descriptorType"
+   * @returns {ExtendedDescriptorLanguage}  ExtendedDescriptorLanguage that's used throughout
+   * @memberof WorkflowQuery
    */
   private workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
     descriptorType: Workflow.DescriptorTypeEnum
