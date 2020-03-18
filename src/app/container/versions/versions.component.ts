@@ -54,7 +54,6 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
     dateService: DateService,
     private alertService: AlertService,
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
-    private matDialog: MatDialog,
     protected sessionQuery: SessionQuery
   ) {
     super(dockstoreService, dateService, sessionQuery);
@@ -93,14 +92,6 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
     this.dataSource.data = this.versions;
   }
 
-  isManualMode() {
-    if (this.tool && this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   setNoOrderCols(): Array<number> {
     return [5, 6];
   }
@@ -111,9 +102,5 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
     this.alertService.start('Changing version to ' + version.name);
     this.alertService.detailedSuccess();
     this.selectedVersionChange.emit(this.selectedTag);
-  }
-
-  showAddTagModal() {
-    this.matDialog.open(AddTagComponent, { width: '600px' });
   }
 }

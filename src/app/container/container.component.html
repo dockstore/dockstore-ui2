@@ -187,6 +187,18 @@
                 >
                 </app-versions-container>
               </div>
+
+              <button
+                id="addTagButton"
+                type="button"
+                class="pull-right mr-1 my-3"
+                *ngIf="!publicPage && isManualMode()"
+                mat-flat-button
+                color="primary"
+                (click)="showAddTagModal()"
+              >
+                Add Tag
+              </button>
             </div>
           </mat-tab>
           <mat-tab label="Files">
@@ -353,10 +365,10 @@
   <div class="p-3">
     <mat-card class="alert alert-info p-3" role="alert">
       <mat-icon>info</mat-icon>
-      <span *ngIf="tool?.mode === ModeEnum.HOSTED">
+      <span *ngIf="tool?.mode === ModeEnum.HOSTED || tool?.mode === ModeEnum.MANUALIMAGEPATH">
         To see versions, please add a new version.
       </span>
-      <span *ngIf="tool?.mode !== ModeEnum.HOSTED">
+      <span *ngIf="tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED">
         To see versions, please refresh the tool.
       </span>
     </mat-card>

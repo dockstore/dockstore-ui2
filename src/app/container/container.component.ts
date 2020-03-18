@@ -45,6 +45,7 @@ import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool'
 import { ContainersService } from './../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
+import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
 
 @Component({
@@ -136,6 +137,21 @@ export class ContainerComponent extends Entry implements AfterViewInit {
 
   isPublic(): boolean {
     return this.isToolPublic;
+  }
+
+
+  isManualMode() {
+    console.log(this.tool);
+    if (this.tool && this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+  showAddTagModal() {
+    this.dialog.open(AddTagComponent, { width: '600px' });
   }
 
   public resetCopyBtn(): void {
