@@ -65,6 +65,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
+  public isManualMode$: Observable<boolean>;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema;
@@ -123,7 +124,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
         }
       });
     }
-
+    this.isManualMode$ = this.toolQuery.isManualMode$;
     this.updateTabSelection();
   }
 
@@ -138,17 +139,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   isPublic(): boolean {
     return this.isToolPublic;
   }
-
-
-  isManualMode() {
-    console.log(this.tool);
-    if (this.tool && this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
 
   showAddTagModal() {
     this.dialog.open(AddTagComponent, { width: '600px' });

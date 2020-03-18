@@ -187,12 +187,11 @@
                 >
                 </app-versions-container>
               </div>
-
               <button
                 id="addTagButton"
                 type="button"
-                class="pull-right mr-1 my-3"
-                *ngIf="!publicPage && isManualMode()"
+                class="pull-right m-3"
+                *ngIf="!publicPage && (isManualMode$ | async)"
                 mat-flat-button
                 color="primary"
                 (click)="showAddTagModal()"
