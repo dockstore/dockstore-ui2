@@ -15,7 +15,6 @@
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
-import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
@@ -27,7 +26,6 @@ import { SessionQuery } from '../../shared/session/session.query';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
-import { AddTagComponent } from '../add-tag/add-tag.component';
 
 @Component({
   selector: 'app-versions-container',
