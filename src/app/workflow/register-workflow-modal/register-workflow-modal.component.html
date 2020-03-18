@@ -49,20 +49,15 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
-      <div *ngIf="selectedOption?.value == 0">
+      <div *ngIf="selectedOption?.value === 0">
         <p>
           Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
-          <a
-            href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cy="homepage-getting-started-link"
-          >
+          <a href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps.html" target="_blank" rel="noopener noreferrer">
             documentation <mat-icon>open_in_new</mat-icon>
           </a>
           for how to use GitHub Apps to automatically sync your workflows with GitHub.
         </p>
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" class="mb-2">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
           <a
             mat-flat-button
             type="button"
@@ -81,7 +76,7 @@
           </button>
         </div>
       </div>
-      <div *ngIf="selectedOption?.value == 1">
+      <div *ngIf="selectedOption?.value === 1">
         <entry-wizard></entry-wizard>
         <div class="modal-footer">
           <button mat-button color="secondary" matStepperPrevious>Back</button>
@@ -93,7 +88,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 2"
+        *ngIf="selectedOption?.value === 2"
         #registerWorkflowForm="ngForm"
         name="registerWorkflowForm"
         (submit)="registerWorkflow()"
@@ -209,7 +204,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 3"
+        *ngIf="selectedOption?.value === 3"
         #registerHostedWorkflowForm="ngForm"
         name="registerHostedWorkflowForm"
         (ngSubmit)="registerHostedWorkflow()"
