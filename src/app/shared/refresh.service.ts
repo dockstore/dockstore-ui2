@@ -90,52 +90,6 @@ export class RefreshService {
     );
   }
 
-  /**
-   * Handles refreshing of all the tools and updates the view.
-   * @param {number} userId The user id
-   * @memberof RefreshService
-   */
-  refreshAllTools(userId: number): void {
-    const message = 'Refreshing all tools';
-    this.alertService.start(message);
-    this.usersService.refresh(userId).subscribe(
-      response => {
-        this.containerService.setTools(response);
-        this.alertService.detailedSuccess();
-      },
-      error => this.alertService.detailedError(error)
-    );
-  }
-
-  /**
-   * Handles refreshing of all the workflows and updates the view.
-   * @param {number} userId The user id
-   * @memberof RefreshService
-   */
-  refreshAllWorkflows(userId: number): void {
-    const message = 'Refreshing all workflows';
-    this.alertService.start(message);
-    this.usersService.refreshWorkflows(userId).subscribe(
-      response => {
-        this.workflowService.setWorkflows(response);
-        this.alertService.detailedSuccess();
-      },
-      error => this.alertService.detailedError(error)
-    );
-  }
-
-  /**
-   * The list of tools is outdated.
-   * Replace outdated tool with the same id with the updated tool.
-   * @param {*} tool  The updated tool
-   * @memberof RefreshService
-   */
-  replaceTool(tool: DockstoreTool): void {
-    this.tools = this.tools.filter(obj => obj.id !== tool.id);
-    this.tools.push(tool);
-    this.containerService.setTools(this.tools);
-  }
-
   syncServices(): void {
     const message = 'Syncing services';
     this.alertService.start(message);

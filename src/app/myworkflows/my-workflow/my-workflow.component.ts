@@ -211,10 +211,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.myWorkflowsService.registerEntry(this.entryType);
   }
 
-  refreshAllEntries(): void {
-    this.refreshService.refreshAllWorkflows(this.user.id);
-  }
-
   /**
    * Toggles the sidebar
    */

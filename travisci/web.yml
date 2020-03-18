@@ -23,6 +23,9 @@ zenodoUrl: https://zenodo.org
 gitHubAppPrivateKeyFile: <fill me in>
 gitHubAppId: <fill me in>
 
+orcidClientID: <fill me in>
+orcidClientSecret: <fill me in>
+
 authorizerType: inmemory
 
 externalConfig:
