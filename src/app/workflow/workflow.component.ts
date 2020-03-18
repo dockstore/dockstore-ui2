@@ -88,6 +88,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   public WorkflowModel = Workflow;
+  public launchSupport$: Observable<boolean>;
   @Input() user;
 
   constructor(
@@ -139,6 +140,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
+    this.launchSupport$ = this.workflowQuery.launchSupport$;
   }
 
   ngAfterViewInit() {
