@@ -51,8 +51,16 @@
       <ng-template matStepLabel>Create a workflow</ng-template>
       <div *ngIf="selectedOption?.value == 0">
         <p>
-          Navigate to GitHub to install our GitHub app on your repositories/organizations. See our documentation for how to use GitHub Apps
-          to automatically sync your workflows with GitHub.
+          Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
+          <a
+            href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cy="homepage-getting-started-link"
+          >
+            documentation <mat-icon>open_in_new</mat-icon>
+          </a>
+          for how to use GitHub Apps to automatically sync your workflows with GitHub.
         </p>
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" class="mb-2">
           <a

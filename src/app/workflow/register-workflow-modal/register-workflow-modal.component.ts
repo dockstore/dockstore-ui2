@@ -24,6 +24,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
+import { Dockstore } from '../../shared/dockstore.model';
 import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
 import {
@@ -88,6 +89,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public selectedOption = this.options[0];
 
   private ngUnsubscribe: Subject<{}> = new Subject();
+
+  Dockstore = Dockstore;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm', { static: false }) currentForm: NgForm;
