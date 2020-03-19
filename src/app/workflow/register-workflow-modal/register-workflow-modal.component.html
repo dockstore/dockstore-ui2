@@ -55,7 +55,7 @@
           <a href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps.html" target="_blank" rel="noopener noreferrer">
             documentation <mat-icon>open_in_new</mat-icon>
           </a>
-          for how to use GitHub Apps to automatically sync your workflows with GitHub.
+          for how to use GitHub Apps to automatically sync your workflows with GitHub. A .dockstore.yml file is required.
         </p>
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
           <a
@@ -72,7 +72,7 @@
         <div class="modal-footer">
           <button mat-button color="secondary" matStepperPrevious>Back</button>
           <button type="button" mat-flat-button color="primary" [mat-dialog-close]="true" (click)="clearWorkflowRegisterError()">
-            Finish
+            Close
           </button>
         </div>
       </div>
