@@ -28,6 +28,9 @@ export class ToolQuery extends QueryEntity<ToolState, DockstoreTool> {
   public tool$: Observable<DockstoreTool> = this.selectActive();
   public toolId$: Observable<number> = this.tool$.pipe(map((tool: DockstoreTool) => (tool ? tool.id : null)));
   public toolIsPublished$: Observable<boolean> = this.tool$.pipe(map((tool: DockstoreTool) => (tool ? tool.is_published : null)));
+  public isManualMode$: Observable<boolean> = this.tool$.pipe(
+    map((tool: DockstoreTool) => tool && tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH)
+  );
   constructor(protected store: ToolStore) {
     super(store);
   }
