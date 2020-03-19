@@ -9,6 +9,25 @@
     Requires a Quay.io account linked on Dockstore and also Git build triggers to be present on the repository.
   </p>
   <app-loading [loading]="loading$ | async">
+    <mat-card class="alert alert-danger" role="alert" *ngIf="error$ | async as error">
+      <button type="button" class="close" data-dismiss="alert" (click)="clearError()">
+        &times;
+      </button>
+      <p>
+        <mat-icon>warning</mat-icon>
+        The webservice encountered an error.
+      </p>
+      <p class="error-output">
+        {{
+          '[HTTP ' +
+            error.status +
+            '] ' +
+            error.statusText +
+            ': ' +
+            (error.error && error.error.message ? error.error.message : error.error)
+        }}
+      </p>
+    </mat-card>
     <div *ngIf="organizations$ | async as organizations">
       <div *ngIf="organizations === undefined">
         I don't know how you got passed the loading bar

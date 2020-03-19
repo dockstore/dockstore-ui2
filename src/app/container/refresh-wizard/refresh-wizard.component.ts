@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { TokenSource } from 'app/shared/enum/token-source.enum';
 import { Observable } from 'rxjs';
@@ -16,6 +17,7 @@ export class RefreshWizardComponent implements OnInit {
   organizations$: Observable<string[]>;
   repositories$: Observable<string[]>;
   repositoryLoading$: Observable<boolean>;
+  error$: Observable<HttpErrorResponse>;
 
   constructor(private refreshWizardQuery: RefreshWizardQuery, private refreshWizardService: RefreshWizardService) {}
 
@@ -25,6 +27,7 @@ export class RefreshWizardComponent implements OnInit {
     this.organizations$ = this.refreshWizardQuery.organizations$;
     this.repositories$ = this.refreshWizardQuery.repositories$;
     this.repositoryLoading$ = this.refreshWizardQuery.repositoryLoading$;
+    this.error$ = this.refreshWizardQuery.error$;
   }
 
   refreshOrganization(organization: string) {
@@ -37,5 +40,9 @@ export class RefreshWizardComponent implements OnInit {
 
   refreshRepository(repository: string) {
     this.refreshWizardService.refreshRepository(repository);
+  }
+
+  clearError() {
+    this.refreshWizardService.setError(null);
   }
 }

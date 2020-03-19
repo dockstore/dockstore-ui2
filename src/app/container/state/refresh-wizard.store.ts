@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
@@ -6,6 +7,7 @@ export interface RefreshWizardState {
   repositories: string[];
   selectedOrganization: string;
   repositoryLoading: boolean;
+  error: HttpErrorResponse;
 }
 
 export function createInitialState(): RefreshWizardState {
@@ -13,7 +15,8 @@ export function createInitialState(): RefreshWizardState {
     organizations: undefined,
     repositories: undefined,
     selectedOrganization: undefined,
-    repositoryLoading: false
+    repositoryLoading: false,
+    error: null
   };
 }
 

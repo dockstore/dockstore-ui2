@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
@@ -9,6 +10,7 @@ export class RefreshWizardQuery extends Query<RefreshWizardState> {
   repositories$: Observable<string[]> = this.select(state => state.repositories);
   seletedOrganization$: Observable<string> = this.select(state => state.selectedOrganization);
   repositoryLoading$: Observable<boolean> = this.select(state => state.repositoryLoading);
+  error$: Observable<HttpErrorResponse> = this.select(state => state.error);
   constructor(protected store: RefreshWizardStore) {
     super(store);
   }

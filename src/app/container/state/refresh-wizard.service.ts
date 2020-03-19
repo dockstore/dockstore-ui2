@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { transaction } from '@datorama/akita';
@@ -28,9 +29,23 @@ export class RefreshWizardService {
     this.dockerRegistriesService
       .getDockerRegistriesOrganization(dockerRegistry)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
-      .subscribe(organizations => {
-        this.setOrganizations(organizations);
-      });
+      .subscribe(
+        organizations => {
+          this.setOrganizations(organizations);
+        },
+        error => {
+          this.setError(error);
+        }
+      );
+  }
+
+  setError(error: HttpErrorResponse | null) {
+    this.refreshWizardStore.update(state => {
+      return {
+        ...state,
+        error: error
+      };
+    });
   }
 
   refreshOrganization(organization: string) {
