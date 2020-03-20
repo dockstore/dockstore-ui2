@@ -63,27 +63,24 @@ describe('Dockstore hosted tools', () => {
           const editors = doc.getElementsByClassName('ace_editor');
           const dockerfile = `FROM ubuntu:latest`;
           window.ace.edit(editors[0]).setValue(dockerfile, -1);
-          console.log(editors);
         });
       });
       cy.get('.ace_editor').should('have.length', 1);
 
       goToTab('Descriptor Files');
       cy.wait(500);
-
       cy.contains('Add File').click();
       cy.window().then(function(window: any) {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
-          cy.wait(500);
           window.ace.edit(editors[0]).setValue(cwlDescriptor, -1);
-          console.log(editors);
         });
       });
       cy.get('.ace_editor').should('have.length', 1);
 
       cy.get('#saveNewVersionButton').click();
+
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
 
       // Should have a version 1
@@ -105,7 +102,6 @@ describe('Dockstore hosted tools', () => {
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
       cy.get('#editFilesButton').click();
-
       goToTab('Test Parameter Files');
       cy.wait(500);
       cy.contains('Add File').click();
@@ -125,12 +121,13 @@ describe('Dockstore hosted tools', () => {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
-          window.ace.edit(editors[0]).setValue(cwlDescriptor, -1);
+          window.ace.edit(editors[1]).setValue(cwlDescriptor, -1);
         });
       });
+      cy.get('.ace_editor');
+
       cy.get('#saveNewVersionButton').click();
       cy.get('.ace_editor').should('have.length', 2);
-
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Should have a version 2
       goToTab('Versions');
@@ -150,7 +147,6 @@ describe('Dockstore hosted tools', () => {
         .first()
         .click();
       cy.get('#saveNewVersionButton').click();
-      cy.get('.ace_editor');
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:3');
 
       // Should now only have 1 visible editor

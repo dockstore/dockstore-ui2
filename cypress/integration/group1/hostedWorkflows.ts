@@ -105,7 +105,7 @@ describe('Dockstore hosted workflows', () => {
         cy.document().then(doc => {
           const editors = doc.getElementsByClassName('ace_editor');
           const testParameterFile = '{}';
-          window.ace.edit(editors[2]).setValue(testParameterFile, -1);
+          window.ace.edit(editors[0]).setValue(testParameterFile, -1);
         });
       });
 
