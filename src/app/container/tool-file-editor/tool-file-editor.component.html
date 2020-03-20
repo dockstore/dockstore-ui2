@@ -16,50 +16,56 @@
 
 <mat-tab-group mat-stretch-tabs>
   <mat-tab label="Dockerfile" id="dockerfileTab">
-    <app-code-editor-list
-      [sourcefiles]="dockerFile"
-      [editing]="editing"
-      [fileType]="'dockerfile'"
-      [selectedVersion]="currentVersion"
-      [entryType]="'tool'"
-      [entrypath]="entrypath"
-    ></app-code-editor-list>
+    <ng-template matTabContent>
+      <app-code-editor-list
+        [sourcefiles]="dockerFile"
+        [editing]="editing"
+        [fileType]="'dockerfile'"
+        [selectedVersion]="currentVersion"
+        [entryType]="'tool'"
+        [entrypath]="entrypath"
+      ></app-code-editor-list>
+    </ng-template>
   </mat-tab>
   <mat-tab label="Descriptor Files" id="descriptorFilesTab">
-    <mat-form-field>
-      <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
-        <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
-        <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
-        <!-- <mat-option value="nfl">nextflow</mat-option> -->
-      </mat-select>
-    </mat-form-field>
-    <app-code-editor-list
-      [sourcefiles]="descriptorFiles"
-      [editing]="editing"
-      [fileType]="'descriptor'"
-      [descriptorType]="selectedDescriptorType"
-      [selectedVersion]="currentVersion"
-      [entryType]="'tool'"
-      [entrypath]="entrypath"
-    ></app-code-editor-list>
+    <ng-template matTabContent>
+      <mat-form-field>
+        <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
+          <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
+          <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
+          <!-- <mat-option value="nfl">nextflow</mat-option> -->
+        </mat-select>
+      </mat-form-field>
+      <app-code-editor-list
+        [sourcefiles]="descriptorFiles"
+        [editing]="editing"
+        [fileType]="'descriptor'"
+        [descriptorType]="selectedDescriptorType"
+        [selectedVersion]="currentVersion"
+        [entryType]="'tool'"
+        [entrypath]="entrypath"
+      ></app-code-editor-list>
+    </ng-template>
   </mat-tab>
   <mat-tab label="Test Parameter Files" id="testParameterFilesTab">
-    <mat-form-field>
-      <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
-        <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
-        <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
-        <!-- <mat-option value="nfl">nextflow</mat-option> -->
-      </mat-select>
-    </mat-form-field>
-    <app-code-editor-list
-      [sourcefiles]="testParameterFiles"
-      [editing]="editing"
-      [fileType]="'testParam'"
-      [descriptorType]="selectedDescriptorType"
-      [selectedVersion]="currentVersion"
-      [entryType]="'tool'"
-      [entrypath]="entrypath"
-    ></app-code-editor-list>
+    <ng-template matTabContent>
+      <mat-form-field>
+        <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
+          <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
+          <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
+          <!-- <mat-option value="nfl">nextflow</mat-option> -->
+        </mat-select>
+      </mat-form-field>
+      <app-code-editor-list
+        [sourcefiles]="testParameterFiles"
+        [editing]="editing"
+        [fileType]="'testParam'"
+        [descriptorType]="selectedDescriptorType"
+        [selectedVersion]="currentVersion"
+        [entryType]="'tool'"
+        [entrypath]="entrypath"
+      ></app-code-editor-list>
+    </ng-template>
   </mat-tab>
 </mat-tab-group>
 <div class="editor-button-container p-2" *ngIf="!publicPage && isNewestVersion">
