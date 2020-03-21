@@ -124,7 +124,6 @@ describe('Dockstore hosted tools', () => {
           window.ace.edit(editors[1]).setValue(cwlDescriptor, -1);
         });
       });
-      cy.get('.ace_editor');
 
       cy.get('#saveNewVersionButton').click();
       cy.get('.ace_editor').should('have.length', 2);
