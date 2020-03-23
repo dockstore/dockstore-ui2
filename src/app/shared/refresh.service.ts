@@ -90,6 +90,28 @@ export class RefreshService {
     );
   }
 
+  /**
+   * Refresh an individual version of a workflow and optionally updates the GA4GH files
+   * @param workflowId
+   * @param versionName
+   * @memberof RefreshService
+   */
+  refreshWorkflowVersion(workflowId: string, versionName: string): void {
+    const message = 'Refreshing ' + this.workflow.full_workflow_path + ' version ' + versionName;
+    this.alertService.start(message);
+    this.workflowsService.refreshVersion(this.workflow.id, versionName).subscribe(
+      (refreshedWorkflow: Workflow) => {
+        this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
+        this.workflowService.setWorkflow(refreshedWorkflow);
+        this.alertService.detailedSuccess();
+        if (workflowId && versionName) {
+          this.gA4GHFilesService.updateFiles(workflowId, versionName);
+        }
+      },
+      error => this.alertService.detailedError(error)
+    );
+  }
+
   syncServices(): void {
     const message = 'Syncing services';
     this.alertService.start(message);

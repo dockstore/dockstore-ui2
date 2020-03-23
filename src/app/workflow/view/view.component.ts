@@ -17,12 +17,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { RefreshService } from 'app/shared/refresh.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -61,6 +63,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
     private workflowsService: WorkflowsService,
     private matDialog: MatDialog,
     private hostedService: HostedService,
+    private refreshService: RefreshService,
     dateService: DateService,
     private alertService: AlertService
   ) {
@@ -128,6 +131,11 @@ export class ViewWorkflowComponent extends View implements OnInit {
     this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
+  }
+
+  refreshVersion() {
+    const prefix = this.sessionQuery.getValue().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
+    this.refreshService.refreshWorkflowVersion(prefix + this.workflow.full_workflow_path, this.version.name);
   }
 
   deleteHostedVersion() {
