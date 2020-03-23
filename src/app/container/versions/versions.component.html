@@ -118,16 +118,4 @@
       *matRowDef="let row; columns: displayedColumns; let version"
     ></tr>
   </table>
-
-  <button
-    id="addTagButton"
-    type="button"
-    class="pull-right mr-1 my-3"
-    *ngIf="!publicPage && isManualMode()"
-    mat-flat-button
-    color="primary"
-    (click)="showAddTagModal()"
-  >
-    Add Tag
-  </button>
 </div>

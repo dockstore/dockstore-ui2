@@ -70,7 +70,6 @@ export abstract class MyEntry extends Base implements OnDestroy {
   public abstract selectEntry(entry: ExtendedDockstoreTool | ExtendedWorkflow): void;
   public abstract setRegisterEntryModalInfo(gitURLOrNamespace: String): void;
   public abstract showRegisterEntryModal(): void;
-  public abstract refreshAllEntries(): void;
   protected abstract getMyEntries(): void;
   public abstract toggleSidebar(): void;
 

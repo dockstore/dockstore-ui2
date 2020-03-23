@@ -123,20 +123,4 @@ describe('RefreshService', () => {
       // });
     }
   ));
-  it('should refresh all tools', inject(
-    [RefreshService, ContainerService],
-    (service: RefreshService, containerService: ContainerService) => {
-      service.refreshAllTools(0);
-      containerService.tools$.subscribe(tools => {
-        expect(tools).toEqual([]);
-      });
-    }
-  ));
-  it('should refresh all workflows', inject(
-    [RefreshService, WorkflowService],
-    (service: RefreshService, workflowService: WorkflowService) => {
-      service.refreshAllWorkflows(0);
-      workflowService.workflows$.subscribe(workflow => expect(workflow).toEqual([]));
-    }
-  ));
 });

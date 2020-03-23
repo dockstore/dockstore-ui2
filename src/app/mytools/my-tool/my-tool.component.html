@@ -36,16 +36,6 @@
                       <button
                         mat-icon-button
                         color="primary"
-                        [matTooltipPosition]="'after'"
-                        matTooltip="Find new tools and sync all existing tools"
-                        (click)="refreshAllEntries()"
-                        [disabled]="isRefreshing$ | async"
-                      >
-                        <mat-icon>sync</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        color="primary"
                         id="register_tool_button"
                         matTooltip="Register tool"
                         matTooltipPosition="after"
