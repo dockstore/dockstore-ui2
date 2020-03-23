@@ -19,10 +19,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
+import { Dockstore } from '../../shared/dockstore.model';
 import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
 import {
@@ -56,6 +58,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
+  public gitHubAppInstallationLink$: Observable<string>;
   public hostedWorkflow = {
     repository: '',
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
@@ -63,24 +66,31 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   };
   public options = [
     {
+      label: 'Register using GitHub Apps (Recommended)',
+      extendedLabel: 'Install our GitHub App on your repository/organization to automatically sync workflows with GitHub.',
+      value: 0
+    },
+    {
       label: 'Quickly register remote workflows',
       extendedLabel: 'Toggle repositories from GitHub, Bitbucket, and GitLab to quickly create workflows on Dockstore.',
-      value: 0
+      value: 1
     },
     {
       label: 'Register custom remote workflows',
       extendedLabel: 'Manually add individual workflows at custom file paths from repositories on GitHub, Bitbucket, and GitLab.',
-      value: 1
+      value: 2
     },
     {
       label: 'Create workflows on Dockstore.org',
       extendedLabel: 'All workflow files are created and stored directly on Dockstore.',
-      value: 2
+      value: 3
     }
   ];
   public selectedOption = this.options[0];
 
   private ngUnsubscribe: Subject<{}> = new Subject();
+
+  Dockstore = Dockstore;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm', { static: false }) currentForm: NgForm;
@@ -89,7 +99,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     private registerWorkflowModalService: RegisterWorkflowModalService,
     public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>,
     private alertQuery: AlertQuery,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    protected sessionQuery: SessionQuery
   ) {}
 
   friendlyRepositoryKeys(): Array<string> {
@@ -102,6 +113,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
 
   ngOnInit() {
     this.isRefreshing$ = this.alertQuery.showInfo$;
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {
       this.workflow = workflow;
       this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
