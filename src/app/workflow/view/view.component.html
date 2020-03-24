@@ -63,7 +63,9 @@
       mat-menu-item
       color="accent"
       class="btn-block"
-      [disabled]="(isRefreshing$ | async) || version.frozen || workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML"
+      [disabled]="
+        (isRefreshing$ | async) || version.frozen || (workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML && !version.legacyVersion)
+      "
       (click)="refreshVersion()"
       matTooltip="Refresh an individual version. Disabled for frozen versions and GitHub App workflows."
     >
