@@ -20,11 +20,14 @@ import { EntryType } from '../enum/entry-type';
 export interface SessionState {
   isPublic: boolean;
   entryType: EntryType;
+  // This should be the loading bar stickied to the top of each dialog
+  loadingDialog: boolean;
 }
 export function createInitialState(): SessionState {
   return {
     isPublic: true,
-    entryType: null
+    entryType: null,
+    loadingDialog: false
   };
 }
 /**

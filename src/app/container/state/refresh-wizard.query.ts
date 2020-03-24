@@ -9,7 +9,6 @@ export class RefreshWizardQuery extends Query<RefreshWizardState> {
   organizations$: Observable<string[]> = this.select(state => state.organizations);
   repositories$: Observable<string[]> = this.select(state => state.repositories);
   seletedOrganization$: Observable<string> = this.select(state => state.selectedOrganization);
-  repositoryLoading$: Observable<boolean> = this.select(state => state.repositoryLoading);
   error$: Observable<HttpErrorResponse> = this.select(state => state.error);
   constructor(protected store: RefreshWizardStore) {
     super(store);

@@ -6,6 +6,7 @@ import { MytoolsService } from 'app/mytools/mytools.service';
 import { TokenSource } from 'app/shared/enum/token-source.enum';
 import { UsersService } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
+import { SessionService } from 'app/shared/session/session.service';
 import { UsersService as SwaggerUsersService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { finalize } from 'rxjs/operators';
@@ -22,7 +23,8 @@ export class RefreshWizardService {
     private refreshWizardQuery: RefreshWizardQuery,
     private matSnackBar: MatSnackBar,
     private thing: MytoolsService,
-    private sessionQuery: SessionQuery
+    private sessionQuery: SessionQuery,
+    private sessionService: SessionService
   ) {}
   getOrganizations(dockerRegistry: string) {
     this.refreshWizardStore.setLoading(true);
@@ -59,13 +61,13 @@ export class RefreshWizardService {
   }
 
   refreshRepository(repository: string) {
-    this.setRepositoryLoading(true);
+    this.sessionService.setLoadingDialog(true);
     const userId = this.userQuery.getValue().user.id;
     const entryType = this.sessionQuery.getValue().entryType;
     const selectedOrganization = this.refreshWizardQuery.getValue().selectedOrganization;
     this.swaggerUsersService
       .refreshToolsByOrganization(userId, selectedOrganization, repository)
-      .pipe(finalize(() => this.setRepositoryLoading(false)))
+      .pipe(finalize(() => this.sessionService.setLoadingDialog(false)))
       .subscribe(
         () => {
           this.matSnackBar.open('Synchronizing tool succeeded');
@@ -103,15 +105,6 @@ export class RefreshWizardService {
       return {
         ...state,
         organizations: organizations
-      };
-    });
-  }
-
-  setRepositoryLoading(loading: boolean) {
-    this.refreshWizardStore.update(state => {
-      return {
-        ...state,
-        repositoryLoading: loading
       };
     });
   }

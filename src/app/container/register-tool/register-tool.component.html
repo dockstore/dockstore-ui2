@@ -14,6 +14,7 @@
   ~    limitations under the License.
   -->
 <h4 mat-dialog-title>Register Tool</h4>
+<mat-progress-bar mat-dialog-title mode="indeterminate" *ngIf="loading$ | async"></mat-progress-bar>
 <mat-dialog-content>
   <app-alert></app-alert>
   <mat-horizontal-stepper #stepper>

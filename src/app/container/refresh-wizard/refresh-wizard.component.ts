@@ -26,7 +26,6 @@ export class RefreshWizardComponent implements OnInit {
     this.refreshWizardService.getOrganizations(TokenSource.QUAY);
     this.organizations$ = this.refreshWizardQuery.organizations$;
     this.repositories$ = this.refreshWizardQuery.repositories$;
-    this.repositoryLoading$ = this.refreshWizardQuery.repositoryLoading$;
     this.error$ = this.refreshWizardQuery.error$;
   }
 

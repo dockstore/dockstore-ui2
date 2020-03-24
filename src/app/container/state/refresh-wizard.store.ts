@@ -6,7 +6,6 @@ export interface RefreshWizardState {
   organizations: string[];
   repositories: string[];
   selectedOrganization: string;
-  repositoryLoading: boolean;
   error: HttpErrorResponse;
 }
 
@@ -15,7 +14,6 @@ export function createInitialState(): RefreshWizardState {
     organizations: undefined,
     repositories: undefined,
     selectedOrganization: undefined,
-    repositoryLoading: false,
     error: null
   };
 }

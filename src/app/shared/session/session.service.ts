@@ -40,4 +40,13 @@ export class SessionService {
       };
     });
   }
+
+  setLoadingDialog(loadingDialog: boolean): void {
+    this.sessionStore.update(state => {
+      return {
+        ...state,
+        loadingDialog: loadingDialog
+      };
+    });
+  }
 }

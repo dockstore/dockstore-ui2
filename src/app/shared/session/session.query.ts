@@ -16,6 +16,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
+import { Session } from 'inspector';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Dockstore } from '../dockstore.model';
@@ -34,6 +35,7 @@ export class SessionQuery extends Query<SessionState> {
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
     map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(entryType) : null))
   );
+  loadingDialog$: Observable<boolean> = this.select(session => session.loadingDialog);
   constructor(protected store: SessionStore) {
     super(store);
   }
