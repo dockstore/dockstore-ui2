@@ -162,15 +162,17 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   );
 
   terraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
-    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'Terra'))
+    map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'Terra'))
   );
 
   anvilTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
-    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'AnVIL'))
+    map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'AnVIL'))
   );
 
   bdCatalystTerraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
-    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra'))
+    map(([hasContent, hasFileImports]) =>
+      this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra')
+    )
   );
 
   disableTerraPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
@@ -241,7 +243,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     return this.workflow && this.workflow.gitUrl && this.workflow.gitUrl.startsWith('git@github.com');
   }
 
-  private terraTooltip(hasContent: boolean, hasFileImports, platform: string): string {
+  private terraBasedPlatformTooltip(hasContent: boolean, hasFileImports, platform: string): string {
     if (!hasContent) {
       return 'The WDL has no content.';
     }
