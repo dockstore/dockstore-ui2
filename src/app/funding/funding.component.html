@@ -123,21 +123,20 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-12 col-md-6 col-lg-6">
+    <div *ngFor="let funder of funders" class="col-xs-12 col-md-6 col-lg-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">CFI</h3>
+          <h3 class="panel-title">{{ funder.title }}</h3>
         </div>
         <div class="panel-body">
           <div class="col-sm-12" style="min-height:150px !important;">
-            <a href="https://www.innovation.ca/">
-              <img src="../assets/images/sponsors/CFI_CMYK.png" class="center-block img-responsive funding-img" alt="CFI Logo" />
+            <a [href]="funder.website">
+              <img [src]="funder.imageSource" class="center-block img-responsive funding-img" [alt]="funder.altImageText" />
             </a>
           </div>
           <div class="col-sm-12" style="min-height:200px !important;">
             <p>
-              The CFI makes financial contributions to Canada’s universities, colleges, research hospitals and non-profit research
-              organizations to increase their capability to carry out high quality research.
+              {{ funder.content }}
             </p>
           </div>
         </div>
