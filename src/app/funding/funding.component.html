@@ -14,110 +14,20 @@
     <p class="lead">
       Support for Dockstore is provided by grants from Genome Canada, the National Institutes of Health, and the Province of Ontario.
     </p>
-    <div class="col-xs-12 col-md-6 col-lg-6">
+    <div *ngFor="let funder of funders" class="col-xs-12 col-md-6 col-lg-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Genome Canada</h3>
+          <h3 class="panel-title">{{ funder.title }}</h3>
         </div>
         <div class="panel-body">
           <div class="col-sm-12" style="min-height:150px !important;">
-            <a href="https://www.genomecanada.ca/">
-              <img
-                src="../assets/images/sponsors/genomecanada.png"
-                class="center-block img-responsive funding-img"
-                alt="Genome Canada Logo"
-              />
+            <a [href]="funder.website">
+              <img [src]="funder.imageSource" class="center-block img-responsive funding-img" [alt]="funder.altImageText" />
             </a>
           </div>
-          <div class="col-sm-12" style="min-height:200px !important;">
+          <div class="col-sm-12" style="min-height:210px !important;">
             <p>
-              Genome Canada is a not-for-profit organization, funded by the Government of Canada. We act as a catalyst for developing and
-              applying genomics+ and genomic-based technologies to create economic and social benefits for Canadians.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-md-6 col-lg-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Province of Ontario</h3>
-        </div>
-        <div class="panel-body">
-          <div class="col-sm-12" style="min-height:150px !important;">
-            <a href="https://www.ontario.ca">
-              <img
-                src="../assets/images/sponsors/ontario_new.png"
-                class="center-block img-responsive funding-img"
-                alt="Government of Ontario Logo"
-              />
-            </a>
-          </div>
-          <div class="col-sm-12" style="min-height:200px !important;">
-            <p>This work was funded by the Government of Canada through Genome Canada and the Ontario Genomics Institute (OGI-168).</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-md-6 col-lg-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">National Institutes of Health</h3>
-        </div>
-        <div class="panel-body">
-          <div class="col-sm-12" style="min-height:150px !important;">
-            <a href="https://www.nih.gov/">
-              <img src="../assets/images/sponsors/NIH.png" class="center-block img-responsive funding-img" alt="NIH Logo" />
-            </a>
-          </div>
-          <div class="col-sm-12" style="min-height:200px !important;">
-            <p>A part of the U.S. Department of Health and Human Services, NIH is the largest biomedical research agency in the world.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-md-6 col-lg-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">BISTI</h3>
-        </div>
-        <div class="panel-body">
-          <div class="col-sm-12" style="min-height:150px !important;">
-            <a href="https://www.nih.gov/">
-              <img src="../assets/images/sponsors/bisti-logo.png" class="center-block img-responsive funding-img" alt="NIH Logo" />
-            </a>
-          </div>
-          <div class="col-sm-12" style="min-height:200px !important;">
-            <p>
-              The Biomedical Information Science and Technology Initiative is a consortium of representatives from each of the NIH
-              institutes and centers. The mission of BISTI is to make optimal use of computer science and technology to address problems in
-              biology and medicine by fostering new basic understandings, collaborations, and transdisciplinary initiatives between the
-              computational and biomedical sciences.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-md-6 col-lg-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">DataSTAGE</h3>
-        </div>
-        <div class="panel-body">
-          <div class="col-sm-12" style="min-height:150px !important;">
-            <a href="https://www.nih.gov/">
-              <img src="../assets/images/sponsors/DataSTAGE_logo.png" class="center-block img-responsive funding-img" alt="NIH Logo" />
-            </a>
-          </div>
-          <div class="col-sm-12" style="min-height:200px !important;">
-            <p>
-              The DataSTAGE (Storage, Toolspace, Access and analytics for biG data Empowerment) project aims to create a community of
-              practice that is motivated to collaboratively solve technical challenges to enable NHLBI investigators to find, access, share,
-              store, cross-link, and compute on large-scale data sets.
+              {{ funder.content }}
             </p>
           </div>
         </div>
