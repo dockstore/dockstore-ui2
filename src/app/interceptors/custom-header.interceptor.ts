@@ -1,5 +1,5 @@
 /**
- *    Copyright 2019 OICR
+ *    Copyright 2020 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { version } from '../../../package.json';
+import { versions } from '../footer/versions';
+
+const uiVersion = versions.tag.match(/\d+\.\d+\.\d+/)[0];
 
 /**
  * An interceptor that ensures that every request has a custom X-Dockstore-UI header with the UI version as
@@ -25,7 +27,7 @@ import { version } from '../../../package.json';
 @Injectable()
 export class CustomHeaderInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    req = req.clone({ headers: req.headers.set('X-Dockstore-UI', version) });
+    req = req.clone({ headers: req.headers.set('X-Dockstore-UI', uiVersion) });
     return next.handle(req);
   }
 }
