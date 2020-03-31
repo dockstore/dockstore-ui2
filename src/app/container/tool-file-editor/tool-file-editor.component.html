@@ -15,7 +15,7 @@
   -->
 
 <mat-tab-group mat-stretch-tabs animationDuration="0ms">
-  <mat-tab label="Dockerfile" id="dockerfileTab">
+  <mat-tab label="Dockerfile">
     <ng-template matTabContent>
       <app-code-editor-list
         [sourcefiles]="dockerFile"
@@ -27,9 +27,9 @@
       ></app-code-editor-list>
     </ng-template>
   </mat-tab>
-  <mat-tab label="Descriptor Files" id="descriptorFilesTab">
+  <mat-tab label="Descriptor Files">
     <ng-template matTabContent>
-      <mat-form-field>
+      <mat-form-field class="pl-2">
         <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
           <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
           <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
@@ -47,9 +47,9 @@
       ></app-code-editor-list>
     </ng-template>
   </mat-tab>
-  <mat-tab label="Test Parameter Files" id="testParameterFilesTab">
+  <mat-tab label="Test Parameter Files">
     <ng-template matTabContent>
-      <mat-form-field>
+      <mat-form-field class="pl-2">
         <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
           <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
           <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
