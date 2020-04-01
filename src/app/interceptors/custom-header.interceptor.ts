@@ -16,18 +16,25 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 import { versions } from '../footer/versions';
 
 const uiVersion = versions.tag;
+const uuid = uuidv4().toString();
 
 /**
  * An interceptor that ensures that every request has a custom X-Dockstore-UI header with the UI version as
- * the value so we can track API calls coming from the Dockstore UI.
+ * the value and a custom UUID header so we can track API calls coming from the Dockstore UI.
  */
 @Injectable()
 export class CustomHeaderInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    req = req.clone({ headers: req.headers.set('X-Dockstore-UI', uiVersion) });
+    req = req.clone({
+      setHeaders: {
+        'X-Dockstore-UI': uiVersion,
+        'X-UUID': uuid
+      }
+    });
     return next.handle(req);
   }
 }
