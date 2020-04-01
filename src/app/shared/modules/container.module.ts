@@ -17,12 +17,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { ContainerComponent } from '../../container/container.component';
@@ -80,17 +76,13 @@ import { SelectModule } from './select.module';
     ToolFileEditorComponent
   ],
   imports: [
-    ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
     CurrentCollectionsModule,
     HeaderModule,
     SelectModule,
     ListContainersModule,
-    TooltipModule.forRoot(),
     TabsModule.forRoot(),
-    AccordionModule.forRoot(),
-    AlertModule.forRoot(),
     FormsModule,
     OrderByModule,
     PrivateIconModule,
@@ -103,7 +95,6 @@ import { SelectModule } from './select.module';
     MarkdownModule
   ],
   providers: [
-    { provide: TooltipConfig, useFactory: getTooltipConfig },
     EmailService,
     DateService,
     FileService,
