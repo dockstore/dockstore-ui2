@@ -22,7 +22,7 @@ describe('CustomHeaderInterceptor', () => {
     [HttpClient, HttpTestingController],
     (http: HttpClient, httpMock: HttpTestingController) => {
       http.get('/api').subscribe(response => expect(response).toBeTruthy());
-      const uiVersion = versions.tag.match(/\d+\.\d+\.\d+/)[0];
+      const uiVersion = versions.tag;
       const request = httpMock.expectOne(req => req.headers.has('X-Dockstore-UI') && req.headers.get('X-Dockstore-UI') === uiVersion);
 
       request.flush({ data: 'test' });

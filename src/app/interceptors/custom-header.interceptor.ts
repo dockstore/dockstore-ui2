@@ -18,7 +18,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { versions } from '../footer/versions';
 
-const uiVersion = versions.tag.match(/\d+\.\d+\.\d+/)[0];
+const uiVersion = versions.tag;
 
 /**
  * An interceptor that ensures that every request has a custom X-Dockstore-UI header with the UI version as
