@@ -408,7 +408,8 @@ export abstract class Entry implements OnInit, OnDestroy {
       this.decodeURL(this._toolType);
 
       // Get index of /containers or /workflows
-      // const pageIndex = this.getPageIndex();
+      // TODO: Not sure why getPageIndex() returns anything, but does need to get called to change URL.
+      const pageIndex = this.getPageIndex();
     }
   }
 
