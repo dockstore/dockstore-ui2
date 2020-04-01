@@ -68,8 +68,8 @@ export class RegisterCheckerWorkflowService {
               this.containerService.upsertToolToTools(<DockstoreTool>entry);
               this.containerService.setTool(<DockstoreTool>entry);
             }
-            // TODO: Use the message or remove it
             const refreshCheckerMessage = 'Refreshing checker workflow';
+            this.alertService.start(refreshCheckerMessage);
             this.workflowsService
               .refresh(entry.checker_id)
               .pipe(first())

@@ -4,7 +4,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { SessionQuery } from 'app/shared/session/session.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -48,12 +47,10 @@ export class PermissionsComponent implements OnInit {
     private workflowsService: WorkflowsService,
     private snackBar: MatSnackBar,
     private alertService: AlertService,
-    private tokenQuery: TokenQuery,
-    private sessionQuery: SessionQuery
+    private tokenQuery: TokenQuery
   ) {}
 
   ngOnInit() {
-    const entryType = this.sessionQuery.getValue().entryType;
     this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
       this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
     });
@@ -69,7 +66,7 @@ export class PermissionsComponent implements OnInit {
           this.processResponse(userPermissions);
         },
         (e: HttpErrorResponse) => {
-          this.handleError(e, `Error removing user ${entity}.`);
+          this.handleError(e);
         }
       );
   }
@@ -89,7 +86,7 @@ export class PermissionsComponent implements OnInit {
             this.processResponse(userPermissions);
           },
           (e: HttpErrorResponse) => {
-            this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with Terra`);
+            this.handleError(e);
           }
         );
     }
@@ -100,9 +97,8 @@ export class PermissionsComponent implements OnInit {
     }
   }
 
-  private handleError(e: HttpErrorResponse, defaultMessage: string) {
+  private handleError(e: HttpErrorResponse) {
     this.updating--;
-    const message = e.error || defaultMessage;
     if (e.status === 409) {
       // A more severe error that deserves more attention than a disappearing snackbar
       this.alertService.detailedError(e);

@@ -106,7 +106,7 @@ export abstract class LaunchService {
     if (!filePath) {
       return;
     }
-    let urlType = 'PLAIN_NFL';
+    let urlType;
     switch (descriptorType) {
       case ToolDescriptor.TypeEnum.WDL:
         urlType = 'PLAIN_WDL';

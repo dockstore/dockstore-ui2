@@ -40,7 +40,13 @@
           </div>
           <strong>docker</strong>:&nbsp;{{ tool?.docker }}
           <br />
-          <strong>link</strong>:&nbsp;<a href="{{ tool?.link }}" target="_blank" *ngIf="tool?.link !== 'Not Specified'">{{ tool?.link }}</a>
+          <strong>link</strong>:&nbsp;<a
+            href="{{ tool?.link }}"
+            target="_blank"
+            *ngIf="tool?.link !== 'Not Specified'"
+            rel="noopener noreferrer"
+            >{{ tool?.link }}</a
+          >
           <span *ngIf="tool?.link === 'Not Specified'">Not Specified</span>
         </td>
       </ng-container>
