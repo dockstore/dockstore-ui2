@@ -49,7 +49,34 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
-      <div *ngIf="selectedOption?.value == 0">
+      <div *ngIf="selectedOption?.value === 0">
+        <p>
+          Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
+          <a href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps.html" target="_blank" rel="noopener noreferrer">
+            documentation <mat-icon>open_in_new</mat-icon>
+          </a>
+          for how to use GitHub Apps to automatically sync your workflows with GitHub. A .dockstore.yml file is required.
+        </p>
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
+          <a
+            mat-flat-button
+            type="button"
+            color="primary"
+            [href]="gitHubAppInstallationLink$ | async"
+            target="_blank"
+            rel="noopener noreferrer"
+            matTooltip="Manage Dockstore Installations on GitHub"
+            ><mat-icon>add</mat-icon> Manage Dockstore Installations on GitHub</a
+          >
+        </div>
+        <div class="modal-footer">
+          <button mat-button color="secondary" matStepperPrevious>Back</button>
+          <button type="button" mat-flat-button color="primary" [mat-dialog-close]="true" (click)="clearWorkflowRegisterError()">
+            Close
+          </button>
+        </div>
+      </div>
+      <div *ngIf="selectedOption?.value === 1">
         <entry-wizard></entry-wizard>
         <div class="modal-footer">
           <button mat-button color="secondary" matStepperPrevious>Back</button>
@@ -61,7 +88,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value === 2"
         #registerWorkflowForm="ngForm"
         name="registerWorkflowForm"
         (submit)="registerWorkflow()"
@@ -117,7 +144,7 @@
             name="workflow_path"
             [(ngModel)]="workflow.workflow_path"
             minlength="3"
-            maxlength="128"
+            maxlength="1000"
             [pattern]="descriptorValidationPattern"
             required
             [matTooltip]="Tooltip.workflowPath"
@@ -133,7 +160,7 @@
             name="testParameterFilePath"
             [(ngModel)]="workflow.defaultTestParameterFilePath"
             minlength="3"
-            maxlength="128"
+            maxlength="1000"
             [pattern]="validationPatterns.testParameterFilePath"
             matTooltip="Relative path to a Test Parameter File in the Git repository."
             placeholder="e.g. /test.json"
@@ -177,7 +204,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 2"
+        *ngIf="selectedOption?.value === 3"
         #registerHostedWorkflowForm="ngForm"
         name="registerHostedWorkflowForm"
         (ngSubmit)="registerHostedWorkflow()"

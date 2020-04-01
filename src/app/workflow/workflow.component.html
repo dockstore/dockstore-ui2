@@ -170,16 +170,25 @@
           </mat-tab>
           <div *ngIf="entryType === EntryType.BioWorkflow">
             <mat-tab id="launchTab" label="Launch">
-              <app-launch
-                *ngIf="workflow?.workflowVersions.length > 0; else noVersions"
-                [selectedVersion]="selectedVersion"
-                [basePath]="workflow?.path"
-                [path]="workflow?.full_workflow_path"
-                [canRead]="canRead"
-                [canWrite]="canWrite"
-                [isOwner]="isOwner"
-                [mode]="workflow?.mode"
-              ></app-launch>
+              <div *ngIf="!(launchSupport$ | async); else launchSupported">
+                <div class="p-3">
+                  <mat-card class="alert alert-warning" role="alert">
+                    <mat-icon>warning</mat-icon> Dockstore does not yet have customized launch-with instructions for this language.
+                  </mat-card>
+                </div>
+              </div>
+              <ng-template #launchSupported>
+                <app-launch
+                  *ngIf="workflow?.workflowVersions.length > 0; else noVersions"
+                  [selectedVersion]="selectedVersion"
+                  [basePath]="workflow?.path"
+                  [path]="workflow?.full_workflow_path"
+                  [canRead]="canRead"
+                  [canWrite]="canWrite"
+                  [isOwner]="isOwner"
+                  [mode]="workflow?.mode"
+                ></app-launch>
+              </ng-template>
               <ng-template #noVersions>
                 <div class="p-3">
                   <mat-card class="alert alert-warning" role="alert">

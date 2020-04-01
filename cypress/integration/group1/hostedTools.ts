@@ -160,9 +160,10 @@ describe('Dockstore hosted tools', () => {
       cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
-      cy.contains('button', 'Actions').should('be.visible').click();
-      cy.get('.deleteVersionButton')
+      cy.contains('button', 'Actions')
+        .should('be.visible')
         .click();
+      cy.get('.deleteVersionButton').click();
       // Automatically selects the newest version that wasn't the one that was just deleted
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Version 3 should no longer exist since it was just deleted

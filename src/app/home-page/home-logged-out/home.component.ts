@@ -18,7 +18,6 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { TabDirective } from 'ngx-bootstrap/tabs';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -86,10 +85,6 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
 
   goToSearch(searchValue: string) {
     this.homePageService.goToSearch(searchValue);
-  }
-
-  onSelect(data: TabDirective): void {
-    this.selectedTab = data.id;
   }
 
   openYoutube() {

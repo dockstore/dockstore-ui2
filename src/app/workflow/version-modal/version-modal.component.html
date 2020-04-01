@@ -52,7 +52,7 @@
                 name="workflow_path"
                 [(ngModel)]="version.workflow_path"
                 minlength="3"
-                maxlength="128"
+                maxlength="1000"
                 [pattern]="validationPatterns.workflowDescriptorPath"
                 required
                 [matTooltip]="tooltip.workflowPath"
@@ -92,7 +92,7 @@
                   name="testParameterFilePaths[{{ i }}]"
                   [(ngModel)]="testParameterFilePaths[i]"
                   minlength="3"
-                  maxlength="128"
+                  maxlength="1000"
                   [pattern]="validationPatterns.testFilePath"
                   placeholder="e.g. /test.json"
                   disabled
@@ -127,7 +127,7 @@
                   name="testParameterFilePath"
                   [(ngModel)]="testParameterFilePath"
                   minlength="3"
-                  maxlength="128"
+                  maxlength="1000"
                   [pattern]="validationPatterns.testFilePath"
                   placeholder="e.g. /test.json"
                   [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
