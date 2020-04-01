@@ -73,6 +73,13 @@ export class WorkflowFileEditorComponent extends FileEditing {
   }
 
   /**
+   * Getting the newest workflowVersion based on the id
+   */
+  getNewestVersion(versions: Array<WorkflowVersion>): WorkflowVersion {
+    return versions.reduce((p, c) => (p.id > c.id ? p : c));
+  }
+
+  /**
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {
@@ -111,8 +118,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
           this.workflowsService.getWorkflow(editedWorkflow.id).subscribe(
             (newlyGottenWorkflow: Workflow) => {
               this.workflowService.setWorkflow(newlyGottenWorkflow);
-              const mostRecentId = this.getIdOfNewestVersion(newlyGottenWorkflow.workflowVersions);
-              const updatedVersion = newlyGottenWorkflow.workflowVersions.find(v => v.id === mostRecentId);
+              const updatedVersion = this.getNewestVersion(newlyGottenWorkflow.workflowVersions);
               this.alertService.detailedSuccess(
                 'Saved version ' + updatedVersion.name + ' of hosted workflow ' + newlyGottenWorkflow.repository
               );
