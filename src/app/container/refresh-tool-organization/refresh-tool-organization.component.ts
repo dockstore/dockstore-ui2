@@ -42,10 +42,8 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
 
   refreshOrganization(): void {
     const message = 'Refreshing ' + this.organization;
-    const splitOrganization: string[] = this.organization.split('/');
-    const actualOrganization: string = splitOrganization[1];
     this.alertService.start(message);
-    this.usersService.refreshToolsByOrganization(this.userId, actualOrganization).subscribe(
+    this.usersService.refreshToolsByOrganization(this.userId, this.organization).subscribe(
       (success: DockstoreTool[]) => {
         this.containerService.setTools(success);
         this.alertService.detailedSuccess();

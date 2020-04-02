@@ -61,7 +61,6 @@ export class ExtendedWorkflowsService extends WorkflowsService {
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [];
 
     return this.httpClient.get<any>(
       `${this.configuration.basePath}/workflows/${encodeURIComponent(String(workflowId))}/zip/${encodeURIComponent(
