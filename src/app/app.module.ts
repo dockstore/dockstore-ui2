@@ -42,6 +42,7 @@ import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
 import { HomePageModule } from './home-page/home-page.module';
+import { CustomHeaderInterceptor } from './interceptors/custom-header.interceptor';
 import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
@@ -221,7 +222,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
-    { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true }
   ],
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent]
