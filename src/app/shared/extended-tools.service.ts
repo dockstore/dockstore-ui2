@@ -46,7 +46,6 @@ export class ExtendedToolsService extends ContainersService {
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [];
 
     return this.httpClient.get<any>(
       `${this.configuration.basePath}/containers/${encodeURIComponent(String(toolId))}/zip/${encodeURIComponent(String(tagId))}`,
