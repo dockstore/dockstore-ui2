@@ -20,19 +20,23 @@ import { v4 as uuidv4 } from 'uuid';
 import { versions } from '../footer/versions';
 
 const uiVersion = versions.tag;
-const uuid = uuidv4().toString();
+const sessionUUID = uuidv4().toString();
 
 /**
- * An interceptor that ensures that every request has a custom X-Dockstore-UI header with the UI version as
- * the value and a custom UUID header so we can track API calls coming from the Dockstore UI.
+ * An interceptor that ensures that every request has the following custom headers:
+ *  - X-Dockstore-UI: Dockstore UI version
+ *  - X-Session-ID: UUID for each browser session
+ *  - X-Request-ID: UUID for each request
  */
 @Injectable()
 export class CustomHeaderInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const requestUUID = uuidv4().toString();
     req = req.clone({
       setHeaders: {
         'X-Dockstore-UI': uiVersion,
-        'X-UUID': uuid
+        'X-Session-ID': sessionUUID,
+        'X-Request-ID': requestUUID
       }
     });
     return next.handle(req);
