@@ -429,6 +429,7 @@ export class MetadataStubService {
 export class RefreshStubService {
   refreshAllWorkflows() {}
   refreshWorkflow() {}
+  refreshWorkflowVersion() {}
   handleSuccess(message: string): void {}
 
   handleError(message: string, error: any): void {}
