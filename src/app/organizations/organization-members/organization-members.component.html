@@ -29,6 +29,9 @@
               />
               <mat-card-title>{{ organizationUser.user?.username }}</mat-card-title>
               <mat-card-subtitle>{{ organizationUser.role | titlecase }}</mat-card-subtitle>
+              <mat-card-subtitle *ngIf="organizationUser.user?.orcid">
+                ORCID id: <a href="{{ getUserORCIDLink(organizationUser) }}">{{ organizationUser.user?.orcid }}</a>
+              </mat-card-subtitle>
             </mat-card-header>
           </div>
           <div fxFlex fxGrow="1" fxLayoutAlign="end center" *ngIf="canEditMembership$ | async">

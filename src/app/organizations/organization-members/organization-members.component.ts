@@ -125,4 +125,9 @@ export class OrganizationMembersComponent extends Base implements OnInit {
         }
       });
   }
+
+  getUserORCIDLink(organizationUser: OrganizationUser) {
+    const orcid = organizationUser.user.orcid;
+    return 'https://orcid.org/' + orcid;
+  }
 }
