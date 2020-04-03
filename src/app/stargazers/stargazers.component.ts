@@ -19,6 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { altAvatarImg } from '../shared/constants';
 import { StarentryService } from '../shared/starentry.service';
+import { User } from '../shared/swagger';
 import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
 
@@ -46,5 +47,9 @@ export class StargazersComponent extends Base implements OnInit {
         });
       }
     });
+  }
+
+  getUserORCIDLink(user: User) {
+    return 'https://orcid.org/' + user.orcid;
   }
 }

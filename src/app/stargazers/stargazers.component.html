@@ -27,6 +27,9 @@
           <img src="{{ stargazer.avatarUrl }}" width="150" height="150" class="img-responsive stargazer-img" alt="{{ altAvatarImg }}" />
           <div class="caption">
             <h5 class="text-center">{{ stargazer.username }}</h5>
+            <h6 class="text-center stargazer-orcid" *ngIf="stargazer.orcid">
+              ORCID iD: <a href="{{ getUserORCIDLink(stargazer) }}">{{ stargazer.orcid }}</a>
+            </h6>
           </div>
         </div>
       </div>
