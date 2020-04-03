@@ -31,4 +31,11 @@ export class Links {
                             ?client_id=${Dockstore.ZENODO_CLIENT_ID}
                             &redirect_uri=${Dockstore.ZENODO_REDIRECT_URI}
                             &response_type=code`.replace(/\s/g, '') + `&scope=${Dockstore.ZENODO_SCOPE}`;
+
+  static readonly ORCID = () =>
+    `${Dockstore.ORCID_AUTH_URL}
+        ?client_id=${Dockstore.ORCID_CLIENT_ID}
+        &response_type=code
+        &scope=${Dockstore.ORCID_SCOPE}
+        &redirect_uri=${Dockstore.ORCID_REDIRECT_URI}`;
 }

@@ -84,6 +84,14 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
       show: false,
       logo: 'zenodo.jpg'
+    },
+    {
+      name: 'ORCID',
+      source: TokenSource.ORCID,
+      bold: '',
+      message: 'ORCID credentials are used for linking ORCID IDs to workflows published on Zenodo.',
+      show: false,
+      logo: 'orcid.svg'
     }
   ];
 
