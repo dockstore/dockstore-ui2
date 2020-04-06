@@ -2107,6 +2107,7 @@ INSERT INTO public.user_entry (userid, entryid) VALUES (1, 20);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 21);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 22);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 30);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 100);
 INSERT INTO public.user_entry (userid, entryid) VALUES (2, 52);
 
 
