@@ -101,14 +101,12 @@ export class CreateCollectionService {
     let name = null;
     let topic = null;
     let displayName = null;
-    let description = null;
     formsManager.remove('createOrUpdateCollection');
     if (mode !== TagEditorMode.Add) {
       const collection: Collection = data.collection.value;
       name = collection.name;
       topic = collection.topic;
       displayName = collection.displayName;
-      description = collection.description;
     }
 
     const createOrUpdateCollectionForm = this.builder.group({

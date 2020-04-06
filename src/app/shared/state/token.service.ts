@@ -54,6 +54,8 @@ export class TokenService {
         return this.tokensService.addGitlabToken(token);
       case Provider.ZENODO:
         return this.tokensService.addZenodoToken(token);
+      case Provider.ORCID:
+        return this.tokensService.addOrcidToken(token);
       default: {
         console.log('Unknown provider: ' + provider);
         return throwError('Unknown provider.');
