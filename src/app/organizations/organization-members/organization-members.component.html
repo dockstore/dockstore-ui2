@@ -30,7 +30,8 @@
               <mat-card-title>{{ organizationUser.user?.username }}</mat-card-title>
               <mat-card-subtitle>{{ organizationUser.role | titlecase }}</mat-card-subtitle>
               <mat-card-subtitle *ngIf="organizationUser.user?.orcid">
-                ORCID iD: <a href="{{ getUserORCIDLink(organizationUser) }}">{{ organizationUser.user?.orcid }}</a>
+                ORCID <img src="../../../assets/images/account-logos/orcid.svg" alt="{{ row.name }} logo" class="account-logo" />
+                <a href="{{ getUserORCIDLink(organizationUser) }}">{{ organizationUser.user?.orcid }}</a>
               </mat-card-subtitle>
             </mat-card-header>
           </div>
