@@ -22,6 +22,8 @@ describe('Service: EntryFileTabService', () => {
     expect(EntryFileTabService.getValidationMessageObject(null, version)).toEqual(null);
     expect(EntryFileTabService.getValidationMessageObject(toolFile, version)).toEqual(JSON.parse(`{"fakeFilePath":"fakeErrorMessage"}`));
     expect(EntryFileTabService.getValidationMessageObject(unsupportedToolFile, version)).toEqual(null);
+    version.validations[0].message = 'notJson';
+    expect(EntryFileTabService.getValidationMessageObject(toolFile, version)).toEqual(null);
     version.validations = null;
     expect(EntryFileTabService.getValidationMessageObject(toolFile, version)).toEqual(null);
   });

@@ -48,11 +48,16 @@ export class EntryFileTabService extends Base {
       const supportedValidationTypeEnum: Validation.TypeEnum[] = EntryFileTabService.toolFileToValdationTypeEnums(toolFile.file_type);
       const foundValidation: Validation = validations.find(validation => supportedValidationTypeEnum.includes(validation.type));
       if (foundValidation) {
-        const validationObject = JSON.parse(foundValidation.message);
-        if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
+        try {
+          const validationObject = JSON.parse(foundValidation.message);
+          if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
+            return null;
+          } else {
+            return validationObject;
+          }
+        } catch (e) {
+          console.error(e);
           return null;
-        } else {
-          return validationObject;
         }
       } else {
         return null;
