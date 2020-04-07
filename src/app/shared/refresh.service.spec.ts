@@ -70,32 +70,6 @@ describe('RefreshService', () => {
   it('should be created', inject([RefreshService], (service: RefreshService) => {
     expect(service).toBeTruthy();
   }));
-
-  it('should refresh tool', inject(
-    [RefreshService, AlertQuery, ContainerService],
-    (service: RefreshService, alertQuery: AlertQuery, containerService: ContainerService) => {
-      const refreshedTool: DockstoreTool = {
-        default_cwl_path: 'refreshedDefaultCWLPath',
-        default_dockerfile_path: 'refreshedDefaultDockerfilePath',
-        default_wdl_path: 'refreshedDefaultWDLPath',
-        gitUrl: 'refreshedGitUrl',
-        mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
-        name: 'refreshedName',
-        namespace: 'refreshedNamespace',
-        private_access: false,
-        registry_string: 'quay.io',
-        registry: DockstoreTool.RegistryEnum.QUAYIO,
-        toolname: 'refreshedToolname',
-        defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
-        defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
-      };
-      service.tool = sampleTool1;
-      service.refreshTool();
-      alertQuery.showInfo$.subscribe(refreshing => {
-        expect(refreshing).toBeFalsy();
-      });
-    }
-  ));
   it('should refresh workflow', inject(
     [RefreshService, AlertQuery, WorkflowService, WorkflowQuery],
     (service: RefreshService, alertQuery: AlertQuery, workflowService: WorkflowService, workflowQuery: WorkflowQuery) => {
