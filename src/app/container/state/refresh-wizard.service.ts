@@ -22,7 +22,7 @@ export class RefreshWizardService {
     private userQuery: UserQuery,
     private refreshWizardQuery: RefreshWizardQuery,
     private matSnackBar: MatSnackBar,
-    private thing: MytoolsService,
+    private myToolsService: MytoolsService,
     private sessionQuery: SessionQuery,
     private sessionService: SessionService
   ) {}
@@ -50,16 +50,6 @@ export class RefreshWizardService {
     });
   }
 
-  refreshOrganization(organization: string) {
-    this.refreshWizardStore.setLoading(true);
-    this.swaggerUsersService
-      .refreshToolsByOrganization(this.userQuery.getValue().user.id, organization, TokenSource.QUAY)
-      .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
-      .subscribe(thing => {
-        console.log('I have no idea what this returns');
-      });
-  }
-
   refreshRepository(repository: string) {
     this.sessionService.setLoadingDialog(true);
     const userId = this.userQuery.getValue().user.id;
@@ -71,7 +61,7 @@ export class RefreshWizardService {
       .subscribe(
         () => {
           this.matSnackBar.open('Synchronizing tool succeeded');
-          this.thing.getMyEntries(userId, entryType);
+          this.myToolsService.getMyEntries(userId, entryType);
         },
         error => {
           this.matSnackBar.open('Synchronizing tool failed');

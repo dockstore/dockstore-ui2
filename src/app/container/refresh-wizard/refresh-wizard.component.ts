@@ -35,10 +35,6 @@ export class RefreshWizardComponent implements OnInit {
     this.error$ = this.refreshWizardQuery.error$;
   }
 
-  refreshOrganization(organization: string) {
-    this.refreshWizardService.refreshOrganization(organization);
-  }
-
   selectOrganization(organization: string) {
     this.refreshWizardService.getRepositories(organization);
   }

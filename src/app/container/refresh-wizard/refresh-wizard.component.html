@@ -25,10 +25,10 @@
     </mat-card>
     <div *ngIf="organizations$ | async as organizations">
       <div *ngIf="organizations === undefined">
-        I don't know how you got passed the loading bar
+        Encountering an issue with the website.
       </div>
       <div *ngIf="organizations === null">
-        Problems getting organizations
+        Problems getting organizations.
       </div>
       <div *ngIf="organizations && organizations.length === 0">
         Could not get any organizations, try relinking the Quay.io token in the accounts page.
