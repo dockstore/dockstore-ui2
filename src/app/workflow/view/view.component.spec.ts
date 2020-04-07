@@ -15,6 +15,7 @@
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { RefreshService } from 'app/shared/refresh.service';
 import { DateService } from '../../shared/date.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger';
@@ -23,6 +24,7 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import {
   DateStubService,
   HostedStubService,
+  RefreshStubService,
   VersionModalStubService,
   WorkflowsStubService,
   WorkflowStubService
@@ -45,7 +47,8 @@ describe('ViewWorkflowComponent', () => {
         { provide: VersionModalService, useClass: VersionModalStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: DateService, useClass: DateStubService },
-        { provide: HostedService, useClass: HostedStubService }
+        { provide: HostedService, useClass: HostedStubService },
+        { provide: RefreshService, useClass: RefreshStubService }
       ]
     }).compileComponents();
   }));
