@@ -135,7 +135,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
 
   refreshVersion() {
     const prefix = this.sessionQuery.getValue().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
-    this.refreshService.refreshWorkflowVersion(prefix + this.workflow.full_workflow_path, this.version.name);
+    this.refreshService.refreshWorkflowVersion(prefix, this.workflow, this.version.name);
   }
 
   deleteHostedVersion() {
