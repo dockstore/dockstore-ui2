@@ -15,9 +15,13 @@
  */
 
 .stargazer-img {
+  width: 150px;
+  height: 150px;
   border-radius: 5px;
 }
 
-.stargazer-orcid {
-  font-size: 10px;
+.orcid-id-logo {
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: sub;
 }
