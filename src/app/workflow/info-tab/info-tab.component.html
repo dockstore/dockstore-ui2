@@ -14,23 +14,22 @@
   ~    limitations under the License.
   -->
 <div class="p-3">
-  <mat-card class="alert alert-info">
-    <span
-      *ngIf="
-        workflow?.source_control_provider === 'GITHUB' &&
-        (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB)
-      "
+  <mat-card
+    class="alert alert-info"
+    *ngIf="
+      workflow?.source_control_provider === 'GITHUB' &&
+      (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB)
+    "
+  >
+    Keep your workflow automatically in sync with GitHub with our new registration process. Click
+    <a
+      href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="link-with-underline"
+      >here</a
     >
-      Keep your workflow automatically in sync with GitHub with our new registration process. Click
-      <a
-        href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="link-with-underline"
-        >here</a
-      >
-      to learn more.
-    </span>
+    to learn more.
   </mat-card>
   <mat-card>
     <mat-card-header>
