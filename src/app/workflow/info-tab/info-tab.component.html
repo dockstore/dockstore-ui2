@@ -14,6 +14,23 @@
   ~    limitations under the License.
   -->
 <div class="p-3">
+  <mat-card class="alert alert-info">
+    <span
+      *ngIf="
+        workflow?.source_control_provider === 'GITHUB' &&
+        (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB)
+      "
+    >
+      This workflow can be migrated to our new registration process. See our
+      <a
+        href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml"
+        target="_blank"
+        rel="noopener noreferrer"
+        >documentation</a
+      >
+      for details.
+    </span>
+  </mat-card>
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ entryType$ | async | titlecase }} Information</mat-card-title>
