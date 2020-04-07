@@ -21,7 +21,7 @@ export class ViewService {
     this.containersService.updateToolDefaultVersion(toolId, newDefaultVersion).subscribe(
       response => {
         this.alertService.detailedSuccess();
-        this.containerService.replaceTool(null, response);
+        this.containerService.replaceTool(response);
         this.containerService.setTool(response);
       },
       error => this.alertService.detailedError(error)

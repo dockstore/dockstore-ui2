@@ -51,7 +51,7 @@ export class RefreshService {
     this.alertService.start(message);
     this.containersService.refresh(tool.id).subscribe(
       (response: DockstoreTool) => {
-        this.containerService.replaceTool(null, response);
+        this.containerService.replaceTool(response);
         this.containerService.setTool(response);
         this.alertService.detailedSuccess();
       },

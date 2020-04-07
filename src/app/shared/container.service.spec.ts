@@ -62,6 +62,7 @@ describe('ContainerService', () => {
 
   it('should replace tool', inject([ContainerService], (service: ContainerService) => {
     const tools: DockstoreTool[] = [sampleTool1, sampleTool2, sampleTool3];
+    service.setTools(tools);
     const newSampleTool1: DockstoreTool = {
       id: 1,
       default_cwl_path: 'sampleDefaultCWLPath',
@@ -78,7 +79,7 @@ describe('ContainerService', () => {
       defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
       defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
     };
-    service.replaceTool(tools, newSampleTool1);
+    service.replaceTool(newSampleTool1);
     expect(service.tools$.getValue()).toEqual([newSampleTool1, sampleTool2, sampleTool3]);
   }));
 

@@ -96,7 +96,7 @@ export class InfoTabService extends Base {
         this.alertService.start('Refreshing ' + message);
         this.containersService.refresh(this.tool.id).subscribe(
           refreshResponse => {
-            this.containerService.replaceTool(this.tools, refreshResponse);
+            this.containerService.replaceTool(refreshResponse);
             this.containerService.setTool(refreshResponse);
             this.alertService.detailedSuccess();
           },
