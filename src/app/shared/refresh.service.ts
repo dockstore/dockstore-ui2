@@ -23,17 +23,12 @@ import { WorkflowService } from './state/workflow.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
-import { BioWorkflow } from './swagger/model/bioWorkflow';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { Service } from './swagger/model/service';
 import { Workflow } from './swagger/model/workflow';
 import { ToolQuery } from './tool/tool.query';
 
 @Injectable()
 export class RefreshService {
-  public tool: DockstoreTool;
-  private tools;
-  private workflow: Service | BioWorkflow;
   constructor(
     private workflowsService: WorkflowsService,
     private containerService: ContainerService,
@@ -44,22 +39,19 @@ export class RefreshService {
     private toolQuery: ToolQuery,
     private gA4GHFilesService: GA4GHFilesService,
     private workflowQuery: WorkflowQuery
-  ) {
-    this.toolQuery.tool$.subscribe(tool => (this.tool = tool));
-    this.workflowQuery.workflow$.subscribe(workflow => (this.workflow = workflow));
-    this.containerService.tools$.subscribe(tools => (this.tools = tools));
-  }
+  ) {}
 
   /**
    * Handles refreshing of tool and updates the view.
    * @memberof RefreshService
    */
   refreshTool(): void {
-    const message = 'Refreshing ' + this.tool.tool_path;
+    const tool = this.toolQuery.getActive();
+    const message = 'Refreshing ' + tool.tool_path;
     this.alertService.start(message);
-    this.containersService.refresh(this.tool.id).subscribe(
+    this.containersService.refresh(tool.id).subscribe(
       (response: DockstoreTool) => {
-        this.containerService.replaceTool(this.tools, response);
+        this.containerService.replaceTool(null, response);
         this.containerService.setTool(response);
         this.alertService.detailedSuccess();
       },
@@ -75,9 +67,10 @@ export class RefreshService {
    * @memberof RefreshService
    */
   refreshWorkflow(toolID?: string, versionName?: string | null): void {
-    const message = 'Refreshing ' + this.workflow.full_workflow_path;
+    const workflow = this.workflowQuery.getActive();
+    const message = 'Refreshing ' + workflow.full_workflow_path;
     this.alertService.start(message);
-    this.workflowsService.refresh(this.workflow.id).subscribe(
+    this.workflowsService.refresh(workflow.id).subscribe(
       (refreshedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
         this.workflowService.setWorkflow(refreshedWorkflow);
