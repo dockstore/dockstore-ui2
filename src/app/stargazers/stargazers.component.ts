@@ -48,8 +48,4 @@ export class StargazersComponent extends Base implements OnInit {
       }
     });
   }
-
-  getUserORCIDLink(user: User) {
-    return 'https://orcid.org/' + user.orcid;
-  }
 }
