@@ -23,11 +23,11 @@
   <div class="panel-body" *ngIf="starGazers?.length > 0">
     <div fxLayout="row wrap">
       <div *ngFor="let stargazer of starGazers">
-        <div fxFlex="90%" class="mx-2">
+        <div fxFlex="90%" class="mx-3 text-center">
           <img src="{{ stargazer.avatarUrl }}" class="stargazer-img" alt="{{ altAvatarImg }}" />
-          <div class="px-2">
+          <div style="width:150px;">
             <h5 class="text-center">{{ stargazer.username }}</h5>
-            <h6 class="text-center" *ngIf="stargazer.orcid">
+            <h6 *ngIf="stargazer.orcid">
               ORCID <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo" />
               <a href="https://orcid.org/{{ stargazer.orcid }}" style="font-size:0.8em;">{{ stargazer.orcid }}</a>
             </h6>
