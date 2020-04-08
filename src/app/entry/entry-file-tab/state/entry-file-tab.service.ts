@@ -10,7 +10,7 @@ import { GA4GHFilesQuery } from 'app/shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from 'app/shared/ga4gh-files/ga4gh-files.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from 'app/shared/swagger';
+import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, WorkflowVersion } from 'app/shared/swagger';
 import { takeUntil } from 'rxjs/operators';
 import { Validation } from '../../../shared/swagger/model/validation';
 import { EntryFileTabQuery } from './entry-file-tab.query';
@@ -30,6 +30,53 @@ export class EntryFileTabService extends Base {
     private sessionQuery: SessionQuery
   ) {
     super();
+  }
+
+  /**
+   * This is going to be problematic in the future because we need to match the Dockstore Validation.TypeEnum with
+   * TRS ToolFile.FileTypeEnum for plugins that can have anything. Right now it's matching only a select few.
+   *
+   * @static
+   * @param {(ToolFile | null)} toolFile  The file that's currently being viewed by the user (from TRS)
+   * @param {(WorkflowVersion | null)} version  The version that's currently being viewed (from Dockstore proprietary endpoint)
+   * @returns {(Object | null)}
+   * @memberof EntryFileTabService
+   */
+  public static getValidationMessageObject(toolFile: ToolFile | null, version: WorkflowVersion | null): Object | null {
+    if (version && version.validations && toolFile) {
+      const validations = version.validations;
+      const supportedValidationTypeEnum: Validation.TypeEnum[] = EntryFileTabService.toolFileToValdationTypeEnums(toolFile.file_type);
+      const foundValidation: Validation = validations.find(validation => supportedValidationTypeEnum.includes(validation.type));
+      if (foundValidation) {
+        try {
+          const validationObject = JSON.parse(foundValidation.message);
+          if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
+            return null;
+          } else {
+            return validationObject;
+          }
+        } catch (e) {
+          console.error(e);
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Currently only map PRIMARYDESCRIPTOR and OTHER to DOCKSTORESERVICEYML and DOCKSTOREGXFORMAT2
+   */
+  private static toolFileToValdationTypeEnums(typeEnum: ToolFile.FileTypeEnum | null): Validation.TypeEnum[] {
+    const supportedToolFileFileTypeEnum: ToolFile.FileTypeEnum[] = [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR, ToolFile.FileTypeEnum.OTHER];
+    if (supportedToolFileFileTypeEnum.includes(typeEnum)) {
+      return [Validation.TypeEnum.DOCKSTORESERVICEYML, Validation.TypeEnum.DOCKSTOREGXFORMAT2];
+    } else {
+      return [];
+    }
   }
 
   private setSelectedFileType(fileType: ToolFile.FileTypeEnum) {
@@ -137,34 +184,17 @@ export class EntryFileTabService extends Base {
   private getValidations() {
     const version = this.workflowQuery.getValue().version;
     const file = this.entryFileTabQuery.getValue().selectedFile;
-    if (
-      version &&
-      version.validations &&
-      file &&
-      (file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR || file.file_type === ToolFile.FileTypeEnum.OTHER)
-    ) {
-      for (const validation of version.validations) {
-        if (validation.type === Validation.TypeEnum.DOCKSTORESERVICEYML) {
-          const validationObject = JSON.parse(validation.message);
-          if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
-            this.entryFileTabStore.update(state => {
-              return {
-                ...state,
-                validationMessage: null
-              };
-            });
-          } else {
-            this.entryFileTabStore.update(state => {
-              return {
-                ...state,
-                validationMessage: validationObject
-              };
-            });
-          }
-          break;
-        }
-      }
-    }
+    const validationMessageObject = EntryFileTabService.getValidationMessageObject(file, version);
+    this.setValidationMessage(validationMessageObject);
+  }
+
+  private setValidationMessage(message: Object | null) {
+    this.entryFileTabStore.update(state => {
+      return {
+        ...state,
+        validationMessage: message
+      };
+    });
   }
 
   /**

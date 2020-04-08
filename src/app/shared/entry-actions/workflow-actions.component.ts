@@ -7,6 +7,7 @@ import { RefreshService } from '../refresh.service';
 import { SessionQuery } from '../session/session.query';
 import { TokenQuery } from '../state/token.query';
 import { BioWorkflow, Service, WorkflowVersion } from '../swagger';
+import { Workflow } from '../swagger/model/workflow';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
 
@@ -22,6 +23,7 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   @Input() canWrite: boolean;
   EntryType = EntryType;
   zenodoAccountIsLinked$: Observable<boolean>;
+  WorkflowModel = Workflow;
 
   constructor(
     protected entryActionsService: EntryActionsService,
