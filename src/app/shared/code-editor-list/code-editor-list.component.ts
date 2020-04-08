@@ -152,6 +152,7 @@ export class CodeEditorListComponent {
   }
 
   /**
+   * TODO: Fix this execution of this function.  This function is being executed a bajillion times
    * Determines whether to show the current sourcefile based on the descriptor type and tab
    * @param  type sourcefile type
    * @return {boolean}      whether or not to show file
