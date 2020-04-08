@@ -48,10 +48,10 @@
               <button
                 mat-icon-button
                 color="primary"
-                aria-label="Example icon-button with a heart icon"
+                aria-label="Refresh button"
                 (click)="refreshRepository(repository)"
                 [disabled]="(loading$ | async) || (repositoryLoading$ | async)"
-                matTooltip="Sync with Dockstore"
+                matTooltip="Refresh on Dockstore"
               >
                 <mat-icon>sync</mat-icon>
               </button>

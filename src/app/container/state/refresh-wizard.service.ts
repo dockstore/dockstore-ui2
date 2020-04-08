@@ -60,11 +60,11 @@ export class RefreshWizardService {
       .pipe(finalize(() => this.sessionService.setLoadingDialog(false)))
       .subscribe(
         () => {
-          this.matSnackBar.open('Synchronizing tool succeeded');
+          this.matSnackBar.open('Refreshing tool succeeded');
           this.myToolsService.getMyEntries(userId, entryType);
         },
         error => {
-          this.matSnackBar.open('Synchronizing tool failed');
+          this.matSnackBar.open('Refreshing tool failed');
         }
       );
   }
