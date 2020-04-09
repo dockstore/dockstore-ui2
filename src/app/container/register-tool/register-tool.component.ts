@@ -15,6 +15,7 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -37,6 +38,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public showCustomDockerRegistryPath: boolean;
   public isModalShown: boolean;
   public disablePrivateCheckbox = false;
+  public loading$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
   public hostedTool = {
     path: '',
@@ -46,16 +48,21 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   };
   public options = [
     {
+      label: 'Quickly register Quay.io tools',
+      extendedLabel: 'Select repositories from Quay.io to quickly create tools on Dockstore.',
+      value: 0
+    },
+    {
       label: 'Create tool with descriptor(s) on remote sites',
       extendedLabel:
         'Manually add individual tools with descriptor(s) from sites like GitHub, BitBucket, and GitLab. Docker images are stored on sites like Quay.io and DockerHub.',
-      value: 0
+      value: 1
     },
     {
       label: 'Create tool with descriptor(s) on Dockstore.org',
       extendedLabel:
         'Manually add individual tools with descriptor(s) stored on Dockstore.org. Docker images are stored on sites like Quay.io and DockerHub.',
-      value: 1
+      value: 2
     }
   ];
   public selectedOption = this.options[0];
@@ -63,7 +70,12 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm', { static: false }) currentForm: NgForm;
-  constructor(private registerToolService: RegisterToolService, private alertQuery: AlertQuery, private alertService: AlertService) {}
+  constructor(
+    private registerToolService: RegisterToolService,
+    private alertQuery: AlertQuery,
+    private alertService: AlertService,
+    private sessionQuery: SessionQuery
+  ) {}
 
   isInvalidCustomRegistry() {
     return this.registerToolService.isInvalidCustomRegistry(this.tool, this.customDockerRegistryPath);
@@ -113,6 +125,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   ngOnInit() {
+    this.loading$ = this.sessionQuery.loadingDialog$;
     this.registerToolService.toolRegisterError
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(toolRegisterError => (this.toolRegisterError = toolRegisterError));

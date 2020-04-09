@@ -14,6 +14,7 @@
   ~    limitations under the License.
   -->
 <h4 mat-dialog-title>Register Tool</h4>
+<mat-progress-bar mat-dialog-title mode="indeterminate" *ngIf="loading$ | async"></mat-progress-bar>
 <mat-dialog-content>
   <app-alert></app-alert>
   <mat-horizontal-stepper #stepper>
@@ -53,8 +54,11 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a tool</ng-template>
+      <div *ngIf="selectedOption?.value === 0">
+        <refresh-wizard></refresh-wizard>
+      </div>
       <form
-        *ngIf="selectedOption?.value == 0"
+        *ngIf="selectedOption?.value == 1"
         #registerToolForm="ngForm"
         name="registerToolForm"
         class="form-horizontal"
@@ -359,7 +363,7 @@
         </div>
       </form>
       <form
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value == 2"
         #registerHostedToolForm="ngForm"
         name="registerHostedToolForm"
         class="form-horizontal"
