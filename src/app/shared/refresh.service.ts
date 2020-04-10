@@ -91,7 +91,7 @@ export class RefreshService {
    * @memberof RefreshService
    */
   refreshWorkflowVersion(prefix: string, workflow: Workflow, versionName: string): void {
-    const message = 'Refreshing ' + this.workflow.full_workflow_path + ' version ' + versionName;
+    const message = 'Refreshing ' + workflow.full_workflow_path + ' version ' + versionName;
     const ga4ghId = prefix + workflow.full_workflow_path;
     this.alertService.start(message);
     this.workflowsService.refreshVersion(workflow.id, versionName).subscribe(

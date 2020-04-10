@@ -34,6 +34,12 @@ export class FooterComponent extends Base implements OnInit {
   public prod = true;
   public dsServerURI: any;
   Dockstore = Dockstore;
+  private WEBSERVICE_DOWN_STATUS_CODES = [
+    0, // Was like this, don't know when it happens
+    404, // Web service container is down. Obviously only test with a specific, known, endpoint
+    502, // Stack is down
+    504 // Angular proxy returns 504 -- for local dev environment
+  ];
 
   constructor(private metadataService: MetadataService) {
     super();
@@ -55,8 +61,8 @@ export class FooterComponent extends Base implements OnInit {
         },
         (error: HttpErrorResponse) => {
           console.log(error);
-          // Angular proxy returns 504
-          if ((error.status === 0 || error.status === 504) && window.location.pathname !== '/maintenance') {
+          const webserviceDown = this.WEBSERVICE_DOWN_STATUS_CODES.some(code => code === error.status);
+          if (webserviceDown && window.location.pathname !== '/maintenance') {
             window.location.href = '/maintenance';
           }
         }
