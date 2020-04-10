@@ -107,6 +107,6 @@ import { SelectModule } from './select.module';
     InfoTabService
   ],
   exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent],
-  entryComponents: [VersionModalComponent, AddTagComponent]
+  entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent]
 })
 export class ContainerModule {}

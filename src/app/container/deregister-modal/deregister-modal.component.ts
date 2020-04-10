@@ -15,20 +15,25 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { RegisterToolService } from './../register-tool/register-tool.service';
 
 @Component({
   selector: 'app-deregister-modal',
   templateUrl: './deregister-modal.component.html',
-  styleUrls: ['./deregister-modal.component.css']
+  styleUrls: ['./deregister-modal.component.scss']
 })
 export class ModalComponent implements OnInit {
   @Input() refreshMessage;
 
-  constructor(private registerToolService: RegisterToolService) {}
+  constructor(private registerToolService: RegisterToolService, private matDialog: MatDialog) {}
 
   ngOnInit() {}
   deregister() {
     this.registerToolService.deregisterTool();
+  }
+
+  closeDialog() {
+    this.matDialog.closeAll();
   }
 }

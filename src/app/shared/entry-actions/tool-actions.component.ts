@@ -1,4 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from '../../container/deregister-modal/deregister-modal.component';
 import { AlertQuery } from '../alert/state/alert.query';
 import { RefreshService } from '../refresh.service';
 import { DockstoreTool, Tag } from '../swagger';
@@ -18,7 +20,8 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
   constructor(
     protected entryActionsService: EntryActionsService,
     protected alertQuery: AlertQuery,
-    private refreshService: RefreshService
+    private refreshService: RefreshService,
+    private dialog: MatDialog
   ) {
     super(alertQuery, entryActionsService);
   }
@@ -47,5 +50,9 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
    */
   refresh() {
     this.refreshService.refreshTool();
+  }
+
+  openDeleteDialog() {
+    const dialogRef = this.dialog.open(ModalComponent, { width: '600px' });
   }
 }
