@@ -1,9 +1,10 @@
 import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 
 /**
- * Use the value property to map the DescriptorLanguageBean to this
+ * TODO: Use the value property to map the DescriptorLanguageBean to this
  */
 export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
+  shortFriendlyName: string;
   descriptorPathPattern: string;
   descriptorPathPlaceholder: string;
   toolDescriptorEnum: ToolDescriptor.TypeEnum;
@@ -21,7 +22,8 @@ export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
 
 const superCWL: ExtendedDescriptorLanguage = {
   value: 'CWL',
-  friendlyName: 'Workflow Descriptor ',
+  shortFriendlyName: 'CWL',
+  friendlyName: 'Common Workflow Language',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)',
   descriptorPathPlaceholder: 'e.g. /Dockstore.cwl',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.CWL,
@@ -37,6 +39,7 @@ const superCWL: ExtendedDescriptorLanguage = {
 
 const superWDL: ExtendedDescriptorLanguage = {
   value: 'WDL',
+  shortFriendlyName: 'WDL',
   friendlyName: 'Workflow Description Language',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$',
   descriptorPathPlaceholder: 'e.g. /Dockstore.wdl',
@@ -53,6 +56,7 @@ const superWDL: ExtendedDescriptorLanguage = {
 
 const superNFL: ExtendedDescriptorLanguage = {
   value: 'NFL',
+  shortFriendlyName: 'Nextflow',
   friendlyName: 'Nextflow',
   descriptorPathPattern: '^^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)',
   descriptorPathPlaceholder: 'e.g. /nextflow.config',
@@ -69,6 +73,7 @@ const superNFL: ExtendedDescriptorLanguage = {
 
 const superService: ExtendedDescriptorLanguage = {
   value: 'service',
+  shortFriendlyName: 'Service',
   friendlyName: 'generic placeholder for services',
   // This is not really applicable
   descriptorPathPattern: '.*',
@@ -86,6 +91,7 @@ const superService: ExtendedDescriptorLanguage = {
 
 const superGalaxy: ExtendedDescriptorLanguage = {
   value: 'gxformat2',
+  shortFriendlyName: 'Galaxyv2',
   friendlyName: 'Galaxy Workflow Format 2',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(ga|yaml|yml)',
   descriptorPathPlaceholder: 'e.g. /Dockstore.yml',
@@ -102,6 +108,7 @@ const superGalaxy: ExtendedDescriptorLanguage = {
 
 export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
   value: null,
+  shortFriendlyName: null,
   friendlyName: null,
   descriptorPathPattern: '.*',
   descriptorPathPlaceholder: '',

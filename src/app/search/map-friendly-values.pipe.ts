@@ -14,12 +14,20 @@
  *    limitations under the License.
  */
 import { Pipe, PipeTransform } from '@angular/core';
-import { ToolFile } from 'app/shared/swagger';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { ToolFile, Workflow } from 'app/shared/swagger';
 
 @Pipe({
   name: 'mapFriendlyValue'
 })
 export class MapFriendlyValuesPipe implements PipeTransform {
+  readonly shortFriendlyCWLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
+  readonly shortFriendlyWDLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
+  readonly shortFriendlyNFLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
+  readonly shortFriendlyGalaxyName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+    Workflow.DescriptorTypeEnum.Gxformat2
+  );
+
   /**
    * Map containing what the friendly names should be mapped to
    *
@@ -29,10 +37,27 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ['has_checker', new Map([['1', 'has a checker workflow'], ['0', 'unchecked workflow']])],
     ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
     ['private_access', new Map([['1', 'private'], ['0', 'public']])],
-    ['descriptorType', new Map([['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']])],
+    [
+      'descriptorType',
+      new Map([
+        ['cwl', this.shortFriendlyCWLName],
+        ['wdl', this.shortFriendlyWDLName],
+        ['nfl', this.shortFriendlyNFLName],
+        ['NFL', this.shortFriendlyNFLName],
+        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName]
+      ])
+    ],
     [
       'descriptor_type',
-      new Map([['CWL', 'CWL'], ['WDL', 'WDL'], ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']])
+      new Map([
+        ['CWL', this.shortFriendlyCWLName],
+        ['WDL', this.shortFriendlyWDLName],
+        ['cwl', this.shortFriendlyCWLName],
+        ['wdl', this.shortFriendlyWDLName],
+        ['nfl', this.shortFriendlyNFLName],
+        ['NFL', this.shortFriendlyNFLName],
+        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName]
+      ])
     ],
     [
       'registry',
