@@ -3,7 +3,6 @@ import { transaction } from '@datorama/akita';
 import { AuthService } from 'ng2-ui-auth';
 import { Md5 } from 'ts-md5/dist/md5';
 import { AlertService } from '../alert/state/alert.service';
-import { LogoutService } from '../logout.service';
 import { TokenService } from '../state/token.service';
 import { Configuration, ExtendedUserData, User, UsersService } from '../swagger';
 import { UserStore } from './user.store';
@@ -16,8 +15,7 @@ export class UserService {
     private usersService: UsersService,
     private configuration: Configuration,
     private tokenService: TokenService,
-    private alertService: AlertService,
-    private loginService: LogoutService
+    private alertService: AlertService
   ) {
     this.getUser();
   }
@@ -78,7 +76,8 @@ export class UserService {
           }
         },
         error => {
-          this.loginService.logout();
+          this.updateUser(null);
+          this.tokenService.removeAll();
         }
       );
     } else {
