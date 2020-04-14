@@ -91,7 +91,7 @@ const superService: ExtendedDescriptorLanguage = {
 
 const superGalaxy: ExtendedDescriptorLanguage = {
   value: 'gxformat2',
-  shortFriendlyName: 'Galaxyv2',
+  shortFriendlyName: 'GalaxyV2',
   friendlyName: 'Galaxy Workflow Format 2',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(ga|yaml|yml)',
   descriptorPathPlaceholder: 'e.g. /Dockstore.yml',
