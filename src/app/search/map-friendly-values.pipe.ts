@@ -50,10 +50,10 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     [
       'descriptor_type',
       new Map([
-        ['CWL', this.shortFriendlyCWLName],
-        ['WDL', this.shortFriendlyWDLName],
         ['cwl', this.shortFriendlyCWLName],
+        ['CWL', this.shortFriendlyCWLName],
         ['wdl', this.shortFriendlyWDLName],
+        ['WDL', this.shortFriendlyWDLName],
         ['nfl', this.shortFriendlyNFLName],
         ['NFL', this.shortFriendlyNFLName],
         [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName]

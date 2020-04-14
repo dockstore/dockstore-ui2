@@ -129,7 +129,7 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Service);
     expect(placeholder).toEqual('Service');
     placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Gxformat2);
-    expect(placeholder).toEqual('GalaxyV2');
+    expect(placeholder).toEqual('Galaxy');
     placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(null);
     expect(placeholder).toEqual(null);
     placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(<Workflow.DescriptorTypeEnum>'UnrecognizedType');
