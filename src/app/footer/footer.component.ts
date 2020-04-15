@@ -35,6 +35,17 @@ export class FooterComponent extends Base implements OnInit {
   public dsServerURI: any;
   Dockstore = Dockstore;
 
+  /**
+   * API Status codes that can indicate the web service is down
+   *
+   * * 0 This may have only happened without the load balancer, but it was already in the code, so leaving it.
+   * * 404 The web service container is down or restarting. While most 404s don't mean the web service is down,
+   * going to assume that a 404 on the TRS metadata endpoint means something is wrong
+   * * 502 The whole compose_setup backend stack is down.
+   * * 504 In a local dev environment, the Angular proxy returns 504 if it can't connect to the web service.
+   */
+  private readonly WEBSERVICE_DOWN_STATUS_CODES = [0, 404, 502, 504];
+
   constructor(private metadataService: MetadataService) {
     super();
   }
@@ -55,8 +66,8 @@ export class FooterComponent extends Base implements OnInit {
         },
         (error: HttpErrorResponse) => {
           console.log(error);
-          // Angular proxy returns 504
-          if ((error.status === 0 || error.status === 504) && window.location.pathname !== '/maintenance') {
+          const webserviceDown = this.WEBSERVICE_DOWN_STATUS_CODES.some(code => code === error.status);
+          if (webserviceDown && window.location.pathname !== '/maintenance') {
             window.location.href = '/maintenance';
           }
         }
