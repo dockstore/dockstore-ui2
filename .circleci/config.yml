@@ -14,6 +14,45 @@ executors:
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
+
+  uptime_monitor:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
+    steps:
+      - checkout
+      - run:
+          name: Checkout merge commit (PRs only)
+          command: |
+            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
+              git checkout -qf FETCH_HEAD
+            fi
+      - install_container_dependencies
+      - restore_cache:
+          key: dep-cache-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+            if [ ! -d "./node_modules" ]
+            then
+              bash -i -c 'npm ci'
+            fi
+      - run:
+          name: Build
+          command: bash -i -c 'npm run build.prod'
+      - run:
+          name: Install cypress dependencies
+          command: sudo apt install libgtk2.0-0 -yq
+      - run:
+          name: Install cypress
+          command: bash -i -c 'npm i cypress@4.0.2 --no-save'
+      - run:
+          name: Run remote verification test against dev
+          command: bash -i -c 'npm run test-dev'
+
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
@@ -204,6 +243,18 @@ workflows:
           filters:
             branches:
               only: /^develop/
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "5,20,35,50 * * * *"
+          filters:
+            branches:
+              only:
+                - feature/SEAB-815/daily-tests
+    jobs:
+      - uptime_monitor
+
 commands:
   install_container_dependencies:
     steps:

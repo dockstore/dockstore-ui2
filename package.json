@@ -16,7 +16,8 @@
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
     "test": "npx ng test",
     "lint": "npx ng lint",
-    "e2e": "npx ng e2e"
+    "e2e": "npx ng e2e",
+    "test-dev": "npx cypress run -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/manualTests/monitor.ts\""
   },
   "private": true,
   "dependencies": {
