@@ -15,7 +15,7 @@
  */
 import { of as observableOf } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { ToolDescriptor } from '../swagger';
+import { ToolDescriptor, Workflow } from '../swagger';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 import { DescriptorLanguageService } from './descriptor-language.service';
 
@@ -117,6 +117,22 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual(null);
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    expect(placeholder).toEqual(null);
+  });
+  it('should be able to get shortFriendlyName from Worfklow.DescriptorTypeEnum for workflow registration', () => {
+    let placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
+    expect(placeholder).toEqual('CWL');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
+    expect(placeholder).toEqual('WDL');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
+    expect(placeholder).toEqual('Nextflow');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Service);
+    expect(placeholder).toEqual('Service');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Gxformat2);
+    expect(placeholder).toEqual('Galaxy');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(null);
+    expect(placeholder).toEqual(null);
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(<Workflow.DescriptorTypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual(null);
   });
 });

@@ -54,6 +54,17 @@ export class DescriptorLanguageService {
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
   }
+
+  static workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === workflowDescriptorTypeEnum
+    );
+    if (foundExtendedDescriptorLanguageFromValue) {
+      return foundExtendedDescriptorLanguageFromValue.shortFriendlyName;
+    }
+    return extendedUnknownDescriptor.shortFriendlyName;
+  }
+
   update() {
     this.metadataService.getDescriptorLanguages().subscribe((languageBeans: Array<DescriptorLanguageBean>) => {
       this.descriptorLanguagesBean$.next(languageBeans);
