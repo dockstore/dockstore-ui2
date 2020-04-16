@@ -14,13 +14,13 @@
   ~    limitations under the License.
   -->
 
-<h4 mat-dialog-title class="pl-1 section-border">Are you sure you wish to delete this tool?</h4>
-<mat-dialog-content class="m-0 pl-1 section-border">
-  <p>All information associated with this tool will be deleted.</p>
-</mat-dialog-content>
-<mat-dialog-actions class="dialog-actions pl-5">
-  <button type="button" mat-button tabindex="-1" color="secondary" (click)="closeDialog()">Close</button>
-  <button id="deregisterConfirmButton" tabindex="-1" type="button" mat-flat-button color="warn" (click)="deregister(); closeDialog()">
-    Delete
-  </button>
-</mat-dialog-actions>
+<button
+  id="deregisterButton"
+  mat-raised-button
+  color="warn"
+  matTooltip="Delete the tool"
+  [disabled]="refreshMessage"
+  (click)="openDeleteDialog()"
+>
+  Delete
+</button>

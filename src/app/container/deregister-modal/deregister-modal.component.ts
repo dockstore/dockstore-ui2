@@ -15,7 +15,11 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { takeUntil } from 'rxjs/operators';
+import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
+import { Base } from '../../shared/base';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { RegisterToolService } from './../register-tool/register-tool.service';
 
 @Component({
@@ -23,17 +27,33 @@ import { RegisterToolService } from './../register-tool/register-tool.service';
   templateUrl: './deregister-modal.component.html',
   styleUrls: ['./deregister-modal.component.scss']
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent extends Base implements OnInit {
   @Input() refreshMessage;
 
-  constructor(private registerToolService: RegisterToolService, private matDialog: MatDialog) {}
+  constructor(private registerToolService: RegisterToolService, private confirmationDialogService: ConfirmationDialogService) {
+    super();
+  }
 
   ngOnInit() {}
   deregister() {
     this.registerToolService.deregisterTool();
   }
 
-  closeDialog() {
-    this.matDialog.closeAll();
+  openDeleteDialog() {
+    const confirmationDialogData: ConfirmationDialogData = {
+      title: 'Are you sure you wish to delete this tool?',
+      message: `All information associated with this tool will be deleted.`,
+      cancelButtonText: 'Close',
+      confirmationButtonText: 'Delete'
+    };
+    this.confirmationDialogService
+      .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.deregister();
+        }
+      });
   }
+
 }
