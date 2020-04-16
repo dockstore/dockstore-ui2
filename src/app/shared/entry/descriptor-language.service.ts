@@ -14,7 +14,11 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { ExtendedDescriptorLanguage, extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
+import {
+  ExtendedDescriptorLanguageBean,
+  extendedDescriptorLanguages,
+  extendedUnknownDescriptor
+} from 'app/entry/extendedDescriptorLanguage';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
@@ -58,7 +62,9 @@ export class DescriptorLanguageService {
     return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguage(descriptorType).defaultDescriptorPath;
   }
 
-  static toolDescriptorTypeEnumToExtendedDescriptorLanguage(descriptorType: ToolDescriptor.TypeEnum | null): ExtendedDescriptorLanguage {
+  static toolDescriptorTypeEnumToExtendedDescriptorLanguage(
+    descriptorType: ToolDescriptor.TypeEnum | null
+  ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );

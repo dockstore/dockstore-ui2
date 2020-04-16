@@ -3,7 +3,7 @@ import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'ap
 /**
  * TODO: Use the value property to map the DescriptorLanguageBean to this
  */
-export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
+export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
   shortFriendlyName: string;
   defaultDescriptorPath: string;
   descriptorPathPattern: string;
@@ -21,7 +21,7 @@ export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
   workflowLaunchSupport: boolean;
 }
 
-const extendedCWL: ExtendedDescriptorLanguage = {
+const extendedCWL: ExtendedDescriptorLanguageBean = {
   value: 'CWL',
   shortFriendlyName: 'CWL',
   friendlyName: 'Common Workflow Language',
@@ -39,7 +39,7 @@ const extendedCWL: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: true
 };
 
-const extendedWDL: ExtendedDescriptorLanguage = {
+const extendedWDL: ExtendedDescriptorLanguageBean = {
   value: 'WDL',
   shortFriendlyName: 'WDL',
   friendlyName: 'Workflow Description Language',
@@ -57,7 +57,7 @@ const extendedWDL: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: true
 };
 
-const extendedNFL: ExtendedDescriptorLanguage = {
+const extendedNFL: ExtendedDescriptorLanguageBean = {
   value: 'NFL',
   shortFriendlyName: 'Nextflow',
   friendlyName: 'Nextflow',
@@ -75,7 +75,7 @@ const extendedNFL: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: true
 };
 
-const extendedService: ExtendedDescriptorLanguage = {
+const extendedService: ExtendedDescriptorLanguageBean = {
   value: 'service',
   shortFriendlyName: 'Service',
   friendlyName: 'generic placeholder for services',
@@ -94,7 +94,7 @@ const extendedService: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: true
 };
 
-const extendedGalaxy: ExtendedDescriptorLanguage = {
+const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   value: 'gxformat2',
   shortFriendlyName: 'Galaxy',
   friendlyName: 'Galaxy Workflow Format',
@@ -112,7 +112,7 @@ const extendedGalaxy: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: false
 };
 
-export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
+export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
   value: null,
   shortFriendlyName: null,
   friendlyName: null,
@@ -129,7 +129,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
   },
   workflowLaunchSupport: false
 };
-export const extendedDescriptorLanguages: ExtendedDescriptorLanguage[] = [
+export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
   extendedCWL,
   extendedWDL,
   extendedNFL,

@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { ExtendedDescriptorLanguage, extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
+import {
+  ExtendedDescriptorLanguageBean,
+  extendedDescriptorLanguages,
+  extendedUnknownDescriptor
+} from 'app/entry/extendedDescriptorLanguage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
@@ -24,7 +28,7 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
       workflow ? this.descriptorTypeCompatService.stringToDescriptorType(workflow.descriptorType) : null
     )
   );
-  public extendedDescriptorLanguageBean$: Observable<ExtendedDescriptorLanguage> = this.workflow$.pipe(
+  public extendedDescriptorLanguageBean$: Observable<ExtendedDescriptorLanguageBean> = this.workflow$.pipe(
     map(workflow => this.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflow.descriptorType))
   );
   public launchSupport$: Observable<boolean> = this.extendedDescriptorLanguageBean$.pipe(
@@ -45,12 +49,12 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
    *
    * @private
    * @param {Workflow.DescriptorTypeEnum} descriptorType  Typically the "workflow.descriptorType"
-   * @returns {ExtendedDescriptorLanguage}  ExtendedDescriptorLanguage that's used throughout
+   * @returns {ExtendedDescriptorLanguageBean}  ExtendedDescriptorLanguage that's used throughout
    * @memberof WorkflowQuery
    */
   private workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
     descriptorType: Workflow.DescriptorTypeEnum
-  ): ExtendedDescriptorLanguage {
+  ): ExtendedDescriptorLanguageBean {
     const foundextendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
