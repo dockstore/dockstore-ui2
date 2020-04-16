@@ -5,6 +5,7 @@ import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'ap
  */
 export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
   shortFriendlyName: string;
+  defaultDescriptorPath: string;
   descriptorPathPattern: string;
   descriptorPathPlaceholder: string;
   toolDescriptorEnum: ToolDescriptor.TypeEnum;
@@ -20,10 +21,11 @@ export interface ExtendedDescriptorLanguage extends DescriptorLanguageBean {
   workflowLaunchSupport: boolean;
 }
 
-const superCWL: ExtendedDescriptorLanguage = {
+const extendedCWL: ExtendedDescriptorLanguage = {
   value: 'CWL',
   shortFriendlyName: 'CWL',
   friendlyName: 'Common Workflow Language',
+  defaultDescriptorPath: '/Dockstore.cwl',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)',
   descriptorPathPlaceholder: 'e.g. /Dockstore.cwl',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.CWL,
@@ -37,10 +39,11 @@ const superCWL: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: true
 };
 
-const superWDL: ExtendedDescriptorLanguage = {
+const extendedWDL: ExtendedDescriptorLanguage = {
   value: 'WDL',
   shortFriendlyName: 'WDL',
   friendlyName: 'Workflow Description Language',
+  defaultDescriptorPath: '/Dockstore.wdl',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$',
   descriptorPathPlaceholder: 'e.g. /Dockstore.wdl',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.WDL,
@@ -54,10 +57,11 @@ const superWDL: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: true
 };
 
-const superNFL: ExtendedDescriptorLanguage = {
+const extendedNFL: ExtendedDescriptorLanguage = {
   value: 'NFL',
   shortFriendlyName: 'Nextflow',
   friendlyName: 'Nextflow',
+  defaultDescriptorPath: '/nextflow.config',
   descriptorPathPattern: '^^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)',
   descriptorPathPlaceholder: 'e.g. /nextflow.config',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.NFL,
@@ -71,10 +75,11 @@ const superNFL: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: true
 };
 
-const superService: ExtendedDescriptorLanguage = {
+const extendedService: ExtendedDescriptorLanguage = {
   value: 'service',
   shortFriendlyName: 'Service',
   friendlyName: 'generic placeholder for services',
+  defaultDescriptorPath: '/.dockstore.yml',
   // This is not really applicable
   descriptorPathPattern: '.*',
   descriptorPathPlaceholder: 'e.g. /.dockstore.yml',
@@ -89,10 +94,11 @@ const superService: ExtendedDescriptorLanguage = {
   workflowLaunchSupport: true
 };
 
-const superGalaxy: ExtendedDescriptorLanguage = {
+const extendedGalaxy: ExtendedDescriptorLanguage = {
   value: 'gxformat2',
   shortFriendlyName: 'Galaxy',
   friendlyName: 'Galaxy Workflow Format',
+  defaultDescriptorPath: '/Dockstore.yml',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(ga|yaml|yml)',
   descriptorPathPlaceholder: 'e.g. /Dockstore.yml',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.GXFORMAT2,
@@ -110,6 +116,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
   value: null,
   shortFriendlyName: null,
   friendlyName: null,
+  defaultDescriptorPath: null,
   descriptorPathPattern: '.*',
   descriptorPathPlaceholder: '',
   toolDescriptorEnum: null,
@@ -122,4 +129,10 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguage = {
   },
   workflowLaunchSupport: false
 };
-export const extendedDescriptorLanguages: ExtendedDescriptorLanguage[] = [superCWL, superWDL, superNFL, superService, superGalaxy];
+export const extendedDescriptorLanguages: ExtendedDescriptorLanguage[] = [
+  extendedCWL,
+  extendedWDL,
+  extendedNFL,
+  extendedService,
+  extendedGalaxy
+];

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
+import { ExtendedDescriptorLanguage, extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
@@ -53,6 +53,16 @@ export class DescriptorLanguageService {
     );
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
+  }
+  static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
+    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguage(descriptorType).defaultDescriptorPath;
+  }
+
+  static toolDescriptorTypeEnumToExtendedDescriptorLanguage(descriptorType: ToolDescriptor.TypeEnum | null): ExtendedDescriptorLanguage {
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
+    );
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
   static workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
@@ -134,14 +144,8 @@ export class DescriptorLanguageService {
    * @returns {string}  Placeholder descriptor path
    * @memberof DescriptorLanguageService
    */
-  workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum): string {
-    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
-    );
-    if (foundExtendedDescriptorLanguageFromValue) {
-      return foundExtendedDescriptorLanguageFromValue.descriptorPathPlaceholder;
-    }
-    return extendedUnknownDescriptor.descriptorPathPlaceholder;
+  workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum | null): string {
+    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguage(descriptorType).descriptorPathPlaceholder;
   }
 
   genericUnhandledTypeError(type: any): void {
