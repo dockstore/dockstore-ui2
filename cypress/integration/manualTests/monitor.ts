@@ -56,8 +56,7 @@ it('gets 200 response from gui.dockstore.org', () => {
   // before the request goes out we need to set up spying
   cy.server();
   cy.route('GET', 'gui.dockstore.org').as('image');
-  cy.get('#load').click();
 
-  cy.get('@post').then(console.log);
-  cy.get('@post').should('have.property', 'status', 200);
+  cy.get('@image').then(console.log);
+  cy.get('@image').should('have.property', 'status', 200);
 });
