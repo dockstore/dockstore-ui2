@@ -254,9 +254,9 @@
                 </ng-template>
               </div>
               <ng-template #FilesTabBioWorkflow>
-                <div *ngIf="validVersions && !isStub() && !isHosted()">
+                <div *ngIf="!isStub() && !isHosted()">
                   <app-files-workflow
-                    *ngIf="validVersions && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
+                    *ngIf="workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
                     [entrypath]="workflow.full_workflow_path"
                     [id]="workflow?.id"
                     [versions]="validVersions"
@@ -273,9 +273,9 @@
                     *ngIf="workflow?.mode === WorkflowModel.ModeEnum.DOCKSTOREYML"
                   ></app-entry-file-tab>
                 </div>
-                <div *ngIf="validVersions && isHosted()">
+                <div *ngIf="isHosted()">
                   <app-workflow-file-editor
-                    *ngIf="validVersions && currentTab === 'files'"
+                    *ngIf="currentTab === 'files'"
                     [entrypath]="workflow.full_workflow_path"
                     [id]="workflow?.id"
                     [versions]="validVersions"
@@ -298,7 +298,7 @@
           </mat-tab>
           <div *ngIf="entryType === EntryType.BioWorkflow">
             <mat-tab id="toolsTab" label="Tools">
-              <div *ngIf="validVersions && !isStub()">
+              <div *ngIf="!isStub()">
                 <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
                 </app-tool-tab>
               </div>
