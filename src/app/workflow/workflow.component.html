@@ -234,65 +234,88 @@
           </mat-tab>
           <mat-tab id="fileTab" label="Files">
             <ng-template matTabContent>
-              <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new plugin -->
-              <div
-                *ngIf="
-                  workflow.descriptorType !== 'CWL' && workflow.descriptorType !== 'WDL' && workflow.descriptorType !== 'NFL';
-                  else FilesTabBioWorkflow
-                "
-                class="p-3"
-              >
-                <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
-                  <app-entry-file-tab [version]="selectedVersion"></app-entry-file-tab>
+              <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
+                <div [ngSwitch]="workflow.mode">
+                  <div *ngSwitchCase="WorkflowModel.ModeEnum.STUB">
+                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
+                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else newComponent" class="p-3">
+                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
+                    </div>
+                  </div>
+                  <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
+                    <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
+                  </div>
+                  <div *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML">
+                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
+                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else newComponent" class="p-3">
+                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
+                    </div>
+                  </div>
+                  <div *ngSwitchCase="WorkflowModel.ModeEnum.FULL">
+                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
+                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else newComponent" class="p-3">
+                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
+                    </div>
+                  </div>
+                  <!-- This also handle SERVICE mode -->
+                  <div *ngSwitchDefault>
+                    <ng-container *ngTemplateOutlet="newComponent"></ng-container>
+                  </div>
                 </div>
-
-                <ng-template #noVersionsFilesTab>
-                  <mat-card class="alert alert-info" role="alert">
+              </div>
+              <ng-template #noVersionsFilesTab>
+                <div [ngSwitch]="workflow.mode" class="p-3">
+                  <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.STUB" class="alert alert-info" role="alert">
+                    <mat-icon>info</mat-icon> To see files, please refresh the workflow.
+                  </mat-card>
+                  <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
+                    <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
+                  </div>
+                  <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info" role="alert">
+                    <mat-icon>info</mat-icon> This workflow does not have any versions. Create a release/tag on GitHub with a valid
+                    .dockstore.yml to add a new version.
+                  </mat-card>
+                  <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.SERVICE" class="alert alert-info" role="alert">
                     <mat-icon>info</mat-icon> This service does not have any versions. Create a release/tag on GitHub with a valid
                     .dockstore.yml to add a new version.
                   </mat-card>
-                </ng-template>
-              </div>
-              <ng-template #FilesTabBioWorkflow>
-                <div *ngIf="!isStub() && !isHosted()">
-                  <app-files-workflow
-                    *ngIf="workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
-                    [entrypath]="workflow.full_workflow_path"
-                    [id]="workflow?.id"
-                    [versions]="validVersions"
-                    [default]="defaultVersion"
-                    [selectedVersion]="selectedVersion"
-                    [descriptorType]="descriptorType$ | async"
-                    [canRead]="canRead"
-                    [canWrite]="canWrite"
-                    [isOwner]="isOwner"
-                  >
-                  </app-files-workflow>
-                  <app-entry-file-tab
-                    [version]="selectedVersion"
-                    *ngIf="workflow?.mode === WorkflowModel.ModeEnum.DOCKSTOREYML"
-                  ></app-entry-file-tab>
-                </div>
-                <div *ngIf="isHosted()">
-                  <app-workflow-file-editor
-                    *ngIf="currentTab === 'files'"
-                    [entrypath]="workflow.full_workflow_path"
-                    [id]="workflow?.id"
-                    [versions]="validVersions"
-                    [default]="defaultVersion"
-                    [selectedVersion]="selectedVersion"
-                    [publicPage]="publicPage"
-                    [canRead]="canRead"
-                    [canWrite]="canWrite"
-                    [isOwner]="isOwner"
-                  >
-                  </app-workflow-file-editor>
-                </div>
-                <div *ngIf="isStub()" class="p-3">
-                  <mat-card class="alert alert-warning" role="alert">
-                    <mat-icon>warning</mat-icon> To see files, please refresh the workflow.
+                  <!-- This also handles FULL -->
+                  <mat-card *ngSwitchDefault class="alert alert-info" role="alert">
+                    <mat-icon>info</mat-icon> This workflow does not have any versions.
                   </mat-card>
                 </div>
+              </ng-template>
+              <ng-template #oldComponent>
+                <app-files-workflow
+                  [entrypath]="workflow.full_workflow_path"
+                  [id]="workflow?.id"
+                  [versions]="validVersions"
+                  [default]="defaultVersion"
+                  [selectedVersion]="selectedVersion"
+                  [descriptorType]="descriptorType$ | async"
+                  [canRead]="canRead"
+                  [canWrite]="canWrite"
+                  [isOwner]="isOwner"
+                >
+                </app-files-workflow>
+              </ng-template>
+              <ng-template #newComponent>
+                <app-entry-file-tab [version]="selectedVersion"></app-entry-file-tab>
+              </ng-template>
+              <ng-template #hostedComponent>
+                <app-workflow-file-editor
+                  *ngIf="currentTab === 'files'"
+                  [entrypath]="workflow.full_workflow_path"
+                  [id]="workflow?.id"
+                  [versions]="validVersions"
+                  [default]="defaultVersion"
+                  [selectedVersion]="selectedVersion"
+                  [publicPage]="publicPage"
+                  [canRead]="canRead"
+                  [canWrite]="canWrite"
+                  [isOwner]="isOwner"
+                >
+                </app-workflow-file-editor>
               </ng-template>
             </ng-template>
           </mat-tab>
