@@ -1,7 +1,7 @@
 function checkLink(selector: string, url: string): void {
   it('these links should be present', () => {
     cy.visit('');
-    cy.get('aaaaaaa').click();
+    cy.get(selector).click();
     cy.url().should('include', url);
   });
 }
@@ -49,4 +49,15 @@ describe('Monitor homepage links', () => {
       });
     });
   });
+});
+
+it('gets 200 response from gui.dockstore.org', () => {
+  cy.visit('');
+  // before the request goes out we need to set up spying
+  cy.server();
+  cy.route('GET', 'gui.dockstore.org').as('image');
+  cy.get('#load').click();
+
+  cy.get('@post').then(console.log);
+  cy.get('@post').should('have.property', 'status', 200);
 });
