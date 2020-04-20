@@ -1,7 +1,7 @@
 function checkLink(selector: string, url: string): void {
   it('these links should be present', () => {
     cy.visit('');
-    cy.get(selector).click();
+    cy.get('aaaaaaa').click();
     cy.url().should('include', url);
   });
 }
