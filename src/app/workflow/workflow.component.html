@@ -233,7 +233,9 @@
             </ng-template>
           </mat-tab>
           <mat-tab id="fileTab" label="Files">
+            <!-- See https://docs.google.com/spreadsheets/d/1tDsm87okoWwaeO9Ae4cc5vapWbTSbXI5eqNSWEOrUcE/edit#gid=0 for all combinations -->
             <ng-template matTabContent>
+              <!-- Check if there's versions, then check workflow mode, then check descriptor type -->
               <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
                 <div [ngSwitch]="workflow.mode">
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.STUB">
@@ -266,22 +268,22 @@
               <ng-template #noVersionsFilesTab>
                 <div [ngSwitch]="workflow.mode" class="p-3">
                   <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.STUB" class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> To see files, please refresh the workflow.
+                    <mat-icon>info</mat-icon> To see files, please refresh the {{ entryType }}.
                   </mat-card>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
                     <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
                   </div>
                   <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> This workflow does not have any versions. Create a release/tag on GitHub with a valid
+                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. Create a release/tag on GitHub with a valid
                     .dockstore.yml to add a new version.
                   </mat-card>
                   <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.SERVICE" class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> This service does not have any versions. Create a release/tag on GitHub with a valid
+                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. Create a release/tag on GitHub with a valid
                     .dockstore.yml to add a new version.
                   </mat-card>
                   <!-- This also handles FULL -->
                   <mat-card *ngSwitchDefault class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> This workflow does not have any versions.
+                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions.
                   </mat-card>
                 </div>
               </ng-template>
