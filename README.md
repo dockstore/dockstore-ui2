@@ -117,7 +117,7 @@ Run `npm run start -- --host=<host>` for a dev server. Navigate to `http://<host
 Run `npm update`. This will automatically update package.json and package-lock.json.
 
 When you update a dependency in the package.json, make sure to update the third party licenses file `THIRD-PARTY-LICENSES.csv`. 
-To update, run the command `license-checker  --excludePackages dockstore-ui2@2.3.0 --csv > UPDATED-LICENSES.csv`
+To update, run the command `license-checker  --excludePackages dockstore-ui2@2.3.0 --csv > UPDATED-LICENSES.csv`.
 Run a diff between the two files and update `THIRD-PARTY-LICENSES.csv` where appropriate. If there are new dependencies that list
 the license as `UNKNOWN` or `UNLICENSED`, look to see if the original license file has the dependency updated already. Unfortunately, there is not a way
 to permanently say a certain dependency should be x license using this package. So, once we manually update a dependency's license info and we continue to use it, 
