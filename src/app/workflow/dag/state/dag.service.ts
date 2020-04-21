@@ -206,7 +206,7 @@ export class DagService {
   }
 
   getDockerText(link: string, docker: string) {
-    const validLink = !this.isNA(docker);
+    const validLink = this.isValidUrl(link);
     if (validLink) {
       return `<div><b>Docker: </b> <a href='` + link + `'>` + docker + `</a></div>`;
     } else {
@@ -214,8 +214,14 @@ export class DagService {
     }
   }
 
-  isNA(docker: string) {
-    return docker === 'n/a';
+  isValidUrl(possibleUrl: string | null | undefined): boolean {
+    try {
+      // tslint:disable-next-line: no-unused-expression
+      new URL(possibleUrl);
+    } catch (_) {
+      return false;
+    }
+    return true;
   }
 
   isHttp(run: string) {

@@ -135,4 +135,21 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(<Workflow.DescriptorTypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual(null);
   });
+
+  it('should be able to get defaultDescriptorPath from ToolDescriptor.TypeEnum for workflow stub language changing', () => {
+    let placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.CWL);
+    expect(placeholder).toEqual('/Dockstore.cwl');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.WDL);
+    expect(placeholder).toEqual('/Dockstore.wdl');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.NFL);
+    expect(placeholder).toEqual('/nextflow.config');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SERVICE);
+    expect(placeholder).toEqual('/.dockstore.yml');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.GXFORMAT2);
+    expect(placeholder).toEqual('/Dockstore.yml');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(null);
+    expect(placeholder).toEqual(null);
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    expect(placeholder).toEqual(null);
+  });
 });
