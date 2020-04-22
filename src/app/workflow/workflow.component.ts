@@ -74,6 +74,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public entryType: EntryType;
+  public readonly oldLanguages = [Workflow.DescriptorTypeEnum.CWL, Workflow.DescriptorTypeEnum.WDL, Workflow.DescriptorTypeEnum.NFL];
   validTabs = [];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
