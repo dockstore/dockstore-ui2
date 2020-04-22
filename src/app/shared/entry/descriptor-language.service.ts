@@ -76,13 +76,16 @@ export class DescriptorLanguageService {
   }
 
   static workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
+    return this.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflowDescriptorTypeEnum).shortFriendlyName;
+  }
+
+  static workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+    descriptorType: Workflow.DescriptorTypeEnum | null
+  ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === workflowDescriptorTypeEnum
+      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
-    if (foundExtendedDescriptorLanguageFromValue) {
-      return foundExtendedDescriptorLanguageFromValue.shortFriendlyName;
-    }
-    return extendedUnknownDescriptor.shortFriendlyName;
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
   update() {
