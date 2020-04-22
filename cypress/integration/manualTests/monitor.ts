@@ -52,7 +52,7 @@ describe('Monitor homepage links', () => {
 });
 
 it('gets the svg icons', () => {
-  cy.visit('');
+  cy.visit('workflows/dockstore.org/bjstubbs/gtex:2?tab=info');
   // before the request goes out we need to set up spying
   cy.server();
   cy.get('[data-cy=dnanexusIcon]').should('exist');
