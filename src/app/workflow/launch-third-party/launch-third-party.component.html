@@ -31,7 +31,8 @@
               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
               [disabled]="!(hasContent$ | async)"
               color="primary"
-              ><mat-icon svgIcon="dnanexus" data-cy="dnanexusIcon"></mat-icon> DNAnexus &raquo;</a
+              data-cy="dnanexusIcon"
+              ><mat-icon svgIcon="dnanexus"></mat-icon> DNAnexus &raquo;</a
             >
           </div>
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
@@ -43,7 +44,8 @@
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               color="primary"
-              ><mat-icon svgIcon="terra" data-cy="terraIcon"></mat-icon> Terra &raquo;</a
+              data-cy="terraIcon"
+              ><mat-icon svgIcon="terra"></mat-icon> Terra &raquo;</a
             >
           </div>
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
@@ -79,7 +81,8 @@
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               color="primary"
-              ><mat-icon class="anvil-icon" svgIcon="anvil" data-cy="anvilIcon"></mat-icon> AnVIL &raquo;</a
+              data-cy="anvilIcon"
+              ><mat-icon class="anvil-icon" svgIcon="anvil"></mat-icon> AnVIL &raquo;</a
             >
           </div>
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
