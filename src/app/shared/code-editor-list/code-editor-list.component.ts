@@ -34,29 +34,33 @@ export class CodeEditorListComponent {
    * Adds a new file editor
    */
   addFile() {
+    const descriptorType = this.descriptorType;
     const filesToAdd = [];
     const newFilePath = this.getDefaultPath();
     if (!this.hasPrimaryDescriptor() && this.fileType === 'descriptor') {
-      switch (this.descriptorType) {
+      switch (descriptorType) {
         case ToolDescriptor.TypeEnum.NFL: {
           filesToAdd.push(this.createFileObject(this.NEXTFLOW_PATH));
           filesToAdd.push(this.createFileObject(this.NEXTFLOW_CONFIG_PATH));
           break;
         }
+        case ToolDescriptor.TypeEnum.CWL:
+        case ToolDescriptor.TypeEnum.WDL:
         case ToolDescriptor.TypeEnum.GXFORMAT2: {
-          // TODO: Switch this to defaultDescriptorPath. DO NOT LET MERGED if https://github.com/dockstore/dockstore-ui2/pull/962 is merged
-          filesToAdd.push(this.createFileObject('/Dockstore.yml'));
+          const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
+          filesToAdd.push(this.createFileObject(defaultDescriptorPath));
           break;
         }
         default: {
+          console.log('Possibly unsupported hosted workflow language: ' + descriptorType);
           filesToAdd.push(this.createFileObject('/Dockstore' + newFilePath));
         }
       }
     } else if (!this.hasPrimaryTestParam() && this.fileType === 'testParam') {
-      if (this.descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2) {
+      if (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2) {
         filesToAdd.push(this.createFileObject('/test.galaxy.json'));
       } else {
-        filesToAdd.push(this.createFileObject('/test.' + this.descriptorType.toLowerCase() + newFilePath));
+        filesToAdd.push(this.createFileObject('/test.' + descriptorType.toLowerCase() + newFilePath));
       }
     } else {
       filesToAdd.push(this.createFileObject('/' + newFilePath));
