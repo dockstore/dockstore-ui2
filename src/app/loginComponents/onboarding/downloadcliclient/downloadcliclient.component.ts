@@ -64,7 +64,7 @@ Setup our Dockstore CLI application to start launching workflows from the comman
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
 2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
-3. Python3 and pip3 (Optional: if working with CWL)
+3. Python3 and pip3 (Required if working with CWL, optional otherwise)
 
 #### Part 1 - Install dependencies and Dockstore CLI
 1. Install Java 11 (This example installs OpenJDK 11)
