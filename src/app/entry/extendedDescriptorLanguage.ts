@@ -1,4 +1,4 @@
-import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
+import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Validation, Workflow } from 'app/shared/swagger';
 
 /**
  * TODO: Use the value property to map the DescriptorLanguageBean to this
@@ -19,6 +19,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
     workflowStepHeader: string;
   };
   workflowLaunchSupport: boolean;
+  testParameterFileType: string;
 }
 
 const extendedCWL: ExtendedDescriptorLanguageBean = {
@@ -36,7 +37,8 @@ const extendedCWL: ExtendedDescriptorLanguageBean = {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'
   },
-  workflowLaunchSupport: true
+  workflowLaunchSupport: true,
+  testParameterFileType: Validation.TypeEnum.CWLTESTJSON
 };
 
 const extendedWDL: ExtendedDescriptorLanguageBean = {
@@ -54,7 +56,8 @@ const extendedWDL: ExtendedDescriptorLanguageBean = {
     rowIdentifier: 'task\xa0ID',
     workflowStepHeader: 'Task Excerpt'
   },
-  workflowLaunchSupport: true
+  workflowLaunchSupport: true,
+  testParameterFileType: Validation.TypeEnum.WDLTESTJSON
 };
 
 const extendedNFL: ExtendedDescriptorLanguageBean = {
@@ -72,7 +75,8 @@ const extendedNFL: ExtendedDescriptorLanguageBean = {
     rowIdentifier: 'process\xa0name',
     workflowStepHeader: 'Process Excerpt'
   },
-  workflowLaunchSupport: true
+  workflowLaunchSupport: true,
+  testParameterFileType: Validation.TypeEnum.NEXTFLOWTESTPARAMS
 };
 
 const extendedService: ExtendedDescriptorLanguageBean = {
@@ -91,7 +95,8 @@ const extendedService: ExtendedDescriptorLanguageBean = {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Service'
   },
-  workflowLaunchSupport: true
+  workflowLaunchSupport: true,
+  testParameterFileType: Validation.TypeEnum.DOCKSTORESERVICETESTJSON
 };
 
 const extendedGalaxy: ExtendedDescriptorLanguageBean = {
@@ -109,7 +114,8 @@ const extendedGalaxy: ExtendedDescriptorLanguageBean = {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'
   },
-  workflowLaunchSupport: false
+  workflowLaunchSupport: false,
+  testParameterFileType: Validation.TypeEnum.GXFORMAT2TESTFILE
 };
 
 export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
@@ -127,7 +133,8 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'
   },
-  workflowLaunchSupport: false
+  workflowLaunchSupport: false,
+  testParameterFileType: null
 };
 export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
   extendedCWL,

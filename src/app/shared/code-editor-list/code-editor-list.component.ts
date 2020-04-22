@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { DescriptorLanguageService } from '../entry/descriptor-language.service';
 import { WorkflowQuery } from '../state/workflow.query';
+import { Validation } from '../swagger';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 
@@ -35,14 +37,27 @@ export class CodeEditorListComponent {
     const filesToAdd = [];
     const newFilePath = this.getDefaultPath();
     if (!this.hasPrimaryDescriptor() && this.fileType === 'descriptor') {
-      if (this.descriptorType === ToolDescriptor.TypeEnum.NFL) {
-        filesToAdd.push(this.createFileObject(this.NEXTFLOW_PATH));
-        filesToAdd.push(this.createFileObject(this.NEXTFLOW_CONFIG_PATH));
-      } else {
-        filesToAdd.push(this.createFileObject('/Dockstore' + newFilePath));
+      switch (this.descriptorType) {
+        case ToolDescriptor.TypeEnum.NFL: {
+          filesToAdd.push(this.createFileObject(this.NEXTFLOW_PATH));
+          filesToAdd.push(this.createFileObject(this.NEXTFLOW_CONFIG_PATH));
+          break;
+        }
+        case ToolDescriptor.TypeEnum.GXFORMAT2: {
+          // TODO: Switch this to defaultDescriptorPath. DO NOT LET MERGED if https://github.com/dockstore/dockstore-ui2/pull/962 is merged
+          filesToAdd.push(this.createFileObject('/Dockstore.yml'));
+          break;
+        }
+        default: {
+          filesToAdd.push(this.createFileObject('/Dockstore' + newFilePath));
+        }
       }
     } else if (!this.hasPrimaryTestParam() && this.fileType === 'testParam') {
-      filesToAdd.push(this.createFileObject('/test.' + this.descriptorType.toLowerCase() + newFilePath));
+      if (this.descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2) {
+        filesToAdd.push(this.createFileObject('/test.galaxy.json'));
+      } else {
+        filesToAdd.push(this.createFileObject('/test.' + this.descriptorType.toLowerCase() + newFilePath));
+      }
     } else {
       filesToAdd.push(this.createFileObject('/' + newFilePath));
     }
@@ -96,11 +111,7 @@ export class CodeEditorListComponent {
       }
     } else if (this.fileType === 'testParam') {
       if (this.descriptorType) {
-        if (this.descriptorType === ToolDescriptor.TypeEnum.NFL) {
-          return 'NEXTFLOW_TEST_PARAMS';
-        } else {
-          return this.descriptorType + '_TEST_JSON';
-        }
+        return DescriptorLanguageService.toolDescriptorTypeEnumTotestParameterFileType(this.descriptorType);
       } else {
         return 'CWL_TEST_JSON';
       }
@@ -166,13 +177,15 @@ export class CodeEditorListComponent {
       return (
         (this.descriptorType === ToolDescriptor.TypeEnum.CWL && type === 'DOCKSTORE_CWL') ||
         (this.descriptorType === ToolDescriptor.TypeEnum.WDL && type === 'DOCKSTORE_WDL') ||
-        (this.descriptorType === ToolDescriptor.TypeEnum.NFL && (type === 'NEXTFLOW' || type === 'NEXTFLOW_CONFIG'))
+        (this.descriptorType === ToolDescriptor.TypeEnum.NFL && (type === 'NEXTFLOW' || type === 'NEXTFLOW_CONFIG')) ||
+        (this.descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && type === Validation.TypeEnum.DOCKSTOREGXFORMAT2)
       );
     } else if (this.fileType === 'testParam') {
       return (
         (this.descriptorType === ToolDescriptor.TypeEnum.CWL && type === 'CWL_TEST_JSON') ||
         (this.descriptorType === ToolDescriptor.TypeEnum.WDL && type === 'WDL_TEST_JSON') ||
-        (this.descriptorType === ToolDescriptor.TypeEnum.NFL && type === 'NEXTFLOW_TEST_PARAMS')
+        (this.descriptorType === ToolDescriptor.TypeEnum.NFL && type === 'NEXTFLOW_TEST_PARAMS') ||
+        (this.descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && type === Validation.TypeEnum.GXFORMAT2TESTFILE)
       );
     } else {
       return true;
