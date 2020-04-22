@@ -53,9 +53,6 @@ describe('Monitor homepage links', () => {
 
 it('gets the svg icons', () => {
   cy.visit('workflows/dockstore.org/bjstubbs/gtex:2?tab=info');
-  // before the request goes out we need to set up spying
-  cy.server();
-  cy.get('a[data-cy=dnanexusIcon]').should('exist');
+
   cy.get('a[data-cy=terraIcon]').should('exist');
-  cy.get('a[data-cy=anvilIcon]').should('exist');
 });
