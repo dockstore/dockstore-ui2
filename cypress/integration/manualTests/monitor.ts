@@ -51,12 +51,11 @@ describe('Monitor homepage links', () => {
   });
 });
 
-it('gets 200 response from gui.dockstore.org', () => {
+it('gets the svg icons', () => {
   cy.visit('');
   // before the request goes out we need to set up spying
   cy.server();
-  cy.route('GET', 'gui.dockstore.org').as('image');
-
-  cy.get('@image').then(console.log);
-  cy.get('@image').should('have.property', 'status', 200);
+  cy.get('[data-cy=dnanexusIcon]').should('exist');
+  cy.get('[data-cy=terraIcon]').should('exist');
+  cy.get('[data-cy=anvilIcon=').should('exist');
 });
