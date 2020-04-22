@@ -1,3 +1,5 @@
+import { goToTab } from '../../support/commands';
+
 function checkLink(selector: string, url: string): void {
   it('these links should be present', () => {
     cy.visit('');
@@ -51,8 +53,26 @@ describe('Monitor homepage links', () => {
   });
 });
 
-it('gets the svg icons', () => {
-  cy.visit('workflows/dockstore.org/bjstubbs/gtex:2?tab=info');
+describe('Test launch button icons', () => {
+  it('find a WDL workflow', () => {
+    cy.visit('/search');
+    cy.wait(10000); // wait for the tabs to become clickable
+    goToTab('Workflows');
 
-  cy.get('a[data-cy=terraIcon]').should('exist');
+    // click to sort by descriptor type descending so WDL is at the top
+    cy.get('[data-cy=descriptorType]')
+      .click()
+      .click();
+    cy.get('[data-cy=workflowColumn]')
+      .first()
+      .within(() => {
+        cy.get('a').click(); // click on the link to the first workflow
+      });
+  });
+
+  it('get the svg icons', () => {
+    cy.get('[data-cy=dnanexusIcon]').should('exist');
+    cy.get('[data-cy=terraIcon]').should('exist');
+    cy.get('[data-cy=anvilIcon]').should('exist');
+  });
 });
