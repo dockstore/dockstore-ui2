@@ -67,39 +67,66 @@ export class CodeEditorListService {
   }
 
   static determineFilesToAdd(descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory, sourcefiles: SourceFile[]): SourceFile[] {
-    const filesToAdd = [];
+    const filesToAdd: SourceFile[] = [];
     const newFilePath = CodeEditorListService.getDefaultPath(fileType, descriptorType);
     if (!CodeEditorListService.hasPrimaryDescriptor(descriptorType, sourcefiles) && fileType === 'descriptor') {
       switch (descriptorType) {
         case ToolDescriptor.TypeEnum.NFL: {
-          filesToAdd.push(CodeEditorListService.createFileObject(CodeEditorListService.NEXTFLOW_PATH, descriptorType, fileType));
-          filesToAdd.push(CodeEditorListService.createFileObject(CodeEditorListService.NEXTFLOW_CONFIG_PATH, descriptorType, fileType));
+          const nextflowConfigFile = CodeEditorListService.createFileObject(CodeEditorListService.NEXTFLOW_PATH, descriptorType, fileType);
+          if (nextflowConfigFile) {
+            CodeEditorListService.pushFileIfNotNull(filesToAdd, nextflowConfigFile);
+          }
+          CodeEditorListService.pushFileIfNotNull(
+            filesToAdd,
+            CodeEditorListService.createFileObject(CodeEditorListService.NEXTFLOW_CONFIG_PATH, descriptorType, fileType)
+          );
           break;
         }
         case ToolDescriptor.TypeEnum.CWL:
         case ToolDescriptor.TypeEnum.WDL:
         case ToolDescriptor.TypeEnum.GXFORMAT2: {
           const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
-          filesToAdd.push(CodeEditorListService.createFileObject(defaultDescriptorPath, descriptorType, fileType));
+          if (defaultDescriptorPath) {
+            CodeEditorListService.pushFileIfNotNull(
+              filesToAdd,
+              CodeEditorListService.createFileObject(defaultDescriptorPath, descriptorType, fileType)
+            );
+          }
           break;
         }
         default: {
           console.log('Possibly unsupported hosted workflow language: ' + descriptorType);
-          filesToAdd.push(CodeEditorListService.createFileObject('/Dockstore' + newFilePath, descriptorType, fileType));
+          CodeEditorListService.pushFileIfNotNull(
+            filesToAdd,
+            CodeEditorListService.createFileObject('/Dockstore' + newFilePath, descriptorType, fileType)
+          );
         }
       }
     } else if (!CodeEditorListService.hasPrimaryTestParam(descriptorType, sourcefiles) && fileType === 'testParam') {
       if (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2) {
-        filesToAdd.push(CodeEditorListService.createFileObject('/test.galaxy.json', descriptorType, fileType));
+        CodeEditorListService.pushFileIfNotNull(
+          filesToAdd,
+          CodeEditorListService.createFileObject('/test.galaxy.json', descriptorType, fileType)
+        );
       } else {
-        filesToAdd.push(
+        CodeEditorListService.pushFileIfNotNull(
+          filesToAdd,
           CodeEditorListService.createFileObject('/test.' + descriptorType.toLowerCase() + newFilePath, descriptorType, fileType)
         );
       }
     } else {
-      filesToAdd.push(CodeEditorListService.createFileObject('/' + newFilePath, descriptorType, fileType));
+      CodeEditorListService.pushFileIfNotNull(
+        filesToAdd,
+        CodeEditorListService.createFileObject('/' + newFilePath, descriptorType, fileType)
+      );
     }
     return filesToAdd;
+  }
+
+  private static pushFileIfNotNull(filesToAdd: SourceFile[], sourcefile: SourceFile | null) {
+    if (sourcefile) {
+      filesToAdd.push(sourcefile);
+    }
   }
 
   /**
@@ -111,7 +138,11 @@ export class CodeEditorListService {
    * @returns
    * @memberof CodeEditorListComponent
    */
-  private static getFileType(filepath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): SourceFile.TypeEnum {
+  private static getFileType(
+    filepath: string,
+    descriptorType: ToolDescriptor.TypeEnum,
+    fileType: FileCategory
+  ): SourceFile.TypeEnum | null {
     switch (fileType) {
       case 'descriptor': {
         if (descriptorType) {
@@ -157,13 +188,18 @@ export class CodeEditorListService {
       }
     }
   }
-  private static createFileObject(newFilePath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): SourceFile {
-    return {
-      absolutePath: newFilePath,
-      content: '',
-      path: newFilePath,
-      type: CodeEditorListService.getFileType(newFilePath, descriptorType, fileType)
-    };
+  private static createFileObject(newFilePath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): SourceFile | null {
+    const type = CodeEditorListService.getFileType(newFilePath, descriptorType, fileType);
+    if (type) {
+      return {
+        absolutePath: newFilePath,
+        content: '',
+        path: newFilePath,
+        type: type
+      };
+    } else {
+      return null;
+    }
   }
 
   /**
