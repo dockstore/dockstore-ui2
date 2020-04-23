@@ -15,7 +15,7 @@ export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
   styleUrls: ['./code-editor-list.component.scss']
 })
 export class CodeEditorListComponent {
-  @Input() sourcefiles: Array<any>;
+  @Input() sourcefiles: SourceFile[];
   @Input() editing: boolean;
   @Input() fileType: FileCategory;
   @Input() descriptorType: ToolDescriptor.TypeEnum;

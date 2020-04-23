@@ -11,7 +11,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
   toolDescriptorEnum: ToolDescriptor.TypeEnum;
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum;
   plainTRS: string;
-  sourceFileTypeEnum: SourceFile.TypeEnum[];
+  descriptorFileTypes: SourceFile.TypeEnum[];
   toolTab: {
     // Example: If rowIdentifier is "tool ID", then the the first column of each row will say something like "tool ID: hello-world"
     rowIdentifier: string;
@@ -19,7 +19,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
     workflowStepHeader: string;
   };
   workflowLaunchSupport: boolean;
-  testParameterFileType: string;
+  testParameterFileType: SourceFile.TypeEnum;
 }
 
 const extendedCWL: ExtendedDescriptorLanguageBean = {
@@ -32,7 +32,7 @@ const extendedCWL: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.CWL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.CWL,
   plainTRS: 'PLAIN-CWL',
-  sourceFileTypeEnum: [SourceFile.TypeEnum.DOCKSTORECWL],
+  descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTORECWL],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'
@@ -51,13 +51,13 @@ const extendedWDL: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.WDL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.WDL,
   plainTRS: 'PLAIN-WDL',
-  sourceFileTypeEnum: [SourceFile.TypeEnum.DOCKSTOREWDL],
+  descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREWDL],
   toolTab: {
     rowIdentifier: 'task\xa0ID',
     workflowStepHeader: 'Task Excerpt'
   },
   workflowLaunchSupport: true,
-  testParameterFileType: Validation.TypeEnum.WDLTESTJSON
+  testParameterFileType: SourceFile.TypeEnum.WDLTESTJSON
 };
 
 const extendedNFL: ExtendedDescriptorLanguageBean = {
@@ -70,13 +70,13 @@ const extendedNFL: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.NFL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.NFL,
   plainTRS: 'PLAIN-NFL',
-  sourceFileTypeEnum: [SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.NEXTFLOWCONFIG],
+  descriptorFileTypes: [SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.NEXTFLOWCONFIG],
   toolTab: {
     rowIdentifier: 'process\xa0name',
     workflowStepHeader: 'Process Excerpt'
   },
   workflowLaunchSupport: true,
-  testParameterFileType: Validation.TypeEnum.NEXTFLOWTESTPARAMS
+  testParameterFileType: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS
 };
 
 const extendedService: ExtendedDescriptorLanguageBean = {
@@ -90,13 +90,13 @@ const extendedService: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.SERVICE,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Service,
   plainTRS: 'PLAIN-SERVICE',
-  sourceFileTypeEnum: [],
+  descriptorFileTypes: [],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Service'
   },
   workflowLaunchSupport: true,
-  testParameterFileType: Validation.TypeEnum.DOCKSTORESERVICETESTJSON
+  testParameterFileType: SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON
 };
 
 const extendedGalaxy: ExtendedDescriptorLanguageBean = {
@@ -109,13 +109,13 @@ const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.GXFORMAT2,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Gxformat2,
   plainTRS: '<FILL-IN>',
-  sourceFileTypeEnum: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
+  descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'
   },
   workflowLaunchSupport: false,
-  testParameterFileType: Validation.TypeEnum.GXFORMAT2TESTFILE
+  testParameterFileType: SourceFile.TypeEnum.GXFORMAT2TESTFILE
 };
 
 export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
@@ -128,7 +128,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: null,
   workflowDescriptorEnum: null,
   plainTRS: null,
-  sourceFileTypeEnum: [],
+  descriptorFileTypes: [],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt'

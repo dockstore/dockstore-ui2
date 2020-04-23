@@ -22,26 +22,56 @@ describe('CodeEditorListService', () => {
 
   it('should be able to know if path is a primary descriptor', () => {
     // Brand new hosted workflow with no descriptors
-    const primaryCWLFile = { content: '', path: '/Dockstore.cwl', type: SourceFile.TypeEnum.DOCKSTORECWL };
-    const secondaryCWLFile = { content: '', path: '/.cwl', type: SourceFile.TypeEnum.DOCKSTORECWL };
-    const primaryWDLFile = { content: '', path: '/Dockstore.wdl', type: SourceFile.TypeEnum.DOCKSTOREWDL };
-    const secondaryWDLFile = { content: '', path: '/.wdl', type: SourceFile.TypeEnum.DOCKSTOREWDL };
-    const firstPrimaryNFLFile = { content: '', path: '/main.nf', type: SourceFile.TypeEnum.NEXTFLOW };
-    const secondPrimaryNFLFile = { content: '', path: '/nextflow.config', type: SourceFile.TypeEnum.NEXTFLOWCONFIG };
-    const secondaryNFLFile = { content: '', path: '/.nf', type: SourceFile.TypeEnum.NEXTFLOW };
+    const primaryCWLFile: SourceFile = {
+      content: '',
+      absolutePath: '/Dockstore.cwl',
+      path: '/Dockstore.cwl',
+      type: SourceFile.TypeEnum.DOCKSTORECWL
+    };
+    const secondaryCWLFile = { content: '', absolutePath: '/.cwl', path: '/.cwl', type: SourceFile.TypeEnum.DOCKSTORECWL };
+    const primaryWDLFile = { content: '', absolutePath: '/Dockstore.wdl', path: '/Dockstore.wdl', type: SourceFile.TypeEnum.DOCKSTOREWDL };
+    const secondaryWDLFile = { content: '', absolutePath: '/.wdl', path: '/.wdl', type: SourceFile.TypeEnum.DOCKSTOREWDL };
+    const firstPrimaryNFLFile = { content: '', absolutePath: '/main.nf', path: '/main.nf', type: SourceFile.TypeEnum.NEXTFLOW };
+    const secondPrimaryNFLFile = {
+      content: '',
+      absolutePath: '/nextflow.config',
+      path: '/nextflow.config',
+      type: SourceFile.TypeEnum.NEXTFLOWCONFIG
+    };
+    const secondaryNFLFile = { content: '', absolutePath: '/.nf', path: '/.nf', type: SourceFile.TypeEnum.NEXTFLOW };
     const primaryNFLFiles = [firstPrimaryNFLFile, secondPrimaryNFLFile];
-    const primaryGalaxyFile = { content: '', path: '/Dockstore.yml', type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2 };
-    const secondaryGalaxyFile = { content: '', path: '/Dockstore.yml', type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2 };
+    const primaryGalaxyFile = {
+      content: '',
+      absolutePath: '/Dockstore.yml',
+      path: '/Dockstore.yml',
+      type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2
+    };
+    const secondaryGalaxyFile = {
+      content: '',
+      absolutePath: '/.yml',
+      path: '/.yml',
+      type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2
+    };
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'descriptor', [])).toEqual([primaryCWLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'descriptor', [])).toEqual([primaryWDLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'descriptor', [])).toEqual(primaryNFLFiles);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'descriptor', [])).toEqual([primaryGalaxyFile]);
 
-    const testCWLFile = { content: '', path: '/test.cwl.json', type: SourceFile.TypeEnum.CWLTESTJSON };
-    const testWDLFile = { content: '', path: '/test.wdl.json', type: SourceFile.TypeEnum.WDLTESTJSON };
+    const testCWLFile = { content: '', absolutePath: '/test.cwl.json', path: '/test.cwl.json', type: SourceFile.TypeEnum.CWLTESTJSON };
+    const testWDLFile = { content: '', absolutePath: '/test.wdl.json', path: '/test.wdl.json', type: SourceFile.TypeEnum.WDLTESTJSON };
     // Weird because NFL doesn't have test parameter files
-    const testNFLFile = { content: '', path: '/test.nfl.json', type: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS };
-    const testGalaxyFile = { content: '', path: '/test.galaxy.json', type: SourceFile.TypeEnum.GXFORMAT2TESTFILE };
+    const testNFLFile = {
+      content: '',
+      absolutePath: '/test.nfl.json',
+      path: '/test.nfl.json',
+      type: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS
+    };
+    const testGalaxyFile = {
+      content: '',
+      absolutePath: '/test.galaxy.json',
+      path: '/test.galaxy.json',
+      type: SourceFile.TypeEnum.GXFORMAT2TESTFILE
+    };
     // Brand new hosted workflow with no test parameter file
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'testParam', [])).toEqual([testCWLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'testParam', [])).toEqual([testWDLFile]);

@@ -23,7 +23,7 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
-import { ToolDescriptor } from '../swagger';
+import { SourceFile, ToolDescriptor } from '../swagger';
 import { Workflow } from '../swagger/model/workflow';
 import { validationDescriptorPatterns } from '../validationMessages.model';
 import { MetadataService } from './../swagger/api/metadata.service';
@@ -71,7 +71,7 @@ export class DescriptorLanguageService {
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
-  static toolDescriptorTypeEnumTotestParameterFileType(descriptorType: ToolDescriptor.TypeEnum): string | null {
+  static toolDescriptorTypeEnumTotestParameterFileType(descriptorType: ToolDescriptor.TypeEnum): SourceFile.TypeEnum | null {
     return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType;
   }
 
