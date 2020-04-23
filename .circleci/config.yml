@@ -71,8 +71,10 @@ jobs:
             - .
   licenses_test:
     working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
     steps:
-      -run: bash scripts/detect-package-json-changes.sh
+      - run: bash scripts/detect-package-json-changes.sh
   integration_test_1:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -174,9 +176,9 @@ workflows:
             tags:
               only: /.*/
       - licenses_test:
-          - filters:
-              tags:
-                only: /.*/
+          filters:
+            tags:
+              only: /.*/
       - integration_test_1:
           filters:
             tags:
