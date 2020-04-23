@@ -74,6 +74,7 @@ jobs:
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
+      - checkout
       - run: bash scripts/detect-package-json-changes.sh
   integration_test_1:
     executor: integration_test_exec
