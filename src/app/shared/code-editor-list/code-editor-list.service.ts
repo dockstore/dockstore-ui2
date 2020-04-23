@@ -75,37 +75,55 @@ export class CodeEditorListService {
    * @returns
    * @memberof CodeEditorListComponent
    */
-  private static getFileType(filepath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory) {
+  private static getFileType(filepath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): SourceFile.TypeEnum {
     switch (fileType) {
       case 'descriptor': {
         if (descriptorType) {
-          if (descriptorType === ToolDescriptor.TypeEnum.NFL) {
-            if (filepath === CodeEditorListService.NEXTFLOW_CONFIG_PATH) {
-              return 'NEXTFLOW_CONFIG';
-            } else {
-              return 'NEXTFLOW';
+          switch (descriptorType) {
+            case ToolDescriptor.TypeEnum.NFL: {
+              if (filepath === CodeEditorListService.NEXTFLOW_CONFIG_PATH) {
+                return SourceFile.TypeEnum.NEXTFLOWCONFIG;
+              } else {
+                return SourceFile.TypeEnum.NEXTFLOW;
+              }
             }
-          } else {
-            return 'DOCKSTORE_' + descriptorType;
+            case ToolDescriptor.TypeEnum.CWL:
+            case ToolDescriptor.TypeEnum.WDL:
+            case ToolDescriptor.TypeEnum.GXFORMAT2: {
+              const descriptorFileTypes = DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType)
+                .descriptorFileTypes;
+              if (descriptorFileTypes && descriptorFileTypes.length > 0) {
+                return descriptorFileTypes[0];
+              } else {
+                // Defaulting to CWL for some reason
+                return SourceFile.TypeEnum.DOCKSTORECWL;
+              }
+            }
+            default: {
+              // Defaulting to CWL for some reason
+              return SourceFile.TypeEnum.DOCKSTORECWL;
+            }
           }
         } else {
-          return 'DOCKSTORE_CWL';
+          return SourceFile.TypeEnum.DOCKSTORECWL;
         }
       }
       case 'testParam': {
         if (descriptorType) {
           return DescriptorLanguageService.toolDescriptorTypeEnumTotestParameterFileType(descriptorType);
         } else {
-          return 'CWL_TEST_JSON';
+          // Defaulting to CWL for some reason
+          return SourceFile.TypeEnum.DOCKSTORECWL;
         }
       }
       case 'dockerfile': {
-        return 'DOCKERFILE';
+        return SourceFile.TypeEnum.DOCKERFILE;
       }
     }
   }
-  private static createFileObject(newFilePath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): any {
+  private static createFileObject(newFilePath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): SourceFile {
     return {
+      absolutePath: newFilePath,
       content: '',
       path: newFilePath,
       type: CodeEditorListService.getFileType(newFilePath, descriptorType, fileType)
@@ -151,7 +169,7 @@ export class CodeEditorListService {
     }
   }
 
-  static determineFilesToAdd(descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory, sourcefiles: any[]): any[] {
+  static determineFilesToAdd(descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory, sourcefiles: SourceFile[]): SourceFile[] {
     const filesToAdd = [];
     const newFilePath = CodeEditorListService.getDefaultPath(fileType, descriptorType);
     if (!CodeEditorListService.hasPrimaryDescriptor(descriptorType, sourcefiles) && fileType === 'descriptor') {
@@ -192,7 +210,7 @@ export class CodeEditorListService {
    * @param  path File path to look for
    * @return {boolean}      Whether a sourcefile with the path exists
    */
-  private static hasFilePath(path: string, sourcefiles: any): boolean {
+  private static hasFilePath(path: string, sourcefiles: Array<SourceFile>): boolean {
     for (const sourcefile of sourcefiles) {
       if (sourcefile.path === path) {
         return true;
@@ -205,7 +223,7 @@ export class CodeEditorListService {
    * Checks for the given descriptor type, does there already exist a primary test json
    * @return {boolean} whether or not version has a primary test json
    */
-  private static hasPrimaryTestParam(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: any[]): boolean {
+  private static hasPrimaryTestParam(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: SourceFile[]): boolean {
     if (descriptorType === null || descriptorType === undefined) {
       return false;
     }
@@ -217,7 +235,7 @@ export class CodeEditorListService {
    * Checks for the given descriptor type, does there already exist a primary descriptor
    * @return {boolean} whether or not version has a primary descriptor
    */
-  private static hasPrimaryDescriptor(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: any[]): boolean {
+  private static hasPrimaryDescriptor(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: SourceFile[]): boolean {
     if (descriptorType === null || descriptorType === undefined) {
       return false;
     }
