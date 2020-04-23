@@ -276,12 +276,19 @@ export class CodeEditorListService {
     }
 
     const pathToFind = '/Dockstore.' + descriptorType.toLowerCase();
-    if (descriptorType === ToolDescriptor.TypeEnum.NFL) {
-      return (
-        CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_PATH, sourcefiles) &&
-        CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_CONFIG_PATH, sourcefiles)
-      );
+    switch (descriptorType) {
+      case ToolDescriptor.TypeEnum.NFL: {
+        return (
+          CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_PATH, sourcefiles) &&
+          CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_CONFIG_PATH, sourcefiles)
+        );
+      }
+      case ToolDescriptor.TypeEnum.GXFORMAT2: {
+        return CodeEditorListService.hasFilePath('/Dockstore.yml', sourcefiles);
+      }
+      default: {
+        return CodeEditorListService.hasFilePath(pathToFind, sourcefiles);
+      }
     }
-    return CodeEditorListService.hasFilePath(pathToFind, sourcefiles);
   }
 }
