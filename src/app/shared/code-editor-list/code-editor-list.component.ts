@@ -34,7 +34,12 @@ export class CodeEditorListComponent {
    * Adds a new file editor
    */
   addFile() {
-    const filesToAdd = CodeEditorListService.determineFilesToAdd(this.descriptorType, this.fileType, this.sourcefiles);
+    let descriptorType = this.descriptorType;
+    // determineFilesToAdd gets really confusing when it needs to handle a falsey descriptorType, setting it here (no end effect)
+    if (this.fileType === 'dockerfile') {
+      descriptorType = ToolDescriptor.TypeEnum.CWL;
+    }
+    const filesToAdd = CodeEditorListService.determineFilesToAdd(descriptorType, this.fileType, this.sourcefiles);
     if (this.sourcefiles === undefined) {
       this.sourcefiles = [];
     }

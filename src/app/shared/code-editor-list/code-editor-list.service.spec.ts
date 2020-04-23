@@ -17,6 +17,7 @@ describe('CodeEditorListService', () => {
     expect(CodeEditorListService.isPrimaryDescriptor('/main.nf')).toBe(true);
     // This seems wrong
     expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.yml')).toBe(false);
+    expect(CodeEditorListService.isPrimaryDescriptor(null)).toBe(false);
     expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.potato')).toBe(false);
   });
 
@@ -72,6 +73,12 @@ describe('CodeEditorListService', () => {
       path: '/test.galaxy.json',
       type: SourceFile.TypeEnum.GXFORMAT2TESTFILE
     };
+    const testDockerFile = {
+      content: '',
+      absolutePath: '/Dockerfile',
+      path: '/Dockerfile',
+      type: SourceFile.TypeEnum.DOCKERFILE
+    };
     // Brand new hosted workflow with no test parameter file
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'testParam', [])).toEqual([testCWLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'testParam', [])).toEqual([testWDLFile]);
@@ -99,6 +106,22 @@ describe('CodeEditorListService', () => {
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'testParam', [testGalaxyFile])).toEqual([
       testGalaxyFile
     ]);
+
+    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'dockerfile', [])).toEqual([testDockerFile]);
+    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'dockerfile', [])).toEqual([testDockerFile]);
+
+    expect(CodeEditorListService.determineFilesToAdd(null, null, null)).toEqual([]);
+
+    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'dockerfile', [])).toEqual([testDockerFile]);
+
+    // Unhandled hosted workflow descriptor type
+    const weirdServiceFile = {
+      content: '',
+      absolutePath: '/Dockstore.service',
+      path: '/Dockstore.service',
+      type: SourceFile.TypeEnum.DOCKSTORECWL
+    };
+    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.SERVICE, 'descriptor', [])).toEqual([weirdServiceFile]);
   });
   it('should be able to determine whether to show the sourcefile in the current tab or not', () => {
     // Descriptor tab
@@ -151,5 +174,6 @@ describe('CodeEditorListService', () => {
     expect(
       CodeEditorListService.showSourcefile(SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'dockerfile', ToolDescriptor.TypeEnum.GXFORMAT2)
     ).toBe(true);
+    expect(CodeEditorListService.showSourcefile(null, null, null)).toBe(true);
   });
 });

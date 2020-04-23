@@ -3,6 +3,12 @@ import { DescriptorLanguageService } from '../entry/descriptor-language.service'
 import { SourceFile, ToolDescriptor, Validation } from '../swagger';
 import { FileCategory } from './code-editor-list.component';
 
+/**
+ * This service currently only handles CWL, WDL, NFL, and Galaxy. All plugin languages and SERVICE will not work correctly.
+ *
+ * @export
+ * @class CodeEditorListService
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -22,10 +28,10 @@ export class CodeEditorListService {
    */
   static showSourcefile(
     sourcefileType: SourceFile.TypeEnum | null | undefined,
-    fileCategory: FileCategory,
-    descriptorType: ToolDescriptor.TypeEnum
+    fileCategory: FileCategory | null | undefined,
+    descriptorType: ToolDescriptor.TypeEnum | null | undefined
   ): boolean {
-    if (sourcefileType === null || sourcefileType === undefined) {
+    if (!sourcefileType || !fileCategory || !descriptorType) {
       return true;
     }
     switch (fileCategory) {
@@ -49,14 +55,13 @@ export class CodeEditorListService {
           (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && sourcefileType === Validation.TypeEnum.GXFORMAT2TESTFILE)
         );
       }
-      default: {
-        console.error('Unrecognized fileCategory: ' + fileCategory);
-        return true;
-      }
     }
   }
 
-  static isPrimaryDescriptor(path: string): boolean {
+  static isPrimaryDescriptor(path: string | null): boolean {
+    if (!path) {
+      return false;
+    }
     const primaryDescriptors = [
       '/Dockstore.cwl',
       '/Dockstore.wdl',
@@ -66,7 +71,14 @@ export class CodeEditorListService {
     return primaryDescriptors.includes(path);
   }
 
-  static determineFilesToAdd(descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory, sourcefiles: SourceFile[]): SourceFile[] {
+  static determineFilesToAdd(
+    descriptorType: ToolDescriptor.TypeEnum | null | undefined,
+    fileType: FileCategory | null | undefined,
+    sourcefiles: SourceFile[] | null | undefined
+  ): SourceFile[] {
+    if (!descriptorType || !fileType || !sourcefiles) {
+      return [];
+    }
     const filesToAdd: SourceFile[] = [];
     const newFilePath = CodeEditorListService.getDefaultPath(fileType, descriptorType);
     if (!CodeEditorListService.hasPrimaryDescriptor(descriptorType, sourcefiles) && fileType === 'descriptor') {
@@ -95,7 +107,7 @@ export class CodeEditorListService {
           break;
         }
         default: {
-          console.log('Possibly unsupported hosted workflow language: ' + descriptorType);
+          CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
           CodeEditorListService.pushFileIfNotNull(
             filesToAdd,
             CodeEditorListService.createFileObject('/Dockstore' + newFilePath, descriptorType, fileType)
@@ -145,43 +157,36 @@ export class CodeEditorListService {
   ): SourceFile.TypeEnum | null {
     switch (fileType) {
       case 'descriptor': {
-        if (descriptorType) {
-          switch (descriptorType) {
-            case ToolDescriptor.TypeEnum.NFL: {
-              if (filepath === CodeEditorListService.NEXTFLOW_CONFIG_PATH) {
-                return SourceFile.TypeEnum.NEXTFLOWCONFIG;
-              } else {
-                return SourceFile.TypeEnum.NEXTFLOW;
-              }
+        switch (descriptorType) {
+          case ToolDescriptor.TypeEnum.NFL: {
+            if (filepath === CodeEditorListService.NEXTFLOW_CONFIG_PATH) {
+              return SourceFile.TypeEnum.NEXTFLOWCONFIG;
+            } else {
+              return SourceFile.TypeEnum.NEXTFLOW;
             }
-            case ToolDescriptor.TypeEnum.CWL:
-            case ToolDescriptor.TypeEnum.WDL:
-            case ToolDescriptor.TypeEnum.GXFORMAT2: {
-              const descriptorFileTypes = DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType)
-                .descriptorFileTypes;
-              if (descriptorFileTypes && descriptorFileTypes.length > 0) {
-                return descriptorFileTypes[0];
-              } else {
-                // Defaulting to CWL for some reason
-                return SourceFile.TypeEnum.DOCKSTORECWL;
-              }
-            }
-            default: {
+          }
+          case ToolDescriptor.TypeEnum.CWL:
+          case ToolDescriptor.TypeEnum.WDL:
+          case ToolDescriptor.TypeEnum.GXFORMAT2: {
+            const descriptorFileTypes = DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType)
+              .descriptorFileTypes;
+            if (descriptorFileTypes && descriptorFileTypes.length > 0) {
+              return descriptorFileTypes[0];
+            } else {
+              CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
               // Defaulting to CWL for some reason
               return SourceFile.TypeEnum.DOCKSTORECWL;
             }
           }
-        } else {
-          return SourceFile.TypeEnum.DOCKSTORECWL;
+          default: {
+            CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
+            // Defaulting to CWL for some reason
+            return SourceFile.TypeEnum.DOCKSTORECWL;
+          }
         }
       }
       case 'testParam': {
-        if (descriptorType) {
-          return DescriptorLanguageService.toolDescriptorTypeEnumTotestParameterFileType(descriptorType);
-        } else {
-          // Defaulting to CWL for some reason
-          return SourceFile.TypeEnum.DOCKSTORECWL;
-        }
+        return DescriptorLanguageService.toolDescriptorTypeEnumTotestParameterFileType(descriptorType);
       }
       case 'dockerfile': {
         return SourceFile.TypeEnum.DOCKERFILE;
@@ -214,21 +219,16 @@ export class CodeEditorListService {
   private static getDefaultPath(fileType: FileCategory, descriptorType: ToolDescriptor.TypeEnum): string {
     switch (fileType) {
       case 'descriptor': {
-        if (descriptorType) {
-          switch (descriptorType) {
-            case ToolDescriptor.TypeEnum.NFL: {
-              return '.nf';
-            }
-            case ToolDescriptor.TypeEnum.GXFORMAT2: {
-              return '.yml';
-            }
-            default: {
-              return '.' + descriptorType.toLowerCase();
-            }
+        switch (descriptorType) {
+          case ToolDescriptor.TypeEnum.NFL: {
+            return '.nf';
           }
-        } else {
-          console.error('No descriptor type. How odd');
-          return '.cwl';
+          case ToolDescriptor.TypeEnum.GXFORMAT2: {
+            return '.yml';
+          }
+          default: {
+            return '.' + descriptorType.toLowerCase();
+          }
         }
       }
       case 'testParam': {
@@ -259,9 +259,6 @@ export class CodeEditorListService {
    * @return {boolean} whether or not version has a primary test json
    */
   private static hasPrimaryTestParam(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: SourceFile[]): boolean {
-    if (descriptorType === null || descriptorType === undefined) {
-      return false;
-    }
     const pathToFind = 'test.' + descriptorType.toLowerCase() + '.json';
     return CodeEditorListService.hasFilePath(pathToFind, sourcefiles);
   }
@@ -271,10 +268,6 @@ export class CodeEditorListService {
    * @return {boolean} whether or not version has a primary descriptor
    */
   private static hasPrimaryDescriptor(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: SourceFile[]): boolean {
-    if (descriptorType === null || descriptorType === undefined) {
-      return false;
-    }
-
     const pathToFind = '/Dockstore.' + descriptorType.toLowerCase();
     switch (descriptorType) {
       case ToolDescriptor.TypeEnum.NFL: {
@@ -290,5 +283,9 @@ export class CodeEditorListService {
         return CodeEditorListService.hasFilePath(pathToFind, sourcefiles);
       }
     }
+  }
+
+  private static unhandledHostedWorkflowDescriptorType(descriptorType: ToolDescriptor.TypeEnum) {
+    console.error('Unhandled hosted workflow descriptor type: ' + descriptorType);
   }
 }
