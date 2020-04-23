@@ -10,6 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { WorkflowService } from '../state/workflow.service';
+import { ToolDescriptor } from '../swagger';
 import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-download.pipe';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
 import { PublicFileDownloadPipe } from './../../shared/entry/public-file-download.pipe';
