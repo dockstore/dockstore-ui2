@@ -1,4 +1,4 @@
-import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Validation, Workflow } from 'app/shared/swagger';
+import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 
 /**
  * TODO: Use the value property to map the DescriptorLanguageBean to this
@@ -38,7 +38,7 @@ const extendedCWL: ExtendedDescriptorLanguageBean = {
     workflowStepHeader: 'Tool Excerpt'
   },
   workflowLaunchSupport: true,
-  testParameterFileType: Validation.TypeEnum.CWLTESTJSON
+  testParameterFileType: SourceFile.TypeEnum.CWLTESTJSON
 };
 
 const extendedWDL: ExtendedDescriptorLanguageBean = {

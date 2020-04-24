@@ -64,7 +64,6 @@ export class CodeEditorListComponent {
    * TODO: Fix the execution of this function.  This function is being executed a bajillion times.
    * Returns true if path is the primary descriptor, false otherwise
    *
-   * @static
    * @param {string} path Path to check
    * @returns {boolean} Is path for primary descriptor
    * @memberof CodeEditorListComponent
