@@ -59,8 +59,8 @@ export class CodeEditorListService {
   }
 
   /**
-   * Determines whether the path is a primary descriptor
-   *
+   * Determines whether the path is a primary descriptor.
+   * This is kind of easy to break.
    * @static
    * @param {(string | null)} path
    * @returns {boolean}
@@ -71,10 +71,15 @@ export class CodeEditorListService {
       return false;
     }
     const primaryDescriptors = [
+      // CWL
       '/Dockstore.cwl',
+      // WDL
       '/Dockstore.wdl',
+      // NFL
       CodeEditorListService.NEXTFLOW_CONFIG_PATH,
-      CodeEditorListService.NEXTFLOW_PATH
+      CodeEditorListService.NEXTFLOW_PATH,
+      // Galaxy
+      '/Dockstore.yml'
     ];
     return primaryDescriptors.includes(path);
   }

@@ -69,7 +69,7 @@ export class CodeEditorListComponent {
    * @memberof CodeEditorListComponent
    */
   isPrimaryDescriptor(path: string): boolean {
-    return CodeEditorListService.isPrimaryDescriptor(path);
+    return this.fileType === 'descriptor' && CodeEditorListService.isPrimaryDescriptor(path);
   }
 
   /**
@@ -79,7 +79,7 @@ export class CodeEditorListComponent {
    * @return {boolean}      Is path for dockerfile
    */
   isDockerFile(path: string): boolean {
-    return path === '/Dockerfile';
+    return this.fileType === 'dockerfile' && path === '/Dockerfile';
   }
 
   /**
