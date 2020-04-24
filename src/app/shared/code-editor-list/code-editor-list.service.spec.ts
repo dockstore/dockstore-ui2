@@ -15,8 +15,7 @@ describe('CodeEditorListService', () => {
     expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.wdl')).toBe(true);
     expect(CodeEditorListService.isPrimaryDescriptor('/nextflow.config')).toBe(true);
     expect(CodeEditorListService.isPrimaryDescriptor('/main.nf')).toBe(true);
-    // This seems wrong
-    expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.yml')).toBe(false);
+    expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.yml')).toBe(true);
     expect(CodeEditorListService.isPrimaryDescriptor(null)).toBe(false);
     expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.potato')).toBe(false);
   });
