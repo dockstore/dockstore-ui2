@@ -19,11 +19,11 @@
   class="m-2"
   matTooltip="Commands for running the checker workflow of this tool/workflow through Dockstore CLI"
 >
-  Run a checker workflow with:
-  <pre>{{ command }}</pre>
-  Make a runtime JSON template and fill in desired inputs, outputs, and other parameters from the checker workflow with:
+  To run a checker workflow for this entry, first make a runtime JSON template and fill in desired inputs, outputs, and other parameters:
   <pre>
 dockstore workflow convert entry2json --entry {{ checkerWorkflowPath$ | async
-    }}{{ versionName ? ':' + versionName : '' }} > Dockstore.json</pre
+    }}{{ versionName ? ':' + versionName : '' }} > checkparam.json</pre
   >
+  Run the checker workflow with:
+  <pre>{{ command }}</pre>
 </mat-card>
