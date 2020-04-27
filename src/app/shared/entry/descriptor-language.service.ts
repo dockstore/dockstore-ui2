@@ -23,7 +23,7 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
-import { ToolDescriptor } from '../swagger';
+import { SourceFile, ToolDescriptor } from '../swagger';
 import { Workflow } from '../swagger/model/workflow';
 import { validationDescriptorPatterns } from '../validationMessages.model';
 import { MetadataService } from './../swagger/api/metadata.service';
@@ -59,10 +59,10 @@ export class DescriptorLanguageService {
     this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
   }
   static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguage(descriptorType).defaultDescriptorPath;
+    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
   }
 
-  static toolDescriptorTypeEnumToExtendedDescriptorLanguage(
+  static toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
     descriptorType: ToolDescriptor.TypeEnum | null
   ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
@@ -71,14 +71,21 @@ export class DescriptorLanguageService {
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
+  static toolDescriptorTypeEnumTotestParameterFileType(descriptorType: ToolDescriptor.TypeEnum): SourceFile.TypeEnum | null {
+    return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType;
+  }
+
   static workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
+    return this.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflowDescriptorTypeEnum).shortFriendlyName;
+  }
+
+  static workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+    descriptorType: Workflow.DescriptorTypeEnum | null
+  ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === workflowDescriptorTypeEnum
+      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
-    if (foundExtendedDescriptorLanguageFromValue) {
-      return foundExtendedDescriptorLanguageFromValue.shortFriendlyName;
-    }
-    return extendedUnknownDescriptor.shortFriendlyName;
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
   update() {
@@ -151,7 +158,7 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum | null): string {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguage(descriptorType).descriptorPathPlaceholder;
+    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
   }
 
   genericUnhandledTypeError(type: any): void {

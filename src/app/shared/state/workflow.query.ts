@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import {
-  ExtendedDescriptorLanguageBean,
-  extendedDescriptorLanguages,
-  extendedUnknownDescriptor
-} from 'app/entry/extendedDescriptorLanguage';
+import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
-import { ToolDescriptor, Workflow } from '../swagger';
+import { DescriptorLanguageService } from '../entry/descriptor-language.service';
+import { ToolDescriptor } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
 import { WorkflowState, WorkflowStore } from './workflow.store';
@@ -29,7 +26,7 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
     )
   );
   public extendedDescriptorLanguageBean$: Observable<ExtendedDescriptorLanguageBean> = this.workflow$.pipe(
-    map(workflow => this.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflow.descriptorType))
+    map(workflow => DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflow.descriptorType))
   );
   public launchSupport$: Observable<boolean> = this.extendedDescriptorLanguageBean$.pipe(
     map(extendedDescriptorLanguage => extendedDescriptorLanguage.workflowLaunchSupport)
@@ -42,25 +39,5 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
   );
   constructor(protected store: WorkflowStore, private descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(store);
-  }
-
-  /**
-   * Converts the Workflow.DescriptorTypeEnum to the ExtendedDescriptorLanguage that's used throughout the frontend
-   *
-   * @private
-   * @param {Workflow.DescriptorTypeEnum} descriptorType  Typically the "workflow.descriptorType"
-   * @returns {ExtendedDescriptorLanguageBean}  ExtendedDescriptorLanguage that's used throughout
-   * @memberof WorkflowQuery
-   */
-  private workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
-    descriptorType: Workflow.DescriptorTypeEnum
-  ): ExtendedDescriptorLanguageBean {
-    const foundextendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
-    );
-    if (foundextendedDescriptorLanguageFromValue) {
-      return foundextendedDescriptorLanguageFromValue;
-    }
-    return extendedUnknownDescriptor;
   }
 }

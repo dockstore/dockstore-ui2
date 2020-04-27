@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { ToolDescriptor } from '../../shared/swagger';
 
 @Injectable({
@@ -16,13 +16,7 @@ export class ToolTabService {
    * @memberof ToolTabService
    */
   descriptorTypeToHeaderName(descriptorType: ToolDescriptor.TypeEnum): string {
-    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
-    );
-    if (foundExtendedDescriptorLanguage) {
-      return foundExtendedDescriptorLanguage.toolTab.workflowStepHeader;
-    }
-    return extendedUnknownDescriptor.toolTab.workflowStepHeader;
+    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).toolTab.workflowStepHeader;
   }
 
   /**
@@ -34,12 +28,6 @@ export class ToolTabService {
    * @memberof ToolTabService
    */
   descriptorTypeToWorkflowExcerptRowHeading(descriptorType: ToolDescriptor.TypeEnum): string {
-    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
-    );
-    if (foundExtendedDescriptorLanguage) {
-      return foundExtendedDescriptorLanguage.toolTab.rowIdentifier;
-    }
-    return extendedUnknownDescriptor.toolTab.rowIdentifier;
+    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).toolTab.rowIdentifier;
   }
 }
