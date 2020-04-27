@@ -248,10 +248,7 @@
                     <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
                   </div>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML">
-                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
-                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else newComponent" class="p-3">
-                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
-                    </div>
+                    <ng-container *ngTemplateOutlet="newComponent"></ng-container>
                   </div>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.FULL">
                     <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
