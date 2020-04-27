@@ -154,7 +154,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           if (workflows && sharedWorkflows) {
             this.workflows = workflows;
             this.sharedWorkflows = sharedWorkflows;
-            this.selectEntry(this.myWorkflowsService.recomputeWhatEntryToSelect([...(workflows || []), ...(sharedWorkflows || [])]));
           }
         },
         error => {

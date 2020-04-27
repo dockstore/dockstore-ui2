@@ -33,7 +33,7 @@ export class RegisterWorkflowModalService {
   sampleWorkflow: Workflow = <Workflow>{};
   actualWorkflow: Workflow;
   private sourceControlMap = [];
-  workflows: any;
+  workflows: Array<any>;
   isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
   public filteredDescriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
@@ -115,10 +115,9 @@ export class RegisterWorkflowModalService {
           this.workflowsService.refresh(result.id).subscribe(
             refreshResult => {
               this.workflows.push(refreshResult);
-              this.workflowService.setWorkflows(this.workflows);
               this.alertService.detailedSuccess();
               dialogRef.close();
-              this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
+              this.handleNewWorkflow(this.workflows, refreshResult);
             },
             (error: HttpErrorResponse) => this.alertService.detailedError(error)
           );
@@ -149,10 +148,9 @@ export class RegisterWorkflowModalService {
         result => {
           this.alertService.detailedSuccess();
           this.workflows.push(result);
-          this.workflowService.setWorkflows(this.workflows);
           dialogRef.close();
           this.clearWorkflowRegisterError();
-          this.router.navigateByUrl('/my-workflows' + '/' + result.full_workflow_path);
+          this.handleNewWorkflow(this.workflows, result);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
@@ -164,6 +162,11 @@ export class RegisterWorkflowModalService {
     if (this.sourceControlMap) {
       return this.sourceControlMap.map(a => a.friendlyName);
     }
+  }
+
+  handleNewWorkflow(workflows: Array<any>, workflow: Workflow): void {
+    this.workflowService.setWorkflows(workflows);
+    this.router.navigateByUrl('/my-workflows' + '/' + workflow.full_workflow_path);
   }
 
   getDescriptorLanguageKeys(): Array<string> {

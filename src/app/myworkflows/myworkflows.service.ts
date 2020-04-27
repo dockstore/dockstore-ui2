@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { transaction } from '@datorama/akita';
@@ -22,13 +23,14 @@ import { includesValidation } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from 'app/shared/myentries.service';
 import { SessionQuery } from 'app/shared/session/session.query';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { DockstoreTool, UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
+import { BioWorkflow, DockstoreTool, SharedWorkflows, UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { forkJoin, Observable, of as observableOf } from 'rxjs';
+import { catchError, finalize, take } from 'rxjs/operators';
 import { MyBioWorkflowsService } from './my-bio-workflows.service';
 import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
@@ -44,6 +46,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     protected workflowsService: WorkflowsService,
     private myBioWorkflowsService: MyBioWorkflowsService,
     private myServicesService: MyServicesService,
+    private myEntriesStateService: MyEntriesStateService,
     private sessionQuery: SessionQuery,
     public matDialog: MatDialog,
     protected urlResolverService: UrlResolverService
@@ -54,10 +57,70 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
 
   getMyEntries(userId: number, entryType: EntryType) {
     if (entryType === EntryType.BioWorkflow) {
-      this.myBioWorkflowsService.getMyBioWorkflows(userId);
+      this.getMyBioWorkflows(userId);
     } else {
       this.myServicesService.getMyServices(userId);
     }
+  }
+
+  /**
+   * Very strange function that gets both the user's workflows and the user's shared workflows
+   * If one of them errors, the other should still continue executing.  This is done by catching it.
+   * Once both of them finish, the error is determined whether the type is Array (which is normal) or not (which means HttpErrorResponse
+   * If both errors, then only the user's workflows error message is displayed
+   *
+   * @param {number} id  The user ID
+   * @memberof MyBioWorkflowsService
+   */
+  getMyBioWorkflows(id: number): void {
+    this.alertService.start('Fetching workflows');
+    this.myEntriesStateService.setRefreshingMyEntries(true);
+    forkJoin([
+      this.usersService.userWorkflows(id).pipe(
+        catchError((error: HttpErrorResponse) => {
+          return observableOf(error);
+        })
+      ),
+      this.workflowsService.sharedWorkflows().pipe(
+        catchError((error: HttpErrorResponse) => {
+          return observableOf(error);
+        })
+      )
+    ])
+      .pipe(
+        finalize(() => {
+          this.alertService.simpleSuccess();
+          this.myEntriesStateService.setRefreshingMyEntries(false);
+        })
+      )
+      .subscribe(
+        ([workflows, sharedWorkflows]: [(Array<BioWorkflow> | HttpErrorResponse), (Array<SharedWorkflows> | HttpErrorResponse)]) => {
+          if (!Array.isArray(workflows) && !Array.isArray(sharedWorkflows)) {
+            this.alertService.detailedSnackBarError(workflows);
+            workflows = [];
+            sharedWorkflows = [];
+          } else {
+            if (!Array.isArray(workflows)) {
+              this.alertService.detailedSnackBarError(workflows);
+              workflows = [];
+            }
+            if (!Array.isArray(sharedWorkflows)) {
+              this.alertService.detailedSnackBarError(sharedWorkflows);
+              sharedWorkflows = [];
+            }
+          }
+          this.workflowService.setWorkflows(workflows);
+          this.workflowService.setSharedWorkflows(sharedWorkflows);
+          const actualSharedWorkflows = WorkflowService.convertSharedWorkflowsToWorkflowsList(sharedWorkflows);
+          this.selectEntry(
+            this.recomputeWhatEntryToSelect([...(workflows || []), ...(actualSharedWorkflows || [])]),
+            EntryType.BioWorkflow
+          );
+        },
+        error => {
+          console.error('This should be impossible because both errors are caught already');
+        }
+      );
   }
 
   /**
