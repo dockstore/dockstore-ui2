@@ -274,10 +274,6 @@
                     <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. Create a release/tag on GitHub with a valid
                     .dockstore.yml to add a new version.
                   </mat-card>
-                  <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.SERVICE" class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. Create a release/tag on GitHub with a valid
-                    .dockstore.yml to add a new version.
-                  </mat-card>
                   <!-- This also handles FULL -->
                   <mat-card *ngSwitchDefault class="alert alert-info" role="alert">
                     <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions.
