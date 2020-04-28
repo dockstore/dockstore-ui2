@@ -56,15 +56,6 @@
                         </button>
                       </span>
                       <ng-container *ngIf="entryType === EntryType.Service">
-                        <button
-                          [disabled]="isRefreshing$ | async"
-                          data-cy="sync-with-github"
-                          mat-icon-button
-                          matTooltip="Sync with GitHub"
-                          (click)="sync()"
-                        >
-                          <mat-icon>sync</mat-icon>
-                        </button>
                         <a
                           mat-icon-button
                           [href]="gitHubAppInstallationLink$ | async"
