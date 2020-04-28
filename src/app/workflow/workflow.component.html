@@ -256,7 +256,6 @@
                       <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
                     </div>
                   </div>
-                  <!-- This also handle SERVICE mode -->
                   <div *ngSwitchDefault>
                     <ng-container *ngTemplateOutlet="newComponent"></ng-container>
                   </div>
@@ -271,10 +270,6 @@
                     <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
                   </div>
                   <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. Create a release/tag on GitHub with a valid
-                    .dockstore.yml to add a new version.
-                  </mat-card>
-                  <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.SERVICE" class="alert alert-info" role="alert">
                     <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. Create a release/tag on GitHub with a valid
                     .dockstore.yml to add a new version.
                   </mat-card>
