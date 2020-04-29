@@ -59,8 +59,33 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     if (entryType === EntryType.BioWorkflow) {
       this.getMyBioWorkflows(userId);
     } else {
-      this.myServicesService.getMyServices(userId);
+      this.getMyServices(userId);
     }
+  }
+
+  getMyServices(id: number): void {
+    this.alertService.start('Fetching services');
+    this.myEntriesStateService.setRefreshingMyEntries(true);
+    this.usersService
+      .userServices(id)
+      .pipe(
+        finalize(() => {
+          this.myEntriesStateService.setRefreshingMyEntries(false);
+        })
+      )
+      .subscribe(
+        (services: Array<Workflow>) => {
+          this.workflowService.setWorkflows(services);
+          this.workflowService.setSharedWorkflows([]);
+          this.alertService.simpleSuccess();
+          this.selectEntry(this.recomputeWhatEntryToSelect([...(services || []), ...[]]), EntryType.Service);
+        },
+        error => {
+          this.workflowService.setWorkflows([]);
+          this.workflowService.setSharedWorkflows([]);
+          this.alertService.detailedSnackBarError(error);
+        }
+      );
   }
 
   /**
