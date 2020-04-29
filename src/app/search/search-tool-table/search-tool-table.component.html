@@ -51,7 +51,7 @@
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm *matCellDef="let tool">{{
+      <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool">{{
         tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : ''
       }}</mat-cell>
     </ng-container>
