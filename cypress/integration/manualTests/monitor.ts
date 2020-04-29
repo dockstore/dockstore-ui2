@@ -56,10 +56,11 @@ describe('Monitor homepage links', () => {
 describe('Test launch button icons', () => {
   it('find a WDL workflow', () => {
     cy.visit('/search');
-    cy.wait(10000); // wait for the tabs to become clickable
+    cy.contains('.mat-tab-label', 'Workflows');
+    cy.get('[data-cy=toolNames]').should('have.length.of.at.least', 1);
     goToTab('Workflows');
 
-    // click to sort by descriptor type descending so WDL is at the top
+    // click twice to sort by descriptor type descending so WDL is at the top
     cy.get('[data-cy=descriptorType]')
       .click()
       .click();
@@ -71,8 +72,14 @@ describe('Test launch button icons', () => {
   });
 
   it('get the svg icons', () => {
-    cy.get('[data-cy=dnanexusIcon]').should('exist');
-    cy.get('[data-cy=terraIcon]').should('exist');
-    cy.get('[data-cy=anvilIcon]').should('exist');
+    cy.get('[data-cy=dnanexusIcon]').within(() => {
+      cy.get('svg').should('exist');
+    });
+    cy.get('[data-cy=terraIcon]').within(() => {
+      cy.get('svg').should('exist');
+    });
+    cy.get('[data-cy=anvilIcon]').within(() => {
+      cy.get('svg').should('exist');
+    });
   });
 });
