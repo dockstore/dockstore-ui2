@@ -180,7 +180,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!paramMap) {
       return;
     }
-    const newAdvancedSearchObject: AdvancedSearchObject = initialAdvancedSearchObject;
+    const newAdvancedSearchObject: AdvancedSearchObject = { ...initialAdvancedSearchObject };
     let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
     // URL is gospel, if it doesn't have a search term, then there's no search term
     if (!paramMap.has('search')) {

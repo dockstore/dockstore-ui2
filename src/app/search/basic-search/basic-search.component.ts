@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
+import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 
@@ -13,7 +15,7 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./basic-search.component.scss']
 })
 export class BasicSearchComponent extends Base implements OnInit {
-  constructor(private searchService: SearchService, private searchQuery: SearchQuery) {
+  constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {
     super();
   }
   public searchFormControl = new FormControl();
@@ -49,6 +51,9 @@ export class BasicSearchComponent extends Base implements OnInit {
    * @memberof BasicSearchComponent
    */
   openAdvancedSearch(): void {
-    this.searchService.setShowModal(true);
+    this.matDialog.open(AdvancedSearchComponent, {
+      width: '600px',
+      height: 'auto'
+    });
   }
 }

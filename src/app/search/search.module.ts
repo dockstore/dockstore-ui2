@@ -77,6 +77,7 @@ import { SearchService } from './state/search.service';
     FlexLayoutModule
   ],
   providers: [SearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
-  exports: [SearchComponent]
+  exports: [SearchComponent],
+  entryComponents: [AdvancedSearchComponent]
 })
 export class SearchModule {}
