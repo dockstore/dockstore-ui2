@@ -217,10 +217,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public toggleSidebar(): void {
     this.showSidebar = !this.showSidebar;
   }
-
-  sync(): void {
-    this.refreshService.syncServices();
-  }
 }
 
 /**
