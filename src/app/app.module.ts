@@ -60,6 +60,7 @@ import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloa
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { RequestsModule } from './loginComponents/requests.module';
+import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -150,7 +151,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     GithubCallbackComponent,
     ConfirmationDialogComponent,
     SessionExpiredComponent,
-    TosBannerComponent
+    TosBannerComponent,
+    LogoutComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
