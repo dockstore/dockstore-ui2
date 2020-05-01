@@ -23,7 +23,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -59,7 +58,6 @@ import { SearchService } from './state/search.service';
     FontAwesomeModule,
     AccordionModule.forRoot(),
     MatAutocompleteModule,
-    ModalModule.forRoot(),
     FormsModule,
     HeaderModule,
     TagCloudModule,
