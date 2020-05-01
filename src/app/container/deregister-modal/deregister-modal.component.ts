@@ -25,7 +25,7 @@ import { RegisterToolService } from './../register-tool/register-tool.service';
 @Component({
   selector: 'app-deregister-modal',
   templateUrl: './deregister-modal.component.html',
-  styleUrls: ['./deregister-modal.component.scss']
+  styleUrls: ['./deregister-modal.component.css']
 })
 export class ModalComponent extends Base implements OnInit {
   @Input() refreshMessage;
@@ -55,5 +55,4 @@ export class ModalComponent extends Base implements OnInit {
         }
       });
   }
-
 }
