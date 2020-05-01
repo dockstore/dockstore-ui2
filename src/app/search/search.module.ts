@@ -21,11 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TagCloudModule } from 'angular-tag-cloud-module';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
@@ -56,14 +52,10 @@ import { SearchService } from './state/search.service';
     CommonModule,
     CustomMaterialModule,
     FontAwesomeModule,
-    AccordionModule.forRoot(),
     MatAutocompleteModule,
     FormsModule,
     HeaderModule,
     TagCloudModule,
-    TabsModule.forRoot(),
-    TooltipModule.forRoot(),
-    BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
     PipeModule,
     ClipboardModule,
@@ -74,7 +66,7 @@ import { SearchService } from './state/search.service';
     RefreshAlertModule,
     FlexLayoutModule
   ],
-  providers: [SearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
+  providers: [SearchService, QueryBuilderService],
   exports: [SearchComponent],
   entryComponents: [AdvancedSearchComponent]
 })
