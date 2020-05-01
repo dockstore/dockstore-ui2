@@ -17,8 +17,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { ContainerComponent } from '../../container/container.component';
@@ -49,7 +47,6 @@ import { InfoTabService } from './../../container/info-tab/info-tab.service';
 import { RegisterToolService } from './../../container/register-tool/register-tool.service';
 import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
-import { getTooltipConfig } from './../../shared/tooltip';
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
@@ -82,12 +79,10 @@ import { SelectModule } from './select.module';
     HeaderModule,
     SelectModule,
     ListContainersModule,
-    TabsModule.forRoot(),
     FormsModule,
     OrderByModule,
     PrivateIconModule,
     StarringModule,
-    ModalModule,
     StargazersModule,
     EntryModule,
     AddEntryModule,
