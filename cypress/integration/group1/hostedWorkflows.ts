@@ -53,7 +53,7 @@ describe('Dockstore hosted workflows', () => {
 
       // Should have alert saying there are no versions
       goToTab('Versions');
-      cy.contains('To see versions, please add a new version.');
+      cy.contains('To see versions, please add a new version in the Files tab.');
 
       // Add a new version with one descriptor
       goToTab('Files');

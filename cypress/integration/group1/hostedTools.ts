@@ -50,7 +50,7 @@ describe('Dockstore hosted tools', () => {
 
       // Check content of the version tab. New hosted tool, there's no versions
       goToTab('Versions');
-      cy.contains('To see versions, please add a new version');
+      cy.contains('To see versions, please add a new version in the Files tab.');
 
       // Add a new version with one descriptor and dockerfile
       goToTab('Files');
