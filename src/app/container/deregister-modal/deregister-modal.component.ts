@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { Base } from '../../shared/base';
@@ -43,12 +43,12 @@ export class ModalComponent extends Base implements OnInit {
     const confirmationDialogData: ConfirmationDialogData = {
       title: 'Are you sure you wish to delete this tool?',
       message: `All information associated with this tool will be deleted.`,
-      cancelButtonText: 'Close',
+      cancelButtonText: 'Cancel',
       confirmationButtonText: 'Delete'
     };
     this.confirmationDialogService
       .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
-      .pipe(takeUntil(this.ngUnsubscribe))
+      .pipe(first())
       .subscribe(result => {
         if (result) {
           this.deregister();

@@ -21,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TagCloudModule } from 'angular-tag-cloud-module';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
@@ -56,6 +57,7 @@ import { SearchService } from './state/search.service';
     FormsModule,
     HeaderModule,
     TagCloudModule,
+    BsDropdownModule.forRoot(),
     PopoverModule.forRoot(),
     PipeModule,
     ClipboardModule,

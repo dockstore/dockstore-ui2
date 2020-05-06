@@ -13,16 +13,16 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<h4 mat-dialog-title class="pull-left">Advanced Search</h4>
-<mat-dialog-content class="h-100 p-0 m-0">
-  <div mat-dialog-actions class="modal-title p-0 m-0 dialog-actions">
-    <button type="button" class="close pull-right" aria-label="Close" tabindex="-1">
+<h4 mat-dialog-title>
+  Advanced Search
+  <span>
+    <button type="button" class="close" aria-label="Close" tabindex="-1" (click)="closeDialog()">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
-</mat-dialog-content>
+  </span>
+</h4>
 <div mat-dialog-content>
-  <div mat-dialog-actions class="modal-body form-horizontal dialog-actions p-0 mb-0">
+  <div mat-dialog-actions class="form-horizontal dialog-actions mb-0">
     Find tools and workflows with
     <span *ngIf="searchMode === 'description'"> a </span>
     <span class="btn-group" dropdown>

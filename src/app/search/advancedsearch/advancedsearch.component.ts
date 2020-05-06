@@ -64,10 +64,14 @@ export class AdvancedSearchComponent extends Base implements OnInit {
     // No easy and correct way to get searchInfo for `this.searchService.createPermalinks(searchInfo)` without major changes
     // because it's not in the state
     this.searchService.goToCleanSearch();
-    this.dialog.closeAll();
+    this.closeDialog();
   }
 
   switchSearchMode(searchMode: string): void {
     this.searchMode = searchMode;
+  }
+
+  closeDialog(): void {
+    this.dialog.closeAll();
   }
 }

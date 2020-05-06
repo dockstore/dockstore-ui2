@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
-import { formInputDebounceTime } from '../../shared/constants';
+import { bootstrap4largeModalSize, formInputDebounceTime } from '../../shared/constants';
 import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
@@ -52,7 +52,7 @@ export class BasicSearchComponent extends Base implements OnInit {
    */
   openAdvancedSearch(): void {
     this.matDialog.open(AdvancedSearchComponent, {
-      width: '600px',
+      width: bootstrap4largeModalSize,
       height: 'auto'
     });
   }
