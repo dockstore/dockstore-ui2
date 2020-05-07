@@ -180,9 +180,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!paramMap) {
       return;
     }
-    // Spread operator for assigning the initialAdvancedSearchObject must be used due to an issue where overriding
-    // any of the object's field will result in an error for localhost running without production mode on.
-    // This issue does not appear on dev.dockstore.net.
+    // Spread operator for assigning the initialAdvancedSearchObject must be used due to an issue occurring with
+    // only non-prod mode.
     const newAdvancedSearchObject: AdvancedSearchObject = { ...initialAdvancedSearchObject };
     let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
     // URL is gospel, if it doesn't have a search term, then there's no search term
