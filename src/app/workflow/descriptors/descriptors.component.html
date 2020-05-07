@@ -67,7 +67,7 @@
     </div>
     <mat-card class="alert alert-warning" role="alert" *ngIf="!content">
       <mat-icon>warning</mat-icon>
-      &nbsp;A Descriptor File associated with this workflow could not be found.
+      &nbsp;A {{ !otherFiles ? 'Descriptor File' : 'Configuration File' }} associated with this workflow could not be found.
     </mat-card>
   </ng-template>
 </div>
