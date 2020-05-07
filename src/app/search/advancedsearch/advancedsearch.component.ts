@@ -15,7 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { SearchService } from '../state/search.service';
@@ -25,16 +25,15 @@ import { AdvancedSearchQuery } from './state/advanced-search.query';
 @Component({
   selector: 'app-advancedsearch',
   templateUrl: './advancedsearch.component.html',
-  styleUrls: ['./advancedsearch.component.css']
+  styleUrls: ['./advancedsearch.component.scss']
 })
 export class AdvancedSearchComponent extends Base implements OnInit {
   NOTFilter: string;
   ANDNoSplitFilter: string;
   ANDSplitFilter: string;
   ORFilter: string;
-  isModalShown$: Observable<boolean>;
   searchMode = 'files';
-  constructor(private searchService: SearchService, private advancedSearchQuery: AdvancedSearchQuery) {
+  constructor(private searchService: SearchService, private advancedSearchQuery: AdvancedSearchQuery, private dialog: MatDialog) {
     super();
   }
 
@@ -46,11 +45,6 @@ export class AdvancedSearchComponent extends Base implements OnInit {
       this.NOTFilter = advancedSearch.NOTFilter;
       this.searchMode = advancedSearch.searchMode;
     });
-    this.isModalShown$ = this.advancedSearchQuery.showModal$;
-  }
-
-  public onHidden(): void {
-    this.searchService.setShowModal(false);
   }
 
   advancedSearch(): void {
@@ -62,7 +56,7 @@ export class AdvancedSearchComponent extends Base implements OnInit {
       searchMode: this.searchMode
     };
     this.searchService.setAdvancedSearch(advancedSearch);
-    this.onHidden();
+    this.dialog.closeAll();
   }
 
   clearAll(): void {
@@ -70,10 +64,14 @@ export class AdvancedSearchComponent extends Base implements OnInit {
     // No easy and correct way to get searchInfo for `this.searchService.createPermalinks(searchInfo)` without major changes
     // because it's not in the state
     this.searchService.goToCleanSearch();
-    this.onHidden();
+    this.closeDialog();
   }
 
   switchSearchMode(searchMode: string): void {
     this.searchMode = searchMode;
+  }
+
+  closeDialog(): void {
+    this.dialog.closeAll();
   }
 }

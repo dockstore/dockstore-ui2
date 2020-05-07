@@ -120,10 +120,6 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     this.alertService.clearEverything();
   }
 
-  showModal() {
-    this.registerToolService.setIsModalShown(true);
-  }
-
   ngOnInit() {
     this.loading$ = this.sessionQuery.loadingDialog$;
     this.registerToolService.toolRegisterError

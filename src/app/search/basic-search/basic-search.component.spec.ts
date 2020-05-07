@@ -2,7 +2,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { ProviderService } from '../../shared/provider.service';
 import { SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
@@ -15,7 +17,7 @@ describe('BasicSearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatAutocompleteModule, RouterTestingModule],
+      imports: [MatAutocompleteModule, RouterTestingModule, BrowserAnimationsModule, CustomMaterialModule],
       declarations: [BasicSearchComponent],
       providers: [ProviderService, { provide: SearchService, useClass: SearchStubService }]
     }).compileComponents();
