@@ -248,7 +248,12 @@
                     <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
                   </div>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML">
-                    <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
+                    <div *ngIf="workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Service">
+                      <ng-container *ngTemplateOutlet="newComponent"></ng-container>
+                    </div>
+                    <div *ngIf="workflow.descriptorType !== WorkflowModel.DescriptorTypeEnum.Service">
+                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
+                    </div>
                   </div>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.FULL">
                     <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
