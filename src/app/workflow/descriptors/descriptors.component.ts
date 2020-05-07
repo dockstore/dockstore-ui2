@@ -35,6 +35,7 @@ import { FilesService } from '../files/state/files.service';
 export class DescriptorsWorkflowComponent extends EntryFileSelector {
   @Input() id: number;
   @Input() entrypath: string;
+  @Input() otherFiles: boolean;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.onVersionChange(value);
     this.checkIfValid(true, value);
@@ -72,9 +73,13 @@ export class DescriptorsWorkflowComponent extends EntryFileSelector {
    * @memberof DescriptorsWorkflowComponent
    */
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
-    return this.gA4GHFilesQuery.getToolFiles(descriptorType, [
-      ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
-      ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR
-    ]);
+    if (this.otherFiles) {
+      return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.OTHER]);
+    } else {
+      return this.gA4GHFilesQuery.getToolFiles(descriptorType, [
+        ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
+        ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR
+      ]);
+    }
   }
 }
