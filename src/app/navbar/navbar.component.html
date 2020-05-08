@@ -29,6 +29,9 @@
         <a mat-button class="icon" href="{{ Dockstore.DOCUMENTATION_URL }}" target="_blank" rel="noopener noreferrer">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png" alt="stacked pages" /> Docs
         </a>
+        <a mat-button class="icon" href="{{ Dockstore.DISCOURSE_URL }}" target="_blank" rel="noopener noreferrer">
+          <mat-icon class="hidden-sm">help_outline</mat-icon> Help
+        </a>
         <span class="spacer"></span>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
         <template [ngTemplateOutlet]="loginButton"></template>
