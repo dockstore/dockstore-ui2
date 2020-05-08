@@ -46,8 +46,4 @@ export class SearchWorkflowTableComponent extends SearchEntryTable implements On
   privateNgOnInit(): Observable<Array<Workflow>> {
     return this.searchQuery.workflows$;
   }
-
-  getVerified(workflow: Workflow): boolean {
-    return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
-  }
 }

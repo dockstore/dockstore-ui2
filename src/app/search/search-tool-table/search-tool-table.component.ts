@@ -31,8 +31,4 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
   privateNgOnInit(): Observable<Array<DockstoreTool>> {
     return this.searchQuery.tools$;
   }
-
-  getVerified(tool: DockstoreTool): boolean {
-    return this.dockstoreService.getVersionVerified(tool.workflowVersions);
-  }
 }
