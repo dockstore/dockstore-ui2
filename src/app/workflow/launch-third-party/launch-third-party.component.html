@@ -19,7 +19,7 @@
               [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
               [disabled]="!(hasContent$ | async)"
               color="primary"
-              ><img src="../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
+              ><img data-cy="dnastackIcon" src="../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
             >
           </div>
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
@@ -91,6 +91,7 @@
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               color="primary"
+              data-cy="nhlbiWdlButton"
               >NHLBI BioData Catalyst</a
             >
           </div>
