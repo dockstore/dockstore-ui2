@@ -17,7 +17,6 @@ import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
-import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable, Subject } from 'rxjs';
@@ -168,13 +167,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   }
 
   getWorkflowPathPlaceholder(descriptorType: Workflow.DescriptorTypeEnum): string {
-    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
-    );
-    if (foundExtendedDescriptorLanguage) {
-      return foundExtendedDescriptorLanguage.descriptorPathPlaceholder;
-    }
-    return extendedUnknownDescriptor.descriptorPathPlaceholder;
+    return DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
   }
 
   formChanged() {
@@ -241,15 +234,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * @memberof RegisterWorkflowModalComponent
    */
   changeDescriptorType(descriptorType: Workflow.DescriptorTypeEnum): void {
-    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
-    );
-    if (foundExtendedDescriptorLanguage) {
-      this.descriptorValidationPattern = foundExtendedDescriptorLanguage.descriptorPathPattern;
-    } else {
-      this.descriptorValidationPattern = '.*';
-    }
-    console.log(this.workflow.descriptorType);
+    this.descriptorValidationPattern = DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+      descriptorType
+    ).descriptorPathPattern;
     this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
   }
 

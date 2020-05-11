@@ -68,32 +68,12 @@ describe('Dockstore Home', () => {
     });
   });
 
-  describe('my-services sync', () => {
+  describe('my-services', () => {
     setTokenUserViewPortCurator();
     it('Have no services in /my-services', () => {
       cy.visit('/my-services');
       cy.url().should('contain', 'my-services');
       cy.contains('You have not registered any services').should('be.visible');
-    });
-    it('Clicking sync with Github should sync', () => {
-      cy.server();
-      // This fixture has one service
-      cy.fixture('syncservices1.json').then(json => {
-        cy.route({
-          method: 'POST',
-          url: '*/users/github/sync',
-          response: json
-        });
-      });
-      // One org
-      cy.get('[data-cy=sync-with-github]').click();
-      // One org but different
-      cy.get('mat-expansion-panel').should('have.length', 1);
-      cy.get('.mat-expansion-indicator')
-        .first()
-        .click();
-      // One repo within the org
-      cy.get('.mat-list-item-content').should('have.length', 1);
     });
   });
 

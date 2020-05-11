@@ -210,9 +210,10 @@
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
-              No description associated with this {{ entryType$ | async }}. See
+              No description associated with this {{ entryType$ | async }}.
               <ng-container [ngSwitch]="descriptorType$ | async">
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.CWL">
+                  See&nbsp;
                   <a
                     href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/best-practices.html#authorship-metadata"
                     target="_blank"
@@ -223,6 +224,7 @@
                   description for this tool.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.WDL">
+                  See&nbsp;
                   <a
                     href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata"
                     target="_blank"
@@ -231,6 +233,7 @@
                   >.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.NFL">
+                  See&nbsp;
                   <a
                     href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata"
                     target="_blank"
@@ -238,9 +241,9 @@
                     >Nextflow Best Practices</a
                   >.
                 </span>
-                <span *ngSwitchCase="ToolDescriptor.TypeEnum.SERVICE">
-                  ** placeholder: link to doc that describes how to set a service description **
-                </span>
+                <!-- TODO: Handle SERVICE and GALAXY (Link to doc that describes how to set a service, etc) -->
+                <!-- Empty default for show that it was considered -->
+                <span *ngSwitchDefault></span>
               </ng-container>
             </span>
           </div>

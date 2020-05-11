@@ -162,19 +162,21 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   );
 
   terraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
-    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'Terra'))
+    map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'Terra'))
   );
 
   anvilTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
-    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'AnVIL'))
+    map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'AnVIL'))
   );
 
   bdCatalystTerraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
-    map(([hasContent, hasFileImports]) => this.terraTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra'))
+    map(([hasContent, hasFileImports]) =>
+      this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra')
+    )
   );
 
   disableTerraPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
-    map(([hasContent, hasFileImports]) => !hasContent || hasFileImports)
+    map(([hasContent, hasFileImports]) => !hasContent || (hasFileImports && !this.isGitHubWorkflow()))
   );
 
   constructor(
@@ -237,12 +239,16 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     return `Export this workflow version to ${platform}.`;
   }
 
-  private terraTooltip(hasContent: boolean, hasFileImports, platform: string): string {
+  private isGitHubWorkflow(): boolean {
+    return this.workflow && this.workflow.gitUrl && this.workflow.gitUrl.startsWith('git@github.com');
+  }
+
+  private terraBasedPlatformTooltip(hasContent: boolean, hasFileImports, platform: string): string {
     if (!hasContent) {
       return 'The WDL has no content.';
     }
-    if (hasFileImports) {
-      return `${platform} does not support file-path imports in WDL. It only supports http(s) imports.`;
+    if (!this.isGitHubWorkflow() && hasFileImports) {
+      return `This version of the WDL has file-path imports, which are only supported by ${platform} for GitHub-based workflows.`;
     }
     return `Export this workflow version to ${platform}.`;
   }

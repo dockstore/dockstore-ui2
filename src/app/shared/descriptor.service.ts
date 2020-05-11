@@ -35,7 +35,7 @@ export class DescriptorService {
       const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
       unique.forEach((element: SourceFile.TypeEnum) => {
         extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
-          if (extendedDescriptorLanguage.sourceFileTypeEnum.includes(element)) {
+          if (extendedDescriptorLanguage.descriptorFileTypes.includes(element)) {
             descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);
           }
         });
@@ -55,7 +55,7 @@ export class DescriptorService {
     if (version && version.validations) {
       extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
         const cwlValidation = version.validations.find(validation => {
-          return extendedDescriptorLanguage.sourceFileTypeEnum.includes(validation.type);
+          return extendedDescriptorLanguage.descriptorFileTypes.includes(validation.type);
         });
         if (cwlValidation && cwlValidation.valid) {
           descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);

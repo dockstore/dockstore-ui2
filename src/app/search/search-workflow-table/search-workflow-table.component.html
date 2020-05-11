@@ -23,7 +23,7 @@
     <ng-container matColumnDef="verified">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let workflow">
-        <a *ngIf="getVerified(workflow)" href="{{ verifiedLink }}">
+        <a *ngIf="workflow.verified" href="{{ verifiedLink }}">
           <mat-icon matTooltip="Verified">done</mat-icon>
         </a>
       </mat-cell>

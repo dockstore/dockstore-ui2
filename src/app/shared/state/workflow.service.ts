@@ -17,6 +17,20 @@ export class WorkflowService {
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {}
 
+  /**
+   * Converts the mapping of roles to workflows to a concatentation of all the workflows
+   * @param workflows mapping returned by shared workflows endpoint
+   */
+  static convertSharedWorkflowsToWorkflowsList(workflows: Array<any>): Array<Workflow> {
+    if (workflows) {
+      let sharedWorkflows = workflows.map(workflow => workflow.workflows);
+      sharedWorkflows = [].concat.apply([], sharedWorkflows);
+      return sharedWorkflows;
+    } else {
+      return null;
+    }
+  }
+
   @transaction()
   setWorkflow(workflow: BioWorkflow | Service | null) {
     if (workflow) {
@@ -63,21 +77,7 @@ export class WorkflowService {
   }
 
   setSharedWorkflows(workflows: Array<any>) {
-    this.sharedWorkflows$.next(this.convertSharedWorkflowsToWorkflowsList(workflows));
-  }
-
-  /**
-   * Converts the mapping of roles to workflows to a concatentation of all the workflows
-   * @param workflows mapping returned by shared workflows endpoint
-   */
-  convertSharedWorkflowsToWorkflowsList(workflows: Array<any>): Array<Workflow> {
-    if (workflows) {
-      let sharedWorkflows = workflows.map(workflow => workflow.workflows);
-      sharedWorkflows = [].concat.apply([], sharedWorkflows);
-      return sharedWorkflows;
-    } else {
-      return null;
-    }
+    this.sharedWorkflows$.next(WorkflowService.convertSharedWorkflowsToWorkflowsList(workflows));
   }
 
   /**

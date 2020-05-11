@@ -5,7 +5,6 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { Workflow } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
-import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 
@@ -27,17 +26,12 @@ export class SidebarAccordionComponent implements OnInit {
     private workflowQuery: WorkflowQuery,
     public dialog: MatDialog,
     private sessionQuery: SessionQuery,
-    private alertQuery: AlertQuery,
-    private refreshService: RefreshService
+    private alertQuery: AlertQuery
   ) {}
 
   ngOnInit(): void {
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.entryType$ = this.sessionQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
-  }
-
-  syncOrganization(organization: string) {
-    this.refreshService.syncServicesForOrganziation(organization);
   }
 }

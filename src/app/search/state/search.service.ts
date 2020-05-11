@@ -579,15 +579,6 @@ export class SearchService {
     });
   }
 
-  setShowModal(showModal: boolean): void {
-    this.searchStore.update(state => {
-      return {
-        ...state,
-        showModal: showModal
-      };
-    });
-  }
-
   saveCurrentTab(index: number) {
     this.searchStore.update(state => {
       return {

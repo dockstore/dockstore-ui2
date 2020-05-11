@@ -8,6 +8,9 @@
     </span>
   </mat-card>
 </div>
+<div *ngIf="!(files$ | async) || (files$ | async).length === 0" class="p-3">
+  <mat-card class="alert alert-warning"> <mat-icon>warning</mat-icon>This version has no files.</mat-card>
+</div>
 <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
   <mat-tab *ngFor="let fileType of fileTypes$ | async" label="{{ 'ToolFile.FileTypeEnum' | mapFriendlyValue: fileType }}">
     <ng-template matTabContent>

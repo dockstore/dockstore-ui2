@@ -14,12 +14,16 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
+import {
+  ExtendedDescriptorLanguageBean,
+  extendedDescriptorLanguages,
+  extendedUnknownDescriptor
+} from 'app/entry/extendedDescriptorLanguage';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
-import { ToolDescriptor } from '../swagger';
+import { SourceFile, ToolDescriptor } from '../swagger';
 import { Workflow } from '../swagger/model/workflow';
 import { validationDescriptorPatterns } from '../validationMessages.model';
 import { MetadataService } from './../swagger/api/metadata.service';
@@ -54,15 +58,34 @@ export class DescriptorLanguageService {
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
   }
+  static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
+    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
+  }
+
+  static toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+    descriptorType: ToolDescriptor.TypeEnum | null
+  ): ExtendedDescriptorLanguageBean {
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
+    );
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
+  }
+
+  static toolDescriptorTypeEnumTotestParameterFileType(descriptorType: ToolDescriptor.TypeEnum): SourceFile.TypeEnum | null {
+    return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType;
+  }
 
   static workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
+    return this.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflowDescriptorTypeEnum).shortFriendlyName;
+  }
+
+  static workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+    descriptorType: Workflow.DescriptorTypeEnum | null
+  ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === workflowDescriptorTypeEnum
+      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
-    if (foundExtendedDescriptorLanguageFromValue) {
-      return foundExtendedDescriptorLanguageFromValue.shortFriendlyName;
-    }
-    return extendedUnknownDescriptor.shortFriendlyName;
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
   update() {
@@ -134,14 +157,8 @@ export class DescriptorLanguageService {
    * @returns {string}  Placeholder descriptor path
    * @memberof DescriptorLanguageService
    */
-  workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum): string {
-    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
-    );
-    if (foundExtendedDescriptorLanguageFromValue) {
-      return foundExtendedDescriptorLanguageFromValue.descriptorPathPlaceholder;
-    }
-    return extendedUnknownDescriptor.descriptorPathPlaceholder;
+  workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum | null): string {
+    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
   }
 
   genericUnhandledTypeError(type: any): void {
