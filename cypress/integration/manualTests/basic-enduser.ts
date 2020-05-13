@@ -1,21 +1,9 @@
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import { goToTab } from '../../support/commands';
 
-function testWorkflow(url: string, version1: string, version2: string, trsUrl: string) {
-  it('get the svg icons', () => {
-    cy.visit('/workflows/' + url + ':' + version1);
-    cy.get('[data-cy=dnanexusIcon]').within(() => {
-      cy.get('svg').should('exist');
-    });
-    cy.get('[data-cy=terraIcon]').within(() => {
-      cy.get('svg').should('exist');
-    });
-    cy.get('[data-cy=anvilIcon]').within(() => {
-      cy.get('svg').should('exist');
-    });
-  });
-
+function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
   it('info tab works', () => {
+    cy.visit('/workflows/' + url + ':' + version1);
     goToTab('Launch');
     cy.url().should('contain', '?tab=launch');
     cy.contains('mat-card-header', 'Workflow Information');
@@ -49,20 +37,39 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.get('[data-cy=dag-holder]');
   });
 
-  const launchWithTuples = [
-    // pairs of [launch button text, expected href]
-    ['DNAstack', Dockstore.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + url],
-    ['DNAnexus', Dockstore.DNANEXUS_IMPORT_URL + '?source=' + trsUrl],
-    ['Terra', Dockstore.TERRA_IMPORT_URL + '/' + url + ':' + version2],
-    ['AnVIL', Dockstore.ANVIL_IMPORT_URL + '/' + url + ':' + version2],
-    ['NHLBI BioData Catalyst', Dockstore.BD_CATALYST_TERRA_IMPORT_URL + '/' + url + ':' + version2]
-  ];
+  let launchWithTuples: any[] = [];
+  if (type === 'WDL') {
+    it('get the svg icons', () => {
+      cy.get('[data-cy=dnanexusIcon]').within(() => {
+        cy.get('svg').should('exist');
+      });
+      cy.get('[data-cy=terraIcon]').within(() => {
+        cy.get('svg').should('exist');
+      });
+      cy.get('[data-cy=anvilIcon]').within(() => {
+        cy.get('svg').should('exist');
+      });
+    });
+    launchWithTuples = [
+      // pairs of [launch button text, expected href]
+      ['DNAstack', Dockstore.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + url],
+      ['DNAnexus', Dockstore.DNANEXUS_IMPORT_URL + '?source=' + trsUrl],
+      ['Terra', Dockstore.TERRA_IMPORT_URL + '/' + url + ':' + version2],
+      ['AnVIL', Dockstore.ANVIL_IMPORT_URL + '/' + url + ':' + version2],
+      ['NHLBI BioData Catalyst', Dockstore.BD_CATALYST_TERRA_IMPORT_URL + '/' + url + ':' + version2]
+    ];
+  } else if (type === 'CWL') {
+    launchWithTuples = [
+      // pairs of [launch button text, expected href]
+      ['CGC', Dockstore.CGC_IMPORT_URL + '?trs=' + trsUrl],
+      ['NHLBI BioData Catalyst', Dockstore.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL + '?trs=' + trsUrl]
+    ];
+  }
 
   // click on each launch button and confirm the url changes
   launchWithTuples.forEach(t => {
     it('launch with buttons go to external site', () => {
       cy.contains('a', t[0]).should($el => {
-        expect($el).to.have.attr('href');
         expect($el).to.have.attr('href', t[1]);
       });
     });
@@ -137,14 +144,24 @@ const workflowVersionTuples = [
     'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl',
     '1.32.0',
     'develop',
-    'http://localhost:4200/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/develop'
-  ]
+    window.location.origin +
+      '/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/develop',
+    'WDL'
+  ],
+  [
+    'github.com/NCI-GDC/gdc-dnaseq-cwl/GDC_DNASeq',
+    'dev',
+    'master',
+    window.location.origin + '/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FNCI-GDC%2Fgdc-dnaseq-cwl%2FGDC_DNASeq/versions/master',
+    'CWL'
+  ],
+  ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL']
 ];
 
-const organizations = [['Seven Bridges']];
+const organizations = [['Broad Institute']];
 
 describe('Monitor workflows', () => {
-  workflowVersionTuples.forEach(t => testWorkflow(t[0], t[1], t[2], t[3]));
+  workflowVersionTuples.forEach(t => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
 });
 
 describe('Check organizations page', () => {

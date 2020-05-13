@@ -199,7 +199,7 @@
       </div>
       <span *ngIf="isValidVersion" id="downloadZipButton">
         <button *ngIf="!workflow?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
-        <a [href]="downloadZipLink" *ngIf="workflow?.is_published" data-cy="exportZip" mat-raised-button>Export as ZIP</a>
+        <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-raised-button>Export as ZIP</a>
       </span>
       <div>
         <div *ngIf="selectedVersion?.description || !isPublic">
