@@ -23,7 +23,13 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     goToTab('Files');
     cy.url().should('contain', '?tab=files');
     cy.contains('Descriptor Files');
-    cy.contains('Test Parameter Files');
+    cy.get('[data-cy=descriptorFiles]');
+    goToTab('Test Parameter Files');
+    if (type === 'NFL') {
+      cy.contains('Nextflow does not have the concept of a test parameter file.');
+    } else {
+      cy.get('[data-cy=testParamFiles]');
+    }
   });
 
   it('tools tab works', () => {
