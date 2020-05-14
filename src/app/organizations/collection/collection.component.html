@@ -82,7 +82,7 @@
           </mat-card>
 
           <div fxLayout="column" fxLayoutGap="15px">
-            <div *ngFor="let entry of collection?.entries">
+            <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
               <mat-card class="entryCard">
                 <mat-card-header>
                   <mat-card-title>

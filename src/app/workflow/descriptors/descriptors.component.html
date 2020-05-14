@@ -24,7 +24,7 @@
   </mat-card>
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
-    <div [hidden]="!content">
+    <div [hidden]="!content" data-cy="descriptorFiles">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
           <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
