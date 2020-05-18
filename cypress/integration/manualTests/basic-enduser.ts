@@ -2,7 +2,6 @@ import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import { goToTab } from '../../support/commands';
 
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
-
   it('info tab works', () => {
     cy.visit('/workflows/' + url + ':' + version1);
     goToTab('Launch');
