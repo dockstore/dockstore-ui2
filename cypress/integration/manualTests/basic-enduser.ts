@@ -2,6 +2,7 @@ import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import { goToTab } from '../../support/commands';
 
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
+
   it('info tab works', () => {
     cy.visit('/workflows/' + url + ':' + version1);
     goToTab('Launch');
@@ -56,27 +57,32 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
         cy.get('svg').should('exist');
       });
     });
+  }
+  if (type === 'CWL') {
     launchWithTuples = [
       // pairs of [launch button text, expected href]
-      ['DNAstack', Dockstore.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + url],
-      ['DNAnexus', Dockstore.DNANEXUS_IMPORT_URL + '?source=' + trsUrl],
-      ['Terra', Dockstore.TERRA_IMPORT_URL + '/' + url + ':' + version2],
-      ['AnVIL', Dockstore.ANVIL_IMPORT_URL + '/' + url + ':' + version2],
-      ['NHLBI BioData Catalyst', Dockstore.BD_CATALYST_TERRA_IMPORT_URL + '/' + url + ':' + version2]
+      ['CGC', '?trs=' + trsUrl],
+      ['NHLBI BioData Catalyst', '?trs=' + trsUrl]
     ];
-  } else if (type === 'CWL') {
+  } else if (type === 'WDL') {
     launchWithTuples = [
       // pairs of [launch button text, expected href]
-      ['CGC', Dockstore.CGC_IMPORT_URL + '?trs=' + trsUrl],
-      ['NHLBI BioData Catalyst', Dockstore.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL + '?trs=' + trsUrl]
+      ['DNAstack', '?descriptorType=wdl&path=' + url],
+      ['DNAnexus', '?source=' + trsUrl],
+      ['Terra', url + ':' + version2],
+      ['AnVIL', url + ':' + version2],
+      ['NHLBI BioData Catalyst', url + ':' + version2]
     ];
+  } else {
+    launchWithTuples = [];
   }
 
   // click on each launch button and confirm the url changes
   launchWithTuples.forEach(t => {
     it('launch with buttons go to external site', () => {
       cy.contains('a', t[0]).should($el => {
-        expect($el).to.have.attr('href', t[1]);
+        // @ts-ignore
+        expect($el.attr('href')).to.contain(t[1]);
       });
     });
   });
@@ -84,7 +90,6 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
 
 describe('Test logged out home page', () => {
   it('find buttons', () => {
-    cy.log(cy.url().toString());
     cy.visit('/');
     cy.contains('[data-cy=register-button]', 'Register');
     cy.get('[data-cy=homepage-search-button]').click();
