@@ -37,7 +37,7 @@
         <mat-form-field class="w-100">
           <mat-label>Select namespace</mat-label>
           <mat-select (selectionChange)="selectOrganization($event.value)">
-            <mat-option *ngFor="let organization of organizations" [value]="organization">
+            <mat-option data-cy="dropdownOrg" *ngFor="let organization of organizations" [value]="organization">
               {{ organization }}
             </mat-option>
           </mat-select>
