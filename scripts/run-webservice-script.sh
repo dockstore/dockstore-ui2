@@ -4,7 +4,9 @@ set -o pipefail
 set -o nounset
 set -o xtrace
 
-wget -O dockstore-webservice.jar --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${npm_package_config_webservice_version}/dockstore-webservice-${npm_package_config_webservice_version}.jar
+PATH="https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${npm_package_config_webservice_version}/dockstore-webservice-${npm_package_config_webservice_version}.jar"
+PATH="https://3855-33383826-gh.circle-artifacts.com/0/tmp/artifacts/dockstore-webservice-1.8.6-SNAPSHOT.jarwget -O dockstore-webservice.jar --no-verbose --tries=10 https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${npm_package_config_webservice_version}/dockstore-webservice-${npm_package_config_webservice_version}.jar
+wget -O dockstore-webservice.jar --no-verbose --tries=10 ${PATH}
 chmod u+x dockstore-webservice.jar
 psql -h localhost -c "create user dockstore with password 'dockstore' createdb;" -U postgres
 psql -h localhost -c "ALTER USER dockstore WITH superuser;" -U postgres
