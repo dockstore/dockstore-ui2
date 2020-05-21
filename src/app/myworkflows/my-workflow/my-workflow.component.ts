@@ -25,6 +25,7 @@ import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { TokenService } from 'app/shared/state/token.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
+import { UserService } from 'app/shared/user/user.service';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -89,6 +90,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     public dialog: MatDialog,
     protected accountsService: AccountsService,
     private refreshService: RefreshService,
+    private userService: UserService,
     private router: Router,
     private registerWorkflowModalService: RegisterWorkflowModalService,
     protected urlResolverService: UrlResolverService,
@@ -208,6 +210,10 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   showRegisterEntryModal(): void {
     this.myWorkflowsService.registerEntry(this.entryType);
+  }
+
+  addToExistingWorkflows(): void {
+    this.userService.addUserToWorkflows();
   }
 
   /**
