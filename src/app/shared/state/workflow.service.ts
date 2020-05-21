@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-import { Workflow, WorkflowVersion } from '../swagger';
+import { Workflow, WorkflowVersion, MyWorkflows } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
 import { ExtendedWorkflowService } from './extended-workflow.service';
@@ -54,7 +54,7 @@ export class WorkflowService {
     this.workflowStore.remove(id);
   }
 
-  setWorkflows(workflows: BioWorkflow[] | Service[]) {
+  setWorkflows(workflows: MyWorkflows[] | Service[]) {
     this.workflows$.next(workflows);
   }
 

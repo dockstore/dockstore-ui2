@@ -7,7 +7,7 @@ import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { forkJoin, of as observableOf } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { SharedWorkflows, UsersService, Workflow, WorkflowsService } from '../shared/swagger';
+import { SharedWorkflows, UsersService, Workflow, WorkflowsService, MyWorkflows } from '../shared/swagger';
 
 @Injectable()
 export class MyBioWorkflowsService {
@@ -57,7 +57,7 @@ export class MyBioWorkflowsService {
         })
       )
       .subscribe(
-        ([workflows, sharedWorkflows]: [(Array<BioWorkflow> | HttpErrorResponse), (Array<SharedWorkflows> | HttpErrorResponse)]) => {
+        ([workflows, sharedWorkflows]: [(Array<MyWorkflows> | HttpErrorResponse), (Array<SharedWorkflows> | HttpErrorResponse)]) => {
           if (!Array.isArray(workflows) && !Array.isArray(sharedWorkflows)) {
             this.alertService.detailedSnackBarError(workflows);
             workflows = [];
