@@ -23,14 +23,8 @@ export class TrackLoginService {
   private isLoggedIn: Subject<boolean> = new BehaviorSubject(this.authService.isAuthenticated());
   isLoggedIn$ = this.isLoggedIn.asObservable();
 
-  dockstoreToken: string;
-
   constructor(private authService: AuthService) {}
   switchState(state: boolean) {
     this.isLoggedIn.next(state);
-
-    if (state) {
-      this.dockstoreToken = this.authService.getToken();
-    }
   }
 }

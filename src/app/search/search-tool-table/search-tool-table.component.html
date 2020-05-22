@@ -28,7 +28,7 @@
   >
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let tool">
+      <mat-cell data-cy="toolNames" *matCellDef="let tool">
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
@@ -40,7 +40,7 @@
     <ng-container matColumnDef="verified">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
-        <a *ngIf="getVerified(tool)" href="{{ verifiedLink }}">
+        <a *ngIf="tool.verified" href="{{ verifiedLink }}">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
       </mat-cell>
@@ -51,7 +51,7 @@
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm *matCellDef="let tool">{{
+      <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool">{{
         tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : ''
       }}</mat-cell>
     </ng-container>

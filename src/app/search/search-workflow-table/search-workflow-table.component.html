@@ -14,7 +14,7 @@
   >
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let workflow">
+      <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
         <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
           workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
         }}</a>
@@ -23,7 +23,7 @@
     <ng-container matColumnDef="verified">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let workflow">
-        <a *ngIf="getVerified(workflow)" href="{{ verifiedLink }}">
+        <a *ngIf="workflow.verified" href="{{ verifiedLink }}">
           <mat-icon matTooltip="Verified">done</mat-icon>
         </a>
       </mat-cell>
@@ -33,8 +33,10 @@
       <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
-      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm *matCellDef="let workflow">{{ workflow?.descriptorType | uppercase }}</mat-cell>
+      <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow">{{
+        workflow?.descriptorType | uppercase
+      }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Project Links</mat-header-cell>
