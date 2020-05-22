@@ -378,7 +378,7 @@ describe('Dockstore tool/workflow search table', () => {
 // test checks if items per page for pagination persists after navigating away and back to search
 describe('search table items per page', () => {
   setTokenUserViewPort();
-  it('tool items per page', () => {
+  beforeEach(() => {
     cy.server();
     cy.fixture('searchTableResponse').then(json => {
       cy.route({
@@ -387,6 +387,9 @@ describe('search table items per page', () => {
         response: json
       });
     });
+  });
+
+  it('tool items per page', () => {
     cy.visit('/search');
     cy.get('#mat-select-0 ').click();
     cy.get('#mat-option-1 ').click();
@@ -395,5 +398,32 @@ describe('search table items per page', () => {
       .contains(' Search ')
       .click();
     cy.get('.mat-select-value-text ').contains('20');
+  });
+
+  it('tool items per page after advanced search', () => {
+    cy.visit('/search');
+    cy.get('[data-cy=advanced-search]').click();
+    cy.get('[data-cy=NOTFilter]')
+      .click()
+      .type('garyluu');
+    cy.get('[data-cy=confirm-search]').click();
+
+    cy.get('[data-cy=advanced-search]').click();
+    cy.get('[data-cy=clear-advanced-search]').click();
+
+    cy.get('[data-cy=advanced-search]').click();
+    cy.get('[data-cy=ANDNoSplitFilter]')
+      .click()
+      .type('gary');
+    cy.get('[data-cy=ORFilter]')
+      .click()
+      .type('A2');
+    cy.get('[data-cy=NOTFilter]')
+      .click()
+      .type('b3');
+    cy.get('[data-cy=confirm-search]').click();
+
+    cy.get('[data-cy=advanced-search]').click();
+    cy.get('[data-cy=clear-advanced-search]').click();
   });
 });
