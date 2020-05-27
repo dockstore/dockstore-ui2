@@ -106,6 +106,16 @@ export class WorkflowService {
     }
   }
 
+  /**
+   * Updates an existing workflow by updating the current list of workflows
+   * and updating extendededWorkfllowService
+   * @param workflow the workflow to be updated
+   */
+  updateWorkflow(workflow: BioWorkflow | Service) {
+    this.upsertWorkflowToWorkflow(workflow);
+    this.extendedWorkflowService.update(workflow);
+  }
+
   setNsWorkflows(nsWorkflows: any) {
     this.nsWorkflows$.next(nsWorkflows);
   }

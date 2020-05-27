@@ -45,7 +45,7 @@
     <mat-action-row>
       <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
-          <app-refresh-workflow-organization [organization]="orgObj?.organization"></app-refresh-workflow-organization>
+          <app-refresh-workflow-organization [orgWorkflowObject]="orgObj"></app-refresh-workflow-organization>
         </span>
       </div>
       <div *ngIf="(entryType$ | async) === EntryType.Service">

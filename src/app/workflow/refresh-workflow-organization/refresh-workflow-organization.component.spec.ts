@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,7 +34,7 @@ describe('RefreshWorkflowOrganizationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RefreshWorkflowOrganizationComponent],
-      imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule],
+      imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule, HttpClientTestingModule],
       providers: [
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
