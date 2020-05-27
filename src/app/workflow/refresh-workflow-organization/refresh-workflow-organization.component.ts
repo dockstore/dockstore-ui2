@@ -53,11 +53,11 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
       const workflows = this.orgWorkflowObject.published.concat(this.orgWorkflowObject.unpublished);
       from(workflows)
         .pipe(
-          takeUntil(this.ngUnsubscribe),
           concatMap(workflow => {
             this.alertService.start(`Refreshing ${workflow.full_workflow_path}`);
             return this.workflowsService.refresh(workflow.id);
-          })
+          }),
+          takeUntil(this.ngUnsubscribe)
         )
         .subscribe(
           workflow => {
