@@ -48,6 +48,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
+  originalVersion: WorkflowVersion;
   workflow: BioWorkflow | Service;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
@@ -86,7 +87,10 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.isOwner = this.data.isOwner;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => (this.version = Object.assign({}, version)));
+    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => {
+      this.version = Object.assign({}, version);
+      this.originalVersion = version;
+    });
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
     this.versionModalService.testParameterFiles.pipe(takeUntil(this.ngUnsubscribe)).subscribe(testParameterFiles => {
       this.testParameterFilePaths = [];
@@ -120,6 +124,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
     this.versionModalService.saveVersion(
+      this.originalVersion,
       this.version,
       this.originalTestParameterFilePaths,
       this.testParameterFilePaths,

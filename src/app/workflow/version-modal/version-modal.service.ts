@@ -57,10 +57,20 @@ export class VersionModalService {
    * @param {any} newTestParameterFiles
    * @memberof VersionModalService
    */
-  saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles, workflowMode: String) {
+  saveVersion(
+    originalVersion: WorkflowVersion,
+    workflowVersion: WorkflowVersion,
+    originalTestParameterFilePaths,
+    newTestParameterFiles,
+    workflowMode: String
+  ) {
     const message1 = 'Saving workflow version';
     const message2 = 'Modifying test parameter files';
     const workflowId = this.workflowQuery.getActive().id;
+    let toRefresh = false;
+    if (originalVersion.workflow_path !== workflowVersion.workflow_path) {
+      toRefresh = true;
+    }
     this.alertService.start(message1);
     if (workflowMode !== 'HOSTED') {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
@@ -68,13 +78,20 @@ export class VersionModalService {
           this.alertService.start(message2);
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
             success => {
+              if (!(Object.keys(success).length === 0 && success.constructor === Object)) {
+                toRefresh = true;
+              }
               this.alertService.detailedSuccess();
-              this.refreshService.refreshWorkflow();
+              if (toRefresh) {
+                this.refreshService.refreshWorkflow();
+              }
               this.matDialog.closeAll();
             },
             error => {
               this.alertService.detailedError(error);
-              this.refreshService.refreshWorkflow();
+              if (toRefresh) {
+                this.refreshService.refreshWorkflow();
+              }
             }
           );
         },
