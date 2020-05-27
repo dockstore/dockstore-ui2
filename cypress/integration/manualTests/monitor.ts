@@ -52,34 +52,3 @@ describe('Monitor homepage links', () => {
     });
   });
 });
-
-describe('Test launch button icons', () => {
-  it('find a WDL workflow', () => {
-    cy.visit('/search');
-    cy.contains('.mat-tab-label', 'Workflows');
-    cy.get('[data-cy=toolNames]').should('have.length.of.at.least', 1);
-    goToTab('Workflows');
-
-    // click twice to sort by descriptor type descending so WDL is at the top
-    cy.get('[data-cy=descriptorType]')
-      .click()
-      .click();
-    cy.get('[data-cy=workflowColumn]')
-      .first()
-      .within(() => {
-        cy.get('a').click(); // click on the link to the first workflow
-      });
-  });
-
-  it('get the svg icons', () => {
-    cy.get('[data-cy=dnanexusIcon]').within(() => {
-      cy.get('svg').should('exist');
-    });
-    cy.get('[data-cy=terraIcon]').within(() => {
-      cy.get('svg').should('exist');
-    });
-    cy.get('[data-cy=anvilIcon]').within(() => {
-      cy.get('svg').should('exist');
-    });
-  });
-});

@@ -1,3 +1,5 @@
+import {goToTab} from '../../support/commands';
+
 function unpublishTool() {
   it('unpublish the tool', () => {
     cy.contains('button', 'Unpublish').should('not.be.disabled');
@@ -7,7 +9,6 @@ function unpublishTool() {
 
 function deleteTool() {
   it('delete the tool', () => {
-    cy.contains('button', 'Delete').should('not.be.disabled');
     cy.contains('button', 'Delete').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
       cy.contains('button', 'Delete').click();
@@ -15,7 +16,8 @@ function deleteTool() {
     cy.contains('There are currently no tools registered under this account');
   });
 }
-describe('Register, publish, unpublish, and delete a tool', () => {
+
+function registerQuayTool() {
   it('register and publish - quickly register quay.io tools option', () => {
     cy.log(Cypress.env('TOKEN'));
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('TOKEN'));
@@ -35,6 +37,30 @@ describe('Register, publish, unpublish, and delete a tool', () => {
     cy.contains('button', 'Finish').click();
     cy.contains('button', 'Publish').click();
   });
+}
+
+describe('Hide and un-hide a tool version', () => {
+  registerQuayTool();
+  it('hide a version', () => {
+    goToTab('Versions');
+    cy.contains('button', 'Actions').should('be.visible');
+    cy.contains('td', 'Actions').first().click();
+    cy.contains('button', 'Edit').click();
+    cy.contains('div', 'Hidden:').within(() => {
+      cy.get('[name=checkbox]').click();
+    });
+    cy.contains('button', 'Save Changes').click();
+
+    // select the first row in the versions table
+    cy.contains('tr').first().within(() => {
+      // both 'valid' and 'hidden' columns should be checked
+      cy.contains('mat-icon', 'check').should('have.length', 2);
+    });
+  });
+});
+
+describe('Register, publish, unpublish, and delete a tool', () => {
+  registerQuayTool();
   unpublishTool();
   deleteTool();
 
@@ -71,3 +97,15 @@ describe('Register, publish, unpublish, and delete a tool', () => {
   });
   deleteTool();
 });
+
+
+describe('Refresh, publish, unpublish, and restub a workflow', () => {
+  it('refresh and publish', () => {
+    cy.contains('mat-expansion-panel', 'github.com/emlys').within(() => {
+      goToTab('Unpublished');
+    });
+  });
+
+});
+
+
