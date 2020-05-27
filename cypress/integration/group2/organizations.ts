@@ -252,7 +252,7 @@ describe('Dockstore Organizations', () => {
     it('be able to remove an entry from a collection', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-      cy.get('#removeToolButton').click();
+      cy.get('#removeEntryButton').click();
       cy.get('#accept-remove-entry-from-org').click();
       cy.contains('This collection has no associated entries');
       cy.visit('/organizations/Potatoe');
