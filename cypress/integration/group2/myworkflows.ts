@@ -173,13 +173,24 @@ describe('Dockstore my workflows', () => {
 
   it('Should refresh individual repo when refreshing organization', () => {
     cy.server();
-    cy.route('/api/workflows/11/refresh').as('refreshWorkflow');
+    cy.fixture('refreshedAslashl').then(json => {
+      cy.route({
+        method: 'GET',
+        url: '/api/workflows/11/refresh',
+        response: json
+      }).as('refreshWorkflow');
+    });
+    // cy.route('/api/workflows/11/refresh').as('refreshWorkflow');
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
+    goToTab('Versions');
+    cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
     cy.contains('button', 'Refresh Organization')
       .should('be.visible')
       .click();
     cy.wait('@refreshWorkflow');
+    goToTab('Versions');
+    cy.get('table>tbody>tr').should('have.length', 1); // 2 Versions and no warning line
   });
 
   describe('Look at an invalid workflow', () => {
