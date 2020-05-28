@@ -45,10 +45,10 @@ export class VersionModalService {
   }
 
   /**
-   * Saves the version.  This contains 4 parts:
+   * Saves the version.  This contains 3 parts:
    * 1. PUT workflowVersions
-   * 3. Modify test parameter files
-   * 4. Refresh workflow again if workflow path has changed or if a file was added/removed
+   * 2. Modify test parameter files
+   * 3. Refresh workflow if workflow path has changed or if a test parameter file was added/removed
    *
    * @param {WorkflowVersion} workflowVersion
    * @param {any} originalTestParameterFilePaths
@@ -77,7 +77,7 @@ export class VersionModalService {
           this.alertService.start(message2);
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
             success => {
-              // Checks if there was a file added/removed
+              // Checks if there was a test parameter file added/removed
               if (!(Object.keys(success).length === 0 && success.constructor === Object)) {
                 toRefresh = true;
               }
