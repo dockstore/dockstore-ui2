@@ -47,10 +47,8 @@ export class VersionModalService {
   /**
    * Saves the version.  This contains 4 parts:
    * 1. PUT workflowVersions
-   * 2. Refresh workflow
    * 3. Modify test parameter files
-   * 4. Refresh workflow again
-   * TODO: Skip 2 and 3 if there's no test parameter files to modify
+   * 4. Refresh workflow again if workflow path has changed or if a file was added/removed
    *
    * @param {WorkflowVersion} workflowVersion
    * @param {any} originalTestParameterFilePaths
@@ -68,6 +66,7 @@ export class VersionModalService {
     const message2 = 'Modifying test parameter files';
     const workflowId = this.workflowQuery.getActive().id;
     let toRefresh = false;
+    // Checks if the workflow path was changed
     if (originalVersion.workflow_path !== workflowVersion.workflow_path) {
       toRefresh = true;
     }
@@ -78,6 +77,7 @@ export class VersionModalService {
           this.alertService.start(message2);
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
             success => {
+              // Checks if there was a file added/removed
               if (!(Object.keys(success).length === 0 && success.constructor === Object)) {
                 toRefresh = true;
               }
