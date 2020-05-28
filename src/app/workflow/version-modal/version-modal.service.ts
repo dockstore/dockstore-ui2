@@ -78,6 +78,7 @@ export class VersionModalService {
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
             success => {
               // Checks if there was a test parameter file added/removed
+              // The this.modifyTestParameterFiles function returns a {} observable if nothing was done, this is a way of checking for it
               if (!(Object.keys(success).length === 0 && success.constructor === Object)) {
                 toRefresh = true;
               }
