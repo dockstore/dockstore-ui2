@@ -45,22 +45,31 @@ export class VersionModalService {
   }
 
   /**
-   * Saves the version.  This contains 4 parts:
+   * Saves the version.  This contains 3 parts:
    * 1. PUT workflowVersions
-   * 2. Refresh workflow
-   * 3. Modify test parameter files
-   * 4. Refresh workflow again
-   * TODO: Skip 2 and 3 if there's no test parameter files to modify
+   * 2. Modify test parameter files
+   * 3. Refresh workflow if workflow path has changed or if a test parameter file was added/removed
    *
    * @param {WorkflowVersion} workflowVersion
    * @param {any} originalTestParameterFilePaths
    * @param {any} newTestParameterFiles
    * @memberof VersionModalService
    */
-  saveVersion(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles, workflowMode: String) {
+  saveVersion(
+    originalVersion: WorkflowVersion,
+    workflowVersion: WorkflowVersion,
+    originalTestParameterFilePaths,
+    newTestParameterFiles,
+    workflowMode: String
+  ) {
     const message1 = 'Saving workflow version';
     const message2 = 'Modifying test parameter files';
     const workflowId = this.workflowQuery.getActive().id;
+    let toRefresh = false;
+    // Checks if the workflow path was changed
+    if (originalVersion.workflow_path !== workflowVersion.workflow_path) {
+      toRefresh = true;
+    }
     this.alertService.start(message1);
     if (workflowMode !== 'HOSTED') {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
@@ -68,13 +77,22 @@ export class VersionModalService {
           this.alertService.start(message2);
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
             success => {
+              // Checks if there was a test parameter file added/removed
+              // The this.modifyTestParameterFiles function returns a {} observable if nothing was done, this is a way of checking for it
+              if (!(Object.keys(success).length === 0 && success.constructor === Object)) {
+                toRefresh = true;
+              }
               this.alertService.detailedSuccess();
-              this.refreshService.refreshWorkflow();
+              if (toRefresh) {
+                this.refreshService.refreshWorkflow();
+              }
               this.matDialog.closeAll();
             },
             error => {
               this.alertService.detailedError(error);
-              this.refreshService.refreshWorkflow();
+              if (toRefresh) {
+                this.refreshService.refreshWorkflow();
+              }
             }
           );
         },
