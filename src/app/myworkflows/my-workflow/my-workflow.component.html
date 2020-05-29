@@ -62,10 +62,9 @@
                             type="button"
                             (click)="addToExistingWorkflows()"
                             [disabled]="isRefreshing$ | async"
-                            matTooltip="Find existing Dockstore workflows based on your connected source control accounts."
+                            matTooltip="Discover workflows added by others using your linked source control accounts"
                             matTooltipPosition="after"
                           >
-                            <mat-icon>sync</mat-icon>
                             <span>Find Existing Workflows</span>
                           </button>
                         </mat-menu>
