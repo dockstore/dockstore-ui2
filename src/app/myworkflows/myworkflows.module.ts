@@ -16,8 +16,11 @@
 import { NgModule } from '@angular/core';
 import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
 import { myworkflowRouting } from './myworkflows.routing';
+import { GithubAppsLogsComponent } from './sidebar-accordion/github-apps-logs/github-apps-logs.component';
 
 @NgModule({
-  imports: [SharedWorkflowServicesModule, myworkflowRouting]
+  imports: [SharedWorkflowServicesModule, myworkflowRouting],
+  declarations: [GithubAppsLogsComponent],
+  entryComponents: [GithubAppsLogsComponent]
 })
 export class MyWorkflowsModule {}
