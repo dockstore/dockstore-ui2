@@ -116,7 +116,7 @@ export class WorkflowService {
    * @param workflow the workflow to be updated
    */
   updateWorkflow(workflow: BioWorkflow | Service) {
-    this.upsertWorkflowToWorkflow(workflow);
+    this.update(workflow.id, workflow);
     const extendedWorkflow = this.extendedWorkflowQuery.getValue();
     if (extendedWorkflow && extendedWorkflow.id === workflow.id) {
       this.extendedWorkflowService.update(workflow);
