@@ -40,9 +40,9 @@ export class UserService {
     });
   }
 
-  addUserToWorkflows(): void {
+  addUserToWorkflows(user: User): void {
     this.alertService.start('Adding user to existing workflows on Dockstore');
-    this.usersService.addUserToDockstoreWorkflows().subscribe(
+    this.usersService.addUserToDockstoreWorkflows(user.id).subscribe(
       (workflows: Array<Workflow>) => {
         this.alertService.detailedSuccess();
         this.workflowService.setWorkflows(workflows);

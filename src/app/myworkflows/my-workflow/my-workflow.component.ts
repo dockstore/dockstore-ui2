@@ -213,7 +213,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   addToExistingWorkflows(): void {
-    this.userService.addUserToWorkflows();
+    this.userQuery.user$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((user) => {
+        if (user) {
+          this.userService.addUserToWorkflows(user);
+        }
+      });
   }
 
   /**

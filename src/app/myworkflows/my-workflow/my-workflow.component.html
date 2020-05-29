@@ -54,17 +54,21 @@
                         >
                           <mat-icon>add</mat-icon>
                         </button>
-                        <button
-                          mat-icon-button
-                          color="primary"
-                          type="button"
-                          (click)="addToExistingWorkflows()"
-                          [disabled]="isRefreshing$ | async"
-                          matTooltip="Add yourself to existing Dockstore workflows that you should have access to on remote sites"
-                          matTooltipPosition="after"
-                        >
-                          <mat-icon>sync</mat-icon>
-                        </button>
+                        <button mat-icon-button [matMenuTriggerFor]="myWorkflowsActions"><mat-icon>more_vert</mat-icon></button>
+                        <mat-menu #myWorkflowsActions="matMenu">
+                          <button
+                            mat-menu-item
+                            color="primary"
+                            type="button"
+                            (click)="addToExistingWorkflows()"
+                            [disabled]="isRefreshing$ | async"
+                            matTooltip="Find existing Dockstore workflows based on your connected source control accounts."
+                            matTooltipPosition="after"
+                          >
+                            <mat-icon>sync</mat-icon>
+                            <span>Find Existing Workflows</span>
+                          </button>
+                        </mat-menu>
                       </span>
                       <ng-container *ngIf="entryType === EntryType.Service">
                         <a
