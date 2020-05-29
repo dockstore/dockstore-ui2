@@ -25,17 +25,17 @@
   <div mat-dialog-actions class="form-horizontal dialog-actions mb-0">
     Find tools and workflows with
     <span *ngIf="searchMode === 'description'"> a </span>
-    <span class="btn-group" dropdown>
-      <button dropdownToggle type="button" class="btn btn-secondary dropdown-toggle">{{ searchMode }} <span class="caret"></span></button>
-      <ul *dropdownMenu class="dropdown-menu" role="menu">
-        <li *ngIf="searchMode !== 'description'" role="menuitem">
-          <a class="dropdown-item" (click)="switchSearchMode('description')">description</a>
-        </li>
-        <li *ngIf="searchMode !== 'files'" role="menuitem">
-          <a class="dropdown-item" (click)="switchSearchMode('files')">files</a>
-        </li>
-      </ul>
-    </span>
+    <mat-form-field>
+      <mat-label class="dropdown-display"> {{ searchMode }} </mat-label>
+      <mat-select>
+        <a *ngIf="searchMode !== 'description'">
+          <mat-option class="dropdown-item" (click)="switchSearchMode('description')">description</mat-option>
+        </a>
+        <a *ngIf="searchMode !== 'files'">
+          <mat-option class="dropdown-item" (click)="switchSearchMode('files')">files</mat-option>
+        </a>
+      </mat-select>
+    </mat-form-field>
     that
     <span *ngIf="searchMode === 'description'"> has </span>
     <span *ngIf="searchMode === 'files'"> have </span>

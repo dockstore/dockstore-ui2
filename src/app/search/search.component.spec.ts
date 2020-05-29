@@ -28,6 +28,7 @@ import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
+import { MdePopoverModule } from '@material-extended/mde';
 
 @Component({
   selector: 'app-search-results',
@@ -56,7 +57,7 @@ describe('SearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-      imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule, RouterTestingModule],
+      imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule, RouterTestingModule, MdePopoverModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
