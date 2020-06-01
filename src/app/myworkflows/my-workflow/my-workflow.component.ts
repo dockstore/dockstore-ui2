@@ -18,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { User } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
@@ -69,6 +70,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflows: Array<Workflow>;
   entryType: EntryType;
   entryType$: Observable<EntryType>;
+  user: User;
+  user$: Observable<User>;
   myEntryPageTitle$: Observable<string>;
   workflow$: Observable<Service | BioWorkflow>;
   EntryType = EntryType;
@@ -119,6 +122,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     );
     this.entryType = this.sessionQuery.getValue().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
+    this.user = this.userQuery.getValue().user;
+    this.user$ = this.userQuery.user$;
   }
 
   ngOnInit() {
@@ -213,13 +218,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   addToExistingWorkflows(): void {
-    this.userQuery.user$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((user) => {
-        if (user) {
-          this.userService.addUserToWorkflows(user);
-        }
-      });
+    if (this.user) {
+      this.userService.addUserToWorkflows(this.user.id);
+    }
   }
 
   /**

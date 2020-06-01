@@ -54,18 +54,20 @@
                         >
                           <mat-icon>add</mat-icon>
                         </button>
-                        <button mat-icon-button [matMenuTriggerFor]="myWorkflowsActions"><mat-icon>more_vert</mat-icon></button>
+                        <button mat-icon-button [matMenuTriggerFor]="myWorkflowsActions" [disabled]="isRefreshing$ | async">
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
                         <mat-menu #myWorkflowsActions="matMenu">
                           <button
                             mat-menu-item
                             color="primary"
                             type="button"
                             (click)="addToExistingWorkflows()"
-                            [disabled]="isRefreshing$ | async"
+                            [disabled]="(isRefreshing$ | async) || !(user$ | async)"
                             matTooltip="Discover workflows added by others using your linked source control accounts"
                             matTooltipPosition="after"
                           >
-                            <span>Find Existing Workflows</span>
+                            <span>Discover Existing Dockstore Workflows</span>
                           </button>
                         </mat-menu>
                       </span>
@@ -139,20 +141,21 @@
                   Register {{ entryType$ | async | titlecase }}
                 </button>
 
-                <li *ngIf="entryType === EntryType.BioWorkflow">
-                  If there are already workflows on Dockstore added by other users that you should have access to, press the button below.
-                </li>
-                <button
-                  *ngIf="entryType === EntryType.BioWorkflow"
-                  mat-raised-button
-                  color="primary"
-                  type="button"
-                  (click)="addToExistingWorkflows()"
-                  [disabled]="isRefreshing$ | async"
-                  matTooltip="Add yourself to existing Dockstore workflows that you should have access to on remote sites."
-                >
-                  Sync With Existing Workflows
-                </button>
+                <span *ngIf="entryType === EntryType.BioWorkflow">
+                  <li>
+                    If there are already workflows on Dockstore added by other users that you have access to, press the button below.
+                  </li>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    type="button"
+                    (click)="addToExistingWorkflows()"
+                    [disabled]="(isRefreshing$ | async) || !(user$ | async)"
+                    matTooltip="Discover workflows added by others using your linked source control accounts"
+                  >
+                    Discover Existing Dockstore Workflows
+                  </button>
+                </span>
               </ul>
               <div *ngIf="!hasGitHubToken" class="mt-3">
                 <a class="btn btn-block btn-social btn-github" (click)="link()">
