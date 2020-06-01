@@ -180,12 +180,11 @@ describe('Dockstore my workflows', () => {
         response: json
       }).as('refreshWorkflow');
     });
-    // cy.route('/api/workflows/11/refresh').as('refreshWorkflow');
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
-    cy.contains('button', 'Refresh Organization')
+    cy.get('[data-cy=refreshOrganization]:visible')
       .should('be.visible')
       .click();
     cy.wait('@refreshWorkflow');
