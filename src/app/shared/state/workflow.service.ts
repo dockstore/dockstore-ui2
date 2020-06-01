@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs';
 import { Workflow, WorkflowVersion } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
-import { ExtendedWorkflowQuery } from './extended-workflow.query';
 import { ExtendedWorkflowService } from './extended-workflow.service';
 import { WorkflowStore } from './workflow.store';
 
@@ -15,11 +14,8 @@ export class WorkflowService {
   nsSharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted shared workflows
   nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
-  constructor(
-    private workflowStore: WorkflowStore,
-    private extendedWorkflowService: ExtendedWorkflowService,
-    private extendedWorkflowQuery: ExtendedWorkflowQuery
-  ) {}
+  copyBtn$ = this.copyBtnSource.asObservable();
+  constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {}
 
   /**
    * Converts the mapping of roles to workflows to a concatentation of all the workflows
@@ -107,19 +103,6 @@ export class WorkflowService {
         workflows.push(workflow);
         this.setWorkflows(workflows);
       }
-    }
-  }
-
-  /**
-   * Updates an existing workflow by updating the current list of workflows
-   * and updating extendededWorkfllowService
-   * @param workflow the workflow to be updated
-   */
-  updateWorkflow(workflow: BioWorkflow | Service) {
-    this.update(workflow.id, workflow);
-    const extendedWorkflow = this.extendedWorkflowQuery.getValue();
-    if (extendedWorkflow && extendedWorkflow.id === workflow.id) {
-      this.extendedWorkflowService.update(workflow);
     }
   }
 

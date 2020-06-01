@@ -23,6 +23,7 @@ import { ProviderService } from '../provider.service';
 import { Workflow } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
+import { ExtendedWorkflowQuery } from './extended-workflow.query';
 import { ExtendedWorkflowStore } from './extended-workflow.store';
 
 @Injectable({ providedIn: 'root' })
@@ -31,7 +32,8 @@ export class ExtendedWorkflowService {
     private extendedWorkflowStore: ExtendedWorkflowStore,
     private dockstoreService: DockstoreService,
     private dateService: DateService,
-    private providerService: ProviderService
+    private providerService: ProviderService,
+    private extendedWorkflowQuery: ExtendedWorkflowQuery
   ) {}
 
   /**
@@ -46,6 +48,18 @@ export class ExtendedWorkflowService {
       this.extendedWorkflowStore.update(this.extendWorkflow(workflow));
     } else {
       this.remove();
+    }
+  }
+
+  /**
+   * Updates the extendedWorkflow if has the same id as workflow
+   *
+   * @param workflow
+   */
+  updateIfActive(workflow: Workflow) {
+    const extendedWorkflow = this.extendedWorkflowQuery.getValue();
+    if (extendedWorkflow && extendedWorkflow.id === workflow.id) {
+      this.update(workflow);
     }
   }
 

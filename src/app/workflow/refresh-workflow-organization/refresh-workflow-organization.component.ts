@@ -21,6 +21,7 @@ import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.com
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
+import { ExtendedWorkflowService } from '../../shared/state/extended-workflow.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger';
 import { UsersService } from '../../shared/swagger/api/users.service';
@@ -42,7 +43,8 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService,
     private alertService: AlertService,
-    protected alertQuery: AlertQuery
+    protected alertQuery: AlertQuery,
+    private extendedWorkflowService: ExtendedWorkflowService
   ) {
     super(userQuery, alertQuery);
     this.buttonText = 'Refresh Organization';
@@ -61,7 +63,9 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
         )
         .subscribe(
           workflow => {
-            this.workflowService.updateWorkflow(workflow);
+            // Only need to update the active workflow. When switching to other workflows,
+            // the UI fetches the latest content.
+            this.extendedWorkflowService.updateIfActive(workflow);
             this.alertService.detailedSuccess();
           },
           err => this.alertService.detailedError(err)
