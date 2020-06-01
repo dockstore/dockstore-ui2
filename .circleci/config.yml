@@ -255,7 +255,7 @@ workflows:
               only:
                 - develop
     jobs:
-      - uptime_monitor
+      - uptime_monitor:
           context: auth-tests
 
   nightlytest:
