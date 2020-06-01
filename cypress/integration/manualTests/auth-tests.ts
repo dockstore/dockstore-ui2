@@ -1,8 +1,9 @@
 import { goToTab } from '../../support/commands';
 
 // tuples of registry, repo, name
-const toolTuple = ['github.com', 'emlys', 'dockstore-tool-md5sum'];
-const workflowTuple = ['github.com', 'emlys', 'hello-dockstore-workflow'];
+const username = 'dockstoretestuser4';
+const toolTuple = ['github.com', username, 'dockstore-tool-md5sum'];
+const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
 const collectionTuple = ['test', 'test'];
 
@@ -21,6 +22,7 @@ function unpublishTool() {
 function deleteTool() {
   it('delete the tool', () => {
     cy.contains('button', 'Delete').should('be.visible');
+    cy.wait(1000);
     cy.contains('button', 'Delete').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
       cy.contains('button', 'Delete').click();
@@ -32,30 +34,48 @@ function deleteTool() {
 function registerQuayTool(repo: string, name: string) {
   it('register and publish - quickly register quay.io tools option', () => {
     storeToken();
+
+    // define routes to watch for
+    cy.server();
+    cy.route('/api/users/dockerRegistries/quay.io/organizations').as('orgs');
+    cy.route('**/tokens').as('tokens');
+    cy.route('**/repositories').as('repos');
+    cy.route('**/containers').as('containers');
+    cy.route('post', '**/publish').as('publish');
+
     cy.visit('/my-tools');
     // click thru the steps of registering a tool
+    cy.wait('@tokens');
     cy.get('#register_tool_button').should('be.visible');
+
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
+      cy.wait('@orgs');
       cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
       cy.contains('button', 'Next').click();
       cy.contains('mat-form-field', 'Select namespace').click();
     });
     cy.contains('mat-option', repo).click();
-    cy.contains('div', name).within(() => {
-      cy.get('[matTooltip="Refresh on Dockstore"]').click();
-    });
+    cy.wait('@repos');
+    cy.contains('mat-icon', 'sync').click();
+    cy.wait('@containers');
     cy.contains('button', 'Finish').click();
     cy.contains('button', 'Publish').click();
+    cy.wait('@publish');
   });
 }
 
 function registerRemoteSitesTool(repo: string, name: string) {
   it('register and publish - create tool remote sites option', () => {
     storeToken();
+    // define routes to watch for
+    cy.server();
+    cy.route('**/tokens').as('tokens');
+
     cy.visit('/my-tools');
     // click thru the steps of registering a tool
     cy.get('#register_tool_button').should('be.visible');
+    cy.wait('@tokens');
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
@@ -71,8 +91,14 @@ function registerRemoteSitesTool(repo: string, name: string) {
 function registerToolOnDockstore(repo: string, name: string) {
   it('register - create tool on Dockstore option', () => {
     storeToken();
+
+    // define routes to watch for
+    cy.server();
+    cy.route('**/tokens').as('tokens');
+
     cy.visit('/my-tools');
     cy.get('#register_tool_button').should('be.visible');
+    cy.wait('@tokens');
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').click();
@@ -107,27 +133,23 @@ function testTool(registry: string, repo: string, name: string) {
       cy.contains('td', 'Actions')
         .first()
         .click();
+      cy.wait(1000);
       cy.contains('button', 'Edit').click();
       cy.contains('div', 'Hidden:').within(() => {
         cy.get('[name=checkbox]').click();
       });
       cy.contains('button', 'Save Changes').click();
-
-      // select the first row in the versions table
-      cy.contains('tr')
-        .first()
-        .within(() => {
-          // both 'valid' and 'hidden' columns should be checked
-          cy.contains('mat-icon', 'check').should('have.length', 2);
-        });
+      cy.wait(1000);
+      cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
     });
     it('refresh namespace', () => {
-      cy.contains('button', 'Refresh namespace')
+      cy.contains('button', 'Refresh Namespace')
         .first()
         .click();
       // check that the 'refresh succeeded' message appears
       cy.contains('succeeded');
     });
+    unpublishTool();
     deleteTool();
   });
 }
@@ -136,9 +158,18 @@ function testWorkflow(registry: string, repo: string, name: string) {
   describe('Refresh, publish, unpublish, and restub a workflow', () => {
     it('refresh and publish', () => {
       storeToken();
-      cy.visit(`/my-workflows/${registry}/${repo}/${name}`);
 
-      cy.get('[data-cy=refreshButton]').click();
+      // define routes to watch for
+      cy.server();
+      cy.route('**/tokens').as('tokens');
+
+      cy.visit(`/my-workflows/${registry}/${repo}/${name}`);
+      cy.wait('@tokens');
+      cy.contains('app-workflow').within(() => {
+        cy.contains('button', 'Refresh').should('be.visible');
+        cy.contains('button', 'Refresh').click();
+      });
+
       cy.contains('button', 'Publish').should('be.enabled');
       cy.contains('button', 'Publish').click();
     });
@@ -168,6 +199,8 @@ function testCollection(org: string, collection: string, registry: string, repo:
   describe('add entry to and remove from collection', () => {
     registerQuayTool(repo, name);
     it('be able to add an entry to the collection', () => {
+      cy.visit(`/containers/quay.io/${repo}/${name}`);
+      cy.wait(5000);
       cy.get('#addToolToCollectionButton')
         .should('be.visible')
         .click();
