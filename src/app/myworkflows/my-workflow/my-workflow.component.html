@@ -54,7 +54,13 @@
                         >
                           <mat-icon>add</mat-icon>
                         </button>
-                        <button mat-icon-button [matMenuTriggerFor]="myWorkflowsActions" [disabled]="isRefreshing$ | async">
+                        <button
+                          mat-icon-button
+                          [matMenuTriggerFor]="myWorkflowsActions"
+                          [disabled]="isRefreshing$ | async"
+                          id="myWorkflowsMoreActionButtons"
+                          data-cy="myWorkflowsMoreActionButtons"
+                        >
                           <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #myWorkflowsActions="matMenu">
@@ -66,6 +72,8 @@
                             [disabled]="(isRefreshing$ | async) || !(user$ | async)"
                             matTooltip="Discover workflows added by others using your linked source control accounts"
                             matTooltipPosition="after"
+                            id="addToExistingWorkflows"
+                            data-cy="addToExistingWorkflows"
                           >
                             <span>Discover Existing Dockstore Workflows</span>
                           </button>
