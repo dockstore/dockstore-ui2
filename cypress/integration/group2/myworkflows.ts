@@ -25,11 +25,11 @@ describe('Dockstore my workflows', () => {
   const nextflowDescriptorType = 'Nextflow';
   it('have entries shown on the homepage', () => {
     cy.visit('/');
-    cy.contains('A/l');
+    cy.contains(/^l$/);
     cy.contains('Find entries');
-    cy.get('#mat-input-0').type('bit');
-    cy.contains('a/a');
-    cy.get('#mat-input-0').type('r');
+    cy.get('#mat-input-0').type('hosted');
+    cy.contains('hosted-workflow');
+    cy.get('#mat-input-0').type('potato');
     cy.contains('No matching entries');
   });
 
@@ -63,6 +63,7 @@ describe('Dockstore my workflows', () => {
         .should('be.visible')
         .click();
       cy.get('[data-cy=my-workflows-nav-button]').click();
+      cy.contains('github.com/A/l');
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
       cy.visit('/my-workflows/github.com/A/g');
@@ -110,26 +111,21 @@ describe('Dockstore my workflows', () => {
       cy.visit('/my-workflows/github.com/A/l');
       cy.contains('Versions').click();
       cy.get('td')
-        .find('button')
-        .contains('Edit')
-        .invoke('width')
-        .should('be.gt', 0);
-      cy.get('td')
-        .find('button')
-        .contains('Edit')
+        .contains('Actions')
+        .click();
+      cy.contains('Edit')
         .should('be.visible')
         .click();
+      // For some reason, it would type half in the correct input field, but the other half in the first field
+      cy.wait(2000);
+      cy.get('[data-cy=test-parameter-file-input]').click();
       cy.get('[data-cy=test-parameter-file-input]').type('/test.wdl.json');
       cy.get('[data-cy=save-version').click();
       cy.get('[data-cy=save-version').should('not.exist');
       cy.get('td')
-        .find('button')
-        .contains('Edit')
-        .invoke('width')
-        .should('be.gt', 0);
-      cy.get('td')
-        .find('button')
-        .contains('Edit')
+        .contains('Actions')
+        .click();
+      cy.contains('Edit')
         .should('be.visible')
         .click();
       cy.get('[data-cy=remove-test-parameter-file-button]').click();
@@ -143,6 +139,9 @@ describe('Dockstore my workflows', () => {
       goToTab('Versions');
       cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
       // The buttons should be present
+      cy.get('td')
+        .contains('Actions')
+        .click();
       cy.get('[data-cy=dockstore-request-doi-button]')
         .its('length')
         .should('be.gt', 0);
@@ -262,7 +261,7 @@ describe('Dockstore my workflows', () => {
         .click();
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
-      cy.get('#0-register-workflow-option').click();
+      cy.get('#1-register-workflow-option').click();
       cy.contains('button', 'Next').click();
 
       // Select github.com in git registry
@@ -305,7 +304,7 @@ describe('Dockstore my workflows', () => {
         .click();
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
-      cy.get('#1-register-workflow-option').click();
+      cy.get('#2-register-workflow-option').click();
       cy.contains('button', 'Next').click();
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
@@ -360,7 +359,7 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Look at a published workflow', () => {
-    it.only('Look at each tab', () => {
+    it('Look at each tab', () => {
       const tabs = ['Info', 'Launch', 'Versions', 'Files', 'Tools', 'DAG'];
       cy.visit('/my-workflows/github.com/A/l');
       isActiveTab('Info');

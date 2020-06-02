@@ -77,7 +77,6 @@ export class CollectionComponent implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organization$ = this.organizationQuery.organization$;
     this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
-    this.organizationService.updateOrganizationFromName(organizationName);
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;

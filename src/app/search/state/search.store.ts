@@ -45,7 +45,7 @@ export function createInitialState(): SearchState {
     autocompleteTerms: [],
     suggestTerm: '',
     pageSize: 10,
-    advancedSearch: initialAdvancedSearchObject,
+    advancedSearch: { ...initialAdvancedSearchObject },
     pageIndex: 0,
     currentTabIndex: 0
   };
