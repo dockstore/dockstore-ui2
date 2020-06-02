@@ -23,7 +23,7 @@ describe('Dockstore my workflows', () => {
   const cwlDescriptorType = 'CWL';
   const wdlDescriptorType = 'WDL';
   const nextflowDescriptorType = 'Nextflow';
-  it.skip('have entries shown on the homepage', () => {
+  it('have entries shown on the homepage', () => {
     cy.visit('/');
     cy.contains(/^l$/);
     cy.contains('Find entries');
@@ -34,7 +34,7 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Should contain extended Workflow properties', () => {
-    it.skip('visit another page then come back', () => {
+    it('visit another page then come back', () => {
       cy.visit('/my-workflows');
       cy.get('a#home-nav-button').click();
       cy.get('[data-cy=dropdown-main]:visible')
@@ -43,7 +43,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=my-workflows-nav-button]').click();
       cy.contains('github.com/A/l');
     });
-    it.skip('Should contain the extended properties and be able to edit the info tab', () => {
+    it('Should contain the extended properties and be able to edit the info tab', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('github.com');
       cy.get('a#sourceRepository')
@@ -67,12 +67,12 @@ describe('Dockstore my workflows', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore.cwl');
     });
-    it.skip('should have mode tooltip', () => {
+    it('should have mode tooltip', () => {
       // .trigger('mouseover') doesn't work for some reason
       cy.contains('Mode').trigger('mouseenter');
       cy.get('.mat-tooltip').contains('STUB: Basic metadata pulled from source control.');
     });
-    it.skip('should be able to add labels', () => {
+    it('should be able to add labels', () => {
       cy.contains('github.com/A/g');
       cy.get('button')
         .contains('Manage labels')
@@ -85,7 +85,7 @@ describe('Dockstore my workflows', () => {
         .contains('Save')
         .should('not.exist');
     });
-    it.skip('add and remove test parameter file', () => {
+    it('add and remove test parameter file', () => {
       cy.visit('/my-workflows/github.com/A/l');
       cy.contains('Versions').click();
       cy.get('td')
@@ -111,7 +111,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=save-version').should('not.be.visible');
     });
 
-    it.skip('Should be able to snapshot', () => {
+    it('Should be able to snapshot', () => {
       cy.visit('/my-workflows/github.com/A/l');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
       goToTab('Versions');
@@ -193,7 +193,7 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Look at an invalid workflow', () => {
-    it.skip('Invalid workflow should not be publishable', () => {
+    it('Invalid workflow should not be publishable', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.get('#publishButton').should('be.disabled');
       cy.get('#refreshButton').should('not.be.disabled');
@@ -209,7 +209,7 @@ describe('Dockstore my workflows', () => {
   }
 
   describe('Test workflow wizard form', () => {
-    it.skip('It should be able to add workflows to ', () => {
+    it('It should be able to add workflows to ', () => {
       // Mock endpoints
       const canDeleteMe: Repository = {
         organization: 'foobar',
@@ -295,7 +295,7 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Test register workflow form validation', () => {
-    it.skip('It should have 3 seperate descriptor path validation patterns', () => {
+    it('It should have 3 seperate descriptor path validation patterns', () => {
       cy.visit('/my-workflows');
       cy.get('#registerWorkflowButton')
         .should('be.visible')
