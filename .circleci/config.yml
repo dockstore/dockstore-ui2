@@ -42,7 +42,7 @@ jobs:
             fi
       - run:
           name: Build
-          command: bash -i -c 'npm run build.prod'
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
       - run:
           name: Install cypress dependencies
           command: sudo apt install libgtk2.0-0 -yq
@@ -178,7 +178,7 @@ jobs:
                 command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\(\.\./\)\+assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
             - run:
                 name: Build
-                command: bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
+                command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
             # Copy to a versioned folder
             - aws-s3/copy:
                 from: dist
