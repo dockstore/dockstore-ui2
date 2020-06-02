@@ -94,7 +94,7 @@ jobs:
           command: bash -i -c 'npm run lint'
       - run:
           name: Build
-          command: NODE_OPTIONS="--max-old-space-size=2684" bash -i -c 'npm run build.prod'
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
       - run:
           name: Install codecov
           command: bash -i -c 'npm i --no-save codecov'
