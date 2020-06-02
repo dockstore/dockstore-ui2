@@ -18,7 +18,7 @@
     "test": "npx ng test",
     "lint": "npx ng lint",
     "e2e": "npx ng e2e",
-    "test-dev": "npx cypress run -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/manualTests/auth-tests.ts\"",
+    "test-dev": "npx cypress run --record -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/manualTests/auth-tests.ts\"",
     "test-staging": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/manualTests/monitor.ts\"",
     "test-prod": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/manualTests/monitor.ts\""
   },

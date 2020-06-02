@@ -199,8 +199,13 @@ function testCollection(org: string, collection: string, registry: string, repo:
   describe('add entry to and remove from collection', () => {
     registerQuayTool(repo, name);
     it('be able to add an entry to the collection', () => {
-      cy.visit(`/containers/quay.io/${repo}/${name}`);
-      cy.wait(5000);
+      storeToken();
+      // define routes to watch for
+      cy.server();
+      cy.route('**/collections').as('collections');
+
+      cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
+      cy.wait('@collections');
       cy.get('#addToolToCollectionButton')
         .should('be.visible')
         .click();
@@ -223,6 +228,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
     });
 
     it('be able to remove an entry from a collection', () => {
+      storeToken();
       cy.visit(`/organizations/${org}/collections/${collection}`);
       cy.contains(`quay.io/${registry}/${repo}/${name}`);
       cy.get('#removeToolButton').click();
@@ -233,9 +239,8 @@ function testCollection(org: string, collection: string, registry: string, repo:
     });
   });
 }
+testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
 
 testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
 
 testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
-
-testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
