@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { AuthService } from 'ng2-ui-auth';
 import { Md5 } from 'ts-md5/dist/md5';
-import { UsersService as OpenAPIUsersService } from '../../shared/openapi';
-import { Workflow as OpenAPIWorkflow } from '../../shared/openapi';
 import { AlertService } from '../alert/state/alert.service';
 import { TokenService } from '../state/token.service';
 import { WorkflowService } from '../state/workflow.service';
@@ -19,8 +17,7 @@ export class UserService {
     private configuration: Configuration,
     private tokenService: TokenService,
     private alertService: AlertService,
-    private workflowService: WorkflowService,
-    private openAPIUsersService: OpenAPIUsersService
+    private workflowService: WorkflowService
   ) {
     this.getUser();
   }
@@ -45,10 +42,10 @@ export class UserService {
 
   addUserToWorkflows(userId: number): void {
     this.alertService.start('Adding user to existing workflows on Dockstore');
-    this.openAPIUsersService.addUserToDockstoreWorkflows(userId).subscribe(
-      (workflows: Array<OpenAPIWorkflow>) => {
+    this.usersService.addUserToDockstoreWorkflows(userId).subscribe(
+      (workflows: Array<Workflow>) => {
         this.alertService.detailedSuccess();
-        this.workflowService.setWorkflows(workflows as Workflow[]);
+        this.workflowService.setWorkflows(workflows);
       },
       error => this.alertService.detailedError(error)
     );
