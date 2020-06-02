@@ -66,6 +66,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
             // Only need to update the active workflow. When switching to other workflows,
             // the UI fetches the latest content.
             this.extendedWorkflowService.updateIfActive(workflow);
+            this.workflowService.update(workflow.id, workflow);
             this.alertService.detailedSuccess();
           },
           err => this.alertService.detailedError(err)
