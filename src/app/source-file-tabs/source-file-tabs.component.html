@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="files">
   <div *ngIf="version" class="p-3">
     <mat-card class="alert alert-warning" *ngIf="validationMessage">
       <mat-icon>warning</mat-icon>
@@ -19,6 +19,11 @@
                 <mat-option [value]="file" *ngFor="let file of filteredFiles"> {{ file.path }} </mat-option>
               </mat-select>
             </mat-form-field>
+            <span>
+              <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="currentFile.content">
+                <mat-icon>file_copy</mat-icon>
+              </button>
+            </span>
           </div>
         </mat-toolbar>
         <app-code-editor [content]="currentFile.content" [filepath]="currentFile.path" [editing]="false"></app-code-editor>
