@@ -5,6 +5,13 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 
+/**
+ * https://material.angular.io/components/table/examples for example on table with expandable rows
+ *
+ * @export
+ * @class GithubAppsLogsComponent
+ * @implements {OnInit}
+ */
 @Component({
   selector: 'app-github-apps-logs',
   templateUrl: './github-apps-logs.component.html',
