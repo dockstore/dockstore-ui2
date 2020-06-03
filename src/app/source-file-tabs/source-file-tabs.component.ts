@@ -10,7 +10,13 @@ import { Validation } from 'app/shared/swagger';
 })
 export class SourceFileTabsComponent implements OnInit {
   @Input() workflowId: number;
-  @Input() version: WorkflowVersion;
+  @Input() set version(value: WorkflowVersion) {
+    if (value != null) {
+      this.currentVersion = value;
+      this.setupVersionFileTabs();
+    }
+  }
+  currentVersion: WorkflowVersion;
   files: SourceFile[];
   filteredFiles: SourceFile[];
   currentFile: SourceFile;
@@ -21,7 +27,11 @@ export class SourceFileTabsComponent implements OnInit {
   constructor(private workflowsService: WorkflowsService) {}
 
   ngOnInit() {
-    this.workflowsService.getWorkflowVersionsSourcefiles(this.workflowId, this.version.id).subscribe(
+    this.setupVersionFileTabs();
+  }
+
+  setupVersionFileTabs() {
+    this.workflowsService.getWorkflowVersionsSourcefiles(this.workflowId, this.currentVersion.id).subscribe(
       (sourceFiles: SourceFile[]) => {
         this.files = sourceFiles;
         this.fileTypes = [];
@@ -30,19 +40,12 @@ export class SourceFileTabsComponent implements OnInit {
             this.fileTypes.push(file.type);
           }
         });
-        this.changeFileType(this.fileTypes[0]);
+        if (this.fileTypes.length > 0) {
+          this.changeFileType(this.fileTypes[0]);
+        }
       },
       error => console.log(error)
     );
-  }
-
-  matTabChange(event: MatTabChangeEvent) {
-    const fileType: SourceFile.TypeEnum = this.fileTypes[event.index];
-    this.changeFileType(fileType);
-  }
-
-  matSelectChange(event: MatSelectChange) {
-    this.currentFile = event.value;
   }
 
   changeFileType(fileType: SourceFile.TypeEnum) {
@@ -55,11 +58,20 @@ export class SourceFileTabsComponent implements OnInit {
     if (this.filteredFiles.length > 0) {
       this.currentFile = this.filteredFiles[0];
     }
-    this.version.validations.forEach((validation: Validation) => {
+    this.currentVersion.validations.forEach((validation: Validation) => {
       this.validationMessage = null;
       if (validation.type === this.currentFileType && !validation.valid) {
         this.validationMessage = JSON.parse(validation.message);
       }
     });
+  }
+
+  matTabChange(event: MatTabChangeEvent) {
+    const fileType: SourceFile.TypeEnum = this.fileTypes[event.index];
+    this.changeFileType(fileType);
+  }
+
+  matSelectChange(event: MatSelectChange) {
+    this.currentFile = event.value;
   }
 }
