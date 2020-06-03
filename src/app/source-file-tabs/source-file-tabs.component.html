@@ -1,6 +1,6 @@
 <div>
   <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
-    <mat-tab *ngFor="let fileType of fileTypes" label="{{ fileType }}">
+    <mat-tab *ngFor="let fileType of fileTypes" label="{{ 'SourceFile.TypeEnum' | mapFriendlyValue: fileType }}">
       <ng-template matTabContent>
         <mat-toolbar color="primary">
           <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">

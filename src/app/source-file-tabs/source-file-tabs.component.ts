@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectChange, MatTabChangeEvent } from '@angular/material';
 import { SourceFile, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-source-file-tabs',

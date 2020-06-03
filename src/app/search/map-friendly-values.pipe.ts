@@ -15,7 +15,7 @@
  */
 import { Pipe, PipeTransform } from '@angular/core';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { ToolFile, Workflow } from 'app/shared/swagger';
+import { SourceFile, ToolFile, Workflow } from 'app/shared/swagger';
 
 @Pipe({
   name: 'mapFriendlyValue'
@@ -83,6 +83,25 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [ToolFile.FileTypeEnum.TESTFILE, 'Test Parameter Files'],
         [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
         [ToolFile.FileTypeEnum.OTHER, 'Files']
+      ])
+    ],
+    [
+      'SourceFile.TypeEnum',
+      new Map([
+        [SourceFile.TypeEnum.DOCKERFILE, 'Dockerfile'],
+        [SourceFile.TypeEnum.DOCKSTORECWL, 'Descriptor Files'],
+        [SourceFile.TypeEnum.DOCKSTOREWDL, 'Descriptor Files'],
+        [SourceFile.TypeEnum.NEXTFLOW, 'Descriptor Files'],
+        [SourceFile.TypeEnum.NEXTFLOWCONFIG, 'Descriptor Files'],
+        [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'Descriptor Files'],
+        [SourceFile.TypeEnum.CWLTESTJSON, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.WDLTESTJSON, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.DOCKSTORESERVICEYML, 'Configuration'],
+        [SourceFile.TypeEnum.DOCKSTOREYML, 'Configuration'],
+        [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, 'Files'],
       ])
     ]
   ]);
