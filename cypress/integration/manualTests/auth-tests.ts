@@ -5,7 +5,7 @@ const username = 'dockstoretestuser4';
 const toolTuple = ['github.com', username, 'dockstore-tool-md5sum'];
 const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
-const collectionTuple = ['test', 'test'];
+const collectionTuple = ['test', 'testcollection'];
 
 // get the dockstore token from env variable and put it in local storage
 function storeToken() {
@@ -212,13 +212,13 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectOrganization').click();
       cy.get('mat-option')
-        .contains('test')
+        .contains(org)
         .click();
 
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectCollection').click();
       cy.get('mat-option')
-        .contains('testcollection')
+        .contains(collection)
         .click();
       cy.get('#addEntryToCollectionButton')
         .should('not.be.disabled')
