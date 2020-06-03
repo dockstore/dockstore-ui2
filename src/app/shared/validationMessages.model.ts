@@ -76,6 +76,18 @@ export const validationMessages = {
     maxlength: 'Descriptor Path is too long. (Max 1000 characters.)',
     pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.wdl'.`
   },
+  nflPath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Descriptor Path is too short. (Min. 3 characters.)',
+    maxlength: 'Descriptor Path is too long. (Max 1000 characters.)',
+    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.config'.`
+  },
+  galaxyPath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Descriptor Path is too short. (Min. 3 characters.)',
+    maxlength: 'Descriptor Path is too long. (Max 1000 characters.)',
+    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.ga', '*.yml', or '*.yaml'.`
+  },
   dockerfilePath: {
     required: 'This field cannot be empty.',
     minlength: 'Dockerfile Path is too short. (Min. 3 characters.)',

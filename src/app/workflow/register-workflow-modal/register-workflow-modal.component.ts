@@ -54,6 +54,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public isModalShown: boolean;
   public isRefreshing$: Observable<boolean>;
   public descriptorValidationPattern;
+  public workflowPathError: String;
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
@@ -134,6 +135,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
       }
     });
     this.selectInitialSourceControlRepository();
+    this.workflowPathError = validationMessages.cwlPath.pattern;
   }
 
   /**
@@ -237,6 +239,15 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.descriptorValidationPattern = DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
       descriptorType
     ).descriptorPathPattern;
+    if (descriptorType === Workflow.DescriptorTypeEnum.CWL) {
+      this.workflowPathError = validationMessages.cwlPath.pattern;
+    } else if (descriptorType === Workflow.DescriptorTypeEnum.WDL) {
+      this.workflowPathError = validationMessages.wdlPath.pattern;
+    } else if (descriptorType === Workflow.DescriptorTypeEnum.NFL) {
+      this.workflowPathError = validationMessages.nflPath.pattern;
+    } else if (descriptorType === Workflow.DescriptorTypeEnum.Gxformat2) {
+      this.workflowPathError = validationMessages.galaxyPath.pattern;
+    }
     this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
   }
 
