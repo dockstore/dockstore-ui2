@@ -34,4 +34,12 @@ export class SidebarAccordionComponent implements OnInit {
     this.entryType$ = this.sessionQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
   }
+
+  trackByWorkflowId(index: number, workflow: Workflow) {
+    return workflow.id;
+  }
+
+  trackByOrgWorkflowObject(index: number, orgWorkflowObject: OrgWorkflowObject<Workflow>) {
+    return orgWorkflowObject.sourceControl + '/' + orgWorkflowObject.organization;
+  }
 }

@@ -20,6 +20,7 @@
   matTooltip="Refresh all entries in the organization"
   type="button"
   class="mr-1"
+  data-cy="refreshOrganization"
   (click)="refreshOrganization()"
   [disabled]="isRefreshing$ | async"
 >

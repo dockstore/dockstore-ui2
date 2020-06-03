@@ -13,7 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
@@ -29,6 +30,8 @@ import { UserQuery } from '../../shared/user/user.query';
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
+  @Input() protected orgToolObject: OrgToolObject<DockstoreTool>;
+
   constructor(
     userQuery: UserQuery,
     private alertService: AlertService,
@@ -41,14 +44,16 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
   }
 
   refreshOrganization(): void {
-    const message = 'Refreshing ' + this.organization;
-    this.alertService.start(message);
-    this.usersService.refreshToolsByOrganization(this.userId, this.organization).subscribe(
-      (success: DockstoreTool[]) => {
-        this.containerService.setTools(success);
-        this.alertService.detailedSuccess();
-      },
-      error => this.alertService.detailedError(error)
-    );
+    if (this.orgToolObject) {
+      const message = 'Refreshing ' + this.orgToolObject.namespace;
+      this.alertService.start(message);
+      this.usersService.refreshToolsByOrganization(this.userId, this.orgToolObject.namespace).subscribe(
+        (success: DockstoreTool[]) => {
+          this.containerService.setTools(success);
+          this.alertService.detailedSuccess();
+        },
+        error => this.alertService.detailedError(error)
+      );
+    }
   }
 }
