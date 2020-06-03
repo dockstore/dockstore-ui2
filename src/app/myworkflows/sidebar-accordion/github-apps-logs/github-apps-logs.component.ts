@@ -1,13 +1,15 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 
 /**
  * https://material.angular.io/components/table/examples for example on table with expandable rows
- *
+ * TODO: Filter by date (datasource is using timestamp instead of medium date)
+ * TODO: Change to prettier empty and error messages
+ * TODO: Friendly value map for reference (maybe success, maybe type too)
  * @export
  * @class GithubAppsLogsComponent
  * @implements {OnInit}
@@ -35,6 +37,7 @@ export class GithubAppsLogsComponent implements OnInit {
   lambdaEvents: LambdaEvent[];
   loading = true;
   public LambdaEvent = LambdaEvent;
+  dataSource: MatTableDataSource<LambdaEvent> = new MatTableDataSource();
   expandedElement: LambdaEvent | null;
   showContent: 'table' | 'error' | 'empty' | null;
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
@@ -60,6 +63,7 @@ export class GithubAppsLogsComponent implements OnInit {
   }
 
   updateContentToShow(lambdaEvents: LambdaEvent[] | null) {
+    this.dataSource.data = lambdaEvents;
     if (!lambdaEvents) {
       this.showContent = 'error';
     } else {
@@ -69,5 +73,10 @@ export class GithubAppsLogsComponent implements OnInit {
         this.showContent = 'table';
       }
     }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

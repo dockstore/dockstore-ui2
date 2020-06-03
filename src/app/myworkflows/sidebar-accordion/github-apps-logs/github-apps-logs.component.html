@@ -1,44 +1,50 @@
 <h1 mat-dialog-title>GitHub App Logs</h1>
-<div mat-dialog-title>
+<div mat-dialog-content>
   <app-loading [loading]="loading">
     <span *ngIf="showContent === 'error'">There were problems retrieving GitHub App logs for this organization.</span>
     <span *ngIf="showContent === 'empty'">There are no GitHub App logs for this organization.</span>
-    <table *ngIf="showContent === 'table'" mat-table [dataSource]="lambdaEvents" multiTemplateDataRows class="mat-elevation-z3 w-100">
-      <ng-container matColumnDef="dbCreateDate">
-        <th mat-header-cell *matHeaderCellDef>Date</th>
-        <td mat-cell *matCellDef="let element">{{ element.dbCreateDate | date: 'medium' }}</td>
-      </ng-container>
-      <ng-container matColumnDef="githubUsername">
-        <th mat-header-cell *matHeaderCellDef>GitHub Username</th>
-        <td mat-cell *matCellDef="let element">{{ element.githubUsername }}</td>
-      </ng-container>
+    <div *ngIf="showContent === 'table'">
+      <mat-form-field>
+        <mat-label>Filter (except Date)</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. PUSH" />
+      </mat-form-field>
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z3 w-100">
+        <ng-container matColumnDef="dbCreateDate">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.dbCreateDate | date: 'medium' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="githubUsername">
+          <th mat-header-cell *matHeaderCellDef>GitHub Username</th>
+          <td mat-cell *matCellDef="let element">{{ element.githubUsername }}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
-        <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
-        <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
-      </ng-container>
+        <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
+          <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+        </ng-container>
 
-      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-      <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-          <div class="expanded-row-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-            <div class="p-2">
-              {{ element.message }}
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+            <div class="expanded-row-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+              <div class="p-2">
+                {{ element.message }}
+              </div>
             </div>
-          </div>
-        </td>
-      </ng-container>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr
-        mat-row
-        *matRowDef="let element; columns: displayedColumns"
-        class="element-row"
-        [class.expanded-row]="expandedElement === element"
-        (click)="expandedElement = expandedElement === element ? null : element"
-      ></tr>
-      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
-    </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr
+          mat-row
+          *matRowDef="let element; columns: displayedColumns"
+          class="element-row"
+          [class.expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+      </table>
+    </div>
   </app-loading>
 </div>
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
