@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatSnackBar, MatTableDataSource } from '@angular/material';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
@@ -35,6 +35,7 @@ export class GithubAppsLogsComponent implements OnInit {
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['dbCreateDate', 'githubUsername', ...this.columnsToDisplay];
   lambdaEvents: LambdaEvent[];
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   loading = true;
   public LambdaEvent = LambdaEvent;
   dataSource: MatTableDataSource<LambdaEvent> = new MatTableDataSource();
@@ -44,6 +45,7 @@ export class GithubAppsLogsComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.dataSource.sort = this.sort;
     this.lambdaEventsService
       .getLambdaEventsByOrganization(this.data)
       .pipe(

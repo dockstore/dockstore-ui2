@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 import { NgModule } from '@angular/core';
+import { MatSortModule } from '@angular/material';
 import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
 import { myworkflowRouting } from './myworkflows.routing';
 import { GithubAppsLogsComponent } from './sidebar-accordion/github-apps-logs/github-apps-logs.component';
 
 @NgModule({
-  imports: [SharedWorkflowServicesModule, myworkflowRouting],
+  imports: [SharedWorkflowServicesModule, myworkflowRouting, MatSortModule],
   declarations: [GithubAppsLogsComponent],
   entryComponents: [GithubAppsLogsComponent]
 })
