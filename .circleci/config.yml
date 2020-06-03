@@ -35,8 +35,8 @@ jobs:
               bash -i -c 'npm ci'
             fi
       - run:
-          name: Prebuild
-          command: bash -i -c 'npm run prebuild.prod'
+          name: build
+          command: bash -i -c 'npm run build.prod'
       - run:
           name: Run remote verification test against dev
           command: bash -i -c 'npm run test-dev'
@@ -255,8 +255,7 @@ workflows:
               only:
                 - develop
     jobs:
-      - uptime_monitor:
-          context: auth-tests
+      - uptime_monitor
 
   nightlytest:
     triggers:

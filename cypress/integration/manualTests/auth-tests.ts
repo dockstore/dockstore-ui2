@@ -14,6 +14,7 @@ function storeToken() {
 
 function unpublishTool() {
   it('unpublish the tool', () => {
+    storeToken();
     cy.contains('button', 'Unpublish').should('be.visible');
     cy.contains('button', 'Unpublish').click();
   });
@@ -46,22 +47,25 @@ function registerQuayTool(repo: string, name: string) {
     cy.visit('/my-tools');
     // click thru the steps of registering a tool
     cy.wait('@tokens');
-    cy.get('#register_tool_button').should('be.visible');
-
-    cy.get('#register_tool_button').click();
-    cy.get('mat-dialog-content').within(() => {
-      cy.wait('@orgs');
-      cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
-      cy.contains('button', 'Next').click();
-      cy.contains('mat-form-field', 'Select namespace').click();
-    });
-    cy.contains('mat-option', repo).click();
-    cy.wait('@repos');
-    cy.contains('mat-icon', 'sync').click();
-    cy.wait('@containers');
-    cy.contains('button', 'Finish').click();
+    // cy.get('#register_tool_button').should('be.visible');
+    //
+    // cy.get('#register_tool_button').click();
+    // cy.get('mat-dialog-content').within(() => {
+    //   cy.wait('@orgs');
+    //   cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
+    //   cy.contains('button', 'Next').click();
+    //   cy.contains('mat-form-field', 'Select namespace').click();
+    // });
+    // cy.contains('mat-option', repo).click();
+    // cy.wait('@repos');
+    // cy.contains('mat-icon', 'sync').click();
+    // cy.wait('@containers');
+    // cy.contains('button', 'Finish').click();
+    // cy.wait(1000);
     cy.contains('button', 'Publish').click();
     cy.wait('@publish');
+    cy.wait('@containers');
+    cy.wait(5000);
   });
 }
 
@@ -162,13 +166,13 @@ function testWorkflow(registry: string, repo: string, name: string) {
       // define routes to watch for
       cy.server();
       cy.route('**/tokens').as('tokens');
+      cy.route('**/workflows/path/workflow/**').as('workflow');
 
-      cy.visit(`/my-workflows/${registry}/${repo}/${name}`);
+      cy.visit(`/my-workflows`);
       cy.wait('@tokens');
-      cy.contains('app-workflow').within(() => {
-        cy.contains('button', 'Refresh').should('be.visible');
-        cy.contains('button', 'Refresh').click();
-      });
+      cy.wait('@workflow');
+      cy.get('[data-cy=refreshButton]').should('be.visible');
+      cy.get('[data-cy=refreshButton]').click();
 
       cy.contains('button', 'Publish').should('be.enabled');
       cy.contains('button', 'Publish').click();
@@ -203,7 +207,8 @@ function testCollection(org: string, collection: string, registry: string, repo:
       // define routes to watch for
       cy.server();
       cy.route('**/collections').as('collections');
-
+      cy.route('post', '**/collections/**').as('postToCollection');
+      cy.wait(5000);
       cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
       cy.wait('@collections');
       cy.get('#addToolToCollectionButton')
@@ -223,6 +228,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.get('#addEntryToCollectionButton')
         .should('not.be.disabled')
         .click();
+      cy.wait('@postToCollection');
       cy.get('#addEntryToCollectionButton').should('not.be.visible');
       cy.get('mat-progress-bar').should('not.be.visible');
     });
@@ -231,12 +237,14 @@ function testCollection(org: string, collection: string, registry: string, repo:
       storeToken();
       cy.visit(`/organizations/${org}/collections/${collection}`);
       cy.contains(`quay.io/${repo}/${name}`);
-      cy.get('#removeToolButton').click();
+      cy.get('#removeEntryButton').click();
       cy.get('#accept-remove-entry-from-org').click();
       cy.contains('This collection has no associated entries');
       cy.visit(`/organizations/${org}`);
       cy.contains('Members').should('be.visible');
+      cy.visit('/my-tools');
     });
+    unpublishTool();
   });
 }
 
