@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectChange, MatTabChangeEvent } from '@angular/material';
 import { SourceFile, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
+import { Validation } from 'app/shared/swagger';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -15,6 +16,7 @@ export class SourceFileTabsComponent implements OnInit {
   currentFile: SourceFile;
   fileTypes: SourceFile.TypeEnum[];
   currentFileType: SourceFile.TypeEnum;
+  validationMessage: Object;
 
   constructor(private workflowsService: WorkflowsService) {}
 
@@ -53,5 +55,11 @@ export class SourceFileTabsComponent implements OnInit {
     if (this.filteredFiles.length > 0) {
       this.currentFile = this.filteredFiles[0];
     }
+    this.version.validations.forEach((validation: Validation) => {
+      this.validationMessage = null;
+      if (validation.type === this.currentFileType && !validation.valid) {
+        this.validationMessage = JSON.parse(validation.message);
+      }
+    });
   }
 }

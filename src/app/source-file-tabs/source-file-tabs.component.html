@@ -1,4 +1,14 @@
 <div>
+  <div *ngIf="version" class="p-3">
+    <mat-card class="alert alert-warning" *ngIf="validationMessage">
+      <mat-icon>warning</mat-icon>
+      &nbsp;
+      <span *ngFor="let item of validationMessage | keyvalue">
+        <strong>{{ item.key }}</strong
+        >: {{ item.value }}
+      </span>
+    </mat-card>
+  </div>
   <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
     <mat-tab *ngFor="let fileType of fileTypes" label="{{ 'SourceFile.TypeEnum' | mapFriendlyValue: fileType }}">
       <ng-template matTabContent>
