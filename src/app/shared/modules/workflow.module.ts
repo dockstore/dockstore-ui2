@@ -30,6 +30,7 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
 import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
+import { SourceFileTabsComponent } from '../../source-file-tabs/source-file-tabs.component';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
@@ -78,7 +79,8 @@ import { getTooltipConfig } from './../tooltip';
     WorkflowActionsComponent,
     InfoTabComponent,
     ToolTabComponent,
-    EntryFileTabComponent
+    EntryFileTabComponent,
+    SourceFileTabsComponent
   ],
   imports: [
     CommonModule,
