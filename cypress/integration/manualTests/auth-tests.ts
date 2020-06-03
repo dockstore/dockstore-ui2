@@ -23,7 +23,6 @@ function unpublishTool() {
 function deleteTool() {
   it('delete the tool', () => {
     cy.contains('button', 'Delete').should('be.visible');
-    cy.wait(1000);
     cy.contains('button', 'Delete').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
       cy.contains('button', 'Delete').click();
@@ -61,11 +60,9 @@ function registerQuayTool(repo: string, name: string) {
     // cy.contains('mat-icon', 'sync').click();
     // cy.wait('@containers');
     // cy.contains('button', 'Finish').click();
-    // cy.wait(1000);
     cy.contains('button', 'Publish').click();
     cy.wait('@publish');
     cy.wait('@containers');
-    cy.wait(5000);
   });
 }
 
@@ -137,13 +134,11 @@ function testTool(registry: string, repo: string, name: string) {
       cy.contains('td', 'Actions')
         .first()
         .click();
-      cy.wait(1000);
       cy.contains('button', 'Edit').click();
       cy.contains('div', 'Hidden:').within(() => {
         cy.get('[name=checkbox]').click();
       });
       cy.contains('button', 'Save Changes').click();
-      cy.wait(1000);
       cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
     });
     it('refresh namespace', () => {
@@ -208,7 +203,6 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.server();
       cy.route('**/collections').as('collections');
       cy.route('post', '**/collections/**').as('postToCollection');
-      cy.wait(5000);
       cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
       cy.wait('@collections');
       cy.get('#addToolToCollectionButton')

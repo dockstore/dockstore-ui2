@@ -35,8 +35,8 @@ jobs:
               bash -i -c 'npm ci'
             fi
       - run:
-          name: build
-          command: bash -i -c 'npm run build.prod'
+          name: Prebuild
+          command: bash -i -c 'npm run prebuild.prod'
       - run:
           name: Run remote verification test against dev
           command: bash -i -c 'npm run test-dev'
