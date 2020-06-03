@@ -230,7 +230,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
     it('be able to remove an entry from a collection', () => {
       storeToken();
       cy.visit(`/organizations/${org}/collections/${collection}`);
-      cy.contains(`quay.io/${registry}/${repo}/${name}`);
+      cy.contains(`quay.io/${repo}/${name}`);
       cy.get('#removeToolButton').click();
       cy.get('#accept-remove-entry-from-org').click();
       cy.contains('This collection has no associated entries');
