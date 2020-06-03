@@ -573,7 +573,7 @@ export class SearchService {
     this.searchStore.update(state => {
       return {
         ...state,
-        advancedSearch: advancedSearch,
+        advancedSearch: { ...advancedSearch },
         searchText: ''
       };
     });
@@ -596,7 +596,7 @@ export class SearchService {
     this.searchStore.update(state => {
       return {
         ...state,
-        advancedSearch: initialAdvancedSearchObject
+        advancedSearch: { ...initialAdvancedSearchObject }
       };
     });
   }

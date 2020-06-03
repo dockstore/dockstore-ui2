@@ -27,6 +27,7 @@
                 <a
                   [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]"
                   [matTooltip]="collection?.value?.name"
+                  data-cy="collectionName"
                 >
                   {{ collection.value.displayName }}
                 </a>
