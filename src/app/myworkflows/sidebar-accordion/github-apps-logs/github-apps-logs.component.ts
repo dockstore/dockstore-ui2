@@ -2,6 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-github-apps-logs',
@@ -20,12 +21,16 @@ export class GithubAppsLogsComponent implements OnInit {
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['dbCreateDate', 'githubUsername', ...this.columnsToDisplay];
   lambdaEvents: LambdaEvent[];
+  loading = true;
   public LambdaEvent = LambdaEvent;
   expandedElement: LambdaEvent | null;
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   ngOnInit() {
-    console.log(this.data);
-    this.lambdaEventsService.getLambdaEventsByOrganization(this.data).subscribe(lambdaEvents => (this.lambdaEvents = lambdaEvents));
+    this.loading = true;
+    this.lambdaEventsService
+      .getLambdaEventsByOrganization(this.data)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(lambdaEvents => (this.lambdaEvents = lambdaEvents), error => console.log('do nothing'));
   }
 }
