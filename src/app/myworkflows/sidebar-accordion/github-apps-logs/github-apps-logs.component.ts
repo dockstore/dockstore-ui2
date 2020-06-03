@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 
@@ -17,16 +18,18 @@ import { finalize } from 'rxjs/operators';
   ]
 })
 export class GithubAppsLogsComponent implements OnInit {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: string, private lambdaEventsService: LambdaEventsService) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: string,
+    private lambdaEventsService: LambdaEventsService,
+    private matSnackBar: MatSnackBar
+  ) {}
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['dbCreateDate', 'githubUsername', ...this.columnsToDisplay];
   lambdaEvents: LambdaEvent[];
   loading = true;
   public LambdaEvent = LambdaEvent;
   expandedElement: LambdaEvent | null;
-  showError = false;
-  showEmpty = false;
-  showTable = false;
+  showContent: 'table' | 'error' | 'empty' | null;
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   ngOnInit() {
@@ -39,23 +42,24 @@ export class GithubAppsLogsComponent implements OnInit {
           this.updateContentToShow(this.lambdaEvents);
         })
       )
-      .subscribe(lambdaEvents => (this.lambdaEvents = lambdaEvents), () => (this.lambdaEvents = null));
+      .subscribe(
+        lambdaEvents => (this.lambdaEvents = lambdaEvents),
+        error => {
+          this.lambdaEvents = null;
+          const detailedErrorMessage = AlertService.getDetailedErrorMessage(error);
+          this.matSnackBar.open(detailedErrorMessage);
+        }
+      );
   }
 
   updateContentToShow(lambdaEvents: LambdaEvent[] | null) {
     if (!lambdaEvents) {
-      this.showError = true;
-      this.showEmpty = false;
-      this.showTable = false;
+      this.showContent = 'error';
     } else {
       if (lambdaEvents.length === 0) {
-        this.showError = false;
-        this.showEmpty = true;
-        this.showTable = false;
+        this.showContent = 'empty';
       } else {
-        this.showError = false;
-        this.showEmpty = false;
-        this.showTable = true;
+        this.showContent = 'table';
       }
     }
   }
