@@ -218,7 +218,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectCollection').click();
       cy.get('mat-option')
-        .contains('test')
+        .contains('testcollection')
         .click();
       cy.get('#addEntryToCollectionButton')
         .should('not.be.disabled')
@@ -239,8 +239,11 @@ function testCollection(org: string, collection: string, registry: string, repo:
     });
   });
 }
+
 testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
 
-testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
+// Commented out until tool delete fix is merged
+// See https://github.com/dockstore/dockstore/pull/3494/files
+// testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
 
 testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
