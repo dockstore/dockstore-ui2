@@ -13,29 +13,25 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Injectable, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AlertQuery } from '../alert/state/alert.query';
+import { Base } from '../base';
 import { UserQuery } from '../user/user.query';
 
 @Injectable()
-export class RefreshOrganizationComponent implements OnInit, OnDestroy {
+export abstract class RefreshOrganizationComponent extends Base implements OnInit {
   protected userId: number;
   buttonText: string;
-  @Input() protected organization: string;
   public isRefreshing$: Observable<boolean>;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(private userQuery: UserQuery, protected alertQuery: AlertQuery) {}
+  constructor(private userQuery: UserQuery, protected alertQuery: AlertQuery) {
+    super();
+  }
 
   ngOnInit() {
     this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => (this.userId = userId));
     this.isRefreshing$ = this.alertQuery.showInfo$;
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }
