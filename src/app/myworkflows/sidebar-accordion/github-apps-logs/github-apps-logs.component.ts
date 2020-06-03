@@ -24,13 +24,39 @@ export class GithubAppsLogsComponent implements OnInit {
   loading = true;
   public LambdaEvent = LambdaEvent;
   expandedElement: LambdaEvent | null;
+  showError = false;
+  showEmpty = false;
+  showTable = false;
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   ngOnInit() {
     this.loading = true;
     this.lambdaEventsService
       .getLambdaEventsByOrganization(this.data)
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe(lambdaEvents => (this.lambdaEvents = lambdaEvents), error => console.log('do nothing'));
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.updateContentToShow(this.lambdaEvents);
+        })
+      )
+      .subscribe(lambdaEvents => (this.lambdaEvents = lambdaEvents), () => (this.lambdaEvents = null));
+  }
+
+  updateContentToShow(lambdaEvents: LambdaEvent[] | null) {
+    if (!lambdaEvents) {
+      this.showError = true;
+      this.showEmpty = false;
+      this.showTable = false;
+    } else {
+      if (lambdaEvents.length === 0) {
+        this.showError = false;
+        this.showEmpty = true;
+        this.showTable = false;
+      } else {
+        this.showError = false;
+        this.showEmpty = false;
+        this.showTable = true;
+      }
+    }
   }
 }

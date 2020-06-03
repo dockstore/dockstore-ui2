@@ -1,7 +1,7 @@
-<app-loading [loading]="loading"
-  ><span *ngIf="!lambdaEvents">There are no GitHub App logs for this organization</span>
-
-  <table *ngIf="lambdaEvents" mat-table [dataSource]="lambdaEvents" multiTemplateDataRows class="mat-elevation-z3 w-100">
+<app-loading [loading]="loading">
+  <span *ngIf="showError">There were problems retrieving GitHub App logs for this organization.</span>
+  <span *ngIf="showEmpty">There are no GitHub App logs for this organization.</span>
+  <table *ngIf="showTable" mat-table [dataSource]="lambdaEvents" multiTemplateDataRows class="mat-elevation-z3 w-100">
     <ng-container matColumnDef="dbCreateDate">
       <th mat-header-cell *matHeaderCellDef>Date</th>
       <td mat-cell *matCellDef="let element">{{ element.dbCreateDate | date: 'medium' }}</td>
