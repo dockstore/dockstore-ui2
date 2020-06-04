@@ -151,7 +151,7 @@
             [placeholder]="workflowPathPlaceholder"
           />
           <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
-          <mat-error *ngIf="formErrors.workflow_path">{{ formErrors.workflow_path }}</mat-error>
+          <mat-error *ngIf="formErrors.workflow_path">{{ workflowPathError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100">
           <mat-label>Test Parameter File Path</mat-label>

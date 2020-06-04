@@ -54,6 +54,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public isModalShown: boolean;
   public isRefreshing$: Observable<boolean>;
   public descriptorValidationPattern;
+  public workflowPathError: String | null;
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
@@ -237,6 +238,23 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.descriptorValidationPattern = DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
       descriptorType
     ).descriptorPathPattern;
+    switch (descriptorType) {
+      case Workflow.DescriptorTypeEnum.CWL:
+        this.workflowPathError = validationMessages.cwlPath.pattern;
+        break;
+      case Workflow.DescriptorTypeEnum.WDL:
+        this.workflowPathError = validationMessages.wdlPath.pattern;
+        break;
+      case Workflow.DescriptorTypeEnum.NFL:
+        this.workflowPathError = validationMessages.nflPath.pattern;
+        break;
+      case Workflow.DescriptorTypeEnum.Gxformat2:
+        this.workflowPathError = validationMessages.galaxyPath.pattern;
+        break;
+      default:
+        console.error('Unknown descriptor type: ' + descriptorType);
+        this.workflowPathError = null;
+    }
     this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
   }
 
