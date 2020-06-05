@@ -3,6 +3,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
+import { ToolDescriptor } from 'app/shared/swagger';
 import { finalize } from 'rxjs/operators';
 
 /**
@@ -10,6 +11,7 @@ import { finalize } from 'rxjs/operators';
  * TODO: Filter by date (datasource is using timestamp instead of medium date)
  * TODO: Change to prettier empty and error messages
  * TODO: Friendly value map for reference (maybe success, maybe type too)
+ * TODO: Fix sort expanding every row
  * @export
  * @class GithubAppsLogsComponent
  * @implements {OnInit}
@@ -33,7 +35,7 @@ export class GithubAppsLogsComponent implements OnInit {
     private matSnackBar: MatSnackBar
   ) {}
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
-  displayedColumns: string[] = ['dbCreateDate', 'githubUsername', ...this.columnsToDisplay];
+  displayedColumns: string[] = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
   lambdaEvents: LambdaEvent[];
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   loading = true;

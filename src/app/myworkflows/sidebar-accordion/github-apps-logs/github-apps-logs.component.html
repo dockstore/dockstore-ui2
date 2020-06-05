@@ -10,9 +10,9 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. PUSH" />
       </mat-form-field>
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z3 w-100" matSort>
-        <ng-container matColumnDef="dbCreateDate">
+        <ng-container matColumnDef="eventDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.dbCreateDate | date: 'medium' }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.eventDate | date: 'medium' }}</td>
         </ng-container>
         <ng-container matColumnDef="githubUsername">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>GitHub Username</th>
