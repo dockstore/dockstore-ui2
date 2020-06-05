@@ -3,7 +3,7 @@
   "version": "2.3.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version": "1.9.0-alpha.9"
+    "webservice_version": "1.9.0-alpha.10"
   },
   "scripts": {
     "ng": "npx ng",
