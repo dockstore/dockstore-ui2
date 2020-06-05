@@ -38,8 +38,11 @@ jobs:
           name: Prebuild
           command: bash -i -c 'npm run prebuild.prod'
       - run:
-          name: Run remote verification test against dev
-          command: bash -i -c 'npm run test-dev'
+          name: Run remote verification test against dev (no auth)
+          command: bash -i -c 'npm run test-dev-no-auth'
+      - run:
+          name: Run remote verification test against dev (with auth)
+          command: bash -i -c 'npm run test-dev-auth'
 
   lint_unit_test_coverage:
     working_directory: ~/repo
