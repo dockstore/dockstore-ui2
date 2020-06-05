@@ -22,10 +22,10 @@ jobs:
     steps:
       - checkout
       - install_container_dependencies
-      - restore_dep_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
-      - restore_cypress_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+      - restore_cache:
+          keys:
+              - dep-cache-{{ checksum "./package-lock.json" }}
+              - cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
