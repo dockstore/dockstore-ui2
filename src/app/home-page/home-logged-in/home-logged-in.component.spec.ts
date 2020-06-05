@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TabsModule } from 'ngx-bootstrap';
 import { TwitterService } from '../../shared/twitter.service';
 import { HomeLoggedInComponent } from './home-logged-in.component';
 
@@ -17,7 +16,7 @@ describe('HomeLoggedInComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HomeLoggedInComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TabsModule.forRoot(), RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
+      imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
       providers: [TwitterService]
     }).compileComponents();
   }));

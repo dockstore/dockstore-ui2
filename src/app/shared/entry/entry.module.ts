@@ -20,8 +20,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { ShareButtonsModule } from '@ngx-share/buttons';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RefreshAlertModule } from '../alert/alert.module';
 import { AvailableLogsModule } from '../available-logs.module';
@@ -47,9 +45,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
   imports: [
     AvailableLogsModule,
     CommonModule,
-    TooltipModule.forRoot(),
     FormsModule,
-    ModalModule,
     CustomMaterialModule,
     FlexLayoutModule,
     NgxJsonLdModule,

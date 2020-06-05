@@ -18,12 +18,6 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { EntryFileTabComponent } from 'app/entry/entry-file-tab/entry-file-tab.component';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
@@ -60,7 +54,6 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
-import { getTooltipConfig } from './../tooltip';
 
 @NgModule({
   declarations: [
@@ -82,18 +75,12 @@ import { getTooltipConfig } from './../tooltip';
   ],
   imports: [
     CommonModule,
-    ButtonsModule.forRoot(),
-    AlertModule.forRoot(),
     CurrentCollectionsModule,
     FlexLayoutModule,
     HeaderModule,
     ListWorkflowsModule,
-    ModalModule.forRoot(),
     SelectModule,
     PipeModule,
-    TooltipModule.forRoot(),
-    TabsModule.forRoot(),
-    AccordionModule.forRoot(),
     StarringModule,
     OrderByModule,
     FormsModule,
@@ -105,7 +92,6 @@ import { getTooltipConfig } from './../tooltip';
     MarkdownModule
   ],
   providers: [
-    { provide: TooltipConfig, useFactory: getTooltipConfig },
     DateService,
     FileService,
     WorkflowLaunchService,

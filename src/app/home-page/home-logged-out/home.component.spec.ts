@@ -19,7 +19,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TwitterService } from '../../shared/twitter.service';
 import { HomeComponent } from './home.component';
 
@@ -31,7 +30,7 @@ describe('HomeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HomeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TabsModule.forRoot(), CustomMaterialModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [CustomMaterialModule, RouterTestingModule, HttpClientTestingModule],
       providers: [TwitterService, DescriptorLanguageService]
     }).compileComponents();
   }));

@@ -16,7 +16,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TabsModule } from 'ngx-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ListContainersComponent } from '../../containers/list/list.component';
 import { ListContainersService } from '../../containers/list/list.service';
@@ -28,7 +27,7 @@ import { CustomMaterialModule } from './material.module';
 
 @NgModule({
   declarations: [ListContainersComponent],
-  imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule, TabsModule, EntryModule],
+  imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule, EntryModule],
   providers: [PublishedToolsDataSource, ListContainersService],
   exports: [ListContainersComponent]
 })

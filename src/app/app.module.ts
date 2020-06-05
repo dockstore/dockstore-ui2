@@ -24,11 +24,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { environment } from '../environments/environment';
@@ -92,7 +87,6 @@ import { RefreshService } from './shared/refresh.service';
 import { ApiModule } from './shared/swagger/api.module';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 import { Configuration } from './shared/swagger/configuration';
-import { getTooltipConfig } from './shared/tooltip';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
@@ -164,10 +158,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
-    BsDropdownModule.forRoot(),
-    AccordionModule.forRoot(),
-    TabsModule.forRoot(),
-    TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
     FlexLayoutModule,
@@ -175,7 +165,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     OrganizationStarringModule,
     OrganizationStargazersModule,
     routing,
-    ModalModule.forRoot(),
     StargazersModule,
     MarkdownModule.forRoot(),
     ReactiveFormsModule,
@@ -188,7 +177,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
   ],
   providers: [
     AccountsService,
-    { provide: TooltipConfig, useFactory: getTooltipConfig },
     AuthService,
     LoginService,
     RegisterService,

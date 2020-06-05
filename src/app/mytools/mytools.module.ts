@@ -26,7 +26,6 @@ import { RegisterToolComponent } from './../container/register-tool/register-too
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from './../shared/modules/material.module';
-import { getTooltipConfig } from './../shared/tooltip';
 import { MyToolComponent } from './my-tool/my-tool.component';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';

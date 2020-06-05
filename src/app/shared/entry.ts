@@ -17,9 +17,8 @@ import { Location } from '@angular/common';
 import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
-import { TabsetComponent } from 'ngx-bootstrap';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../shared/dockstore.model';
@@ -38,7 +37,7 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
-  @ViewChild('entryTabs', { static: false }) entryTabs: TabsetComponent;
+  @ViewChild('entryTabs', { static: false }) entryTabs: MatTabGroup;
   protected shareURL: string;
   public starGazersClicked = false;
   private totalShare = 0;

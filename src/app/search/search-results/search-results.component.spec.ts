@@ -19,7 +19,6 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TagCloudModule } from 'angular-tag-cloud-module';
-import { TabsModule } from 'ngx-bootstrap/tabs';
 import { QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
 import { QueryBuilderService } from './../query-builder.service';
 
@@ -35,7 +34,7 @@ describe('SearchResultsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SearchResultsComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TabsModule.forRoot(), TagCloudModule, RouterTestingModule],
+      imports: [TagCloudModule, RouterTestingModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService }
