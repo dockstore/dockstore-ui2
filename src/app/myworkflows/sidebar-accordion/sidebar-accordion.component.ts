@@ -43,7 +43,7 @@ export class SidebarAccordionComponent implements OnInit {
 
   trackByOrgWorkflowObject(index: number, orgWorkflowObject: OrgWorkflowObject<Workflow>) {
     return orgWorkflowObject.sourceControl + '/' + orgWorkflowObject.organization;
-    
+  }
   openGitHubAppsLogs(organization: string) {
     this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: organization });
   }
