@@ -13,12 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
-import { myworkflowRouting } from './myworkflows.routing';
-import { GitHubAppsLogsModule } from './sidebar-accordion/github-apps-logs/github-apps-logs.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { RefreshAlertModule } from 'app/shared/alert/alert.module';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { GithubAppsLogsComponent } from './github-apps-logs.component';
 
 @NgModule({
-  imports: [SharedWorkflowServicesModule, myworkflowRouting, GitHubAppsLogsModule]
+  imports: [CustomMaterialModule, CommonModule, RefreshAlertModule, FlexLayoutModule],
+  declarations: [GithubAppsLogsComponent],
+  entryComponents: [GithubAppsLogsComponent]
 })
-export class MyWorkflowsModule {}
+export class GitHubAppsLogsModule {}
