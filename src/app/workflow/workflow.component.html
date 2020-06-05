@@ -298,7 +298,11 @@
               </ng-template>
 
               <ng-template #dockstoreYmlComponent>
-                <app-source-file-tabs [workflowId]="workflow?.id" [version]="selectedVersion"></app-source-file-tabs>
+                <app-source-file-tabs
+                  [workflowId]="workflow?.id"
+                  [version]="selectedVersion"
+                  [descriptorType]="descriptorType$ | async"
+                ></app-source-file-tabs>
               </ng-template>
 
               <ng-template #hostedComponent>

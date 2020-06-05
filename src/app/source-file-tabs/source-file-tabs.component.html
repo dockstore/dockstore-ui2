@@ -1,4 +1,4 @@
-<div *ngIf="files">
+<app-loading class="w-100" [loading]="!files">
   <div *ngIf="currentVersion" class="p-3">
     <mat-card class="alert alert-warning" *ngIf="validationMessage">
       <mat-icon>warning</mat-icon>
@@ -20,6 +20,17 @@
               </mat-select>
             </mat-form-field>
             <span>
+              <a
+                mat-icon-button
+                color="secondary"
+                class="mr-1"
+                [href]="customDownloadHREF"
+                [download]="customDownloadPath"
+                type="button"
+                title="{{ filePath }}"
+              >
+                <mat-icon>save_alt</mat-icon>
+              </a>
               <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="currentFile.content">
                 <mat-icon>file_copy</mat-icon>
               </button>
@@ -30,4 +41,4 @@
       </ng-template>
     </mat-tab>
   </mat-tab-group>
-</div>
+</app-loading>
