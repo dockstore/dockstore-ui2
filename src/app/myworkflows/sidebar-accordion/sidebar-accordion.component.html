@@ -1,5 +1,5 @@
 <mat-accordion multi-true>
-  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj.expanded">
+  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject; trackBy: trackByOrgWorkflowObject" [expanded]="orgObj.expanded">
     <mat-expansion-panel-header>
       <mat-panel-title class="org-accordion-header">
         {{ orgObj?.sourceControl + '/' + orgObj?.organization }}
@@ -8,7 +8,10 @@
     <mat-tab-group mat-stretch-tabs [selectedIndex]="orgObj | selectTab: (workflowId$ | async)">
       <mat-tab label="Published">
         <mat-list class="org-accordion-list">
-          <mat-list-item *ngFor="let workflowObj of orgObj?.published" [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }">
+          <mat-list-item
+            *ngFor="let workflowObj of orgObj?.published; trackBy: trackByWorkflowId"
+            [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }"
+          >
             <a
               class="no-wrap"
               title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
@@ -25,7 +28,7 @@
       <mat-tab label="Unpublished">
         <mat-list class="org-accordion-list">
           <mat-list-item
-            *ngFor="let workflowObj of orgObj?.unpublished"
+            *ngFor="let workflowObj of orgObj?.unpublished; trackBy: trackByWorkflowId"
             [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }"
           >
             <a
@@ -45,7 +48,7 @@
     <mat-action-row>
       <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
-          <app-refresh-workflow-organization [organization]="orgObj?.organization"></app-refresh-workflow-organization>
+          <app-refresh-workflow-organization [orgWorkflowObject]="orgObj"></app-refresh-workflow-organization>
         </span>
       </div>
       <div *ngIf="(entryType$ | async) === EntryType.Service">

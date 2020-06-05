@@ -59,6 +59,7 @@
             *ngIf="_selectedVersion?.name !== version?.name"
             matTooltip="Click to select version"
             (click)="setVersion(version)"
+            data-cy="versionName"
             >{{ version?.name }}</a
           >
           <span *ngIf="_selectedVersion?.name === version?.name">{{ version?.name }}</span>

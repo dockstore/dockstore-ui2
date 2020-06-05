@@ -19,7 +19,7 @@
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of autocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
   </mat-autocomplete>
-  <button mat-stroked-button color="primary" type="button" class="w-100" (click)="openAdvancedSearch()">
+  <button data-cy="advanced-search" mat-stroked-button color="primary" type="button" class="w-100" (click)="openAdvancedSearch()">
     Open Advanced Search
   </button>
 </mat-expansion-panel>

@@ -31,7 +31,7 @@
           <i [class]="(showToolTagCloud$ | async) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
           <span>Tag Cloud</span>
         </button>
-        <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async">
+        <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async" data-cy="tagCloud">
           <angular-tag-cloud
             [data]="toolTagCloudData"
             [width]="options.width"

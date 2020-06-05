@@ -70,7 +70,7 @@ describe('Service: version-modal.service.ts', () => {
     [VersionModalService, AlertQuery],
     (service: VersionModalService, alertQuery: AlertQuery) => {
       workflowQuery.getActive.and.returnValue(<any>{ id: 1 });
-      service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
+      service.saveVersion(expectedVersion, expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
       // Refresh service takes modifying the refreshMessage from the third message;
       alertQuery.message$.subscribe(refreshMessage => expect(refreshMessage).toEqual(''));
     }
