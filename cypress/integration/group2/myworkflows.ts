@@ -162,10 +162,9 @@ describe('Dockstore my workflows', () => {
 
     cy.get('body').type('{esc}');
 
+    // Test file content
     goToTab('Files');
-
     cy.contains('Configuration');
-
     cy.contains('/.dockstore.yml');
 
     goToTab('Descriptor Files');
@@ -175,10 +174,10 @@ describe('Dockstore my workflows', () => {
     cy.get('mat-tab-body').within((tabBody) => {
       cy.get('mat-select').eq(1).click();
     });
+
     cy.get('mat-option')
       .contains('md5sum-tool.cwl')
       .click();
-
     cy.contains('class: CommandLineTool');
   });
 
