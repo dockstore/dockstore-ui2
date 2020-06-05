@@ -28,10 +28,11 @@
                 [download]="customDownloadPath"
                 type="button"
                 title="{{ filePath }}"
+                matTooltip="Download File"
               >
                 <mat-icon>save_alt</mat-icon>
               </a>
-              <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="currentFile.content">
+              <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="currentFile.content" matTooltip="Copy File">
                 <mat-icon>file_copy</mat-icon>
               </button>
             </span>
