@@ -46,6 +46,11 @@ function registerQuayTool(repo: string, name: string) {
     cy.visit('/my-tools');
     // click thru the steps of registering a tool
     cy.wait('@tokens');
+
+    // Commented out until tool delete issue is fixed
+    // See https://github.com/dockstore/dockstore/pull/3494/files
+    // tool will already be there, so no need to register it
+    //
     // cy.get('#register_tool_button').should('be.visible');
     //
     // cy.get('#register_tool_button').click();

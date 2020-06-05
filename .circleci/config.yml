@@ -22,9 +22,9 @@ jobs:
     steps:
       - checkout
       - install_container_dependencies
-      - restore_cache:
+      - restore_dep_cache:
           key: dep-cache-{{ checksum "./package-lock.json" }}
-      - restore_cache:
+      - restore_cypress_cache:
           key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
