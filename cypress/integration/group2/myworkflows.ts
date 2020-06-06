@@ -43,6 +43,10 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=my-workflows-nav-button]').click();
       cy.contains('github.com/A/l');
     });
+    it('should be able to see GitHub Apps Logs dialog', () => {
+      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('There were problems retrieving GitHub App logs for this organization.');
+    });
     it('Should contain the extended properties and be able to edit the info tab', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('github.com');
