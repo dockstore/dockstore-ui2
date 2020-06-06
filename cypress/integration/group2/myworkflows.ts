@@ -56,6 +56,39 @@ describe('Dockstore my workflows', () => {
       cy.contains('See GitHub Apps Logs').click();
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
+      const realResponse = [
+        {
+          eventDate: 1582165220000,
+          githubUsername: 'boil',
+          id: 1,
+          message: 'HTTP 418 ',
+          organization: 'dockstore',
+          reference: 'refs/tag/1.03',
+          repository: 'hello_world',
+          success: false,
+          type: 'PUSH'
+        },
+        {
+          eventDate: 1591368041850,
+          githubUsername: 'em',
+          id: 2,
+          message: 'HTTP 418 ',
+          organization: 'dockstore',
+          reference: 'refs/tag/1.03',
+          repository: 'hello_world',
+          success: false,
+          type: 'PUSH'
+        }
+      ];
+      cy.route({
+        method: 'GET',
+        url: '/api/lambdaEvents/**',
+        response: realResponse
+      }).as('refreshWorkflow');
+      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Feb 20, 2020, 2:20:20 AM');
+      cy.contains('Jun 5, 2020, 2:40:41 PM');
+      cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
       cy.visit('/my-workflows/github.com/A/g');
