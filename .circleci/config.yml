@@ -67,11 +67,7 @@ jobs:
               git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
               git checkout -qf FETCH_HEAD
             fi
-      - run:
-          name: Install npm
-          command: |
-            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            bash -i -c 'nvm install'
+      - install_container_dependencies
       - restore_cache:
           key: dep-cache-{{ checksum "./package-lock.json" }}
       - run:
@@ -98,7 +94,7 @@ jobs:
           command: bash -i -c 'npm run lint'
       - run:
           name: Build
-          command: NODE_OPTIONS="--max-old-space-size=2048" bash -i -c 'npm run build.prod'
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
       - run:
           name: Install codecov
           command: bash -i -c 'npm i --no-save codecov'
