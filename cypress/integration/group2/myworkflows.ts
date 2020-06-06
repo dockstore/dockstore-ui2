@@ -46,6 +46,16 @@ describe('Dockstore my workflows', () => {
     it('should be able to see GitHub Apps Logs dialog', () => {
       cy.contains('See GitHub Apps Logs').click();
       cy.contains('There were problems retrieving GitHub App logs for this organization.');
+      cy.contains('Close').click();
+      cy.server();
+      cy.route({
+        method: 'GET',
+        url: '/api/lambdaEvents/**',
+        response: []
+      }).as('refreshWorkflow');
+      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('There are no GitHub App logs for this organization.');
+      cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
       cy.visit('/my-workflows/github.com/A/g');
