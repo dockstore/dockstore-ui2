@@ -260,18 +260,6 @@ workflows:
     jobs:
       - uptime_monitor
 
-  nightlytest:
-    triggers:
-      - schedule:
-          cron: "0,10,20,30,40,50 * * * *" # every 10 minutes
-          filters:
-            branches:
-              only:
-                - feature/SEAB-792/logged-in-tests
-    jobs:
-      - uptime_monitor
-
-
 commands:
   install_container_dependencies:
     steps:
