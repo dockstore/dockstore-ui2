@@ -44,6 +44,7 @@ import { VersionsWorkflowComponent } from '../../workflow/versions/versions.comp
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
+import { RefreshAlertModule } from '../alert/alert.module';
 import { DateService } from '../date.service';
 import { WorkflowActionsComponent } from '../entry-actions/workflow-actions.component';
 import { FileService } from '../file.service';
@@ -104,7 +105,8 @@ import { getTooltipConfig } from './../tooltip';
     ClipboardModule,
     EntryModule,
     AddEntryModule,
-    MarkdownModule
+    MarkdownModule,
+    RefreshAlertModule
   ],
   providers: [
     { provide: TooltipConfig, useFactory: getTooltipConfig },

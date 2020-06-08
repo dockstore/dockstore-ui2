@@ -301,6 +301,11 @@ export class HttpStubService {
   }
 }
 
+export class DescriptorTypeCompatStubService {
+  stringToDescriptorType(descriptorType: string | Workflow.DescriptorTypeEnum) {}
+  toolDescriptorTypeEnumToPlainTRS(typeEnum: ToolDescriptor.TypeEnum) {}
+}
+
 export class WorkflowStubService {
   nsWorkflows$ = observableOf([]);
   nsSharedWorkflows$ = observableOf([]);

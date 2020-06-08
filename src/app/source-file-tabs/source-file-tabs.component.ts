@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatSelectChange, MatSnackBar, MatTabChangeEvent } from '@angular/material';
+import { MatSelectChange, MatTabChangeEvent } from '@angular/material';
 import { SafeUrl } from '@angular/platform-browser';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { FileService } from 'app/shared/file.service';
@@ -37,7 +37,8 @@ export class SourceFileTabsComponent implements OnInit {
   constructor(
     private workflowsService: WorkflowsService,
     private fileService: FileService,
-    private descriptorTypeCompatService: DescriptorTypeCompatService) {}
+    private descriptorTypeCompatService: DescriptorTypeCompatService
+  ) {}
 
   ngOnInit() {
     this.setupVersionFileTabs();
@@ -45,28 +46,30 @@ export class SourceFileTabsComponent implements OnInit {
 
   setupVersionFileTabs() {
     this.loading = true;
-    this.workflowsService.getWorkflowVersionsSourcefiles(this.workflowId, this.currentVersion.id)
-    .pipe(
-      finalize(() => {
-        this.loading = false;
-      })
-    ).subscribe(
-      (sourceFiles: SourceFile[]) => {
-        this.files = sourceFiles;
-        this.fileTypes = [];
-        this.files.forEach((file: SourceFile) => {
-          if (!this.fileTypes.includes(file.type)) {
-            this.fileTypes.push(file.type);
+    this.workflowsService
+      .getWorkflowVersionsSourcefiles(this.workflowId, this.currentVersion.id)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(
+        (sourceFiles: SourceFile[]) => {
+          this.files = sourceFiles;
+          this.fileTypes = [];
+          this.files.forEach((file: SourceFile) => {
+            if (!this.fileTypes.includes(file.type)) {
+              this.fileTypes.push(file.type);
+            }
+          });
+          if (this.fileTypes.length > 0) {
+            this.changeFileType(this.fileTypes[0]);
           }
-        });
-        if (this.fileTypes.length > 0) {
-          this.changeFileType(this.fileTypes[0]);
+        },
+        error => {
+          console.log(error);
         }
-      },
-      error => {
-        console.log(error);
-      }
-    );
+      );
   }
 
   /**
