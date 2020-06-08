@@ -1,4 +1,4 @@
-<app-loading class="w-100" [loading]="!files">
+<app-loading class="w-100" [loading]="loading">
   <div *ngIf="currentVersion" class="p-3">
     <mat-card class="alert alert-warning" *ngIf="validationMessage">
       <mat-icon>warning</mat-icon>
@@ -8,6 +8,9 @@
         >: {{ item.value }}
       </span>
     </mat-card>
+  </div>
+  <div *ngIf="!loading && !files">
+    <mat-card class="alert alert-warning"> <mat-icon>warning</mat-icon>This version has no files.</mat-card>
   </div>
   <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
     <mat-tab *ngFor="let fileType of fileTypes" label="{{ 'SourceFile.TypeEnum' | mapFriendlyValue: fileType }}">

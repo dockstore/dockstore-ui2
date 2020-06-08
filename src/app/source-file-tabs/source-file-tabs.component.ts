@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatSelectChange, MatTabChangeEvent } from '@angular/material';
+import { MatSelectChange, MatSnackBar, MatTabChangeEvent } from '@angular/material';
 import { SafeUrl } from '@angular/platform-browser';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
 import { Validation } from 'app/shared/swagger';
-import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../shared/constants';
+import { finalize } from 'rxjs/operators';
+import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -21,6 +22,7 @@ export class SourceFileTabsComponent implements OnInit {
       this.setupVersionFileTabs();
     }
   }
+  loading = true;
   currentVersion: WorkflowVersion;
   files: SourceFile[];
   filteredFiles: SourceFile[];
@@ -42,7 +44,13 @@ export class SourceFileTabsComponent implements OnInit {
   }
 
   setupVersionFileTabs() {
-    this.workflowsService.getWorkflowVersionsSourcefiles(this.workflowId, this.currentVersion.id).subscribe(
+    this.loading = true;
+    this.workflowsService.getWorkflowVersionsSourcefiles(this.workflowId, this.currentVersion.id)
+    .pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    ).subscribe(
       (sourceFiles: SourceFile[]) => {
         this.files = sourceFiles;
         this.fileTypes = [];
@@ -55,7 +63,9 @@ export class SourceFileTabsComponent implements OnInit {
           this.changeFileType(this.fileTypes[0]);
         }
       },
-      error => console.log(error)
+      error => {
+        console.log(error);
+      }
     );
   }
 
