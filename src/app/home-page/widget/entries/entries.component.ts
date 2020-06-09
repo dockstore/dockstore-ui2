@@ -21,7 +21,6 @@ export class EntriesComponent extends FilteredList {
     this.usersService
       .getUserEntries(10, this.filterText)
       .pipe(
-        debounceTime(formInputDebounceTime),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(
