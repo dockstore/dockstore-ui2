@@ -141,7 +141,6 @@ export class ViewWorkflowComponent extends View implements OnInit {
 
   deleteHostedVersion() {
     let deleteMessage;
-    console.log(this.defaultVersion + ' ' + this.version.name);
     if (this.defaultVersion === this.version.name) {
       deleteMessage =
         'You are trying to delete the default version ' +
