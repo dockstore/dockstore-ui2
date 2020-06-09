@@ -19,7 +19,7 @@
           <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
             <mat-form-field *ngIf="selectedFile$ | async as selected" class="w-50">
               <mat-select [value]="selected" (selectionChange)="matSelectChange($event)">
-                <mat-option [value]="file" *ngFor="let file of files$ | async"> {{ file.path }} </mat-option>
+                <mat-option [value]="file" *ngFor="let file of files$ | async"> {{ file.path | filePathPipe }} </mat-option>
               </mat-select>
             </mat-form-field>
             <span>
