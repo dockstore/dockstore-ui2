@@ -1,11 +1,8 @@
 import { OnInit } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { UserQuery } from 'app/shared/user/user.query';
-
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { formInputDebounceTime } from '../../shared/constants';
-
 import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { EntriesService, UsersService } from '../../shared/openapi';
 
 /**

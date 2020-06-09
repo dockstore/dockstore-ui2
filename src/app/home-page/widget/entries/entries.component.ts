@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { formInputDebounceTime } from 'app/shared/constants';
 import { EntryUpdateTime } from 'app/shared/openapi/model/entryUpdateTime';
 import { UserQuery } from 'app/shared/user/user.query';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { EntriesService, UsersService } from '../../../shared/openapi';
 import { FilteredList } from '../filtered-list';
 
