@@ -1,0 +1,22 @@
+tr.detail-row {
+  height: 0;
+}
+
+/* Material says it should highlight on hover, sadly Angular Material does not. Also don't highlight expanded row */
+tr.element-row:not(.expanded-row):hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+tr.element-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+// To not have border between expanded details and the normal row
+.element-row td {
+  border-bottom-width: 0;
+}
+
+.expanded-row-detail {
+  overflow: hidden;
+  display: flex;
+}
