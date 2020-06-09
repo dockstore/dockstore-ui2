@@ -131,6 +131,12 @@ describe('Dockstore Home', () => {
   }
   function checkFilesTab() {
     goToTab('Files');
+    // Configuration tab
+    cy.contains('.dockstore.yml');
+    cy.contains('subclass: docker-compose');
+
+    // Files Tab
+    goToTab('Files');
     cy.contains('README.md');
     cy.contains('# another-test-serviceaaaa');
   }
