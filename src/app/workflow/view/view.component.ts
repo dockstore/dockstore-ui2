@@ -47,6 +47,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
+  @Input() defaultVersion: string;
   items: any[];
   isPublic: boolean;
   EntryType = EntryType;
@@ -139,8 +140,19 @@ export class ViewWorkflowComponent extends View implements OnInit {
   }
 
   deleteHostedVersion() {
-    const deleteMessage =
-      'Are you sure you want to delete version ' + this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
+    let deleteMessage;
+    console.log(this.defaultVersion + ' ' + this.version.name);
+    if (this.defaultVersion === this.version.name) {
+      deleteMessage =
+        'You are trying to delete the default version ' +
+        this.defaultVersion +
+        ' for the workflow ' +
+        this.workflow.full_workflow_path +
+        '. Deleting this will set the default version to be the latest version. Are you sure you want to continue?';
+    } else {
+      deleteMessage =
+        'Are you sure you want to delete version ' + this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
+    }
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
       this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
