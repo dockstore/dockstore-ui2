@@ -4,7 +4,8 @@ import { AuthService } from 'ng2-ui-auth';
 import { Md5 } from 'ts-md5/dist/md5';
 import { AlertService } from '../alert/state/alert.service';
 import { TokenService } from '../state/token.service';
-import { Configuration, ExtendedUserData, User, UsersService } from '../swagger';
+import { WorkflowService } from '../state/workflow.service';
+import { Configuration, ExtendedUserData, User, UsersService, Workflow } from '../swagger';
 import { UserStore } from './user.store';
 
 @Injectable({ providedIn: 'root' })
@@ -15,7 +16,8 @@ export class UserService {
     private usersService: UsersService,
     private configuration: Configuration,
     private tokenService: TokenService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private workflowService: WorkflowService
   ) {
     this.getUser();
   }
@@ -36,6 +38,17 @@ export class UserService {
         extendedUserData: extendeduserData
       };
     });
+  }
+
+  addUserToWorkflows(userId: number): void {
+    this.alertService.start('Adding user to existing workflows on Dockstore');
+    this.usersService.addUserToDockstoreWorkflows(userId).subscribe(
+      (workflows: Array<Workflow>) => {
+        this.alertService.detailedSuccess();
+        this.workflowService.setWorkflows(workflows);
+      },
+      error => this.alertService.detailedError(error)
+    );
   }
 
   @transaction()

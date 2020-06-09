@@ -33,6 +33,28 @@ describe('Dockstore my workflows', () => {
     cy.contains('No matching entries');
   });
 
+  it('have action buttons which work', () => {
+    cy.server();
+    cy.fixture('myWorkflows.json').then(json => {
+      cy.route({
+        url: '/api/users/1/workflows',
+        method: 'PATCH',
+        status: 200,
+        response: json
+      });
+    });
+
+    cy.visit('/my-workflows');
+    cy.get('[data-cy=myWorkflowsMoreActionButtons]')
+      .should('be.visible')
+      .click();
+    cy.get('[data-cy=addToExistingWorkflows]')
+      .should('be.visible')
+      .click();
+
+    cy.contains('addedthisworkflowviasync');
+  });
+
   describe('Should contain extended Workflow properties', () => {
     it('visit another page then come back', () => {
       cy.visit('/my-workflows');
