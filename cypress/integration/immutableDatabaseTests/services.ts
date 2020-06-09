@@ -136,8 +136,16 @@ describe('Dockstore Home', () => {
     cy.contains('subclass: docker-compose');
 
     // Files Tab
-    goToTab('Files');
+    goToTab('Service Files');
     cy.contains('README.md');
     cy.contains('# another-test-serviceaaaa');
+
+    cy.get('mat-tab-body').within((tabBody) => {
+      cy.get('mat-select').eq(1).click();
+    });
+    cy.get('mat-option')
+      .contains('docker-compose.yml')
+      .click();
+    cy.contains('docker-compose.yml');
   }
 });

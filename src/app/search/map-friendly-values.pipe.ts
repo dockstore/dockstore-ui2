@@ -101,7 +101,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, 'Test Parameter Files'],
         [SourceFile.TypeEnum.DOCKSTORESERVICEYML, 'Configuration'],
         [SourceFile.TypeEnum.DOCKSTOREYML, 'Configuration'],
-        [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, 'Files'],
+        [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, 'Service Files']
       ])
     ]
   ]);
