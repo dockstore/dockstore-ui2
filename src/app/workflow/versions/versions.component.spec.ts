@@ -19,7 +19,6 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { TooltipModule } from 'ngx-bootstrap';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -69,7 +68,7 @@ describe('VersionsWorkflowComponent', () => {
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CustomMaterialModule, FormsModule, TooltipModule, FontAwesomeModule, BrowserAnimationsModule],
+      imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule],
       declarations: [
         VersionsWorkflowComponent,
         OrderBy,

@@ -142,35 +142,37 @@
           >
         </mat-card>
 
+        <mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
+          <mat-card class="row">
+            <div>Link to this page</div>
+            <div class="input-group" style="padding:5px;">
+              <input type="text" class="form-control" [value]="shortUrl$ | async" readonly />
+              <span class="input-group-btn">
+                <button
+                  data-cy="copy_button"
+                  class="btn btn-default"
+                  [ngClass]="{ 'btn-copy': isCopied }"
+                  type="button"
+                  ngxClipboard
+                  [cbContent]="shortUrl$ | async"
+                  (cbOnSuccess)="isCopied = true"
+                >
+                  <mat-icon>file_copy</mat-icon>
+                </button>
+              </span>
+            </div>
+          </mat-card>
+        </mde-popover>
+
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
           <mat-card class="alert alert-info">
-            <ng-template #popTemplate>
-              <div class="row">
-                <div class="input-group" style="padding:5px;">
-                  <input type="text" class="form-control" [value]="shortUrl$ | async" readonly />
-                  <span class="input-group-btn">
-                    <button
-                      class="btn btn-default"
-                      [ngClass]="{ 'btn-copy': isCopied }"
-                      type="button"
-                      ngxClipboard
-                      [cbContent]="shortUrl$ | async"
-                      (cbOnSuccess)="isCopied = true"
-                    >
-                      <mat-icon>file_copy</mat-icon>
-                    </button>
-                  </span>
-                </div>
-              </div>
-            </ng-template>
             <button
+              data-cy="share_button"
               mat-raised-button
               type="button"
               color="primary"
-              [popover]="popTemplate"
-              popoverTitle="Link to this page"
-              placement="bottom"
-              [outsideClick]="true"
+              [mdePopoverTriggerFor]="appPopover"
+              mdePopoverTriggerOn="click"
               class="mr-2"
             >
               <i class="fa fa-share-alt" aria-hidden="true"></i>

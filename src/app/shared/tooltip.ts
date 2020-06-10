@@ -1,4 +1,3 @@
-import { TooltipConfig } from 'ngx-bootstrap/tooltip';
 export const Tooltip = {
   testParameterFile: 'Relative path to a Test Parameter File in the Git repository',
   workflowPath: 'Path in Git repository to main descriptor file',
@@ -9,7 +8,3 @@ export const Tooltip = {
   workflowName: 'Name to distinguish between multiple workflows within the same repository',
   repository: 'Repository name within Dockstore'
 };
-
-export function getTooltipConfig(): TooltipConfig {
-  return Object.assign(new TooltipConfig(), { placement: 'auto' });
-}

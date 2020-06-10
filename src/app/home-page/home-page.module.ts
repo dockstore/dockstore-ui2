@@ -11,7 +11,6 @@ import { EntryToDisplayNamePipe } from 'app/shared/entry-to-display-name.pipe';
 import { ListContainersModule } from 'app/shared/modules/list-containers.module';
 import { ListWorkflowsModule } from 'app/shared/modules/list-workflows.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { TabsModule } from 'ngx-bootstrap';
 import { MarkdownModule } from 'ngx-markdown';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HomePageComponent } from './home-page.component';
@@ -32,9 +31,7 @@ import { RequestsComponent } from './widget/requests/requests.component';
     RouterModule,
     ListWorkflowsModule,
     ListContainersModule,
-    TabsModule,
     FormsModule,
-    TabsModule,
     HttpClientModule,
     RefreshAlertModule,
     MarkdownModule

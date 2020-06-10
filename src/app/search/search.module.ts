@@ -20,16 +20,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MdePopoverModule } from '@material-extended/mde';
 import { TagCloudModule } from 'angular-tag-cloud-module';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
-import { getTooltipConfig } from '../shared/tooltip';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
 import { BasicSearchComponent } from './basic-search/basic-search.component';
 import { QueryBuilderService } from './query-builder.service';
@@ -57,8 +55,6 @@ import { SearchService } from './state/search.service';
     FormsModule,
     HeaderModule,
     TagCloudModule,
-    BsDropdownModule.forRoot(),
-    PopoverModule.forRoot(),
     PipeModule,
     ClipboardModule,
     searchRouting,
@@ -66,7 +62,8 @@ import { SearchService } from './state/search.service';
     PrivateIconModule,
     ReactiveFormsModule,
     RefreshAlertModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MdePopoverModule
   ],
   providers: [SearchService, QueryBuilderService],
   exports: [SearchComponent],
