@@ -140,17 +140,10 @@ export class ViewWorkflowComponent extends View implements OnInit {
   }
 
   deleteHostedVersion() {
-    let deleteMessage;
+    let deleteMessage =
+      'Are you sure you want to delete version ' + this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
     if (this.defaultVersion === this.version.name) {
-      deleteMessage =
-        'You are trying to delete the default version ' +
-        this.defaultVersion +
-        ' for the workflow ' +
-        this.workflow.full_workflow_path +
-        '. Deleting this will set the default version to be the latest version. Are you sure you want to continue?';
-    } else {
-      deleteMessage =
-        'Are you sure you want to delete version ' + this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
+      deleteMessage += ' This is the default version and deleting it will set the default version to be the latest version.';
     }
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
