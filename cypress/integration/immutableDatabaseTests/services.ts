@@ -131,21 +131,24 @@ describe('Dockstore Home', () => {
   }
   function checkFilesTab() {
     goToTab('Files');
-    // Configuration tab
-    cy.contains('.dockstore.yml');
-    cy.contains('subclass: docker-compose');
 
     // Files Tab
-    goToTab('Service Files');
     cy.contains('README.md');
     cy.contains('# another-test-serviceaaaa');
 
-    cy.get('mat-tab-body').within((tabBody) => {
-      cy.get('mat-select').eq(1).click();
+    cy.get('mat-tab-body').within(tabBody => {
+      cy.get('mat-select')
+        .eq(1)
+        .click();
     });
     cy.get('mat-option')
       .contains('docker-compose.yml')
       .click();
     cy.contains('docker-compose.yml');
+
+    // Configuration tab
+    goToTab('Configuration');
+    cy.contains('.dockstore.yml');
+    cy.contains('subclass: docker-compose');
   }
 });

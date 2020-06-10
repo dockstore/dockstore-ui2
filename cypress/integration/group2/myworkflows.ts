@@ -164,21 +164,24 @@ describe('Dockstore my workflows', () => {
 
     // Test file content
     goToTab('Files');
-    cy.contains('Configuration');
-    cy.contains('/.dockstore.yml');
 
-    goToTab('Descriptor Files');
     cy.contains('/Dockstore.cwl');
     cy.contains('class: Workflow');
 
-    cy.get('mat-tab-body').within((tabBody) => {
-      cy.get('mat-select').eq(1).click();
+    cy.get('mat-tab-body').within(tabBody => {
+      cy.get('mat-select')
+        .eq(1)
+        .click();
     });
 
     cy.get('mat-option')
       .contains('md5sum-tool.cwl')
       .click();
     cy.contains('class: CommandLineTool');
+
+    goToTab('Configuration');
+    cy.contains('Configuration');
+    cy.contains('/.dockstore.yml');
   });
 
   it('Should be able to refresh a workflow version', () => {
