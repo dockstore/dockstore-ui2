@@ -8,14 +8,13 @@ import { EntriesService, UsersService } from '../../shared/openapi';
 /**
  * Base class for logged in homepage widgets that have a filter list
  */
-export abstract class FilteredList extends Base implements OnInit, OnDestroy {
+export abstract class FilteredList extends Base implements OnInit {
   userId$: Observable<number>;
   public hasItems = false;
   public firstCall = true;
   public myItems;
   public filterText;
   public isLoading = true;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
   private subject: Subject<string> = new Subject();
 
   constructor(protected userQuery: UserQuery, protected entriesService: EntriesService, protected usersService: UsersService) {
@@ -37,11 +36,6 @@ export abstract class FilteredList extends Base implements OnInit, OnDestroy {
 
   onTextChange(event: any) {
     this.subject.next(this.filterText);
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   abstract getMyList();
