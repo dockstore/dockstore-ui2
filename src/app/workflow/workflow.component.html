@@ -248,7 +248,7 @@
                     <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
                   </div>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML">
-                    <ng-container *ngTemplateOutlet="newComponent"></ng-container>
+                    <ng-container *ngTemplateOutlet="dockstoreYmlComponent"></ng-container>
                   </div>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.FULL">
                     <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
@@ -296,6 +296,15 @@
               <ng-template #newComponent>
                 <app-entry-file-tab [version]="selectedVersion"></app-entry-file-tab>
               </ng-template>
+
+              <ng-template #dockstoreYmlComponent>
+                <app-source-file-tabs
+                  [workflowId]="workflow?.id"
+                  [version]="selectedVersion"
+                  [descriptorType]="descriptorType$ | async"
+                ></app-source-file-tabs>
+              </ng-template>
+
               <ng-template #hostedComponent>
                 <app-workflow-file-editor
                   *ngIf="currentTab === 'files'"

@@ -30,6 +30,7 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
 import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
+import { SourceFileTabsComponent } from '../../source-file-tabs/source-file-tabs.component';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
@@ -43,6 +44,7 @@ import { VersionsWorkflowComponent } from '../../workflow/versions/versions.comp
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
+import { RefreshAlertModule } from '../alert/alert.module';
 import { DateService } from '../date.service';
 import { WorkflowActionsComponent } from '../entry-actions/workflow-actions.component';
 import { FileService } from '../file.service';
@@ -78,7 +80,8 @@ import { getTooltipConfig } from './../tooltip';
     WorkflowActionsComponent,
     InfoTabComponent,
     ToolTabComponent,
-    EntryFileTabComponent
+    EntryFileTabComponent,
+    SourceFileTabsComponent
   ],
   imports: [
     CommonModule,
@@ -102,7 +105,8 @@ import { getTooltipConfig } from './../tooltip';
     ClipboardModule,
     EntryModule,
     AddEntryModule,
-    MarkdownModule
+    MarkdownModule,
+    RefreshAlertModule
   ],
   providers: [
     { provide: TooltipConfig, useFactory: getTooltipConfig },

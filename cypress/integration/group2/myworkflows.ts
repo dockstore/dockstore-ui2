@@ -228,6 +228,27 @@ describe('Dockstore my workflows', () => {
       .should('be.visible')
       .click();
     cy.contains('button', 'Refresh Version').should('be.disabled');
+
+    cy.get('body').type('{esc}');
+
+    // Test file content
+    goToTab('Files');
+
+    cy.contains('/Dockstore.cwl');
+    cy.contains('class: Workflow');
+
+    cy.get('mat-tab-body').within(tabBody => {
+      cy.get('mat-select').click();
+    });
+
+    cy.get('mat-option')
+      .contains('md5sum-tool.cwl')
+      .click();
+    cy.contains('class: CommandLineTool');
+
+    goToTab('Configuration');
+    cy.contains('Configuration');
+    cy.contains('/.dockstore.yml');
   });
 
   it('Should be able to refresh a workflow version', () => {

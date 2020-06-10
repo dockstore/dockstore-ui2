@@ -73,6 +73,20 @@ export class FileStubService {
   }
 }
 
+export class SourceFileTabsStubService {
+  getSourceFiles(workflowId: number, versionId: number) {
+    return observableOf(null);
+  }
+
+  getFileTypes(files: SourceFile[]) {
+    return [];
+  }
+
+  getDescriptorPath(descriptorType: ToolDescriptor.TypeEnum, filePath: string, versionName: string): string {
+    return '';
+  }
+}
+
 export class QueryBuilderStubService {
   getTagCloudQuery(type: string): string {
     return '';
@@ -298,6 +312,11 @@ export class HttpStubService {
   getDockstoreToken() {
     return 'IMAFAKEDOCKSTORETOKEN';
   }
+}
+
+export class DescriptorTypeCompatStubService {
+  stringToDescriptorType(descriptorType: string | Workflow.DescriptorTypeEnum) {}
+  toolDescriptorTypeEnumToPlainTRS(typeEnum: ToolDescriptor.TypeEnum) {}
 }
 
 export class WorkflowStubService {
