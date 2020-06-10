@@ -27,12 +27,12 @@
     <span *ngIf="searchMode === 'description'"> a </span>
     <mat-form-field>
       <mat-label class="dropdown-display"> {{ searchMode }} </mat-label>
-      <mat-select>
+      <mat-select data-cy="dropdown">
         <a *ngIf="searchMode !== 'description'">
-          <mat-option class="dropdown-item" (click)="switchSearchMode('description')">description</mat-option>
+          <mat-option data-cy="desc_select" class="dropdown-item" (click)="switchSearchMode('description')">description</mat-option>
         </a>
         <a *ngIf="searchMode !== 'files'">
-          <mat-option class="dropdown-item" (click)="switchSearchMode('files')">files</mat-option>
+          <mat-option data-cy="file_select" class="dropdown-item" (click)="switchSearchMode('files')">files</mat-option>
         </a>
       </mat-select>
     </mat-form-field>

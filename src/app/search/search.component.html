@@ -149,6 +149,7 @@
               <input type="text" class="form-control" [value]="shortUrl$ | async" readonly />
               <span class="input-group-btn">
                 <button
+                  data-cy="copy_button"
                   class="btn btn-default"
                   [ngClass]="{ 'btn-copy': isCopied }"
                   type="button"
@@ -166,6 +167,7 @@
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
           <mat-card class="alert alert-info">
             <button
+              data-cy="share_button"
               mat-raised-button
               type="button"
               color="primary"
