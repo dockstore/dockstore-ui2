@@ -137,9 +137,7 @@ describe('Dockstore Home', () => {
     cy.contains('# another-test-serviceaaaa');
 
     cy.get('mat-tab-body').within(tabBody => {
-      cy.get('mat-select')
-        .eq(1)
-        .click();
+      cy.get('mat-select').click();
     });
     cy.get('mat-option')
       .contains('docker-compose.yml')

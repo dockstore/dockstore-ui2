@@ -70,12 +70,11 @@ export class SourceFileTabsComponent implements OnInit {
    * @param fileType
    */
   changeFileType(fileType: SourceFile.TypeEnum, files: SourceFile[]) {
+    let validationMessage = null;
     this.currentVersion.validations.forEach((validation: Validation) => {
-      let validationMessage = null;
       if (validation.type === fileType && !validation.valid) {
         validationMessage = JSON.parse(validation.message);
       }
-      this.validationMessage = validationMessage;
     });
 
     const filteredFiles = files.filter((file: SourceFile) => {
@@ -87,6 +86,7 @@ export class SourceFileTabsComponent implements OnInit {
 
     this.currentFileType = fileType;
     this.filteredFiles = filteredFiles;
+    this.validationMessage = validationMessage;
   }
 
   selectFile(file: SourceFile) {

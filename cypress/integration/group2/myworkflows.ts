@@ -169,9 +169,7 @@ describe('Dockstore my workflows', () => {
     cy.contains('class: Workflow');
 
     cy.get('mat-tab-body').within(tabBody => {
-      cy.get('mat-select')
-        .eq(1)
-        .click();
+      cy.get('mat-select').click();
     });
 
     cy.get('mat-option')
