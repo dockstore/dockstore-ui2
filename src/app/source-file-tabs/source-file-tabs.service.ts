@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowsService } from 'app/shared/openapi';
+import { Observable } from 'rxjs';
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class SourceFileTabsService {
    * @param workflowId
    * @param versionId
    */
-  getSourceFiles(workflowId: number, versionId: number) {
+  getSourceFiles(workflowId: number, versionId: number): Observable<SourceFile[]> {
     return this.workflowsService.getWorkflowVersionsSourcefiles(workflowId, versionId);
   }
 
@@ -27,13 +28,25 @@ export class SourceFileTabsService {
    * Return a set of file types for the given file set
    * @param files
    */
-  getFileTypes(files: SourceFile[]) {
+  getFileTypes(files: SourceFile[]): SourceFile.TypeEnum[] {
     const fileTypes = [];
     files.forEach((file: SourceFile) => {
       if (!fileTypes.includes(file.type)) {
         fileTypes.push(file.type);
       }
     });
+    // Push /dockstore.yml configuration files to the end
+    let ymlIndex = fileTypes.indexOf(SourceFile.TypeEnum.DOCKSTOREYML);
+    if (ymlIndex >= 0) {
+      fileTypes.splice(ymlIndex, 1);
+      fileTypes.push(SourceFile.TypeEnum.DOCKSTOREYML);
+    }
+
+    ymlIndex = fileTypes.indexOf(SourceFile.TypeEnum.DOCKSTORESERVICEYML);
+    if (ymlIndex >= 0) {
+      fileTypes.splice(ymlIndex, 1);
+      fileTypes.push(SourceFile.TypeEnum.DOCKSTORESERVICEYML);
+    }
     return fileTypes;
   }
 
