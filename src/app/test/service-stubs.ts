@@ -74,6 +74,20 @@ export class FileStubService {
   }
 }
 
+export class SourceFileTabsStubService {
+  getSourceFiles(workflowId: number, versionId: number) {
+    return observableOf(null);
+  }
+
+  getFileTypes(files: SourceFile[]) {
+    return [];
+  }
+
+  getDescriptorPath(descriptorType: ToolDescriptor.TypeEnum, filePath: string, versionName: string): string {
+    return '';
+  }
+}
+
 export class QueryBuilderStubService {
   getTagCloudQuery(type: string): string {
     return '';

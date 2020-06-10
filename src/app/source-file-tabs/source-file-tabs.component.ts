@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectChange, MatTabChangeEvent } from '@angular/material';
 import { SafeUrl } from '@angular/platform-browser';
-import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { FileService } from 'app/shared/file.service';
-import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
+import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
 import { Validation } from 'app/shared/swagger';
 import { finalize } from 'rxjs/operators';
-import { ga4ghWorkflowIdPrefix } from '../shared/constants';
+import { SourceFileTabsService } from './source-file-tabs.service';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -23,6 +22,7 @@ export class SourceFileTabsComponent implements OnInit {
     }
   }
   loading = true;
+  displayError = false;
   currentVersion: WorkflowVersion;
   files: SourceFile[];
   filteredFiles: SourceFile[];
@@ -34,11 +34,7 @@ export class SourceFileTabsComponent implements OnInit {
   customDownloadPath: String;
   filePath: String;
 
-  constructor(
-    private workflowsService: WorkflowsService,
-    private fileService: FileService,
-    private descriptorTypeCompatService: DescriptorTypeCompatService
-  ) {}
+  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
 
   ngOnInit() {
     this.setupVersionFileTabs();
@@ -46,8 +42,9 @@ export class SourceFileTabsComponent implements OnInit {
 
   setupVersionFileTabs() {
     this.loading = true;
-    this.workflowsService
-      .getWorkflowVersionsSourcefiles(this.workflowId, this.currentVersion.id)
+    this.displayError = false;
+    this.sourceFileTabsService
+      .getSourceFiles(this.workflowId, this.currentVersion.id)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -55,19 +52,15 @@ export class SourceFileTabsComponent implements OnInit {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
-          this.files = sourceFiles;
-          this.fileTypes = [];
-          this.files.forEach((file: SourceFile) => {
-            if (!this.fileTypes.includes(file.type)) {
-              this.fileTypes.push(file.type);
-            }
-          });
-          if (this.fileTypes.length > 0) {
-            this.changeFileType(this.fileTypes[0]);
+          const fileTypes = this.sourceFileTabsService.getFileTypes(sourceFiles);
+          if (fileTypes.length > 0) {
+            this.changeFileType(fileTypes[0], sourceFiles);
           }
+          this.files = sourceFiles;
+          this.fileTypes = fileTypes;
         },
         error => {
-          console.log(error);
+          this.displayError = true;
         }
       );
   }
@@ -76,46 +69,39 @@ export class SourceFileTabsComponent implements OnInit {
    * Sets the file type to display and loads validation messages
    * @param fileType
    */
-  changeFileType(fileType: SourceFile.TypeEnum) {
-    this.currentFileType = fileType;
-
-    this.filteredFiles = this.files.filter((file: SourceFile) => {
-      return file.type === this.currentFileType;
-    });
-
-    if (this.filteredFiles.length > 0) {
-      this.selectFile(this.filteredFiles[0]);
-    }
+  changeFileType(fileType: SourceFile.TypeEnum, files: SourceFile[]) {
     this.currentVersion.validations.forEach((validation: Validation) => {
-      this.validationMessage = null;
-      if (validation.type === this.currentFileType && !validation.valid) {
-        this.validationMessage = JSON.parse(validation.message);
+      let validationMessage = null;
+      if (validation.type === fileType && !validation.valid) {
+        validationMessage = JSON.parse(validation.message);
       }
+      this.validationMessage = validationMessage;
     });
+
+    const filteredFiles = files.filter((file: SourceFile) => {
+      return file.type === fileType;
+    });
+    if (filteredFiles.length > 0) {
+      this.selectFile(filteredFiles[0]);
+    }
+
+    this.currentFileType = fileType;
+    this.filteredFiles = filteredFiles;
   }
 
   selectFile(file: SourceFile) {
+    this.customDownloadHREF = this.fileService.getFileData(file.content);
+    this.customDownloadPath = this.fileService.getFileName(file.path);
+    this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.currentVersion.name);
     this.currentFile = file;
-    this.customDownloadHREF = this.fileService.getFileData(this.currentFile.content);
-    this.customDownloadPath = this.fileService.getFileName(this.currentFile.path);
-    this.filePath = this.getDescriptorPath();
   }
 
   matTabChange(event: MatTabChangeEvent) {
     const fileType: SourceFile.TypeEnum = this.fileTypes[event.index];
-    this.changeFileType(fileType);
+    this.changeFileType(fileType, this.files);
   }
 
   matSelectChange(event: MatSelectChange) {
     this.selectFile(event.value);
-  }
-
-  getDescriptorPath(): string {
-    const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(this.descriptorType);
-    if (type === null) {
-      return null;
-    }
-    const id = ga4ghWorkflowIdPrefix + this.currentFile.path;
-    return this.fileService.getDownloadFilePath(id, this.currentVersion.name, type, this.currentFile.path);
   }
 }

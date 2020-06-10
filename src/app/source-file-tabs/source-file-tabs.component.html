@@ -9,8 +9,14 @@
       </span>
     </mat-card>
   </div>
-  <div *ngIf="!loading && !files">
+  <div *ngIf="!loading && !files && !displayError" class="p-3">
     <mat-card class="alert alert-warning"> <mat-icon>warning</mat-icon>This version has no files.</mat-card>
+  </div>
+
+  <div *ngIf="displayError" class="p-3">
+    <mat-card class="alert alert-warning">
+      <mat-icon>warning</mat-icon>There was an error retrieving the files for this version. Please reload the page.</mat-card
+    >
   </div>
   <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
     <mat-tab *ngFor="let fileType of fileTypes" label="{{ 'SourceFile.TypeEnum' | mapFriendlyValue: fileType }}">

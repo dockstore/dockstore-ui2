@@ -3,11 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MapFriendlyValuesPipe } from 'app/search/map-friendly-values.pipe';
-import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { FileService } from 'app/shared/file.service';
-import { WorkflowsService } from 'app/shared/swagger';
-import { DescriptorTypeCompatStubService, FileStubService, WorkflowsStubService } from 'app/test/service-stubs';
+import { FileStubService, SourceFileTabsStubService } from 'app/test/service-stubs';
 import { SourceFileTabsComponent } from './source-file-tabs.component';
+import { SourceFileTabsService } from './source-file-tabs.service';
 
 describe('SourceFileTabsComponent', () => {
   let component: SourceFileTabsComponent;
@@ -16,12 +15,11 @@ describe('SourceFileTabsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SourceFileTabsComponent, MapFriendlyValuesPipe],
-      providers: [
-        { provide: FileService, useClass: FileStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService }
-      ],
       imports: [HttpClientTestingModule],
+      providers: [
+        { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
+        { provide: FileService, useClass: FileStubService },
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
