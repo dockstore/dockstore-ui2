@@ -101,7 +101,7 @@ const extendedService: ExtendedDescriptorLanguageBean = {
 
 const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   value: 'gxformat2',
-  shortFriendlyName: 'Galaxy',
+  shortFriendlyName: 'Galaxy (preview)',
   friendlyName: 'Galaxy Workflow Format',
   defaultDescriptorPath: '/Dockstore.yml',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(ga|yaml|yml)',
