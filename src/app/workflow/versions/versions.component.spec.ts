@@ -51,6 +51,7 @@ class MockViewWorkflowComponent {
   @Input() canRead;
   @Input() canWrite;
   @Input() isOwner;
+  @Input() defaultVersion;
 }
 
 @Component({

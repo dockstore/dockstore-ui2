@@ -21,6 +21,7 @@ import { Tag, WorkflowVersion } from './swagger';
 
 export abstract class View implements OnDestroy {
   @Input() version: WorkflowVersion | Tag;
+  @Input() defaultVersion: string;
   public isRefreshing$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 

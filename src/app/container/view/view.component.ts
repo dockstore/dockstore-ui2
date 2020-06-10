@@ -83,7 +83,11 @@ export class ViewContainerComponent extends View implements OnInit {
   }
 
   deleteHostedTag(): void {
-    const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
+    let deleteMessage = 'Are you sure you want to delete version ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
+    if (this.defaultVersion === this.version.name) {
+      deleteMessage += ' This is the default version and deleting it will set the default version to be the latest version.';
+    }
+
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
       this.hostedService
