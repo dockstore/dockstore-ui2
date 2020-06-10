@@ -21,17 +21,9 @@ jobs:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - checkout
-      - run:
-          name: Checkout merge commit (PRs only)
-          command: |
-            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
-            then
-              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
-              git checkout -qf FETCH_HEAD
-            fi
       - install_container_dependencies
       - restore_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
@@ -41,17 +33,14 @@ jobs:
               bash -i -c 'npm ci'
             fi
       - run:
-          name: Build
-          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+          name: Prebuild
+          command: bash -i -c 'npm run prebuild.prod'
       - run:
-          name: Install cypress dependencies
-          command: sudo apt install libgtk2.0-0 -yq
+          name: Run remote verification test against dev (no auth)
+          command: bash -i -c 'npm run test-dev-no-auth'
       - run:
-          name: Install cypress
-          command: bash -i -c 'npm i cypress@4.0.2 --no-save'
-      - run:
-          name: Run remote verification test against dev
-          command: bash -i -c 'npm run test-dev'
+          name: Run remote verification test against dev (with auth)
+          command: bash -i -c 'npm run test-dev-auth'
 
   lint_unit_test_coverage:
     working_directory: ~/repo

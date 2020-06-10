@@ -28,6 +28,7 @@
     [disabled]="isRefreshing$ | async"
     *ngIf="!isHosted && canWrite && workflow?.mode != WorkflowModel.ModeEnum.DOCKSTOREYML"
     matTooltip="Sync the {{ entryType }} with the source control repository"
+    data-cy="refreshButton"
   >
     {{ 'Refresh' }}
   </button>
