@@ -59,6 +59,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
   public gitHubAppInstallationLink$: Observable<string>;
+  public recommendGitHubApps = true;
   public hostedWorkflow = {
     repository: '',
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
@@ -66,7 +67,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   };
   public options = [
     {
-      label: 'Register using GitHub Apps (Recommended)',
+      label: 'Register using GitHub Apps' + (this.recommendGitHubApps ? ' (Recommended)' : ''),
       extendedLabel: 'Install our GitHub App on your repository/organization to automatically sync workflows with GitHub.',
       value: 0
     },
