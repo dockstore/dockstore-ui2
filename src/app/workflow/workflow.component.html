@@ -47,16 +47,19 @@
   <div class="row m-1" *ngIf="!showRedirect">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div class="col-md-7">
-      <h3 id="workflow-path" data-cy="workflowTitle">
+      <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
         <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
           <a href="{{ getVerifiedLink() }}" class="verified-check">
             <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
-        {{ title
-        }}<span *ngIf="workflow?.workflowVersions.length > 0"
-          >:<span class="ds-green">{{ selectedVersion?.name }}</span></span
-        >
+        <span>
+          {{ title
+          }}<span *ngIf="workflow?.workflowVersions.length > 0"
+            >:<span class="ds-green">{{ selectedVersion?.name }}</span></span
+          >
+        </span>
+        <div *ngIf="workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2" class="beta-label">preview</div>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
         <mat-form-field>
