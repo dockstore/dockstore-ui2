@@ -24,14 +24,16 @@ export abstract class FilteredList extends Base implements OnInit {
   ngOnInit() {
     this.getMyList();
 
-    this.subject.pipe(
-      // The usual argument formDebounceTime is set to 250 which is not long enough
-      debounceTime(500),
-      distinctUntilChanged(),
-      takeUntil(this.ngUnsubscribe)
-  ).subscribe(filterText => {
-      this.getMyList();
-    });
+    this.subject
+      .pipe(
+        // The usual argument formDebounceTime is set to 250 which is not long enough
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(filterText => {
+        this.getMyList();
+      });
   }
 
   onTextChange(event: any) {
