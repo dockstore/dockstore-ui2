@@ -1,4 +1,4 @@
-import {OnDestroy, OnInit} from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable, Subject } from 'rxjs';
