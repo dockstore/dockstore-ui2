@@ -1,4 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
@@ -28,11 +29,7 @@ import { finalize } from 'rxjs/operators';
   ]
 })
 export class GithubAppsLogsComponent implements OnInit {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: string,
-    private lambdaEventsService: LambdaEventsService,
-    private matSnackBar: MatSnackBar
-  ) {}
+  pipe: DatePipe;
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
   lambdaEvents: LambdaEvent[] | null;
@@ -44,6 +41,20 @@ export class GithubAppsLogsComponent implements OnInit {
   expandedElement: LambdaEvent | null;
   showContent: 'table' | 'error' | 'empty' | null;
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: string,
+    private lambdaEventsService: LambdaEventsService,
+    private matSnackBar: MatSnackBar
+  ) {
+    this.pipe = new DatePipe('en');
+    const defaultPredicate = this.dataSource.filterPredicate;
+    // tslint:disable-next-line:no-shadowed-variable
+    this.dataSource.filterPredicate = (data, filter) => {
+      const formatted = this.pipe.transform(data.eventDate, 'medium').toLowerCase();
+      return formatted.indexOf(filter) >= 0 || defaultPredicate(data, filter);
+    };
+  }
 
   ngOnInit() {
     this.loading = true;
