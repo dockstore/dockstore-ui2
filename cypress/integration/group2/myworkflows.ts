@@ -160,8 +160,8 @@ describe('Dockstore my workflows', () => {
       cy.get('td')
         .contains('Actions')
         .click();
-      cy.contains('Edit')
-        .should('be.visible')
+      cy.get('.cdk-overlay-connected-position-bounding-box')
+        .contains('Edit')
         .click();
       // For some reason, it would type half in the correct input field, but the other half in the first field
       cy.wait(2000);
@@ -172,8 +172,8 @@ describe('Dockstore my workflows', () => {
       cy.get('td')
         .contains('Actions')
         .click();
-      cy.contains('Edit')
-        .should('be.visible')
+      cy.get('.cdk-overlay-connected-position-bounding-box')
+        .contains('Edit')
         .click();
       cy.get('[data-cy=remove-test-parameter-file-button]').click();
       cy.get('[data-cy=save-version').click();
