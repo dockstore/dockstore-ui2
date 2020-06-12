@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
+import { MAT_DIALOG_DATA, MatPaginator, MatSnackBar, MatSort, MatTableDataSource, PageEvent } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
@@ -37,6 +37,7 @@ export class GithubAppsLogsComponent implements OnInit {
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
   lambdaEvents: LambdaEvent[];
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   loading = true;
   public LambdaEvent = LambdaEvent;
@@ -48,6 +49,7 @@ export class GithubAppsLogsComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.lambdaEventsService
       .getLambdaEventsByOrganization(this.data)
       .pipe(
@@ -82,5 +84,8 @@ export class GithubAppsLogsComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
