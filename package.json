@@ -61,7 +61,7 @@
     "cytoscape-popper": "^1.0.4",
     "elasticsearch-browser": "^15.0.0",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.4.0",
+    "jquery": "~3.4.1",
     "ng2-ui-auth": "^10.0.1",
     "ngx-clipboard": "^12.2.1",
     "ngx-markdown": "^8.1.0",
