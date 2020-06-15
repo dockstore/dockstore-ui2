@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatPaginator, MatSnackBar, MatSort, MatTableDataSource, PageEvent } from '@angular/material';
+import { MAT_DIALOG_DATA, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
