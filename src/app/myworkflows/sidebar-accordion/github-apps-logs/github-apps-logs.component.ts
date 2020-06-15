@@ -36,7 +36,7 @@ export class GithubAppsLogsComponent implements OnInit {
   ) {}
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
-  lambdaEvents: LambdaEvent[];
+  lambdaEvents: LambdaEvent[] | null;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   loading = true;
@@ -69,7 +69,7 @@ export class GithubAppsLogsComponent implements OnInit {
   }
 
   updateContentToShow(lambdaEvents: LambdaEvent[] | null) {
-    this.dataSource.data = lambdaEvents;
+    this.dataSource.data = lambdaEvents ? lambdaEvents : [];
     if (!lambdaEvents) {
       this.showContent = 'error';
     } else {
