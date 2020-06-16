@@ -36,3 +36,6 @@ export const currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVER
 export const currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
 export const dismissedLatestTOS = 'dismissedLatestTOS';
 export const dismissedLatestPrivacyPolicy = 'dismissedLatestPrivacyPolicy';
+// This is used to toggle whether GitHub apps are recommended or not.
+// If it's to be recommended permanently, it's better to revert this commit instead.
+export const recommendGitHubApps = false;

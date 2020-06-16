@@ -22,10 +22,11 @@ import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { formInputDebounceTime } from '../../shared/constants';
+import { formInputDebounceTime, recommendGitHubApps } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
+
 import {
   exampleDescriptorPatterns,
   formErrors,
@@ -59,17 +60,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
   public gitHubAppInstallationLink$: Observable<string>;
+  public recommendGitHubApps = recommendGitHubApps;
   public hostedWorkflow = {
     repository: '',
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
     entryName: null
   };
-  public options = [
-    {
-      label: 'Register using GitHub Apps (Recommended)',
-      extendedLabel: 'Install our GitHub App on your repository/organization to automatically sync workflows with GitHub.',
-      value: 0
-    },
+  private baseOptions = [
     {
       label: 'Quickly register remote workflows',
       extendedLabel: 'Toggle repositories from GitHub, Bitbucket, and GitLab to quickly create workflows on Dockstore.',
@@ -86,6 +83,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
       value: 3
     }
   ];
+  private githubAppOption = {
+    label: 'Register using GitHub Apps' + (this.recommendGitHubApps ? ' (Recommended)' : ''),
+    extendedLabel: 'Install our GitHub App on your repository/organization to automatically sync workflows with GitHub.',
+    value: 0
+  };
+  public options = this.recommendGitHubApps ? [this.githubAppOption, ...this.baseOptions] : [...this.baseOptions, this.githubAppOption];
+
   public selectedOption = this.options[0];
 
   private ngUnsubscribe: Subject<{}> = new Subject();
