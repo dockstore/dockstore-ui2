@@ -104,7 +104,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, 'Service Files']
       ])
     ],
-    ['success', new Map([['true', 'Succeeded'], ['false', 'Failed']])]
+    ['success', new Map([['true', 'Success'], ['false', 'Failed']])],
+    ['type', new Map([['PUSH', 'Git Push'], ['DELETE', 'Git Delete'], ['INSTALL', 'Install']])]
   ]);
 
   /**

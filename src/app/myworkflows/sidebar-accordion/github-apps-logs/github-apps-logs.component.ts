@@ -8,9 +8,6 @@ import { finalize } from 'rxjs/operators';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
- * TODO: Filter by date (datasource is using timestamp instead of medium date)
- * TODO: Friendly value map for reference (maybe success, maybe type too)
- * TODO: Fix sort expanding every row
  * TODO: Add backend pagination
  * @export
  * @class GithubAppsLogsComponent
