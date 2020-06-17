@@ -41,13 +41,12 @@ export class GithubAppsLogsComponent implements OnInit {
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: string,
+    @Inject(MAT_DIALOG_DATA) public matDialogData: string,
     private lambdaEventsService: LambdaEventsService,
     private matSnackBar: MatSnackBar
   ) {
     this.pipe = new DatePipe('en');
     const defaultPredicate = this.dataSource.filterPredicate;
-    // tslint:disable-next-line:no-shadowed-variable
     this.dataSource.filterPredicate = (data, filter) => {
       const formatted = this.pipe.transform(data.eventDate, 'medium').toLowerCase();
       return formatted.indexOf(filter) >= 0 || defaultPredicate(data, filter);
@@ -59,7 +58,7 @@ export class GithubAppsLogsComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.lambdaEventsService
-      .getLambdaEventsByOrganization(this.data)
+      .getLambdaEventsByOrganization(this.matDialogData)
       .pipe(
         finalize(() => {
           this.loading = false;
