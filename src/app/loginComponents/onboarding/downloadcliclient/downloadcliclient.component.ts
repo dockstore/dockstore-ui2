@@ -21,6 +21,7 @@ export class DownloadCLIClientComponent implements OnInit {
   public textData1 = '';
   public textData2 = '';
   public textData3 = '';
+  public textDataInstallCLI = '';
   private cwltoolVersion = '';
   constructor(private authService: AuthService, private metadataService: MetadataService, private gA4GHService: GA4GHService) {}
 
@@ -66,7 +67,7 @@ Setup our Dockstore CLI application to start launching workflows from the comman
 2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
 3. Python3 and pip3 (Required if working with CWL, optional otherwise)
 
-#### Part 1 - Install dependencies and Dockstore CLI
+#### Part 1 For Linux/Ubuntu - Install dependencies
 1. Install Java 11 (This example installs OpenJDK 11)
 \`\`\`
 sudo add-apt-repository ppa:openjdk-r/ppa \
@@ -80,7 +81,27 @@ Ensure that you are able to run Docker without using sudo directly with the
 sudo usermod -aG docker $USER
 exec newgrp docker
 \`\`\`
-3. Install the dockstore command-line program and add it to the path.
+
+#### Part 1 for MacOS - Install dependencies
+1. Install Java 11. Download the JDK from [AdoptOpenJDK](https://adoptopenjdk.net/index.html). Choose the MacOS Compressed Archive Version.
+\`\`\`
+// extract the JDK
+tar xf jdk-11.0.4_osx-x64_bin.tar.gz \n\n // put the JDK in its standard location
+sudo mv jdk-11.0.4.jdk /Library/Java/JavaVirtualMachines/ \n\n // List the JDKs that are installed; you should see version 11
+/usr/libexec/java_home -V \n\n // If you need to switch to Java 11, run the following
+/usr/libexec/java_home -v 11.0.4 \n\n // Check that if $JAVA_HOME is set to the correct JDK. Should look similar to /Library/Java/JavaVirtualMachines/jdk-11.0.4.jdk/Contents/Home/
+echo $JAVA_HOME/ \n \n // If it is not check your .bashrc or .bash_profile to find out where it is being set. Fix it and/or source the correct one.
+/usr/libexec/java_home \n\n // Use the output from the above command and run
+export JAVA_HOME={OUTPUT FROM ABOVE COMMAND} \n\n // Check that the default version is JDK 11
+java -version
+\`\`\`
+
+2. Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 2.0.0.3 installed.
+`;
+
+    this.textDataInstallCLI = `
+#### Part 2 Install Dockstore CLI
+1. Install the dockstore command-line program and add it to the path.
 \`\`\`
 mkdir -p ~/bin
 curl -L -o ~/bin/dockstore ${this.downloadCli}
@@ -88,9 +109,9 @@ chmod +x ~/bin/dockstore
 echo 'export PATH=~/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 \`\`\`
-3. Alternatively, click here to download and configure the CLI yourself.
+2. Alternatively, click here to download and configure the CLI yourself.
+    `;
 
-`;
     this.textData2 = `
 #### Part 2 - Setup Dockstore CLI Config
 1. Create the folder \`~/.dockstore\` and create a configuration file \`~/.dockstore/config\`:
