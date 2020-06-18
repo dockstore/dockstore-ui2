@@ -178,21 +178,30 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.contains('button', 'Publish').click();
     });
     it('snapshot', () => {
+      // define routes to watch for
+      cy.server();
+      cy.route('**/tools/**').as('tools');
+
       goToTab('Versions');
+      cy.wait('@tools');
       cy.contains('button', 'Actions').should('be.visible');
-      // assuming that the first version in the table is snapshot-able
       cy.contains('td', 'Actions')
         .first()
         .click();
-      cy.contains('button', 'Snapshot').click();
       // don't actually snapshot since it can't be undone
+      cy.get('.mat-menu-content').within(() => {
+        cy.contains('button', 'Snapshot');
+        cy.contains('button', 'Edit').click();
+      });
       cy.contains('button', 'Cancel').click();
     });
     it('unpublish and stub', () => {
       storeToken();
-      cy.contains('button', 'Unpublish').should('be.visible');
-      cy.contains('button', 'Unpublish').click();
+      cy.contains('button', 'Unpublish')
+        .should('be.visible')
+        .click({ force: true });
 
+      goToTab('Info');
       cy.contains('button', 'Restub').click();
       cy.contains('button', 'Publish').should('be.disabled');
     });

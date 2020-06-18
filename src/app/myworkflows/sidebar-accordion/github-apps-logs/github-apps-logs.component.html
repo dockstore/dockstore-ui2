@@ -1,13 +1,17 @@
 <h1 mat-dialog-title>GitHub App Logs</h1>
 <div mat-dialog-content>
   <app-loading [loading]="loading">
-    <span *ngIf="showContent === 'error'">There were problems retrieving GitHub App logs for this organization.</span>
-    <span *ngIf="showContent === 'empty'">There are no GitHub App logs for this organization.</span>
+    <mat-card *ngIf="showContent === 'error'" class="alert alert-warning" role="alert">
+      <mat-icon>warning</mat-icon> There were problems retrieving GitHub App logs for this organization.
+    </mat-card>
+    <mat-card *ngIf="showContent === 'empty'" class="alert alert-info" role="alert">
+      <mat-icon>warning</mat-icon> There are no GitHub App logs for this organization.
+    </mat-card>
     <!-- *ngIf doesn't work with the sorting implementation, using hidden for now -->
     <div [hidden]="showContent !== 'table'">
       <mat-form-field>
         <mat-label>Filter (except Date)</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. PUSH" />
+        <input #filter matInput (keyup)="applyFilter(filter.value)" placeholder="Ex. PUSH" />
       </mat-form-field>
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z3 w-100" matSort>
         <ng-container matColumnDef="eventDate">
@@ -45,6 +49,8 @@
         ></tr>
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
       </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
     </div>
   </app-loading>
 </div>

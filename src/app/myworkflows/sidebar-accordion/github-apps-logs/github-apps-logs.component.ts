@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
+import { MAT_DIALOG_DATA, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
@@ -8,10 +8,9 @@ import { finalize } from 'rxjs/operators';
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
  * TODO: Filter by date (datasource is using timestamp instead of medium date)
- * TODO: Change to prettier empty and error messages (cards)
  * TODO: Friendly value map for reference (maybe success, maybe type too)
  * TODO: Fix sort expanding every row
- * TODO: Add pagination
+ * TODO: Add backend pagination
  * @export
  * @class GithubAppsLogsComponent
  * @implements {OnInit}
@@ -36,7 +35,8 @@ export class GithubAppsLogsComponent implements OnInit {
   ) {}
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
-  lambdaEvents: LambdaEvent[];
+  lambdaEvents: LambdaEvent[] | null;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   loading = true;
   public LambdaEvent = LambdaEvent;
@@ -48,6 +48,7 @@ export class GithubAppsLogsComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.lambdaEventsService
       .getLambdaEventsByOrganization(this.data)
       .pipe(
@@ -67,7 +68,7 @@ export class GithubAppsLogsComponent implements OnInit {
   }
 
   updateContentToShow(lambdaEvents: LambdaEvent[] | null) {
-    this.dataSource.data = lambdaEvents;
+    this.dataSource.data = lambdaEvents ? lambdaEvents : [];
     if (!lambdaEvents) {
       this.showContent = 'error';
     } else {
@@ -79,8 +80,10 @@ export class GithubAppsLogsComponent implements OnInit {
     }
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: string) {
+    this.dataSource.filter = event.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }
