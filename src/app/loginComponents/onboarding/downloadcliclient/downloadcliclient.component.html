@@ -1,10 +1,21 @@
-<markdown [data]="textData1"></markdown>
+<markdown [data]="textDataRequirements"></markdown>
+
+<mat-tab-group class="font">
+  <mat-tab label="Linux/Ubuntu (Recommended)">
+    <markdown [data]="textDataUbuntuLinux"></markdown>
+  </mat-tab>
+
+  <mat-tab label="MacOS">
+    <markdown [data]="textDataMacOs"></markdown>
+  </mat-tab>
+</mat-tab-group>
+
 <markdown [data]="textDataInstallCLI"></markdown>
 <a mat-raised-button color="primary" *ngIf="downloadCli" class="hori-offset-12 indent" [attr.href]="downloadCli">
   <mat-icon>save_alt</mat-icon>
   Download CLI
 </a>
-<markdown [data]="textData2"></markdown>
+<markdown [data]="textDataCLIConfig"></markdown>
 <div class="input-group textarea indent">
   <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>
 token: {{ dsToken }}&#13;&#10;server-url: {{ dsServerURI }}</textarea
@@ -21,4 +32,5 @@ token: {{ dsToken }}&#13;&#10;server-url: {{ dsServerURI }}</textarea
     </button>
   </span>
 </div>
-<markdown [data]="textData3"></markdown>
+
+<markdown [data]="textDataConfirmInstallation"></markdown>
