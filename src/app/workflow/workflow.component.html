@@ -59,7 +59,13 @@
             >:<span class="ds-green">{{ selectedVersion?.name }}</span></span
           >
         </span>
-        <div *ngIf="workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2" class="beta-label">preview</div>
+        <div
+          matTooltip="Galaxy is currently in preview"
+          *ngIf="workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2"
+          class="beta-label"
+        >
+          preview
+        </div>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
         <mat-form-field>
