@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatPaginator, MatSnackBar, MatSort, MatTableDataSource
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
+import { MapFriendlyValuesPipe } from '../../../search/map-friendly-values.pipe';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
@@ -27,7 +28,8 @@ import { finalize } from 'rxjs/operators';
   ]
 })
 export class GithubAppsLogsComponent implements OnInit {
-  pipe: DatePipe;
+  datePipe: DatePipe;
+  mapPipe: MapFriendlyValuesPipe;
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
   lambdaEvents: LambdaEvent[] | null;
@@ -45,10 +47,15 @@ export class GithubAppsLogsComponent implements OnInit {
     private lambdaEventsService: LambdaEventsService,
     private matSnackBar: MatSnackBar
   ) {
-    this.pipe = new DatePipe('en');
+    this.datePipe = new DatePipe('en');
+    this.mapPipe = new MapFriendlyValuesPipe();
     const defaultPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data, filter) => {
-      const formatted = this.pipe.transform(data.eventDate, 'medium').toLowerCase();
+      const formatted = this.datePipe.transform(data.eventDate, 'medium').toLowerCase();
+      return formatted.indexOf(filter) >= 0 || defaultPredicate(data, filter);
+    };
+    this.dataSource.filterPredicate = (data, filter) => {
+      const formatted = this.mapPipe.transform('success', String(data.success)).toLowerCase();
       return formatted.indexOf(filter) >= 0 || defaultPredicate(data, filter);
     };
   }

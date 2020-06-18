@@ -105,7 +105,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       ])
     ],
     ['success', new Map([['true', 'Success'], ['false', 'Failed']])],
-    ['type', new Map([['PUSH', 'Git Push'], ['DELETE', 'Git Delete'], ['INSTALL', 'Install']])]
+    ['type', new Map([['PUSH', 'Push'], ['DELETE', 'Delete'], ['INSTALL', 'Install']])]
   ]);
 
   /**
