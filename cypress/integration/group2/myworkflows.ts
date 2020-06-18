@@ -110,6 +110,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('See GitHub Apps Logs').click();
       cy.contains('Feb 20, 2020, 2:20:20 AM');
       cy.contains('Jun 5, 2020, 2:40:41 PM');
+      cy.contains('1 - 2 of 2');
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
@@ -160,8 +161,8 @@ describe('Dockstore my workflows', () => {
       cy.get('td')
         .contains('Actions')
         .click();
-      cy.contains('Edit')
-        .should('be.visible')
+      cy.get('.cdk-overlay-connected-position-bounding-box')
+        .contains('Edit')
         .click();
       // For some reason, it would type half in the correct input field, but the other half in the first field
       cy.wait(2000);
@@ -172,8 +173,8 @@ describe('Dockstore my workflows', () => {
       cy.get('td')
         .contains('Actions')
         .click();
-      cy.contains('Edit')
-        .should('be.visible')
+      cy.get('.cdk-overlay-connected-position-bounding-box')
+        .contains('Edit')
         .click();
       cy.get('[data-cy=remove-test-parameter-file-button]').click();
       cy.get('[data-cy=save-version').click();

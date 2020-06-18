@@ -48,7 +48,7 @@
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div class="col-md-7">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-        <span id="verifiedIcon" *ngIf="workflow?.versionVerified">
+        <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified">
           <a href="{{ getVerifiedLink() }}" class="verified-check">
             <mat-icon matTooltip="Verified">done</mat-icon>
           </a>

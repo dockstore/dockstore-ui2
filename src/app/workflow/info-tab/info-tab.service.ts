@@ -121,6 +121,7 @@ export class InfoTabService {
     this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(
       (updatedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
+        this.workflowService.setWorkflow(updatedWorkflow);
         this.alertService.detailedSuccess();
       },
       (error: HttpErrorResponse) => {

@@ -19,7 +19,8 @@
     *ngIf="
       !isPublic &&
       workflow?.source_control_provider === 'GITHUB' &&
-      (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB)
+      (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB) &&
+      this.recommendGitHubApps
     "
   >
     Keep your workflow automatically in sync with GitHub with our new registration process. Click

@@ -20,6 +20,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { recommendGitHubApps } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { ExtendedWorkflowsService } from '../../shared/extended-workflows.service';
@@ -64,6 +65,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   ToolDescriptor = ToolDescriptor;
   public entryType$: Observable<EntryType>;
   public isRefreshing$: Observable<boolean>;
+  public recommendGitHubApps = recommendGitHubApps;
   modeTooltipContent = `STUB: Basic metadata pulled from source control.
   FULL: Full content synced from source control.
   HOSTED: Workflow metadata and files hosted on Dockstore.`;
