@@ -1,15 +1,14 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
+import { MapFriendlyValuesPipe } from '../../../search/map-friendly-values.pipe';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
- * TODO: Filter by date (datasource is using timestamp instead of medium date)
- * TODO: Friendly value map for reference (maybe success, maybe type too)
- * TODO: Fix sort expanding every row
  * TODO: Add backend pagination
  * @export
  * @class GithubAppsLogsComponent
@@ -21,18 +20,16 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./github-apps-logs.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('collapsed, void', style({ height: '0px', minHeight: '0' })),
       state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
     ])
   ]
 })
 export class GithubAppsLogsComponent implements OnInit {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: string,
-    private lambdaEventsService: LambdaEventsService,
-    private matSnackBar: MatSnackBar
-  ) {}
+  datePipe: DatePipe;
+  mapPipe: MapFriendlyValuesPipe;
   columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
   displayedColumns: string[] = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
   lambdaEvents: LambdaEvent[] | null;
@@ -45,12 +42,27 @@ export class GithubAppsLogsComponent implements OnInit {
   showContent: 'table' | 'error' | 'empty' | null;
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public matDialogData: string,
+    private lambdaEventsService: LambdaEventsService,
+    private matSnackBar: MatSnackBar
+  ) {
+    this.datePipe = new DatePipe('en');
+    this.mapPipe = new MapFriendlyValuesPipe();
+    const defaultPredicate = this.dataSource.filterPredicate;
+    this.dataSource.filterPredicate = (data, filter) => {
+      const formattedDate = this.datePipe.transform(data.eventDate, 'medium').toLowerCase();
+      const formattedStatus = this.mapPipe.transform('success', String(data.success)).toLowerCase();
+      return formattedDate.indexOf(filter) >= 0 || formattedStatus.indexOf(filter) >= 0 || defaultPredicate(data, filter);
+    };
+  }
+
   ngOnInit() {
     this.loading = true;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.lambdaEventsService
-      .getLambdaEventsByOrganization(this.data)
+      .getLambdaEventsByOrganization(this.matDialogData)
       .pipe(
         finalize(() => {
           this.loading = false;
