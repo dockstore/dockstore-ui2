@@ -27,10 +27,7 @@ export class OrganizationStarringService {
   constructor(private usersService: UsersService, private organizationsService: OrganizationsService) {}
 
   setUnstar(organizationID: number): Observable<any> {
-    const body: StarRequest = {
-      star: false
-    };
-    return this.organizationsService.starOrganization(organizationID, body);
+    return this.organizationsService.unstarOrganization(organizationID);
   }
 
   setStar(organizationID: number): Observable<any> {
