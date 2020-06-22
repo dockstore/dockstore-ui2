@@ -47,13 +47,7 @@ function registerQuayTool(repo: string, name: string) {
     cy.visit('/my-tools');
     // click thru the steps of registering a tool
     cy.wait('@tokens');
-
-    // Commented out until tool delete issue is fixed
-    // See https://github.com/dockstore/dockstore/pull/3494/files
-    // tool will already be there, so no need to register it
-
     cy.get('#register_tool_button').should('be.visible');
-
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
       cy.wait('@orgs');
@@ -263,9 +257,5 @@ function testCollection(org: string, collection: string, registry: string, repo:
 }
 
 testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
-
-// Commented out until tool delete fix is merged
-// See https://github.com/dockstore/dockstore/pull/3494/files
 testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
-
 testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
