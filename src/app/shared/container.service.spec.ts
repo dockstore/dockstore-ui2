@@ -54,10 +54,8 @@ describe('ContainerService', () => {
     const tool1: DockstoreTool = sampleTool2;
 
     service.setTool(tool);
-    service.setNsContainers('2');
     service.setCopyBtn('1');
     service.copyBtn$.subscribe(value => expect(value).toEqual('1'));
-    service.nsContainers.subscribe(value => expect(value).toEqual('2'));
   }));
 
   it('should replace tool', inject([ContainerService], (service: ContainerService) => {
