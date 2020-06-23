@@ -351,7 +351,8 @@ export class DagService {
         container: element,
         boxSelectionEnabled: false,
         autounselectify: true,
-        layout: {
+        // We don't have the type definition for cytoscape-dagre
+        layout: <cytoscape.BaseLayoutOptions>{
           name: 'dagre',
           nodeDimensionsIncludeLabels: true
         },
