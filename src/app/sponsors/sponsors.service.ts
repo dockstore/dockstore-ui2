@@ -14,8 +14,10 @@
  *    limitations under the License.
  */
 
+import { Injectable } from '@angular/core';
 import { Sponsor } from './sponsor.model';
 
+@Injectable()
 export class SponsorsService {
   // TODO: UCSC logo is technically different than the one linked to
   private sponsors: Sponsor[] = [

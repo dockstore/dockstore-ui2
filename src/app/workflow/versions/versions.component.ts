@@ -45,7 +45,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
   dataSource = new MatTableDataSource(this.versions);
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
   setNoOrderCols(): Array<number> {

@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Input } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { DockstoreService } from '../shared/dockstore.service';
@@ -25,6 +25,7 @@ import { SessionQuery } from './session/session.query';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Tooltip } from './tooltip';
 
+@Directive()
 export abstract class Versions extends EntryTab {
   @Input() versions: Array<Tag | WorkflowVersion>;
   @Input() verifiedSource: Array<any>;

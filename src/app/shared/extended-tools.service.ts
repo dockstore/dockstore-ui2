@@ -1,4 +1,5 @@
 import { HttpEvent, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ContainersService } from './../shared/swagger/api/containers.service';
 
@@ -11,6 +12,7 @@ import { ContainersService } from './../shared/swagger/api/containers.service';
  * @extends {ContainersService}
  */
 /* tslint:disable */
+@Injectable()
 export class ExtendedToolsService extends ContainersService {
   /**
    * Download a ZIP file of a tool and all associated files.

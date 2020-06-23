@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+import { Injectable } from '@angular/core';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faBitbucket, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 import { faDockstore, faWhale } from './custom-icons';
@@ -25,6 +26,7 @@ const BITBUCKET = 'Bitbucket';
 const GITLAB = 'GitLab';
 const DOCKSTORE = 'Dockstore';
 
+@Injectable()
 export class ProviderService {
   /* set up project provider */
   setUpProvider(tool: ExtendedDockstoreTool | ExtendedWorkflow): ExtendedDockstoreTool | ExtendedWorkflow {

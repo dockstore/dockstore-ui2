@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { OnInit, ViewChild } from '@angular/core';
+import { Directive, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,6 +25,7 @@ import { DockstoreTool, Workflow } from '../shared/swagger';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
 
+@Directive()
 export abstract class SearchEntryTable extends Base implements OnInit {
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) protected sort: MatSort;

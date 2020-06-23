@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Location } from '@angular/common';
-import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Directive, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
@@ -35,9 +35,10 @@ import { SessionService } from './session/session.service';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
 
+@Directive()
 @Injectable()
 export abstract class Entry implements OnInit, OnDestroy {
-  @ViewChild('entryTabs', { static: false }) entryTabs: MatTabGroup;
+  @ViewChild('entryTabs') entryTabs: MatTabGroup;
   protected shareURL: string;
   public starGazersClicked = false;
   private totalShare = 0;

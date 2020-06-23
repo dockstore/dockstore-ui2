@@ -38,7 +38,7 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
   selectedTag: Tag;
   public DockstoreToolType = DockstoreTool;
   dataSource = new MatTableDataSource(this.versions);
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort;
   @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this.selectedTag = value;
