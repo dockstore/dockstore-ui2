@@ -64,7 +64,7 @@
     "jquery": "~3.4.1",
     "ng2-ui-auth": "^10.0.1",
     "ngx-clipboard": "^12.2.1",
-    "ngx-markdown": "^8.1.0",
+    "ngx-markdown": "^9.1.1",
     "pipeline-builder": "^0.3.10-dev.313",
     "rxjs": "^6.5.3",
     "ts-md5": "^1.2.6",
