@@ -89,7 +89,7 @@ jobs:
           command: bash -i -c 'npm i --no-save codecov'
       - run:
           name: Unit Test
-          command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless'
+          command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless --source-map=false'
       - run:
           name: Codecov
           command: bash -i -c 'npx codecov'
