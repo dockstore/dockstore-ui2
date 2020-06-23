@@ -15,7 +15,7 @@
  */
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SortDirection } from '@angular/material';
+import { SortDirection } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { transaction } from '@datorama/akita';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
