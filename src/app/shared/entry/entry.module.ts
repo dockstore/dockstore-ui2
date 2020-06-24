@@ -20,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { ClipboardModule } from 'ngx-clipboard';
-import { ShareModule } from 'ngx-sharebuttons';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { RefreshAlertModule } from '../alert/alert.module';
 import { AvailableLogsModule } from '../available-logs.module';
 import { BioschemaService } from '../bioschema.service';
@@ -84,7 +85,8 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     PublicFileDownloadPipe,
     NgxJsonLdModule,
     RefreshAlertModule,
-    ShareModule,
+    ShareButtonsModule,
+    ShareIconsModule,
     UrlDeconstructPipe,
     RouterModule,
     ReactiveFormsModule
