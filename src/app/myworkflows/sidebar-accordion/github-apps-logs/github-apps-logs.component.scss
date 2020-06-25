@@ -17,7 +17,7 @@ tr.element-row:not(.expanded-row):active {
 }
 
 // Cursor on unexpanded rows
-.element-row:not(.expanded) {
+.element-row:not(.expanded).expandable {
   cursor: pointer;
 }
 
