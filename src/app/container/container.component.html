@@ -29,8 +29,7 @@
   <div
     class="row m-1"
     *ngIf="
-      (tool?.mode === 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS' || tool?.mode === 'AUTO_DETECT_QUAY_TAGS_WITH_MIXED') &&
-      (tool?.gitUrl === '' || tool?.gitUrl === null)
+      (tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED) && !tool?.gitUrl
     "
   >
     <mat-card class="alert alert-info" role="alert">
@@ -39,7 +38,7 @@
     </mat-card>
   </div>
 
-  <div class="row m-1" *ngIf="tool?.mode === 'HOSTED' && tool?.workflowVersions?.length === 0">
+  <div class="row m-1" *ngIf="tool?.mode === ModeEnum.HOSTED && tool?.workflowVersions?.length === 0">
     <mat-card class="alert alert-info" role="alert">
       <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
     </mat-card>
