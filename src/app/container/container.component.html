@@ -26,7 +26,20 @@
     </div>
   </div>
 
-  <div class="row m-1" *ngIf="tool?.mode == 'MANUAL_IMAGE_PATH' && tool?.workflowVersions?.length === 0">
+  <div
+    class="row m-1"
+    *ngIf="
+      (tool?.mode === 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS' || tool?.mode === 'AUTO_DETECT_QUAY_TAGS_WITH_MIXED') &&
+      (tool?.gitUrl === '' || tool?.gitUrl === null)
+    "
+  >
+    <mat-card class="alert alert-info" role="alert">
+      <mat-icon>warning</mat-icon> This Quay.io tool does not have an associated Git repository. Please view the Quay.io repository and add
+      a build trigger for a valid Git repository.
+    </mat-card>
+  </div>
+
+  <div class="row m-1" *ngIf="tool?.mode === 'HOSTED' && tool?.workflowVersions?.length === 0">
     <mat-card class="alert alert-info" role="alert">
       <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
     </mat-card>
