@@ -51,7 +51,7 @@ export class GithubAppsLogsComponent implements OnInit {
     this.mapPipe = new MapFriendlyValuesPipe();
     const defaultPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data, filter) => {
-      const formattedDate = this.datePipe.transform(data.eventDate, 'medium').toLowerCase();
+      const formattedDate = this.datePipe.transform(data.eventDate, 'yyyy-MM-ddTHH:mm').toLowerCase();
       const formattedStatus = this.mapPipe.transform('success', String(data.success)).toLowerCase();
       return formattedDate.indexOf(filter) >= 0 || formattedStatus.indexOf(filter) >= 0 || defaultPredicate(data, filter);
     };
