@@ -28,6 +28,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     Workflow.DescriptorTypeEnum.Gxformat2
   );
 
+  // For instances in which we know it is nullable and don't need an console.error
+  readonly nullableKeys = ['reference'];
+
   /**
    * Map containing what the friendly names should be mapped to
    *
@@ -119,7 +122,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
   transform(key: string, subBucket: string | number): string {
     // Handle null or undefined
     if (subBucket === null || subBucket === undefined) {
-      console.error('null/undefined passed into the pipe along with the key: ' + key);
+      if (!this.nullableKeys.includes(key)) {
+        console.error('null/undefined passed into the pipe along with the key: ' + key);
+      }
       return null;
     }
     // Handle number
