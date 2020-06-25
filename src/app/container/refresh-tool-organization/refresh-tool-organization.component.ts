@@ -14,12 +14,15 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
+import { ContainersService } from 'app/shared/swagger';
+import { ToolQuery } from 'app/shared/tool/tool.query';
+import { ToolService } from 'app/shared/tool/tool.service';
+import { from } from 'rxjs';
+import { concatMap, takeUntil } from 'rxjs/operators';
 import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { ContainerService } from '../../shared/container.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
-import { UsersService } from '../../shared/swagger/api/users.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { UserQuery } from '../../shared/user/user.query';
 
@@ -35,9 +38,10 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
   constructor(
     userQuery: UserQuery,
     private alertService: AlertService,
-    private usersService: UsersService,
-    private containerService: ContainerService,
-    protected alertQuery: AlertQuery
+    protected alertQuery: AlertQuery,
+    private toolService: ToolService,
+    private containersService: ContainersService,
+    private toolQuery: ToolQuery
   ) {
     super(userQuery, alertQuery);
     this.buttonText = 'Refresh Namespace';
@@ -45,15 +49,28 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
 
   refreshOrganization(): void {
     if (this.orgToolObject) {
-      const message = 'Refreshing ' + this.orgToolObject.namespace;
-      this.alertService.start(message);
-      this.usersService.refreshToolsByOrganization(this.userId, this.orgToolObject.namespace).subscribe(
-        (success: DockstoreTool[]) => {
-          this.containerService.setTools(success);
-          this.alertService.detailedSuccess();
-        },
-        error => this.alertService.detailedError(error)
-      );
+      const entries: DockstoreTool[] = this.orgToolObject.published
+        .concat(this.orgToolObject.unpublished)
+        .filter(entry => entry.mode !== DockstoreTool.ModeEnum.HOSTED && entry.gitUrl);
+      from(entries)
+        .pipe(
+          concatMap(entry => {
+            this.alertService.start(`Refreshing ${entry.tool_path}`);
+            return this.containersService.refresh(entry.id);
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe(
+          entry => {
+            const activeID = this.toolQuery.getActive().id;
+            if (activeID === entry.id) {
+              // Warning: this may result in an incomplete tool (missing validation, aliases etc)
+              this.toolService.setTool(entry);
+            }
+            this.alertService.detailedSuccess();
+          },
+          error => this.alertService.detailedError(error)
+        );
     }
   }
 }
