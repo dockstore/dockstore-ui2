@@ -1249,3 +1249,9 @@ mat-tab-group.no-pagination {
     display: none;
   }
 }
+
+//color from mat-card-subtitle
+.subtitle {
+  font-size: smaller;
+  color: rgba(0, 0, 0, 0.54);
+}
