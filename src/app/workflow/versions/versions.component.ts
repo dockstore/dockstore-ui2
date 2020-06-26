@@ -36,6 +36,7 @@ import { Versions } from '../../shared/versions';
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
   @Input() workflowId: number;
+  @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   zenodoUrl: string;
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;

@@ -71,6 +71,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public schema: BioschemaTool;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
+  public versionsWithVerirfiedPlatforms: Array<VersionVerifiedPlatform> = [];
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -95,7 +96,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
     private toolService: ToolService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private entryService: EntriesService
   ) {
     super(
       trackLoginService,
@@ -192,6 +194,10 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
+      this.entryService.getVerifiedPlatforms(tool.id).subscribe((verifiedVersions: Array<VersionVerifiedPlatform>) => {
+        this.versionsWithVerirfiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
+        console.log(this.versionsWithVerirfiedPlatforms);
+      });
     }
   }
 

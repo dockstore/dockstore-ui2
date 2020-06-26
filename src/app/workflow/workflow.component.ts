@@ -55,6 +55,7 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
+import { EntriesService, VersionVerifiedPlatform } from '../shared/openapi';
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -90,6 +91,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   public WorkflowModel = Workflow;
   public launchSupport$: Observable<boolean>;
+  public versionsWithVerirfiedPlatforms: Array<VersionVerifiedPlatform> = [];
   @Input() user;
 
   constructor(
@@ -112,7 +114,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
     public dialog: MatDialog,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private entryService: EntriesService
   ) {
     super(
       trackLoginService,
@@ -247,6 +250,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             }
           });
       }
+      this.entryService.getVerifiedPlatforms(workflow.id).subscribe((verifiedVersion: Array<VersionVerifiedPlatform>) => {
+        this.versionsWithVerirfiedPlatforms = verifiedVersion.map(value => Object.assign({}, value));
+      });
     }
   }
 

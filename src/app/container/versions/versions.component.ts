@@ -23,9 +23,10 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
+import { VersionVerifiedPlatform } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
+import { Tag } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
-import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
 
 @Component({
@@ -35,6 +36,7 @@ import { Versions } from '../../shared/versions';
 })
 export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
+  @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   Dockstore = Dockstore;
   selectedTag: Tag;
   public DockstoreToolType = DockstoreTool;

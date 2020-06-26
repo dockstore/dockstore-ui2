@@ -213,6 +213,7 @@
                 [versions]="(extendedWorkflow$ | async)?.workflowVersions"
                 (selectedVersionChange)="onSelectedVersionChange($event)"
                 [verifiedSource]="(extendedWorkflow$ | async)?.verifiedSources"
+                [verifiedVersionPlatforms]="versionsWithVerirfiedPlatforms"
                 [workflowId]="workflow?.id"
                 [selectedVersion]="selectedVersion"
                 [canRead]="canRead"
