@@ -30,6 +30,7 @@
 
 // Import commands.js and defaults.js
 // using ES2015 syntax:
+import 'cypress-plugin-retries';
 import './commands';
 import './defaults';
 
