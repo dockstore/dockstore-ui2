@@ -17,18 +17,13 @@ import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { environment } from '../environments/environment';
@@ -38,11 +33,12 @@ import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
-import { NotificationsComponent } from './notifications/notifications.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
 import { HomePageModule } from './home-page/home-page.module';
+import { CustomHeaderInterceptor } from './interceptors/custom-header.interceptor';
+import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -59,13 +55,15 @@ import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloa
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { RequestsModule } from './loginComponents/requests.module';
+import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ViewService } from './workflow/view/view.service';
+import { NotificationsComponent } from './notifications/notifications.component';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './register/register.service';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { RefreshAlertModule } from './shared/alert/alert.module';
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
@@ -89,7 +87,6 @@ import { RefreshService } from './shared/refresh.service';
 import { ApiModule } from './shared/swagger/api.module';
 import { GA4GHService } from './shared/swagger/api/gA4GH.service';
 import { Configuration } from './shared/swagger/configuration';
-import { getTooltipConfig } from './shared/tooltip';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
@@ -99,10 +96,9 @@ import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
-import { SessionExpiredComponent } from './session-expired/session-expired.component';
-import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
-import { TosBannerComponent } from './tosBanner/tos-banner.component';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
+import { TosBannerComponent } from './tosBanner/tos-banner.component';
+import { ViewService } from './workflow/view/view.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -149,7 +145,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     GithubCallbackComponent,
     ConfirmationDialogComponent,
     SessionExpiredComponent,
-    TosBannerComponent
+    TosBannerComponent,
+    LogoutComponent
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -161,10 +158,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
-    BsDropdownModule.forRoot(),
-    AccordionModule.forRoot(),
-    TabsModule.forRoot(),
-    TooltipModule.forRoot(),
     ClipboardModule,
     OrderByModule,
     FlexLayoutModule,
@@ -172,7 +165,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     OrganizationStarringModule,
     OrganizationStargazersModule,
     routing,
-    ModalModule.forRoot(),
     StargazersModule,
     MarkdownModule.forRoot(),
     ReactiveFormsModule,
@@ -185,7 +177,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
   ],
   providers: [
     AccountsService,
-    { provide: TooltipConfig, useFactory: getTooltipConfig },
     AuthService,
     LoginService,
     RegisterService,
@@ -221,7 +212,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
-    { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true }
   ],
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent]

@@ -15,18 +15,17 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-
 import { ga4ghPath } from '../../shared/constants';
-import { ContainerService } from '../../shared/container.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
+import { ToolDescriptor, ToolVersion } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
-import { ToolDescriptor, ToolVersion } from '../../shared/swagger';
+
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 
 @Component({
@@ -56,7 +55,6 @@ export class InfoTabComponent implements OnInit, OnChanges {
   isValidVersion = false;
   Dockstore = Dockstore;
   constructor(
-    private containerService: ContainerService,
     private infoTabService: InfoTabService,
     private sessionQuery: SessionQuery,
     private containersService: ExtendedToolsService
@@ -66,8 +64,7 @@ export class InfoTabComponent implements OnInit, OnChanges {
     this.tool = JSON.parse(JSON.stringify(this.extendedDockstoreTool));
     if (this.selectedVersion && this.tool) {
       this.currentVersion = this.selectedVersion;
-      const found = this.validVersions.find((version: Tag) => version.id === this.selectedVersion.id);
-      this.isValidVersion = found ? true : false;
+      this.isValidVersion = this.validVersions.some((version: Tag) => version.id === this.selectedVersion.id);
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
       if (this.tool.descriptorType.includes(DescriptorTypeEnum.CWL)) {
         this.trsLinkCWL = this.getTRSLink(

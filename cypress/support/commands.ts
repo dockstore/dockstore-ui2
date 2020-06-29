@@ -15,16 +15,32 @@
  */
 
 export function goToTab(tabName: string): void {
-  cy
-    .contains('.mat-tab-label', tabName).should('be.visible').click();
+  cy.contains('.mat-tab-label', tabName)
+    .should('be.visible')
+    .click();
 }
 
 export function assertVisibleTab(tabName: string): void {
-  cy
-    .get('.mat-tab-labels')
+  cy.get('.mat-tab-labels')
     .should('be.visible')
     .contains('div', tabName)
     .should('be.visible');
+}
+
+/**
+ * Could not find a better way to cancel the dropdown.
+ * Tried:
+ * - cy.get('body').type('{esc}');
+ * - clicking the button again
+ */
+export function cancelMatMenu(): void {
+  cy.reload();
+}
+
+export function clickFirstActionsButton(): void {
+  cy.get('button')
+    .contains('Actions')
+    .click();
 }
 
 export function isActiveTab(tabName: string): void {
@@ -43,7 +59,7 @@ export function resetDB() {
   before(() => {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
     cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
-    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,alter_test_user_1.7.0,1.8.0 travisci/web.yml');
+    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,alter_test_user_1.7.0,1.8.0,1.9.0 travisci/web.yml');
   });
 }
 
@@ -63,13 +79,12 @@ export function setTokenUserViewPortCurator() {
   });
 }
 
-export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp | string)) {
+export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | string) {
   // This is needed because of a possible defect in the implementation.
   // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
   // If the user expands a panel before the above happens, their choice gets overwritten
   cy.get('.mat-expanded');
-  cy.contains(organization)
-    .click();
+  cy.contains(organization).click();
   // Can't seem to select the mat-expansion-panel for some reason without triple parent
   cy.contains(organization)
     .parent()
@@ -81,5 +96,7 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: (RegExp |
 }
 
 export function approvePotatoMembership() {
-  cy.exec('PGPASSWORD=dockstore psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore');
+  cy.exec(
+    'PGPASSWORD=dockstore psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore'
+  );
 }

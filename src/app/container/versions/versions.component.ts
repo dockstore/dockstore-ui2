@@ -13,9 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ContainerService } from 'app/shared/container.service';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
@@ -24,25 +23,25 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
-import { AddTagComponent } from '../add-tag/add-tag.component';
 
 @Component({
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
-  styleUrls: ['./versions.component.css']
+  styleUrls: ['./../../workflow/versions/versions.component.css']
 })
-export class VersionsContainerComponent extends Versions implements OnInit {
+export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
   Dockstore = Dockstore;
-  versionTag: Tag;
+  selectedTag: Tag;
   public DockstoreToolType = DockstoreTool;
+  dataSource = new MatTableDataSource(this.versions);
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
   @Input() set selectedVersion(value: Tag) {
     if (value != null) {
-      this.versionTag = value;
+      this.selectedTag = value;
     }
   }
   @Output() selectedVersionChange = new EventEmitter<Tag>();
@@ -50,16 +49,14 @@ export class VersionsContainerComponent extends Versions implements OnInit {
 
   constructor(
     dockstoreService: DockstoreService,
-    private containersService: ContainersService,
     dateService: DateService,
     private alertService: AlertService,
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
-    private matDialog: MatDialog,
-    protected sessionQuery: SessionQuery,
-    private containerService: ContainerService
+    protected sessionQuery: SessionQuery
   ) {
     super(dockstoreService, dateService, sessionQuery);
     this.sortColumn = 'last_built';
+    this.displayedColumns = ['name', 'reference', 'last_built', 'valid', 'hidden', 'verified', 'actions'];
   }
 
   ngOnInit() {
@@ -68,45 +65,40 @@ export class VersionsContainerComponent extends Versions implements OnInit {
       this.tool = tool;
       if (tool) {
         this.defaultVersion = tool.defaultVersion;
+        this.setDisplayedColumnsFromTool(tool);
       }
     });
   }
 
-  isManualMode() {
-    if (this.tool && this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH) {
-      return true;
-    } else {
-      return false;
+  setDisplayColumns(publicPage: boolean) {
+    if (publicPage) {
+      this.displayedColumns = this.displayedColumns.filter(column => column !== 'hidden');
     }
+  }
+
+  setDisplayedColumnsFromTool(tool: ExtendedDockstoreTool) {
+    if (tool.mode === DockstoreTool.ModeEnum.HOSTED) {
+      this.displayedColumns = this.displayedColumns.filter(column => column !== 'last_built');
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
+
+  ngOnChanges() {
+    this.dataSource.data = this.versions;
   }
 
   setNoOrderCols(): Array<number> {
     return [5, 6];
   }
 
-  updateDefaultVersion(newDefaultVersion: string): void {
-    if (this.publicPage) {
-      return;
-    }
-    const message = 'Updating default tool version';
-    this.alertService.start(message);
-    this.containersService.updateToolDefaultVersion(this.tool.id, newDefaultVersion).subscribe(
-      response => {
-        this.alertService.detailedSuccess();
-        this.containerService.replaceTool(null, response);
-        this.containerService.setTool(response);
-      },
-      error => this.alertService.detailedError(error)
-    );
-  }
-
   // Updates the version and emits an event for the parent component
   setVersion(version: Tag) {
-    this.versionTag = version;
-    this.selectedVersionChange.emit(this.versionTag);
-  }
-
-  showAddTagModal() {
-    this.matDialog.open(AddTagComponent, { width: '600px' });
+    this.selectedTag = version;
+    this.alertService.start('Changing version to ' + version.name);
+    this.alertService.detailedSuccess();
+    this.selectedVersionChange.emit(this.selectedTag);
   }
 }

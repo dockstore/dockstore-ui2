@@ -58,15 +58,21 @@ export class ContainerService {
   }
 
   /**
-   * This function replaces the tool inside of tools with an updated tool
+   * This function replaces the tool inside of tools with an updated tool.
+   * This should eventually use an entity store instead
    *
-   * @param {*} tools the current set of tools
-   * @param {*} newTool the new tool we are replacing
+   * @param {DockstoreTool} newTool the new tool we are replacing
+   * @returns
    * @memberof ContainerService
    */
-  replaceTool(tools: any, newTool) {
-    if (this.tools$.getValue()) {
-      tools = this.tools$.getValue();
+  replaceTool(newTool: DockstoreTool | null) {
+    const tools = this.tools$.getValue();
+    if (!tools) {
+      console.error('tools in state is falsey');
+      return;
+    }
+    if (!newTool) {
+      return;
     }
     const oldTool = tools.find(x => x.id === newTool.id);
     const index = tools.indexOf(oldTool);

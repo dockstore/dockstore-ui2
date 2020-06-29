@@ -15,6 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 
+import { extendedDescriptorLanguages } from 'app/entry/extendedDescriptorLanguage';
 import { SourceFile, ToolDescriptor } from './swagger';
 
 @Injectable({ providedIn: 'root' })
@@ -29,24 +30,18 @@ export class DescriptorService {
    * @memberof DescriptorService
    */
   getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+    const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
     if (version) {
-      const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
       const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
-      unique.forEach(element => {
-        if (element === SourceFile.TypeEnum.DOCKSTORECWL) {
-          descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
-        } else if (element === SourceFile.TypeEnum.DOCKSTOREWDL) {
-          descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
-        } else if (element === SourceFile.TypeEnum.NEXTFLOW || element === SourceFile.TypeEnum.NEXTFLOWCONFIG) {
-          descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
-        }
-        // DOCKSTORE-2428 - demo how to add new workflow language
-        // else if (element === SourceFile.TypeEnum.DOCKSTORESWL) {
-        //   descriptorTypes.push(ToolDescriptor.TypeEnum.SWL);
-        // }
+      unique.forEach((element: SourceFile.TypeEnum) => {
+        extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
+          if (extendedDescriptorLanguage.descriptorFileTypes.includes(element)) {
+            descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);
+          }
+        });
       });
-      return descriptorTypes;
     }
+    return descriptorTypes;
   }
 
   /**
@@ -55,41 +50,18 @@ export class DescriptorService {
    * @returns an array that may contain 'CWL' or 'WDL' or 'NFL'
    * @memberof DescriptorService
    */
-  getValidDescriptors(version) {
-    if (version) {
-      const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
-      if (version.validations) {
+  getValidDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+    const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
+    if (version && version.validations) {
+      extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
         const cwlValidation = version.validations.find(validation => {
-          return validation.type === SourceFile.TypeEnum.DOCKSTORECWL;
+          return extendedDescriptorLanguage.descriptorFileTypes.includes(validation.type);
         });
         if (cwlValidation && cwlValidation.valid) {
-          descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
+          descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);
         }
-
-        const wdlValidation = version.validations.find(validation => {
-          return validation.type === SourceFile.TypeEnum.DOCKSTOREWDL;
-        });
-        if (wdlValidation && wdlValidation.valid) {
-          descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
-        }
-
-        const nflValidation = version.validations.find(validation => {
-          return validation.type === SourceFile.TypeEnum.NEXTFLOW || validation.type === SourceFile.TypeEnum.NEXTFLOWCONFIG;
-        });
-        if (nflValidation && nflValidation.valid) {
-          descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
-        }
-
-        // DOCKSTORE-2428 - demo how to add new workflow language
-        // const swlValidation = version.validations.find((validation) => {
-        //   return validation.type === SourceFile.TypeEnum.DOCKSTORESWL ||
-        //     validation.type === SourceFile.TypeEnum.DOCKSTORESWL;
-        // });
-        // if (swlValidation && swlValidation.valid) {
-        //   descriptorTypes.push(ToolDescriptor.TypeEnum.SWL);
-        // }
-      }
-      return descriptorTypes;
+      });
     }
+    return descriptorTypes;
   }
 }

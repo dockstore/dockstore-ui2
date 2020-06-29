@@ -1,7 +1,8 @@
 import { OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UserQuery } from 'app/shared/user/user.query';
 import { Base } from 'app/shared/base';
+import { UserQuery } from 'app/shared/user/user.query';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { EntriesService, UsersService } from '../../shared/openapi';
 
 /**
@@ -14,6 +15,7 @@ export abstract class FilteredList extends Base implements OnInit {
   public myItems;
   public filterText;
   public isLoading = true;
+  private subject: Subject<string> = new Subject();
 
   constructor(protected userQuery: UserQuery, protected entriesService: EntriesService, protected usersService: UsersService) {
     super();
@@ -21,10 +23,21 @@ export abstract class FilteredList extends Base implements OnInit {
 
   ngOnInit() {
     this.getMyList();
+
+    this.subject
+      .pipe(
+        // The usual argument formDebounceTime is set to 250 which is not long enough
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(filterText => {
+        this.getMyList();
+      });
   }
 
   onTextChange(event: any) {
-    this.getMyList();
+    this.subject.next(this.filterText);
   }
 
   abstract getMyList();

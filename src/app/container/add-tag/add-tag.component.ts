@@ -172,7 +172,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
           tagName,
           null
         );
-        forkJoin(addCWL, addWDL).subscribe(
+        forkJoin([addCWL, addWDL]).subscribe(
           () => {
             this.containersService.refresh(id).subscribe(
               (tool: DockstoreTool) => {

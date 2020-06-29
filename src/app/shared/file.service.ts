@@ -49,6 +49,9 @@ export class FileService {
       return null;
     } else {
       const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(descriptorType);
+      if (type === null) {
+        return null;
+      }
       const id = entryType === 'workflow' ? ga4ghWorkflowIdPrefix + entryPath : entryPath;
       const versionId = entryVersion.name;
       const relativePath = sourceFile.path;
@@ -111,9 +114,8 @@ export class FileService {
    */
   getFileName(path: string): string {
     if (path) {
-      let filename = 'dockstore.txt';
       const splitFileName = path.split('/');
-      filename = splitFileName[splitFileName.length - 1];
+      const filename = splitFileName[splitFileName.length - 1];
       return filename;
     } else {
       return null;

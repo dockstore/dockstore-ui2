@@ -23,14 +23,9 @@ describe('Workflow starring while not logged in', () => {
   });
 
   describe('Select a Workflow', () => {
-    it('Workflow can\'t be starred/unstarred when not logged in', () => {
-      cy
-        .get('#starringButton')
-        .should('be.disabled');
-      cy
-        .get('#starCountButton')
-        .should('not.be.disabled');
-
+    it("Workflow can't be starred/unstarred when not logged in", () => {
+      cy.get('#starringButton').should('be.disabled');
+      cy.get('#starCountButton').should('not.be.disabled');
     });
   });
 });
@@ -42,14 +37,9 @@ describe('Tool starring while not logged in', () => {
   });
 
   describe('Select a tool', () => {
-    it('Tool can\'t be starred/unstarred when not logged in', () => {
-      cy
-        .get('#starringButton')
-        .should('be.disabled');
-      cy
-        .get('#starCountButton')
-        .should('not.be.disabled');
-
+    it("Tool can't be starred/unstarred when not logged in", () => {
+      cy.get('#starringButton').should('be.disabled');
+      cy.get('#starCountButton').should('not.be.disabled');
     });
   });
 });

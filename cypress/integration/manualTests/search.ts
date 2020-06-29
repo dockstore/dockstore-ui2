@@ -60,7 +60,9 @@ describe('Admin UI', () => {
     it('should have basic search and advanced search mutually exclusive', () => {
       cy.get('[data-cy=basic-search]').type('dockstore_');
       cy.contains('Open Advanced Search').click();
-      cy.contains('button', /^Advanced Search$/).should('be.visible').click();
+      cy.contains('button', /^Advanced Search$/)
+        .should('be.visible')
+        .click();
       cy.url().should('not.include', '/search?search=dockstore_');
     });
   });

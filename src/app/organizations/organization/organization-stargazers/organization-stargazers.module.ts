@@ -18,9 +18,9 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CustomMaterialModule } from '../../../shared/modules/material.module';
 
-import { OrganizationStargazersComponent } from './organization-stargazers.component';
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
+import { OrganizationStargazersComponent } from './organization-stargazers.component';
 
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, CustomMaterialModule],

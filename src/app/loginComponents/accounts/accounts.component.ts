@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Base } from '../../shared/base';
 import { takeUntil } from 'rxjs/operators';
+import { Base } from '../../shared/base';
 
 @Component({
   selector: 'app-accounts',
@@ -15,7 +15,7 @@ export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
   selected = new FormControl();
   validTabs = ['accounts', 'profiles', 'dockstore account controls', 'requests'];
-  constructor(private location: Location, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private location: Location, private activatedRoute: ActivatedRoute) {
     super();
   }
 

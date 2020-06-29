@@ -16,8 +16,9 @@
 import { NgModule } from '@angular/core';
 import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
 import { myworkflowRouting } from './myworkflows.routing';
+import { GitHubAppsLogsModule } from './sidebar-accordion/github-apps-logs/github-apps-logs.module';
 
 @NgModule({
-  imports: [SharedWorkflowServicesModule, myworkflowRouting]
+  imports: [SharedWorkflowServicesModule, myworkflowRouting, GitHubAppsLogsModule]
 })
 export class MyWorkflowsModule {}

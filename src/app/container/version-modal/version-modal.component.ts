@@ -15,9 +15,10 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { Base } from 'app/shared/base';
+import { forkJoin } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-
 import { ListContainersService } from '../../containers/list/list.service';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -34,22 +35,19 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css']
 })
-export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class VersionModalComponent extends Base implements OnInit, AfterViewChecked, OnDestroy {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = ToolDescriptor.TypeEnum;
   public editMode: boolean;
   public mode: TagEditorMode;
   public tool: DockstoreTool;
   public unsavedVersion;
-  private savedCWLTestParameterFiles: Array<any>;
-  private savedWDLTestParameterFiles: Array<any>;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
   public unsavedCWLTestParameterFilePaths: Array<string> = [];
@@ -58,14 +56,12 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public unsavedTestWDLFile = '';
   public dockerPullCommand = '';
   public DockstoreToolType = DockstoreTool;
-
+  public loading = true;
   public formErrors = formErrors;
   public version: Tag;
   public validationPatterns = validationDescriptorPatterns;
   tagEditorForm: NgForm;
   @ViewChild('tagEditorForm', { static: false }) currentForm: NgForm;
-
-  private ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(
     private paramfilesService: ParamfilesService,
@@ -79,7 +75,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     private dateService: DateService,
     private matDialog: MatDialog,
     private toolQuery: ToolQuery
-  ) {}
+  ) {
+    super();
+  }
 
   // Almost all these functions should be moved to a service
   getSizeString(size) {
@@ -193,23 +191,20 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   setMode(mode: TagEditorMode) {
+    this.loading = true;
     this.unsavedCWLTestParameterFilePaths = [];
     this.unsavedWDLTestParameterFilePaths = [];
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
-    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL).subscribe(file => {
-      this.savedCWLTestParameterFiles = file;
-      this.savedCWLTestParameterFiles.forEach(fileObject => {
-        this.savedCWLTestParameterFilePaths.push(fileObject.path);
-      });
+    forkJoin([
+      this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL),
+      this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL)
+    ]).subscribe(([cwlFiles, wdlFiles]) => {
+      this.savedCWLTestParameterFilePaths = cwlFiles.map(cwlFile => cwlFile.path);
       this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
-    });
-    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL).subscribe(file => {
-      this.savedWDLTestParameterFiles = file;
-      this.savedWDLTestParameterFiles.forEach(fileObject => {
-        this.savedWDLTestParameterFilePaths.push(fileObject.path);
-      });
+      this.savedWDLTestParameterFilePaths = wdlFiles.map(wdlFile => wdlFile.path);
       this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
+      this.loading = false;
     });
   }
 

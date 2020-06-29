@@ -31,6 +31,7 @@
           <mat-radio-button *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
             <span class="text-wrap">
               {{ option.label }}
+              <div *ngIf="option.value === 0 && !this.recommendGitHubApps" class="beta-label">preview</div>
               <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
                 {{ selectedOption.extendedLabel }}
               </div>
@@ -49,7 +50,32 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
-      <div *ngIf="selectedOption?.value == 0">
+      <div *ngIf="selectedOption?.value === 0">
+        <p>
+          Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
+          <a href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps.html" target="_blank" rel="noopener noreferrer">
+            documentation <mat-icon>open_in_new</mat-icon>
+          </a>
+          for how to use GitHub Apps to automatically sync your workflows with GitHub. A .dockstore.yml file is required.
+        </p>
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
+          <a
+            mat-flat-button
+            type="button"
+            color="primary"
+            [href]="gitHubAppInstallationLink$ | async"
+            matTooltip="Manage Dockstore Installations on GitHub"
+            ><mat-icon>add</mat-icon> Manage Dockstore Installations on GitHub</a
+          >
+        </div>
+        <div class="modal-footer">
+          <button mat-button color="secondary" matStepperPrevious>Back</button>
+          <button type="button" mat-flat-button color="primary" [mat-dialog-close]="true" (click)="clearWorkflowRegisterError()">
+            Close
+          </button>
+        </div>
+      </div>
+      <div *ngIf="selectedOption?.value === 1">
         <entry-wizard></entry-wizard>
         <div class="modal-footer">
           <button mat-button color="secondary" matStepperPrevious>Back</button>
@@ -61,7 +87,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value === 2"
         #registerWorkflowForm="ngForm"
         name="registerWorkflowForm"
         (submit)="registerWorkflow()"
@@ -105,7 +131,8 @@
         >
           <mat-label>Descriptor Type: </mat-label>
           <mat-radio-button class="radio-button" *ngFor="let descriptorType of descriptorLanguages$ | async" [value]="descriptorType">
-            {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
+            {{ descriptorType === 'gxformat2' ? 'Galaxy' : ('descriptor_type' | mapFriendlyValue: descriptorType) }}
+            <div *ngIf="descriptorType === 'gxformat2'" class="beta-label">preview</div>
           </mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="w-100">
@@ -117,14 +144,14 @@
             name="workflow_path"
             [(ngModel)]="workflow.workflow_path"
             minlength="3"
-            maxlength="128"
+            maxlength="1000"
             [pattern]="descriptorValidationPattern"
             required
             [matTooltip]="Tooltip.workflowPath"
-            placeholder="{{ examplePatterns[workflow.descriptorType] }}"
+            [placeholder]="workflowPathPlaceholder"
           />
           <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
-          <mat-error *ngIf="formErrors.workflow_path">{{ formErrors.workflow_path }}</mat-error>
+          <mat-error *ngIf="formErrors.workflow_path">{{ workflowPathError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100">
           <mat-label>Test Parameter File Path</mat-label>
@@ -133,7 +160,7 @@
             name="testParameterFilePath"
             [(ngModel)]="workflow.defaultTestParameterFilePath"
             minlength="3"
-            maxlength="128"
+            maxlength="1000"
             [pattern]="validationPatterns.testParameterFilePath"
             matTooltip="Relative path to a Test Parameter File in the Git repository."
             placeholder="e.g. /test.json"
@@ -177,7 +204,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
-        *ngIf="selectedOption?.value == 2"
+        *ngIf="selectedOption?.value === 3"
         #registerHostedWorkflowForm="ngForm"
         name="registerHostedWorkflowForm"
         (ngSubmit)="registerHostedWorkflow()"
@@ -202,7 +229,8 @@
             *ngFor="let descriptorType of descriptorLanguages$ | async"
             [value]="descriptorType"
           >
-            {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
+            {{ descriptorType === 'gxformat2' ? 'Galaxy' : ('descriptor_type' | mapFriendlyValue: descriptorType) }}
+            <div *ngIf="descriptorType === 'gxformat2'" class="beta-label">preview</div>
           </mat-radio-button>
         </mat-radio-group>
 

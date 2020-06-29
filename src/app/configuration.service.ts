@@ -62,6 +62,11 @@ export class ConfigurationService {
     Dockstore.ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + config.zenodoRedirectPath;
     Dockstore.ZENODO_SCOPE = config.zenodoScope;
 
+    Dockstore.ORCID_AUTH_URL = config.orcidAuthUrl;
+    Dockstore.ORCID_CLIENT_ID = config.orcidClientId;
+    Dockstore.ORCID_REDIRECT_URI = Dockstore.HOSTNAME + config.orcidRedirectPath;
+    Dockstore.ORCID_SCOPE = config.orcidScope;
+
     Dockstore.GOOGLE_CLIENT_ID = config.googleClientId;
     Dockstore.GOOGLE_SCOPE = config.googleScope;
     Dockstore.GOOGLE_TAG_MANAGER_ID = config.tagManagerId;

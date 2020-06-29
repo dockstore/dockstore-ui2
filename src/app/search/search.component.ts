@@ -16,7 +16,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
+import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../shared/constants';
@@ -47,7 +47,6 @@ import { Hit, SearchService } from './state/search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  faSort = faSort;
   faSortAlphaDown = faSortAlphaDown;
   faSortAlphaUp = faSortAlphaUp;
   faSortNumericDown = faSortNumericDown;
@@ -180,7 +179,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!paramMap) {
       return;
     }
-    const newAdvancedSearchObject: AdvancedSearchObject = initialAdvancedSearchObject;
+    // Spread operator for assigning the initialAdvancedSearchObject must be used due to an issue occurring with
+    // only non-prod mode.
+    const newAdvancedSearchObject: AdvancedSearchObject = { ...initialAdvancedSearchObject };
     let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
     // URL is gospel, if it doesn't have a search term, then there's no search term
     if (!paramMap.has('search')) {

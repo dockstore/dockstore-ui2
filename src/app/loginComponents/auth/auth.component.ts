@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of as observableOf } from 'rxjs';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { Provider } from '../../shared/enum/provider.enum';
 import { TokenService } from '../../shared/state/token.service';
 import { UserService } from '../../shared/user/user.service';
-import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-auth',
@@ -48,6 +48,8 @@ export class AuthComponent extends Base implements OnInit {
 
     const addBitbucketToken = queryObservable.pipe(mergeMap(query => this.tokenService.registerToken(query['code'], Provider.BITBUCKET)));
 
+    const addOrcidToken = queryObservable.pipe(mergeMap(query => this.tokenService.registerToken(query['code'], Provider.ORCID)));
+
     return this.activatedRoute.params.pipe(
       mergeMap(params => {
         const provider: Provider = params['provider'];
@@ -63,6 +65,8 @@ export class AuthComponent extends Base implements OnInit {
             return addGitLabToken;
           case Provider.ZENODO:
             return addZenodoToken;
+          case Provider.ORCID:
+            return addOrcidToken;
           default: {
             console.log('Unknown provider: ' + provider);
             return observableOf(null);

@@ -16,6 +16,8 @@
 import {
   assertNoTab,
   assertVisibleTab,
+  cancelMatMenu,
+  clickFirstActionsButton,
   goToTab,
   setTokenUserViewPort,
   setTokenUserViewPortCurator
@@ -58,52 +60,20 @@ describe('Dockstore Home', () => {
       checkVersionsTab();
       // Hidden version not visible on public page
       // View button visible on public page, otherwise Edit
+      clickFirstActionsButton();
       cy.contains('button', 'View');
       cy.contains('td', 'test').should('not.be.visible');
+      cancelMatMenu();
       checkFilesTab();
     });
   });
 
-  describe('my-services sync', () => {
+  describe('my-services', () => {
     setTokenUserViewPortCurator();
     it('Have no services in /my-services', () => {
       cy.visit('/my-services');
       cy.url().should('contain', 'my-services');
       cy.contains('You have not registered any services').should('be.visible');
-    });
-    it('Clicking sync with Github should sync', () => {
-      cy.server();
-      // This fixture has one service
-      cy.fixture('syncservices1.json').then(json => {
-        cy.route({
-          method: 'POST',
-          url: '*/users/services/sync',
-          response: json
-        });
-      });
-      // One org
-      cy.get('[data-cy=sync-with-github]').click();
-      // One org but different
-      cy.get('mat-expansion-panel').should('have.length', 1);
-      cy.get('.mat-expansion-indicator').first().click();
-      // One repo within the org
-      cy.get('.mat-list-item-content').should('have.length', 1);
-    });
-    it('Clicking sync with GitHub organization should sync', () => {
-      cy.server();
-      // This fixture has two services, one of which is also in syncservices1.json
-      cy.fixture('syncservices2.json').then(json => {
-        cy.route({
-          method: 'POST',
-          url: '*/users/services/dockstore-testing/sync',
-          response: json
-        });
-      });
-      cy.get('mat-expansion-panel').should('have.length', 1);
-      cy.get('[data-cy=sync-with-github-org]').first().click();
-      cy.get('mat-expansion-panel').should('have.length', 1);
-      // Now 2 repos
-      cy.get('.mat-list-item-content').should('have.length', 2);
     });
   });
 
@@ -121,7 +91,9 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('not.be.visible');
       checkVersionsTab();
       // Edit button only in my-services
+      clickFirstActionsButton();
       cy.contains('button', 'Edit');
+      cancelMatMenu();
       checkFilesTab();
     });
   });
@@ -153,13 +125,28 @@ describe('Dockstore Home', () => {
     cy.contains('tr', 'Git Reference');
     cy.contains('td', '1.3');
     cy.contains('tr', 'Date Modified');
-    cy.contains('td', 'Jul 19, 2019, 1:13:48 PM');
+    cy.contains('td', '2019-07-19 13:13');
     cy.contains('tr', 'Valid');
     cy.contains('tr', 'Verified Platforms');
   }
   function checkFilesTab() {
     goToTab('Files');
+
+    // Files Tab
     cy.contains('README.md');
     cy.contains('# another-test-serviceaaaa');
+
+    cy.get('mat-tab-body').within(tabBody => {
+      cy.get('mat-select').click();
+    });
+    cy.get('mat-option')
+      .contains('docker-compose.yml')
+      .click();
+    cy.contains('docker-compose.yml');
+
+    // Configuration tab
+    goToTab('Configuration');
+    cy.contains('.dockstore.yml');
+    cy.contains('subclass: docker-compose');
   }
 });

@@ -17,7 +17,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
-import { TabDirective } from 'ngx-bootstrap/tabs';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -44,11 +44,11 @@ export class YoutubeComponent {
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent extends Base implements OnInit, AfterViewInit {
-  public browseToolsTab = 'browseToolsTab';
-  public browseWorkflowsTab = 'browseWorkflowsTab';
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;
+  descriptorLanguagesInnerHTML$: Observable<string>;
+
   @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
 
   @ViewChild('youtube', { static: false }) youtube: ElementRef;
@@ -57,12 +57,14 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private twitterService: TwitterService,
     private userQuery: UserQuery,
-    private homePageService: HomePageService
+    private homePageService: HomePageService,
+    private descriptorLanguageService: DescriptorLanguageService
   ) {
     super();
   }
 
   ngOnInit() {
+    this.descriptorLanguagesInnerHTML$ = this.descriptorLanguageService.descriptorLanguagesInnerHTML$;
     this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {
@@ -83,10 +85,6 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
 
   goToSearch(searchValue: string) {
     this.homePageService.goToSearch(searchValue);
-  }
-
-  onSelect(data: TabDirective): void {
-    this.selectedTab = data.id;
   }
 
   openYoutube() {

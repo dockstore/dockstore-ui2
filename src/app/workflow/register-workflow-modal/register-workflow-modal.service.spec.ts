@@ -16,7 +16,10 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { ToolDescriptor } from '../../shared/swagger';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
@@ -28,9 +31,6 @@ import {
   WorkflowStubService
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import { WorkflowService } from '../../shared/state/workflow.service';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ToolDescriptor } from '../../shared/swagger';
 
 describe('Service: RegisterWorkflowModal', () => {
   beforeEach(() => {

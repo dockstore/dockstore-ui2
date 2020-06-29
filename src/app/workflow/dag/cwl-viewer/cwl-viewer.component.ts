@@ -15,12 +15,12 @@
  */
 
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
-import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
-import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { Subject } from 'rxjs';
-import { ExtendedWorkflowQuery } from '../../../shared/state/extended-workflow.query';
 import { takeUntil } from 'rxjs/operators';
+import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
+import { ExtendedWorkflowQuery } from '../../../shared/state/extended-workflow.query';
+import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
+import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 
 @Component({
   selector: 'app-cwl-viewer',

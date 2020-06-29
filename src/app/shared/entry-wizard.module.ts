@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { EntryWizardComponent } from './entry-wizard/entry-wizard.component';
 import { CustomMaterialModule } from './modules/material.module';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [CommonModule, CustomMaterialModule, FormsModule],

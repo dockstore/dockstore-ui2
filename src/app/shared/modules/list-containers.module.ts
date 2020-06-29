@@ -16,19 +16,18 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TabsModule } from 'ngx-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ListContainersComponent } from '../../containers/list/list.component';
 import { ListContainersService } from '../../containers/list/list.service';
 import { PublishedToolsDataSource } from '../../containers/list/published-tools.datasource';
+import { EntryModule } from '../entry/entry.module';
 import { PrivateIconModule } from '../private-icon/private-icon.module';
 import { HeaderModule } from './header.module';
 import { CustomMaterialModule } from './material.module';
-import { EntryModule } from '../entry/entry.module';
 
 @NgModule({
   declarations: [ListContainersComponent],
-  imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule, TabsModule, EntryModule],
+  imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule, EntryModule],
   providers: [PublishedToolsDataSource, ListContainersService],
   exports: [ListContainersComponent]
 })

@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { EventsStore } from './events.store';
-import { Event } from '../../shared/swagger';
-import { OrganizationsService } from '../../shared/swagger';
 import { finalize } from 'rxjs/operators';
+import { Event, OrganizationsService } from '../../shared/swagger';
+import { EventsStore } from './events.store';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
-  constructor(private eventsStore: EventsStore, private http: HttpClient, private organizationsService: OrganizationsService) {}
+  constructor(private eventsStore: EventsStore, private organizationsService: OrganizationsService) {}
 
   /**
    * Retrieves the events for an organization from the database and updates the entityStore

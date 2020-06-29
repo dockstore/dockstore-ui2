@@ -16,16 +16,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TabsModule } from 'ngx-bootstrap';
 import { ListWorkflowsComponent } from '../../workflows/list/list.component';
 import { PublishedWorkflowsDataSource } from '../../workflows/list/published-workflows.datasource';
+import { EntryModule } from '../entry/entry.module';
 import { HeaderModule } from './header.module';
 import { CustomMaterialModule } from './material.module';
-import { EntryModule } from '../entry/entry.module';
 
 @NgModule({
   declarations: [ListWorkflowsComponent],
-  imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule, TabsModule, EntryModule],
+  imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule, EntryModule],
   providers: [PublishedWorkflowsDataSource],
   exports: [ListWorkflowsComponent]
 })

@@ -28,6 +28,7 @@ import {
   UsersStubService,
   WorkflowsStubService
 } from '../test/service-stubs';
+import { AlertQuery } from './alert/state/alert.query';
 import { ContainerService } from './container.service';
 import { DateService } from './date.service';
 import { DockstoreService } from './dockstore.service';
@@ -42,7 +43,6 @@ import { WorkflowsService } from './swagger/api/workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from './swagger/model/workflow';
 import { ToolQuery } from './tool/tool.query';
-import { AlertQuery } from './alert/state/alert.query';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 describe('RefreshService', () => {
@@ -70,32 +70,6 @@ describe('RefreshService', () => {
   it('should be created', inject([RefreshService], (service: RefreshService) => {
     expect(service).toBeTruthy();
   }));
-
-  it('should refresh tool', inject(
-    [RefreshService, AlertQuery, ContainerService],
-    (service: RefreshService, alertQuery: AlertQuery, containerService: ContainerService) => {
-      const refreshedTool: DockstoreTool = {
-        default_cwl_path: 'refreshedDefaultCWLPath',
-        default_dockerfile_path: 'refreshedDefaultDockerfilePath',
-        default_wdl_path: 'refreshedDefaultWDLPath',
-        gitUrl: 'refreshedGitUrl',
-        mode: DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS,
-        name: 'refreshedName',
-        namespace: 'refreshedNamespace',
-        private_access: false,
-        registry_string: 'quay.io',
-        registry: DockstoreTool.RegistryEnum.QUAYIO,
-        toolname: 'refreshedToolname',
-        defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
-        defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
-      };
-      service.tool = sampleTool1;
-      service.refreshTool();
-      alertQuery.showInfo$.subscribe(refreshing => {
-        expect(refreshing).toBeFalsy();
-      });
-    }
-  ));
   it('should refresh workflow', inject(
     [RefreshService, AlertQuery, WorkflowService, WorkflowQuery],
     (service: RefreshService, alertQuery: AlertQuery, workflowService: WorkflowService, workflowQuery: WorkflowQuery) => {
@@ -109,7 +83,8 @@ describe('RefreshService', () => {
         workflowVersions: [],
         defaultTestParameterFilePath: 'refreshedDefaultTestParameterFilePath',
         sourceControl: 'github.com',
-        source_control_provider: 'GITHUB'
+        source_control_provider: 'GITHUB',
+        descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
       };
       workflowService.setWorkflows([]);
       workflowService.setWorkflow(sampleWorkflow1);
@@ -120,22 +95,6 @@ describe('RefreshService', () => {
       // workflowQuery.workflow$.subscribe(workflow => {
       //     expect(workflow).toEqual(refreshedWorkflow);
       // });
-    }
-  ));
-  it('should refresh all tools', inject(
-    [RefreshService, ContainerService],
-    (service: RefreshService, containerService: ContainerService) => {
-      service.refreshAllTools(0);
-      containerService.tools$.subscribe(tools => {
-        expect(tools).toEqual([]);
-      });
-    }
-  ));
-  it('should refresh all workflows', inject(
-    [RefreshService, WorkflowService],
-    (service: RefreshService, workflowService: WorkflowService) => {
-      service.refreshAllWorkflows(0);
-      workflowService.workflows$.subscribe(workflow => expect(workflow).toEqual([]));
     }
   ));
 });

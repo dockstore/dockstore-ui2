@@ -15,20 +15,20 @@
  */
 import { inject, TestBed } from '@angular/core/testing';
 
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {
   ContainerStubService,
   RefreshStubService,
+  RegisterCheckerWorkflowStubService,
   WorkflowsStubService,
-  WorkflowStubService,
-  RegisterCheckerWorkflowStubService
+  WorkflowStubService
 } from '../../../test/service-stubs';
 import { ContainerService } from '../../container.service';
 import { RefreshService } from '../../refresh.service';
+import { WorkflowService } from '../../state/workflow.service';
 import { WorkflowsService } from '../../swagger/api/workflows.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
-import { WorkflowService } from '../../state/workflow.service';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('Service: RegisterCheckerWorkflow', () => {
   beforeEach(() => {

@@ -16,6 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
@@ -38,13 +39,11 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
-import { AlertService } from 'app/shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
-  styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  providers: [MytoolsService]
+  styleUrls: ['../../shared/styles/my-entry.component.scss']
 })
 export class MyToolComponent extends MyEntry implements OnInit {
   tools: any;
@@ -164,10 +163,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   showRegisterEntryModal(): void {
     this.registerToolService.setIsModalShown(true);
-  }
-
-  refreshAllEntries(): void {
-    this.refreshService.refreshAllTools(this.user.id);
   }
 
   /**

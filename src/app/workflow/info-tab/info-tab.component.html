@@ -14,6 +14,25 @@
   ~    limitations under the License.
   -->
 <div class="p-3">
+  <mat-card
+    class="alert alert-info"
+    *ngIf="
+      !isPublic &&
+      workflow?.source_control_provider === 'GITHUB' &&
+      (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB) &&
+      this.recommendGitHubApps
+    "
+  >
+    Keep your workflow automatically in sync with GitHub with our new registration process. Click
+    <a
+      href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="link-with-underline"
+      >here</a
+    >
+    to learn more.
+  </mat-card>
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ entryType$ | async | titlecase }} Information</mat-card-title>
@@ -39,7 +58,7 @@
         <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
           <span>
             <li *ngIf="workflow?.workflow_path || !isPublic">
-              <form #editWorkflowPathForm="ngForm" class="form-inline">
+              <form #editWorkflowPathForm="ngForm" class="form-inline" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                 <div class="form-group">
                   <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
                   <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
@@ -77,7 +96,11 @@
                   </button>
                 </div>
               </form>
-              <form #editTestFilePathForm="ngForm" class="form-inline" *ngIf="!(isNFL$ | async)">
+              <form
+                #editTestFilePathForm="ngForm"
+                class="form-inline"
+                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+              >
                 <div class="form-group">
                   <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
                   <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
@@ -163,13 +186,15 @@
         <strong matTooltip="Digital Object Identifier">DOI</strong>:
         {{ selectedVersion && selectedVersion.doiURL ? selectedVersion.doiURL : 'n/a' }}
       </div>
-      <div><strong matTooltip="Author listed in descriptor">Author</strong>: {{ workflow?.author ? workflow?.author : 'n/a' }}</div>
+      <div>
+        <strong matTooltip="Author listed in descriptor">Author</strong>: {{ selectedVersion?.author ? selectedVersion?.author : 'n/a' }}
+      </div>
       <div>
         <strong matTooltip="E-mail of corresponding author for workflow">E-mail</strong>:
-        <a href="mailto:{{ workflow?.email }}" *ngIf="workflow?.email">
+        <a href="mailto:{{ selectedVersion?.email }}" *ngIf="selectedVersion?.email">
           {{ workflow?.email }}
         </a>
-        <span *ngIf="!workflow?.email">
+        <span *ngIf="!selectedVersion?.email">
           n/a
         </span>
       </div>
@@ -178,17 +203,18 @@
         <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-raised-button>Export as ZIP</a>
       </span>
       <div>
-        <div *ngIf="workflow?.description || !isPublic">
+        <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
-          <div *ngIf="workflow?.description" class="well well-sm">
-            <markdown [data]="workflow?.description"></markdown>
+          <div *ngIf="selectedVersion?.description" class="well well-sm">
+            <markdown [data]="selectedVersion?.description"></markdown>
           </div>
-          <div *ngIf="!workflow?.description && !isPublic" class="well well-sm">
+          <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
-              No description associated with this {{ entryType$ | async }}. See
+              No description associated with this {{ entryType$ | async }}.
               <ng-container [ngSwitch]="descriptorType$ | async">
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.CWL">
+                  See&nbsp;
                   <a
                     href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/best-practices.html#authorship-metadata"
                     target="_blank"
@@ -199,6 +225,7 @@
                   description for this tool.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.WDL">
+                  See&nbsp;
                   <a
                     href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata"
                     target="_blank"
@@ -207,6 +234,7 @@
                   >.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.NFL">
+                  See&nbsp;
                   <a
                     href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata"
                     target="_blank"
@@ -214,9 +242,9 @@
                     >Nextflow Best Practices</a
                   >.
                 </span>
-                <span *ngSwitchCase="ToolDescriptor.TypeEnum.SERVICE">
-                  ** placeholder: link to doc that describes how to set a service description **
-                </span>
+                <!-- TODO: Handle SERVICE and GALAXY (Link to doc that describes how to set a service, etc) -->
+                <!-- Empty default for show that it was considered -->
+                <span *ngSwitchDefault></span>
               </ng-container>
             </span>
           </div>

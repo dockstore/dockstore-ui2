@@ -18,7 +18,7 @@
   Collections
 </app-header>
 <!-- Beware of double loading bar (from page and from loading component) -->
-<app-loading [loading]="(loadingCollection$ | async) && (loadingOrganization$ | async)">
+<app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
   <div *ngIf="organization$ | async as organization">
     <div class="container" *ngIf="collection$ | async as collection" fxLayout="column">
       <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === pendingEnum">
@@ -82,7 +82,7 @@
           </mat-card>
 
           <div fxLayout="column" fxLayoutGap="15px">
-            <div *ngFor="let entry of collection?.entries">
+            <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
               <mat-card class="entryCard">
                 <mat-card-header>
                   <mat-card-title>

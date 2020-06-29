@@ -74,6 +74,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public bitbucketPath = 'bitbucket.org/';
   public descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public entryType: EntryType;
+  public readonly oldLanguages = [Workflow.DescriptorTypeEnum.CWL, Workflow.DescriptorTypeEnum.WDL, Workflow.DescriptorTypeEnum.NFL];
   validTabs = [];
   separatorKeysCodes = [ENTER, COMMA];
   protected canRead = false;
@@ -88,6 +89,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   public WorkflowModel = Workflow;
+  public launchSupport$: Observable<boolean>;
   @Input() user;
 
   constructor(
@@ -139,6 +141,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.extendedWorkflow$ = this.extendedWorkflowQuery.extendedWorkflow$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
+    this.launchSupport$ = this.workflowQuery.launchSupport$;
   }
 
   ngAfterViewInit() {
@@ -256,9 +259,14 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
           const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
-          this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
-            this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
-          ]);
+          const compatType = this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType);
+          if (compatType) {
+            this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [compatType]);
+          } else {
+            this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+              this.workflow.descriptorType
+            ]);
+          }
         }
       }
       this.setUpWorkflow(workflow);

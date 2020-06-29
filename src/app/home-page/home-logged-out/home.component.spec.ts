@@ -13,16 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { TwitterService } from '../../shared/twitter.service';
 import { HomeComponent } from './home.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -32,8 +30,8 @@ describe('HomeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HomeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TabsModule.forRoot(), RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
-      providers: [TwitterService]
+      imports: [CustomMaterialModule, RouterTestingModule, HttpClientTestingModule],
+      providers: [TwitterService, DescriptorLanguageService]
     }).compileComponents();
   }));
 

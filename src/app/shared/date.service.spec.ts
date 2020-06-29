@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-import { DateService } from './date.service';
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { Dockstore } from '../shared/dockstore.model';
+import { DateService } from './date.service';
 
 describe('DateService', () => {
   beforeEach(() => {

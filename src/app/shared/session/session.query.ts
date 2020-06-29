@@ -34,6 +34,7 @@ export class SessionQuery extends Query<SessionState> {
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
     map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(entryType) : null))
   );
+  loadingDialog$: Observable<boolean> = this.select(session => session.loadingDialog);
   constructor(protected store: SessionStore) {
     super(store);
   }

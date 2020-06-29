@@ -16,23 +16,18 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MdePopoverModule } from '@material-extended/mde';
 import { TagCloudModule } from 'angular-tag-cloud-module';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PopoverModule } from 'ngx-bootstrap/popover';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
-import { getTooltipConfig } from '../shared/tooltip';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
 import { BasicSearchComponent } from './basic-search/basic-search.component';
 import { QueryBuilderService } from './query-builder.service';
@@ -42,7 +37,6 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -57,16 +51,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     CustomMaterialModule,
     FontAwesomeModule,
-    AccordionModule.forRoot(),
     MatAutocompleteModule,
-    ModalModule.forRoot(),
     FormsModule,
     HeaderModule,
     TagCloudModule,
-    TabsModule.forRoot(),
-    TooltipModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    PopoverModule.forRoot(),
     PipeModule,
     ClipboardModule,
     searchRouting,
@@ -74,9 +62,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     PrivateIconModule,
     ReactiveFormsModule,
     RefreshAlertModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MdePopoverModule
   ],
-  providers: [SearchService, QueryBuilderService, { provide: TooltipConfig, useFactory: getTooltipConfig }],
-  exports: [SearchComponent]
+  providers: [SearchService, QueryBuilderService],
+  exports: [SearchComponent],
+  entryComponents: [AdvancedSearchComponent]
 })
 export class SearchModule {}

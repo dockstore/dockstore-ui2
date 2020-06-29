@@ -32,6 +32,12 @@ import { AlertStore } from './alert.store';
 export class AlertService {
   constructor(private alertStore: AlertStore, private matSnackBar: MatSnackBar, private alertQuery: AlertQuery) {}
 
+  public static getDetailedErrorMessage(error: HttpErrorResponse): string {
+    return (
+      '[HTTP ' + error.status + '] ' + error.statusText + ': ' + (error.error && error.error.message ? error.error.message : error.error)
+    );
+  }
+
   public start(message: string) {
     this.setInfo(message);
   }
@@ -75,8 +81,7 @@ export class AlertService {
       message = 'The webservice is currently down, possibly due to load. Please wait and try again later.';
     } else {
       message = 'The webservice encountered an error.';
-      details =
-        '[HTTP ' + error.status + '] ' + error.statusText + ': ' + (error.error && error.error.message ? error.error.message : error.error);
+      details = AlertService.getDetailedErrorMessage(error);
     }
     const previousMessage = this.alertQuery.getValue().message;
     this.setError(message, details);
@@ -92,8 +97,7 @@ export class AlertService {
    */
   public detailedSnackBarError(error: HttpErrorResponse) {
     this.clearEverything();
-    const detailedError =
-      '[HTTP ' + error.status + '] ' + error.statusText + ': ' + (error.error && error.error.message ? error.error.message : error.error);
+    const detailedError = AlertService.getDetailedErrorMessage(error);
     this.matSnackBar.open(detailedError);
   }
 

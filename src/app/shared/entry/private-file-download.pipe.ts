@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FileService } from '../file.service';
 import { SafeUrl } from '@angular/platform-browser';
+import { FileService } from '../file.service';
 
 @Pipe({
   name: 'privateFileDownload'

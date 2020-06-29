@@ -5,12 +5,43 @@ executors:
   integration_test_exec: # declares a reusable executor
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
-      - image: circleci/postgres:10.10-alpine
+        environment:
+          JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
+      - image: circleci/postgres:11.6-alpine-ram
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
+
+  uptime_monitor:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
+    steps:
+      - checkout
+      - install_container_dependencies
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+            if [ ! -d "./node_modules" ]
+            then
+              bash -i -c 'npm ci'
+            fi
+      - run:
+          name: Prebuild
+          command: bash -i -c 'npm run prebuild.prod'
+      - run:
+          name: Run remote verification test against dev (no auth)
+          command: bash -i -c 'npm run test-dev-no-auth'
+      - run:
+          name: Run remote verification test against dev (with auth)
+          command: bash -i -c 'npm run test-dev-auth'
+
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
@@ -40,6 +71,10 @@ jobs:
           key: dep-cache-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
+      - save_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          paths:
+            - ~/.cache
       - run:
           name: Check dependencies
           command: bash -i -c 'npm ls'
@@ -48,7 +83,7 @@ jobs:
           command: bash -i -c 'npm run lint'
       - run:
           name: Build
-          command: bash -i -c 'npm run build.prod'
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
       - run:
           name: Install codecov
           command: bash -i -c 'npm i --no-save codecov'
@@ -62,11 +97,20 @@ jobs:
           root: .
           paths:
             - .
+  licenses_test:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
+    steps:
+      - checkout
+      - run: bash scripts/detect-package-json-changes.sh
   integration_test_1:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
@@ -79,6 +123,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
@@ -91,6 +137,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
@@ -119,7 +167,7 @@ jobs:
                 command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\(\.\./\)\+assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
             - run:
                 name: Build
-                command: bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
+                command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
             # Copy to a versioned folder
             - aws-s3/copy:
                 from: dist
@@ -132,6 +180,20 @@ jobs:
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
+  check_build_develop:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python:2.7
+    steps:
+      - get_workspace
+      - install_container_dependencies
+        # Override the webservice version in package.json to instead build against develop webservice
+      - run:
+          name: set webservice to develop
+          command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+      - run:
+          name: Build
+          command: bash -i -c 'npm run build'
 
 workflows:
   version: 2
@@ -142,24 +204,31 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - licenses_test:
+          filters:
+            tags:
+              only: /.*/
       - integration_test_1:
           filters:
             tags:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
       - integration_test_2:
           filters:
             tags:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
       - integration_test_3:
           filters:
             tags:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
@@ -171,6 +240,24 @@ workflows:
               only: /.*/
             branches:
               only: /.*/
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 11 * * *" # This is 4am PDT / 3am PST
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - uptime_monitor
+
 commands:
   install_container_dependencies:
     steps:
@@ -208,9 +295,6 @@ commands:
       - run:
           name: Install cypress dependencies
           command: sudo apt install libgtk2.0-0 -yq
-      - run:
-          name: Install cypress
-          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'

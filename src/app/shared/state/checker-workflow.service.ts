@@ -68,13 +68,13 @@ export class CheckerWorkflowService extends Base {
   }
 
   public getCheckerWorkflowURLObservable(checkerWorkflow$: Observable<Workflow>, isPublic$: Observable<boolean>): Observable<string> {
-    return combineLatest(checkerWorkflow$, isPublic$).pipe(
+    return combineLatest([checkerWorkflow$, isPublic$]).pipe(
       map(([workflow, isPublic]) => (workflow ? this.getCheckerWorkflowURL(workflow, isPublic) : null))
     );
   }
 
   public canAdd(checkerId$: Observable<number>, parentId$: Observable<number>, isStub$: Observable<boolean>): Observable<boolean> {
-    return combineLatest(checkerId$, parentId$, isStub$).pipe(
+    return combineLatest([checkerId$, parentId$, isStub$]).pipe(
       map(([checkerId, parentId, isStub]) => {
         return !checkerId && !parentId && !isStub;
       })

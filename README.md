@@ -116,6 +116,13 @@ Run `npm run start -- --host=<host>` for a dev server. Navigate to `http://<host
 
 Run `npm update`. This will automatically update package.json and package-lock.json.
 
+When you update a dependency in the package.json, make sure to update the third party licenses file `THIRD-PARTY-LICENSES.csv`. 
+To update this file, run `npm run license`. Unfortunately, there is not a way to permanently say a certain dependency should be x license using this package. 
+So, once we manually update a dependency's license info and we continue to use it, running the above command will always result in it being unknown in the 
+updated file. **Be sure to review the updated file (i.e. revert changes as needed and update any new unknown or unlicensed dependencies).**
+
+For more documentation on license-checker, visit [here](https://github.com/davglass/license-checker)
+
 ## Code scaffolding
 
 Run `ng g component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.  See https://github.com/datorama/akita-schematics#create-a-new-feature for how to generate Akita-related components.
@@ -218,3 +225,4 @@ Then open `docs/index.html` with browser
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+~~~~

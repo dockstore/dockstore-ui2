@@ -54,7 +54,6 @@ describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
   let fixture: ComponentFixture<MyWorkflowComponent>;
   let registerWorkflowModalService: RegisterWorkflowModalService;
-  let refreshService: RefreshService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
@@ -100,12 +99,5 @@ describe('MyWorkflowsComponent', () => {
     spyOn(registerWorkflowModalService, 'setWorkflowRepository');
     component.setRegisterEntryModalInfo('a/b');
     expect(registerWorkflowModalService.setWorkflowRepository).toHaveBeenCalled();
-  });
-  it('should refresh workflows', () => {
-    component.user = { id: 1 };
-    refreshService = fixture.debugElement.injector.get(RefreshService);
-    spyOn(refreshService, 'refreshAllWorkflows');
-    component.refreshAllEntries();
-    expect(refreshService.refreshAllWorkflows).toHaveBeenCalled();
   });
 });

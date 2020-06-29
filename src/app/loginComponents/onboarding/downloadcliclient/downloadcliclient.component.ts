@@ -18,9 +18,12 @@ export class DownloadCLIClientComponent implements OnInit {
   public dsToken = 'dummy-token';
   public dsServerURI: any;
   public isCopied2: boolean;
-  public textData1 = '';
-  public textData2 = '';
-  public textData3 = '';
+  public textDataRequirements = '';
+  public textDataMacOs = '';
+  public textDataUbuntuLinux = '';
+  public textDataCLIConfig = '';
+  public textDataConfirmInstallation = '';
+  public textDataInstallCLI = '';
   private cwltoolVersion = '';
   constructor(private authService: AuthService, private metadataService: MetadataService, private gA4GHService: GA4GHService) {}
 
@@ -56,17 +59,19 @@ export class DownloadCLIClientComponent implements OnInit {
     );
   }
   generateMarkdown(): void {
-    this.textData1 = `
-### Setup Command Line Interface (Ubuntu)
+    this.textDataRequirements = `
+### Setup Command Line Interface
 ------------------------------
 Setup our Dockstore CLI application to start launching workflows from the command line.
 
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
 2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
-3. Python3 and pip3 (Optional: if working with CWL)
+3. Python3 and pip3 (Required if working with CWL, optional otherwise)
+    `;
 
-#### Part 1 - Install dependencies and Dockstore CLI
+    this.textDataUbuntuLinux = `
+#### Part 1 - Install dependencies
 1. Install Java 11 (This example installs OpenJDK 11)
 \`\`\`
 sudo add-apt-repository ppa:openjdk-r/ppa \
@@ -80,7 +85,35 @@ Ensure that you are able to run Docker without using sudo directly with the
 sudo usermod -aG docker $USER
 exec newgrp docker
 \`\`\`
-3. Install the dockstore command-line program and add it to the path.
+
+`;
+    this.textDataMacOs = `
+#### Part 1 - Install dependencies
+1. We'll cover two ways to install Java 11. One way is to download the JDK for MacOS from [OpenJDK](https://jdk.java.net/archive/) and executing the following commands.
+\`\`\`
+// put the JDK in its standard location
+sudo mv jdk-11.0.2.jdk /Library/Java/JavaVirtualMachines/ \n\n // List the JDKs that are installed; you should see version 11
+/usr/libexec/java_home -V \n\n // If you need to switch to Java 11, run the following
+/usr/libexec/java_home -v 11.0.2 \n\n // Check that if $JAVA_HOME is set to the correct JDK. Should look similar to /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/
+echo $JAVA_HOME/ \n \n // If it is not check your .bashrc or .bash_profile to find out where it is being set. Fix it and/or source the correct one.
+/usr/libexec/java_home \n\n // Use the output from the above command and run
+export JAVA_HOME={OUTPUT FROM ABOVE COMMAND} \n\n // Check that the default version is JDK 11
+java -version
+\`\`\`
+
+2. Or to install using Homebrew, execute the following commands:
+\`\`\`
+brew tap AdoptOpenJDK/openjdk
+brew cask install adoptopenjdk11
+java -version
+\`\`\`
+
+3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 2.0.0.3 installed.
+    `;
+
+    this.textDataInstallCLI = `
+#### Part 2 - Install Dockstore CLI
+1. Install the dockstore command-line program and add it to the path.
 \`\`\`
 mkdir -p ~/bin
 curl -L -o ~/bin/dockstore ${this.downloadCli}
@@ -88,10 +121,10 @@ chmod +x ~/bin/dockstore
 echo 'export PATH=~/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 \`\`\`
-3. Alternatively, click here to download and configure the CLI yourself.
+2. Alternatively, click here to download and configure the CLI yourself.
+    `;
 
-`;
-    this.textData2 = `
+    this.textDataCLIConfig = `
 #### Part 2 - Setup Dockstore CLI Config
 1. Create the folder \`~/.dockstore\` and create a configuration file \`~/.dockstore/config\`:
 \`\`\`
@@ -100,7 +133,7 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
 \`\`\`
 2. Alternatively, copy this content to your config file directly.
 `;
-    this.textData3 = `
+    this.textDataConfirmInstallation = `
 #### Part 3 - Confirm installation
 1. Run our dependencies to verify that they have been installed properly.
 \`\`\`

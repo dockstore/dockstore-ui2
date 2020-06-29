@@ -18,18 +18,13 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { EntryFileTabComponent } from 'app/entry/entry-file-tab/entry-file-tab.component';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
 import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
+import { SourceFileTabsComponent } from '../../source-file-tabs/source-file-tabs.component';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
@@ -43,6 +38,7 @@ import { VersionsWorkflowComponent } from '../../workflow/versions/versions.comp
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
+import { RefreshAlertModule } from '../alert/alert.module';
 import { DateService } from '../date.service';
 import { WorkflowActionsComponent } from '../entry-actions/workflow-actions.component';
 import { FileService } from '../file.service';
@@ -60,7 +56,6 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
-import { getTooltipConfig } from './../tooltip';
 
 @NgModule({
   declarations: [
@@ -78,22 +73,17 @@ import { getTooltipConfig } from './../tooltip';
     WorkflowActionsComponent,
     InfoTabComponent,
     ToolTabComponent,
-    EntryFileTabComponent
+    EntryFileTabComponent,
+    SourceFileTabsComponent
   ],
   imports: [
     CommonModule,
-    ButtonsModule.forRoot(),
-    AlertModule.forRoot(),
     CurrentCollectionsModule,
     FlexLayoutModule,
     HeaderModule,
     ListWorkflowsModule,
-    ModalModule.forRoot(),
     SelectModule,
     PipeModule,
-    TooltipModule.forRoot(),
-    TabsModule.forRoot(),
-    AccordionModule.forRoot(),
     StarringModule,
     OrderByModule,
     FormsModule,
@@ -102,10 +92,10 @@ import { getTooltipConfig } from './../tooltip';
     ClipboardModule,
     EntryModule,
     AddEntryModule,
-    MarkdownModule
+    MarkdownModule,
+    RefreshAlertModule
   ],
   providers: [
-    { provide: TooltipConfig, useFactory: getTooltipConfig },
     DateService,
     FileService,
     WorkflowLaunchService,

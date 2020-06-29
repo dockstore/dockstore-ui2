@@ -52,7 +52,7 @@
                 name="workflow_path"
                 [(ngModel)]="version.workflow_path"
                 minlength="3"
-                maxlength="128"
+                maxlength="1000"
                 [pattern]="validationPatterns.workflowDescriptorPath"
                 required
                 [matTooltip]="tooltip.workflowPath"
@@ -62,6 +62,7 @@
                   isPublic ||
                   !canWrite ||
                   workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
+                  workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML ||
                   version.frozen ||
                   version.doiURL
                 "
@@ -91,13 +92,13 @@
                   name="testParameterFilePaths[{{ i }}]"
                   [(ngModel)]="testParameterFilePaths[i]"
                   minlength="3"
-                  maxlength="128"
+                  maxlength="1000"
                   [pattern]="validationPatterns.testFilePath"
                   placeholder="e.g. /test.json"
                   disabled
                   readonly
                 />
-                <span class="input-group-btn">
+                <span class="input-group-btn" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                   <button
                     data-cy="remove-test-parameter-file-button"
                     title="Remove test parameter file"
@@ -116,19 +117,19 @@
               [ngClass]="{ 'col-sm-offset-3': testParameterFilePaths.length > 0 }"
               *ngIf="!isPublic && !(isService$ | async) && !version.frozen"
             >
-              <div class="input-group">
+              <div class="input-group" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                 <input
                   data-cy="test-parameter-file-input"
                   [ngClass]="{ 'input-right-button': !isPublic }"
                   type="text"
                   #model1="ngModel"
                   class="form-control"
-                  name="cwlTestParameterFilePath"
+                  name="testParameterFilePath"
                   [(ngModel)]="testParameterFilePath"
                   minlength="3"
-                  maxlength="128"
+                  maxlength="1000"
                   [pattern]="validationPatterns.testFilePath"
-                  placeholder="e.g. /test.cwl.json"
+                  placeholder="e.g. /test.json"
                   [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
                   [matTooltip]="tooltip.testParameterFile"
                 />
@@ -147,15 +148,20 @@
                     title="Enter a valid path"
                     type="button"
                     class="btn btn-default form-sm-button"
-                    [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+                    [disabled]="
+                      model1.invalid ||
+                      testParameterFilePath.length == 0 ||
+                      workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
+                    "
                     *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
                 </span>
               </div>
-              <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
-                {{ formErrors.cwlTestParameterFilePath }}
+              <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages alert alert-danger">
+                {{ formErrors.testParameterFilePath }}
               </div>
               <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
                 Duplicate test json files are not allowed.

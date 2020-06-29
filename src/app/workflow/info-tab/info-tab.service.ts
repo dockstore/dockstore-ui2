@@ -33,7 +33,6 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 export class InfoTabService {
   public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private workflows: Workflow[];
   public descriptorLanguageMap = [];
 
   /**
@@ -67,7 +66,6 @@ export class InfoTabService {
       this.cancelEditing();
     });
     this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe(map => (this.descriptorLanguageMap = map));
-    this.workflowService.workflows$.subscribe(workflows => (this.workflows = workflows));
   }
   setWorkflowPathEditing(editing: boolean) {
     this.workflowPathEditing$.next(editing);
@@ -123,6 +121,7 @@ export class InfoTabService {
     this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(
       (updatedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
+        this.workflowService.setWorkflow(updatedWorkflow);
         this.alertService.detailedSuccess();
       },
       (error: HttpErrorResponse) => {
@@ -141,18 +140,11 @@ export class InfoTabService {
    */
   private changeWorkflowPathToDefaults(workflow: Workflow): Workflow {
     const descriptorType: ToolDescriptor.TypeEnum = this.descriptorTypeCompatService.stringToDescriptorType(workflow.descriptorType);
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL:
-        workflow.workflow_path = '/Dockstore.cwl';
-        break;
-      case ToolDescriptor.TypeEnum.WDL:
-        workflow.workflow_path = '/Dockstore.wdl';
-        break;
-      case ToolDescriptor.TypeEnum.NFL:
-        workflow.workflow_path = '/nextflow.config';
-        break;
-      default:
-        break;
+    const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
+    if (defaultDescriptorPath) {
+      workflow.workflow_path = defaultDescriptorPath;
+    } else {
+      console.log('Unrecognized descriptor language, possibly from language plugin: ' + workflow.descriptorType);
     }
     return workflow;
   }

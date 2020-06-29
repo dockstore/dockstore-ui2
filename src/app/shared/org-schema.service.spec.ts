@@ -1,6 +1,6 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { Organization } from './swagger';
 import { OrgSchemaService } from './org-schema.service';
+import { Organization } from './swagger';
 
 describe('OrgSchemaService', () => {
   beforeEach(() => {

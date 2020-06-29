@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Dockstore } from '../../../shared/dockstore.model';
-import { AlertService } from '../../../shared/alert/state/alert.service';
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { AlertService } from '../../../shared/alert/state/alert.service';
+import { Dockstore } from '../../../shared/dockstore.model';
 
 @Component({
   selector: 'featured-content',

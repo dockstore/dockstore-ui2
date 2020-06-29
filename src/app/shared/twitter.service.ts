@@ -32,7 +32,7 @@ export class TwitterService {
   constructor() {}
 
   loadScript(): Observable<any> {
-    return Observable.create(observer => {
+    return new Observable(observer => {
       this.startScriptLoad();
 
       window['twttr'].ready(twttr => {

@@ -1,12 +1,12 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { ContainersStubService, ContainerStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
+import { exampleEntry } from '../../test/mocked-objects';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { CustomMaterialModule } from '../modules/material.module';
 import { WorkflowService } from '../state/workflow.service';
 import { ContainersService, DockstoreTool, Entry, Tag, Workflow, WorkflowsService } from '../swagger';
 import { EntryActionsService } from './entry-actions.service';
-import { exampleEntry } from '../../test/mocked-objects';
 
 describe('Service: EntryActionsService', () => {
   beforeEach(() => {

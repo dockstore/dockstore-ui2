@@ -17,7 +17,7 @@
   <mat-toolbar-row class="toolbar-holder hidden-xs">
     <div [className]="isExtended ? 'container w-100 navbar-fluid' : 'container navbar-fluid'">
       <span class="flex-toolbar">
-        <a id="home-nav-button" (click)="resetPageNumber()" routerLink="">
+        <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
           <img src="../assets/images/dockstore/logo.png" alt="dockstore logo" />
         </a>
         <a mat-button class="icon" [routerLink]="['/search']">
@@ -28,6 +28,9 @@
         </a>
         <a mat-button class="icon" href="{{ Dockstore.DOCUMENTATION_URL }}" target="_blank" rel="noopener noreferrer">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png" alt="stacked pages" /> Docs
+        </a>
+        <a mat-button class="icon" href="{{ Dockstore.DISCOURSE_URL }}" target="_blank" rel="noopener noreferrer">
+          <mat-icon class="hidden-sm">help_outline</mat-icon> Help
         </a>
         <span class="spacer"></span>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>

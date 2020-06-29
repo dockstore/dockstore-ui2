@@ -16,9 +16,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ViewService } from 'app/container/view/view.service';
+import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -28,15 +29,15 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
-import { VersionModalService } from '../version-modal/version-modal.service';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
+import { VersionModalService } from '../version-modal/version-modal.service';
 
 @Component({
   selector: 'app-view-container',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css']
 })
-// This is actually the tag edtior
+// This is actually the actions dropdown for tags
 export class ViewContainerComponent extends View implements OnInit {
   public TagEditorMode = TagEditorMode;
   public tool: DockstoreTool;
@@ -45,7 +46,9 @@ export class ViewContainerComponent extends View implements OnInit {
   isManualTool: boolean;
   constructor(
     dateService: DateService,
+    alertQuery: AlertQuery,
     private versionModalService: VersionModalService,
+    private viewService: ViewService,
     private sessionQuery: SessionQuery,
     private containerService: ContainerService,
     private containertagsService: ContainertagsService,
@@ -53,13 +56,13 @@ export class ViewContainerComponent extends View implements OnInit {
     private toolQuery: ToolQuery,
     private matDialog: MatDialog
   ) {
-    super(dateService);
+    super(dateService, alertQuery);
   }
 
   setMode(mode: TagEditorMode) {
     this.versionModalService.setVersion(this.version);
     this.versionModalService.setCurrentMode(mode);
-    const dialogRef = this.matDialog.open(VersionModalComponent, { width: '600px' });
+    this.matDialog.open(VersionModalComponent, { width: '600px' });
   }
 
   deleteTag() {
@@ -75,8 +78,16 @@ export class ViewContainerComponent extends View implements OnInit {
     }
   }
 
+  updateDefaultVersion() {
+    this.viewService.updateDefaultVersion(this.version.name);
+  }
+
   deleteHostedTag(): void {
-    const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
+    let deleteMessage = 'Are you sure you want to delete version ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
+    if (this.defaultVersion === this.version.name) {
+      deleteMessage += ' This is the default version and deleting it will set the default version to be the latest version.';
+    }
+
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
       this.hostedService

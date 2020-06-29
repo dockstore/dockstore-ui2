@@ -51,9 +51,7 @@ describe('Dockstore Workflow Details', () => {
   it('should not show Edit Button', () => {
     // edit button should only appear inside "My Workflows"
     // unless logged in as the author, edit button should not be present in "Workflows"
-    cy
-      .get('#editButton')
-      .should('not.exist');
+    cy.get('#editButton').should('not.exist');
   });
 
   it('Change tab to launch', () => {
@@ -63,9 +61,7 @@ describe('Dockstore Workflow Details', () => {
 
   it('Change tab to versions and not see snapshotted version', () => {
     goToTab('Versions');
-    cy
-      .get('tbody>tr')
-      .should('have.length', 1); // 1 Version and no warning line
+    cy.get('tbody>tr').should('have.length', 1); // 1 Version and no warning line
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
     // Buttons to create snapshots are hidden on public
     cy.get('[data-cy=dockstore-snapshot]').should('not.be.visible');
@@ -75,8 +71,7 @@ describe('Dockstore Workflow Details', () => {
     cy.get('[data-cy=dockstore-snapshot-unlocked]')
       .its('length')
       .should('be.gt', 0);
-
-   });
+  });
 
   describe('Change tab to files', () => {
     beforeEach(() => {
@@ -89,9 +84,7 @@ describe('Dockstore Workflow Details', () => {
     });
 
     it('Should have content in file viewer', () => {
-      cy
-        .get('.ace_content')
-        .should('be.visible');
+      cy.get('.ace_content').should('be.visible');
     });
 
     describe('Change tab to Test Parameters', () => {
@@ -100,9 +93,7 @@ describe('Dockstore Workflow Details', () => {
       });
 
       it('Should not have content in file viewer', () => {
-        cy
-          .get('.ace_content')
-          .should('not.be.visible');
+        cy.get('.ace_content').should('not.be.visible');
       });
     });
   });
@@ -122,12 +113,10 @@ describe('Dockstore Workflow Details', () => {
     it('Change to fullscreen and back', () => {
       cy.get('[data-cy=dag-holder]').should('have.class', 'small');
       cy.get('[data-cy=dag-holder]').should('not.have.class', 'big');
-      cy
-        .get('#dag_fullscreen')
-        .click();
-        // Cypress or electron can't initiate fullscreen because:
-        // "Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture."
-        // TODO: Figure out how to test it
+      cy.get('#dag_fullscreen').click();
+      // Cypress or electron can't initiate fullscreen because:
+      // "Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture."
+      // TODO: Figure out how to test it
     });
   });
 });
@@ -139,7 +128,7 @@ describe('Find workflow by alias', () => {
       url: '*/workflows/fakeAlias/aliases',
       method: 'GET',
       status: 200,
-      response: { 'full_workflow_path': 'github.com/A/l' }
+      response: { full_workflow_path: 'github.com/A/l' }
     });
     cy.visit('/aliases/workflows/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l');

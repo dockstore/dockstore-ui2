@@ -22,6 +22,12 @@ mat-sidenav-container {
   }
 }
 
+// The width is gotten from Cypress macbook-13 viewport width. GitHub does 1400px which is just as arbitrary.
+// This is used to prevent the recent events card from stretching too far on a wide-screen monitor (similar to GitHub)
+.mw-macbook-13 {
+  max-width: 128rem;
+}
+
 #column-holder {
   min-height: 900px;
 }

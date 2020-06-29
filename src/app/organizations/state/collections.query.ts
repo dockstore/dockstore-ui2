@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity, HashMap } from '@datorama/akita';
-import { CollectionsStore, CollectionsState } from './collections.store';
-import { Collection } from '../../shared/swagger';
+import { HashMap, QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
+import { Collection } from '../../shared/swagger';
+import { CollectionsState, CollectionsStore } from './collections.store';
 
 @Injectable({
   providedIn: 'root'

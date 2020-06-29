@@ -18,13 +18,13 @@ import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
+import { User } from '../../shared/openapi';
 import { ProviderService } from '../../shared/provider.service';
+import { Workflow } from '../../shared/swagger';
 import { elasticSearchResponse } from '../../test/mocked-objects';
 import { ProviderStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
-import { Workflow } from '../../shared/swagger';
-import { User } from '../../shared/openapi';
 
 describe('SearchService', () => {
   let searchStore: SearchStore;
@@ -115,7 +115,8 @@ describe('SearchService', () => {
       sourceControl: '',
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
-      defaultTestParameterFilePath: ''
+      defaultTestParameterFilePath: '',
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
     };
 
     const b: Workflow = { ...a, author: 'B', starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }] };

@@ -14,17 +14,16 @@
  *    limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Workflow } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
-
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { SessionQuery } from '../../session/session.query';
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
-import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 import { RegisterCheckerWorkflowComponent } from '../register-checker-workflow/register-checker-workflow.component';
-import { MatDialog } from '@angular/material/dialog';
-import { Workflow } from 'app/shared/swagger';
+import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',
@@ -71,7 +70,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
 
   add(): void {
     this.registerCheckerWorkflowService.add();
-    const dialogRef = this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px' });
+    this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px' });
   }
 
   delete(): void {

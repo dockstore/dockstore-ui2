@@ -5,8 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CustomMaterialModule } from './../modules/material.module';
 
-import { AlertComponent } from './alert.component';
 import { LoadingComponent } from '../loading/loading.component';
+import { AlertComponent } from './alert.component';
 
 @NgModule({
   declarations: [AlertComponent, LoadingComponent],

@@ -1,7 +1,7 @@
-import { TestBed, inject } from '@angular/core/testing';
-import { MetadataService } from './metadata.service';
-import { GA4GHStubService } from './../test/service-stubs';
+import { inject, TestBed } from '@angular/core/testing';
 import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
+import { GA4GHStubService } from './../test/service-stubs';
+import { MetadataService } from './metadata.service';
 
 describe('MetadataService', () => {
   beforeEach(() => {

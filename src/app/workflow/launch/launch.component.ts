@@ -17,16 +17,16 @@ import { Component, Input } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor, ToolFile } from '../../shared/swagger';
+import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
-import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
-import { Workflow } from '../../shared/swagger/model/workflow';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 
 @Component({
   selector: 'app-launch',

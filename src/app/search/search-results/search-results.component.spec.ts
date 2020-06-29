@@ -14,18 +14,17 @@
  *    limitations under the License.
  */
 
-import { QueryBuilderService } from './../query-builder.service';
-import { SearchStubService, QueryBuilderStubService } from './../../test/service-stubs';
-import { TagCloudModule } from 'angular-tag-cloud-module';
-import { TabsModule } from 'ngx-bootstrap/tabs';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { TagCloudModule } from 'angular-tag-cloud-module';
+import { QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
+import { QueryBuilderService } from './../query-builder.service';
 
-import { SearchResultsComponent } from './search-results.component';
-import { SearchService } from '../state/search.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SearchService } from '../state/search.service';
+import { SearchResultsComponent } from './search-results.component';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -35,7 +34,7 @@ describe('SearchResultsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SearchResultsComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TabsModule.forRoot(), TagCloudModule, RouterTestingModule],
+      imports: [TagCloudModule, RouterTestingModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService }

@@ -1,13 +1,13 @@
-import { BioschemaService, BioschemaTool } from './bioschema.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { inject, TestBed } from '@angular/core/testing';
+import { BioschemaService, BioschemaTool } from './bioschema.service';
 import { DateService } from './date.service';
+import { ExtendedToolsService } from './extended-tools.service';
+import { ExtendedWorkflowsService } from './extended-workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Tag } from './swagger/model/tag';
 import { Workflow } from './swagger/model/workflow';
 import { WorkflowVersion } from './swagger/model/workflowVersion';
-import { ExtendedToolsService } from './extended-tools.service';
-import { ExtendedWorkflowsService } from './extended-workflows.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('BioschemaService', () => {
   beforeEach(() => {
@@ -79,7 +79,8 @@ describe('BioschemaService', () => {
       sourceControl: '',
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
-      defaultTestParameterFilePath: ''
+      defaultTestParameterFilePath: '',
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
     };
     const result: BioschemaTool = service.getWorkflowSchema(workflow, version);
     expect(result['@context']).toEqual('http://schema.org');

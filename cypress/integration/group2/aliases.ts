@@ -27,7 +27,7 @@ describe('Dockstore aliases', () => {
         url: '*/aliases/workflow-versions/w11wv13alias',
         method: 'GET',
         status: 200,
-        response: {'fullWorkflowPath' : 'github.com/A/l', 'tagName'  : 'master'}
+        response: { fullWorkflowPath: 'github.com/A/l', tagName: 'master' }
       });
       cy.visit('/aliases/workflow-versions/w11wv13alias');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');

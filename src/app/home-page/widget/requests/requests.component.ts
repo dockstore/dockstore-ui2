@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService, OrganizationUser, Organization, OrganizationsService } from '../../../shared/swagger';
-import { AlertService } from '../../../shared/alert/state/alert.service';
-import { UserQuery } from '../../../shared/user/user.query';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
+import { Organization, OrganizationsService, OrganizationUser, UsersService } from '../../../shared/swagger';
+import { UserQuery } from '../../../shared/user/user.query';
 
 @Component({
   selector: 'app-requests',

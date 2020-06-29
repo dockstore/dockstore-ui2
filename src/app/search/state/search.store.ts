@@ -30,7 +30,7 @@ export interface SearchState {
   pageSize: number;
   pageIndex: number;
   advancedSearch: AdvancedSearchObject;
-  showModal: boolean;
+  currentTabIndex: number;
 }
 
 export function createInitialState(): SearchState {
@@ -45,9 +45,9 @@ export function createInitialState(): SearchState {
     autocompleteTerms: [],
     suggestTerm: '',
     pageSize: 10,
-    advancedSearch: initialAdvancedSearchObject,
-    showModal: false,
-    pageIndex: 0
+    advancedSearch: { ...initialAdvancedSearchObject },
+    pageIndex: 0,
+    currentTabIndex: 0
   };
 }
 

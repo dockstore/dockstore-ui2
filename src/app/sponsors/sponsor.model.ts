@@ -17,9 +17,9 @@
 export class Sponsor {
   private static colouredPath = '../assets/images/sponsors/coloured/';
 
-  private current: string;
-  private coloured: string;
-  private url: URL;
+  public current: string;
+  public coloured: string;
+  public url: URL;
 
   constructor(image: string, url: URL) {
     this.current = Sponsor.colouredPath + image;

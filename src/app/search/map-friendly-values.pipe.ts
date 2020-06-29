@@ -14,12 +14,23 @@
  *    limitations under the License.
  */
 import { Pipe, PipeTransform } from '@angular/core';
-import { ToolFile } from 'app/shared/swagger';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { SourceFile, ToolFile, Workflow } from 'app/shared/swagger';
 
 @Pipe({
   name: 'mapFriendlyValue'
 })
 export class MapFriendlyValuesPipe implements PipeTransform {
+  readonly shortFriendlyCWLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
+  readonly shortFriendlyWDLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
+  readonly shortFriendlyNFLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
+  readonly shortFriendlyGalaxyName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+    Workflow.DescriptorTypeEnum.Gxformat2
+  );
+
+  // For instances in which we know it is nullable and don't need an console.error
+  readonly nullableKeys = ['reference'];
+
   /**
    * Map containing what the friendly names should be mapped to
    *
@@ -29,10 +40,27 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     ['has_checker', new Map([['1', 'has a checker workflow'], ['0', 'unchecked workflow']])],
     ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
     ['private_access', new Map([['1', 'private'], ['0', 'public']])],
-    ['descriptorType', new Map([['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']])],
+    [
+      'descriptorType',
+      new Map([
+        ['cwl', this.shortFriendlyCWLName],
+        ['wdl', this.shortFriendlyWDLName],
+        ['nfl', this.shortFriendlyNFLName],
+        ['NFL', this.shortFriendlyNFLName],
+        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName]
+      ])
+    ],
     [
       'descriptor_type',
-      new Map([['CWL', 'CWL'], ['WDL', 'WDL'], ['cwl', 'CWL'], ['wdl', 'WDL'], ['nfl', 'Nextflow'], ['NFL', 'Nextflow']])
+      new Map([
+        ['cwl', this.shortFriendlyCWLName],
+        ['CWL', this.shortFriendlyCWLName],
+        ['wdl', this.shortFriendlyWDLName],
+        ['WDL', this.shortFriendlyWDLName],
+        ['nfl', this.shortFriendlyNFLName],
+        ['NFL', this.shortFriendlyNFLName],
+        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName]
+      ])
     ],
     [
       'registry',
@@ -59,7 +87,28 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
         [ToolFile.FileTypeEnum.OTHER, 'Files']
       ])
-    ]
+    ],
+    [
+      'SourceFile.TypeEnum',
+      new Map([
+        [SourceFile.TypeEnum.DOCKERFILE, 'Dockerfile'],
+        [SourceFile.TypeEnum.DOCKSTORECWL, 'Descriptor Files'],
+        [SourceFile.TypeEnum.DOCKSTOREWDL, 'Descriptor Files'],
+        [SourceFile.TypeEnum.NEXTFLOW, 'Descriptor Files'],
+        [SourceFile.TypeEnum.NEXTFLOWCONFIG, 'Descriptor Files'],
+        [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'Descriptor Files'],
+        [SourceFile.TypeEnum.CWLTESTJSON, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.WDLTESTJSON, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, 'Test Parameter Files'],
+        [SourceFile.TypeEnum.DOCKSTORESERVICEYML, 'Configuration'],
+        [SourceFile.TypeEnum.DOCKSTOREYML, 'Configuration'],
+        [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, 'Service Files']
+      ])
+    ],
+    ['success', new Map([['true', 'Success'], ['false', 'Failed']])],
+    ['type', new Map([['PUSH', 'Push'], ['DELETE', 'Delete'], ['INSTALL', 'Install']])]
   ]);
 
   /**
@@ -73,7 +122,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
   transform(key: string, subBucket: string | number): string {
     // Handle null or undefined
     if (subBucket === null || subBucket === undefined) {
-      console.error('null/undefined passed into the pipe along with the key: ' + key);
+      if (!this.nullableKeys.includes(key)) {
+        console.error('null/undefined passed into the pipe along with the key: ' + key);
+      }
       return null;
     }
     // Handle number

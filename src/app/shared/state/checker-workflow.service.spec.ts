@@ -17,10 +17,10 @@ import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ContainersStubService, ContainerStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
-import { CheckerWorkflowService } from './checker-workflow.service';
 import { ContainerService } from '../container.service';
 import { ContainersService } from '../swagger/api/containers.service';
 import { WorkflowsService } from '../swagger/api/workflows.service';
+import { CheckerWorkflowService } from './checker-workflow.service';
 import { WorkflowService } from './workflow.service';
 
 describe('Service: Service: CheckerWorkflow', () => {

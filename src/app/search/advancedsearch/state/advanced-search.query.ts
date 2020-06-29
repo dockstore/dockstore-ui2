@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class AdvancedSearchQuery extends Query<SearchState> {
   advancedSearch$ = this.select(state => state.advancedSearch);
-  showModal$ = this.select(state => state.showModal);
   hasAdvancedSearchText$: Observable<boolean> = this.advancedSearch$.pipe(
     map(advancedSearchObject => {
       if (

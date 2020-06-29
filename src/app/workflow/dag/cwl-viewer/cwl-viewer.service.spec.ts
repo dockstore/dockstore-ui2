@@ -1,8 +1,8 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { CwlViewerService } from './cwl-viewer.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Dockstore } from '../../../shared/dockstore.model';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
+import { Dockstore } from '../../../shared/dockstore.model';
+import { CwlViewerService } from './cwl-viewer.service';
 
 describe('Service: CWLViewer', () => {
   let cwlViewerService: CwlViewerService;
@@ -99,7 +99,7 @@ describe('Service: CWLViewer', () => {
 
   if (Dockstore.FEATURES.enableCwlViewer) {
     it('should fail if POST returns 400', done => {
-      cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(null, () => done());
+      cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(() => done(), () => done());
       const response400 = httpMock.expectOne(commonWlEndpoint);
       response400.flush(null, { status: 400, statusText: 'Bad Request' });
       httpMock.verify();

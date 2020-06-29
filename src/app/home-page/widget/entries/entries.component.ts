@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { UserQuery } from 'app/shared/user/user.query';
 import { EntryUpdateTime } from 'app/shared/openapi/model/entryUpdateTime';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { formInputDebounceTime } from 'app/shared/constants';
-import { FilteredList } from '../filtered-list';
+import { UserQuery } from 'app/shared/user/user.query';
+import { takeUntil } from 'rxjs/operators';
 import { EntriesService, UsersService } from '../../../shared/openapi';
+import { FilteredList } from '../filtered-list';
 
 @Component({
   selector: 'app-entries',
@@ -21,7 +20,6 @@ export class EntriesComponent extends FilteredList {
     this.usersService
       .getUserEntries(10, this.filterText)
       .pipe(
-        debounceTime(formInputDebounceTime),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(

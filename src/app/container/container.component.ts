@@ -45,6 +45,7 @@ import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool'
 import { ContainersService } from './../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
+import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
 
 @Component({
@@ -56,6 +57,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   privateOnlyRegistry: boolean;
   containerEditData: any;
   thisisValid = true;
+  ModeEnum = DockstoreTool.ModeEnum;
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
@@ -63,6 +65,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
+  public isManualMode$: Observable<boolean>;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema;
@@ -121,7 +124,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
         }
       });
     }
-
+    this.isManualMode$ = this.toolQuery.isManualMode$;
     this.updateTabSelection();
   }
 
@@ -135,6 +138,10 @@ export class ContainerComponent extends Entry implements AfterViewInit {
 
   isPublic(): boolean {
     return this.isToolPublic;
+  }
+
+  showAddTagModal() {
+    this.dialog.open(AddTagComponent, { width: '600px' });
   }
 
   public resetCopyBtn(): void {

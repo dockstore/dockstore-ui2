@@ -14,6 +14,7 @@
   ~    limitations under the License.
   -->
 <h4 mat-dialog-title>Register Tool</h4>
+<mat-progress-bar mat-dialog-title mode="indeterminate" *ngIf="loading$ | async"></mat-progress-bar>
 <mat-dialog-content>
   <app-alert></app-alert>
   <mat-horizontal-stepper #stepper>
@@ -53,8 +54,11 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a tool</ng-template>
+      <div *ngIf="selectedOption?.value === 0">
+        <refresh-wizard></refresh-wizard>
+      </div>
       <form
-        *ngIf="selectedOption?.value == 0"
+        *ngIf="selectedOption?.value == 1"
         #registerToolForm="ngForm"
         name="registerToolForm"
         class="form-horizontal"
@@ -113,7 +117,7 @@
                 name="dockerfilePath"
                 [(ngModel)]="tool.default_dockerfile_path"
                 minlength="3"
-                maxlength="256"
+                maxlength="1000"
                 [pattern]="validationPatterns.dockerfilePath"
                 required
                 matTooltip="Default relative path to the Dockerfile in the Git repository."
@@ -133,7 +137,7 @@
                 name="cwlPath"
                 [(ngModel)]="tool.default_cwl_path"
                 minlength="3"
-                maxlength="256"
+                maxlength="1000"
                 [pattern]="validationPatterns.cwlPath"
                 [required]="!tool.default_wdl_path.length"
                 matTooltip="Default relative path to the CWL Descriptor in the Git repository."
@@ -153,7 +157,7 @@
                 name="wdlPath"
                 [(ngModel)]="tool.default_wdl_path"
                 minlength="3"
-                maxlength="256"
+                maxlength="1000"
                 [pattern]="validationPatterns.wdlPath"
                 [required]="!tool.default_cwl_path.length"
                 matTooltip="Default relative path to the WDL Descriptor in the Git repository."
@@ -173,7 +177,7 @@
                 name="cwlTestParameterFilePath"
                 [(ngModel)]="tool.default_cwl_test_parameter_file"
                 minlength="3"
-                maxlength="128"
+                maxlength="1000"
                 [pattern]="validationPatterns.testFilePath"
                 matTooltip="Relative path to a CWL Test Parameter File in the Git repository."
                 placeholder="e.g. /test.cwl.json"
@@ -192,7 +196,7 @@
                 name="wdlTestParameterFilePath"
                 [(ngModel)]="tool.default_wdl_test_parameter_file"
                 minlength="3"
-                maxlength="128"
+                maxlength="1000"
                 [pattern]="validationPatterns.testFilePath"
                 matTooltip="Relative path to a WDL Test Parameter File in the Git repository."
                 placeholder="e.g. /test.wdl.json"
@@ -359,7 +363,7 @@
         </div>
       </form>
       <form
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value == 2"
         #registerHostedToolForm="ngForm"
         name="registerHostedToolForm"
         class="form-horizontal"
