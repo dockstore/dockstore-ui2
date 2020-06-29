@@ -10,28 +10,35 @@
     <!-- *ngIf doesn't work with the sorting implementation, using hidden for now -->
     <div [hidden]="showContent !== 'table'">
       <mat-form-field>
-        <mat-label>Filter (except Date)</mat-label>
+        <mat-label>Filter</mat-label>
         <input #filter matInput (keyup)="applyFilter(filter.value)" placeholder="Ex. PUSH" />
       </mat-form-field>
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z3 w-100" matSort>
         <ng-container matColumnDef="eventDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.eventDate | date: 'medium' }}</td>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon *ngIf="!element.message" style="color: grey;">{{ 'expand_more' }}</mat-icon>
+            <mat-icon *ngIf="element.message">{{ element == expandedElement ? 'expand_less' : 'expand_more' }}</mat-icon
+            >{{ element.eventDate | date: 'yyyy-MM-ddTHH:mm' }}
+          </td>
         </ng-container>
         <ng-container matColumnDef="githubUsername">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>GitHub Username</th>
           <td mat-cell *matCellDef="let element">{{ element.githubUsername }}</td>
         </ng-container>
-
         <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
-          <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+          <td mat-cell *matCellDef="let element">{{ column | mapFriendlyValue: element[column] }}</td>
         </ng-container>
 
         <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-            <div class="expanded-row-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div
+              *ngIf="element.message"
+              class="expanded-row-detail"
+              [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+            >
               <div class="p-2">
                 {{ element.message }}
               </div>
@@ -44,6 +51,7 @@
           mat-row
           *matRowDef="let element; columns: displayedColumns"
           class="element-row"
+          [class.expandable]="element.message"
           [class.expanded-row]="expandedElement === element"
           (click)="expandedElement = expandedElement === element ? null : element"
         ></tr>

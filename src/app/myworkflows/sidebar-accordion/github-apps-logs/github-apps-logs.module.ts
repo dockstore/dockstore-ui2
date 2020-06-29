@@ -19,10 +19,11 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RefreshAlertModule } from 'app/shared/alert/alert.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { PipeModule } from '../../../shared/pipe/pipe.module';
 import { GithubAppsLogsComponent } from './github-apps-logs.component';
 
 @NgModule({
-  imports: [CustomMaterialModule, CommonModule, RefreshAlertModule, FlexLayoutModule],
+  imports: [CustomMaterialModule, CommonModule, RefreshAlertModule, FlexLayoutModule, PipeModule],
   declarations: [GithubAppsLogsComponent],
   entryComponents: [GithubAppsLogsComponent]
 })
