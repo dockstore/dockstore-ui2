@@ -6,7 +6,7 @@ import { NotificationsService } from './state/notifications.service';
 
 interface DismissedNotification {
   id: number;
-  expiration: Date;
+  expiration: number;
 }
 
 @Component({
@@ -35,7 +35,7 @@ export class NotificationsComponent implements OnInit {
   removeExpiredDisabledNotifications() {
     const today = Date.now();
     this.dismissedNotifications = this.dismissedNotifications.filter(notification => {
-      return new Date(notification.expiration).getTime() > today;
+      return notification.expiration > today;
     });
     localStorage.setItem(this.storageKey, JSON.stringify(this.dismissedNotifications));
   }
