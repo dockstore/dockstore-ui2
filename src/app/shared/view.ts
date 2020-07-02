@@ -13,12 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Input, OnDestroy } from '@angular/core';
+import { Directive, Input, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { AlertQuery } from './alert/state/alert.query';
 import { DateService } from './date.service';
 import { Tag, WorkflowVersion } from './swagger';
 
+@Directive()
 export abstract class View implements OnDestroy {
   @Input() version: WorkflowVersion | Tag;
   @Input() defaultVersion: string;

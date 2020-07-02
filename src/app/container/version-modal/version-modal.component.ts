@@ -61,7 +61,7 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
   public version: Tag;
   public validationPatterns = validationDescriptorPatterns;
   tagEditorForm: NgForm;
-  @ViewChild('tagEditorForm', { static: false }) currentForm: NgForm;
+  @ViewChild('tagEditorForm') currentForm: NgForm;
 
   constructor(
     private paramfilesService: ParamfilesService,

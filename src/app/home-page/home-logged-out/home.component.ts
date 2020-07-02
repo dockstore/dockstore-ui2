@@ -49,9 +49,9 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   Dockstore = Dockstore;
   descriptorLanguagesInnerHTML$: Observable<string>;
 
-  @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
+  @ViewChild('twitter') twitterElement: ElementRef;
 
-  @ViewChild('youtube', { static: false }) youtube: ElementRef;
+  @ViewChild('youtube') youtube: ElementRef;
 
   constructor(
     private dialog: MatDialog,

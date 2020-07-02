@@ -1,10 +1,11 @@
-import { Input } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
 import { EntryType } from '../enum/entry-type';
 import { BioWorkflow, DockstoreTool, Service } from '../swagger';
 import { EntryActionsService } from './entry-actions.service';
 
+@Directive()
 export abstract class EntryActionsComponent {
   @Input() entryType: EntryType;
   publishDisabled: boolean;

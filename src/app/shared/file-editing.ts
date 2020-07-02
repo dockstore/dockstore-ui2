@@ -14,10 +14,12 @@
  *    limitations under the License.
  */
 
+import { Directive } from '@angular/core';
 import { AlertService } from './alert/state/alert.service';
 import { Files } from './files';
 import { SourceFile } from './swagger/model/sourceFile';
 
+@Directive()
 export class FileEditing extends Files {
   /**
    * Toggles edit mode

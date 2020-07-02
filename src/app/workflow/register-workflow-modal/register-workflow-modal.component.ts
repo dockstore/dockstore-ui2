@@ -97,7 +97,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   Dockstore = Dockstore;
 
   registerWorkflowForm: NgForm;
-  @ViewChild('registerWorkflowForm', { static: false }) currentForm: NgForm;
+  @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
   constructor(
     private registerWorkflowModalService: RegisterWorkflowModalService,

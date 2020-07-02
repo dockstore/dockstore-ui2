@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
@@ -45,7 +46,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
   dataSource = new MatTableDataSource(this.versions);
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
   setNoOrderCols(): Array<number> {

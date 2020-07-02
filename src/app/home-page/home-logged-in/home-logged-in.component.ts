@@ -13,7 +13,7 @@ import { UserQuery } from '../../shared/user/user.query';
 })
 export class HomeLoggedInComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;
-  @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
+  @ViewChild('twitter') twitterElement: ElementRef;
 
   constructor(private userQuery: UserQuery, private twitterService: TwitterService) {
     super();

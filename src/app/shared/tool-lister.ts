@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
@@ -28,6 +28,7 @@ import { SessionQuery } from './session/session.query';
 import { PaginatorService } from './state/paginator.service';
 import { DockstoreTool, Workflow } from './swagger';
 
+@Directive()
 export abstract class ToolLister implements AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected previewMode = false;

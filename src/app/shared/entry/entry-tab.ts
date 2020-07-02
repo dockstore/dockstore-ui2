@@ -14,9 +14,10 @@
  *    limitations under the License.
  */
 
-import { Input, OnDestroy } from '@angular/core';
+import { Directive, Input, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
+@Directive()
 export abstract class EntryTab implements OnDestroy {
   @Input() canRead: boolean;
   @Input() canWrite: boolean;

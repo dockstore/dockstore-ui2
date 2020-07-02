@@ -110,7 +110,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('See GitHub Apps Logs').click();
       cy.contains('2020-02-20T02:20');
       cy.contains('2020-06-05T14:40');
-      cy.contains('1 - 2 of 2');
+      cy.contains('1 – 2 of 2');
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {

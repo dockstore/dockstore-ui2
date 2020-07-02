@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { transaction } from '@datorama/akita';
 import { MytoolsService } from 'app/mytools/mytools.service';
 import { TokenSource } from 'app/shared/enum/token-source.enum';
