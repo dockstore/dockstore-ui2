@@ -22,7 +22,7 @@ describe('BioschemaService', () => {
   it('should have expected attributes', inject([BioschemaService, DateService], (service: BioschemaService) => {
     // create a DockstoreTool object
     const tag: Tag = { name: '1.0.0', reference: '', id: 2 };
-    const date: Date = new Date('2017-06-28T18:48:18.000Z');
+    const date: number = new Date('2017-06-28T18:48:18.000Z').getTime();
     const tool: DockstoreTool = {
       // Attributes used in the method being tested
       author: 'me',
