@@ -39,16 +39,16 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
   @ViewChild('addTagForm', { static: true }) currentForm: NgForm;
   public DescriptorType = ToolDescriptor.TypeEnum;
-  public tool;
+  public tool: DockstoreTool;
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
-  public trackByIndex;
+  public trackByIndex: number;
   editMode = true;
   unsavedVersion: Tag;
   unsavedTestCWLFile = '';
   unsavedTestWDLFile = '';
-  unsavedCWLTestParameterFilePaths = [];
-  unsavedWDLTestParameterFilePaths = [];
+  unsavedCWLTestParameterFilePaths: string[] = [];
+  unsavedWDLTestParameterFilePaths: string[] = [];
   // Originally set to false because we made the defaults not duplicate of each other
   public hasDuplicateCWL = false;
   public hasDuplicateWDL = false;

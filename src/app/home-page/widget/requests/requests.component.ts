@@ -12,9 +12,9 @@ import { UserQuery } from '../../../shared/user/user.query';
   styleUrls: ['./requests.component.scss']
 })
 export class RequestsComponent extends Base implements OnInit {
-  public myOrganizationInvites;
-  public myOrganizationRequests;
-  public myPendingOrganizationRequests;
+  public myOrganizationInvites: Array<OrganizationUser>;
+  public myOrganizationRequests: Array<OrganizationUser>;
+  public myPendingOrganizationRequests: Array<Organization>;
 
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;

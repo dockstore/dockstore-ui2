@@ -160,7 +160,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   // Show linked services in the UI
-  private setAvailableTokens(tokens) {
+  private setAvailableTokens(tokens: Token[]) {
     for (const account of this.accountsInfo) {
       const found = tokens.find(token => token.tokenSource === account.source);
       if (found) {
@@ -172,7 +172,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   // Set tokens and linked services
-  private setTokens(tokens): void {
+  private setTokens(tokens: Token[]): void {
     this.tokens = tokens;
     if (tokens) {
       this.setAvailableTokens(tokens);

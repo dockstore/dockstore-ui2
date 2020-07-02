@@ -47,7 +47,7 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
   public editMode: boolean;
   public mode: TagEditorMode;
   public tool: DockstoreTool;
-  public unsavedVersion;
+  public unsavedVersion: Tag;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
   public unsavedCWLTestParameterFilePaths: Array<string> = [];
@@ -80,7 +80,7 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
   }
 
   // Almost all these functions should be moved to a service
-  getSizeString(size) {
+  getSizeString(size: number) {
     return this.versionModalService.getSizeString(size);
   }
 
@@ -282,7 +282,7 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
     this.savedWDLTestParameterFilePaths = [];
   }
 
-  getDateTimeMessage(timestamp) {
+  getDateTimeMessage(timestamp: number) {
     return this.dateService.getDateTimeMessage(timestamp);
   }
 

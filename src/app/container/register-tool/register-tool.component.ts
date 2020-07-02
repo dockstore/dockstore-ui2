@@ -24,6 +24,13 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { RegisterToolService } from './register-tool.service';
 
+interface HostedTool {
+  path: string;
+  registry: string;
+  registryProvider: string;
+  entryName?: string;
+}
+
 @Component({
   selector: 'app-register-tool',
   templateUrl: './register-tool.component.html',
@@ -40,7 +47,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public disablePrivateCheckbox = false;
   public loading$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
-  public hostedTool = {
+  public hostedTool: HostedTool = {
     path: '',
     registry: 'quay.io',
     registryProvider: 'Quay.io',

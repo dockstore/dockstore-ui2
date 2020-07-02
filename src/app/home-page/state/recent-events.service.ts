@@ -25,7 +25,7 @@ export class RecentEventsService {
     this.recentEventsStore.add(recentEvent);
   }
 
-  update(id, recentEvent: Partial<Event>) {
+  update(id: ID, recentEvent: Partial<Event>) {
     this.recentEventsStore.update(id, recentEvent);
   }
 
