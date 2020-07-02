@@ -24,7 +24,6 @@ import { RefreshOrganizationComponent } from '../../shared/refresh-organization/
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger';
-import { UsersService } from '../../shared/swagger/api/users.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 
@@ -38,7 +37,6 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
   @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;
 
   constructor(
-    private usersService: UsersService,
     userQuery: UserQuery,
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService,

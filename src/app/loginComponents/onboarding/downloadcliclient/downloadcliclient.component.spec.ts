@@ -5,6 +5,8 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MarkdownModule } from 'ngx-markdown';
 import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
@@ -19,7 +21,15 @@ describe('DownloadCLIClientComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DownloadCLIClientComponent, RouterLinkStubDirective, RouterOutletStubComponent],
-      imports: [ClipboardModule, MarkdownModule.forRoot(), MatIconModule, MatButtonModule, HttpClientTestingModule],
+      imports: [
+        ClipboardModule,
+        MarkdownModule.forRoot(),
+        MatIconModule,
+        MatButtonModule,
+        HttpClientTestingModule,
+        MatTabsModule,
+        NoopAnimationsModule
+      ],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: GA4GHService, useClass: GA4GHStubService },

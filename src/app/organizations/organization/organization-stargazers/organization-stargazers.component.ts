@@ -24,7 +24,8 @@ import { OrganizationStarringService } from '../organization-starring/organizati
 
 @Component({
   selector: 'app-organization-stargazers',
-  templateUrl: '../../../stargazers/stargazers.component.html'
+  templateUrl: '../../../stargazers/stargazers.component.html',
+  styleUrls: ['../../../stargazers/stargazers.component.css']
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {
   starGazers: Array<User>;

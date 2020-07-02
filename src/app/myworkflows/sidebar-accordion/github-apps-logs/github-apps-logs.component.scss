@@ -16,6 +16,11 @@ tr.element-row:not(.expanded-row):active {
   border-bottom-width: 0;
 }
 
+// Cursor on unexpanded rows
+.element-row:not(.expanded).expandable {
+  cursor: pointer;
+}
+
 .expanded-row-detail {
   overflow: hidden;
   display: flex;

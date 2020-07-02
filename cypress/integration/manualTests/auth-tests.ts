@@ -22,6 +22,7 @@ function unpublishTool() {
 
 function deleteTool() {
   it('delete the tool', () => {
+    cy.wait(1000);
     cy.contains('button', 'Delete').should('be.visible');
     cy.contains('button', 'Delete').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
@@ -46,25 +47,23 @@ function registerQuayTool(repo: string, name: string) {
     cy.visit('/my-tools');
     // click thru the steps of registering a tool
     cy.wait('@tokens');
-
-    // Commented out until tool delete issue is fixed
-    // See https://github.com/dockstore/dockstore/pull/3494/files
-    // tool will already be there, so no need to register it
-    //
-    // cy.get('#register_tool_button').should('be.visible');
-    //
-    // cy.get('#register_tool_button').click();
-    // cy.get('mat-dialog-content').within(() => {
-    //   cy.wait('@orgs');
-    //   cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
-    //   cy.contains('button', 'Next').click();
-    //   cy.contains('mat-form-field', 'Select namespace').click();
-    // });
-    // cy.contains('mat-option', repo).click();
-    // cy.wait('@repos');
-    // cy.contains('mat-icon', 'sync').click();
-    // cy.wait('@containers');
-    // cy.contains('button', 'Finish').click();
+    cy.get('#register_tool_button').should('be.visible');
+    cy.get('#register_tool_button').click();
+    cy.get('mat-dialog-content').within(() => {
+      cy.wait('@orgs');
+      cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
+      cy.contains('button', 'Next').click();
+      cy.contains('mat-form-field', 'Select namespace').click();
+    });
+    cy.contains('mat-option', repo).click();
+    cy.wait('@repos');
+    cy.get('mat-dialog-content').within(() => {
+      cy.contains('div', name).within(() => {
+        cy.contains('mat-icon', 'sync').click();
+      });
+    });
+    cy.wait('@containers');
+    cy.contains('button', 'Finish').click();
     cy.contains('button', 'Publish').click();
     cy.wait('@publish');
     cy.wait('@containers');
@@ -253,13 +252,10 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.visit('/my-tools');
     });
     unpublishTool();
+    deleteTool();
   });
 }
 
 testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
-
-// Commented out until tool delete fix is merged
-// See https://github.com/dockstore/dockstore/pull/3494/files
-// testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
-
+testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
 testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
