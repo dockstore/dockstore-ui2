@@ -147,35 +147,35 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   workflowPathAsQueryValue: string;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
-  cgcTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+  cgcTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'the CGC'))
   );
 
-  disableSevenBridgesPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+  disableSevenBridgesPlatform$: Observable<boolean> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) => !hasContent || hasHttpImports)
   );
 
-  bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+  bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) =>
       this.sevenBridgesTooltip(hasContent, hasHttpImports, 'NHLBI BioData Catalyst powered by Seven Bridges')
     )
   );
 
-  terraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+  terraTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'Terra'))
   );
 
-  anvilTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+  anvilTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'AnVIL'))
   );
 
-  bdCatalystTerraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+  bdCatalystTerraTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) =>
       this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra')
     )
   );
 
-  disableTerraPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+  disableTerraPlatform$: Observable<boolean> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) => !hasContent || (hasFileImports && !this.isGitHubWorkflow()))
   );
 
