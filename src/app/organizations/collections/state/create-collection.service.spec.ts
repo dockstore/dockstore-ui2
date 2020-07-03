@@ -54,12 +54,12 @@ describe('CreateCollectionService', () => {
       imports: [BrowserAnimationsModule, HttpClientTestingModule, MatDialogModule, MatSnackBarModule]
     });
 
-    createCollectionService = TestBed.get(CreateCollectionService);
-    organizationsServiceSpy = TestBed.get(OrganizationsService);
-    organizationQuerySpy = TestBed.get(OrganizationQuery);
-    matDialogSpy = TestBed.get(MatDialog);
-    collectionsServiceSpy = TestBed.get(CollectionsService);
-    createCollectionStore = TestBed.get(CreateCollectionStore);
+    createCollectionService = TestBed.inject(CreateCollectionService);
+    organizationsServiceSpy = TestBed.inject(OrganizationsService) as jasmine.SpyObj<OrganizationsService>;
+    organizationQuerySpy = TestBed.inject(OrganizationQuery) as jasmine.SpyObj<OrganizationQuery>;
+    matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+    collectionsServiceSpy = TestBed.inject(CollectionsService) as jasmine.SpyObj<CollectionsService>;
+    createCollectionStore = TestBed.inject(CreateCollectionStore);
   });
 
   it('should be created', () => {

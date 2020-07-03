@@ -39,7 +39,7 @@ describe('Service: version-modal.service.ts', () => {
         { provide: RefreshService, useClass: RefreshStubService }
       ]
     });
-    workflowQuery = TestBed.get(WorkflowQuery);
+    workflowQuery = TestBed.inject(WorkflowQuery) as jasmine.SpyObj<WorkflowQuery>;
   });
   const expectedError: any = {
     message: 'oh no!',

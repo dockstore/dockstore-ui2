@@ -48,9 +48,9 @@ describe('Service: CWLViewer', () => {
       imports: [HttpClientTestingModule],
       providers: [CwlViewerService]
     });
-    cwlViewerService = TestBed.get(CwlViewerService);
+    cwlViewerService = TestBed.inject(CwlViewerService);
     commonWlEndpoint = cwlViewerService.cwlViewerEndpoint(providerUrl, reference, workflowPath);
-    httpMock = TestBed.get(HttpTestingController);
+    httpMock = TestBed.inject(HttpTestingController);
     onDestroy$ = new Subject<void>();
   });
 

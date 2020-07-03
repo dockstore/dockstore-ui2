@@ -28,8 +28,8 @@ describe('LaunchThirdPartyComponent', () => {
   }));
 
   beforeEach(() => {
-    workflowsService = TestBed.get(WorkflowsService);
-    ga4ghFilesService = TestBed.get(GA4GHFilesService);
+    workflowsService = TestBed.inject(WorkflowsService);
+    ga4ghFilesService = TestBed.inject(GA4GHFilesService);
     fixture = TestBed.createComponent(LaunchThirdPartyComponent);
     component = fixture.componentInstance;
     component.workflow = sampleWdlWorkflow2;

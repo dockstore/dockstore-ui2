@@ -29,9 +29,9 @@ describe('RegisterOrganizationService', () => {
       imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule]
     });
 
-    registerOrganizationService = TestBed.get(RegisterOrganizationService);
-    organizationsServiceSpy = TestBed.get(OrganizationsService);
-    matDialogSpy = TestBed.get(MatDialog);
+    registerOrganizationService = TestBed.inject(RegisterOrganizationService);
+    organizationsServiceSpy = TestBed.inject(OrganizationsService);
+    matDialogSpy = TestBed.inject(MatDialog);
   });
 
   it('should be created', () => {

@@ -15,8 +15,8 @@ describe('OrganizationsStateService', () => {
       imports: [HttpClientTestingModule, MatSnackBarModule]
     });
 
-    organizationsStateService = TestBed.get(OrganizationsStateService);
-    organizationsStore = TestBed.get(OrganizationsStore);
+    organizationsStateService = TestBed.inject(OrganizationsStateService);
+    organizationsStore = TestBed.inject(OrganizationsStore);
   });
 
   it('should be created', () => {

@@ -42,8 +42,8 @@ describe('SearchService', () => {
         }
       ]
     });
-    searchService = TestBed.get(SearchService);
-    searchStore = TestBed.get(SearchStore);
+    searchService = TestBed.inject(SearchService);
+    searchStore = TestBed.inject(SearchStore);
   });
 
   it('should be created', inject([SearchService], (service: SearchService) => {

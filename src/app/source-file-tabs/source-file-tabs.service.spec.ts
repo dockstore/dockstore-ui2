@@ -20,7 +20,7 @@ describe('SourceFileTabsService', () => {
   );
 
   it('should be created', () => {
-    const service: SourceFileTabsService = TestBed.get(SourceFileTabsService);
+    const service: SourceFileTabsService = TestBed.inject(SourceFileTabsService);
     expect(service).toBeTruthy();
   });
 });

@@ -35,7 +35,7 @@ describe('ValueService', () => {
   });
 
   it('#getTRSLink should return real value', () => {
-    service = TestBed.get(InfoTabService);
+    service = TestBed.inject(InfoTabService);
     const path = 'github.com/dockstore-testing/Metaphlan-ISBCGC';
     const versionName = 'master';
     const descriptorType = 'CWL';

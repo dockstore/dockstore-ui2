@@ -16,8 +16,8 @@ describe('CollectionsService', () => {
       imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule]
     });
 
-    collectionsService = TestBed.get(CollectionsService);
-    collectionsStore = TestBed.get(CollectionsStore);
+    collectionsService = TestBed.inject(CollectionsService);
+    collectionsStore = TestBed.inject(CollectionsStore);
   });
 
   it('should be created', () => {

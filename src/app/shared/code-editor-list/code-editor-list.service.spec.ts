@@ -7,7 +7,7 @@ describe('CodeEditorListService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: CodeEditorListService = TestBed.get(CodeEditorListService);
+    const service: CodeEditorListService = TestBed.inject(CodeEditorListService);
     expect(service).toBeTruthy();
   });
   it('should be able to know if path is a primary descriptor', () => {

@@ -47,7 +47,7 @@ describe('Service: WDLViewer', () => {
       providers: [WdlViewerService],
       imports: [HttpClientTestingModule]
     });
-    wdlViewerService = TestBed.get(WdlViewerService);
+    wdlViewerService = TestBed.inject(WdlViewerService);
   });
 
   it('should be truthy', inject([WdlViewerService], (service: WdlViewerService) => {

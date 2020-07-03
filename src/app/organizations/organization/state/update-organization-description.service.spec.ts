@@ -17,8 +17,8 @@ describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule]
     });
 
-    updateOrganizationOrCollectionDescriptionService = TestBed.get(UpdateOrganizationOrCollectionDescriptionService);
-    updateOrganizationOrCollectionDescriptionStore = TestBed.get(UpdateOrganizationOrCollectionDescriptionStore);
+    updateOrganizationOrCollectionDescriptionService = TestBed.inject(UpdateOrganizationOrCollectionDescriptionService);
+    updateOrganizationOrCollectionDescriptionStore = TestBed.inject(UpdateOrganizationOrCollectionDescriptionStore);
   });
 
   it('should be created', () => {

@@ -41,8 +41,8 @@ describe('OrganizationService', () => {
       imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)]
     });
 
-    organizationService = TestBed.get(OrganizationService);
-    organizationStore = TestBed.get(OrganizationStore);
+    organizationService = TestBed.inject(OrganizationService);
+    organizationStore = TestBed.inject(OrganizationStore);
   });
 
   it('should be created', () => {

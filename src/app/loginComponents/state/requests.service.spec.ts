@@ -14,8 +14,8 @@ describe('RequestsService', () => {
       imports: [HttpClientTestingModule, MatSnackBarModule]
     });
 
-    requestsService = TestBed.get(RequestsService);
-    requestsStore = TestBed.get(RequestsStore);
+    requestsService = TestBed.inject(RequestsService);
+    requestsStore = TestBed.inject(RequestsStore);
   });
 
   it('should be created', () => {
