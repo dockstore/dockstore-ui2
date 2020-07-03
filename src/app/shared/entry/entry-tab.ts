@@ -18,6 +18,7 @@ import { Directive, Input, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class EntryTab implements OnDestroy {
   @Input() canRead: boolean;
   @Input() canWrite: boolean;

@@ -26,6 +26,7 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Tooltip } from './tooltip';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class Versions extends EntryTab {
   @Input() versions: Array<Tag | WorkflowVersion>;
   @Input() verifiedSource: Array<any>;
