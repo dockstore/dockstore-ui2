@@ -30,8 +30,8 @@ describe('RegisterOrganizationService', () => {
     });
 
     registerOrganizationService = TestBed.inject(RegisterOrganizationService);
-    organizationsServiceSpy = TestBed.inject(OrganizationsService);
-    matDialogSpy = TestBed.inject(MatDialog);
+    organizationsServiceSpy = TestBed.inject(OrganizationsService) as jasmine.SpyObj<OrganizationsService>;
+    matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
   });
 
   it('should be created', () => {
