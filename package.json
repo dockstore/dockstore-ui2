@@ -86,6 +86,7 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "cypress": "^4.0.1",
+    "cypress-plugin-retries": "^1.5.2",
     "husky": "^3.0.5",
     "jasmine-core": "^3.5.0",
     "jasmine-spec-reporter": "^4.2.1",
