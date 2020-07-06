@@ -42,13 +42,13 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   public tool;
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
-  public trackByIndex;
+  public trackByIndex: number;
   editMode = true;
   unsavedVersion: Tag;
   unsavedTestCWLFile = '';
   unsavedTestWDLFile = '';
-  unsavedCWLTestParameterFilePaths = [];
-  unsavedWDLTestParameterFilePaths = [];
+  unsavedCWLTestParameterFilePaths: string[] = [];
+  unsavedWDLTestParameterFilePaths: string[] = [];
   // Originally set to false because we made the defaults not duplicate of each other
   public hasDuplicateCWL = false;
   public hasDuplicateWDL = false;

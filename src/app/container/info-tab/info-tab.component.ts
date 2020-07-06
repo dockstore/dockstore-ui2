@@ -20,7 +20,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ToolDescriptor, ToolVersion } from '../../shared/swagger';
+import { ToolDescriptor, ToolVersion, WorkflowVersion } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
@@ -35,9 +35,9 @@ import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 })
 export class InfoTabComponent implements OnInit, OnChanges {
   currentVersion: Tag;
-  @Input() validVersions;
+  @Input() validVersions: Array<WorkflowVersion | Tag>;
   @Input() selectedVersion: Tag;
-  @Input() privateOnlyRegistry;
+  @Input() privateOnlyRegistry: boolean;
   @Input() extendedDockstoreTool: ExtendedDockstoreTool;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;

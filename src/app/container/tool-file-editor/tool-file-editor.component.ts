@@ -28,10 +28,10 @@ import { Tag } from './../../shared/swagger/model/tag';
   styleUrls: ['./tool-file-editor.component.scss']
 })
 export class ToolFileEditorComponent extends FileEditing {
-  dockerFile = [];
-  descriptorFiles = [];
-  testParameterFiles = [];
-  originalSourceFiles = [];
+  dockerFile: Array<SourceFile> = [];
+  descriptorFiles: Array<SourceFile> = [];
+  testParameterFiles: Array<SourceFile> = [];
+  originalSourceFiles: Array<SourceFile> = [];
   currentVersion: Tag;
   selectedDescriptorType: ToolDescriptor.TypeEnum = ToolDescriptor.TypeEnum.CWL;
   isNewestVersion = false;
@@ -76,7 +76,7 @@ export class ToolFileEditorComponent extends FileEditing {
    * @return {Array<SourceFile>} Array of sourcefiles
    */
   getCombinedSourceFiles(): Array<SourceFile> {
-    let baseFiles = [];
+    let baseFiles: Array<SourceFile> = [];
     if (this.descriptorFiles) {
       baseFiles = baseFiles.concat(this.descriptorFiles);
     }

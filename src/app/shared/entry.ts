@@ -45,7 +45,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   public title: string;
   protected _toolType: string;
   protected isLoggedIn: boolean;
-  protected validVersions;
+  protected validVersions: Array<WorkflowVersion | Tag>;
   protected defaultVersion;
   protected published: boolean;
   public labelPattern = validationDescriptorPatterns.label;

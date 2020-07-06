@@ -28,7 +28,7 @@ import { RegisterToolService } from './../register-tool/register-tool.service';
   styleUrls: ['./deregister-modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  @Input() refreshMessage;
+  @Input() refreshMessage: boolean;
 
   constructor(private registerToolService: RegisterToolService, private confirmationDialogService: ConfirmationDialogService) {}
 

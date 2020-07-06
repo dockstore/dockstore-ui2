@@ -17,6 +17,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
+import { SearchResponse } from 'elasticsearch';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../shared/constants';
@@ -279,7 +280,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @param {*} hits The response hits from elastic search
    * @memberof SearchComponent
    */
-  setupAllBuckets(hits: any) {
+  setupAllBuckets(hits: SearchResponse<Hit>) {
     this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
     Object.entries(aggregations).forEach(([key, value]) => {

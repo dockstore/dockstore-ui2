@@ -70,7 +70,7 @@ export class DocsComponent implements OnInit {
   }
 
   // Returns a function to test elements of an array against a path
-  findDoc(filteredPath) {
+  findDoc(filteredPath: string) {
     return function(element) {
       return element.existingPath === filteredPath;
     };

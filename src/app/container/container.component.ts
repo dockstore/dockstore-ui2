@@ -24,7 +24,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
-import { BioschemaService } from '../shared/bioschema.service';
+import { BioschemaService, BioschemaTool } from '../shared/bioschema.service';
 import { includesValidation } from '../shared/constants';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
@@ -68,7 +68,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public isManualMode$: Observable<boolean>;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
-  public schema;
+  public schema: BioschemaTool;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
   constructor(
@@ -260,7 +260,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     this.labelsEditMode = false;
   }
 
-  public toolCopyBtnClick(copyBtn): void {
+  public toolCopyBtnClick(copyBtn: string): void {
     this.containerService.setCopyBtn(copyBtn);
   }
 

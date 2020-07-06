@@ -23,7 +23,7 @@ export class CurrentCollectionsService {
     this.currentCollectionsStore.add(currentCollection);
   }
 
-  update(id, currentCollection: Partial<CollectionOrganization>) {
+  update(id: ID, currentCollection: Partial<CollectionOrganization>) {
     this.currentCollectionsStore.update(id, currentCollection);
   }
 

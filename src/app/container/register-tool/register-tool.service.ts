@@ -21,6 +21,7 @@ import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
+import { SourceControlBean } from '../../shared/swagger';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
@@ -35,10 +36,10 @@ export class RegisterToolService {
   public showCustomDockerRegistryPath: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public disabledPrivateCheckbox = false;
   private dockerRegistryMap = [];
-  private sourceControlMap = [];
+  private sourceControlMap: Array<SourceControlBean> = [];
   refreshing: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private tools;
-  private selectedTool;
+  private tools: DockstoreTool[];
+  private selectedTool: DockstoreTool;
   isModalShown: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   tool: BehaviorSubject<any> = new BehaviorSubject<Tool>(
@@ -100,7 +101,7 @@ export class RegisterToolService {
     this.isModalShown.next(isModalShown);
   }
 
-  registerTool(newTool: Tool, customDockerRegistryPath) {
+  registerTool(newTool: Tool, customDockerRegistryPath: string) {
     this.setTool(newTool);
     this.alertService.start('Registering new tool');
     const normalizedToolObj: DockstoreTool = this.getNormalizedToolObj(newTool, customDockerRegistryPath);
@@ -187,7 +188,7 @@ export class RegisterToolService {
     }
   }
 
-  getImagePath(imagePath, part) {
+  getImagePath(imagePath: string, part: string) {
     /** Defines the regex that an image path (namespace/name) must match.
          Group 1 = namespace, Group 2 = name*/
     const imagePathRegexp = /^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)\/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$/i;
@@ -199,7 +200,7 @@ export class RegisterToolService {
     return imageName;
   }
 
-  getGitUrl(gitPath, scrProvider) {
+  getGitUrl(gitPath: string, scrProvider: string) {
     let gitUrl = '';
     switch (scrProvider) {
       case 'GitHub':
@@ -217,7 +218,7 @@ export class RegisterToolService {
     return gitUrl;
   }
 
-  createPath(toolObj: Tool, customDockerRegistryPath) {
+  createPath(toolObj: Tool, customDockerRegistryPath: string) {
     let path = '';
     if (customDockerRegistryPath !== null) {
       path += customDockerRegistryPath;
@@ -249,7 +250,7 @@ export class RegisterToolService {
     }
   }
 
-  getImageRegistryPath(irProvider): string {
+  getImageRegistryPath(irProvider: string): string {
     let foundEnum;
     this.dockerRegistryMap.forEach(element => {
       if (irProvider === element.friendlyName) {
@@ -259,7 +260,7 @@ export class RegisterToolService {
     return foundEnum;
   }
 
-  getToolRegistry(irProvider, customDockerRegistryPath): string {
+  getToolRegistry(irProvider: string, customDockerRegistryPath: string): string {
     let foundPath;
     this.dockerRegistryMap.forEach(element => {
       if (irProvider === element.friendlyName) {

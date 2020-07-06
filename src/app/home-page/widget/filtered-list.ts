@@ -3,7 +3,7 @@ import { Base } from 'app/shared/base';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { EntriesService, UsersService } from '../../shared/openapi';
+import { EntriesService, OrganizationUpdateTime, UsersService } from '../../shared/openapi';
 
 /**
  * Base class for logged in homepage widgets that have a filter list
@@ -12,8 +12,8 @@ export abstract class FilteredList extends Base implements OnInit {
   userId$: Observable<number>;
   public hasItems = false;
   public firstCall = true;
-  public myItems;
-  public filterText;
+  public myItems: Array<OrganizationUpdateTime>;
+  public filterText: string;
   public isLoading = true;
   private subject: Subject<string> = new Subject();
 
