@@ -38,8 +38,8 @@
             <span mat-line>
               <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
               <span class="spacing" *ngFor="let type of tool?.descriptorType">{{ type | uppercase }}</span>
-              <a class="spacing" *ngIf="tool?.provider" href="{{ tool?.providerUrl }}">{{ tool?.provider }}</a>
-              <a class="spacing" *ngIf="tool?.imgProvider" href="{{ tool?.imgProviderUrl }}">{{ tool?.imgProvider }}</a>
+              <a class="spacing" *ngIf="tool?.provider" [href]="tool?.providerUrl">{{ tool?.provider }}</a>
+              <a class="spacing" *ngIf="tool?.imgProvider" [href]="tool?.imgProviderUrl">{{ tool?.imgProvider }}</a>
             </span>
             <app-starring class="pull-right" style="width: 100px;" [tool]="tool" (change)="starGazersChange()"></app-starring>
             <mat-divider></mat-divider>
@@ -70,7 +70,7 @@
             <span mat-line>
               <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
               <span class="spacing">{{ workflow?.descriptorType | uppercase }}</span>
-              <a class="spacing" *ngIf="workflow?.provider" href="{{ workflow?.providerUrl }}">{{ workflow?.provider }}</a>
+              <a class="spacing" *ngIf="workflow?.provider" [href]="workflow?.providerUrl">{{ workflow?.provider }}</a>
             </span>
             <app-starring class="pull-right" style="width: 100px;" [workflow]="workflow" (change)="starGazersChange()"></app-starring>
             <mat-divider></mat-divider>

@@ -41,7 +41,7 @@
           <strong>docker</strong>:&nbsp;{{ tool?.docker }}
           <br />
           <strong>link</strong>:&nbsp;<a
-            href="{{ tool?.link }}"
+            [href]="tool?.link"
             target="_blank"
             *ngIf="tool?.link !== 'Not Specified'"
             rel="noopener noreferrer"

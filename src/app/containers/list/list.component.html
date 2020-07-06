@@ -40,7 +40,7 @@
     <ng-container matColumnDef="verified">
       <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
       <mat-cell *matCellDef="let tool">
-        <a *ngIf="getVerified(tool)" href="{{ verifiedLink }}">
+        <a *ngIf="getVerified(tool)" [href]="verifiedLink">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
       </mat-cell>

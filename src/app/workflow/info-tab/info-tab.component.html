@@ -25,7 +25,7 @@
   >
     Keep your workflow automatically in sync with GitHub with our new registration process. Click
     <a
-      href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml"
+      [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml'"
       target="_blank"
       rel="noopener noreferrer"
       class="link-with-underline"
@@ -216,7 +216,7 @@
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.CWL">
                   See&nbsp;
                   <a
-                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/best-practices.html#authorship-metadata"
+                    [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/best-practices/best-practices.html#authorship-metadata'"
                     target="_blank"
                     rel="noopener noreferrer"
                     >CWL Best Practices</a
@@ -227,7 +227,7 @@
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.WDL">
                   See&nbsp;
                   <a
-                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata"
+                    [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata'"
                     target="_blank"
                     rel="noopener noreferrer"
                     >WDL Best Practices</a
@@ -236,7 +236,7 @@
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.NFL">
                   See&nbsp;
                   <a
-                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata"
+                    [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata'"
                     target="_blank"
                     rel="noopener noreferrer"
                     >Nextflow Best Practices</a

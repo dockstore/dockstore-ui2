@@ -49,7 +49,7 @@
     <div class="col-md-7">
       <h3 id="tool-path">
         <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified">
-          <a href="{{ getVerifiedLink() }}" class="verified-check">
+          <a [href]="getVerifiedLink()" class="verified-check">
             <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
@@ -262,7 +262,7 @@
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
                 <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                  <a href="{{ getVerifiedLink() }}" class="verified-check">
+                  <a [href]="getVerifiedLink()" class="verified-check">
                     <mat-icon matTooltip="Verified">done</mat-icon>
                   </a>
                 </span>

@@ -94,7 +94,7 @@
           color="accent"
           target="_blank"
           rel="noopener noreferrer"
-          href="{{ Dockstore.DOCUMENTATION_URL }}/launch-with/launch.html"
+          [href]="Dockstore.DOCUMENTATION_URL + '/launch-with/launch.html'"
           >Learn how to launch tools and workflows <mat-icon>open_in_new</mat-icon></a
         >
       </div>
@@ -111,7 +111,7 @@
           color="accent"
           target="_blank"
           rel="noopener noreferrer"
-          href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/getting-started.html"
+          [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started.html'"
           >Learn how to register content <mat-icon>open_in_new</mat-icon></a
         >
       </div>
@@ -128,7 +128,7 @@
           color="accent"
           target="_blank"
           rel="noopener noreferrer"
-          href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/organizations-and-collections.html"
+          [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/organizations-and-collections.html'"
           >Read about organizations and collections <mat-icon>open_in_new</mat-icon></a
         >
       </div>
@@ -140,7 +140,7 @@
         Dockstore developers and the general Dockstore audience.
       </p>
       <div class="button-row">
-        <a mat-button color="accent" target="_blank" rel="noopener noreferrer" href="{{ Dockstore.DOCUMENTATION_URL }}"
+        <a mat-button color="accent" target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL"
           >Documentation <mat-icon> open_in_new</mat-icon></a
         >
         <a mat-button color="accent" target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org"
