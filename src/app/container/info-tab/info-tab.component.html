@@ -273,7 +273,7 @@
         </div>
         <div>
           <strong matTooltip="E-mail of corresponding author for tool">E-mail</strong>:
-          <a href="mailto:{{ selectedVersion?.email }}" *ngIf="selectedVersion?.email">
+          <a [href]="'mailto:' + selectedVersion?.email" *ngIf="selectedVersion?.email">
             {{ selectedVersion?.email }}
           </a>
           <span *ngIf="!selectedVersion?.email">
