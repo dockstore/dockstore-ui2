@@ -652,7 +652,7 @@ export const elasticSearchResponse: Hit[] = [
 
 export const exampleEntry: Version = {
   commitID: null,
-  dbUpdateDate: new Date(1568664818354),
+  dbUpdateDate: 1568664818354,
   dirtyBit: true,
   doiStatus: 'NOT_REQUESTED',
   doiURL: null,
@@ -735,5 +735,5 @@ export const expiredMockNotification: Notification = {
   message: 'Testing123',
   type: 'SITEWIDE',
   priority: 'LOW',
-  expiration: new Date('2018-11-25T00:00:00')
+  expiration: new Date('2018-11-25T00:00:00').getTime()
 };
