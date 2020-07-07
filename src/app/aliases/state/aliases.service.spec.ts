@@ -13,8 +13,8 @@ describe('AliasesService', () => {
       imports: [HttpClientTestingModule]
     });
 
-    aliasesService = TestBed.get(AliasesService);
-    aliasesStore = TestBed.get(AliasesStore);
+    aliasesService = TestBed.inject(AliasesService);
+    aliasesStore = TestBed.inject(AliasesStore);
   });
 
   it('should be created', () => {

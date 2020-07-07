@@ -13,8 +13,8 @@ describe('NotificationsService', () => {
       imports: [HttpClientTestingModule]
     });
 
-    notificationsService = TestBed.get(NotificationsService);
-    notificationsStore = TestBed.get(NotificationsStore);
+    notificationsService = TestBed.inject(NotificationsService);
+    notificationsStore = TestBed.inject(NotificationsStore);
   });
 
   it('should be created', () => {

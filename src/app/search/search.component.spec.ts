@@ -69,7 +69,7 @@ describe('SearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    searchQuery = TestBed.get(SearchQuery);
+    searchQuery = TestBed.inject(SearchQuery) as jasmine.SpyObj<SearchQuery>;
     searchQuery.searchText$ = of('');
     searchQuery.getValue.and.returnValue({
       shortUrl: null,

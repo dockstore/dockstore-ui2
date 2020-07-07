@@ -29,6 +29,7 @@ import { PaginatorService } from './state/paginator.service';
 import { DockstoreTool, Workflow } from './swagger';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class ToolLister implements AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected previewMode = false;

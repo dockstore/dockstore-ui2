@@ -14,8 +14,8 @@ describe('EventsService', () => {
       imports: [HttpClientTestingModule, MatSnackBarModule]
     });
 
-    eventsService = TestBed.get(EventsService);
-    eventsStore = TestBed.get(EventsStore);
+    eventsService = TestBed.inject(EventsService);
+    eventsStore = TestBed.inject(EventsStore);
   });
 
   it('should be created', () => {

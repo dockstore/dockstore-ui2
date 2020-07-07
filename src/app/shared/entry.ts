@@ -37,6 +37,7 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 
 @Directive()
 @Injectable()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class Entry implements OnInit, OnDestroy {
   @ViewChild('entryTabs') entryTabs: MatTabGroup;
   protected shareURL: string;

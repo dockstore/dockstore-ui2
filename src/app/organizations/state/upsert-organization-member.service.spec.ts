@@ -16,8 +16,8 @@ describe('UpsertOrganizationMemberService', () => {
       imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule]
     });
 
-    upsertOrganizationMemberService = TestBed.get(UpsertOrganizationMemberService);
-    upsertOrganizationMemberStore = TestBed.get(UpsertOrganizationMemberStore);
+    upsertOrganizationMemberService = TestBed.inject(UpsertOrganizationMemberService);
+    upsertOrganizationMemberStore = TestBed.inject(UpsertOrganizationMemberStore);
   });
 
   it('should be created', () => {

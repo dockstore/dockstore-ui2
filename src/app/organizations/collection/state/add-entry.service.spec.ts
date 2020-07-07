@@ -14,8 +14,8 @@ describe('AddEntryService', () => {
       imports: [HttpClientTestingModule, CustomMaterialModule]
     });
 
-    addEntryService = TestBed.get(AddEntryService);
-    addEntryStore = TestBed.get(AddEntryStore);
+    addEntryService = TestBed.inject(AddEntryService);
+    addEntryStore = TestBed.inject(AddEntryStore);
   });
 
   it('should be created', () => {

@@ -20,6 +20,7 @@ import { Files } from './files';
 import { SourceFile } from './swagger/model/sourceFile';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export class FileEditing extends Files {
   /**
    * Toggles edit mode

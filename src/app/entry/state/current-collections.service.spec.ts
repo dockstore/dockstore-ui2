@@ -13,8 +13,8 @@ describe('CurrentCollectionsService', () => {
       imports: [HttpClientTestingModule]
     });
 
-    currentCollectionsService = TestBed.get(CurrentCollectionsService);
-    currentCollectionsStore = TestBed.get(CurrentCollectionsStore);
+    currentCollectionsService = TestBed.inject(CurrentCollectionsService);
+    currentCollectionsStore = TestBed.inject(CurrentCollectionsStore);
   });
 
   it('should be created', () => {

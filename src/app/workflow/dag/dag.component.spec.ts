@@ -46,7 +46,7 @@ describe('DagComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DagComponent);
     component = fixture.componentInstance;
-    dagQuery = TestBed.get(DagQuery);
+    dagQuery = TestBed.inject(DagQuery);
     // Mocking services that are injected inside the component
     (component as any).dagService = new DagStubService();
     fixture.detectChanges();
