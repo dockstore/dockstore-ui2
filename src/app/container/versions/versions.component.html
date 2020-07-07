@@ -37,7 +37,7 @@
         Version
         <a
           *ngIf="!publicPage"
-          href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#what-is-a-default-version-of-a-tool-or-workflow"
+          [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
           target="_blank"
           rel="noopener noreferrer"
           ><mat-icon>info</mat-icon></a

@@ -26,10 +26,10 @@
         <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
           <mat-icon class="hidden-sm">people</mat-icon> Organizations
         </a>
-        <a mat-button class="icon" href="{{ Dockstore.DOCUMENTATION_URL }}" target="_blank" rel="noopener noreferrer">
+        <a mat-button class="icon" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png" alt="stacked pages" /> Docs
         </a>
-        <a mat-button class="icon" href="{{ Dockstore.DISCOURSE_URL }}" target="_blank" rel="noopener noreferrer">
+        <a mat-button class="icon" [href]="Dockstore.DISCOURSE_URL" target="_blank" rel="noopener noreferrer">
           <mat-icon class="hidden-sm">help_outline</mat-icon> Help
         </a>
         <span class="spacer"></span>
@@ -89,7 +89,7 @@
     <div class="container-fluid navbar-holder">
       <a mat-button class="icon icon-sm" routerLink="/search">Search</a>
       <a mat-button class="icon icon-sm" routerLink="/organizations">Organizations</a>
-      <a mat-button class="icon icon-sm" href="{{ Dockstore.DOCUMENTATION_URL }}" target="_blank" rel="noopener noreferrer">Docs</a>
+      <a mat-button class="icon icon-sm" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">Docs</a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

@@ -182,14 +182,14 @@
     <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="20px" class="mb-4">
       <a
         mat-stroked-button
-        href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/getting-started.html"
+        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started.html'"
         target="_blank"
         rel="noopener noreferrer"
         data-cy="homepage-getting-started-link"
       >
         Developer tutorial <mat-icon>open_in_new</mat-icon>
       </a>
-      <a mat-stroked-button href="{{ Dockstore.DOCUMENTATION_URL }}/launch-with/launch.html" target="_blank" rel="noopener noreferrer">
+      <a mat-stroked-button [href]="Dockstore.DOCUMENTATION_URL + '/launch-with/launch.html'" target="_blank" rel="noopener noreferrer">
         Launch workflows <mat-icon>open_in_new</mat-icon>
       </a>
       <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()" data-cy="homepage-organizations-button">

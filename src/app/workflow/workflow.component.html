@@ -49,7 +49,7 @@
     <div class="col-md-7">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified">
-          <a href="{{ getVerifiedLink() }}" class="verified-check">
+          <a [href]="getVerifiedLink()" class="verified-check">
             <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
@@ -390,7 +390,7 @@
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
                 <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                  <a href="{{ getVerifiedLink() }}" class="verified-check">
+                  <a [href]="getVerifiedLink()" class="verified-check">
                     <mat-icon matTooltip="Verified">done</mat-icon>
                   </a>
                 </span>

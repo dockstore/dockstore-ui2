@@ -15,10 +15,9 @@
  */
 
 import { Component, Input, OnInit } from '@angular/core';
-import { first, takeUntil } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
-import { Base } from '../../shared/base';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { RegisterToolService } from './../register-tool/register-tool.service';
 
