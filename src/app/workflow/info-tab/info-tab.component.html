@@ -58,10 +58,15 @@
         <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
           <span>
             <li *ngIf="workflow?.workflow_path || !isPublic">
-              <form #editWorkflowPathForm="ngForm" class="form-inline" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
-                <div class="form-group">
+              <form
+                #editWorkflowPathForm="ngForm"
+                class="form-inline"
+                fxLayout
+                *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+              >
+                <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
-                  <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
+                  <span *ngIf="!workflowPathEditing" fxFlexOffset="4px"> {{ workflow.workflow_path }} </span>
                   <input
                     *ngIf="workflowPathEditing"
                     minlength="3"
@@ -72,14 +77,11 @@
                     name="workflowPath"
                     [(ngModel)]="workflow.workflow_path"
                     placeholder="e.g. /Dockstore.cwl"
+                    fxFlex="noshrink"
+                    fxFlexOffset="4px"
                   />
                 </div>
-                <div
-                  *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED"
-                  class="btn-group push-right"
-                  role="group"
-                  aria-label="Basic example"
-                >
+                <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
                   <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
@@ -99,11 +101,12 @@
               <form
                 #editTestFilePathForm="ngForm"
                 class="form-inline"
+                fxLayout
                 *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
               >
-                <div class="form-group">
+                <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
-                  <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
+                  <span *ngIf="!defaultTestFilePathEditing" fxFlexOffset="4px"> {{ workflow?.defaultTestParameterFilePath }} </span>
                   <input
                     *ngIf="defaultTestFilePathEditing"
                     minlength="3"
@@ -114,6 +117,8 @@
                     name="workflowPath"
                     [(ngModel)]="workflow.defaultTestParameterFilePath"
                     placeholder="e.g. /Dockstore.cwl"
+                    fxFlex="noshrink"
+                    fxFlexOffset="4px"
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
@@ -121,7 +126,7 @@
                     *ngIf="!isPublic"
                     type="button"
                     [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)"
-                    class="btn btn-link push-right"
+                    class="btn btn-link"
                     (click)="toggleEditDefaultTestFilePath()"
                   >
                     <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
