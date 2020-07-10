@@ -499,6 +499,15 @@ textarea:focus {
   right: 20px;
 }
 
+.inline-flex-form {
+  display: flex !important;
+  align-items: center;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
 /* BUTTONS - - - - - - - - - - - - - */
 
 div.button {

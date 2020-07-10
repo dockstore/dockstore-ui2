@@ -60,28 +60,23 @@
             </li>
           </span>
           <li *ngIf="tool?.default_dockerfile_path || !isPublic">
-            <form #editDockerfileForm="ngForm" class="form-inline">
-              <div class="form-group">
+            <form #editDockerfileForm="ngForm" class="form-inline inline-flex-form">
+              <div class="form-group inline-flex-form flex-grow-1">
                 <strong matTooltip="Path in Git repository to the tool's Dockerfile">Dockerfile Path</strong>:
-                <span *ngIf="!dockerFileEditing">{{ tool?.default_dockerfile_path }}</span>
+                <span *ngIf="!dockerFileEditing" class="hori-offset-4">{{ tool?.default_dockerfile_path }}</span>
                 <input
                   *ngIf="dockerFileEditing"
                   minlength="3"
                   maxlength="256"
                   [pattern]="validationPatterns.dockerfilePath"
                   type="text"
-                  class="input-default form-control"
+                  class="input-default form-control flex-grow-1 hori-offset-4"
                   name="contDockerfilePath"
                   [(ngModel)]="tool.default_dockerfile_path"
                   placeholder="e.g. /Dockerfile"
                 />
               </div>
-              <div
-                *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
-                class="btn-group push-right"
-                role="group"
-                aria-label="Basic example"
-              >
+              <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
                 <button *ngIf="!isPublic && dockerFileEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                   <mat-icon>cancel</mat-icon> Cancel
                 </button>
@@ -100,10 +95,10 @@
             </form>
           </li>
           <li *ngIf="tool?.default_cwl_path || !isPublic">
-            <form #editCWLPathForm="ngForm" class="form-inline">
-              <div class="form-group">
+            <form #editCWLPathForm="ngForm" class="form-inline inline-flex-form">
+              <div class="form-group inline-flex-form flex-grow-1">
                 <strong matTooltip="Path in Git repository to main CWL descriptor file">CWL Path</strong>:
-                <span *ngIf="!cwlPathEditing"> {{ tool?.default_cwl_path || 'n/a' }}</span>
+                <span *ngIf="!cwlPathEditing" class="hori-offset-4"> {{ tool?.default_cwl_path || 'n/a' }}</span>
                 <input
                   *ngIf="cwlPathEditing"
                   [required]="!tool?.default_wdl_path"
@@ -111,18 +106,13 @@
                   maxlength="256"
                   [pattern]="validationPatterns.cwlPath"
                   type="text"
-                  class="input-default form-control"
+                  class="input-default form-control flex-grow-1 hori-offset-4"
                   name="contCWLPath"
                   [(ngModel)]="tool.default_cwl_path"
                   [placeholder]="exampleDescriptorPatterns.cwl"
                 />
               </div>
-              <div
-                *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
-                class="btn-group push-right"
-                role="group"
-                aria-label="Basic example"
-              >
+              <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
                 <button *ngIf="!isPublic && cwlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                   <mat-icon>cancel</mat-icon> Cancel
                 </button>
@@ -141,10 +131,10 @@
             </form>
           </li>
           <li *ngIf="tool?.default_wdl_path || !isPublic">
-            <form #editWDLPathForm="ngForm" class="form-inline">
-              <div class="form-group">
+            <form #editWDLPathForm="ngForm" class="form-inline inline-flex-form">
+              <div class="form-group inline-flex-form flex-grow-1">
                 <strong matTooltip="Path in Git repository to main WDL descriptor file">WDL Path</strong>:
-                <span *ngIf="!wdlPathEditing">{{ tool?.default_wdl_path || 'n/a' }}</span>
+                <span *ngIf="!wdlPathEditing" class="hori-offset-4">{{ tool?.default_wdl_path || 'n/a' }}</span>
                 <input
                   *ngIf="wdlPathEditing"
                   [required]="!tool?.default_cwl_path"
@@ -152,18 +142,13 @@
                   maxlength="256"
                   [pattern]="validationPatterns.wdlPath"
                   type="text"
-                  class="input-default form-control"
+                  class="input-default form-control flex-grow-1 hori-offset-4"
                   name="contWDLPath"
                   [(ngModel)]="tool.default_wdl_path"
                   [placeholder]="exampleDescriptorPatterns.wdl"
                 />
               </div>
-              <div
-                *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
-                class="btn-group push-right"
-                role="group"
-                aria-label="Basic example"
-              >
+              <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
                 <button *ngIf="!isPublic && wdlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                   <mat-icon>cancel</mat-icon> Cancel
                 </button>
@@ -182,17 +167,17 @@
             </form>
           </li>
           <li>
-            <form #editCWLTestPathForm="ngForm" class="form-inline">
-              <div class="form-group">
+            <form #editCWLTestPathForm="ngForm" class="form-inline inline-flex-form">
+              <div class="form-group inline-flex-form flex-grow-1">
                 <strong matTooltip="Path in Git repository to main CWL descriptor file">CWL Test Parameter File Path</strong>:
-                <span *ngIf="!cwlTestPathEditing"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
+                <span *ngIf="!cwlTestPathEditing" class="hori-offset-4"> {{ tool?.defaultCWLTestParameterFile || 'n/a' }}</span>
                 <input
                   *ngIf="cwlTestPathEditing"
                   minlength="3"
                   maxlength="256"
                   [pattern]="validationPatterns.testFilePath"
                   type="text"
-                  class="input-default form-control"
+                  class="input-default form-control flex-grow-1 hori-offset-4"
                   name="CWLTestPath"
                   [(ngModel)]="tool.defaultCWLTestParameterFile"
                   placeholder="e.g. /test.cwl.json"
@@ -202,7 +187,7 @@
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
                 [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))"
-                class="btn btn-link push-right"
+                class="btn btn-link"
                 (click)="toggleEditCWLTestPath()"
               >
                 <mat-icon *ngIf="cwlTestPathEditing">save</mat-icon>
@@ -212,17 +197,17 @@
             </form>
           </li>
           <li>
-            <form #editWDLTestPathForm="ngForm" class="form-inline">
-              <div class="form-group">
+            <form #editWDLTestPathForm="ngForm" class="form-inline inline-flex-form">
+              <div class="form-group inline-flex-form flex-grow-1">
                 <strong matTooltip="Path in Git repository to main WDL descriptor file">WDL Test Parameter File Path</strong>:
-                <span *ngIf="!wdlTestPathEditing">{{ tool?.defaultWDLTestParameterFile || 'n/a' }}</span>
+                <span *ngIf="!wdlTestPathEditing" class="hori-offset-4">{{ tool?.defaultWDLTestParameterFile || 'n/a' }}</span>
                 <input
                   *ngIf="wdlTestPathEditing"
                   minlength="3"
                   maxlength="256"
                   [pattern]="validationPatterns.testFilePath"
                   type="text"
-                  class="input-default form-control"
+                  class="input-default form-control flex-grow-1 hori-offset-4"
                   name="WDLTestPath"
                   [(ngModel)]="tool.defaultWDLTestParameterFile"
                   placeholder="e.g. /test.wdl.json"
@@ -232,7 +217,7 @@
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
                 [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))"
-                class="btn btn-link push-right"
+                class="btn btn-link"
                 (click)="toggleEditWDLTestPath()"
               >
                 <mat-icon *ngIf="wdlTestPathEditing">save</mat-icon>
