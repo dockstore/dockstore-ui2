@@ -16,8 +16,8 @@
 import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
-import { SourceFile, VerificationInformation } from '../../swagger';
+import { VersionVerifiedPlatform } from '../../openapi';
+import { SourceFile, Tag, VerificationInformation, WorkflowVersion } from '../../swagger';
 
 @Component({
   selector: 'app-verified-display',
@@ -26,6 +26,8 @@ import { SourceFile, VerificationInformation } from '../../swagger';
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
   @Input() sourceFiles: SourceFile[];
+  @Input() verifiedByPlatform: Array<VersionVerifiedPlatform>;
+  @Input() version: Tag | WorkflowVersion | null;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   public dataSource: MatTableDataSource<any>;
   public displayedColumns = ['platform', 'platformVersion', 'path', 'metadata'];
@@ -39,7 +41,9 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // Update the dataSource's data
-    this.dataSource.data = this.getCustomVerificationInformationArray(this.sourceFiles);
+    // fix this
+    // this.dataSource.data = this.getCustomVerificationInformationArray(this.sourceFiles);
+    this.dataSource.data = this.getCustomVerificationInformationArray2(this.version, this.verifiedByPlatform);
   }
 
   /**
@@ -49,6 +53,7 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
    * @returns {Array<CustomVerificationInformationObject>}   Custom object array (that contains path, verifier, platform)
    * @memberof VerifiedDisplayComponent
    */
+  //
   getCustomVerificationInformationArray(sourceFiles: Array<SourceFile>): Array<any> {
     const customVerificationInformationArray: Array<VerificationInformation> = new Array();
     sourceFiles.forEach((sourceFile: SourceFile) => {
@@ -69,6 +74,32 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
         }
       });
     });
+    console.log('verified-display.component.ts' + this.verifiedByPlatform);
+    return customVerificationInformationArray;
+  }
+
+  getCustomVerificationInformationArray2(
+    version: Tag | WorkflowVersion | null,
+    verifiedByPlatform: Array<VersionVerifiedPlatform>
+  ): Array<any> {
+    const customVerificationInformationArray: Array<VerificationInformation> = new Array();
+    if (version && verifiedByPlatform) {
+      verifiedByPlatform
+        .filter((vs: VersionVerifiedPlatform) => vs.versionId === version.id)
+        .forEach(vs => {
+          if (vs.verified) {
+            const customVerificationInformationObject = {
+              // This allows the string to break after every slash for word-wrapping purposes
+              path: vs.path.replace(/\//g, '/' + '\u2028'),
+              platform: vs.source,
+              platformVersion: vs.platformVersion ? vs.platformVersion : 'N/A',
+              metadata: vs.metadata
+            };
+            customVerificationInformationArray.push(customVerificationInformationObject);
+          }
+        });
+    }
+    console.log('verified-display.component.ts' + this.verifiedByPlatform);
     return customVerificationInformationArray;
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-
-import { SourceFile } from './swagger';
+import { VersionVerifiedPlatform } from './openapi';
+import { SourceFile, Tag, WorkflowVersion } from './swagger';
 
 @Injectable({
   providedIn: 'root'
@@ -16,28 +16,24 @@ export class VerifiedByService {
    * @returns {Array<string>}                    An array of strings to be displayed seperated by newlines
    * @memberof VerifiedByService
    */
-  getVerifiedByString(sourceFiles: Array<SourceFile>): Array<string> {
+
+  getVerifiedByString(verifiedSources: Array<VersionVerifiedPlatform>, version: Tag | WorkflowVersion): Array<string> {
     const verifiedSourceMap = new Map<string, Set<string>>();
-    if (sourceFiles) {
-      sourceFiles.forEach(sourceFile => {
-        const verifiedBySource = sourceFile.verifiedBySource;
-        if (verifiedBySource) {
-          const verifiedBySourceArray = Object.entries(verifiedBySource);
-          verifiedBySourceArray.forEach(arrayElement => {
-            const platform: string = arrayElement[0];
-            const verified: boolean = arrayElement[1].verified;
-            const platformVersion: string = arrayElement[1].platformVersion;
-            if (verified) {
-              if (!verifiedSourceMap[platform]) {
-                verifiedSourceMap[platform] = new Set<string>();
-              }
-              if (platformVersion) {
-                verifiedSourceMap[platform].add(platformVersion);
-              }
+    if (version && verifiedSources) {
+      verifiedSources
+        .filter((vs: VersionVerifiedPlatform) => vs.versionId === version.id)
+        .forEach(vs => {
+          if (vs.verified) {
+            const platform: string = vs.source;
+            const platformVersion: string = vs.platformVersion;
+            if (!verifiedSourceMap[platform]) {
+              verifiedSourceMap[platform] = new Set<string>();
             }
-          });
-        }
-      });
+            if (platformVersion) {
+              verifiedSourceMap[platform].add(platformVersion);
+            }
+          }
+        });
       const verifiedSourceArray = Object.entries(verifiedSourceMap);
       const verifiedByStringArray: Array<string> = [];
       verifiedSourceArray.forEach(arrayElement => {

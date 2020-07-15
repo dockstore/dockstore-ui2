@@ -426,7 +426,8 @@
         </div>
       </div>
       <current-collections [id]="workflow.id"></current-collections>
-      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
+      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerirfiedPlatforms">
+      </app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="workflow">
         <div class="panel-heading">
           <h3>Sharing</h3>

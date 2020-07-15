@@ -7,6 +7,7 @@ import { CustomMaterialModule } from '../../modules/material.module';
 import { SourceFile } from '../../swagger';
 import { VerifiedDisplayComponent } from './verified-display.component';
 
+// fix this test
 describe('VerifiedDisplayComponent', () => {
   let component: VerifiedDisplayComponent;
   let fixture: ComponentFixture<VerifiedDisplayComponent>;

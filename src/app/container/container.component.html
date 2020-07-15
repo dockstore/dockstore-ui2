@@ -342,7 +342,11 @@
         </div>
       </div>
       <current-collections [id]="tool.id"></current-collections>
-      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
+      <app-verified-by
+        *ngIf="selectedVersion"
+        [version]="selectedVersion"
+        [verifiedByPlatform]="versionsWithVerirfiedPlatforms"
+      ></app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="tool">
         <div class="panel-heading">
           <h3>Sharing</h3>
