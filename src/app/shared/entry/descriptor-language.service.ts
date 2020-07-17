@@ -173,7 +173,7 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   getDescriptorLanguagesInnerHTML(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
-    const innerHTMLArray = [];
+    const innerHTMLArray: Array<string> = [];
     descriptorLanguageBeans.forEach(descriptorLanguageBean => {
       switch (descriptorLanguageBean.value) {
         case this.knownCWLValue: {
