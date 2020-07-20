@@ -36,6 +36,7 @@ export class DescriptorLanguageService {
   readonly knownWDLValue = 'WDL';
   readonly knownNFLValue = 'NFL';
   readonly knownServiceValue = 'service';
+  readonly knownGalaxyValue = 'gxformat2';
 
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public descriptorLanguagesInnerHTML$: Observable<string>;
@@ -174,6 +175,9 @@ export class DescriptorLanguageService {
    */
   getDescriptorLanguagesInnerHTML(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
     const innerHTMLArray = [];
+    if (descriptorLanguageBeans.length === 0) {
+      return '';
+    }
     descriptorLanguageBeans.forEach(descriptorLanguageBean => {
       switch (descriptorLanguageBean.value) {
         case this.knownCWLValue: {
@@ -186,6 +190,10 @@ export class DescriptorLanguageService {
         }
         case this.knownNFLValue: {
           innerHTMLArray.push('<a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>');
+          break;
+        }
+        case this.knownGalaxyValue: {
+          innerHTMLArray.push('<a href="https://training.galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>');
           break;
         }
         default: {
