@@ -17,7 +17,7 @@ import { Component, Input } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ToolDescriptor } from '../../shared/swagger';
+import { SourceFile, ToolDescriptor } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { ToolQuery } from '../../shared/tool/tool.query';
@@ -36,13 +36,14 @@ export class LaunchComponent extends Base {
   @Input() path: string;
   @Input() toolname: string;
   @Input() mode: DockstoreTool.ModeEnum | Workflow.ModeEnum;
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
 
   _selectedVersion: Tag;
   @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this._selectedVersion = value;
       this.reactToDescriptor();
-      this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
+      this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
     }
   }
 
@@ -73,13 +74,13 @@ export class LaunchComponent extends Base {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
         this.descriptors = descriptors;
-        this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
+        this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
       });
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
   // Returns an array of descriptors that are valid for the given tool version
-  filterDescriptors(descriptors: Array<DescriptorTypeEnum>, version: Tag): Array<string> {
+  filterDescriptors(descriptors: Array<DescriptorTypeEnum>, version: Tag, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<string> {
     const newDescriptors: Array<DescriptorTypeEnum> = [];
 
     // Return empty array if no descriptors present yet
@@ -91,10 +92,10 @@ export class LaunchComponent extends Base {
     let hasCwl = false;
     let hasWdl = false;
 
-    for (const sourceFile of version.sourceFiles) {
-      if (sourceFile.type.toString() === 'DOCKSTORE_CWL') {
+    for (const fileType of versionsFileTypes) {
+      if (fileType === SourceFile.TypeEnum.DOCKSTORECWL) {
         hasCwl = true;
-      } else if (sourceFile.type.toString() === 'DOCKSTORE_WDL') {
+      } else if (fileType === SourceFile.TypeEnum.DOCKSTOREWDL) {
         hasWdl = true;
       }
     }

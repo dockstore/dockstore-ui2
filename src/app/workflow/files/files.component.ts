@@ -17,7 +17,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { Files } from '../../shared/files';
-import { ToolDescriptor } from '../../shared/swagger';
+import { SourceFile, ToolDescriptor } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 
 @Component({
@@ -28,6 +28,7 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   @Input() selectedVersion: WorkflowVersion;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
   versionsWithParamfiles: Array<any>;
   previousEntryPath: string;
   previousVersionName: string;
@@ -35,10 +36,11 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
     super();
   }
 
+  // FIX THIS
   ngOnInit() {
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
+    // this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
   ngOnChanges() {
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
+    // this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 }

@@ -23,13 +23,15 @@ import { FilesService } from '../../workflow/files/state/files.service';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
+import { EntriesService } from '../openapi';
+import { FileWrapper, GA4GHService, SourceFile, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
 
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version
  */
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
+  id: number;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected currentDescriptor: ToolDescriptor.TypeEnum;
@@ -45,11 +47,12 @@ export abstract class EntryFileSelector implements OnDestroy {
   public customDownloadPath: string;
   public loading = false;
   public validationMessage = null;
+  public versionsFileTypes: Array<SourceFile.TypeEnum>;
   abstract entrypath: string;
   protected abstract entryType: 'tool' | 'workflow';
   content: string = null;
 
-  abstract getDescriptors(version): Array<any>;
+  abstract getDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any>;
   abstract getValidDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
@@ -58,28 +61,37 @@ export abstract class EntryFileSelector implements OnDestroy {
     protected gA4GHFilesService: GA4GHFilesService,
     protected gA4GHService: GA4GHService,
     protected filesService: FilesService,
-    protected filesQuery: FilesQuery
+    protected filesQuery: FilesQuery,
+    protected entryService: EntriesService
   ) {}
 
   protected getDescriptorPath(path: string, entryType: 'tool' | 'workflow'): string {
     return this.fileService.getDescriptorPath(path, this._selectedVersion, this.currentFile, this.currentDescriptor, entryType);
   }
 
-  reactToVersion(): void {
-    this.descriptors = this.getDescriptors(this._selectedVersion);
-    this.validDescriptors = this.getValidDescriptors(this._selectedVersion);
-    if (this.descriptors) {
-      this.nullDescriptors = false;
-      if (this.descriptors.length) {
-        if (this.validDescriptors && this.validDescriptors.length) {
-          this.onDescriptorChange(this.validDescriptors[0]);
+  //
+  reactToVersion(entryid: number): void {
+    this.loading = true;
+    this.entryService
+      .getTagsFileTypes(entryid, this._selectedVersion.id)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
+        this.versionsFileTypes = fileTypes;
+        this.descriptors = this.getDescriptors(this._selectedVersion, this.versionsFileTypes);
+        this.validDescriptors = this.getValidDescriptors(this._selectedVersion);
+        if (this.descriptors) {
+          this.nullDescriptors = false;
+          if (this.descriptors.length) {
+            if (this.validDescriptors && this.validDescriptors.length) {
+              this.onDescriptorChange(this.validDescriptors[0]);
+            } else {
+              this.onDescriptorChange(this.descriptors[0]);
+            }
+          }
         } else {
-          this.onDescriptorChange(this.descriptors[0]);
+          this.nullDescriptors = true;
         }
-      }
-    } else {
-      this.nullDescriptors = true;
-    }
+      });
   }
 
   onDescriptorChange(descriptor: ToolDescriptor.TypeEnum) {
@@ -116,9 +128,9 @@ export abstract class EntryFileSelector implements OnDestroy {
     }
   }
 
-  onVersionChange(value: Tag) {
+  onVersionChange(value: Tag, entryid: number) {
     this._selectedVersion = value;
-    this.reactToVersion();
+    this.reactToVersion(entryid);
   }
 
   clearContent() {

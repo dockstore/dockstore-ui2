@@ -29,11 +29,10 @@ export class DescriptorService {
    * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
    * @memberof DescriptorService
    */
-  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<ToolDescriptor.TypeEnum> {
     const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
-    if (version) {
-      const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
-      unique.forEach((element: SourceFile.TypeEnum) => {
+    if (versionsFileTypes) {
+      versionsFileTypes.forEach((element: SourceFile.TypeEnum) => {
         extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
           if (extendedDescriptorLanguage.descriptorFileTypes.includes(element)) {
             descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);

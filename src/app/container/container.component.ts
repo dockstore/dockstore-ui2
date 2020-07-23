@@ -33,10 +33,11 @@ import { Entry } from '../shared/entry';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
-import { EntriesService, VersionVerifiedPlatform } from '../shared/openapi';
+import { ContainertagsService, EntriesService, VersionVerifiedPlatform } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
+import { SourceFile } from '../shared/swagger/model/sourceFile';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { ToolQuery } from '../shared/tool/tool.query';
@@ -73,6 +74,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
   public versionsWithVerirfiedPlatforms: Array<VersionVerifiedPlatform> = [];
+  public versionsFileTypes: Array<SourceFile.TypeEnum>;
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -98,7 +100,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     public dialog: MatDialog,
     private toolService: ToolService,
     private alertService: AlertService,
-    private entryService: EntriesService
+    private entryService: EntriesService,
+    private containerTagsService: ContainertagsService
   ) {
     super(
       trackLoginService,
@@ -197,7 +200,9 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.entryService.getVerifiedPlatforms(tool.id).subscribe((verifiedVersions: Array<VersionVerifiedPlatform>) => {
         this.versionsWithVerirfiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
-        console.log(this.versionsWithVerirfiedPlatforms);
+      });
+      this.entryService.getTagsFileTypes(tool.id, this.selectedVersion.id).subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
+        this.versionsFileTypes = fileTypes;
       });
     }
   }

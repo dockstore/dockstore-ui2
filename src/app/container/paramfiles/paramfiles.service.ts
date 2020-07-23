@@ -41,18 +41,20 @@ export class ParamfilesService {
   }
 
   // get descriptors which have test parameter files
-  getDescriptors(version: WorkflowVersion | Tag): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(versionsFileTypes: Array<SourceFile.TypeEnum>): Array<ToolDescriptor.TypeEnum> {
     const descriptorsWithParamfiles: Array<ToolDescriptor.TypeEnum> = [];
-    if (version) {
-      for (const file of version.sourceFiles) {
-        const type = file.type;
-        if (type === 'CWL_TEST_JSON' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.CWL)) {
+    if (versionsFileTypes) {
+      for (const type of versionsFileTypes) {
+        if (type === SourceFile.TypeEnum.CWLTESTJSON && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.CWL)) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.CWL);
-        } else if (type === 'WDL_TEST_JSON' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.WDL)) {
+        } else if (type === SourceFile.TypeEnum.WDLTESTJSON && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.WDL)) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.WDL);
-        } else if (type === 'NEXTFLOW_TEST_PARAMS' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.NFL)) {
+        } else if (type === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.NFL)) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.NFL);
-        } else if (type === 'GXFORMAT2_TEST_FILE' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.GXFORMAT2)) {
+        } else if (
+          type === SourceFile.TypeEnum.GXFORMAT2TESTFILE &&
+          !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.GXFORMAT2)
+        ) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.GXFORMAT2);
         }
         // DOCKSTORE-2428 - demo how to add new workflow language
@@ -133,16 +135,17 @@ export class ParamfilesService {
     return languageFile !== undefined;
   }
 
+  // FIX THIS
   // get versions which have test parameter files
-  getVersions(versions: Array<Tag | WorkflowVersion>) {
-    const versionsWithParamfiles = [];
-    if (versions) {
-      for (const version of versions) {
-        if (this.getDescriptors(version).length) {
-          versionsWithParamfiles.push(version);
-        }
-      }
-    }
-    return versionsWithParamfiles;
-  }
+  // getVersions(versions: Array<Tag | WorkflowVersion>) {
+  //   const versionsWithParamfiles = [];
+  //   if (versions) {
+  //     for (const version of versions) {
+  //       if (this.getDescriptors(version).length) {
+  //         versionsWithParamfiles.push(version);
+  //       }
+  //     }
+  //   }
+  //   return versionsWithParamfiles;
+  // }
 }

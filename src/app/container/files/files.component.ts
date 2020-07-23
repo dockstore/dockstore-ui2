@@ -31,15 +31,16 @@ export class FilesContainerComponent extends Files implements OnInit, OnChanges 
     super();
   }
 
+  // FIX THIS
   ngOnInit() {
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
+    // this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
   ngOnChanges() {
     if (!this.selectedVersion) {
       this.gA4GHFilesService.clearFiles();
     } else {
       this.gA4GHFilesService.updateFiles(this.entrypath, this.selectedVersion.name);
-      this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
+      // this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
     }
   }
 }

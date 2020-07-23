@@ -20,9 +20,10 @@ import { ParamfilesService } from '../../container/paramfiles/paramfiles.service
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
+import { EntriesService } from '../../shared/openapi';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
+import { GA4GHService, SourceFile, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { FilesQuery } from '../files/state/files.query';
 import { FilesService } from '../files/state/files.service';
@@ -37,7 +38,7 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
   @Input() entrypath: string;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this.clearContent();
-    this.onVersionChange(value);
+    this.onVersionChange(value, this.id);
     this.checkIfValid(false, value);
   }
   public isNFL$: Observable<boolean>;
@@ -53,14 +54,15 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     private workflowService: WorkflowQuery,
     private gA4GHFilesQuery: GA4GHFilesQuery,
     protected filesService: FilesService,
-    protected filesQuery: FilesQuery
+    protected filesQuery: FilesQuery,
+    protected entryService: EntriesService
   ) {
-    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery, entryService);
     this.published$ = this.workflowService.workflowIsPublished$;
     this.isNFL$ = this.workflowQuery.isNFL$;
   }
-  getDescriptors(version: WorkflowVersion): Array<ToolDescriptor.TypeEnum> {
-    return this.paramfilesService.getDescriptors(this._selectedVersion);
+  getDescriptors(version: WorkflowVersion, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<ToolDescriptor.TypeEnum> {
+    return this.paramfilesService.getDescriptors(versionsFileTypes);
   }
 
   getValidDescriptors(version: WorkflowVersion): Array<any> {
