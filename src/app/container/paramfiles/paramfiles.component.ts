@@ -63,8 +63,8 @@ export class ParamfilesComponent extends EntryFileSelector {
     return this.paramfilesService.getDescriptors(versionsFileTypes);
   }
 
-  getValidDescriptors(version): Array<any> {
-    return this.paramfilesService.getValidDescriptors(this._selectedVersion);
+  getValidDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any> {
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion, versionsFileTypes);
   }
 
   /**

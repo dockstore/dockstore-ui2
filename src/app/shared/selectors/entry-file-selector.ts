@@ -53,7 +53,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   content: string = null;
 
   abstract getDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any>;
-  abstract getValidDescriptors(version): Array<any>;
+  abstract getValidDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
   constructor(
@@ -78,7 +78,7 @@ export abstract class EntryFileSelector implements OnDestroy {
       .subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
         this.versionsFileTypes = fileTypes;
         this.descriptors = this.getDescriptors(this._selectedVersion, this.versionsFileTypes);
-        this.validDescriptors = this.getValidDescriptors(this._selectedVersion);
+        this.validDescriptors = this.getValidDescriptors(this._selectedVersion, this.versionsFileTypes);
         if (this.descriptors) {
           this.nullDescriptors = false;
           if (this.descriptors.length) {

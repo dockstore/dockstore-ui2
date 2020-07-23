@@ -71,23 +71,27 @@ export class ParamfilesService {
    * @param version the current selected version of the workflow or tool
    * @returns an array that may contain 'CWL' or 'WDL' or 'NFL'
    */
-  getValidDescriptors(version: WorkflowVersion | Tag) {
+  getValidDescriptors(version: WorkflowVersion | Tag, versionsFileTypes: Array<SourceFile.TypeEnum>) {
     if (version) {
       const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
       if (version.validations) {
-        if (this.checkValidFileType(version, SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.DOCKSTORECWL)) {
+        if (this.checkValidFileType(version, SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.DOCKSTORECWL, versionsFileTypes)) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
         }
 
-        if (this.checkValidFileType(version, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.DOCKSTOREWDL)) {
+        if (this.checkValidFileType(version, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.DOCKSTOREWDL, versionsFileTypes)) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
         }
 
-        if (this.checkValidFileType(version, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.NEXTFLOWCONFIG)) {
+        if (
+          this.checkValidFileType(version, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.NEXTFLOWCONFIG, versionsFileTypes)
+        ) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
         }
 
-        if (this.checkValidFileType(version, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2)) {
+        if (
+          this.checkValidFileType(version, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, versionsFileTypes)
+        ) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.GXFORMAT2);
         }
         // DOCKSTORE-2428 - demo how to add new workflow language
@@ -108,7 +112,12 @@ export class ParamfilesService {
    * @param fileType Ex. SourceFile.TypeEnum.CWLTESTJSON
    * @param descriptorType Ex. SourceFile.TypeEnum.DOCKSTORECWL
    */
-  checkValidFileType(version: WorkflowVersion | Tag, fileType: SourceFile.TypeEnum, descriptorType: SourceFile.TypeEnum) {
+  checkValidFileType(
+    version: WorkflowVersion | Tag,
+    fileType: SourceFile.TypeEnum,
+    descriptorType: SourceFile.TypeEnum,
+    versionsFileTypes: Array<SourceFile.TypeEnum>
+  ) {
     // Check that the language has a valid descriptor
     const descriptorValidation = version.validations.find((validation: Validation) => {
       return validation.type === descriptorType;
@@ -128,8 +137,8 @@ export class ParamfilesService {
     }
 
     // Check that at least one file is present
-    const languageFile = version.sourceFiles.find(sourceFile => {
-      return sourceFile.type === fileType;
+    const languageFile = versionsFileTypes.find(type => {
+      return type === fileType;
     });
 
     return languageFile !== undefined;
