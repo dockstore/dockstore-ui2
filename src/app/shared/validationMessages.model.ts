@@ -14,7 +14,27 @@
  *    limitations under the License.
  */
 
-export const formErrors = {
+interface FormErrors {
+  cwlPath: string;
+  wdlPath: string;
+  dockerfilePath: string;
+  gitPath: string;
+  imagePath: string;
+  label: string;
+  cwlTestParameterFilePath: string;
+  wdlTestParameterFilePath: string;
+  testParameterFilePath: string;
+  toolName: string;
+  email: string;
+  reference: string;
+  versionTag: string;
+  workflow_path: string;
+  workflowName: string;
+  amazonDockerRegistryPath: string;
+  sevenBridgesDockerRegistryPath: string;
+}
+
+export const formErrors: FormErrors = {
   cwlPath: '',
   wdlPath: '',
   dockerfilePath: '',

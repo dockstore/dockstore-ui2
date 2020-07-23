@@ -63,7 +63,7 @@ export abstract class Versions extends EntryTab {
     }
   }
 
-  clickSortColumn(columnName) {
+  clickSortColumn(columnName: string) {
     if (this.sortColumn === columnName) {
       this.sortReverse = !this.sortReverse;
     } else {
@@ -71,16 +71,16 @@ export abstract class Versions extends EntryTab {
       this.sortReverse = false;
     }
   }
-  getIconClass(columnName): IconDefinition {
+  getIconClass(columnName: string): IconDefinition {
     return this.dockstoreService.getIconClass(columnName, this.sortColumn, this.sortReverse);
   }
-  convertSorting(mode): string | undefined {
+  convertSorting(mode: string): string | undefined {
     if (mode && mode === DockstoreTool.ModeEnum.HOSTED) {
       this.sortColumn = 'id';
     }
     return this.sortReverse ? '-' + this.sortColumn : this.sortColumn;
   }
-  getDateTimeString(timestamp) {
+  getDateTimeString(timestamp: number) {
     if (timestamp) {
       return this.dateService.getDateTimeMessage(timestamp);
     } else {
