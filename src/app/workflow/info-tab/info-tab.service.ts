@@ -77,8 +77,8 @@ export class InfoTabService {
 
   updateAndRefresh(workflow: Workflow) {
     const message = 'Workflow Info';
-    workflow.workflowVersions = [];
-    this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(response => {
+    const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
+    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(response => {
       this.alertService.start('Updating ' + message);
       this.workflowsService.refresh(this.originalWorkflow.id).subscribe(
         refreshResponse => {
@@ -92,6 +92,19 @@ export class InfoTabService {
         }
       );
     });
+  }
+
+  /**
+   * PUT for an entry only allows the updating of selected properties.
+   * Sending back only the ones relevant.
+   * Additionally, the webservice does not appear to understand starredUsers which causes an error.
+   * Ideally this implementation should be similar to the tool counterpart
+   */
+  private getPartialEntryForUpdate(entry: Workflow): Workflow {
+    entry.workflowVersions = [];
+    entry.starredUsers = [];
+    entry.users = [];
+    return entry;
   }
 
   /**
