@@ -18,7 +18,7 @@ export class NotificationsService {
     this.notificationsStore.add(notification);
   }
 
-  update(id, notification: Partial<Notification>) {
+  update(id: ID, notification: Partial<Notification>) {
     this.notificationsStore.update(id, notification);
   }
 

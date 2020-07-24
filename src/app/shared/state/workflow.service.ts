@@ -9,10 +9,14 @@ import { WorkflowStore } from './workflow.store';
 
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
-  workflows$: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of unsorted workflows
-  sharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of unsorted shared workflows
-  nsSharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted shared workflows
-  nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
+  // This contains the list of unsorted workflows
+  workflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject(null);
+  // This contains the list of unsorted shared workflows
+  sharedWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject(null);
+  // This contains the list of sorted shared workflows
+  nsSharedWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject<Array<Workflow>>(null);
+  // This contains the list of sorted workflows
+  nsWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject<Array<Workflow>>(null);
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {}
@@ -60,7 +64,7 @@ export class WorkflowService {
     this.workflowStore.add(workflow);
   }
 
-  update(id, workflow: Partial<Service | BioWorkflow>) {
+  update(id: ID, workflow: Partial<Service | BioWorkflow>) {
     this.workflowStore.update(id, workflow);
   }
 

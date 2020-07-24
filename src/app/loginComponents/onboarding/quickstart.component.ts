@@ -22,7 +22,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 })
 export class QuickStartComponent implements OnInit {
   public curStep = 1;
-  public tokenSetComplete;
+  public tokenSetComplete: boolean;
   Dockstore = Dockstore;
   constructor() {}
   ngOnInit() {

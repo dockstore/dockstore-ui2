@@ -30,7 +30,7 @@ export class TokenService {
     this.tokenStore.add(token);
   }
 
-  update(id, token: Partial<Token>) {
+  update(id: ID, token: Partial<Token>) {
     this.tokenStore.update(id, token);
   }
 

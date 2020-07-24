@@ -31,7 +31,7 @@ export abstract class View implements OnDestroy {
     this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
-  getDateTimeMessage(timestamp) {
+  getDateTimeMessage(timestamp: number) {
     return this.dateService.getDateTimeMessage(timestamp);
   }
 

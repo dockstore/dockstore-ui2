@@ -15,7 +15,14 @@
  */
 import { Injectable } from '@angular/core';
 import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { Tag, WorkflowVersion } from './swagger';
+
+interface SourceObject {
+  version: string;
+  verifiedSource: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -67,8 +74,8 @@ export class DockstoreService {
     return '';
   }
 
-  getVerifiedSources(toolRef) {
-    const sources = [];
+  getVerifiedSources(toolRef: ExtendedDockstoreTool) {
+    const sources: Array<SourceObject> = [];
     if (toolRef !== null) {
       for (const version of toolRef.workflowVersions) {
         if (version.verified) {
@@ -84,8 +91,8 @@ export class DockstoreService {
     });
   }
 
-  getVerifiedWorkflowSources(workflow) {
-    const sources = [];
+  getVerifiedWorkflowSources(workflow: ExtendedWorkflow) {
+    const sources: Array<SourceObject> = [];
     if (workflow !== null) {
       for (const version of workflow.workflowVersions) {
         if (version.verified) {
