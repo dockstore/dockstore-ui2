@@ -82,7 +82,7 @@ export abstract class EntryFileSelector implements OnDestroy {
     }
   }
 
-  onDescriptorChange(descriptor) {
+  onDescriptorChange(descriptor: ToolDescriptor.TypeEnum) {
     this.currentDescriptor = descriptor;
     this.reactToDescriptor();
   }
@@ -109,14 +109,14 @@ export abstract class EntryFileSelector implements OnDestroy {
       });
   }
 
-  onFileChange(file) {
+  onFileChange(file: ToolFile) {
     if (this.currentFile !== file) {
       this.currentFile = file;
       this.reactToFile();
     }
   }
 
-  onVersionChange(value) {
+  onVersionChange(value: Tag) {
     this._selectedVersion = value;
     this.reactToVersion();
   }

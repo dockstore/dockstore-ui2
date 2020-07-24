@@ -47,14 +47,14 @@ export abstract class Entry implements OnInit, OnDestroy {
   protected _toolType: string;
   protected isLoggedIn: boolean;
   protected validVersions: Array<WorkflowVersion | Tag>;
-  protected defaultVersion;
+  protected defaultVersion: WorkflowVersion | Tag;
   protected published: boolean;
   public labelPattern = validationDescriptorPatterns.label;
   public labelsEditMode: boolean;
-  public error;
-  public validTabs;
+  public error: boolean;
+  public validTabs: Array<string>;
   public currentTab = 'info';
-  public urlVersion;
+  public urlVersion: string;
   EntryType = EntryType;
   location: Location;
   public selectedVersion: WorkflowVersion | Tag | null = null;
@@ -144,7 +144,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     this.labelsEditMode = !this.labelsEditMode;
   }
 
-  sumCounts(count): void {
+  sumCounts(count: number): void {
     this.totalShare += count;
   }
 

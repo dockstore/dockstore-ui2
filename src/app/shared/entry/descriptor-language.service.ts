@@ -174,7 +174,7 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   getDescriptorLanguagesInnerHTML(descriptorLanguageBeans: DescriptorLanguageBean[]): string {
-    const innerHTMLArray = [];
+    const innerHTMLArray: Array<string> = [];
     if (descriptorLanguageBeans.length === 0) {
       return '';
     }

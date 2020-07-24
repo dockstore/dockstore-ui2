@@ -12,7 +12,7 @@ import { UserQuery } from '../../shared/user/user.query';
   styleUrls: ['./onboarding.component.scss']
 })
 export class OnboardingComponent implements OnInit, OnDestroy {
-  public tokenSetComplete;
+  public tokenSetComplete: boolean;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   extendedUser: ExtendedUserData;
   user: User;
