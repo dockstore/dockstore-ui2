@@ -193,7 +193,7 @@ export class DescriptorLanguageService {
           break;
         }
         case this.knownGalaxyValue: {
-          innerHTMLArray.push('<a href="https://training.galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>');
+          innerHTMLArray.push('<a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>');
           break;
         }
         default: {
