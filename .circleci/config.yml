@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
+  slack: circleci/slack@3.4.2
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -41,7 +42,10 @@ jobs:
       - run:
           name: Run remote verification test against dev (with auth)
           command: bash -i -c 'npm run test-dev-auth'
-
+      - slack/status:
+          fail_only: true
+          failure_message: Smoke tests failed!
+          webhook: https://hooks.slack.com/services/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
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
