@@ -84,7 +84,7 @@ export class LaunchComponent extends Base {
     const newDescriptors: Array<DescriptorTypeEnum> = [];
 
     // Return empty array if no descriptors present yet
-    if (descriptors === undefined || version === undefined) {
+    if (descriptors === undefined || version === undefined || versionsFileTypes === undefined) {
       return newDescriptors;
     }
 

@@ -16,10 +16,10 @@
 import { Component, Input } from '@angular/core';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
+import { ContainertagsService, SourceFile } from '../../shared/openapi';
 import { DockstoreTool, ToolDescriptor } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { Tag } from './../../shared/swagger/model/tag';
 
 @Component({
@@ -28,15 +28,16 @@ import { Tag } from './../../shared/swagger/model/tag';
   styleUrls: ['./tool-file-editor.component.scss']
 })
 export class ToolFileEditorComponent extends FileEditing {
-  dockerFile: Array<SourceFile> = [];
-  descriptorFiles: Array<SourceFile> = [];
-  testParameterFiles: Array<SourceFile> = [];
-  originalSourceFiles: Array<SourceFile> = [];
+  dockerFile = [];
+  descriptorFiles = [];
+  testParameterFiles = [];
+  originalSourceFiles = [];
   currentVersion: Tag;
   selectedDescriptorType: ToolDescriptor.TypeEnum = ToolDescriptor.TypeEnum.CWL;
   isNewestVersion = false;
   ToolDescriptor = ToolDescriptor;
   @Input() entrypath: string;
+  @Input() id: number;
   @Input() set selectedVersion(value: Tag) {
     this.currentVersion = value;
     this.isNewestVersion = this.checkIfNewestVersion();
@@ -44,12 +45,16 @@ export class ToolFileEditorComponent extends FileEditing {
     this.clearSourceFiles();
     if (value != null) {
       // Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
-      this.originalSourceFiles = JSON.parse(JSON.stringify(value.sourceFiles));
       this.loadVersionSourcefiles();
     }
   }
 
-  constructor(private hostedService: HostedService, private containerService: ContainerService, protected alertService: AlertService) {
+  constructor(
+    private hostedService: HostedService,
+    private containerService: ContainerService,
+    protected alertService: AlertService,
+    private containerTagsService: ContainertagsService
+  ) {
     super(alertService);
   }
 
@@ -66,17 +71,20 @@ export class ToolFileEditorComponent extends FileEditing {
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles(): void {
-    this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.currentVersion.sourceFiles)));
-    this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.currentVersion.sourceFiles)));
-    this.dockerFile = JSON.parse(JSON.stringify(this.getDockerFile(this.currentVersion.sourceFiles)));
+    this.containerTagsService.getTagsSourcefiles(this.id, this.currentVersion.id).subscribe((sourcefiles: Array<SourceFile>) => {
+      this.originalSourceFiles = sourcefiles;
+      this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.originalSourceFiles)));
+      this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.originalSourceFiles)));
+      this.dockerFile = JSON.parse(JSON.stringify(this.getDockerFile(this.originalSourceFiles)));
+    });
   }
 
   /**
    * Combines sourcefiles into one array
    * @return {Array<SourceFile>} Array of sourcefiles
    */
-  getCombinedSourceFiles(): Array<SourceFile> {
-    let baseFiles: Array<SourceFile> = [];
+  getCombinedSourceFiles(): Array<any> {
+    let baseFiles = [];
     if (this.descriptorFiles) {
       baseFiles = baseFiles.concat(this.descriptorFiles);
     }
