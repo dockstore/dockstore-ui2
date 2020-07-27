@@ -201,9 +201,11 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.entryService.getVerifiedPlatforms(tool.id).subscribe((verifiedVersions: Array<VersionVerifiedPlatform>) => {
         this.versionsWithVerirfiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
       });
-      this.entryService.getTagsFileTypes(tool.id, this.selectedVersion.id).subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
-        this.versionsFileTypes = fileTypes;
-      });
+      if (this.selectedVersion) {
+        this.entryService.getTagsFileTypes(tool.id, this.selectedVersion.id).subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
+          this.versionsFileTypes = fileTypes;
+        });
+      }
     }
   }
 

@@ -16,10 +16,11 @@
 import { Component, Input } from '@angular/core';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { ContainertagsService, SourceFile } from '../../shared/openapi';
+import { ContainertagsService } from '../../shared/openapi';
 import { DockstoreTool, ToolDescriptor } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { Tag } from './../../shared/swagger/model/tag';
 
 @Component({
@@ -28,10 +29,10 @@ import { Tag } from './../../shared/swagger/model/tag';
   styleUrls: ['./tool-file-editor.component.scss']
 })
 export class ToolFileEditorComponent extends FileEditing {
-  dockerFile = [];
-  descriptorFiles = [];
-  testParameterFiles = [];
-  originalSourceFiles = [];
+  dockerFile: Array<SourceFile> = [];
+  descriptorFiles: Array<SourceFile> = [];
+  testParameterFiles: Array<SourceFile> = [];
+  originalSourceFiles: Array<SourceFile> = [];
   currentVersion: Tag;
   selectedDescriptorType: ToolDescriptor.TypeEnum = ToolDescriptor.TypeEnum.CWL;
   isNewestVersion = false;
