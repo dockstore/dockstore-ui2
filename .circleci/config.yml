@@ -45,7 +45,7 @@ jobs:
       - slack/status:
           fail_only: true
           failure_message: Smoke tests failed!
-          webhook: https://hooks.slack.com/services/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
+          webhook: $SLACK_WEBHOOK
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
