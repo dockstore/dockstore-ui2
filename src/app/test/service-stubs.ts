@@ -347,6 +347,12 @@ export class WorkflowStubService {
   }
 }
 
+export class EntryStubService {
+  getTagsFileTypes(entryid: number, versionid: number): Observable<Array<string>> {
+    return observableOf([]);
+  }
+}
+
 export class HostedStubService {
   deleteHostedWorkflowVersion(id: string, version: string) {
     return observableOf({});

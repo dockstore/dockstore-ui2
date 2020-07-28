@@ -17,11 +17,11 @@ export class VerifiedByService {
    * @memberof VerifiedByService
    */
 
-  getVerifiedByString(verifiedSources: Array<VersionVerifiedPlatform>, version: Tag | WorkflowVersion): Array<string> {
+  getVerifiedByString(verifiedSources: Array<VersionVerifiedPlatform>, versionid: number): Array<string> {
     const verifiedSourceMap = new Map<string, Set<string>>();
-    if (version && verifiedSources) {
+    if (versionid && verifiedSources) {
       verifiedSources
-        .filter((vs: VersionVerifiedPlatform) => vs.versionId === version.id)
+        .filter((vs: VersionVerifiedPlatform) => vs.versionId === versionid)
         .forEach(vs => {
           if (vs.verified) {
             const platform: string = vs.source;

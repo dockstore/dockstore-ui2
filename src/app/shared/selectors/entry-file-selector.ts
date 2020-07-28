@@ -73,7 +73,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   reactToVersion(entryid: number): void {
     this.loading = true;
     this.entryService
-      .getTagsFileTypes(entryid, this._selectedVersion.id)
+      .getVersionsFileTypes(entryid, this._selectedVersion.id)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
         this.versionsFileTypes = fileTypes;

@@ -18,7 +18,8 @@ import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
-import { WorkflowVersion } from '../shared/swagger';
+import { VersionVerifiedPlatform } from '../shared/openapi';
+import { Tag, WorkflowVersion } from '../shared/swagger';
 import { Notification } from '../shared/swagger/model/notification';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
@@ -136,6 +137,12 @@ export const sampleWdlWorkflow2: Workflow = {
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {
+  id: 1,
+  reference: '',
+  name: 'master'
+};
+
+export const sampleToolVersion: Tag = {
   id: 1,
   reference: '',
   name: 'master'
@@ -466,6 +473,25 @@ export const sampleSourceFile: SourceFile = {
   absolutePath: '',
   type: SourceFile.TypeEnum.CWLTESTJSON
 };
+
+export const versionVerifiedPlatform: Array<VersionVerifiedPlatform> = [
+  {
+    metadata: 'Docktesters group',
+    path: '/Dockstore-BTCA-SG.json',
+    platformVersion: '1.0.0',
+    source: 'Dockstore CLI',
+    verified: true,
+    versionId: 1
+  },
+  {
+    metadata: 'Docktesters group',
+    path: '/Dockstore.json',
+    platformVersion: null,
+    source: 'Dockstore CLI',
+    verified: true,
+    versionId: 1
+  }
+];
 
 export const testSourceFiles: Array<SourceFile> = [
   {

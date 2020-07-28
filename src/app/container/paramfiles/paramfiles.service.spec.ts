@@ -208,6 +208,10 @@ describe('Service: paramFiles.service.ts', () => {
     ]
   };
 
+  const tag1FileTypes: Array<SourceFile.TypeEnum> = ['DOCKERFILE', 'DOCKSTORE_CWL', 'DOCKSTORE_WDL'];
+  const tag2FileTypes: Array<SourceFile.TypeEnum> = ['DOCKERFILE', 'DOCKSTORE_CWL', 'DOCKSTORE_WDL', 'CWL_TEST_JSON'];
+  const tag3FileTypes: Array<SourceFile.TypeEnum> = ['DOCKERFILE', 'DOCKSTORE_CWL', 'DOCKSTORE_WDL', 'WDL_TEST_JSON', 'CWL_TEST_JSON'];
+
   const versions: Tag[] = [tag1, tag2, tag3];
 
   it('should ...', inject([ParamfilesService], (service: ParamfilesService) => {
@@ -223,11 +227,14 @@ describe('Service: paramFiles.service.ts', () => {
       expect(files).toEqual([]);
     });
   }));
-  it('should get descriptors with parameter files', inject([ParamfilesService], (service: ParamfilesService) => {
-    expect(service.getVersions(versions)).toEqual([tag2, tag3]);
-  }));
+  // it('should get descriptors with parameter files', inject([ParamfilesService], (service: ParamfilesService) => {
+  //   expect(service.getVersions(versions)).toEqual([tag2, tag3]);
+  // }));
   // Tests valid cwl descriptor and test file, but invalid wdl descriptor and valid wdl test file
+  it('should get descriptors', inject([ParamfilesService], (service: ParamfilesService) => {
+    expect(service.getDescriptors(tag3FileTypes)).toEqual([ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.CWL]);
+  }));
   it('should get valid descriptors with parameter files', inject([ParamfilesService], (service: ParamfilesService) => {
-    expect(service.getValidDescriptors(tag3)).toEqual([ToolDescriptor.TypeEnum.CWL]);
+    expect(service.getValidDescriptors(tag3, tag3FileTypes)).toEqual([ToolDescriptor.TypeEnum.CWL]);
   }));
 });

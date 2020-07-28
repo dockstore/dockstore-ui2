@@ -25,7 +25,7 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.css']
 })
-export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
+export class FilesWorkflowComponent extends Files {
   @Input() selectedVersion: WorkflowVersion;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
   @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
@@ -34,13 +34,5 @@ export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
   previousVersionName: string;
   constructor(private paramfilesService: ParamfilesService) {
     super();
-  }
-
-  // FIX THIS
-  ngOnInit() {
-    // this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
-  }
-  ngOnChanges() {
-    // this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 }

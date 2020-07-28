@@ -19,7 +19,7 @@ export class VerifiedByComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.version) {
-      this.verifiedByStringArray = this.verifiedByService.getVerifiedByString(this.verifiedByPlatform, this.version);
+      this.verifiedByStringArray = this.verifiedByService.getVerifiedByString(this.verifiedByPlatform, this.version.id);
     }
   }
 

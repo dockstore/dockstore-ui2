@@ -24,23 +24,17 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
   selector: 'app-files-container',
   templateUrl: './files.component.html'
 })
-export class FilesContainerComponent extends Files implements OnInit, OnChanges {
+export class FilesContainerComponent extends Files implements OnChanges {
   @Input() selectedVersion: Tag;
-  versionsWithParamfiles: Array<any>;
   constructor(private paramfilesService: ParamfilesService, private gA4GHFilesService: GA4GHFilesService) {
     super();
   }
 
-  // FIX THIS
-  ngOnInit() {
-    // this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
-  }
   ngOnChanges() {
     if (!this.selectedVersion) {
       this.gA4GHFilesService.clearFiles();
     } else {
       this.gA4GHFilesService.updateFiles(this.entrypath, this.selectedVersion.name);
-      // this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
     }
   }
 }

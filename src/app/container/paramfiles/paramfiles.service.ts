@@ -144,7 +144,7 @@ export class ParamfilesService {
     return languageFile !== undefined;
   }
 
-  // FIX THIS
+  // We aren't doing anything with the information we get from this function? Deleted references that call this function
   // get versions which have test parameter files
   // getVersions(versions: Array<Tag | WorkflowVersion>) {
   //   const versionsWithParamfiles = [];

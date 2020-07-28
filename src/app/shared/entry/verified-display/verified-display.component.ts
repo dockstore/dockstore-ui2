@@ -41,51 +41,22 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // Update the dataSource's data
-    // fix this
-    // this.dataSource.data = this.getCustomVerificationInformationArray(this.sourceFiles);
-    this.dataSource.data = this.getCustomVerificationInformationArray2(this.version, this.verifiedByPlatform);
+    this.dataSource.data = this.getCustomVerificationInformationArray(this.version.id, this.verifiedByPlatform);
   }
 
   /**
    * Extracts the custom verification information object array from the sourcefiles
    *
-   * @param {Array<SourceFile>} sourceFiles  The list of sourcefiles from an entry's version
+   * @param {number} versionid The versionid to get verfication information for
+   * @param {Array<VersionVerifiedPlatform>} sourceFiles  The list of sourcefiles from an entry's version
    * @returns {Array<CustomVerificationInformationObject>}   Custom object array (that contains path, verifier, platform)
    * @memberof VerifiedDisplayComponent
    */
-  //
-  getCustomVerificationInformationArray(sourceFiles: Array<SourceFile>): Array<any> {
+  getCustomVerificationInformationArray(versionid: number, verifiedByPlatform: Array<VersionVerifiedPlatform>): Array<any> {
     const customVerificationInformationArray: Array<VerificationInformation> = new Array();
-    sourceFiles.forEach((sourceFile: SourceFile) => {
-      const verifiedBySource = sourceFile.verifiedBySource;
-      const verifiedBySourceArray = Object.entries(verifiedBySource);
-      verifiedBySourceArray.forEach(arrayElement => {
-        const platform: string = arrayElement[0];
-        const verifiedInformation: VerificationInformation = arrayElement[1];
-        if (verifiedInformation.verified) {
-          const customVerificationInformationObject = {
-            // This allows the string to break after every slash for word-wrapping purposes
-            path: sourceFile.path.replace(/\//g, '/' + '\u2028'),
-            platform: platform,
-            platformVersion: verifiedInformation.platformVersion ? verifiedInformation.platformVersion : 'N/A',
-            metadata: verifiedInformation.metadata
-          };
-          customVerificationInformationArray.push(customVerificationInformationObject);
-        }
-      });
-    });
-    console.log('verified-display.component.ts' + this.verifiedByPlatform);
-    return customVerificationInformationArray;
-  }
-
-  getCustomVerificationInformationArray2(
-    version: Tag | WorkflowVersion | null,
-    verifiedByPlatform: Array<VersionVerifiedPlatform>
-  ): Array<any> {
-    const customVerificationInformationArray: Array<VerificationInformation> = new Array();
-    if (version && verifiedByPlatform) {
+    if (versionid && verifiedByPlatform) {
       verifiedByPlatform
-        .filter((vs: VersionVerifiedPlatform) => vs.versionId === version.id)
+        .filter((vs: VersionVerifiedPlatform) => vs.versionId === versionid)
         .forEach(vs => {
           if (vs.verified) {
             const customVerificationInformationObject = {
@@ -99,7 +70,6 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
           }
         });
     }
-    console.log('verified-display.component.ts' + this.verifiedByPlatform);
     return customVerificationInformationArray;
   }
 }

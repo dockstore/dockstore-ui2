@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -51,7 +52,8 @@ describe('ToolFileEditorComponent', () => {
         MatTooltipModule,
         MatCardModule,
         BrowserAnimationsModule,
-        ClipboardModule
+        ClipboardModule,
+        HttpClientModule
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },

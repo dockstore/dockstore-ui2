@@ -5,11 +5,11 @@ import { Version, VersionVerifiedPlatform } from '../openapi';
   name: 'verifiedPlatforms'
 })
 export class VerifiedPlatformsPipe implements PipeTransform {
-  transform(version: Version, versionVerifiedPlatform: Array<VersionVerifiedPlatform>): string {
+  transform(versionid: number, versionVerifiedPlatform: Array<VersionVerifiedPlatform>): string {
     const platforms = new Set<string>();
-    if (versionVerifiedPlatform) {
+    if (versionVerifiedPlatform && versionid) {
       versionVerifiedPlatform.forEach(value => {
-        if (value.versionId === version.id) {
+        if (value.versionId === versionid) {
           platforms.add(value.source);
         }
       });

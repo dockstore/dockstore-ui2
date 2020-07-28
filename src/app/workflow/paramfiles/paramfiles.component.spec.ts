@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -30,6 +31,7 @@ describe('ParamfilesWorkflowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ParamfilesWorkflowComponent],
+      imports: [HttpClientModule],
       providers: [
         { provide: ParamfilesService, useClass: ParamFilesStubService },
         { provide: FileService, useClass: FileStubService },

@@ -13,14 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContainersStubService, ContainerStubService, GA4GHStubService } from '../../../../src/app/test/service-stubs';
+import { ContainersStubService, ContainerStubService, EntryStubService, GA4GHStubService } from '../../../../src/app/test/service-stubs';
 import { ContainerService } from '../../shared/container.service';
 import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
+import { EntriesService } from '../../shared/openapi';
 import { ContainersService, GA4GHService } from '../../shared/swagger';
+import { sampleToolVersion } from '../../test/mocked-objects';
 import { DescriptorsComponent } from './descriptors.component';
 
 describe('DescriptorsComponent', () => {
@@ -33,13 +36,15 @@ describe('DescriptorsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DescriptorsComponent],
+      imports: [HttpClientModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         DescriptorService,
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: FileService, useClass: FileStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService }
+        { provide: GA4GHService, useClass: GA4GHStubService },
+        { provide: EntriesService, useClass: EntryStubService }
       ]
     }).compileComponents();
   }));
@@ -48,7 +53,7 @@ describe('DescriptorsComponent', () => {
     fixture = TestBed.createComponent(DescriptorsComponent);
     component = fixture.componentInstance;
     component.id = 5;
-    component.selectedVersion = null;
+    component.selectedVersion = sampleToolVersion;
     fixture.detectChanges();
   });
 
