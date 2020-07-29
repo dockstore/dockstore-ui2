@@ -45,7 +45,6 @@ export class ToolFileEditorComponent extends FileEditing {
     this.editing = false;
     this.clearSourceFiles();
     if (value != null) {
-      // Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
       this.loadVersionSourcefiles();
     }
   }

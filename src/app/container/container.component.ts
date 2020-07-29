@@ -73,7 +73,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public schema: BioschemaTool;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
-  public versionsWithVerirfiedPlatforms: Array<VersionVerifiedPlatform> = [];
+  public versionsWithVerifiedPlatforms: Array<VersionVerifiedPlatform> = [];
   public versionsFileTypes: Array<SourceFile.TypeEnum>;
   constructor(
     private dockstoreService: DockstoreService,
@@ -179,8 +179,14 @@ export class ContainerComponent extends Entry implements AfterViewInit {
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
+          this.versionsFileTypes = [];
         } else {
           this.selectedVersion = this.selectTag(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
+          if (this.selectedVersion) {
+            this.entryService.getVersionsFileTypes(tool.id, this.selectedVersion.id).subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
+              this.versionsFileTypes = fileTypes;
+            });
+          }
         }
       }
       // Select version
@@ -199,13 +205,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.entryService.getVerifiedPlatforms(tool.id).subscribe((verifiedVersions: Array<VersionVerifiedPlatform>) => {
-        this.versionsWithVerirfiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
+        this.versionsWithVerifiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
       });
-      if (this.selectedVersion) {
-        this.entryService.getVersionsFileTypes(tool.id, this.selectedVersion.id).subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
-          this.versionsFileTypes = fileTypes;
-        });
-      }
     }
   }
 

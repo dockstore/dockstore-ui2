@@ -197,7 +197,7 @@
                   id="versionsTab"
                   [verifiedSource]="(extendedTool$ | async)?.verifiedSources"
                   [selectedVersion]="selectedVersion"
-                  [verifiedVersionPlatforms]="versionsWithVerirfiedPlatforms"
+                  [verifiedVersionPlatforms]="versionsWithVerifiedPlatforms"
                 >
                 </app-versions-container>
               </div>
@@ -346,7 +346,7 @@
       <app-verified-by
         *ngIf="selectedVersion"
         [version]="selectedVersion"
-        [verifiedByPlatform]="versionsWithVerirfiedPlatforms"
+        [verifiedByPlatform]="versionsWithVerifiedPlatforms"
       ></app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="tool">
         <div class="panel-heading">

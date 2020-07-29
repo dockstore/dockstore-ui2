@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { VersionVerifiedPlatform } from './openapi';
-import { SourceFile } from './swagger';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,8 @@ export class VerifiedByService {
    * This converts the verified source in a version's sourcefiles into a an array of strings
    * to be display in the right sidebar of an entry component
    *
-   * @param {Array<SourceFile>} sourceFiles  The sourcesfiles of an entry's version
+   * @param {Array<VersionVerifiedPlatform>} verifiedSources  The sourcesfiles of an entry's version
+   * @param {number} versionid id of the version you want verified sources for.
    * @returns {Array<string>}                    An array of strings to be displayed seperated by newlines
    * @memberof VerifiedByService
    */
