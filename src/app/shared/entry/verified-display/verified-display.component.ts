@@ -25,7 +25,6 @@ import { SourceFile, Tag, VerificationInformation, WorkflowVersion } from '../..
   styleUrls: ['./verified-display.component.scss']
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
-  @Input() sourceFiles: SourceFile[];
   @Input() verifiedByPlatform: Array<VersionVerifiedPlatform>;
   @Input() version: Tag | WorkflowVersion | null;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
