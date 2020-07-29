@@ -69,7 +69,6 @@ export abstract class EntryFileSelector implements OnDestroy {
     return this.fileService.getDescriptorPath(path, this._selectedVersion, this.currentFile, this.currentDescriptor, entryType);
   }
 
-  //
   reactToVersion(entryid: number): void {
     this.loading = true;
     this.entryService

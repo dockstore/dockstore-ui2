@@ -54,7 +54,7 @@ export class ExtendedDockstoreToolService {
   remove() {
     this.extendedDockstoreToolStore.update({});
   }
-  /////
+
   extendTool(tool: DockstoreTool): ExtendedDockstoreTool {
     if (tool) {
       let extendedTool: ExtendedDockstoreTool = { ...tool };
