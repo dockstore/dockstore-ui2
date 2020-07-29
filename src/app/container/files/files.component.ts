@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 import { Files } from '../../shared/files';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';

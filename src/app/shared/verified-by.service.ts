@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { VersionVerifiedPlatform } from './openapi';
-import { SourceFile, Tag, WorkflowVersion } from './swagger';
+import { SourceFile } from './swagger';
 
 @Injectable({
   providedIn: 'root'

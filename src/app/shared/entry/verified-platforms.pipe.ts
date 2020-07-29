@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Version, VersionVerifiedPlatform } from '../openapi';
+import { VersionVerifiedPlatform } from '../openapi';
 
 @Pipe({
   name: 'verifiedPlatforms'
