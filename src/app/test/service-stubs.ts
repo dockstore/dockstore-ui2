@@ -348,7 +348,7 @@ export class WorkflowStubService {
 }
 
 export class EntryStubService {
-  getTagsFileTypes(entryid: number, versionid: number): Observable<Array<string>> {
+  getVersionsFileTypes(entryid: number, versionid: number): Observable<Array<string>> {
     return observableOf([]);
   }
 }
