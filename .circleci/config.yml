@@ -39,9 +39,10 @@ jobs:
       - run:
           name: Run remote verification test against dev (no auth)
           command: bash -i -c 'npm run test-dev-no-auth'
-      - run:
-          name: Run remote verification test against dev (with auth)
-          command: bash -i -c 'npm run test-dev-auth'
+# Disable until fixed; makes noisy alerts. SEAB-1454 to fix them
+#      - run:
+#          name: Run remote verification test against dev (with auth)
+#          command: bash -i -c 'npm run test-dev-auth'
       - slack/status:
           fail_only: true
           failure_message: Smoke tests failed!
