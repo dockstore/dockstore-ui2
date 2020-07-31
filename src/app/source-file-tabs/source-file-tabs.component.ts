@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SafeUrl } from '@angular/platform-browser';
@@ -13,15 +13,10 @@ import { SourceFileTabsService } from './source-file-tabs.service';
   templateUrl: './source-file-tabs.component.html',
   styleUrls: ['./source-file-tabs.component.scss']
 })
-export class SourceFileTabsComponent implements OnInit {
+export class SourceFileTabsComponent implements OnChanges {
   @Input() workflowId: number;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
-  @Input() set version(value: WorkflowVersion) {
-    if (value != null) {
-      this.currentVersion = value;
-      this.setupVersionFileTabs();
-    }
-  }
+  @Input() version: WorkflowVersion | null;
   loading = true;
   displayError = false;
   currentVersion: WorkflowVersion;
@@ -37,8 +32,11 @@ export class SourceFileTabsComponent implements OnInit {
 
   constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
 
-  ngOnInit() {
-    this.setupVersionFileTabs();
+  ngOnChanges() {
+    if (this.version != null) {
+      this.currentVersion = this.version;
+      this.setupVersionFileTabs();
+    }
   }
 
   setupVersionFileTabs() {
