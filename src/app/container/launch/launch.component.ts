@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -31,7 +31,7 @@ import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css']
 })
-export class LaunchComponent extends Base {
+export class LaunchComponent extends Base implements OnInit, OnChanges {
   @Input() basePath: string;
   @Input() path: string;
   @Input() toolname: string;
@@ -39,13 +39,7 @@ export class LaunchComponent extends Base {
   @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
 
   _selectedVersion: Tag;
-  @Input() set selectedVersion(value: Tag) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.reactToDescriptor();
-      this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
-    }
-  }
+  @Input() selectedVersion: Tag;
 
   params: string;
   cli: string;
@@ -70,6 +64,9 @@ export class LaunchComponent extends Base {
     private descriptorLanguageService: DescriptorLanguageService
   ) {
     super();
+  }
+
+  ngOnInit(): void {
     this.descriptorLanguageService.filteredDescriptorLanguages$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
@@ -77,6 +74,12 @@ export class LaunchComponent extends Base {
         this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
       });
     this.published$ = this.toolQuery.toolIsPublished$;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this._selectedVersion = this.selectedVersion;
+    this.reactToDescriptor();
+    this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
   }
 
   // Returns an array of descriptors that are valid for the given tool version
