@@ -256,7 +256,7 @@ workflows:
   nightly:
     triggers:
       - schedule:
-          cron: "*/10 * * * *" # This is 4am PDT / 3am PST
+          cron: "0,10,20 * * * *" # This is 4am PDT / 3am PST
           filters:
             branches:
               only:
