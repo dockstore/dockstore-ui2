@@ -15,6 +15,7 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -183,9 +184,17 @@ export class ContainerComponent extends Entry implements AfterViewInit {
         } else {
           this.selectedVersion = this.selectTag(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
           if (this.selectedVersion) {
-            this.entryService.getVersionsFileTypes(tool.id, this.selectedVersion.id).subscribe((fileTypes: Array<SourceFile.TypeEnum>) => {
-              this.versionsFileTypes = fileTypes;
-            });
+            this.alertService.start('Getting version\'s unique file types');
+            this.entryService.getVersionsFileTypes(tool.id, this.selectedVersion.id).subscribe(
+              (fileTypes: Array<SourceFile.TypeEnum>) => {
+                this.versionsFileTypes = fileTypes;
+                this.alertService.simpleSuccess();
+              },
+              (error: HttpErrorResponse) => {
+                this.alertService.detailedError(error);
+                this.versionsFileTypes = [];
+              }
+            );
           }
         }
       }
@@ -204,9 +213,17 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
-      this.entryService.getVerifiedPlatforms(tool.id).subscribe((verifiedVersions: Array<VersionVerifiedPlatform>) => {
-        this.versionsWithVerifiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
-      });
+      this.alertService.start('Getting the tool\'s verified platforms');
+      this.entryService.getVerifiedPlatforms(tool.id).subscribe(
+        (verifiedVersions: Array<VersionVerifiedPlatform>) => {
+          this.versionsWithVerifiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
+          this.alertService.simpleSuccess();
+        },
+        error => {
+          this.alertService.detailedError(error);
+          this.versionsWithVerifiedPlatforms = [];
+        }
+      );
     }
   }
 

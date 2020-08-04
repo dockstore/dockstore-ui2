@@ -16,6 +16,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ContainersStubService, ContainerStubService, EntryStubService, GA4GHStubService } from '../../../../src/app/test/service-stubs';
 import { ContainerService } from '../../shared/container.service';
@@ -36,7 +37,7 @@ describe('DescriptorsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DescriptorsComponent],
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, MatSnackBarModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         DescriptorService,

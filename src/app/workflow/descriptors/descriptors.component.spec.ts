@@ -16,6 +16,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
@@ -31,7 +32,7 @@ describe('DescriptorsWorkflowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DescriptorsWorkflowComponent],
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, MatSnackBarModule],
       providers: [
         { provide: DescriptorService, useClass: DescriptorsStubService },
         { provide: FileService, useClass: FileStubService },

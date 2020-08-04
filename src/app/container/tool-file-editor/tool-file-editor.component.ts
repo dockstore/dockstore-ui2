@@ -69,6 +69,9 @@ export class ToolFileEditorComponent extends FileEditing {
   /**
    * Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
+   * Reason for JSON -> stringify -> JSON:
+   * Leftover issue with Akita integration. Akita has readonly objects but we sometimes use it as-is with something like
+   * ngModel which will not work.
    */
   loadVersionSourcefiles(): void {
     this.containerTagsService.getTagsSourcefiles(this.id, this.currentVersion.id).subscribe((sourcefiles: Array<SourceFile>) => {
@@ -83,7 +86,7 @@ export class ToolFileEditorComponent extends FileEditing {
    * Combines sourcefiles into one array
    * @return {Array<SourceFile>} Array of sourcefiles
    */
-  getCombinedSourceFiles(): Array<any> {
+  getCombinedSourceFiles(): Array<SourceFile> {
     let baseFiles = [];
     if (this.descriptorFiles) {
       baseFiles = baseFiles.concat(this.descriptorFiles);

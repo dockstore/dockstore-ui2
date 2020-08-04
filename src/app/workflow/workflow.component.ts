@@ -250,9 +250,16 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             }
           });
       }
-      this.entryService.getVerifiedPlatforms(workflow.id).subscribe((verifiedVersion: Array<VersionVerifiedPlatform>) => {
-        this.versionsWithVerirfiedPlatforms = verifiedVersion.map(value => Object.assign({}, value));
-      });
+      this.alertService.start('Getting the workflow\'s verified platforms');
+      this.entryService.getVerifiedPlatforms(workflow.id).subscribe(
+        (verifiedVersion: Array<VersionVerifiedPlatform>) => {
+          this.versionsWithVerirfiedPlatforms = verifiedVersion.map(value => Object.assign({}, value));
+        },
+        error => {
+          this.alertService.detailedError(error);
+          this.versionsWithVerirfiedPlatforms = [];
+        }
+      );
     }
   }
 

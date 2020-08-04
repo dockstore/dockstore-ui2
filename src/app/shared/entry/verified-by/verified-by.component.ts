@@ -28,7 +28,6 @@ export class VerifiedByComponent implements OnChanges {
    *
    * @memberof VerifiedByComponent
    */
-  //
   openVerificationAndAvailableLogsDialog() {
     this.matDialog.open(AvailableLogsComponent, {
       data: {

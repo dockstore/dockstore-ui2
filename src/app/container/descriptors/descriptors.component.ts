@@ -15,6 +15,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
@@ -53,9 +54,10 @@ export class DescriptorsComponent extends EntryFileSelector {
     protected gA4GHFilesService: GA4GHFilesService,
     protected filesService: FilesService,
     protected filesQuery: FilesQuery,
-    protected entryService: EntriesService
+    protected entryService: EntriesService,
+    protected alertService: AlertService
   ) {
-    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery, entryService);
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery, entryService, alertService);
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 

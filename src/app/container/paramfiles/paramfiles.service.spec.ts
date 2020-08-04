@@ -227,9 +227,6 @@ describe('Service: paramFiles.service.ts', () => {
       expect(files).toEqual([]);
     });
   }));
-  // it('should get descriptors with parameter files', inject([ParamfilesService], (service: ParamfilesService) => {
-  //   expect(service.getVersions(versions)).toEqual([tag2, tag3]);
-  // }));
   // Tests valid cwl descriptor and test file, but invalid wdl descriptor and valid wdl test file
   it('should get descriptors', inject([ParamfilesService], (service: ParamfilesService) => {
     expect(service.getDescriptors(tag3FileTypes)).toEqual([ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.CWL]);

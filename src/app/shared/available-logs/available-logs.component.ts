@@ -11,6 +11,11 @@ import { AvailableLogsService } from '../state/available-logs.service';
 import { CheckerWorkflowQuery } from '../state/checker-workflow.query';
 import { Tag, WorkflowVersion } from '../swagger';
 
+interface VersionVerifiedInformation {
+  version: WorkflowVersion | Tag;
+  verifiedByPlatform: Array<VersionVerifiedPlatform>;
+}
+
 @Component({
   selector: 'available-logs',
   templateUrl: './available-logs.component.html',
@@ -28,7 +33,7 @@ export class AvailableLogsComponent extends Base implements OnInit {
     private availableLogsQuery: AvailableLogsQuery,
     private checkerWorkflowQuery: CheckerWorkflowQuery,
     private availableLogsService: AvailableLogsService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: VersionVerifiedInformation
   ) {
     super();
     this.version = data.version;
