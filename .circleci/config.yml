@@ -37,12 +37,20 @@ jobs:
           name: Prebuild
           command: bash -i -c 'npm run prebuild.prod'
       - run:
+          name: create directory to store cypress artifacts
+          command: mkdir -p nightly-test-results/junit
+      - run:
           name: Run remote verification test against dev (no auth)
           command: bash -i -c 'npm run test-dev-no-auth'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-no-auth-[hash].xml
 # Disable until fixed; makes noisy alerts. SEAB-1454 to fix them
 #      - run:
 #          name: Run remote verification test against dev (with auth)
 #          command: bash -i -c 'npm run test-dev-auth'
+#          environment:
+#            MOCHA_FILE: nightly-test-results/junit/test-dev-auth-[hash].xml
+      - upload_nightly_artifacts
       - slack/status:
           fail_only: true
           failure_message: Smoke tests failed!
@@ -206,52 +214,56 @@ workflows:
   everything:
     jobs:
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
-      - lint_unit_test_coverage:
+#      - lint_unit_test_coverage:
+#          filters:
+#            tags:
+#              only: /.*/
+#      - licenses_test:
+#          filters:
+#            tags:
+#              only: /.*/
+#      - integration_test_1:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_unit_test_coverage
+#            - licenses_test
+#      - integration_test_2:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_unit_test_coverage
+#            - licenses_test
+#      - integration_test_3:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_unit_test_coverage
+#            - licenses_test
+#      # Upload builds for tags and branches to s3.
+#      - upload_to_s3:
+#          requires:
+#            - integration_test_1
+#            - integration_test_2
+#            - integration_test_3
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              only: /.*/
+#      - check_build_develop:
+#          requires:
+#            - upload_to_s3
+#          filters:
+#            branches:
+#              only: /^develop/
+      - uptime_monitor:
           filters:
             tags:
               only: /.*/
-      - licenses_test:
-          filters:
-            tags:
-              only: /.*/
-      - integration_test_1:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_unit_test_coverage
-            - licenses_test
-      - integration_test_2:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_unit_test_coverage
-            - licenses_test
-      - integration_test_3:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_unit_test_coverage
-            - licenses_test
-      # Upload builds for tags and branches to s3.
-      - upload_to_s3:
-          requires:
-            - integration_test_1
-            - integration_test_2
-            - integration_test_3
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              only: /.*/
-      - check_build_develop:
-          requires:
-            - upload_to_s3
-          filters:
-            branches:
-              only: /^develop/
 
   nightly:
     triggers:
@@ -287,6 +299,16 @@ commands:
           path: integration-tests/test-results
       - store_artifacts:
           path: integration-tests/test-results
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
+  upload_nightly_artifacts:
+    steps:
+      - store_test_results:
+          path: nightly-test-results/
+      - store_artifacts:
+          path: nightly-test-results/
       - store_artifacts:
           path: cypress/videos
       - store_artifacts:
