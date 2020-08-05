@@ -14,20 +14,27 @@
  *    limitations under the License.
  */
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { faDocker, faGitlab } from '@fortawesome/free-brands-svg-icons';
 import { validTool } from '../test/mocked-objects';
-import { ContainersStubService } from '../test/service-stubs';
+import { ContainersStubService, MetadataStubService } from '../test/service-stubs';
 import { faAmazonECR, faQuay, faWhale } from './custom-icons';
 import { ImageProviderService } from './image-provider.service';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { MetadataService } from './swagger';
 import { ContainersService } from './swagger/api/containers.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 
 describe('ImageProviderService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ImageProviderService, { provide: ContainersService, useClass: ContainersStubService }]
+      providers: [
+        ImageProviderService,
+        { provide: ContainersService, useClass: ContainersStubService },
+        { provide: MetadataService, useClass: MetadataStubService }
+      ],
+      imports: [HttpClientTestingModule]
     });
   });
 
