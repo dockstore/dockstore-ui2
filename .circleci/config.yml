@@ -44,13 +44,28 @@ jobs:
           command: bash -i -c 'npm run test-dev-no-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-dev-no-auth-[hash].xml
+      - store_artifacts:
+          path: cypress/videos
+          destination: no-auth
+      - store_artifacts:
+          path: cypress/screenshots
+          destination: no-auth
 # Disable until fixed; makes noisy alerts. SEAB-1454 to fix them
       - run:
           name: Run remote verification test against dev (with auth)
           command: bash -i -c 'npm run test-dev-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-dev-auth-[hash].xml
-      - upload_nightly_artifacts
+      - store_artifacts:
+          path: cypress/videos
+          destination: auth-tests
+      - store_artifacts:
+          path: cypress/screenshots
+          destination: auth-tests
+      - store_test_results:
+          path: nightly-test-results/
+      - store_artifacts:
+          path: nightly-test-results/
 #      - slack/status:
 #          fail_only: true
 #          failure_message: Smoke tests failed!
@@ -303,16 +318,16 @@ commands:
           path: cypress/videos
       - store_artifacts:
           path: cypress/screenshots
-  upload_nightly_artifacts:
-    steps:
-      - store_test_results:
-          path: nightly-test-results/
-      - store_artifacts:
-          path: nightly-test-results/
-      - store_artifacts:
-          path: cypress/videos
-      - store_artifacts:
-          path: cypress/screenshots
+#  upload_nightly_artifacts:
+#    steps:
+#      - store_test_results:
+#          path: nightly-test-results/
+#      - store_artifacts:
+#          path: nightly-test-results/
+#      - store_artifacts:
+#          path: cypress/videos
+#      - store_artifacts:
+#          path: cypress/screenshots
   setup_integration_test:
     steps:
       - get_workspace
