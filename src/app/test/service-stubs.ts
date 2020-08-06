@@ -380,43 +380,43 @@ export class MetadataStubService {
   dockerRegistriesList = observableOf([
     {
       dockerPath: 'quay.io',
-      friendlyName: 'Quay.io',
-      url: 'https://quay.io/repository/',
-      privateOnly: 'false',
       customDockerPath: 'false',
-      enum: 'QUAY_IO'
+      privateOnly: 'false',
+      enum: 'QUAY_IO',
+      friendlyName: 'Quay.io',
+      url: 'https://quay.io/repository/'
     },
     {
       dockerPath: 'registry.hub.docker.com',
-      friendlyName: 'Docker Hub',
-      url: 'https://hub.docker.com/',
-      privateOnly: 'false',
       customDockerPath: 'false',
-      enum: 'DOCKER_HUB'
+      privateOnly: 'false',
+      enum: 'DOCKER_HUB',
+      friendlyName: 'Docker Hub',
+      url: 'https://hub.docker.com/'
     },
     {
       dockerPath: 'registry.gitlab.com',
-      friendlyName: 'GitLab',
-      url: 'https://gitlab.com/',
-      privateOnly: 'false',
       customDockerPath: 'false',
-      enum: 'GITLAB'
+      privateOnly: 'false',
+      enum: 'GITLAB',
+      friendlyName: 'GitLab',
+      url: 'https://gitlab.com/'
     },
     {
       dockerPath: null,
+      customDockerPath: 'true',
+      privateOnly: 'true',
+      enum: 'AMAZON_ECR',
       friendlyName: 'Amazon ECR',
-      url: null,
-      privateOnly: 'true',
-      customDockerPath: 'true',
-      enum: 'AMAZON_ECR'
+      url: null
     },
     {
       dockerPath: null,
-      friendlyName: 'Seven Bridges',
-      url: null,
-      privateOnly: 'true',
       customDockerPath: 'true',
-      enum: 'SEVEN_BRIDGES'
+      privateOnly: 'true',
+      enum: 'SEVEN_BRIDGES',
+      friendlyName: 'Seven Bridges',
+      url: null
     }
   ]);
 
@@ -788,50 +788,6 @@ export class ContainersStubService {
     return observableOf([]);
   }
 
-  getDockerRegistries(extraHttpRequestParams?: any): Observable<Array<{ [key: string]: any }>> {
-    return observableOf([
-      {
-        dockerPath: 'quay.io',
-        customDockerPath: 'false',
-        privateOnly: 'false',
-        enum: 'QUAY_IO',
-        friendlyName: 'Quay.io',
-        url: 'https://quay.io/repository/'
-      },
-      {
-        dockerPath: 'registry.hub.docker.com',
-        customDockerPath: 'false',
-        privateOnly: 'false',
-        enum: 'DOCKER_HUB',
-        friendlyName: 'Docker Hub',
-        url: 'https://hub.docker.com/'
-      },
-      {
-        dockerPath: 'registry.gitlab.com',
-        customDockerPath: 'false',
-        privateOnly: 'false',
-        enum: 'GITLAB',
-        friendlyName: 'GitLab',
-        url: 'https://gitlab.com/'
-      },
-      {
-        dockerPath: null,
-        customDockerPath: 'true',
-        privateOnly: 'true',
-        enum: 'AMAZON_ECR',
-        friendlyName: 'Amazon ECR',
-        url: null
-      },
-      {
-        dockerPath: null,
-        customDockerPath: 'true',
-        privateOnly: 'true',
-        enum: 'SEVEN_BRIDGES',
-        friendlyName: 'Seven Bridges',
-        url: null
-      }
-    ]);
-  }
   refresh(containerId: number, extraHttpRequestParams?: any): Observable<DockstoreTool> {
     const tool: DockstoreTool = {
       default_cwl_path: 'refreshedDefaultCWLPath',
