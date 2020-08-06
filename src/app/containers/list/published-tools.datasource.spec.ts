@@ -15,7 +15,8 @@
  */
 /* tslint:disable:no-unused-variable */
 
-import { async, inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ProviderService } from '../../shared/provider.service';
 import { ContainersService } from '../../shared/swagger';
@@ -30,7 +31,8 @@ describe('Service: PublishedToolsDataSource', () => {
         ImageProviderService,
         ProviderService,
         { provide: ContainersService, useClass: ContainersStubService }
-      ]
+      ],
+      imports: [HttpClientTestingModule]
     });
   });
 
