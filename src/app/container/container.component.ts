@@ -74,8 +74,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public schema: BioschemaTool;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
-  public versionsWithVerifiedPlatforms: Array<VersionVerifiedPlatform> = [];
-  public versionsFileTypes: Array<SourceFile.TypeEnum>;
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -100,8 +98,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
     private toolService: ToolService,
-    private alertService: AlertService,
-    private entryService: EntriesService,
+    alertService: AlertService,
+    entryService: EntriesService,
     private containerTagsService: ContainertagsService
   ) {
     super(
@@ -115,7 +113,9 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       location,
       sessionService,
       sessionQuery,
-      gA4GHFilesService
+      gA4GHFilesService,
+      alertService,
+      entryService
     );
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
@@ -184,17 +184,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
         } else {
           this.selectedVersion = this.selectTag(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
           if (this.selectedVersion) {
-            this.alertService.start('Getting version\'s unique file types');
-            this.entryService.getVersionsFileTypes(tool.id, this.selectedVersion.id).subscribe(
-              (fileTypes: Array<SourceFile.TypeEnum>) => {
-                this.versionsFileTypes = fileTypes;
-                this.alertService.simpleSuccess();
-              },
-              (error: HttpErrorResponse) => {
-                this.alertService.detailedError(error);
-                this.versionsFileTypes = [];
-              }
-            );
+            this.updateVersionsFileTypes(tool.id, this.selectedVersion.id);
           }
         }
       }
@@ -213,17 +203,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
-      this.alertService.start('Getting the tool\'s verified platforms');
-      this.entryService.getVerifiedPlatforms(tool.id).subscribe(
-        (verifiedVersions: Array<VersionVerifiedPlatform>) => {
-          this.versionsWithVerifiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
-          this.alertService.simpleSuccess();
-        },
-        error => {
-          this.alertService.detailedError(error);
-          this.versionsWithVerifiedPlatforms = [];
-        }
-      );
+      this.updateVerifiedPlatforms(this.tool.id);
     }
   }
 
@@ -312,6 +292,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     }
     if (this.selectVersion) {
       this.gA4GHFilesService.updateFiles(this.tool.path, this.selectedVersion.name);
+      this.updateVersionsFileTypes(this.tool.id, this.selectedVersion.id);
     }
     this.onTagChange(tag);
     this.schema = this.bioschemaService.getToolSchema(this.tool, this.selectedVersion);

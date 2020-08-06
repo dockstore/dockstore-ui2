@@ -17,6 +17,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 
 import { Files } from '../../shared/files';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
+import { SourceFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 
@@ -26,6 +27,7 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
 })
 export class FilesContainerComponent extends Files implements OnChanges {
   @Input() selectedVersion: Tag;
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
   constructor(private paramfilesService: ParamfilesService, private gA4GHFilesService: GA4GHFilesService) {
     super();
   }

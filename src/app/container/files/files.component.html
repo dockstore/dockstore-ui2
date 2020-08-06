@@ -24,14 +24,26 @@
 
   <mat-tab label="Descriptor Files">
     <ng-template matTabContent>
-      <app-descriptors-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
+      <app-descriptors-container
+        [entrypath]="entrypath"
+        [id]="id"
+        [selectedVersion]="selectedVersion"
+        [publicPage]="publicPage"
+        [versionsFileTypes]="versionsFileTypes"
+      >
       </app-descriptors-container>
     </ng-template>
   </mat-tab>
 
   <mat-tab label="Test Parameter Files">
     <ng-template matTabContent>
-      <app-paramfiles-container [entrypath]="entrypath" [id]="id" [selectedVersion]="selectedVersion" [publicPage]="publicPage">
+      <app-paramfiles-container
+        [entrypath]="entrypath"
+        [id]="id"
+        [selectedVersion]="selectedVersion"
+        [publicPage]="publicPage"
+        [versionsFileTypes]="versionsFileTypes"
+      >
       </app-paramfiles-container>
     </ng-template>
   </mat-tab>

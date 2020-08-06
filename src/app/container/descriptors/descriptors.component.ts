@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorService } from '../../shared/descriptor.service';
@@ -33,15 +33,12 @@ import { FilesService } from '../../workflow/files/state/files.service';
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.scss']
 })
-export class DescriptorsComponent extends EntryFileSelector {
+export class DescriptorsComponent extends EntryFileSelector implements OnChanges {
   @Input() id: number;
   @Input() entrypath: string;
   @Input() publicPage: boolean;
-  @Input() set selectedVersion(value: Tag) {
-    this.clearContent();
-    this.onVersionChange(value, this.id);
-    this.checkIfValid(true, value);
-  }
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
+  @Input() selectedVersion: Tag;
 
   protected entryType: 'tool' | 'workflow' = 'tool';
 
@@ -61,8 +58,14 @@ export class DescriptorsComponent extends EntryFileSelector {
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
-  getDescriptors(version: Tag, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<ToolDescriptor.TypeEnum> {
-    return this.descriptorsService.getDescriptors(this._selectedVersion, versionsFileTypes);
+  ngOnChanges(changes: SimpleChanges): void {
+    this.clearContent();
+    this.onVersionChange(this.selectedVersion, this.id);
+    this.checkIfValid(true, this.selectedVersion);
+  }
+
+  getDescriptors(version: Tag): Array<ToolDescriptor.TypeEnum> {
+    return this.descriptorsService.getDescriptors(this._selectedVersion, this.versionsFileTypes);
   }
 
   getValidDescriptors(version: Tag): Array<ToolDescriptor.TypeEnum> {

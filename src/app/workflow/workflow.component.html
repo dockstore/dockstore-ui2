@@ -213,7 +213,7 @@
                 [versions]="(extendedWorkflow$ | async)?.workflowVersions"
                 (selectedVersionChange)="onSelectedVersionChange($event)"
                 [verifiedSource]="(extendedWorkflow$ | async)?.verifiedSources"
-                [verifiedVersionPlatforms]="versionsWithVerirfiedPlatforms"
+                [verifiedVersionPlatforms]="versionsWithVerifiedPlatforms"
                 [workflowId]="workflow?.id"
                 [selectedVersion]="selectedVersion"
                 [canRead]="canRead"
@@ -300,6 +300,7 @@
                   [canRead]="canRead"
                   [canWrite]="canWrite"
                   [isOwner]="isOwner"
+                  [versionsFileTypes]="versionsFileTypes"
                 >
                 </app-files-workflow>
               </ng-template>
@@ -426,7 +427,7 @@
         </div>
       </div>
       <current-collections [id]="workflow.id"></current-collections>
-      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerirfiedPlatforms">
+      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="workflow">
         <div class="panel-heading">

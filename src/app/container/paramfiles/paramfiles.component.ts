@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileService } from '../../shared/file.service';
@@ -33,15 +33,13 @@ import { ParamfilesService } from './paramfiles.service';
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.scss']
 })
-export class ParamfilesComponent extends EntryFileSelector {
+export class ParamfilesComponent extends EntryFileSelector implements OnChanges {
   @Input() id: number;
   @Input() entrypath: string;
   @Input() publicPage: boolean;
-  @Input() set selectedVersion(value: Tag) {
-    this.clearContent();
-    this.onVersionChange(value, this.id);
-    this.checkIfValid(false, value);
-  }
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
+  @Input() selectedVersion: Tag;
+
   public filePath: string;
   protected entryType: 'tool' | 'workflow' = 'tool';
   public downloadFilePath: string;
@@ -61,12 +59,18 @@ export class ParamfilesComponent extends EntryFileSelector {
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
-  getDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any> {
-    return this.paramfilesService.getDescriptors(versionsFileTypes);
+  ngOnChanges(changes: SimpleChanges): void {
+    this.clearContent();
+    this.onVersionChange(this.selectedVersion, this.id);
+    this.checkIfValid(false, this.selectedVersion);
   }
 
-  getValidDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any> {
-    return this.paramfilesService.getValidDescriptors(this._selectedVersion, versionsFileTypes);
+  getDescriptors(version): Array<any> {
+    return this.paramfilesService.getDescriptors(this.versionsFileTypes);
+  }
+
+  getValidDescriptors(version): Array<any> {
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion, this.versionsFileTypes);
   }
 
   /**

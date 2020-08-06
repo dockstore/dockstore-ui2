@@ -74,7 +74,7 @@ export class ParamfilesService {
   getValidDescriptors(version: WorkflowVersion | Tag, versionsFileTypes: Array<SourceFile.TypeEnum>) {
     if (version) {
       const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
-      if (version.validations) {
+      if (version.validations && versionsFileTypes) {
         if (this.checkValidFileType(version, SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.DOCKSTORECWL, versionsFileTypes)) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
         }

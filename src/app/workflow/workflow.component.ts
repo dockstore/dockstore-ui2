@@ -46,7 +46,7 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor } from '../shared/swagger';
+import { Permission, SourceFile, ToolDescriptor } from '../shared/swagger';
 import { WorkflowsService } from '../shared/swagger/api/workflows.service';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
@@ -55,7 +55,8 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
-import { EntriesService, VersionVerifiedPlatform } from '../shared/openapi';
+import { EntriesService } from '../shared/openapi';
+
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -91,7 +92,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
   public WorkflowModel = Workflow;
   public launchSupport$: Observable<boolean>;
-  public versionsWithVerirfiedPlatforms: Array<VersionVerifiedPlatform> = [];
   @Input() user;
 
   constructor(
@@ -114,8 +114,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
     public dialog: MatDialog,
-    private alertService: AlertService,
-    private entryService: EntriesService
+    alertService: AlertService,
+    entryService: EntriesService
   ) {
     super(
       trackLoginService,
@@ -128,7 +128,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       location,
       sessionService,
       sessionQuery,
-      gA4GHFilesService
+      gA4GHFilesService,
+      alertService,
+      entryService
     );
     this._toolType = 'workflows';
     this.location = location;
@@ -250,16 +252,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             }
           });
       }
-      this.alertService.start('Getting the workflow\'s verified platforms');
-      this.entryService.getVerifiedPlatforms(workflow.id).subscribe(
-        (verifiedVersion: Array<VersionVerifiedPlatform>) => {
-          this.versionsWithVerirfiedPlatforms = verifiedVersion.map(value => Object.assign({}, value));
-        },
-        error => {
-          this.alertService.detailedError(error);
-          this.versionsWithVerirfiedPlatforms = [];
-        }
-      );
+      this.updateVerifiedPlatforms(this.workflow.id);
     }
   }
 
@@ -271,6 +264,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
+          this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
           const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
           const compatType = this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType);
           if (compatType) {
@@ -404,6 +398,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
         this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
       ]);
+      this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);

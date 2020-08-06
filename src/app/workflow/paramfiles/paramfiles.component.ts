@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
@@ -34,14 +34,12 @@ import { FilesService } from '../files/state/files.service';
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.css']
 })
-export class ParamfilesWorkflowComponent extends EntryFileSelector {
+export class ParamfilesWorkflowComponent extends EntryFileSelector implements OnChanges {
   @Input() id: number;
   @Input() entrypath: string;
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    this.clearContent();
-    this.onVersionChange(value, this.id);
-    this.checkIfValid(false, value);
-  }
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
+  @Input() selectedVersion: WorkflowVersion;
+
   public isNFL$: Observable<boolean>;
   protected entryType: 'tool' | 'workflow' = 'workflow';
   public downloadFilePath: string;
@@ -63,12 +61,19 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     this.published$ = this.workflowService.workflowIsPublished$;
     this.isNFL$ = this.workflowQuery.isNFL$;
   }
-  getDescriptors(version: WorkflowVersion, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<ToolDescriptor.TypeEnum> {
-    return this.paramfilesService.getDescriptors(versionsFileTypes);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.clearContent();
+    this.onVersionChange(this.selectedVersion, this.id);
+    this.checkIfValid(false, this.selectedVersion);
   }
 
-  getValidDescriptors(version: WorkflowVersion, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any> {
-    return this.paramfilesService.getValidDescriptors(this._selectedVersion, versionsFileTypes);
+  getDescriptors(version: WorkflowVersion): Array<ToolDescriptor.TypeEnum> {
+    return this.paramfilesService.getDescriptors(this.versionsFileTypes);
+  }
+
+  getValidDescriptors(version: WorkflowVersion): Array<any> {
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion, this.versionsFileTypes);
   }
 
   /**

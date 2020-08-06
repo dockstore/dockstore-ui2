@@ -32,6 +32,7 @@ import { FileWrapper, GA4GHService, SourceFile, Tag, ToolDescriptor, ToolFile, W
  */
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
+  // versionsFileTypes: Array<SourceFile.TypeEnum> = [];
   id: number;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
@@ -48,13 +49,12 @@ export abstract class EntryFileSelector implements OnDestroy {
   public customDownloadPath: string;
   public loading = false;
   public validationMessage = null;
-  public versionsFileTypes: Array<SourceFile.TypeEnum>;
   abstract entrypath: string;
   protected abstract entryType: 'tool' | 'workflow';
   content: string = null;
 
-  abstract getDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any>;
-  abstract getValidDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<any>;
+  abstract getDescriptors(version): Array<any>;
+  abstract getValidDescriptors(version): Array<any>;
   abstract getFiles(descriptor): Observable<any>;
 
   constructor(
@@ -71,36 +71,21 @@ export abstract class EntryFileSelector implements OnDestroy {
     return this.fileService.getDescriptorPath(path, this._selectedVersion, this.currentFile, this.currentDescriptor, entryType);
   }
 
-  reactToVersion(entryid: number): void {
-    this.loading = true;
-    this.alertService.start('Switching versions: Getting the version\'s unique file types');
-    this.entryService
-      .getVersionsFileTypes(entryid, this._selectedVersion.id)
-      .pipe(finalize(() => (this.loading = false)))
-      .subscribe(
-        (fileTypes: Array<SourceFile.TypeEnum>) => {
-          this.versionsFileTypes = fileTypes;
-          this.descriptors = this.getDescriptors(this._selectedVersion, this.versionsFileTypes);
-          this.validDescriptors = this.getValidDescriptors(this._selectedVersion, this.versionsFileTypes);
-          if (this.descriptors) {
-            this.nullDescriptors = false;
-            if (this.descriptors.length) {
-              if (this.validDescriptors && this.validDescriptors.length) {
-                this.onDescriptorChange(this.validDescriptors[0]);
-              } else {
-                this.onDescriptorChange(this.descriptors[0]);
-              }
-            }
-          } else {
-            this.nullDescriptors = true;
-          }
-          this.alertService.simpleSuccess();
-        },
-        error => {
-          this.versionsFileTypes = [];
-          this.alertService.detailedError(error);
+  reactToVersion(): void {
+    this.descriptors = this.getDescriptors(this._selectedVersion);
+    this.validDescriptors = this.getValidDescriptors(this._selectedVersion);
+    if (this.descriptors) {
+      this.nullDescriptors = false;
+      if (this.descriptors.length) {
+        if (this.validDescriptors && this.validDescriptors.length) {
+          this.onDescriptorChange(this.validDescriptors[0]);
+        } else {
+          this.onDescriptorChange(this.descriptors[0]);
         }
-      );
+      }
+    } else {
+      this.nullDescriptors = true;
+    }
   }
 
   onDescriptorChange(descriptor: ToolDescriptor.TypeEnum) {
@@ -139,7 +124,7 @@ export abstract class EntryFileSelector implements OnDestroy {
 
   onVersionChange(value: Tag, entryid: number) {
     this._selectedVersion = value;
-    this.reactToVersion(entryid);
+    this.reactToVersion();
   }
 
   clearContent() {
