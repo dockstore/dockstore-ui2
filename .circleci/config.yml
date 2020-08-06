@@ -254,14 +254,7 @@ workflows:
           filters:
             branches:
               only: /^develop/
-      - uptime_monitor_no_auth:
-          filters:
-            tags:
-              only: /.*/
-      - uptime_monitor_auth:
-          filters:
-            tags:
-              only: /.*/
+
   nightly:
     triggers:
       - schedule:
