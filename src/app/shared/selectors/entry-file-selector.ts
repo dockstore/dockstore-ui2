@@ -25,14 +25,13 @@ import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
 import { EntriesService } from '../openapi';
-import { FileWrapper, GA4GHService, SourceFile, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
+import { FileWrapper, GA4GHService, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
 
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version
  */
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
-  // versionsFileTypes: Array<SourceFile.TypeEnum> = [];
   id: number;
 
   private ngUnsubscribe: Subject<{}> = new Subject();

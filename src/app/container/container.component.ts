@@ -15,7 +15,6 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,11 +33,10 @@ import { Entry } from '../shared/entry';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
-import { ContainertagsService, EntriesService, VersionVerifiedPlatform } from '../shared/openapi';
+import { ContainertagsService, EntriesService } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
-import { SourceFile } from '../shared/swagger/model/sourceFile';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { ToolQuery } from '../shared/tool/tool.query';
