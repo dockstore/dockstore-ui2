@@ -22,25 +22,6 @@ jobs:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - setup_nightly_tests
-#      - checkout
-#      - install_container_dependencies
-#      - restore_cache:
-#          key: cypress-cache-{{ checksum "./package-lock.json" }}
-#      - run:
-#          name: Install dependencies
-#          #Only run 'npm ci' if node_modules was not restored from cache
-#          command: |
-#            if [ ! -d "./node_modules" ]
-#            then
-#              bash -i -c 'npm ci'
-#            fi
-#            mkdir -p nightly-test-results/junit
-#      - run:
-#          name: Prebuild
-#          command: bash -i -c 'npm run prebuild.prod'
-#      - run:
-#          name: create directory to store cypress artifacts
-#          command: mkdir -p nightly-test-results/junit
       - run:
           name: Run remote verification test against dev (no auth)
           command: bash -i -c 'npm run test-dev-no-auth'
@@ -57,17 +38,17 @@ jobs:
         - image: circleci/buildpack-deps:18.04-browsers
     steps:
       - setup_nightly_tests
-# Disable until fixed; makes noisy alerts. SEAB-1454 to fix them
       - run:
           name: Run remote verification test against dev (with auth)
           command: bash -i -c 'npm run test-dev-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-dev-auth-[hash].xml
       - upload_nightly_artifacts
-      - slack/status:
-          fail_only: true
-          failure_message: TEST-Nightly auth tests failed!
-          webhook: $SLACK_WEBHOOK
+      # Disable until fixed; makes noisy alerts. SEAB-1454 to fix them
+#      - slack/status:
+#          fail_only: true
+#          failure_message: TEST-Nightly auth tests failed!
+#          webhook: $SLACK_WEBHOOK
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
@@ -226,53 +207,53 @@ workflows:
   version: 2
   everything:
     jobs:
-#      # Add the tags filter to all jobs so they will run before upload_to_s3
-#      - lint_unit_test_coverage:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - licenses_test:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - integration_test_1:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#            - licenses_test
-#      - integration_test_2:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#            - licenses_test
-#      - integration_test_3:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#            - licenses_test
-#      # Upload builds for tags and branches to s3.
-#      - upload_to_s3:
-#          requires:
-#            - integration_test_1
-#            - integration_test_2
-#            - integration_test_3
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              only: /.*/
-#      - check_build_develop:
-#          requires:
-#            - upload_to_s3
-#          filters:
-#            branches:
-#              only: /^develop/
+      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - lint_unit_test_coverage:
+          filters:
+            tags:
+              only: /.*/
+      - licenses_test:
+          filters:
+            tags:
+              only: /.*/
+      - integration_test_1:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+            - licenses_test
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+            - licenses_test
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+            - licenses_test
+      # Upload builds for tags and branches to s3.
+      - upload_to_s3:
+          requires:
+            - integration_test_1
+            - integration_test_2
+            - integration_test_3
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
       - uptime_monitor_no_auth:
           filters:
             tags:
