@@ -16,37 +16,39 @@ executors:
           POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
 
-  uptime_monitor:
+  uptime_monitor_no_auth:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
     steps:
-      - checkout
-      - install_container_dependencies
-      - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
-      - run:
-          name: Install dependencies
-          #Only run 'npm ci' if node_modules was not restored from cache
-          command: |
-            if [ ! -d "./node_modules" ]
-            then
-              bash -i -c 'npm ci'
-            fi
-      - run:
-          name: Prebuild
-          command: bash -i -c 'npm run prebuild.prod'
+      - setup_nightly_tests
       - run:
           name: Run remote verification test against dev (no auth)
           command: bash -i -c 'npm run test-dev-no-auth'
-# Disable until fixed; makes noisy alerts. SEAB-1454 to fix them
-#      - run:
-#          name: Run remote verification test against dev (with auth)
-#          command: bash -i -c 'npm run test-dev-auth'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-no-auth-[hash].xml
+      - upload_nightly_artifacts
       - slack/status:
           fail_only: true
-          failure_message: Smoke tests failed!
+          failure_message: Nightly non-auth tests failed!
           webhook: $SLACK_WEBHOOK
+  uptime_monitor_auth:
+    working_directory: ~/repo
+    docker:
+        - image: circleci/buildpack-deps:18.04-browsers
+    steps:
+      - setup_nightly_tests
+      - run:
+          name: Run remote verification test against dev (with auth)
+          command: bash -i -c 'npm run test-dev-auth'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-auth-[hash].xml
+      - upload_nightly_artifacts
+      # Disable until fixed; makes noisy alerts. SEAB-1454 to fix them
+#      - slack/status:
+#          fail_only: true
+#          failure_message: Nightly auth tests failed!
+#          webhook: $SLACK_WEBHOOK
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
@@ -262,7 +264,8 @@ workflows:
               only:
                 - develop
     jobs:
-      - uptime_monitor
+      - uptime_monitor_no_auth
+      - uptime_monitor_auth
 
 commands:
   install_container_dependencies:
@@ -322,3 +325,31 @@ commands:
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh
+  setup_nightly_tests:
+    steps:
+      - checkout
+      - install_container_dependencies
+      - restore_cache:
+          key: cypress-cache-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+            if [ ! -d "./node_modules" ]
+            then
+              bash -i -c 'npm ci'
+            fi
+            mkdir -p nightly-test-results/junit
+      - run:
+          name: Prebuild
+          command: bash -i -c 'npm run prebuild.prod'
+  upload_nightly_artifacts:
+    steps:
+      - store_test_results:
+          path: nightly-test-results/
+      - store_artifacts:
+          path: nightly-test-results/
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots
