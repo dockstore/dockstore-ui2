@@ -16,10 +16,10 @@ import { SourceFileTabsService } from './source-file-tabs.service';
 export class SourceFileTabsComponent implements OnChanges {
   @Input() workflowId: number;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
-  @Input() version: WorkflowVersion | null;
+  // Version is strictly non-null because everything that uses this component has a truthy-check guard
+  @Input() version: WorkflowVersion;
   loading = true;
   displayError = false;
-  currentVersion: WorkflowVersion;
   files: SourceFile[];
   filteredFiles: SourceFile[];
   currentFile: SourceFile;
@@ -33,17 +33,14 @@ export class SourceFileTabsComponent implements OnChanges {
   constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
 
   ngOnChanges() {
-    if (this.version != null) {
-      this.currentVersion = this.version;
-      this.setupVersionFileTabs();
-    }
+    this.setupVersionFileTabs();
   }
 
   setupVersionFileTabs() {
     this.loading = true;
     this.displayError = false;
     this.sourceFileTabsService
-      .getSourceFiles(this.workflowId, this.currentVersion.id)
+      .getSourceFiles(this.workflowId, this.version.id)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -70,7 +67,7 @@ export class SourceFileTabsComponent implements OnChanges {
    */
   changeFileType(fileType: SourceFile.TypeEnum, files: SourceFile[]) {
     let validationMessage = null;
-    this.currentVersion.validations.forEach((validation: Validation) => {
+    this.version.validations.forEach((validation: Validation) => {
       if (validation.type === fileType && !validation.valid) {
         validationMessage = JSON.parse(validation.message);
       }
@@ -91,7 +88,7 @@ export class SourceFileTabsComponent implements OnChanges {
   selectFile(file: SourceFile) {
     this.customDownloadHREF = this.fileService.getFileData(file.content);
     this.customDownloadPath = this.fileService.getFileName(file.path);
-    this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.currentVersion.name);
+    this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.version.name);
     this.currentFile = file;
   }
 
