@@ -180,6 +180,7 @@
               [path]="tool?.tool_path"
               [toolname]="tool?.toolname"
               [mode]="tool?.mode"
+              [versionsFileTypes]="versionsFileTypes"
             ></app-launch>
             <ng-template #noTags>
               <div class="p-3">
@@ -196,6 +197,7 @@
                   id="versionsTab"
                   [verifiedSource]="(extendedTool$ | async)?.verifiedSources"
                   [selectedVersion]="selectedVersion"
+                  [verifiedVersionPlatforms]="versionsWithVerifiedPlatforms"
                 >
                 </app-versions-container>
               </div>
@@ -223,6 +225,7 @@
                     [default]="defaultVersion"
                     [selectedVersion]="selectedVersion"
                     [publicPage]="publicPage"
+                    [versionsFileTypes]="versionsFileTypes"
                   >
                   </app-files-container>
                 </div>
@@ -341,7 +344,11 @@
         </div>
       </div>
       <current-collections [id]="tool.id"></current-collections>
-      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
+      <app-verified-by
+        *ngIf="selectedVersion"
+        [version]="selectedVersion"
+        [verifiedByPlatform]="versionsWithVerifiedPlatforms"
+      ></app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="tool">
         <div class="panel-heading">
           <h3>Sharing</h3>

@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { Files } from '../../shared/files';
-import { ToolDescriptor } from '../../shared/swagger';
+import { SourceFile, ToolDescriptor } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 
 @Component({
@@ -25,20 +25,14 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.css']
 })
-export class FilesWorkflowComponent extends Files implements OnInit, OnChanges {
+export class FilesWorkflowComponent extends Files {
   @Input() selectedVersion: WorkflowVersion;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
   versionsWithParamfiles: Array<any>;
   previousEntryPath: string;
   previousVersionName: string;
   constructor(private paramfilesService: ParamfilesService) {
     super();
-  }
-
-  ngOnInit() {
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
-  }
-  ngOnChanges() {
-    this.versionsWithParamfiles = this.paramfilesService.getVersions(this.versions);
   }
 }

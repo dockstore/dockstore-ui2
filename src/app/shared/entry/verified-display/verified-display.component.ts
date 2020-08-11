@@ -16,8 +16,8 @@
 import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
-import { SourceFile, VerificationInformation } from '../../swagger';
+import { VersionVerifiedPlatform } from '../../openapi';
+import { Tag, VerificationInformation, WorkflowVersion } from '../../swagger';
 
 @Component({
   selector: 'app-verified-display',
@@ -25,7 +25,8 @@ import { SourceFile, VerificationInformation } from '../../swagger';
   styleUrls: ['./verified-display.component.scss']
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
-  @Input() sourceFiles: SourceFile[];
+  @Input() verifiedByPlatform: Array<VersionVerifiedPlatform>;
+  @Input() version: Tag | WorkflowVersion | null;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   public dataSource: MatTableDataSource<any>;
   public displayedColumns = ['platform', 'platformVersion', 'path', 'metadata'];
@@ -39,36 +40,35 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // Update the dataSource's data
-    this.dataSource.data = this.getCustomVerificationInformationArray(this.sourceFiles);
+    this.dataSource.data = this.getCustomVerificationInformationArray(this.version.id, this.verifiedByPlatform);
   }
 
   /**
    * Extracts the custom verification information object array from the sourcefiles
    *
-   * @param {Array<SourceFile>} sourceFiles  The list of sourcefiles from an entry's version
+   * @param {number} versionid The versionid to get verfication information for
+   * @param {Array<VersionVerifiedPlatform>} sourceFiles  The list of sourcefiles from an entry's version
    * @returns {Array<CustomVerificationInformationObject>}   Custom object array (that contains path, verifier, platform)
    * @memberof VerifiedDisplayComponent
    */
-  getCustomVerificationInformationArray(sourceFiles: Array<SourceFile>): Array<any> {
+  getCustomVerificationInformationArray(versionid: number, verifiedByPlatform: Array<VersionVerifiedPlatform>): Array<any> {
     const customVerificationInformationArray: Array<VerificationInformation> = new Array();
-    sourceFiles.forEach((sourceFile: SourceFile) => {
-      const verifiedBySource = sourceFile.verifiedBySource;
-      const verifiedBySourceArray = Object.entries(verifiedBySource);
-      verifiedBySourceArray.forEach(arrayElement => {
-        const platform: string = arrayElement[0];
-        const verifiedInformation: VerificationInformation = arrayElement[1];
-        if (verifiedInformation.verified) {
-          const customVerificationInformationObject = {
-            // This allows the string to break after every slash for word-wrapping purposes
-            path: sourceFile.path.replace(/\//g, '/' + '\u2028'),
-            platform: platform,
-            platformVersion: verifiedInformation.platformVersion ? verifiedInformation.platformVersion : 'N/A',
-            metadata: verifiedInformation.metadata
-          };
-          customVerificationInformationArray.push(customVerificationInformationObject);
-        }
-      });
-    });
+    if (versionid && verifiedByPlatform) {
+      verifiedByPlatform
+        .filter((vs: VersionVerifiedPlatform) => vs.versionId === versionid)
+        .forEach(vs => {
+          if (vs.verified) {
+            const customVerificationInformationObject = {
+              // This allows the string to break after every slash for word-wrapping purposes
+              path: vs.path.replace(/\//g, '/' + '\u2028'),
+              platform: vs.source,
+              platformVersion: vs.platformVersion ? vs.platformVersion : 'N/A',
+              metadata: vs.metadata
+            };
+            customVerificationInformationArray.push(customVerificationInformationObject);
+          }
+        });
+    }
     return customVerificationInformationArray;
   }
 }

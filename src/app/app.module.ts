@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -173,7 +173,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     CustomMaterialModule,
     RefreshAlertModule,
     RequestsModule,
-    HomePageModule
+    HomePageModule,
+    HttpClientModule
   ],
   providers: [
     AccountsService,

@@ -33,6 +33,7 @@ import { Entry } from '../shared/entry';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
+import { ContainertagsService, EntriesService } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
@@ -95,7 +96,9 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
     private toolService: ToolService,
-    private alertService: AlertService
+    alertService: AlertService,
+    entryService: EntriesService,
+    private containerTagsService: ContainertagsService
   ) {
     super(
       trackLoginService,
@@ -108,7 +111,9 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       location,
       sessionService,
       sessionQuery,
-      gA4GHFilesService
+      gA4GHFilesService,
+      alertService,
+      entryService
     );
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
@@ -173,8 +178,12 @@ export class ContainerComponent extends Entry implements AfterViewInit {
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
+          this.versionsFileTypes = [];
         } else {
           this.selectedVersion = this.selectTag(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
+          if (this.selectedVersion) {
+            this.updateVersionsFileTypes(tool.id, this.selectedVersion.id);
+          }
         }
       }
       // Select version
@@ -192,6 +201,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
+      this.updateVerifiedPlatforms(this.tool.id);
     }
   }
 
@@ -280,6 +290,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     }
     if (this.selectVersion) {
       this.gA4GHFilesService.updateFiles(this.tool.path, this.selectedVersion.name);
+      this.updateVersionsFileTypes(this.tool.id, this.selectedVersion.id);
     }
     this.onTagChange(tag);
     this.schema = this.bioschemaService.getToolSchema(this.tool, this.selectedVersion);

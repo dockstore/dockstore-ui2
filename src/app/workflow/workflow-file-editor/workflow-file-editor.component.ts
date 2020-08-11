@@ -14,9 +14,11 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
+import { WorkflowsService as OpenApiWorkflowServices } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
+
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { ToolDescriptor, Workflow } from '../../shared/swagger';
@@ -38,6 +40,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
   public selectedDescriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public isNFL$: Observable<boolean>;
   @Input() entrypath: string;
+  @Input() id: number;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
     this.editing = false;
@@ -52,6 +55,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
     private hostedService: HostedService,
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService,
+    private openapiWorkflowsService: OpenApiWorkflowServices,
     protected alertService: AlertService,
     private workflowQuery: WorkflowQuery
   ) {
@@ -83,8 +87,11 @@ export class WorkflowFileEditorComponent extends FileEditing {
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {
-    this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this._selectedVersion.sourceFiles)));
-    this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this._selectedVersion.sourceFiles)));
+    this.openapiWorkflowsService.getWorkflowVersionsSourcefiles(this.id, this._selectedVersion.id).subscribe(sourcefiles => {
+      this.originalSourceFiles = sourcefiles;
+      this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.originalSourceFiles)));
+      this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.originalSourceFiles)));
+    });
   }
 
   /**

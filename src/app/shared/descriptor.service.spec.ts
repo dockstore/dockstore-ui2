@@ -97,12 +97,23 @@ describe('DescriptorService', () => {
     ]
   };
 
+  const sampleVersionsFileTypes: Array<SourceFile.TypeEnum> = [
+    'DOCKERFILE',
+    'DOCKSTORE_CWL',
+    'DOCKSTORE_WDL',
+    'WDL_TEST_JSON',
+    'CWL_TEST_JSON'
+  ];
+
   it('should be created', inject([DescriptorService], (service: DescriptorService) => {
     expect(service).toBeTruthy();
   }));
 
   it('should get descriptors', inject([DescriptorService], (service: DescriptorService) => {
-    expect(service.getDescriptors(sampleVersion)).toEqual([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL]);
+    expect(service.getDescriptors(sampleVersion, sampleVersionsFileTypes)).toEqual([
+      ToolDescriptor.TypeEnum.CWL,
+      ToolDescriptor.TypeEnum.WDL
+    ]);
   }));
   // Tests valid cwl descriptor, but invalid wdl descriptor
   it('should get valid descriptors only', inject([DescriptorService], (service: DescriptorService) => {

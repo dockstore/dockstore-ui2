@@ -20,9 +20,11 @@ import { finalize, takeUntil } from 'rxjs/operators';
 
 import { FilesQuery } from '../../workflow/files/state/files.query';
 import { FilesService } from '../../workflow/files/state/files.service';
+import { AlertService } from '../alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
+import { EntriesService } from '../openapi';
 import { FileWrapper, GA4GHService, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
 
 /**
@@ -30,6 +32,7 @@ import { FileWrapper, GA4GHService, Tag, ToolDescriptor, ToolFile, WorkflowVersi
  */
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
+  id: number;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected currentDescriptor: ToolDescriptor.TypeEnum;
@@ -58,7 +61,9 @@ export abstract class EntryFileSelector implements OnDestroy {
     protected gA4GHFilesService: GA4GHFilesService,
     protected gA4GHService: GA4GHService,
     protected filesService: FilesService,
-    protected filesQuery: FilesQuery
+    protected filesQuery: FilesQuery,
+    protected entryService: EntriesService,
+    protected alertService: AlertService
   ) {}
 
   protected getDescriptorPath(path: string, entryType: 'tool' | 'workflow'): string {
@@ -116,7 +121,7 @@ export abstract class EntryFileSelector implements OnDestroy {
     }
   }
 
-  onVersionChange(value: Tag) {
+  onVersionChange(value: Tag, entryid: number) {
     this._selectedVersion = value;
     this.reactToVersion();
   }

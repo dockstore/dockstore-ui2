@@ -55,6 +55,8 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
+import { EntriesService } from '../shared/openapi';
+
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
@@ -112,7 +114,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
     public dialog: MatDialog,
-    private alertService: AlertService
+    alertService: AlertService,
+    entryService: EntriesService
   ) {
     super(
       trackLoginService,
@@ -125,7 +128,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       location,
       sessionService,
       sessionQuery,
-      gA4GHFilesService
+      gA4GHFilesService,
+      alertService,
+      entryService
     );
     this._toolType = 'workflows';
     this.location = location;
@@ -247,6 +252,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             }
           });
       }
+      this.updateVerifiedPlatforms(this.workflow.id);
     }
   }
 
@@ -258,6 +264,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
+          this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
           const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
           const compatType = this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType);
           if (compatType) {
@@ -391,6 +398,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
         this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
       ]);
+      this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);

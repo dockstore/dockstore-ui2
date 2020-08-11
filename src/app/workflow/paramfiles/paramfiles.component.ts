@@ -13,16 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
+import { EntriesService } from '../../shared/openapi';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
+import { GA4GHService, SourceFile, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { FilesQuery } from '../files/state/files.query';
 import { FilesService } from '../files/state/files.service';
@@ -32,14 +34,12 @@ import { FilesService } from '../files/state/files.service';
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.css']
 })
-export class ParamfilesWorkflowComponent extends EntryFileSelector {
+export class ParamfilesWorkflowComponent extends EntryFileSelector implements OnChanges {
   @Input() id: number;
   @Input() entrypath: string;
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    this.clearContent();
-    this.onVersionChange(value);
-    this.checkIfValid(false, value);
-  }
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
+  @Input() selectedVersion: WorkflowVersion;
+
   public isNFL$: Observable<boolean>;
   protected entryType: 'tool' | 'workflow' = 'workflow';
   public downloadFilePath: string;
@@ -53,18 +53,27 @@ export class ParamfilesWorkflowComponent extends EntryFileSelector {
     private workflowService: WorkflowQuery,
     private gA4GHFilesQuery: GA4GHFilesQuery,
     protected filesService: FilesService,
-    protected filesQuery: FilesQuery
+    protected filesQuery: FilesQuery,
+    protected entryService: EntriesService,
+    protected alertService: AlertService
   ) {
-    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery, entryService, alertService);
     this.published$ = this.workflowService.workflowIsPublished$;
     this.isNFL$ = this.workflowQuery.isNFL$;
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.clearContent();
+    this.onVersionChange(this.selectedVersion, this.id);
+    this.checkIfValid(false, this.selectedVersion);
+  }
+
   getDescriptors(version: WorkflowVersion): Array<ToolDescriptor.TypeEnum> {
-    return this.paramfilesService.getDescriptors(this._selectedVersion);
+    return this.paramfilesService.getDescriptors(this.versionsFileTypes);
   }
 
   getValidDescriptors(version: WorkflowVersion): Array<any> {
-    return this.paramfilesService.getValidDescriptors(this._selectedVersion);
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion, this.versionsFileTypes);
   }
 
   /**
