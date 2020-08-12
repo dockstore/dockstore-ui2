@@ -16,7 +16,9 @@ function storeToken() {
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
-    cy.get('#publishToolButton').contains('Unpublish').click();
+    cy.get('#publishToolButton')
+      .contains('Unpublish')
+      .click();
   });
 }
 
@@ -41,17 +43,13 @@ function registerQuayTool(repo: string, name: string) {
     cy.server();
     // get quay.io organization/namespaces accessible to user
     cy.route('/api/users/dockerRegistries/quay.io/organizations').as('orgs');
-    // cy.route('**/tokens').as('tokens');
     cy.route('**/repositories').as('repos');
     cy.route('**/containers').as('containers');
     cy.route('post', '**/publish').as('publish');
 
     cy.visit('/my-tools');
     // click thru the steps of registering a tool
-    // cy.wait('@tokens');
-    cy.wait(2000);
-    // cy.wait('@containers');
-    // cy.get('#register_tool_button').should('be.visible').and('contains', 'Register tool').click();
+    cy.wait(2000); // hardcoded 2s wait least flaky right now, revisit in future
     cy.get('#register_tool_button').click();
     cy.wait('@orgs');
     // cy.wait(1000);
@@ -69,11 +67,8 @@ function registerQuayTool(repo: string, name: string) {
     });
     cy.wait('@containers');
     cy.contains('button', 'Finish').click();
-    // cy.wait(1000);
-    // cy.get('#publishToolButton').should('be.visible').and('contains', 'Publish');
     cy.get('#publishToolButton').click();
     cy.wait('@publish');
-    // cy.wait('@containers');
   });
 }
 
@@ -85,7 +80,7 @@ function registerRemoteSitesTool(repo: string, name: string) {
     cy.route('post', '**/publish').as('publish');
 
     cy.visit('/my-tools');
-    cy.wait(2000);
+    cy.wait(2000); // hardcoded 2s wait least flaky right now, revisit in future
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
@@ -135,6 +130,7 @@ function testTool(registry: string, repo: string, name: string) {
   });
 
   // disable test until hiding versions for Tools are working on dev
+
   // describe('Hide and un-hide a tool version', () => {
   //   registerQuayTool(repo, name);
   //   it('hide a version', () => {
@@ -175,10 +171,16 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.visit(`/my-workflows`);
       cy.wait('@tokens');
       cy.wait('@workflow');
-      cy.get('[data-cy=refreshButton]').click();
 
-      cy.contains('button', 'Publish').should('be.enabled').click();
+      //  refresh stubbed workflow to full and publish
+      cy.get('[data-cy=refreshButton]').click();
+      cy.contains('button', 'Publish')
+        .should('be.enabled')
+        .click();
     });
+
+    // Test some snapshot and versions stuff
+    // WARNING: don't actually snapshot since it can't be undone
     it('snapshot', () => {
       // define routes to watch for
       cy.server();
@@ -188,7 +190,6 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.contains('td', 'Actions')
         .first()
         .click();
-      // WARNING: don't actually snapshot since it can't be undone
       cy.get('.mat-menu-content').within(() => {
         cy.contains('button', 'Snapshot');
         cy.contains('button', 'Edit').click();
@@ -197,7 +198,9 @@ function testWorkflow(registry: string, repo: string, name: string) {
     });
     it('unpublish and stub', () => {
       storeToken();
-      cy.get('#publishButton').contains('Unpublish').click({ force: true });
+      cy.get('#publishButton')
+        .contains('Unpublish')
+        .click({ force: true });
 
       goToTab('Info');
       cy.contains('button', 'Restub').click();
