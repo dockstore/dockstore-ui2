@@ -1,7 +1,8 @@
 import { goToTab } from '../../support/commands';
 
-// tuples of registry, repo, name
+// TODO: for clarity and future debugging refactor variable names to use 'namespace', 'entry-name', call those variable names in methods
 const username = 'dockstoretestuser4';
+// tuples of registry, repo namespace (username), and entry-name (repo name)
 const toolTuple = ['github.com', username, 'dockstore-tool-md5sum'];
 const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
@@ -15,16 +16,16 @@ function storeToken() {
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
-    cy.contains('button', 'Unpublish').should('be.visible');
-    cy.contains('button', 'Unpublish').click();
+    cy.get('#publishToolButton').contains('Unpublish').click();
   });
 }
 
 function deleteTool() {
   it('delete the tool', () => {
+    // why wait?
     cy.wait(1000);
     cy.contains('button', 'Delete').should('be.visible');
-    cy.contains('button', 'Delete').click();
+    cy.get('#deregisterButton').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
       cy.contains('button', 'Delete').click();
     });
@@ -38,19 +39,23 @@ function registerQuayTool(repo: string, name: string) {
 
     // define routes to watch for
     cy.server();
+    // get quay.io organization/namespaces accessible to user
     cy.route('/api/users/dockerRegistries/quay.io/organizations').as('orgs');
-    cy.route('**/tokens').as('tokens');
+    // cy.route('**/tokens').as('tokens');
     cy.route('**/repositories').as('repos');
     cy.route('**/containers').as('containers');
     cy.route('post', '**/publish').as('publish');
 
     cy.visit('/my-tools');
     // click thru the steps of registering a tool
-    cy.wait('@tokens');
-    cy.get('#register_tool_button').should('be.visible');
+    // cy.wait('@tokens');
+    cy.wait(2000);
+    // cy.wait('@containers');
+    // cy.get('#register_tool_button').should('be.visible').and('contains', 'Register tool').click();
     cy.get('#register_tool_button').click();
+    cy.wait('@orgs');
+    // cy.wait(1000);
     cy.get('mat-dialog-content').within(() => {
-      cy.wait('@orgs');
       cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
       cy.contains('button', 'Next').click();
       cy.contains('mat-form-field', 'Select namespace').click();
@@ -64,9 +69,11 @@ function registerQuayTool(repo: string, name: string) {
     });
     cy.wait('@containers');
     cy.contains('button', 'Finish').click();
-    cy.contains('button', 'Publish').click();
+    // cy.wait(1000);
+    // cy.get('#publishToolButton').should('be.visible').and('contains', 'Publish');
+    cy.get('#publishToolButton').click();
     cy.wait('@publish');
-    cy.wait('@containers');
+    // cy.wait('@containers');
   });
 }
 
@@ -75,12 +82,10 @@ function registerRemoteSitesTool(repo: string, name: string) {
     storeToken();
     // define routes to watch for
     cy.server();
-    cy.route('**/tokens').as('tokens');
+    cy.route('post', '**/publish').as('publish');
 
     cy.visit('/my-tools');
-    // click thru the steps of registering a tool
-    cy.get('#register_tool_button').should('be.visible');
-    cy.wait('@tokens');
+    cy.wait(2000);
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
@@ -89,7 +94,8 @@ function registerRemoteSitesTool(repo: string, name: string) {
       cy.get('#imageRegistryInput').type(`${repo}/${name}`);
       cy.contains('button', 'Add Tool').click();
     });
-    cy.contains('button', 'Publish').click();
+    cy.get('#publishToolButton').click();
+    cy.wait('@publish');
   });
 }
 
@@ -99,15 +105,13 @@ function registerToolOnDockstore(repo: string, name: string) {
 
     // define routes to watch for
     cy.server();
-    cy.route('**/tokens').as('tokens');
 
     cy.visit('/my-tools');
-    cy.get('#register_tool_button').should('be.visible');
-    cy.wait('@tokens');
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').click();
       cy.contains('button', 'Next').click();
+      cy.wait(1000);
       cy.get('#hostedImagePath').type(`${repo}/${name}`);
       cy.contains('button', 'Add Tool').click();
     });
@@ -130,31 +134,32 @@ function testTool(registry: string, repo: string, name: string) {
     deleteTool();
   });
 
-  describe('Hide and un-hide a tool version', () => {
-    registerQuayTool(repo, name);
-    it('hide a version', () => {
-      goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible');
-      cy.contains('td', 'Actions')
-        .first()
-        .click();
-      cy.contains('button', 'Edit').click();
-      cy.contains('div', 'Hidden:').within(() => {
-        cy.get('[name=checkbox]').click();
-      });
-      cy.contains('button', 'Save Changes').click();
-      cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
-    });
-    it('refresh namespace', () => {
-      cy.contains('button', 'Refresh Namespace')
-        .first()
-        .click();
-      // check that the 'refresh succeeded' message appears
-      cy.contains('succeeded');
-    });
-    unpublishTool();
-    deleteTool();
-  });
+  // disable test until hiding versions for Tools are working on dev
+  // describe('Hide and un-hide a tool version', () => {
+  //   registerQuayTool(repo, name);
+  //   it('hide a version', () => {
+  //     goToTab('Versions');
+  //     cy.contains('button', 'Actions').should('be.visible');
+  //     cy.contains('td', 'Actions')
+  //       .first()
+  //       .click();
+  //     cy.contains('button', 'Edit').click();
+  //     cy.contains('div', 'Hidden:').within(() => {
+  //       cy.get('[name=checkbox]').click();
+  //     });
+  //     cy.contains('button', 'Save Changes').click();
+  //     cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
+  //   });
+  //   it('refresh namespace', () => {
+  //     cy.contains('button', 'Refresh Namespace')
+  //       .first()
+  //       .click();
+  //     // check that the 'refresh succeeded' message appears
+  //     cy.contains('succeeded');
+  //   });
+  //   unpublishTool();
+  //   deleteTool();
+  // });
 }
 
 function testWorkflow(registry: string, repo: string, name: string) {
@@ -170,24 +175,20 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.visit(`/my-workflows`);
       cy.wait('@tokens');
       cy.wait('@workflow');
-      cy.get('[data-cy=refreshButton]').should('be.visible');
       cy.get('[data-cy=refreshButton]').click();
 
-      cy.contains('button', 'Publish').should('be.enabled');
-      cy.contains('button', 'Publish').click();
+      cy.contains('button', 'Publish').should('be.enabled').click();
     });
     it('snapshot', () => {
       // define routes to watch for
       cy.server();
-      cy.route('**/tools/**').as('tools');
 
       goToTab('Versions');
-      cy.wait('@tools');
       cy.contains('button', 'Actions').should('be.visible');
       cy.contains('td', 'Actions')
         .first()
         .click();
-      // don't actually snapshot since it can't be undone
+      // WARNING: don't actually snapshot since it can't be undone
       cy.get('.mat-menu-content').within(() => {
         cy.contains('button', 'Snapshot');
         cy.contains('button', 'Edit').click();
@@ -196,9 +197,7 @@ function testWorkflow(registry: string, repo: string, name: string) {
     });
     it('unpublish and stub', () => {
       storeToken();
-      cy.contains('button', 'Unpublish')
-        .should('be.visible')
-        .click({ force: true });
+      cy.get('#publishButton').contains('Unpublish').click({ force: true });
 
       goToTab('Info');
       cy.contains('button', 'Restub').click();
@@ -226,7 +225,6 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.get('mat-option')
         .contains(org)
         .click();
-
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectCollection').click();
       cy.get('mat-option')
