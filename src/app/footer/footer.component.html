@@ -69,6 +69,26 @@
           </li>
           <li class="m-0">
             <a
+              href="https://github.com/dockstore/compose_setup/commits/{{ Dockstore.COMPOSE_SETUP_VERSION }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              <small>Compose Setup - {{ Dockstore.COMPOSE_SETUP_VERSION }}</small>
+            </a>
+          </li>
+          <li class="m-0">
+            <a
+              href="https://github.com/dockstore/dockstore-deploy/commits/{{ Dockstore.DEPLOY_COMMIT_ID }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              <small>Deploy - {{ Dockstore.DEPLOY_COMMIT_ID }}</small>
+            </a>
+          </li>
+          <li class="m-0">
+            <a
               [href]="dsServerURI + '/metadata/rss'"
               target="_blank"
               rel="noopener noreferrer"
@@ -91,7 +111,7 @@
             Contact Us
           </li>
           <li class="m-0">
-            <a href="https://github.com/ga4gh/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <a href="https://github.com/dockstore/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
               <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/github-mark-light.png" alt="small GitHub logo" /><small>
                 Github</small
               >
@@ -137,7 +157,7 @@
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
-              ><small>&copy; 2019 OICR</small></a
+              ><small>&copy; {{ year }} OICR</small></a
             >
           </li>
           <li class="m-0">

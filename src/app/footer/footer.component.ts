@@ -34,6 +34,7 @@ export class FooterComponent extends Base implements OnInit {
   public prod = true;
   public dsServerURI: any;
   Dockstore = Dockstore;
+  year: number;
 
   /**
    * API Status codes that can indicate the web service is down
@@ -51,6 +52,7 @@ export class FooterComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
+    this.year = new Date().getFullYear();
     this.tag = versions.tag;
     this.dsServerURI = Dockstore.API_URI;
     this.metadataService
