@@ -208,8 +208,8 @@ workflows:
   everything:
     jobs:
       - uptime_monitor_auth
-          branches:
-            tags:
+          filters:
+            branches:
               only: /.*/
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
 #      - lint_unit_test_coverage:
