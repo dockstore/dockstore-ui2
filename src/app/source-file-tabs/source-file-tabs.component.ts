@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SafeUrl } from '@angular/platform-browser';
@@ -13,18 +13,13 @@ import { SourceFileTabsService } from './source-file-tabs.service';
   templateUrl: './source-file-tabs.component.html',
   styleUrls: ['./source-file-tabs.component.scss']
 })
-export class SourceFileTabsComponent implements OnInit {
+export class SourceFileTabsComponent implements OnChanges {
   @Input() workflowId: number;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
-  @Input() set version(value: WorkflowVersion) {
-    if (value != null) {
-      this.currentVersion = value;
-      this.setupVersionFileTabs();
-    }
-  }
+  // Version is strictly non-null because everything that uses this component has a truthy-check guard
+  @Input() version: WorkflowVersion;
   loading = true;
   displayError = false;
-  currentVersion: WorkflowVersion;
   files: SourceFile[];
   filteredFiles: SourceFile[];
   currentFile: SourceFile;
@@ -37,7 +32,7 @@ export class SourceFileTabsComponent implements OnInit {
 
   constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
 
-  ngOnInit() {
+  ngOnChanges() {
     this.setupVersionFileTabs();
   }
 
@@ -45,7 +40,7 @@ export class SourceFileTabsComponent implements OnInit {
     this.loading = true;
     this.displayError = false;
     this.sourceFileTabsService
-      .getSourceFiles(this.workflowId, this.currentVersion.id)
+      .getSourceFiles(this.workflowId, this.version.id)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -72,7 +67,7 @@ export class SourceFileTabsComponent implements OnInit {
    */
   changeFileType(fileType: SourceFile.TypeEnum, files: SourceFile[]) {
     let validationMessage = null;
-    this.currentVersion.validations.forEach((validation: Validation) => {
+    this.version.validations.forEach((validation: Validation) => {
       if (validation.type === fileType && !validation.valid) {
         validationMessage = JSON.parse(validation.message);
       }
@@ -93,7 +88,7 @@ export class SourceFileTabsComponent implements OnInit {
   selectFile(file: SourceFile) {
     this.customDownloadHREF = this.fileService.getFileData(file.content);
     this.customDownloadPath = this.fileService.getFileName(file.path);
-    this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.currentVersion.name);
+    this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.version.name);
     this.currentFile = file;
   }
 

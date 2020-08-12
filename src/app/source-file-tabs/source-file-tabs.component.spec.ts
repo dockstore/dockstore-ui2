@@ -18,7 +18,7 @@ describe('SourceFileTabsComponent', () => {
       imports: [HttpClientTestingModule],
       providers: [
         { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
-        { provide: FileService, useClass: FileStubService },
+        { provide: FileService, useClass: FileStubService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -27,7 +27,7 @@ describe('SourceFileTabsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SourceFileTabsComponent);
     component = fixture.componentInstance;
-    component.currentVersion = { id: 0 };
+    component.version = { id: 0 };
     component.workflowId = 0;
     fixture.detectChanges();
   });
