@@ -207,7 +207,7 @@ workflows:
   version: 2
   everything:
     jobs:
-      - uptime_monitor_auth
+      - uptime_monitor_auth:
           filters:
             branches:
               only: /.*/
