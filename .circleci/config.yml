@@ -207,57 +207,53 @@ workflows:
   version: 2
   everything:
     jobs:
-      - uptime_monitor_auth:
+#      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - lint_unit_test_coverage:
           filters:
+            tags:
+              only: /.*/
+      - licenses_test:
+          filters:
+            tags:
+              only: /.*/
+      - integration_test_1:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+            - licenses_test
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+            - licenses_test
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_unit_test_coverage
+            - licenses_test
+      # Upload builds for tags and branches to s3.
+      - upload_to_s3:
+          requires:
+            - integration_test_1
+            - integration_test_2
+            - integration_test_3
+          filters:
+            tags:
+              only: /.*/
             branches:
               only: /.*/
-#      # Add the tags filter to all jobs so they will run before upload_to_s3
-#      - lint_unit_test_coverage:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - licenses_test:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - integration_test_1:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#            - licenses_test
-#      - integration_test_2:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#            - licenses_test
-#      - integration_test_3:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_unit_test_coverage
-#            - licenses_test
-#      # Upload builds for tags and branches to s3.
-#      - upload_to_s3:
-#          requires:
-#            - integration_test_1
-#            - integration_test_2
-#            - integration_test_3
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              only: /.*/
-#      - check_build_develop:
-#          requires:
-#            - upload_to_s3
-#          filters:
-#            branches:
-#              only: /^develop/
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
 
   nightly:
     triggers:
