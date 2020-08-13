@@ -260,10 +260,8 @@ function testCollection(org: string, collection: string, registry: string, repo:
       storeToken();
       // define routes to watch for
       cy.server();
-      // cy.route('**/collections').as('collections');
       cy.route('post', '**/collections/**').as('postToCollection');
       cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
-      // cy.wait('@collections');
       cy.get('#addToolToCollectionButton')
         .should('be.visible')
         .click();
