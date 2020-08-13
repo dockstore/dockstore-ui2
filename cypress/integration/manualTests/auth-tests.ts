@@ -1,5 +1,16 @@
 import { goToTab } from '../../support/commands';
 
+/**
+ * To run these on tests you have the following:
+ *    1. Base url for cypress must be set to dev.dockstore.net (or if local make sure user is in local database)
+ *    2. DockstoreTestUser4 registered on dev.dockstore.net with github and quay accounts linked (at minimum)
+ *        -- must have the entries on their github and quay accounts (dockstore-tool-md5sum and hello-dockstore-workflow)
+ *    3. Dockstore token for DockstoreTestUser4 must be passed to cypress
+ *    4. The 'testtest' dockstore organization must exist with 'testcollection' Collection and DockstoreTestUser4 as member
+ *    5. Tests will either fail or be flaky if artifacts are left behind from a failed run (ie tool not deleted or workflow unpublished)
+ *        -- if tests keep failing double check that these were removed
+ */
+
 // TODO: for clarity and future debugging refactor variable names to use 'namespace', 'entry-name', call those variable names in methods
 const username = 'dockstoretestuser4';
 // tuples of registry, repo namespace (username), and entry-name (repo name)
@@ -24,13 +35,17 @@ function unpublishTool() {
 
 function deleteTool() {
   it('delete the tool', () => {
-    // why wait?
-    cy.wait(1000);
+    storeToken();
+    cy.server();
+    cy.route('delete', '**/containers/**').as('containers');
+    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.contains('button', 'Delete').should('be.visible');
-    cy.get('#deregisterButton').click();
+    cy.contains('button', 'Delete').click();
+    // cy.get('#deregisterButton').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
       cy.contains('button', 'Delete').click();
     });
+    cy.wait('@containers');
     cy.contains('There are currently no tools registered under this account');
   });
 }
@@ -43,13 +58,15 @@ function registerQuayTool(repo: string, name: string) {
     cy.server();
     // get quay.io organization/namespaces accessible to user
     cy.route('/api/users/dockerRegistries/quay.io/organizations').as('orgs');
+    cy.route('**/tokens').as('tokens');
     cy.route('**/repositories').as('repos');
     cy.route('**/containers').as('containers');
     cy.route('post', '**/publish').as('publish');
 
     cy.visit('/my-tools');
+    cy.wait('@tokens');
     // click thru the steps of registering a tool
-    cy.wait(2000); // hardcoded 2s wait least flaky right now, revisit in future
+    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#register_tool_button').click();
     cy.wait('@orgs');
     // cy.wait(1000);
@@ -78,9 +95,11 @@ function registerRemoteSitesTool(repo: string, name: string) {
     // define routes to watch for
     cy.server();
     cy.route('post', '**/publish').as('publish');
+    cy.route('**/tokens').as('tokens');
 
     cy.visit('/my-tools');
-    cy.wait(2000); // hardcoded 2s wait least flaky right now, revisit in future
+    cy.wait('@tokens');
+    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
@@ -100,9 +119,29 @@ function registerToolOnDockstore(repo: string, name: string) {
 
     // define routes to watch for
     cy.server();
+    // for some reason watching and waiting for all the responses is still flaky
+    cy.route('**/containers').as('containers');
+    cy.route('**/tokens').as('tokens');
+    cy.route('**/user').as('user');
+    cy.route('**/extended').as('extended');
+    cy.route('**/metadata').as('metadata');
+    cy.route('**/dockerRegistryList').as('docker');
+    cy.route('**/sourceControlList').as('sourceControl');
+    cy.route('**/notifications').as('notifications');
 
     cy.visit('/my-tools');
-    cy.get('#register_tool_button').click();
+    cy.wait('@containers');
+    cy.wait('@notifications');
+    cy.wait('@tokens');
+    cy.wait('@user');
+    cy.wait('@extended');
+    cy.wait('@metadata');
+    cy.wait('@docker');
+    cy.wait('@sourceControl');
+    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
+    cy.get('#register_tool_button')
+      .should('be.visible')
+      .click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').click();
       cy.contains('button', 'Next').click();
@@ -173,10 +212,14 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.wait('@workflow');
 
       //  refresh stubbed workflow to full and publish
+      cy.route('**/refresh').as('refresh');
       cy.get('[data-cy=refreshButton]').click();
+      cy.wait('@refresh');
+      cy.route('post', '**/publish').as('publish');
       cy.contains('button', 'Publish')
         .should('be.enabled')
         .click();
+      cy.wait('@publish');
     });
 
     // Test some snapshot and versions stuff
@@ -186,6 +229,7 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.server();
 
       goToTab('Versions');
+
       cy.contains('button', 'Actions').should('be.visible');
       cy.contains('td', 'Actions')
         .first()
