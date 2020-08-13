@@ -59,22 +59,22 @@
           </li>
           <li class="m-0">
             <a
-              href="https://github.com/dockstore/dockstore-ui2/{{ tag | gitTag }}"
+              href="https://github.com/dockstore/dockstore-ui2/{{ tag | gitTag: true }}"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>UI - {{ tag }}</small>
+              <small>UI - {{ tag | gitTag }}</small>
             </a>
           </li>
           <li class="m-0">
             <a
-              href="https://github.com/dockstore/compose_setup/commits/{{ Dockstore.COMPOSE_SETUP_VERSION }}"
+              href="https://github.com/dockstore/compose_setup/{{ Dockstore.COMPOSE_SETUP_VERSION | gitTag: true }}"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>Compose Setup - {{ Dockstore.COMPOSE_SETUP_VERSION }}</small>
+              <small>Deploy - {{ Dockstore.COMPOSE_SETUP_VERSION | gitTag }}</small>
             </a>
           </li>
           <li class="m-0">
@@ -84,7 +84,7 @@
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>Deploy - {{ Dockstore.DEPLOY_COMMIT_ID }}</small>
+              <small>Infrastructure - {{ Dockstore.DEPLOY_COMMIT_ID }}</small>
             </a>
           </li>
           <li class="m-0">
