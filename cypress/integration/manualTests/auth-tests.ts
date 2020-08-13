@@ -27,7 +27,6 @@ function storeToken() {
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#publishToolButton')
       .contains('Unpublish')
       .click();
@@ -261,10 +260,10 @@ function testCollection(org: string, collection: string, registry: string, repo:
       storeToken();
       // define routes to watch for
       cy.server();
-      cy.route('**/collections').as('collections');
+      // cy.route('**/collections').as('collections');
       cy.route('post', '**/collections/**').as('postToCollection');
       cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
-      cy.wait('@collections');
+      // cy.wait('@collections');
       cy.get('#addToolToCollectionButton')
         .should('be.visible')
         .click();
@@ -288,6 +287,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
 
     it('be able to remove an entry from a collection', () => {
       storeToken();
+      cy.server();
       cy.visit(`/organizations/${org}/collections/${collection}`);
       cy.contains(`quay.io/${repo}/${name}`);
       cy.get('#removeEntryButton').click();
@@ -295,7 +295,11 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.contains('This collection has no associated entries');
       cy.visit(`/organizations/${org}`);
       cy.contains('Members').should('be.visible');
+
+      cy.route('**/tokens').as('tokens');
       cy.visit('/my-tools');
+      cy.wait('@tokens');
+      cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     });
     unpublishTool();
     deleteTool();
