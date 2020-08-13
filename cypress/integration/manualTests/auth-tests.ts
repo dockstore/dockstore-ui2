@@ -27,6 +27,7 @@ function storeToken() {
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
+    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#publishToolButton')
       .contains('Unpublish')
       .click();
