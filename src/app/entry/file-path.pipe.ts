@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilePathPipe implements PipeTransform {
   transform(filePath: String): String {
     if (filePath.endsWith('.dockstore.yml')) {
-      if (filePath === '.github/.dockstore.yml' || filePath === '/.github/.dockstore.yml') {
+      if (filePath.endsWith('.github/.dockstore.yml')) {
         return '/.github/.dockstore.yml';
       } else {
         return '/.dockstore.yml';
