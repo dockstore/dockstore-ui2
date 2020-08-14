@@ -24,6 +24,9 @@ export class GitTagPipe implements PipeTransform {
   private readonly gitShaRegEx = /[a-f0-9]{7,}/;
 
   transform(tag: string, withPath?: boolean): string {
+    if (!tag) {
+      return '';
+    }
     const execArray = this.gitTagRegEx.exec(tag);
     if (execArray || this.gitShaRegEx.test(tag)) {
       const actualTag = execArray ? execArray[1] : tag;

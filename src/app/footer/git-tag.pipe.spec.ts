@@ -20,4 +20,9 @@ describe('GitTagPipe', () => {
     expect(pipe.transform('e422a55')).toEqual('e422a55');
     expect(pipe.transform('e422a55', true)).toEqual('commits/e422a55');
   });
+  it('handles nulls', () => {
+    const pipe = new GitTagPipe();
+    expect(pipe.transform(null)).toEqual('');
+    expect(pipe.transform(null, true)).toEqual('');
+  });
 });
