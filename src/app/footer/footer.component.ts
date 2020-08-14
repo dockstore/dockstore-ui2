@@ -62,7 +62,7 @@ export class FooterComponent extends Base implements OnInit {
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
             const metadatum = metadata['version'];
-            if ((metadatum && metadatum.indexOf('SNAPSHOT') !== -1) || metadatum.indexOf('development-build') !== -1) {
+            if (metadatum && (metadatum.includes('SNAPSHOT') || metadatum.includes('development-build'))) {
               this.version = Dockstore.WEBSERVICE_COMMIT_ID;
             } else {
               this.version = metadatum;
