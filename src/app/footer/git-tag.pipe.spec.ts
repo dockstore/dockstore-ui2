@@ -15,4 +15,9 @@ describe('GitTagPipe', () => {
     expect(pipe.transform('2.6.1')).toEqual('2.6.1');
     expect(pipe.transform('2.6.1', true)).toEqual('releases/tag/2.6.1');
   });
+  it('handles a plain old commit id', () => {
+    const pipe = new GitTagPipe();
+    expect(pipe.transform('e422a55')).toEqual('e422a55');
+    expect(pipe.transform('e422a55', true)).toEqual('commits/e422a55');
+  });
 });

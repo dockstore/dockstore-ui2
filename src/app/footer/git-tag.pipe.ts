@@ -12,17 +12,22 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'gitTag'
 })
 export class GitTagPipe implements PipeTransform {
-  private readonly gitTagRegEx = /-\d+-g(\w{8})/;
+  /**
+   * Regex for "2.6.1-26-geb3771b6"
+   * @private
+   */
+  private readonly gitTagRegEx = /-\d+-g(\w{7,})/;
   /**
    * Less than perfect test for commit sha -- hexadecimal for at least 7 chars long
    * @private
    */
-  private readonly gitShaRegEx = /[a-f0-9]{8,}/;
+  private readonly gitShaRegEx = /[a-f0-9]{7,}/;
 
   transform(tag: string, withPath?: boolean): string {
     const execArray = this.gitTagRegEx.exec(tag);
-    if (execArray || this.gitTagRegEx.test(tag)) {
-      return withPath ? `commits/${execArray[1]}` : execArray[1];
+    if (execArray || this.gitShaRegEx.test(tag)) {
+      const actualTag = execArray ? execArray[1] : tag;
+      return withPath ? `commits/${actualTag}` : actualTag;
     }
     return withPath ? `releases/tag/${tag}` : tag;
   }

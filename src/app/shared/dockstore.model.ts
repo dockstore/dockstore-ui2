@@ -81,6 +81,7 @@ export class Dockstore {
 
   static DEPLOY_COMMIT_ID = '';
   static COMPOSE_SETUP_VERSION = '';
+  static WEBSERVICE_COMMIT_ID = '';
 
   static FEATURES = {
     enableCwlViewer: true

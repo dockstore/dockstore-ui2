@@ -81,6 +81,8 @@ export class ConfigurationService {
     Dockstore.DEPLOY_COMMIT_ID = config.deployCommitId;
 
     Dockstore.COMPOSE_SETUP_VERSION = config.composeSetupVersion;
+
+    Dockstore.WEBSERVICE_COMMIT_ID = config.gitCommitId;
   }
 
   /**

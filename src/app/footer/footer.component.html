@@ -43,12 +43,12 @@
             </a>
             -
             <a
-              href="https://github.com/dockstore/dockstore/releases/tag/{{ version }}"
+              href="https://github.com/dockstore/dockstore/{{ version | gitTag: true }}"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>{{ version }} </small>
+              <small>{{ version | gitTag }} </small>
             </a>
             <a href="https://status.dockstore.org/" target="_blank" rel="noopener noreferrer" class="footer-link">
               <img
@@ -74,17 +74,16 @@
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>Deploy - {{ Dockstore.COMPOSE_SETUP_VERSION | gitTag }}</small>
+              <small>Deploy</small>
             </a>
-          </li>
-          <li class="m-0">
+            <span> / </span>
             <a
               href="https://github.com/dockstore/dockstore-deploy/commits/{{ Dockstore.DEPLOY_COMMIT_ID }}"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>Infrastructure - {{ Dockstore.DEPLOY_COMMIT_ID }}</small>
+              <small>Infrastructure</small>
             </a>
           </li>
           <li class="m-0">
