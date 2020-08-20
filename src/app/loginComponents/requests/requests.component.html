@@ -26,11 +26,19 @@
               on {{ org.dbCreateDate | date }}
             </p>
           </mat-card-subtitle>
+          <button
+            mat-flat-button
+            color="warn"
+            class="ml-auto h-50"
+            (click)="openDeleteDialog(org.displayName, org.id)"
+            matTooltip="Delete this organization request"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ org.topic }}
         </mat-card-content>
-
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
           <button
             mat-flat-button
@@ -72,6 +80,15 @@
             }}</a>
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
+          <button
+            mat-flat-button
+            color="warn"
+            class="ml-auto h-50"
+            (click)="openDeleteDialog(membership.organization.displayName, membership.organization.id)"
+            matTooltip="Delete this organization request"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
@@ -93,6 +110,15 @@
             }}</a>
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
+          <button
+            mat-flat-button
+            color="warn"
+            class="ml-auto h-50"
+            (click)="openDeleteDialog(membership.organization.displayName, membership.organization.id)"
+            matTooltip="Delete this organization request"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}

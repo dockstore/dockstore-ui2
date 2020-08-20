@@ -35,10 +35,22 @@ export class OrganizationInviteConfirmDialogComponent {
   }
 }
 
+@Component({
+  selector: 'organization-delete-confirm-dialog',
+  templateUrl: 'organization-delete-confirm-dialog.html'
+})
+export class OrganizationDeleteConfirmDialogComponent {
+  constructor(public dialogRef: MatDialogRef<OrganizationDeleteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
 export interface DialogData {
   name: string;
   id: number;
-  approve: boolean; // true = approve, false = reject
+  approve?: boolean; // true = approve, false = reject
 }
 
 @Component({
@@ -111,6 +123,19 @@ export class RequestsComponent extends Base implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.requestsService.acceptOrRejectOrganizationInvite(result.id, result.approve);
+      }
+    });
+  }
+
+  openDeleteDialog(name: string, id: number): void {
+    const dialogRef = this.dialog.open(OrganizationDeleteConfirmDialogComponent, {
+      width: '400px',
+      data: { name: name, id: id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.requestsService.deleteOrganization(result.id);
       }
     });
   }
