@@ -252,6 +252,74 @@ describe('Dropdown test', () => {
       // One pending org request should be visible
       cy.get('#my-pending-org-card-0').should('be.visible');
     });
+
+    it('Should be able to delete pending/reject org request', () => {
+      // Both pending and rejected orgs should be visible
+      cy.get('#my-pending-org-card-0').should('be.visible');
+      cy.get('#my-rejected-org-card-0').should('be.visible');
+
+      // New mocked memberships after deleting the rejected organization
+      let memberships = [
+        { id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
+        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } }
+      ];
+
+      // Route all DELETE API calls to organizations respond with with an empty JSON object
+      cy.server().route({
+        method: 'DELETE',
+        url: '*/organizations/*',
+        response: []
+      });
+
+      // Route GET API call to user/membership with the new mocked membership JSON object
+      cy.server().route({
+        method: 'GET',
+        url: '*/users/user/memberships',
+        response: memberships
+      });
+
+      // Delete the rejected organization
+      // Should result with the rejected organization no longer existing, and only the pending org existing
+      cy.get('#delete-my-rejected-org-0')
+        .should('be.visible')
+        .click();
+      cy.get('#delete-org-dialog')
+        .should('be.visible')
+        .click();
+      cy.get('#my-pending-org-card-0').should('be.visible');
+      cy.get('#my-rejected-org-card-0').should('not.exist');
+
+      // New membership JSON object after deleting the pending organization
+      memberships = [{ id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } }];
+
+      // Route GET API call to user/memberships to respond with the new membership JSON object
+      cy.server().route({
+        method: 'GET',
+        url: '*/users/user/memberships',
+        response: memberships
+      });
+
+      // New JSON mocked object that details all pending organizations after the deletion of organization 1002
+      const pendingOrganizations = [{ id: 1000, name: 'OrgOne', status: 'PENDING' }];
+
+      // Route all GET requests to organizations/all?type=pending to return the new pendingOrganizations JSON object
+      cy.server().route({
+        method: 'GET',
+        url: '*/organizations/all?type=pending',
+        response: pendingOrganizations
+      });
+
+      // Delete the pending organization
+      // Should result with the organization no longer existing and the request page empty of rejected/pending orgs
+      cy.get('#delete-my-pending-org-0')
+        .should('be.visible')
+        .click();
+      cy.get('#delete-org-dialog')
+        .should('be.visible')
+        .click();
+      cy.get('#my-pending-org-card-0').should('not.exist');
+      cy.get('#my-rejected-org-card-0').should('not.exist');
+    });
   });
 
   describe('Go to enabled Dockstore Account Controls', () => {

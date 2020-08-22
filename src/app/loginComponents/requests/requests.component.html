@@ -29,6 +29,7 @@
           <button
             mat-flat-button
             color="warn"
+            [id]="'delete-pending-org' + i"
             class="ml-auto h-50"
             (click)="openDeleteDialog(org.displayName, org.id)"
             matTooltip="Delete this organization request"
@@ -83,6 +84,7 @@
           <button
             mat-flat-button
             color="warn"
+            [id]="'delete-my-pending-org-' + i"
             class="ml-auto h-50"
             (click)="openDeleteDialog(membership.organization.displayName, membership.organization.id)"
             matTooltip="Delete this organization request"
@@ -113,6 +115,7 @@
           <button
             mat-flat-button
             color="warn"
+            [id]="'delete-my-rejected-org-' + i"
             class="ml-auto h-50"
             (click)="openDeleteDialog(membership.organization.displayName, membership.organization.id)"
             matTooltip="Delete this organization request"
