@@ -142,7 +142,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
       },
       (error: HttpErrorResponse) => {
         if (error.status === 413) {
-          this.alertService.detailedError(error, 'Cannot upload new version: new version would exceed the 60 kilobyte limit');
+          this.alertService.detailedError(error, 'Cannot save new version: versions have a 60 kilobyte limit');
         } else if (error) {
           this.alertService.detailedError(error);
         }
