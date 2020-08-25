@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { WorkflowsService as OpenApiWorkflowServices } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
@@ -139,8 +140,10 @@ export class WorkflowFileEditorComponent extends FileEditing {
           this.handleNoContentResponse();
         }
       },
-      error => {
-        if (error) {
+      (error: HttpErrorResponse) => {
+        if (error.status === 413) {
+          this.alertService.detailedError(error, 'Cannot save new version: versions have a 60 kilobyte limit');
+        } else if (error) {
           this.alertService.detailedError(error);
         }
       }
