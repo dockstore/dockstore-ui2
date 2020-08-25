@@ -177,7 +177,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     RefreshAlertModule,
     RequestsModule,
     HomePageModule,
-    HttpClientModule
+    HttpClientModule,
+    ClipboardModule
   ],
   providers: [
     AccountsService,
