@@ -93,9 +93,11 @@ export class OrganizationMembersService {
           // appears as if he still has permissions to edit.
           if (this.userQuery.getValue().user) {
             const currentUserId = this.userQuery.getValue().user.id;
-            const canEdit = organizationUsers.some(user => user.id.userId === currentUserId && user.accepted);
+            const canEdit = organizationUsers.some(
+              user => user.id.userId === currentUserId && user.accepted && user.role !== OrganizationUser.RoleEnum.MEMBER
+            );
             const canEditMembers = organizationUsers.some(
-              user => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.MAINTAINER
+              user => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.ADMIN
             );
             this.setCanEditState(canEdit, canEditMembers);
           } else {
