@@ -26,15 +26,17 @@
               on {{ org.dbCreateDate | date }}
             </p>
           </mat-card-subtitle>
-          <button
-            mat-flat-button
+          <app-deregister-modal
             [id]="'delete-pending-org' + i"
             class="ml-auto h-50"
-            (click)="openDeleteDialog(org.displayName, org.id)"
-            matTooltip="Delete this organization request"
+            [toolTipMessage]="'Delete this pending organization: ' + org.displayName"
+            [option]="'organization'"
+            [organizationName]="org.displayName"
+            [organizationID]="org.id"
+            [organizationStatus]="'pending'"
           >
             <mat-icon>delete</mat-icon>
-          </button>
+          </app-deregister-modal>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ org.topic }}
@@ -80,15 +82,17 @@
             }}</a>
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
-          <button
-            mat-flat-button
+          <app-deregister-modal
             [id]="'delete-my-pending-org-' + i"
             class="ml-auto h-50"
-            (click)="openDeleteDialog(membership.organization.displayName, membership.organization.id)"
-            matTooltip="Delete this organization request"
+            [toolTipMessage]="'Delete this pending organization: ' + membership.organization.displayName"
+            [option]="'organization'"
+            [organizationName]="membership.organization.displayName"
+            [organizationID]="membership.organization.id"
+            [organizationStatus]="'pending'"
           >
             <mat-icon>delete</mat-icon>
-          </button>
+          </app-deregister-modal>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
@@ -110,15 +114,17 @@
             }}</a>
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
-          <button
-            mat-flat-button
+          <app-deregister-modal
             [id]="'delete-my-rejected-org-' + i"
             class="ml-auto h-50"
-            (click)="openDeleteDialog(membership.organization.displayName, membership.organization.id)"
-            matTooltip="Delete this organization request"
+            [toolTipMessage]="'Delete this rejected organization: ' + membership.organization.displayName"
+            [option]="'organization'"
+            [organizationName]="membership.organization.displayName"
+            [organizationID]="membership.organization.id"
+            [organizationStatus]="'rejected'"
           >
             <mat-icon>delete</mat-icon>
-          </button>
+          </app-deregister-modal>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}

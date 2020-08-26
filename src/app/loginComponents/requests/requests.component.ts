@@ -127,19 +127,6 @@ export class RequestsComponent extends Base implements OnInit {
     });
   }
 
-  openDeleteDialog(name: string, id: number): void {
-    const dialogRef = this.dialog.open(OrganizationDeleteConfirmDialogComponent, {
-      width: '400px',
-      data: { name: name, id: id }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.requestsService.deleteOrganization(result.id);
-      }
-    });
-  }
-
   rerequestReview(membership: OrganizationUser) {
     this.requestsService.requestRereview(membership.organization.id);
   }

@@ -28,7 +28,12 @@
     </button>
   </ng-template>
   <ng-template #enabledDeleteButton>
-    <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="isRefreshing$ | async"></app-deregister-modal>
+    <app-deregister-modal
+      *ngIf="!tool?.is_published"
+      [refreshMessage]="isRefreshing$ | async"
+      [toolTipMessage]="'Delete the tool'"
+      [option]="'tool'"
+    ></app-deregister-modal>
   </ng-template>
   <button
     *ngIf="!isHosted"
