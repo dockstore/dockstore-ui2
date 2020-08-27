@@ -11,7 +11,7 @@ GENERATOR_VERSION="3.3.4"
 # Uncomment this to use the actual Dockstore webservice release from the package.json
 #BASE_PATH="https://raw.githubusercontent.com/dockstore/dockstore/$npm_package_config_webservice_version"
 # Uncomment this to use the CircleCI swagger/openapi instead
-CIRCLE_CI_PATH="https://4694-33383826-gh.circle-artifacts.com/0/tmp/artifacts" 
+CIRCLE_CI_PATH="https://4872-33383826-gh.circle-artifacts.com/0/tmp/artifacts"
 # DOCKSTORE-2428 - demo how to add new workflow language, generate from local copy of swagger
 # Uncomment this to use your local copy of swagger instead
 # BASE_PATH="../dockstore"
