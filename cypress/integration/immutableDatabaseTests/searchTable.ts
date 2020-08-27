@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ga4ghExtendedPath } from '../../../src/app/shared/constants';
 import { setTokenUserViewPort } from '../../support/commands';
 import { goToTab } from '../../support/commands';
 
@@ -24,7 +25,7 @@ describe('Dockstore tool/workflow search table', () => {
     cy.server();
     // Tools/worflows not starred in this response.
     cy.route({
-      url: '*/api/ga4gh/v2/extended/tools/entry/_search',
+      url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
       method: 'POST',
       status: 200,
       response: {
@@ -350,7 +351,7 @@ describe('Dockstore tool/workflow search table', () => {
     // First tool and workflow starred
     cy.fixture('searchTableResponse').then(json => {
       cy.route({
-        url: '*/api/ga4gh/v2/extended/tools/entry/_search',
+        url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
         method: 'POST',
         response: json
       });
@@ -382,7 +383,7 @@ describe('search table items per page', () => {
     cy.server();
     cy.fixture('searchTableResponse').then(json => {
       cy.route({
-        url: '*/api/ga4gh/v2/extended/tools/entry/_search',
+        url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
         method: 'POST',
         response: json
       });
