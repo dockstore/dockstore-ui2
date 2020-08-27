@@ -94,7 +94,10 @@ export class OrganizationMembersService {
           if (this.userQuery.getValue().user) {
             const currentUserId = this.userQuery.getValue().user.id;
             const canEdit = organizationUsers.some(
-              user => user.id.userId === currentUserId && user.accepted && user.role !== OrganizationUser.RoleEnum.MEMBER
+              user =>
+                user.id.userId === currentUserId &&
+                user.accepted &&
+                (user.role === OrganizationUser.RoleEnum.ADMIN || user.role === OrganizationUser.RoleEnum.MAINTAINER)
             );
             const canEditMembers = organizationUsers.some(
               user => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.ADMIN
