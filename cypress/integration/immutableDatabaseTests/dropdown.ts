@@ -259,7 +259,7 @@ describe('Dropdown test', () => {
       cy.get('#my-rejected-org-card-0').should('be.visible');
 
       // New mocked memberships after deleting the rejected organization
-      let memberships = [
+      const memberships = [
         { id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
         { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } }
       ];
@@ -283,20 +283,20 @@ describe('Dropdown test', () => {
       cy.get('#delete-my-rejected-org-0')
         .should('be.visible')
         .click();
-      cy.get('#delete-org-dialog')
-        .should('be.visible')
-        .click();
+      cy.contains('div', 'Are you sure you wish to delete this rejected organization: orgThree?').within(() => {
+        cy.contains('button', 'Delete').click();
+      });
       cy.get('#my-pending-org-card-0').should('be.visible');
       cy.get('#my-rejected-org-card-0').should('not.exist');
 
       // New membership JSON object after deleting the pending organization
-      memberships = [{ id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } }];
+      const memberships2 = [{ id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } }];
 
       // Route GET API call to user/memberships to respond with the new membership JSON object
       cy.server().route({
         method: 'GET',
         url: '*/users/user/memberships',
-        response: memberships
+        response: memberships2
       });
 
       // New JSON mocked object that details all pending organizations after the deletion of organization 1002
@@ -314,9 +314,9 @@ describe('Dropdown test', () => {
       cy.get('#delete-my-pending-org-0')
         .should('be.visible')
         .click();
-      cy.get('#delete-org-dialog')
-        .should('be.visible')
-        .click();
+      cy.contains('div', 'Are you sure you wish to delete this pending organization: orgTwo?').within(() => {
+        cy.contains('button', 'Delete').click();
+      });
       cy.get('#my-pending-org-card-0').should('not.exist');
       cy.get('#my-rejected-org-card-0').should('not.exist');
     });
