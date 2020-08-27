@@ -34,6 +34,7 @@
             [organizationName]="org.displayName"
             [organizationID]="org.id"
             [organizationStatus]="'pending'"
+            [confirmationDialogData]="getDeregisterDialogData(org.displayName, 'pending')"
           >
             <mat-icon>delete</mat-icon>
           </app-deregister-modal>
@@ -90,6 +91,7 @@
             [organizationName]="membership.organization.displayName"
             [organizationID]="membership.organization.id"
             [organizationStatus]="'pending'"
+            [confirmationDialogData]="getDeregisterDialogData(membership.organization.displayName, 'pending')"
           >
             <mat-icon>delete</mat-icon>
           </app-deregister-modal>
@@ -122,6 +124,7 @@
             [organizationName]="membership.organization.displayName"
             [organizationID]="membership.organization.id"
             [organizationStatus]="'rejected'"
+            [confirmationDialogData]="getDeregisterDialogData(membership.organization.displayName, 'rejected')"
           >
             <mat-icon>delete</mat-icon>
           </app-deregister-modal>

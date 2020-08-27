@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { AlertQuery } from '../alert/state/alert.query';
 import { RefreshService } from '../refresh.service';
 import { DockstoreTool, Tag } from '../swagger';
@@ -22,6 +23,13 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
   ) {
     super(alertQuery, entryActionsService);
   }
+
+  toolDialogData: ConfirmationDialogData = {
+    title: 'Are you sure you wish to delete this tool?',
+    message: `All information associated with this tool will be deleted.`,
+    cancelButtonText: 'Cancel',
+    confirmationButtonText: 'Delete'
+  };
 
   ngOnInit() {
     this.commonNgOnInit();

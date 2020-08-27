@@ -5,29 +5,14 @@ import { RouterModule } from '@angular/router';
 import { ContainerModule } from '../shared/modules/container.module';
 import { CustomMaterialModule } from './../shared/modules/material.module';
 import {
-  OrganizationDeleteConfirmDialogComponent,
   OrganizationInviteConfirmDialogComponent,
   OrganizationRequestConfirmDialogComponent,
   RequestsComponent
 } from './requests/requests.component';
 @NgModule({
   imports: [CommonModule, CustomMaterialModule, RouterModule, FlexLayoutModule, ContainerModule],
-  declarations: [
-    RequestsComponent,
-    OrganizationRequestConfirmDialogComponent,
-    OrganizationInviteConfirmDialogComponent,
-    OrganizationDeleteConfirmDialogComponent
-  ],
-  exports: [
-    RequestsComponent,
-    OrganizationRequestConfirmDialogComponent,
-    OrganizationInviteConfirmDialogComponent,
-    OrganizationDeleteConfirmDialogComponent
-  ],
-  entryComponents: [
-    OrganizationRequestConfirmDialogComponent,
-    OrganizationInviteConfirmDialogComponent,
-    OrganizationDeleteConfirmDialogComponent
-  ]
+  declarations: [RequestsComponent, OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent],
+  exports: [RequestsComponent, OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent],
+  entryComponents: [OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent]
 })
 export class RequestsModule {}

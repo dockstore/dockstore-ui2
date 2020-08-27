@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { Base } from '../../shared/base';
 import { Organization, OrganizationUser } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
@@ -29,18 +30,6 @@ export class OrganizationRequestConfirmDialogComponent {
 })
 export class OrganizationInviteConfirmDialogComponent {
   constructor(public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'organization-delete-confirm-dialog',
-  templateUrl: 'organization-delete-confirm-dialog.html'
-})
-export class OrganizationDeleteConfirmDialogComponent {
-  constructor(public dialogRef: MatDialogRef<OrganizationDeleteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -129,5 +118,15 @@ export class RequestsComponent extends Base implements OnInit {
 
   rerequestReview(membership: OrganizationUser) {
     this.requestsService.requestRereview(membership.organization.id);
+  }
+
+  getDeregisterDialogData(organizationName: string, organizationStatus: string) {
+    const confirmationDialogData: ConfirmationDialogData = {
+      title: `Are you sure you wish to delete this ${organizationStatus} organization: ${organizationName}?`,
+      message: `All information associated with <b>${organizationName}</b> will be deleted.`,
+      cancelButtonText: 'Cancel',
+      confirmationButtonText: 'Delete'
+    };
+    return confirmationDialogData;
   }
 }

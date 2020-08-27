@@ -28,6 +28,7 @@ import { RegisterToolService } from './../register-tool/register-tool.service';
   styleUrls: ['./deregister-modal.component.css']
 })
 export class ModalComponent implements OnInit {
+  @Input() confirmationDialogData: ConfirmationDialogData;
   @Input() toolTipMessage: string;
   @Input() refreshMessage: boolean;
   @Input() option: string;
@@ -52,26 +53,8 @@ export class ModalComponent implements OnInit {
   }
 
   openDeleteDialog() {
-    const toolDialogData: ConfirmationDialogData = {
-      title: 'Are you sure you wish to delete this tool?',
-      message: `All information associated with this tool will be deleted.`,
-      cancelButtonText: 'Cancel',
-      confirmationButtonText: 'Delete'
-    };
-
-    const organizationDialogData: ConfirmationDialogData = {
-      title: `Are you sure you wish to delete this ${this.organizationStatus} organization: ${this.organizationName}?`,
-      message: `All information associated with <b>${this.organizationName}</b> will be deleted.`,
-      cancelButtonText: 'Cancel',
-      confirmationButtonText: 'Delete'
-    };
-
-    let confirmationDialogData: ConfirmationDialogData = toolDialogData;
-    if (this.option === 'organization') {
-      confirmationDialogData = organizationDialogData;
-    }
     this.confirmationDialogService
-      .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
+      .openDialog(this.confirmationDialogData, bootstrap4mediumModalSize)
       .pipe(first())
       .subscribe(result => {
         console.log(this.organizationID);
