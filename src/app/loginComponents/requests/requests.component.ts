@@ -33,8 +33,6 @@ export class OrganizationRequestConfirmDialogComponent {
 export class OrganizationInviteConfirmDialogComponent {
   constructor(public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
-  toolTip;
-
   onNoClick(): void {
     this.dialogRef.close();
   }
