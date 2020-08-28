@@ -31,7 +31,11 @@ export class OrganizationMembersQuery extends QueryEntity<OrganizationMembersSta
   sortOrganizationUser(a: OrganizationUser, b: OrganizationUser): number {
     // If different roles, return the higher ranking role
     if (a.role !== b.role) {
-      return a.role === OrganizationUser.RoleEnum.MAINTAINER ? -1 : 1;
+      if (a.role === OrganizationUser.RoleEnum.ADMIN || b.role === OrganizationUser.RoleEnum.ADMIN) {
+        return a.role === OrganizationUser.RoleEnum.ADMIN ? -1 : 1;
+      } else {
+        return a.role === OrganizationUser.RoleEnum.MAINTAINER ? -1 : 1;
+      }
       // Otherwise sort by userId
     } else {
       return a.id.userId > b.id.userId ? -1 : 1;
