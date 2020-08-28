@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { Base } from '../../shared/base';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { Organization, OrganizationUser } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
 import { RequestsQuery } from '../state/requests.query';
@@ -30,6 +32,8 @@ export class OrganizationRequestConfirmDialogComponent {
 })
 export class OrganizationInviteConfirmDialogComponent {
   constructor(public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  toolTip;
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -61,7 +65,8 @@ export class RequestsComponent extends Base implements OnInit {
     private requestsQuery: RequestsQuery,
     private requestsService: RequestsService,
     public dialog: MatDialog,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    private confirmationDialogService: ConfirmationDialogService
   ) {
     super();
   }
@@ -120,13 +125,30 @@ export class RequestsComponent extends Base implements OnInit {
     this.requestsService.requestRereview(membership.organization.id);
   }
 
-  getDeregisterDialogData(organizationName: string, organizationStatus: string) {
+  removeOrganizationDialog(organizationName: string, organizationStatus: string, organizationID: number) {
     const confirmationDialogData: ConfirmationDialogData = {
       title: `Are you sure you wish to delete this ${organizationStatus} organization: ${organizationName}?`,
       message: `All information associated with <b>${organizationName}</b> will be deleted.`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Delete'
     };
-    return confirmationDialogData;
+    this.confirmationDialogService
+      .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.deleteOrganization(organizationID);
+        }
+      });
+  }
+
+  deleteOrganization(organizationID: number) {
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdminOrCurator => {
+      if (isAdminOrCurator) {
+        this.requestsService.deleteOrganization(organizationID, true);
+      } else {
+        this.requestsService.deleteOrganization(organizationID, false);
+      }
+    });
   }
 }

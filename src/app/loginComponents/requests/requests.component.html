@@ -26,23 +26,20 @@
               on {{ org.dbCreateDate | date }}
             </p>
           </mat-card-subtitle>
-          <app-deregister-modal
-            [id]="'delete-pending-org' + i"
-            class="ml-auto h-50"
-            [toolTipMessage]="'Delete this pending organization: ' + org.displayName"
-            [option]="'organization'"
-            [organizationName]="org.displayName"
-            [organizationID]="org.id"
-            [organizationStatus]="'pending'"
-            [confirmationDialogData]="getDeregisterDialogData(org.displayName, 'pending')"
-          >
-            <mat-icon>delete</mat-icon>
-          </app-deregister-modal>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ org.topic }}
         </mat-card-content>
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+          <button
+            [id]="'delete-pending-org' + i"
+            mat-raised-button
+            color="warn"
+            [matTooltip]="'Delete this pending organization: ' + org.displayName"
+            (click)="removeOrganizationDialog(org.displayName, org.status, org.id)"
+          >
+            Delete
+          </button>
           <button
             mat-flat-button
             [id]="'reject-pending-org-' + i"
@@ -83,22 +80,23 @@
             }}</a>
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
-          <app-deregister-modal
-            [id]="'delete-my-pending-org-' + i"
-            class="ml-auto h-50"
-            [toolTipMessage]="'Delete this pending organization: ' + membership.organization.displayName"
-            [option]="'organization'"
-            [organizationName]="membership.organization.displayName"
-            [organizationID]="membership.organization.id"
-            [organizationStatus]="'pending'"
-            [confirmationDialogData]="getDeregisterDialogData(membership.organization.displayName, 'pending')"
-          >
-            <mat-icon>delete</mat-icon>
-          </app-deregister-modal>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
         </mat-card-content>
+        <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+          <button
+            [id]="'delete-my-pending-org-' + i"
+            mat-raised-button
+            color="warn"
+            [matTooltip]="'Delete this pending organization: ' + membership.organization.displayName"
+            (click)="
+              removeOrganizationDialog(membership.organization.displayName, membership.organization.status, membership.organization.id)
+            "
+          >
+            Delete
+          </button>
+        </mat-card-actions>
       </mat-card>
     </div>
 
@@ -116,23 +114,22 @@
             }}</a>
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
-          <app-deregister-modal
-            [id]="'delete-my-rejected-org-' + i"
-            class="ml-auto h-50"
-            [toolTipMessage]="'Delete this rejected organization: ' + membership.organization.displayName"
-            [option]="'organization'"
-            [organizationName]="membership.organization.displayName"
-            [organizationID]="membership.organization.id"
-            [organizationStatus]="'rejected'"
-            [confirmationDialogData]="getDeregisterDialogData(membership.organization.displayName, 'rejected')"
-          >
-            <mat-icon>delete</mat-icon>
-          </app-deregister-modal>
         </mat-card-header>
         <mat-card-content class="px-4">
           {{ membership.organization.topic }}
         </mat-card-content>
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+          <button
+            [id]="'delete-my-rejected-org-' + i"
+            mat-raised-button
+            color="warn"
+            [matTooltip]="'Delete this rejected organization: ' + membership.organization.displayName"
+            (click)="
+              removeOrganizationDialog(membership.organization.displayName, membership.organization.status, membership.organization.id)
+            "
+          >
+            Delete
+          </button>
           <button
             mat-flat-button
             color="primary"

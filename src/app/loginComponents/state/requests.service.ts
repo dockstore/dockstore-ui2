@@ -190,14 +190,16 @@ export class RequestsService {
       );
   }
 
-  deleteOrganization(id: number): void {
+  deleteOrganization(id: number, isAdminOrCurator: boolean): void {
     this.openApiOrgService
       .deleteRejectedOrPendingOrganization(id)
       .pipe(finalize(() => this.requestsStore.setLoading(false)))
       .subscribe(
         (organization: Organization) => {
           this.alertService.simpleSuccess();
-          this.updateCuratorOrganizations();
+          if (isAdminOrCurator) {
+            this.updateCuratorOrganizations();
+          }
           this.updateMyMemberships();
         },
         () => {

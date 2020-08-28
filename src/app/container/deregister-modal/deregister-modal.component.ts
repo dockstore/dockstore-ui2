@@ -18,7 +18,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
-import { RequestsService } from '../../loginComponents/state/requests.service';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { RegisterToolService } from './../register-tool/register-tool.service';
 
@@ -28,45 +27,28 @@ import { RegisterToolService } from './../register-tool/register-tool.service';
   styleUrls: ['./deregister-modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  @Input() confirmationDialogData: ConfirmationDialogData;
-  @Input() toolTipMessage: string;
   @Input() refreshMessage: boolean;
-  @Input() option: string;
-  @Input() organizationID: number;
-  @Input() organizationStatus: string;
-  @Input() organizationName: string;
 
-  constructor(
-    private registerToolService: RegisterToolService,
-    private confirmationDialogService: ConfirmationDialogService,
-    private requestsService: RequestsService
-  ) {}
+  constructor(private registerToolService: RegisterToolService, private confirmationDialogService: ConfirmationDialogService) {}
 
   ngOnInit() {}
-
-  deregisterTool() {
+  deregister() {
     this.registerToolService.deregisterTool();
   }
 
-  deregisterOrganization(id: number) {
-    this.requestsService.deleteOrganization(id);
-  }
-
   openDeleteDialog() {
+    const confirmationDialogData: ConfirmationDialogData = {
+      title: 'Are you sure you wish to delete this tool?',
+      message: `All information associated with this tool will be deleted.`,
+      cancelButtonText: 'Cancel',
+      confirmationButtonText: 'Delete'
+    };
     this.confirmationDialogService
-      .openDialog(this.confirmationDialogData, bootstrap4mediumModalSize)
+      .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
       .pipe(first())
       .subscribe(result => {
-        console.log(this.organizationID);
         if (result) {
-          switch (this.option) {
-            case 'tool':
-              this.deregisterTool();
-              break;
-            case 'organization':
-              this.deregisterOrganization(this.organizationID);
-              break;
-          }
+          this.deregister();
         }
       });
   }
