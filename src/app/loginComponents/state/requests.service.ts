@@ -191,6 +191,7 @@ export class RequestsService {
   }
 
   deleteOrganization(id: number, isAdminOrCurator: boolean): void {
+    this.alertService.start('Deleting organization ' + id);
     this.requestsStore.setLoading(true);
     this.openApiOrgService
       .deleteRejectedOrPendingOrganization(id)
