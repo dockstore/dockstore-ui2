@@ -41,7 +41,7 @@ export class OrganizationInviteConfirmDialogComponent {
 export interface DialogData {
   name: string;
   id: number;
-  approve?: boolean; // true = approve, false = reject
+  approve: boolean; // true = approve, false = reject
 }
 
 @Component({

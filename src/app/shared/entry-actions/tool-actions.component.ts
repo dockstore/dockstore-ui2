@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { AlertQuery } from '../alert/state/alert.query';
 import { RefreshService } from '../refresh.service';
 import { DockstoreTool, Tag } from '../swagger';
