@@ -191,6 +191,7 @@ export class RequestsService {
   }
 
   deleteOrganization(id: number, isAdminOrCurator: boolean): void {
+    this.requestsStore.setLoading(true);
     this.openApiOrgService
       .deleteRejectedOrPendingOrganization(id)
       .pipe(finalize(() => this.requestsStore.setLoading(false)))
