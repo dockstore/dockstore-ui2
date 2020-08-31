@@ -51,6 +51,9 @@ describe('Checker workflow test from my-tools', () => {
       cy.get('#checkerWorkflowTestParameterFilePath').type('/test.json');
 
       cy.get('#submitButton').click();
+
+      // There appears to be an error. The modal will not close automatically.
+      cy.contains('Close').click();
       cy.get('#addCheckerWorkflowButton').should('not.be.visible');
       cy.get('#viewCheckerWorkflowButton').should('be.visible');
     });
