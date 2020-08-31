@@ -24,13 +24,6 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
     super(alertQuery, entryActionsService);
   }
 
-  toolDialogData: ConfirmationDialogData = {
-    title: 'Are you sure you wish to delete this tool?',
-    message: `All information associated with this tool will be deleted.`,
-    cancelButtonText: 'Cancel',
-    confirmationButtonText: 'Delete'
-  };
-
   ngOnInit() {
     this.commonNgOnInit();
   }
