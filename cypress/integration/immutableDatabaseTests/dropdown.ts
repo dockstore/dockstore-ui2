@@ -306,7 +306,7 @@ describe('Dropdown test', () => {
       cy.get('#delete-my-rejected-org-0')
         .should('be.visible')
         .click();
-      cy.contains('div', 'Are you sure you wish to delete this REJECTED organization: orgThree?').within(() => {
+      cy.contains('div', 'Delete Organization').within(() => {
         cy.contains('button', 'Delete').click();
       });
       cy.get('#my-pending-org-card-0').should('be.visible');
@@ -331,7 +331,7 @@ describe('Dropdown test', () => {
       cy.get('#delete-my-pending-org-0')
         .should('be.visible')
         .click();
-      cy.contains('div', 'Are you sure you wish to delete this PENDING organization: orgTwo?').within(() => {
+      cy.contains('div', 'Delete Organization').within(() => {
         cy.contains('button', 'Delete').click();
       });
       cy.get('#my-pending-org-card-0').should('not.exist');
