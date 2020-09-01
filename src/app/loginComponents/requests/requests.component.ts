@@ -125,8 +125,9 @@ export class RequestsComponent extends Base implements OnInit {
 
   removeOrganizationDialog(organizationName: string, organizationStatus: string, organizationID: number) {
     const confirmationDialogData: ConfirmationDialogData = {
-      title: `Are you sure you wish to delete this ${organizationStatus} organization: ${organizationName}?`,
-      message: `All information associated with <b>${organizationName}</b> will be deleted.`,
+      title: 'Delete Organization',
+      message: `Are you sure you wish to delete this ${organizationStatus} organization?
+                All information associated with <b>${organizationName}</b> will be deleted.`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Delete'
     };
@@ -142,11 +143,7 @@ export class RequestsComponent extends Base implements OnInit {
 
   deleteOrganization(organizationID: number) {
     this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdminOrCurator => {
-      if (isAdminOrCurator) {
-        this.requestsService.deleteOrganization(organizationID, true);
-      } else {
-        this.requestsService.deleteOrganization(organizationID, false);
-      }
+      this.requestsService.deleteOrganization(organizationID, isAdminOrCurator);
     });
   }
 }
