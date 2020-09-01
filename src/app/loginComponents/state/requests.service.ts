@@ -3,7 +3,6 @@ import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { OrganizationsService as openapiOrganizationsService } from '../../shared/openapi';
 import { Organization, OrganizationsService, OrganizationUser, User, UsersService } from '../../shared/swagger';
-
 import { RequestsState, RequestsStore } from './requests.store';
 
 @Injectable({ providedIn: 'root' })
