@@ -58,6 +58,7 @@ export class RequestsComponent extends Base implements OnInit {
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
   userId$: Observable<number>;
+  isAdminOrCurator: boolean;
 
   constructor(
     private requestsQuery: RequestsQuery,
@@ -83,6 +84,7 @@ export class RequestsComponent extends Base implements OnInit {
     this.userId$ = this.userQuery.userId$;
 
     this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdminOrCurator => {
+      this.isAdminOrCurator = isAdminOrCurator;
       if (isAdminOrCurator) {
         this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
       }
@@ -136,14 +138,8 @@ export class RequestsComponent extends Base implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(result => {
         if (result) {
-          this.deleteOrganization(organizationID);
+          this.requestsService.deleteOrganization(organizationID, this.isAdminOrCurator);
         }
       });
-  }
-
-  deleteOrganization(organizationID: number) {
-    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdminOrCurator => {
-      this.requestsService.deleteOrganization(organizationID, isAdminOrCurator);
-    });
   }
 }
