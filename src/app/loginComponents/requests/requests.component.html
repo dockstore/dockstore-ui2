@@ -31,14 +31,15 @@
           {{ org.topic }}
         </mat-card-content>
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <a
-            class="removeOrg"
+          <button
+            mat-flat-button
             [id]="'delete-pending-org' + i"
-            [matTooltip]="'Delete pending organization'"
+            class="mr-1"
+            matTooltip="Delete pending organization"
             (click)="removeOrganizationDialog(org.displayName, org.status, org.id)"
           >
             <mat-icon>delete</mat-icon>Delete
-          </a>
+          </button>
           <button
             mat-flat-button
             [id]="'reject-pending-org-' + i"
@@ -84,16 +85,16 @@
           {{ membership.organization.topic }}
         </mat-card-content>
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <a
-            class="removeOrg"
+          <button
+            mat-flat-button
             [id]="'delete-my-pending-org-' + i"
-            [matTooltip]="'Delete pending organization'"
+            matTooltip="Delete pending organization"
             (click)="
               removeOrganizationDialog(membership.organization.displayName, membership.organization.status, membership.organization.id)
             "
           >
             <mat-icon>delete</mat-icon>Delete
-          </a>
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>
@@ -117,16 +118,17 @@
           {{ membership.organization.topic }}
         </mat-card-content>
         <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <a
-            class="removeOrg"
+          <button
+            mat-flat-button
+            class="mr-1"
             [id]="'delete-my-rejected-org-' + i"
-            [matTooltip]="'Delete rejected organization'"
+            matTooltip="Delete rejected organization"
             (click)="
               removeOrganizationDialog(membership.organization.displayName, membership.organization.status, membership.organization.id)
             "
           >
             <mat-icon>delete</mat-icon>Delete
-          </a>
+          </button>
           <button
             mat-flat-button
             color="primary"
