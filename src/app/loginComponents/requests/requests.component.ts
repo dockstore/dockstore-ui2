@@ -126,7 +126,7 @@ export class RequestsComponent extends Base implements OnInit {
   removeOrganizationDialog(organizationName: string, organizationStatus: string, organizationID: number) {
     const confirmationDialogData: ConfirmationDialogData = {
       title: 'Delete Organization',
-      message: `Are you sure you wish to delete this ${organizationStatus} organization?
+      message: `Are you sure you wish to delete this ${organizationStatus.toLowerCase()} organization?
                 All information associated with <b>${organizationName}</b> will be deleted.`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Delete'
