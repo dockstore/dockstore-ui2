@@ -18,14 +18,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContainerService } from '../../shared/container.service';
 import { DescriptorService } from '../../shared/descriptor.service';
+import { GA4GHV20Service } from '../../shared/openapi';
 import { CheckerWorkflowService } from '../../shared/state/checker-workflow.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { GA4GHService } from '../../shared/swagger';
 import {
   CheckerWorkflowStubService,
   ContainerStubService,
   DescriptorsStubService,
-  GA4GHStubService,
+  GA4GHV20StubService,
   WorkflowStubService
 } from '../../test/service-stubs';
 import { LaunchWorkflowComponent } from './launch.component';
@@ -45,7 +45,7 @@ describe('LaunchWorkflowComponent', () => {
         { provide: DescriptorService, useClass: DescriptorsStubService },
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService }
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService }
       ]
     }).compileComponents();
   }));

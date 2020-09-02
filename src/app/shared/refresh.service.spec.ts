@@ -23,7 +23,7 @@ import {
   ContainerStubService,
   DateStubService,
   DockstoreStubService,
-  GA4GHStubService,
+  GA4GHV20StubService,
   ProviderStubService,
   UsersStubService,
   WorkflowsStubService
@@ -32,11 +32,11 @@ import { AlertQuery } from './alert/state/alert.query';
 import { ContainerService } from './container.service';
 import { DateService } from './date.service';
 import { DockstoreService } from './dockstore.service';
+import { GA4GHV20Service } from './openapi';
 import { ProviderService } from './provider.service';
 import { RefreshService } from './refresh.service';
 import { WorkflowQuery } from './state/workflow.query';
 import { WorkflowService } from './state/workflow.service';
-import { GA4GHService } from './swagger';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
@@ -60,7 +60,7 @@ describe('RefreshService', () => {
         { provide: ProviderService, useClass: ProviderStubService },
         { provide: DateService, useClass: DateStubService },
         { provide: DockstoreService, useClass: DockstoreStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService },
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
         { provide: WorkflowService, useClass: WorkflowService },
         { provide: UsersService, useClass: UsersStubService }
       ]

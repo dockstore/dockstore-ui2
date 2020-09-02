@@ -130,6 +130,8 @@ export class GA4GHStubService {
   }
 }
 
+export class GA4GHV20StubService {}
+
 export class SearchStubService {
   workflowhit$ = observableOf([]);
   toolhit$ = observableOf([]);
