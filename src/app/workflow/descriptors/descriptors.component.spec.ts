@@ -20,9 +20,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
+import { GA4GHV20Service } from '../../shared/openapi';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { GA4GHService } from '../../shared/swagger';
-import { DescriptorsStubService, FileStubService, GA4GHStubService, WorkflowStubService } from '../../test/service-stubs';
+import { DescriptorsStubService, FileStubService, GA4GHV20StubService, WorkflowStubService } from '../../test/service-stubs';
 import { DescriptorsWorkflowComponent } from './descriptors.component';
 
 describe('DescriptorsWorkflowComponent', () => {
@@ -37,7 +37,7 @@ describe('DescriptorsWorkflowComponent', () => {
         { provide: DescriptorService, useClass: DescriptorsStubService },
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService }
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
