@@ -8,9 +8,10 @@ import { FileService } from 'app/shared/file.service';
 import { GA4GHFiles } from 'app/shared/ga4gh-files/ga4gh-files.model';
 import { GA4GHFilesQuery } from 'app/shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from 'app/shared/ga4gh-files/ga4gh-files.service';
+import { GA4GHV20Service } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, WorkflowVersion } from 'app/shared/swagger';
+import { FileWrapper, ToolDescriptor, ToolFile, WorkflowVersion } from 'app/shared/swagger';
 import { takeUntil } from 'rxjs/operators';
 import { Validation } from '../../../shared/swagger/model/validation';
 import { EntryFileTabQuery } from './entry-file-tab.query';
@@ -23,7 +24,7 @@ export class EntryFileTabService extends Base {
     private workflowQuery: WorkflowQuery,
     private entryFileTabQuery: EntryFileTabQuery,
     private gA4GHFilesQuery: GA4GHFilesQuery,
-    private ga4ghService: GA4GHService,
+    private ga4ghService: GA4GHV20Service,
     private ga4ghFilesService: GA4GHFilesService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
     private fileService: FileService,

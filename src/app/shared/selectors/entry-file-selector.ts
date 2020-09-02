@@ -24,8 +24,8 @@ import { AlertService } from '../alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { EntriesService } from '../openapi';
-import { FileWrapper, GA4GHService, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
+import { EntriesService, GA4GHV20Service } from '../openapi';
+import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
 
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version
@@ -59,7 +59,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   constructor(
     protected fileService: FileService,
     protected gA4GHFilesService: GA4GHFilesService,
-    protected gA4GHService: GA4GHService,
+    protected gA4GHService: GA4GHV20Service,
     protected filesService: FilesService,
     protected filesQuery: FilesQuery,
     protected entryService: EntriesService,

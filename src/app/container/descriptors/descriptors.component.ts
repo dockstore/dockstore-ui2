@@ -20,9 +20,9 @@ import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
-import { EntriesService } from '../../shared/openapi';
+import { EntriesService, GA4GHV20Service } from '../../shared/openapi';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { GA4GHService, SourceFile, ToolDescriptor, ToolFile } from '../../shared/swagger';
+import { SourceFile, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { FilesQuery } from '../../workflow/files/state/files.query';
@@ -44,7 +44,7 @@ export class DescriptorsComponent extends EntryFileSelector implements OnChanges
 
   constructor(
     private descriptorsService: DescriptorService,
-    protected gA4GHService: GA4GHService,
+    protected gA4GHService: GA4GHV20Service,
     private toolQuery: ToolQuery,
     private gA4GHFilesQuery: GA4GHFilesQuery,
     public fileService: FileService,

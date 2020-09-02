@@ -16,14 +16,15 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { FilesService } from '../../workflow/files/state/files.service';
-import { GA4GHService, ToolDescriptor } from '../swagger';
+import { GA4GHV20Service } from '../openapi';
+import { ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GA4GHFilesService {
-  constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHService, private filesService: FilesService) {}
+  constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHV20Service, private filesService: FilesService) {}
 
   /**
    * Updates all GA4GH files from all descriptor types unless specific ones provided
@@ -81,10 +82,10 @@ export class GA4GHFilesService {
    * Since the swagger.yaml does not indicate the endpoints are optionally authenticated,
    * the generated classes will not try and use authentication.  This manually injects it in for use.
    *
-   * @param {GA4GHService} ga4ghService
+   * @param {GA4GHV20Service} ga4ghService
    * @memberof GA4GHFilesService
    */
-  public injectAuthorizationToken(ga4ghService: GA4GHService) {
+  public injectAuthorizationToken(ga4ghService: GA4GHV20Service) {
     const auth = ga4ghService.configuration.apiKeys['Authorization'];
     if (auth) {
       ga4ghService.defaultHeaders = ga4ghService.defaultHeaders.set('Authorization', auth);

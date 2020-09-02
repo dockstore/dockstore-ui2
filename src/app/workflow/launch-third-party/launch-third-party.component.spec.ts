@@ -7,7 +7,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { GA4GHFilesStore } from '../../shared/ga4gh-files/ga4gh-files.store';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
-import { GA4GHService } from '../../shared/swagger';
+import { GA4GHV20Service } from '../../shared/openapi';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { sampleWdlWorkflow2, sampleWorkflowVersion } from '../../test/mocked-objects';
 import { WorkflowsStubService } from '../../test/service-stubs';
@@ -23,7 +23,7 @@ describe('LaunchThirdPartyComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LaunchThirdPartyComponent],
       imports: [CustomMaterialModule, HttpClientModule],
-      providers: [GA4GHFilesService, GA4GHService, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
+      providers: [GA4GHFilesService, GA4GHV20Service, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
