@@ -67,21 +67,27 @@ export class AlertService {
     this.setInfo('');
   }
 
+  public customDetailedError(title: string, details: string) {
+    const previousMessage = this.alertQuery.getValue().message;
+    this.setError(title, details);
+    this.matSnackBar.open(previousMessage + ' failed', 'Dismiss');
+  }
+
   /**
    * Handles error HTTP response and show both matSnackBar and an alert
    *
    * @param {HttpErrorResponse} error  The HttpErrorResponse received when the last HTTP request has errored
-   * @param {string} [customMessage]   Optional message to override the default message to provide a clearer reason for the error
+   * @param {string} [customDetails]   Optional message to override the default message to provide a clearer reason for the error
    * @memberof AlertService
    */
-  public detailedError(error: HttpErrorResponse, customMessage?: string) {
+  public detailedError(error: HttpErrorResponse) {
     let message: string;
     let details: string;
     if (error.status === 0) {
       // Error code of 0 means the webservice is not responding, likely down
       message = 'The webservice is currently down, possibly due to load. Please wait and try again later.';
     } else {
-      message = customMessage ? customMessage : 'The webservice encountered an error.';
+      message = 'The webservice encountered an error.';
       details = AlertService.getDetailedErrorMessage(error);
     }
     const previousMessage = this.alertQuery.getValue().message;
