@@ -142,6 +142,8 @@ export class WorkflowFileEditorComponent extends FileEditing {
       },
       (error: HttpErrorResponse) => {
         if (error.status === 413) {
+          // Using customDetailedError() here as NGINX passes HTML tags through the HTTPErrorResponseObject
+          // which displays a mess of HTML tags instead of a coherent error message.
           this.alertService.customDetailedError(
             '[HTTP 413] Request Entity Too Large',
             'Cannot save new version: versions have a 60 kilobyte limit'
