@@ -58,8 +58,9 @@ describe('FileService', () => {
     const downloadFilePath = fileService.getDownloadFilePath(id, versionId, type, relativePath);
     expect(downloadFilePath).toEqual(
       Dockstore.API_URI +
+        ga4ghPath +
         // tslint:disable-next-line: max-line-length
-        '/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN-WDL/descriptor/HISAT2.wdl'
+        '/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN-WDL/descriptor/HISAT2.wdl'
     );
   }));
 

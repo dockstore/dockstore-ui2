@@ -18,12 +18,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ContainersStubService, ContainerStubService, EntryStubService, GA4GHStubService } from '../../../../src/app/test/service-stubs';
+import { ContainersStubService, ContainerStubService, EntryStubService, GA4GHV20StubService } from '../../../../src/app/test/service-stubs';
 import { ContainerService } from '../../shared/container.service';
 import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
-import { EntriesService } from '../../shared/openapi';
-import { ContainersService, GA4GHService } from '../../shared/swagger';
+import { EntriesService, GA4GHV20Service } from '../../shared/openapi';
+import { ContainersService } from '../../shared/swagger';
 import { sampleToolVersion } from '../../test/mocked-objects';
 import { DescriptorsComponent } from './descriptors.component';
 
@@ -44,7 +44,7 @@ describe('DescriptorsComponent', () => {
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: FileService, useClass: FileStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService },
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
         { provide: EntriesService, useClass: EntryStubService }
       ]
     }).compileComponents();

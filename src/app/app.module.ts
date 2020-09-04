@@ -81,6 +81,7 @@ import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
+import { GA4GHV20Service } from './shared/openapi/api/gA4GHV20.service';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
@@ -195,6 +196,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     PagenumberService,
     TwitterService,
     GA4GHService,
+    GA4GHV20Service,
     DescriptorLanguageService,
     UrlResolverService,
     MetadataService,

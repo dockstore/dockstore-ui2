@@ -1,3 +1,4 @@
+import { ga4ghPath } from '../../../src/app/shared/constants';
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import { goToTab } from '../../support/commands';
 
@@ -157,14 +158,16 @@ const workflowVersionTuples = [
     '1.32.0',
     'develop',
     window.location.origin +
-      '/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/develop',
+      '/api' +
+      ga4ghPath +
+      '/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/develop',
     'WDL'
   ],
   [
     'github.com/NCI-GDC/gdc-dnaseq-cwl/GDC_DNASeq',
     'dev',
     'master',
-    window.location.origin + '/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FNCI-GDC%2Fgdc-dnaseq-cwl%2FGDC_DNASeq/versions/master',
+    window.location.origin + '/api' + ga4ghPath + '/tools/%23workflow%2Fgithub.com%2FNCI-GDC%2Fgdc-dnaseq-cwl%2FGDC_DNASeq/versions/master',
     'CWL'
   ],
   ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL']

@@ -15,6 +15,7 @@
  */
 import { inject, TestBed } from '@angular/core/testing';
 
+import { ga4ghPath } from '../../shared/constants';
 import { ToolLaunchService } from './tool-launch.service';
 
 describe('ToolLaunchService', () => {
@@ -43,10 +44,10 @@ describe('ToolLaunchService', () => {
     expect(service.getCwlString('quay.io/a/b', 'c', '%2Fpotato')).toContain('cwl-runner');
     expect(service.getCwlString('quay.io/a/b', 'c', '%2Fpotato')).not.toContain('non-strict');
     expect(service.getCwlString('quay.io/a/b', 'c', '%2Fpotato')).toContain(
-      'api/ga4gh/v2/tools/quay.io%2Fa%2Fb/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json'
+      ga4ghPath + '/tools/quay.io%2Fa%2Fb/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json'
     );
     expect(service.getCwlString('quay.io/a/b/d', 'c', '%2Fpotato')).toContain(
-      'api/ga4gh/v2/tools/quay.io%2Fa%2Fb%2Fd/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json'
+      ga4ghPath + '/tools/quay.io%2Fa%2Fb%2Fd/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json'
     );
   }));
   it('should getConsonanceString', inject([ToolLaunchService], (service: ToolLaunchService) => {

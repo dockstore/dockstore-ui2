@@ -2,11 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
+import { ga4ghPath } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { GA4GHFilesStore } from '../../shared/ga4gh-files/ga4gh-files.store';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
-import { GA4GHService } from '../../shared/swagger';
+import { GA4GHV20Service } from '../../shared/openapi';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { sampleWdlWorkflow2, sampleWorkflowVersion } from '../../test/mocked-objects';
 import { WorkflowsStubService } from '../../test/service-stubs';
@@ -22,7 +23,7 @@ describe('LaunchThirdPartyComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LaunchThirdPartyComponent],
       imports: [CustomMaterialModule, HttpClientModule],
-      providers: [GA4GHFilesService, GA4GHService, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
+      providers: [GA4GHFilesService, GA4GHV20Service, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
@@ -57,7 +58,8 @@ describe('LaunchThirdPartyComponent', () => {
       nativeElement.querySelector(
         'a[href="https://platform.dnanexus.com/panx/tools/import-workflow?source=' +
           Dockstore.API_URI +
-          '/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master"]'
+          ga4ghPath +
+          '/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master"]'
       )
     ).toBeTruthy();
     expect(

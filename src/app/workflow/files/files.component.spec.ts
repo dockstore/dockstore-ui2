@@ -17,8 +17,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
-import { GA4GHService } from '../../shared/swagger';
-import { GA4GHStubService, ParamFilesStubService } from '../../test/service-stubs';
+import { GA4GHV20Service } from '../../shared/openapi';
+import { GA4GHV20StubService, ParamFilesStubService } from '../../test/service-stubs';
 import { FilesWorkflowComponent } from './files.component';
 
 describe('FilesWorkflowComponent', () => {
@@ -29,7 +29,10 @@ describe('FilesWorkflowComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FilesWorkflowComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ParamfilesService, useClass: ParamFilesStubService }, { provide: GA4GHService, useClass: GA4GHStubService }]
+      providers: [
+        { provide: ParamfilesService, useClass: ParamFilesStubService },
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService }
+      ]
     }).compileComponents();
   }));
 
