@@ -90,9 +90,7 @@ export class AlertService {
       message = 'The webservice encountered an error.';
       details = AlertService.getDetailedErrorMessage(error);
     }
-    const previousMessage = this.alertQuery.getValue().message;
-    this.setError(message, details);
-    this.matSnackBar.open(previousMessage + ' failed', 'Dismiss');
+    this.customDetailedError(message, details);
   }
 
   /**
