@@ -68,22 +68,8 @@
             </a>
           </li>
           <li class="m-0">
-            <a
-              href="https://github.com/dockstore/compose_setup/{{ Dockstore.COMPOSE_SETUP_VERSION | gitTag: true }}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-            >
-              <small><button cdkCopyToClipboard="Hello">Copy Build Info</button></small>
-            </a>
-            <span> / </span>
-            <a
-              href="https://github.com/dockstore/dockstore-deploy/commits/{{ Dockstore.DEPLOY_COMMIT_ID }}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-            >
-              <small>Infrastructure</small>
+            <a href="javascript:void(0)" class="footer-link" ngxClipboard [cbContent]="content">
+              <mat-icon inline="true">content_copy</mat-icon><small> Copy Build Info</small>
             </a>
           </li>
           <li class="m-0">

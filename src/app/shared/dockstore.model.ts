@@ -79,7 +79,7 @@ export class Dockstore {
   static DOCUMENTATION_URL = 'https://docs.dockstore.org';
   static FEATURED_CONTENT_URL = 'will be filled in by configuration.service';
 
-  static DEPLOY_COMMIT_ID = '';
+  static DEPLOY_VERSION = '';
   static COMPOSE_SETUP_VERSION = '';
   static WEBSERVICE_COMMIT_ID = '';
 
