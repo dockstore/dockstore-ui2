@@ -23,7 +23,7 @@ export class GitTagPipe implements PipeTransform {
    */
   private readonly gitShaRegEx = /[a-f0-9]{7,}/;
 
-  transform(tag: string, withPath?: boolean): string {
+  transform(tag: string | null, withPath?: boolean): string {
     if (!tag) {
       return '';
     }
