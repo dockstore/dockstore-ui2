@@ -215,6 +215,6 @@ describe('Create Zenodo DOI for workflow version', () => {
     cy.get('[class=mat-card-header]').should('contain', 'Workflow Version Information');
 
     // Check that the DOI appears on the Info page for the new version
-    cy.get('div').should('contain', '10.5072/zenodo.');
+    cy.get('[data-cy=info-tab-DOI-badge]').should('be.visible');
   });
 });
