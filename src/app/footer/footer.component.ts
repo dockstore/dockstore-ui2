@@ -75,7 +75,6 @@ export class FooterComponent extends Base implements OnInit {
               Dockstore.COMPOSE_SETUP_VERSION,
               Dockstore.DEPLOY_VERSION
             );
-            console.log('content', this.content);
           } else {
             throw new Error('Version undefined');
           }
