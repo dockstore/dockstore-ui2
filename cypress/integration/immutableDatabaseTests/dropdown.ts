@@ -111,9 +111,24 @@ describe('Dropdown test', () => {
 
       // Logged in user has two memberships, one is not accepted
       const memberships = [
-        { id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
-        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
-        { id: 3, role: 'MAINTAINER', accepted: true, organization: { id: 1002, status: 'REJECTED', name: 'orgThree' } }
+        {
+          id: 1,
+          role: 'MAINTAINER',
+          accepted: false,
+          organization: { id: 1000, status: 'PENDING', name: 'orgOne', displayName: 'orgOne' }
+        },
+        {
+          id: 2,
+          role: 'MAINTAINER',
+          accepted: true,
+          organization: { id: 1001, status: 'PENDING', name: 'orgTwo', displayName: 'orgTwo' }
+        },
+        {
+          id: 3,
+          role: 'MAINTAINER',
+          accepted: true,
+          organization: { id: 1002, status: 'REJECTED', name: 'orgThree', displayName: 'orgThree' }
+        }
       ];
       cy.server().route({
         method: 'GET',
@@ -251,6 +266,76 @@ describe('Dropdown test', () => {
     it('Should have a pending org request', () => {
       // One pending org request should be visible
       cy.get('#my-pending-org-card-0').should('be.visible');
+    });
+
+    it('Should be able to delete pending/reject org request', () => {
+      // Both pending and rejected orgs should be visible
+      cy.get('#my-pending-org-card-0').should('be.visible');
+      cy.get('#my-rejected-org-card-0').should('be.visible');
+
+      // JSON object for the membership that is not affiliated with the user
+      const nonAffiliatedMembership = {
+        id: 1,
+        role: 'MAINTAINER',
+        accepted: false,
+        organization: { id: 1000, status: 'PENDING', name: 'orgOne', displayName: 'orgOne' }
+      };
+
+      // New mocked memberships after deleting the rejected organization
+      const membershipsAfterFirstDeletion = [
+        nonAffiliatedMembership,
+        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo', displayName: 'orgTwo' } }
+      ];
+
+      // Route all DELETE API calls to organizations respond with with an empty JSON object
+      cy.server().route({
+        method: 'DELETE',
+        url: '*/organizations/*',
+        response: []
+      });
+
+      // Route GET API call to user/membership with the mocked membership JSON object after first deletion
+      cy.server().route({
+        method: 'GET',
+        url: '*/users/user/memberships',
+        response: membershipsAfterFirstDeletion
+      });
+
+      // Delete the rejected organization
+      // Should result with the rejected organization no longer existing, and only the pending and non-affiliated org existing
+      cy.get('#delete-my-rejected-org-0')
+        .should('be.visible')
+        .click();
+      cy.contains('div', 'Delete Organization').within(() => {
+        cy.contains('button', 'Delete').click();
+      });
+      cy.get('#my-pending-org-card-0').should('be.visible');
+      cy.get('#my-rejected-org-card-0').should('not.exist');
+
+      // Route GET API call to user/memberships to respond with the membership JSON object that the user is not affiliated with
+      cy.server().route({
+        method: 'GET',
+        url: '*/users/user/memberships',
+        response: [nonAffiliatedMembership]
+      });
+
+      // Route all GET requests to organizations/all?type=pending to the non affiliated organization
+      cy.server().route({
+        method: 'GET',
+        url: '*/organizations/all?type=pending',
+        response: [nonAffiliatedMembership]
+      });
+
+      // Delete the pending organization
+      // Should result with the organization no longer existing and the request page empty of rejected/pending orgs
+      cy.get('#delete-my-pending-org-0')
+        .should('be.visible')
+        .click();
+      cy.contains('div', 'Delete Organization').within(() => {
+        cy.contains('button', 'Delete').click();
+      });
+      cy.get('#my-pending-org-card-0').should('not.exist');
+      cy.get('#my-rejected-org-card-0').should('not.exist');
     });
   });
 

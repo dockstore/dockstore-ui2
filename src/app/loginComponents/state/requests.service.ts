@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { OrganizationsService as openapiOrganizationsService } from '../../shared/openapi';
 import { Organization, OrganizationsService, OrganizationUser, User, UsersService } from '../../shared/swagger';
 import { RequestsState, RequestsStore } from './requests.store';
 
@@ -10,6 +11,7 @@ export class RequestsService {
     private requestsStore: RequestsStore,
     private alertService: AlertService,
     private organizationsService: OrganizationsService,
+    private openApiOrgService: openapiOrganizationsService,
     private usersService: UsersService
   ) {}
 
@@ -177,6 +179,28 @@ export class RequestsService {
         (organization: Organization) => {
           this.alertService.simpleSuccess();
           this.updateCuratorOrganizations();
+          this.updateMyMemberships();
+        },
+        () => {
+          this.updateMyMembershipState(null, null, null, null);
+          this.requestsStore.setError(true);
+          this.alertService.simpleError();
+        }
+      );
+  }
+
+  deleteOrganization(id: number, isAdminOrCurator: boolean): void {
+    this.alertService.start('Deleting organization ' + id);
+    this.requestsStore.setLoading(true);
+    this.openApiOrgService
+      .deleteRejectedOrPendingOrganization(id)
+      .pipe(finalize(() => this.requestsStore.setLoading(false)))
+      .subscribe(
+        (organization: Organization) => {
+          this.alertService.simpleSuccess();
+          if (isAdminOrCurator) {
+            this.updateCuratorOrganizations();
+          }
           this.updateMyMemberships();
         },
         () => {
