@@ -176,14 +176,14 @@
           <div>
             <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
             <a
-              href="https://doi.org/{{ workflow.conceptDoi }}"
+              [href]="'https://doi.org/' + workflow.conceptDoi"
               *ngIf="workflow.conceptDoi"
               matTooltip="Click to view the DOI entry information for all versions."
               target="_blank"
               rel="noopener noreferrer"
               ><img src="{{ zenodoUrl }}/badge/DOI/{{ workflow.conceptDoi }}.svg" alt="{{ workflow.conceptDoi }}"
             /></a>
-            {{ workflow && workflow.conceptDoi ? '' : 'n/a' }}
+            {{ workflow?.conceptDoi ? '' : 'n/a' }}
           </div>
         </div>
       </ul>
@@ -198,7 +198,7 @@
       <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <strong matTooltip="Digital Object Identifier">DOI</strong>:
         <a
-          href="https://doi.org/{{ selectedVersion.doiURL }}"
+          [href]="'https://doi.org/' + selectedVersion.doiURL"
           *ngIf="selectedVersion.doiURL"
           data-cy="info-tab-DOI-badge"
           matTooltip="Click to view this version's DOI entry information."
@@ -206,7 +206,7 @@
           rel="noopener noreferrer"
           ><img src="{{ zenodoUrl }}/badge/DOI/{{ selectedVersion.doiURL }}.svg" alt="{{ selectedVersion.doiURL }}"
         /></a>
-        {{ selectedVersion && selectedVersion.doiURL ? '' : 'n/a' }}
+        {{ selectedVersion?.doiURL ? '' : 'n/a' }}
       </div>
       <div>
         <strong matTooltip="Author listed in descriptor">Author</strong>: {{ selectedVersion?.author ? selectedVersion?.author : 'n/a' }}
