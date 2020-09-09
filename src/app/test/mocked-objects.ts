@@ -690,7 +690,6 @@ export const exampleEntry: Version = {
   output_file_formats: [],
   reference: 'develop',
   referenceType: 'UNSET',
-  sourceFiles: [],
   valid: false,
   validations: [
     {
