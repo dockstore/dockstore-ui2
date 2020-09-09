@@ -60,7 +60,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "~3.4.1",
     "ng2-ui-auth": "^10.0.1",
-    "ngx-clipboard": "^12.2.1",
+    "ngx-clipboard": "^13.0.1",
     "ngx-markdown": "^9.1.1",
     "ngx-sharebuttons": "^8.0.0",
     "pipeline-builder": "^0.3.10-dev.313",
