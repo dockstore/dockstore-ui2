@@ -48,7 +48,6 @@ export class WorkflowFileEditorComponent extends FileEditing {
     this.isNewestVersion = this.checkIfNewestVersion();
     this.clearSourceFiles();
     if (value != null) {
-      this.originalSourceFiles = JSON.parse(JSON.stringify(value.sourceFiles));
       this.loadVersionSourcefiles();
     }
   }
