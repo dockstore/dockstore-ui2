@@ -6,7 +6,7 @@ import { Dockstore } from './shared/dockstore.model';
 import { Config, MetadataService } from './shared/swagger';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfigurationService {
   constructor(private metadataService: MetadataService, private configService: ConfigService) {}
@@ -21,7 +21,7 @@ export class ConfigurationService {
 
           this.updateAuthProviders();
         },
-        e => {
+        (e) => {
           console.error('Error downloading config.json', e);
           // Less than ideal, but just let the normal error handling in footer.component.ts kick in later.
           Promise.resolve();

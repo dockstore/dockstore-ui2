@@ -8,7 +8,7 @@ describe('ConfigurationService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [ConfigurationService, { provide: ConfigService, useValue: {} }]
+      providers: [ConfigurationService, { provide: ConfigService, useValue: {} }],
     })
   );
 

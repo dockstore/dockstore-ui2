@@ -15,16 +15,11 @@
  */
 
 export function goToTab(tabName: string): void {
-  cy.contains('.mat-tab-label', tabName)
-    .should('be.visible')
-    .click();
+  cy.contains('.mat-tab-label', tabName).should('be.visible').click();
 }
 
 export function assertVisibleTab(tabName: string): void {
-  cy.get('.mat-tab-labels')
-    .should('be.visible')
-    .contains('div', tabName)
-    .should('be.visible');
+  cy.get('.mat-tab-labels').should('be.visible').contains('div', tabName).should('be.visible');
 }
 
 /**
@@ -38,9 +33,7 @@ export function cancelMatMenu(): void {
 }
 
 export function clickFirstActionsButton(): void {
-  cy.get('button')
-    .contains('Actions')
-    .click();
+  cy.get('button').contains('Actions').click();
 }
 
 export function isActiveTab(tabName: string): void {
@@ -48,11 +41,7 @@ export function isActiveTab(tabName: string): void {
 }
 
 export function assertNoTab(tabName: string): any {
-  return cy
-    .get('.mat-tab-labels')
-    .should('be.visible')
-    .contains('div', tabName)
-    .should('not.be.visible');
+  return cy.get('.mat-tab-labels').should('be.visible').contains('div', tabName).should('not.be.visible');
 }
 
 export function resetDB() {
@@ -86,13 +75,7 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | 
   cy.get('.mat-expanded');
   cy.contains(organization).click();
   // Can't seem to select the mat-expansion-panel for some reason without triple parent
-  cy.contains(organization)
-    .parent()
-    .parent()
-    .parent()
-    .contains('div .no-wrap', repo)
-    .should('be.visible')
-    .click();
+  cy.contains(organization).parent().parent().parent().contains('div .no-wrap', repo).should('be.visible').click();
 }
 
 export function approvePotatoMembership() {
