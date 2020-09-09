@@ -88,7 +88,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
    */
   loadVersionSourcefiles() {
     this.openapiWorkflowsService.getWorkflowVersionsSourcefiles(this.id, this._selectedVersion.id).subscribe(sourcefiles => {
-      this.originalSourceFiles = sourcefiles;
+      this.originalSourceFiles = JSON.parse(JSON.stringify(sourcefiles));
       this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.originalSourceFiles)));
       this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.originalSourceFiles)));
     });
