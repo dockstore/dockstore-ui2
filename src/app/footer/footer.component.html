@@ -68,11 +68,6 @@
             </a>
           </li>
           <li class="m-0">
-            <a href="javascript:void(0)" class="footer-link" ngxClipboard [cbContent]="content">
-              <mat-icon inline="true">content_copy</mat-icon><small> Build Info</small>
-            </a>
-          </li>
-          <li class="m-0">
             <a
               [href]="dsServerURI + '/metadata/rss'"
               target="_blank"
@@ -87,6 +82,11 @@
             <a routerLink="/sitemap" target="_blank" rel="noopener noreferrer" class="footer-link">
               <small>Sitemap</small>
             </a>
+          </li>
+          <li class="m-0">
+            <button mat-icon-button>
+              <mat-icon ngxClipboard [cbContent]="content">content_copy</mat-icon> <small>&nbsp;Build Info</small>
+            </button>
           </li>
         </ul>
       </div>
