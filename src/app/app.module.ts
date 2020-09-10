@@ -33,6 +33,7 @@ import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { GitTagPipe } from './footer/git-tag.pipe';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
@@ -148,6 +149,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SessionExpiredComponent,
     TosBannerComponent,
     LogoutComponent,
+    GitTagPipe,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

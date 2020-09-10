@@ -39,29 +39,6 @@ describe('Service: paramFiles.service.ts', () => {
   const tag1: Tag = {
     id: 131,
     reference: 'master',
-    sourceFiles: [
-      {
-        id: 272,
-        type: SourceFile.TypeEnum.DOCKSTOREWDL,
-        content: '',
-        path: '/Dockstore.wdl',
-        absolutePath: '/Dockstore.wdl'
-      },
-      {
-        id: 273,
-        type: SourceFile.TypeEnum.DOCKERFILE,
-        content: '',
-        path: '/Dockerfile',
-        absolutePath: '/Dockerfile'
-      },
-      {
-        id: 271,
-        type: SourceFile.TypeEnum.DOCKSTORECWL,
-        content: '',
-        path: '/Dockstore.cwl',
-        absolutePath: '/Dockstore.cwl'
-      }
-    ],
     hidden: false,
     valid: true,
     name: 'master',
@@ -78,36 +55,6 @@ describe('Service: paramFiles.service.ts', () => {
   const tag2: Tag = {
     id: 132,
     reference: 'master',
-    sourceFiles: [
-      {
-        id: 276,
-        type: SourceFile.TypeEnum.DOCKERFILE,
-        content: '',
-        path: '/Dockerfile',
-        absolutePath: '/Dockerfile'
-      },
-      {
-        id: 275,
-        type: SourceFile.TypeEnum.DOCKSTOREWDL,
-        content: '',
-        path: '/Dockstore.wdl',
-        absolutePath: '/Dockstore.wdl'
-      },
-      {
-        id: 274,
-        type: SourceFile.TypeEnum.DOCKSTORECWL,
-        content: '',
-        path: '/Dockstore.cwl',
-        absolutePath: '/Dockstore.cwl'
-      },
-      {
-        id: 277,
-        type: SourceFile.TypeEnum.CWLTESTJSON,
-        content: '',
-        path: '/test.json',
-        absolutePath: '/test.json'
-      }
-    ],
     hidden: false,
     valid: true,
     name: 'latest',
@@ -125,43 +72,6 @@ describe('Service: paramFiles.service.ts', () => {
   const tag3: Tag = {
     id: 132,
     reference: 'master',
-    sourceFiles: [
-      {
-        id: 276,
-        type: SourceFile.TypeEnum.DOCKERFILE,
-        content: '',
-        path: '/Dockerfile',
-        absolutePath: '/Dockerfile'
-      },
-      {
-        id: 275,
-        type: SourceFile.TypeEnum.DOCKSTOREWDL,
-        content: '',
-        path: '/Dockstore.wdl',
-        absolutePath: '/Dockstore.wdl'
-      },
-      {
-        id: 274,
-        type: SourceFile.TypeEnum.DOCKSTORECWL,
-        content: '',
-        path: '/Dockstore.cwl',
-        absolutePath: '/Dockstore.cwl'
-      },
-      {
-        id: 278,
-        type: SourceFile.TypeEnum.CWLTESTJSON,
-        content: '',
-        path: '/Dockstore.wdl',
-        absolutePath: '/Dockstore.wdl'
-      },
-      {
-        id: 277,
-        type: SourceFile.TypeEnum.WDLTESTJSON,
-        content: '',
-        path: '/test.json',
-        absolutePath: '/test.json'
-      }
-    ],
     hidden: false,
     valid: true,
     name: 'latest',

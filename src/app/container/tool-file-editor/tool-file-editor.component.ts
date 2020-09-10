@@ -75,7 +75,7 @@ export class ToolFileEditorComponent extends FileEditing {
    */
   loadVersionSourcefiles(): void {
     this.containerTagsService.getTagsSourcefiles(this.id, this.currentVersion.id).subscribe((sourcefiles: Array<SourceFile>) => {
-      this.originalSourceFiles = sourcefiles;
+      this.originalSourceFiles = JSON.parse(JSON.stringify(sourcefiles));
       this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.originalSourceFiles)));
       this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.originalSourceFiles)));
       this.dockerFile = JSON.parse(JSON.stringify(this.getDockerFile(this.originalSourceFiles)));

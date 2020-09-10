@@ -22,6 +22,7 @@ import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
 import { GA4GHStubService } from './../test/service-stubs';
 
 import { FooterComponent } from './footer.component';
+import { GitTagPipe } from './git-tag.pipe';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -29,7 +30,7 @@ describe('FooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FooterComponent],
+      declarations: [FooterComponent, GitTagPipe],
       imports: [RouterTestingModule, MatIconModule],
       providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }]
     }).compileComponents();

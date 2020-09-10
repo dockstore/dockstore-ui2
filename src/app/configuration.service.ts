@@ -77,6 +77,12 @@ export class ConfigurationService {
 
     Dockstore.DOCUMENTATION_URL = config.documentationUrl;
     Dockstore.FEATURED_CONTENT_URL = config.featuredContentUrl;
+
+    Dockstore.DEPLOY_VERSION = config.deployVersion;
+
+    Dockstore.COMPOSE_SETUP_VERSION = config.composeSetupVersion;
+
+    Dockstore.WEBSERVICE_COMMIT_ID = config.gitCommitId;
   }
 
   /**
