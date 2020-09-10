@@ -105,13 +105,13 @@ import { ViewService } from './workflow/view/view.service';
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
   hideDelay: 500,
-  touchendHideDelay: 500
+  touchendHideDelay: 500,
 };
 
 export const myCustomSnackbarDefaults: MatSnackBarConfig = {
   duration: 5000,
   horizontalPosition: 'center',
-  verticalPosition: 'bottom'
+  verticalPosition: 'bottom',
 };
 
 export function configurationServiceFactory(configurationService: ConfigurationService): Function {
@@ -149,7 +149,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SessionExpiredComponent,
     TosBannerComponent,
     LogoutComponent,
-    GitTagPipe
+    GitTagPipe,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -178,7 +178,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     RequestsModule,
     HomePageModule,
     HttpClientModule,
-    ClipboardModule
   ],
   providers: [
     AccountsService,
@@ -214,21 +213,21 @@ export function configurationServiceFactory(configurationService: ConfigurationS
       provide: APP_INITIALIZER,
       useFactory: configurationServiceFactory,
       deps: [ConfigurationService],
-      multi: true
+      multi: true,
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
   ],
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 
 export const apiConfig = new Configuration({
   apiKeys: {},
-  basePath: window.location.protocol + '//' + window.location.host + '/api'
+  basePath: window.location.protocol + '//' + window.location.host + '/api',
 });
 
 export function getApiConfig() {
