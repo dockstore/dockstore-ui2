@@ -287,7 +287,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   }
 
   updateVersionsFileTypes(entryId: number, versionid: number): void {
-    this.alertService.start("Getting version's unique file types");
+    this.alertService.start(`Getting version's unique file types`);
     this.entryService.getVersionsFileTypes(entryId, versionid).subscribe(
       (fileTypes: Array<SourceFile.TypeEnum>) => {
         this.versionsFileTypes = fileTypes;
