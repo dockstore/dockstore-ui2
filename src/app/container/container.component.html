@@ -17,9 +17,7 @@
   <div class="row m-1" *ngIf="error || missingWarning">
     <div class="col-md-12" *ngIf="!isToolPublic">
       <mat-card class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
-        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
-          &times;
-        </button>
+        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
         <mat-icon>warning</mat-icon>
         {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: ' }} {{ missingContent }}
       </mat-card>
@@ -82,14 +80,10 @@
       ></app-starring>
       <h3 class="pull-right">
         <div class="mr-2" *ngIf="publicPage && tool?.private_access">
-          <a mat-raised-button color="accent" [href]="requestAccessHREF">
-            Request Access
-          </a>
+          <a mat-raised-button color="accent" [href]="requestAccessHREF"> Request Access </a>
         </div>
         <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
-          <a mat-raised-button color="primary" [href]="contactAuthorHREF">
-            Contact Author
-          </a>
+          <a mat-raised-button color="primary" [href]="contactAuthorHREF"> Contact Author </a>
         </div>
       </h3>
     </div>
@@ -100,7 +94,7 @@
     </div>
   </div>
   <div class="row m-1">
-    <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px;">
+    <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px">
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
           <mat-chip color="primary" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{ label }}</mat-chip>
@@ -111,7 +105,7 @@
       </span>
 
       <span *ngIf="labelsEditMode && !isToolPublic">
-        <mat-form-field style="width: 100%;">
+        <mat-form-field style="width: 100%">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
               {{ label }}
@@ -255,7 +249,7 @@
       </div>
     </div>
 
-    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic && tool">
+    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
       <div class="panel panel-default mb-3">
         <div class="panel-heading">
           <h3>Recent Versions</h3>
@@ -382,12 +376,8 @@
   <div class="p-3">
     <mat-card class="alert alert-info p-3" role="alert">
       <mat-icon>info</mat-icon>
-      <span *ngIf="tool?.mode === ModeEnum.HOSTED">
-        To see versions, please add a new version in the Files tab.
-      </span>
-      <span *ngIf="tool?.mode === ModeEnum.MANUALIMAGEPATH">
-        To see versions, click the Add Tag button below.
-      </span>
+      <span *ngIf="tool?.mode === ModeEnum.HOSTED"> To see versions, please add a new version in the Files tab. </span>
+      <span *ngIf="tool?.mode === ModeEnum.MANUALIMAGEPATH"> To see versions, click the Add Tag button below. </span>
       <span *ngIf="tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED">
         To see versions, please refresh the tool.
       </span>

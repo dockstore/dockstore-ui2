@@ -49,7 +49,7 @@ export abstract class Versions extends EntryTab {
 
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => {
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => {
       this.publicPage = publicPage;
       this.setDisplayColumns(publicPage);
     });

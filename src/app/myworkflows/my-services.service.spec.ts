@@ -14,9 +14,9 @@ describe('Service: MyServices', () => {
       providers: [
         MyServicesService,
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService }
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
       ],
-      imports: [HttpClientTestingModule, RouterTestingModule, CustomMaterialModule, MyEntriesModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, CustomMaterialModule, MyEntriesModule],
     });
   });
 

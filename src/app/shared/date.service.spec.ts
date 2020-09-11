@@ -21,7 +21,7 @@ import { DateService } from './date.service';
 describe('DateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DateService]
+      providers: [DateService],
     });
   });
 

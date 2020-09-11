@@ -34,8 +34,8 @@ describe('StargazersComponent', () => {
       providers: [
         { provide: UserService, useClass: UserStubService },
         { provide: StarringService, useClass: StarringStubService },
-        { provide: StarentryService, useClass: StarEntryStubService }
-      ]
+        { provide: StarentryService, useClass: StarEntryStubService },
+      ],
     }).compileComponents();
   }));
 

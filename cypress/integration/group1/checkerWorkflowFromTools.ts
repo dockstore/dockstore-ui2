@@ -42,9 +42,7 @@ describe('Checker workflow test from my-tools', () => {
       cy.get('#viewCheckerWorkflowButton').should('not.be.visible');
       cy.get('#viewParentEntryButton').should('not.be.visible');
       cy.get('#launchCheckerWorkflow').should('not.be.visible');
-      cy.get('#addCheckerWorkflowButton')
-        .should('be.visible')
-        .click();
+      cy.get('#addCheckerWorkflowButton').should('be.visible').click();
 
       cy.get('#checkerWorkflowPath').type('/Dockstore.cwl');
 
@@ -70,9 +68,7 @@ describe('Checker workflow test from my-tools', () => {
       goToTab('Launch');
       cy.get('#launchCheckerWorkflow').should('be.visible');
       goToTab('Info');
-      cy.get('#viewCheckerWorkflowButton')
-        .should('visible')
-        .click();
+      cy.get('#viewCheckerWorkflowButton').should('visible').click();
 
       // In the checker workflow right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A2/b3/_cwl_checker');
@@ -82,9 +78,7 @@ describe('Checker workflow test from my-tools', () => {
       goToTab('Launch');
       cy.get('#launchCheckerWorkflow').should('not.be.visible');
       goToTab('Info');
-      cy.get('#viewParentEntryButton')
-        .should('be.visible')
-        .click();
+      cy.get('#viewParentEntryButton').should('be.visible').click();
 
       // In the parent tool right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-tools/quay.io/A2/b3');
@@ -103,47 +97,27 @@ describe('Checker workflow test from my-tools', () => {
       // In the parent tool right now
       // Didn't change the tool path upon entry or select
       // cy.url().should('eq','/my-tools/quay.io/A2/b3')
-      cy.get('#publishToolButton')
-        .should('be.visible')
-        .should('contain', 'Unpublish')
-        .click();
-      cy.get('#publishToolButton')
-        .should('be.visible')
-        .should('contain', 'Publish');
-      cy.get('#viewCheckerWorkflowButton')
-        .should('visible')
-        .click();
+      cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click();
+      cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish');
+      cy.get('#viewCheckerWorkflowButton').should('visible').click();
 
       // In the checker workflow right now
       cy.get('#workflow-path').should('contain', '_checker');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A2/b3/_cwl_checker');
-      cy.get('#publishButton')
-        .should('be.visible')
-        .should('contain', 'Publish');
-      cy.get('#viewParentEntryButton')
-        .should('be.visible')
-        .click();
+      cy.get('#publishButton').should('be.visible').should('contain', 'Publish');
+      cy.get('#viewParentEntryButton').should('be.visible').click();
 
       // In the parent tool right now
       cy.get('#tool-path').should('not.contain', '_checker');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-tools/quay.io/A2/b3');
-      cy.get('#publishToolButton')
-        .should('be.visible')
-        .should('contain', 'Publish')
-        .click();
-      cy.get('#publishToolButton')
-        .should('be.visible')
-        .should('contain', 'Unpublish');
-      cy.get('#viewCheckerWorkflowButton')
-        .should('visible')
-        .click();
+      cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish').click();
+      cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish');
+      cy.get('#viewCheckerWorkflowButton').should('visible').click();
 
       // in the checker workflow right now
       cy.get('#workflow-path').should('contain', '_checker');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A2/b3/_cwl_checker');
-      cy.get('#publishButton')
-        .should('be.visible')
-        .should('contain', 'Unpublish');
+      cy.get('#publishButton').should('be.visible').should('contain', 'Unpublish');
     });
   });
 });
@@ -165,9 +139,7 @@ describe('Should be able to see the checker workflow from a tool', () => {
     goToTab('Launch');
     cy.get('#launchCheckerWorkflow').should('be.visible');
     goToTab('Info');
-    cy.get('#viewCheckerWorkflowButton')
-      .should('visible')
-      .click();
+    cy.get('#viewCheckerWorkflowButton').should('visible').click();
 
     // In the checker workflow right now
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A2/b3/_cwl_checker?tab=info');
@@ -176,9 +148,7 @@ describe('Should be able to see the checker workflow from a tool', () => {
     goToTab('Launch');
     cy.get('#launchCheckerWorkflow').should('not.be.visible');
     goToTab('Info');
-    cy.get('#viewParentEntryButton')
-      .should('be.visible')
-      .click();
+    cy.get('#viewParentEntryButton').should('be.visible').click();
 
     // In the parent tool right now
     // Accidentically allow the uri "tools" to work

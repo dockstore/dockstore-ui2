@@ -80,7 +80,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
           this.alertService.simpleSuccess();
           this.selectEntry(this.recomputeWhatEntryToSelect([...(services || []), ...[]]), EntryType.Service);
         },
-        error => {
+        (error) => {
           this.workflowService.setWorkflows([]);
           this.workflowService.setSharedWorkflows([]);
           this.alertService.detailedSnackBarError(error);
@@ -110,7 +110,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
         catchError((error: HttpErrorResponse) => {
           return observableOf(error);
         })
-      )
+      ),
     ])
       .pipe(
         finalize(() => {
@@ -119,7 +119,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
         })
       )
       .subscribe(
-        ([workflows, sharedWorkflows]: [(Array<BioWorkflow> | HttpErrorResponse), (Array<SharedWorkflows> | HttpErrorResponse)]) => {
+        ([workflows, sharedWorkflows]: [Array<BioWorkflow> | HttpErrorResponse, Array<SharedWorkflows> | HttpErrorResponse]) => {
           if (!Array.isArray(workflows) && !Array.isArray(sharedWorkflows)) {
             this.alertService.detailedSnackBarError(workflows);
             workflows = [];
@@ -142,7 +142,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
             EntryType.BioWorkflow
           );
         },
-        error => {
+        (error) => {
           console.error('This should be impossible because both errors are caught already');
         }
       );
@@ -188,7 +188,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   registerEntry(entryType: EntryType | null) {
     if (entryType === EntryType.BioWorkflow) {
       const dialogRef = this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
-      dialogRef.afterClosed().subscribe(reloadEntries => {
+      dialogRef.afterClosed().subscribe((reloadEntries) => {
         if (reloadEntries) {
           const user = this.userQuery.getValue().user;
           if (user) {
@@ -198,7 +198,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
       });
     }
     if (entryType === EntryType.Service) {
-      this.gitHubAppInstallationLink$.pipe(take(1)).subscribe(link => window.open(link));
+      this.gitHubAppInstallationLink$.pipe(take(1)).subscribe((link) => window.open(link));
     }
   }
 
@@ -206,7 +206,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     return {
       sourceControl: workflow.sourceControl,
       organization: workflow.organization,
-      ...this.createPartial(workflow)
+      ...this.createPartial(workflow),
     };
   }
 
@@ -220,7 +220,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     orgWorkflowObjects: OrgWorkflowObject<Workflow>[],
     selectedWorkflow: Workflow
   ): OrgWorkflowObject<Workflow> | undefined {
-    return orgWorkflowObjects.find(orgWorkflowObject => {
+    return orgWorkflowObjects.find((orgWorkflowObject) => {
       return (
         orgWorkflowObject.sourceControl === selectedWorkflow.sourceControl &&
         orgWorkflowObject.organization === selectedWorkflow.organization

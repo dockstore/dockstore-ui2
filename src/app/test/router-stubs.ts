@@ -24,8 +24,8 @@ import { NavigationExtras } from '@angular/router';
 @Directive({
   selector: '[routerLink]',
   host: {
-    '(click)': 'onClick()'
-  }
+    '(click)': 'onClick()',
+  },
 })
 export class RouterLinkStubDirective {
   @Input('routerLink') linkParams: any;

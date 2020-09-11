@@ -24,7 +24,7 @@ const ORGANIZATIONS_ROUTES: Routes = [
   { path: '', component: OrganizationsComponent, data: { title: 'Dockstore | Organizations' } },
   { path: ':organizationName', component: OrganizationComponent, data: { title: 'Dockstore | Organization' } },
   { path: ':organizationName/collections/:collectionName', component: CollectionComponent, data: { title: 'Dockstore | Collection' } },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 export const OrganizationsRouting = RouterModule.forChild(ORGANIZATIONS_ROUTES);

@@ -21,8 +21,8 @@ import { DocsComponent } from './docs.component';
 const DOC_ROUTES: Routes = [
   {
     path: '**',
-    component: DocsComponent
-  }
+    component: DocsComponent,
+  },
 ];
 
 export const docsRouting = RouterModule.forChild(DOC_ROUTES);

@@ -50,11 +50,8 @@ describe('Create Zenodo DOI for workflow version', () => {
     // then try to go to the hosted test workflow
     cy.get('[class=hidden-xs]')
       .invoke('text')
-      .then(text => {
-        const userName = text
-          .toString()
-          .trim()
-          .substr(0, text.toString().indexOf(' '));
+      .then((text) => {
+        const userName = text.toString().trim().substr(0, text.toString().indexOf(' '));
         cy.visit('/my-workflows/' + organization + '/' + userName + '/' + zenodoWorkflow);
         // Wait a long time for the my workflows page to load
         // Sometimes this takes longer than 30 seconds
@@ -67,7 +64,7 @@ describe('Create Zenodo DOI for workflow version', () => {
     // of the test workflow in it. In that case create a hosted test workflow.
     cy.get('[id=workflow-path]')
       .invoke('text')
-      .then(workflowPath => {
+      .then((workflowPath) => {
         let workflowName = workflowPath.toString();
         workflowName = workflowPath.toString().substring(workflowPath.toString().lastIndexOf('/') + 1);
         // accounts for no colon because an empty string is falsy, therefore it returns workflowPath
@@ -80,14 +77,9 @@ describe('Create Zenodo DOI for workflow version', () => {
           // Select the Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.' option to create a hosted workflow
           cy.contains('Create and save CWL, WDL, or Nextflow on Dockstore.org').click();
           cy.contains('button', 'Next').click();
-          cy.get('#descriptorTypeRadioButtons')
-            .contains(wdlDescriptorType)
-            .find('.mat-radio-container')
-            .click();
+          cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).find('.mat-radio-container').click();
           cy.get('[id="hostedWorkflowRepository"]').type(zenodoWorkflow);
-          cy.get('[id=submitButton]')
-            .should('be.visible')
-            .click();
+          cy.get('[id=submitButton]').should('be.visible').click();
           // Check that the workflow was created by looking for the test workflow
           // name in the workflow path at the top of the page
           cy.get('[id=workflow-path]').should('contain', zenodoWorkflow);
@@ -132,8 +124,8 @@ describe('Create Zenodo DOI for workflow version', () => {
           }
         }`;
 
-    cy.window().then(function(window: any) {
-      cy.document().then(doc => {
+    cy.window().then(function (window: any) {
+      cy.document().then((doc) => {
         const editors = doc.getElementsByClassName('ace_editor');
         // Put the descriptor in the last editor to be opened by the Add File command
         window.ace.edit(editors[editors.length - 1]).setValue(wdlDescriptorFile, -1);
@@ -151,47 +143,34 @@ describe('Create Zenodo DOI for workflow version', () => {
 
     cy.get('[id=publishButton]')
       .invoke('text')
-      .then(text => {
+      .then((text) => {
         if (text.toString().trim() === 'Publish') {
           cy.get('[id=publishButton]').click();
         }
       });
 
-    cy.get('button', { timeout: 2000 })
-      .should('contain', 'Unpublish')
-      .should('be.visible');
+    cy.get('button', { timeout: 2000 }).should('contain', 'Unpublish').should('be.visible');
 
     goToTab('Versions');
 
     // There should be at least on unlock icon since we just added a new version
     // and haven't snapshotted it yet; but this will find any unsnapshotted version
-    cy.get('[data-cy=dockstore-snapshot-unlocked]')
-      .its('length')
-      .should('be.gt', 0);
+    cy.get('[data-cy=dockstore-snapshot-unlocked]').its('length').should('be.gt', 0);
 
-    cy.get('[data-cy=dockstore-snapshot]')
-      .first()
-      .click();
+    cy.get('[data-cy=dockstore-snapshot]').first().click();
 
     cy.get('[data-cy=confirm-dialog-button]').should('be.visible');
 
     cy.get('[data-cy=confirm-dialog-button]').click();
 
-    cy.get('[data-cy=dockstore-snapshot-locked]')
-      .its('length')
-      .should('be.gt', 0);
+    cy.get('[data-cy=dockstore-snapshot-locked]').its('length').should('be.gt', 0);
 
     // alias all of the tr's found in the Version table as 'rows'
-    cy.get('table')
-      .find('tr')
-      .as('versionrows');
+    cy.get('table').find('tr').as('versionrows');
     // Cypress returns the reference to the <tr>'s
     // which allows us to continue to chain commands
     // finding the 1st row in the Versions table.
-    cy.get('@versionrows')
-      .first()
-      .get('[data-cy=dockstore-snapshot-locked]')
-      .should('be.visible');
+    cy.get('@versionrows').first().get('[data-cy=dockstore-snapshot-locked]').should('be.visible');
 
     cy.get('[data-cy=confirm-dialog-button]').should('not.be.visible');
 
@@ -201,9 +180,7 @@ describe('Create Zenodo DOI for workflow version', () => {
     // cy.get('[id=publishButton]').invoke('width').should('be.greaterThan', 0)
     cy.wait(2000);
 
-    cy.get('[data-cy=dockstore-request-doi-button]')
-      .first()
-      .click();
+    cy.get('[data-cy=dockstore-request-doi-button]').first().click();
 
     cy.get('[data-cy=confirm-dialog-button]').should('be.visible');
     cy.get('[data-cy=confirm-dialog-button]').click();

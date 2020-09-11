@@ -24,6 +24,6 @@ import { DocsComponent } from './docs.component';
 @NgModule({
   declarations: [DocsComponent],
   imports: [CommonModule, docsRouting, HeaderModule],
-  providers: []
+  providers: [],
 })
 export class DocsModule {}

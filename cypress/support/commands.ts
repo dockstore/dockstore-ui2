@@ -80,6 +80,6 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | 
 
 export function approvePotatoMembership() {
   cy.exec(
-    'PGPASSWORD=dockstore psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore'
+    "PGPASSWORD=dockstore psql -h localhost -c 'update organization_user set accepted=true where userid=2 and organizationid=1' webservice_test -U dockstore"
   );
 }

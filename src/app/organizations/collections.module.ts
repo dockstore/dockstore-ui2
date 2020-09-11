@@ -22,10 +22,10 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     RefreshAlertModule,
     RouterModule,
     MarkdownModule,
-    UpdateOrganizationDescriptionModule
+    UpdateOrganizationDescriptionModule,
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],
-  entryComponents: [CollectionRemoveEntryDialogComponent]
+  entryComponents: [CollectionRemoveEntryDialogComponent],
 })
 export class CollectionsModule {}

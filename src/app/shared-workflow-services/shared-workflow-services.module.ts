@@ -21,7 +21,7 @@ const DECLARATIONS: any[] = [
   MyWorkflowComponent,
   RefreshWorkflowOrganizationComponent,
   RegisterWorkflowModalComponent,
-  SidebarAccordionComponent
+  SidebarAccordionComponent,
 ];
 const IMPORTS = [
   FormsModule,
@@ -33,7 +33,7 @@ const IMPORTS = [
   CommonModule,
   RouterModule,
   MyEntriesModule,
-  EntryWizardModule
+  EntryWizardModule,
 ];
 
 /**
@@ -48,6 +48,6 @@ const IMPORTS = [
   imports: IMPORTS,
   providers: [MyWorkflowsService, MyBioWorkflowsService, MyServicesService],
   exports: DECLARATIONS.concat(IMPORTS),
-  entryComponents: [RegisterWorkflowModalComponent]
+  entryComponents: [RegisterWorkflowModalComponent],
 })
 export class SharedWorkflowServicesModule {}

@@ -8,7 +8,7 @@ import { GithubCallbackService } from './github-callback.service';
 @Component({
   selector: 'app-github-callback',
   templateUrl: './github-callback.component.html',
-  styleUrls: ['./github-callback.component.scss']
+  styleUrls: ['./github-callback.component.scss'],
 })
 export class GithubCallbackComponent extends Base implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private router: GithubCallbackService) {

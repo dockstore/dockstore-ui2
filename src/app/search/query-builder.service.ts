@@ -81,14 +81,14 @@ export class QueryBuilderService {
         'workflowVersions.valid',
         'workflowVersions.workflow_path',
         'workflowVersions.workingDirectory',
-        'workflowVersions.reference'
-      ]
+        'workflowVersions.reference',
+      ],
     });
   }
 
   getNumberOfFilters(filters: any) {
     let count = 0;
-    filters.forEach(filter => {
+    filters.forEach((filter) => {
       count += filter.size;
     });
     return count;
@@ -123,7 +123,7 @@ export class QueryBuilderService {
    */
   appendFilter(body: any, aggKey: string, filters: any): any {
     filters.forEach((value: Set<string>, key: string) => {
-      value.forEach(insideFilter => {
+      value.forEach((insideFilter) => {
         if (aggKey === key && !this.searchService.exclusiveFilters.includes(key)) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
@@ -183,17 +183,17 @@ export class QueryBuilderService {
    * @memberof QueryBuilderService
    */
   searchEverything(body: any, searchString: string): void {
-    body = body.filter('bool', filter =>
+    body = body.filter('bool', (filter) =>
       filter
-        .orFilter('bool', workflowVersionsFileContent =>
+        .orFilter('bool', (workflowVersionsFileContent) =>
           workflowVersionsFileContent.filter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
         )
-        .orFilter('bool', tagsFileContent => tagsFileContent.filter('match_phrase', 'tags.sourceFiles.content', searchString))
-        .orFilter('bool', descriptionFilter => descriptionFilter.filter('match_phrase', 'description', searchString))
-        .orFilter('bool', labelsFilter => labelsFilter.filter('match_phrase', 'labels', searchString))
-        .orFilter('bool', authorFilter => authorFilter.filter('match_phrase', 'author', searchString))
-        .orFilter('bool', pathFilter => pathFilter.filter('match_phrase', 'tool_path', searchString))
-        .orFilter('bool', pathFilter => pathFilter.filter('match_phrase', 'full_workflow_path', searchString))
+        .orFilter('bool', (tagsFileContent) => tagsFileContent.filter('match_phrase', 'tags.sourceFiles.content', searchString))
+        .orFilter('bool', (descriptionFilter) => descriptionFilter.filter('match_phrase', 'description', searchString))
+        .orFilter('bool', (labelsFilter) => labelsFilter.filter('match_phrase', 'labels', searchString))
+        .orFilter('bool', (authorFilter) => authorFilter.filter('match_phrase', 'author', searchString))
+        .orFilter('bool', (pathFilter) => pathFilter.filter('match_phrase', 'tool_path', searchString))
+        .orFilter('bool', (pathFilter) => pathFilter.filter('match_phrase', 'full_workflow_path', searchString))
     );
   }
 
@@ -212,10 +212,10 @@ export class QueryBuilderService {
    */
   appendAggregations(count: number, body: any, bucketStubs: any, filters: any, sortModeMap: any): any {
     // go through buckets
-    bucketStubs.forEach(key => {
+    bucketStubs.forEach((key) => {
       const order = this.searchService.parseOrderBy(key, sortModeMap);
       if (count > 0) {
-        body = body.agg('filter', key, key, a => {
+        body = body.agg('filter', key, key, (a) => {
           return this.appendFilter(a, key, filters).aggregation('terms', key, key, { size: this.shard_size, order });
         });
       } else {
@@ -232,26 +232,26 @@ export class QueryBuilderService {
     if (advancedSearchObject.ANDSplitFilter) {
       const filters = advancedSearchObject.ANDSplitFilter.split(' ');
       let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         insideFilter_tool = insideFilter_tool.filter('match_phrase', 'tags.sourceFiles.content', filter);
       });
       let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
       });
-      body = body.filter('bool', filter =>
+      body = body.filter('bool', (filter) =>
         filter
-          .orFilter('bool', toolfilter => (toolfilter = insideFilter_tool))
-          .orFilter('bool', workflowfilter => (workflowfilter = insideFilter_workflow))
+          .orFilter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
+          .orFilter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
       );
     }
     if (advancedSearchObject.ANDNoSplitFilter) {
-      body = body.filter('bool', filter =>
+      body = body.filter('bool', (filter) =>
         filter
-          .orFilter('bool', toolfilter =>
+          .orFilter('bool', (toolfilter) =>
             toolfilter.filter('match_phrase', 'tags.sourceFiles.content', advancedSearchObject.ANDNoSplitFilter)
           )
-          .orFilter('bool', workflowfilter =>
+          .orFilter('bool', (workflowfilter) =>
             workflowfilter.filter('match_phrase', 'workflowVersions.sourceFiles.content', advancedSearchObject.ANDNoSplitFilter)
           )
       );
@@ -259,33 +259,33 @@ export class QueryBuilderService {
     if (advancedSearchObject.ORFilter) {
       const filters = advancedSearchObject.ORFilter.split(' ');
       let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         insideFilter_tool = insideFilter_tool.orFilter('match_phrase', 'tags.sourceFiles.content', filter);
       });
       let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         insideFilter_workflow = insideFilter_workflow.orFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
       });
-      body = body.filter('bool', filter =>
+      body = body.filter('bool', (filter) =>
         filter
-          .orFilter('bool', toolfilter => (toolfilter = insideFilter_tool))
-          .orFilter('bool', workflowfilter => (workflowfilter = insideFilter_workflow))
+          .orFilter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
+          .orFilter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
       );
     }
     if (advancedSearchObject.NOTFilter) {
       const filters = advancedSearchObject.NOTFilter.split(' ');
       let insideFilter_tool = bodybuilder();
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         insideFilter_tool = insideFilter_tool.notFilter('match_phrase', 'tags.sourceFiles.content', filter);
       });
       let insideFilter_workflow = bodybuilder();
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         insideFilter_workflow = insideFilter_workflow.notFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
       });
-      body = body.filter('bool', filter =>
+      body = body.filter('bool', (filter) =>
         filter
-          .filter('bool', toolfilter => (toolfilter = insideFilter_tool))
-          .filter('bool', workflowfilter => (workflowfilter = insideFilter_workflow))
+          .filter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
+          .filter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
       );
     }
   }
@@ -293,20 +293,20 @@ export class QueryBuilderService {
   advancedSearchDescription(body: any, advancedSearchObject: AdvancedSearchObject) {
     if (advancedSearchObject.ANDSplitFilter) {
       const filters = advancedSearchObject.ANDSplitFilter.split(' ');
-      filters.forEach(filter => (body = body.filter('match_phrase', 'description', filter)));
+      filters.forEach((filter) => (body = body.filter('match_phrase', 'description', filter)));
     }
     if (advancedSearchObject.ANDNoSplitFilter) {
       body = body.query('match_phrase', 'description', advancedSearchObject.ANDNoSplitFilter);
     }
     if (advancedSearchObject.ORFilter) {
       const filters = advancedSearchObject.ORFilter.split(' ');
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         body = body.orFilter('match_phrase', 'description', filter);
       });
     }
     if (advancedSearchObject.NOTFilter) {
       const filters = advancedSearchObject.NOTFilter.split(' ');
-      filters.forEach(filter => {
+      filters.forEach((filter) => {
         body = body.notQuery('match_phrase', 'description', filter);
       });
     }

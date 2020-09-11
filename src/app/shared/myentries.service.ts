@@ -41,7 +41,7 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
       return [];
     }
     const orgEntryObjects: O[] = [];
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       const existingOrgEntryObject = this.matchingOrgEntryObject(orgEntryObjects, entry);
       if (existingOrgEntryObject) {
         if (entry.is_published) {
@@ -62,7 +62,7 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
     return {
       published: entry.is_published ? [entry] : [],
       unpublished: entry.is_published ? [] : [entry],
-      expanded: false
+      expanded: false,
     };
   }
 
@@ -79,7 +79,7 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
     if (!path || !entries || entries.length === 0) {
       return null;
     }
-    return entries.find(entry => this.getPath(entry) === path);
+    return entries.find((entry) => this.getPath(entry) === path);
   }
 
   abstract getPath(entry: E): string;
@@ -94,7 +94,7 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
       return null;
     }
     entries.sort(this.sortEntry);
-    const publishedEntries = entries.filter(entry => entry.is_published);
+    const publishedEntries = entries.filter((entry) => entry.is_published);
     if (publishedEntries.length > 0) {
       return publishedEntries[0];
     } else {

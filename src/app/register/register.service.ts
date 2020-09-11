@@ -25,10 +25,10 @@ export class RegisterService {
   constructor(private auth: AuthService, private alertService: AlertService) {}
 
   authenticate(provider: string): Observable<any> {
-    return new Observable(observable => {
+    return new Observable((observable) => {
       this.alertService.start('Register');
       return this.auth.authenticate(provider, { register: true }).subscribe(
-        user => {
+        (user) => {
           this.alertService.simpleSuccess();
           observable.next(user);
           observable.complete();

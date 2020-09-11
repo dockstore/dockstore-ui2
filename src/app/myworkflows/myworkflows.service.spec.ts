@@ -41,7 +41,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/cc/aa',
     full_workflow_path: 'github.com/cc/aa',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
   };
   const tool2: Workflow = {
     defaultTestParameterFilePath: '',
@@ -55,7 +55,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/cc/bb',
     full_workflow_path: 'github.com/cc/bb',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
   };
   const tool3: Workflow = {
     defaultTestParameterFilePath: '',
@@ -69,7 +69,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/bb/cc',
     full_workflow_path: 'github.com/bb/cc',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
   };
   const tool4: Workflow = {
     defaultTestParameterFilePath: '',
@@ -83,7 +83,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/bb/dd',
     full_workflow_path: 'github.com/bb/dd',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
   };
   const tool5: Workflow = {
     defaultTestParameterFilePath: '',
@@ -97,7 +97,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
   };
   const tool6: Workflow = {
     defaultTestParameterFilePath: '',
@@ -111,7 +111,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
   };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
   const expectedResult1: OrgWorkflowObject<Workflow> = {
@@ -119,21 +119,21 @@ describe('MyWorkflowsService', () => {
     published: [],
     expanded: false,
     sourceControl: 'github.com',
-    organization: 'aa'
+    organization: 'aa',
   };
   const expectedResult2: OrgWorkflowObject<Workflow> = {
     unpublished: [tool3, tool4],
     published: [],
     expanded: false,
     sourceControl: 'github.com',
-    organization: 'bb'
+    organization: 'bb',
   };
   const expectedResult3: OrgWorkflowObject<Workflow> = {
     unpublished: [tool1, tool2],
     published: [],
     expanded: true,
     sourceControl: 'github.com',
-    organization: 'cc'
+    organization: 'cc',
   };
   const expectedResult: OrgWorkflowObject<Workflow>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
@@ -146,8 +146,8 @@ describe('MyWorkflowsService', () => {
         { provide: UrlResolverService, useClass: UrlResolverStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService }
-      ]
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+      ],
     });
   });
   it('should be truthy', inject([MyWorkflowsService], (service: MyWorkflowsService) => {

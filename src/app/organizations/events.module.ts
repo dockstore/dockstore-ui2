@@ -9,6 +9,6 @@ import { EventsComponent } from './events/events.component';
 @NgModule({
   imports: [CommonModule, CustomMaterialModule, FlexLayoutModule, RefreshAlertModule],
   declarations: [EventsComponent],
-  exports: [EventsComponent]
+  exports: [EventsComponent],
 })
 export class EventsModule {}

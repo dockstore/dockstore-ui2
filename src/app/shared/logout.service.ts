@@ -35,7 +35,7 @@ export class LogoutService {
         this.userService.remove();
         this.trackLoginService.switchState(false);
         routeChange ? this.router.navigate([routeChange]) : this.router.navigate(['/logout']);
-      }
+      },
     });
   }
 }

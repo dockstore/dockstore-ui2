@@ -24,7 +24,7 @@ import { ToolDescriptor, Workflow } from './swagger';
  * @class DescriptorTypeCompatService
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DescriptorTypeCompatService {
   constructor() {}
@@ -38,13 +38,13 @@ export class DescriptorTypeCompatService {
    */
   public stringToDescriptorType(descriptorType: string | Workflow.DescriptorTypeEnum): ToolDescriptor.TypeEnum | null {
     const foundextendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
     if (foundextendedDescriptorLanguageFromValue) {
       return foundextendedDescriptorLanguageFromValue.toolDescriptorEnum;
     }
     const foundExtendedDescriptorLanguageFromWorkflowDescriptorType = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
     if (foundExtendedDescriptorLanguageFromWorkflowDescriptorType) {
       return foundExtendedDescriptorLanguageFromWorkflowDescriptorType.toolDescriptorEnum;
@@ -61,7 +61,7 @@ export class DescriptorTypeCompatService {
    */
   public toolDescriptorTypeEnumToPlainTRS(typeEnum: ToolDescriptor.TypeEnum): string | null {
     const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === typeEnum
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.toolDescriptorEnum === typeEnum
     );
     if (foundExtendedDescriptorLanguage) {
       return foundExtendedDescriptorLanguage.plainTRS;

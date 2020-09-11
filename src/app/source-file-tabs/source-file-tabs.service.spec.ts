@@ -14,8 +14,8 @@ describe('SourceFileTabsService', () => {
       providers: [
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService }
-      ]
+        { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService },
+      ],
     })
   );
 

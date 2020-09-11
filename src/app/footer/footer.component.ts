@@ -27,7 +27,7 @@ import { versions } from './versions';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent extends Base implements OnInit {
   version: string;
@@ -81,7 +81,7 @@ export class FooterComponent extends Base implements OnInit {
         },
         (error: HttpErrorResponse) => {
           console.log(error);
-          const webserviceDown = this.WEBSERVICE_DOWN_STATUS_CODES.some(code => code === error.status);
+          const webserviceDown = this.WEBSERVICE_DOWN_STATUS_CODES.some((code) => code === error.status);
           if (webserviceDown && window.location.pathname !== '/maintenance') {
             window.location.href = '/maintenance';
           }

@@ -29,8 +29,8 @@ describe('StarringService', () => {
         StarringService,
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: UsersService, useClass: UsersStubService }
-      ]
+        { provide: UsersService, useClass: UsersStubService },
+      ],
     });
   });
 

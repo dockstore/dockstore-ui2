@@ -53,7 +53,7 @@ export class ContainerService {
     if (!tool || !tools) {
       return;
     }
-    const oldWorkflow = tools.find(x => x.id === tool.id);
+    const oldWorkflow = tools.find((x) => x.id === tool.id);
     if (oldWorkflow) {
       const index = tools.indexOf(oldWorkflow);
       tools[index] = tool;
@@ -80,7 +80,7 @@ export class ContainerService {
     if (!newTool) {
       return;
     }
-    const oldTool = tools.find(x => x.id === newTool.id);
+    const oldTool = tools.find((x) => x.id === newTool.id);
     const index = tools.indexOf(oldTool);
     tools[index] = newTool;
     this.setTools(tools);

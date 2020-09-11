@@ -7,7 +7,7 @@ describe('NotificationsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [NotificationsComponent]
+      providers: [NotificationsComponent],
     });
   });
 

@@ -76,7 +76,7 @@ export class FileService {
     }
     const basepath = Dockstore.API_URI + ga4ghPath + '/';
     // Encode the relativePath even though the webservice can handle it because the browser cannot handle '..'
-    const urlStringSegments = ['tools', id, 'versions', versionId, type, 'descriptor', relativePath].map(urlStringSegment =>
+    const urlStringSegments = ['tools', id, 'versions', versionId, type, 'descriptor', relativePath].map((urlStringSegment) =>
       encodeURIComponent(urlStringSegment)
     );
     return basepath + urlStringSegments.join('/');

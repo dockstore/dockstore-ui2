@@ -9,7 +9,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  * commit id, preceded by `g`, e.g., 2.6.1-26-geb3771b6.
  */
 @Pipe({
-  name: 'gitTag'
+  name: 'gitTag',
 })
 export class GitTagPipe implements PipeTransform {
   /**

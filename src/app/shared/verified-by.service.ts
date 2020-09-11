@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { VersionVerifiedPlatform } from './openapi';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VerifiedByService {
   constructor() {}
@@ -22,7 +22,7 @@ export class VerifiedByService {
     if (versionid && verifiedSources) {
       verifiedSources
         .filter((vs: VersionVerifiedPlatform) => vs.versionId === versionid)
-        .forEach(vs => {
+        .forEach((vs) => {
           if (vs.verified) {
             const platform: string = vs.source;
             const platformVersion: string = vs.platformVersion;
@@ -36,7 +36,7 @@ export class VerifiedByService {
         });
       const verifiedSourceArray = Object.entries(verifiedSourceMap);
       const verifiedByStringArray: Array<string> = [];
-      verifiedSourceArray.forEach(arrayElement => {
+      verifiedSourceArray.forEach((arrayElement) => {
         const platformVersions: Set<string> = arrayElement[1];
         const arrayOfPlatformVersions = Array.from(platformVersions);
         verifiedByStringArray.push(arrayElement[0] + ' ' + arrayOfPlatformVersions.join(', '));

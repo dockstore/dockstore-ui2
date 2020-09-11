@@ -11,7 +11,7 @@ describe('BannerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BannerComponent],
-      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }]
+      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }],
     }).compileComponents();
   }));
 

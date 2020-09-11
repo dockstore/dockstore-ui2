@@ -21,7 +21,7 @@ import {
   DateStubService,
   DockstoreStubService,
   ImageProviderStubService,
-  ProviderStubService
+  ProviderStubService,
 } from '../test/service-stubs';
 import { sampleTool2, sampleTool3 } from './../test/mocked-objects';
 import { ContainerService } from './container.service';
@@ -41,8 +41,8 @@ describe('ContainerService', () => {
         { provide: ProviderService, useClass: ProviderStubService },
         { provide: ImageProviderService, useClass: ImageProviderStubService },
         { provide: DateService, useClass: DateStubService },
-        { provide: DockstoreService, useClass: DockstoreStubService }
-      ]
+        { provide: DockstoreService, useClass: DockstoreStubService },
+      ],
     });
   });
 
@@ -55,7 +55,7 @@ describe('ContainerService', () => {
 
     service.setTool(tool);
     service.setCopyBtn('1');
-    service.copyBtn$.subscribe(value => expect(value).toEqual('1'));
+    service.copyBtn$.subscribe((value) => expect(value).toEqual('1'));
   }));
 
   it('should replace tool', inject([ContainerService], (service: ContainerService) => {
@@ -75,7 +75,7 @@ describe('ContainerService', () => {
       registry: DockstoreTool.RegistryEnum.QUAYIO,
       toolname: 'sampleToolname',
       defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
-      defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
+      defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
     };
     service.replaceTool(newSampleTool1);
     expect(service.tools$.getValue()).toEqual([newSampleTool1, sampleTool2, sampleTool3]);

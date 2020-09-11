@@ -11,7 +11,7 @@ import { SourceFileTabsService } from './source-file-tabs.service';
 @Component({
   selector: 'app-source-file-tabs',
   templateUrl: './source-file-tabs.component.html',
-  styleUrls: ['./source-file-tabs.component.scss']
+  styleUrls: ['./source-file-tabs.component.scss'],
 })
 export class SourceFileTabsComponent implements OnChanges {
   @Input() workflowId: number;
@@ -55,7 +55,7 @@ export class SourceFileTabsComponent implements OnChanges {
           this.files = sourceFiles;
           this.fileTypes = fileTypes;
         },
-        error => {
+        (error) => {
           this.displayError = true;
         }
       );

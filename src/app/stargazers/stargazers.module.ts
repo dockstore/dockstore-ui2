@@ -27,6 +27,6 @@ import { StargazersComponent } from './stargazers.component';
   imports: [CommonModule, FlexLayoutModule, MatIconModule, CustomMaterialModule],
   declarations: [StargazersComponent],
   exports: [StargazersComponent],
-  providers: [StarringService, StarentryService]
+  providers: [StarringService, StarentryService],
 })
 export class StargazersModule {}

@@ -32,7 +32,7 @@ describe('FooterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FooterComponent, GitTagPipe],
       imports: [RouterTestingModule, MatIconModule],
-      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }]
+      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }],
     }).compileComponents();
   }));
 

@@ -95,7 +95,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     this.subscriptions();
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe((event: RouterEvent) => {
@@ -103,8 +103,8 @@ export abstract class Entry implements OnInit, OnDestroy {
       });
     this.parseURL(this.router.url);
     this.sessionService.setPublicPage(this.isPublic());
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.publicPage = publicPage));
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => (this.isLoggedIn = state));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => (this.publicPage = publicPage));
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => (this.isLoggedIn = state));
   }
 
   private parseURL(url: String): void {
@@ -287,7 +287,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   }
 
   updateVersionsFileTypes(entryId: number, versionid: number): void {
-    this.alertService.start('Getting version\'s unique file types');
+    this.alertService.start("Getting version's unique file types");
     this.entryService.getVersionsFileTypes(entryId, versionid).subscribe(
       (fileTypes: Array<SourceFile.TypeEnum>) => {
         this.versionsFileTypes = fileTypes;
@@ -303,10 +303,10 @@ export abstract class Entry implements OnInit, OnDestroy {
   updateVerifiedPlatforms(entryId: number): void {
     this.entryService.getVerifiedPlatforms(entryId).subscribe(
       (verifiedVersions: Array<VersionVerifiedPlatform>) => {
-        this.versionsWithVerifiedPlatforms = verifiedVersions.map(value => Object.assign({}, value));
+        this.versionsWithVerifiedPlatforms = verifiedVersions.map((value) => Object.assign({}, value));
         this.alertService.simpleSuccess();
       },
-      error => {
+      (error) => {
         this.alertService.detailedError(error);
         this.versionsWithVerifiedPlatforms = [];
       }
@@ -460,9 +460,9 @@ export abstract class Entry implements OnInit, OnDestroy {
     }
     (<any>window).DiscourseEmbed = {
       discourseUrl: Dockstore.DISCOURSE_URL,
-      topicId: topicId
+      topicId: topicId,
     };
-    (function() {
+    (function () {
       const d = document.createElement('script');
       d.type = 'text/javascript';
       d.async = true;

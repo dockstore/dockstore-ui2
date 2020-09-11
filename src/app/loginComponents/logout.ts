@@ -12,7 +12,7 @@ export class Logout extends Base {
 
   constructor(private trackLoginService: TrackLoginService, private logoutService: LogoutService, protected router: Router) {
     super();
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => (this.isLoggedIn = state));
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => (this.isLoggedIn = state));
   }
 
   logout(routeChange?: string) {

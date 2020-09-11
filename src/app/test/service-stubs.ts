@@ -124,7 +124,7 @@ export class GA4GHStubService {
   metadataGet(): Observable<Metadata> {
     const metadata: Metadata = {
       version: '3',
-      api_version: '3'
+      api_version: '3',
     };
     return observableOf(metadata);
   }
@@ -140,10 +140,7 @@ export class SearchStubService {
   values$ = observableOf('');
   setSearchText(searchText: string) {}
   joinComma(searchTerm: string): string {
-    return searchTerm
-      .trim()
-      .split(' ')
-      .join(', ');
+    return searchTerm.trim().split(' ').join(', ');
   }
   haveNoHits(object: Object[]): boolean {
     if (!object || object.length === 0) {
@@ -181,7 +178,7 @@ export class SearchStubService {
       ['Author', 'author'],
       ['Organization', 'namespace'],
       ['Labels', 'labels.value.keyword'],
-      ['Verified Source', 'verifiedSource']
+      ['Verified Source', 'verifiedSource'],
     ]);
   }
 
@@ -202,7 +199,7 @@ export class SearchStubService {
       ['author', 'Author'],
       ['namespace', 'Organization'],
       ['labels.value.keyword', 'Labels'],
-      ['verifiedSource', 'Verified Source']
+      ['verifiedSource', 'Verified Source'],
     ]);
   }
 
@@ -216,9 +213,9 @@ export class SearchStubService {
       [
         'has_checker',
         'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
-          'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.'
+          'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.',
       ],
-      ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.']
+      ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.'],
     ]);
   }
 
@@ -231,15 +228,35 @@ export class SearchStubService {
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
       ['verified', new SubBucket()],
-      ['verifiedSource', new SubBucket()]
+      ['verifiedSource', new SubBucket()],
     ]);
   }
 
   initializeFriendlyValueNames() {
     return new Map([
-      ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
-      ['private_access', new Map([['1', 'private'], ['0', 'public']])],
-      ['registry', new Map([['QUAY_IO', 'Quay.io'], ['DOCKER_HUB', 'Docker Hub'], ['GITLAB', 'GitLab'], ['AMAZON_ECR', 'Amazon ECR']])]
+      [
+        'verified',
+        new Map([
+          ['1', 'verified'],
+          ['0', 'non-verified'],
+        ]),
+      ],
+      [
+        'private_access',
+        new Map([
+          ['1', 'private'],
+          ['0', 'public'],
+        ]),
+      ],
+      [
+        'registry',
+        new Map([
+          ['QUAY_IO', 'Quay.io'],
+          ['DOCKER_HUB', 'Docker Hub'],
+          ['GITLAB', 'GitLab'],
+          ['AMAZON_ECR', 'Amazon ECR'],
+        ]),
+      ],
     ]);
   }
   handleLink(linkArray: Array<string>) {}
@@ -266,7 +283,7 @@ export class ConfigurationStub {
   apiKeys = {
     accessToken: '',
     apiKeys: {},
-    basePath: Dockstore.API_URI
+    basePath: Dockstore.API_URI,
   };
 }
 
@@ -373,16 +390,16 @@ export class MetadataStubService {
   sourceControlList = observableOf([
     {
       value: 'github.com',
-      friendlyName: 'GitHub'
+      friendlyName: 'GitHub',
     },
     {
       value: 'bitbucket.org',
-      friendlyName: 'BitBucket'
+      friendlyName: 'BitBucket',
     },
     {
       value: 'gitlab.com',
-      friendlyName: 'GitLab'
-    }
+      friendlyName: 'GitLab',
+    },
   ]);
 
   dockerRegistriesList = observableOf([
@@ -392,7 +409,7 @@ export class MetadataStubService {
       privateOnly: 'false',
       enum: 'QUAY_IO',
       friendlyName: 'Quay.io',
-      url: 'https://quay.io/repository/'
+      url: 'https://quay.io/repository/',
     },
     {
       dockerPath: 'registry.hub.docker.com',
@@ -400,7 +417,7 @@ export class MetadataStubService {
       privateOnly: 'false',
       enum: 'DOCKER_HUB',
       friendlyName: 'Docker Hub',
-      url: 'https://hub.docker.com/'
+      url: 'https://hub.docker.com/',
     },
     {
       dockerPath: 'registry.gitlab.com',
@@ -408,7 +425,7 @@ export class MetadataStubService {
       privateOnly: 'false',
       enum: 'GITLAB',
       friendlyName: 'GitLab',
-      url: 'https://gitlab.com/'
+      url: 'https://gitlab.com/',
     },
     {
       dockerPath: null,
@@ -416,7 +433,7 @@ export class MetadataStubService {
       privateOnly: 'true',
       enum: 'AMAZON_ECR',
       friendlyName: 'Amazon ECR',
-      url: null
+      url: null,
     },
     {
       dockerPath: null,
@@ -424,19 +441,19 @@ export class MetadataStubService {
       privateOnly: 'true',
       enum: 'SEVEN_BRIDGES',
       friendlyName: 'Seven Bridges',
-      url: null
-    }
+      url: null,
+    },
   ]);
 
   descriptorLanguageList = observableOf([
     {
       value: ToolDescriptor.TypeEnum.CWL,
-      friendlyName: 'Common Workflow Language'
+      friendlyName: 'Common Workflow Language',
     },
     {
       value: ToolDescriptor.TypeEnum.WDL,
-      friendlyName: 'Workflow Description Language'
-    }
+      friendlyName: 'Workflow Description Language',
+    },
   ]);
 
   getSourceControlList(thing?: any): Observable<any> {
@@ -555,7 +572,7 @@ export class DescriptorLanguageStubService {
     ToolDescriptor.TypeEnum.CWL,
     ToolDescriptor.TypeEnum.WDL,
     ToolDescriptor.TypeEnum.NFL,
-    ToolDescriptor.TypeEnum.SERVICE
+    ToolDescriptor.TypeEnum.SERVICE,
   ]);
   filteredDescriptorLanguages$ = observableOf([ToolDescriptor.TypeEnum.CWL, ToolDescriptor.TypeEnum.WDL, ToolDescriptor.TypeEnum.NFL]);
 }
@@ -719,7 +736,7 @@ export class WorkflowsStubService {
       defaultTestParameterFilePath: 'refreshedDefaultTestParameterFilePath',
       sourceControl: 'github.com',
       source_control_provider: 'GITHUB',
-      descriptorTypeSubclass: 'NOT_APPLICABLE'
+      descriptorTypeSubclass: 'NOT_APPLICABLE',
     };
     return observableOf(refreshedWorkflow);
   }
@@ -810,7 +827,7 @@ export class ContainersStubService {
       registry: DockstoreTool.RegistryEnum.QUAYIO,
       toolname: 'refreshedToolname',
       defaultCWLTestParameterFile: 'refreshedDefaultCWLTestParameterFile',
-      defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile'
+      defaultWDLTestParameterFile: 'refreshedDefaultWDLTestParameterFile',
     };
     return observableOf(tool);
   }

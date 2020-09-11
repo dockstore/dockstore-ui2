@@ -84,6 +84,6 @@ export class Dockstore {
   static WEBSERVICE_COMMIT_ID = '';
 
   static FEATURES = {
-    enableCwlViewer: true
+    enableCwlViewer: true,
   };
 }

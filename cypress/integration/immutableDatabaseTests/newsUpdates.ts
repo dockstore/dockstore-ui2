@@ -21,23 +21,17 @@ describe('News and Updates Widget', () => {
 
   it('News and updates widget appears on logged-in homepage', () => {
     cy.server();
-    cy.fixture('newsUpdates.json').then(json => {
+    cy.fixture('newsUpdates.json').then((json) => {
       cy.route({
         method: 'GET',
         url: '*/curation/notifications',
-        response: json
+        response: json,
       });
     });
     cy.visit('/');
     // make sure items are in proper sort order
-    cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]')
-      .eq(0)
-      .contains('First Newsbody Item');
-    cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]')
-      .eq(1)
-      .contains('Middle Newsbody Item');
-    cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]')
-      .eq(2)
-      .contains('Last Newsbody Item');
+    cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]').eq(0).contains('First Newsbody Item');
+    cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]').eq(1).contains('Middle Newsbody Item');
+    cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]').eq(2).contains('Last Newsbody Item');
   });
 });

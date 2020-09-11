@@ -32,10 +32,10 @@ export class TwitterService {
   constructor() {}
 
   loadScript(): Observable<any> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       this.startScriptLoad();
 
-      window['twttr'].ready(twttr => {
+      window['twttr'].ready((twttr) => {
         observer.next(twttr);
         observer.complete();
       });
@@ -43,7 +43,7 @@ export class TwitterService {
   }
 
   private startScriptLoad() {
-    window['twttr'] = (function(d, s, id, url) {
+    window['twttr'] = (function (d, s, id, url) {
       let script;
       const firstScriptEl = d.getElementsByTagName(s)[0],
         twitterScript = window['twttr'] || {};
@@ -58,7 +58,7 @@ export class TwitterService {
 
       twitterScript._e = [];
 
-      twitterScript.ready = function(f) {
+      twitterScript.ready = function (f) {
         twitterScript._e.push(f);
       };
 
@@ -72,11 +72,11 @@ export class TwitterService {
     window['twttr'].widgets
       .createTimeline({ sourceType: 'url', url: 'https://twitter.com/dockstoreOrg' }, nativeElement, {
         theme: 'light',
-        tweetLimit: tweetLimit
+        tweetLimit: tweetLimit,
       })
-      .then(embed => {
+      .then((embed) => {
         // console.log(embed);
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   }
 }

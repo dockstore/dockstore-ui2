@@ -10,7 +10,7 @@ import { AliasesService } from './state/aliases.service';
 @Component({
   selector: 'aliases',
   templateUrl: './aliases.component.html',
-  styleUrls: ['./aliases.component.scss']
+  styleUrls: ['./aliases.component.scss'],
 })
 export class AliasesComponent extends Base implements OnInit {
   loading$: Observable<boolean>;

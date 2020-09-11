@@ -51,7 +51,7 @@ import { EmailService } from './email.service';
 
 @Component({
   selector: 'app-container',
-  templateUrl: './container.component.html'
+  templateUrl: './container.component.html',
 })
 export class ContainerComponent extends Entry implements AfterViewInit {
   dockerPullCmd: string;
@@ -123,7 +123,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.publicPage) {
-      this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+      this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
         if (tool && tool.topicId) {
           this.discourseHelper(tool.topicId);
         }
@@ -172,7 +172,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   }
 
   public subscriptions(): void {
-    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
         this.published = this.tool.is_published;
@@ -189,7 +189,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       // Select version
       this.setUpTool(tool);
     });
-    this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toolCopyBtn => {
+    this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolCopyBtn) => {
       this.toolCopyBtn = toolCopyBtn;
     });
   }
@@ -210,7 +210,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title, includesValidation).subscribe(
-        tool => {
+        (tool) => {
           this.containerService.setTool(tool);
           this.selectedVersion = this.selectTag(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
 
@@ -219,7 +219,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
         },
-        error => {
+        (error) => {
           this.router.navigate(['../']);
         }
       );
@@ -235,7 +235,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     const toolLabels = labelArray;
     this.containerEditData = {
       labels: toolLabels,
-      is_published: this.tool.is_published
+      is_published: this.tool.is_published,
     };
   }
 
@@ -254,12 +254,12 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   setContainerLabels() {
     this.alertService.start('Setting labels');
     return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels.join(', ')).subscribe(
-      tool => {
+      (tool) => {
         this.updateContainer.setTool(tool);
         this.labelsEditMode = false;
         this.alertService.simpleSuccess();
       },
-      error => {
+      (error) => {
         this.alertService.detailedError(error);
       }
     );

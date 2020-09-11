@@ -39,7 +39,7 @@ export const updatedWorkflow: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  descriptorTypeSubclass: 'NOT_APPLICABLE'
+  descriptorTypeSubclass: 'NOT_APPLICABLE',
 };
 
 export const sampleWorkflow1: Workflow = {
@@ -54,7 +54,7 @@ export const sampleWorkflow1: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  descriptorTypeSubclass: 'NOT_APPLICABLE'
+  descriptorTypeSubclass: 'NOT_APPLICABLE',
 };
 
 export const sampleWorkflow2: Workflow = {
@@ -69,7 +69,7 @@ export const sampleWorkflow2: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  descriptorTypeSubclass: 'NOT_APPLICABLE'
+  descriptorTypeSubclass: 'NOT_APPLICABLE',
 };
 
 export const sampleWorkflow3: Workflow = {
@@ -85,7 +85,7 @@ export const sampleWorkflow3: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/sampleWorkflowPath',
-  descriptorTypeSubclass: 'NOT_APPLICABLE'
+  descriptorTypeSubclass: 'NOT_APPLICABLE',
 };
 
 export const sampleWdlWorkflow1: Workflow = {
@@ -101,7 +101,7 @@ export const sampleWdlWorkflow1: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence',
-  descriptorTypeSubclass: 'NOT_APPLICABLE'
+  descriptorTypeSubclass: 'NOT_APPLICABLE',
 };
 
 export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
@@ -117,7 +117,7 @@ export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/dockstore-testing/md5sum-checker',
-  descriptorTypeSubclass: 'NOT_APPLICABLE'
+  descriptorTypeSubclass: 'NOT_APPLICABLE',
 };
 
 export const sampleWdlWorkflow2: Workflow = {
@@ -133,19 +133,19 @@ export const sampleWdlWorkflow2: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl',
-  descriptorTypeSubclass: 'NOT_APPLICABLE'
+  descriptorTypeSubclass: 'NOT_APPLICABLE',
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {
   id: 1,
   reference: '',
-  name: 'master'
+  name: 'master',
 };
 
 export const sampleToolVersion: Tag = {
   id: 1,
   reference: '',
-  name: 'master'
+  name: 'master',
 };
 
 export const sampleTool1: DockstoreTool = {
@@ -163,7 +163,7 @@ export const sampleTool1: DockstoreTool = {
   toolname: 'sampleToolname',
   defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
   defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
-  tool_path: ''
+  tool_path: '',
 };
 
 export const sampleTool2: DockstoreTool = {
@@ -180,7 +180,7 @@ export const sampleTool2: DockstoreTool = {
   registry: DockstoreTool.RegistryEnum.QUAYIO,
   toolname: 'sampleToolname',
   defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
-  defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
+  defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
 };
 
 export const sampleTool3: DockstoreTool = {
@@ -197,7 +197,7 @@ export const sampleTool3: DockstoreTool = {
   registry: DockstoreTool.RegistryEnum.QUAYIO,
   toolname: 'sampleToolname',
   defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
-  defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile'
+  defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
 };
 
 // Case 1: sampleTool1 in published entries, unpublished doesn't matter
@@ -206,7 +206,7 @@ export const orgObj1: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool1],
   unpublished: [sampleTool2, sampleTool3],
-  expanded: false
+  expanded: false,
 };
 // Case 2: sampleTool1 in unpublished entries, published doesn't matter
 export const orgObj2: OrgToolObject<DockstoreTool> = {
@@ -214,7 +214,7 @@ export const orgObj2: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool2, sampleTool3],
   unpublished: [sampleTool1],
-  expanded: false
+  expanded: false,
 };
 
 // Case 3: sampleTool1 in neither, published has something
@@ -223,7 +223,7 @@ export const orgObj3: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool2],
   unpublished: [sampleTool3],
-  expanded: false
+  expanded: false,
 };
 
 // Case 4: sampleTool1 in neither, published has nothing
@@ -232,7 +232,7 @@ export const orgObj4: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [],
   unpublished: [],
-  expanded: false
+  expanded: false,
 };
 
 export const gitLabToken: Token = {
@@ -241,7 +241,7 @@ export const gitLabToken: Token = {
   content: 'fakeGitLabToken',
   username: 'fakeGitLabUsername',
   refreshToken: null,
-  userId: 2
+  userId: 2,
 };
 
 export const gitHubToken: Token = {
@@ -250,7 +250,7 @@ export const gitHubToken: Token = {
   content: 'fakeGitHubToken',
   username: 'fakeGitHubUsername',
   refreshToken: null,
-  userId: 2
+  userId: 2,
 };
 
 export const bitbucketToken: Token = {
@@ -259,7 +259,7 @@ export const bitbucketToken: Token = {
   content: 'fakeBitbucketToken',
   username: 'fakeBitbucketUsername',
   refreshToken: null,
-  userId: 2
+  userId: 2,
 };
 
 export const quayToken: Token = {
@@ -268,13 +268,13 @@ export const quayToken: Token = {
   content: 'fakeQuayToken',
   username: 'fakeQuayUsername',
   refreshToken: null,
-  userId: 2
+  userId: 2,
 };
 
 export const sampleTag = {
   reference: 'sampleReference',
   image_id: 'sampleImageId',
-  name: 'sampleName'
+  name: 'sampleName',
 };
 
 export const wdlSourceFile: SourceFile = {
@@ -282,7 +282,7 @@ export const wdlSourceFile: SourceFile = {
   id: 0,
   path: '',
   absolutePath: '',
-  type: 'DOCKSTORE_WDL'
+  type: 'DOCKSTORE_WDL',
 };
 
 export const emptyWdlSourceFile: SourceFile = {
@@ -290,7 +290,7 @@ export const emptyWdlSourceFile: SourceFile = {
   id: 1,
   path: '/foo.wdl',
   absolutePath: '',
-  type: 'DOCKSTORE_WDL'
+  type: 'DOCKSTORE_WDL',
 };
 
 export const wdlSourceFileWithHttpImport: SourceFile = {
@@ -298,7 +298,7 @@ export const wdlSourceFileWithHttpImport: SourceFile = {
   id: 2,
   path: '/goo.wdl',
   absolutePath: '',
-  type: 'DOCKSTORE_WDL'
+  type: 'DOCKSTORE_WDL',
 };
 
 export const wdlSourceFileWithCommentedHttpImport: SourceFile = {
@@ -306,7 +306,7 @@ export const wdlSourceFileWithCommentedHttpImport: SourceFile = {
   id: 2,
   path: '/goo.wdl',
   absolutePath: '',
-  type: 'DOCKSTORE_WDL'
+  type: 'DOCKSTORE_WDL',
 };
 
 const cwlWithNoImport = `#!/usr/bin/env cwl-runner
@@ -415,7 +415,7 @@ export const cwlSourceFileWithNoImport: SourceFile = {
   id: 3,
   path: '/fubar.cwl',
   absolutePath: '',
-  type: 'DOCKSTORE_CWL'
+  type: 'DOCKSTORE_CWL',
 };
 
 export const cwlSourceFileWithHttpsImport: SourceFile = {
@@ -423,7 +423,7 @@ export const cwlSourceFileWithHttpsImport: SourceFile = {
   id: 3,
   path: '/fubar.cwl',
   absolutePath: '',
-  type: 'DOCKSTORE_CWL'
+  type: 'DOCKSTORE_CWL',
 };
 
 export const cwlSourceFileWithMixinImport: SourceFile = {
@@ -431,7 +431,7 @@ export const cwlSourceFileWithMixinImport: SourceFile = {
   id: 3,
   path: '/fubar.cwl',
   absolutePath: '',
-  type: 'DOCKSTORE_CWL'
+  type: 'DOCKSTORE_CWL',
 };
 
 export const cwlSourceFileWithCommentedMixinImport: SourceFile = {
@@ -439,7 +439,7 @@ export const cwlSourceFileWithCommentedMixinImport: SourceFile = {
   id: 3,
   path: '/fubar.cwl',
   absolutePath: '',
-  type: 'DOCKSTORE_CWL'
+  type: 'DOCKSTORE_CWL',
 };
 
 export const cwlSourceFileWithIncludeImport: SourceFile = {
@@ -447,7 +447,7 @@ export const cwlSourceFileWithIncludeImport: SourceFile = {
   id: 3,
   path: '/fubar.cwl',
   absolutePath: '',
-  type: 'DOCKSTORE_CWL'
+  type: 'DOCKSTORE_CWL',
 };
 
 export const cwlSourceFileWithSomeHttpLinks: SourceFile = {
@@ -455,7 +455,7 @@ export const cwlSourceFileWithSomeHttpLinks: SourceFile = {
   id: 3,
   path: '/fubar.cwl',
   absolutePath: '',
-  type: 'DOCKSTORE_CWL'
+  type: 'DOCKSTORE_CWL',
 };
 
 export const cwlSourceFileWithHttpRun: SourceFile = {
@@ -463,7 +463,7 @@ export const cwlSourceFileWithHttpRun: SourceFile = {
   id: 3,
   path: '/checker.cwl',
   absolutePath: '',
-  type: 'DOCKSTORE_CWL'
+  type: 'DOCKSTORE_CWL',
 };
 
 export const sampleSourceFile: SourceFile = {
@@ -471,7 +471,7 @@ export const sampleSourceFile: SourceFile = {
   id: 1,
   path: '/cwl.json',
   absolutePath: '',
-  type: SourceFile.TypeEnum.CWLTESTJSON
+  type: SourceFile.TypeEnum.CWLTESTJSON,
 };
 
 export const versionVerifiedPlatform: Array<VersionVerifiedPlatform> = [
@@ -481,7 +481,7 @@ export const versionVerifiedPlatform: Array<VersionVerifiedPlatform> = [
     platformVersion: '1.0.0',
     source: 'Dockstore CLI',
     verified: true,
-    versionId: 1
+    versionId: 1,
   },
   {
     metadata: 'Docktesters group',
@@ -489,8 +489,8 @@ export const versionVerifiedPlatform: Array<VersionVerifiedPlatform> = [
     platformVersion: null,
     source: 'Dockstore CLI',
     verified: true,
-    versionId: 1
-  }
+    versionId: 1,
+  },
 ];
 
 export const testSourceFiles: Array<SourceFile> = [
@@ -500,7 +500,7 @@ export const testSourceFiles: Array<SourceFile> = [
     path: '/Dockerfile',
     absolutePath: '',
     type: SourceFile.TypeEnum.DOCKERFILE,
-    verifiedBySource: {}
+    verifiedBySource: {},
   },
   {
     content: 'potato',
@@ -512,9 +512,9 @@ export const testSourceFiles: Array<SourceFile> = [
       'Dockstore CLI': {
         metadata: 'Docktesters group',
         verified: true,
-        platformVersion: '1.0.0'
-      }
-    }
+        platformVersion: '1.0.0',
+      },
+    },
   },
   {
     content: 'potato',
@@ -522,7 +522,7 @@ export const testSourceFiles: Array<SourceFile> = [
     path: '/Dockstore.cwl',
     absolutePath: '',
     type: SourceFile.TypeEnum.DOCKSTORECWL,
-    verifiedBySource: {}
+    verifiedBySource: {},
   },
   {
     content: 'potato',
@@ -534,10 +534,10 @@ export const testSourceFiles: Array<SourceFile> = [
       'Dockstore CLI': {
         metadata: 'Docktesters group',
         verified: true,
-        platformVersion: null
-      }
-    }
-  }
+        platformVersion: null,
+      },
+    },
+  },
 ];
 
 export const elasticSearchResponse: Hit[] = [
@@ -579,7 +579,7 @@ export const elasticSearchResponse: Hit[] = [
           size: 0,
           cwl_path: '/delly_docker/Dockstore.cwl',
           id: 8459,
-          image_id: ''
+          image_id: '',
         },
         {
           doiURL: null,
@@ -598,8 +598,8 @@ export const elasticSearchResponse: Hit[] = [
           size: 0,
           cwl_path: '/delly_docker/Dockstore.cwl',
           id: 8458,
-          image_id: ''
-        }
+          image_id: '',
+        },
       ],
       has_checker: false,
       id: 2313,
@@ -619,8 +619,8 @@ export const elasticSearchResponse: Hit[] = [
       namespace: 'weischenfeldt',
       gitUrl: 'git@bitbucket.org:weischenfeldt/pcawg_delly_workflow.git',
       defaultWDLTestParameterFile: '/test.json',
-      defaultVersion: 'DELLYlegacy'
-    }
+      defaultVersion: 'DELLYlegacy',
+    },
   },
   {
     _index: 'entry',
@@ -653,8 +653,8 @@ export const elasticSearchResponse: Hit[] = [
           referenceType: 'UNSET',
           commitID: null,
           id: 8288,
-          doiStatus: 'NOT_REQUESTED'
-        }
+          doiStatus: 'NOT_REQUESTED',
+        },
       ],
       sourceControl: 'github.com',
       has_checker: false,
@@ -671,9 +671,9 @@ export const elasticSearchResponse: Hit[] = [
       parent_id: null,
       organization: 'smc-rna-challenge',
       gitUrl: 'git@github.com:smc-rna-challenge/Ginny-9609498.git',
-      defaultVersion: null
-    }
-  }
+      defaultVersion: null,
+    },
+  },
 ];
 
 export const exampleEntry: Version = {
@@ -696,37 +696,37 @@ export const exampleEntry: Version = {
       id: 21835,
       message: '{"/Dockstore.cwl":"Primary CWL descriptor is not present."}',
       type: 'DOCKSTORE_CWL',
-      valid: false
+      valid: false,
     },
     {
       id: 21836,
       message: '{"/Dockstore.wdl":"Primary WDL descriptor is not present."}',
       type: 'DOCKSTORE_WDL',
-      valid: false
+      valid: false,
     },
     {
       id: 21837,
       message: '{"/Dockerfile":"Missing a Dockerfile."}',
       type: 'DOCKERFILE',
-      valid: false
+      valid: false,
     },
     {
       id: 21838,
       message: '{}',
       type: 'CWL_TEST_JSON',
-      valid: true
+      valid: true,
     },
     {
       id: 21839,
       message: '{}',
       type: 'WDL_TEST_JSON',
-      valid: true
-    }
+      valid: true,
+    },
   ],
   verified: false,
   verifiedSource: null,
   versionEditor: null,
-  workingDirectory: ''
+  workingDirectory: '',
 };
 
 export const validTool: ExtendedDockstoreTool = {
@@ -744,7 +744,7 @@ export const validTool: ExtendedDockstoreTool = {
   private_access: false,
   registry_string: 'quay.io',
   registry: DockstoreTool.RegistryEnum.QUAYIO,
-  toolname: null
+  toolname: null,
 };
 
 export const mockedNotification: Notification = {
@@ -752,7 +752,7 @@ export const mockedNotification: Notification = {
   message: 'TestingTesting123',
   type: 'SITEWIDE',
   priority: 'LOW',
-  expiration: null
+  expiration: null,
 };
 
 export const expiredMockNotification: Notification = {
@@ -760,5 +760,5 @@ export const expiredMockNotification: Notification = {
   message: 'Testing123',
   type: 'SITEWIDE',
   priority: 'LOW',
-  expiration: new Date('2018-11-25T00:00:00').getTime()
+  expiration: new Date('2018-11-25T00:00:00').getTime(),
 };

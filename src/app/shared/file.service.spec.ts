@@ -27,7 +27,7 @@ import {
   sampleTag,
   wdlSourceFile,
   wdlSourceFileWithCommentedHttpImport,
-  wdlSourceFileWithHttpImport
+  wdlSourceFileWithHttpImport,
 } from '../test/mocked-objects';
 import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
@@ -37,7 +37,7 @@ import { ToolDescriptor } from './swagger';
 describe('FileService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [FileService]
+      providers: [FileService],
     });
   });
 

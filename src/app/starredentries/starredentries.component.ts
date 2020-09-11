@@ -9,7 +9,7 @@ import { UsersService } from './../shared/swagger/api/users.service';
 @Component({
   selector: 'app-starredentries',
   templateUrl: './starredentries.component.html',
-  styleUrls: ['./starredentries.component.scss']
+  styleUrls: ['./starredentries.component.scss'],
 })
 export class StarredEntriesComponent extends Base implements OnInit {
   starredTools: any;
@@ -28,10 +28,10 @@ export class StarredEntriesComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    this.userQuery.user$.subscribe(user => (this.user = user));
-    this.usersService.getStarredTools().subscribe(starredTool => {
+    this.userQuery.user$.subscribe((user) => (this.user = user));
+    this.usersService.getStarredTools().subscribe((starredTool) => {
       this.starredTools = starredTool.filter((entry: DockstoreTool) => entry.is_published);
-      this.starredTools.forEach(tool => {
+      this.starredTools.forEach((tool) => {
         if (!tool.providerUrl) {
           this.providerService.setUpProvider(tool);
         }
@@ -40,16 +40,16 @@ export class StarredEntriesComponent extends Base implements OnInit {
         }
       });
     });
-    this.usersService.getStarredWorkflows().subscribe(starredWorkflow => {
+    this.usersService.getStarredWorkflows().subscribe((starredWorkflow) => {
       this.starredWorkflows = starredWorkflow.filter((entry: Workflow) => entry.is_published);
-      this.starredWorkflows.forEach(workflow => {
+      this.starredWorkflows.forEach((workflow) => {
         if (!workflow.providerUrl) {
           this.providerService.setUpProvider(workflow);
         }
       });
     });
 
-    this.usersService.getStarredOrganizations().subscribe(starredOrganizations => {
+    this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {
       this.starredOrganizations = starredOrganizations;
     });
   }

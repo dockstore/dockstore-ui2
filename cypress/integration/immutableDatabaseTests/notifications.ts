@@ -27,11 +27,11 @@ describe('Notifications Banner', () => {
 
   beforeEach(() => {
     cy.server();
-    cy.fixture('notification1.json').then(json => {
+    cy.fixture('notification1.json').then((json) => {
       cy.route({
         method: 'GET',
         url: '*/curation/notifications',
-        response: json
+        response: json,
       });
     });
 
@@ -42,7 +42,7 @@ describe('Notifications Banner', () => {
     it('should be appearing on any page before it is dismissed', () => {
       verifyNotificationExist();
 
-      dockstorePaths.forEach(path => {
+      dockstorePaths.forEach((path) => {
         cy.visit(path);
         verifyNotificationExist();
       });
@@ -55,7 +55,7 @@ describe('Notifications Banner', () => {
 
       verifyNotificationAbsent();
 
-      dockstorePaths.forEach(path => {
+      dockstorePaths.forEach((path) => {
         cy.visit(path);
         verifyNotificationAbsent();
       });

@@ -28,7 +28,7 @@ describe('Dockstore hosted workflows', () => {
     cy.route({
       method: 'GET',
       url: /workflows\/.+\/zip\/.+/,
-      response: 200
+      response: 200,
     }).as('downloadZip');
   });
 
@@ -59,8 +59,8 @@ describe('Dockstore hosted workflows', () => {
       goToTab('Files');
       cy.get('#editFilesButton').click();
       cy.contains('Add File').click();
-      cy.window().then(function(window: any) {
-        cy.document().then(doc => {
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
           const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
           window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
@@ -82,16 +82,14 @@ describe('Dockstore hosted workflows', () => {
       // https://github.com/ga4gh/dockstore/issues/2050
       cy.get('#downloadZipButton').click();
 
-      cy.wait('@downloadZip')
-        .its('url')
-        .should('include', Dockstore.API_URI);
+      cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
       cy.get('#editFilesButton').click();
       cy.contains('Add File').click();
-      cy.window().then(function(window: any) {
-        cy.document().then(doc => {
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
           const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
           window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
@@ -101,8 +99,8 @@ describe('Dockstore hosted workflows', () => {
       goToTab('Test Parameter Files');
       cy.wait(500);
       cy.contains('Add File').click();
-      cy.window().then(function(window: any) {
-        cy.document().then(doc => {
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
           const testParameterFile = '{}';
           window.ace.edit(editors[0]).setValue(testParameterFile, -1);
@@ -121,9 +119,7 @@ describe('Dockstore hosted workflows', () => {
       // Try deleting a file (.wdl file)
       goToTab('Files');
       cy.get('#editFilesButton').click();
-      cy.get('.delete-editor-file')
-        .first()
-        .click();
+      cy.get('.delete-editor-file').first().click();
       cy.get('#saveNewVersionButton').click();
       cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:3');
 
@@ -141,9 +137,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
       // Version 3 should no longer exist since it was just deleted
       goToTab('Versions');
-      cy.get('table')
-        .find('a')
-        .should('not.contain', '3');
+      cy.get('table').find('a').should('not.contain', '3');
 
       // Reload the hosted workflow to test https://github.com/dockstore/dockstore/issues/2854
       cy.reload();

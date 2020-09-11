@@ -21,5 +21,5 @@ import { Dockstore } from './../shared/dockstore.model';
 export const ELASTIC_SEARCH_CLIENT = new Client({
   host: Dockstore.API_URI + ga4ghExtendedPath,
   apiVersion: '5.6',
-  log: 'warning'
+  log: 'warning',
 });

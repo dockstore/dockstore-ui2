@@ -25,7 +25,7 @@ describe('PagenumberService', () => {
     TestBed.configureTestingModule({
       providers: [PagenumberService],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     });
   });
 

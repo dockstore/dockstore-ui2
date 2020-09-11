@@ -117,7 +117,7 @@
             </div>
           </div>
           <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
-            <span style="cursor:pointer" class="pull-right" (click)="clickExpand(key)">
+            <span style="cursor: pointer" class="pull-right" (click)="clickExpand(key)">
               <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
               <a>
                 {{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}
@@ -127,9 +127,7 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-      <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 my-3">
-        Reset Filters
-      </button>
+      <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 my-3">Reset Filters</button>
     </div>
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
@@ -145,7 +143,7 @@
         <mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
           <mat-card class="row">
             <div>Link to this page</div>
-            <div class="input-group" style="padding:5px;">
+            <div class="input-group" style="padding: 5px">
               <input type="text" class="form-control" [value]="shortUrl$ | async" readonly />
               <span class="input-group-btn">
                 <button
@@ -213,13 +211,9 @@
               the <strong>{{ friendlyNames.get(key) }}</strong> is
               <span *ngFor="let subBucket of filters.get(key); let j = index">
                 <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
-                <span *ngIf="j < filters.get(key).size - 1">
-                  OR
-                </span>
+                <span *ngIf="j < filters.get(key).size - 1"> OR </span>
               </span>
-              <span *ngIf="i < filters.size - 1">
-                AND
-              </span>
+              <span *ngIf="i < filters.size - 1"> AND </span>
             </span>
           </mat-card>
         </div>
