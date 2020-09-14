@@ -9,7 +9,7 @@ import { EmailService } from './email.service';
 describe('Service: Email', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [EmailService, DockstoreService]
+      providers: [EmailService, DockstoreService],
     });
   });
 
@@ -20,7 +20,7 @@ describe('Service: Email', () => {
     registry_string: 'registry.hub.docker.com',
     registry: DockstoreTool.RegistryEnum.DOCKERHUB,
     imgProvider: 'Docker Hub',
-    tool_path: 'registry.hub.docker.com/postgres/postgres'
+    tool_path: 'registry.hub.docker.com/postgres/postgres',
   };
 
   it('should get the right request access email href', inject([EmailService], (service: EmailService) => {

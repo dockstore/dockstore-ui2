@@ -45,7 +45,7 @@ import { SearchService } from './state/search.service';
     SearchResultsComponent,
     SearchToolTableComponent,
     SearchWorkflowTableComponent,
-    BasicSearchComponent
+    BasicSearchComponent,
   ],
   imports: [
     CommonModule,
@@ -63,10 +63,10 @@ import { SearchService } from './state/search.service';
     ReactiveFormsModule,
     RefreshAlertModule,
     FlexLayoutModule,
-    MdePopoverModule
+    MdePopoverModule,
   ],
   providers: [SearchService, QueryBuilderService],
   exports: [SearchComponent],
-  entryComponents: [AdvancedSearchComponent]
+  entryComponents: [AdvancedSearchComponent],
 })
 export class SearchModule {}

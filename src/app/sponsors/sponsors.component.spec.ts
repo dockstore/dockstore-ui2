@@ -27,7 +27,7 @@ describe('SponsorsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SponsorsComponent],
       providers: [Location],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     }).compileComponents();
   }));
 

@@ -73,7 +73,7 @@ export class ExtendedWorkflowsService extends WorkflowsService {
         headers: headers,
         observe: observe,
         reportProgress: reportProgress,
-        responseType: 'blob' as 'json'
+        responseType: 'blob' as 'json',
       }
     );
   }

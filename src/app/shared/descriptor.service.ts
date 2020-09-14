@@ -33,7 +33,7 @@ export class DescriptorService {
     const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
     if (versionsFileTypes) {
       versionsFileTypes.forEach((element: SourceFile.TypeEnum) => {
-        extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
+        extendedDescriptorLanguages.forEach((extendedDescriptorLanguage) => {
           if (extendedDescriptorLanguage.descriptorFileTypes.includes(element)) {
             descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);
           }
@@ -52,8 +52,8 @@ export class DescriptorService {
   getValidDescriptors(version): Array<ToolDescriptor.TypeEnum> {
     const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
     if (version && version.validations) {
-      extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
-        const cwlValidation = version.validations.find(validation => {
+      extendedDescriptorLanguages.forEach((extendedDescriptorLanguage) => {
+        const cwlValidation = version.validations.find((validation) => {
           return extendedDescriptorLanguage.descriptorFileTypes.includes(validation.type);
         });
         if (cwlValidation && cwlValidation.valid) {

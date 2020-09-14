@@ -25,6 +25,6 @@ import { StarringService } from './starring.service';
   imports: [CommonModule, MatIconModule],
   declarations: [StarringComponent],
   exports: [StarringComponent],
-  providers: [StarringService, StarentryService]
+  providers: [StarringService, StarentryService],
 })
 export class StarringModule {}

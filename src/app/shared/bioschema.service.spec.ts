@@ -12,7 +12,7 @@ import { WorkflowVersion } from './swagger/model/workflowVersion';
 describe('BioschemaService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BioschemaService, DateService, ExtendedWorkflowsService, ExtendedToolsService, HttpClient, HttpHandler]
+      providers: [BioschemaService, DateService, ExtendedWorkflowsService, ExtendedToolsService, HttpClient, HttpHandler],
     });
   });
 
@@ -42,7 +42,7 @@ describe('BioschemaService', () => {
       mode: DockstoreTool.ModeEnum.HOSTED,
       namespace: '',
       private_access: false,
-      registry_string: ''
+      registry_string: '',
     };
     const result: BioschemaTool = service.getToolSchema(tool, tag);
     expect(result['@context']).toEqual('http://schema.org');
@@ -80,7 +80,7 @@ describe('BioschemaService', () => {
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
       defaultTestParameterFilePath: '',
-      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
     };
     const result: BioschemaTool = service.getWorkflowSchema(workflow, version);
     expect(result['@context']).toEqual('http://schema.org');

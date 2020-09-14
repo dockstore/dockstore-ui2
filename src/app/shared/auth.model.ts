@@ -21,7 +21,7 @@ export const AuthConfig: IPartialConfigOptions = {
     github: {
       url: Dockstore.API_URI + '/auth/tokens/github',
       clientId: Dockstore.GITHUB_CLIENT_ID,
-      scope: [Dockstore.GITHUB_SCOPE]
+      scope: [Dockstore.GITHUB_SCOPE],
     },
     google: {
       url: Dockstore.API_URI + '/auth/tokens/google',
@@ -29,8 +29,8 @@ export const AuthConfig: IPartialConfigOptions = {
       scope: [Dockstore.GOOGLE_SCOPE],
       additionalUrlParams: {
         access_type: 'offline',
-        prompt: 'consent'
-      }
-    }
-  }
+        prompt: 'consent',
+      },
+    },
+  },
 };

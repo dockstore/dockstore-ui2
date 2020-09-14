@@ -4,7 +4,7 @@ import { GitTagPipe } from './git-tag.pipe';
 const DOCKSTORE_GITHUB_ORG = 'https://github.com/dockstore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FooterService {
   private gitTagPipe: GitTagPipe;

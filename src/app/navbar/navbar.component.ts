@@ -31,7 +31,7 @@ import { TrackLoginService } from './../shared/track-login.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent extends Logout implements OnInit {
   public user: User;
@@ -52,7 +52,7 @@ export class NavbarComponent extends Logout implements OnInit {
     super(trackLoginService, logoutService, router);
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
@@ -61,13 +61,13 @@ export class NavbarComponent extends Logout implements OnInit {
   }
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.user = user;
       if (this.user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
         this.logOutUsersWithoutCurrentTOS();
       }
     });
-    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => (this.extendedUser = extendedUser));
+    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((extendedUser) => (this.extendedUser = extendedUser));
   }
 
   resetPageNumber() {

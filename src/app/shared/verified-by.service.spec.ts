@@ -7,7 +7,7 @@ import { VerifiedByService } from './verified-by.service';
 describe('Service: VerifiedBy', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [VerifiedByService]
+      providers: [VerifiedByService],
     });
   });
 

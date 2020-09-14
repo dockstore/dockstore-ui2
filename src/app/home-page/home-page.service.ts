@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HomePageService {
   constructor(private router: Router) {}
@@ -15,7 +15,7 @@ export class HomePageService {
     logo: '../assets/images/dockstore/dockstore.png',
     name: 'Dockstore',
     sameAs: 'https://github.com/dockstore',
-    url: window.location.href
+    url: window.location.href,
   };
 
   hpWebsiteSchema = {
@@ -26,9 +26,9 @@ export class HomePageService {
     potentialAction: {
       '@type': 'SearchAction',
       target: window.location.href + 'search?search={search_term_string}',
-      'query-input': 'required name=search_term_string'
+      'query-input': 'required name=search_term_string',
     },
-    url: window.location.href
+    url: window.location.href,
   };
 
   goToSearch(searchValue: string) {

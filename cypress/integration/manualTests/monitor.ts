@@ -11,9 +11,7 @@ function checkLink(selector: string, url: string): void {
 function checkExternalLink(selector: string, url: string): void {
   it('Check External links', () => {
     cy.visit('');
-    cy.get(selector)
-      .should('have.attr', 'href')
-      .and('include', url);
+    cy.get(selector).should('have.attr', 'href').and('include', url);
   });
   return;
 }
@@ -21,13 +19,13 @@ function checkExternalLink(selector: string, url: string): void {
 const selectorLinkTuples = [
   ['[data-cy=register-button]', '/login'],
   ['[data-cy=homepage-organizations-button]', '/organizations'],
-  ['[data-cy=homepage-search-link]', '/search']
+  ['[data-cy=homepage-search-link]', '/search'],
 ];
 
 const externalLinkTuples = [
   ['[data-cy=homepage-discuss-link]', 'discuss.dockstore.org'],
   ['[data-cy=footer-api-link]', '/static/swagger-ui/index.html'],
-  ['[data-cy=footer-about-link]', '/dockstore-introduction.html']
+  ['[data-cy=footer-about-link]', '/dockstore-introduction.html'],
 ];
 
 before(() => {
@@ -36,18 +34,16 @@ before(() => {
 
 describe('Monitor homepage links', () => {
   describe('Check links', () => {
-    selectorLinkTuples.forEach(t => checkLink(t[0], t[1]));
+    selectorLinkTuples.forEach((t) => checkLink(t[0], t[1]));
   });
   describe('Monitor external homepage links', () => {
-    externalLinkTuples.forEach(t => checkExternalLink(t[0], t[1]));
+    externalLinkTuples.forEach((t) => checkExternalLink(t[0], t[1]));
   });
 
   describe('Test RSS feed', () => {
     it('access RSS feed', () => {
-      cy.get('[data-cy=footer-rss-link]').then(t => {
-        cy.request(t.prop('href'))
-          .its('body')
-          .should('include', '<rss version="2.0">');
+      cy.get('[data-cy=footer-rss-link]').then((t) => {
+        cy.request(t.prop('href')).its('body').should('include', '<rss version="2.0">');
       });
     });
   });

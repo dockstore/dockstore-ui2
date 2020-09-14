@@ -6,7 +6,7 @@ import { DockstoreTool, Workflow } from './swagger';
  * TODO: Better type checking
  */
 @Pipe({
-  name: 'entryToDisplayName'
+  name: 'entryToDisplayName',
 })
 export class EntryToDisplayNamePipe implements PipeTransform {
   transform(entry: DockstoreTool | Workflow): string {

@@ -31,19 +31,19 @@ import { SearchService } from './state/search.service';
 
 @Component({
   selector: 'app-search-results',
-  template: ''
+  template: '',
 })
 class SearchResultsComponent {}
 
 @Component({
   selector: 'app-basic-search',
-  template: ''
+  template: '',
 })
 class BasicSearchComponent {}
 
 @Component({
   selector: 'app-header',
-  template: ''
+  template: '',
 })
 class HeaderComponent {}
 
@@ -61,8 +61,8 @@ describe('SearchComponent', () => {
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) }
-      ]
+        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
+      ],
     }).compileComponents();
   }));
 
@@ -84,7 +84,7 @@ describe('SearchComponent', () => {
       pageSize: 10,
       pageIndex: 0,
       advancedSearch: null,
-      currentTabIndex: 0
+      currentTabIndex: 0,
     });
     fixture.detectChanges();
   });

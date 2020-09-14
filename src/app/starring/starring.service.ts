@@ -31,7 +31,7 @@ export class StarringService {
 
   putStar(entryID: number, entryType: EntryType, toStar: boolean): Observable<any> {
     const body: StarRequest = {
-      star: toStar
+      star: toStar,
     };
     if (entryType === EntryType.BioWorkflow) {
       return this.workflowsService.starEntry(entryID, body);

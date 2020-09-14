@@ -64,7 +64,7 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     launchWithTuples = [
       // pairs of [launch button text, expected href]
       ['CGC', '?trs=' + trsUrl],
-      ['NHLBI BioData Catalyst', '?trs=' + trsUrl]
+      ['NHLBI BioData Catalyst', '?trs=' + trsUrl],
     ];
   } else if (type === 'WDL') {
     launchWithTuples = [
@@ -73,16 +73,16 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
       ['DNAnexus', '?source=' + trsUrl],
       ['Terra', url + ':' + version2],
       ['AnVIL', url + ':' + version2],
-      ['NHLBI BioData Catalyst', url + ':' + version2]
+      ['NHLBI BioData Catalyst', url + ':' + version2],
     ];
   } else {
     launchWithTuples = [];
   }
 
   // click on each launch button and confirm the url changes
-  launchWithTuples.forEach(t => {
+  launchWithTuples.forEach((t) => {
     it('launch with buttons go to external site', () => {
-      cy.contains('a', t[0]).should($el => {
+      cy.contains('a', t[0]).should(($el) => {
         // @ts-ignore
         expect($el.attr('href')).to.contain(t[1]);
       });
@@ -140,9 +140,7 @@ describe('Test workflow page functionality', () => {
     goToTab('Workflows');
 
     // click twice to sort by descriptor type descending so WDL is at the top
-    cy.get('[data-cy=descriptorTypeHeader]')
-      .click()
-      .click();
+    cy.get('[data-cy=descriptorTypeHeader]').click().click();
     cy.get('[data-cy=workflowColumn]')
       .first()
       .within(() => {
@@ -161,22 +159,22 @@ const workflowVersionTuples = [
       '/api' +
       ga4ghPath +
       '/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/develop',
-    'WDL'
+    'WDL',
   ],
   [
     'github.com/NCI-GDC/gdc-dnaseq-cwl/GDC_DNASeq',
     'dev',
     'master',
     window.location.origin + '/api' + ga4ghPath + '/tools/%23workflow%2Fgithub.com%2FNCI-GDC%2Fgdc-dnaseq-cwl%2FGDC_DNASeq/versions/master',
-    'CWL'
+    'CWL',
   ],
-  ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL']
+  ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
 ];
 
 const organizations = [['Broad Institute']];
 
 describe('Monitor workflows', () => {
-  workflowVersionTuples.forEach(t => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
+  workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
 });
 
 describe('Check organizations page', () => {
@@ -186,13 +184,11 @@ describe('Check organizations page', () => {
     cy.get('[data-cy=orgName]').should('have.length.of.at.least', 2);
   });
 
-  organizations.forEach(t => {
+  organizations.forEach((t) => {
     it('organization page and collections work', () => {
       cy.contains('[data-cy=orgName]', t[0]).click();
       cy.get('[data-cy=collectionName').should('have.length.of.at.least', 1);
-      cy.get('[data-cy=collectionName')
-        .first()
-        .click();
+      cy.get('[data-cy=collectionName').first().click();
       cy.url().should('contain', 'collections');
       cy.get('[data-cy=collectionEntry]').should('have.length.of.at.least', 1);
     });
@@ -202,7 +198,7 @@ describe('Check organizations page', () => {
 describe('Check external links', () => {
   it('github, twitter, gitter, discuss links are correct', () => {
     cy.visit('');
-    cy.contains('a', 'Github').should('have.attr', 'href', 'https://github.com/ga4gh/dockstore');
+    cy.contains('a', 'Github').should('have.attr', 'href', 'https://github.com/dockstore/dockstore');
     cy.contains('a', '@DockstoreOrg').should('have.attr', 'href', 'https://twitter.com/DockstoreOrg');
     cy.contains('a', 'Gitter').should('have.attr', 'href', 'https://gitter.im/ga4gh/dockstore');
     cy.contains('a', 'Help Desk').should('have.attr', 'href', 'https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506');

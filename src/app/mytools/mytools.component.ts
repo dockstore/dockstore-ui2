@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-mytools',
   templateUrl: './mytools.component.html',
-  styleUrls: ['./mytools.component.css']
+  styleUrls: ['./mytools.component.css'],
 })
 export class MyToolsComponent implements OnInit {
   constructor() {}

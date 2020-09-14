@@ -18,7 +18,7 @@ import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.
 import { SourceFile, ToolFile, Workflow } from 'app/shared/swagger';
 
 @Pipe({
-  name: 'mapFriendlyValue'
+  name: 'mapFriendlyValue',
 })
 export class MapFriendlyValuesPipe implements PipeTransform {
   readonly shortFriendlyCWLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
@@ -37,9 +37,27 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    * @memberof MapFriendlyValuesPipe
    */
   readonly friendlyValueNames = new Map([
-    ['has_checker', new Map([['1', 'has a checker workflow'], ['0', 'unchecked workflow']])],
-    ['verified', new Map([['1', 'verified'], ['0', 'non-verified']])],
-    ['private_access', new Map([['1', 'private'], ['0', 'public']])],
+    [
+      'has_checker',
+      new Map([
+        ['1', 'has a checker workflow'],
+        ['0', 'unchecked workflow'],
+      ]),
+    ],
+    [
+      'verified',
+      new Map([
+        ['1', 'verified'],
+        ['0', 'non-verified'],
+      ]),
+    ],
+    [
+      'private_access',
+      new Map([
+        ['1', 'private'],
+        ['0', 'public'],
+      ]),
+    ],
     [
       'descriptorType',
       new Map([
@@ -47,8 +65,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['wdl', this.shortFriendlyWDLName],
         ['nfl', this.shortFriendlyNFLName],
         ['NFL', this.shortFriendlyNFLName],
-        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName]
-      ])
+        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName],
+      ]),
     ],
     [
       'descriptor_type',
@@ -59,8 +77,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['WDL', this.shortFriendlyWDLName],
         ['nfl', this.shortFriendlyNFLName],
         ['NFL', this.shortFriendlyNFLName],
-        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName]
-      ])
+        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName],
+      ]),
     ],
     [
       'registry',
@@ -69,14 +87,26 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['DOCKER_HUB', 'Docker Hub'],
         ['GITLAB', 'GitLab'],
         ['AMAZON_ECR', 'Amazon ECR'],
-        ['SEVEN_BRIDGES', 'Seven Bridges']
-      ])
+        ['SEVEN_BRIDGES', 'Seven Bridges'],
+      ]),
     ],
     [
       'source_control_provider.keyword',
-      new Map([['GITHUB', 'GitHub'], ['BITBUCKET', 'Bitbucket'], ['GITLAB', 'GitLab'], ['DOCKSTORE', 'Dockstore']])
+      new Map([
+        ['GITHUB', 'GitHub'],
+        ['BITBUCKET', 'Bitbucket'],
+        ['GITLAB', 'GitLab'],
+        ['DOCKSTORE', 'Dockstore'],
+      ]),
     ],
-    ['descriptor_tooltip', new Map([['CWL', 'Common Workflow Language'], ['WDL', 'Workflow Description Language'], ['NFL', 'Nextflow']])],
+    [
+      'descriptor_tooltip',
+      new Map([
+        ['CWL', 'Common Workflow Language'],
+        ['WDL', 'Workflow Description Language'],
+        ['NFL', 'Nextflow'],
+      ]),
+    ],
     ['author', new Map([['', 'n/a']])],
     [
       'ToolFile.FileTypeEnum',
@@ -85,8 +115,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR, 'Secondary Descriptors'],
         [ToolFile.FileTypeEnum.TESTFILE, 'Test Parameter Files'],
         [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
-        [ToolFile.FileTypeEnum.OTHER, 'Files']
-      ])
+        [ToolFile.FileTypeEnum.OTHER, 'Files'],
+      ]),
     ],
     [
       'SourceFile.TypeEnum',
@@ -104,11 +134,24 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, 'Test Parameter Files'],
         [SourceFile.TypeEnum.DOCKSTORESERVICEYML, 'Configuration'],
         [SourceFile.TypeEnum.DOCKSTOREYML, 'Configuration'],
-        [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, 'Service Files']
-      ])
+        [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, 'Service Files'],
+      ]),
     ],
-    ['success', new Map([['true', 'Success'], ['false', 'Failed']])],
-    ['type', new Map([['PUSH', 'Push'], ['DELETE', 'Delete'], ['INSTALL', 'Install']])]
+    [
+      'success',
+      new Map([
+        ['true', 'Success'],
+        ['false', 'Failed'],
+      ]),
+    ],
+    [
+      'type',
+      new Map([
+        ['PUSH', 'Push'],
+        ['DELETE', 'Delete'],
+        ['INSTALL', 'Install'],
+      ]),
+    ],
   ]);
 
   /**

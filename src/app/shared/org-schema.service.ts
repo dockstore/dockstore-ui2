@@ -29,7 +29,7 @@ export class OrgSchemaService {
       '@context': 'http://schema.org',
       '@type': 'Organization',
       name: org.name,
-      url: org.link
+      url: org.link,
     };
     if (org.avatarUrl) {
       schema.logo = org.avatarUrl; // image link

@@ -36,8 +36,8 @@ export class CustomHeaderInterceptor implements HttpInterceptor {
       setHeaders: {
         'X-Dockstore-UI': uiVersion,
         'X-Session-ID': sessionUUID,
-        'X-Request-ID': requestUUID
-      }
+        'X-Request-ID': requestUUID,
+      },
     });
     return next.handle(req);
   }

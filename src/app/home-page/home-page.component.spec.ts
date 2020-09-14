@@ -12,7 +12,7 @@ describe('HomePageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HomePageComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     }).compileComponents();
   }));
 

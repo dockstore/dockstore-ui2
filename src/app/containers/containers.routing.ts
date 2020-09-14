@@ -27,9 +27,9 @@ const CONTAINERS_ROUTES: Routes = [
     data: { title: 'Dockstore | Tool', entryType: EntryType.Tool },
     children: [
       { path: '', component: SearchContainersComponent, data: { title: 'Dockstore | Tools' } },
-      { path: '**', component: ContainerComponent, data: { title: 'Dockstore | Tool' } }
-    ]
-  }
+      { path: '**', component: ContainerComponent, data: { title: 'Dockstore | Tool' } },
+    ],
+  },
 ];
 
 export const containersRouting = RouterModule.forChild(CONTAINERS_ROUTES);

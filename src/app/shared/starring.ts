@@ -20,6 +20,6 @@ export function isStarredByUser(starredUsers: User[], currentUser: User): boolea
   if (!currentUser || !starredUsers) {
     return false;
   } else {
-    return starredUsers.some(user => user.id === currentUser.id);
+    return starredUsers.some((user) => user.id === currentUser.id);
   }
 }

@@ -21,7 +21,7 @@ import { toExtendSite } from '../shared/helpers';
 
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html'
+  templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
   isExtended = false;
@@ -30,10 +30,10 @@ export class HeaderComponent implements OnInit {
   constructor(private router: Router) {
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(event => {
+      .subscribe((event) => {
         this.isExtended = toExtendSite(this.router.url);
       });
   }

@@ -25,13 +25,13 @@ interface SourceObject {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DockstoreService {
   constructor() {}
 
   getValidVersions(versions: Array<WorkflowVersion | Tag>): Array<WorkflowVersion | Tag> {
-    return versions.filter(version => version.valid);
+    return versions.filter((version) => version.valid);
   }
 
   /**
@@ -45,7 +45,7 @@ export class DockstoreService {
     if (!versions) {
       return false;
     }
-    const verifiedVersion = versions.find(version => version.verified);
+    const verifiedVersion = versions.find((version) => version.verified);
     if (verifiedVersion) {
       return true;
     } else {
@@ -81,12 +81,12 @@ export class DockstoreService {
         if (version.verified) {
           sources.push({
             version: version.name,
-            verifiedSource: version.verifiedSource
+            verifiedSource: version.verifiedSource,
           });
         }
       }
     }
-    return sources.filter(function(elem, pos) {
+    return sources.filter(function (elem, pos) {
       return sources.indexOf(elem) === pos;
     });
   }
@@ -98,18 +98,18 @@ export class DockstoreService {
         if (version.verified) {
           sources.push({
             version: version.name,
-            verifiedSource: version.verifiedSource
+            verifiedSource: version.verifiedSource,
           });
         }
       }
     }
-    return sources.filter(function(elem, pos) {
+    return sources.filter(function (elem, pos) {
       return sources.indexOf(elem) === pos;
     });
   }
 
   getLabelStrings(labels: any[]): string[] {
-    const labelValues = labels.map(label => label.value);
+    const labelValues = labels.map((label) => label.value);
     return labelValues.sort();
   }
 

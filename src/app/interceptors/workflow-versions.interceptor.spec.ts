@@ -24,13 +24,13 @@ class RequestUnchangedChecker extends HttpHandler {
 describe('WorkflowVersionsInterceptor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WorkflowVersionsInterceptor]
+      providers: [WorkflowVersionsInterceptor],
     });
   });
 
   it('Should tranform put', inject([WorkflowVersionsInterceptor], (interceptor: WorkflowVersionsInterceptor) => {
     const httpRequest = new HttpRequest('PUT', 'https://dockstore.org/api/workflows/1234/workflowVersions', [
-      { sourceFiles: [{ one: 'something' }] }
+      { sourceFiles: [{ one: 'something' }] },
     ]);
     const httpHandler = new SourcefilesEmptyChecker();
     interceptor.intercept(httpRequest, httpHandler);

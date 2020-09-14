@@ -23,7 +23,7 @@ interface DocObject {
 
 @Component({
   selector: 'app-docs',
-  templateUrl: './docs.component.html'
+  templateUrl: './docs.component.html',
 })
 export class DocsComponent implements OnInit {
   // Array of doc objects, where existingPath is the path on Dockstore, and newPath is the new path on the docs page
@@ -42,7 +42,7 @@ export class DocsComponent implements OnInit {
     { existingPath: '/docs/advanced-features', newPath: '/docs/publisher-tutorials/advanced-features/' },
     { existingPath: '/docs/aws-batch-tutorial', newPath: '/docs/publisher-tutorials/aws-batch/' },
     { existingPath: '/docs/azure-batch-tutorial', newPath: '/docs/publisher-tutorials/azure-batch/' },
-    { existingPath: '/docs/user-created', newPath: '/docs/extras/user-created' }
+    { existingPath: '/docs/user-created', newPath: '/docs/extras/user-created' },
   ];
 
   public redirectLink = this.getLink();
@@ -76,7 +76,7 @@ export class DocsComponent implements OnInit {
 
   // Returns a function to test elements of an array against a path
   findDoc(filteredPath: string) {
-    return function(element: DocObject) {
+    return function (element: DocObject) {
       return element.existingPath === filteredPath;
     };
   }

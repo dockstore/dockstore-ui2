@@ -1,9 +1,7 @@
 describe('Admin UI', () => {
   before(() => {
     cy.visit('');
-    cy.get('a')
-      .contains('Search')
-      .click();
+    cy.get('a').contains('Search').click();
   });
 
   describe('Basic search functions', () => {
@@ -11,10 +9,7 @@ describe('Admin UI', () => {
       cy.url().should('include', '/search');
     });
     it('should be able to select facet', () => {
-      cy.get('mat-checkbox')
-        .parent()
-        .contains('workflow')
-        .click();
+      cy.get('mat-checkbox').parent().contains('workflow').click();
       cy.contains('the Entry Type is workflow');
       cy.url().should('include', '/search?_type=workflow');
     });
@@ -37,21 +32,14 @@ describe('Admin UI', () => {
     it('should remember paginator setting', () => {
       cy.contains('Items per page');
       cy.contains('1 - 10');
-      cy.get('[data-cy=search-tool-table-paginator]')
-        .contains(10)
-        .should('be.visible')
-        .click();
-      cy.get('mat-option')
-        .contains(20)
-        .click();
+      cy.get('[data-cy=search-tool-table-paginator]').contains(10).should('be.visible').click();
+      cy.get('mat-option').contains(20).click();
       cy.get('[data-cy=search-tool-table-paginator]').within(() => {
         cy.get('.mat-paginator-navigation-next').click();
       });
       cy.contains('21 - 40');
       cy.get('[data-cy=search-tool-table-paginator]').contains(20);
-      cy.get('a')
-        .contains('Organizations')
-        .click();
+      cy.get('a').contains('Organizations').click();
       cy.go('back');
       cy.contains('21 - 40');
       cy.get('[data-cy=search-tool-table-paginator]').contains(20);

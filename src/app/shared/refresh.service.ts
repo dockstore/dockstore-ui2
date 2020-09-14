@@ -55,7 +55,7 @@ export class RefreshService {
         this.containerService.setTool(response);
         this.alertService.detailedSuccess();
       },
-      error => this.alertService.detailedError(error)
+      (error) => this.alertService.detailedError(error)
     );
   }
 
@@ -79,7 +79,7 @@ export class RefreshService {
           this.gA4GHFilesService.updateFiles(toolID, versionName);
         }
       },
-      error => this.alertService.detailedError(error)
+      (error) => this.alertService.detailedError(error)
     );
   }
 
@@ -103,7 +103,7 @@ export class RefreshService {
           this.gA4GHFilesService.updateFiles(ga4ghId, versionName);
         }
       },
-      error => this.alertService.detailedError(error)
+      (error) => this.alertService.detailedError(error)
     );
   }
 
@@ -113,7 +113,7 @@ export class RefreshService {
         this.alertService.detailedSuccess();
         this.workflowService.setWorkflows(services);
       },
-      error => this.alertService.detailedError(error)
+      (error) => this.alertService.detailedError(error)
     );
   }
 }

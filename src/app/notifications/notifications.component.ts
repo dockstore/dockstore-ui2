@@ -12,12 +12,12 @@ interface DismissedNotification {
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.scss']
+  styleUrls: ['./notifications.component.scss'],
 })
 export class NotificationsComponent implements OnInit {
   constructor(notificationsQuery: NotificationsQuery, private notificationsService: NotificationsService) {
     this.activeNotifications$ = notificationsQuery.selectAll({
-      filterBy: entity => !this.dismissedNotifications.some(d => entity.id === d.id)
+      filterBy: (entity) => !this.dismissedNotifications.some((d) => entity.id === d.id),
     });
   }
   public activeNotifications$: Observable<Array<Notification>>;
@@ -34,7 +34,7 @@ export class NotificationsComponent implements OnInit {
    */
   removeExpiredDisabledNotifications() {
     const today = Date.now();
-    this.dismissedNotifications = this.dismissedNotifications.filter(notification => {
+    this.dismissedNotifications = this.dismissedNotifications.filter((notification) => {
       return notification.expiration > today;
     });
     localStorage.setItem(this.storageKey, JSON.stringify(this.dismissedNotifications));

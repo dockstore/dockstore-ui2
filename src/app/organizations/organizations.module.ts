@@ -21,8 +21,8 @@ import { RegisterOrganizationModule } from './register-organization.module';
     OrganizationsRouting,
     ReactiveFormsModule,
     RegisterOrganizationModule,
-    UpdateOrganizationDescriptionModule
+    UpdateOrganizationDescriptionModule,
   ],
-  declarations: [OrganizationsComponent]
+  declarations: [OrganizationsComponent],
 })
 export class OrganizationsModule {}

@@ -5,7 +5,7 @@ import { LogoutComponent } from './logout.component';
 
 @Component({
   selector: 'app-header',
-  template: ''
+  template: '',
 })
 class HeaderComponent {}
 
@@ -15,7 +15,7 @@ describe('LogoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LogoutComponent, HeaderComponent]
+      declarations: [LogoutComponent, HeaderComponent],
     }).compileComponents();
   }));
 

@@ -26,7 +26,7 @@ import {
   GA4GHV20StubService,
   ProviderStubService,
   UsersStubService,
-  WorkflowsStubService
+  WorkflowsStubService,
 } from '../test/service-stubs';
 import { AlertQuery } from './alert/state/alert.query';
 import { ContainerService } from './container.service';
@@ -62,8 +62,8 @@ describe('RefreshService', () => {
         { provide: DockstoreService, useClass: DockstoreStubService },
         { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
         { provide: WorkflowService, useClass: WorkflowService },
-        { provide: UsersService, useClass: UsersStubService }
-      ]
+        { provide: UsersService, useClass: UsersStubService },
+      ],
     });
   });
 
@@ -84,12 +84,12 @@ describe('RefreshService', () => {
         defaultTestParameterFilePath: 'refreshedDefaultTestParameterFilePath',
         sourceControl: 'github.com',
         source_control_provider: 'GITHUB',
-        descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+        descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
       };
       workflowService.setWorkflows([]);
       workflowService.setWorkflow(sampleWorkflow1);
       service.refreshWorkflow();
-      alertQuery.showInfo$.subscribe(refreshing => {
+      alertQuery.showInfo$.subscribe((refreshing) => {
         expect(refreshing).toBeFalsy();
       });
       // workflowQuery.workflow$.subscribe(workflow => {

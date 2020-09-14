@@ -12,19 +12,19 @@ describe('CustomHeaderInterceptor', () => {
         {
           provide: HTTP_INTERCEPTORS,
           useClass: CustomHeaderInterceptor,
-          multi: true
-        }
-      ]
+          multi: true,
+        },
+      ],
     });
   });
 
   it('Should add X-Dockstore-UI, X-Session-ID, and X-Request-ID headers', inject(
     [HttpClient, HttpTestingController],
     (http: HttpClient, httpMock: HttpTestingController) => {
-      http.get('/api').subscribe(response => expect(response).toBeTruthy());
+      http.get('/api').subscribe((response) => expect(response).toBeTruthy());
       const uiVersion = versions.tag;
       const request = httpMock.expectOne(
-        req =>
+        (req) =>
           req.headers.has('X-Dockstore-UI') &&
           req.headers.get('X-Dockstore-UI') === uiVersion &&
           req.headers.has('X-Request-ID') &&

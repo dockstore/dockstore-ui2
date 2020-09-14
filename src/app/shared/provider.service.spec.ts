@@ -26,7 +26,7 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
 describe('ProviderService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ProviderService]
+      providers: [ProviderService],
     });
   });
 
@@ -48,7 +48,7 @@ describe('ProviderService', () => {
       private_access: false,
       registry_string: 'quay.io',
       registry: DockstoreTool.RegistryEnum.QUAYIO,
-      toolname: ''
+      toolname: '',
     };
     expect(service.setUpProvider(tool).providerUrl).toBeFalsy();
     const tool2 = tool;

@@ -9,6 +9,6 @@ import { StarringService } from '../starring/starring.service';
 
 @NgModule({
   imports: [CommonModule, StargazersModule, HeaderModule, StarringModule],
-  providers: [StarentryService, StarringService]
+  providers: [StarentryService, StarringService],
 })
 export class StarredEntriesModule {}

@@ -37,8 +37,8 @@ describe('LoginComponent', () => {
         { provide: TrackLoginService, useClass: TrackLoginStubService },
         { provide: UserService, useClass: UserStubService },
         { provide: LoginService, useClass: LoginStubService },
-        { provide: RegisterService, useClass: LoginStubService }
-      ]
+        { provide: RegisterService, useClass: LoginStubService },
+      ],
     }).compileComponents();
   }));
 

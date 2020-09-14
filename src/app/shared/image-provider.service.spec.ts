@@ -32,9 +32,9 @@ describe('ImageProviderService', () => {
       providers: [
         ImageProviderService,
         { provide: ContainersService, useClass: ContainersStubService },
-        { provide: MetadataService, useClass: MetadataStubService }
+        { provide: MetadataService, useClass: MetadataStubService },
       ],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
   });
 
@@ -57,7 +57,7 @@ describe('ImageProviderService', () => {
       private_access: false,
       registry_string: 'quay.io',
       registry: DockstoreTool.RegistryEnum.QUAYIO,
-      toolname: ''
+      toolname: '',
     };
     expect(service.checkPrivateOnlyRegistry(tool)).toBeFalsy();
     const tool2 = tool;
@@ -85,7 +85,7 @@ describe('ImageProviderService', () => {
       private_access: false,
       registry_string: 'quay.io',
       registry: DockstoreTool.RegistryEnum.QUAYIO,
-      toolname: null
+      toolname: null,
     };
     expect(service.setUpImageProvider(tool).imgProvider).toEqual('Quay.io');
     const tool2: any = tool;

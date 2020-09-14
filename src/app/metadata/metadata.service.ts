@@ -10,7 +10,7 @@ export class MetadataService {
 
   constructor(private gA4GHService: GA4GHService) {
     this.metadata = this.gA4GHService.metadataGet().pipe(
-      map(metadata => metadata),
+      map((metadata) => metadata),
       publishReplay(),
       refCount()
     );

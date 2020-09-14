@@ -22,7 +22,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-containers',
-  templateUrl: './containers.component.html'
+  templateUrl: './containers.component.html',
 })
 export class ContainersComponent implements OnInit {
   entryPageTitle$: Observable<string>;
