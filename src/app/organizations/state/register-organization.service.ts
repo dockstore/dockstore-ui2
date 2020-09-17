@@ -96,8 +96,8 @@ export class RegisterOrganizationService {
     let location = null;
     let contactEmail = null;
     let avatarUrl = null;
+    const organization: Organization = data.organization;
     if (data.mode !== TagEditorMode.Add) {
-      const organization: Organization = data.organization;
       name = organization.name;
       displayName = organization.displayName;
       topic = organization.topic;
@@ -108,18 +108,18 @@ export class RegisterOrganizationService {
     }
     const registerOrganizationForm = this.builder.group({
       name: [
-        { value: name, disabled: data.mode === TagEditorMode.Edit },
-        [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(this.organizationNameRegex)]
+        { value: name, disabled: organization?.status === Organization.StatusEnum.APPROVED },
+        [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(this.organizationNameRegex)],
       ],
       displayName: [
-        { value: displayName, disabled: data.mode === TagEditorMode.Edit },
-        [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(this.organizationDisplayNameRegex)]
+        { value: displayName, disabled: organization?.status === Organization.StatusEnum.APPROVED },
+        [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(this.organizationDisplayNameRegex)],
       ],
       topic: [topic, Validators.required],
       link: [link, Validators.pattern(this.urlRegex)],
       location: [location],
       contactEmail: [contactEmail, [Validators.email]],
-      avatarUrl: [avatarUrl, Validators.pattern(this.logoUrlRegex)]
+      avatarUrl: [avatarUrl, Validators.pattern(this.logoUrlRegex)],
     });
     formsManager.upsert('registerOrganization', registerOrganizationForm);
     return registerOrganizationForm;
@@ -158,7 +158,7 @@ export class RegisterOrganizationService {
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
         avatarUrl: organizationFormState.avatarUrl || null,
-        users: []
+        users: [],
       };
       this.alertService.start('Adding organization');
       this.organizationsService.createOrganization(newOrganization).subscribe(
@@ -207,7 +207,7 @@ export class RegisterOrganizationService {
         status: Organization.StatusEnum.PENDING,
         avatarUrl: organizationFormState.avatarUrl || null,
         description: organizationDescription,
-        users: []
+        users: [],
       };
       this.alertService.start('Updating organization');
       this.organizationsService.updateOrganization(organizationId, editedOrganization).subscribe(
