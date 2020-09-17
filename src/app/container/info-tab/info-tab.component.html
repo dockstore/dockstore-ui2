@@ -257,7 +257,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="mt-3">
+    <mat-card *ngIf="selectedVersion" class="mt-3">
       <mat-card-header>
         <mat-card-title class="m-0">Tag Information</mat-card-title>
         <mat-card-subtitle class="m-0">{{ selectedVersion?.name }}</mat-card-subtitle>
