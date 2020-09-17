@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { formInputDebounceTime } from 'app/shared/constants';
 import { OrganizationUpdateTime } from 'app/shared/openapi/model/organizationUpdateTime';
 import { UserQuery } from 'app/shared/user/user.query';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { EntriesService, UsersService } from '../../../shared/openapi';
 import { FilteredList } from '../filtered-list';
 
@@ -19,10 +18,7 @@ export class OrganizationsComponent extends FilteredList {
   getMyList(): void {
     this.usersService
       .getUserDockstoreOrganizations(10, this.filterText)
-      .pipe(
-        debounceTime(formInputDebounceTime),
-        takeUntil(this.ngUnsubscribe)
-      )
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (myOrganizations: Array<OrganizationUpdateTime>) => {
           this.myItems = myOrganizations;
