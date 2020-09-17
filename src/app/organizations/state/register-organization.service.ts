@@ -108,11 +108,11 @@ export class RegisterOrganizationService {
     }
     const registerOrganizationForm = this.builder.group({
       name: [
-        name,
+        { value: name, disabled: data.mode === TagEditorMode.Edit },
         [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(this.organizationNameRegex)]
       ],
       displayName: [
-        displayName,
+        { value: displayName, disabled: data.mode === TagEditorMode.Edit },
         [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(this.organizationDisplayNameRegex)]
       ],
       topic: [topic, Validators.required],
