@@ -189,7 +189,7 @@
       </ul>
     </mat-card-content>
   </mat-card>
-  <mat-card class="mt-3" *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB">
+  <mat-card class="mt-3" *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB && selectedVersion">
     <mat-card-header>
       <mat-card-title class="m-0">{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
       <mat-card-subtitle class="m-0">{{ selectedVersion?.name }}</mat-card-subtitle>
