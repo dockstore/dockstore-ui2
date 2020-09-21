@@ -13,7 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ElementAst } from '@angular/compiler';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
@@ -54,6 +55,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   faSortNumericUp = faSortNumericUp;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
+  @ViewChild('resetButton', {read: ElementRef}) resetButton: ElementRef;
   public advancedSearchObject$: Observable<AdvancedSearchObject>;
   public hasAdvancedSearchText$: Observable<boolean>;
   public shortUrl$: Observable<string>;
@@ -266,7 +268,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   getHistogramWidth(items: number) {
-    const rowWidth = document.getElementById('facet-row').offsetWidth;
+    const rowWidth = this.resetButton.nativeElement.offsetWidth;
     const histogramWidth = (items / 1000) * rowWidth;
     return histogramWidth;
   }
