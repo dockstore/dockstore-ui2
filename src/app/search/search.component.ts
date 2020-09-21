@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { ElementAst } from '@angular/compiler';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -55,7 +54,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   faSortNumericUp = faSortNumericUp;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
-  @ViewChild('resetButton', {read: ElementRef}) resetButton: ElementRef;
+  @ViewChild('resetButton', { read: ElementRef }) resetButton: ElementRef;
   public advancedSearchObject$: Observable<AdvancedSearchObject>;
   public hasAdvancedSearchText$: Observable<boolean>;
   public shortUrl$: Observable<string>;
