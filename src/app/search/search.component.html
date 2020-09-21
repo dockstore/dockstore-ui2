@@ -82,7 +82,7 @@
           </div>
           <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items); let i = index">
             <div class="panel-container-label">
-              <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
+              <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center" id="facet-row">
                 <div class="container-name-oflw">
                   <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
                     <mat-checkbox
@@ -95,7 +95,8 @@
                     </mat-checkbox>
                   </span>
                 </div>
-                <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                <div class="histogram" [ngStyle]="{ 'width.px': getHistogramWidth(orderedBuckets.get(key).Items.get(subBucket)) }"></div>
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
@@ -112,7 +113,8 @@
                     </mat-checkbox>
                   </span>
                 </div>
-                {{ orderedBuckets.get(key).Items.get(subBucket) }}
+                <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                <div class="histogram" [ngStyle]="{ 'width.px': getHistogramWidth(orderedBuckets.get(key).Items.get(subBucket)) }"></div>
               </div>
             </div>
           </div>

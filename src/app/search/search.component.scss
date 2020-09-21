@@ -152,3 +152,17 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
+.number-of-items {
+  position: absolute;
+  right: 30px;
+}
+
+.histogram {
+  background-color: #dddddd;
+  min-height: 20px;
+}
+
+.panel-container-label {
+  padding-right: 0;
+}
