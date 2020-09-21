@@ -6,6 +6,7 @@
     "webservice_version": "https://app.circleci.com/pipelines/github/dockstore/dockstore/4129/workflows/83a4e516-e6dc-4641-aa95-a16544fcae0f/jobs/5170"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "ng": "npx ng",
     "start": "npx ng serve --progress=false --proxy-config=proxy.conf.json",
     "webservice": "./scripts/run-webservice-script.sh",
@@ -58,7 +59,7 @@
     "cytoscape-popper": "^1.0.4",
     "elasticsearch-browser": "^15.0.0",
     "font-awesome": "^4.7.0",
-    "jquery": "~3.4.1",
+    "jquery": "^3.5.1",
     "ng2-ui-auth": "^10.0.1",
     "ngx-clipboard": "^13.0.1",
     "ngx-markdown": "^9.1.1",
@@ -98,13 +99,17 @@
     "license-checker": "^25.0.1",
     "lint-staged": "^9.4.0",
     "prettier": "^2.1.1",
-    "rxjs-tslint": "^0.1.7",
+    "rxjs-tslint": "^0.1.8",
     "rxjs-tslint-rules": "^4.17.0",
     "ts-loader": "^5.4.5",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3"
+  },
+  "resolutions": {
+    "lodash": "^4.17.19",
+    "minimist": "^1.2.3"
   },
   "husky": {
     "hooks": {
