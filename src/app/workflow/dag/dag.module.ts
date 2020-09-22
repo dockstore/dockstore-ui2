@@ -25,7 +25,6 @@ import { RefreshAlertModule } from 'app/shared/alert/alert.module';
 import { CustomMaterialModule } from './../../shared/modules/material.module';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
-import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
 @NgModule({
   providers: [{ provide: OverlayContainer, useClass: FullscreenOverlayContainer }],
@@ -37,9 +36,9 @@ import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
     MatProgressBarModule,
     MatTooltipModule,
     CustomMaterialModule,
-    RefreshAlertModule
+    RefreshAlertModule,
   ],
-  declarations: [DagComponent, CwlViewerComponent, WdlViewerComponent],
-  exports: [DagComponent]
+  declarations: [DagComponent, CwlViewerComponent],
+  exports: [DagComponent],
 })
 export class DagModule {}

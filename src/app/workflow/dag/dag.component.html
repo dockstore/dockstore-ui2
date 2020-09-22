@@ -48,18 +48,20 @@
                 (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL &&
                 (workflow$ | async)?.source_control_provider === 'GITHUB'
               "
-              style="line-height: 20px;"
+              style="line-height: 20px"
             >
               <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
               <label class="radio-inline">
                 <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer" />Common Workflow Language Viewer
               </label>
             </div>
-            <div *ngIf="isWDL$ | async" style="line-height: 20px;">
-              <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
-              <label class="radio-inline">
-                <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer" />EPAM WDL Visualizer
-              </label>
+            <div *ngIf="isWDL$ | async" style="line-height: 20px">
+              Classic
+              <!--ALLOW WDL VIEWER AGAIN -->
+              <!--              <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>-->
+              <!--              <label class="radio-inline">-->
+              <!--                <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer" />EPAM WDL Visualizer-->
+              <!--              </label>-->
             </div>
             <div>
               <a
@@ -100,13 +102,13 @@
           [expanded]="expanded"
         >
         </app-cwl-viewer>
-        <app-wdl-viewer
-          *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"
-          [workflow]="workflow$ | async"
-          [selectedVersion]="selectedVersion"
-          [expanded]="expanded"
-        >
-        </app-wdl-viewer>
+        <!--ALLOW WDL VIEWER AGAIN -->
+        <!--        <app-wdl-viewer-->
+        <!--          *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"-->
+        <!--          [workflow]="workflow$ | async"-->
+        <!--          [selectedVersion]="selectedVersion"-->
+        <!--          [expanded]="expanded"-->
+        <!--        </app-wdl-viewer>-->
         <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" class="h-100 w-100" [hidden]="dagType !== 'classic'"></div>
       </div>
     </div>
