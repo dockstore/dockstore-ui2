@@ -54,7 +54,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   faSortNumericUp = faSortNumericUp;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
-  @ViewChild('resetButton', { read: ElementRef }) resetButton: ElementRef;
+  @ViewChild('subBucketColumn', { read: ElementRef }) subBucketColumn: ElementRef;
   public advancedSearchObject$: Observable<AdvancedSearchObject>;
   public hasAdvancedSearchText$: Observable<boolean>;
   public shortUrl$: Observable<string>;
@@ -266,9 +266,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  getHistogramWidth(items: number) {
-    const rowWidth = this.resetButton.nativeElement.offsetWidth;
-    const histogramWidth = (items / 1000) * rowWidth;
+  // For each facet, returns histogram bar that is proportional to number of items in that bucket
+  getHistogramWidth(items: string) {
+    const rowWidth = this.subBucketColumn.nativeElement.offsetWidth;
+    // Divide number of items by 1000 to get a decimal proportional to the bucket size
+    const widthDivisor = 1000;
+    const histogramWidth = (Number(items) / widthDivisor) * rowWidth;
+    console.log(histogramWidth);
     return histogramWidth;
   }
 
