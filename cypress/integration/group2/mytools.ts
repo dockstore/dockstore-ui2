@@ -389,18 +389,9 @@ describe('Dockstore my tools', () => {
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 0); // No versions
   });
-  it('Tooltip should have new refresh namespace text', () => {
-    cy.server();
-    cy.fixture('refreshedTool5').then(json => {
-      cy.route({
-        method: 'GET',
-        url: '/api/containers/5/refresh',
-        response: json
-      }).as('refreshEntry');
-    });
+  it('Refresh Namespace button should have tooltip', () => {
     cy.visit('/my-tools/quay.io/A2/a');
-    cy.get('#cdk-accordion-child-4 > .mat-action-row > .pull-right > [data-cy=refreshOrganization]')
-      .trigger('mouseenter');
+    cy.get('#cdk-accordion-child-4 > .mat-action-row > .pull-right > [data-cy=refreshOrganization]').trigger('mouseenter');
     cy.get('.mat-tooltip').contains('Refresh all tools in the namespace');
   });
 });
