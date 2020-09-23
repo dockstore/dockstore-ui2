@@ -108,7 +108,9 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && git secrets --pre_commit_hook -- \"$@\"",
+      "commit-msg": "git secrets --commit_msg_hook -- \"$@\"",
+      "prepare-commit-msg": "git secrets --prepare_commit_msg_hook -- \"$@\""
     }
   },
   "lint-staged": {
