@@ -7,7 +7,6 @@
   },
   "scripts": {
     "ng": "npx ng",
-    "preinstall": "npx npm-force-resolutions",
     "start": "npx ng serve --progress=false --proxy-config=proxy.conf.json",
     "webservice": "./scripts/run-webservice-script.sh",
     "prebuild": "ts-node -O '{\"module\":\"commonjs\"}' git.version.ts && ./scripts/generate-openapi-script.sh",
@@ -64,7 +63,6 @@
     "ngx-clipboard": "^13.0.1",
     "ngx-markdown": "^9.1.1",
     "ngx-sharebuttons": "^8.0.0",
-    "npm-force-resolutions": "0.0.3",
     "rxjs": "^6.5.3",
     "ts-md5": "^1.2.6",
     "tslib": "^1.10.0",
@@ -90,7 +88,7 @@
     "husky": "^3.0.5",
     "jasmine-core": "^3.5.0",
     "jasmine-spec-reporter": "^4.2.1",
-    "karma": "^4.4.1",
+    "karma": "^5.2.2",
     "karma-chrome-launcher": "^3.1.0",
     "karma-coverage-istanbul-reporter": "^2.1.0",
     "karma-jasmine": "^2.0.1",
@@ -106,9 +104,6 @@
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3"
-  },
-  "resolutions": {
-    "minimist": "^1.2.3"
   },
   "husky": {
     "hooks": {
