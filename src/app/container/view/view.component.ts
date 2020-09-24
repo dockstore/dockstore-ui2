@@ -20,10 +20,13 @@ import { ViewService } from 'app/container/view/view.service';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { forkJoin, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { ContainersService } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
+import { ToolDescriptor } from '../../shared/swagger';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
@@ -31,9 +34,6 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
-import { ContainersService } from '../../shared/openapi';
-import { AlertService } from '../../shared/alert/state/alert.service';
-import { ToolDescriptor } from '../../shared/swagger';
 
 @Component({
   selector: 'app-view-container',
