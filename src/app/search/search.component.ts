@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
@@ -45,7 +45,7 @@ import { Hit, SearchService } from './state/search.service';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   faSortAlphaDown = faSortAlphaDown;
@@ -54,7 +54,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   faSortNumericUp = faSortNumericUp;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
-  @ViewChild('subBucketColumn', { read: ElementRef }) subBucketColumn: ElementRef;
   public advancedSearchObject$: Observable<AdvancedSearchObject>;
   public hasAdvancedSearchText$: Observable<boolean>;
   public shortUrl$: Observable<string>;
@@ -144,18 +143,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.values$ = this.searchQuery.searchText$;
     this.basicSearchText$ = this.searchQuery.basicSearchText$;
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
-    this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
+    this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toSaveSearch) => {
       if (toSaveSearch) {
         this.saveSearchFilter();
         this.searchService.toSaveSearch$.next(false);
       }
     });
     this.searchQuery.searchText$
-      .pipe(
-        debounceTime(formInputDebounceTime),
-        distinctUntilChanged(),
-        takeUntil(this.ngUnsubscribe)
-      )
+      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchText: string) => {
         this.onKey(searchText);
       });
@@ -189,10 +184,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!paramMap.has('search')) {
       this.searchService.setSearchText('');
     }
-    paramMap.keys.forEach(key => {
+    paramMap.keys.forEach((key) => {
       const value = paramMap.getAll(key);
       if (this.friendlyNames.get(key)) {
-        value.forEach(categoryValue => {
+        value.forEach((categoryValue) => {
           categoryValue = decodeURIComponent(categoryValue);
           newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
@@ -234,7 +229,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @memberof SearchComponent
    */
   setupBuckets(key, buckets: any) {
-    buckets.forEach(bucket => {
+    buckets.forEach((bucket) => {
       if (!this.setFilter) {
         this.fullyExpandMap.set(key, false);
       }
@@ -296,7 +291,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     });
     this.setFilter = true;
-    // console.log("ordered buckets", this.orderedBuckets);
   }
   /**
    * For buckets that were checked earlier, retain them even if there is 0 hits.
@@ -324,7 +318,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       searchValues: values,
       checkbox: this.checkboxMap,
       sortModeMap: this.sortModeMap,
-      advancedSearchObject: advancedSearchObject
+      advancedSearchObject: advancedSearchObject,
     };
     this.searchService.setSearchInfo(searchInfo);
   }
@@ -337,7 +331,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       filter: this.filters,
       searchValues: values,
       advancedSearchObject: advancedSearchObject,
-      searchTerm: this.searchTerm
+      searchTerm: this.searchTerm,
     };
     const linkArray = this.searchService.createPermalinks(searchInfo);
     this.searchService.handleLink(linkArray);
@@ -380,13 +374,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
-      body: value
+      body: value,
     })
-      .then(hits => {
+      .then((hits) => {
         this.setupAllBuckets(hits);
         this.setupOrderBuckets();
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }
 
   /**
@@ -399,9 +393,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
-      body: value
+      body: value,
     })
-      .then(hits => {
+      .then((hits) => {
         this.hits = hits.hits.hits;
         const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
         const searchText = this.searchQuery.getValue().searchText;
@@ -413,7 +407,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.searchService.suggestSearchTerm(searchText);
         }
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }
 
   /**===============================================
@@ -449,20 +443,20 @@ export class SearchComponent implements OnInit, OnDestroy {
               field: 'description',
               size: 4,
               order: {
-                _count: 'desc'
+                _count: 'desc',
               },
               include: {
-                pattern: pattern
-              }
-            }
-          }
-        }
-      }
+                pattern: pattern,
+              },
+            },
+          },
+        },
+      },
     })
-      .then(hits => {
+      .then((hits) => {
         this.searchService.setAutoCompleteTerms(hits);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
     this.searchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
