@@ -17,6 +17,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+import { Organization } from 'app/shared/swagger';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { FormsState, RegisterOrganizationService } from '../state/register-organization.service';
@@ -32,12 +33,13 @@ import { FormsState, RegisterOrganizationService } from '../state/register-organ
 @Component({
   selector: 'register-organization',
   templateUrl: './register-organization.component.html',
-  styleUrls: ['./register-organization.component.scss']
+  styleUrls: ['./register-organization.component.scss'],
 })
 export class RegisterOrganizationComponent implements OnInit, OnDestroy {
   registerOrganizationForm: FormGroup;
   public title: string;
   public TagEditorMode = TagEditorMode;
+  public Organization = Organization;
   constructor(
     private registerOrganizationService: RegisterOrganizationService,
     private formsManager: AkitaNgFormsManager<FormsState>,
