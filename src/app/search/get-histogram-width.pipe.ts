@@ -21,8 +21,6 @@ export class GetHistogramWidthPipe implements PipeTransform {
     for (const i of bucket.values()) {
       divisor += i;
     }
-    console.log('bucket', bucket);
-    console.log('items', items);
 
     // Width of histogram is percetange of items out of total items in the bucket
     const histogramWidth = (Number(items) / divisor) * 100;
