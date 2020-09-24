@@ -10,6 +10,6 @@ const DECLARATIONS: any[] = [FilePathPipe, MapFriendlyValuesPipe, SelectTabPipe,
 @NgModule({
   imports: [CommonModule],
   declarations: DECLARATIONS,
-  exports: DECLARATIONS
+  exports: DECLARATIONS,
 })
 export class PipeModule {}

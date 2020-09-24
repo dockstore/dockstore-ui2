@@ -47,7 +47,7 @@ export class EntryFileTabService extends Base {
     if (version && version.validations && toolFile) {
       const validations = version.validations;
       const supportedValidationTypeEnum: Validation.TypeEnum[] = EntryFileTabService.toolFileToValdationTypeEnums(toolFile.file_type);
-      const foundValidation: Validation = validations.find(validation => supportedValidationTypeEnum.includes(validation.type));
+      const foundValidation: Validation = validations.find((validation) => supportedValidationTypeEnum.includes(validation.type));
       if (foundValidation) {
         try {
           const validationObject = JSON.parse(foundValidation.message);
@@ -81,37 +81,37 @@ export class EntryFileTabService extends Base {
   }
 
   private setSelectedFileType(fileType: ToolFile.FileTypeEnum) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        selectedFileType: fileType
+        selectedFileType: fileType,
       };
     });
   }
 
   private setUnfilteredFiles(files: ToolFile[]) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        unfilteredFiles: files
+        unfilteredFiles: files,
       };
     });
   }
 
   private setFiles(files: ToolFile[]) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        files: files
+        files: files,
       };
     });
   }
 
   private setSelectedFile(file: ToolFile) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        selectedFile: file
+        selectedFile: file,
       };
     });
   }
@@ -125,20 +125,20 @@ export class EntryFileTabService extends Base {
    */
   @transaction()
   private setFileContents(fileContents: string) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        fileContents: fileContents
+        fileContents: fileContents,
       };
     });
     this.setLoading(false);
   }
 
   private setDownloadFilePath(downloadFilePath: string) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        downloadFilePath: downloadFilePath
+        downloadFilePath: downloadFilePath,
       };
     });
   }
@@ -190,10 +190,10 @@ export class EntryFileTabService extends Base {
   }
 
   private setValidationMessage(message: Object | null) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        validationMessage: message
+        validationMessage: message,
       };
     });
   }
@@ -226,7 +226,7 @@ export class EntryFileTabService extends Base {
     const selectedFileType: ToolFile.FileTypeEnum = fileTypes.includes(previousFileType) ? previousFileType : fileTypes[0];
     const files = this.filterFiles(selectedFileType, unfilteredFiles);
     const file = files[0];
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
         unfilteredFiles: unfilteredFiles,
@@ -234,7 +234,7 @@ export class EntryFileTabService extends Base {
         selectedFileType: selectedFileType,
         files: files,
         selectedFile: file,
-        fileContents: null
+        fileContents: null,
       };
     });
     this.getValidations();
@@ -249,7 +249,7 @@ export class EntryFileTabService extends Base {
    */
   private getFileTypes(toolFiles: ToolFile[]): ToolFile.FileTypeEnum[] {
     return toolFiles
-      .map(toolFile => toolFile.file_type)
+      .map((toolFile) => toolFile.file_type)
       .filter((v, i, a) => a.indexOf(v) === i)
       .sort();
   }
@@ -281,7 +281,7 @@ export class EntryFileTabService extends Base {
         (fileWrapper: FileWrapper) => {
           this.handleFileWrapperChange(fileWrapper);
         },
-        error => {
+        (error) => {
           this.setFileContents(null);
           this.setDownloadFilePath(null);
         }
@@ -349,6 +349,6 @@ export class EntryFileTabService extends Base {
    * @memberof EntryFileTabService
    */
   private filterFiles(fileType: ToolFile.FileTypeEnum, toolFiles: ToolFile[]): ToolFile[] {
-    return toolFiles.filter(toolFile => toolFile.file_type === fileType);
+    return toolFiles.filter((toolFile) => toolFile.file_type === fileType);
   }
 }

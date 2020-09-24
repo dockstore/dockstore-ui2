@@ -23,7 +23,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
   createForm(data: any): FormGroup {
     const description = data.description;
     const form = this.formBuilder.group({
-      description: [description, []]
+      description: [description, []],
     });
     return form;
   }
@@ -41,7 +41,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
           this.collectionsService.updateCollections(organizationID);
           this.matDialog.closeAll();
         },
-        error => {
+        (error) => {
           this.updateOrganizationOrCollectionDescriptionStore.setError(true);
         }
       );
@@ -60,7 +60,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
           this.organizationService.updateOrganizationFromID(organizationID);
           this.matDialog.closeAll();
         },
-        error => {
+        (error) => {
           this.updateOrganizationOrCollectionDescriptionStore.setError(true);
         }
       );

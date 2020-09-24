@@ -13,7 +13,7 @@ describe('LoadingComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatProgressBarModule],
-      declarations: [LoadingComponent]
+      declarations: [LoadingComponent],
     }).compileComponents();
   }));
 

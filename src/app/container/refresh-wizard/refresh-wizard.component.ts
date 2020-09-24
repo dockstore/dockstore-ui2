@@ -11,7 +11,7 @@ import { RefreshWizardStore } from '../state/refresh-wizard.store';
   selector: 'refresh-wizard',
   templateUrl: './refresh-wizard.component.html',
   styleUrls: ['./refresh-wizard.component.scss'],
-  providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService]
+  providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService],
 })
 export class RefreshWizardComponent implements OnInit {
   loading$: Observable<boolean>;

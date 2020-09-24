@@ -44,7 +44,7 @@ export class RegisterCheckerWorkflowService {
     private alertService: AlertService,
     private matDialog: MatDialog
   ) {
-    this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter(x => x != null));
+    this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter((x) => x != null));
     this.entryId$.subscribe((id: number) => {
       this.entryId = id;
     });

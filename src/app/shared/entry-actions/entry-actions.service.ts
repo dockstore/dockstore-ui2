@@ -78,7 +78,7 @@ export class EntryActionsService {
     }
     if (entry.is_published) {
       return `Unpublish the ${entryType} to remove it from the public`;
-    } else if (!entry.workflowVersions || !entry.workflowVersions.some(version => version.valid)) {
+    } else if (!entry.workflowVersions || !entry.workflowVersions.some((version) => version.valid)) {
       return 'Unable to publish: No valid versions found';
     } else {
       return `Publish the ${entryType} to make it visible to the public`;
@@ -96,7 +96,7 @@ export class EntryActionsService {
     if (!versionTags) {
       return false;
     }
-    return versionTags.some(version => version.valid);
+    return versionTags.some((version) => version.valid);
   }
 
   publishWorkflowToggle(workflow: Workflow, isOwner: boolean, entryType: EntryType): void {
@@ -105,7 +105,7 @@ export class EntryActionsService {
       return;
     } else {
       const request: PublishRequest = {
-        publish: !currentlyPublished
+        publish: !currentlyPublished,
       };
       const message = !currentlyPublished ? `Publishing ${entryType}` : `Unpublishing ${entryType}`;
       this.alertService.start(message);
@@ -137,12 +137,12 @@ export class EntryActionsService {
       return;
     } else {
       const request: PublishRequest = {
-        publish: !currentlyPublished
+        publish: !currentlyPublished,
       };
       const message = !currentlyPublished ? 'Publishing tool' : 'Unpublishing tool';
       this.alertService.start(message);
       this.containersService.publish(tool.id, request).subscribe(
-        response => {
+        (response) => {
           this.containerService.upsertToolToTools(response);
           this.containerService.setTool(response);
           this.alertService.detailedSuccess();

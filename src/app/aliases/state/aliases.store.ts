@@ -16,7 +16,7 @@ export function createInitialState(): AliasesState {
     collection: null,
     tool: null,
     workflow: null,
-    workflowVersionPathInfo: null
+    workflowVersionPathInfo: null,
   };
 }
 

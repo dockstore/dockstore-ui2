@@ -23,20 +23,20 @@ describe('SidebarAccordionComponent', () => {
       providers: [
         {
           provide: RegisterWorkflowModalService,
-          useClass: RegisterWorkflowModalStubService
+          useClass: RegisterWorkflowModalStubService,
         },
         { provide: WorkflowService, useClass: WorkflowStubService },
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => {}
-          }
+            close: (dialogResult: any) => {},
+          },
         },
         {
           provide: RefreshService,
-          useClass: RefreshStubService
-        }
-      ]
+          useClass: RefreshStubService,
+        },
+      ],
     }).compileComponents();
   }));
 

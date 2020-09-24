@@ -13,7 +13,7 @@ import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.com
 @Component({
   selector: 'app-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
-  styleUrls: ['./sidebar-accordion.component.scss']
+  styleUrls: ['./sidebar-accordion.component.scss'],
 })
 export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;

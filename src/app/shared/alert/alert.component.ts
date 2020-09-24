@@ -29,7 +29,7 @@ import { AlertService } from './state/alert.service';
 @Component({
   selector: 'app-alert',
   templateUrl: './alert.component.html',
-  styleUrls: ['./alert.component.css']
+  styleUrls: ['./alert.component.css'],
 })
 export class AlertComponent implements OnInit {
   public showError$: Observable<boolean>;

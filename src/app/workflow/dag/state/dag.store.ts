@@ -7,7 +7,7 @@ export interface DagState {
 
 export function createInitialState(): DagState {
   return {
-    dagResults: null
+    dagResults: null,
   };
 }
 

@@ -23,7 +23,7 @@ import { ParamfilesService } from '../paramfiles/paramfiles.service';
 
 @Component({
   selector: 'app-files-container',
-  templateUrl: './files.component.html'
+  templateUrl: './files.component.html',
 })
 export class FilesContainerComponent extends Files implements OnChanges {
   @Input() selectedVersion: Tag;

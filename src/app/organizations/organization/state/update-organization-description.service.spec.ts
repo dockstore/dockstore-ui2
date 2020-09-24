@@ -14,7 +14,7 @@ describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UpdateOrganizationOrCollectionDescriptionService, UpdateOrganizationOrCollectionDescriptionStore, FormBuilder],
-      imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule],
     });
 
     updateOrganizationOrCollectionDescriptionService = TestBed.inject(UpdateOrganizationOrCollectionDescriptionService);

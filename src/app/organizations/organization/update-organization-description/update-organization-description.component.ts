@@ -20,7 +20,7 @@ import { UpdateOrganizationOrCollectionDescriptionService } from '../state/updat
 
 @Component({
   templateUrl: './update-organization-description.component.html',
-  styleUrls: ['./update-organization-description.component.scss']
+  styleUrls: ['./update-organization-description.component.scss'],
 })
 export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {
   updateOrganizationOrCollectionDescriptionForm: FormGroup;

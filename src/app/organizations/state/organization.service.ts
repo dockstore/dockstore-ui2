@@ -29,12 +29,12 @@ export class OrganizationService {
   ) {}
 
   clearState(): void {
-    this.organizationStore.update(state => {
+    this.organizationStore.update((state) => {
       return {
         ...state,
         organization: null,
         canEdit: false,
-        canEditMembership: false
+        canEditMembership: false,
       };
     });
   }
@@ -57,10 +57,10 @@ export class OrganizationService {
   }
 
   updateOrganization(organization: Organization) {
-    this.organizationStore.update(state => {
+    this.organizationStore.update((state) => {
       return {
         ...state,
-        organization: organization
+        organization: organization,
       };
     });
   }

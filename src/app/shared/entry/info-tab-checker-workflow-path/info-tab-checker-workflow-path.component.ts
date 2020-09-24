@@ -28,7 +28,7 @@ import { RegisterCheckerWorkflowService } from '../register-checker-workflow/reg
 @Component({
   selector: 'app-info-tab-checker-workflow-path',
   templateUrl: './info-tab-checker-workflow-path.component.html',
-  styleUrls: ['./info-tab-checker-workflow-path.component.scss']
+  styleUrls: ['./info-tab-checker-workflow-path.component.scss'],
 })
 export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;

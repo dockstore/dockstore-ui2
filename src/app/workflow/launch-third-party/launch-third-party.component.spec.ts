@@ -24,7 +24,7 @@ describe('LaunchThirdPartyComponent', () => {
       declarations: [LaunchThirdPartyComponent],
       imports: [CustomMaterialModule, HttpClientModule],
       providers: [GA4GHFilesService, GA4GHV20Service, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -41,7 +41,7 @@ describe('LaunchThirdPartyComponent', () => {
   it('should set properties correctly', () => {
     component.ngOnChanges({
       workflow: new SimpleChange(null, sampleWdlWorkflow2, true),
-      selectedVersion: new SimpleChange(null, sampleWorkflowVersion, true)
+      selectedVersion: new SimpleChange(null, sampleWorkflowVersion, true),
     });
     fixture.detectChanges();
     const nativeElement: HTMLElement = fixture.nativeElement;

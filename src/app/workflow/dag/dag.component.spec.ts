@@ -38,8 +38,8 @@ describe('DagComponent', () => {
         DagStore,
         DagQuery,
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService }
-      ]
+        { provide: WorkflowService, useClass: WorkflowStubService },
+      ],
     }).compileComponents();
   }));
 

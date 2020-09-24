@@ -36,13 +36,13 @@ import {
   ImageProviderStubService,
   RefreshStubService,
   WorkflowsStubService,
-  WorkflowStubService
+  WorkflowStubService,
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
 
 @Component({
   selector: 'app-view-workflow',
-  template: '<p>App View Component</p>'
+  template: '<p>App View Component</p>',
 })
 class MockViewWorkflowComponent {
   @Input() versions;
@@ -56,7 +56,7 @@ class MockViewWorkflowComponent {
 
 @Component({
   selector: 'app-version-modal',
-  template: '<p>Version Modal Component</p>'
+  template: '<p>Version Modal Component</p>',
 })
 class MockVersionModalComponent {
   @Input() canRead;
@@ -76,7 +76,7 @@ describe('VersionsWorkflowComponent', () => {
         CommitUrlPipe,
         VerifiedPlatformsPipe,
         MockViewWorkflowComponent,
-        MockVersionModalComponent
+        MockVersionModalComponent,
       ],
       providers: [
         DockstoreService,
@@ -87,8 +87,8 @@ describe('VersionsWorkflowComponent', () => {
         ProviderService,
         WorkflowQuery,
         { provide: ImageProviderService, useClass: ImageProviderStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+      ],
     }).compileComponents();
   }));
 

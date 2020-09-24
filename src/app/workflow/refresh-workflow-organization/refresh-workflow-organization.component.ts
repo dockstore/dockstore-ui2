@@ -31,7 +31,7 @@ import { UserQuery } from '../../shared/user/user.query';
   selector: 'app-refresh-workflow-organization',
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
-  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
+  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
   @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;
@@ -53,14 +53,14 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
       const workflows = this.orgWorkflowObject.published.concat(this.orgWorkflowObject.unpublished);
       from(workflows)
         .pipe(
-          concatMap(workflow => {
+          concatMap((workflow) => {
             this.alertService.start(`Refreshing ${workflow.full_workflow_path}`);
             return this.workflowsService.refresh(workflow.id);
           }),
           takeUntil(this.ngUnsubscribe)
         )
         .subscribe(
-          workflow => {
+          (workflow) => {
             const extendedWorkflow = this.extendedWorkflowQuery.getValue();
             if (extendedWorkflow && extendedWorkflow.id === workflow.id) {
               this.workflowService.setWorkflow(workflow);
@@ -69,7 +69,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
             }
             this.alertService.detailedSuccess();
           },
-          err => this.alertService.detailedError(err)
+          (err) => this.alertService.detailedError(err)
         );
     }
   }

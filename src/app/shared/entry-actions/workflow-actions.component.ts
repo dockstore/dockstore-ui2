@@ -14,7 +14,7 @@ import { EntryActionsService } from './entry-actions.service';
 @Component({
   selector: 'app-workflow-actions',
   templateUrl: './workflow-actions.component.html',
-  styleUrls: ['./entry-actions.component.scss']
+  styleUrls: ['./entry-actions.component.scss'],
 })
 export class WorkflowActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {
   @Input() workflow: BioWorkflow | Service;

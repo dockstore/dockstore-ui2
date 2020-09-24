@@ -31,7 +31,7 @@ import { AccountsService } from './accounts.service';
 @Component({
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.css']
+  styleUrls: ['./accounts.component.css'],
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
@@ -43,7 +43,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: 'One of GitHub or Google is required.',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
       show: false,
-      logo: 'github.svg'
+      logo: 'github.svg',
     },
     {
       name: 'Google',
@@ -51,7 +51,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: 'One of GitHub or Google is required.',
       message: 'Google credentials are used for login purposes and integration with Terra.',
       show: false,
-      logo: 'google.svg'
+      logo: 'google.svg',
     },
     {
       name: 'Quay',
@@ -59,7 +59,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: '',
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
       show: false,
-      logo: 'quay.svg'
+      logo: 'quay.svg',
     },
     {
       name: 'Bitbucket',
@@ -67,7 +67,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: '',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false,
-      logo: 'bitbucket.svg'
+      logo: 'bitbucket.svg',
     },
     {
       name: 'GitLab',
@@ -75,7 +75,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: '',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
       show: false,
-      logo: 'gitlab.svg'
+      logo: 'gitlab.svg',
     },
     {
       name: 'Zenodo',
@@ -83,7 +83,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: '',
       message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
       show: false,
-      logo: 'zenodo.jpg'
+      logo: 'zenodo.jpg',
     },
     {
       name: 'ORCID',
@@ -91,8 +91,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       bold: '',
       message: 'ORCID credentials are used for linking ORCID IDs to workflows published on Zenodo.',
       show: false,
-      logo: 'orcid.svg'
-    }
+      logo: 'orcid.svg',
+    },
   ];
 
   public tokens: Token[];
@@ -109,7 +109,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private tokenQuery: TokenQuery
   ) {
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => {
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
       if (!state) {
         this.router.navigate(['']);
       }
@@ -133,7 +133,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
         () => {
           this.link(source);
         },
-        error => {
+        (error) => {
           this.matSnackBar.open('Failed to relink ' + source + ' account', 'Dismiss');
         }
       );
@@ -153,7 +153,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
           this.userService.getUser();
           this.matSnackBar.open('Unlinked ' + source + ' account', 'Dismiss');
         },
-        error => {
+        (error) => {
           this.matSnackBar.open('Failed to unlink ' + source, 'Dismiss');
         }
       );
@@ -162,7 +162,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   // Show linked services in the UI
   private setAvailableTokens(tokens: Token[]) {
     for (const account of this.accountsInfo) {
-      const found = tokens.find(token => token.tokenSource === account.source);
+      const found = tokens.find((token) => token.tokenSource === account.source);
       if (found) {
         account.isLinked = true;
       } else {

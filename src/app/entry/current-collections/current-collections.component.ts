@@ -11,7 +11,7 @@ import { CurrentCollectionsService } from '../state/current-collections.service'
 @Component({
   selector: 'current-collections',
   templateUrl: './current-collections.component.html',
-  styleUrls: ['./current-collections.component.scss']
+  styleUrls: ['./current-collections.component.scss'],
 })
 export class CurrentCollectionsComponent implements OnInit, OnChanges {
   @Input() id: number;
@@ -47,7 +47,7 @@ export class CurrentCollectionsComponent implements OnInit, OnChanges {
   addEntryToCollection() {
     this.matDialog.open(AddEntryComponent, {
       data: { entryId: this.id },
-      width: '500px'
+      width: '500px',
     });
   }
 

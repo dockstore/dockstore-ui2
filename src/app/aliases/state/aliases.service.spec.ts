@@ -10,7 +10,7 @@ describe('AliasesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AliasesService, AliasesStore],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
     aliasesService = TestBed.inject(AliasesService);

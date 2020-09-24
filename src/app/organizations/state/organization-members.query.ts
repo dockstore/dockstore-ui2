@@ -7,11 +7,11 @@ import { OrganizationUser } from '../../shared/swagger';
 import { OrganizationMembersState, OrganizationMembersStore } from './organization-members.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrganizationMembersQuery extends QueryEntity<OrganizationMembersState, OrganizationUser> {
   sortedOrganizationMembers$: Observable<Array<OrganizationUser>> = this.selectAll().pipe(
-    map(organizationMembers => {
+    map((organizationMembers) => {
       organizationMembers.sort((a, b) => this.sortOrganizationUser(a, b));
       return organizationMembers;
     })

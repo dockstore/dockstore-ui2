@@ -30,7 +30,7 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 @Component({
   selector: 'app-workflow-file-editor',
   templateUrl: './workflow-file-editor.component.html',
-  styleUrls: ['./workflow-file-editor.component.scss']
+  styleUrls: ['./workflow-file-editor.component.scss'],
 })
 export class WorkflowFileEditorComponent extends FileEditing {
   descriptorFiles = [];
@@ -87,7 +87,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {
-    this.openapiWorkflowsService.getWorkflowVersionsSourcefiles(this.id, this._selectedVersion.id).subscribe(sourcefiles => {
+    this.openapiWorkflowsService.getWorkflowVersionsSourcefiles(this.id, this._selectedVersion.id).subscribe((sourcefiles) => {
       this.originalSourceFiles = JSON.parse(JSON.stringify(sourcefiles));
       this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.originalSourceFiles)));
       this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.originalSourceFiles)));
@@ -130,7 +130,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
                 'Saved version ' + updatedVersion.name + ' of hosted workflow ' + newlyGottenWorkflow.repository
               );
             },
-            error => {
+            (error) => {
               this.alertService.detailedError(error);
             }
           );

@@ -42,7 +42,7 @@ import {
   UrlResolverStubService,
   UsersStubService,
   WorkflowsStubService,
-  WorkflowStubService
+  WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyBioWorkflowsService } from '../my-bio-workflows.service';
@@ -77,10 +77,10 @@ describe('MyWorkflowsComponent', () => {
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => {}
-          }
-        }
-      ]
+            close: (dialogResult: any) => {},
+          },
+        },
+      ],
     }).compileComponents();
   }));
 

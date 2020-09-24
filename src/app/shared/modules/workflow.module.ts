@@ -74,7 +74,7 @@ import { RefreshService } from './../refresh.service';
     InfoTabComponent,
     ToolTabComponent,
     EntryFileTabComponent,
-    SourceFileTabsComponent
+    SourceFileTabsComponent,
   ],
   imports: [
     CommonModule,
@@ -93,7 +93,7 @@ import { RefreshService } from './../refresh.service';
     EntryModule,
     AddEntryModule,
     MarkdownModule,
-    RefreshAlertModule
+    RefreshAlertModule,
   ],
   providers: [
     DateService,
@@ -103,9 +103,9 @@ import { RefreshService } from './../refresh.service';
     InfoTabService,
     RefreshService,
     RegisterWorkflowModalService,
-    VersionModalService
+    VersionModalService,
   ],
   exports: [WorkflowComponent, CustomMaterialModule, EntryModule, HeaderModule, CommonModule, WorkflowActionsComponent],
-  entryComponents: [VersionModalComponent]
+  entryComponents: [VersionModalComponent],
 })
 export class WorkflowModule {}

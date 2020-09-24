@@ -25,6 +25,6 @@ import { SelectComponent } from '../../select/select.component';
   declarations: [SelectComponent],
   imports: [CommonModule, FormsModule, CustomMaterialModule],
   providers: [],
-  exports: [SelectComponent]
+  exports: [SelectComponent],
 })
 export class SelectModule {}

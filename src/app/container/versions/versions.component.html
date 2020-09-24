@@ -98,9 +98,7 @@
       </td>
     </ng-container>
     <ng-container matColumnDef="verified">
-      <th scope="col" mat-header-cell *matHeaderCellDef [matTooltip]="verifiedVersionTooltip">
-        Verified Platforms
-      </th>
+      <th scope="col" mat-header-cell *matHeaderCellDef [matTooltip]="verifiedVersionTooltip">Verified Platforms</th>
       <td mat-cell *matCellDef="let version">
         <span matTooltip="{{ getVerifiedSource(version.name) }}">{{ version.id | verifiedPlatforms: verifiedVersionPlatforms }}</span>
       </td>

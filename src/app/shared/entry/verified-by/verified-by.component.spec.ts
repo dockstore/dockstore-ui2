@@ -10,7 +10,7 @@ describe('VerifiedByComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CustomMaterialModule],
-      declarations: [VerifiedByComponent]
+      declarations: [VerifiedByComponent],
     }).compileComponents();
   }));
 

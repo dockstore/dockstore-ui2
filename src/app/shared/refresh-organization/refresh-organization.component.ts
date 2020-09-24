@@ -31,7 +31,7 @@ export abstract class RefreshOrganizationComponent extends Base implements OnIni
   }
 
   ngOnInit() {
-    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => (this.userId = userId));
+    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((userId) => (this.userId = userId));
     this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 }

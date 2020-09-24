@@ -27,7 +27,7 @@ export function createInitialState(): SessionState {
   return {
     isPublic: true,
     entryType: null,
-    loadingDialog: false
+    loadingDialog: false,
   };
 }
 /**
@@ -40,7 +40,7 @@ export function createInitialState(): SessionState {
  * @extends {Store<SessionState>}
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 @StoreConfig({ name: 'session' })
 export class SessionStore extends Store<SessionState> {

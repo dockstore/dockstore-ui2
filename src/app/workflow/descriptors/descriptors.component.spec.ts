@@ -37,9 +37,9 @@ describe('DescriptorsWorkflowComponent', () => {
         { provide: DescriptorService, useClass: DescriptorsStubService },
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService }
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

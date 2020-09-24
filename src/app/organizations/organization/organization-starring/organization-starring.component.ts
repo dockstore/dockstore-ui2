@@ -29,7 +29,7 @@ import { OrganizationStarringService } from './organization-starring.service';
 @Component({
   selector: 'app-organization-starring',
   templateUrl: '../../../starring/starring.component.html',
-  styleUrls: ['../../../starring/starring.component.css']
+  styleUrls: ['../../../starring/starring.component.css'],
 })
 export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {
   @Input() organization: Organization;
@@ -51,8 +51,8 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
   }
 
   ngOnInit() {
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => (this.isLoggedIn = isLoggedIn));
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn));
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.user = user;
       this.rate = isStarredByUser(this.starredUsers, this.user);
     });
@@ -81,12 +81,12 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
       this.alertService.start(message);
 
       this.setStar().subscribe(
-        data => {
+        (data) => {
           // update total_stars
           this.alertService.simpleSuccess();
           this.getStarredUsers();
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
           this.disableRateButton = false;
         }
@@ -114,7 +114,7 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
             this.rate = isStarredByUser(starring, this.user);
             this.disableRateButton = false;
           },
-          error => (this.disableRateButton = false)
+          (error) => (this.disableRateButton = false)
         );
     } else {
       this.disableRateButton = false;
@@ -123,7 +123,7 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
 
   getStargazers() {
     const selectedOrganization = {
-      theOrganization: this.organization
+      theOrganization: this.organization,
     };
     this.starOrganizationService.setOrganization(selectedOrganization);
     this.change.emit();

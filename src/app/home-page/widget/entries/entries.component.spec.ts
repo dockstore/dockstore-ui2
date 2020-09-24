@@ -16,7 +16,7 @@ describe('EntriesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EntriesComponent, LoadingComponent],
-      imports: [RouterTestingModule, MatFormFieldModule, FormsModule, HttpClientTestingModule, MatTooltipModule, MatProgressBarModule]
+      imports: [RouterTestingModule, MatFormFieldModule, FormsModule, HttpClientTestingModule, MatTooltipModule, MatProgressBarModule],
     }).compileComponents();
   }));
 

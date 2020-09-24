@@ -14,7 +14,7 @@ import {
   ExtendedDockstoreToolStubService,
   ProviderStubService,
   RefreshStubService,
-  UsersStubService
+  UsersStubService,
 } from './../../test/service-stubs';
 import { RefreshToolOrganizationComponent } from './refresh-tool-organization.component';
 
@@ -47,8 +47,8 @@ describe('RefreshToolOrganizationComponent', () => {
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService }
-      ]
+        { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
+      ],
     }).compileComponents();
   }));
 

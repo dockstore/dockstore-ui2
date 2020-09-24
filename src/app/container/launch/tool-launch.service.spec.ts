@@ -21,7 +21,7 @@ import { ToolLaunchService } from './tool-launch.service';
 describe('ToolLaunchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ToolLaunchService]
+      providers: [ToolLaunchService],
     });
   });
 

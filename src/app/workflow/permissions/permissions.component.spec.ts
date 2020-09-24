@@ -18,8 +18,8 @@ describe('PermissionsComponent', () => {
       providers: [
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: TokenService, useClass: TokenStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+      ],
     }).compileComponents();
   }));
 

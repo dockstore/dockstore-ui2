@@ -22,7 +22,7 @@ export function createInitialState(): EntryFileTabState {
     selectedFile: null,
     fileContents: null,
     downloadFilePath: null,
-    validationMessage: null
+    validationMessage: null,
   };
 }
 

@@ -38,7 +38,7 @@ import { InfoTabService } from './info-tab.service';
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css']
+  styleUrls: ['./info-tab.component.css'],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
@@ -111,11 +111,13 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
-    this.infoTabService.workflowPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(editing => (this.workflowPathEditing = editing));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));
+    this.infoTabService.workflowPathEditing$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((editing) => (this.workflowPathEditing = editing));
     this.infoTabService.defaultTestFilePathEditing$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(editing => (this.defaultTestFilePathEditing = editing));
+      .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
   }
 
   /**

@@ -31,8 +31,8 @@ describe('FilesWorkflowComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ParamfilesService, useClass: ParamFilesStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService }
-      ]
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+      ],
     }).compileComponents();
   }));
 

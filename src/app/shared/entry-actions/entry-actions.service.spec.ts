@@ -15,22 +15,22 @@ describe('Service: EntryActionsService', () => {
         EntryActionsService,
         {
           provide: WorkflowsService,
-          useClass: WorkflowsStubService
+          useClass: WorkflowsStubService,
         },
         {
           provide: WorkflowService,
-          useClass: WorkflowStubService
+          useClass: WorkflowStubService,
         },
         {
           provide: ContainersService,
-          useClass: ContainersStubService
+          useClass: ContainersStubService,
         },
         {
           provide: ContainerService,
-          useClass: ContainerStubService
-        }
+          useClass: ContainerStubService,
+        },
       ],
-      imports: [CustomMaterialModule]
+      imports: [CustomMaterialModule],
     });
   });
 

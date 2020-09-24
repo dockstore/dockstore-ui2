@@ -17,7 +17,7 @@ import {
   ContainertagsStubService,
   DateStubService,
   ParamFilesStubService,
-  VersionModalStubService
+  VersionModalStubService,
 } from '../../test/service-stubs';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalComponent } from './version-modal.component';
@@ -39,8 +39,8 @@ describe('VersionModalComponent', () => {
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainertagsService, useClass: ContainertagsStubService },
-        { provide: DateService, useClass: DateStubService }
-      ]
+        { provide: DateService, useClass: DateStubService },
+      ],
     }).compileComponents();
   }));
 

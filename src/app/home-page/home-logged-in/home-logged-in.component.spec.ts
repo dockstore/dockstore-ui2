@@ -17,7 +17,7 @@ describe('HomeLoggedInComponent', () => {
       declarations: [HomeLoggedInComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
-      providers: [TwitterService]
+      providers: [TwitterService],
     }).compileComponents();
   }));
 

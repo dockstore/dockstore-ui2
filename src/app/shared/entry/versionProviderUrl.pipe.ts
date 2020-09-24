@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'versionProviderUrl'
+  name: 'versionProviderUrl',
 })
 export class VersionProviderUrlPipe implements PipeTransform {
   transform(providerUrl: string, versionName: string): any {

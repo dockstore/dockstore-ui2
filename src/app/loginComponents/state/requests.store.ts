@@ -17,7 +17,7 @@ export function createInitialState(): RequestsState {
     myMemberships: null,
     myOrganizationInvites: null,
     myPendingOrganizationRequests: null,
-    myRejectedOrganizationRequests: null
+    myRejectedOrganizationRequests: null,
   };
 }
 
