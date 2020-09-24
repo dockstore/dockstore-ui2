@@ -96,7 +96,7 @@
                   </span>
                 </div>
                 <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                <div class="histogram" [ngStyle]="{ 'width.px': getHistogramWidth(orderedBuckets.get(key).Items.get(subBucket)) }"></div>
+                <div class="histogram" [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"></div>
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
@@ -114,7 +114,7 @@
                   </span>
                 </div>
                 <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                <div class="histogram" [ngStyle]="{ 'width.px': getHistogramWidth(orderedBuckets.get(key).Items.get(subBucket)) }"></div>
+                <div class="histogram" [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"></div>
               </div>
             </div>
           </div>

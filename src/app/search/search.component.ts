@@ -266,16 +266,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  // For each facet, returns histogram bar that is proportional to number of items in that bucket
-  getHistogramWidth(items: string) {
-    const rowWidth = this.subBucketColumn.nativeElement.offsetWidth;
-    // Divide number of items by 1000 to get a decimal proportional to the bucket size
-    const widthDivisor = 1000;
-    const histogramWidth = (Number(items) / widthDivisor) * rowWidth;
-    console.log(histogramWidth);
-    return histogramWidth;
-  }
-
   setupOrderBuckets() {
     this.entryOrder.forEach((value, key) => {
       if (value.Items.size > 0 || value.SelectedItems.size > 0) {
@@ -306,6 +296,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     });
     this.setFilter = true;
+    // console.log("ordered buckets", this.orderedBuckets);
   }
   /**
    * For buckets that were checked earlier, retain them even if there is 0 hits.
