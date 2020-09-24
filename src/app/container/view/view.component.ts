@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewService } from 'app/container/view/view.service';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
@@ -31,6 +31,9 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
+import { ContainersService } from '../../shared/openapi';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { ToolDescriptor } from '../../shared/swagger';
 
 @Component({
   selector: 'app-view-container',
@@ -51,18 +54,30 @@ export class ViewContainerComponent extends View implements OnInit {
     private viewService: ViewService,
     private sessionQuery: SessionQuery,
     private containerService: ContainerService,
+    private containersService: ContainersService,
     private containertagsService: ContainertagsService,
     private hostedService: HostedService,
     private toolQuery: ToolQuery,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private alertService: AlertService
   ) {
     super(dateService, alertQuery);
   }
 
   setMode(mode: TagEditorMode) {
     this.versionModalService.setVersion(this.version);
-    this.versionModalService.setCurrentMode(mode);
-    this.matDialog.open(VersionModalComponent, { width: '600px' });
+    forkJoin([
+      this.containersService.getTestParameterFiles(this.tool.id, this.version.name, ToolDescriptor.TypeEnum.CWL),
+      this.containersService.getTestParameterFiles(this.tool.id, this.version.name, ToolDescriptor.TypeEnum.WDL),
+    ]).subscribe(
+      (items) => {
+        this.versionModalService.setCurrentMode(mode);
+        this.matDialog.open(VersionModalComponent, { width: '600px' });
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+      }
+    );
   }
 
   deleteTag() {

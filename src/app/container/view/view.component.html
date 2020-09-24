@@ -15,10 +15,10 @@
   -->
 
 <!-- Button trigger modal -->
-<button mat-button [matMenuTriggerFor]="menu">Actions<mat-icon>arrow_drop_down</mat-icon></button>
+<button data-cy="actionsButton" mat-button [matMenuTriggerFor]="menu">Actions<mat-icon>arrow_drop_down</mat-icon></button>
 <mat-menu #menu="matMenu">
   <button type="button" mat-menu-item color="accent" *ngIf="isPublic$ | async" (click)="setMode(TagEditorMode.View); (false)">View</button>
-  <button type="button" mat-menu-item color="accent" *ngIf="!(isPublic$ | async)" (click)="setMode(TagEditorMode.Edit); (false)">
+  <button data-cy="editTagButton" type="button" mat-menu-item color="accent" *ngIf="!(isPublic$ | async)" (click)="setMode(TagEditorMode.Edit); (false)">
     Edit
   </button>
   <button type="button" mat-menu-item color="warn" *ngIf="!(isPublic$ | async) && isManualTool" (click)="deleteTag(); (false)">
