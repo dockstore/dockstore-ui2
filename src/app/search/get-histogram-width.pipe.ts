@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'getHistogramWidth'
+  name: 'getHistogramWidth',
 })
 export class GetHistogramWidthPipe implements PipeTransform {
   /**
@@ -16,11 +16,9 @@ export class GetHistogramWidthPipe implements PipeTransform {
     // Get number of items in the subBucket
     const items = bucket.get(subBucket);
 
-    // Sum up number of items in the bucket
-    let divisor = 0;
-    for (const i of bucket.values()) {
-      divisor += i;
-    }
+    // Sum up number of items in the bucket to get the divisor
+    const bucketValues = Array.from(bucket.values());
+    const divisor = bucketValues.reduce((accumulator, currentValue) => accumulator + currentValue);
 
     // Width of histogram is percetange of items out of total items in the bucket
     const histogramWidth = (Number(items) / divisor) * 100;
