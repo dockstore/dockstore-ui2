@@ -1,0 +1,36 @@
+# Each line is a regular expression against the output of git-secrets
+# travisci/dbdump.sql:.*
+# Can match on the content of the string
+
+# travisci/dbdump.sql
+travisci/db_dump.sql:.*
+
+# src/app/organizations/events/events.component.html
+src/app/organizations/events/events.component.html:.*EventType.REMOVEFROMCOLLECTION
+
+# src/app/organizations/state/events.service.ts
+src/app/organizations/state/events.service.ts:.*EventType.REMOVEFROMCOLLECTION
+
+# cypress/fixtures/searchTableResponse.json
+cypress/fixtures/searchTableResponse.json:.*image_id":*
+
+# cypress/integration/immutableDatabaseTests/searchTable.ts
+cypress/integration/immutableDatabaseTests/searchTable.ts:.*image_id:*
+
+# src/app/container/paramfiles/paramfiles.service.spec.ts
+src/app/container/paramfiles/paramfiles.service.spec.ts:.*image_id:*
+
+# src/app/shared/descriptor.service.spec.ts
+src/app/shared/descriptor.service.spec.ts:.*image_id:*
+
+# README.md
+README.md:.*https://api.codacy.com/project/badge/Grade/58c43301d4b84c8ab74bdbeb2a962973
+
+# src/app/shared/entry/commit-url.pipe.spec.ts
+src/app/shared/entry/commit-url.pipe.spec.ts:.*868a1c6b02344dd679eb0548889de03e6affef99
+
+# src/app/workflow/dag/cwl-viewer/cwl-viewer.service.spec.ts
+src/app/workflow/dag/cwl-viewer/cwl-viewer.service.spec.ts:.*9283b35ae651477f5e722111b07c8128aa66c0ea
+
+# src/app/workflow/launch-third-party/launch-third-party.component.ts
+src/app/workflow/launch-third-party/launch-third-party.component.ts:.*https://github.com/dockstore/dockstore/blob/0a734abe9dbe34eed12404d4697ebc43b71da8d8*

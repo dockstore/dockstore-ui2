@@ -65,4 +65,13 @@ else
   echo "git secrets is already installed"
 fi
 
+# if git secrets is now installed
+if which git-secrets &>/dev/null
+then
+  # setup the AWS specific configuration variables
+  # and custom patterns
+  git secrets --register-aws
+  git secrets --add '[a-fA-F0-9]{30,}'
+fi
+
 
