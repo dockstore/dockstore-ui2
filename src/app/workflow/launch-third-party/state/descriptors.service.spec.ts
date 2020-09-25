@@ -8,7 +8,7 @@ import { DescriptorsService } from './descriptors.service';
 describe('DescriptorsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DescriptorsService, DescriptorsStore]
+      providers: [DescriptorsService, DescriptorsStore],
     });
   });
 

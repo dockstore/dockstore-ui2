@@ -10,7 +10,7 @@ export interface DescriptorsState {
 export function createInitialState(): DescriptorsState {
   return {
     primaryDescriptor: null,
-    secondaryDescriptors: Array()
+    secondaryDescriptors: Array(),
   };
 }
 

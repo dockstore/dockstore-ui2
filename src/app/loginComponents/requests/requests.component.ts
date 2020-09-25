@@ -13,7 +13,7 @@ import { RequestsService } from '../state/requests.service';
 
 @Component({
   selector: 'organization-request-confirm-dialog',
-  templateUrl: 'organization-request-confirm-dialog.html'
+  templateUrl: 'organization-request-confirm-dialog.html',
 })
 export class OrganizationRequestConfirmDialogComponent {
   constructor(
@@ -28,7 +28,7 @@ export class OrganizationRequestConfirmDialogComponent {
 
 @Component({
   selector: 'organization-invite-confirm-dialog',
-  templateUrl: 'organization-invite-confirm-dialog.html'
+  templateUrl: 'organization-invite-confirm-dialog.html',
 })
 export class OrganizationInviteConfirmDialogComponent {
   constructor(public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
@@ -47,7 +47,7 @@ export interface DialogData {
 @Component({
   selector: 'requests',
   templateUrl: './requests.component.html',
-  styleUrls: ['./requests.component.scss']
+  styleUrls: ['./requests.component.scss'],
 })
 export class RequestsComponent extends Base implements OnInit {
   public allPendingOrganizations$: Observable<Array<Organization>>;
@@ -83,7 +83,7 @@ export class RequestsComponent extends Base implements OnInit {
     this.isCurator$ = this.userQuery.isCurator$;
     this.userId$ = this.userQuery.userId$;
 
-    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdminOrCurator => {
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
       this.isAdminOrCurator = isAdminOrCurator;
       if (isAdminOrCurator) {
         this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
@@ -94,10 +94,10 @@ export class RequestsComponent extends Base implements OnInit {
   openDialog(name: string, id: number, approve: boolean): void {
     const dialogRef = this.dialog.open(OrganizationRequestConfirmDialogComponent, {
       width: '400px',
-      data: { name: name, id: id, approve: approve }
+      data: { name: name, id: id, approve: approve },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.approve) {
           this.requestsService.approveOrganization(result.id);
@@ -111,10 +111,10 @@ export class RequestsComponent extends Base implements OnInit {
   openInviteDialog(name: string, id: number, approve: boolean): void {
     const dialogRef = this.dialog.open(OrganizationInviteConfirmDialogComponent, {
       width: '400px',
-      data: { name: name, id: id, approve: approve }
+      data: { name: name, id: id, approve: approve },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.requestsService.acceptOrRejectOrganizationInvite(result.id, result.approve);
       }
@@ -131,12 +131,12 @@ export class RequestsComponent extends Base implements OnInit {
       message: `Are you sure you wish to delete this ${organizationStatus.toLowerCase()} organization?
                 All information associated with <b>${organizationName}</b> will be deleted.`,
       cancelButtonText: 'Cancel',
-      confirmationButtonText: 'Delete'
+      confirmationButtonText: 'Delete',
     };
     this.confirmationDialogService
       .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(result => {
+      .subscribe((result) => {
         if (result) {
           this.requestsService.deleteOrganization(organizationID, this.isAdminOrCurator);
         }

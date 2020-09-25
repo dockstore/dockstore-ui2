@@ -4,18 +4,18 @@ import { EntryFileTabService } from './entry-file-tab.service';
 describe('Service: EntryFileTabService', () => {
   it('should be able to get the validation message object from a ToolFile', () => {
     const toolFile: ToolFile = {
-      file_type: ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR
+      file_type: ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
     };
     const unsupportedToolFile: ToolFile = {
-      file_type: ToolFile.FileTypeEnum.CONTAINERFILE
+      file_type: ToolFile.FileTypeEnum.CONTAINERFILE,
     };
     const version: WorkflowVersion = {
       name: 'do not care',
       reference: 'do not care',
       validations: [
         { id: 51918, message: `{"fakeFilePath":"fakeErrorMessage"}`, type: 'DOCKSTORE_GXFORMAT2', valid: true },
-        { id: 51919, message: '{}', type: 'GXFORMAT2_TEST_FILE', valid: true }
-      ]
+        { id: 51919, message: '{}', type: 'GXFORMAT2_TEST_FILE', valid: true },
+      ],
     };
     expect(EntryFileTabService.getValidationMessageObject(null, null)).toEqual(null);
     expect(EntryFileTabService.getValidationMessageObject(toolFile, null)).toEqual(null);

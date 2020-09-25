@@ -164,8 +164,8 @@
               <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
               <select class="form-control input-sm" (change)="updateDescriptorType()" [(ngModel)]="temporaryDescriptorType">
                 <option *ngFor="let descriptorLanguage of descriptorLanguages$ | async" [value]="descriptorLanguage">
-                  {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}</option
-                >
+                  {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}
+                </option>
               </select>
             </div>
             <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
@@ -216,9 +216,7 @@
         <a [href]="'mailto:' + selectedVersion?.email" *ngIf="selectedVersion?.email">
           {{ workflow?.email }}
         </a>
-        <span *ngIf="!selectedVersion?.email">
-          n/a
-        </span>
+        <span *ngIf="!selectedVersion?.email"> n/a </span>
       </div>
       <span *ngIf="isValidVersion" id="downloadZipButton">
         <button *ngIf="!workflow?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>

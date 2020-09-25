@@ -11,7 +11,7 @@ describe('EventsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [EventsService, EventsStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
     eventsService = TestBed.inject(EventsService);

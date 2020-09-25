@@ -43,7 +43,7 @@ import { MytoolsService } from '../mytools.service';
 @Component({
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
-  styleUrls: ['../../shared/styles/my-entry.component.scss']
+  styleUrls: ['../../shared/styles/my-entry.component.scss'],
 })
 export class MyToolComponent extends MyEntry implements OnInit {
   tools: any;
@@ -94,7 +94,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
@@ -106,7 +106,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         dialogRef
           .afterClosed()
           .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe(result => {
+          .subscribe((result) => {
             this.alertService.clearEverything();
           });
       } else {
@@ -116,13 +116,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
     this.containerService.setTools(null);
-    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
     });
 
     this.getMyEntries();
 
-    this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
+    this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tools) => {
       this.tools = tools;
       this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(tools));
     });
@@ -137,7 +137,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
     );
-    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
+    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => (this.registerTool = tool));
   }
 
   protected getMyEntries() {

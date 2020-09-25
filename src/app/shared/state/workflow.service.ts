@@ -27,7 +27,7 @@ export class WorkflowService {
    */
   static convertSharedWorkflowsToWorkflowsList(workflows: Array<any>): Array<Workflow> {
     if (workflows) {
-      let sharedWorkflows = workflows.map(workflow => workflow.workflows);
+      let sharedWorkflows = workflows.map((workflow) => workflow.workflows);
       sharedWorkflows = [].concat.apply([], sharedWorkflows);
       return sharedWorkflows;
     } else {
@@ -93,8 +93,8 @@ export class WorkflowService {
     const workflows = this.workflows$.getValue();
     const sharedWorkflows = this.sharedWorkflows$.getValue();
     if (workflow && workflows && sharedWorkflows) {
-      const oldWorkflow = workflows.find(x => x.id === workflow.id);
-      const oldSharedWorkflow = sharedWorkflows.find(x => x.id === workflow.id);
+      const oldWorkflow = workflows.find((x) => x.id === workflow.id);
+      const oldSharedWorkflow = sharedWorkflows.find((x) => x.id === workflow.id);
       if (oldWorkflow) {
         const index = workflows.indexOf(oldWorkflow);
         workflows[index] = workflow;

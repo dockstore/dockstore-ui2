@@ -11,7 +11,7 @@ describe('OrganizationMembersService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationMembersService, OrganizationMembersStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
     organizationMembersService = TestBed.inject(OrganizationMembersService);

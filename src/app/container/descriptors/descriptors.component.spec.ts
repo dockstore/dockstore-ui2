@@ -45,8 +45,8 @@ describe('DescriptorsComponent', () => {
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: FileService, useClass: FileStubService },
         { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-        { provide: EntriesService, useClass: EntryStubService }
-      ]
+        { provide: EntriesService, useClass: EntryStubService },
+      ],
     }).compileComponents();
   }));
 

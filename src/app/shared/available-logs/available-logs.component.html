@@ -17,9 +17,7 @@
   <app-loading [loading]="isLoading$ | async">
     <mat-card>
       <mat-card-header>
-        <mat-card-title>
-          Verification Information
-        </mat-card-title>
+        <mat-card-title> Verification Information </mat-card-title>
         <mat-card-subtitle>
           This tool/workflow version has been verified by certain entities. The below table shows information about the entity that verified
           this version.
@@ -35,9 +33,7 @@
     </mat-card>
     <mat-card *ngIf="(availableLogs$ | async).length > 0">
       <mat-card-header>
-        <mat-card-title>
-          Logs
-        </mat-card-title>
+        <mat-card-title> Logs </mat-card-title>
         <mat-card-subtitle>
           Dockstore has successfully ran this tool/workflow version. Here are the logs for those runs.
         </mat-card-subtitle>

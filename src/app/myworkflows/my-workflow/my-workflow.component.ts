@@ -63,7 +63,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
 @Component({
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
-  styleUrls: ['../../shared/styles/my-entry.component.scss']
+  styleUrls: ['../../shared/styles/my-entry.component.scss'],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Service | BioWorkflow;
@@ -140,17 +140,17 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflow$ = this.workflowQuery.selectActive();
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(event => {
+      .subscribe((event) => {
         this.selectEntry(this.myWorkflowsService.recomputeWhatEntryToSelect([...(this.workflows || []), ...(this.sharedWorkflows || [])]));
       });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
 
     // Updates selected workflow from service and selects in sidebar
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => (this.workflow = workflow));
     this.getMyEntries();
 
     // Using the workflows and shared with me workflows, initialize the organization groupings and set the initial entry
@@ -163,7 +163,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             this.sharedWorkflows = sharedWorkflows;
           }
         },
-        error => {
+        (error) => {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );

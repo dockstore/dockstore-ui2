@@ -32,7 +32,7 @@ import { Versions } from '../../shared/versions';
 @Component({
   selector: 'app-versions-workflow',
   templateUrl: './versions.component.html',
-  styleUrls: ['./versions.component.css']
+  styleUrls: ['./versions.component.css'],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
@@ -85,7 +85,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   ngOnInit() {
     this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.publicPageSubscription();
-    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;
@@ -96,9 +96,9 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         columnDefs: [
           {
             orderable: false,
-            targets: this.setNoOrderCols()
-          }
-        ]
+            targets: this.setNoOrderCols(),
+          },
+        ],
       };
     });
   }

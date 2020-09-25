@@ -65,7 +65,7 @@ export class InfoTabService {
       this.workflow = workflow;
       this.cancelEditing();
     });
-    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe(map => (this.descriptorLanguageMap = map));
+    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((map) => (this.descriptorLanguageMap = map));
   }
   setWorkflowPathEditing(editing: boolean) {
     this.workflowPathEditing$.next(editing);
@@ -78,15 +78,15 @@ export class InfoTabService {
   updateAndRefresh(workflow: Workflow) {
     const message = 'Workflow Info';
     const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
-    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(response => {
+    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe((response) => {
       this.alertService.start('Updating ' + message);
       this.workflowsService.refresh(this.originalWorkflow.id).subscribe(
-        refreshResponse => {
+        (refreshResponse) => {
           this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
           this.workflowService.setWorkflow(refreshResponse);
           this.alertService.detailedSuccess();
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
           this.restoreWorkflow();
         }

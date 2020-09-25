@@ -1,13 +1,11 @@
 <div>
-  <mat-card class="alert alert-info" role="alert" *ngIf="sourcefiles?.length == 0">
-    No files exist.
-  </mat-card>
-  <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom:10px;">
+  <mat-card class="alert alert-info" role="alert" *ngIf="sourcefiles?.length == 0"> No files exist. </mat-card>
+  <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom: 10px">
     <div *ngIf="sourcefile?.content !== null && showSourcefile(sourcefile?.type)">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
-          <form style="width:100%;" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)">
-            <mat-form-field color="accent" style="width:40%;">
+          <form style="width: 100%" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)">
+            <mat-form-field color="accent" style="width: 40%">
               <input
                 matInput
                 [value]="sourcefile.path"

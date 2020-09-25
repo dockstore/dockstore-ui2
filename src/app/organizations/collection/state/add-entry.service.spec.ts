@@ -11,7 +11,7 @@ describe('AddEntryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AddEntryService, AddEntryStore],
-      imports: [HttpClientTestingModule, CustomMaterialModule]
+      imports: [HttpClientTestingModule, CustomMaterialModule],
     });
 
     addEntryService = TestBed.inject(AddEntryService);

@@ -5,7 +5,7 @@ import { ContainersService } from 'app/shared/swagger';
 import { ToolQuery } from 'app/shared/tool/tool.query';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ViewService {
   constructor(
@@ -19,12 +19,12 @@ export class ViewService {
     const message = 'Updating default tool version';
     this.alertService.start(message);
     this.containersService.updateToolDefaultVersion(toolId, newDefaultVersion).subscribe(
-      response => {
+      (response) => {
         this.alertService.detailedSuccess();
         this.containerService.replaceTool(response);
         this.containerService.setTool(response);
       },
-      error => this.alertService.detailedError(error)
+      (error) => this.alertService.detailedError(error)
     );
   }
 }

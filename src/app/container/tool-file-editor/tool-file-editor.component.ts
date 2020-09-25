@@ -26,7 +26,7 @@ import { Tag } from './../../shared/swagger/model/tag';
 @Component({
   selector: 'app-tool-file-editor',
   templateUrl: './tool-file-editor.component.html',
-  styleUrls: ['./tool-file-editor.component.scss']
+  styleUrls: ['./tool-file-editor.component.scss'],
 })
 export class ToolFileEditorComponent extends FileEditing {
   dockerFile: Array<SourceFile> = [];
@@ -119,7 +119,7 @@ export class ToolFileEditorComponent extends FileEditing {
           this.handleNoContentResponse();
         }
       },
-      error => {
+      (error) => {
         if (error) {
           this.alertService.detailedError(error);
         }

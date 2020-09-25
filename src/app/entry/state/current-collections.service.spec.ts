@@ -10,7 +10,7 @@ describe('CurrentCollectionsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CurrentCollectionsService, CurrentCollectionsStore],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
     currentCollectionsService = TestBed.inject(CurrentCollectionsService);

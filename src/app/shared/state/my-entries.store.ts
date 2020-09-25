@@ -7,7 +7,7 @@ export interface MyEntriesState {
 
 export function createInitialState(): MyEntriesState {
   return {
-    refreshingMyEntries: false
+    refreshingMyEntries: false,
   };
 }
 

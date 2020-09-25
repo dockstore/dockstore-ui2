@@ -137,7 +137,7 @@ export class ParamfilesService {
     }
 
     // Check that at least one file is present
-    const languageFile = versionsFileTypes.find(type => {
+    const languageFile = versionsFileTypes.find((type) => {
       return type === fileType;
     });
 

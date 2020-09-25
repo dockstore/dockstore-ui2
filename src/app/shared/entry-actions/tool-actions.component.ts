@@ -8,7 +8,7 @@ import { EntryActionsService } from './entry-actions.service';
 @Component({
   selector: 'app-tool-actions',
   templateUrl: './tool-actions.component.html',
-  styleUrls: ['./entry-actions.component.scss']
+  styleUrls: ['./entry-actions.component.scss'],
 })
 export class ToolActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {
   @Input() tool: DockstoreTool;

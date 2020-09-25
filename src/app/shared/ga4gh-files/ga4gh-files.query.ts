@@ -22,7 +22,7 @@ import { GA4GHFiles } from './ga4gh-files.model';
 import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
   /**
@@ -35,14 +35,14 @@ export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
     if (descriptorType) {
       let toolFiles$: Observable<Array<ToolFile>>;
       toolFiles$ = this.selectError().pipe(
-        switchMap(error => {
+        switchMap((error) => {
           return error != null
             ? observableOf(null)
             : this.selectEntity(descriptorType).pipe(map((gA4GHFile: GA4GHFiles) => (gA4GHFile ? gA4GHFile.toolFiles : [])));
         })
       );
       return toolFiles$.pipe(
-        map((toolFiles: Array<ToolFile>) => (toolFiles ? toolFiles.filter(toolFile => fileTypes.includes(toolFile.file_type)) : null))
+        map((toolFiles: Array<ToolFile>) => (toolFiles ? toolFiles.filter((toolFile) => fileTypes.includes(toolFile.file_type)) : null))
       );
     } else {
       return observableOf([]);

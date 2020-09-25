@@ -42,7 +42,7 @@
         >
           <mat-icon>file_copy</mat-icon>
         </button>
-        <span *ngIf="show" style="overflow: auto;">{{ dockstoreToken }}</span>
+        <span *ngIf="show" style="overflow: auto">{{ dockstoreToken }}</span>
       </span>
     </div>
   </mat-card>
@@ -88,7 +88,7 @@
         >
           <mat-icon>file_copy</mat-icon>
         </button>
-        <span *ngIf="row.show" style="overflow: auto;">{{ row.source | getTokenContent: tokens }}</span>
+        <span *ngIf="row.show" style="overflow: auto">{{ row.source | getTokenContent: tokens }}</span>
         <span *ngIf="row.isLinked" class="pull-right">
           <span class="mx-2">
             <strong>Username: </strong>

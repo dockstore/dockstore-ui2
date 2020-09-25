@@ -10,7 +10,7 @@ import { FileCategory } from './code-editor-list.component';
  * @class CodeEditorListService
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CodeEditorListService {
   static readonly NEXTFLOW_CONFIG_PATH = '/nextflow.config';
@@ -79,7 +79,7 @@ export class CodeEditorListService {
       CodeEditorListService.NEXTFLOW_CONFIG_PATH,
       CodeEditorListService.NEXTFLOW_PATH,
       // Galaxy
-      '/Dockstore.yml'
+      '/Dockstore.yml',
     ];
     return primaryDescriptors.includes(path);
   }
@@ -247,7 +247,7 @@ export class CodeEditorListService {
         absolutePath: newFilePath,
         content: '',
         path: newFilePath,
-        type: type
+        type: type,
       };
     } else {
       return null;
@@ -299,7 +299,7 @@ export class CodeEditorListService {
    * @memberof CodeEditorListService
    */
   private static hasFilePath(path: string, sourcefiles: Array<SourceFile>): boolean {
-    return sourcefiles.some(sourcefile => sourcefile.path === path);
+    return sourcefiles.some((sourcefile) => sourcefile.path === path);
   }
 
   /**

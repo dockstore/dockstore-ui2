@@ -9,7 +9,7 @@ import { VerifiedByService } from '../../verified-by.service';
 @Component({
   selector: 'app-verified-by',
   templateUrl: './verified-by.component.html',
-  styleUrls: ['./verified-by.component.scss']
+  styleUrls: ['./verified-by.component.scss'],
 })
 export class VerifiedByComponent implements OnChanges {
   @Input() version: WorkflowVersion | Tag;
@@ -32,9 +32,9 @@ export class VerifiedByComponent implements OnChanges {
     this.matDialog.open(AvailableLogsComponent, {
       data: {
         version: this.version,
-        verifiedByPlatform: this.verifiedByPlatform
+        verifiedByPlatform: this.verifiedByPlatform,
       },
-      width: bootstrap4largeModalSize
+      width: bootstrap4largeModalSize,
     });
   }
 }

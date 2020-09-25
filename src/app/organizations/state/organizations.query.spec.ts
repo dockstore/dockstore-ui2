@@ -24,7 +24,7 @@ describe('OrganizationsQuery', () => {
       description: 'someDescription',
       link: 'someLink',
       location: 'someLocation',
-      avatarUrl: 'someAvatarUrl'
+      avatarUrl: 'someAvatarUrl',
     };
 
     const beefOrganization: Organization = { name: 'beef', status: Organization.StatusEnum.APPROVED, users: [], topic: 'nothing relevent' };
@@ -32,14 +32,14 @@ describe('OrganizationsQuery', () => {
       name: 'chicken',
       status: Organization.StatusEnum.APPROVED,
       users: [],
-      topic: 'nothing relevent'
+      topic: 'nothing relevent',
     };
     const porkOrganization: Organization = { name: 'pork', status: Organization.StatusEnum.APPROVED, users: [], topic: 'nothing relevent' };
     const muttonOrganization: Organization = {
       name: 'mutton',
       status: Organization.StatusEnum.APPROVED,
       users: [],
-      topic: 'nothing relevent'
+      topic: 'nothing relevent',
     };
     const duckOrganization: Organization = { name: 'duck', status: Organization.StatusEnum.APPROVED, users: [], topic: 'nothing relevent' };
     const exampleOrganizations: Array<Organization> = [
@@ -48,7 +48,7 @@ describe('OrganizationsQuery', () => {
       chickenOrganization,
       porkOrganization,
       muttonOrganization,
-      duckOrganization
+      duckOrganization,
     ];
     expect(query.filterOrganizations(exampleOrganizations, 'potato')).toEqual([potatoOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'po')).toEqual([potatoOrganization, porkOrganization]);

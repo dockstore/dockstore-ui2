@@ -42,7 +42,7 @@ export interface Dialogdata {
 @Component({
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
-  styleUrls: ['./version-modal.component.css']
+  styleUrls: ['./version-modal.component.css'],
 })
 export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   isPublic: boolean;
@@ -87,12 +87,12 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.isOwner = this.data.isOwner;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => {
+    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe((version) => {
       this.version = Object.assign({}, version);
       this.originalVersion = version;
     });
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
-    this.versionModalService.testParameterFiles.pipe(takeUntil(this.ngUnsubscribe)).subscribe(testParameterFiles => {
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => (this.workflow = workflow));
+    this.versionModalService.testParameterFiles.pipe(takeUntil(this.ngUnsubscribe)).subscribe((testParameterFiles) => {
       this.testParameterFilePaths = [];
       this.originalTestParameterFilePaths = [];
       this.testParameterFiles = testParameterFiles;
@@ -101,7 +101,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
         this.originalTestParameterFilePaths.push(testParameterFile.path);
       }
     });
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.isPublic = publicPage));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => (this.isPublic = publicPage));
   }
 
   removeTestParameterFile(index: number) {
@@ -144,11 +144,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.versionEditorForm = this.currentForm;
     if (this.versionEditorForm) {
       this.versionEditorForm.valueChanges
-        .pipe(
-          debounceTime(formInputDebounceTime),
-          takeUntil(this.ngUnsubscribe)
-        )
-        .subscribe(data => this.onValueChanged(data));
+        .pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => this.onValueChanged(data));
     }
   }
   onValueChanged(data?: any) {

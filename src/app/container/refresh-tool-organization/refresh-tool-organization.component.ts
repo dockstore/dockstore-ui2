@@ -30,7 +30,7 @@ import { UserQuery } from '../../shared/user/user.query';
   selector: 'app-refresh-tool-organization',
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
-  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
+  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
   @Input() protected orgToolObject: OrgToolObject<DockstoreTool>;
@@ -51,17 +51,17 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
     if (this.orgToolObject) {
       const entries: DockstoreTool[] = this.orgToolObject.published
         .concat(this.orgToolObject.unpublished)
-        .filter(entry => entry.mode !== DockstoreTool.ModeEnum.HOSTED && entry.gitUrl);
+        .filter((entry) => entry.mode !== DockstoreTool.ModeEnum.HOSTED && entry.gitUrl);
       from(entries)
         .pipe(
-          concatMap(entry => {
+          concatMap((entry) => {
             this.alertService.start(`Refreshing ${entry.tool_path}`);
             return this.containersService.refresh(entry.id);
           }),
           takeUntil(this.ngUnsubscribe)
         )
         .subscribe(
-          entry => {
+          (entry) => {
             const activeID = this.toolQuery.getActive().id;
             if (activeID === entry.id) {
               // Warning: this may result in an incomplete tool (missing validation, aliases etc)
@@ -69,7 +69,7 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
             }
             this.alertService.detailedSuccess();
           },
-          error => this.alertService.detailedError(error)
+          (error) => this.alertService.detailedError(error)
         );
     }
   }

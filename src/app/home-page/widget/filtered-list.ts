@@ -31,7 +31,7 @@ export abstract class FilteredList extends Base implements OnInit {
         distinctUntilChanged(),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(filterText => {
+      .subscribe((filterText) => {
         this.getMyList();
       });
   }

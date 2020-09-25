@@ -34,7 +34,7 @@ import { UpsertOrganizationMemberComponent } from '../upsert-organization-member
 @Component({
   selector: 'organization-members',
   templateUrl: './organization-members.component.html',
-  styleUrls: ['./organization-members.component.scss']
+  styleUrls: ['./organization-members.component.scss'],
 })
 export class OrganizationMembersComponent extends Base implements OnInit {
   organizationMembers$: Observable<OrganizationUser[]>;
@@ -84,7 +84,7 @@ export class OrganizationMembersComponent extends Base implements OnInit {
     this.alertService.clearEverything();
     this.matDialog.open(UpsertOrganizationMemberComponent, {
       data: { mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role },
-      width: '600px'
+      width: '600px',
     });
   }
 
@@ -97,7 +97,7 @@ export class OrganizationMembersComponent extends Base implements OnInit {
     this.alertService.clearEverything();
     this.matDialog.open(UpsertOrganizationMemberComponent, {
       data: { mode: TagEditorMode.Add, username: null, role: null },
-      width: '600px'
+      width: '600px',
     });
   }
 
@@ -114,12 +114,12 @@ export class OrganizationMembersComponent extends Base implements OnInit {
       from the organization
     <strong>${organizationUser.organization.displayName}?`,
       cancelButtonText: 'NO THANKS',
-      confirmationButtonText: 'REMOVE'
+      confirmationButtonText: 'REMOVE',
     };
     this.confirmationDialogService
       .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(result => {
+      .subscribe((result) => {
         if (result) {
           this.organizationMembersService.removeUser(organizationUser);
         }

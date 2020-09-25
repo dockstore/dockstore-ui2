@@ -33,10 +33,10 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
       imports: [FormsModule, RouterTestingModule, MatDialogModule, CustomMaterialModule],
       providers: [
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService }
+        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
       ],
       declarations: [InfoTabCheckerWorkflowPathComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));
 

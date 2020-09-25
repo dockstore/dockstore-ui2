@@ -13,7 +13,7 @@ import { UserQuery } from '../../../../shared/user/user.query';
 @Component({
   selector: 'app-delete-account-dialog',
   templateUrl: './delete-account-dialog.component.html',
-  styleUrls: ['./delete-account-dialog.component.scss']
+  styleUrls: ['./delete-account-dialog.component.scss'],
 })
 export class DeleteAccountDialogComponent implements OnDestroy {
   username = '';
@@ -33,7 +33,7 @@ export class DeleteAccountDialogComponent implements OnDestroy {
       (username: string) => {
         this.setupForm(username);
       },
-      error => {
+      (error) => {
         console.error('Could not get username from userService');
       }
     );
@@ -49,7 +49,7 @@ export class DeleteAccountDialogComponent implements OnDestroy {
     this.username = username;
     this.usernameFormControl = new FormControl('', [Validators.required, this.validateUsername(this.username)]);
     this.usernameForm = new FormGroup({
-      usernameFormControl: this.usernameFormControl
+      usernameFormControl: this.usernameFormControl,
     });
   }
 

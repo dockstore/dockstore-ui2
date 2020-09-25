@@ -27,7 +27,7 @@ import { UsersService } from './../../../../shared/swagger/api/users.service';
 @Component({
   selector: 'app-change-username',
   templateUrl: './change-username.component.html',
-  styleUrls: ['./change-username.component.scss']
+  styleUrls: ['./change-username.component.scss'],
 })
 export class ChangeUsernameComponent implements OnInit {
   @Input() showText;
@@ -41,13 +41,13 @@ export class ChangeUsernameComponent implements OnInit {
   usernameFormControl = new FormControl('', [
     Validators.required,
     Validators.pattern('^[a-zA-Z][a-zA-Z0-9]*([-_]?[a-zA-Z0-9]+)*$'),
-    Validators.maxLength(39)
+    Validators.maxLength(39),
   ]);
   protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(private userService: UserService, private usersService: UsersService, private userQuery: UserQuery) {}
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       if (user) {
         this.user = user;
         this.username = user.username;
@@ -55,16 +55,11 @@ export class ChangeUsernameComponent implements OnInit {
       }
     });
     this.canChangeUsername$ = this.userQuery.canChangeUsername$;
-    this.usernameFormControl.valueChanges
-      .pipe(
-        debounceTime(formInputDebounceTime),
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(value => {
-        if (this.usernameFormControl.valid) {
-          this.checkIfUsernameExists(value);
-        }
-      });
+    this.usernameFormControl.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe)).subscribe((value) => {
+      if (this.usernameFormControl.valid) {
+        this.checkIfUsernameExists(value);
+      }
+    });
   }
 
   /**
@@ -88,7 +83,7 @@ export class ChangeUsernameComponent implements OnInit {
             this.usernameTaken = userExists;
           }
         },
-        error => {
+        (error) => {
           console.error(error);
         }
       );

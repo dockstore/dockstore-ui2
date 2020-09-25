@@ -100,7 +100,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   reactToDescriptor() {
     this.getFiles(this.currentDescriptor)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(files => {
+      .subscribe((files) => {
         this.nullDescriptors = false;
         this.files = files;
         if (!this.files) {

@@ -13,7 +13,7 @@ describe('CollectionsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CollectionsService, CollectionsStore],
-      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
     });
 
     collectionsService = TestBed.inject(CollectionsService);

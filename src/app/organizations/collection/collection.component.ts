@@ -17,7 +17,7 @@ import { OrganizationService } from '../state/organization.service';
 
 @Component({
   selector: 'collection-entry-confirm-remove',
-  templateUrl: 'collection-entry-confirm-remove.html'
+  templateUrl: 'collection-entry-confirm-remove.html',
 })
 export class CollectionRemoveEntryDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private collectionsService: CollectionsService) {}
@@ -42,7 +42,7 @@ export interface DialogData {
 @Component({
   selector: 'collection',
   templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.scss', '../organization/organization.component.scss']
+  styleUrls: ['./collection.component.scss', '../organization/organization.component.scss'],
 })
 export class CollectionComponent implements OnInit {
   WorkflowMode = Workflow.ModeEnum;
@@ -98,8 +98,8 @@ export class CollectionComponent implements OnInit {
         entryName: entryName,
         collectionId: collectionId,
         entryId: entryId,
-        organizationId: organizationId
-      }
+        organizationId: organizationId,
+      },
     });
   }
 
@@ -107,14 +107,14 @@ export class CollectionComponent implements OnInit {
     const collectionMap = { key: collection.id, value: collection };
     this.dialog.open(CreateCollectionComponent, {
       data: { collection: collectionMap, mode: TagEditorMode.Edit },
-      width: '600px'
+      width: '600px',
     });
   }
 
   updateDescription(description: String, collectionId: number) {
     this.dialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'collection', collectionId: collectionId },
-      width: '600px'
+      width: '600px',
     });
   }
 }

@@ -22,7 +22,7 @@
 
 <div class="container-fluid sidebar-set-height">
   <!--Tool Content Page-->
-  <div class="row containers-rsb" style="height:100%;">
+  <div class="row containers-rsb" style="height: 100%">
     <mat-sidenav-container autosize class="sidebar-set-height">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12" *ngIf="!(refreshingMyEntries$ | async)">
         <div id="parent">
@@ -71,9 +71,7 @@
                   Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools
                   will be synchronized in the linking process.
                 </li>
-                <li>
-                  Press the 'Add Tool' button to manually add a tool using the registration wizard.
-                </li>
+                <li>Press the 'Add Tool' button to manually add a tool using the registration wizard.</li>
                 <button
                   mat-raised-button
                   color="primary"

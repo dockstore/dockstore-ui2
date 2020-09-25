@@ -60,7 +60,7 @@ export class CollectionsService {
             this.updateCollectionFromId(organizationID, activeId as number);
           }
         },
-        error => {
+        (error) => {
           console.error(error);
           this.collectionsStore.setError(true);
         }

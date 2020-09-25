@@ -26,7 +26,7 @@ import {
   ContainerStubService,
   DescriptorsStubService,
   GA4GHV20StubService,
-  WorkflowStubService
+  WorkflowStubService,
 } from '../../test/service-stubs';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
@@ -45,8 +45,8 @@ describe('LaunchWorkflowComponent', () => {
         { provide: DescriptorService, useClass: DescriptorsStubService },
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService }
-      ]
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+      ],
     }).compileComponents();
   }));
 

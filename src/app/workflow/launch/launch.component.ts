@@ -31,7 +31,7 @@ import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
-  styleUrls: ['./launch.component.css']
+  styleUrls: ['./launch.component.css'],
 })
 export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChanges {
   @Input() basePath;

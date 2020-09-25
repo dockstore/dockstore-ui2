@@ -18,7 +18,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-onboarding',
-  templateUrl: './quickstart.component.html'
+  templateUrl: './quickstart.component.html',
 })
 export class QuickStartComponent implements OnInit {
   public curStep = 1;

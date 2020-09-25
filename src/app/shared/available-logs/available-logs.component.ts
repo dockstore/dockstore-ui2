@@ -19,7 +19,7 @@ interface VersionVerifiedInformation {
 @Component({
   selector: 'available-logs',
   templateUrl: './available-logs.component.html',
-  styleUrls: ['./available-logs.component.scss']
+  styleUrls: ['./available-logs.component.scss'],
 })
 export class AvailableLogsComponent extends Base implements OnInit {
   version: Tag | WorkflowVersion | null;

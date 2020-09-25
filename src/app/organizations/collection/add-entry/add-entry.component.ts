@@ -8,7 +8,7 @@ import { AddEntryService } from '../state/add-entry.service';
 @Component({
   selector: 'add-entry',
   templateUrl: './add-entry.component.html',
-  styleUrls: ['./add-entry.component.scss']
+  styleUrls: ['./add-entry.component.scss'],
 })
 export class AddEntryComponent implements OnInit {
   public memberships$: Observable<Array<OrganizationUser>>;

@@ -12,7 +12,7 @@ export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
 @Component({
   selector: 'app-code-editor-list',
   templateUrl: './code-editor-list.component.html',
-  styleUrls: ['./code-editor-list.component.scss']
+  styleUrls: ['./code-editor-list.component.scss'],
 })
 export class CodeEditorListComponent {
   @Input() sourcefiles: SourceFile[];
@@ -43,7 +43,7 @@ export class CodeEditorListComponent {
     if (this.sourcefiles === undefined) {
       this.sourcefiles = [];
     }
-    filesToAdd.forEach(file => {
+    filesToAdd.forEach((file) => {
       this.sourcefiles.push(file);
     });
   }

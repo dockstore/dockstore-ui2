@@ -18,34 +18,34 @@ import { EntryType } from '../enum/entry-type';
 import { SessionStore } from './session.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionService {
   constructor(private sessionStore: SessionStore) {}
 
   setPublicPage(isPublic: boolean): void {
-    this.sessionStore.update(state => {
+    this.sessionStore.update((state) => {
       return {
         ...state,
-        isPublic: isPublic
+        isPublic: isPublic,
       };
     });
   }
 
   setEntryType(entryType: EntryType): void {
-    this.sessionStore.update(state => {
+    this.sessionStore.update((state) => {
       return {
         ...state,
-        entryType: entryType
+        entryType: entryType,
       };
     });
   }
 
   setLoadingDialog(loadingDialog: boolean): void {
-    this.sessionStore.update(state => {
+    this.sessionStore.update((state) => {
       return {
         ...state,
-        loadingDialog: loadingDialog
+        loadingDialog: loadingDialog,
       };
     });
   }

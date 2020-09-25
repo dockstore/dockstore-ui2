@@ -98,9 +98,7 @@
       <mat-error *ngIf="formErrors.wdlPath">{{ formErrors.wdlPath }}</mat-error>
     </mat-form-field>
     <div class="form-group">
-      <mat-label>
-        CWL Test Parameter File(s):
-      </mat-label>
+      <mat-label> CWL Test Parameter File(s): </mat-label>
       <div *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIndex">
         <div class="input-group py-1">
           <input
@@ -267,9 +265,7 @@
       </mat-checkbox>
     </div>
     <div class="w-100">
-      <mat-checkbox [value]="tool?.automated">
-        Automated
-      </mat-checkbox>
+      <mat-checkbox [value]="tool?.automated"> Automated </mat-checkbox>
     </div>
   </form>
 </div>

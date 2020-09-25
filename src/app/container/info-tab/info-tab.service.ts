@@ -65,7 +65,7 @@ export class InfoTabService extends Base {
           this.cancelEditing();
         }
       });
-    this.containerService.tools$.subscribe(tools => (this.tools = tools));
+    this.containerService.tools$.subscribe((tools) => (this.tools = tools));
   }
   setDockerFileEditing(editing: boolean) {
     this.dockerFileEditing$.next(editing);
@@ -92,21 +92,21 @@ export class InfoTabService extends Base {
     const partialTool = this.getPartialToolForUpdate(tool);
     this.alertService.start('Updating ' + message);
     this.containersService.updateContainer(this.tool.id, partialTool).subscribe(
-      response => {
+      (response) => {
         this.alertService.start('Refreshing ' + message);
         this.containersService.refresh(this.tool.id).subscribe(
-          refreshResponse => {
+          (refreshResponse) => {
             this.containerService.replaceTool(refreshResponse);
             this.containerService.setTool(refreshResponse);
             this.alertService.detailedSuccess();
           },
-          error => {
+          (error) => {
             this.alertService.detailedError(error);
             this.restoreTool();
           }
         );
       },
-      error => {
+      (error) => {
         this.alertService.detailedError(error);
         this.restoreTool();
       }
@@ -132,7 +132,7 @@ export class InfoTabService extends Base {
       default_wdl_path: tool.default_wdl_path,
       defaultCWLTestParameterFile: tool.defaultCWLTestParameterFile,
       defaultWDLTestParameterFile: tool.defaultWDLTestParameterFile,
-      default_dockerfile_path: tool.default_dockerfile_path
+      default_dockerfile_path: tool.default_dockerfile_path,
     };
     return partialTool;
   }

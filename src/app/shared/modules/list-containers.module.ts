@@ -29,6 +29,6 @@ import { CustomMaterialModule } from './material.module';
   declarations: [ListContainersComponent],
   imports: [CommonModule, RouterModule, ClipboardModule, CustomMaterialModule, HeaderModule, PrivateIconModule, EntryModule],
   providers: [PublishedToolsDataSource, ListContainersService],
-  exports: [ListContainersComponent]
+  exports: [ListContainersComponent],
 })
 export class ListContainersModule {}

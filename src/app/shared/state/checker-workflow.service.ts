@@ -50,7 +50,7 @@ export class CheckerWorkflowService extends Base {
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage: boolean) => (this.publicPage = publicPage));
     observableMerge(this.toolQuery.tool$, this.workflowQuery.workflow$)
       .pipe(
-        filter(x => x != null),
+        filter((x) => x != null),
         distinctUntilChanged(),
         takeUntil(this.ngUnsubscribe)
       )
@@ -91,7 +91,7 @@ export class CheckerWorkflowService extends Base {
           (workflow: Workflow) => {
             this.update(workflow, entry);
           },
-          error => this.update(null, entry)
+          (error) => this.update(null, entry)
         );
     } else {
       this.workflowsService
@@ -101,16 +101,16 @@ export class CheckerWorkflowService extends Base {
           (workflow: Workflow) => {
             this.update(workflow, entry);
           },
-          error => this.update(null, entry)
+          (error) => this.update(null, entry)
         );
     }
   }
 
   public update(checkerWorkflow: Workflow, entry: Entry) {
-    this.checkerWorkflowStore.update(state => {
+    this.checkerWorkflowStore.update((state) => {
       return {
         entry: entry,
-        checkerWorkflow: checkerWorkflow
+        checkerWorkflow: checkerWorkflow,
       };
     });
   }
@@ -137,12 +137,12 @@ export class CheckerWorkflowService extends Base {
         (workflow: Workflow) => {
           this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
         },
-        error =>
+        (error) =>
           this.containersService.getPublishedContainer(parentId).subscribe(
             (tool: DockstoreTool) => {
               this.goToEntry(this.publicPage, tool.tool_path, 'tool');
             },
-            error2 => console.log('Can not get parent entry')
+            (error2) => console.log('Can not get parent entry')
           )
       );
     } else {
@@ -150,12 +150,12 @@ export class CheckerWorkflowService extends Base {
         (workflow: Workflow) => {
           this.goToEntry(this.publicPage, workflow.full_workflow_path, 'workflow');
         },
-        error =>
+        (error) =>
           this.containersService.getContainer(parentId).subscribe(
             (tool: DockstoreTool) => {
               this.goToEntry(this.publicPage, tool.tool_path, 'tool');
             },
-            error2 => console.log('Can not get parent entry')
+            (error2) => console.log('Can not get parent entry')
           )
       );
     }

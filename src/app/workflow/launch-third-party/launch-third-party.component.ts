@@ -92,7 +92,7 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
   selector: 'app-launch-third-party',
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss'],
-  providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore]
+  providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore],
 })
 export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit {
   /**
@@ -198,16 +198,16 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     this.gA4GHFilesQuery
       .getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType), [
         FileTypeEnum.PRIMARYDESCRIPTOR,
-        FileTypeEnum.SECONDARYDESCRIPTOR
+        FileTypeEnum.SECONDARYDESCRIPTOR,
       ])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(fileDescriptors => {
+      .subscribe((fileDescriptors) => {
         if (fileDescriptors && fileDescriptors.length) {
           // No idea if this.workflow.descriptorType is the one that's required or if it's some other enum
           const descriptorType: string = this.workflow.descriptorType;
-          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe(sourceFile => {
+          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
-            if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
+            if (fileDescriptors.some((file) => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
               this.workflowsService
                 .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, descriptorType)
                 .subscribe((sourceFiles: Array<SourceFile>) => {

@@ -71,11 +71,11 @@ const MATERIAL_MODULES = [
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
 ];
 
 @NgModule({
   imports: MATERIAL_MODULES,
-  exports: MATERIAL_MODULES
+  exports: MATERIAL_MODULES,
 })
 export class CustomMaterialModule {}

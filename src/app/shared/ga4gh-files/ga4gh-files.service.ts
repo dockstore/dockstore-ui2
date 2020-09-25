@@ -21,7 +21,7 @@ import { ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GA4GHFilesService {
   constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHV20Service, private filesService: FilesService) {}
@@ -48,17 +48,17 @@ export class GA4GHFilesService {
         ToolDescriptor.TypeEnum.WDL,
         // DOCKSTORE-2428 - demo how to add new workflow language
         // ToolDescriptor.TypeEnum.SWL,
-        ToolDescriptor.TypeEnum.NFL
+        ToolDescriptor.TypeEnum.NFL,
       ];
     }
     this.injectAuthorizationToken(this.ga4ghService);
-    descriptorTypes.forEach(descriptorType => {
+    descriptorTypes.forEach((descriptorType) => {
       this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(descriptorType, id, version).subscribe(
-        files => {
+        (files) => {
           this.ga4ghFilesStore.setError(null);
           this.ga4ghFilesStore.upsert(descriptorType, { toolFiles: files });
         },
-        e => {
+        (e) => {
           this.ga4ghFilesStore.setError(e);
           this.ga4ghFilesStore.remove();
         }

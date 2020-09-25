@@ -13,8 +13,8 @@ describe('OrganizationStarringService', () => {
         OrganizationStarringService,
         RequestsService,
         { provide: UsersService, useClass: UsersStubService },
-        { provide: OrganizationsService, useClass: OrganizationsStubService }
-      ]
+        { provide: OrganizationsService, useClass: OrganizationsStubService },
+      ],
     });
   });
 

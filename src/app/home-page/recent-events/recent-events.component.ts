@@ -14,7 +14,7 @@ import { RecentEventsService } from '../state/recent-events.service';
 @Component({
   selector: 'recent-events',
   templateUrl: './recent-events.component.html',
-  styleUrls: ['./recent-events.component.scss']
+  styleUrls: ['./recent-events.component.scss'],
 })
 export class RecentEventsComponent implements OnInit {
   events$: Observable<Event[]>;
@@ -27,7 +27,7 @@ export class RecentEventsComponent implements OnInit {
 
   ngOnInit() {
     this.events$ = this.recentEventsQuery.selectAll({
-      filterBy: entity => this.supportedEventTypes.includes(entity.type)
+      filterBy: (entity) => this.supportedEventTypes.includes(entity.type),
     });
     this.loading$ = this.recentEventsQuery.selectLoading();
 

@@ -28,13 +28,13 @@ describe('DownloadCLIClientComponent', () => {
         MatButtonModule,
         HttpClientTestingModule,
         MatTabsModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
       ],
       providers: [
         { provide: AuthService, useClass: AuthStubService },
         { provide: GA4GHService, useClass: GA4GHStubService },
-        MetadataService
-      ]
+        MetadataService,
+      ],
     }).compileComponents();
   }));
 

@@ -31,7 +31,7 @@ import { OrganizationsStateService } from '../state/organizations.service';
 @Component({
   selector: 'organizations',
   templateUrl: './organizations.component.html',
-  styleUrls: ['./organizations.component.scss']
+  styleUrls: ['./organizations.component.scss'],
 })
 export class OrganizationsComponent extends Base implements OnInit {
   public filteredOrganizations$: Observable<Array<Organization>>;
@@ -61,11 +61,7 @@ export class OrganizationsComponent extends Base implements OnInit {
     this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
     this.organizationSearchForm
       .get('name')
-      .valueChanges.pipe(
-        debounceTime(formInputDebounceTime),
-        distinctUntilChanged(),
-        takeUntil(this.ngUnsubscribe)
-      )
+      .valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchName: string) => {
         this.organizationsStateService.updateSearchNameState(searchName);
       });

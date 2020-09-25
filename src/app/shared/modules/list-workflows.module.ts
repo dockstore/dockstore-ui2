@@ -26,6 +26,6 @@ import { CustomMaterialModule } from './material.module';
   declarations: [ListWorkflowsComponent],
   imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule, EntryModule],
   providers: [PublishedWorkflowsDataSource],
-  exports: [ListWorkflowsComponent]
+  exports: [ListWorkflowsComponent],
 })
 export class ListWorkflowsModule {}

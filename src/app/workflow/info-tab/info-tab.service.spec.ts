@@ -20,18 +20,18 @@ describe('ValueService', () => {
         InfoTabService,
         {
           provide: WorkflowsService,
-          useClass: WorkflowsStubService
+          useClass: WorkflowsStubService,
         },
         {
           provide: WorkflowService,
-          useClass: WorkflowStubService
+          useClass: WorkflowStubService,
         },
         AlertService,
         ExtendedWorkflowQuery,
         DescriptorTypeCompatService,
-        DescriptorLanguageService
+        DescriptorLanguageService,
       ],
-      imports: [CustomMaterialModule, HttpClientTestingModule]
+      imports: [CustomMaterialModule, HttpClientTestingModule],
     });
   });
 

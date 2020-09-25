@@ -27,5 +27,5 @@ export const initialAdvancedSearchObject: AdvancedSearchObject = {
   ANDNoSplitFilter: '',
   ORFilter: '',
   NOTFilter: '',
-  searchMode: 'files'
+  searchMode: 'files',
 };

@@ -31,8 +31,8 @@ describe('Service: paramFiles.service.ts', () => {
         ParamfilesService,
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: ContainersService, useClass: ContainersStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+      ],
     });
   });
 
@@ -50,7 +50,7 @@ describe('Service: paramFiles.service.ts', () => {
     image_id: '5f01c6b7ae8f6ba7701aa30b6643866c2ff6166a8f2221844840f46d636e1ed3',
     dockerfile_path: '/Dockerfile',
     cwl_path: '/Dockstore.cwl',
-    wdl_path: '/Dockstore.wdl'
+    wdl_path: '/Dockstore.wdl',
   };
   const tag2: Tag = {
     id: 132,
@@ -66,7 +66,7 @@ describe('Service: paramFiles.service.ts', () => {
     image_id: '5f01c6b7ae8f6ba7701aa30b6643866c2ff6166a8f2221844840f46d636e1ed3',
     dockerfile_path: '/Dockerfile',
     cwl_path: '/Dockstore.cwl',
-    wdl_path: '/Dockstore.wdl'
+    wdl_path: '/Dockstore.wdl',
   };
 
   const tag3: Tag = {
@@ -89,33 +89,33 @@ describe('Service: paramFiles.service.ts', () => {
         id: 1,
         type: SourceFile.TypeEnum.DOCKERFILE,
         valid: true,
-        message: '{}'
+        message: '{}',
       },
       {
         id: 2,
         type: SourceFile.TypeEnum.DOCKSTORECWL,
         valid: true,
-        message: '{}'
+        message: '{}',
       },
       {
         id: 3,
         type: SourceFile.TypeEnum.DOCKSTOREWDL,
         valid: false,
-        message: '{"/Dockstore.wdl":"Primary WDL descriptor is not present."}'
+        message: '{"/Dockstore.wdl":"Primary WDL descriptor is not present."}',
       },
       {
         id: 4,
         type: SourceFile.TypeEnum.WDLTESTJSON,
         valid: true,
-        message: '{}'
+        message: '{}',
       },
       {
         id: 5,
         type: SourceFile.TypeEnum.CWLTESTJSON,
         valid: true,
-        message: '{}'
-      }
-    ]
+        message: '{}',
+      },
+    ],
   };
 
   const tag1FileTypes: Array<SourceFile.TypeEnum> = ['DOCKERFILE', 'DOCKSTORE_CWL', 'DOCKSTORE_WDL'];
@@ -128,12 +128,12 @@ describe('Service: paramFiles.service.ts', () => {
     expect(service).toBeTruthy();
   }));
   it('should get workflow test parameter files from swagger workflowsService', inject([ParamfilesService], (service: ParamfilesService) => {
-    service.getFiles(1, 'workflows', 'develop', 'CWL').subscribe(files => {
+    service.getFiles(1, 'workflows', 'develop', 'CWL').subscribe((files) => {
       expect(files).toEqual([]);
     });
   }));
   it('should get tool test parameter files from swagger containersService', inject([ParamfilesService], (service: ParamfilesService) => {
-    service.getFiles(1, 'containers', 'develop', 'CWL').subscribe(files => {
+    service.getFiles(1, 'containers', 'develop', 'CWL').subscribe((files) => {
       expect(files).toEqual([]);
     });
   }));

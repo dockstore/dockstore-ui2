@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Token } from '../../../shared/swagger';
 
 @Pipe({
-  name: 'getTokenContent'
+  name: 'getTokenContent',
 })
 export class GetTokenContentPipe implements PipeTransform {
   /**
@@ -16,7 +16,7 @@ export class GetTokenContentPipe implements PipeTransform {
    * @memberof GetTokenContentPipe
    */
   transform(source: string, tokens: Array<Token>): string {
-    const tokenFound: Token = tokens.find(token => token.tokenSource === source);
+    const tokenFound: Token = tokens.find((token) => token.tokenSource === source);
     if (tokenFound) {
       return tokenFound.content;
     } else {

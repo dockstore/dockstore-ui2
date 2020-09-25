@@ -38,9 +38,9 @@ describe('SearchService', () => {
         SearchStore,
         {
           provide: ProviderService,
-          useClass: ProviderStubService
-        }
-      ]
+          useClass: ProviderStubService,
+        },
+      ],
     });
     searchService = TestBed.inject(SearchService);
     searchStore = TestBed.inject(SearchStore);
@@ -54,7 +54,7 @@ describe('SearchService', () => {
   }));
   it('should set observables', inject([SearchService], (service: SearchService) => {
     service.setSearchInfo('stuff');
-    service.searchInfo$.pipe(first()).subscribe(result => {
+    service.searchInfo$.pipe(first()).subscribe((result) => {
       expect(result).toEqual('stuff');
     });
   }));
@@ -73,7 +73,7 @@ describe('SearchService', () => {
           enum: 'QUAY_IO',
           friendlyName: 'Quay.io',
           privateOnly: 'false',
-          url: 'https://quay.io/repository/'
+          url: 'https://quay.io/repository/',
         },
         {
           customDockerPath: 'false',
@@ -81,7 +81,7 @@ describe('SearchService', () => {
           enum: 'DOCKER_HUB',
           friendlyName: 'Docker Hub',
           privateOnly: 'false',
-          url: 'https://hub.docker.com/'
+          url: 'https://hub.docker.com/',
         },
         {
           customDockerPath: 'false',
@@ -89,10 +89,17 @@ describe('SearchService', () => {
           enum: 'GITLAB',
           friendlyName: 'GitLab',
           privateOnly: 'false',
-          url: 'https://gitlab.com/'
+          url: 'https://gitlab.com/',
         },
         { customDockerPath: 'true', dockerPath: null, enum: 'AMAZON_ECR', friendlyName: 'Amazon ECR', privateOnly: 'true', url: null },
-        { customDockerPath: 'true', dockerPath: null, enum: 'SEVEN_BRIDGES', friendlyName: 'Seven Bridges', privateOnly: 'true', url: null }
+        {
+          customDockerPath: 'true',
+          dockerPath: null,
+          enum: 'SEVEN_BRIDGES',
+          friendlyName: 'Seven Bridges',
+          privateOnly: 'true',
+          url: null,
+        },
       ]);
       const filtered: [Array<Hit>, Array<Hit>] = service.filterEntry(elasticSearchResponse, 201);
       const tools = filtered[0];
@@ -116,7 +123,7 @@ describe('SearchService', () => {
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
       defaultTestParameterFilePath: '',
-      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
     };
 
     const b: Workflow = { ...a, author: 'B', starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }] };

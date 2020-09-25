@@ -8,24 +8,24 @@ import { createInitialState, DescriptorsState, DescriptorsStore } from './descri
 
 @Injectable()
 export class DescriptorsQuery extends Query<DescriptorsState> {
-  primaryDescriptor$: Observable<SourceFile> = this.select(state => state.primaryDescriptor);
-  secondaryDescriptor$: Observable<Array<SourceFile>> = this.select(state => state.secondaryDescriptors);
+  primaryDescriptor$: Observable<SourceFile> = this.select((state) => state.primaryDescriptor);
+  secondaryDescriptor$: Observable<Array<SourceFile>> = this.select((state) => state.secondaryDescriptors);
   hasContent$: Observable<boolean> = this.primaryDescriptor$.pipe(
-    map(primaryDescriptor => !!(primaryDescriptor && primaryDescriptor.content && primaryDescriptor.content.length))
+    map((primaryDescriptor) => !!(primaryDescriptor && primaryDescriptor.content && primaryDescriptor.content.length))
   );
   hasFileImports$: Observable<boolean> = this.secondaryDescriptor$.pipe(
-    map(secondaryDescriptors => !!(secondaryDescriptors && secondaryDescriptors.length))
+    map((secondaryDescriptors) => !!(secondaryDescriptors && secondaryDescriptors.length))
   );
   hasHttpImports$: Observable<boolean | any> = this.primaryDescriptor$.pipe(
-    map(primaryDescriptor => this.fileService.hasHttpImport(primaryDescriptor)),
-    mergeMap(hasHttpImport => {
+    map((primaryDescriptor) => this.fileService.hasHttpImport(primaryDescriptor)),
+    mergeMap((hasHttpImport) => {
       if (hasHttpImport) {
         return observableOf(true);
       } else {
         return this.secondaryDescriptor$.pipe(
           map(
-            secondaryDescriptors =>
-              secondaryDescriptors && secondaryDescriptors.some(descriptor => this.fileService.hasHttpImport(descriptor))
+            (secondaryDescriptors) =>
+              secondaryDescriptors && secondaryDescriptors.some((descriptor) => this.fileService.hasHttpImport(descriptor))
           )
         );
       }

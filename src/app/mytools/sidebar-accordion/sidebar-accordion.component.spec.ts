@@ -29,12 +29,12 @@ describe('SidebarAccordionComponent', () => {
         MatExpansionModule,
         MatListModule,
         MatTooltipModule,
-        RouterTestingModule
+        RouterTestingModule,
       ],
       providers: [
         { provide: RegisterToolService, useClass: RegisterToolStubService },
-        { provide: ContainerService, useClass: ContainerStubService }
-      ]
+        { provide: ContainerService, useClass: ContainerStubService },
+      ],
     }).compileComponents();
   }));
 

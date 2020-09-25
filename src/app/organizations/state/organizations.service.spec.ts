@@ -12,7 +12,7 @@ describe('OrganizationsStateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationsStateService, OrganizationsStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
     organizationsStateService = TestBed.inject(OrganizationsStateService);

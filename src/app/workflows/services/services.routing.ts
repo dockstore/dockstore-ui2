@@ -11,9 +11,9 @@ const routes: Routes = [
     data: { title: 'Dockstore | Service', entryType: EntryType.Service },
     children: [
       { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Services' } },
-      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Service' } }
-    ]
-  }
+      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Service' } },
+    ],
+  },
 ];
 
 export const ServicesRoutes = RouterModule.forChild(routes);

@@ -14,7 +14,7 @@ export class RecentEventsService {
       .getEvents('ALL_STARRED')
       .pipe(
         finalize(() => this.recentEventsStore.setLoading(false)),
-        tap(allStarredEvents => {
+        tap((allStarredEvents) => {
           this.recentEventsStore.set(allStarredEvents);
         })
       )

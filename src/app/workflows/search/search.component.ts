@@ -18,6 +18,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-search-workflows',
-  templateUrl: './search.component.html'
+  templateUrl: './search.component.html',
 })
 export class SearchWorkflowsComponent {}

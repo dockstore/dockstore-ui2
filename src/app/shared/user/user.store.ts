@@ -10,7 +10,7 @@ export interface UserState {
 export function createInitialState(): UserState {
   return {
     user: null,
-    extendedUserData: null
+    extendedUserData: null,
   };
 }
 

@@ -52,11 +52,11 @@ export class RegisterWorkflowModalService {
     // because it's not supposed to be compatible yet (in the webservice)
     this.sampleWorkflow.descriptorType = Workflow.DescriptorTypeEnum.CWL;
     this.sampleWorkflow.workflowName = '';
-    this.metadataService.getSourceControlList().subscribe(map => (this.sourceControlMap = map));
-    this.descriptorLanguageService.descriptorLanguages$.subscribe(map => (this.descriptorLanguageMap = map));
+    this.metadataService.getSourceControlList().subscribe((map) => (this.sourceControlMap = map));
+    this.descriptorLanguageService.descriptorLanguages$.subscribe((map) => (this.descriptorLanguageMap = map));
     this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
-    this.workflow.subscribe(workflow => (this.actualWorkflow = workflow));
-    this.workflowService.workflows$.subscribe(workflows => (this.workflows = workflows));
+    this.workflow.subscribe((workflow) => (this.actualWorkflow = workflow));
+    this.workflowService.workflows$.subscribe((workflows) => (this.workflows = workflows));
   }
 
   clearWorkflowRegisterError() {
@@ -73,7 +73,7 @@ export class RegisterWorkflowModalService {
       if (error.status === 0) {
         errorObj = {
           message: 'The webservice is currently down, possibly due to load. Please wait and try again later.',
-          errorDetails: ''
+          errorDetails: '',
         };
       } else {
         errorObj = {
@@ -81,7 +81,7 @@ export class RegisterWorkflowModalService {
             'The webservice encountered an error trying to create this ' +
             'workflow, please ensure that the workflow attributes are ' +
             'valid.',
-          errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' + error.error
+          errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' + error.error,
         };
       }
     }
@@ -111,9 +111,9 @@ export class RegisterWorkflowModalService {
         this.actualWorkflow.defaultTestParameterFilePath
       )
       .subscribe(
-        result => {
+        (result) => {
           this.workflowsService.refresh(result.id).subscribe(
-            refreshResult => {
+            (refreshResult) => {
               this.workflows.push(refreshResult);
               this.alertService.detailedSuccess();
               dialogRef.close();
@@ -145,7 +145,7 @@ export class RegisterWorkflowModalService {
         hostedWorkflow.entryName ? hostedWorkflow.entryName : undefined
       )
       .subscribe(
-        result => {
+        (result) => {
           this.alertService.detailedSuccess();
           this.workflows.push(result);
           dialogRef.close();
@@ -160,7 +160,7 @@ export class RegisterWorkflowModalService {
 
   friendlyRepositoryKeys(): Array<string> {
     if (this.sourceControlMap) {
-      return this.sourceControlMap.map(a => a.friendlyName);
+      return this.sourceControlMap.map((a) => a.friendlyName);
     }
   }
 
