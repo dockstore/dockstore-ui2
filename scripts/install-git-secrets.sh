@@ -71,7 +71,7 @@ then
   # setup the AWS specific configuration variables
   # and custom patterns
   git secrets --register-aws
-  git secrets --add '[a-fA-F0-9]{30,}'
+  git secrets --add "[a-fA-F0-9]{30,}"
 fi
 
 
