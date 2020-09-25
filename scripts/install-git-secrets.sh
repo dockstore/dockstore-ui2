@@ -71,7 +71,12 @@ then
   # setup the AWS specific configuration variables
   # and custom patterns
   git secrets --register-aws
-  git secrets --add "[a-fA-F0-9]{30,}"
+  # return success code (true) since git secrets --add
+  # will return a 1 if the pattern is already set
+  # and that will fail when running
+  # npm run install-git-secrets
+  git secrets --add '[a-fA-F0-9]{30,}' || true
+  git secrets --scan
 fi
 
 
