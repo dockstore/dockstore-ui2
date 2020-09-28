@@ -58,8 +58,7 @@ export class FundingComponent {
     website: 'https://www.innovation.ca/',
     imageSource: '../assets/images/sponsors/CFI_CMYK.png',
     altImageText: 'CFI Logo',
-    content: `The CFI makes financial contributions to Canada’s universities, colleges, research hospitals and non-profit research
-    organizations to increase their capability to carry out high quality research.`,
+    content: `The authors wish to acknowledge the funding support of the Canada Foundation for Innovation Cyberinfrastructure Initiative, the Ontario Research Fund, BC Knowledge Development Fund and the Ministère de l'Économie, de la Science et l'Innovation for 'The Cancer Genome Collaboratory' project.`,
   };
   funders: Funder[] = [
     this.GenomeCanadaFunder,
