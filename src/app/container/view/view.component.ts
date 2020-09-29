@@ -21,6 +21,7 @@ import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { forkJoin, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import {bootstrap4mediumModalSize} from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -72,7 +73,7 @@ export class ViewContainerComponent extends View implements OnInit {
     ]).subscribe(
       (items) => {
         this.versionModalService.setCurrentMode(mode);
-        this.matDialog.open(VersionModalComponent, { width: '600px' });
+        this.matDialog.open(VersionModalComponent, { width: bootstrap4mediumModalSize });
       },
       (error) => {
         this.alertService.detailedError(error);
