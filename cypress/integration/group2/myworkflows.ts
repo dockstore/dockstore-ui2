@@ -389,6 +389,6 @@ describe('Dockstore my workflows', () => {
       '#cdk-accordion-child-2 > .mat-action-row > div.ng-star-inserted > :nth-child(2) > ' +
         'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
     ).trigger('mouseenter');
-    cy.get('.mat-tooltip').contains('Refresh all entries in the organization');
+    cy.get('.mat-tooltip').contains('Refresh all workflows in the organization');
   });
 });

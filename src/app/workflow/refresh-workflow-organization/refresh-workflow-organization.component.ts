@@ -46,7 +46,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
   ) {
     super(userQuery, alertQuery);
     this.buttonText = 'Refresh Organization';
-    this.tooltipText = 'Refresh all entries in the organization';
+    this.tooltipText = 'Refresh all workflows in the organization';
   }
 
   refreshOrganization(): void {
