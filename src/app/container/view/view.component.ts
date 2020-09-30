@@ -18,12 +18,16 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewService } from 'app/container/view/view.service';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import {bootstrap4mediumModalSize} from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { ContainersService } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
+import { ToolDescriptor } from '../../shared/swagger';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
@@ -51,18 +55,30 @@ export class ViewContainerComponent extends View implements OnInit {
     private viewService: ViewService,
     private sessionQuery: SessionQuery,
     private containerService: ContainerService,
+    private containersService: ContainersService,
     private containertagsService: ContainertagsService,
     private hostedService: HostedService,
     private toolQuery: ToolQuery,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private alertService: AlertService
   ) {
     super(dateService, alertQuery);
   }
 
   setMode(mode: TagEditorMode) {
     this.versionModalService.setVersion(this.version);
-    this.versionModalService.setCurrentMode(mode);
-    this.matDialog.open(VersionModalComponent, { width: '600px' });
+    forkJoin([
+      this.containersService.getTestParameterFiles(this.tool.id, this.version.name, ToolDescriptor.TypeEnum.CWL),
+      this.containersService.getTestParameterFiles(this.tool.id, this.version.name, ToolDescriptor.TypeEnum.WDL),
+    ]).subscribe(
+      (items) => {
+        this.versionModalService.setCurrentMode(mode);
+        this.matDialog.open(VersionModalComponent, { width: bootstrap4mediumModalSize });
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+      }
+    );
   }
 
   deleteTag() {
