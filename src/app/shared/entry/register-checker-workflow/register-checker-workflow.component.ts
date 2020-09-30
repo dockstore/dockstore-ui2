@@ -33,7 +33,7 @@ import { RegisterCheckerWorkflowService } from './register-checker-workflow.serv
 
 @Component({
   templateUrl: './register-checker-workflow.component.html',
-  styleUrls: ['./register-checker-workflow.component.scss']
+  styleUrls: ['./register-checker-workflow.component.scss'],
 })
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
   constructor(
@@ -157,11 +157,8 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
     this.registerCheckerWorkflowForm = this.currentForm;
     if (this.registerCheckerWorkflowForm) {
       this.registerCheckerWorkflowForm.valueChanges
-        .pipe(
-          debounceTime(formInputDebounceTime),
-          takeUntil(this.ngUnsubscribe)
-        )
-        .subscribe(data => this.onValueChanged(data));
+        .pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => this.onValueChanged(data));
     }
   }
   onValueChanged(data?: any): void {

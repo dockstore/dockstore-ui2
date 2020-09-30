@@ -13,7 +13,7 @@ describe('UpsertOrganizationMemberService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UpsertOrganizationMemberService, UpsertOrganizationMemberStore, FormBuilder],
-      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule],
     });
 
     upsertOrganizationMemberService = TestBed.inject(UpsertOrganizationMemberService);

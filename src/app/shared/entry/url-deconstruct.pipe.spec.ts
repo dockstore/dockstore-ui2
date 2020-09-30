@@ -5,7 +5,7 @@
 import { UrlDeconstructPipe } from './url-deconstruct.pipe';
 
 describe('Pipe: urlDeconstruct', () => {
-  it('Create an instance and return url pathname', function() {
+  it('Create an instance and return url pathname', function () {
     const pipe = new UrlDeconstructPipe();
 
     // Truthy tests

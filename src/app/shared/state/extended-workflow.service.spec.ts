@@ -35,8 +35,8 @@ describe('Service: ExtendedWorkflow', () => {
         { provide: DateService, useClass: DateStubService },
         { provide: DockstoreService, useClass: DockstoreStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: ImageProviderService, useClass: ImageProviderStubService }
-      ]
+        { provide: ImageProviderService, useClass: ImageProviderStubService },
+      ],
     });
   });
 

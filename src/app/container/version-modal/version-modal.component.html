@@ -21,9 +21,7 @@
       <form *ngIf="unsavedVersion" #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
         <div class="modal-body tagEditor">
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Version Tag:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Version Tag: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
                 id="versionTagInput"
@@ -40,9 +38,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Git Reference:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Git Reference: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
                 id="gitReferenceInput"
@@ -63,9 +59,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Image ID:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Image ID: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
                 type="text"
@@ -79,9 +73,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Dockerfile:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Dockerfile: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
                 data-cy="dockerfilePath"
@@ -105,9 +97,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              CWL Descriptor:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> CWL Descriptor: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
                 type="text"
@@ -128,9 +118,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              WDL Descriptor:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> WDL Descriptor: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
                 type="text"
@@ -152,9 +140,7 @@
           </div>
 
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              CWL Test Parameter File(s):
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> CWL Test Parameter File(s): </label>
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
@@ -250,9 +236,7 @@
           </div>
 
           <div class="form-group form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              WDL Test Parameter File(s):
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> WDL Test Parameter File(s): </label>
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
@@ -347,10 +331,8 @@
             </div>
           </div>
 
-          <div class="form-group form-group-sm" *ngIf="editMode" style="clear:both;">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Hidden:
-            </label>
+          <div class="form-group form-group-sm" *ngIf="editMode" style="clear: both">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Hidden: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div>
                 <label>
@@ -366,9 +348,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Automated:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Automated: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ unsavedVersion.automated ? 'Yes' : 'No' }}
@@ -376,9 +356,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Image Size:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Image Size: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ unsavedVersion.size ? getSizeString(unsavedVersion.size) : 'n/a' }}
@@ -386,9 +364,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Last Modified:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Last Modified: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ getDateTimeMessage(unsavedVersion.last_modified) }}
@@ -396,9 +372,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Valid:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Valid: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ unsavedVersion.valid ? 'Yes' : 'No' }}
@@ -406,9 +380,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="!unsavedVersion.create">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Docker Pull:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Docker Pull: </label>
             <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tool">
               <div class="input-group">
                 <input

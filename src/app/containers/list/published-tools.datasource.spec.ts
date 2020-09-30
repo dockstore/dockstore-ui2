@@ -33,7 +33,7 @@ describe('Service: PublishedToolsDataSource', () => {
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainersService, useClass: ContainersStubService },
       ],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
   });
 

@@ -34,8 +34,8 @@ describe('DockerfileComponent', () => {
       providers: [
         { provide: FileService, useClass: FileStubService },
         { provide: ContainerService, useClass: ContainerStubService },
-        { provide: ContainersService, useClass: ContainersStubService }
-      ]
+        { provide: ContainersService, useClass: ContainersStubService },
+      ],
     }).compileComponents();
   }));
 

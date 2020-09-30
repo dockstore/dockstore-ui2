@@ -17,6 +17,6 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-org
   providers: [OrganizationStarringService, StarOrganizationService, OrgSchemaService],
   declarations: [UpdateOrganizationOrCollectionDescriptionComponent],
   entryComponents: [UpdateOrganizationOrCollectionDescriptionComponent],
-  exports: [NgxJsonLdModule]
+  exports: [NgxJsonLdModule],
 })
 export class UpdateOrganizationDescriptionModule {}

@@ -24,9 +24,9 @@ describe('RegisterOrganizationService', () => {
         RegisterOrganizationService,
         FormBuilder,
         { provide: OrganizationsService, useValue: organizationsServiceStub },
-        { provide: MatDialog, useValue: matDialogStub }
+        { provide: MatDialog, useValue: matDialogStub },
       ],
-      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule],
     });
 
     registerOrganizationService = TestBed.inject(RegisterOrganizationService);

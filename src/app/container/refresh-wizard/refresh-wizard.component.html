@@ -5,9 +5,7 @@
   </p>
   <app-loading [loading]="loading$ | async">
     <mat-card class="alert alert-danger" role="alert" *ngIf="error$ | async as error">
-      <button type="button" class="close" data-dismiss="alert" (click)="clearError()">
-        &times;
-      </button>
+      <button type="button" class="close" data-dismiss="alert" (click)="clearError()">&times;</button>
       <p>
         <mat-icon>warning</mat-icon>
         The webservice encountered an error.
@@ -24,12 +22,8 @@
       </p>
     </mat-card>
     <div *ngIf="organizations$ | async as organizations">
-      <div *ngIf="organizations === undefined">
-        Encountering an issue with the website.
-      </div>
-      <div *ngIf="organizations === null">
-        Problems getting organizations.
-      </div>
+      <div *ngIf="organizations === undefined">Encountering an issue with the website.</div>
+      <div *ngIf="organizations === null">Problems getting organizations.</div>
       <div *ngIf="organizations && organizations.length === 0">
         Could not get any organizations, try relinking the Quay.io token in the accounts page.
       </div>
@@ -65,8 +59,6 @@
 
   <div class="modal-footer" xLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
     <button mat-button color="secondary" matStepperPrevious>Back</button>
-    <button type="button" mat-flat-button color="primary" [mat-dialog-close]="true">
-      Finish
-    </button>
+    <button type="button" mat-flat-button color="primary" [mat-dialog-close]="true">Finish</button>
   </div>
 </div>

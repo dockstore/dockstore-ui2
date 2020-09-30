@@ -28,14 +28,14 @@ export class OrganizationStarringService {
 
   setUnstar(organizationID: number): Observable<any> {
     const body: StarRequest = {
-      star: false
+      star: false,
     };
     return this.organizationsService.starOrganization(organizationID, body);
   }
 
   setStar(organizationID: number): Observable<any> {
     const body: StarRequest = {
-      star: true
+      star: true,
     };
 
     return this.organizationsService.starOrganization(organizationID, body);

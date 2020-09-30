@@ -23,9 +23,7 @@ import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
 
 @Component({
-  template: `
-    <router-outlet></router-outlet>
-  `
+  template: ` <router-outlet></router-outlet> `,
 })
 export class OrganizationsComponent {}
 
@@ -38,7 +36,7 @@ describe('OrganizationService', () => {
     TestBed.configureTestingModule({
       declarations: [OrganizationsComponent],
       providers: [OrganizationService, OrganizationStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)]
+      imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)],
     });
 
     organizationService = TestBed.inject(OrganizationService);

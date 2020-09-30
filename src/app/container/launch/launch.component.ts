@@ -29,7 +29,7 @@ import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
-  styleUrls: ['./launch.component.css']
+  styleUrls: ['./launch.component.css'],
 })
 export class LaunchComponent extends Base implements OnInit, OnChanges {
   @Input() basePath: string;

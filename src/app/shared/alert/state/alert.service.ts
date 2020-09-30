@@ -128,11 +128,11 @@ export class AlertService {
    * @memberof AlertService
    */
   public clearEverything() {
-    this.alertStore.update(state => {
+    this.alertStore.update((state) => {
       return {
         ...state,
         message: '',
-        type: 'info'
+        type: 'info',
       };
     });
   }
@@ -146,12 +146,12 @@ export class AlertService {
    * @memberof AlertService
    */
   private setError(message: string, details: string) {
-    this.alertStore.update(state => {
+    this.alertStore.update((state) => {
       return {
         ...state,
         message: message,
         details: details,
-        type: 'error'
+        type: 'error',
       };
     });
   }
@@ -164,12 +164,12 @@ export class AlertService {
    * @memberof AlertService
    */
   private setInfo(message: string) {
-    this.alertStore.update(state => {
+    this.alertStore.update((state) => {
       return {
         ...state,
         message: message,
         details: '',
-        type: 'info'
+        type: 'info',
       };
     });
   }

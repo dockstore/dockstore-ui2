@@ -31,7 +31,7 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-org
 @Component({
   selector: 'organization',
   templateUrl: './organization.component.html',
-  styleUrls: ['./organization.component.scss']
+  styleUrls: ['./organization.component.scss'],
 })
 export class OrganizationComponent implements OnInit {
   public organizationStarGazersClicked = false;
@@ -63,7 +63,7 @@ export class OrganizationComponent implements OnInit {
     this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
-    this.schema$ = this.organization$.pipe(map(organization => this.orgschemaService.getSchema(organization)));
+    this.schema$ = this.organization$.pipe(map((organization) => this.orgschemaService.getSchema(organization)));
   }
 
   /**
@@ -75,7 +75,7 @@ export class OrganizationComponent implements OnInit {
     const organizationSnapshot: Organization = this.organizationQuery.getValue().organization;
     this.matDialog.open(RegisterOrganizationComponent, {
       data: { organization: organizationSnapshot, mode: TagEditorMode.Edit },
-      width: '600px'
+      width: '600px',
     });
   }
 
@@ -84,7 +84,7 @@ export class OrganizationComponent implements OnInit {
     const description = organizationSnapshot.description;
     this.matDialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'organization' },
-      width: '600px'
+      width: '600px',
     });
   }
 

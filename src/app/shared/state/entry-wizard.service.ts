@@ -8,7 +8,7 @@ import { EntryWizardQuery } from './entry-wizard.query';
 import { EntryWizardStore } from './entry-wizard.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EntryWizardService {
   constructor(
@@ -135,7 +135,7 @@ export class EntryWizardService {
   updateRepoIsPresent(repository: Repository, isPresent: boolean, canDelete: boolean) {
     const state = this.entryWizardQuery.getValue();
     const gitRepos = state.gitRepositories;
-    const index = gitRepos.findIndex(repo => {
+    const index = gitRepos.findIndex((repo) => {
       return repository.path === repo.path && repository.gitRegistry === repo.gitRegistry;
     });
 
@@ -145,7 +145,7 @@ export class EntryWizardService {
       gitRegistry: repository.gitRegistry,
       canDelete: canDelete,
       present: isPresent,
-      path: repository.path
+      path: repository.path,
     };
 
     const updatedGitRepos = Object.assign([], gitRepos);

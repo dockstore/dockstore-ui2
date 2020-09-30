@@ -47,10 +47,10 @@ export class AccountsService {
           .authenticate('google')
           .pipe(first())
           .subscribe(
-            response => {
+            (response) => {
               // TODO: Hook up to snackbar
             },
-            error => {
+            (error) => {
               // TODO: Hook up to snackbar
             },
             () => {

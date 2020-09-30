@@ -49,9 +49,9 @@ describe('CreateCollectionService', () => {
         { provide: MatDialog, useValue: matDialogStub },
         { provide: CollectionsService, useValue: collectionsServiceStub },
         { provide: OrganizationsService, useValue: organizationsServiceStub },
-        { provide: OrganizationQuery, useValue: organizationQueryStub }
+        { provide: OrganizationQuery, useValue: organizationQueryStub },
       ],
-      imports: [BrowserAnimationsModule, HttpClientTestingModule, MatDialogModule, MatSnackBarModule]
+      imports: [BrowserAnimationsModule, HttpClientTestingModule, MatDialogModule, MatSnackBarModule],
     });
 
     createCollectionService = TestBed.inject(CreateCollectionService);

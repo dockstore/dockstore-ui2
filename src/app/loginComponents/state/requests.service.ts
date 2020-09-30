@@ -90,7 +90,7 @@ export class RequestsService {
     this.requestsStore.update((state: RequestsState) => {
       return {
         ...state,
-        allPendingOrganizations: allPendingOrganizations
+        allPendingOrganizations: allPendingOrganizations,
       };
     });
   }
@@ -105,12 +105,12 @@ export class RequestsService {
       .pipe(finalize(() => this.requestsStore.setLoading(false)))
       .subscribe(
         (myMemberships: Array<OrganizationUser>) => {
-          const myOrganizationInvites = myMemberships.filter(membership => !membership.accepted);
+          const myOrganizationInvites = myMemberships.filter((membership) => !membership.accepted);
           const myPendingOrganizationRequests = myMemberships.filter(
-            membership => membership.organization.status === 'PENDING' && membership.accepted
+            (membership) => membership.organization.status === 'PENDING' && membership.accepted
           );
           const myRejectedOrganizationRequests = myMemberships.filter(
-            membership => membership.organization.status === 'REJECTED' && membership.accepted
+            (membership) => membership.organization.status === 'REJECTED' && membership.accepted
           );
 
           this.updateMyMembershipState(myMemberships, myOrganizationInvites, myPendingOrganizationRequests, myRejectedOrganizationRequests);
@@ -142,7 +142,7 @@ export class RequestsService {
         myMemberships: myMemberships,
         myOrganizationInvites: myOrganizationInvites,
         myPendingOrganizationRequests: myPendingOrganizationRequests,
-        myRejectedOrganizationRequests: myRejectedOrganizationRequests
+        myRejectedOrganizationRequests: myRejectedOrganizationRequests,
       };
     });
   }

@@ -23,7 +23,7 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 @Component({
   selector: 'app-files-workflow',
   templateUrl: './files.component.html',
-  styleUrls: ['./files.component.css']
+  styleUrls: ['./files.component.css'],
 })
 export class FilesWorkflowComponent extends Files {
   @Input() selectedVersion: WorkflowVersion;

@@ -15,6 +15,7 @@
     "build": "npx ng build --progress false --subresource-integrity",
     "license": "license-checker  --excludePackages dockstore-ui2@2.3.0 --csv > THIRD-PARTY-LICENSES.csv",
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
+    "install-git-secrets": "./scripts/install-git-secrets.sh",
     "test": "npx ng test",
     "lint": "npx ng lint",
     "e2e": "npx ng e2e",
@@ -107,7 +108,9 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && git secrets --pre_commit_hook -- ${HUSKY_GIT_PARAMS}",
+      "commit-msg": "git secrets --commit_msg_hook -- ${HUSKY_GIT_PARAMS}",
+      "prepare-commit-msg": "git secrets --prepare_commit_msg_hook -- ${HUSKY_GIT_PARAMS}"
     }
   },
   "lint-staged": {

@@ -27,7 +27,7 @@ import { ToolTabService } from './tool-tab.service';
 @Component({
   selector: 'app-tool-tab',
   templateUrl: './tool-tab.component.html',
-  styleUrls: ['./tool-tab.component.scss']
+  styleUrls: ['./tool-tab.component.scss'],
 })
 export class ToolTabComponent extends EntryTab {
   workflow: BioWorkflow | Service;
@@ -47,7 +47,7 @@ export class ToolTabComponent extends EntryTab {
     if (value != null) {
       this.workflow = this.workflowQuery.getActive();
       // Also check that the workflow version belongs to the workflow
-      if (this.workflow && this.workflow.workflowVersions && this.workflow.workflowVersions.some(version => version.id === value.id)) {
+      if (this.workflow && this.workflow.workflowVersions && this.workflow.workflowVersions.some((version) => version.id === value.id)) {
         this.getTableToolContent(this.workflow.id, value.id);
       } else {
         this.handleNullToolContent();
@@ -62,10 +62,10 @@ export class ToolTabComponent extends EntryTab {
     super();
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.toolExcerptHeaderName$ = this.descriptorType$.pipe(
-      map(descriptorType => this.toolTabService.descriptorTypeToHeaderName(descriptorType))
+      map((descriptorType) => this.toolTabService.descriptorTypeToHeaderName(descriptorType))
     );
     this.workflowExcerptRowHeading$ = this.descriptorType$.pipe(
-      map(descriptorType => this.toolTabService.descriptorTypeToWorkflowExcerptRowHeading(descriptorType))
+      map((descriptorType) => this.toolTabService.descriptorTypeToWorkflowExcerptRowHeading(descriptorType))
     );
   }
 
@@ -83,10 +83,10 @@ export class ToolTabComponent extends EntryTab {
         .getTableToolContent(workflowId, versionId)
         .pipe(finalize(() => (this.loading = false)))
         .subscribe(
-          toolContent => {
+          (toolContent) => {
             this.handleToolContent(toolContent);
           },
-          error => {
+          (error) => {
             console.log('Could not retrieve table tool content');
             this.handleToolContent(null);
           }

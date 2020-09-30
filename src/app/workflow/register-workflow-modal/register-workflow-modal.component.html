@@ -40,12 +40,8 @@
         </mat-radio-group>
       </div>
       <div class="modal-footer">
-        <button mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
-          Close
-        </button>
-        <button mat-flat-button color="primary" matStepperNext>
-          Next
-        </button>
+        <button mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
+        <button mat-flat-button color="primary" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
@@ -210,9 +206,7 @@
         (ngSubmit)="registerHostedWorkflow()"
         novalidate
       >
-        <p>
-          Create a workflow with all descriptor files created and stored on Dockstore.org.
-        </p>
+        <p>Create a workflow with all descriptor files created and stored on Dockstore.org.</p>
 
         <mat-radio-group
           id="descriptorTypeRadioButtons"
@@ -260,9 +254,7 @@
         </mat-form-field> -->
 
         <div class="modal-footer">
-          <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
-            Close
-          </button>
+          <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
           <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerHostedWorkflowForm.form.valid">
             Register Workflow
           </button>

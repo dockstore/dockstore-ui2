@@ -31,7 +31,7 @@ describe('HomeComponent', () => {
       declarations: [HomeComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [CustomMaterialModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [TwitterService, DescriptorLanguageService]
+      providers: [TwitterService, DescriptorLanguageService],
     }).compileComponents();
   }));
 

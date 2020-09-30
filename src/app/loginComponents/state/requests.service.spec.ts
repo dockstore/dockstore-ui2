@@ -11,7 +11,7 @@ describe('RequestsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [RequestsService, RequestsStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
     requestsService = TestBed.inject(RequestsService);

@@ -31,7 +31,7 @@ import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css']
+  styleUrls: ['./info-tab.component.css'],
 })
 export class InfoTabComponent implements OnInit, OnChanges {
   currentVersion: Tag;
@@ -90,12 +90,12 @@ export class InfoTabComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.infoTabService.dockerFileEditing$.subscribe(editing => (this.dockerFileEditing = editing));
-    this.infoTabService.cwlPathEditing$.subscribe(editing => (this.cwlPathEditing = editing));
-    this.infoTabService.wdlPathEditing$.subscribe(editing => (this.wdlPathEditing = editing));
-    this.infoTabService.cwlTestPathEditing$.subscribe(editing => (this.cwlTestPathEditing = editing));
-    this.infoTabService.wdlTestPathEditing$.subscribe(editing => (this.wdlTestPathEditing = editing));
-    this.sessionQuery.isPublic$.subscribe(publicPage => (this.isPublic = publicPage));
+    this.infoTabService.dockerFileEditing$.subscribe((editing) => (this.dockerFileEditing = editing));
+    this.infoTabService.cwlPathEditing$.subscribe((editing) => (this.cwlPathEditing = editing));
+    this.infoTabService.wdlPathEditing$.subscribe((editing) => (this.wdlPathEditing = editing));
+    this.infoTabService.cwlTestPathEditing$.subscribe((editing) => (this.cwlTestPathEditing = editing));
+    this.infoTabService.wdlTestPathEditing$.subscribe((editing) => (this.wdlTestPathEditing = editing));
+    this.sessionQuery.isPublic$.subscribe((publicPage) => (this.isPublic = publicPage));
   }
 
   downloadZip() {

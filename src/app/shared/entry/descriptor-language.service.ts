@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import {
   ExtendedDescriptorLanguageBean,
   extendedDescriptorLanguages,
-  extendedUnknownDescriptor
+  extendedUnknownDescriptor,
 } from 'app/entry/extendedDescriptorLanguage';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -46,18 +46,18 @@ export class DescriptorLanguageService {
   constructor(private metadataService: MetadataService, private sessionQuery: SessionQuery) {
     this.update();
     this.descriptorLanguages$ = this.descriptorLanguagesBean$.pipe(
-      map(descriptorLanguageMap => {
+      map((descriptorLanguageMap) => {
         if (descriptorLanguageMap) {
-          return descriptorLanguageMap.map(descriptorLanguage => <Workflow.DescriptorTypeEnum>descriptorLanguage.value.toString());
+          return descriptorLanguageMap.map((descriptorLanguage) => <Workflow.DescriptorTypeEnum>descriptorLanguage.value.toString());
         }
       })
     );
-    this.noService$ = this.descriptorLanguagesBean$.pipe(map(beans => this.filterService(beans)));
+    this.noService$ = this.descriptorLanguagesBean$.pipe(map((beans) => this.filterService(beans)));
     this.descriptorLanguagesInnerHTML$ = this.noService$.pipe(
       map((descriptorLanguageBeans: DescriptorLanguageBean[]) => this.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans))
     );
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
-    this.filteredDescriptorLanguages$ = combined$.pipe(map(combined => this.filterLanguages(combined[0], combined[1])));
+    this.filteredDescriptorLanguages$ = combined$.pipe(map((combined) => this.filterLanguages(combined[0], combined[1])));
   }
   static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
     return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
@@ -67,7 +67,7 @@ export class DescriptorLanguageService {
     descriptorType: ToolDescriptor.TypeEnum | null
   ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
@@ -84,7 +84,7 @@ export class DescriptorLanguageService {
     descriptorType: Workflow.DescriptorTypeEnum | null
   ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      extendedDescriptorLanguage => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.workflowDescriptorEnum === descriptorType
     );
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
@@ -178,7 +178,7 @@ export class DescriptorLanguageService {
     if (descriptorLanguageBeans.length === 0) {
       return '';
     }
-    descriptorLanguageBeans.forEach(descriptorLanguageBean => {
+    descriptorLanguageBeans.forEach((descriptorLanguageBean) => {
       switch (descriptorLanguageBean.value) {
         case this.knownCWLValue: {
           innerHTMLArray.push('<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>');
@@ -242,7 +242,7 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   filterService(beans: DescriptorLanguageBean[]): DescriptorLanguageBean[] {
-    return beans.filter(bean => bean.value !== this.knownServiceValue);
+    return beans.filter((bean) => bean.value !== this.knownServiceValue);
   }
 
   /**
@@ -255,7 +255,7 @@ export class DescriptorLanguageService {
    */
   filterLanguages(descriptorTypes: Workflow.DescriptorTypeEnum[], entryType: EntryType): Workflow.DescriptorTypeEnum[] {
     if (entryType === EntryType.BioWorkflow || entryType === EntryType.Tool || !entryType) {
-      return descriptorTypes.filter(descriptorType => descriptorType !== Workflow.DescriptorTypeEnum.Service);
+      return descriptorTypes.filter((descriptorType) => descriptorType !== Workflow.DescriptorTypeEnum.Service);
     } else {
       return [Workflow.DescriptorTypeEnum.Service];
     }

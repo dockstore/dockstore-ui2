@@ -11,6 +11,6 @@ import { AlertComponent } from './alert.component';
 @NgModule({
   declarations: [AlertComponent, LoadingComponent],
   imports: [MatProgressBarModule, MatIconModule, CommonModule, FormsModule, CustomMaterialModule],
-  exports: [AlertComponent, LoadingComponent]
+  exports: [AlertComponent, LoadingComponent],
 })
 export class RefreshAlertModule {}

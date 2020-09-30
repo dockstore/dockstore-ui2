@@ -10,7 +10,5 @@
     {{ myPendingOrganizationRequests?.length }} organization request<span *ngIf="myPendingOrganizationRequests?.length !== 1">s</span>
     requiring action
   </p>
-  <a [routerLink]="['/accounts']" [queryParams]="{ tab: 'requests' }" class="mx-3 pull-right">
-    View requests
-  </a>
+  <a [routerLink]="['/accounts']" [queryParams]="{ tab: 'requests' }" class="mx-3 pull-right"> View requests </a>
 </div>

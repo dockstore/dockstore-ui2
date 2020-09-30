@@ -43,7 +43,7 @@
           <pre>{{ cli }}</pre>
         </mat-card>
         <mat-card
-          *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode)"
+          *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode"
           class="m-2"
         >
           <div matTooltip="Nextflow can conveniently run a workflow off of source control">

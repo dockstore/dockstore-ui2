@@ -25,6 +25,6 @@ import { GithubAppsLogsComponent } from './github-apps-logs.component';
 @NgModule({
   imports: [CustomMaterialModule, CommonModule, RefreshAlertModule, FlexLayoutModule, PipeModule],
   declarations: [GithubAppsLogsComponent],
-  entryComponents: [GithubAppsLogsComponent]
+  entryComponents: [GithubAppsLogsComponent],
 })
 export class GitHubAppsLogsModule {}

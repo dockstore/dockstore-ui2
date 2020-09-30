@@ -8,7 +8,7 @@ import { EntryWizardService } from '../state/entry-wizard.service';
 @Component({
   selector: 'entry-wizard',
   templateUrl: './entry-wizard.component.html',
-  styleUrls: ['./entry-wizard.component.scss']
+  styleUrls: ['./entry-wizard.component.scss'],
 })
 export class EntryWizardComponent implements OnInit {
   isLoading$: Observable<boolean>;

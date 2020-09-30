@@ -25,7 +25,7 @@ import { AdvancedSearchQuery } from './state/advanced-search.query';
 @Component({
   selector: 'app-advancedsearch',
   templateUrl: './advancedsearch.component.html',
-  styleUrls: ['./advancedsearch.component.scss']
+  styleUrls: ['./advancedsearch.component.scss'],
 })
 export class AdvancedSearchComponent extends Base implements OnInit {
   NOTFilter: string;
@@ -53,7 +53,7 @@ export class AdvancedSearchComponent extends Base implements OnInit {
       ANDSplitFilter: this.ANDSplitFilter,
       ORFilter: this.ORFilter,
       NOTFilter: this.NOTFilter,
-      searchMode: this.searchMode
+      searchMode: this.searchMode,
     };
     this.searchService.setAdvancedSearch(advancedSearch);
     this.dialog.closeAll();

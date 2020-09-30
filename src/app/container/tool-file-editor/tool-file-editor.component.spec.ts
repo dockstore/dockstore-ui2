@@ -38,7 +38,7 @@ describe('ToolFileEditorComponent', () => {
         CodeEditorComponent,
         PublicFileDownloadPipe,
         PrivateFileDownloadPipe,
-        PrivateFilePathPipe
+        PrivateFilePathPipe,
       ],
       imports: [
         MatButtonModule,
@@ -53,15 +53,15 @@ describe('ToolFileEditorComponent', () => {
         MatCardModule,
         BrowserAnimationsModule,
         ClipboardModule,
-        HttpClientModule
+        HttpClientModule,
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: FileService, useClass: FileStubService }
-      ]
+        { provide: FileService, useClass: FileStubService },
+      ],
     }).compileComponents();
   }));
 

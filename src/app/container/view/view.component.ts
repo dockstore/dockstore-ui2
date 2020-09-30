@@ -35,7 +35,7 @@ import { VersionModalService } from '../version-modal/version-modal.service';
 @Component({
   selector: 'app-view-container',
   templateUrl: './view.component.html',
-  styleUrls: ['./view.component.css']
+  styleUrls: ['./view.component.css'],
 })
 // This is actually the actions dropdown for tags
 export class ViewContainerComponent extends View implements OnInit {
@@ -69,8 +69,8 @@ export class ViewContainerComponent extends View implements OnInit {
     const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
-      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(deleteResponse => {
-        this.containertagsService.getTagsByPath(this.tool.id).subscribe(response => {
+      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe((deleteResponse) => {
+        this.containertagsService.getTagsByPath(this.tool.id).subscribe((response) => {
           this.tool.workflowVersions = response;
           this.containerService.setTool(this.tool);
         });
@@ -90,18 +90,16 @@ export class ViewContainerComponent extends View implements OnInit {
 
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
-      this.hostedService
-        .deleteHostedToolVersion(this.tool.id, this.version.name)
-        .subscribe(
-          (updatedTool: DockstoreTool) => this.containerService.setTool(updatedTool),
-          (error: HttpErrorResponse) => console.log(error)
-        );
+      this.hostedService.deleteHostedToolVersion(this.tool.id, this.version.name).subscribe(
+        (updatedTool: DockstoreTool) => this.containerService.setTool(updatedTool),
+        (error: HttpErrorResponse) => console.log(error)
+      );
     }
   }
 
   ngOnInit() {
     this.isPublic$ = this.sessionQuery.isPublic$;
-    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = JSON.parse(JSON.stringify(tool));
       if (this.tool) {
         this.isManualTool = this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;

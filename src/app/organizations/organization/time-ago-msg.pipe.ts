@@ -17,7 +17,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DateService } from '../../shared/date.service';
 
 @Pipe({
-  name: 'timeAgoMessage'
+  name: 'timeAgoMessage',
 })
 export class TimeAgoMsgPipe implements PipeTransform {
   constructor(private dateService: DateService) {}

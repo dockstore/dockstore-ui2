@@ -8,6 +8,6 @@ import { PrivateIconComponent } from './private-icon.component';
 @NgModule({
   imports: [CommonModule, MatIconModule, MatTooltipModule],
   declarations: [PrivateIconComponent],
-  exports: [PrivateIconComponent]
+  exports: [PrivateIconComponent],
 })
 export class PrivateIconModule {}

@@ -5,7 +5,7 @@ import { FileService } from '../file.service';
 import { ToolDescriptor } from '../swagger';
 
 @Pipe({
-  name: 'publicFileDownload'
+  name: 'publicFileDownload',
 })
 export class PublicFileDownloadPipe implements PipeTransform {
   constructor(protected fileService: FileService) {}

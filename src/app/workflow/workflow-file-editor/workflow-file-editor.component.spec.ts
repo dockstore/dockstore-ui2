@@ -36,7 +36,7 @@ describe('WorkflowFileEditorComponent', () => {
         CodeEditorComponent,
         PublicFileDownloadPipe,
         PrivateFileDownloadPipe,
-        PrivateFilePathPipe
+        PrivateFilePathPipe,
       ],
       imports: [
         MatButtonModule,
@@ -50,15 +50,15 @@ describe('WorkflowFileEditorComponent', () => {
         MatSnackBarModule,
         MatCardModule,
         BrowserAnimationsModule,
-        HttpClientModule
+        HttpClientModule,
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: RefreshService, useClass: RefreshStubService },
-        { provide: FileService, useClass: FileStubService }
-      ]
+        { provide: FileService, useClass: FileStubService },
+      ],
     }).compileComponents();
   }));
 

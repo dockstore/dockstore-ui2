@@ -73,10 +73,10 @@ export class VersionModalService {
     this.alertService.start(message1);
     if (workflowMode !== 'HOSTED') {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
-        response => {
+        (response) => {
           this.alertService.start(message2);
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
-            success => {
+            (success) => {
               // Checks if there was a test parameter file added/removed
               // The this.modifyTestParameterFiles function returns a {} observable if nothing was done, this is a way of checking for it
               if (!(Object.keys(success).length === 0 && success.constructor === Object)) {
@@ -88,7 +88,7 @@ export class VersionModalService {
               }
               this.matDialog.closeAll();
             },
-            error => {
+            (error) => {
               this.alertService.detailedError(error);
               if (toRefresh) {
                 this.refreshService.refreshWorkflow();
@@ -96,17 +96,17 @@ export class VersionModalService {
             }
           );
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
         }
       );
     } else {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
-        response => {
+        (response) => {
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
         }
       );
@@ -123,8 +123,8 @@ export class VersionModalService {
    * @memberof VersionModalService
    */
   modifyTestParameterFiles(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles): Observable<any> {
-    const newCWL = newTestParameterFiles.filter(x => !originalTestParameterFilePaths.includes(x));
-    const missingCWL = originalTestParameterFilePaths.filter(x => !newTestParameterFiles.includes(x));
+    const newCWL = newTestParameterFiles.filter((x) => !originalTestParameterFilePaths.includes(x));
+    const missingCWL = originalTestParameterFilePaths.filter((x) => !newTestParameterFiles.includes(x));
     const toAdd: boolean = newCWL && newCWL.length > 0;
     const toDelete: boolean = missingCWL && missingCWL.length > 0;
     const workflowId = this.workflowQuery.getActive().id;

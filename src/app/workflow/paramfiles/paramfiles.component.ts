@@ -32,7 +32,7 @@ import { FilesService } from '../files/state/files.service';
 @Component({
   selector: 'app-paramfiles-workflow',
   templateUrl: './paramfiles.component.html',
-  styleUrls: ['./paramfiles.component.css']
+  styleUrls: ['./paramfiles.component.css'],
 })
 export class ParamfilesWorkflowComponent extends EntryFileSelector implements OnChanges {
   @Input() id: number;

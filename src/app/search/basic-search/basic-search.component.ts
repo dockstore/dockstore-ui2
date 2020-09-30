@@ -12,7 +12,7 @@ import { SearchService } from '../state/search.service';
 @Component({
   selector: 'app-basic-search',
   templateUrl: './basic-search.component.html',
-  styleUrls: ['./basic-search.component.scss']
+  styleUrls: ['./basic-search.component.scss'],
 })
 export class BasicSearchComponent extends Base implements OnInit {
   constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {
@@ -22,7 +22,7 @@ export class BasicSearchComponent extends Base implements OnInit {
   public autocompleteTerms$: Observable<Array<string>>;
   public hasAutoCompleteTerms$: Observable<boolean>;
   ngOnInit() {
-    this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(searchText => {
+    this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((searchText) => {
       // This keeps the state and the view in sync but this is slightly awkward
       // Changes to the searchText$ state will change searchFormControl
       // However, changes to searchFormControl will change searchText$
@@ -34,12 +34,8 @@ export class BasicSearchComponent extends Base implements OnInit {
     this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
 
     this.searchFormControl.valueChanges
-      .pipe(
-        debounceTime(formInputDebounceTime),
-        distinctUntilChanged(),
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(searchText => {
+      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .subscribe((searchText) => {
         this.searchService.setSearchText(searchText);
       });
   }
@@ -53,7 +49,7 @@ export class BasicSearchComponent extends Base implements OnInit {
   openAdvancedSearch(): void {
     this.matDialog.open(AdvancedSearchComponent, {
       width: bootstrap4largeModalSize,
-      height: 'auto'
+      height: 'auto',
     });
   }
 }

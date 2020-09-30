@@ -25,6 +25,6 @@ import { OrganizationStarringService } from './organization-starring.service';
   imports: [CommonModule, MatIconModule],
   declarations: [OrganizationStarringComponent],
   exports: [OrganizationStarringComponent],
-  providers: [OrganizationStarringService, StarOrganizationService]
+  providers: [OrganizationStarringService, StarOrganizationService],
 })
 export class OrganizationStarringModule {}

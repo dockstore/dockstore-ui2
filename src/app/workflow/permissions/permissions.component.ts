@@ -16,7 +16,7 @@ import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
-  styleUrls: ['./permissions.component.scss']
+  styleUrls: ['./permissions.component.scss'],
 })
 export class PermissionsComponent implements OnInit {
   public Role = RoleEnum;
@@ -51,8 +51,8 @@ export class PermissionsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
-      this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
+    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens) => {
+      this.hasGoogleAccount = !!tokens.find((token) => token.tokenSource === TokenSource.GOOGLE);
     });
   }
 
@@ -123,7 +123,7 @@ export class PermissionsComponent implements OnInit {
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
-    return permissions.filter(u => u.role === role).map(c => c.email);
+    return permissions.filter((u) => u.role === role).map((c) => c.email);
   }
 
   private processResponse(userPermissions: Permission[]): void {

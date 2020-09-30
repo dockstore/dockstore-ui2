@@ -21,8 +21,8 @@ describe('ControlsComponent', () => {
       providers: [
         { provide: UserService, useClass: UserStubService },
         { provide: UsersService, useClass: UsersStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+      ],
     }).compileComponents();
   }));
 

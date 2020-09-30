@@ -8,7 +8,7 @@ import { FilteredList } from '../filtered-list';
 @Component({
   selector: 'app-organizations',
   templateUrl: './organizations.component.html',
-  styleUrls: ['./organizations.component.scss']
+  styleUrls: ['./organizations.component.scss'],
 })
 export class OrganizationsComponent extends FilteredList {
   constructor(userQuery: UserQuery, usersService: UsersService, entriesService: EntriesService) {

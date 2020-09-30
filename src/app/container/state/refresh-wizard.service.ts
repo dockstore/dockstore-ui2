@@ -32,20 +32,20 @@ export class RefreshWizardService {
       .getDockerRegistriesOrganization(dockerRegistry)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
       .subscribe(
-        organizations => {
+        (organizations) => {
           this.setOrganizations(organizations);
         },
-        error => {
+        (error) => {
           this.setError(error);
         }
       );
   }
 
   setError(error: HttpErrorResponse | null) {
-    this.refreshWizardStore.update(state => {
+    this.refreshWizardStore.update((state) => {
       return {
         ...state,
-        error: error
+        error: error,
       };
     });
   }
@@ -63,7 +63,7 @@ export class RefreshWizardService {
           this.matSnackBar.open('Refreshing tool succeeded');
           this.myToolsService.getMyEntries(userId, entryType);
         },
-        error => {
+        (error) => {
           this.matSnackBar.open('Refreshing tool failed');
         }
       );
@@ -75,35 +75,35 @@ export class RefreshWizardService {
     this.dockerRegistriesService
       .getDockerRegistryOrganizationRepositories(TokenSource.QUAY, organization)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
-      .subscribe(repositories => {
+      .subscribe((repositories) => {
         this.setSelectedOrganization(organization);
         this.setRepositories(repositories);
       });
   }
 
   setRepositories(repositories: string[]): void {
-    this.refreshWizardStore.update(state => {
+    this.refreshWizardStore.update((state) => {
       return {
         ...state,
-        repositories: repositories
+        repositories: repositories,
       };
     });
   }
 
   setOrganizations(organizations: string[]): void {
-    this.refreshWizardStore.update(state => {
+    this.refreshWizardStore.update((state) => {
       return {
         ...state,
-        organizations: organizations
+        organizations: organizations,
       };
     });
   }
 
   setSelectedOrganization(organization: string) {
-    this.refreshWizardStore.update(state => {
+    this.refreshWizardStore.update((state) => {
       return {
         ...state,
-        selectedOrganization: organization
+        selectedOrganization: organization,
       };
     });
   }

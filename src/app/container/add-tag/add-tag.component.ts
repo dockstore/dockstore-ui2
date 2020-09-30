@@ -33,7 +33,7 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 @Component({
   selector: 'app-add-tag',
   templateUrl: './add-tag.component.html',
-  styleUrls: ['./add-tag.component.css']
+  styleUrls: ['./add-tag.component.css'],
 })
 export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   addTagForm: NgForm;
@@ -76,7 +76,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
       dirtyBit: false,
       verified: false,
       verifiedSource: null,
-      size: 0
+      size: 0,
     };
     this.unsavedCWLTestParameterFilePaths = [];
     this.unsavedWDLTestParameterFilePaths = [];
@@ -98,7 +98,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.initializeTag();
-    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       // One day, we will figure out how to handle form changes with state management's read only state
       this.tool = JSON.parse(JSON.stringify(tool));
       this.loadDefaults();
@@ -209,11 +209,8 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
     this.addTagForm = this.currentForm;
     if (this.addTagForm) {
       this.addTagForm.valueChanges
-        .pipe(
-          debounceTime(formInputDebounceTime),
-          takeUntil(this.ngUnsubscribe)
-        )
-        .subscribe(data => this.onValueChanged(data));
+        .pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => this.onValueChanged(data));
     }
   }
   onValueChanged(data?: any) {

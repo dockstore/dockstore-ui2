@@ -26,7 +26,7 @@ import { SearchService } from '../state/search.service';
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
-  styleUrls: ['./search-results.component.scss']
+  styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent extends Base implements OnInit {
   public activeToolTab$: Observable<number>;
@@ -40,7 +40,7 @@ export class SearchResultsComponent extends Base implements OnInit {
   options: CloudOptions = {
     width: 600,
     height: 200,
-    overflow: false
+    overflow: false,
   };
 
   constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
@@ -56,7 +56,7 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
     this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
-      map(activeToolTab => {
+      map((activeToolTab) => {
         return { active: activeToolTab };
       })
     );
@@ -75,16 +75,16 @@ export class SearchResultsComponent extends Base implements OnInit {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
-      body: toolQuery
+      body: toolQuery,
     })
-      .then(hits => {
+      .then((hits) => {
         let weight = 10;
         let count = 0;
         if (hits && hits.aggregations && hits.aggregations.tagcloud) {
-          hits.aggregations.tagcloud.buckets.forEach(tag => {
+          hits.aggregations.tagcloud.buckets.forEach((tag) => {
             const theTag = {
               text: tag.key,
-              weight: weight
+              weight: weight,
             };
             if (weight === 10) {
               /** just for fun...**/
@@ -108,7 +108,7 @@ export class SearchResultsComponent extends Base implements OnInit {
           });
         }
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }
 
   // Tells the search service to tell the search filters to save its data

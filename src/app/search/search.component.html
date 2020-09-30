@@ -95,7 +95,8 @@
                     </mat-checkbox>
                   </span>
                 </div>
-                <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                <div class="histogram" [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"></div>
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
@@ -112,7 +113,8 @@
                     </mat-checkbox>
                   </span>
                 </div>
-                {{ orderedBuckets.get(key).Items.get(subBucket) }}
+                <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                <div class="histogram" [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"></div>
               </div>
             </div>
           </div>

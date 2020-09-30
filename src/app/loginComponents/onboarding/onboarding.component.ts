@@ -9,7 +9,7 @@ import { UserQuery } from '../../shared/user/user.query';
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
-  styleUrls: ['./onboarding.component.scss']
+  styleUrls: ['./onboarding.component.scss'],
 })
 export class OnboardingComponent implements OnInit, OnDestroy {
   public tokenSetComplete: boolean;
@@ -21,16 +21,13 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   constructor(private userQuery: UserQuery, private tokenService: TokenQuery) {}
   ngOnInit() {
     localStorage.setItem('page', '/onboarding');
-    this.tokenService.userTokenStatusSet$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokenStatusSet => {
+    this.tokenService.userTokenStatusSet$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokenStatusSet) => {
       if (tokenStatusSet) {
         this.tokenSetComplete = tokenStatusSet.github;
       }
     });
     combineLatest([this.userQuery.user$, this.userQuery.extendedUserData$])
-      .pipe(
-        distinctUntilChanged(),
-        takeUntil(this.ngUnsubscribe)
-      )
+      .pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe(
         ([user, extendedUser]) => {
           this.user = user;
@@ -39,7 +36,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
             this.ready = true;
           }
         },
-        error => {
+        (error) => {
           console.error('Error combining user$ and extendedUser$.  This should never happen: ' + error);
         }
       );

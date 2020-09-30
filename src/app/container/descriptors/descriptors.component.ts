@@ -31,7 +31,7 @@ import { FilesService } from '../../workflow/files/state/files.service';
 @Component({
   selector: 'app-descriptors-container',
   templateUrl: './descriptors.component.html',
-  styleUrls: ['./descriptors.component.scss']
+  styleUrls: ['./descriptors.component.scss'],
 })
 export class DescriptorsComponent extends EntryFileSelector implements OnChanges {
   @Input() id: number;
@@ -82,7 +82,7 @@ export class DescriptorsComponent extends EntryFileSelector implements OnChanges
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
     return this.gA4GHFilesQuery.getToolFiles(descriptorType, [
       ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR,
-      ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR
+      ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR,
     ]);
   }
 }

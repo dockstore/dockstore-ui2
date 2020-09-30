@@ -37,8 +37,8 @@ describe('SearchResultsComponent', () => {
       imports: [TagCloudModule, RouterTestingModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
-        { provide: QueryBuilderService, useClass: QueryBuilderStubService }
-      ]
+        { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+      ],
     }).compileComponents();
   }));
 

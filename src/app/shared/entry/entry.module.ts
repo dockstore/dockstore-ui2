@@ -53,7 +53,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     ClipboardModule,
     RouterModule,
     ReactiveFormsModule,
-    RefreshAlertModule
+    RefreshAlertModule,
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -68,7 +68,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     PublicFileDownloadPipe,
     PrivateFileDownloadPipe,
     PrivateFilePathPipe,
-    UrlDeconstructPipe
+    UrlDeconstructPipe,
   ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
@@ -89,9 +89,9 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     ShareIconsModule,
     UrlDeconstructPipe,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   entryComponents: [RegisterCheckerWorkflowComponent],
-  providers: [BioschemaService, EntryActionsService]
+  providers: [BioschemaService, EntryActionsService],
 })
 export class EntryModule {}

@@ -32,7 +32,7 @@ import { Versions } from '../../shared/versions';
 @Component({
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
-  styleUrls: ['./../../workflow/versions/versions.component.css']
+  styleUrls: ['./../../workflow/versions/versions.component.css'],
 })
 export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
@@ -75,13 +75,13 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
 
   setDisplayColumns(publicPage: boolean) {
     if (publicPage) {
-      this.displayedColumns = this.displayedColumns.filter(column => column !== 'hidden');
+      this.displayedColumns = this.displayedColumns.filter((column) => column !== 'hidden');
     }
   }
 
   setDisplayedColumnsFromTool(tool: ExtendedDockstoreTool) {
     if (tool.mode === DockstoreTool.ModeEnum.HOSTED) {
-      this.displayedColumns = this.displayedColumns.filter(column => column !== 'last_built');
+      this.displayedColumns = this.displayedColumns.filter((column) => column !== 'last_built');
     }
   }
 

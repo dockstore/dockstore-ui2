@@ -82,7 +82,7 @@ export class CwlViewerService {
         if (res.status === 200) {
           return observableOf(<CwlViewerDescriptor>{
             svgUrl: Dockstore.CWL_VISUALIZER_URI + res.body.visualisationSvg,
-            webPageUrl: res.url
+            webPageUrl: res.url,
           });
         } else if (res.status === 202) {
           const locationHeader = res.headers.get('Location');
@@ -123,7 +123,7 @@ export class CwlViewerService {
         }
         return <CwlViewerDescriptor>{
           svgUrl: Dockstore.CWL_VISUALIZER_URI + resp.body.visualisationSvg,
-          webPageUrl: resp.url
+          webPageUrl: resp.url,
         };
       }),
       takeUntil(onDestroy$)

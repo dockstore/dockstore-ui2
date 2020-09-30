@@ -25,7 +25,7 @@ export interface CheckerWorkflowState {
 export function createInitialState(): CheckerWorkflowState {
   return {
     entry: null,
-    checkerWorkflow: null
+    checkerWorkflow: null,
   };
 }
 

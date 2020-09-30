@@ -10,7 +10,7 @@ export interface AddEntryState {
 export function createInitialState(): AddEntryState {
   return {
     memberships: null,
-    collections: null
+    collections: null,
   };
 }
 

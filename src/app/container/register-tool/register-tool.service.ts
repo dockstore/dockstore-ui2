@@ -68,14 +68,14 @@ export class RegisterToolService {
     private hostedService: HostedService,
     private toolQuery: ToolQuery
   ) {
-    this.metadataService.getDockerRegistries().subscribe(map => (this.dockerRegistryMap = map));
-    this.metadataService.getSourceControlList().subscribe(map => (this.sourceControlMap = map));
-    this.containerService.tools$.subscribe(tools => (this.tools = tools));
-    this.toolQuery.tool$.subscribe(tool => (this.selectedTool = tool));
+    this.metadataService.getDockerRegistries().subscribe((map) => (this.dockerRegistryMap = map));
+    this.metadataService.getSourceControlList().subscribe((map) => (this.sourceControlMap = map));
+    this.containerService.tools$.subscribe((tools) => (this.tools = tools));
+    this.toolQuery.tool$.subscribe((tool) => (this.selectedTool = tool));
   }
   deregisterTool() {
     this.containersService.deleteContainer(this.selectedTool.id).subscribe(
-      response => {
+      (response) => {
         const newTools: Array<DockstoreTool> = this.tools.filter((tool: DockstoreTool) => tool.id !== this.selectedTool.id);
         const found = newTools.find(
           (tool: DockstoreTool) =>
@@ -88,7 +88,7 @@ export class RegisterToolService {
         }
         this.containerService.setTools(newTools);
       },
-      error => {
+      (error) => {
         this.matSnackBar.open('Encountered problems deleting tool', 'Dismiss');
       }
     );
@@ -146,7 +146,7 @@ export class RegisterToolService {
           this.containerService.setTool(result);
           this.router.navigateByUrl('/my-tools' + '/' + result.tool_path);
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
         }
       );
@@ -252,7 +252,7 @@ export class RegisterToolService {
 
   getImageRegistryPath(irProvider: string): string {
     let foundEnum;
-    this.dockerRegistryMap.forEach(element => {
+    this.dockerRegistryMap.forEach((element) => {
       if (irProvider === element.friendlyName) {
         foundEnum = element.dockerPath;
       }
@@ -262,7 +262,7 @@ export class RegisterToolService {
 
   getToolRegistry(irProvider: string, customDockerRegistryPath: string): string {
     let foundPath;
-    this.dockerRegistryMap.forEach(element => {
+    this.dockerRegistryMap.forEach((element) => {
       if (irProvider === element.friendlyName) {
         if (irProvider === 'Amazon ECR' || irProvider === 'Seven Bridges') {
           foundPath = customDockerRegistryPath;
@@ -275,7 +275,7 @@ export class RegisterToolService {
   }
 
   registryKeys(): Array<string> {
-    return this.dockerRegistryMap.map(a => a.enum);
+    return this.dockerRegistryMap.map((a) => a.enum);
   }
 
   getNormalizedToolObj(toolObj: Tool, customDockerRegistryPath: string): DockstoreTool {
@@ -293,7 +293,7 @@ export class RegisterToolService {
       defaultWDLTestParameterFile: toolObj.default_wdl_test_parameter_file,
       is_published: false,
       private_access: toolObj.private_access,
-      tool_maintainer_email: toolObj.tool_maintainer_email
+      tool_maintainer_email: toolObj.tool_maintainer_email,
     };
     if (normToolObj.toolname === normToolObj.name || !normToolObj.toolname) {
       delete normToolObj.toolname;
@@ -303,13 +303,13 @@ export class RegisterToolService {
 
   friendlyRegistryKeys(): Array<string> {
     if (this.dockerRegistryMap) {
-      return this.dockerRegistryMap.map(a => a.friendlyName);
+      return this.dockerRegistryMap.map((a) => a.friendlyName);
     }
   }
 
   friendlyRepositoryKeys(): Array<string> {
     if (this.sourceControlMap) {
-      return this.sourceControlMap.map(a => a.friendlyName);
+      return this.sourceControlMap.map((a) => a.friendlyName);
     }
   }
 }

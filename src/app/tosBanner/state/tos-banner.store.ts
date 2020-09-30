@@ -27,7 +27,7 @@ export interface TosBannerState {
 export function createInitialState(): TosBannerState {
   return {
     dismissedLatestTOS: JSON.parse(localStorage.getItem(dismissedLatestTOS)),
-    dismissedLatestPrivacyPolicy: JSON.parse(localStorage.getItem(dismissedLatestPrivacyPolicy))
+    dismissedLatestPrivacyPolicy: JSON.parse(localStorage.getItem(dismissedLatestPrivacyPolicy)),
   };
 }
 

@@ -21,7 +21,7 @@ import { ToolQuery } from './tool.query';
 import { ToolStore } from './tool.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ToolService {
   constructor(
@@ -48,10 +48,10 @@ export class ToolService {
 
   @transaction()
   setTags(workflowVersions: Array<Tag> | null) {
-    this.toolStore.updateActive(active => {
+    this.toolStore.updateActive((active) => {
       return {
         ...active.workflowVersions,
-        workflowVersions
+        workflowVersions,
       };
     });
     this.extendedDockstoreToolService.update(this.toolQuery.getActive());

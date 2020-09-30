@@ -8,7 +8,7 @@ import { FilteredList } from '../filtered-list';
 @Component({
   selector: 'app-entries',
   templateUrl: './entries.component.html',
-  styleUrls: ['./entries.component.scss']
+  styleUrls: ['./entries.component.scss'],
 })
 export class EntriesComponent extends FilteredList {
   public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
@@ -19,9 +19,7 @@ export class EntriesComponent extends FilteredList {
   getMyList(): void {
     this.usersService
       .getUserEntries(10, this.filterText)
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (myEntries: Array<EntryUpdateTime>) => {
           this.myItems = myEntries;

@@ -22,7 +22,7 @@ import { Tag, VerificationInformation, WorkflowVersion } from '../../swagger';
 @Component({
   selector: 'app-verified-display',
   templateUrl: './verified-display.component.html',
-  styleUrls: ['./verified-display.component.scss']
+  styleUrls: ['./verified-display.component.scss'],
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
   @Input() verifiedByPlatform: Array<VersionVerifiedPlatform>;
@@ -56,14 +56,14 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
     if (versionid && verifiedByPlatform) {
       verifiedByPlatform
         .filter((vs: VersionVerifiedPlatform) => vs.versionId === versionid)
-        .forEach(vs => {
+        .forEach((vs) => {
           if (vs.verified) {
             const customVerificationInformationObject = {
               // This allows the string to break after every slash for word-wrapping purposes
               path: vs.path.replace(/\//g, '/' + '\u2028'),
               platform: vs.source,
               platformVersion: vs.platformVersion ? vs.platformVersion : 'N/A',
-              metadata: vs.metadata
+              metadata: vs.metadata,
             };
             customVerificationInformationArray.push(customVerificationInformationObject);
           }

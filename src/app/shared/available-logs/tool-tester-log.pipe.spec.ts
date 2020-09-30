@@ -7,7 +7,7 @@ import { ToolTesterLogPipe } from './tool-tester-log.pipe';
 describe('Pipe: ToolTesterLoge', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     });
   });
   it('create an instance', inject([Router], (router: Router) => {

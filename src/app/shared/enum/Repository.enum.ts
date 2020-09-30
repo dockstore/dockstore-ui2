@@ -17,11 +17,11 @@
 export enum Repository {
   GITHUB,
   BITBUCKET,
-  GITLAB
+  GITLAB,
 }
 
 export enum FriendlyRepositories {
   'GitHub',
   'Bitbucket',
-  'GitLab'
+  'GitLab',
 }

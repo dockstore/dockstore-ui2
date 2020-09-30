@@ -22,6 +22,6 @@ import { RefreshAlertModule } from '../alert/alert.module';
   declarations: [HeaderComponent],
   imports: [RefreshAlertModule],
   providers: [],
-  exports: [HeaderComponent]
+  exports: [HeaderComponent],
 })
 export class HeaderModule {}

@@ -271,9 +271,7 @@
           <a [href]="'mailto:' + selectedVersion?.email" *ngIf="selectedVersion?.email">
             {{ selectedVersion?.email }}
           </a>
-          <span *ngIf="!selectedVersion?.email">
-            n/a
-          </span>
+          <span *ngIf="!selectedVersion?.email"> n/a </span>
         </div>
         <span *ngIf="isValidVersion" id="downloadZipButton">
           <button *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>

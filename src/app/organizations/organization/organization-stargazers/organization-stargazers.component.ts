@@ -25,7 +25,7 @@ import { OrganizationStarringService } from '../organization-starring/organizati
 @Component({
   selector: 'app-organization-stargazers',
   templateUrl: '../../../stargazers/stargazers.component.html',
-  styleUrls: ['../../../stargazers/stargazers.component.css']
+  styleUrls: ['../../../stargazers/stargazers.component.css'],
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {
   starGazers: Array<User>;
@@ -39,7 +39,7 @@ export class OrganizationStargazersComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    this.starOrganizationService.starOrganization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(organization => {
+    this.starOrganizationService.starOrganization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization) => {
       if (organization && organization.theOrganization) {
         this.organizationStarringService.getStarring(organization.theOrganization.id).subscribe((starring: Array<User>) => {
           this.starGazers = starring;

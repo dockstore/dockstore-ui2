@@ -25,7 +25,7 @@ import { WorkflowLaunchService } from './workflow-launch.service';
 describe('WorkflowLaunchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WorkflowLaunchService, { provide: WorkflowService, useClass: WorkflowStubService }]
+      providers: [WorkflowLaunchService, { provide: WorkflowService, useClass: WorkflowStubService }],
     });
   });
 
