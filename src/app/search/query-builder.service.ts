@@ -110,6 +110,24 @@ export class QueryBuilderService {
     return tableQuery;
   }
 
+  getFacetSearchQuery(
+    query_size: number,
+    values: string,
+    advancedSearchObject: AdvancedSearchObject,
+    searchTerm: boolean,
+    filters: any,
+    sortModeMap: any
+  ): string {
+    const count = this.getNumberOfFilters(filters);
+    let facetBody = bodybuilder().size(query_size);
+    facetBody = this.excludeContent(facetBody);
+    facetBody = this.appendQuery(facetBody, values, advancedSearchObject, searchTerm);
+    facetBody = this.appendAggregationsFacetSearch(count, facetBody, filters, sortModeMap, 'author');
+    const builtSideBarBody = facetBody.build();
+    const facetSearchQuery = JSON.stringify(builtSideBarBody);
+    return facetSearchQuery;
+  }
+
   /**===============================================
    *                Append Functions
    * ==============================================
@@ -197,6 +215,12 @@ export class QueryBuilderService {
     );
   }
 
+  searchAuthor(body: any, searchString: string): void {
+    body = body.filter('bool', (filter) =>
+      filter.orFilter('bool', (authorFilter) => authorFilter.filter('match_phrase', 'author', searchString))
+    );
+  }
+
   /**===============================================
    *                Advanced Search Functions
    * ===============================================
@@ -222,6 +246,27 @@ export class QueryBuilderService {
         body = body.agg('terms', key, key, { size: this.shard_size, order });
       }
     });
+    return body;
+  }
+
+  /**
+   * Append aggregations for searching within a specific facet
+   *
+   * @param {number} count number of filters
+   * @param {*} body the body builder object
+   * @param {string} facet category to search within
+   * @returns {*} the new body builder object
+   * @memberof SearchComponent
+   */
+  appendAggregationsFacetSearch(count: number, body: any, filters: any, sortModeMap: any, facet: string): any {
+    const order = this.searchService.parseOrderBy(facet, sortModeMap);
+    if (count > 0) {
+      body = body.agg('filter', facet, facet, (a) => {
+        return this.appendFilter(a, facet, filters).aggregation('terms', facet, facet, { size: this.shard_size, order });
+      });
+    } else {
+      body = body.agg('terms', facet, facet, { size: this.shard_size, order });
+    }
     return body;
   }
 
