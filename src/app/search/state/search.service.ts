@@ -153,6 +153,19 @@ export class SearchService {
     }
   }
 
+  @transaction()
+  setFacetSearchText(text: string) {
+    this.searchStore.update((state) => {
+      return {
+        ...state,
+        facetSearchText: text,
+      };
+    });
+    if (text) {
+      this.clear();
+    }
+  }
+
   searchSuggestTerm() {
     const suggestTerm = this.searchQuery.getValue().suggestTerm;
     this.setSearchText(suggestTerm);

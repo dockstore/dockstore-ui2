@@ -29,6 +29,7 @@ export class SearchQuery extends Query<SearchState> {
   public noWorkflowHits$: Observable<boolean> = this.workflows$.pipe(map((workflows: Array<Workflow>) => this.haveNoHits(workflows)));
   public searchText$: Observable<string> = this.select((state) => state.searchText);
   public basicSearchText$: Observable<string> = this.searchText$.pipe(map((searchText) => this.joinComma(searchText)));
+  public facetSearchText$: Observable<string> = this.select((state) => state.facetSearchText);
   public showToolTagCloud$: Observable<boolean> = this.select((state) => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select((state) => state.showWorkflowTagCloud);
   public filterKeys$: Observable<Array<string>> = this.select((state) => state.filterKeys);

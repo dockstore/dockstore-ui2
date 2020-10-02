@@ -72,6 +72,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
   searchTerm = false;
+  facetSearchTerm = false;
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -102,6 +103,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
   public basicSearchText$: Observable<string>;
+  public facetSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
 
   public filterKeys$: Observable<Array<string>>;
@@ -115,6 +117,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private queryBuilderService: QueryBuilderService,
     public searchService: SearchService,
     private searchQuery: SearchQuery,
+    private facetSearchQuery: SearchQuery,
     private advancedSearchQuery: AdvancedSearchQuery,
     private activatedRoute: ActivatedRoute
   ) {
@@ -142,6 +145,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
     this.basicSearchText$ = this.searchQuery.basicSearchText$;
+    this.facetSearchText$ = this.searchQuery.facetSearchText$;
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toSaveSearch) => {
       if (toSaveSearch) {
@@ -153,6 +157,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchText: string) => {
         this.onKey(searchText);
+      });
+    this.searchQuery.facetSearchText$
+      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .subscribe((searchText: string) => {
+        this.onKeyFacetSearch(searchText);
       });
     this.hits = [];
 
@@ -377,6 +386,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       body: value,
     })
       .then((hits) => {
+        console.log('updatesidebar', hits);
         this.setupAllBuckets(hits);
         this.setupOrderBuckets();
       })
@@ -406,6 +416,32 @@ export class SearchComponent implements OnInit, OnDestroy {
         if (this.searchTerm && this.hits.length === 0) {
           this.searchService.suggestSearchTerm(searchText);
         }
+      })
+      .catch((error) => console.log(error));
+  }
+
+  updateFacetSearchQuery() {
+    const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const values = this.advancedSearchQuery.getValue().searchText;
+    const facetSearchQuery = this.queryBuilderService.getFacetSearchQuery(
+      this.query_size,
+      values,
+      advancedSearchObject,
+      this.searchTerm,
+      this.filters,
+      this.sortModeMap
+    );
+    this.updateFacet(facetSearchQuery);
+  }
+
+  updateFacet(value: string) {
+    ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: value,
+    })
+      .then((hits) => {
+        console.log(hits);
       })
       .catch((error) => console.log(error));
   }
@@ -462,6 +498,14 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm = false;
     }
     this.updatePermalink();
+  }
+
+  onKeyFacetSearch(searchText: string) {
+    this.facetSearchTerm = true;
+    if (!searchText || 0 === searchText.length) {
+      this.facetSearchTerm = false;
+    }
+    this.updateFacetSearchQuery();
   }
 
   searchSuggestTerm() {
