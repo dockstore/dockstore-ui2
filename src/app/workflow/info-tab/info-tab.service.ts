@@ -90,6 +90,7 @@ export class InfoTabService {
           this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
           this.workflowService.setWorkflow(refreshResponse);
           this.alertService.detailedSuccess();
+          console.log(refreshResponse);
         },
         (error) => {
           this.alertService.detailedError(error);
