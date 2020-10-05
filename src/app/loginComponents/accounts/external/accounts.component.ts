@@ -89,7 +89,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'ORCID',
       source: TokenSource.ORCID,
       bold: '',
-      message: 'ORCID iDs are used for providing links from your Dockstore contributions to your ORCID account.',
+      message: 'ORCID credentials are used for providing links from your Dockstore contributions to your ORCID account.',
       show: false,
       logo: 'orcid.svg',
     },
