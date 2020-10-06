@@ -44,8 +44,8 @@
             {{ friendlyNames.get(key) }}
             <mat-icon *ngIf="toolTips.get(key)" matTooltip="{{ toolTips.get(key) }}">help_outline</mat-icon>
           </mat-expansion-panel-header>
+          <app-facet-search *ngIf="key === 'author'"></app-facet-search>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
-            <app-facet-search *ngIf="key === 'author'"></app-facet-search>
             <button
               mat-stroked-button
               (click)="clickSortMode(key, false)"
