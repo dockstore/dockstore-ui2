@@ -284,10 +284,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @param {*} hits The response hits from elastic search
    * @memberof SearchComponent
    */
-  setupAllBuckets(hits: SearchResponse<Hit>, isFacetSearch: boolean) {
-    if (isFacetSearch) {
-      console.log('success');
-    }
+  setupAllBuckets(hits: SearchResponse<Hit>) {
     this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
     Object.entries(aggregations).forEach(([key, value]) => {
@@ -302,6 +299,42 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     });
     this.setFilter = true;
+  }
+
+  /**
+   * Updates the bucket, fullyExpandMap, and checkboxMap data structures of one facet
+   * based on the hits to update the search view
+   * @param {*} hits The response hits from elastic search
+   * @memberof SearchComponent
+   */
+  setupSingleBucket(hits: SearchResponse<Hit>) {
+    const facet = 'author';
+    // Make copies of the previous checkboxMap and entryOrder
+    const prevMap = this.checkboxMap;
+    const prevEntryOrder = this.entryOrder;
+    // Clear entryorder but keep orderBuckets
+    // We are only looking for an entryOrder for one specific bucket
+    this.entryOrder.clear();
+    this.entryOrder = this.searchService.initializeEntryOrder();
+    this.checkboxMap = new Map<string, Map<string, boolean>>();
+    const aggregations = hits.aggregations;
+    Object.entries(aggregations).forEach(([key, value]) => {
+      if (value['buckets'] != null) {
+        this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
+      }
+      if (value[key]) {
+        this.setupBuckets(key, value[key].buckets);
+      }
+    });
+    // insert the updated bucket results of the specific facet into the old checkboxMap and entryOrder
+    // then set current checkboxMap and entryOrder to their old version
+    // so everything will be the same except the updated facet
+    prevMap.set(facet, this.checkboxMap.get(facet));
+    this.checkboxMap = prevMap;
+    prevEntryOrder.set(facet, this.entryOrder.get(facet));
+    this.entryOrder = prevEntryOrder;
+    // this will update only the facet you are searching
+    this.setupOrderBuckets();
   }
 
   /**
@@ -359,7 +392,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    var values = this.advancedSearchQuery.getValue().searchText;
+    let values = this.advancedSearchQuery.getValue().searchText;
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     if (isFacetSearch) {
       values = this.advancedSearchQuery.getValue().facetSearchText;
@@ -380,10 +413,12 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.filters
     );
-    this.resetEntryOrder();
-    this.updateSideBar(sideBarQuery, isFacetSearch);
     if (!isFacetSearch) {
+      this.resetEntryOrder();
       this.updateResultsTable(tableQuery);
+      this.updateSideBar(sideBarQuery);
+    } else {
+      this.updateFacet(sideBarQuery);
     }
   }
 
@@ -401,14 +436,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.updateFacet(facetQuery);
   }
 
-  updateSideBar(value: string, isFacetSearch: boolean) {
+  updateSideBar(value: string) {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: value,
     })
       .then((hits) => {
-        this.setupAllBuckets(hits, isFacetSearch);
+        this.setupAllBuckets(hits);
         this.setupOrderBuckets();
       })
       .catch((error) => console.log(error));
@@ -448,8 +483,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       body: value,
     })
       .then((hits) => {
-        // this.setupSingleBucket(hits);
-        // this.setupOrderBuckets();
+        this.setupSingleBucket(hits);
       })
       .catch((error) => console.log(error));
   }
@@ -460,6 +494,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   resetFilters() {
     this.searchService.reset();
+    this.searchService.setFacetSearchText('');
   }
 
   resetEntryOrder() {
@@ -513,7 +548,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!searchText || 0 === searchText.length) {
       this.facetSearchTerm = false;
     }
-    this.updateQuery(true);
+    this.updateQuery(this.facetSearchTerm);
   }
 
   searchSuggestTerm() {

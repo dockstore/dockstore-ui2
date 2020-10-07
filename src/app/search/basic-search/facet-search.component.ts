@@ -20,6 +20,7 @@ export class FacetSearchComponent extends Base implements OnInit {
   public searchFormControl = new FormControl();
   public autocompleteTerms$: Observable<Array<string>>;
   public hasAutoCompleteTerms$: Observable<boolean>;
+  public inputDebounceTime = 500;
 
   ngOnInit() {
     this.searchQuery.facetSearchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((searchText) => {
@@ -34,7 +35,7 @@ export class FacetSearchComponent extends Base implements OnInit {
     this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
 
     this.searchFormControl.valueChanges
-      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .pipe(debounceTime(this.inputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchText) => {
         this.searchService.setFacetSearchText(searchText);
       });
