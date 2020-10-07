@@ -45,6 +45,7 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
   ) {
     super(userQuery, alertQuery);
     this.buttonText = 'Refresh Namespace';
+    this.tooltipText = 'Refresh all tools in the namespace';
   }
 
   refreshOrganization(): void {

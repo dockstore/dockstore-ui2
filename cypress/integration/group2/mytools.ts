@@ -389,4 +389,9 @@ describe('Dockstore my tools', () => {
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 0); // No versions
   });
+  it('Refresh Namespace button should have tooltip', () => {
+    cy.visit('/my-tools/quay.io/A2/a');
+    cy.get('#cdk-accordion-child-4 > .mat-action-row > .pull-right > [data-cy=refreshOrganization]').trigger('mouseenter');
+    cy.get('.mat-tooltip').contains('Refresh all tools in the namespace');
+  });
 });
