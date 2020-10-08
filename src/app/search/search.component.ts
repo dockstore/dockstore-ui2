@@ -68,6 +68,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public hits: Hit[];
+  public hasFacetResults = true;
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
@@ -109,6 +110,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
+  public hasFacetSearchResults = true;
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -310,7 +312,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   setupSingleBucket(hits: SearchResponse<Hit>) {
     const facet = 'author';
     // Make copies of the previous checkboxMap and entryOrder
-    const prevMap = this.checkboxMap;
+    const prevCheckboxMap = this.checkboxMap;
     const prevEntryOrder = this.entryOrder;
     // Clear entryorder but keep orderBuckets
     // We are only looking for an entryOrder for one specific bucket
@@ -329,8 +331,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     // insert the updated bucket results of the specific facet into the old checkboxMap and entryOrder
     // then set current checkboxMap and entryOrder to their old version
     // so everything will be the same except the updated facet
-    prevMap.set(facet, this.checkboxMap.get(facet));
-    this.checkboxMap = prevMap;
+    prevCheckboxMap.set(facet, this.checkboxMap.get(facet));
+    this.checkboxMap = prevCheckboxMap;
     prevEntryOrder.set(facet, this.entryOrder.get(facet));
     this.entryOrder = prevEntryOrder;
     // this will update only the facet you are searching
@@ -388,11 +390,13 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
 
   // Called when any change to the search is made to update the results
+  // Handles search within a facet too
+  // If isFacetSearch, will only update results within the facet
   updateQuery(isFacetSearch: boolean) {
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    let values = this.advancedSearchQuery.getValue().searchText;
+    var values = this.advancedSearchQuery.getValue().searchText;
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     if (isFacetSearch) {
       values = this.advancedSearchQuery.getValue().facetSearchText;
@@ -483,7 +487,12 @@ export class SearchComponent implements OnInit, OnDestroy {
       body: value,
     })
       .then((hits) => {
-        this.setupSingleBucket(hits);
+        if (hits.aggregations.author.buckets.length === 0) {
+          this.hasFacetSearchResults = false;
+        } else {
+          this.hasFacetSearchResults = true;
+          this.setupSingleBucket(hits);
+        }
       })
       .catch((error) => console.log(error));
   }
@@ -533,6 +542,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       },
     })
       .then((hits) => {
+        console.log('basic autocomplete', hits);
         this.searchService.setAutoCompleteTerms(hits);
       })
       .catch((error) => console.log(error));
@@ -544,9 +554,38 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   onKeyFacetSearch(searchText: string) {
+    const pattern = searchText + '.*';
+    ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: {
+        size: 0,
+        aggs: {
+          autocomplete: {
+            terms: {
+              field: 'description',
+              size: 4,
+              order: {
+                _count: 'desc',
+              },
+              include: {
+                pattern: pattern,
+              },
+            },
+          },
+        },
+      },
+    })
+      .then((hits) => {
+        console.log('facet autocomplete', hits);
+        this.searchService.setAutoCompleteTerms(hits);
+      })
+      .catch((error) => console.log(error));
     this.facetSearchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.facetSearchTerm = false;
+      // set to true to clear "no results" alert
+      this.hasFacetSearchResults = true;
     }
     this.updateQuery(this.facetSearchTerm);
   }
@@ -564,6 +603,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       const checked = this.checkboxMap.get(category).get(categoryValue);
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
+      this.hasFacetSearchResults = true;
+      this.searchService.setFacetSearchText('');
     }
     this.updatePermalink();
   }

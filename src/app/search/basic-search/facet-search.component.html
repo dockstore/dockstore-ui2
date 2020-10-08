@@ -1,12 +1,17 @@
-<mat-form-field>
-  <input
-    matInput
-    [formControl]="searchFormControl"
-    matTooltip="Find tools and workflows"
-    [matTooltipPosition]="'after'"
-    list="suggestions"
-    class="w-100 mb-3"
-    placeholder="Enter search term"
-    type="text"
-  />
-</mat-form-field>
+<div>
+  <mat-form-field>
+    <input
+      matInput
+      [formControl]="searchFormControl"
+      matTooltip="Find tools and workflows"
+      [matTooltipPosition]="'after'"
+      list="suggestions"
+      class="w-100 mb-3"
+      placeholder="Search for an author"
+      type="text"
+    />
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of autocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
+  </mat-autocomplete>
+</div>

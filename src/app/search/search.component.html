@@ -44,7 +44,10 @@
             {{ friendlyNames.get(key) }}
             <mat-icon *ngIf="toolTips.get(key)" matTooltip="{{ toolTips.get(key) }}">help_outline</mat-icon>
           </mat-expansion-panel-header>
-          <app-facet-search *ngIf="key === 'author'"></app-facet-search>
+          <div *ngIf="key === 'author'">
+            <app-facet-search></app-facet-search>
+            <mat-card *ngIf="!hasFacetSearchResults" class="alert alert-warning"> Sorry, no authors found. </mat-card>
+          </div>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button
               mat-stroked-button
