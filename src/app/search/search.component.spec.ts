@@ -84,6 +84,7 @@ describe('SearchComponent', () => {
     component = fixture.componentInstance;
     searchQuery = TestBed.inject(SearchQuery) as jasmine.SpyObj<SearchQuery>;
     searchQuery.searchText$ = of('');
+    searchQuery.facetSearchText$ = of('');
     searchQuery.getValue.and.returnValue({
       shortUrl: null,
       workflowhit: null,
