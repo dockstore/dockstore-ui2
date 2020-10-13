@@ -25,6 +25,7 @@ import { UserQuery } from '../user/user.query';
 export abstract class RefreshOrganizationComponent extends Base implements OnInit {
   protected userId: number;
   buttonText: string;
+  tooltipText: string;
   public isRefreshing$: Observable<boolean>;
   constructor(private userQuery: UserQuery, protected alertQuery: AlertQuery) {
     super();

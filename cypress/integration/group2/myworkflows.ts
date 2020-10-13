@@ -383,4 +383,12 @@ describe('Dockstore my workflows', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
     });
   });
+  it('Refresh Organization button should have tooltip', () => {
+    cy.visit('/my-workflows/github.com/A/l');
+    cy.get(
+      '#cdk-accordion-child-2 > .mat-action-row > div.ng-star-inserted > :nth-child(2) > ' +
+        'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
+    ).trigger('mouseenter');
+    cy.get('.mat-tooltip').contains('Refresh all workflows in the organization');
+  });
 });
