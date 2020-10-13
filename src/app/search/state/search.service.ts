@@ -285,6 +285,22 @@ export class SearchService {
     });
   }
 
+  setAuthorAutocomplete(hits: any) {
+    let authorAutocompleteTerms;
+    try {
+      authorAutocompleteTerms = hits.aggregations.autocomplete.buckets.map((term) => term.key);
+    } catch (error) {
+      console.error('Could not retrieve autocomplete terms');
+      authorAutocompleteTerms = [];
+    }
+    this.searchStore.update((state) => {
+      return {
+        ...state,
+        authorAutocompleteTerms: authorAutocompleteTerms,
+      };
+    });
+  }
+
   /**
    * By default, bodybuilder will create a aggregation name called agg_<aggregationType>_<fieldToAggregate>
    * This converts it to just <fieldToAggregate>

@@ -197,12 +197,6 @@ export class QueryBuilderService {
     );
   }
 
-  searchAuthor(body: any, searchString: string): void {
-    body = body.filter('bool', (filter) =>
-      filter.orFilter('bool', (authorFilter) => authorFilter.filter('match_phrase', 'author', searchString))
-    );
-  }
-
   /**===============================================
    *                Advanced Search Functions
    * ===============================================

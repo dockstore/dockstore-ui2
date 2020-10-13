@@ -4,21 +4,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
-import { bootstrap4largeModalSize, formInputDebounceTime } from '../../shared/constants';
-import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 
 @Component({
   selector: 'app-facet-search',
   templateUrl: './facet-search.component.html',
+  styleUrls: ['./facet-search.component.scss'],
 })
 export class FacetSearchComponent extends Base implements OnInit {
   constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {
     super();
   }
   public searchFormControl = new FormControl();
-  public autocompleteTerms$: Observable<Array<string>>;
+  public authorAutocompleteTerms$: Observable<Array<string>>;
   public hasAutoCompleteTerms$: Observable<boolean>;
   public inputDebounceTime = 500;
 
@@ -31,7 +30,7 @@ export class FacetSearchComponent extends Base implements OnInit {
       // Ideally, we should probably be using AkitaFormManager because then there would only be one variable
       this.searchFormControl.setValue(searchText);
     });
-    this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;
+    this.authorAutocompleteTerms$ = this.searchQuery.authorAutocompleteTerms$;
     this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
 
     this.searchFormControl.valueChanges

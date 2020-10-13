@@ -68,7 +68,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public hits: Hit[];
-  public hasFacetResults = true;
+  public noFacetResults = false;
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
@@ -110,7 +110,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
-  public hasFacetSearchResults = true;
+  public noFacetSearchResults = false;
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -225,7 +225,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
-    this.updateQuery(false);
+    this.updateQuery();
   }
 
   /**===============================================
@@ -392,15 +392,12 @@ export class SearchComponent implements OnInit, OnDestroy {
   // Called when any change to the search is made to update the results
   // Handles search within a facet too
   // If isFacetSearch, will only update results within the facet
-  updateQuery(isFacetSearch: boolean) {
+  updateQuery() {
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    var values = this.advancedSearchQuery.getValue().searchText;
+    const values = this.advancedSearchQuery.getValue().searchText;
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
-    if (isFacetSearch) {
-      values = this.advancedSearchQuery.getValue().facetSearchText;
-    }
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
       this.query_size,
       values,
@@ -417,27 +414,75 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.filters
     );
-    if (!isFacetSearch) {
-      this.resetEntryOrder();
-      this.updateResultsTable(tableQuery);
-      this.updateSideBar(sideBarQuery);
-    } else {
-      this.updateFacet(sideBarQuery);
-    }
+    this.resetEntryOrder();
+    this.updateResultsTable(tableQuery);
+    this.updateSideBar(sideBarQuery);
   }
 
-  updateFacetSearchQuery(values: string) {
-    const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
-    const facetQuery = this.queryBuilderService.getSidebarQuery(
-      this.query_size,
-      values,
-      advancedSearchObject,
-      this.searchTerm,
-      this.bucketStubs,
-      this.filters,
-      this.sortModeMap
-    );
-    this.updateFacet(facetQuery);
+  // Searches for an author
+  // TODO: right now only returns exact matches, is case sensitive. Can be improved with new ES features when updated
+  updateFacetQuery() {
+    const facetSearchText = this.advancedSearchQuery.getValue().facetSearchText;
+    // If no facetSearchText, load all authors
+    if (!facetSearchText) {
+      ELASTIC_SEARCH_CLIENT.search({
+        index: 'tools',
+        type: 'entry',
+        body: {
+          query: {
+            bool: {
+              filter: {
+                match_all: {},
+              },
+            },
+          },
+          aggs: {
+            author: {
+              terms: {
+                field: 'author',
+              },
+            },
+          },
+        },
+      })
+        .then((hits) => {
+          this.noFacetSearchResults = false;
+          this.setupSingleBucket(hits);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      ELASTIC_SEARCH_CLIENT.search({
+        index: 'tools',
+        type: 'entry',
+        body: {
+          query: {
+            bool: {
+              filter: {
+                match_phrase: {
+                  author: facetSearchText,
+                },
+              },
+            },
+          },
+          aggs: {
+            author: {
+              terms: {
+                field: 'author',
+              },
+            },
+          },
+        },
+      })
+        .then((hits) => {
+          if (hits.aggregations.author.buckets.length === 0) {
+            this.noFacetSearchResults = true;
+          } else {
+            this.noFacetSearchResults = false;
+            this.setupSingleBucket(hits);
+          }
+        })
+        .catch((error) => console.log(error));
+    }
   }
 
   updateSideBar(value: string) {
@@ -475,23 +520,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
         if (this.searchTerm && this.hits.length === 0) {
           this.searchService.suggestSearchTerm(searchText);
-        }
-      })
-      .catch((error) => console.log(error));
-  }
-
-  updateFacet(value: string) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: value,
-    })
-      .then((hits) => {
-        if (hits.aggregations.author.buckets.length === 0) {
-          this.hasFacetSearchResults = false;
-        } else {
-          this.hasFacetSearchResults = true;
-          this.setupSingleBucket(hits);
         }
       })
       .catch((error) => console.log(error));
@@ -542,7 +570,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       },
     })
       .then((hits) => {
-        console.log('basic autocomplete', hits);
         this.searchService.setAutoCompleteTerms(hits);
       })
       .catch((error) => console.log(error));
@@ -563,7 +590,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         aggs: {
           autocomplete: {
             terms: {
-              field: 'description',
+              field: 'author',
               size: 4,
               order: {
                 _count: 'desc',
@@ -577,17 +604,15 @@ export class SearchComponent implements OnInit, OnDestroy {
       },
     })
       .then((hits) => {
-        console.log('facet autocomplete', hits);
-        this.searchService.setAutoCompleteTerms(hits);
+        this.searchService.setAuthorAutocomplete(hits);
       })
       .catch((error) => console.log(error));
     this.facetSearchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.facetSearchTerm = false;
-      // set to true to clear "no results" alert
-      this.hasFacetSearchResults = true;
+      this.noFacetSearchResults = false;
     }
-    this.updateQuery(this.facetSearchTerm);
+    this.updateFacetQuery();
   }
 
   searchSuggestTerm() {
@@ -603,7 +628,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       const checked = this.checkboxMap.get(category).get(categoryValue);
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
-      this.hasFacetSearchResults = true;
+      this.noFacetSearchResults = false;
       this.searchService.setFacetSearchText('');
     }
     this.updatePermalink();

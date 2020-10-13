@@ -47,6 +47,12 @@ class BasicSearchComponent {}
 })
 class HeaderComponent {}
 
+@Component({
+  selector: 'app-facet-search',
+  template: '',
+})
+class FacetSearchComponent {}
+
 /* tslint:disable:no-unused-variable */
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -55,13 +61,20 @@ describe('SearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
+      declarations: [
+        SearchComponent,
+        MapFriendlyValuesPipe,
+        HeaderComponent,
+        BasicSearchComponent,
+        SearchResultsComponent,
+        FacetSearchComponent,
+      ],
       imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
+        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText', 'facetSearchText']) },
       ],
     }).compileComponents();
   }));
@@ -78,8 +91,10 @@ describe('SearchComponent', () => {
       showToolTagCloud: false,
       showWorkflowTagCloud: false,
       searchText: '',
+      facetSearchText: '',
       filterKeys: [],
       autocompleteTerms: [],
+      authorAutocompleteTerms: [],
       suggestTerm: '',
       pageSize: 10,
       pageIndex: 0,

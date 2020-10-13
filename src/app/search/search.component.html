@@ -46,7 +46,7 @@
           </mat-expansion-panel-header>
           <div *ngIf="key === 'author'">
             <app-facet-search></app-facet-search>
-            <mat-card *ngIf="!hasFacetSearchResults" class="alert alert-warning"> Sorry, no authors found. </mat-card>
+            <mat-card *ngIf="noFacetSearchResults" class="alert alert-warning"> Sorry, no authors found. </mat-card>
           </div>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button

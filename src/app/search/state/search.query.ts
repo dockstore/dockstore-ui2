@@ -34,6 +34,7 @@ export class SearchQuery extends Query<SearchState> {
   public showWorkflowTagCloud$: Observable<boolean> = this.select((state) => state.showWorkflowTagCloud);
   public filterKeys$: Observable<Array<string>> = this.select((state) => state.filterKeys);
   public autoCompleteTerms$: Observable<Array<string>> = this.select((state) => state.autocompleteTerms);
+  public authorAutocompleteTerms$: Observable<Array<string>> = this.select((state) => state.authorAutocompleteTerms);
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map((terms) => terms.length > 0));
   public suggestTerm$: Observable<string> = this.select((state) => state.suggestTerm);
   public pageSize$: Observable<number> = this.select((state) => state.pageSize);
