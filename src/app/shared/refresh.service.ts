@@ -70,7 +70,7 @@ export class RefreshService {
     const workflow = this.workflowQuery.getActive();
     const message = 'Refreshing ' + workflow.full_workflow_path;
     this.alertService.start(message);
-    this.workflowsService.refresh(workflow.id).subscribe(
+    this.workflowsService.refresh(workflow.id, false).subscribe(
       (refreshedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
         this.workflowService.setWorkflow(refreshedWorkflow);
@@ -94,7 +94,7 @@ export class RefreshService {
     const message = 'Refreshing ' + workflow.full_workflow_path + ' version ' + versionName;
     const ga4ghId = prefix + workflow.full_workflow_path;
     this.alertService.start(message);
-    this.workflowsService.refreshVersion(workflow.id, versionName).subscribe(
+    this.workflowsService.refreshVersion(workflow.id, versionName, false).subscribe(
       (refreshedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
         this.workflowService.setWorkflow(refreshedWorkflow);

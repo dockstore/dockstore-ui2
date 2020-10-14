@@ -135,7 +135,7 @@ Run `npm run build` to build the project. The build artifacts will be stored in 
 ### Angular Production Build
 
 For an Angular Production Build, you will need to install Nginx. 
-Replace your nginx.conf file (location depends on your installation) with this template, filling in the two paths:
+Replace your nginx.conf file (location depends on your installation) with this template, filling in the two paths: 
 ```
 events {
 }
