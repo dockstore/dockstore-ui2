@@ -82,6 +82,9 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
 
       it('Should have content in file viewer', () => {
         cy.get('.ace_content').should('be.visible');
+        cy.contains('a')
+          .should('have.attr', 'href')
+          .and('include', 'data:text/plain');
       });
     });
 
