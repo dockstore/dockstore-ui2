@@ -40,6 +40,7 @@ import { StarringService } from '../../starring/starring.service';
 import { DateService } from '../date.service';
 import { ToolActionsComponent } from '../entry-actions/tool-actions.component';
 import { FileService } from '../file.service';
+import { MarkdownWrapperComponent } from '../markdown-wrapper/markdown-wrapper.component';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
@@ -71,6 +72,7 @@ import { SelectModule } from './select.module';
     VersionModalComponent,
     InfoTabComponent,
     ToolFileEditorComponent,
+    MarkdownWrapperComponent,
   ],
   imports: [
     CommonModule,
@@ -101,7 +103,7 @@ import { SelectModule } from './select.module';
     VersionModalService,
     InfoTabService,
   ],
-  exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent],
+  exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent, MarkdownWrapperComponent],
   entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent],
 })
 export class ContainerModule {}
