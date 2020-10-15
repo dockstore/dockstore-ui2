@@ -37,27 +37,13 @@
               mat-icon-button
               color="secondary"
               class="mr-1"
-              *ngIf="published$ | async; else unpublishedDownloadLink"
-              download
-              [href]="downloadFilePath"
+              [href]="customDownloadHREF"
+              [download]="customDownloadPath"
               type="button"
               title="{{ filePath }}"
             >
               <mat-icon>save_alt</mat-icon>
             </a>
-            <ng-template #unpublishedDownloadLink>
-              <a
-                mat-icon-button
-                color="secondary"
-                class="mr-1"
-                [href]="customDownloadHREF"
-                [download]="customDownloadPath"
-                type="button"
-                title="{{ filePath }}"
-              >
-                <mat-icon>save_alt</mat-icon>
-              </a>
-            </ng-template>
             <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="content">
               <mat-icon>file_copy</mat-icon>
             </button>

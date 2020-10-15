@@ -43,7 +43,6 @@ export class DockerfileComponent {
   content: string;
   filePath: string;
   public published$: Observable<boolean>;
-  public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
   public loading = true;
@@ -65,7 +64,6 @@ export class DockerfileComponent {
           file => {
             this.content = file.content;
             this.filePath = file.path;
-            this.downloadFilePath = this.getContainerfilePath();
             this.customDownloadFile();
           },
           error => {
@@ -76,13 +74,6 @@ export class DockerfileComponent {
       this.content = null;
       this.loading = false;
     }
-  }
-
-  private getContainerfilePath(): string {
-    const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
-    const customPath =
-      encodeURIComponent(this.entrypath) + '/versions/' + encodeURIComponent(this._selectedVersion.name) + '/containerfile';
-    return basepath + customPath;
   }
 
   customDownloadFile(): void {
