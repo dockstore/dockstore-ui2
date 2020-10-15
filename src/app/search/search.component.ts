@@ -68,7 +68,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   /*TODO: Bad coding...change this up later (init)..*/
   private setFilter = false;
   public hits: Hit[];
-  public noFacetResults = false;
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   public readonly query_size = 201;
@@ -99,6 +98,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
    */
+  // Retain copy of all authors to filter through
+  private allAuthors: Array<any>;
+
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
   public toolTips: Map<string, string>;
@@ -278,6 +280,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     });
     this.retainZeroBuckets();
+    if (!this.allAuthors) {
+      this.allAuthors = Array.from(this.orderedBuckets.get('author').Items.entries());
+    }
   }
 
   /**
@@ -301,42 +306,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     });
     this.setFilter = true;
-  }
-
-  /**
-   * Updates the bucket, fullyExpandMap, and checkboxMap data structures of one facet
-   * based on the hits to update the search view
-   * @param {*} hits The response hits from elastic search
-   * @memberof SearchComponent
-   */
-  setupSingleBucket(hits: SearchResponse<Hit>) {
-    const facet = 'author';
-    // Make copies of the previous checkboxMap and entryOrder
-    const prevCheckboxMap = this.checkboxMap;
-    const prevEntryOrder = this.entryOrder;
-    // Clear entryorder but keep orderBuckets
-    // We are only looking for an entryOrder for one specific bucket
-    this.entryOrder.clear();
-    this.entryOrder = this.searchService.initializeEntryOrder();
-    this.checkboxMap = new Map<string, Map<string, boolean>>();
-    const aggregations = hits.aggregations;
-    Object.entries(aggregations).forEach(([key, value]) => {
-      if (value['buckets'] != null) {
-        this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
-      }
-      if (value[key]) {
-        this.setupBuckets(key, value[key].buckets);
-      }
-    });
-    // insert the updated bucket results of the specific facet into the old checkboxMap and entryOrder
-    // then set current checkboxMap and entryOrder to their old version
-    // so everything will be the same except the updated facet
-    prevCheckboxMap.set(facet, this.checkboxMap.get(facet));
-    this.checkboxMap = prevCheckboxMap;
-    prevEntryOrder.set(facet, this.entryOrder.get(facet));
-    this.entryOrder = prevEntryOrder;
-    // this will update only the facet you are searching
-    this.setupOrderBuckets();
   }
 
   /**
@@ -419,69 +388,32 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.updateSideBar(sideBarQuery);
   }
 
-  // Searches for an author
-  // TODO: right now only returns exact matches, is case sensitive. Can be improved with new ES features when updated
-  updateFacetQuery() {
-    const facetSearchText = this.advancedSearchQuery.getValue().facetSearchText;
-    // If no facetSearchText, load all authors
-    if (!facetSearchText) {
-      ELASTIC_SEARCH_CLIENT.search({
-        index: 'tools',
-        type: 'entry',
-        body: {
-          query: {
-            bool: {
-              filter: {
-                match_all: {},
-              },
-            },
-          },
-          aggs: {
-            author: {
-              terms: {
-                field: 'author',
-              },
-            },
-          },
-        },
-      })
-        .then((hits) => {
-          this.noFacetSearchResults = false;
-          this.setupSingleBucket(hits);
-        })
-        .catch((error) => console.log(error));
-    } else {
-      ELASTIC_SEARCH_CLIENT.search({
-        index: 'tools',
-        type: 'entry',
-        body: {
-          query: {
-            bool: {
-              filter: {
-                match_phrase: {
-                  author: facetSearchText,
-                },
-              },
-            },
-          },
-          aggs: {
-            author: {
-              terms: {
-                field: 'author',
-              },
-            },
-          },
-        },
-      })
-        .then((hits) => {
-          if (hits.aggregations.author.buckets.length === 0) {
-            this.noFacetSearchResults = true;
-          } else {
-            this.noFacetSearchResults = false;
-            this.setupSingleBucket(hits);
-          }
-        })
-        .catch((error) => console.log(error));
+  // Searches for an author by filtering within bucket
+  // If no search term, reset facet to full bucket
+  updateFacet() {
+    const values = this.advancedSearchQuery.getValue().facetSearchText.toLowerCase();
+    const filteredSubBucket = new SubBucket();
+    let filteredHits;
+    // Do nothing at initial load, allAuthors will be []
+    if (!values && this.allAuthors) {
+      this.allAuthors.map(item => {
+        filteredSubBucket.Items.set(item[0], item[1]);
+      });
+      this.entryOrder.set('author', filteredSubBucket);
+      this.setupOrderBuckets();
+    } else if (values && this.allAuthors) {
+      filteredHits = this.allAuthors.filter(item => item[0].toLowerCase().includes(values));
+      this.noFacetSearchResults = false;
+      if (filteredHits.length === 0) {
+        this.noFacetSearchResults = true;
+      }
+      // Make new map with filtered results and set to entryOrder
+      // Call setupOrderBuckets() to update orderedBucket and facet will show filtered results
+      filteredHits.map(item => {
+        filteredSubBucket.Items.set(item[0], item[1]);
+      });
+      this.entryOrder.set('author', filteredSubBucket);
+      this.setupOrderBuckets();
     }
   }
 
@@ -612,7 +544,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.facetSearchTerm = false;
       this.noFacetSearchResults = false;
     }
-    this.updateFacetQuery();
+    this.updateFacet();
   }
 
   searchSuggestTerm() {

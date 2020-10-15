@@ -579,13 +579,6 @@ export class SearchService {
   hasResults(searchTerm: boolean, hits: any) {
     return searchTerm && hits && hits.length > 0;
   }
-  /**
-   * Returns true if author search returns no results
-   */
-  noFacetSearchResults() {
-    return true;
-    // return searchTerm && hits && hits.aggregations.author.length === 0;
-  }
 
   /**
    * Returns true if at least one filter is set
