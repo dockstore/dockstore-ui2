@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -13,6 +13,7 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./facet-search.component.scss'],
 })
 export class FacetSearchComponent extends Base implements OnInit {
+  @Input() facet: string;
   constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {
     super();
   }

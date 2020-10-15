@@ -98,13 +98,13 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
    */
-  // Retain copy of all authors to filter through
-  private allAuthors: Array<any>;
-
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
   public toolTips: Map<string, string>;
+
+  // Retain copy of entryOrder on initial load for filtering in facets
   private entryOrder: Map<string, SubBucket>;
+  private entryOrderCopy: Map<string, SubBucket>;
   public basicSearchText$: Observable<string>;
   public facetSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
@@ -131,6 +131,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
+    this.entryOrderCopy = this.searchService.initializeEntryOrder();
     this.toolTips = this.searchService.initializeToolTips();
   }
 
@@ -148,7 +149,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
     this.basicSearchText$ = this.searchQuery.basicSearchText$;
-    this.facetSearchText$ = this.searchQuery.facetSearchText$;
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toSaveSearch) => {
       if (toSaveSearch) {
@@ -280,9 +280,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     });
     this.retainZeroBuckets();
-    if (!this.allAuthors) {
-      this.allAuthors = Array.from(this.orderedBuckets.get('author').Items.entries());
-    }
   }
 
   /**
@@ -307,7 +304,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
     this.setFilter = true;
   }
-
   /**
    * For buckets that were checked earlier, retain them even if there is 0 hits.
    *
@@ -359,14 +355,12 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
 
   // Called when any change to the search is made to update the results
-  // Handles search within a facet too
-  // If isFacetSearch, will only update results within the facet
   updateQuery() {
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    const values = this.advancedSearchQuery.getValue().searchText;
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
+    const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
       this.query_size,
       values,
@@ -388,33 +382,29 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.updateSideBar(sideBarQuery);
   }
 
-  // Searches for an author by filtering within bucket
-  // If no search term, reset facet to full bucket
-  updateFacet() {
+  // Handles searching within a facet
+  updateFacet(key: string) {
     const values = this.advancedSearchQuery.getValue().facetSearchText.toLowerCase();
     const filteredSubBucket = new SubBucket();
     let filteredHits;
-    // Do nothing at initial load, allAuthors will be []
-    if (!values && this.allAuthors) {
-      this.allAuthors.map(item => {
+    this.noFacetSearchResults = false;
+    const unfilteredHits = Array.from(this.entryOrderCopy.get(key).Items.entries());
+    // If no search term, show all items in bucket
+    if (!values) {
+      this.entryOrder.set(key, this.entryOrderCopy.get(key));
+    } else {
+      filteredHits = unfilteredHits.filter((item) => item[0].toLowerCase().includes(values));
+      // Make new map with filtered results and set to corresponding key in entryOrder
+      filteredHits.map((item) => {
         filteredSubBucket.Items.set(item[0], item[1]);
       });
-      this.entryOrder.set('author', filteredSubBucket);
-      this.setupOrderBuckets();
-    } else if (values && this.allAuthors) {
-      filteredHits = this.allAuthors.filter(item => item[0].toLowerCase().includes(values));
-      this.noFacetSearchResults = false;
       if (filteredHits.length === 0) {
         this.noFacetSearchResults = true;
       }
-      // Make new map with filtered results and set to entryOrder
-      // Call setupOrderBuckets() to update orderedBucket and facet will show filtered results
-      filteredHits.map(item => {
-        filteredSubBucket.Items.set(item[0], item[1]);
-      });
-      this.entryOrder.set('author', filteredSubBucket);
-      this.setupOrderBuckets();
+      this.entryOrder.set(key, filteredSubBucket);
     }
+    // Call setupOrderBuckets() to update orderedBucket and facet will show filtered results
+    this.setupOrderBuckets();
   }
 
   updateSideBar(value: string) {
@@ -544,7 +534,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.facetSearchTerm = false;
       this.noFacetSearchResults = false;
     }
-    this.updateFacet();
+    this.updateFacet('author');
   }
 
   searchSuggestTerm() {
