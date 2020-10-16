@@ -65,7 +65,7 @@ export class PermissionsComponent implements OnInit {
       );
   }
 
-  private add(event: MatChipInputEvent, permission: RoleEnum): void {
+  add(event: MatChipInputEvent, permission: RoleEnum): void {
     const input = event.input;
     const value = event.value;
 
