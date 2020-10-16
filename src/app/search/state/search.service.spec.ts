@@ -130,12 +130,12 @@ describe('SearchService', () => {
 
     const c: Workflow = { ...a, author: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
 
-    expect(searchService.compareAttributes(a, b, 'author', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'author', 'desc')).toEqual(1);
-    expect(searchService.compareAttributes(b, c, 'author', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(b, c, 'author', 'desc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc')).toEqual(-0);
-    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'author', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'author', 'desc', 'workflow')).toEqual(1);
+    expect(searchService.compareAttributes(b, c, 'author', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(b, c, 'author', 'desc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc', 'workflow')).toEqual(-0);
+    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc', 'workflow')).toEqual(-1);
   }));
 });
