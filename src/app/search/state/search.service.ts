@@ -93,8 +93,8 @@ export class SearchService {
     direction: SortDirection,
     entryType: 'tool' | 'workflow'
   ) {
-    // For sorting tools by name, sort namespace property
-    // For sorting workflows by name, sort organization property
+    // For sorting tools by name, sort tool_path
+    // For sorting workflows by name, sort full_workflow_path
     if (entryType === 'tool' && attribute === 'name') {
       attribute = 'tool_path';
     } else if (entryType === 'workflow' && attribute === 'name') {
