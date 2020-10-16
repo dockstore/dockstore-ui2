@@ -1,5 +1,3 @@
-import { goToTab } from '../../support/commands';
-
 function checkLink(selector: string, url: string): void {
   it('these links should be present', () => {
     cy.visit('');

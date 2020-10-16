@@ -18,7 +18,6 @@ import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
-import { User } from '../../shared/openapi';
 import { ProviderService } from '../../shared/provider.service';
 import { Workflow } from '../../shared/swagger';
 import { elasticSearchResponse } from '../../test/mocked-objects';
@@ -27,7 +26,6 @@ import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
 
 describe('SearchService', () => {
-  let searchStore: SearchStore;
   let searchService: SearchService;
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -43,7 +41,7 @@ describe('SearchService', () => {
       ],
     });
     searchService = TestBed.inject(SearchService);
-    searchStore = TestBed.inject(SearchStore);
+    TestBed.inject(SearchStore);
   });
 
   it('should be created', inject([SearchService], (service: SearchService) => {

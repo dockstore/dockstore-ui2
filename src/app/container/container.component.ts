@@ -33,7 +33,7 @@ import { Entry } from '../shared/entry';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
-import { ContainertagsService, EntriesService } from '../shared/openapi';
+import { EntriesService } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
@@ -97,8 +97,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     public dialog: MatDialog,
     private toolService: ToolService,
     alertService: AlertService,
-    entryService: EntriesService,
-    private containerTagsService: ContainertagsService
+    entryService: EntriesService
   ) {
     super(
       trackLoginService,
@@ -219,7 +218,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
         },
-        (error) => {
+        () => {
           this.router.navigate(['../']);
         }
       );

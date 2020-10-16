@@ -8,7 +8,6 @@ import { CollectionsStore } from './collections.store';
 
 describe('CollectionsService', () => {
   let collectionsService: CollectionsService;
-  let collectionsStore: CollectionsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -17,7 +16,7 @@ describe('CollectionsService', () => {
     });
 
     collectionsService = TestBed.inject(CollectionsService);
-    collectionsStore = TestBed.inject(CollectionsStore);
+    TestBed.inject(CollectionsStore);
   });
 
   it('should be created', () => {

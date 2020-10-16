@@ -1,8 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -43,12 +41,7 @@ export class PermissionsComponent implements OnInit {
     return this._workflow;
   }
 
-  constructor(
-    private workflowsService: WorkflowsService,
-    private snackBar: MatSnackBar,
-    private alertService: AlertService,
-    private tokenQuery: TokenQuery
-  ) {}
+  constructor(private workflowsService: WorkflowsService, private alertService: AlertService, private tokenQuery: TokenQuery) {}
 
   ngOnInit() {
     this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens) => {
@@ -69,32 +62,6 @@ export class PermissionsComponent implements OnInit {
           this.handleError(e);
         }
       );
-  }
-
-  private add(event: MatChipInputEvent, permission: RoleEnum): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      this.updating++;
-      this.alertService.start('Updating permissions');
-      this.workflowsService
-        .addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }, this.entryType === EntryType.Service)
-        .subscribe(
-          (userPermissions: Permission[]) => {
-            this.updating--;
-            this.processResponse(userPermissions);
-          },
-          (e: HttpErrorResponse) => {
-            this.handleError(e);
-          }
-        );
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
   }
 
   private handleError(e: HttpErrorResponse) {

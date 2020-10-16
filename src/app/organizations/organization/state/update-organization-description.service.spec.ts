@@ -9,7 +9,6 @@ import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organiz
 
 describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
   let updateOrganizationOrCollectionDescriptionService: UpdateOrganizationOrCollectionDescriptionService;
-  let updateOrganizationOrCollectionDescriptionStore: UpdateOrganizationOrCollectionDescriptionStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -18,7 +17,7 @@ describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
     });
 
     updateOrganizationOrCollectionDescriptionService = TestBed.inject(UpdateOrganizationOrCollectionDescriptionService);
-    updateOrganizationOrCollectionDescriptionStore = TestBed.inject(UpdateOrganizationOrCollectionDescriptionStore);
+    TestBed.inject(UpdateOrganizationOrCollectionDescriptionStore);
   });
 
   it('should be created', () => {

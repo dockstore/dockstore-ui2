@@ -46,10 +46,6 @@ describe('Service: RegisterWorkflowModal', () => {
       imports: [RouterTestingModule, MatSnackBarModule],
     });
   });
-  const expectedError: any = {
-    message: 'oh no!',
-    errorDetails: 'oh yes',
-  };
   const expectedWorkflow: any = {
     repository: 'GitHub',
     descriptorType: ToolDescriptor.TypeEnum.CWL,

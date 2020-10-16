@@ -15,7 +15,6 @@
  */
 import { Component, Input } from '@angular/core';
 
-import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { Files } from '../../shared/files';
 import { SourceFile, ToolDescriptor } from '../../shared/swagger';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
@@ -32,7 +31,7 @@ export class FilesWorkflowComponent extends Files {
   versionsWithParamfiles: Array<any>;
   previousEntryPath: string;
   previousVersionName: string;
-  constructor(private paramfilesService: ParamfilesService) {
+  constructor() {
     super();
   }
 }

@@ -19,5 +19,6 @@ describe('AliasesService', () => {
 
   it('should be created', () => {
     expect(aliasesService).toBeDefined();
+    expect(aliasesStore).toBeDefined();
   });
 });

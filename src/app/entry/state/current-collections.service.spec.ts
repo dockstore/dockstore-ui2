@@ -5,7 +5,6 @@ import { CurrentCollectionsStore } from './current-collections.store';
 
 describe('CurrentCollectionsService', () => {
   let currentCollectionsService: CurrentCollectionsService;
-  let currentCollectionsStore: CurrentCollectionsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,7 +13,7 @@ describe('CurrentCollectionsService', () => {
     });
 
     currentCollectionsService = TestBed.inject(CurrentCollectionsService);
-    currentCollectionsStore = TestBed.inject(CurrentCollectionsStore);
+    TestBed.inject(CurrentCollectionsStore);
   });
 
   it('should be created', () => {

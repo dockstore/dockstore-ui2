@@ -13,7 +13,6 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organizat
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
-import { OrganizationService } from '../state/organization.service';
 
 @Component({
   selector: 'collection-entry-confirm-remove',
@@ -61,7 +60,6 @@ export class CollectionComponent implements OnInit {
   constructor(
     private collectionsQuery: CollectionsQuery,
     private organizationQuery: OrganizationQuery,
-    private organizationService: OrganizationService,
     private collectionsService: CollectionsService,
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,

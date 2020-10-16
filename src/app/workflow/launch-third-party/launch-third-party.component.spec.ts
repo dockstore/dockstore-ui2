@@ -16,8 +16,6 @@ import { LaunchThirdPartyComponent } from './launch-third-party.component';
 describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
   let fixture: ComponentFixture<LaunchThirdPartyComponent>;
-  let workflowsService: WorkflowsService;
-  let ga4ghFilesService: GA4GHFilesService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,8 +27,8 @@ describe('LaunchThirdPartyComponent', () => {
   }));
 
   beforeEach(() => {
-    workflowsService = TestBed.inject(WorkflowsService);
-    ga4ghFilesService = TestBed.inject(GA4GHFilesService);
+    TestBed.inject(WorkflowsService);
+    TestBed.inject(GA4GHFilesService);
     fixture = TestBed.createComponent(LaunchThirdPartyComponent);
     component = fixture.componentInstance;
     component.workflow = sampleWdlWorkflow2;
