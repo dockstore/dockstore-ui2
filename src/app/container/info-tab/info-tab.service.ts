@@ -64,7 +64,6 @@ export class InfoTabService extends Base {
           this.cancelEditing();
         }
       });
-    this.containerService.tools$.subscribe((tools) => (this.tools = tools));
   }
   setDockerFileEditing(editing: boolean) {
     this.dockerFileEditing$.next(editing);
