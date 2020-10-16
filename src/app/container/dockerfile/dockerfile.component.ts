@@ -18,8 +18,6 @@ import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { finalize, first } from 'rxjs/operators';
 
-import { ga4ghPath } from '../../shared/constants';
-import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
 import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
@@ -66,7 +64,7 @@ export class DockerfileComponent {
             this.filePath = file.path;
             this.customDownloadFile();
           },
-          error => {
+          () => {
             this.content = null;
           }
         );
