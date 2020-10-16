@@ -4,6 +4,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
@@ -31,6 +32,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     OrganizationStargazersModule,
     MarkdownModule,
     PipeModule,
+    ContainerModule,
   ],
   declarations: [OrganizationComponent],
   exports: [OrganizationComponent],

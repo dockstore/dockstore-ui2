@@ -3,7 +3,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 @Component({
   selector: 'markdown-wrapper',
   templateUrl: './markdown-wrapper.component.html',
-  styleUrls: ['./markdown-container.component.scss'],
+  styleUrls: ['./markdown-wrapper.component.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
 })
 
