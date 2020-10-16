@@ -91,14 +91,14 @@ export class SearchService {
     b: DockstoreTool | Workflow,
     attribute: string,
     direction: SortDirection,
-    entryType: string
+    entryType: 'tool' | 'workflow'
   ) {
     // For sorting tools by name, sort namespace property
     // For sorting workflows by name, sort organization property
     if (entryType === 'tool' && attribute === 'name') {
-      attribute = 'namespace';
+      attribute = 'tool_path';
     } else if (entryType === 'workflow' && attribute === 'name') {
-      attribute = 'organization';
+      attribute = 'full_workflow_path';
     }
     let aVal = a[attribute];
     let bVal = b[attribute];

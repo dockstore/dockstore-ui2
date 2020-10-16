@@ -32,9 +32,10 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['../../shared/styles/entry-table.scss', './search-workflow-table.component.scss'],
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
+  readonly entryType = 'workflow';
   public dataSource: MatTableDataSource<Workflow>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
-    super(dateService, searchQuery, searchService, 'workflow');
+    super(dateService, searchQuery, searchService);
   }
 
   privateNgOnInit(): Observable<Array<Workflow>> {

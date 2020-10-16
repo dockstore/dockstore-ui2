@@ -34,17 +34,12 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   public readonly displayedColumns = ['name', 'verified', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
+  abstract readonly entryType: 'tool' | 'workflow';
   abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
   abstract privateNgOnInit(): Observable<(DockstoreTool | Workflow)[]>;
 
-  constructor(
-    protected dateService: DateService,
-    protected searchQuery: SearchQuery,
-    protected searchService: SearchService,
-    private entryType: string
-  ) {
+  constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
     super();
-    this.entryType = entryType;
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 

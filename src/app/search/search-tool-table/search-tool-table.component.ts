@@ -17,9 +17,10 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['../../shared/styles/entry-table.scss', './search-tool-table.component.scss'],
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
+  readonly entryType = 'tool';
   public dataSource: MatTableDataSource<DockstoreTool>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
-    super(dateService, searchQuery, searchService, 'tool');
+    super(dateService, searchQuery, searchService);
   }
 
   privateNgOnInit(): Observable<Array<DockstoreTool>> {
