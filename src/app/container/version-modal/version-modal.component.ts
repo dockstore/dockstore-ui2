@@ -200,13 +200,16 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
     forkJoin([
       this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL),
       this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL),
-    ]).subscribe(([cwlFiles, wdlFiles]) => {
-      this.savedCWLTestParameterFilePaths = cwlFiles.map((cwlFile) => cwlFile.path);
-      this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
-      this.savedWDLTestParameterFilePaths = wdlFiles.map((wdlFile) => wdlFile.path);
-      this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
-      this.loading = false;
-    });
+    ]).subscribe(
+      ([cwlFiles, wdlFiles]) => {
+        this.savedCWLTestParameterFilePaths = cwlFiles.map((cwlFile) => cwlFile.path);
+        this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
+        this.savedWDLTestParameterFilePaths = wdlFiles.map((wdlFile) => wdlFile.path);
+        this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
+        this.loading = false;
+      },
+      (error) => this.alertService.detailedError(error)
+    );
   }
 
   addTestParameterFile(descriptorType: ToolDescriptor.TypeEnum) {
