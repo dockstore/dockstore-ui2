@@ -99,6 +99,9 @@ export class FileService {
    */
   getFileData(content: string): SafeUrl {
     if (content) {
+      // This uses the Data URI scheme, 'data;[<media type>][;base64],<data>'. For security
+      // purposes, it is important that the prefix is 'data:text/plain,' as this forces the user-input content to
+      // only be treated as plain text data. Other Data URI media types (such as text/html) could lead to potential XSS vulnerabilities.
       return this.sanitizer.bypassSecurityTrustUrl('data:text/plain,' + encodeURIComponent(content));
     } else {
       return null;
