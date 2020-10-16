@@ -37,8 +37,14 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
   abstract privateNgOnInit(): Observable<(DockstoreTool | Workflow)[]>;
 
-  constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
+  constructor(
+    protected dateService: DateService,
+    protected searchQuery: SearchQuery,
+    protected searchService: SearchService,
+    private entryType: string
+  ) {
     super();
+    this.entryType = entryType;
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
@@ -56,7 +62,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
       });
     this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
       return data.slice().sort((a: Workflow | DockstoreTool, b: Workflow | DockstoreTool) => {
-        return this.searchService.compareAttributes(a, b, sort.active, sort.direction);
+        return this.searchService.compareAttributes(a, b, sort.active, sort.direction, this.entryType);
       });
     };
   }
