@@ -18,16 +18,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewService } from 'app/container/view/view.service';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
-import { forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { ContainersService } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ToolDescriptor } from '../../shared/swagger';
 import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
@@ -55,12 +53,10 @@ export class ViewContainerComponent extends View implements OnInit {
     private viewService: ViewService,
     private sessionQuery: SessionQuery,
     private containerService: ContainerService,
-    private containersService: ContainersService,
     private containertagsService: ContainertagsService,
     private hostedService: HostedService,
     private toolQuery: ToolQuery,
-    private matDialog: MatDialog,
-    private alertService: AlertService
+    private matDialog: MatDialog
   ) {
     super(dateService, alertQuery);
   }
@@ -75,7 +71,7 @@ export class ViewContainerComponent extends View implements OnInit {
     const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
-      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe((deleteResponse) => {
+      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(() => {
         this.containertagsService.getTagsByPath(this.tool.id).subscribe((response) => {
           this.tool.workflowVersions = response;
           this.containerService.setTool(this.tool);
