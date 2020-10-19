@@ -18,7 +18,7 @@ import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Base } from 'app/shared/base';
 import { forkJoin } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../../containers/list/list.service';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -200,16 +200,17 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
     forkJoin([
       this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL),
       this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL),
-    ]).subscribe(
-      ([cwlFiles, wdlFiles]) => {
-        this.savedCWLTestParameterFilePaths = cwlFiles.map((cwlFile) => cwlFile.path);
-        this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
-        this.savedWDLTestParameterFilePaths = wdlFiles.map((wdlFile) => wdlFile.path);
-        this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
-        this.loading = false;
-      },
-      (error) => this.alertService.detailedError(error)
-    );
+    ])
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(
+        ([cwlFiles, wdlFiles]) => {
+          this.savedCWLTestParameterFilePaths = cwlFiles.map((cwlFile) => cwlFile.path);
+          this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
+          this.savedWDLTestParameterFilePaths = wdlFiles.map((wdlFile) => wdlFile.path);
+          this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
+        },
+        (error) => this.alertService.detailedError(error)
+      );
   }
 
   addTestParameterFile(descriptorType: ToolDescriptor.TypeEnum) {
