@@ -31,9 +31,7 @@ describe('DescriptorsComponent', () => {
   let component: DescriptorsComponent;
   let fixture: ComponentFixture<DescriptorsComponent>;
 
-  class HttpStubService {}
   class FileStubService {}
-  class HttpStub {}
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DescriptorsComponent],

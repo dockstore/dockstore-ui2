@@ -5,7 +5,6 @@ import { NotificationsStore } from './notifications.store';
 
 describe('NotificationsService', () => {
   let notificationsService: NotificationsService;
-  let notificationsStore: NotificationsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,7 +13,7 @@ describe('NotificationsService', () => {
     });
 
     notificationsService = TestBed.inject(NotificationsService);
-    notificationsStore = TestBed.inject(NotificationsStore);
+    TestBed.inject(NotificationsStore);
   });
 
   it('should be created', () => {

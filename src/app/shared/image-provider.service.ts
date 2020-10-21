@@ -19,7 +19,7 @@ import { Injectable } from '@angular/core';
 import { faDocker, faGitlab, IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { faAmazonECR, faQuay, faWhale } from './custom-icons';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
-import { ContainersService, DockstoreTool, MetadataService } from './swagger';
+import { DockstoreTool, MetadataService } from './swagger';
 import RegistryEnum = DockstoreTool.RegistryEnum;
 
 @Injectable()
@@ -28,7 +28,7 @@ export class ImageProviderService {
 
   private dockerRegistryList: Array<any>;
 
-  constructor(private containersService: ContainersService, private metadataService: MetadataService) {
+  constructor(private metadataService: MetadataService) {
     this.setdockerRegistryList(JSON.parse(localStorage.getItem('dockerRegistryList')));
     if (!this.dockerRegistryList) {
       this.getDockerRegistryList();

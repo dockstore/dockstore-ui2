@@ -31,7 +31,6 @@ import { AccountsService } from '../../loginComponents/accounts/external/account
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ContainerService } from '../../shared/container.service';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
-import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
@@ -61,7 +60,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     protected activatedRoute: ActivatedRoute,
     private containerService: ContainerService,
     private dialog: MatDialog,
-    private refreshService: RefreshService,
     protected accountsService: AccountsService,
     private registerToolService: RegisterToolService,
     protected tokenQuery: TokenQuery,
@@ -106,7 +104,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         dialogRef
           .afterClosed()
           .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((result) => {
+          .subscribe(() => {
             this.alertService.clearEverything();
           });
       } else {
