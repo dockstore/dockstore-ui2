@@ -57,6 +57,7 @@
     "cytoscape": "^3.10.1",
     "cytoscape-dagre": "^2.2.2",
     "cytoscape-popper": "^1.0.4",
+    "dompurify": "^2.2.0",
     "elasticsearch-browser": "^15.0.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
