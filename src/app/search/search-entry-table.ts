@@ -34,6 +34,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   public readonly displayedColumns = ['name', 'verified', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
+  abstract readonly entryType: 'tool' | 'workflow';
   abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
   abstract privateNgOnInit(): Observable<(DockstoreTool | Workflow)[]>;
 
@@ -56,7 +57,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
       });
     this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
       return data.slice().sort((a: Workflow | DockstoreTool, b: Workflow | DockstoreTool) => {
-        return this.searchService.compareAttributes(a, b, sort.active, sort.direction);
+        return this.searchService.compareAttributes(a, b, sort.active, sort.direction, this.entryType);
       });
     };
   }

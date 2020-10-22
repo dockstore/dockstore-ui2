@@ -122,18 +122,27 @@ describe('SearchService', () => {
       workflow_path: '',
       defaultTestParameterFilePath: '',
       descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+      full_workflow_path: 'abc'
     };
 
-    const b: Workflow = { ...a, author: 'B', starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }] };
+    const b: Workflow = {
+      ...a, author: 'B',
+      full_workflow_path: 'Bcd',
+      starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }]
+    };
 
-    const c: Workflow = { ...a, author: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
+    const c: Workflow = {...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
 
-    expect(searchService.compareAttributes(a, b, 'author', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'author', 'desc')).toEqual(1);
-    expect(searchService.compareAttributes(b, c, 'author', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(b, c, 'author', 'desc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc')).toEqual(-0);
-    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'author', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'author', 'desc', 'workflow')).toEqual(1);
+    expect(searchService.compareAttributes(b, c, 'author', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(b, c, 'author', 'desc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc', 'workflow')).toEqual(-0);
+    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'name', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'name', 'desc', 'workflow')).toEqual(1);
+    expect(searchService.compareAttributes(b, c, 'name', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(b, c, 'name', 'desc', 'workflow')).toEqual(-1);
   }));
 });
