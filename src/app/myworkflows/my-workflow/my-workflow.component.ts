@@ -33,7 +33,6 @@ import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
-import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -92,7 +91,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected authService: AuthService,
     public dialog: MatDialog,
     protected accountsService: AccountsService,
-    private refreshService: RefreshService,
     private userService: UserService,
     private router: Router,
     private registerWorkflowModalService: RegisterWorkflowModalService,
@@ -143,7 +141,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
         filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe((event) => {
+      .subscribe(() => {
         this.selectEntry(this.myWorkflowsService.recomputeWhatEntryToSelect([...(this.workflows || []), ...(this.sharedWorkflows || [])]));
       });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
@@ -163,7 +161,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
             this.sharedWorkflows = sharedWorkflows;
           }
         },
-        (error) => {
+        () => {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );

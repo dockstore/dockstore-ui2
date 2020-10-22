@@ -14,14 +14,12 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { AlertService } from './alert/state/alert.service';
 import { ContainerService } from './container.service';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from './state/workflow.query';
 import { WorkflowService } from './state/workflow.service';
 import { ContainersService } from './swagger/api/containers.service';
-import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from './swagger/model/workflow';
@@ -35,7 +33,6 @@ export class RefreshService {
     private alertService: AlertService,
     private workflowService: WorkflowService,
     private containersService: ContainersService,
-    private usersService: UsersService,
     private toolQuery: ToolQuery,
     private gA4GHFilesService: GA4GHFilesService,
     private workflowQuery: WorkflowQuery
@@ -70,7 +67,7 @@ export class RefreshService {
     const workflow = this.workflowQuery.getActive();
     const message = 'Refreshing ' + workflow.full_workflow_path;
     this.alertService.start(message);
-    this.workflowsService.refresh(workflow.id).subscribe(
+    this.workflowsService.refresh(workflow.id, false).subscribe(
       (refreshedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
         this.workflowService.setWorkflow(refreshedWorkflow);
@@ -94,7 +91,7 @@ export class RefreshService {
     const message = 'Refreshing ' + workflow.full_workflow_path + ' version ' + versionName;
     const ga4ghId = prefix + workflow.full_workflow_path;
     this.alertService.start(message);
-    this.workflowsService.refreshVersion(workflow.id, versionName).subscribe(
+    this.workflowsService.refreshVersion(workflow.id, versionName, false).subscribe(
       (refreshedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
         this.workflowService.setWorkflow(refreshedWorkflow);
@@ -102,16 +99,6 @@ export class RefreshService {
         if (ga4ghId && versionName) {
           this.gA4GHFilesService.updateFiles(ga4ghId, versionName);
         }
-      },
-      (error) => this.alertService.detailedError(error)
-    );
-  }
-
-  private updateWorkflows(workflows: Observable<Workflow[]>): void {
-    workflows.subscribe(
-      (services: Array<Workflow>) => {
-        this.alertService.detailedSuccess();
-        this.workflowService.setWorkflows(services);
       },
       (error) => this.alertService.detailedError(error)
     );

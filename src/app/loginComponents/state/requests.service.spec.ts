@@ -6,7 +6,6 @@ import { RequestsStore } from './requests.store';
 
 describe('RequestsService', () => {
   let requestsService: RequestsService;
-  let requestsStore: RequestsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,7 +14,7 @@ describe('RequestsService', () => {
     });
 
     requestsService = TestBed.inject(RequestsService);
-    requestsStore = TestBed.inject(RequestsStore);
+    TestBed.inject(RequestsStore);
   });
 
   it('should be created', () => {

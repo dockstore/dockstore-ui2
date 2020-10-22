@@ -31,7 +31,6 @@ export class InfoTabService extends Base {
   public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public cwlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public wdlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private tools;
 
   /**
    * The original tool that should be in sync with the database
@@ -65,7 +64,6 @@ export class InfoTabService extends Base {
           this.cancelEditing();
         }
       });
-    this.containerService.tools$.subscribe((tools) => (this.tools = tools));
   }
   setDockerFileEditing(editing: boolean) {
     this.dockerFileEditing$.next(editing);

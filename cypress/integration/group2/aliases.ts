@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore aliases', () => {
   resetDB();

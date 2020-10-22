@@ -6,7 +6,6 @@ import { EventsStore } from './events.store';
 
 describe('EventsService', () => {
   let eventsService: EventsService;
-  let eventsStore: EventsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,7 +14,7 @@ describe('EventsService', () => {
     });
 
     eventsService = TestBed.inject(EventsService);
-    eventsStore = TestBed.inject(EventsStore);
+    TestBed.inject(EventsStore);
   });
 
   it('should be created', () => {

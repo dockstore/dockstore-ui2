@@ -28,12 +28,10 @@ import { CreateCollectionStore } from './create-collection.store';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let organizationQuerySpy: jasmine.SpyObj<OrganizationQuery>;
-let collectionsServiceSpy: jasmine.SpyObj<CollectionsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
 
 describe('CreateCollectionService', () => {
   let createCollectionService: CreateCollectionService;
-  let createCollectionStore: CreateCollectionStore;
   const exampleFormState = { name: '', description: '', displayName: '', topic: '' };
 
   beforeEach(() => {
@@ -58,8 +56,7 @@ describe('CreateCollectionService', () => {
     organizationsServiceSpy = TestBed.inject(OrganizationsService) as jasmine.SpyObj<OrganizationsService>;
     organizationQuerySpy = TestBed.inject(OrganizationQuery) as jasmine.SpyObj<OrganizationQuery>;
     matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
-    collectionsServiceSpy = TestBed.inject(CollectionsService) as jasmine.SpyObj<CollectionsService>;
-    createCollectionStore = TestBed.inject(CreateCollectionStore);
+    TestBed.inject(CreateCollectionStore);
   });
 
   it('should be created', () => {

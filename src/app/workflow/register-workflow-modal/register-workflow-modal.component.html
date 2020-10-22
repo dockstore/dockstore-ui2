@@ -49,7 +49,11 @@
       <div *ngIf="selectedOption?.value === 0">
         <p>
           Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
-          <a [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps.html'" target="_blank" rel="noopener noreferrer">
+          <a
+            href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps/github-apps.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             documentation <mat-icon>open_in_new</mat-icon>
           </a>
           for how to use GitHub Apps to automatically sync your workflows with GitHub. A .dockstore.yml file is required.

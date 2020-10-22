@@ -51,7 +51,6 @@ describe('ContainerService', () => {
   }));
   it('should set observables', inject([ContainerService], (service: ContainerService) => {
     const tool: DockstoreTool = sampleTool1;
-    const tool1: DockstoreTool = sampleTool2;
 
     service.setTool(tool);
     service.setCopyBtn('1');

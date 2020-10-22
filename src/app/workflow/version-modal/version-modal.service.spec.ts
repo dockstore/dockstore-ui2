@@ -41,16 +41,6 @@ describe('Service: version-modal.service.ts', () => {
     });
     workflowQuery = TestBed.inject(WorkflowQuery) as jasmine.SpyObj<WorkflowQuery>;
   });
-  const expectedError: any = {
-    message: 'oh no!',
-    errorDetails: 'oh yes',
-  };
-  const expectedWorkflow: any = {
-    repository: 'GitHub',
-    descriptorType: 'cwl',
-    gitUrl: 'asdf',
-    workflowName: '',
-  };
   const expectedVersion: WorkflowVersion = {
     name: 'expectedName',
     reference: 'expectedReference',

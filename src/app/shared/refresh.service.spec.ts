@@ -16,8 +16,9 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { first } from 'rxjs/operators';
 
-import { sampleTool1, sampleWorkflow1 } from '../test/mocked-objects';
+import { sampleWorkflow1 } from '../test/mocked-objects';
 import {
   ContainersStubService,
   ContainerStubService,
@@ -40,10 +41,7 @@ import { WorkflowService } from './state/workflow.service';
 import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { Workflow } from './swagger/model/workflow';
 import { ToolQuery } from './tool/tool.query';
-import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 describe('RefreshService', () => {
   beforeEach(() => {
@@ -73,28 +71,15 @@ describe('RefreshService', () => {
   it('should refresh workflow', inject(
     [RefreshService, AlertQuery, WorkflowService, WorkflowQuery],
     (service: RefreshService, alertQuery: AlertQuery, workflowService: WorkflowService, workflowQuery: WorkflowQuery) => {
-      const refreshedWorkflow: Workflow = {
-        descriptorType: DescriptorTypeEnum.CWL,
-        gitUrl: 'refreshedGitUrl',
-        mode: Workflow.ModeEnum.FULL,
-        organization: 'refreshedOrganization',
-        repository: 'refreshedRepository',
-        workflow_path: 'refreshedWorkflowPath',
-        workflowVersions: [],
-        defaultTestParameterFilePath: 'refreshedDefaultTestParameterFilePath',
-        sourceControl: 'github.com',
-        source_control_provider: 'GITHUB',
-        descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
-      };
       workflowService.setWorkflows([]);
       workflowService.setWorkflow(sampleWorkflow1);
+      workflowQuery.workflow$.pipe(first()).subscribe((workflow) => {
+        expect(workflow).toEqual(sampleWorkflow1);
+      });
       service.refreshWorkflow();
-      alertQuery.showInfo$.subscribe((refreshing) => {
+      alertQuery.showInfo$.pipe(first()).subscribe((refreshing) => {
         expect(refreshing).toBeFalsy();
       });
-      // workflowQuery.workflow$.subscribe(workflow => {
-      //     expect(workflow).toEqual(refreshedWorkflow);
-      // });
     }
   ));
 });

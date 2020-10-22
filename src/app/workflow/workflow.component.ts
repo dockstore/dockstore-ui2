@@ -293,30 +293,32 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     if (url.includes('workflows') || url.includes('services')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      this.workflowsService.getPublishedWorkflowByPath(this.title, includesValidation, this.entryType === EntryType.Service).subscribe(
-        (workflow) => {
-          this.workflowService.setWorkflow(workflow);
-          this.selectTab(this.validTabs.indexOf(this.currentTab));
-          this.updateWorkflowUrl(this.workflow);
-        },
-        (error) => {
-          const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
-          if (regex.test(this.resourcePath)) {
-            this.router.navigate(['../']);
-          } else {
-            this.showRedirect = true;
-            // Retrieve the workflow path from the URL
-            const splitPath = this.resourcePath.split('/');
-            const workflowPath = splitPath.slice(2, 5);
-            const pathSuffix = workflowPath.join('/');
+      this.workflowsService
+        .getPublishedWorkflowByPath(this.title, includesValidation, this.entryType === EntryType.Service, this.urlVersion)
+        .subscribe(
+          (workflow) => {
+            this.workflowService.setWorkflow(workflow);
+            this.selectTab(this.validTabs.indexOf(this.currentTab));
+            this.updateWorkflowUrl(this.workflow);
+          },
+          (error) => {
+            const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
+            if (regex.test(this.resourcePath)) {
+              this.router.navigate(['../']);
+            } else {
+              this.showRedirect = true;
+              // Retrieve the workflow path from the URL
+              const splitPath = this.resourcePath.split('/');
+              const workflowPath = splitPath.slice(2, 5);
+              const pathSuffix = workflowPath.join('/');
 
-            // Create suggested paths
-            this.gitlabPath += pathSuffix;
-            this.githubPath += pathSuffix;
-            this.bitbucketPath += pathSuffix;
+              // Create suggested paths
+              this.gitlabPath += pathSuffix;
+              this.githubPath += pathSuffix;
+              this.bitbucketPath += pathSuffix;
+            }
           }
-        }
-      );
+        );
     }
   }
   /**

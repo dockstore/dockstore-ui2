@@ -213,8 +213,8 @@
       </div>
       <div>
         <strong matTooltip="E-mail of corresponding author for workflow">E-mail</strong>:
-        <a [href]="'mailto:' + selectedVersion?.email" *ngIf="selectedVersion?.email">
-          {{ workflow?.email }}
+        <a href="mailto:{{ selectedVersion?.email }}" *ngIf="selectedVersion?.email">
+          {{ selectedVersion?.email }}
         </a>
         <span *ngIf="!selectedVersion?.email"> n/a </span>
       </div>

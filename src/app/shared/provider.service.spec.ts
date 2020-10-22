@@ -18,7 +18,6 @@ import { inject, TestBed } from '@angular/core/testing';
 import { faBitbucket, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 import { validTool } from '../test/mocked-objects';
 import { faDockstore } from './custom-icons';
-import { ImageProviderService } from './image-provider.service';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ProviderService } from './provider.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';

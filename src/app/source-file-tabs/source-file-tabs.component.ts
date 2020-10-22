@@ -55,7 +55,7 @@ export class SourceFileTabsComponent implements OnChanges {
           this.files = sourceFiles;
           this.fileTypes = fileTypes;
         },
-        (error) => {
+        () => {
           this.displayError = true;
         }
       );
