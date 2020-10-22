@@ -56,7 +56,7 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
-import { ContainerModule } from './container.module';
+import { WrapperModule } from './wrapper.module';
 
 @NgModule({
   declarations: [
@@ -95,7 +95,7 @@ import { ContainerModule } from './container.module';
     AddEntryModule,
     MarkdownModule,
     RefreshAlertModule,
-    ContainerModule,
+    WrapperModule,
   ],
   providers: [
     DateService,

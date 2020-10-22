@@ -7,6 +7,7 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
+import { WrapperModule } from '../shared/modules/wrapper.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { CollectionsModule } from './collections.module';
 import { EventsModule } from './events.module';
@@ -33,6 +34,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     MarkdownModule,
     PipeModule,
     ContainerModule,
+    WrapperModule,
   ],
   declarations: [OrganizationComponent],
   exports: [OrganizationComponent],

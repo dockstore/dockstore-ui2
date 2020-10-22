@@ -40,7 +40,6 @@ import { StarringService } from '../../starring/starring.service';
 import { DateService } from '../date.service';
 import { ToolActionsComponent } from '../entry-actions/tool-actions.component';
 import { FileService } from '../file.service';
-import { MarkdownWrapperComponent } from '../markdown-wrapper/markdown-wrapper.component';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
@@ -55,6 +54,7 @@ import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { SelectModule } from './select.module';
+import { WrapperModule } from './wrapper.module';
 
 @NgModule({
   declarations: [
@@ -72,7 +72,6 @@ import { SelectModule } from './select.module';
     VersionModalComponent,
     InfoTabComponent,
     ToolFileEditorComponent,
-    MarkdownWrapperComponent,
   ],
   imports: [
     CommonModule,
@@ -90,6 +89,7 @@ import { SelectModule } from './select.module';
     AddEntryModule,
     FlexLayoutModule,
     MarkdownModule,
+    WrapperModule,
   ],
   providers: [
     EmailService,
@@ -103,7 +103,7 @@ import { SelectModule } from './select.module';
     VersionModalService,
     InfoTabService,
   ],
-  exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent, MarkdownWrapperComponent],
+  exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent],
   entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent],
 })
 export class ContainerModule {}

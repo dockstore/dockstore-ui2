@@ -1,6 +1,5 @@
-import {Component, Input, OnInit, SecurityContext} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
-import DOMPurify from 'dompurify';
+import { Component, Input, OnInit } from '@angular/core';
+import { DOMPurify } from 'dompurify';
 
 @Component({
   selector: 'markdown-wrapper',
@@ -20,11 +19,10 @@ export class MarkdownWrapperComponent implements OnInit {
     this.forbid_attr = ['class'];
 
     // Sets config for DOMPurify until otherwise specified.
-    DOMPurify.setConfig(
-      {
-        FORBID_TAGS: this.forbid_tags,
-        FORBID_ATTR: this.forbid_attr,
-      });
+    DOMPurify.setConfig({
+      FORBID_TAGS: this.forbid_tags,
+      FORBID_ATTR: this.forbid_attr,
+    });
   }
 
   customSanitize(content: string) {

@@ -226,7 +226,7 @@
         <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
           <div *ngIf="selectedVersion?.description" class="well well-sm">
-            <markdown-wrapper [data]="fakHtml"></markdown-wrapper>
+            <markdown-wrapper [data]="selectedVersion?.description"></markdown-wrapper>
           </div>
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
