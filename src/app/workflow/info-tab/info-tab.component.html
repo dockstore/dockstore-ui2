@@ -41,7 +41,7 @@
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
-            <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
+            <strong matTooltip="Git repository for the associated descriptors">Source Code </strong>:
             <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
               {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
@@ -54,6 +54,16 @@
         <li *ngIf="isPublic && isValidVersion">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
           <a [href]="trsLink"> #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }} </a>
+          <button
+            mat-icon-button
+            color="secondary"
+            ngxClipboard
+            [cbContent]="trsLink"
+            (cbOnSuccess)="isCopied1 = true"
+            matTooltip="Copy Token"
+          >
+            <mat-icon>file_copy</mat-icon>
+          </button>
         </li>
         <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
           <span>
