@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DOMPurify } from 'dompurify';
+import DOMPurify from 'dompurify';
 
 @Component({
   selector: 'markdown-wrapper',
@@ -7,14 +7,15 @@ import { DOMPurify } from 'dompurify';
   styleUrls: ['./markdown-wrapper.component.scss'],
 })
 
-// Wrapper for user-input markdown to prevent access to global CSS classes.
+// Wrapper for user-input markdown to provide custom sanitization not accessible through the built-in sanitizer, DOMSanitize.
+// DOMSanitize's safe-lists can be seen https://github.com/angular/angular/blob/master/packages/core/src/sanitization/html_sanitizer.ts
 export class MarkdownWrapperComponent implements OnInit {
   @Input() data: string;
   forbid_tags: string[];
   forbid_attr: string[];
 
   ngOnInit() {
-    // list of tags and attributes that will be sanitized by DOMPurify
+    // list of tags and attributes that will be sanitized by DOMPurify.
     this.forbid_tags = [];
     this.forbid_attr = ['class'];
 
