@@ -58,6 +58,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   temporaryDescriptorType: Workflow.DescriptorTypeEnum;
   descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   defaultTestFilePathEditing: boolean;
+  forumUrlEditing: boolean;
   isPublic: boolean;
   trsLink: string;
   EntryType = EntryType;
@@ -118,6 +119,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.infoTabService.defaultTestFilePathEditing$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
+    this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
   }
 
   /**
@@ -153,6 +155,13 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.save();
     }
     this.infoTabService.setDefaultTestFilePathEditing(!this.defaultTestFilePathEditing);
+  }
+
+  toggleEditForumUrl() {
+    if (this.forumUrlEditing) {
+      this.save();
+    }
+    this.infoTabService.setForumUrlEditing(!this.forumUrlEditing);
   }
 
   save() {
