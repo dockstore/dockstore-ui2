@@ -6,7 +6,6 @@ import { AddEntryStore } from './add-entry.store';
 
 describe('AddEntryService', () => {
   let addEntryService: AddEntryService;
-  let addEntryStore: AddEntryStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,7 +14,7 @@ describe('AddEntryService', () => {
     });
 
     addEntryService = TestBed.inject(AddEntryService);
-    addEntryStore = TestBed.inject(AddEntryStore);
+    TestBed.inject(AddEntryStore);
   });
 
   it('should be created', () => {

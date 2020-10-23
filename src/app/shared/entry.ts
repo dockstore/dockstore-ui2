@@ -46,7 +46,6 @@ export abstract class Entry implements OnInit, OnDestroy {
   @ViewChild('entryTabs') entryTabs: MatTabGroup;
   protected shareURL: string;
   public starGazersClicked = false;
-  private totalShare = 0;
   public title: string;
   protected _toolType: string;
   protected isLoggedIn: boolean;
@@ -150,10 +149,6 @@ export abstract class Entry implements OnInit, OnDestroy {
 
   toggleLabelsEditMode(): void {
     this.labelsEditMode = !this.labelsEditMode;
-  }
-
-  sumCounts(count: number): void {
-    this.totalShare += count;
   }
 
   protected initTool(): void {
@@ -445,7 +440,7 @@ export abstract class Entry implements OnInit, OnDestroy {
 
       // Get index of /containers or /workflows
       // TODO: Not sure why getPageIndex() returns anything, but does need to get called to change URL.
-      const pageIndex = this.getPageIndex();
+      this.getPageIndex();
     }
   }
 

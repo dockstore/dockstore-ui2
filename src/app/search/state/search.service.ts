@@ -86,7 +86,20 @@ export class SearchService {
    * @param attribute: workflow or tool property to sort by
    * @param direction: 'asc' or 'desc'
    */
-  compareAttributes(a: DockstoreTool | Workflow, b: DockstoreTool | Workflow, attribute: string, direction: SortDirection) {
+  compareAttributes(
+    a: DockstoreTool | Workflow,
+    b: DockstoreTool | Workflow,
+    attribute: string,
+    direction: SortDirection,
+    entryType: 'tool' | 'workflow'
+  ) {
+    // For sorting tools by name, sort tool_path
+    // For sorting workflows by name, sort full_workflow_path
+    if (entryType === 'tool' && attribute === 'name') {
+      attribute = 'tool_path';
+    } else if (entryType === 'workflow' && attribute === 'name') {
+      attribute = 'full_workflow_path';
+    }
     let aVal = a[attribute];
     let bVal = b[attribute];
     const sortFactor = direction === 'asc' ? 1 : -1;

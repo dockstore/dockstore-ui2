@@ -31,7 +31,6 @@ export const MOCK_ORGANIZATIONS_ROUTES: Routes = [{ path: '**', component: Organ
 
 describe('OrganizationService', () => {
   let organizationService: OrganizationService;
-  let organizationStore: OrganizationStore;
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationsComponent],
@@ -40,7 +39,7 @@ describe('OrganizationService', () => {
     });
 
     organizationService = TestBed.inject(OrganizationService);
-    organizationStore = TestBed.inject(OrganizationStore);
+    TestBed.inject(OrganizationStore);
   });
 
   it('should be created', () => {

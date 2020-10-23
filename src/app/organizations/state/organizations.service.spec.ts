@@ -7,7 +7,6 @@ import { OrganizationsStore } from './organizations.store';
 
 describe('OrganizationsStateService', () => {
   let organizationsStateService: OrganizationsStateService;
-  let organizationsStore: OrganizationsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -16,7 +15,6 @@ describe('OrganizationsStateService', () => {
     });
 
     organizationsStateService = TestBed.inject(OrganizationsStateService);
-    organizationsStore = TestBed.inject(OrganizationsStore);
   });
 
   it('should be created', () => {

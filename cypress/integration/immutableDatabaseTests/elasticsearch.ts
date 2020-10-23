@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort } from '../../support/commands';
 
 describe('elasticsearch from logged-out homepage', () => {
   it('Should be able to search entries for using text', () => {

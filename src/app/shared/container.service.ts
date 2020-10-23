@@ -27,7 +27,6 @@ import { ToolService } from './tool/tool.service';
  */
 @Injectable()
 export class ContainerService {
-  private static readonly descriptorWdl = ' --descriptor wdl';
   tools$ = new BehaviorSubject<DockstoreTool[]>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();

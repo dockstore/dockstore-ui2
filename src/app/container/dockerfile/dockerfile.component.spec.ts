@@ -21,7 +21,6 @@ import { ContainerService } from './../../shared/container.service';
 import { FileService } from './../../shared/file.service';
 import { ContainersStubService, ContainerStubService, FileStubService } from './../../test/service-stubs';
 import { DockerfileComponent } from './dockerfile.component';
-class DockerFileStubService {}
 
 describe('DockerfileComponent', () => {
   let component: DockerfileComponent;

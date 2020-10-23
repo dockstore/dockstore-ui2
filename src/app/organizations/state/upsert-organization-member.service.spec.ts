@@ -8,7 +8,6 @@ import { UpsertOrganizationMemberStore } from './upsert-organization-member.stor
 
 describe('UpsertOrganizationMemberService', () => {
   let upsertOrganizationMemberService: UpsertOrganizationMemberService;
-  let upsertOrganizationMemberStore: UpsertOrganizationMemberStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -17,7 +16,7 @@ describe('UpsertOrganizationMemberService', () => {
     });
 
     upsertOrganizationMemberService = TestBed.inject(UpsertOrganizationMemberService);
-    upsertOrganizationMemberStore = TestBed.inject(UpsertOrganizationMemberStore);
+    TestBed.inject(UpsertOrganizationMemberStore);
   });
 
   it('should be created', () => {

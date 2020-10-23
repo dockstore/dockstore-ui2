@@ -6,7 +6,6 @@ import { OrganizationMembersStore } from './organization-members.store';
 
 describe('OrganizationMembersService', () => {
   let organizationMembersService: OrganizationMembersService;
-  let organizationMembersStore: OrganizationMembersStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,7 +14,7 @@ describe('OrganizationMembersService', () => {
     });
 
     organizationMembersService = TestBed.inject(OrganizationMembersService);
-    organizationMembersStore = TestBed.inject(OrganizationMembersStore);
+    TestBed.inject(OrganizationMembersStore);
   });
 
   it('should be created', () => {
