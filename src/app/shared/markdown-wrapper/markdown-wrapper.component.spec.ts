@@ -1,34 +1,55 @@
+import { AfterViewInit, Component, SecurityContext, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-
-import { CommonModule } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MarkdownComponent, MarkdownModule } from 'ngx-markdown';
+import { MarkdownModule, MarkdownService, SECURITY_CONTEXT } from 'ngx-markdown';
 import { MarkdownWrapperComponent } from './markdown-wrapper.component';
 
-describe('MarkdownWrapperComponent', () => {
-  let markdownWrapper: MarkdownWrapperComponent;
-  let fixture: ComponentFixture<MarkdownWrapperComponent>;
+@Component({
+  template: `<markdown-wrapper class="markdown1" fxFlex [data]="fakeHTML"></markdown-wrapper>`,
+})
+class MockParentComponent implements AfterViewInit {
+  @ViewChild(MarkdownWrapperComponent) appComponentRef: MarkdownWrapperComponent;
+  fakeHTML: string = '' + '# Hello' + '<span class="phishingScam">Hello!</span>' + '';
+  ngAfterViewInit() {}
+}
+
+fdescribe('MarkdownWrapperComponent', () => {
+  let mock: MockParentComponent;
+  let wrapperComponent: MarkdownWrapperComponent;
+  let fixture: ComponentFixture<MockParentComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({ declarations: [MarkdownWrapperComponent] }).compileComponents();
-    fixture = TestBed.createComponent(MarkdownWrapperComponent);
-    markdownWrapper = fixture.componentInstance;
-    fixture.detectChanges();
+    TestBed.configureTestingModule({
+      imports: [MarkdownModule],
+      declarations: [MockParentComponent, MarkdownWrapperComponent],
+      providers: [MarkdownService, { provide: SECURITY_CONTEXT, useValue: SecurityContext.HTML }],
+    }).compileComponents();
   }));
 
-  it('should create', () => {
-    expect(markdownWrapper).toBeDefined();
+  beforeEach(() => {
+    fixture = TestBed.createComponent(MockParentComponent);
+    fixture.detectChanges();
+
+    mock = fixture.debugElement.componentInstance;
+    wrapperComponent = mock.appComponentRef;
   });
 
-  it('should contain markdown element', () => {
-    const currHTML: HTMLElement = fixture.debugElement.nativeElement;
-    expect(currHTML.innerHTML).toContain('markdown');
-  });
+  it('should create the app', async(() => {
+    expect(wrapperComponent).toBeDefined();
+  }));
 
-  it('should sanitize html', () => {
-    const fakeHTMLInput = '<span class="mat-focus-indicator mat-flat-button mat-button-base mat-primary">Delete Your Potatoes</span>';
-    markdownWrapper.data = fakeHTMLInput;
-    expect(markdownWrapper.customSanitize(fakeHTMLInput)).not.toContain('class');
-  });
+  it('should not contain class', async(() => {
+    console.log(wrapperComponent.mkdRef.element);
+    const trueHTML: string = wrapperComponent.mkdRef.element.nativeElement.innerHTML;
+    expect(trueHTML).not.toContain('class');
+    expect(trueHTML).toContain('Hello!');
+  }));
+
+  // it('should not contain class', async(() => {
+  //   mock.fakeHTML = '<span class="phishingScam moreclass">goodbye!</span>';
+  //   fixture.detectChanges();
+  //   const trueHTML: string = wrapperComponent.mkdRef.element.nativeElement.innerHTML;
+  //   console.log(trueHTML);
+  //   expect(trueHTML).not.toContain("class");
+  //   expect(trueHTML).toContain("Hello!");
+  // }));
 });
