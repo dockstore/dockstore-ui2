@@ -8,11 +8,16 @@ import { MarkdownWrapperComponent } from './markdown-wrapper.component';
 })
 class MockParentComponent implements AfterViewInit {
   @ViewChild(MarkdownWrapperComponent) appComponentRef: MarkdownWrapperComponent;
-  fakeHTML: string = '' + '# Hello' + '<span class="phishingScam">Hello!</span>' + '';
+  fakeHTML: string = '# Header1' +
+    '\n <span class="phishingScam"><a>Fake Button!</a></span>' +
+    '\n ## Header2' +
+    '\n <span class="mat-focus-indicator mat-flat-button mat-button-base mat-primary"><a href="www.github.com">has href but no styling</a></span>' +
+    '\n <span class="mat-focus-indicator mat-flat-button mat-button-base mat-primary"><a href="javascript:window.alert(\'mashing\')">no href and no styling</a></span>' +
+    '\n `<span class="mat-focus-indicator mat-flat-button mat-button-base mat-primary"><a href="javascript:window.alert(\'mashing\')">Safe!</a></span>`';
   ngAfterViewInit() {}
 }
 
-fdescribe('MarkdownWrapperComponent', () => {
+describe('MarkdownWrapperComponent', () => {
   let mock: MockParentComponent;
   let wrapperComponent: MarkdownWrapperComponent;
   let fixture: ComponentFixture<MockParentComponent>;
@@ -37,19 +42,38 @@ fdescribe('MarkdownWrapperComponent', () => {
     expect(wrapperComponent).toBeDefined();
   }));
 
-  it('should not contain class', async(() => {
-    console.log(wrapperComponent.mkdRef.element);
-    const trueHTML: string = wrapperComponent.mkdRef.element.nativeElement.innerHTML;
-    expect(trueHTML).not.toContain('class');
-    expect(trueHTML).toContain('Hello!');
+  it('should contain h1', async(() => {
+    const trueHTML: string = wrapperComponent.mkdRef.element.nativeElement.querySelector('h1').innerHTML;
+    expect(trueHTML).toContain('Header1');
   }));
 
-  // it('should not contain class', async(() => {
-  //   mock.fakeHTML = '<span class="phishingScam moreclass">goodbye!</span>';
-  //   fixture.detectChanges();
-  //   const trueHTML: string = wrapperComponent.mkdRef.element.nativeElement.innerHTML;
-  //   console.log(trueHTML);
-  //   expect(trueHTML).not.toContain("class");
-  //   expect(trueHTML).toContain("Hello!");
-  // }));
+  it('should contain h2', async(() => {
+    const trueHTML: string = wrapperComponent.mkdRef.element.nativeElement.querySelector('h2').innerHTML;
+    expect(trueHTML).toContain('Header2');
+  }));
+
+  it('should have correctly sanitized spans', async(() => {
+    const spanArray = wrapperComponent.mkdRef.element.nativeElement.querySelectorAll('span');
+
+    // first <span> should contain just a link and no class
+    expect(spanArray[0].outerHTML).toContain('Fake Button!');
+    expect(spanArray[0].outerHTML).not.toContain('class');
+
+    // second span should have an href but no classes
+    expect(spanArray[1].outerHTML).toContain('has href but no styling');
+    expect(spanArray[1].outerHTML).toContain('<a href="www.github.com">has href but no styling</a>');
+    expect(spanArray[1].outerHTML).not.toContain('class');
+
+    // third span should have no href and no styling
+    expect(spanArray[2].outerHTML).toContain('no href and no styling');
+    expect(spanArray[2].outerHTML).not.toContain('href=');
+    expect(spanArray[2].outerHTML).not.toContain('class');
+  }));
+
+  it('should not sanitize text ', async(() => {
+    const trueHTML: string = wrapperComponent.mkdRef.element.nativeElement.querySelector('code').innerHTML;
+    expect(trueHTML).toContain('class="mat-focus-indicator mat-flat-button mat-button-base mat-primary');
+    expect(trueHTML).toContain('href="javascript:window.alert(\'mashing\')');
+    expect(trueHTML).toContain('Safe!');
+  }));
 });
