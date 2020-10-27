@@ -68,7 +68,7 @@ describe('Checker workflow test from my-tools', () => {
       goToTab('Launch');
       cy.get('#launchCheckerWorkflow').should('be.visible');
       goToTab('Info');
-      cy.get('#viewCheckerWorkflowButton').should('visible').click();
+      cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
       // In the checker workflow right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A2/b3/_cwl_checker');
@@ -87,7 +87,7 @@ describe('Checker workflow test from my-tools', () => {
       goToTab('Launch');
       cy.get('#launchCheckerWorkflow').should('be.visible');
       goToTab('Info');
-      cy.get('#viewCheckerWorkflowButton').should('visible');
+      cy.get('#viewCheckerWorkflowButton').should('be.visible');
     });
     it('visit the tool and have its publish/unpublish reflected in the checker workflow', () => {
       cy.server();
@@ -99,7 +99,7 @@ describe('Checker workflow test from my-tools', () => {
       // cy.url().should('eq','/my-tools/quay.io/A2/b3')
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click();
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish');
-      cy.get('#viewCheckerWorkflowButton').should('visible').click();
+      cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
       // In the checker workflow right now
       cy.get('#workflow-path').should('contain', '_checker');
@@ -112,7 +112,7 @@ describe('Checker workflow test from my-tools', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/my-tools/quay.io/A2/b3');
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish').click();
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish');
-      cy.get('#viewCheckerWorkflowButton').should('visible').click();
+      cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
       // in the checker workflow right now
       cy.get('#workflow-path').should('contain', '_checker');
@@ -122,8 +122,8 @@ describe('Checker workflow test from my-tools', () => {
   });
 });
 describe('Should be able to see the checker workflow from a tool', () => {
+  setTokenUserViewPort();
   it('visit the tool with a checker workflow and have the correct buttons', () => {
-    setTokenUserViewPort();
     cy.visit('/search-containers');
     cy.get('mat-cell')
       .find('a')
@@ -139,7 +139,7 @@ describe('Should be able to see the checker workflow from a tool', () => {
     goToTab('Launch');
     cy.get('#launchCheckerWorkflow').should('be.visible');
     goToTab('Info');
-    cy.get('#viewCheckerWorkflowButton').should('visible').click();
+    cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
     // In the checker workflow right now
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A2/b3/_cwl_checker?tab=info');
@@ -158,6 +158,6 @@ describe('Should be able to see the checker workflow from a tool', () => {
     goToTab('Launch');
     cy.get('#launchCheckerWorkflow').should('be.visible');
     goToTab('Info');
-    cy.get('#viewCheckerWorkflowButton').should('visible');
+    cy.get('#viewCheckerWorkflowButton').should('be.visible');
   });
 });

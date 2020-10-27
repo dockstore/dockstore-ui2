@@ -120,7 +120,7 @@ jobs:
           key: cypress-cache-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/* --browser chrome'
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
@@ -304,8 +304,8 @@ commands:
           name: Install cypress dependencies
           command: sudo apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
       - run:
-         name: Install cypress
-         command: bash -i -c 'npm install cypress'
+          name: Install cypress
+          command: bash -i -c 'npm install cypress'
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
