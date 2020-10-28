@@ -72,7 +72,7 @@ describe('MarkdownWrapperComponent', () => {
     wrapperComponent.ngOnChanges(); // has to be called manually in unit tests (TestBed doesn't by default)
     fixture.detectChanges();
     expect(fixture.nativeElement.innerHTML).toContain('class="mat-focus-indicator mat-flat-button mat-button-base mat-primary');
-    expect(fixture.nativeElement.innerHTML).toContain("href=\"javascript:window.alert('mashing')");
+    expect(fixture.nativeElement.innerHTML).toContain('href="javascript:window.alert(\'mashing\')"');
     expect(fixture.nativeElement.innerHTML).toContain('Safe!');
   }));
 });

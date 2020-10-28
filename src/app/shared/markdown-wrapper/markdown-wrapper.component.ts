@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import DOMPurify from 'dompurify';
-import { MarkdownComponent, MarkdownService } from 'ngx-markdown';
+import { MarkdownService } from 'ngx-markdown';
 
 @Component({
   selector: 'markdown-wrapper',
