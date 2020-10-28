@@ -88,7 +88,12 @@
                   <button
                     *ngIf="!isPublic"
                     type="button"
-                    [disabled]="(workflowPathEditing && !editWorkflowPathForm.valid) || (isRefreshing$ | async)"
+                    [disabled]="
+                      defaultTestFilePathEditing ||
+                      forumUrlEditing ||
+                      (workflowPathEditing && !editWorkflowPathForm.valid) ||
+                      (isRefreshing$ | async)
+                    "
                     class="btn btn-link"
                     (click)="toggleEditWorkflowPath()"
                   >
@@ -122,16 +127,70 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+                  <button *ngIf="!isPublic && defaultTestFilePathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                  </button>
                   <button
                     *ngIf="!isPublic"
                     type="button"
-                    [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)"
+                    [disabled]="
+                      workflowPathEditing ||
+                      forumUrlEditing ||
+                      (defaultTestFilePathEditing && !editTestFilePathForm.valid) ||
+                      (isRefreshing$ | async)
+                    "
                     class="btn btn-link"
                     (click)="toggleEditDefaultTestFilePath()"
                   >
                     <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
                     <mat-icon *ngIf="!defaultTestFilePathEditing">edit</mat-icon>
                     {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
+                  </button>
+                </span>
+              </form>
+              <form
+                #editForumUrl="ngForm"
+                class="form-inline"
+                fxLayout
+                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+              >
+                <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
+                  <strong matTooltip="Link to a discussion forum for this workflow">Discussion Forum</strong>:
+                  <a *ngIf="!forumUrlEditing" [href]="'//' + workflow?.forumUrl" fxFlexOffset="4px"> {{ workflow?.forumUrl }} </a>
+                  <input
+                    *ngIf="forumUrlEditing"
+                    maxlength="256"
+                    type="url"
+                    class="input-default form-control"
+                    name="forumUrl"
+                    [(ngModel)]="workflow.forumUrl"
+                    placeholder="Link to discussion forum"
+                    fxFlex="noshrink"
+                    fxFlexOffset="4px"
+                  />
+                </div>
+                <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+                  <button *ngIf="!isPublic && forumUrlEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                  </button>
+                  <button
+                    *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
+                    [disabled]="workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    type="button"
+                    class="btn btn-link"
+                    (click)="toggleEditForumUrl()"
+                  >
+                    <mat-icon>add</mat-icon> Add
+                  </button>
+                  <button
+                    *ngIf="!isPublic && (workflow?.forumUrl || forumUrlEditing)"
+                    type="button"
+                    class="btn btn-link"
+                    (click)="toggleEditForumUrl()"
+                  >
+                    <mat-icon *ngIf="forumUrlEditing">save</mat-icon>
+                    <mat-icon *ngIf="!forumUrlEditing">edit</mat-icon>
+                    {{ forumUrlEditing ? 'Save' : 'Edit' }}
                   </button>
                 </span>
               </form>
