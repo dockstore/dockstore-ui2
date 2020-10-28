@@ -25,4 +25,4 @@ import { MarkdownWrapperComponent } from '../markdown-wrapper/markdown-wrapper.c
   exports: [MarkdownWrapperComponent],
   entryComponents: [],
 })
-export class WrapperModule {}
+export class MarkdownWrapperModule {}

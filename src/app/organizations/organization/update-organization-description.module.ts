@@ -5,8 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { MarkdownModule } from 'ngx-markdown';
 import { RefreshAlertModule } from '../../shared/alert/alert.module';
+import { MarkdownWrapperModule } from '../../shared/modules/markdown-wrapper.module';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
-import { WrapperModule } from '../../shared/modules/wrapper.module';
 import { OrgSchemaService } from '../../shared/org-schema.service';
 import { StarOrganizationService } from '../../shared/star-organization.service';
 import { OrganizationStarringService } from './organization-starring/organization-starring.service';
@@ -22,7 +22,7 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-org
     ReactiveFormsModule,
     MarkdownModule,
     NgxJsonLdModule,
-    WrapperModule,
+    MarkdownWrapperModule,
   ],
   providers: [OrganizationStarringService, StarOrganizationService, OrgSchemaService],
   declarations: [UpdateOrganizationOrCollectionDescriptionComponent],

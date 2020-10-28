@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
+import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
-import { WrapperModule } from '../shared/modules/wrapper.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { CollectionsModule } from './collections.module';
 import { EventsModule } from './events.module';
@@ -32,7 +32,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     OrganizationStargazersModule,
     MarkdownModule,
     PipeModule,
-    WrapperModule,
+    MarkdownWrapperModule,
   ],
   declarations: [OrganizationComponent],
   exports: [OrganizationComponent],

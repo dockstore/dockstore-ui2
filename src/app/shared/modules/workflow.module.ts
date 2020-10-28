@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2020 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
-import { WrapperModule } from './wrapper.module';
+import { MarkdownWrapperModule } from './markdown-wrapper.module';
 
 @NgModule({
   declarations: [
@@ -95,7 +95,7 @@ import { WrapperModule } from './wrapper.module';
     AddEntryModule,
     MarkdownModule,
     RefreshAlertModule,
-    WrapperModule,
+    MarkdownWrapperModule,
   ],
   providers: [
     DateService,
