@@ -55,6 +55,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: set cache version
+          command: VERSION="v1"
+      - run:
           name: Checkout merge commit (PRs only)
           command: |
             if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
@@ -64,7 +67,7 @@ jobs:
             fi
       - install_container_dependencies
       - restore_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
@@ -74,11 +77,11 @@ jobs:
                 bash -i -c 'npm ci'
               fi
       - save_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
       - save_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
             - ~/.cache
               # Disabled until ng2-ui-auth and @ngx-lite/json is replaced. Currently they do not support Angular 9
@@ -117,7 +120,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/* --browser chrome'
@@ -131,7 +134,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
@@ -145,7 +148,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
@@ -304,9 +307,6 @@ commands:
           name: Install cypress dependencies
           command: sudo apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
       - run:
-          name: Install cypress
-          command: bash -i -c 'npm install cypress'
-      - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
       - run:
@@ -332,7 +332,7 @@ commands:
       - checkout
       - install_container_dependencies
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
