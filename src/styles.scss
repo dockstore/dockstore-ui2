@@ -549,6 +549,13 @@ table {
   border: 1px solid #cfd1d7;
 }
 
+// Decided to not do horizontal scroll. Just wrap no matter what.
+// This is to naturally wrap breakable text. If the text is not breakable, wrap anywhere.
+// This does not affect <mat-table>
+td {
+  word-break: break-word;
+}
+
 td,
 th {
   font-weight: normal;
