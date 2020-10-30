@@ -445,9 +445,7 @@ export class SearchComponent implements OnInit, OnDestroy {
               order: {
                 _count: 'desc',
               },
-              include: {
-                pattern: pattern,
-              },
+              include: pattern,
             },
           },
         },
