@@ -61,6 +61,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   forumUrlEditing: boolean;
   isPublic: boolean;
   trsLink: string;
+  displayTextForButton: string;
   EntryType = EntryType;
   descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
@@ -120,6 +121,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
+    this.entryType$.subscribe((test) => (this.displayTextForButton = '#' + test + '/' + this.workflow?.full_workflow_path));
   }
 
   /**
