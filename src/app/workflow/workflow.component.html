@@ -422,7 +422,7 @@
           </div>
         </div>
       </div>
-      <current-collections [id]="workflow.id"></current-collections>
+      <current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></current-collections>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="workflow">

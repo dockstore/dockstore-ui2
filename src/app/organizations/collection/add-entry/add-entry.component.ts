@@ -16,6 +16,7 @@ export class AddEntryComponent implements OnInit {
   isLoading$: Observable<boolean>;
   selectedOrganizationId: number;
   selectedCollectionId: number;
+  selectedVersionId: number | null;
   constructor(
     private addEntryQuery: AddEntryQuery,
     private addEntryService: AddEntryService,
@@ -44,7 +45,12 @@ export class AddEntryComponent implements OnInit {
    */
   addToCollection() {
     if (this.selectedCollectionId && this.selectedOrganizationId) {
-      this.addEntryService.addEntryToCollection(this.selectedOrganizationId, this.selectedCollectionId, this.data.entryId);
+      this.addEntryService.addEntryToCollection(
+        this.selectedOrganizationId,
+        this.selectedCollectionId,
+        this.data.entryId,
+        this.selectedVersionId
+      );
     }
   }
 }

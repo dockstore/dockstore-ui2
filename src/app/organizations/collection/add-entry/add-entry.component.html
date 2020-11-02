@@ -23,7 +23,8 @@
             <mat-icon>info</mat-icon> You must be part of an organization to add to a collection
           </mat-card>
         </ng-template>
-        <mat-form-field *ngIf="memberships && memberships.length > 0; else noMemberships">
+        <mat-form-field appearance="outline" *ngIf="memberships && memberships.length > 0; else noMemberships">
+          <mat-label>Organization</mat-label>
           <mat-select
             id="selectOrganization"
             placeholder="Organization"
@@ -42,10 +43,27 @@
             <mat-icon>info</mat-icon> The selected organization has no collections that can be added
           </mat-card>
         </ng-template>
-        <mat-form-field id="selectCollection" *ngIf="selectedOrganizationId && collections && collections.length > 0; else noCollections">
+        <mat-form-field
+          appearance="outline"
+          id="selectCollection"
+          *ngIf="selectedOrganizationId && collections && collections.length > 0; else noCollections"
+        >
+          <mat-label>Collection</mat-label>
           <mat-select placeholder="Collection" [(value)]="selectedCollectionId" [disabled]="!selectedOrganizationId">
             <mat-option *ngFor="let collection of collections" [value]="collection.id">
               {{ collection.displayName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex *ngIf="selectedCollectionId">
+        <!-- It's extremely unlikely that a published entry has no versions -->
+        <mat-form-field appearance="outline">
+          <mat-label>Version (Optional)</mat-label>
+          <mat-select placeholder="Version (Optional)" [(value)]="selectedVersionId">
+            <mat-option [value]="null">None</mat-option>
+            <mat-option *ngFor="let version of data.versions" [value]="version.id">
+              {{ version.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
