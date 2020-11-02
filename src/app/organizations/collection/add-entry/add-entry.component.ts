@@ -14,8 +14,8 @@ export class AddEntryComponent implements OnInit {
   public memberships$: Observable<Array<OrganizationUser>>;
   public collections$: Observable<Array<Collection>>;
   isLoading$: Observable<boolean>;
-  selectedOrganizationId: number;
-  selectedCollectionId: number;
+  selectedOrganizationId: number | null;
+  selectedCollectionId: number | null;
   selectedVersionId: number | null;
   constructor(
     private addEntryQuery: AddEntryQuery,
@@ -26,9 +26,12 @@ export class AddEntryComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading$ = this.addEntryQuery.isLoading$;
+    this.selectedCollectionId = null;
+    this.selectedOrganizationId = null;
+    this.selectedVersionId = null;
     this.addEntryService.updateMemberships();
     this.memberships$ = this.addEntryQuery.memberships$;
-    this.collections$ = this.addEntryQuery.filteredCollections$;
+    this.collections$ = this.addEntryQuery.collections$;
   }
 
   /**
