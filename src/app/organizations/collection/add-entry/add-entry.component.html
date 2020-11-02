@@ -37,17 +37,13 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex *ngIf="collections$ | async as collections">
+      <div fxFlex *ngIf="selectedOrganizationId && collections$ | async as collections">
         <ng-template #noCollections>
           <mat-card class="alert alert-info" role="alert">
             <mat-icon>info</mat-icon> The selected organization has no collections that can be added
           </mat-card>
         </ng-template>
-        <mat-form-field
-          appearance="outline"
-          id="selectCollection"
-          *ngIf="selectedOrganizationId && collections && collections.length > 0; else noCollections"
-        >
+        <mat-form-field appearance="outline" id="selectCollection" *ngIf="collections && collections.length > 0; else noCollections">
           <mat-label>Collection</mat-label>
           <mat-select placeholder="Collection" [(value)]="selectedCollectionId" [disabled]="!selectedOrganizationId">
             <mat-option *ngFor="let collection of collections" [value]="collection.id">

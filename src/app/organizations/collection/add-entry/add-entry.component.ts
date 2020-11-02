@@ -26,9 +26,6 @@ export class AddEntryComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading$ = this.addEntryQuery.isLoading$;
-    this.selectedCollectionId = null;
-    this.selectedOrganizationId = null;
-    this.selectedVersionId = null;
     this.addEntryService.updateMemberships();
     this.memberships$ = this.addEntryQuery.memberships$;
     this.collections$ = this.addEntryQuery.collections$;
