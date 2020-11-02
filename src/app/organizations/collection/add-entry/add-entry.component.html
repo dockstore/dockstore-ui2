@@ -16,7 +16,7 @@
 <h1 mat-dialog-title>Add to collection</h1>
 <div mat-dialog-content>
   <app-loading [loading]="isLoading$ | async" [retainContent]="true">
-    <div fxLayout="column" fxLayoutGap="15px">
+    <div fxLayout="column">
       <div fxFlex *ngIf="memberships$ | async as memberships">
         <ng-template #noMemberships>
           <mat-card class="alert alert-info" role="alert">

@@ -87,8 +87,10 @@
                 <mat-card-header>
                   <mat-card-title>
                     <h4>
-                      <a [routerLink]="['/' + entry.entryType + 's/', entry.entryPath]">
-                        {{ entry.entryPath }}
+                      <a
+                        [routerLink]="['/' + entry.entryType + 's/', entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')]"
+                      >
+                        {{ entry.entryPath + (entry.versionName ? ':' + entry.versionName : '') }}
                       </a>
                     </h4>
                   </mat-card-title>
