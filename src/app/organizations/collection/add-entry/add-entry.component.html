@@ -58,7 +58,7 @@
       </div>
       <div fxFlex *ngIf="selectedCollectionId">
         <!-- It's extremely unlikely that a published entry has no versions -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" data-cy="selectVersion">
           <mat-label>Version (Optional)</mat-label>
           <mat-select placeholder="Version (Optional)" [(value)]="selectedVersionId">
             <mat-option [value]="null">None</mat-option>
