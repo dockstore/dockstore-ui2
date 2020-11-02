@@ -33,6 +33,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 export class InfoTabService {
   public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public forumUrlEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguageMap = [];
 
   /**
@@ -73,6 +74,10 @@ export class InfoTabService {
 
   setDefaultTestFilePathEditing(editing: boolean) {
     this.defaultTestFilePathEditing$.next(editing);
+  }
+
+  setForumUrlEditing(editing: boolean) {
+    this.forumUrlEditing$.next(editing);
   }
 
   updateAndRefresh(workflow: Workflow) {
@@ -178,6 +183,8 @@ export class InfoTabService {
    */
   cancelEditing(): void {
     this.workflowPathEditing$.next(false);
+    this.defaultTestFilePathEditing$.next(false);
+    this.forumUrlEditing$.next(false);
     this.restoreWorkflow();
   }
 

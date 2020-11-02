@@ -64,7 +64,7 @@ jobs:
             fi
       - install_container_dependencies
       - restore_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
@@ -74,11 +74,11 @@ jobs:
                 bash -i -c 'npm ci'
               fi
       - save_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
       - save_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
             - ~/.cache
               # Disabled until ng2-ui-auth and @ngx-lite/json is replaced. Currently they do not support Angular 9
@@ -117,7 +117,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
@@ -131,7 +131,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
@@ -145,7 +145,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
@@ -329,7 +329,7 @@ commands:
       - checkout
       - install_container_dependencies
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
