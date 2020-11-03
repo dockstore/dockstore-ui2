@@ -92,6 +92,7 @@ export class FileService {
 
   /**
    * Constructing the custom download link involves setting 2 attributes ('href' and 'download')
+   * A custom download link is used when the TRS (auth or no auth) does not offer a plain text response of the contents (CONTAINERFILE)
    * This gets the 'href' attribute
    * @param {string} content  The file contents
    * @returns {SafeUrl}    What to set for the 'href' attribute
