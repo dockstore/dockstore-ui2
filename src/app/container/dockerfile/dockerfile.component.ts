@@ -18,8 +18,6 @@ import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { finalize, first } from 'rxjs/operators';
 
-import { ga4ghPath } from '../../shared/constants';
-import { Dockstore } from '../../shared/dockstore.model';
 import { FileService } from '../../shared/file.service';
 import { ContainersService } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
@@ -43,7 +41,6 @@ export class DockerfileComponent {
   content: string;
   filePath: string;
   public published$: Observable<boolean>;
-  public downloadFilePath: string;
   public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
   public loading = true;
@@ -65,10 +62,9 @@ export class DockerfileComponent {
           file => {
             this.content = file.content;
             this.filePath = file.path;
-            this.downloadFilePath = this.getContainerfilePath();
             this.customDownloadFile();
           },
-          error => {
+          () => {
             this.content = null;
           }
         );
@@ -76,13 +72,6 @@ export class DockerfileComponent {
       this.content = null;
       this.loading = false;
     }
-  }
-
-  private getContainerfilePath(): string {
-    const basepath = Dockstore.API_URI + ga4ghPath + '/tools/';
-    const customPath =
-      encodeURIComponent(this.entrypath) + '/versions/' + encodeURIComponent(this._selectedVersion.name) + '/containerfile';
-    return basepath + customPath;
   }
 
   customDownloadFile(): void {
