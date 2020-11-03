@@ -46,7 +46,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Display Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
+      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
       typeInInput('Organization website', 'www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
@@ -70,7 +70,7 @@ describe('Dockstore Organizations', () => {
   describe('Should be able to view new unapproved organization', () => {
     it('have the fields just entered in during registration', () => {
       cy.contains('Potato');
-      cy.contains('Boil \'em, mash \'em, stick \'em in a stew');
+      cy.contains("Boil 'em, mash 'em, stick 'em in a stew");
       cy.contains('https://www.google.ca');
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
@@ -246,6 +246,29 @@ describe('Dockstore Organizations', () => {
       cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
       cy.get('#addEntryToCollectionButton').should('not.be.visible');
       cy.get('mat-progress-bar').should('not.be.visible');
+    });
+
+    it('be able to add an entry with version to the collection', () => {
+      cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info');
+      cy.get('#addToolToCollectionButton').should('be.visible').click();
+      cy.get('#addEntryToCollectionButton').should('be.disabled');
+      cy.get('#selectOrganization').click();
+      cy.get('mat-option').contains('Potatoe').click();
+
+      cy.get('#addEntryToCollectionButton').should('be.disabled');
+      cy.get('#selectCollection').click();
+      cy.get('mat-option').contains('veryFakeCollectionName').click();
+      cy.get('[data-cy=selectVersion]').click();
+      cy.get('mat-option').contains('3.0.0-rc8').click();
+      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
+      cy.get('#addEntryToCollectionButton').should('not.be.visible');
+      cy.get('mat-progress-bar').should('not.be.visible');
+    });
+
+    it('be able to see the two entries added to collection', () => {
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
+      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
     });
 
     it.skip('be able to remove an entry from a collection', () => {

@@ -14,8 +14,9 @@ export class AddEntryComponent implements OnInit {
   public memberships$: Observable<Array<OrganizationUser>>;
   public collections$: Observable<Array<Collection>>;
   isLoading$: Observable<boolean>;
-  selectedOrganizationId: number;
-  selectedCollectionId: number;
+  selectedOrganizationId: number | null;
+  selectedCollectionId: number | null;
+  selectedVersionId: number | null;
   constructor(
     private addEntryQuery: AddEntryQuery,
     private addEntryService: AddEntryService,
@@ -27,7 +28,7 @@ export class AddEntryComponent implements OnInit {
     this.isLoading$ = this.addEntryQuery.isLoading$;
     this.addEntryService.updateMemberships();
     this.memberships$ = this.addEntryQuery.memberships$;
-    this.collections$ = this.addEntryQuery.filteredCollections$;
+    this.collections$ = this.addEntryQuery.collections$;
   }
 
   /**
@@ -44,7 +45,12 @@ export class AddEntryComponent implements OnInit {
    */
   addToCollection() {
     if (this.selectedCollectionId && this.selectedOrganizationId) {
-      this.addEntryService.addEntryToCollection(this.selectedOrganizationId, this.selectedCollectionId, this.data.entryId);
+      this.addEntryService.addEntryToCollection(
+        this.selectedOrganizationId,
+        this.selectedCollectionId,
+        this.data.entryId,
+        this.selectedVersionId
+      );
     }
   }
 }

@@ -95,10 +95,10 @@ export class AddEntryService {
    * @param collectionId
    * @param entryId
    */
-  addEntryToCollection(organizationId: number, collectionId: number, entryId: number): void {
+  addEntryToCollection(organizationId: number, collectionId: number, entryId: number, versionId: number | null): void {
     this.alertService.start('Adding to collection');
     this.organizationsService
-      .addEntryToCollection(organizationId, collectionId, entryId)
+      .addEntryToCollection(organizationId, collectionId, entryId, versionId)
       .pipe(finalize(() => this.addEntryStore.setLoading(false)))
       .subscribe(
         (collection: Collection) => {

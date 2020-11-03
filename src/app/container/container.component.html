@@ -337,7 +337,7 @@
           </div>
         </div>
       </div>
-      <current-collections [id]="tool.id"></current-collections>
+      <current-collections [id]="tool.id" [versions]="tool.workflowVersions"></current-collections>
       <app-verified-by
         *ngIf="selectedVersion"
         [version]="selectedVersion"
