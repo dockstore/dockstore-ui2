@@ -121,9 +121,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
-    this.entryType$.subscribe((test) => (this.displayTextForButton = '#' + test + '/' + this.workflow?.full_workflow_path));
+    this.entryType$.subscribe((entryType) => (this.displayTextForButton = '#' + entryType + '/' + this.workflow?.full_workflow_path));
   }
-
   /**
    * Handle restubbing a workflow
    * TODO: Handle restub error
