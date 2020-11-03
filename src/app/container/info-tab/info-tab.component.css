@@ -13,3 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+.mat-icon {
+  font-size: 20px;
+  height: 20px;
+}
