@@ -7,7 +7,7 @@ describe('CodeEditorListService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: CodeEditorListService = TestBed.get(CodeEditorListService);
+    const service: CodeEditorListService = TestBed.inject(CodeEditorListService);
     expect(service).toBeTruthy();
   });
   it('should be able to know if path is a primary descriptor', () => {
@@ -26,7 +26,7 @@ describe('CodeEditorListService', () => {
       content: '',
       absolutePath: '/Dockstore.cwl',
       path: '/Dockstore.cwl',
-      type: SourceFile.TypeEnum.DOCKSTORECWL
+      type: SourceFile.TypeEnum.DOCKSTORECWL,
     };
     const secondaryCWLFile = { content: '', absolutePath: '/.cwl', path: '/.cwl', type: SourceFile.TypeEnum.DOCKSTORECWL };
     const primaryWDLFile = { content: '', absolutePath: '/Dockstore.wdl', path: '/Dockstore.wdl', type: SourceFile.TypeEnum.DOCKSTOREWDL };
@@ -36,7 +36,7 @@ describe('CodeEditorListService', () => {
       content: '',
       absolutePath: '/nextflow.config',
       path: '/nextflow.config',
-      type: SourceFile.TypeEnum.NEXTFLOWCONFIG
+      type: SourceFile.TypeEnum.NEXTFLOWCONFIG,
     };
     const secondaryNFLFile = { content: '', absolutePath: '/.nf', path: '/.nf', type: SourceFile.TypeEnum.NEXTFLOW };
     const primaryNFLFiles = [firstPrimaryNFLFile, secondPrimaryNFLFile];
@@ -44,13 +44,13 @@ describe('CodeEditorListService', () => {
       content: '',
       absolutePath: '/Dockstore.yml',
       path: '/Dockstore.yml',
-      type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2
+      type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2,
     };
     const secondaryGalaxyFile = {
       content: '',
       absolutePath: '/.yml',
       path: '/.yml',
-      type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2
+      type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2,
     };
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'descriptor', [])).toEqual([primaryCWLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'descriptor', [])).toEqual([primaryWDLFile]);
@@ -64,19 +64,19 @@ describe('CodeEditorListService', () => {
       content: '',
       absolutePath: '/test.nfl.json',
       path: '/test.nfl.json',
-      type: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS
+      type: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS,
     };
     const testGalaxyFile = {
       content: '',
       absolutePath: '/test.galaxy.json',
       path: '/test.galaxy.json',
-      type: SourceFile.TypeEnum.GXFORMAT2TESTFILE
+      type: SourceFile.TypeEnum.GXFORMAT2TESTFILE,
     };
     const testDockerFile = {
       content: '',
       absolutePath: '/Dockerfile',
       path: '/Dockerfile',
-      type: SourceFile.TypeEnum.DOCKERFILE
+      type: SourceFile.TypeEnum.DOCKERFILE,
     };
     // Brand new hosted workflow with no test parameter file
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'testParam', [])).toEqual([testCWLFile]);
@@ -86,16 +86,16 @@ describe('CodeEditorListService', () => {
 
     // When there's already the primary descriptor
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'descriptor', [primaryCWLFile])).toEqual([
-      secondaryCWLFile
+      secondaryCWLFile,
     ]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'descriptor', [primaryWDLFile])).toEqual([
-      secondaryWDLFile
+      secondaryWDLFile,
     ]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'descriptor', primaryNFLFiles)).toEqual([
-      secondaryNFLFile
+      secondaryNFLFile,
     ]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'descriptor', [primaryGalaxyFile])).toEqual([
-      secondaryGalaxyFile
+      secondaryGalaxyFile,
     ]);
 
     // When there's already a test parameter file
@@ -103,7 +103,7 @@ describe('CodeEditorListService', () => {
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'testParam', [testWDLFile])).toEqual([testWDLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'testParam', [testNFLFile])).toEqual([testNFLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'testParam', [testGalaxyFile])).toEqual([
-      testGalaxyFile
+      testGalaxyFile,
     ]);
 
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'dockerfile', [])).toEqual([testDockerFile]);
@@ -118,7 +118,7 @@ describe('CodeEditorListService', () => {
       content: '',
       absolutePath: '/Dockstore.service',
       path: '/Dockstore.service',
-      type: SourceFile.TypeEnum.DOCKSTORECWL
+      type: SourceFile.TypeEnum.DOCKSTORECWL,
     };
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.SERVICE, 'descriptor', [])).toEqual([weirdServiceFile]);
   });

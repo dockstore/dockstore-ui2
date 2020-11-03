@@ -28,7 +28,7 @@ describe('Dockstore hosted tools', () => {
     cy.route({
       method: 'GET',
       url: /containers\/.+\/zip\/.+/,
-      response: 200
+      response: 200,
     }).as('downloadZip');
   });
 
@@ -58,8 +58,8 @@ describe('Dockstore hosted tools', () => {
       cy.get('#editFilesButton').click();
 
       cy.contains('Add File').click();
-      cy.window().then(function(window: any) {
-        cy.document().then(doc => {
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
           const dockerfile = `FROM ubuntu:latest`;
           window.ace.edit(editors[0]).setValue(dockerfile, -1);
@@ -70,8 +70,8 @@ describe('Dockstore hosted tools', () => {
       goToTab('Descriptor Files');
       cy.wait(500);
       cy.contains('Add File').click();
-      cy.window().then(function(window: any) {
-        cy.document().then(doc => {
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
           const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
           window.ace.edit(editors[0]).setValue(cwlDescriptor, -1);
@@ -95,9 +95,7 @@ describe('Dockstore hosted tools', () => {
       // https://github.com/ga4gh/dockstore/issues/2050
       cy.get('#downloadZipButton').click();
 
-      cy.wait('@downloadZip')
-        .its('url')
-        .should('include', Dockstore.API_URI);
+      cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
@@ -105,8 +103,8 @@ describe('Dockstore hosted tools', () => {
       goToTab('Test Parameter Files');
       cy.wait(500);
       cy.contains('Add File').click();
-      cy.window().then(function(window: any) {
-        cy.document().then(doc => {
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
           const testParameterFile = '{}';
           window.ace.edit(editors[0]).setValue(testParameterFile, -1);
@@ -117,8 +115,8 @@ describe('Dockstore hosted tools', () => {
       goToTab('Descriptor Files');
       cy.wait(500);
       cy.contains('Add File').click();
-      cy.window().then(function(window: any) {
-        cy.document().then(doc => {
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
           const cwlDescriptor = `cwlVersion: v1.0\nclass: CommandLineTool`;
           window.ace.edit(editors[1]).setValue(cwlDescriptor, -1);
@@ -130,9 +128,7 @@ describe('Dockstore hosted tools', () => {
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Should have a version 2
       goToTab('Versions');
-      cy.get('table')
-        .contains('span', /\b2\b/)
-        .click();
+      cy.get('table').contains('span', /\b2\b/).click();
 
       // Should be able to publish
       cy.get('#publishButton').should('not.be.disabled');
@@ -142,9 +138,7 @@ describe('Dockstore hosted tools', () => {
       cy.get('#editFilesButton').click();
       goToTab('Descriptor Files');
       cy.wait(500);
-      cy.get('.delete-editor-file')
-        .first()
-        .click();
+      cy.get('.delete-editor-file').first().click();
       cy.get('#saveNewVersionButton').click();
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:3');
 
@@ -156,18 +150,36 @@ describe('Dockstore hosted tools', () => {
       cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
-      cy.contains('button', 'Actions')
-        .should('be.visible')
-        .click();
+      cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('.deleteVersionButton').click();
       cy.scrollTo('top');
       // Automatically selects the newest version that wasn't the one that was just deleted
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Version 3 should no longer exist since it was just deleted
       goToTab('Versions');
-      cy.get('table')
-        .find('a')
-        .should('not.contain', '3');
+      cy.get('table').find('a').should('not.contain', '3');
+    });
+  });
+
+  describe('Should not be able to edit unpublished tools', () => {
+    it('Should return an error when editing an unpublished hosted tool', () => {
+      getTool();
+      goToTab('Versions');
+      cy.get('[data-cy=actionsButton]').first().click();
+      cy.get('[data-cy=editTagButton]').click();
+      cy.get('.alert').should('exist');
+      cy.get('.error-output').contains('[HTTP 403] Forbidden: Entry not published').should('exist');
+    });
+    it('Should not return an error when editing a published hosted tool', () => {
+      getTool();
+      goToTab('Versions');
+      cy.get('#publishToolButton').click();
+      // Disabled since it is already published
+      cy.get('#publishToolButton').contains('Unpublish');
+      cy.get('[data-cy=actionsButton]').first().click();
+      cy.get('[data-cy=editTagButton]').click();
+      cy.get('.alert').should('not.exist');
+      cy.get('[data-cy=editToolVersionDialog]').should('exist');
     });
   });
 });

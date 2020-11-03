@@ -28,7 +28,7 @@ import {
   HostedStubService,
   MetadataStubService,
   WorkflowsStubService,
-  WorkflowStubService
+  WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 
@@ -41,39 +41,35 @@ describe('Service: RegisterWorkflowModal', () => {
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: MetadataService, useClass: MetadataStubService },
         { provide: HostedService, useClass: HostedStubService },
-        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
       ],
-      imports: [RouterTestingModule, MatSnackBarModule]
+      imports: [RouterTestingModule, MatSnackBarModule],
     });
   });
-  const expectedError: any = {
-    message: 'oh no!',
-    errorDetails: 'oh yes'
-  };
   const expectedWorkflow: any = {
     repository: 'GitHub',
     descriptorType: ToolDescriptor.TypeEnum.CWL,
     gitUrl: 'asdf',
-    workflowName: ''
+    workflowName: '',
   };
 
   it('should ...', inject([RegisterWorkflowModalService], (service: RegisterWorkflowModalService) => {
     expect(service).toBeTruthy();
   }));
   it('should be initially not visible', inject([RegisterWorkflowModalService], (service: RegisterWorkflowModalService) => {
-    service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toBeFalsy());
+    service.isModalShown$.subscribe((isModalShown) => expect(isModalShown).toBeFalsy());
   }));
   it('should be shown after set to true', inject([RegisterWorkflowModalService], (service: RegisterWorkflowModalService) => {
     service.setIsModalShown(true);
-    service.isModalShown$.subscribe(isModalShown => expect(isModalShown).toBeTruthy());
+    service.isModalShown$.subscribe((isModalShown) => expect(isModalShown).toBeTruthy());
   }));
   it('should be no error after cleared', inject([RegisterWorkflowModalService], (service: RegisterWorkflowModalService) => {
     service.clearWorkflowRegisterError();
-    service.workflowRegisterError$.subscribe(error => expect(error).toBeFalsy());
+    service.workflowRegisterError$.subscribe((error) => expect(error).toBeFalsy());
   }));
   it('should have repository', inject([RegisterWorkflowModalService], (service: RegisterWorkflowModalService) => {
     service.setWorkflowRepository('asdf');
-    service.workflow.subscribe(workflow => expect(workflow).toEqual(expectedWorkflow));
+    service.workflow.subscribe((workflow) => expect(workflow).toEqual(expectedWorkflow));
   }));
 
   it('should have not error on getDescriptorLanguageKeys()', inject(

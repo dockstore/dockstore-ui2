@@ -25,7 +25,7 @@ import { DockstoreTool } from '../swagger';
 import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExtendedDockstoreToolService {
   constructor(

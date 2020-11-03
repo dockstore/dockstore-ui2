@@ -34,7 +34,7 @@ import { RequestsComponent } from './widget/requests/requests.component';
     FormsModule,
     HttpClientModule,
     RefreshAlertModule,
-    MarkdownModule
+    MarkdownModule,
   ],
   declarations: [
     HomePageComponent,
@@ -47,9 +47,9 @@ import { RequestsComponent } from './widget/requests/requests.component';
     FeaturedContentComponent,
     NewsUpdatesComponent,
     GettingStartedComponent,
-    EntryToDisplayNamePipe
+    EntryToDisplayNamePipe,
   ],
   entryComponents: [],
-  exports: [NgxJsonLdModule]
+  exports: [NgxJsonLdModule],
 })
 export class HomePageModule {}

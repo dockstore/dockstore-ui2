@@ -14,10 +14,13 @@
  *    limitations under the License.
  */
 
+import { Directive } from '@angular/core';
 import { AlertService } from './alert/state/alert.service';
 import { Files } from './files';
 import { SourceFile } from './swagger/model/sourceFile';
 
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export class FileEditing extends Files {
   /**
    * Toggles edit mode
@@ -41,7 +44,7 @@ export class FileEditing extends Files {
    * @return {Array<SourceFile>}      Array of test parameter files
    */
   getDockerFile(sourceFiles: Array<SourceFile>): Array<SourceFile> {
-    return sourceFiles.filter(sourcefile => sourcefile.type === SourceFile.TypeEnum.DOCKERFILE);
+    return sourceFiles.filter((sourcefile) => sourcefile.type === SourceFile.TypeEnum.DOCKERFILE);
   }
 
   /**
@@ -51,7 +54,7 @@ export class FileEditing extends Files {
    */
   getDescriptorFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile =>
+      (sourcefile) =>
         sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL ||
         sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL ||
         sourcefile.type === SourceFile.TypeEnum.NEXTFLOWCONFIG ||
@@ -69,7 +72,7 @@ export class FileEditing extends Files {
    */
   getTestFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
-      sourcefile =>
+      (sourcefile) =>
         sourcefile.type === SourceFile.TypeEnum.WDLTESTJSON ||
         sourcefile.type === SourceFile.TypeEnum.CWLTESTJSON ||
         // DOCKSTORE-2428 - demo how to add new workflow language
@@ -90,7 +93,7 @@ export class FileEditing extends Files {
 
     // Deal with file renames
     for (const originalSourceFile of originalSourceFiles) {
-      const matchingPath = newSourceFiles.find(x => x.path === originalSourceFile.path);
+      const matchingPath = newSourceFiles.find((x) => x.path === originalSourceFile.path);
       if (matchingPath === undefined) {
         const sourceFileCopy = originalSourceFile;
         sourceFileCopy.content = null;

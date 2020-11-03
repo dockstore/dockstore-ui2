@@ -34,16 +34,12 @@ describe('Logged in Dockstore Home', () => {
 
   describe('Navigation', () => {
     it('My Tools visible', () => {
-      cy.get('[data-cy=dropdown-main]:visible')
-        .should('be.visible')
-        .click();
-      cy.get('[data-cy=my-tools-nav-button]').should('visible');
+      cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
+      cy.get('[data-cy=my-tools-nav-button]').should('be.visible');
     });
     it('My Workflows visible', () => {
-      cy.get('[data-cy=dropdown-main]:visible')
-        .should('be.visible')
-        .click();
-      cy.get('[data-cy=my-workflows-nav-button]').should('visible');
+      cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
+      cy.get('[data-cy=my-workflows-nav-button]').should('be.visible');
     });
   });
 
@@ -70,13 +66,11 @@ describe('Logged out Dockstore Home', () => {
   });
   describe('Landing Video', () => {
     it('video button visible', () => {
-      cy.get('[data-cy=video-overview-button]').should('visible');
+      cy.get('[data-cy=video-overview-button]').should('be.visible');
     });
     it('open and close video', () => {
       cy.get('#youtubeModal').should('not.be.visible');
-      cy.get('[data-cy=video-overview-button]')
-        .should('be.visible')
-        .click();
+      cy.get('[data-cy=video-overview-button]').should('be.visible').click();
       cy.get('#youtubeModal').should('be.visible');
       cy.get('body').type('{esc}');
       cy.get('#youtubeModal').should('not.be.visible');

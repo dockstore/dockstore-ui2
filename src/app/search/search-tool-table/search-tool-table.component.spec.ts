@@ -25,8 +25,8 @@ describe('SearchToolTableComponent', () => {
         { provide: DockstoreService, useClass: DockstoreStubService },
         DateService,
         { provide: ListContainersService, useClass: ListContainersStubService },
-        { provide: SearchService, useClass: SearchStubService }
-      ]
+        { provide: SearchService, useClass: SearchStubService },
+      ],
     }).compileComponents();
   }));
 

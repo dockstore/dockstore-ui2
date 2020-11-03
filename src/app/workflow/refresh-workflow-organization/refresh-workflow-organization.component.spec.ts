@@ -33,7 +33,7 @@ import {
   ProviderStubService,
   RefreshStubService,
   UsersStubService,
-  WorkflowStubService
+  WorkflowStubService,
 } from '../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
 
@@ -51,8 +51,8 @@ describe('RefreshWorkflowOrganizationComponent', () => {
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
         { provide: DateService, useClass: DateStubService },
-        { provide: ProviderService, useClass: ProviderStubService }
-      ]
+        { provide: ProviderService, useClass: ProviderStubService },
+      ],
     }).compileComponents();
   }));
 

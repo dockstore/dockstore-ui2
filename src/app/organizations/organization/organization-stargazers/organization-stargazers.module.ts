@@ -26,6 +26,6 @@ import { OrganizationStargazersComponent } from './organization-stargazers.compo
   imports: [CommonModule, FlexLayoutModule, CustomMaterialModule],
   declarations: [OrganizationStargazersComponent],
   exports: [OrganizationStargazersComponent],
-  providers: [OrganizationStarringService, StarOrganizationService]
+  providers: [OrganizationStarringService, StarOrganizationService],
 })
 export class OrganizationStargazersModule {}

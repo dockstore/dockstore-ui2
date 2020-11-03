@@ -27,6 +27,6 @@ import { SearchContainersComponent } from './search/search.component';
 
 @NgModule({
   declarations: [ContainersComponent, SearchContainersComponent],
-  imports: [CommonModule, HeaderModule, SelectModule, ListContainersModule, ContainerModule, containersRouting, MarkdownModule]
+  imports: [CommonModule, HeaderModule, SelectModule, ListContainersModule, ContainerModule, containersRouting, MarkdownModule],
 })
 export class ContainersModule {}

@@ -26,7 +26,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 @Component({
   selector: 'app-dockerfile',
   templateUrl: './dockerfile.component.html',
-  styleUrls: ['./dockerfile.component.scss']
+  styleUrls: ['./dockerfile.component.scss'],
 })
 export class DockerfileComponent {
   @Input() id: number;
@@ -59,7 +59,7 @@ export class DockerfileComponent {
           finalize(() => (this.loading = false))
         )
         .subscribe(
-          file => {
+          (file) => {
             this.content = file.content;
             this.filePath = file.path;
             this.customDownloadFile();

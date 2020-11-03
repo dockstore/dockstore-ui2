@@ -23,7 +23,7 @@ const MYTOOLS_ROUTES: Routes = [
     path: '',
     component: MyToolsComponent,
     data: { title: 'Dockstore | My Tools' },
-    children: [{ path: '**', component: MyToolComponent, data: { title: 'Dockstore | My Tools', entryType: EntryType.Tool } }]
-  }
+    children: [{ path: '**', component: MyToolComponent, data: { title: 'Dockstore | My Tools', entryType: EntryType.Tool } }],
+  },
 ];
 export const mytoolsRouting = RouterModule.forChild(MYTOOLS_ROUTES);

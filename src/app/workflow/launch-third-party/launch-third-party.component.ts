@@ -92,7 +92,7 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
   selector: 'app-launch-third-party',
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss'],
-  providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore]
+  providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore],
 })
 export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit {
   /**
@@ -147,35 +147,35 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   workflowPathAsQueryValue: string;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
-  cgcTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+  cgcTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'the CGC'))
   );
 
-  disableSevenBridgesPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+  disableSevenBridgesPlatform$: Observable<boolean> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) => !hasContent || hasHttpImports)
   );
 
-  bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasHttpImports$).pipe(
+  bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) =>
       this.sevenBridgesTooltip(hasContent, hasHttpImports, 'NHLBI BioData Catalyst powered by Seven Bridges')
     )
   );
 
-  terraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+  terraTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'Terra'))
   );
 
-  anvilTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+  anvilTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'AnVIL'))
   );
 
-  bdCatalystTerraTooltip$: Observable<string> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+  bdCatalystTerraTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) =>
       this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra')
     )
   );
 
-  disableTerraPlatform$: Observable<boolean> = combineLatest(this.hasContent$, this.hasFileImports$).pipe(
+  disableTerraPlatform$: Observable<boolean> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) => !hasContent || (hasFileImports && !this.isGitHubWorkflow()))
   );
 
@@ -198,16 +198,16 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     this.gA4GHFilesQuery
       .getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType), [
         FileTypeEnum.PRIMARYDESCRIPTOR,
-        FileTypeEnum.SECONDARYDESCRIPTOR
+        FileTypeEnum.SECONDARYDESCRIPTOR,
       ])
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(fileDescriptors => {
+      .subscribe((fileDescriptors) => {
         if (fileDescriptors && fileDescriptors.length) {
           // No idea if this.workflow.descriptorType is the one that's required or if it's some other enum
           const descriptorType: string = this.workflow.descriptorType;
-          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe(sourceFile => {
+          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
-            if (fileDescriptors.some(file => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
+            if (fileDescriptors.some((file) => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
               this.workflowsService
                 .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, descriptorType)
                 .subscribe((sourceFiles: Array<SourceFile>) => {

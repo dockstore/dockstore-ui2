@@ -22,6 +22,6 @@ import { WorkflowModule } from './workflow.module';
 @NgModule({
   declarations: [WorkflowsComponent, SearchWorkflowsComponent],
   imports: [WorkflowModule, ListWorkflowsModule],
-  exports: [WorkflowsComponent, WorkflowModule, ListWorkflowsModule]
+  exports: [WorkflowsComponent, WorkflowModule, ListWorkflowsModule],
 })
 export class WorkflowsPageModule {}

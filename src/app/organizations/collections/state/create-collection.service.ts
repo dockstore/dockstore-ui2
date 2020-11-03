@@ -47,7 +47,7 @@ export class CreateCollectionService {
     collection = {
       name: collectionFormState.name,
       topic: collectionFormState.topic,
-      displayName: collectionFormState.displayName
+      displayName: collectionFormState.displayName,
     };
     const organizationID = this.organizationQuery.getValue().organization.id;
     this.beforeCall();
@@ -113,9 +113,9 @@ export class CreateCollectionService {
       name: [name, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
       displayName: [
         displayName,
-        [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)]
+        [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)],
       ],
-      topic: [topic]
+      topic: [topic],
     });
     formsManager.upsert('createOrUpdateCollection', createOrUpdateCollectionForm);
     return createOrUpdateCollectionForm;
@@ -130,10 +130,10 @@ export class CreateCollectionService {
   setTitle(data: any): void {
     const mode: TagEditorMode = data.mode;
     const title = mode === TagEditorMode.Add ? 'Create Collection' : 'Edit Collection';
-    this.createCollectionStore.update(state => {
+    this.createCollectionStore.update((state) => {
       return {
         ...state,
-        title: title
+        title: title,
       };
     });
   }
@@ -152,7 +152,7 @@ export class CreateCollectionService {
       name: collectionFormState.name,
       topic: collectionFormState.topic,
       displayName: collectionFormState.displayName,
-      description: collectionDescripton
+      description: collectionDescripton,
     };
     const organizationID = this.organizationQuery.getValue().organization.id;
     this.beforeCall();
@@ -167,7 +167,7 @@ export class CreateCollectionService {
           this.alertService.detailedSuccess();
           this.collectionsService.updateCollections();
         },
-        error => {
+        (error) => {
           this.createCollectionStore.setError(true);
           this.alertService.detailedError(error);
         }

@@ -27,7 +27,7 @@ import { CreateCollectionComponent } from './create-collection/create-collection
 @Component({
   selector: 'collections',
   templateUrl: './collections.component.html',
-  styleUrls: ['./collections.component.scss']
+  styleUrls: ['./collections.component.scss'],
 })
 export class CollectionsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;

@@ -15,7 +15,7 @@ describe('RequestsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [RequestsComponent],
       imports: [RouterTestingModule, HttpClientTestingModule, CustomMaterialModule],
-      providers: [{ provide: UsersService, useClass: UsersStubService }]
+      providers: [{ provide: UsersService, useClass: UsersStubService }],
     }).compileComponents();
   }));
 

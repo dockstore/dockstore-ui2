@@ -44,7 +44,7 @@ describe('Service: DescriptorLanguage', () => {
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
     const filteredDescriptorLanguageBeans = descriptorLanguageService.filterService(descriptorLanguageBeans);
     expect(filteredDescriptorLanguageBeans.length).toEqual(3);
-    filteredDescriptorLanguageBeans.forEach(descriptorLanguageBean => {
+    filteredDescriptorLanguageBeans.forEach((descriptorLanguageBean) => {
       expect(descriptorLanguageBean.value).not.toEqual(descriptorLanguageService.knownServiceValue);
     });
   });

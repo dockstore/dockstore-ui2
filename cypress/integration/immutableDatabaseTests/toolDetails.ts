@@ -176,7 +176,7 @@ describe('Find tool by alias', () => {
       url: '*/containers/fakeAlias/aliases',
       method: 'GET',
       status: 200,
-      response: { tool_path: 'quay.io/A2/b3' }
+      response: { tool_path: 'quay.io/A2/b3' },
     });
     cy.visit('/aliases/tools/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3');

@@ -7,6 +7,6 @@ import { CustomMaterialModule } from './modules/material.module';
 @NgModule({
   imports: [CommonModule, CustomMaterialModule, FormsModule],
   declarations: [EntryWizardComponent],
-  exports: [EntryWizardComponent]
+  exports: [EntryWizardComponent],
 })
 export class EntryWizardModule {}

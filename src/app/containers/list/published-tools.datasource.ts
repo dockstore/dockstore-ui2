@@ -57,7 +57,7 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
       )
       .subscribe((entries: HttpResponse<Array<DockstoreTool>>) => {
         this.entriesSubject.next(
-          entries.body.map(tool => {
+          entries.body.map((tool) => {
             tool = this.imageProviderService.setUpImageProvider(tool);
             return <ExtendedDockstoreTool>this.providersService.setUpProvider(tool);
           })

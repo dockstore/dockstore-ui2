@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SourceFileTabsService {
   constructor(

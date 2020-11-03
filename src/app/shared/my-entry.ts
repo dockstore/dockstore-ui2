@@ -60,7 +60,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.myEntryPageTitle$ = this.sessionQuery.myEntryPageTitle$;
     this.refreshingMyEntries$ = this.myEntriesQuery.refreshingMyEntries$;
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => (this.user = user));
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => (this.user = user));
   }
 
   link() {
@@ -77,7 +77,9 @@ export abstract class MyEntry extends Base implements OnDestroy {
     localStorage.setItem('page', this.pageName);
     const token = this.authService.getToken();
     this.configuration.apiKeys['Authorization'] = token ? 'Bearer ' + token : null;
-    this.tokenQuery.hasGitHubToken$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(hasGitHubToken => (this.hasGitHubToken = hasGitHubToken));
+    this.tokenQuery.hasGitHubToken$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((hasGitHubToken) => (this.hasGitHubToken = hasGitHubToken));
   }
 
   ngOnDestroy() {

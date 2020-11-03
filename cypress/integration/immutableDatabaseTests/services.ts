@@ -20,7 +20,7 @@ import {
   clickFirstActionsButton,
   goToTab,
   setTokenUserViewPort,
-  setTokenUserViewPortCurator
+  setTokenUserViewPortCurator,
 } from '../../support/commands';
 
 describe('Dockstore Home', () => {
@@ -136,12 +136,10 @@ describe('Dockstore Home', () => {
     cy.contains('README.md');
     cy.contains('# another-test-serviceaaaa');
 
-    cy.get('mat-tab-body').within(tabBody => {
+    cy.get('mat-tab-body').within((tabBody) => {
       cy.get('mat-select').click();
     });
-    cy.get('mat-option')
-      .contains('docker-compose.yml')
-      .click();
+    cy.get('mat-option').contains('docker-compose.yml').click();
     cy.contains('docker-compose.yml');
 
     // Configuration tab

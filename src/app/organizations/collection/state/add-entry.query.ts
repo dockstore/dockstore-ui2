@@ -8,11 +8,11 @@ import { AddEntryState, AddEntryStore } from './add-entry.store';
 
 @Injectable({ providedIn: 'root' })
 export class AddEntryQuery extends Query<AddEntryState> {
-  memberships$: Observable<Array<OrganizationUser>> = this.select(state => state.memberships);
-  collections$: Observable<Array<Collection>> = this.select(state => state.collections);
+  memberships$: Observable<Array<OrganizationUser>> = this.select((state) => state.memberships);
+  collections$: Observable<Array<Collection>> = this.select((state) => state.collections);
   filteredCollections$: Observable<Array<Collection>> = combineLatest([
     this.collections$,
-    this.currentCollectionsQuery.currentCollectionIds$
+    this.currentCollectionsQuery.currentCollectionIds$,
   ]).pipe(map(([collections, collectionOrganization]) => this.filteredCollections(collections, collectionOrganization)));
   isLoading$: Observable<boolean> = this.selectLoading();
   constructor(protected store: AddEntryStore, private currentCollectionsQuery: CurrentCollectionsQuery) {
@@ -29,7 +29,9 @@ export class AddEntryQuery extends Query<AddEntryState> {
    */
   filteredCollections(collections: Array<Collection>, existingCollectionIds: Array<number>): Array<Collection> {
     if (collections) {
-      return collections.filter(collection => !existingCollectionIds.some(existingCollectionId => existingCollectionId === collection.id));
+      return collections.filter(
+        (collection) => !existingCollectionIds.some((existingCollectionId) => existingCollectionId === collection.id)
+      );
     } else {
       return null;
     }

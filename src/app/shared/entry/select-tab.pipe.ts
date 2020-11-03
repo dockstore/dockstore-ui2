@@ -21,7 +21,7 @@ import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
 import { DockstoreTool, Entry, Workflow } from '../swagger';
 
 @Pipe({
-  name: 'selectTab'
+  name: 'selectTab',
 })
 export class SelectTabPipe implements PipeTransform {
   /**

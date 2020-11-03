@@ -19,7 +19,7 @@ describe('BasicSearchComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [MatAutocompleteModule, RouterTestingModule, BrowserAnimationsModule, CustomMaterialModule],
       declarations: [BasicSearchComponent],
-      providers: [ProviderService, { provide: SearchService, useClass: SearchStubService }]
+      providers: [ProviderService, { provide: SearchService, useClass: SearchStubService }],
     }).compileComponents();
   }));
 

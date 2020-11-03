@@ -152,3 +152,19 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
+/*for facet histograms*/
+.number-of-items {
+  position: absolute;
+  right: 3rem;
+}
+
+/*for facet histograms*/
+.panel-container-label {
+  padding-right: 0;
+}
+
+.histogram {
+  background-color: #dddddd;
+  min-height: 2rem;
+}

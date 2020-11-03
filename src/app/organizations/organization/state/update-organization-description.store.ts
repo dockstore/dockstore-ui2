@@ -7,7 +7,7 @@ export interface UpdateOrganizationOrCollectionDescriptionState {
 
 export function createInitialState(): UpdateOrganizationOrCollectionDescriptionState {
   return {
-    key: ''
+    key: '',
   };
 }
 

@@ -14,9 +14,11 @@
  *    limitations under the License.
  */
 
-import { Input } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { EntryTab } from '../shared/entry/entry-tab';
 
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export class Files extends EntryTab {
   @Input() id: number;
   @Input() versions: Array<any>;

@@ -9,16 +9,15 @@ import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organiz
 
 describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
   let updateOrganizationOrCollectionDescriptionService: UpdateOrganizationOrCollectionDescriptionService;
-  let updateOrganizationOrCollectionDescriptionStore: UpdateOrganizationOrCollectionDescriptionStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UpdateOrganizationOrCollectionDescriptionService, UpdateOrganizationOrCollectionDescriptionStore, FormBuilder],
-      imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, MatDialogModule, MatSnackBarModule],
     });
 
-    updateOrganizationOrCollectionDescriptionService = TestBed.get(UpdateOrganizationOrCollectionDescriptionService);
-    updateOrganizationOrCollectionDescriptionStore = TestBed.get(UpdateOrganizationOrCollectionDescriptionStore);
+    updateOrganizationOrCollectionDescriptionService = TestBed.inject(UpdateOrganizationOrCollectionDescriptionService);
+    TestBed.inject(UpdateOrganizationOrCollectionDescriptionStore);
   });
 
   it('should be created', () => {

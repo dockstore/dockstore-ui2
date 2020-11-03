@@ -38,10 +38,10 @@ describe('AppComponent', () => {
         RouterLinkStubDirective,
         RouterOutletStubComponent,
         TosBannerStubComponent,
-        NotificationStubComponent
+        NotificationStubComponent,
       ],
       imports: [RouterTestingModule, MatSnackBarModule],
-      providers: [{ provide: TrackLoginService, useClass: TrackLoginStubService }]
+      providers: [{ provide: TrackLoginService, useClass: TrackLoginStubService }],
     }).compileComponents();
   }));
 

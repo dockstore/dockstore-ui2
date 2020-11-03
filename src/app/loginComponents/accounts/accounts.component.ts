@@ -9,7 +9,7 @@ import { Base } from '../../shared/base';
 
 @Component({
   selector: 'app-accounts',
-  templateUrl: './accounts.component.html'
+  templateUrl: './accounts.component.html',
 })
 export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
@@ -25,7 +25,7 @@ export class AccountsComponent extends Base implements OnInit {
   }
 
   private parseParam(params: Observable<Params>): void {
-    params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(next => {
+    params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((next) => {
       this.setupTab(next);
     });
   }

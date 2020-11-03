@@ -25,13 +25,14 @@ import { UserQuery } from '../user/user.query';
 export abstract class RefreshOrganizationComponent extends Base implements OnInit {
   protected userId: number;
   buttonText: string;
+  tooltipText: string;
   public isRefreshing$: Observable<boolean>;
   constructor(private userQuery: UserQuery, protected alertQuery: AlertQuery) {
     super();
   }
 
   ngOnInit() {
-    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(userId => (this.userId = userId));
+    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((userId) => (this.userId = userId));
     this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 }

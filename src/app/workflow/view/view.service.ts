@@ -77,7 +77,7 @@ export class ViewService {
     const message = 'Updating default workflow version';
     this.alertService.start(message);
     this.workflowsService.updateWorkflowDefaultVersion(workflowId, newDefaultVersion).subscribe(
-      updatedWorkflow => {
+      (updatedWorkflow) => {
         this.alertService.detailedSuccess();
         this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
         this.workflowService.setWorkflow(updatedWorkflow);
@@ -99,13 +99,13 @@ export class ViewService {
                 Would you like to link a Zenodo account now?`,
       title: 'Request DOI (Link Zenodo Account)',
       confirmationButtonText: 'Link Zenodo Account',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     };
 
     this.confirmationDialogService
       .openDialog(dialogData, bootstrap4mediumModalSize)
       .pipe(first())
-      .subscribe(confirmationResult => {
+      .subscribe((confirmationResult) => {
         if (confirmationResult) {
           this.accountsService.link(TokenSource.ZENODO);
         } else {
@@ -127,13 +127,13 @@ export class ViewService {
                 DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>? <p><b>Warning: This CANNOT be undone!</b></p>`,
       title: 'Request DOI (Snapshot Version)',
       confirmationButtonText: 'Snapshot Version',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     };
 
     this.confirmationDialogService
       .openDialog(dialogData, bootstrap4mediumModalSize)
       .pipe(first())
-      .subscribe(confirmationResult => {
+      .subscribe((confirmationResult) => {
         if (confirmationResult) {
           this.updateWorkflowToSnapshot(workflow, version, () => this.showRequestDOIDialog(workflow, version));
         } else {
@@ -156,7 +156,7 @@ export class ViewService {
                 <b>${version.name}</b>?`,
       title: 'Request DOI',
       confirmationButtonText: 'Request DOI',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     };
 
     const workflowName: string = workflow.workflowName || workflow.repository;
@@ -164,16 +164,14 @@ export class ViewService {
     this.confirmationDialogService
       .openDialog(dialogData, bootstrap4mediumModalSize)
       .pipe(first())
-      .subscribe(confirmationResult => {
+      .subscribe((confirmationResult) => {
         if (confirmationResult) {
           this.alertService.start(`A Digital Object Identifier (DOI) is being requested for workflow
                                        "${workflowName}" version "${version.name}"!`);
-          this.workflowsService
-            .requestDOIForWorkflowVersion(workflow.id, version.id)
-            .subscribe(
-              (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
-              (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
-            );
+          this.workflowsService.requestDOIForWorkflowVersion(workflow.id, version.id).subscribe(
+            (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
+            (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
+          );
         } else {
           this.alertService.detailedSuccess('You cancelled DOI issuance.');
         }
@@ -214,7 +212,7 @@ export class ViewService {
                 you sure you would like to snapshot version <b>${version.name}</b>? <p><b>Warning: This CANNOT be undone!</b></p>`,
       title: 'Snapshot',
       confirmationButtonText: 'Snapshot Version',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     };
     this.confirmationDialogService
       .openDialog(dialogData, bootstrap4mediumModalSize)

@@ -5,7 +5,7 @@ import { Organization } from './swagger';
 describe('OrgSchemaService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OrgSchemaService]
+      providers: [OrgSchemaService],
     });
   });
 
@@ -19,7 +19,7 @@ describe('OrgSchemaService', () => {
       avatarUrl: 'http://org.org/image',
       email: 'contact@org.org',
       status: 'APPROVED',
-      users: []
+      users: [],
     };
     const schema = service.getSchema(org);
     expect(schema.name).toEqual('org');

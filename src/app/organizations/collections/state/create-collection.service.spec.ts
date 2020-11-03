@@ -28,12 +28,10 @@ import { CreateCollectionStore } from './create-collection.store';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let organizationQuerySpy: jasmine.SpyObj<OrganizationQuery>;
-let collectionsServiceSpy: jasmine.SpyObj<CollectionsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
 
 describe('CreateCollectionService', () => {
   let createCollectionService: CreateCollectionService;
-  let createCollectionStore: CreateCollectionStore;
   const exampleFormState = { name: '', description: '', displayName: '', topic: '' };
 
   beforeEach(() => {
@@ -49,17 +47,16 @@ describe('CreateCollectionService', () => {
         { provide: MatDialog, useValue: matDialogStub },
         { provide: CollectionsService, useValue: collectionsServiceStub },
         { provide: OrganizationsService, useValue: organizationsServiceStub },
-        { provide: OrganizationQuery, useValue: organizationQueryStub }
+        { provide: OrganizationQuery, useValue: organizationQueryStub },
       ],
-      imports: [BrowserAnimationsModule, HttpClientTestingModule, MatDialogModule, MatSnackBarModule]
+      imports: [BrowserAnimationsModule, HttpClientTestingModule, MatDialogModule, MatSnackBarModule],
     });
 
-    createCollectionService = TestBed.get(CreateCollectionService);
-    organizationsServiceSpy = TestBed.get(OrganizationsService);
-    organizationQuerySpy = TestBed.get(OrganizationQuery);
-    matDialogSpy = TestBed.get(MatDialog);
-    collectionsServiceSpy = TestBed.get(CollectionsService);
-    createCollectionStore = TestBed.get(CreateCollectionStore);
+    createCollectionService = TestBed.inject(CreateCollectionService);
+    organizationsServiceSpy = TestBed.inject(OrganizationsService) as jasmine.SpyObj<OrganizationsService>;
+    organizationQuerySpy = TestBed.inject(OrganizationQuery) as jasmine.SpyObj<OrganizationQuery>;
+    matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+    TestBed.inject(CreateCollectionStore);
   });
 
   it('should be created', () => {

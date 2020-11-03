@@ -21,8 +21,8 @@ const ALIASES_ROUTES: Routes = [
   {
     path: ':type/:alias',
     component: AliasesComponent,
-    data: { title: 'Dockstore | Aliases' }
-  }
+    data: { title: 'Dockstore | Aliases' },
+  },
 ];
 
 export const AliasesRouting = RouterModule.forChild(ALIASES_ROUTES);

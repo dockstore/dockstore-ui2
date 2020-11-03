@@ -23,7 +23,7 @@ import { EntryFileTabStore } from './state/entry-file-tab.store';
   selector: 'app-entry-file-tab',
   templateUrl: './entry-file-tab.component.html',
   styleUrls: ['./entry-file-tab.component.scss'],
-  providers: [EntryFileTabService, EntryFileTabStore, EntryFileTabQuery]
+  providers: [EntryFileTabService, EntryFileTabStore, EntryFileTabQuery],
 })
 export class EntryFileTabComponent extends Base implements OnInit {
   @Input() version: WorkflowVersion;

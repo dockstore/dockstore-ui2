@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ga4ghExtendedPath } from '../../../src/app/shared/constants';
 import { setTokenUserViewPort } from '../../support/commands';
 import { goToTab } from '../../support/commands';
 
@@ -24,7 +25,7 @@ describe('Dockstore tool/workflow search table', () => {
     cy.server();
     // Tools/worflows not starred in this response.
     cy.route({
-      url: '*/api/ga4gh/v2/extended/tools/entry/_search',
+      url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
       method: 'POST',
       status: 200,
       response: {
@@ -87,8 +88,8 @@ describe('Dockstore tool/workflow search table', () => {
                     id: 52,
                     image_id: 'c387f22e65f066c42ccaf11392fdbd640aa2b7627eb40ac06a0dbaca2ca323cb',
                     dirtyBit: false,
-                    last_modified: 1518479368000
-                  }
+                    last_modified: 1518479368000,
+                  },
                 ],
                 dbCreateDate: null,
                 custom_docker_registry_path: 'quay.io',
@@ -97,8 +98,8 @@ describe('Dockstore tool/workflow search table', () => {
                 namespace: 'garyluu',
                 gitUrl: 'git@github.com:garyluu/dockstore-cgpmap.git',
                 defaultWDLTestParameterFile: '/test.wdl.json',
-                defaultVersion: null
-              }
+                defaultVersion: null,
+              },
             },
             {
               _index: 'entry',
@@ -152,7 +153,7 @@ describe('Dockstore tool/workflow search table', () => {
                     id: 11,
                     image_id: '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0',
                     dirtyBit: false,
-                    last_modified: 1465420088000
+                    last_modified: 1465420088000,
                   },
                   {
                     doiURL: null,
@@ -175,8 +176,8 @@ describe('Dockstore tool/workflow search table', () => {
                     id: 10,
                     image_id: '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0',
                     dirtyBit: false,
-                    last_modified: 1465420088000
-                  }
+                    last_modified: 1465420088000,
+                  },
                 ],
                 dbCreateDate: null,
                 custom_docker_registry_path: 'quay.io',
@@ -185,8 +186,8 @@ describe('Dockstore tool/workflow search table', () => {
                 namespace: 'A2',
                 gitUrl: 'git@github.com:A2/a.git',
                 defaultWDLTestParameterFile: null,
-                defaultVersion: null
-              }
+                defaultVersion: null,
+              },
             },
             {
               _index: 'entry',
@@ -240,7 +241,7 @@ describe('Dockstore tool/workflow search table', () => {
                     id: 9,
                     image_id: 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d',
                     dirtyBit: false,
-                    last_modified: 1458081725000
+                    last_modified: 1458081725000,
                   },
                   {
                     doiURL: null,
@@ -263,8 +264,8 @@ describe('Dockstore tool/workflow search table', () => {
                     id: 8,
                     image_id: 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d',
                     dirtyBit: false,
-                    last_modified: 1458081724000
-                  }
+                    last_modified: 1458081724000,
+                  },
                 ],
                 dbCreateDate: null,
                 custom_docker_registry_path: 'quay.io',
@@ -273,8 +274,8 @@ describe('Dockstore tool/workflow search table', () => {
                 namespace: 'A2',
                 gitUrl: 'git@github.com:A2/b3.git',
                 defaultWDLTestParameterFile: null,
-                defaultVersion: null
-              }
+                defaultVersion: null,
+              },
             },
             {
               _index: 'entry',
@@ -303,7 +304,7 @@ describe('Dockstore tool/workflow search table', () => {
                     referenceType: 'UNSET',
                     commitID: null,
                     id: 13,
-                    doiStatus: 'NOT_REQUESTED'
+                    doiStatus: 'NOT_REQUESTED',
                   },
                   {
                     doiURL: null,
@@ -313,8 +314,8 @@ describe('Dockstore tool/workflow search table', () => {
                     referenceType: 'UNSET',
                     commitID: null,
                     id: 14,
-                    doiStatus: 'NOT_REQUESTED'
-                  }
+                    doiStatus: 'NOT_REQUESTED',
+                  },
                 ],
                 sourceControl: 'github.com',
                 has_checker: false,
@@ -330,12 +331,12 @@ describe('Dockstore tool/workflow search table', () => {
                 parent_id: null,
                 organization: 'A',
                 gitUrl: 'git@github.com:A/l.git',
-                defaultVersion: null
-              }
-            }
-          ]
-        }
-      }
+                defaultVersion: null,
+              },
+            },
+          ],
+        },
+      },
     });
     cy.visit('/search');
 
@@ -348,11 +349,11 @@ describe('Dockstore tool/workflow search table', () => {
     //   .click();
 
     // First tool and workflow starred
-    cy.fixture('searchTableResponse').then(json => {
+    cy.fixture('searchTableResponse').then((json) => {
       cy.route({
-        url: '*/api/ga4gh/v2/extended/tools/entry/_search',
+        url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
         method: 'POST',
-        response: json
+        response: json,
       });
     });
 
@@ -380,11 +381,11 @@ describe('search table items per page', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.server();
-    cy.fixture('searchTableResponse').then(json => {
+    cy.fixture('searchTableResponse').then((json) => {
       cy.route({
-        url: '*/api/ga4gh/v2/extended/tools/entry/_search',
+        url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
         method: 'POST',
-        response: json
+        response: json,
       });
     });
   });
@@ -394,9 +395,7 @@ describe('search table items per page', () => {
     cy.get('#mat-select-0 ').click();
     cy.get('#mat-option-1 ').click();
     cy.contains('a', 'garyluu/dockstore-cgpmap/cgpmap-cramOut').click();
-    cy.get('.flex-toolbar ')
-      .contains(' Search ')
-      .click();
+    cy.get('.flex-toolbar ').contains(' Search ').click();
     cy.get('.mat-select-value-text ').contains('20');
   });
 
@@ -406,13 +405,9 @@ describe('search table items per page', () => {
 
     cy.get('[data-cy=dropdown]').click();
     cy.get('[data-cy=file_select').should('not.visible');
-    cy.get('[data-cy=desc_select')
-      .should('be.visible')
-      .click();
+    cy.get('[data-cy=desc_select').should('be.visible').click();
 
-    cy.get('[data-cy=NOTFilter]')
-      .click()
-      .type('garyluu');
+    cy.get('[data-cy=NOTFilter]').click().type('garyluu');
     cy.get('[data-cy=confirm-search]').click();
 
     cy.get('[data-cy=advanced-search]').click();
@@ -421,25 +416,15 @@ describe('search table items per page', () => {
     cy.get('[data-cy=advanced-search]').click();
 
     cy.get('[data-cy=dropdown]').click();
-    cy.get('[data-cy=desc_select')
-      .should('be.visible')
-      .click();
+    cy.get('[data-cy=desc_select').should('be.visible').click();
 
     cy.get('[data-cy=dropdown]').click();
     cy.get('[data-cy=desc_select').should('not.visible');
-    cy.get('[data-cy=file_select')
-      .should('be.visible')
-      .click();
+    cy.get('[data-cy=file_select').should('be.visible').click();
 
-    cy.get('[data-cy=ANDNoSplitFilter]')
-      .click()
-      .type('gary');
-    cy.get('[data-cy=ORFilter]')
-      .click()
-      .type('A2');
-    cy.get('[data-cy=NOTFilter]')
-      .click()
-      .type('b3');
+    cy.get('[data-cy=ANDNoSplitFilter]').click().type('gary');
+    cy.get('[data-cy=ORFilter]').click().type('A2');
+    cy.get('[data-cy=NOTFilter]').click().type('b3');
     cy.get('[data-cy=confirm-search]').click();
 
     cy.get('[data-cy=advanced-search]').click();
@@ -451,14 +436,10 @@ describe('search table items per page', () => {
     cy.get('[data-cy=share_button').should('not.visible');
 
     cy.get('[data-cy=advanced-search]').click();
-    cy.get('[data-cy=ORFilter]')
-      .click()
-      .type('A2');
+    cy.get('[data-cy=ORFilter]').click().type('A2');
     cy.get('[data-cy=confirm-search]').click();
 
-    cy.get('[data-cy=share_button')
-      .should('be.visible')
-      .click();
+    cy.get('[data-cy=share_button').should('be.visible').click();
     cy.get('[data-cy=copy_button').click();
   });
 });

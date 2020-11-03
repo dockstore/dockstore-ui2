@@ -35,10 +35,10 @@ const extendedCWL: ExtendedDescriptorLanguageBean = {
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTORECWL],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
-    workflowStepHeader: 'Tool Excerpt'
+    workflowStepHeader: 'Tool Excerpt',
   },
   workflowLaunchSupport: true,
-  testParameterFileType: SourceFile.TypeEnum.CWLTESTJSON
+  testParameterFileType: SourceFile.TypeEnum.CWLTESTJSON,
 };
 
 const extendedWDL: ExtendedDescriptorLanguageBean = {
@@ -54,10 +54,10 @@ const extendedWDL: ExtendedDescriptorLanguageBean = {
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREWDL],
   toolTab: {
     rowIdentifier: 'task\xa0ID',
-    workflowStepHeader: 'Task Excerpt'
+    workflowStepHeader: 'Task Excerpt',
   },
   workflowLaunchSupport: true,
-  testParameterFileType: SourceFile.TypeEnum.WDLTESTJSON
+  testParameterFileType: SourceFile.TypeEnum.WDLTESTJSON,
 };
 
 const extendedNFL: ExtendedDescriptorLanguageBean = {
@@ -73,10 +73,10 @@ const extendedNFL: ExtendedDescriptorLanguageBean = {
   descriptorFileTypes: [SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.NEXTFLOWCONFIG],
   toolTab: {
     rowIdentifier: 'process\xa0name',
-    workflowStepHeader: 'Process Excerpt'
+    workflowStepHeader: 'Process Excerpt',
   },
   workflowLaunchSupport: true,
-  testParameterFileType: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS
+  testParameterFileType: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS,
 };
 
 const extendedService: ExtendedDescriptorLanguageBean = {
@@ -93,10 +93,10 @@ const extendedService: ExtendedDescriptorLanguageBean = {
   descriptorFileTypes: [],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
-    workflowStepHeader: 'Service'
+    workflowStepHeader: 'Service',
   },
   workflowLaunchSupport: true,
-  testParameterFileType: SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON
+  testParameterFileType: SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON,
 };
 
 const extendedGalaxy: ExtendedDescriptorLanguageBean = {
@@ -112,10 +112,10 @@ const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
-    workflowStepHeader: 'Tool Excerpt'
+    workflowStepHeader: 'Tool Excerpt',
   },
   workflowLaunchSupport: false,
-  testParameterFileType: SourceFile.TypeEnum.GXFORMAT2TESTFILE
+  testParameterFileType: SourceFile.TypeEnum.GXFORMAT2TESTFILE,
 };
 
 export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
@@ -131,15 +131,15 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
   descriptorFileTypes: [],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
-    workflowStepHeader: 'Tool Excerpt'
+    workflowStepHeader: 'Tool Excerpt',
   },
   workflowLaunchSupport: false,
-  testParameterFileType: null
+  testParameterFileType: null,
 };
 export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
   extendedCWL,
   extendedWDL,
   extendedNFL,
   extendedService,
-  extendedGalaxy
+  extendedGalaxy,
 ];

@@ -9,19 +9,19 @@ export class DescriptorsService {
   constructor(private descriptorsStore: DescriptorsStore) {}
 
   updatePrimaryDescriptor(primaryDescriptor: SourceFile) {
-    this.descriptorsStore.update(state => {
+    this.descriptorsStore.update((state) => {
       return {
         ...state,
-        primaryDescriptor: primaryDescriptor
+        primaryDescriptor: primaryDescriptor,
       };
     });
   }
 
   updateSecondaryDescriptors(secondaryDescriptors: Array<SourceFile>) {
-    this.descriptorsStore.update(state => {
+    this.descriptorsStore.update((state) => {
       return {
         ...state,
-        secondaryDescriptors: secondaryDescriptors
+        secondaryDescriptors: secondaryDescriptors,
       };
     });
   }

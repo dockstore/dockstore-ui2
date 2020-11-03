@@ -30,9 +30,9 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     OrganizationStarringModule,
     OrganizationStargazersModule,
     MarkdownModule,
-    PipeModule
+    PipeModule,
   ],
   declarations: [OrganizationComponent],
-  exports: [OrganizationComponent]
+  exports: [OrganizationComponent],
 })
 export class OrganizationModule {}

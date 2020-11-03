@@ -9,10 +9,14 @@ import { WorkflowStore } from './workflow.store';
 
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
-  workflows$: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of unsorted workflows
-  sharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of unsorted shared workflows
-  nsSharedWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted shared workflows
-  nsWorkflows$: BehaviorSubject<any> = new BehaviorSubject<any>(null); // This contains the list of sorted workflows
+  // This contains the list of unsorted workflows
+  workflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject(null);
+  // This contains the list of unsorted shared workflows
+  sharedWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject(null);
+  // This contains the list of sorted shared workflows
+  nsSharedWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject<Array<Workflow>>(null);
+  // This contains the list of sorted workflows
+  nsWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject<Array<Workflow>>(null);
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {}
@@ -23,7 +27,7 @@ export class WorkflowService {
    */
   static convertSharedWorkflowsToWorkflowsList(workflows: Array<any>): Array<Workflow> {
     if (workflows) {
-      let sharedWorkflows = workflows.map(workflow => workflow.workflows);
+      let sharedWorkflows = workflows.map((workflow) => workflow.workflows);
       sharedWorkflows = [].concat.apply([], sharedWorkflows);
       return sharedWorkflows;
     } else {
@@ -60,7 +64,7 @@ export class WorkflowService {
     this.workflowStore.add(workflow);
   }
 
-  update(id, workflow: Partial<Service | BioWorkflow>) {
+  update(id: ID, workflow: Partial<Service | BioWorkflow>) {
     this.workflowStore.update(id, workflow);
   }
 
@@ -89,8 +93,8 @@ export class WorkflowService {
     const workflows = this.workflows$.getValue();
     const sharedWorkflows = this.sharedWorkflows$.getValue();
     if (workflow && workflows && sharedWorkflows) {
-      const oldWorkflow = workflows.find(x => x.id === workflow.id);
-      const oldSharedWorkflow = sharedWorkflows.find(x => x.id === workflow.id);
+      const oldWorkflow = workflows.find((x) => x.id === workflow.id);
+      const oldSharedWorkflow = sharedWorkflows.find((x) => x.id === workflow.id);
       if (oldWorkflow) {
         const index = workflows.indexOf(oldWorkflow);
         workflows[index] = workflow;

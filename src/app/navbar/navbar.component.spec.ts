@@ -41,8 +41,8 @@ describe('NavbarComponent', () => {
       providers: [
         PagenumberService,
         { provide: TrackLoginService, useClass: TrackLoginStubService },
-        { provide: LogoutService, useClass: LogoutStubService }
-      ]
+        { provide: LogoutService, useClass: LogoutStubService },
+      ],
     }).compileComponents();
   }));
   beforeEach(() => {
@@ -61,10 +61,10 @@ describe('NavbarComponent', () => {
     const toolPageInfo: PageInfo = new PageInfo();
     toolPageInfo.pgNumber = 0;
     toolPageInfo.searchQuery = '';
-    pagenumberService.pgNumTools$.subscribe(pgNumTools => {
+    pagenumberService.pgNumTools$.subscribe((pgNumTools) => {
       expect(pgNumTools).toEqual(toolPageInfo);
     });
-    pagenumberService.pgNumWorkflows$.subscribe(pgNumTools => {
+    pagenumberService.pgNumWorkflows$.subscribe((pgNumTools) => {
       expect(pgNumTools).toEqual(toolPageInfo);
     });
   });

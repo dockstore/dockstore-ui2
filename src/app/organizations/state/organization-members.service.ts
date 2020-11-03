@@ -30,7 +30,7 @@ export class OrganizationMembersService {
   updateAll(organizationUsers: OrganizationUser[]) {
     // Can't use set because Akita isn't able to figure out the entity id
     this.organizationMembersStore.remove();
-    organizationUsers.forEach(organizationUser => {
+    organizationUsers.forEach((organizationUser) => {
       this.organizationMembersStore.upsert(organizationUser.id.userId, organizationUser);
     });
   }
@@ -66,7 +66,7 @@ export class OrganizationMembersService {
           this.updateCanEdit(organizationID);
           this.organizationMembersStore.setError(false);
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
           this.organizationMembersStore.setError(true);
         }
@@ -94,13 +94,13 @@ export class OrganizationMembersService {
           if (this.userQuery.getValue().user) {
             const currentUserId = this.userQuery.getValue().user.id;
             const canEdit = organizationUsers.some(
-              user =>
+              (user) =>
                 user.id.userId === currentUserId &&
                 user.accepted &&
                 (user.role === OrganizationUser.RoleEnum.ADMIN || user.role === OrganizationUser.RoleEnum.MAINTAINER)
             );
             const canEditMembers = organizationUsers.some(
-              user => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.ADMIN
+              (user) => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.ADMIN
             );
             this.setCanEditState(canEdit, canEditMembers);
           } else {
@@ -129,11 +129,11 @@ export class OrganizationMembersService {
   }
 
   setCanEditState(canEdit: boolean, canEditMembers: boolean) {
-    this.organizationStore.update(state => {
+    this.organizationStore.update((state) => {
       return {
         ...state,
         canEdit: canEdit,
-        canEditMembership: canEditMembers
+        canEditMembership: canEditMembers,
       };
     });
   }

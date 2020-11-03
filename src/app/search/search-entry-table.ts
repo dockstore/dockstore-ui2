@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { OnInit, ViewChild } from '@angular/core';
+import { Directive, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -25,6 +25,8 @@ import { DockstoreTool, Workflow } from '../shared/swagger';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
 
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class SearchEntryTable extends Base implements OnInit {
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) protected sort: MatSort;
@@ -32,6 +34,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   public readonly displayedColumns = ['name', 'verified', 'author', 'descriptorType', 'projectLinks', 'starredUsers'];
+  abstract readonly entryType: 'tool' | 'workflow';
   abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
   abstract privateNgOnInit(): Observable<(DockstoreTool | Workflow)[]>;
 
@@ -54,7 +57,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
       });
     this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
       return data.slice().sort((a: Workflow | DockstoreTool, b: Workflow | DockstoreTool) => {
-        return this.searchService.compareAttributes(a, b, sort.active, sort.direction);
+        return this.searchService.compareAttributes(a, b, sort.active, sort.direction, this.entryType);
       });
     };
   }

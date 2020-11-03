@@ -21,6 +21,6 @@ export interface GA4GHFiles {
 
 export function createGA4GHFiles({ toolFiles = [] }: Partial<GA4GHFiles>) {
   return {
-    toolFiles: []
+    toolFiles: [],
   };
 }

@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,6 +33,7 @@ import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { GitTagPipe } from './footer/git-tag.pipe';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
@@ -81,6 +82,7 @@ import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
+import { GA4GHV20Service } from './shared/openapi/api/gA4GHV20.service';
 import { PagenumberService } from './shared/pagenumber.service';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
@@ -103,13 +105,13 @@ import { ViewService } from './workflow/view/view.service';
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
   hideDelay: 500,
-  touchendHideDelay: 500
+  touchendHideDelay: 500,
 };
 
 export const myCustomSnackbarDefaults: MatSnackBarConfig = {
   duration: 5000,
   horizontalPosition: 'center',
-  verticalPosition: 'bottom'
+  verticalPosition: 'bottom',
 };
 
 export function configurationServiceFactory(configurationService: ConfigurationService): Function {
@@ -146,7 +148,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ConfirmationDialogComponent,
     SessionExpiredComponent,
     TosBannerComponent,
-    LogoutComponent
+    LogoutComponent,
+    GitTagPipe,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -173,7 +176,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     CustomMaterialModule,
     RefreshAlertModule,
     RequestsModule,
-    HomePageModule
+    HomePageModule,
+    HttpClientModule,
   ],
   providers: [
     AccountsService,
@@ -194,6 +198,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     PagenumberService,
     TwitterService,
     GA4GHService,
+    GA4GHV20Service,
     DescriptorLanguageService,
     UrlResolverService,
     MetadataService,
@@ -208,21 +213,21 @@ export function configurationServiceFactory(configurationService: ConfigurationS
       provide: APP_INITIALIZER,
       useFactory: configurationServiceFactory,
       deps: [ConfigurationService],
-      multi: true
+      multi: true,
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
   ],
   entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
 
 export const apiConfig = new Configuration({
   apiKeys: {},
-  basePath: window.location.protocol + '//' + window.location.host + '/api'
+  basePath: window.location.protocol + '//' + window.location.host + '/api',
 });
 
 export function getApiConfig() {

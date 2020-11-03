@@ -42,7 +42,7 @@ describe('MytoolsService', () => {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: '',
     tool_path: 'quay.io/cc/aa',
-    path: 'quay.io/cc/aa'
+    path: 'quay.io/cc/aa',
   };
   const tool2: DockstoreTool = {
     defaultWDLTestParameterFile: '',
@@ -59,7 +59,7 @@ describe('MytoolsService', () => {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: '',
     tool_path: 'quay.io/cc/bb',
-    path: 'quay.io/cc/bb'
+    path: 'quay.io/cc/bb',
   };
   const tool3: DockstoreTool = {
     defaultWDLTestParameterFile: '',
@@ -76,7 +76,7 @@ describe('MytoolsService', () => {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: '',
     tool_path: 'quay.io/bb/cc',
-    path: 'quay.io/bb/cc'
+    path: 'quay.io/bb/cc',
   };
   const tool4: DockstoreTool = {
     defaultWDLTestParameterFile: '',
@@ -93,7 +93,7 @@ describe('MytoolsService', () => {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: '',
     tool_path: 'quay.io/bb/dd',
-    path: 'quay.io/bb/dd'
+    path: 'quay.io/bb/dd',
   };
   const tool5: DockstoreTool = {
     defaultWDLTestParameterFile: '',
@@ -110,7 +110,7 @@ describe('MytoolsService', () => {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: '',
     tool_path: 'quay.io/aa/ee',
-    path: 'quay.io/aa/ee'
+    path: 'quay.io/aa/ee',
   };
   const tool6: DockstoreTool = {
     defaultWDLTestParameterFile: '',
@@ -127,7 +127,7 @@ describe('MytoolsService', () => {
     registry: DockstoreTool.RegistryEnum.QUAYIO,
     toolname: '1',
     tool_path: 'quay.io/aa/ee/1',
-    path: 'quay.io/aa/ee'
+    path: 'quay.io/aa/ee',
   };
   const tools: DockstoreTool[] = [tool1, tool2, tool4, tool3, tool5, tool6];
   const expectedResult1: OrgToolObject<DockstoreTool> = {
@@ -135,21 +135,21 @@ describe('MytoolsService', () => {
     expanded: false,
     namespace: 'aa',
     registry: 'quay.io',
-    published: []
+    published: [],
   };
   const expectedResult2: OrgToolObject<DockstoreTool> = {
     unpublished: [tool3, tool4],
     expanded: false,
     namespace: 'bb',
     registry: 'quay.io',
-    published: []
+    published: [],
   };
   const expectedResult3: OrgToolObject<DockstoreTool> = {
     unpublished: [tool1, tool2],
     expanded: true,
     registry: 'quay.io',
     namespace: 'cc',
-    published: []
+    published: [],
   };
   const expectedResult: OrgToolObject<DockstoreTool>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
@@ -157,9 +157,9 @@ describe('MytoolsService', () => {
       providers: [
         MytoolsService,
         { provide: ContainerService, useClass: ContainerStubService },
-        { provide: UrlResolverService, useclass: UrlResolverService }
+        { provide: UrlResolverService, useclass: UrlResolverService },
       ],
-      imports: [RouterTestingModule, CustomMaterialModule, HttpClientTestingModule, MyEntriesModule]
+      imports: [RouterTestingModule, CustomMaterialModule, HttpClientTestingModule, MyEntriesModule],
     });
   });
   it('should ...', inject([MytoolsService], (service: MytoolsService) => {

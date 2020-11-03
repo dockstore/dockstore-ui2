@@ -1,0 +1,51 @@
+{
+  "aliases": {},
+  "author": "",
+  "checker_id": null,
+  "conceptDoi": null,
+  "custom_docker_registry_path": "quay.io",
+  "dbCreateDate": 1540931203177,
+  "dbUpdateDate": 1540931206733,
+  "defaultCWLTestParameterFile": "/test1.json",
+  "defaultVersion": null,
+  "defaultWDLTestParameterFile": "/test1.json",
+  "default_cwl_path": "/Dockstore.cwl",
+  "default_dockerfile_path": "/Dockerfile",
+  "default_wdl_path": "/Dockstore.wdl",
+  "description": "",
+  "descriptorType": [
+    "CWL",
+    "WDL"
+  ],
+  "email": "",
+  "gitUrl": "git@github.com:A2/a",
+  "has_checker": false,
+  "id": 5,
+  "input_file_formats": [
+    {
+      "value": "http://edamontology.org/data_8080"
+    }
+  ],
+  "is_published": true,
+  "labels": [],
+  "lastBuild": 1524864740000,
+  "lastUpdated": 1540931205062,
+  "last_modified": null,
+  "last_modified_date": null,
+  "mode": "AUTO_DETECT_QUAY_TAGS_WITH_MIXED",
+  "name": "a",
+  "namespace": "A2",
+  "output_file_formats": [],
+  "path": "quay.io/A2/a",
+  "private_access": false,
+  "registry": "QUAY_IO",
+  "registry_string": "quay.io",
+  "starredUsers": [],
+  "tags": null,
+  "tool_maintainer_email": "",
+  "tool_path": "quay.io/A2/a",
+  "toolname": null,
+  "topicId": null,
+  "users": null,
+  "workflowVersions": []
+}

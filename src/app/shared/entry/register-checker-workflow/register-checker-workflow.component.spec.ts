@@ -40,8 +40,8 @@ describe('RegisterCheckerWorkflowComponent', () => {
         { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
         { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
         DescriptorTypeCompatService,
-        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }
-      ]
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+      ],
     }).compileComponents();
   }));
 

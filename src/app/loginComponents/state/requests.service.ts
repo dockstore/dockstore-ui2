@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { OrganizationsService as openapiOrganizationsService } from '../../shared/openapi';
 import { Organization, OrganizationsService, OrganizationUser, User, UsersService } from '../../shared/swagger';
 import { RequestsState, RequestsStore } from './requests.store';
 
@@ -10,6 +11,7 @@ export class RequestsService {
     private requestsStore: RequestsStore,
     private alertService: AlertService,
     private organizationsService: OrganizationsService,
+    private openApiOrgService: openapiOrganizationsService,
     private usersService: UsersService
   ) {}
 
@@ -88,7 +90,7 @@ export class RequestsService {
     this.requestsStore.update((state: RequestsState) => {
       return {
         ...state,
-        allPendingOrganizations: allPendingOrganizations
+        allPendingOrganizations: allPendingOrganizations,
       };
     });
   }
@@ -103,12 +105,12 @@ export class RequestsService {
       .pipe(finalize(() => this.requestsStore.setLoading(false)))
       .subscribe(
         (myMemberships: Array<OrganizationUser>) => {
-          const myOrganizationInvites = myMemberships.filter(membership => !membership.accepted);
+          const myOrganizationInvites = myMemberships.filter((membership) => !membership.accepted);
           const myPendingOrganizationRequests = myMemberships.filter(
-            membership => membership.organization.status === 'PENDING' && membership.accepted
+            (membership) => membership.organization.status === 'PENDING' && membership.accepted
           );
           const myRejectedOrganizationRequests = myMemberships.filter(
-            membership => membership.organization.status === 'REJECTED' && membership.accepted
+            (membership) => membership.organization.status === 'REJECTED' && membership.accepted
           );
 
           this.updateMyMembershipState(myMemberships, myOrganizationInvites, myPendingOrganizationRequests, myRejectedOrganizationRequests);
@@ -140,7 +142,7 @@ export class RequestsService {
         myMemberships: myMemberships,
         myOrganizationInvites: myOrganizationInvites,
         myPendingOrganizationRequests: myPendingOrganizationRequests,
-        myRejectedOrganizationRequests: myRejectedOrganizationRequests
+        myRejectedOrganizationRequests: myRejectedOrganizationRequests,
       };
     });
   }
@@ -177,6 +179,28 @@ export class RequestsService {
         (organization: Organization) => {
           this.alertService.simpleSuccess();
           this.updateCuratorOrganizations();
+          this.updateMyMemberships();
+        },
+        () => {
+          this.updateMyMembershipState(null, null, null, null);
+          this.requestsStore.setError(true);
+          this.alertService.simpleError();
+        }
+      );
+  }
+
+  deleteOrganization(id: number, isAdminOrCurator: boolean): void {
+    this.alertService.start('Deleting organization ' + id);
+    this.requestsStore.setLoading(true);
+    this.openApiOrgService
+      .deleteRejectedOrPendingOrganization(id)
+      .pipe(finalize(() => this.requestsStore.setLoading(false)))
+      .subscribe(
+        (organization: Organization) => {
+          this.alertService.simpleSuccess();
+          if (isAdminOrCurator) {
+            this.updateCuratorOrganizations();
+          }
           this.updateMyMemberships();
         },
         () => {

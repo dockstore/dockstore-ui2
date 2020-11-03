@@ -6,5 +6,5 @@ export enum TokenSource {
   ZENODO = 'zenodo.org',
   GOOGLE = 'google.com',
   DOCKSTORE = 'dockstore',
-  ORCID = 'orcid.org'
+  ORCID = 'orcid.org',
 }

@@ -5,7 +5,7 @@ import { WdlViewerPipelineResponse } from './wdl-viewer.model';
 import { WdlViewerState, WdlViewerStore } from './wdl-viewer.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WdlViewerQuery extends QueryEntity<WdlViewerState, WdlViewerPipelineResponse> {
   constructor(protected store: WdlViewerStore) {

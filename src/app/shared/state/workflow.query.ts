@@ -11,7 +11,7 @@ import { Service } from '../swagger/model/service';
 import { WorkflowState, WorkflowStore } from './workflow.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkflow> {
   public workflow$: Observable<Service | BioWorkflow> = this.selectActive();
@@ -26,10 +26,10 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
     )
   );
   public extendedDescriptorLanguageBean$: Observable<ExtendedDescriptorLanguageBean> = this.workflow$.pipe(
-    map(workflow => DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflow.descriptorType))
+    map((workflow) => DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflow.descriptorType))
   );
   public launchSupport$: Observable<boolean> = this.extendedDescriptorLanguageBean$.pipe(
-    map(extendedDescriptorLanguage => extendedDescriptorLanguage.workflowLaunchSupport)
+    map((extendedDescriptorLanguage) => extendedDescriptorLanguage.workflowLaunchSupport)
   );
   public isNFL$: Observable<boolean> = this.descriptorType$.pipe(
     map((descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.NFL)

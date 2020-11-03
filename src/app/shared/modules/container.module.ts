@@ -70,7 +70,7 @@ import { SelectModule } from './select.module';
     AddTagComponent,
     VersionModalComponent,
     InfoTabComponent,
-    ToolFileEditorComponent
+    ToolFileEditorComponent,
   ],
   imports: [
     CommonModule,
@@ -87,7 +87,7 @@ import { SelectModule } from './select.module';
     EntryModule,
     AddEntryModule,
     FlexLayoutModule,
-    MarkdownModule
+    MarkdownModule,
   ],
   providers: [
     EmailService,
@@ -99,9 +99,9 @@ import { SelectModule } from './select.module';
     RegisterToolService,
     StarringService,
     VersionModalService,
-    InfoTabService
+    InfoTabService,
   ],
   exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent],
-  entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent]
+  entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent],
 })
 export class ContainerModule {}

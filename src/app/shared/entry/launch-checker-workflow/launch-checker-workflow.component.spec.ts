@@ -27,7 +27,7 @@ describe('LaunchCheckerWorkflowComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LaunchCheckerWorkflowComponent],
       providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
-      imports: [MatCardModule]
+      imports: [MatCardModule],
     }).compileComponents();
   }));
 

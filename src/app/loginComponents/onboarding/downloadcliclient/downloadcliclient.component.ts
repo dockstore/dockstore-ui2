@@ -10,7 +10,7 @@ import { Metadata } from './../../../shared/swagger/model/metadata';
 @Component({
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
-  styleUrls: ['./downloadcliclient.component.scss']
+  styleUrls: ['./downloadcliclient.component.scss'],
 })
 export class DownloadCLIClientComponent implements OnInit {
   public downloadCli = 'dummy-start-value';
@@ -48,12 +48,12 @@ export class DownloadCLIClientComponent implements OnInit {
                 this.cwltoolVersion = json.cwltool;
               }
             },
-            err => {
+            (err) => {
               console.log('Unable to retrieve requirements.txt file.');
             }
           );
       },
-      error => {
+      (error) => {
         this.generateMarkdown();
       }
     );

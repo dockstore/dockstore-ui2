@@ -44,7 +44,7 @@ export class OrderBy implements PipeTransform {
       if (!a && b) {
         return -1;
       }
-    } else if (isNaN(parseFloat(a)) || !isFinite(a) || (isNaN(parseFloat(b)) || !isFinite(b))) {
+    } else if (isNaN(parseFloat(a)) || !isFinite(a) || isNaN(parseFloat(b)) || !isFinite(b)) {
       // Isn't a number so lowercase the string to properly compare
       if (a.toLowerCase() < b.toLowerCase()) {
         return -1;
@@ -88,13 +88,13 @@ export class OrderBy implements PipeTransform {
         const property: string =
           propertyToCheck.substr(0, 1) === '+' || propertyToCheck.substr(0, 1) === '-' ? propertyToCheck.substr(1) : propertyToCheck;
 
-        return value.sort(function(a: any, b: any) {
+        return value.sort(function (a: any, b: any) {
           return !desc ? OrderBy._orderByComparator(a[property], b[property]) : -OrderBy._orderByComparator(a[property], b[property]);
         });
       }
     } else {
       // Loop over property of the array in order and sort
-      return value.sort(function(a: any, b: any) {
+      return value.sort(function (a: any, b: any) {
         for (let i = 0; i < config.length; i++) {
           const desc = config[i].substr(0, 1) === '-';
           const property = config[i].substr(0, 1) === '+' || config[i].substr(0, 1) === '-' ? config[i].substr(1) : config[i];

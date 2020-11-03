@@ -7,8 +7,8 @@ import { DagState, DagStore } from './dag.store';
 
 @Injectable()
 export class DagQuery extends Query<DagState> {
-  dagResults$ = this.select(state => state.dagResults);
-  missingTool$: Observable<boolean> = this.dagResults$.pipe(map(dagResults => this.isMissingTool(dagResults)));
+  dagResults$ = this.select((state) => state.dagResults);
+  missingTool$: Observable<boolean> = this.dagResults$.pipe(map((dagResults) => this.isMissingTool(dagResults)));
   constructor(protected store: DagStore) {
     super(store);
   }

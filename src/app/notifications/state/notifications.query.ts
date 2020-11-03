@@ -9,7 +9,7 @@ export class NotificationsQuery extends QueryEntity<NotificationsState> {
   allNotifications$: Observable<Array<Notification>> = this.selectAll({
     // sort notifications, those expiring the soonest last
     sortBy: 'expiration',
-    sortByOrder: Order.DESC
+    sortByOrder: Order.DESC,
   });
 
   constructor(protected store: NotificationsStore) {

@@ -5,7 +5,7 @@ import { FileWrapper } from '../../../shared/swagger';
 import { FilesState, FilesStore } from './files.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FilesQuery extends QueryEntity<FilesState, FileWrapper> {
   constructor(protected store: FilesStore) {

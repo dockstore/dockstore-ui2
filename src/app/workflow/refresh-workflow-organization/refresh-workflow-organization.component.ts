@@ -24,7 +24,6 @@ import { RefreshOrganizationComponent } from '../../shared/refresh-organization/
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger';
-import { UsersService } from '../../shared/swagger/api/users.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 
@@ -32,13 +31,12 @@ import { UserQuery } from '../../shared/user/user.query';
   selector: 'app-refresh-workflow-organization',
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
-  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
+  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
   @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;
 
   constructor(
-    private usersService: UsersService,
     userQuery: UserQuery,
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService,
@@ -48,6 +46,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
   ) {
     super(userQuery, alertQuery);
     this.buttonText = 'Refresh Organization';
+    this.tooltipText = 'Refresh all workflows in the organization';
   }
 
   refreshOrganization(): void {
@@ -55,14 +54,14 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
       const workflows = this.orgWorkflowObject.published.concat(this.orgWorkflowObject.unpublished);
       from(workflows)
         .pipe(
-          concatMap(workflow => {
+          concatMap((workflow) => {
             this.alertService.start(`Refreshing ${workflow.full_workflow_path}`);
             return this.workflowsService.refresh(workflow.id);
           }),
           takeUntil(this.ngUnsubscribe)
         )
         .subscribe(
-          workflow => {
+          (workflow) => {
             const extendedWorkflow = this.extendedWorkflowQuery.getValue();
             if (extendedWorkflow && extendedWorkflow.id === workflow.id) {
               this.workflowService.setWorkflow(workflow);
@@ -71,7 +70,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
             }
             this.alertService.detailedSuccess();
           },
-          err => this.alertService.detailedError(err)
+          (err) => this.alertService.detailedError(err)
         );
     }
   }

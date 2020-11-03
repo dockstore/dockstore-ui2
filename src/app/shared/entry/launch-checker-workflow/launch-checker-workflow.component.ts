@@ -21,7 +21,7 @@ import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 @Component({
   selector: 'app-launch-checker-workflow',
   templateUrl: './launch-checker-workflow.component.html',
-  styleUrls: ['./launch-checker-workflow.component.scss']
+  styleUrls: ['./launch-checker-workflow.component.scss'],
 })
 export class LaunchCheckerWorkflowComponent implements OnInit {
   @Input() command: string;

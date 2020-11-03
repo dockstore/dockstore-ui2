@@ -16,7 +16,7 @@ import { UserQuery } from './shared/user/user.query';
  * @implements {PipeTransform}
  */
 @Pipe({
-  name: 'githubNameToId'
+  name: 'githubNameToId',
 })
 export class GithubNameToIdPipe implements PipeTransform {
   constructor(
@@ -35,7 +35,7 @@ export class GithubNameToIdPipe implements PipeTransform {
         if (!organizationsResponse) {
           return null;
         }
-        const matchingOrganization = organizationsResponse.find(e => e.login === userNameOrOrganizationName);
+        const matchingOrganization = organizationsResponse.find((e) => e.login === userNameOrOrganizationName);
         if (matchingOrganization) {
           return this.idToLink(matchingOrganization.id);
         } else {
@@ -59,12 +59,12 @@ export class GithubNameToIdPipe implements PipeTransform {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: 'token ' + token.token
-      })
+        Authorization: 'token ' + token.token,
+      }),
     };
     const url = 'https://api.github.com/users/' + username;
     return httpClient.get(url, httpOptions).pipe(
-      map(response => {
+      map((response) => {
         return this.idToLink(response['id']);
       })
     );

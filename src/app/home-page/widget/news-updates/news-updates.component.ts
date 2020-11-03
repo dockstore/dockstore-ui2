@@ -7,7 +7,7 @@ import { Notification } from '../../../shared/swagger';
 @Component({
   selector: 'app-news-updates',
   templateUrl: './news-updates.component.html',
-  styleUrls: ['./news-updates.component.scss']
+  styleUrls: ['./news-updates.component.scss'],
 })
 export class NewsUpdatesComponent implements OnInit {
   constructor(private notificationsQuery: NotificationsQuery, private notificationsService: NotificationsService) {}

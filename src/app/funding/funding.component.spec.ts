@@ -11,7 +11,7 @@ describe('FundingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FundingComponent]
+      declarations: [FundingComponent],
     }).compileComponents();
   }));
 

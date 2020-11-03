@@ -9,7 +9,7 @@ import { FormsState, UpsertOrganizationMemberService } from '../state/upsert-org
 @Component({
   selector: 'upsert-organization-member',
   templateUrl: './upsert-organization-member.component.html',
-  styleUrls: ['./upsert-organization-member.component.scss']
+  styleUrls: ['./upsert-organization-member.component.scss'],
 })
 export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
   roleKeys: any;

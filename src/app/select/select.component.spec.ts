@@ -26,7 +26,7 @@ describe('SelectComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SelectComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

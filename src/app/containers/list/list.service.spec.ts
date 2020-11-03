@@ -20,7 +20,7 @@ import { ListContainersService } from './list.service';
 describe('listService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ListContainersService]
+      providers: [ListContainersService],
     });
   });
   it('should ...', inject([ListContainersService], (service: ListContainersService) => {

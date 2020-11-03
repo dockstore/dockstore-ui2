@@ -8,6 +8,6 @@ import { CurrentCollectionsComponent } from './current-collections/current-colle
 @NgModule({
   imports: [CommonModule, CustomMaterialModule, FlexLayoutModule, RouterModule],
   declarations: [CurrentCollectionsComponent],
-  exports: [CurrentCollectionsComponent]
+  exports: [CurrentCollectionsComponent],
 })
 export class CurrentCollectionsModule {}

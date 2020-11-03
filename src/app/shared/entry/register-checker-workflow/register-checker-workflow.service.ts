@@ -20,7 +20,6 @@ import { BehaviorSubject, merge as observableMerge, Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 import { AlertService } from '../../alert/state/alert.service';
 import { ContainerService } from '../../container.service';
-import { RefreshService } from '../../refresh.service';
 import { WorkflowQuery } from '../../state/workflow.query';
 import { WorkflowService } from '../../state/workflow.service';
 import { WorkflowsService } from '../../swagger/api/workflows.service';
@@ -38,13 +37,12 @@ export class RegisterCheckerWorkflowService {
     private workflowsService: WorkflowsService,
     private containerService: ContainerService,
     private workflowService: WorkflowService,
-    private refreshService: RefreshService,
     private toolQuery: ToolQuery,
     private workflowQuery: WorkflowQuery,
     private alertService: AlertService,
     private matDialog: MatDialog
   ) {
-    this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter(x => x != null));
+    this.entryId$ = observableMerge(this.toolQuery.toolId$, this.workflowQuery.workflowId$).pipe(filter((x) => x != null));
     this.entryId$.subscribe((id: number) => {
       this.entryId = id;
     });

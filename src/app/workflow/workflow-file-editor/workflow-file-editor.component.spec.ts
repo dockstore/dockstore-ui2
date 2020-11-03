@@ -1,5 +1,5 @@
+import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -36,7 +36,7 @@ describe('WorkflowFileEditorComponent', () => {
         CodeEditorComponent,
         PublicFileDownloadPipe,
         PrivateFileDownloadPipe,
-        PrivateFilePathPipe
+        PrivateFilePathPipe,
       ],
       imports: [
         MatButtonModule,
@@ -49,15 +49,16 @@ describe('WorkflowFileEditorComponent', () => {
         ClipboardModule,
         MatSnackBarModule,
         MatCardModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        HttpClientModule,
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: RefreshService, useClass: RefreshStubService },
-        { provide: FileService, useClass: FileStubService }
-      ]
+        { provide: FileService, useClass: FileStubService },
+      ],
     }).compileComponents();
   }));
 

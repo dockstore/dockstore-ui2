@@ -8,7 +8,7 @@ export class PaginatorService {
   setPaginator(type: 'tool' | 'workflow', pageSize: number, pageNumber: number): void {
     const paginatorInfo: PaginatorInfo = {
       pageSize: pageSize,
-      pageIndex: pageNumber
+      pageIndex: pageNumber,
     };
     if (type === 'tool') {
       this.setToolPaginatorSize(paginatorInfo);
@@ -18,19 +18,19 @@ export class PaginatorService {
   }
 
   setToolPaginatorSize(paginatorInfo: PaginatorInfo) {
-    this.paginatorStore.update(state => {
+    this.paginatorStore.update((state) => {
       return {
         ...state,
-        tool: paginatorInfo
+        tool: paginatorInfo,
       };
     });
   }
 
   setWorkflowPaginatorSize(paginatorInfo: PaginatorInfo) {
-    this.paginatorStore.update(state => {
+    this.paginatorStore.update((state) => {
       return {
         ...state,
-        workflow: paginatorInfo
+        workflow: paginatorInfo,
       };
     });
   }

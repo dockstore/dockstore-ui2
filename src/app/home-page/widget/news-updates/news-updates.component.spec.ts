@@ -11,7 +11,7 @@ describe('NewsUpdatesComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [NewsUpdatesComponent],
-      imports: [MarkdownModule, HttpClientTestingModule]
+      imports: [MarkdownModule, HttpClientTestingModule],
     }).compileComponents();
   }));
 

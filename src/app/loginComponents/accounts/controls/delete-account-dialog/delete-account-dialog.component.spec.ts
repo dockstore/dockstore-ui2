@@ -24,10 +24,10 @@ describe('DeleteAccountDialogComponent', () => {
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => {}
-          }
-        }
-      ]
+            close: (dialogResult: any) => {},
+          },
+        },
+      ],
     }).compileComponents();
   }));
 

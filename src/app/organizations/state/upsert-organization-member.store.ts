@@ -7,7 +7,7 @@ export interface UpsertOrganizationMemberState {
 
 export function createInitialState(): UpsertOrganizationMemberState {
   return {
-    key: ''
+    key: '',
   };
 }
 

@@ -10,7 +10,7 @@ export interface OrganizationsState {
 export function createInitialState(): OrganizationsState {
   return {
     organizations: null,
-    searchName: ''
+    searchName: '',
   };
 }
 

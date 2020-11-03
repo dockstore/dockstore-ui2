@@ -4,19 +4,26 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../base';
+import { VersionVerifiedPlatform } from '../openapi';
 import { ToolTesterLog } from '../openapi/model/toolTesterLog';
 import { AvailableLogsQuery } from '../state/available-logs.query';
 import { AvailableLogsService } from '../state/available-logs.service';
 import { CheckerWorkflowQuery } from '../state/checker-workflow.query';
 import { Tag, WorkflowVersion } from '../swagger';
 
+interface VersionVerifiedInformation {
+  version: WorkflowVersion | Tag;
+  verifiedByPlatform: Array<VersionVerifiedPlatform>;
+}
+
 @Component({
   selector: 'available-logs',
   templateUrl: './available-logs.component.html',
-  styleUrls: ['./available-logs.component.scss']
+  styleUrls: ['./available-logs.component.scss'],
 })
 export class AvailableLogsComponent extends Base implements OnInit {
   version: Tag | WorkflowVersion | null;
+  verifiedByPlatform: Array<VersionVerifiedPlatform>;
   versionName: string | null;
   availableLogs$: Observable<ToolTesterLog[]>;
   isLoading$: Observable<boolean>;
@@ -26,10 +33,11 @@ export class AvailableLogsComponent extends Base implements OnInit {
     private availableLogsQuery: AvailableLogsQuery,
     private checkerWorkflowQuery: CheckerWorkflowQuery,
     private availableLogsService: AvailableLogsService,
-    @Inject(MAT_DIALOG_DATA) public data: Tag | WorkflowVersion | null
+    @Inject(MAT_DIALOG_DATA) public data: VersionVerifiedInformation
   ) {
     super();
-    this.version = data;
+    this.version = data.version;
+    this.verifiedByPlatform = data.verifiedByPlatform;
     this.versionName = this.version ? this.version.name : null;
   }
 

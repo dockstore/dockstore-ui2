@@ -26,7 +26,7 @@ export class AddEntryService {
       .pipe(finalize(() => this.addEntryStore.setLoading(false)))
       .subscribe(
         (memberships: Array<OrganizationUser>) => {
-          memberships = memberships.filter(membership => membership.accepted && membership.role !== OrganizationUser.RoleEnum.MEMBER);
+          memberships = memberships.filter((membership) => membership.accepted && membership.role !== OrganizationUser.RoleEnum.MEMBER);
           this.updateMembershipsState(memberships);
           this.addEntryStore.setError(false);
         },
@@ -45,7 +45,7 @@ export class AddEntryService {
     this.addEntryStore.update((state: AddEntryState) => {
       return {
         ...state,
-        memberships: memberships
+        memberships: memberships,
       };
     });
   }
@@ -84,7 +84,7 @@ export class AddEntryService {
     this.addEntryStore.update((state: AddEntryState) => {
       return {
         ...state,
-        collections: collections
+        collections: collections,
       };
     });
   }

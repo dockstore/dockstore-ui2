@@ -9,7 +9,7 @@ describe('Service: GithubCallback', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [GithubCallbackService]
+      providers: [GithubCallbackService],
     });
   });
 

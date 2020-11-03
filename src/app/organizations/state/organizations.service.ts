@@ -39,7 +39,7 @@ export class OrganizationsStateService {
     this.organizationsStore.update((state: OrganizationsState) => {
       return {
         ...state,
-        searchName: searchName
+        searchName: searchName,
       };
     });
   }
@@ -48,7 +48,7 @@ export class OrganizationsStateService {
     this.organizationsStore.update((state: OrganizationsState) => {
       return {
         ...state,
-        organizations: organizations
+        organizations: organizations,
       };
     });
   }

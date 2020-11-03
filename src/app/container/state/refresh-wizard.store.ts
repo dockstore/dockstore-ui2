@@ -14,7 +14,7 @@ export function createInitialState(): RefreshWizardState {
     organizations: undefined,
     repositories: undefined,
     selectedOrganization: undefined,
-    error: null
+    error: null,
   };
 }
 

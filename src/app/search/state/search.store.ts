@@ -47,7 +47,7 @@ export function createInitialState(): SearchState {
     pageSize: 10,
     advancedSearch: { ...initialAdvancedSearchObject },
     pageIndex: 0,
-    currentTabIndex: 0
+    currentTabIndex: 0,
   };
 }
 

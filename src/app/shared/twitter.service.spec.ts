@@ -21,7 +21,7 @@ import { TwitterService } from './twitter.service';
 describe('TwitterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TwitterService]
+      providers: [TwitterService],
     });
   });
 

@@ -23,9 +23,7 @@
       <form #versionEditorForm="ngForm" class="form-horizontal">
         <div class="modal-body tagEditor">
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Git Reference:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Git Reference: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
                 *ngIf="!(isService$ | async)"
@@ -76,9 +74,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="!(isService$ | async) && (descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Test Parameter File(s):
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Test Parameter File(s): </label>
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
@@ -163,19 +159,15 @@
               <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages alert alert-danger">
                 {{ formErrors.testParameterFilePath }}
               </div>
-              <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
-                Duplicate test json files are not allowed.
-              </mat-card>
+              <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger"> Duplicate test json files are not allowed. </mat-card>
             </div>
             <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
               <input class="form-control" placeholder="None provided" disabled />
             </div>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3"></div>
-          <div class="form-group form-group-sm" *ngIf="!isPublic" style="clear:both;">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Hidden:
-            </label>
+          <div class="form-group form-group-sm" *ngIf="!isPublic" style="clear: both">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Hidden: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div>
                 <label>
@@ -191,9 +183,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Last Modified:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Last Modified: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ getDateTimeMessage(version.last_modified) }}
@@ -201,9 +191,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Valid:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Valid: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ version.valid ? 'Yes' : 'No' }}

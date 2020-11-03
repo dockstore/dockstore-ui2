@@ -18,9 +18,9 @@ describe('SourceFileTabsComponent', () => {
       imports: [HttpClientTestingModule],
       providers: [
         { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
-        { provide: FileService, useClass: FileStubService }
+        { provide: FileService, useClass: FileStubService },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

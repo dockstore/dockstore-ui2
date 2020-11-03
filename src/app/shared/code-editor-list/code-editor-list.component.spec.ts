@@ -34,9 +34,12 @@ describe('CodeEditorListComponent', () => {
         MatFormFieldModule,
         MatTooltipModule,
         MatCardModule,
-        ClipboardModule
+        ClipboardModule,
       ],
-      providers: [{ provide: WorkflowService, useClass: WorkflowStubService }, { provide: FileService, useClass: FileStubService }]
+      providers: [
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: FileService, useClass: FileStubService },
+      ],
     }).compileComponents();
   }));
 

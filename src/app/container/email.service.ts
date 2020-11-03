@@ -70,7 +70,7 @@ export class EmailService {
    * This method is mostly redundant, but keeping it to mirror the Request Access button methods and in case modifications are needed
    * @param email The tool author's email address
    */
-  private getInquiryEmailMailTo(email): string {
+  private getInquiryEmailMailTo(email: string): string {
     return email;
   }
 

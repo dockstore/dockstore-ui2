@@ -9,6 +9,6 @@ import { RefreshWizardComponent } from './refresh-wizard/refresh-wizard.componen
 @NgModule({
   imports: [CommonModule, RefreshAlertModule, CustomMaterialModule, FlexLayoutModule],
   declarations: [RefreshWizardComponent],
-  exports: [RefreshWizardComponent]
+  exports: [RefreshWizardComponent],
 })
 export class RefreshWizardModule {}

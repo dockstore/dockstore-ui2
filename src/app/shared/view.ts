@@ -13,12 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Input, OnDestroy } from '@angular/core';
+import { Directive, Input, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { AlertQuery } from './alert/state/alert.query';
 import { DateService } from './date.service';
 import { Tag, WorkflowVersion } from './swagger';
 
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class View implements OnDestroy {
   @Input() version: WorkflowVersion | Tag;
   @Input() defaultVersion: string;
@@ -29,7 +31,7 @@ export abstract class View implements OnDestroy {
     this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
-  getDateTimeMessage(timestamp) {
+  getDateTimeMessage(timestamp: number) {
     return this.dateService.getDateTimeMessage(timestamp);
   }
 

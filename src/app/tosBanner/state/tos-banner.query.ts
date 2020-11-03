@@ -22,8 +22,8 @@ import { TosBannerState, TosBannerStore } from './tos-banner.store';
 
 @Injectable({ providedIn: 'root' })
 export class TosBannerQuery extends Query<TosBannerState> {
-  dismissedLatestTOS$: Observable<User.TosversionEnum> = this.select(state => state.dismissedLatestTOS);
-  dismissedLatestPrivacyPolicy$: Observable<User.PrivacyPolicyVersionEnum> = this.select(state => state.dismissedLatestPrivacyPolicy);
+  dismissedLatestTOS$: Observable<User.TosversionEnum> = this.select((state) => state.dismissedLatestTOS);
+  dismissedLatestPrivacyPolicy$: Observable<User.PrivacyPolicyVersionEnum> = this.select((state) => state.dismissedLatestPrivacyPolicy);
 
   constructor(protected store: TosBannerStore) {
     super(store);
