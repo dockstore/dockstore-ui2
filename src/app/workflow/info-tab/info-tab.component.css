@@ -18,7 +18,6 @@
   text-decoration: underline;
 }
 
-.mat-icon {
-  font-size: 20px;
-  height: 20px;
+.icon {
+  transform: scale(0.85);
 }
