@@ -113,7 +113,7 @@ export class ToolFileEditorComponent extends FileEditing {
           // Only stop editing when version change was successful (not 204)
           this.toggleEdit();
           this.containerService.setTool(editedDockstoreTool);
-          this.alertService.detailedSuccess('Saved version ' + ' of hosted tool ');
+          this.alertService.detailedSuccess();
         } else {
           // Probably encountered a 204
           this.handleNoContentResponse();
