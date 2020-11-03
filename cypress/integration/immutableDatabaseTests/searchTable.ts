@@ -37,8 +37,8 @@ describe('Dockstore tool/workflow search table', () => {
           max_score: 1.0,
           hits: [
             {
-              _index: 'entry',
-              _type: 'tool',
+              _index: 'tools',
+              _type: '_doc',
               _id: '52',
               _score: 1.0,
               _source: {
@@ -102,8 +102,8 @@ describe('Dockstore tool/workflow search table', () => {
               },
             },
             {
-              _index: 'entry',
-              _type: 'tool',
+              _index: 'tools',
+              _type: '_doc',
               _id: '5',
               _score: 1.0,
               _source: {
@@ -190,8 +190,8 @@ describe('Dockstore tool/workflow search table', () => {
               },
             },
             {
-              _index: 'entry',
-              _type: 'tool',
+              _index: 'tools',
+              _type: '_doc',
               _id: '4',
               _score: 1.0,
               _source: {
@@ -278,8 +278,8 @@ describe('Dockstore tool/workflow search table', () => {
               },
             },
             {
-              _index: 'entry',
-              _type: 'workflow',
+              _index: 'workflows',
+              _type: '_doc',
               _id: '11',
               _score: 1.0,
               _source: {
