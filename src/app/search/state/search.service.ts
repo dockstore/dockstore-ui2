@@ -69,7 +69,7 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['verified', 'private_access', '_type', 'has_checker'];
+  public exclusiveFilters = ['verified', 'private_access', '_index', 'has_checker'];
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
