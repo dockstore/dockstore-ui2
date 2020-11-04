@@ -69,7 +69,7 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['verified', 'private_access', '_type', 'has_checker'];
+  public exclusiveFilters = ['verified', 'private_access', '_index', 'has_checker'];
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
@@ -204,10 +204,10 @@ export class SearchService {
     hits.forEach((hit) => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
       if (workflowHits.length + toolHits.length < query_size - 1) {
-        if (hit['_type'] === 'tool') {
+        if (hit['_index'] === 'tools') {
           hit['_source'] = this.imageProviderService.setUpImageProvider(hit['_source']);
           toolHits.push(hit);
-        } else if (hit['_type'] === 'workflow') {
+        } else if (hit['_index'] === 'workflows') {
           workflowHits.push(hit);
         }
       }
@@ -457,7 +457,7 @@ export class SearchService {
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([
-      ['Entry Type', '_type'],
+      ['Entry Type', '_index'],
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Source Control', 'source_control_provider.keyword'],
@@ -477,7 +477,7 @@ export class SearchService {
 
   initializeFriendlyNames() {
     return new Map([
-      ['_type', 'Entry Type'],
+      ['_index', 'Entry Type'],
       ['descriptorType', 'Language'],
       ['registry', 'Tool: Registry'],
       ['source_control_provider.keyword', 'Workflow: Source Control'],
@@ -513,7 +513,7 @@ export class SearchService {
 
   initializeEntryOrder() {
     return new Map([
-      ['_type', new SubBucket()],
+      ['_index', new SubBucket()],
       ['descriptorType', new SubBucket()],
       ['author', new SubBucket()],
       ['registry', new SubBucket()],

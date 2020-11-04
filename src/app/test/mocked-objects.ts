@@ -542,8 +542,8 @@ export const testSourceFiles: Array<SourceFile> = [
 
 export const elasticSearchResponse: Hit[] = [
   {
-    _index: 'entry',
-    _type: 'tool',
+    _index: 'tools',
+    _type: '_doc',
     _id: '2313',
     _score: 1,
     _source: {
@@ -623,8 +623,8 @@ export const elasticSearchResponse: Hit[] = [
     },
   },
   {
-    _index: 'entry',
-    _type: 'workflow',
+    _index: 'workflows',
+    _type: '_doc',
     _id: '2210',
     _score: 1,
     _source: {
