@@ -33,10 +33,11 @@ export class QueryBuilderService {
 
   getTagCloudQuery(type: string): string {
     const tagCloudSize = 20;
+    const index = type + 's';
     let body = bodybuilder().size(tagCloudSize);
     body = this.excludeContent(body);
-    body = body.query('match', '_type', type);
-    body = body.aggregation('significant_terms', 'description', 'tagcloud', { size: tagCloudSize });
+    body = body.query('match', '_index', index);
+    body = body.aggregation('significant_text', 'description', 'tagcloud', { size: tagCloudSize });
     const toolQuery = JSON.stringify(body.build(), null, 1);
     return toolQuery;
   }
