@@ -14,6 +14,9 @@
  *    limitations under the License.
  */
 
+// Must define the material icons font directory path, see https://www.npmjs.com/package/material-design-icons-iconfont
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+@import '~material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';
 @import '~ngx-sharebuttons/themes/default/default-theme';
