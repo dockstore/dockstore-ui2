@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
+import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { CollectionComponent, CollectionRemoveEntryDialogComponent } from './collection/collection.component';
 import { CollectionsComponent } from './collections/collections.component';
@@ -23,6 +24,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     RouterModule,
     MarkdownModule,
     UpdateOrganizationDescriptionModule,
+    MarkdownWrapperModule,
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],

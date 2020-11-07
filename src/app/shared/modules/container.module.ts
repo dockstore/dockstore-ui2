@@ -53,6 +53,7 @@ import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
+import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SelectModule } from './select.module';
 
 @NgModule({
@@ -88,6 +89,7 @@ import { SelectModule } from './select.module';
     AddEntryModule,
     FlexLayoutModule,
     MarkdownModule,
+    MarkdownWrapperModule,
   ],
   providers: [
     EmailService,
