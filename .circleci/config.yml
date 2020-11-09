@@ -6,9 +6,15 @@ executors:
   integration_test_exec: # declares a reusable executor
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
       - image: circleci/postgres:11.6-alpine-ram
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
@@ -20,6 +26,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - setup_nightly_tests
       - run:
@@ -36,6 +45,9 @@ jobs:
     working_directory: ~/repo
     docker:
         - image: circleci/buildpack-deps:18.04-browsers
+          auth:
+            username: dockstoretestuser
+            password: $DOCKERHUB_PASSWORD
     steps:
       - setup_nightly_tests
       - run:
@@ -52,6 +64,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -108,6 +123,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run: bash scripts/detect-package-json-changes.sh
@@ -157,6 +175,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/python:2.7
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     parameters:
       aws_bucket:
         type: string
@@ -191,6 +212,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/python:2.7
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - get_workspace
       - install_container_dependencies
@@ -222,6 +246,8 @@ workflows:
           requires:
             - lint_unit_test_coverage
             - licenses_test
+          context:
+            - dockerhub
       - integration_test_2:
           filters:
             tags:
@@ -229,6 +255,8 @@ workflows:
           requires:
             - lint_unit_test_coverage
             - licenses_test
+          context:
+            - dockerhub
       - integration_test_3:
           filters:
             tags:
@@ -236,6 +264,8 @@ workflows:
           requires:
             - lint_unit_test_coverage
             - licenses_test
+          context:
+            - dockerhub
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
@@ -247,12 +277,16 @@ workflows:
               only: /.*/
             branches:
               only: /.*/
+          context:
+            - dockerhub
       - check_build_develop:
           requires:
             - upload_to_s3
           filters:
             branches:
               only: /^develop/
+          context:
+            - dockerhub
 
   nightly:
     triggers:
@@ -264,7 +298,12 @@ workflows:
                 - develop
     jobs:
       - uptime_monitor_no_auth
+        context:
+          - dockerhub
+
       - uptime_monitor_auth
+        context:
+          - dockerhub
 
 commands:
   install_container_dependencies:
