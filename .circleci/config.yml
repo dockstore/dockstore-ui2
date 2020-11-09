@@ -297,11 +297,10 @@ workflows:
               only:
                 - develop
     jobs:
-      - uptime_monitor_no_auth
+      - uptime_monitor_no_auth:
         context:
           - dockerhub
-
-      - uptime_monitor_auth
+      - uptime_monitor_auth:
         context:
           - dockerhub
 
