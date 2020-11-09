@@ -51,12 +51,18 @@
               <a [href]="trsLinkCWL">
                 {{ tool?.tool_path }}
               </a>
+              <button mat-icon-button color="secondary" ngxClipboard [cbContent]="tool?.tool_path" matTooltip="Copy TRS ID">
+                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              </button>
             </li>
             <li *ngIf="trsLinkWDL">
               <strong matTooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
               <a [href]="trsLinkWDL">
                 {{ tool?.tool_path }}
               </a>
+              <button mat-icon-button color="secondary" ngxClipboard [cbContent]="tool?.tool_path" matTooltip="Copy TRS ID">
+                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              </button>
             </li>
           </span>
           <li *ngIf="tool?.default_dockerfile_path || !isPublic">

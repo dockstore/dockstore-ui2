@@ -61,6 +61,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   forumUrlEditing: boolean;
   isPublic: boolean;
   trsLink: string;
+  displayTextForButton: string;
   EntryType = EntryType;
   descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
@@ -119,9 +120,11 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.infoTabService.defaultTestFilePathEditing$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
+    this.entryType$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((entryType) => (this.displayTextForButton = '#' + entryType + '/' + this.workflow?.full_workflow_path));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
   }
-
   /**
    * Handle restubbing a workflow
    * TODO: Handle restub error
