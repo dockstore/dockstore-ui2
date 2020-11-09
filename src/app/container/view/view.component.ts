@@ -20,6 +20,7 @@ import { ViewService } from 'app/container/view/view.service';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -54,7 +55,8 @@ export class ViewContainerComponent extends View implements OnInit {
     private containertagsService: ContainertagsService,
     private hostedService: HostedService,
     private toolQuery: ToolQuery,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private alertService: AlertService
   ) {
     super(dateService, alertQuery);
   }
@@ -90,9 +92,15 @@ export class ViewContainerComponent extends View implements OnInit {
 
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
+      this.alertService.start('Deleting version ' + this.version.name);
       this.hostedService.deleteHostedToolVersion(this.tool.id, this.version.name).subscribe(
-        (updatedTool: DockstoreTool) => this.containerService.setTool(updatedTool),
-        (error: HttpErrorResponse) => console.log(error)
+        (updatedTool: DockstoreTool) => {
+          this.containerService.setTool(updatedTool);
+          this.alertService.simpleSuccess();
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
       );
     }
   }

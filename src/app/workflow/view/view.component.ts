@@ -147,12 +147,14 @@ export class ViewWorkflowComponent extends View implements OnInit {
     }
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
+      this.alertService.start('Deleting version ' + this.version.name);
       this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
         (result) => {
           this.workflowService.setWorkflow(result);
+          this.alertService.simpleSuccess();
         },
         (error: HttpErrorResponse) => {
-          console.log(error);
+          this.alertService.detailedError(error);
         }
       );
     }
