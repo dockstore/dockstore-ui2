@@ -298,11 +298,11 @@ workflows:
                 - develop
     jobs:
       - uptime_monitor_no_auth:
-        context:
-          - dockerhub
+          context:
+            - dockerhub
       - uptime_monitor_auth:
-        context:
-          - dockerhub
+          context:
+            - dockerhub
 
 commands:
   install_container_dependencies:
