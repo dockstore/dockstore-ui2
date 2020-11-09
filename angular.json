@@ -28,8 +28,7 @@
               "node_modules/bootstrap-social/bootstrap-social.css",
               "src/styles.css",
               "src/styles.scss",
-              "src/material.scss",
-              "node_modules/material-design-icons/iconfont/material-icons.css"
+              "src/material.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
