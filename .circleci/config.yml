@@ -235,10 +235,14 @@ workflows:
           filters:
             tags:
               only: /.*/
+          context:
+            - dockerhub
       - licenses_test:
           filters:
             tags:
               only: /.*/
+          context:
+            - dockerhub
       - integration_test_1:
           filters:
             tags:
