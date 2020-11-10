@@ -80,6 +80,7 @@ describe('SearchComponent', () => {
       searchText: '',
       filterKeys: [],
       autocompleteTerms: [],
+      facetAutocompleteTerms: [],
       suggestTerm: '',
       pageSize: 10,
       pageIndex: 0,

@@ -44,6 +44,21 @@
             {{ friendlyNames.get(key) }}
             <mat-icon *ngIf="toolTips.get(key)" matTooltip="{{ toolTips.get(key) }}">help_outline</mat-icon>
           </mat-expansion-panel-header>
+          <div *ngIf="key === 'author'">
+            <mat-form-field appearance="outline">
+              <mat-label>Search for {{ key }}</mat-label>
+              <input
+                matInput
+                placeholder="Search for {{ key }}"
+                [(ngModel)]="facetSearchText"
+                (keyup)="onFacetSearchKey(key)"
+                [matAutocomplete]="auto"
+              />
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of facetAutocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
+            </mat-autocomplete>
+          </div>
           <div *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button
               mat-stroked-button
@@ -80,7 +95,7 @@
               <span>{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
             </div>
           </div>
-          <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items); let i = index">
+          <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index">
             <div class="panel-container-label">
               <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
