@@ -13,10 +13,11 @@ import { Pipe, PipeTransform } from '@angular/core';
  * @memberof GetFacetSearchResultsPipe
  */
 export class GetFacetSearchResultsPipe implements PipeTransform {
-  transform(items: Array<any>, searchText: string, facet: string): any {
+  transform(items: Array<any>, searchText: string, facet: string): Array<any> {
     if (!items || !searchText || facet !== 'author') {
       return items;
     }
-    return items.filter((item) => item.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
+    const filteredItems = items.filter((item) => item.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
+    return filteredItems;
   }
 }
