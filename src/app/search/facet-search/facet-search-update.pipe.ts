@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'getFacetSearchUpdate',
 })
 /**
- * This pipe filters results in the facet according to the facet search text
+ * This pipe updates the number of hidden items in the facet when a search is completed
  *
  * @param {Array<any>} items The items in the facet
  * @param {string} searchText The search text entered
