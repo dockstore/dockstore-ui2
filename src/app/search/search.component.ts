@@ -531,9 +531,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const values = this.facetSearchText.toLowerCase();
     const unfilteredItems = Array.from(this.orderedBuckets.get(key).Items.entries());
     const filteredItems = unfilteredItems.filter((item) => item[0].toLowerCase().includes(values)).map((item) => item[0]);
-    if (filteredItems) {
-      this.searchService.setFacetAutocompleteTerms(filteredItems);
-    }
+    this.searchService.setFacetAutocompleteTerms(filteredItems);
   }
 
   /**===============================================

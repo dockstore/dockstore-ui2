@@ -287,7 +287,8 @@ export class SearchService {
 
   setFacetAutocompleteTerms(hits: any) {
     const autocompleteTerms = [];
-    for (let i = 0; i <= 3; i++) {
+    const maxTerms = 3;
+    for (let i = 0; i <= maxTerms; i++) {
       if (hits[i]) {
         autocompleteTerms.push(hits[i]);
       }
@@ -295,7 +296,7 @@ export class SearchService {
     this.searchStore.update((state) => {
       return {
         ...state,
-        facetAutocompleteTerms: autocompleteTerms
+        facetAutocompleteTerms: autocompleteTerms,
       };
     });
   }
