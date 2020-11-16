@@ -17,7 +17,8 @@ export class GetFacetSearchResultsPipe implements PipeTransform {
     if (!items || !searchText || facet !== 'author') {
       return items;
     }
-    const filteredItems = items.filter((item) => item.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
+    const value = searchText.toLowerCase();
+    const filteredItems = items.filter((item) => item.toLowerCase().includes(value));
     return filteredItems;
   }
 }

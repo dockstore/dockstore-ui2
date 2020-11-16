@@ -12,17 +12,19 @@ import { Pipe, PipeTransform } from '@angular/core';
  * @memberof GetFacetSearchResultsPipe
  */
 export class GetFacetSearchUpdatePipe implements PipeTransform {
-  transform(unfilteredItems: Array<any>, searchText: string): string {
+  transform(unfilteredItems: Array<any>, searchText: string): string | null {
     let hiddenFilteredSize;
-    if (!searchText && unfilteredItems.length > 5) {
-      hiddenFilteredSize = unfilteredItems.length - 5;
+    const value = searchText.toLowerCase();
+    const itemsDisplayed = 5;
+    if (!searchText && unfilteredItems.length > itemsDisplayed) {
+      hiddenFilteredSize = unfilteredItems.length - itemsDisplayed;
       return hiddenFilteredSize.toString() + ' more';
     }
-    const filteredSize = unfilteredItems.filter((item) => item.toLowerCase().includes(searchText)).length;
+    const filteredSize = unfilteredItems.filter((item) => item.toLowerCase().includes(value)).length;
     if (filteredSize < 5) {
       return null;
     }
-    hiddenFilteredSize = filteredSize - 5;
+    hiddenFilteredSize = filteredSize - itemsDisplayed;
     return hiddenFilteredSize.toString() + ' more';
   }
 }
