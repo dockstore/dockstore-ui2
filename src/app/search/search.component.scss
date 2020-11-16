@@ -168,3 +168,16 @@
   background-color: #dddddd;
   min-height: 2rem;
 }
+
+// For facet search
+input[type='text']:focus,
+textarea:focus {
+  border: none;
+}
+mat-form-field {
+  width: 100%;
+}
+
+input.mat-input-element:not(:focus) {
+  height: 1rem;
+}
