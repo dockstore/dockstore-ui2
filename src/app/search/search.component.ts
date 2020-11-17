@@ -71,7 +71,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   // Set to 201 if searching both queries
-  public query_size;
+  public readonly query_size = 101;
+  public readonly query_size_full = 201;
+  private readonly searchIndex = 'entries';
   searchTerm = false;
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
@@ -350,13 +352,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     // The second query updates the result table
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
+    let querySize;
     if (!values) {
-      this.query_size = 101;
+      querySize = this.query_size;
     } else {
-      this.query_size = 201;
+      querySize = this.query_size_full;
     }
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
-      this.query_size,
+      this.query_size_full,
       values,
       advancedSearchObject,
       this.searchTerm,
@@ -364,13 +367,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters,
       this.sortModeMap
     );
-    const tableQuery = this.queryBuilderService.getResultQuery(
-      this.query_size,
-      values,
-      advancedSearchObject,
-      this.searchTerm,
-      this.filters
-    );
+    const tableQuery = this.queryBuilderService.getResultQuery(querySize, values, advancedSearchObject, this.searchTerm, this.filters);
     this.resetEntryOrder();
     this.updateSideBar(sideBarQuery);
     if (!values) {
@@ -383,7 +380,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   updateSideBar(value: string) {
     ELASTIC_SEARCH_CLIENT.search({
-      index: 'entries',
+      index: this.searchIndex,
       type: 'all',
       body: value,
     })
@@ -402,13 +399,13 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   updateResultsTable(value: string) {
     ELASTIC_SEARCH_CLIENT.search({
-      index: 'entries',
+      index: this.searchIndex,
       type: 'all',
       body: value,
     })
       .then((hits) => {
         this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
         const searchText = this.searchQuery.getValue().searchText;
         this.searchService.setHits(filteredHits[0], filteredHits[1]);
         if (searchText.length > 0 && hits) {
@@ -431,27 +428,26 @@ export class SearchComponent implements OnInit, OnDestroy {
   updateResultsTableSeparately(value: string) {
     let toolHits;
     let workflowHits;
-    const numOfResults = 201;
     // Combine array of tools and workflows to filter into results table
     ELASTIC_SEARCH_CLIENT.search({
-      index: 'entries',
+      index: this.searchIndex,
       type: 'tools',
       body: value,
     })
-      .then((hits) => {
-        toolHits = hits.hits.hits;
-      })
-      .catch((error) => console.log(error));
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'entries',
-      type: 'workflows',
-      body: value,
-    })
-      .then((hits) => {
-        workflowHits = hits.hits.hits;
-        this.hits = toolHits.concat(workflowHits);
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, numOfResults);
-        this.searchService.setHits(filteredHits[0], filteredHits[1]);
+      .then((tools) => {
+        toolHits = tools.hits.hits;
+        ELASTIC_SEARCH_CLIENT.search({
+          index: this.searchIndex,
+          type: 'workflows',
+          body: value,
+        })
+          .then((workflows) => {
+            workflowHits = workflows.hits.hits;
+            this.hits = toolHits.concat(workflowHits);
+            const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+            this.searchService.setHits(filteredHits[0], filteredHits[1]);
+          })
+          .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error));
   }
@@ -479,7 +475,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = searchText + '.*';
     ELASTIC_SEARCH_CLIENT.search({
-      index: 'entries',
+      index: this.searchIndex,
       type: 'all',
       body: {
         size: 0,
