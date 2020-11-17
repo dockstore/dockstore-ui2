@@ -343,7 +343,7 @@ describe('Dockstore tool/workflow search table', () => {
     if (type === 'workflow') {
       goToTab('Workflows');
     }
-    cy.get('.mat-icon.star').should('not.exist');
+    cy.get('.mat-icon.star-icon').should('not.exist');
     // cy.visit(url);
     // cy.get('#starringButton')
     //   .click();
@@ -361,7 +361,7 @@ describe('Dockstore tool/workflow search table', () => {
     if (type === 'workflow') {
       goToTab('Workflows');
     }
-    cy.get('.mat-icon.star').should('exist');
+    cy.get('.mat-icon.star-icon').should('exist');
     // cy.visit(url);
     // cy.get('#starringButton')
     //   .click();
