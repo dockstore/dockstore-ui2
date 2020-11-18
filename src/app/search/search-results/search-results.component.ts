@@ -73,8 +73,8 @@ export class SearchResultsComponent extends Base implements OnInit {
 
   createToolTagCloud(toolQuery, type) {
     ELASTIC_SEARCH_CLIENT.search({
-      index: 'entries',
-      type: 'all',
+      index: 'tools',
+      type: 'entry',
       body: toolQuery,
     })
       .then((hits) => {

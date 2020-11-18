@@ -352,12 +352,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     // The second query updates the result table
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
-    let querySize;
-    if (!values) {
-      querySize = this.query_size;
-    } else {
-      querySize = this.query_size_full;
-    }
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
       this.query_size_full,
       values,
@@ -367,21 +361,30 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters,
       this.sortModeMap
     );
-    const tableQuery = this.queryBuilderService.getResultQuery(querySize, values, advancedSearchObject, this.searchTerm, this.filters);
-    this.resetEntryOrder();
-    this.updateSideBar(sideBarQuery);
     if (!values) {
-      // Query workflows and tools separately otherwise ES because only returns hits from tools index first
-      this.updateResultsTableSeparately(tableQuery);
+      const toolsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'tools');
+      const workflowsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'workflows');
+      this.resetEntryOrder();
+      this.updateSideBar(sideBarQuery);
+      this.updateResultsTableSeparately(toolsQuery, workflowsQuery);
     } else {
+      const tableQuery = this.queryBuilderService.getResultQuery(
+        this.query_size_full,
+        values,
+        advancedSearchObject,
+        this.searchTerm,
+        this.filters
+      );
+      this.resetEntryOrder();
+      this.updateSideBar(sideBarQuery);
       this.updateResultsTable(tableQuery);
     }
   }
 
   updateSideBar(value: string) {
     ELASTIC_SEARCH_CLIENT.search({
-      index: this.searchIndex,
-      type: 'all',
+      index: 'tools',
+      type: 'entry',
       body: value,
     })
       .then((hits) => {
@@ -399,8 +402,8 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   updateResultsTable(value: string) {
     ELASTIC_SEARCH_CLIENT.search({
-      index: this.searchIndex,
-      type: 'all',
+      index: 'tools',
+      type: 'entry',
       body: value,
     })
       .then((hits) => {
@@ -425,21 +428,21 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @param {string} value the elastic search query
    * @memberof SearchComponent
    */
-  updateResultsTableSeparately(value: string) {
+  updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
     let toolHits;
     let workflowHits;
     // Combine array of tools and workflows to filter into results table
     ELASTIC_SEARCH_CLIENT.search({
-      index: this.searchIndex,
-      type: 'tools',
-      body: value,
+      index: 'tools',
+      type: 'entry',
+      body: toolsQuery,
     })
       .then((tools) => {
         toolHits = tools.hits.hits;
         ELASTIC_SEARCH_CLIENT.search({
-          index: this.searchIndex,
-          type: 'workflows',
-          body: value,
+          index: 'tools',
+          type: 'entry',
+          body: workflowsQuery,
         })
           .then((workflows) => {
             workflowHits = workflows.hits.hits;
@@ -475,8 +478,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = searchText + '.*';
     ELASTIC_SEARCH_CLIENT.search({
-      index: this.searchIndex,
-      type: 'all',
+      index: 'tools',
+      type: 'entry',
       body: {
         size: 0,
         aggs: {
