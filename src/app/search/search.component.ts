@@ -73,7 +73,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   // Set to 201 if searching both queries
   public readonly query_size = 101;
   public readonly query_size_full = 201;
-  private readonly searchIndex = 'entries';
   searchTerm = false;
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
