@@ -236,8 +236,8 @@ export class SearchService {
 
   suggestSearchTerm(searchText: string) {
     ELASTIC_SEARCH_CLIENT.search({
-      index: 'entries',
-      type: 'all',
+      index: 'tools',
+      type: 'entry',
       body: {
         suggest: {
           do_you_mean: {
