@@ -19,9 +19,9 @@
     "test": "npx ng test",
     "lint": "npx ng lint",
     "e2e": "npx ng e2e",
-    "test-dev-no-auth": "npx cypress run --record --reporter junit -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/search.ts\"",
-    "test-staging-no-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/search.ts\"",
-    "test-prod-no-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/search.ts\"",
+    "test-dev-no-auth": "npx cypress run --record --reporter junit -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/search.ts\"",
+    "test-staging-no-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/search.ts\"",
+    "test-prod-no-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/search.ts\"",
     "test-dev-auth": "npx cypress run --record --reporter junit -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/manualTests/auth-tests.ts\"",
     "test-staging-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/manualTests/auth-tests.ts\"",
     "test-prod-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/manualTests/auth-tests.ts\""
