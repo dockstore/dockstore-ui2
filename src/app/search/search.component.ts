@@ -422,7 +422,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   /**
    * Updates the results table when there is no search term
-   * Queries for 100 tools and 100 workflows
    *
    * @param {string} value the elastic search query
    * @memberof SearchComponent
