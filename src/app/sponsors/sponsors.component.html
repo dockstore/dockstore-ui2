@@ -33,7 +33,7 @@
     <div fxLayout="row wrap" fxLayoutAlign="space-around stretch">
       <div *ngFor="let partner of languages" class="pb-5 px-1">
         <a [href]="partner.url" target="_blank" rel="noopener noreferrer">
-          <img [src]="partner.current" />
+          <img [src]="partner.current" [alt]="partner.url.hostname" />
         </a>
       </div>
     </div>
