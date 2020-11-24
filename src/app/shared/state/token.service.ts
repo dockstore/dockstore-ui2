@@ -30,7 +30,7 @@ export class TokenService {
     this.tokenStore.add(token);
   }
 
-  update(id, token: Partial<Token>) {
+  update(id: ID, token: Partial<Token>) {
     this.tokenStore.update(id, token);
   }
 
@@ -76,11 +76,11 @@ export class TokenService {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: 'token ' + token
-        })
+          Authorization: 'token ' + token,
+        }),
       };
       const getOrganizationUrl = 'https://api.github.com/user/orgs';
-      httpClient.get(getOrganizationUrl, httpOptions).subscribe(gitHubOrganizations => this.setGitHubOrganizations(gitHubOrganizations));
+      httpClient.get(getOrganizationUrl, httpOptions).subscribe((gitHubOrganizations) => this.setGitHubOrganizations(gitHubOrganizations));
     } else {
       this.setGitHubOrganizations([]);
     }

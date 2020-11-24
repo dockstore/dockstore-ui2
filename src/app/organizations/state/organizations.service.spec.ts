@@ -7,16 +7,14 @@ import { OrganizationsStore } from './organizations.store';
 
 describe('OrganizationsStateService', () => {
   let organizationsStateService: OrganizationsStateService;
-  let organizationsStore: OrganizationsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationsStateService, OrganizationsStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
-    organizationsStateService = TestBed.get(OrganizationsStateService);
-    organizationsStore = TestBed.get(OrganizationsStore);
+    organizationsStateService = TestBed.inject(OrganizationsStateService);
   });
 
   it('should be created', () => {

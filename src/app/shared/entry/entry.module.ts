@@ -19,8 +19,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
-import { ShareButtonsModule } from '@ngx-share/buttons';
 import { ClipboardModule } from 'ngx-clipboard';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { RefreshAlertModule } from '../alert/alert.module';
 import { AvailableLogsModule } from '../available-logs.module';
 import { BioschemaService } from '../bioschema.service';
@@ -52,7 +53,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     ClipboardModule,
     RouterModule,
     ReactiveFormsModule,
-    RefreshAlertModule
+    RefreshAlertModule,
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,
@@ -67,7 +68,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     PublicFileDownloadPipe,
     PrivateFileDownloadPipe,
     PrivateFilePathPipe,
-    UrlDeconstructPipe
+    UrlDeconstructPipe,
   ],
   exports: [
     InfoTabCheckerWorkflowPathComponent,
@@ -85,11 +86,12 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     NgxJsonLdModule,
     RefreshAlertModule,
     ShareButtonsModule,
+    ShareIconsModule,
     UrlDeconstructPipe,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   entryComponents: [RegisterCheckerWorkflowComponent],
-  providers: [BioschemaService, EntryActionsService]
+  providers: [BioschemaService, EntryActionsService],
 })
 export class EntryModule {}

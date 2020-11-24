@@ -7,7 +7,7 @@ export interface CreateCollectionState {
 
 export function createInitialState(): CreateCollectionState {
   return {
-    title: ''
+    title: '',
   };
 }
 

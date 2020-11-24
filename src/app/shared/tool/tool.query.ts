@@ -22,7 +22,7 @@ import { DockstoreTool } from '../swagger';
 import { ToolState, ToolStore } from './tool.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ToolQuery extends QueryEntity<ToolState, DockstoreTool> {
   public tool$: Observable<DockstoreTool> = this.selectActive();

@@ -12,7 +12,7 @@ import { UserService } from '../../../shared/user/user.service';
 @Component({
   selector: 'app-accounts-internal',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.scss']
+  styleUrls: ['./accounts.component.scss'],
 })
 export class AccountsInternalComponent implements OnInit {
   user: User;
@@ -48,7 +48,7 @@ export class AccountsInternalComponent implements OnInit {
         this.userService.updateUser(user);
         this.alertService.simpleSuccess();
       },
-      error => {
+      (error) => {
         this.alertService.simpleError();
       }
     );

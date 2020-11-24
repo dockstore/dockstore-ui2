@@ -13,8 +13,8 @@ describe('Service: Accounts', () => {
         AccountsService,
         { provide: UserService, useClass: UserStubService },
         { provide: LoginService, useClass: LoginStubService },
-        { provide: TokenService, useClass: TokenStubService }
-      ]
+        { provide: TokenService, useClass: TokenStubService },
+      ],
     });
   });
 

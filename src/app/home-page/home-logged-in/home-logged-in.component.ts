@@ -9,11 +9,11 @@ import { UserQuery } from '../../shared/user/user.query';
 @Component({
   selector: 'home-logged-in',
   templateUrl: './home-logged-in.component.html',
-  styleUrls: ['./home-logged-in.component.scss']
+  styleUrls: ['./home-logged-in.component.scss'],
 })
 export class HomeLoggedInComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;
-  @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
+  @ViewChild('twitter') twitterElement: ElementRef;
 
   constructor(private userQuery: UserQuery, private twitterService: TwitterService) {
     super();
@@ -35,7 +35,7 @@ export class HomeLoggedInComponent extends Base implements OnInit, AfterViewInit
         () => {
           this.twitterService.createTimeline(this.twitterElement, 3);
         },
-        err => console.error(err)
+        (err) => console.error(err)
       );
   }
 }

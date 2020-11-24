@@ -12,7 +12,7 @@ export function createInitialState(): EntryWizardState {
   return {
     gitRegistries: undefined,
     gitOrganizations: undefined,
-    gitRepositories: undefined
+    gitRepositories: undefined,
   };
 }
 

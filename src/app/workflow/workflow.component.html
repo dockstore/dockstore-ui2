@@ -17,9 +17,7 @@
   <div class="row m-1" *ngIf="error || missingWarning">
     <div class="col-md-12" *ngIf="!isWorkflowPublic">
       <mat-card class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
-        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
-          &times;
-        </button>
+        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
         <mat-icon>warning</mat-icon>
       </mat-card>
     </div>
@@ -49,7 +47,7 @@
     <div class="col-md-7">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified">
-          <a href="{{ getVerifiedLink() }}" class="verified-check">
+          <a [href]="getVerifiedLink()" class="verified-check">
             <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
@@ -104,7 +102,7 @@
     </div>
   </div>
   <div class="row m-1" *ngIf="!showRedirect">
-    <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px;">
+    <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px">
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
           <mat-chip color="primary" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{ label }}</mat-chip>
@@ -114,7 +112,7 @@
         </mat-chip-list>
       </span>
       <span *ngIf="labelsEditMode && !isWorkflowPublic">
-        <mat-form-field style="width: 100%;">
+        <mat-form-field style="width: 100%">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let label of workflowEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
               {{ label }}
@@ -213,6 +211,7 @@
                 [versions]="(extendedWorkflow$ | async)?.workflowVersions"
                 (selectedVersionChange)="onSelectedVersionChange($event)"
                 [verifiedSource]="(extendedWorkflow$ | async)?.verifiedSources"
+                [verifiedVersionPlatforms]="versionsWithVerifiedPlatforms"
                 [workflowId]="workflow?.id"
                 [selectedVersion]="selectedVersion"
                 [canRead]="canRead"
@@ -233,9 +232,7 @@
                     <span *ngIf="workflow?.mode === WorkflowModel.ModeEnum.HOSTED">
                       To see versions, please add a new version in the Files tab.
                     </span>
-                    <span *ngIf="workflow?.mode !== WorkflowModel.ModeEnum.HOSTED">
-                      To see versions, please refresh the workflow.
-                    </span>
+                    <span *ngIf="workflow?.mode !== WorkflowModel.ModeEnum.HOSTED"> To see versions, please refresh the workflow. </span>
                   </ng-template>
                 </mat-card>
               </div>
@@ -299,6 +296,7 @@
                   [canRead]="canRead"
                   [canWrite]="canWrite"
                   [isOwner]="isOwner"
+                  [versionsFileTypes]="versionsFileTypes"
                 >
                 </app-files-workflow>
               </ng-template>
@@ -390,7 +388,7 @@
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
                 <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                  <a href="{{ getVerifiedLink() }}" class="verified-check">
+                  <a [href]="getVerifiedLink()" class="verified-check">
                     <mat-icon matTooltip="Verified">done</mat-icon>
                   </a>
                 </span>
@@ -424,8 +422,9 @@
           </div>
         </div>
       </div>
-      <current-collections [id]="workflow.id"></current-collections>
-      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
+      <current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></current-collections>
+      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
+      </app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="workflow">
         <div class="panel-heading">
           <h3>Sharing</h3>
@@ -435,7 +434,6 @@
             <share-buttons
               [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
               [show]="5"
-              [showCount]="false"
               [url]="shareURL"
               [autoSetMeta]="false"
             ></share-buttons>

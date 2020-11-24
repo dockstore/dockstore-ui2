@@ -6,16 +6,15 @@ import { RequestsStore } from './requests.store';
 
 describe('RequestsService', () => {
   let requestsService: RequestsService;
-  let requestsStore: RequestsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [RequestsService, RequestsStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
-    requestsService = TestBed.get(RequestsService);
-    requestsStore = TestBed.get(RequestsStore);
+    requestsService = TestBed.inject(RequestsService);
+    TestBed.inject(RequestsStore);
   });
 
   it('should be created', () => {

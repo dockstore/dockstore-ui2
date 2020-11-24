@@ -21,7 +21,7 @@ import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExtendedDockstoreToolQuery extends Query<ExtendedDockstoreTool> {
   extendedDockstoreTool$: Observable<ExtendedDockstoreTool> = this.select();

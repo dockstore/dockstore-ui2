@@ -28,7 +28,7 @@ describe('DocsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DocsComponent, RouterLinkStubDirective, RouterOutletStubComponent],
-      imports: [HeaderModule]
+      imports: [HeaderModule],
     }).compileComponents();
   }));
 

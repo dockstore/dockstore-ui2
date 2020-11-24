@@ -5,7 +5,7 @@ import { ToolTabService } from './tool-tab.service';
 describe('Service: ToolTab', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ToolTabService]
+      providers: [ToolTabService],
     });
   });
 

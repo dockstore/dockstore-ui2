@@ -24,14 +24,14 @@ describe('RegisterOrganizationService', () => {
         RegisterOrganizationService,
         FormBuilder,
         { provide: OrganizationsService, useValue: organizationsServiceStub },
-        { provide: MatDialog, useValue: matDialogStub }
+        { provide: MatDialog, useValue: matDialogStub },
       ],
-      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule],
     });
 
-    registerOrganizationService = TestBed.get(RegisterOrganizationService);
-    organizationsServiceSpy = TestBed.get(OrganizationsService);
-    matDialogSpy = TestBed.get(MatDialog);
+    registerOrganizationService = TestBed.inject(RegisterOrganizationService);
+    organizationsServiceSpy = TestBed.inject(OrganizationsService) as jasmine.SpyObj<OrganizationsService>;
+    matDialogSpy = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
   });
 
   it('should be created', () => {

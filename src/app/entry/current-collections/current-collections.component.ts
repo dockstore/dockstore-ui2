@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, Version } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
@@ -11,10 +11,12 @@ import { CurrentCollectionsService } from '../state/current-collections.service'
 @Component({
   selector: 'current-collections',
   templateUrl: './current-collections.component.html',
-  styleUrls: ['./current-collections.component.scss']
+  styleUrls: ['./current-collections.component.scss'],
 })
 export class CurrentCollectionsComponent implements OnInit, OnChanges {
   @Input() id: number;
+  // This is bad, should not have an input that's only passed down the chain
+  @Input() versions: Version[];
   currentCollections$: Observable<CollectionOrganization[]>;
   isLoading$: Observable<boolean>;
   isLoggedIn$: Observable<boolean>;
@@ -46,8 +48,8 @@ export class CurrentCollectionsComponent implements OnInit, OnChanges {
 
   addEntryToCollection() {
     this.matDialog.open(AddEntryComponent, {
-      data: { entryId: this.id },
-      width: '500px'
+      data: { entryId: this.id, versions: this.versions },
+      width: '500px',
     });
   }
 

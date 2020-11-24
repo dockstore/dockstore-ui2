@@ -23,9 +23,7 @@
     </ng-template>
     <mat-step>
       <ng-template matStepLabel>Tool storage type</ng-template>
-      <p>
-        Tools are a combination of Docker images describing the tool environment and descriptor files describing how the tool is run.
-      </p>
+      <p>Tools are a combination of Docker images describing the tool environment and descriptor files describing how the tool is run.</p>
       <div class="modal-body">
         <mat-radio-group class="radio-group" [(ngModel)]="selectedOption">
           <mat-radio-button
@@ -44,12 +42,8 @@
         </mat-radio-group>
       </div>
       <div class="modal-footer">
-        <button mat-button color="secondary" (click)="hideModal()">
-          Close
-        </button>
-        <button mat-raised-button color="primary" matStepperNext>
-          Next
-        </button>
+        <button mat-button color="secondary" (click)="hideModal()">Close</button>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
@@ -71,9 +65,7 @@
             multiple tools with the same Docker image.
           </p>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Source Code Repository:
-            </label>
+            <label class="col-sm-3 control-label"> Source Code Repository: </label>
             <div class="col-sm-9">
               <div class="input-group">
                 <div class="input-group-btn">
@@ -107,9 +99,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Dockerfile Path:
-            </label>
+            <label class="col-sm-3 control-label"> Dockerfile Path: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -127,9 +117,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              CWL Descriptor Path:
-            </label>
+            <label class="col-sm-3 control-label"> CWL Descriptor Path: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -147,9 +135,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              WDL Descriptor Path:
-            </label>
+            <label class="col-sm-3 control-label"> WDL Descriptor Path: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -167,9 +153,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              CWL Test Parameter File:
-            </label>
+            <label class="col-sm-3 control-label"> CWL Test Parameter File: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -186,9 +170,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              WDL Test Parameter File:
-            </label>
+            <label class="col-sm-3 control-label"> WDL Test Parameter File: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -205,9 +187,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Image Registry Provider:
-            </label>
+            <label class="col-sm-3 control-label"> Image Registry Provider: </label>
             <div class="col-sm-9">
               <mat-form-field class="w-100">
                 <mat-select [(value)]="tool.irProvider" data-cy="imageRegistryProviderSelect">
@@ -222,9 +202,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Image Registry:
-            </label>
+            <label class="col-sm-3 control-label"> Image Registry: </label>
             <div class="col-sm-9">
               <input
                 id="imageRegistryInput"
@@ -243,9 +221,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Docker Registry Path:
-            </label>
+            <label class="col-sm-3 control-label"> Docker Registry Path: </label>
             <div class="col-sm-9">
               <span *ngIf="showCustomDockerRegistryPath">
                 <span *ngIf="tool.irProvider === 'Amazon ECR'">
@@ -292,9 +268,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Private Image:
-            </label>
+            <label class="col-sm-3 control-label"> Private Image: </label>
             <div class="col-sm-9">
               <label>
                 <input
@@ -309,9 +283,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="tool.private_access">
-            <label class="col-sm-3 control-label">
-              Tool Maintainer Email:
-            </label>
+            <label class="col-sm-3 control-label"> Tool Maintainer Email: </label>
             <div class="col-sm-9">
               <input
                 id="toolMaintainerEmailInput"
@@ -327,9 +299,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Tool Name:
-            </label>
+            <label class="col-sm-3 control-label"> Tool Name: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -346,9 +316,7 @@
           </div>
         </div>
         <div mat-dialog-actions class="pull-right">
-          <button mat-button type="button" color="secondary" data-dismiss="modal" (click)="hideModal()">
-            Close
-          </button>
+          <button mat-button type="button" color="secondary" data-dismiss="modal" (click)="hideModal()">Close</button>
           <button
             id="submitButton"
             type="submit"
@@ -376,9 +344,7 @@
             DockerHub.
           </p>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Image Registry:
-            </label>
+            <label class="col-sm-3 control-label"> Image Registry: </label>
             <div class="col-sm-9">
               <div class="input-group">
                 <div class="input-group-btn">
@@ -424,9 +390,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Docker Registry Path:
-            </label>
+            <label class="col-sm-3 control-label"> Docker Registry Path: </label>
             <div class="col-sm-9">
               <span *ngIf="hostedTool.registryProvider === 'Seven Bridges' || hostedTool.registryProvider === 'Amazon ECR'">
                 <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">
@@ -475,9 +439,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Tool Name:
-            </label>
+            <label class="col-sm-3 control-label"> Tool Name: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -494,9 +456,7 @@
           </div>
         </div>
         <div mat-dialog-actions class="pull-right">
-          <button mat-button type="button" color="secondary" (click)="hideModal()">
-            Close
-          </button>
+          <button mat-button type="button" color="secondary" (click)="hideModal()">Close</button>
           <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedToolForm.form.valid">
             Add Tool
           </button>

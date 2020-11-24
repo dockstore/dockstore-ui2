@@ -21,7 +21,7 @@ const routes: Routes = [
   {
     path: '**',
     component: MyWorkflowComponent,
-    data: { title: 'Dockstore | My Workflows', entryType: EntryType.BioWorkflow }
-  }
+    data: { title: 'Dockstore | My Workflows', entryType: EntryType.BioWorkflow },
+  },
 ];
 export const myworkflowRouting = RouterModule.forChild(routes);

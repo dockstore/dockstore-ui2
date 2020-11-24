@@ -25,7 +25,7 @@
   >
     Keep your workflow automatically in sync with GitHub with our new registration process. Click
     <a
-      href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml"
+      [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml'"
       target="_blank"
       rel="noopener noreferrer"
       class="link-with-underline"
@@ -54,14 +54,22 @@
         <li *ngIf="isPublic && isValidVersion">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
           <a [href]="trsLink"> #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }} </a>
+          <button mat-icon-button color="secondary" ngxClipboard matTooltip="Copy TRS ID" [cbContent]="displayTextForButton">
+            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          </button>
         </li>
         <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
           <span>
             <li *ngIf="workflow?.workflow_path || !isPublic">
-              <form #editWorkflowPathForm="ngForm" class="form-inline" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
-                <div class="form-group">
+              <form
+                #editWorkflowPathForm="ngForm"
+                class="form-inline"
+                fxLayout
+                *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+              >
+                <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
-                  <span *ngIf="!workflowPathEditing"> {{ workflow.workflow_path }} </span>
+                  <span *ngIf="!workflowPathEditing" fxFlexOffset="4px"> {{ workflow.workflow_path }} </span>
                   <input
                     *ngIf="workflowPathEditing"
                     minlength="3"
@@ -72,21 +80,23 @@
                     name="workflowPath"
                     [(ngModel)]="workflow.workflow_path"
                     placeholder="e.g. /Dockstore.cwl"
+                    fxFlex="noshrink"
+                    fxFlexOffset="4px"
                   />
                 </div>
-                <div
-                  *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED"
-                  class="btn-group push-right"
-                  role="group"
-                  aria-label="Basic example"
-                >
+                <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
                   <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
                   <button
                     *ngIf="!isPublic"
                     type="button"
-                    [disabled]="(workflowPathEditing && !editWorkflowPathForm.valid) || (isRefreshing$ | async)"
+                    [disabled]="
+                      defaultTestFilePathEditing ||
+                      forumUrlEditing ||
+                      (workflowPathEditing && !editWorkflowPathForm.valid) ||
+                      (isRefreshing$ | async)
+                    "
                     class="btn btn-link"
                     (click)="toggleEditWorkflowPath()"
                   >
@@ -99,11 +109,12 @@
               <form
                 #editTestFilePathForm="ngForm"
                 class="form-inline"
+                fxLayout
                 *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
               >
-                <div class="form-group">
+                <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
-                  <span *ngIf="!defaultTestFilePathEditing"> {{ workflow?.defaultTestParameterFilePath }} </span>
+                  <span *ngIf="!defaultTestFilePathEditing" fxFlexOffset="4px"> {{ workflow?.defaultTestParameterFilePath }} </span>
                   <input
                     *ngIf="defaultTestFilePathEditing"
                     minlength="3"
@@ -114,19 +125,75 @@
                     name="workflowPath"
                     [(ngModel)]="workflow.defaultTestParameterFilePath"
                     placeholder="e.g. /Dockstore.cwl"
+                    fxFlex="noshrink"
+                    fxFlexOffset="4px"
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+                  <button *ngIf="!isPublic && defaultTestFilePathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                  </button>
                   <button
                     *ngIf="!isPublic"
                     type="button"
-                    [disabled]="workflowPathEditing || (defaultTestFilePathEditing && !editTestFilePathForm.valid)"
-                    class="btn btn-link push-right"
+                    [disabled]="
+                      workflowPathEditing ||
+                      forumUrlEditing ||
+                      (defaultTestFilePathEditing && !editTestFilePathForm.valid) ||
+                      (isRefreshing$ | async)
+                    "
+                    class="btn btn-link"
                     (click)="toggleEditDefaultTestFilePath()"
                   >
                     <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
                     <mat-icon *ngIf="!defaultTestFilePathEditing">edit</mat-icon>
                     {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
+                  </button>
+                </span>
+              </form>
+              <form
+                #editForumUrl="ngForm"
+                class="form-inline"
+                fxLayout
+                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+              >
+                <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
+                  <strong matTooltip="Link to a discussion forum for this workflow">Discussion Forum</strong>:
+                  <a *ngIf="!forumUrlEditing" [href]="'//' + workflow?.forumUrl" fxFlexOffset="4px"> {{ workflow?.forumUrl }} </a>
+                  <input
+                    *ngIf="forumUrlEditing"
+                    maxlength="256"
+                    type="url"
+                    class="input-default form-control"
+                    name="forumUrl"
+                    [(ngModel)]="workflow.forumUrl"
+                    placeholder="Link to discussion forum"
+                    fxFlex="noshrink"
+                    fxFlexOffset="4px"
+                  />
+                </div>
+                <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+                  <button *ngIf="!isPublic && forumUrlEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                  </button>
+                  <button
+                    *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
+                    [disabled]="workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    type="button"
+                    class="btn btn-link"
+                    (click)="toggleEditForumUrl()"
+                  >
+                    <mat-icon>add</mat-icon> Add
+                  </button>
+                  <button
+                    *ngIf="!isPublic && (workflow?.forumUrl || forumUrlEditing)"
+                    type="button"
+                    class="btn btn-link"
+                    (click)="toggleEditForumUrl()"
+                  >
+                    <mat-icon *ngIf="forumUrlEditing">save</mat-icon>
+                    <mat-icon *ngIf="!forumUrlEditing">edit</mat-icon>
+                    {{ forumUrlEditing ? 'Save' : 'Edit' }}
                   </button>
                 </span>
               </form>
@@ -159,8 +226,8 @@
               <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
               <select class="form-control input-sm" (change)="updateDescriptorType()" [(ngModel)]="temporaryDescriptorType">
                 <option *ngFor="let descriptorLanguage of descriptorLanguages$ | async" [value]="descriptorLanguage">
-                  {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}</option
-                >
+                  {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}
+                </option>
               </select>
             </div>
             <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
@@ -170,13 +237,21 @@
           </li>
           <div>
             <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
-            {{ (workflow && workflow.conceptDoi) || 'n/a' }}
+            <a
+              [href]="'https://doi.org/' + workflow.conceptDoi"
+              *ngIf="workflow.conceptDoi"
+              matTooltip="Click to view the DOI entry information for all versions."
+              target="_blank"
+              rel="noopener noreferrer"
+              ><img src="{{ zenodoUrl }}/badge/DOI/{{ workflow.conceptDoi }}.svg" alt="{{ workflow.conceptDoi }}"
+            /></a>
+            {{ workflow?.conceptDoi ? '' : 'n/a' }}
           </div>
         </div>
       </ul>
     </mat-card-content>
   </mat-card>
-  <mat-card class="mt-3" *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB">
+  <mat-card class="mt-3" *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB && selectedVersion">
     <mat-card-header>
       <mat-card-title class="m-0">{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
       <mat-card-subtitle class="m-0">{{ selectedVersion?.name }}</mat-card-subtitle>
@@ -184,7 +259,16 @@
     <mat-card-content class="p-3">
       <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <strong matTooltip="Digital Object Identifier">DOI</strong>:
-        {{ selectedVersion && selectedVersion.doiURL ? selectedVersion.doiURL : 'n/a' }}
+        <a
+          [href]="'https://doi.org/' + selectedVersion.doiURL"
+          *ngIf="selectedVersion.doiURL"
+          data-cy="info-tab-DOI-badge"
+          matTooltip="Click to view this version's DOI entry information."
+          target="_blank"
+          rel="noopener noreferrer"
+          ><img src="{{ zenodoUrl }}/badge/DOI/{{ selectedVersion.doiURL }}.svg" alt="{{ selectedVersion.doiURL }}"
+        /></a>
+        {{ selectedVersion?.doiURL ? '' : 'n/a' }}
       </div>
       <div>
         <strong matTooltip="Author listed in descriptor">Author</strong>: {{ selectedVersion?.author ? selectedVersion?.author : 'n/a' }}
@@ -194,9 +278,7 @@
         <a href="mailto:{{ selectedVersion?.email }}" *ngIf="selectedVersion?.email">
           {{ selectedVersion?.email }}
         </a>
-        <span *ngIf="!selectedVersion?.email">
-          n/a
-        </span>
+        <span *ngIf="!selectedVersion?.email"> n/a </span>
       </div>
       <span *ngIf="isValidVersion" id="downloadZipButton">
         <button *ngIf="!workflow?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
@@ -206,7 +288,7 @@
         <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
           <div *ngIf="selectedVersion?.description" class="well well-sm">
-            <markdown [data]="selectedVersion?.description"></markdown>
+            <markdown-wrapper [data]="selectedVersion?.description"></markdown-wrapper>
           </div>
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
@@ -216,7 +298,7 @@
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.CWL">
                   See&nbsp;
                   <a
-                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/best-practices.html#authorship-metadata"
+                    [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/best-practices/best-practices.html#authorship-metadata'"
                     target="_blank"
                     rel="noopener noreferrer"
                     >CWL Best Practices</a
@@ -227,7 +309,7 @@
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.WDL">
                   See&nbsp;
                   <a
-                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata"
+                    [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/best-practices/wdl-best-practices.html#authorship-metadata'"
                     target="_blank"
                     rel="noopener noreferrer"
                     >WDL Best Practices</a
@@ -236,7 +318,7 @@
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.NFL">
                   See&nbsp;
                   <a
-                    href="{{ Dockstore.DOCUMENTATION_URL }}/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata"
+                    [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/best-practices/nfl-best-practices.html#authorship-metadata'"
                     target="_blank"
                     rel="noopener noreferrer"
                     >Nextflow Best Practices</a

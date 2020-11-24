@@ -18,7 +18,7 @@ describe('cwl-viewerComponent', () => {
       declarations: [CwlViewerComponent],
       imports: [HttpClientTestingModule, FormsModule],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [DockstoreService, DateService, ProviderService, WorkflowService]
+      providers: [DockstoreService, DateService, ProviderService, WorkflowService],
     }).compileComponents();
   }));
 
@@ -28,7 +28,7 @@ describe('cwl-viewerComponent', () => {
     fixture.detectChanges();
   });
 
-  beforeEach(inject([WorkflowService], svc => {
+  beforeEach(inject([WorkflowService], (svc) => {
     workflowService = svc;
   }));
 

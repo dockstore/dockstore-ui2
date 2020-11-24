@@ -25,7 +25,7 @@ export class EventsService {
             EventType.CREATECOLLECTION,
             EventType.MODIFYCOLLECTION,
             EventType.ADDTOCOLLECTION,
-            EventType.REMOVEFROMCOLLECTION
+            EventType.REMOVEFROMCOLLECTION,
           ];
           // Only return important events
           organizationEvents = organizationEvents.filter((event: Event) => importantEvents.includes(event.type));

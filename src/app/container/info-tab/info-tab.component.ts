@@ -20,7 +20,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ToolDescriptor, ToolVersion } from '../../shared/swagger';
+import { ToolDescriptor, ToolVersion, WorkflowVersion } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
@@ -31,13 +31,13 @@ import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css']
+  styleUrls: ['./info-tab.component.css'],
 })
 export class InfoTabComponent implements OnInit, OnChanges {
   currentVersion: Tag;
-  @Input() validVersions;
+  @Input() validVersions: Array<WorkflowVersion | Tag>;
   @Input() selectedVersion: Tag;
-  @Input() privateOnlyRegistry;
+  @Input() privateOnlyRegistry: boolean;
   @Input() extendedDockstoreTool: ExtendedDockstoreTool;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
@@ -90,12 +90,12 @@ export class InfoTabComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.infoTabService.dockerFileEditing$.subscribe(editing => (this.dockerFileEditing = editing));
-    this.infoTabService.cwlPathEditing$.subscribe(editing => (this.cwlPathEditing = editing));
-    this.infoTabService.wdlPathEditing$.subscribe(editing => (this.wdlPathEditing = editing));
-    this.infoTabService.cwlTestPathEditing$.subscribe(editing => (this.cwlTestPathEditing = editing));
-    this.infoTabService.wdlTestPathEditing$.subscribe(editing => (this.wdlTestPathEditing = editing));
-    this.sessionQuery.isPublic$.subscribe(publicPage => (this.isPublic = publicPage));
+    this.infoTabService.dockerFileEditing$.subscribe((editing) => (this.dockerFileEditing = editing));
+    this.infoTabService.cwlPathEditing$.subscribe((editing) => (this.cwlPathEditing = editing));
+    this.infoTabService.wdlPathEditing$.subscribe((editing) => (this.wdlPathEditing = editing));
+    this.infoTabService.cwlTestPathEditing$.subscribe((editing) => (this.cwlTestPathEditing = editing));
+    this.infoTabService.wdlTestPathEditing$.subscribe((editing) => (this.wdlTestPathEditing = editing));
+    this.sessionQuery.isPublic$.subscribe((publicPage) => (this.isPublic = publicPage));
   }
 
   downloadZip() {

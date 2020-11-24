@@ -25,11 +25,11 @@ export class TosBannerService {
   dismissTOS() {
     localStorage.setItem(dismissedLatestTOS, JSON.stringify(currentTOSVersion));
     localStorage.setItem(dismissedLatestPrivacyPolicy, JSON.stringify(currentPrivacyPolicyVersion));
-    this.tosBannerStore.update(state => {
+    this.tosBannerStore.update((state) => {
       return {
         ...state,
         dismissedLatestTOS: currentTOSVersion,
-        dismissedLatestPrivacyPolicy: currentPrivacyPolicyVersion
+        dismissedLatestPrivacyPolicy: currentPrivacyPolicyVersion,
       };
     });
   }

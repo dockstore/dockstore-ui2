@@ -29,7 +29,7 @@ import { SponsorsService } from './sponsors.service';
   selector: 'app-sponsors',
   templateUrl: './sponsors.component.html',
   styleUrls: ['./sponsors.component.css'],
-  providers: [SponsorsService]
+  providers: [SponsorsService],
 })
 export class SponsorsComponent extends Base implements OnInit {
   public user$: Observable<User>;
@@ -42,7 +42,7 @@ export class SponsorsComponent extends Base implements OnInit {
     super();
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {

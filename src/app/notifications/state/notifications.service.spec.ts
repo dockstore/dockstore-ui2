@@ -5,16 +5,15 @@ import { NotificationsStore } from './notifications.store';
 
 describe('NotificationsService', () => {
   let notificationsService: NotificationsService;
-  let notificationsStore: NotificationsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [NotificationsService, NotificationsStore],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
-    notificationsService = TestBed.get(NotificationsService);
-    notificationsStore = TestBed.get(NotificationsStore);
+    notificationsService = TestBed.inject(NotificationsService);
+    TestBed.inject(NotificationsStore);
   });
 
   it('should be created', () => {

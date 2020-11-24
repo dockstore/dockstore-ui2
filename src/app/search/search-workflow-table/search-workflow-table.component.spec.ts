@@ -24,8 +24,8 @@ describe('SearchWorkflowTableComponent', () => {
       providers: [
         { provide: DockstoreService, useClass: DockstoreStubService },
         DateService,
-        { provide: SearchService, useClass: SearchStubService }
-      ]
+        { provide: SearchService, useClass: SearchStubService },
+      ],
     }).compileComponents();
   }));
 

@@ -8,16 +8,15 @@ import { UpsertOrganizationMemberStore } from './upsert-organization-member.stor
 
 describe('UpsertOrganizationMemberService', () => {
   let upsertOrganizationMemberService: UpsertOrganizationMemberService;
-  let upsertOrganizationMemberStore: UpsertOrganizationMemberStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UpsertOrganizationMemberService, UpsertOrganizationMemberStore, FormBuilder],
-      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule],
     });
 
-    upsertOrganizationMemberService = TestBed.get(UpsertOrganizationMemberService);
-    upsertOrganizationMemberStore = TestBed.get(UpsertOrganizationMemberStore);
+    upsertOrganizationMemberService = TestBed.inject(UpsertOrganizationMemberService);
+    TestBed.inject(UpsertOrganizationMemberStore);
   });
 
   it('should be created', () => {

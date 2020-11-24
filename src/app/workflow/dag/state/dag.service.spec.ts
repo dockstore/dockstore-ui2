@@ -27,7 +27,7 @@ import { DagStore } from './dag.store';
 describe('Service: Dag', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DagService, DagStore, DagQuery, Renderer2, { provide: WorkflowsService, useClass: WorkflowsStubService }]
+      providers: [DagService, DagStore, DagQuery, Renderer2, { provide: WorkflowsService, useClass: WorkflowsStubService }],
     });
   });
 
@@ -57,7 +57,7 @@ describe('Service: Dag', () => {
   }));
 
   it('should get DAG', inject([DagService], (service: DagService) => {
-    service.getCurrentDAG(2, 2).subscribe(results => expect(results).toEqual('someDAG'));
+    service.getCurrentDAG(2, 2).subscribe((results) => expect(results).toEqual('someDAG'));
     expect(service.getCurrentDAG(null, null)).toBeFalsy();
   }));
 });

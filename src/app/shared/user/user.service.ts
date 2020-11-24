@@ -23,19 +23,19 @@ export class UserService {
   }
 
   updateUser(user: User) {
-    this.userStore.update(state => {
+    this.userStore.update((state) => {
       return {
         ...state,
-        user: user
+        user: user,
       };
     });
   }
 
   updateExtendedUserData(extendeduserData: ExtendedUserData) {
-    this.userStore.update(state => {
+    this.userStore.update((state) => {
       return {
         ...state,
-        extendedUserData: extendeduserData
+        extendedUserData: extendeduserData,
       };
     });
   }
@@ -47,7 +47,7 @@ export class UserService {
         this.alertService.detailedSuccess();
         this.workflowService.setWorkflows(workflows);
       },
-      error => this.alertService.detailedError(error)
+      (error) => this.alertService.detailedError(error)
     );
   }
 
@@ -65,12 +65,10 @@ export class UserService {
   getExtendedUserData(): void {
     this.setupConfigurationToken();
     if (this.configuration.apiKeys['Authorization']) {
-      this.usersService
-        .getExtendedUserData()
-        .subscribe(
-          (extendedUserData: ExtendedUserData) => this.updateExtendedUserData(extendedUserData),
-          error => this.updateExtendedUserData(null)
-        );
+      this.usersService.getExtendedUserData().subscribe(
+        (extendedUserData: ExtendedUserData) => this.updateExtendedUserData(extendedUserData),
+        (error) => this.updateExtendedUserData(null)
+      );
     } else {
       this.updateExtendedUserData(null);
     }
@@ -88,7 +86,7 @@ export class UserService {
             this.tokenService.removeAll();
           }
         },
-        error => {
+        (error) => {
           this.updateUser(null);
           this.tokenService.removeAll();
         }
@@ -128,7 +126,7 @@ export class UserService {
         this.getUser();
         this.alertService.detailedSuccess();
       },
-      error => {
+      (error) => {
         this.alertService.detailedError(error);
       }
     );

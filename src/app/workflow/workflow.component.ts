@@ -31,7 +31,7 @@ import {
   ga4ghWorkflowIdPrefix,
   includesValidation,
   myBioWorkflowsURLSegment,
-  myServicesURLSegment
+  myServicesURLSegment,
 } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
@@ -55,10 +55,12 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
+import { EntriesService } from '../shared/openapi';
+
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css']
+  styleUrls: ['./workflow.component.css'],
 })
 export class WorkflowComponent extends Entry implements AfterViewInit {
   workflowEditData: any;
@@ -112,7 +114,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
     public dialog: MatDialog,
-    private alertService: AlertService
+    alertService: AlertService,
+    entryService: EntriesService
   ) {
     super(
       trackLoginService,
@@ -125,7 +128,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       location,
       sessionService,
       sessionQuery,
-      gA4GHFilesService
+      gA4GHFilesService,
+      alertService,
+      entryService
     );
     this._toolType = 'workflows';
     this.location = location;
@@ -146,7 +151,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.publicPage) {
-      this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
+      this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
         if (workflow && workflow.topicId) {
           this.discourseHelper(workflow.topicId);
         }
@@ -167,7 +172,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
-    return permissions.filter(u => u.role === role).map(c => c.email);
+    return permissions.filter((u) => u.role === role).map((c) => c.email);
   }
 
   isPublic(): boolean {
@@ -247,6 +252,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
             }
           });
       }
+      this.updateVerifiedPlatforms(this.workflow.id);
     }
   }
 
@@ -258,13 +264,14 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
         this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
+          this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
           const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
           const compatType = this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType);
           if (compatType) {
             this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [compatType]);
           } else {
             this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
-              this.workflow.descriptorType
+              this.workflow.descriptorType,
             ]);
           }
         }
@@ -289,12 +296,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
       this.workflowsService
         .getPublishedWorkflowByPath(this.title, includesValidation, this.entryType === EntryType.Service, this.urlVersion)
         .subscribe(
-          workflow => {
+          (workflow) => {
             this.workflowService.setWorkflow(workflow);
             this.selectTab(this.validTabs.indexOf(this.currentTab));
             this.updateWorkflowUrl(this.workflow);
           },
-          error => {
+          (error) => {
             const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
             if (regex.test(this.resourcePath)) {
               this.router.navigate(['../']);
@@ -337,7 +344,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   }
 
   restubWorkflow() {
-    this.workflowsService.restub(this.workflow.id).subscribe(response => {
+    this.workflowsService.restub(this.workflow.id).subscribe((response) => {
       this.workflowService.setWorkflow(response);
     });
   }
@@ -347,7 +354,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     const workflowLabels = labelArray;
     this.workflowEditData = {
       labels: workflowLabels,
-      is_published: this.workflow.is_published
+      is_published: this.workflow.is_published,
     };
   }
   submitWorkflowEdits() {
@@ -370,12 +377,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
   setWorkflowLabels() {
     this.alertService.start('Setting labels');
     this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(
-      workflow => {
+      (workflow) => {
         this.workflowService.setWorkflow(workflow);
         this.labelsEditMode = false;
         this.alertService.simpleSuccess();
       },
-      error => {
+      (error) => {
         this.alertService.detailedError(error);
       }
     );
@@ -391,8 +398,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     if (this.selectVersion) {
       const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
       this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
-        this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType)
+        this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
       ]);
+      this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);

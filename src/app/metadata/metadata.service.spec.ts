@@ -6,7 +6,7 @@ import { MetadataService } from './metadata.service';
 describe('MetadataService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }]
+      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }],
     });
   });
 

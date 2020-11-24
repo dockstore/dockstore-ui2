@@ -7,7 +7,7 @@ import { EventsService } from '../state/events.service';
 @Component({
   selector: 'events',
   templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss']
+  styleUrls: ['./events.component.scss'],
 })
 export class EventsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;

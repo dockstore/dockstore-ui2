@@ -19,7 +19,7 @@ import { Injectable } from '@angular/core';
 import { faDocker, faGitlab, IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { faAmazonECR, faQuay, faWhale } from './custom-icons';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
-import { ContainersService, DockstoreTool } from './swagger';
+import { DockstoreTool, MetadataService } from './swagger';
 import RegistryEnum = DockstoreTool.RegistryEnum;
 
 @Injectable()
@@ -28,7 +28,7 @@ export class ImageProviderService {
 
   private dockerRegistryList: Array<any>;
 
-  constructor(private containersService: ContainersService) {
+  constructor(private metadataService: MetadataService) {
     this.setdockerRegistryList(JSON.parse(localStorage.getItem('dockerRegistryList')));
     if (!this.dockerRegistryList) {
       this.getDockerRegistryList();
@@ -77,11 +77,11 @@ export class ImageProviderService {
   }
   private getImageProvider(imageProvider: string): any {
     if (this.dockerRegistryList) {
-      return this.dockerRegistryList.find(dockerRegistry => dockerRegistry.enum === imageProvider);
+      return this.dockerRegistryList.find((dockerRegistry) => dockerRegistry.enum === imageProvider);
     } else {
       console.log('This should not be necessary');
-      this.containersService.getDockerRegistries().subscribe(registryList => {
-        return registryList.find(dockerRegistry => dockerRegistry._enum === imageProvider);
+      this.metadataService.getDockerRegistries().subscribe((registryList) => {
+        return registryList.find((dockerRegistry) => dockerRegistry._enum === imageProvider);
       });
     }
   }
@@ -115,7 +115,7 @@ export class ImageProviderService {
   }
 
   private getDockerRegistryList() {
-    this.containersService.getDockerRegistries().subscribe(registryList => {
+    this.metadataService.getDockerRegistries().subscribe((registryList) => {
       this.setdockerRegistryList(registryList);
       localStorage.setItem('dockerRegistryList', JSON.stringify(this.dockerRegistryList));
     });
@@ -125,8 +125,8 @@ export class ImageProviderService {
     // TODO: Figure out why we need to grab the docker registry list again when the constructor already does it
     if (!this.dockerRegistryList) {
       console.log('This should not be necessary');
-      this.containersService.getDockerRegistries().subscribe(registryList => {
-        const dockerReg = registryList.find(x => x._enum === tool.registry);
+      this.metadataService.getDockerRegistries().subscribe((registryList) => {
+        const dockerReg = registryList.find((x) => x._enum === tool.registry);
         if (dockerReg) {
           return dockerReg.privateOnly === 'true';
         } else {
@@ -134,7 +134,7 @@ export class ImageProviderService {
         }
       });
     } else {
-      const dockerReg = this.dockerRegistryList.find(x => x.enum === tool.registry);
+      const dockerReg = this.dockerRegistryList.find((x) => x.enum === tool.registry);
       if (dockerReg) {
         return dockerReg.privateOnly === 'true';
       } else {

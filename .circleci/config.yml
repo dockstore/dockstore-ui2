@@ -1,13 +1,20 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
+  slack: circleci/slack@3.4.2
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
       - image: circleci/postgres:11.6-alpine-ram
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
@@ -15,37 +22,51 @@ executors:
           POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
 
-  uptime_monitor:
+  uptime_monitor_no_auth:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
-      - checkout
-      - install_container_dependencies
-      - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
-      - run:
-          name: Install dependencies
-          #Only run 'npm ci' if node_modules was not restored from cache
-          command: |
-            if [ ! -d "./node_modules" ]
-            then
-              bash -i -c 'npm ci'
-            fi
-      - run:
-          name: Prebuild
-          command: bash -i -c 'npm run prebuild.prod'
+      - setup_nightly_tests
       - run:
           name: Run remote verification test against dev (no auth)
           command: bash -i -c 'npm run test-dev-no-auth'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-no-auth-[hash].xml
+      - upload_nightly_artifacts
+      - slack/status:
+          fail_only: true
+          failure_message: Nightly non-auth tests failed!
+          webhook: $SLACK_WEBHOOK
+  uptime_monitor_auth:
+    working_directory: ~/repo
+    docker:
+        - image: circleci/buildpack-deps:18.04-browsers
+          auth:
+            username: dockstoretestuser
+            password: $DOCKERHUB_PASSWORD
+    steps:
+      - setup_nightly_tests
       - run:
           name: Run remote verification test against dev (with auth)
           command: bash -i -c 'npm run test-dev-auth'
-
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-auth-[hash].xml
+      - upload_nightly_artifacts
+      - slack/status:
+          fail_only: true
+          failure_message: Nightly auth tests failed!
+          webhook: $SLACK_WEBHOOK
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -58,7 +79,7 @@ jobs:
             fi
       - install_container_dependencies
       - restore_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
@@ -68,16 +89,17 @@ jobs:
                 bash -i -c 'npm ci'
               fi
       - save_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
       - save_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
             - ~/.cache
-      - run:
-          name: Check dependencies
-          command: bash -i -c 'npm ls'
+              # Disabled until ng2-ui-auth and @ngx-lite/json is replaced. Currently they do not support Angular 9
+              #      - run:
+              #          name: Check dependencies
+              #          command: bash -i -c 'npm ls'
       - run:
           name: Lint
           command: bash -i -c 'npm run lint'
@@ -89,7 +111,7 @@ jobs:
           command: bash -i -c 'npm i --no-save codecov'
       - run:
           name: Unit Test
-          command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless'
+          command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless --source-map=false'
       - run:
           name: Codecov
           command: bash -i -c 'npx codecov'
@@ -101,6 +123,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run: bash scripts/detect-package-json-changes.sh
@@ -110,7 +135,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
@@ -124,7 +149,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
@@ -138,7 +163,7 @@ jobs:
     steps:
       - setup_integration_test
       - restore_cache:
-          key: cypress-cache-{{ checksum "./package-lock.json" }}
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
@@ -150,6 +175,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/python:2.7
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     parameters:
       aws_bucket:
         type: string
@@ -184,6 +212,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/python:2.7
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - get_workspace
       - install_container_dependencies
@@ -204,10 +235,14 @@ workflows:
           filters:
             tags:
               only: /.*/
+          context:
+            - dockerhub
       - licenses_test:
           filters:
             tags:
               only: /.*/
+          context:
+            - dockerhub
       - integration_test_1:
           filters:
             tags:
@@ -215,6 +250,8 @@ workflows:
           requires:
             - lint_unit_test_coverage
             - licenses_test
+          context:
+            - dockerhub
       - integration_test_2:
           filters:
             tags:
@@ -222,6 +259,8 @@ workflows:
           requires:
             - lint_unit_test_coverage
             - licenses_test
+          context:
+            - dockerhub
       - integration_test_3:
           filters:
             tags:
@@ -229,6 +268,8 @@ workflows:
           requires:
             - lint_unit_test_coverage
             - licenses_test
+          context:
+            - dockerhub
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
@@ -240,12 +281,16 @@ workflows:
               only: /.*/
             branches:
               only: /.*/
+          context:
+            - dockerhub
       - check_build_develop:
           requires:
             - upload_to_s3
           filters:
             branches:
               only: /^develop/
+          context:
+            - dockerhub
 
   nightly:
     triggers:
@@ -256,7 +301,12 @@ workflows:
               only:
                 - develop
     jobs:
-      - uptime_monitor
+      - uptime_monitor_no_auth:
+          context:
+            - dockerhub
+      - uptime_monitor_auth:
+          context:
+            - dockerhub
 
 commands:
   install_container_dependencies:
@@ -316,3 +366,31 @@ commands:
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh
+  setup_nightly_tests:
+    steps:
+      - checkout
+      - install_container_dependencies
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+            if [ ! -d "./node_modules" ]
+            then
+              bash -i -c 'npm ci'
+            fi
+            mkdir -p nightly-test-results/junit
+      - run:
+          name: Prebuild
+          command: bash -i -c 'npm run prebuild.prod'
+  upload_nightly_artifacts:
+    steps:
+      - store_test_results:
+          path: nightly-test-results/
+      - store_artifacts:
+          path: nightly-test-results/
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots

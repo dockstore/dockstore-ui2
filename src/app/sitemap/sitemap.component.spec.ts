@@ -9,7 +9,7 @@ describe('SitemapComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SitemapComponent],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     }).compileComponents();
   }));
 

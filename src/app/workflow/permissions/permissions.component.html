@@ -26,7 +26,7 @@
   <mat-progress-bar mode="indeterminate" *ngIf="updating"> </mat-progress-bar>
   <ul class="list-unstyled container-info" *ngIf="canViewPermissions">
     <li>
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%">
         <mat-chip-list #ownerlist>
           <mat-chip *ngFor="let owner of owners" (removed)="remove(owner, Role.OWNER)" [removable]="owners.length > 1">
             {{ owner }}
@@ -43,7 +43,7 @@
       </mat-form-field>
     </li>
     <li>
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%">
         <mat-chip-list #writerlist>
           <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, Role.WRITER)" [removable]="true">
             {{ writer }}
@@ -60,7 +60,7 @@
       </mat-form-field>
     </li>
     <li>
-      <mat-form-field style="width: 100%;">
+      <mat-form-field style="width: 100%">
         <mat-chip-list #readerlist>
           <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, Role.READER)" [removable]="true">
             {{ reader }}

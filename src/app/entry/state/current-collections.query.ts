@@ -6,7 +6,7 @@ import { CollectionOrganization } from '../../shared/swagger';
 import { CurrentCollectionsState, CurrentCollectionsStore } from './current-collections.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CurrentCollectionsQuery extends QueryEntity<CurrentCollectionsState, CollectionOrganization> {
   currentCollectionOrganizations$ = this.selectAll().pipe(
@@ -16,7 +16,7 @@ export class CurrentCollectionsQuery extends QueryEntity<CurrentCollectionsState
     })
   );
   currentCollectionIds$: Observable<Array<number>> = this.currentCollectionOrganizations$.pipe(
-    map(collectionOrganizations => collectionOrganizations.map(collectionOrganization => collectionOrganization.collectionId))
+    map((collectionOrganizations) => collectionOrganizations.map((collectionOrganization) => collectionOrganization.collectionId))
   );
   constructor(protected store: CurrentCollectionsStore) {
     super(store);

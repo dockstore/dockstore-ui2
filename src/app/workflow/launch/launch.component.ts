@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -31,21 +31,16 @@ import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
-  styleUrls: ['./launch.component.css']
+  styleUrls: ['./launch.component.css'],
 })
-export class LaunchWorkflowComponent extends EntryTab {
+export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChanges {
   @Input() basePath;
   @Input() path;
   currentDescriptor: ToolDescriptor.TypeEnum;
   @Input() mode: DockstoreTool.ModeEnum | Workflow.ModeEnum;
 
   _selectedVersion: WorkflowVersion;
-  @Input() set selectedVersion(value: WorkflowVersion) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.reactToDescriptor();
-    }
-  }
+  @Input() selectedVersion: WorkflowVersion;
 
   DockstoreToolType = DockstoreTool;
   WorkflowType = Workflow;
@@ -78,6 +73,9 @@ export class LaunchWorkflowComponent extends EntryTab {
     private gA4GHFilesQuery: GA4GHFilesQuery
   ) {
     super();
+  }
+
+  ngOnInit(): void {
     this.published$ = this.workflowQuery.workflowIsPublished$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.descriptorType$
@@ -85,6 +83,12 @@ export class LaunchWorkflowComponent extends EntryTab {
       .subscribe((descriptorType: ToolDescriptor.TypeEnum) => (this.currentDescriptor = descriptorType));
     this.isNFL$ = this.workflowQuery.isNFL$;
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this._selectedVersion = this.selectedVersion;
+    this.reactToDescriptor();
+  }
+
   reactToDescriptor(): void {
     this.changeMessages(this.basePath, this.path, this._selectedVersion.name, this.currentDescriptor);
   }

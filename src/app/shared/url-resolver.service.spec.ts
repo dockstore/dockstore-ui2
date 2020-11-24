@@ -9,7 +9,7 @@ describe('Service: UrlResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [UrlResolverService, { provide: Router, useClass: RouterStub }]
+      providers: [UrlResolverService, { provide: Router, useClass: RouterStub }],
     });
   });
 
@@ -45,7 +45,7 @@ describe('Service: UrlResolver', () => {
   it('should getPath', inject([UrlResolverService, Router], (service: UrlResolverService, router: Router) => {
     const dummyVersion: WorkflowVersion | Tag | null = {
       name: '2.2.0',
-      reference: '2.2.0'
+      reference: '2.2.0',
     };
     const entryPath = 'quay.io/pancancer/pcawg-dkfz-workflow';
     const currentPath = '/containers/quay.io/pancancer/pcawg-dkfz-workflow';

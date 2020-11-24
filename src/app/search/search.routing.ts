@@ -21,8 +21,8 @@ const CONTAINERS_ROUTES: Routes = [
   {
     path: '**',
     component: SearchComponent,
-    data: { title: 'Dockstore | Search' }
-  }
+    data: { title: 'Dockstore | Search' },
+  },
 ];
 
 export const searchRouting = RouterModule.forChild(CONTAINERS_ROUTES);

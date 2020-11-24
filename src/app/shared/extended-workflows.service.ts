@@ -1,4 +1,5 @@
 import { HttpEvent, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WorkflowsService } from './../shared/swagger/api/workflows.service';
 
@@ -11,6 +12,7 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
  * @extends {WorkflowsService}
  */
 /* tslint:disable */
+@Injectable()
 export class ExtendedWorkflowsService extends WorkflowsService {
   /**
    * Download a ZIP file of a workflow and all associated files.
@@ -71,7 +73,7 @@ export class ExtendedWorkflowsService extends WorkflowsService {
         headers: headers,
         observe: observe,
         reportProgress: reportProgress,
-        responseType: 'blob' as 'json'
+        responseType: 'blob' as 'json',
       }
     );
   }

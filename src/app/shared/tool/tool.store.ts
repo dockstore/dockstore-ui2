@@ -19,10 +19,10 @@ import { DockstoreTool } from '../swagger';
 
 export interface ToolState extends EntityState<DockstoreTool>, ActiveState {}
 const initialState: ToolState = {
-  active: null
+  active: null,
 };
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 @StoreConfig({ name: 'tool' })
 export class ToolStore extends EntityStore<ToolState, DockstoreTool> {

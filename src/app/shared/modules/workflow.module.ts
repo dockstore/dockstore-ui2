@@ -56,6 +56,7 @@ import { VersionModalService } from './../../workflow/version-modal/version-moda
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
+import { MarkdownWrapperModule } from './markdown-wrapper.module';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,7 @@ import { RefreshService } from './../refresh.service';
     InfoTabComponent,
     ToolTabComponent,
     EntryFileTabComponent,
-    SourceFileTabsComponent
+    SourceFileTabsComponent,
   ],
   imports: [
     CommonModule,
@@ -93,7 +94,8 @@ import { RefreshService } from './../refresh.service';
     EntryModule,
     AddEntryModule,
     MarkdownModule,
-    RefreshAlertModule
+    RefreshAlertModule,
+    MarkdownWrapperModule,
   ],
   providers: [
     DateService,
@@ -103,9 +105,9 @@ import { RefreshService } from './../refresh.service';
     InfoTabService,
     RefreshService,
     RegisterWorkflowModalService,
-    VersionModalService
+    VersionModalService,
   ],
   exports: [WorkflowComponent, CustomMaterialModule, EntryModule, HeaderModule, CommonModule, WorkflowActionsComponent],
-  entryComponents: [VersionModalComponent]
+  entryComponents: [VersionModalComponent],
 })
 export class WorkflowModule {}

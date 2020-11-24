@@ -31,7 +31,7 @@ import {
   exampleDescriptorPatterns,
   formErrors,
   validationDescriptorPatterns,
-  validationMessages
+  validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 
@@ -43,7 +43,7 @@ export interface HostedWorkflowObject {
 @Component({
   selector: 'app-register-workflow-modal',
   templateUrl: './register-workflow-modal.component.html',
-  styleUrls: ['./register-workflow-modal.component.scss']
+  styleUrls: ['./register-workflow-modal.component.scss'],
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   public formErrors = formErrors;
@@ -64,29 +64,29 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public hostedWorkflow = {
     repository: '',
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
-    entryName: null
+    entryName: null,
   };
   private baseOptions = [
     {
       label: 'Quickly register remote workflows',
       extendedLabel: 'Toggle repositories from GitHub, Bitbucket, and GitLab to quickly create workflows on Dockstore.',
-      value: 1
+      value: 1,
     },
     {
       label: 'Register custom remote workflows',
       extendedLabel: 'Manually add individual workflows at custom file paths from repositories on GitHub, Bitbucket, and GitLab.',
-      value: 2
+      value: 2,
     },
     {
       label: 'Create workflows on Dockstore.org',
       extendedLabel: 'All workflow files are created and stored directly on Dockstore.',
-      value: 3
-    }
+      value: 3,
+    },
   ];
   private githubAppOption = {
     label: 'Register using GitHub Apps' + (this.recommendGitHubApps ? ' (Recommended)' : ''),
     extendedLabel: 'Install our GitHub App on your repository/organization to automatically sync workflows with GitHub.',
-    value: 0
+    value: 0,
   };
   public options = this.recommendGitHubApps ? [this.githubAppOption, ...this.baseOptions] : [...this.baseOptions, this.githubAppOption];
 
@@ -97,7 +97,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   Dockstore = Dockstore;
 
   registerWorkflowForm: NgForm;
-  @ViewChild('registerWorkflowForm', { static: false }) currentForm: NgForm;
+  @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
   constructor(
     private registerWorkflowModalService: RegisterWorkflowModalService,
@@ -108,7 +108,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   ) {}
 
   friendlyRepositoryKeys(): Array<string> {
-    return this.registerWorkflowModalService.friendlyRepositoryKeys().filter(key => key !== 'Dockstore');
+    return this.registerWorkflowModalService.friendlyRepositoryKeys().filter((key) => key !== 'Dockstore');
   }
 
   clearWorkflowRegisterError(): void {
@@ -124,10 +124,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     });
     this.registerWorkflowModalService.workflowRegisterError$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(workflowRegisterError => (this.workflowRegisterError = workflowRegisterError));
+      .subscribe((workflowRegisterError) => (this.workflowRegisterError = workflowRegisterError));
     this.registerWorkflowModalService.isModalShown$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(isModalShown => (this.isModalShown = isModalShown));
+      .subscribe((isModalShown) => (this.isModalShown = isModalShown));
     this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
     this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<Workflow.DescriptorTypeEnum>) => {
@@ -182,11 +182,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.registerWorkflowForm = this.currentForm;
     if (this.registerWorkflowForm) {
       this.registerWorkflowForm.valueChanges
-        .pipe(
-          debounceTime(formInputDebounceTime),
-          takeUntil(this.ngUnsubscribe)
-        )
-        .subscribe(data => this.onValueChanged(data));
+        .pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => this.onValueChanged(data));
     }
   }
 

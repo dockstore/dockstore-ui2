@@ -18,7 +18,6 @@ import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
-import { User } from '../../shared/openapi';
 import { ProviderService } from '../../shared/provider.service';
 import { Workflow } from '../../shared/swagger';
 import { elasticSearchResponse } from '../../test/mocked-objects';
@@ -27,7 +26,6 @@ import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
 
 describe('SearchService', () => {
-  let searchStore: SearchStore;
   let searchService: SearchService;
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,12 +36,12 @@ describe('SearchService', () => {
         SearchStore,
         {
           provide: ProviderService,
-          useClass: ProviderStubService
-        }
-      ]
+          useClass: ProviderStubService,
+        },
+      ],
     });
-    searchService = TestBed.get(SearchService);
-    searchStore = TestBed.get(SearchStore);
+    searchService = TestBed.inject(SearchService);
+    TestBed.inject(SearchStore);
   });
 
   it('should be created', inject([SearchService], (service: SearchService) => {
@@ -54,7 +52,7 @@ describe('SearchService', () => {
   }));
   it('should set observables', inject([SearchService], (service: SearchService) => {
     service.setSearchInfo('stuff');
-    service.searchInfo$.pipe(first()).subscribe(result => {
+    service.searchInfo$.pipe(first()).subscribe((result) => {
       expect(result).toEqual('stuff');
     });
   }));
@@ -73,7 +71,7 @@ describe('SearchService', () => {
           enum: 'QUAY_IO',
           friendlyName: 'Quay.io',
           privateOnly: 'false',
-          url: 'https://quay.io/repository/'
+          url: 'https://quay.io/repository/',
         },
         {
           customDockerPath: 'false',
@@ -81,7 +79,7 @@ describe('SearchService', () => {
           enum: 'DOCKER_HUB',
           friendlyName: 'Docker Hub',
           privateOnly: 'false',
-          url: 'https://hub.docker.com/'
+          url: 'https://hub.docker.com/',
         },
         {
           customDockerPath: 'false',
@@ -89,10 +87,17 @@ describe('SearchService', () => {
           enum: 'GITLAB',
           friendlyName: 'GitLab',
           privateOnly: 'false',
-          url: 'https://gitlab.com/'
+          url: 'https://gitlab.com/',
         },
         { customDockerPath: 'true', dockerPath: null, enum: 'AMAZON_ECR', friendlyName: 'Amazon ECR', privateOnly: 'true', url: null },
-        { customDockerPath: 'true', dockerPath: null, enum: 'SEVEN_BRIDGES', friendlyName: 'Seven Bridges', privateOnly: 'true', url: null }
+        {
+          customDockerPath: 'true',
+          dockerPath: null,
+          enum: 'SEVEN_BRIDGES',
+          friendlyName: 'Seven Bridges',
+          privateOnly: 'true',
+          url: null,
+        },
       ]);
       const filtered: [Array<Hit>, Array<Hit>] = service.filterEntry(elasticSearchResponse, 201);
       const tools = filtered[0];
@@ -116,19 +121,28 @@ describe('SearchService', () => {
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
       defaultTestParameterFilePath: '',
-      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+      full_workflow_path: 'abc'
     };
 
-    const b: Workflow = { ...a, author: 'B', starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }] };
+    const b: Workflow = {
+      ...a, author: 'B',
+      full_workflow_path: 'Bcd',
+      starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }]
+    };
 
-    const c: Workflow = { ...a, author: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
+    const c: Workflow = {...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
 
-    expect(searchService.compareAttributes(a, b, 'author', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'author', 'desc')).toEqual(1);
-    expect(searchService.compareAttributes(b, c, 'author', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(b, c, 'author', 'desc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc')).toEqual(-0);
-    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'author', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'author', 'desc', 'workflow')).toEqual(1);
+    expect(searchService.compareAttributes(b, c, 'author', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(b, c, 'author', 'desc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc', 'workflow')).toEqual(-0);
+    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'name', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'name', 'desc', 'workflow')).toEqual(1);
+    expect(searchService.compareAttributes(b, c, 'name', 'asc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(b, c, 'name', 'desc', 'workflow')).toEqual(-1);
   }));
 });

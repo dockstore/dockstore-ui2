@@ -10,6 +10,6 @@ import { AliasesRouting } from './aliases.routing';
 @NgModule({
   imports: [CommonModule, HeaderModule, AliasesRouting, CustomMaterialModule, RefreshAlertModule, FlexLayoutModule],
   declarations: [AliasesComponent],
-  exports: [AliasesComponent]
+  exports: [AliasesComponent],
 })
 export class AliasesModule {}

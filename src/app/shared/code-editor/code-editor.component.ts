@@ -6,7 +6,7 @@ let ACE_EDITOR_INSTANCE = 0;
 @Component({
   selector: 'app-code-editor',
   templateUrl: './code-editor.component.html',
-  styleUrls: ['./code-editor.component.scss']
+  styleUrls: ['./code-editor.component.scss'],
 })
 export class CodeEditorComponent implements AfterViewInit {
   editorContent: string;
@@ -54,7 +54,7 @@ export class CodeEditorComponent implements AfterViewInit {
       showLineNumbers: true,
       maxLines: 60,
       theme: 'ace/theme/idle_fingers',
-      fontSize: '12pt'
+      fontSize: '12pt',
     });
 
     this.editor.getSession().on('change', () => {

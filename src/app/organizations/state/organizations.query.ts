@@ -7,8 +7,8 @@ import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationsQuery extends Query<OrganizationsState> {
-  organizations$: Observable<Array<Organization>> = this.select(state => state.organizations);
-  searchName$: Observable<string> = this.select(state => state.searchName);
+  organizations$: Observable<Array<Organization>> = this.select((state) => state.organizations);
+  searchName$: Observable<string> = this.select((state) => state.searchName);
   filteredOrganizations$: Observable<Array<Organization>> = combineLatest([this.organizations$, this.searchName$]).pipe(
     map(([organizations, searchName]: [Array<Organization>, string]) => {
       return this.filterOrganizations(organizations, searchName);
@@ -36,15 +36,15 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
     searchName = searchName.toLowerCase();
     if (organizations) {
       return searchName
-        ? organizations.filter(organization => {
+        ? organizations.filter((organization) => {
             const matchOptions: string[] = [
               organization.description,
               organization.displayName,
               organization.location,
               organization.name,
-              organization.topic
-            ].filter(matchOption => !!matchOption);
-            return matchOptions.some(stringIdentifier => stringIdentifier.toLowerCase().includes(searchName));
+              organization.topic,
+            ].filter((matchOption) => !!matchOption);
+            return matchOptions.some((stringIdentifier) => stringIdentifier.toLowerCase().includes(searchName));
           })
         : organizations;
     }

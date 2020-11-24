@@ -92,7 +92,7 @@
       </button>
     </mat-card-actions>
   </mat-card>
-  <mat-card fxFlex="300px" class="my-2  mx-2" *ngIf="hasGoogleToken$ | async">
+  <mat-card fxFlex="300px" class="my-2 mx-2" *ngIf="hasGoogleToken$ | async">
     <img mat-card-image *ngIf="googleProfile?.avatarURL" [src]="googleProfile?.avatarURL" style="filter: grayscale(100%)" />
     <mat-card-header>
       <mat-card-title>

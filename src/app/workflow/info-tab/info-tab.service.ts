@@ -33,6 +33,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 export class InfoTabService {
   public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public forumUrlEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguageMap = [];
 
   /**
@@ -65,7 +66,7 @@ export class InfoTabService {
       this.workflow = workflow;
       this.cancelEditing();
     });
-    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe(map => (this.descriptorLanguageMap = map));
+    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((map) => (this.descriptorLanguageMap = map));
   }
   setWorkflowPathEditing(editing: boolean) {
     this.workflowPathEditing$.next(editing);
@@ -75,18 +76,22 @@ export class InfoTabService {
     this.defaultTestFilePathEditing$.next(editing);
   }
 
+  setForumUrlEditing(editing: boolean) {
+    this.forumUrlEditing$.next(editing);
+  }
+
   updateAndRefresh(workflow: Workflow) {
     const message = 'Workflow Info';
     const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
-    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(response => {
+    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe((response) => {
       this.alertService.start('Updating ' + message);
       this.workflowsService.refresh(this.originalWorkflow.id).subscribe(
-        refreshResponse => {
+        (refreshResponse) => {
           this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
           this.workflowService.setWorkflow(refreshResponse);
           this.alertService.detailedSuccess();
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
           this.restoreWorkflow();
         }
@@ -178,6 +183,8 @@ export class InfoTabService {
    */
   cancelEditing(): void {
     this.workflowPathEditing$.next(false);
+    this.defaultTestFilePathEditing$.next(false);
+    this.forumUrlEditing$.next(false);
     this.restoreWorkflow();
   }
 

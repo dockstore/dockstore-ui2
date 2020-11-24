@@ -15,16 +15,23 @@
  */
 import { Injectable } from '@angular/core';
 import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
+import { ExtendedWorkflow } from './models/ExtendedWorkflow';
 import { Tag, WorkflowVersion } from './swagger';
 
+interface SourceObject {
+  version: string;
+  verifiedSource: string;
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DockstoreService {
   constructor() {}
 
   getValidVersions(versions: Array<WorkflowVersion | Tag>): Array<WorkflowVersion | Tag> {
-    return versions.filter(version => version.valid);
+    return versions.filter((version) => version.valid);
   }
 
   /**
@@ -38,7 +45,7 @@ export class DockstoreService {
     if (!versions) {
       return false;
     }
-    const verifiedVersion = versions.find(version => version.verified);
+    const verifiedVersion = versions.find((version) => version.verified);
     if (verifiedVersion) {
       return true;
     } else {
@@ -67,42 +74,42 @@ export class DockstoreService {
     return '';
   }
 
-  getVerifiedSources(toolRef) {
-    const sources = [];
+  getVerifiedSources(toolRef: ExtendedDockstoreTool) {
+    const sources: Array<SourceObject> = [];
     if (toolRef !== null) {
       for (const version of toolRef.workflowVersions) {
         if (version.verified) {
           sources.push({
             version: version.name,
-            verifiedSource: version.verifiedSource
+            verifiedSource: version.verifiedSource,
           });
         }
       }
     }
-    return sources.filter(function(elem, pos) {
+    return sources.filter(function (elem, pos) {
       return sources.indexOf(elem) === pos;
     });
   }
 
-  getVerifiedWorkflowSources(workflow) {
-    const sources = [];
+  getVerifiedWorkflowSources(workflow: ExtendedWorkflow) {
+    const sources: Array<SourceObject> = [];
     if (workflow !== null) {
       for (const version of workflow.workflowVersions) {
         if (version.verified) {
           sources.push({
             version: version.name,
-            verifiedSource: version.verifiedSource
+            verifiedSource: version.verifiedSource,
           });
         }
       }
     }
-    return sources.filter(function(elem, pos) {
+    return sources.filter(function (elem, pos) {
       return sources.indexOf(elem) === pos;
     });
   }
 
   getLabelStrings(labels: any[]): string[] {
-    const labelValues = labels.map(label => label.value);
+    const labelValues = labels.map((label) => label.value);
     return labelValues.sort();
   }
 

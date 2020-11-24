@@ -17,16 +17,26 @@
   <div class="row m-1" *ngIf="error || missingWarning">
     <div class="col-md-12" *ngIf="!isToolPublic">
       <mat-card class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
-        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">
-          &times;
-        </button>
+        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
         <mat-icon>warning</mat-icon>
         {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: ' }} {{ missingContent }}
       </mat-card>
     </div>
   </div>
 
-  <div class="row m-1" *ngIf="tool?.mode == 'MANUAL_IMAGE_PATH' && tool?.workflowVersions?.length === 0">
+  <div
+    class="row m-1"
+    *ngIf="
+      (tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED) && !tool?.gitUrl
+    "
+  >
+    <mat-card class="alert alert-info" role="alert">
+      <mat-icon>warning</mat-icon> This Quay.io tool does not have an associated Git repository. Please view the Quay.io repository and add
+      a build trigger for a valid Git repository. Once the build has been added, refresh the tool.
+    </mat-card>
+  </div>
+
+  <div class="row m-1" *ngIf="tool?.mode === ModeEnum.HOSTED && tool?.workflowVersions?.length === 0">
     <mat-card class="alert alert-info" role="alert">
       <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
     </mat-card>
@@ -37,7 +47,7 @@
     <div class="col-md-7">
       <h3 id="tool-path">
         <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified">
-          <a href="{{ getVerifiedLink() }}" class="verified-check">
+          <a [href]="getVerifiedLink()" class="verified-check">
             <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
@@ -70,14 +80,10 @@
       ></app-starring>
       <h3 class="pull-right">
         <div class="mr-2" *ngIf="publicPage && tool?.private_access">
-          <a mat-raised-button color="accent" [href]="requestAccessHREF">
-            Request Access
-          </a>
+          <a mat-raised-button color="accent" [href]="requestAccessHREF"> Request Access </a>
         </div>
         <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
-          <a mat-raised-button color="primary" [href]="contactAuthorHREF">
-            Contact Author
-          </a>
+          <a mat-raised-button color="primary" [href]="contactAuthorHREF"> Contact Author </a>
         </div>
       </h3>
     </div>
@@ -88,7 +94,7 @@
     </div>
   </div>
   <div class="row m-1">
-    <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px;">
+    <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px">
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
           <mat-chip color="primary" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{ label }}</mat-chip>
@@ -99,7 +105,7 @@
       </span>
 
       <span *ngIf="labelsEditMode && !isToolPublic">
-        <mat-form-field style="width: 100%;">
+        <mat-form-field style="width: 100%">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
               {{ label }}
@@ -168,6 +174,7 @@
               [path]="tool?.tool_path"
               [toolname]="tool?.toolname"
               [mode]="tool?.mode"
+              [versionsFileTypes]="versionsFileTypes"
             ></app-launch>
             <ng-template #noTags>
               <div class="p-3">
@@ -184,6 +191,7 @@
                   id="versionsTab"
                   [verifiedSource]="(extendedTool$ | async)?.verifiedSources"
                   [selectedVersion]="selectedVersion"
+                  [verifiedVersionPlatforms]="versionsWithVerifiedPlatforms"
                 >
                 </app-versions-container>
               </div>
@@ -211,6 +219,7 @@
                     [default]="defaultVersion"
                     [selectedVersion]="selectedVersion"
                     [publicPage]="publicPage"
+                    [versionsFileTypes]="versionsFileTypes"
                   >
                   </app-files-container>
                 </div>
@@ -240,7 +249,7 @@
       </div>
     </div>
 
-    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope " *ngIf="isToolPublic && tool">
+    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
       <div class="panel panel-default mb-3">
         <div class="panel-heading">
           <h3>Recent Versions</h3>
@@ -250,7 +259,7 @@
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
                 <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                  <a href="{{ getVerifiedLink() }}" class="verified-check">
+                  <a [href]="getVerifiedLink()" class="verified-check">
                     <mat-icon matTooltip="Verified">done</mat-icon>
                   </a>
                 </span>
@@ -328,8 +337,12 @@
           </div>
         </div>
       </div>
-      <current-collections [id]="tool.id"></current-collections>
-      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion"></app-verified-by>
+      <current-collections [id]="tool.id" [versions]="tool.workflowVersions"></current-collections>
+      <app-verified-by
+        *ngIf="selectedVersion"
+        [version]="selectedVersion"
+        [verifiedByPlatform]="versionsWithVerifiedPlatforms"
+      ></app-verified-by>
       <div class="panel panel-default mb-3" *ngIf="tool">
         <div class="panel-heading">
           <h3>Sharing</h3>
@@ -339,7 +352,6 @@
             <share-buttons
               [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
               [show]="5"
-              [showCount]="false"
               [url]="shareURL"
               [autoSetMeta]="false"
             ></share-buttons>
@@ -364,12 +376,8 @@
   <div class="p-3">
     <mat-card class="alert alert-info p-3" role="alert">
       <mat-icon>info</mat-icon>
-      <span *ngIf="tool?.mode === ModeEnum.HOSTED">
-        To see versions, please add a new version in the Files tab.
-      </span>
-      <span *ngIf="tool?.mode === ModeEnum.MANUALIMAGEPATH">
-        To see versions, click the Add Tag button below.
-      </span>
+      <span *ngIf="tool?.mode === ModeEnum.HOSTED"> To see versions, please add a new version in the Files tab. </span>
+      <span *ngIf="tool?.mode === ModeEnum.MANUALIMAGEPATH"> To see versions, click the Add Tag button below. </span>
       <span *ngIf="tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED">
         To see versions, please refresh the tool.
       </span>

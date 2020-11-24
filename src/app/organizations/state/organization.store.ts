@@ -12,7 +12,7 @@ export function createInitialState(): OrganizationState {
   return {
     organization: null,
     canEdit: false,
-    canEditMembership: false
+    canEditMembership: false,
   };
 }
 

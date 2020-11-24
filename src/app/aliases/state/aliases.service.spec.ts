@@ -10,14 +10,15 @@ describe('AliasesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AliasesService, AliasesStore],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
-    aliasesService = TestBed.get(AliasesService);
-    aliasesStore = TestBed.get(AliasesStore);
+    aliasesService = TestBed.inject(AliasesService);
+    aliasesStore = TestBed.inject(AliasesStore);
   });
 
   it('should be created', () => {
     expect(aliasesService).toBeDefined();
+    expect(aliasesStore).toBeDefined();
   });
 });

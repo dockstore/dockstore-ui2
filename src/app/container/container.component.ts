@@ -24,7 +24,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
-import { BioschemaService } from '../shared/bioschema.service';
+import { BioschemaService, BioschemaTool } from '../shared/bioschema.service';
 import { includesValidation } from '../shared/constants';
 import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
@@ -33,6 +33,7 @@ import { Entry } from '../shared/entry';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
+import { EntriesService } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
@@ -50,7 +51,7 @@ import { EmailService } from './email.service';
 
 @Component({
   selector: 'app-container',
-  templateUrl: './container.component.html'
+  templateUrl: './container.component.html',
 })
 export class ContainerComponent extends Entry implements AfterViewInit {
   dockerPullCmd: string;
@@ -68,7 +69,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public isManualMode$: Observable<boolean>;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
-  public schema;
+  public schema: BioschemaTool;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
   constructor(
@@ -95,7 +96,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
     private toolService: ToolService,
-    private alertService: AlertService
+    alertService: AlertService,
+    entryService: EntriesService
   ) {
     super(
       trackLoginService,
@@ -108,7 +110,9 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       location,
       sessionService,
       sessionQuery,
-      gA4GHFilesService
+      gA4GHFilesService,
+      alertService,
+      entryService
     );
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
@@ -118,7 +122,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
 
   ngAfterViewInit() {
     if (this.publicPage) {
-      this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+      this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
         if (tool && tool.topicId) {
           this.discourseHelper(tool.topicId);
         }
@@ -167,20 +171,24 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   }
 
   public subscriptions(): void {
-    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
+          this.versionsFileTypes = [];
         } else {
           this.selectedVersion = this.selectTag(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
+          if (this.selectedVersion) {
+            this.updateVersionsFileTypes(tool.id, this.selectedVersion.id);
+          }
         }
       }
       // Select version
       this.setUpTool(tool);
     });
-    this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toolCopyBtn => {
+    this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolCopyBtn) => {
       this.toolCopyBtn = toolCopyBtn;
     });
   }
@@ -192,6 +200,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
+      this.updateVerifiedPlatforms(this.tool.id);
     }
   }
 
@@ -200,7 +209,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title, includesValidation).subscribe(
-        tool => {
+        (tool) => {
           this.containerService.setTool(tool);
           this.selectedVersion = this.selectTag(this.tool.workflowVersions, this.urlVersion, this.tool.defaultVersion);
 
@@ -209,7 +218,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
         },
-        error => {
+        () => {
           this.router.navigate(['../']);
         }
       );
@@ -225,7 +234,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     const toolLabels = labelArray;
     this.containerEditData = {
       labels: toolLabels,
-      is_published: this.tool.is_published
+      is_published: this.tool.is_published,
     };
   }
 
@@ -244,12 +253,12 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   setContainerLabels() {
     this.alertService.start('Setting labels');
     return this.containersService.updateLabels(this.tool.id, this.containerEditData.labels.join(', ')).subscribe(
-      tool => {
+      (tool) => {
         this.updateContainer.setTool(tool);
         this.labelsEditMode = false;
         this.alertService.simpleSuccess();
       },
-      error => {
+      (error) => {
         this.alertService.detailedError(error);
       }
     );
@@ -260,7 +269,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     this.labelsEditMode = false;
   }
 
-  public toolCopyBtnClick(copyBtn): void {
+  public toolCopyBtnClick(copyBtn: string): void {
     this.containerService.setCopyBtn(copyBtn);
   }
 
@@ -280,6 +289,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     }
     if (this.selectVersion) {
       this.gA4GHFilesService.updateFiles(this.tool.path, this.selectedVersion.name);
+      this.updateVersionsFileTypes(this.tool.id, this.selectedVersion.id);
     }
     this.onTagChange(tag);
     this.schema = this.bioschemaService.getToolSchema(this.tool, this.selectedVersion);

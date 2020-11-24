@@ -5,7 +5,7 @@ import { Event } from '../../shared/swagger';
 import { EventsState, EventsStore } from './events.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventsQuery extends QueryEntity<EventsState, Event> {
   organizationEvents$: Observable<Array<Event>> = this.selectAll();

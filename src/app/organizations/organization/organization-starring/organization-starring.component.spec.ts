@@ -29,7 +29,7 @@ import {
   StarEntryStubService,
   StarOrganizationStubService,
   StarringStubService,
-  TrackLoginStubService
+  TrackLoginStubService,
 } from '../../../test/service-stubs';
 import { OrganizationStarringComponent } from './organization-starring.component';
 import { OrganizationStarringService } from './organization-starring.service';
@@ -48,8 +48,8 @@ describe('OrganizationStarringComponent', () => {
         { provide: StarentryService, useClass: StarEntryStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: StarringService, useClass: StarringStubService },
-        { provide: StarOrganizationService, useClass: StarOrganizationStubService }
-      ]
+        { provide: StarOrganizationService, useClass: StarOrganizationStubService },
+      ],
     }).compileComponents();
   }));
 

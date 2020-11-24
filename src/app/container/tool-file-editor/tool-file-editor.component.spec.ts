@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -37,7 +38,7 @@ describe('ToolFileEditorComponent', () => {
         CodeEditorComponent,
         PublicFileDownloadPipe,
         PrivateFileDownloadPipe,
-        PrivateFilePathPipe
+        PrivateFilePathPipe,
       ],
       imports: [
         MatButtonModule,
@@ -51,15 +52,16 @@ describe('ToolFileEditorComponent', () => {
         MatTooltipModule,
         MatCardModule,
         BrowserAnimationsModule,
-        ClipboardModule
+        ClipboardModule,
+        HttpClientModule,
       ],
       providers: [
         { provide: HostedService, useClass: HostedStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: FileService, useClass: FileStubService }
-      ]
+        { provide: FileService, useClass: FileStubService },
+      ],
     }).compileComponents();
   }));
 

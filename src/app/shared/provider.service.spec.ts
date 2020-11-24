@@ -18,7 +18,6 @@ import { inject, TestBed } from '@angular/core/testing';
 import { faBitbucket, faGithub, faGitlab } from '@fortawesome/free-brands-svg-icons';
 import { validTool } from '../test/mocked-objects';
 import { faDockstore } from './custom-icons';
-import { ImageProviderService } from './image-provider.service';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ProviderService } from './provider.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
@@ -26,7 +25,7 @@ import { DockstoreTool } from './swagger/model/dockstoreTool';
 describe('ProviderService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ProviderService]
+      providers: [ProviderService],
     });
   });
 
@@ -48,7 +47,7 @@ describe('ProviderService', () => {
       private_access: false,
       registry_string: 'quay.io',
       registry: DockstoreTool.RegistryEnum.QUAYIO,
-      toolname: ''
+      toolname: '',
     };
     expect(service.setUpProvider(tool).providerUrl).toBeFalsy();
     const tool2 = tool;

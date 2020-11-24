@@ -24,7 +24,7 @@ describe('LoginService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
-      providers: [LoginService, { provide: AuthService, useClass: AuthStubService }]
+      providers: [LoginService, { provide: AuthService, useClass: AuthStubService }],
     });
   });
 
@@ -32,7 +32,7 @@ describe('LoginService', () => {
     expect(service).toBeTruthy();
   }));
   it('should be able to authenticate', inject([LoginService], (service: LoginService) => {
-    service.authenticate('github').subscribe(user => {
+    service.authenticate('github').subscribe((user) => {
       expect(user).toEqual({});
     });
   }));

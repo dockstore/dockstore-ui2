@@ -16,13 +16,18 @@
 
 import { Component, OnInit } from '@angular/core';
 
+interface DocObject {
+  existingPath: string;
+  newPath: string;
+}
+
 @Component({
   selector: 'app-docs',
-  templateUrl: './docs.component.html'
+  templateUrl: './docs.component.html',
 })
 export class DocsComponent implements OnInit {
   // Array of doc objects, where existingPath is the path on Dockstore, and newPath is the new path on the docs page
-  private docMapping = [
+  private docMapping: DocObject[] = [
     { existingPath: '/docs/faq', newPath: '/faq' },
     { existingPath: '/docs/getting-started-with-docker', newPath: '/docs/prereqs/getting-started-with-docker/' },
     { existingPath: '/docs/getting-started-with-cwl', newPath: '/docs/prereqs/getting-started-with-cwl/' },
@@ -37,7 +42,7 @@ export class DocsComponent implements OnInit {
     { existingPath: '/docs/advanced-features', newPath: '/docs/publisher-tutorials/advanced-features/' },
     { existingPath: '/docs/aws-batch-tutorial', newPath: '/docs/publisher-tutorials/aws-batch/' },
     { existingPath: '/docs/azure-batch-tutorial', newPath: '/docs/publisher-tutorials/azure-batch/' },
-    { existingPath: '/docs/user-created', newPath: '/docs/extras/user-created' }
+    { existingPath: '/docs/user-created', newPath: '/docs/extras/user-created' },
   ];
 
   public redirectLink = this.getLink();
@@ -70,8 +75,8 @@ export class DocsComponent implements OnInit {
   }
 
   // Returns a function to test elements of an array against a path
-  findDoc(filteredPath) {
-    return function(element) {
+  findDoc(filteredPath: string) {
+    return function (element: DocObject) {
       return element.existingPath === filteredPath;
     };
   }

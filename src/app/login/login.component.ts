@@ -26,7 +26,7 @@ import { LoginService } from './login.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   constructor(
@@ -41,14 +41,14 @@ export class LoginComponent {
     iconRegistry.addSvgIcon('google', sanitizer.bypassSecurityTrustResourceUrl('../assets/svg/btn_google_light_normal_ios.svg'));
   }
 
-  private login(observable, page) {
+  private login(observable, page: string) {
     observable.subscribe(
-      response => {
+      (response) => {
         this.trackLoginService.switchState(true);
         this.userService.getUser();
         this.router.navigate([page]);
       },
-      error => {
+      (error) => {
         console.log('Authentication error: ' + error);
       }
     );

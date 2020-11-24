@@ -70,16 +70,10 @@
 </mat-tab-group>
 <div class="editor-button-container p-2" *ngIf="!publicPage && isNewestVersion">
   <span *ngIf="!editing">
-    <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">
-      Edit Files
-    </button>
+    <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">Edit Files</button>
   </span>
   <span *ngIf="editing">
-    <button id="cancelButton" mat-button color="secondary" (click)="toggleEdit(); resetFiles()">
-      Cancel
-    </button>
-    <button id="saveNewVersionButton" mat-raised-button color="primary" (click)="saveVersion()">
-      Save as New Version
-    </button>
+    <button id="cancelButton" mat-button color="secondary" (click)="toggleEdit(); resetFiles()">Cancel</button>
+    <button id="saveNewVersionButton" mat-raised-button color="primary" (click)="saveVersion()">Save as New Version</button>
   </span>
 </div>

@@ -29,12 +29,11 @@ export class DescriptorService {
    * @returns an array that may contain 'cwl' or 'wdl' or 'nfl'
    * @memberof DescriptorService
    */
-  getDescriptors(version): Array<ToolDescriptor.TypeEnum> {
+  getDescriptors(version, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<ToolDescriptor.TypeEnum> {
     const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
-    if (version) {
-      const unique = new Set(version.sourceFiles.map((sourceFile: SourceFile) => sourceFile.type));
-      unique.forEach((element: SourceFile.TypeEnum) => {
-        extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
+    if (versionsFileTypes) {
+      versionsFileTypes.forEach((element: SourceFile.TypeEnum) => {
+        extendedDescriptorLanguages.forEach((extendedDescriptorLanguage) => {
           if (extendedDescriptorLanguage.descriptorFileTypes.includes(element)) {
             descriptorTypes.push(extendedDescriptorLanguage.toolDescriptorEnum);
           }
@@ -53,8 +52,8 @@ export class DescriptorService {
   getValidDescriptors(version): Array<ToolDescriptor.TypeEnum> {
     const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
     if (version && version.validations) {
-      extendedDescriptorLanguages.forEach(extendedDescriptorLanguage => {
-        const cwlValidation = version.validations.find(validation => {
+      extendedDescriptorLanguages.forEach((extendedDescriptorLanguage) => {
+        const cwlValidation = version.validations.find((validation) => {
           return extendedDescriptorLanguage.descriptorFileTypes.includes(validation.type);
         });
         if (cwlValidation && cwlValidation.valid) {

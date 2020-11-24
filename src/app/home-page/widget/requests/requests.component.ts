@@ -9,12 +9,12 @@ import { UserQuery } from '../../../shared/user/user.query';
 @Component({
   selector: 'app-requests',
   templateUrl: './requests.component.html',
-  styleUrls: ['./requests.component.scss']
+  styleUrls: ['./requests.component.scss'],
 })
 export class RequestsComponent extends Base implements OnInit {
-  public myOrganizationInvites;
-  public myOrganizationRequests;
-  public myPendingOrganizationRequests;
+  public myOrganizationInvites: Array<OrganizationUser>;
+  public myOrganizationRequests: Array<OrganizationUser>;
+  public myPendingOrganizationRequests: Array<Organization>;
 
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
@@ -33,7 +33,7 @@ export class RequestsComponent extends Base implements OnInit {
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
 
-    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdminOrCurator => {
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
       if (isAdminOrCurator) {
         this.updateCuratorOrganizations(); // requires admin or curator permissions
       }
@@ -55,9 +55,9 @@ export class RequestsComponent extends Base implements OnInit {
   getMyMemberships(): void {
     this.usersService.getUserMemberships().subscribe(
       (myMemberships: Array<OrganizationUser>) => {
-        this.myOrganizationInvites = myMemberships.filter(membership => !membership.accepted);
+        this.myOrganizationInvites = myMemberships.filter((membership) => !membership.accepted);
         this.myOrganizationRequests = myMemberships.filter(
-          membership =>
+          (membership) =>
             membership.accepted &&
             (membership.organization.status === Organization.StatusEnum.PENDING ||
               membership.organization.status === Organization.StatusEnum.REJECTED)

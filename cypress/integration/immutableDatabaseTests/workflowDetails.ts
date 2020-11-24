@@ -68,9 +68,7 @@ describe('Dockstore Workflow Details', () => {
     cy.get('[data-cy=dockstore-request-doi-button]').should('not.be.visible');
     cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
 
-    cy.get('[data-cy=dockstore-snapshot-unlocked]')
-      .its('length')
-      .should('be.gt', 0);
+    cy.get('[data-cy=dockstore-snapshot-unlocked]').its('length').should('be.gt', 0);
   });
 
   describe('Change tab to files', () => {
@@ -128,7 +126,7 @@ describe('Find workflow by alias', () => {
       url: '*/workflows/fakeAlias/aliases',
       method: 'GET',
       status: 200,
-      response: { full_workflow_path: 'github.com/A/l' }
+      response: { full_workflow_path: 'github.com/A/l' },
     });
     cy.visit('/aliases/workflows/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l');

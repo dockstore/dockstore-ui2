@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
@@ -22,23 +23,25 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
+import { VersionVerifiedPlatform } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
+import { Tag } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
-import { Tag } from '../../shared/swagger/model/tag';
 import { Versions } from '../../shared/versions';
 
 @Component({
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
-  styleUrls: ['./../../workflow/versions/versions.component.css']
+  styleUrls: ['./../../workflow/versions/versions.component.css'],
 })
 export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
+  @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   Dockstore = Dockstore;
   selectedTag: Tag;
   public DockstoreToolType = DockstoreTool;
   dataSource = new MatTableDataSource(this.versions);
-  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort;
   @Input() set selectedVersion(value: Tag) {
     if (value != null) {
       this.selectedTag = value;
@@ -72,13 +75,13 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
 
   setDisplayColumns(publicPage: boolean) {
     if (publicPage) {
-      this.displayedColumns = this.displayedColumns.filter(column => column !== 'hidden');
+      this.displayedColumns = this.displayedColumns.filter((column) => column !== 'hidden');
     }
   }
 
   setDisplayedColumnsFromTool(tool: ExtendedDockstoreTool) {
     if (tool.mode === DockstoreTool.ModeEnum.HOSTED) {
-      this.displayedColumns = this.displayedColumns.filter(column => column !== 'last_built');
+      this.displayedColumns = this.displayedColumns.filter((column) => column !== 'last_built');
     }
   }
 

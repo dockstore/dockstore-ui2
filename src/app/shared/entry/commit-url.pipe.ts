@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'commitUrl'
+  name: 'commitUrl',
 })
 export class CommitUrlPipe implements PipeTransform {
   transform(commitId: string, providerUrl: string): string {

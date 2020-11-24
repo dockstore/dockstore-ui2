@@ -37,8 +37,8 @@ export class DagService {
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
-        'background-color': '#7a88a9'
-      }
+        'background-color': '#7a88a9',
+      },
     },
 
     {
@@ -48,8 +48,8 @@ export class DagService {
         'target-arrow-shape': 'triangle',
         'line-color': '#9dbaea',
         'target-arrow-color': '#9dbaea',
-        'curve-style': 'bezier'
-      }
+        'curve-style': 'bezier',
+      },
     },
 
     {
@@ -59,8 +59,8 @@ export class DagService {
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
-        'background-color': '#4caf50'
-      }
+        'background-color': '#4caf50',
+      },
     },
 
     {
@@ -70,8 +70,8 @@ export class DagService {
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
-        'background-color': '#f44336'
-      }
+        'background-color': '#f44336',
+      },
     },
 
     {
@@ -81,8 +81,8 @@ export class DagService {
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
-        'background-color': '#4ab4a9'
-      }
+        'background-color': '#4ab4a9',
+      },
     },
 
     {
@@ -92,8 +92,8 @@ export class DagService {
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
-        'background-color': '#51aad8'
-      }
+        'background-color': '#51aad8',
+      },
     },
 
     {
@@ -103,16 +103,16 @@ export class DagService {
         'font-size': '16px',
         'text-valign': 'center',
         'text-halign': 'center',
-        'background-color': '#9966FF'
-      }
+        'background-color': '#9966FF',
+      },
     },
 
     {
       selector: 'edge.notselected',
       style: {
-        opacity: '0.4'
-      }
-    }
+        opacity: '0.4',
+      },
+    },
   ];
 
   constructor(
@@ -140,7 +140,7 @@ export class DagService {
       link: tool,
       type: type ? type : 'n/a',
       docker: docker ? docker : 'n/a',
-      run: run ? run : 'n/a'
+      run: run ? run : 'n/a',
     };
   }
 
@@ -233,10 +233,10 @@ export class DagService {
   }
 
   setDagResults(results: any): void {
-    this.dagStore.update(state => {
+    this.dagStore.update((state) => {
       return {
         ...state,
-        dagResults: results
+        dagResults: results,
       };
     });
   }
@@ -256,10 +256,10 @@ export class DagService {
       this.getCurrentDAG(workflowId, workflowVersion.id)
         .pipe(finalize(() => this.dagStore.setLoading(false)))
         .subscribe(
-          result => {
+          (result) => {
             this.setDagResults(result);
           },
-          error => {
+          (error) => {
             this.setDagResults(null);
           }
         );
@@ -320,7 +320,7 @@ export class DagService {
         content: () => {
           return this.createPopupHTML(name, runText, element);
         },
-        popper: { removeOnDestroy: true }
+        popper: { removeOnDestroy: true },
       });
       popper.scheduleUpdate();
     };
@@ -351,20 +351,21 @@ export class DagService {
         container: element,
         boxSelectionEnabled: false,
         autounselectify: true,
-        layout: {
+        // We don't have the type definition for cytoscape-dagre
+        layout: <cytoscape.BaseLayoutOptions>{
           name: 'dagre',
-          nodeDimensionsIncludeLabels: true
+          nodeDimensionsIncludeLabels: true,
         },
         style: this.style,
-        elements: dagResult
+        elements: dagResult,
       };
       cy = cytoscape(cytoscapeOptions);
 
       // Sets up popups on all nodes (except begin and end)
-      const nodes: cytoscape.NodeCollection = cy.nodes().filter(node => node.id() !== 'UniqueBeginKey' && node.id() !== 'UniqueEndKey');
+      const nodes: cytoscape.NodeCollection = cy.nodes().filter((node) => node.id() !== 'UniqueBeginKey' && node.id() !== 'UniqueEndKey');
       nodes.forEach((node: cytoscape.NodeSingular) => this.setDAGNodeTooltip(node, element));
 
-      cy.on('mouseout', 'node', function() {
+      cy.on('mouseout', 'node', function () {
         const node = this;
         cy.elements().removeClass('notselected');
         node.connectedEdges().animate(
@@ -372,32 +373,29 @@ export class DagService {
             style: {
               'line-color': '#9dbaea',
               'target-arrow-color': '#9dbaea',
-              width: 3
-            }
+              width: 3,
+            },
           },
           {
-            duration: 150
+            duration: 150,
           }
         );
       });
 
-      cy.on('mouseover', 'node', function() {
+      cy.on('mouseover', 'node', function () {
         const node = this;
-        cy.elements()
-          .difference(node.connectedEdges())
-          .not(node)
-          .addClass('notselected');
+        cy.elements().difference(node.connectedEdges()).not(node).addClass('notselected');
 
         node.outgoers('edge').animate(
           {
             style: {
               'line-color': '#e57373',
               'target-arrow-color': '#e57373',
-              width: 5
-            }
+              width: 5,
+            },
           },
           {
-            duration: 150
+            duration: 150,
           }
         );
         node.incomers('edge').animate(
@@ -405,16 +403,16 @@ export class DagService {
             style: {
               'line-color': '#81c784',
               'target-arrow-color': '#81c784',
-              width: 5
-            }
+              width: 5,
+            },
           },
           {
-            duration: 150
+            duration: 150,
           }
         );
       });
 
-      cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function() {
+      cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
         try {
           // your browser may block popups
           if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {

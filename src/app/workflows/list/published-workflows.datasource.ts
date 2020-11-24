@@ -52,7 +52,7 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
       )
       .subscribe((entries: HttpResponse<Array<Workflow>>) => {
         this.entriesSubject$.next(
-          entries.body.map(tool => {
+          entries.body.map((tool) => {
             return <ExtendedWorkflow>this.providersService.setUpProvider(tool);
           })
         );

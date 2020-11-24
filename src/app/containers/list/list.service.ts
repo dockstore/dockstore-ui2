@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 /*
  *    Copyright 2017 OICR
  *
@@ -14,6 +15,7 @@
  *    limitations under the License.
  */
 
+@Injectable()
 export class ListContainersService {
   /**
    * This gets the docker pull command

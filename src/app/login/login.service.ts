@@ -24,10 +24,10 @@ export class LoginService {
   constructor(private auth: AuthService, private alertService: AlertService) {}
 
   authenticate(provider: string): Observable<any> {
-    return new Observable(observable => {
+    return new Observable((observable) => {
       this.alertService.start('Logging in');
       return this.auth.authenticate(provider).subscribe(
-        user => {
+        (user) => {
           this.alertService.simpleSuccess();
           observable.next(user);
           observable.complete();

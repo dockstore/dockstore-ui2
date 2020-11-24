@@ -32,7 +32,7 @@ import { UserQuery } from '../../shared/user/user.query';
  * @class YoutubeComponent
  */
 @Component({
-  template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>'
+  template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
 })
 export class YoutubeComponent {
   constructor(public dialogRef: MatDialogRef<YoutubeComponent>) {}
@@ -41,7 +41,7 @@ export class YoutubeComponent {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;
@@ -49,9 +49,9 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   Dockstore = Dockstore;
   descriptorLanguagesInnerHTML$: Observable<string>;
 
-  @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
+  @ViewChild('twitter') twitterElement: ElementRef;
 
-  @ViewChild('youtube', { static: false }) youtube: ElementRef;
+  @ViewChild('youtube') youtube: ElementRef;
 
   constructor(
     private dialog: MatDialog,
@@ -79,7 +79,7 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
         () => {
           this.twitterService.createTimeline(this.twitterElement, 2);
         },
-        err => console.error(err)
+        (err) => console.error(err)
       );
   }
 

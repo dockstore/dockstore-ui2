@@ -40,7 +40,7 @@ import { ViewService } from './view.service';
 @Component({
   selector: 'app-view-workflow',
   templateUrl: './view.component.html',
-  styleUrls: ['./view.component.css']
+  styleUrls: ['./view.component.css'],
 })
 export class ViewWorkflowComponent extends View implements OnInit {
   @Input() workflowId: number;
@@ -75,13 +75,13 @@ export class ViewWorkflowComponent extends View implements OnInit {
     this.versionModalService.setVersion(this.version);
     this.alertService.start('Getting test parameter files');
     this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name).subscribe(
-      items => {
+      (items) => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
         this.openVersionModal();
         this.alertService.simpleSuccess();
       },
-      error => {
+      (error) => {
         // TODO: Figure out a better way to handle this
         // If we were to open the modal without test parameter files and the user saves,
         // the legit files that were already there would be wiped out
@@ -105,7 +105,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   private openVersionModal(): void {
     this.matDialog.open(VersionModalComponent, {
       width: '600px',
-      data: { canRead: this.canRead, canWrite: this.canWrite && !this.version.frozen, isOwner: this.isOwner }
+      data: { canRead: this.canRead, canWrite: this.canWrite && !this.version.frozen, isOwner: this.isOwner },
     });
   }
 
@@ -130,8 +130,8 @@ export class ViewWorkflowComponent extends View implements OnInit {
 
   ngOnInit() {
     this.entryType$ = this.sessionQuery.entryType$;
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => (this.workflow = workflow));
   }
 
   refreshVersion() {
@@ -147,12 +147,14 @@ export class ViewWorkflowComponent extends View implements OnInit {
     }
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
+      this.alertService.start('Deleting version ' + this.version.name);
       this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
-        result => {
+        (result) => {
           this.workflowService.setWorkflow(result);
+          this.alertService.simpleSuccess();
         },
         (error: HttpErrorResponse) => {
-          console.log(error);
+          this.alertService.detailedError(error);
         }
       );
     }

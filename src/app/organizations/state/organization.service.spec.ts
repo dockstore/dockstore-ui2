@@ -23,9 +23,7 @@ import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
 
 @Component({
-  template: `
-    <router-outlet></router-outlet>
-  `
+  template: ` <router-outlet></router-outlet> `,
 })
 export class OrganizationsComponent {}
 
@@ -33,16 +31,15 @@ export const MOCK_ORGANIZATIONS_ROUTES: Routes = [{ path: '**', component: Organ
 
 describe('OrganizationService', () => {
   let organizationService: OrganizationService;
-  let organizationStore: OrganizationStore;
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationsComponent],
       providers: [OrganizationService, OrganizationStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)]
+      imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)],
     });
 
-    organizationService = TestBed.get(OrganizationService);
-    organizationStore = TestBed.get(OrganizationStore);
+    organizationService = TestBed.inject(OrganizationService);
+    TestBed.inject(OrganizationStore);
   });
 
   it('should be created', () => {

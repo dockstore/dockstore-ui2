@@ -24,10 +24,17 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { RegisterToolService } from './register-tool.service';
 
+interface HostedTool {
+  path: string;
+  registry: string;
+  registryProvider: string;
+  entryName?: string;
+}
+
 @Component({
   selector: 'app-register-tool',
   templateUrl: './register-tool.component.html',
-  styleUrls: ['./register-tool.component.css']
+  styleUrls: ['./register-tool.component.css'],
 })
 export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestroy {
   public toolRegisterError: boolean;
@@ -40,36 +47,36 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public disablePrivateCheckbox = false;
   public loading$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
-  public hostedTool = {
+  public hostedTool: HostedTool = {
     path: '',
     registry: 'quay.io',
     registryProvider: 'Quay.io',
-    entryName: undefined
+    entryName: undefined,
   };
   public options = [
     {
       label: 'Quickly register Quay.io tools',
       extendedLabel: 'Select repositories from Quay.io to quickly create tools on Dockstore.',
-      value: 0
+      value: 0,
     },
     {
       label: 'Create tool with descriptor(s) on remote sites',
       extendedLabel:
         'Manually add individual tools with descriptor(s) from sites like GitHub, BitBucket, and GitLab. Docker images are stored on sites like Quay.io and DockerHub.',
-      value: 1
+      value: 1,
     },
     {
       label: 'Create tool with descriptor(s) on Dockstore.org',
       extendedLabel:
         'Manually add individual tools with descriptor(s) stored on Dockstore.org. Docker images are stored on sites like Quay.io and DockerHub.',
-      value: 2
-    }
+      value: 2,
+    },
   ];
   public selectedOption = this.options[0];
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   registerToolForm: NgForm;
-  @ViewChild('registerToolForm', { static: false }) currentForm: NgForm;
+  @ViewChild('registerToolForm') currentForm: NgForm;
   constructor(
     private registerToolService: RegisterToolService,
     private alertQuery: AlertQuery,
@@ -91,7 +98,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
 
   friendlyRepositoryKeys(): Array<string> {
     const friendlyRepositoryKeys = this.registerToolService.friendlyRepositoryKeys();
-    return friendlyRepositoryKeys.filter(key => key !== 'Dockstore');
+    return friendlyRepositoryKeys.filter((key) => key !== 'Dockstore');
   }
 
   isInvalidPrivateTool() {
@@ -124,17 +131,19 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     this.loading$ = this.sessionQuery.loadingDialog$;
     this.registerToolService.toolRegisterError
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(toolRegisterError => (this.toolRegisterError = toolRegisterError));
-    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.tool = tool));
+      .subscribe((toolRegisterError) => (this.toolRegisterError = toolRegisterError));
+    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => (this.tool = tool));
     this.registerToolService.customDockerRegistryPath
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(path => (this.customDockerRegistryPath = path));
+      .subscribe((path) => (this.customDockerRegistryPath = path));
     this.registerToolService.showCustomDockerRegistryPath
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(showPath => (this.showCustomDockerRegistryPath = showPath));
-    this.registerToolService.toolRegisterError.pipe(takeUntil(this.ngUnsubscribe)).subscribe(error => (this.toolRegisterError = error));
+      .subscribe((showPath) => (this.showCustomDockerRegistryPath = showPath));
+    this.registerToolService.toolRegisterError.pipe(takeUntil(this.ngUnsubscribe)).subscribe((error) => (this.toolRegisterError = error));
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isModalShown => (this.isModalShown = isModalShown));
+    this.registerToolService.isModalShown
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isModalShown) => (this.isModalShown = isModalShown));
   }
 
   // Validation starts here, should move most of these to a service somehow
@@ -149,11 +158,8 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     this.registerToolForm = this.currentForm;
     if (this.registerToolForm) {
       this.registerToolForm.valueChanges
-        .pipe(
-          debounceTime(formInputDebounceTime),
-          takeUntil(this.ngUnsubscribe)
-        )
-        .subscribe(data => this.onValueChanged(data));
+        .pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => this.onValueChanged(data));
     }
   }
   onValueChanged(data?: any) {

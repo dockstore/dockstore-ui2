@@ -18,13 +18,18 @@ import { BehaviorSubject } from 'rxjs';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { ToolService } from './tool/tool.service';
 
+/**
+ * This is mostly deprecated in favor of ToolService for the selected tool
+ * This is still used for the list of all tools
+ *
+ * @export
+ * @class ContainerService
+ */
 @Injectable()
 export class ContainerService {
-  private static readonly descriptorWdl = ' --descriptor wdl';
   tools$ = new BehaviorSubject<DockstoreTool[]>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
-  nsContainers: BehaviorSubject<any> = new BehaviorSubject(null); // This contains the list of sorted tool stubs
   constructor(private toolService: ToolService) {}
   setTool(tool: any) {
     this.toolService.setTool(tool);
@@ -47,7 +52,7 @@ export class ContainerService {
     if (!tool || !tools) {
       return;
     }
-    const oldWorkflow = tools.find(x => x.id === tool.id);
+    const oldWorkflow = tools.find((x) => x.id === tool.id);
     if (oldWorkflow) {
       const index = tools.indexOf(oldWorkflow);
       tools[index] = tool;
@@ -74,15 +79,12 @@ export class ContainerService {
     if (!newTool) {
       return;
     }
-    const oldTool = tools.find(x => x.id === newTool.id);
+    const oldTool = tools.find((x) => x.id === newTool.id);
     const index = tools.indexOf(oldTool);
     tools[index] = newTool;
     this.setTools(tools);
   }
 
-  setNsContainers(tools: any) {
-    this.nsContainers.next(tools);
-  }
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
   }

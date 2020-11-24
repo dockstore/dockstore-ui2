@@ -6,16 +6,15 @@ import { OrganizationMembersStore } from './organization-members.store';
 
 describe('OrganizationMembersService', () => {
   let organizationMembersService: OrganizationMembersService;
-  let organizationMembersStore: OrganizationMembersStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationMembersService, OrganizationMembersStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
-    organizationMembersService = TestBed.get(OrganizationMembersService);
-    organizationMembersStore = TestBed.get(OrganizationMembersStore);
+    organizationMembersService = TestBed.inject(OrganizationMembersService);
+    TestBed.inject(OrganizationMembersStore);
   });
 
   it('should be created', () => {

@@ -10,7 +10,7 @@ import {
   OrganizationsService,
   Workflow,
   WorkflowsService,
-  WorkflowVersionPathInfo
+  WorkflowVersionPathInfo,
 } from '../../shared/swagger';
 import { AliasesStore } from './aliases.store';
 
@@ -25,14 +25,14 @@ export class AliasesService {
   ) {}
 
   clearState(): void {
-    this.aliasesStore.update(state => {
+    this.aliasesStore.update((state) => {
       return {
         ...state,
         organization: null,
         collection: null,
         tool: null,
         workflow: null,
-        workflowVersion: null
+        workflowVersion: null,
       };
     });
   }
@@ -56,10 +56,10 @@ export class AliasesService {
   }
 
   updateOrganization(organization: Organization) {
-    this.aliasesStore.update(state => {
+    this.aliasesStore.update((state) => {
       return {
         ...state,
-        organization: organization
+        organization: organization,
       };
     });
   }
@@ -83,10 +83,10 @@ export class AliasesService {
   }
 
   updateCollection(collection: Collection) {
-    this.aliasesStore.update(state => {
+    this.aliasesStore.update((state) => {
       return {
         ...state,
-        collection: collection
+        collection: collection,
       };
     });
   }
@@ -110,10 +110,10 @@ export class AliasesService {
   }
 
   updateTool(tool: DockstoreTool) {
-    this.aliasesStore.update(state => {
+    this.aliasesStore.update((state) => {
       return {
         ...state,
-        tool: tool
+        tool: tool,
       };
     });
   }
@@ -137,10 +137,10 @@ export class AliasesService {
   }
 
   updateWorkflow(workflow: Workflow) {
-    this.aliasesStore.update(state => {
+    this.aliasesStore.update((state) => {
       return {
         ...state,
-        workflow: workflow
+        workflow: workflow,
       };
     });
   }
@@ -164,10 +164,10 @@ export class AliasesService {
   }
 
   updateWorkflowVersionPathInfo(workflowVersionPathInfo: WorkflowVersionPathInfo) {
-    this.aliasesStore.update(state => {
+    this.aliasesStore.update((state) => {
       return {
         ...state,
-        workflowVersionPathInfo: workflowVersionPathInfo
+        workflowVersionPathInfo: workflowVersionPathInfo,
       };
     });
   }

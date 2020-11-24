@@ -14,13 +14,13 @@ describe('SourceFileTabsService', () => {
       providers: [
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService }
-      ]
+        { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService },
+      ],
     })
   );
 
   it('should be created', () => {
-    const service: SourceFileTabsService = TestBed.get(SourceFileTabsService);
+    const service: SourceFileTabsService = TestBed.inject(SourceFileTabsService);
     expect(service).toBeTruthy();
   });
 });

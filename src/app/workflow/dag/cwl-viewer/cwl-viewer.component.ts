@@ -26,7 +26,7 @@ import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
   selector: 'app-cwl-viewer',
   templateUrl: './cwl-viewer.html',
   providers: [CwlViewerService],
-  styleUrls: ['./cwl-viewer.scss']
+  styleUrls: ['./cwl-viewer.scss'],
 })
 export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectedVersion: WorkflowVersion;
@@ -48,7 +48,7 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.cwlViewerDescriptor = null;
-    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe(workflow => {
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.onDestroy$)).subscribe((workflow) => {
       this.extendedWorkflow = workflow;
       this.updateCwlViewerImg();
     });
@@ -89,13 +89,13 @@ export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
           this.onDestroy$
         )
         .subscribe(
-          cwlViewerDescriptor => {
+          (cwlViewerDescriptor) => {
             this.cwlViewerDescriptor = cwlViewerDescriptor;
             this.cwlViewerError = false;
             this.loading = false;
             this.resetZoom();
           },
-          error => {
+          (error) => {
             this.errorMessage = error.message || 'Unknown error';
             this.cwlViewerDescriptor = null;
             this.cwlViewerError = true;

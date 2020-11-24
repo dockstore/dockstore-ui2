@@ -53,6 +53,7 @@ import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
+import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SelectModule } from './select.module';
 
 @NgModule({
@@ -70,7 +71,7 @@ import { SelectModule } from './select.module';
     AddTagComponent,
     VersionModalComponent,
     InfoTabComponent,
-    ToolFileEditorComponent
+    ToolFileEditorComponent,
   ],
   imports: [
     CommonModule,
@@ -87,7 +88,8 @@ import { SelectModule } from './select.module';
     EntryModule,
     AddEntryModule,
     FlexLayoutModule,
-    MarkdownModule
+    MarkdownModule,
+    MarkdownWrapperModule,
   ],
   providers: [
     EmailService,
@@ -99,9 +101,9 @@ import { SelectModule } from './select.module';
     RegisterToolService,
     StarringService,
     VersionModalService,
-    InfoTabService
+    InfoTabService,
   ],
   exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent],
-  entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent]
+  entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent],
 })
 export class ContainerModule {}

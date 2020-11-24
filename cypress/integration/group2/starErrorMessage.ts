@@ -26,7 +26,7 @@ describe('Tool and workflow starring error messages', () => {
       url: routePath,
       method: 'PUT',
       status: 400,
-      response: 'You cannot star the ' + type + ' ' + name + ' because you have not unstarred it.'
+      response: 'You cannot star the ' + type + ' ' + name + ' because you have not unstarred it.',
     });
 
     cy.get('#starringButtonIcon').click();
@@ -48,7 +48,7 @@ describe('Tool and workflow starring error messages', () => {
       url: routePath,
       method: 'PUT',
       status: 400,
-      response: 'You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.'
+      response: 'You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.',
     });
 
     cy.get('#unstarringButtonIcon').click();
@@ -68,16 +68,14 @@ describe('Tool and workflow starring error messages', () => {
       url: routePath,
       method: 'PUT',
       status: 500,
-      response: {}
+      response: {},
     });
 
     cy.get('#starringButtonIcon').click();
 
     cy.get('.alert').should('exist');
 
-    cy.get('.error-output')
-      .contains('[HTTP 500] Internal Server Error:')
-      .should('exist');
+    cy.get('.error-output').contains('[HTTP 500] Internal Server Error:').should('exist');
   }
 
   describe('Workflow starring error message', () => {

@@ -23,7 +23,7 @@ import { WorkflowVersion } from './swagger/model/workflowVersion';
 describe('DockstoreService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DockstoreService]
+      providers: [DockstoreService],
     });
   });
 
@@ -34,17 +34,17 @@ describe('DockstoreService', () => {
     const workflowVersion1: WorkflowVersion = {
       name: 'a',
       reference: '1',
-      valid: false
+      valid: false,
     };
     const workflowVersion2: WorkflowVersion = {
       name: 'b',
       reference: '2',
-      valid: false
+      valid: false,
     };
     const workflowVersion3: WorkflowVersion = {
       name: 'c',
       reference: '3',
-      valid: true
+      valid: true,
     };
     expect(service.getValidVersions([workflowVersion1, workflowVersion2, workflowVersion3])).toEqual([workflowVersion3]);
   }));
@@ -53,19 +53,19 @@ describe('DockstoreService', () => {
       name: 'a',
       reference: '1',
       valid: false,
-      verified: false
+      verified: false,
     };
     const workflowVersion2: WorkflowVersion = {
       name: 'b',
       reference: '2',
       valid: false,
-      verified: false
+      verified: false,
     };
     const workflowVersion3: WorkflowVersion = {
       name: 'c',
       reference: '3',
       valid: true,
-      verified: true
+      verified: true,
     };
     expect(service.getVersionVerified([workflowVersion1, workflowVersion2, workflowVersion3])).toBeTruthy();
     expect(service.getVersionVerified([workflowVersion1, workflowVersion2, workflowVersion2])).toBeFalsy();
@@ -76,27 +76,27 @@ describe('DockstoreService', () => {
       reference: '1',
       valid: false,
       verified: false,
-      verifiedSource: null
+      verifiedSource: null,
     };
     const workflowVersion2: WorkflowVersion = {
       name: 'b',
       reference: '2',
       valid: false,
       verified: false,
-      verifiedSource: null
+      verifiedSource: null,
     };
     const workflowVersion3: WorkflowVersion = {
       name: 'c',
       reference: '3',
       valid: true,
       verified: true,
-      verifiedSource: 'tester'
+      verifiedSource: 'tester',
     };
     const workflow: any = {
-      workflowVersions: [workflowVersion1, workflowVersion2, workflowVersion3]
+      workflowVersions: [workflowVersion1, workflowVersion2, workflowVersion3],
     };
     const tool: any = {
-      workflowVersions: [workflowVersion1, workflowVersion2, workflowVersion3]
+      workflowVersions: [workflowVersion1, workflowVersion2, workflowVersion3],
     };
     expect(service.getVerifiedWorkflowSources(workflow)).toEqual([{ version: 'c', verifiedSource: 'tester' }]);
     expect(service.getVerifiedSources(tool)).toEqual([{ version: 'c', verifiedSource: 'tester' }]);
@@ -104,15 +104,15 @@ describe('DockstoreService', () => {
   it('should get sort labels objects', inject([DockstoreService], (service: DockstoreService) => {
     const label1: Label = {
       id: 1,
-      value: 'a'
+      value: 'a',
     };
     const label2: Label = {
       id: 2,
-      value: 'b'
+      value: 'b',
     };
     const label3: Label = {
       id: 3,
-      value: 'c'
+      value: 'c',
     };
     expect(service.getLabelStrings([label3, label2, label1])).toEqual(['a', 'b', 'c']);
   }));

@@ -5,16 +5,15 @@ import { CurrentCollectionsStore } from './current-collections.store';
 
 describe('CurrentCollectionsService', () => {
   let currentCollectionsService: CurrentCollectionsService;
-  let currentCollectionsStore: CurrentCollectionsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CurrentCollectionsService, CurrentCollectionsStore],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule],
     });
 
-    currentCollectionsService = TestBed.get(CurrentCollectionsService);
-    currentCollectionsStore = TestBed.get(CurrentCollectionsStore);
+    currentCollectionsService = TestBed.inject(CurrentCollectionsService);
+    TestBed.inject(CurrentCollectionsStore);
   });
 
   it('should be created', () => {

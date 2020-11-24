@@ -37,7 +37,7 @@
         Version
         <a
           *ngIf="!publicPage"
-          href="{{ Dockstore.DOCUMENTATION_URL }}/faq.html#what-is-a-default-version-of-a-tool-or-workflow"
+          [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
           target="_blank"
           rel="noopener noreferrer"
           ><mat-icon>info</mat-icon></a
@@ -98,11 +98,9 @@
       </td>
     </ng-container>
     <ng-container matColumnDef="verified">
-      <th scope="col" mat-header-cell *matHeaderCellDef [matTooltip]="verifiedVersionTooltip">
-        Verified Platforms
-      </th>
+      <th scope="col" mat-header-cell *matHeaderCellDef [matTooltip]="verifiedVersionTooltip">Verified Platforms</th>
       <td mat-cell *matCellDef="let version">
-        <span matTooltip="{{ getVerifiedSource(version.name) }}">{{ version?.sourceFiles | verifiedPlatforms }}</span>
+        <span matTooltip="{{ getVerifiedSource(version.name) }}">{{ version.id | verifiedPlatforms: verifiedVersionPlatforms }}</span>
       </td>
     </ng-container>
     <ng-container matColumnDef="actions">

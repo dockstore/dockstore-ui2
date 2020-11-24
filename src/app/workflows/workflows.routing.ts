@@ -27,9 +27,9 @@ const WORKFLOWS_ROUTES: Routes = [
     data: { title: 'Dockstore | Workflow', entryType: EntryType.BioWorkflow },
     children: [
       { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Workflows' } },
-      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Workflow' } }
-    ]
-  }
+      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Workflow' } },
+    ],
+  },
 ];
 
 export const workflowsRouting = RouterModule.forChild(WORKFLOWS_ROUTES);

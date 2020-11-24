@@ -3,7 +3,7 @@ import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.
 import { ToolDescriptor } from '../../shared/swagger';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ToolTabService {
   constructor() {}

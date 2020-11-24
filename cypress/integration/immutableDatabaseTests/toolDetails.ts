@@ -82,6 +82,9 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
 
       it('Should have content in file viewer', () => {
         cy.get('.ace_content').should('be.visible');
+        cy.contains('a')
+          .should('have.attr', 'href')
+          .and('include', 'data:text/plain');
       });
     });
 
@@ -173,7 +176,7 @@ describe('Find tool by alias', () => {
       url: '*/containers/fakeAlias/aliases',
       method: 'GET',
       status: 200,
-      response: { tool_path: 'quay.io/A2/b3' }
+      response: { tool_path: 'quay.io/A2/b3' },
     });
     cy.visit('/aliases/tools/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3');

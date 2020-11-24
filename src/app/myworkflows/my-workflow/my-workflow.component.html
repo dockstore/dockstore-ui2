@@ -27,7 +27,7 @@
 </app-header>
 <div class="container-fluid sidebar-set-height">
   <!--Tool Content Page-->
-  <div class="row containers-rsb" style="height:100%;">
+  <div class="row containers-rsb" style="height: 100%">
     <mat-sidenav-container autosize class="sidebar-set-height">
       <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12" *ngIf="!(refreshingMyEntries$ | async)">
         <div id="parent">
@@ -122,7 +122,7 @@
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div *ngIf="!(isRefreshing$ | async) && (!(hasGroupEntriesObject$ | async) && !(hasGroupSharedEntriesObject$ | async))">
+        <div *ngIf="!(isRefreshing$ | async) && !(hasGroupEntriesObject$ | async) && !(hasGroupSharedEntriesObject$ | async)">
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>
@@ -150,9 +150,7 @@
                 </button>
 
                 <span *ngIf="entryType === EntryType.BioWorkflow">
-                  <li>
-                    If there are already workflows on Dockstore added by other users that you have access to, press the button below.
-                  </li>
+                  <li>If there are already workflows on Dockstore added by other users that you have access to, press the button below.</li>
                   <button
                     mat-raised-button
                     color="primary"

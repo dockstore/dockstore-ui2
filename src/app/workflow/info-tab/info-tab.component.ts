@@ -38,7 +38,7 @@ import { InfoTabService } from './info-tab.service';
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css']
+  styleUrls: ['./info-tab.component.css'],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
@@ -48,6 +48,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   currentVersion: WorkflowVersion;
   downloadZipLink: string;
   isValidVersion = false;
+  zenodoUrl: string;
   @Input() selectedVersion: WorkflowVersion;
 
   public validationPatterns = validationDescriptorPatterns;
@@ -57,8 +58,10 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   temporaryDescriptorType: Workflow.DescriptorTypeEnum;
   descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   defaultTestFilePathEditing: boolean;
+  forumUrlEditing: boolean;
   isPublic: boolean;
   trsLink: string;
+  displayTextForButton: string;
   EntryType = EntryType;
   descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
@@ -105,17 +108,23 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
-    this.infoTabService.workflowPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(editing => (this.workflowPathEditing = editing));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));
+    this.infoTabService.workflowPathEditing$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((editing) => (this.workflowPathEditing = editing));
     this.infoTabService.defaultTestFilePathEditing$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(editing => (this.defaultTestFilePathEditing = editing));
+      .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
+    this.entryType$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((entryType) => (this.displayTextForButton = '#' + entryType + '/' + this.workflow?.full_workflow_path));
+    this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
   }
-
   /**
    * Handle restubbing a workflow
    * TODO: Handle restub error
@@ -149,6 +158,13 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.save();
     }
     this.infoTabService.setDefaultTestFilePathEditing(!this.defaultTestFilePathEditing);
+  }
+
+  toggleEditForumUrl() {
+    if (this.forumUrlEditing) {
+      this.save();
+    }
+    this.infoTabService.setForumUrlEditing(!this.forumUrlEditing);
   }
 
   save() {

@@ -21,7 +21,7 @@ import {
   DateStubService,
   DockstoreStubService,
   ImageProviderStubService,
-  ProviderStubService
+  ProviderStubService,
 } from '../../test/service-stubs';
 import { ContainerService } from '../container.service';
 import { DateService } from '../date.service';
@@ -40,8 +40,8 @@ describe('Service: ExtendedTool', () => {
         { provide: DockstoreService, useClass: DockstoreStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: ImageProviderService, useClass: ImageProviderStubService }
-      ]
+        { provide: ImageProviderService, useClass: ImageProviderStubService },
+      ],
     });
   });
 

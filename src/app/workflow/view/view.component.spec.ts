@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AccountsService } from 'app/loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RefreshService } from 'app/shared/refresh.service';
 import { DateService } from '../../shared/date.service';
@@ -22,12 +23,13 @@ import { WorkflowsService } from '../../shared/swagger';
 import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import {
+  AccountsStubService,
   DateStubService,
   HostedStubService,
   RefreshStubService,
   VersionModalStubService,
   WorkflowsStubService,
-  WorkflowStubService
+  WorkflowStubService,
 } from '../../test/service-stubs';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
@@ -43,13 +45,14 @@ describe('ViewWorkflowComponent', () => {
       declarations: [ViewWorkflowComponent],
       providers: [
         { provide: ViewService },
+        { provide: AccountsService, useClass: AccountsStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: VersionModalService, useClass: VersionModalStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: DateService, useClass: DateStubService },
         { provide: HostedService, useClass: HostedStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+      ],
     }).compileComponents();
   }));
 

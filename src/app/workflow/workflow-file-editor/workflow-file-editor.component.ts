@@ -13,10 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
+import { WorkflowsService as OpenApiWorkflowServices } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
+
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { ToolDescriptor, Workflow } from '../../shared/swagger';
@@ -27,7 +30,7 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 @Component({
   selector: 'app-workflow-file-editor',
   templateUrl: './workflow-file-editor.component.html',
-  styleUrls: ['./workflow-file-editor.component.scss']
+  styleUrls: ['./workflow-file-editor.component.scss'],
 })
 export class WorkflowFileEditorComponent extends FileEditing {
   descriptorFiles = [];
@@ -38,13 +41,13 @@ export class WorkflowFileEditorComponent extends FileEditing {
   public selectedDescriptorType$: Observable<ToolDescriptor.TypeEnum>;
   public isNFL$: Observable<boolean>;
   @Input() entrypath: string;
+  @Input() id: number;
   @Input() set selectedVersion(value: WorkflowVersion) {
     this._selectedVersion = value;
     this.editing = false;
     this.isNewestVersion = this.checkIfNewestVersion();
     this.clearSourceFiles();
     if (value != null) {
-      this.originalSourceFiles = JSON.parse(JSON.stringify(value.sourceFiles));
       this.loadVersionSourcefiles();
     }
   }
@@ -52,6 +55,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
     private hostedService: HostedService,
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService,
+    private openapiWorkflowsService: OpenApiWorkflowServices,
     protected alertService: AlertService,
     private workflowQuery: WorkflowQuery
   ) {
@@ -83,8 +87,11 @@ export class WorkflowFileEditorComponent extends FileEditing {
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */
   loadVersionSourcefiles() {
-    this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this._selectedVersion.sourceFiles)));
-    this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this._selectedVersion.sourceFiles)));
+    this.openapiWorkflowsService.getWorkflowVersionsSourcefiles(this.id, this._selectedVersion.id).subscribe((sourcefiles) => {
+      this.originalSourceFiles = JSON.parse(JSON.stringify(sourcefiles));
+      this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.originalSourceFiles)));
+      this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.originalSourceFiles)));
+    });
   }
 
   /**
@@ -123,7 +130,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
                 'Saved version ' + updatedVersion.name + ' of hosted workflow ' + newlyGottenWorkflow.repository
               );
             },
-            error => {
+            (error) => {
               this.alertService.detailedError(error);
             }
           );
@@ -132,8 +139,15 @@ export class WorkflowFileEditorComponent extends FileEditing {
           this.handleNoContentResponse();
         }
       },
-      error => {
-        if (error) {
+      (error: HttpErrorResponse) => {
+        if (error.status === 413) {
+          // Using customDetailedError() here as NGINX passes HTML tags through the HTTPErrorResponseObject
+          // which displays a mess of HTML tags instead of a coherent error message.
+          this.alertService.customDetailedError(
+            '[HTTP 413] Request Entity Too Large',
+            'Cannot save new version: versions have a 60 kilobyte limit'
+          );
+        } else if (error) {
           this.alertService.detailedError(error);
         }
       }

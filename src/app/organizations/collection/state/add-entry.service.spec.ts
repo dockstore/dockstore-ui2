@@ -6,16 +6,15 @@ import { AddEntryStore } from './add-entry.store';
 
 describe('AddEntryService', () => {
   let addEntryService: AddEntryService;
-  let addEntryStore: AddEntryStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AddEntryService, AddEntryStore],
-      imports: [HttpClientTestingModule, CustomMaterialModule]
+      imports: [HttpClientTestingModule, CustomMaterialModule],
     });
 
-    addEntryService = TestBed.get(AddEntryService);
-    addEntryStore = TestBed.get(AddEntryStore);
+    addEntryService = TestBed.inject(AddEntryService);
+    TestBed.inject(AddEntryStore);
   });
 
   it('should be created', () => {

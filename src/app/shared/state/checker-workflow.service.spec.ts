@@ -32,8 +32,8 @@ describe('Service: Service: CheckerWorkflow', () => {
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: ContainerService, useClass: ContainerStubService },
-        { provide: ContainersService, useClass: ContainersStubService }
-      ]
+        { provide: ContainersService, useClass: ContainersStubService },
+      ],
     });
   });
 

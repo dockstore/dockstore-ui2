@@ -40,12 +40,8 @@
         </mat-radio-group>
       </div>
       <div class="modal-footer">
-        <button mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
-          Close
-        </button>
-        <button mat-flat-button color="primary" matStepperNext>
-          Next
-        </button>
+        <button mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
+        <button mat-flat-button color="primary" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
@@ -53,7 +49,11 @@
       <div *ngIf="selectedOption?.value === 0">
         <p>
           Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
-          <a href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps/github-apps.html" target="_blank" rel="noopener noreferrer">
+          <a
+            href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps/github-apps.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             documentation <mat-icon>open_in_new</mat-icon>
           </a>
           for how to use GitHub Apps to automatically sync your workflows with GitHub. A .dockstore.yml file is required.
@@ -210,9 +210,7 @@
         (ngSubmit)="registerHostedWorkflow()"
         novalidate
       >
-        <p>
-          Create a workflow with all descriptor files created and stored on Dockstore.org.
-        </p>
+        <p>Create a workflow with all descriptor files created and stored on Dockstore.org.</p>
 
         <mat-radio-group
           id="descriptorTypeRadioButtons"
@@ -260,9 +258,7 @@
         </mat-form-field> -->
 
         <div class="modal-footer">
-          <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">
-            Close
-          </button>
+          <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
           <button id="submitButton" type="submit" mat-flat-button color="primary" [disabled]="!registerHostedWorkflowForm.form.valid">
             Register Workflow
           </button>

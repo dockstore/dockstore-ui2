@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 import { Location } from '@angular/common';
-import { Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Directive, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
@@ -25,40 +26,46 @@ import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
+import { AlertService } from './alert/state/alert.service';
 import { BioschemaService } from './bioschema.service';
 import { DateService } from './date.service';
 import { EntryType } from './enum/entry-type';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
+import { EntriesService, VersionVerifiedPlatform } from './openapi';
 import { ProviderService } from './provider.service';
 import { SessionQuery } from './session/session.query';
 import { SessionService } from './session/session.service';
+import { SourceFile } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
 
+@Directive()
 @Injectable()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class Entry implements OnInit, OnDestroy {
-  @ViewChild('entryTabs', { static: false }) entryTabs: MatTabGroup;
+  @ViewChild('entryTabs') entryTabs: MatTabGroup;
   protected shareURL: string;
   public starGazersClicked = false;
-  private totalShare = 0;
   public title: string;
   protected _toolType: string;
   protected isLoggedIn: boolean;
-  protected validVersions;
-  protected defaultVersion;
+  protected validVersions: Array<WorkflowVersion | Tag>;
+  protected defaultVersion: WorkflowVersion | Tag;
   protected published: boolean;
   public labelPattern = validationDescriptorPatterns.label;
   public labelsEditMode: boolean;
-  public error;
-  public validTabs;
+  public error: boolean;
+  public validTabs: Array<string>;
   public currentTab = 'info';
-  public urlVersion;
+  public urlVersion: string;
   EntryType = EntryType;
   location: Location;
   public selectedVersion: WorkflowVersion | Tag | null = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
+  public versionsFileTypes: Array<SourceFile.TypeEnum> = [];
+  public versionsWithVerifiedPlatforms: Array<VersionVerifiedPlatform> = [];
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   protected selected = new FormControl(0);
@@ -74,7 +81,9 @@ export abstract class Entry implements OnInit, OnDestroy {
     public locationService: Location,
     protected sessionService: SessionService,
     protected sessionQuery: SessionQuery,
-    protected gA4GHFilesService: GA4GHFilesService
+    protected gA4GHFilesService: GA4GHFilesService,
+    protected alertService: AlertService,
+    protected entryService: EntriesService
   ) {
     this.location = locationService;
     this.gA4GHFilesService.clearFiles();
@@ -85,7 +94,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     this.subscriptions();
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe((event: RouterEvent) => {
@@ -93,8 +102,8 @@ export abstract class Entry implements OnInit, OnDestroy {
       });
     this.parseURL(this.router.url);
     this.sessionService.setPublicPage(this.isPublic());
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.publicPage = publicPage));
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => (this.isLoggedIn = state));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => (this.publicPage = publicPage));
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => (this.isLoggedIn = state));
   }
 
   private parseURL(url: String): void {
@@ -140,10 +149,6 @@ export abstract class Entry implements OnInit, OnDestroy {
 
   toggleLabelsEditMode(): void {
     this.labelsEditMode = !this.labelsEditMode;
-  }
-
-  sumCounts(count): void {
-    this.totalShare += count;
   }
 
   protected initTool(): void {
@@ -274,6 +279,33 @@ export abstract class Entry implements OnInit, OnDestroy {
       const newPath = this.urlResolverService.getPath(entryPath, myEntry, entry, this.router.url, this.selectedVersion, this.currentTab);
       this.location.replaceState(newPath);
     }
+  }
+
+  updateVersionsFileTypes(entryId: number, versionid: number): void {
+    this.alertService.start(`Getting version's unique file types`);
+    this.entryService.getVersionsFileTypes(entryId, versionid).subscribe(
+      (fileTypes: Array<SourceFile.TypeEnum>) => {
+        this.versionsFileTypes = fileTypes;
+        this.alertService.simpleSuccess();
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+        this.versionsFileTypes = [];
+      }
+    );
+  }
+
+  updateVerifiedPlatforms(entryId: number): void {
+    this.entryService.getVerifiedPlatforms(entryId).subscribe(
+      (verifiedVersions: Array<VersionVerifiedPlatform>) => {
+        this.versionsWithVerifiedPlatforms = verifiedVersions.map((value) => Object.assign({}, value));
+        this.alertService.simpleSuccess();
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+        this.versionsWithVerifiedPlatforms = [];
+      }
+    );
   }
 
   /**
@@ -408,7 +440,7 @@ export abstract class Entry implements OnInit, OnDestroy {
 
       // Get index of /containers or /workflows
       // TODO: Not sure why getPageIndex() returns anything, but does need to get called to change URL.
-      const pageIndex = this.getPageIndex();
+      this.getPageIndex();
     }
   }
 
@@ -423,9 +455,9 @@ export abstract class Entry implements OnInit, OnDestroy {
     }
     (<any>window).DiscourseEmbed = {
       discourseUrl: Dockstore.DISCOURSE_URL,
-      topicId: topicId
+      topicId: topicId,
     };
-    (function() {
+    (function () {
       const d = document.createElement('script');
       d.type = 'text/javascript';
       d.async = true;

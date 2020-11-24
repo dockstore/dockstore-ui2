@@ -13,7 +13,7 @@ import { TosBannerQuery } from './tosBanner/state/tos-banner.query';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   public isLoggedIn$: Observable<boolean>;
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dismissedLatestPrivacyPolicy$ = this.tosBannerQuery.dismissedLatestPrivacyPolicy$;
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         map(() => {
           let route = this.activatedRoute;
           while (route.firstChild) {
@@ -49,10 +49,10 @@ export class AppComponent implements OnInit, OnDestroy {
           }
           return route;
         }),
-        mergeMap(route => route.data)
+        mergeMap((route) => route.data)
       )
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(event => {
+      .subscribe((event) => {
         this.titleService.setTitle(event['title']);
         this.alertService.clearEverything();
       });

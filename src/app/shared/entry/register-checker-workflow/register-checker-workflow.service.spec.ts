@@ -22,7 +22,7 @@ import {
   RefreshStubService,
   RegisterCheckerWorkflowStubService,
   WorkflowsStubService,
-  WorkflowStubService
+  WorkflowStubService,
 } from '../../../test/service-stubs';
 import { ContainerService } from '../../container.service';
 import { RefreshService } from '../../refresh.service';
@@ -39,8 +39,8 @@ describe('Service: RegisterCheckerWorkflow', () => {
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+      ],
     });
   });
 

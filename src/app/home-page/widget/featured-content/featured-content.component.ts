@@ -5,9 +5,7 @@ import { Dockstore } from '../../../shared/dockstore.model';
 
 @Component({
   selector: 'featured-content',
-  template: `
-    <div [innerHTML]="myExternalHTML"></div>
-  `
+  template: ` <div [innerHTML]="myExternalHTML"></div> `,
 })
 export class FeaturedContentComponent implements OnInit {
   public myExternalHTML: any = '';
@@ -22,7 +20,7 @@ export class FeaturedContentComponent implements OnInit {
         { headers: { Authorization: '' }, responseType: 'text' }
       )
       .subscribe(
-        data => {
+        (data) => {
           this.myExternalHTML = data;
           this.alertService.simpleSuccess();
         },

@@ -19,7 +19,7 @@ import {
   goToTab,
   goToUnexpandedSidebarEntry,
   resetDB,
-  setTokenUserViewPort
+  setTokenUserViewPort,
 } from '../../support/commands';
 
 describe('Shared with me workflow test from my-workflows', () => {
@@ -34,19 +34,19 @@ describe('Shared with me workflow test from my-workflows', () => {
     cy.route({
       method: 'GET',
       url: /readertest\/actions/,
-      response: ['READ']
+      response: ['READ'],
     }).as('readerActions');
 
     cy.route({
       method: 'GET',
       url: /writertest\/actions/,
-      response: ['READ', 'WRITE']
+      response: ['READ', 'WRITE'],
     }).as('writerActions');
 
     cy.route({
       method: 'GET',
       url: /ownertest\/actions/,
-      response: ['READ', 'WRITE', 'SHARE', 'DELETE']
+      response: ['READ', 'WRITE', 'SHARE', 'DELETE'],
     }).as('ownerActions');
 
     const readerWorkflow = createHostedWorkflow('readertest', 200);
@@ -58,26 +58,26 @@ describe('Shared with me workflow test from my-workflows', () => {
       response: [
         { role: 'READER', workflows: [readerWorkflow] },
         { role: 'WRITER', workflows: [writerWorkflow] },
-        { role: 'OWNER', workflows: [ownerWorkflow] }
-      ]
+        { role: 'OWNER', workflows: [ownerWorkflow] },
+      ],
     }).as('getSharedWorkflows');
 
     cy.route({
       method: 'GET',
       url: '*/workflows/200*',
-      response: readerWorkflow
+      response: readerWorkflow,
     }).as('getReaderWorkflow');
 
     cy.route({
       method: 'GET',
       url: '*/workflows/201*',
-      response: writerWorkflow
+      response: writerWorkflow,
     }).as('getWriterWorkflow');
 
     cy.route({
       method: 'GET',
       url: '*/workflows/202*',
-      response: ownerWorkflow
+      response: ownerWorkflow,
     }).as('getOwnerWorkflow');
 
     // Visit my-worklfows page
@@ -139,15 +139,15 @@ describe('Shared with me workflow test from my-workflows', () => {
               id: 1,
               path: '/Dockstore.wdl',
               type: 'DOCKSTORE_WDL',
-              verifiedBySource: {}
-            }
+              verifiedBySource: {},
+            },
           ],
           valid: true,
           verified: false,
           verifiedSource: null,
           versionEditor: { avatarUrl: '', curator: false, id: 2, isAdmin: false, name: 'user_B', userProfiles: null, username: 'user_B' },
           workflow_path: '/Dockstore.wdl',
-          workingDirectory: ''
+          workingDirectory: '',
         },
         {
           commitID: null,
@@ -169,18 +169,18 @@ describe('Shared with me workflow test from my-workflows', () => {
               id: 2,
               path: '/Dockstore.wdl',
               type: 'DOCKSTORE_WDL',
-              verifiedBySource: {}
-            }
+              verifiedBySource: {},
+            },
           ],
           valid: true,
           verified: false,
           verifiedSource: null,
           versionEditor: { avatarUrl: '', curator: false, id: 2, isAdmin: false, name: 'user_B', userProfiles: null, username: 'user_B' },
           workflow_path: '/Dockstore.wdl',
-          workingDirectory: ''
-        }
+          workingDirectory: '',
+        },
       ],
-      workflow_path: '/Dockstore.cwl'
+      workflow_path: '/Dockstore.cwl',
     };
   }
 

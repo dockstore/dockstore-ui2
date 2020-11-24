@@ -14,9 +14,12 @@
  *    limitations under the License.
  */
 
+// Must define the material icons font directory path, see https://www.npmjs.com/package/material-design-icons-iconfont
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+@import '~material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';
-@import '~@ngx-share/button/themes/default/default-theme';
+@import '~ngx-sharebuttons/themes/default/default-theme';
 @import 'featured-content.scss';
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
@@ -549,6 +552,13 @@ table {
   border: 1px solid #cfd1d7;
 }
 
+// Decided to not do horizontal scroll. Just wrap no matter what.
+// This is to naturally wrap breakable text. If the text is not breakable, wrap anywhere.
+// This does not affect <mat-table>
+td {
+  word-break: break-word;
+}
+
 td,
 th {
   font-weight: normal;
@@ -785,6 +795,10 @@ div.side-block img {
 
 .mat-icon {
   vertical-align: middle;
+}
+
+.mat-icon-copy-button {
+  transform: scale(0.85);
 }
 
 div.side-block code {
@@ -1202,7 +1216,7 @@ app-select.longer {
   width: 50%;
 }
 
-mat-icon.star {
+mat-icon.star-icon {
   font-size: 16px;
   height: 16px;
 }
