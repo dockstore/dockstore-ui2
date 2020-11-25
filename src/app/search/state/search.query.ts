@@ -63,7 +63,7 @@ export class SearchQuery extends Query<SearchState> {
     if (!tools || !workflows) {
       return this.TOOLS_TAB_INDEX;
     }
-    const param = this.route.snapshot.queryParams['_type'];
+    const param = this.route.snapshot.queryParams['_index'];
 
     if (tools.length === 0 && workflows.length > 0) {
       return this.WORKFLOWS_TAB_INDEX;

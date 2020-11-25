@@ -475,29 +475,29 @@ export class SearchComponent implements OnInit, OnDestroy {
   onKey(searchText: string) {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = searchText + '.*';
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: {
-        size: 0,
-        aggs: {
-          autocomplete: {
-            terms: {
-              field: 'description',
-              size: 4,
-              order: {
-                _count: 'desc',
-              },
-              include: pattern,
-            },
-          },
-        },
-      },
-    })
-      .then((hits) => {
-        this.searchService.setAutoCompleteTerms(hits);
-      })
-      .catch((error) => console.log(error));
+    // ELASTIC_SEARCH_CLIENT.search({
+    //   index: 'tools',
+    //   type: 'entry',
+    //   body: {
+    //     size: 0,
+    //     aggs: {
+    //       autocomplete: {
+    //         terms: {
+    //           field: 'description',
+    //           size: 4,
+    //           order: {
+    //             _count: 'desc',
+    //           },
+    //           include: pattern,
+    //         },
+    //       },
+    //     },
+    //   },
+    // })
+    //   .then((hits) => {
+    //     this.searchService.setAutoCompleteTerms(hits);
+    //   })
+    //   .catch((error) => console.log(error));
     this.searchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
