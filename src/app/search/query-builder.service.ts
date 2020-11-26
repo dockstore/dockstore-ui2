@@ -109,7 +109,7 @@ export class QueryBuilderService {
     return tableQuery;
   }
 
-  getResultSingleIndexQuery(query_size: number, index: string): string {
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
     let body = bodybuilder().size(query_size);
     body = this.sourceOptions(body);
     body = body.query('match', '_index', index);

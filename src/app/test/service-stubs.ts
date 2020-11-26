@@ -111,7 +111,7 @@ export class QueryBuilderStubService {
   ): string {
     return 'thisissomefakequery';
   }
-  getResultSingleIndexQuery(query_size: number, index: string): string {
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
     return 'thisissomefakequery';
   }
   getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
