@@ -18,7 +18,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { SearchResponse } from 'elasticsearch';
-import { Observable, Subject } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
@@ -430,35 +430,32 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   /**
    * Updates the results table when there is no search term
+   * We need to send one request per index
+   * When each index returns its results, join the results into a single array and filter into table
    *
-   * @param {string} value the elastic search query
+   * @param {string} toolsQuery the elastic search query for tools index
+   * @param {string} workflowsQuery the elastic search query for workflows index
    * @memberof SearchComponent
    */
   updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
-    let toolHits;
-    let workflowHits;
-    // Combine array of tools and workflows to filter into results table
-    ELASTIC_SEARCH_CLIENT.search({
+    const tools = ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
       body: toolsQuery,
-    })
-      .then((tools) => {
-        toolHits = tools.hits.hits;
-        ELASTIC_SEARCH_CLIENT.search({
-          index: 'tools',
-          type: 'entry',
-          body: workflowsQuery,
-        })
-          .then((workflows) => {
-            workflowHits = workflows.hits.hits;
-            this.hits = toolHits.concat(workflowHits);
-            const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
-            this.searchService.setHits(filteredHits[0], filteredHits[1]);
-          })
-          .catch((error) => console.log(error));
-      })
-      .catch((error) => console.log(error));
+    }).catch((error) => console.log(error));
+    const workflows = ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: workflowsQuery,
+    }).catch((error) => console.log(error));
+
+    forkJoin([tools, workflows]).subscribe((results: Array<any>) => {
+      const toolHits = results[0].hits.hits;
+      const workflowHits = results[1].hits.hits;
+      this.hits = toolHits.concat(workflowHits);
+      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+      this.searchService.setHits(filteredHits[0], filteredHits[1]);
+    });
   }
 
   /**===============================================

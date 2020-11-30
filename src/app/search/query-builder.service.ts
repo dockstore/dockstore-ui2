@@ -65,26 +65,24 @@ export class QueryBuilderService {
     return body.rawOption('_source', false);
   }
 
-  private excludeVerifiedContent(body: any) {
-    // TODO: it should be possible to exclude tags and workflowVersions too
-    // however, it currently breaks the contents of the datatables since verified information is not aggregated by
-    // tool or workflow properly.
-    return body.rawOption('_source', {
-      excludes: [
-        '*.content',
-        '*.sourceFiles',
-        'description',
-        'users',
-        'workflowVersions.dirtyBit',
-        'workflowVersions.hidden',
-        'workflowVersions.last_modified',
-        'workflowVersions.name',
-        'workflowVersions.valid',
-        'workflowVersions.workflow_path',
-        'workflowVersions.workingDirectory',
-        'workflowVersions.reference',
-      ],
-    });
+  // These are the properties to return in the search to display the results table correctly
+  private sourceOptions(body: any) {
+    return body.rawOption('_source', [
+      'author',
+      'descriptorType',
+      'full_workflow_path',
+      'gitUrl',
+      'name',
+      'namespace',
+      'organization',
+      'providerUrl',
+      'repository',
+      'starredUsers',
+      'toolname',
+      'tool_path',
+      'verified',
+      'workflowName',
+    ]);
   }
 
   getNumberOfFilters(filters: any) {
@@ -103,7 +101,7 @@ export class QueryBuilderService {
     filters: any
   ): string {
     let tableBody = bodybuilder().size(query_size);
-    tableBody = this.excludeVerifiedContent(tableBody);
+    tableBody = this.sourceOptions(tableBody);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters);
     const builtTableBody = tableBody.build();
@@ -111,9 +109,9 @@ export class QueryBuilderService {
     return tableQuery;
   }
 
-  getResultSingleIndexQuery(query_size: number, index: string): string {
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
     let body = bodybuilder().size(query_size);
-    body = this.excludeVerifiedContent(body);
+    body = this.sourceOptions(body);
     body = body.query('match', '_index', index);
     const builtBody = body.build();
     const singleIndexQuery = JSON.stringify(builtBody);
