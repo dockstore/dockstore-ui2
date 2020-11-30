@@ -26,6 +26,7 @@ export interface SearchState {
   searchText: string;
   filterKeys: Array<string>;
   autocompleteTerms: Array<string>;
+  facetAutocompleteTerms: Array<string>;
   suggestTerm: string;
   pageSize: number;
   pageIndex: number;
@@ -43,6 +44,7 @@ export function createInitialState(): SearchState {
     searchText: '',
     filterKeys: [],
     autocompleteTerms: [],
+    facetAutocompleteTerms: [],
     suggestTerm: '',
     pageSize: 10,
     advancedSearch: { ...initialAdvancedSearchObject },

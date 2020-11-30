@@ -18,7 +18,7 @@
     <div [className]="isExtended ? 'container w-100 navbar-fluid' : 'container navbar-fluid'">
       <span class="flex-toolbar">
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
-          <img src="../assets/images/dockstore/logo.png" alt="dockstore logo" />
+          <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="49" alt="dockstore logo" />
         </a>
         <a mat-button class="icon" [routerLink]="['/search']">
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png" alt="search button" /> Search
@@ -30,7 +30,7 @@
           <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png" alt="stacked pages" /> Docs
         </a>
         <a mat-button class="icon" [href]="Dockstore.DISCOURSE_URL" target="_blank" rel="noopener noreferrer">
-          <mat-icon class="hidden-sm">help_outline</mat-icon> Help
+          <mat-icon class="hidden-sm">forum</mat-icon> Forum
         </a>
         <span class="spacer"></span>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
@@ -78,7 +78,7 @@
     <div class="container-fluid navbar-holder">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <a fxFlex id="home-nav-button-mobile" (click)="resetPageNumber()" routerLink="">
-          <img src="../assets/images/dockstore/logo.png" alt="dockstore logo" />
+          <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="49" alt="dockstore logo" />
         </a>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
         <template [ngTemplateOutlet]="loginButton"></template>

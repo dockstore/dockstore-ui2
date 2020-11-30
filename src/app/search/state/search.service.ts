@@ -285,6 +285,22 @@ export class SearchService {
     });
   }
 
+  setFacetAutocompleteTerms(hits: any) {
+    const autocompleteTerms = [];
+    const maxTerms = 3;
+    for (let i = 0; i <= maxTerms; i++) {
+      if (hits[i]) {
+        autocompleteTerms.push(hits[i]);
+      }
+    }
+    this.searchStore.update((state) => {
+      return {
+        ...state,
+        facetAutocompleteTerms: autocompleteTerms,
+      };
+    });
+  }
+
   /**
    * By default, bodybuilder will create a aggregation name called agg_<aggregationType>_<fieldToAggregate>
    * This converts it to just <fieldToAggregate>

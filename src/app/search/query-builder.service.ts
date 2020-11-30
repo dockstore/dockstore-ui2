@@ -108,7 +108,7 @@ export class QueryBuilderService {
     const tableQuery = JSON.stringify(builtTableBody);
     return tableQuery;
   }
-
+  
   getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
     let body = bodybuilder().size(query_size);
     body = this.sourceOptions(body);
