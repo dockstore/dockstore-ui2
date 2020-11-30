@@ -111,6 +111,15 @@ export class QueryBuilderService {
     return tableQuery;
   }
 
+  getResultSingleIndexQuery(query_size: number, index: string): string {
+    let body = bodybuilder().size(query_size);
+    body = this.excludeVerifiedContent(body);
+    body = body.query('match', '_index', index);
+    const builtBody = body.build();
+    const singleIndexQuery = JSON.stringify(builtBody);
+    return singleIndexQuery;
+  }
+
   /**===============================================
    *                Append Functions
    * ==============================================

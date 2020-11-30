@@ -70,7 +70,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   public hits: Hit[];
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
-  public readonly query_size = 201;
+  // Set to 201 if searching both queries
+  public readonly query_size = 101;
+  public readonly query_size_full = 201;
   searchTerm = false;
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
@@ -358,7 +360,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
-      this.query_size,
+      this.query_size_full,
       values,
       advancedSearchObject,
       this.searchTerm,
@@ -366,16 +368,24 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters,
       this.sortModeMap
     );
-    const tableQuery = this.queryBuilderService.getResultQuery(
-      this.query_size,
-      values,
-      advancedSearchObject,
-      this.searchTerm,
-      this.filters
-    );
-    this.resetEntryOrder();
-    this.updateSideBar(sideBarQuery);
-    this.updateResultsTable(tableQuery);
+    if (!values) {
+      const toolsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'tools');
+      const workflowsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'workflows');
+      this.resetEntryOrder();
+      this.updateSideBar(sideBarQuery);
+      this.updateResultsTableSeparately(toolsQuery, workflowsQuery);
+    } else {
+      const tableQuery = this.queryBuilderService.getResultQuery(
+        this.query_size_full,
+        values,
+        advancedSearchObject,
+        this.searchTerm,
+        this.filters
+      );
+      this.resetEntryOrder();
+      this.updateSideBar(sideBarQuery);
+      this.updateResultsTable(tableQuery);
+    }
   }
 
   updateSideBar(value: string) {
@@ -405,7 +415,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     })
       .then((hits) => {
         this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
         const searchText = this.searchQuery.getValue().searchText;
         this.searchService.setHits(filteredHits[0], filteredHits[1]);
         if (searchText.length > 0 && hits) {
@@ -414,6 +424,39 @@ export class SearchComponent implements OnInit, OnDestroy {
         if (this.searchTerm && this.hits.length === 0) {
           this.searchService.suggestSearchTerm(searchText);
         }
+      })
+      .catch((error) => console.log(error));
+  }
+
+  /**
+   * Updates the results table when there is no search term
+   *
+   * @param {string} value the elastic search query
+   * @memberof SearchComponent
+   */
+  updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
+    let toolHits;
+    let workflowHits;
+    // Combine array of tools and workflows to filter into results table
+    ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: toolsQuery,
+    })
+      .then((tools) => {
+        toolHits = tools.hits.hits;
+        ELASTIC_SEARCH_CLIENT.search({
+          index: 'tools',
+          type: 'entry',
+          body: workflowsQuery,
+        })
+          .then((workflows) => {
+            workflowHits = workflows.hits.hits;
+            this.hits = toolHits.concat(workflowHits);
+            const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+            this.searchService.setHits(filteredHits[0], filteredHits[1]);
+          })
+          .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error));
   }
