@@ -102,7 +102,9 @@
                       mat-flat-button
                       matTooltip="Remove entry from collection."
                       id="removeEntryButton"
-                      (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.entryPath)"
+                      (click)="
+                        openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.entryPath, entry.versionName)
+                      "
                     >
                       <mat-icon>clear</mat-icon> Remove
                     </button>
