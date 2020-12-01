@@ -18,6 +18,7 @@ import { Directive } from '@angular/core';
 import { AlertService } from './alert/state/alert.service';
 import { Files } from './files';
 import { WorkflowVersion } from './swagger';
+import { Tag } from './swagger';
 import { SourceFile } from './swagger/model/sourceFile';
 
 @Directive()
@@ -112,7 +113,7 @@ export class FileEditing extends Files {
    * Getting the newest workflowVersion based on the id
    */
 
-  getNewestVersion(versions: Array<any>): any {
+  getNewestVersion(versions: Array<WorkflowVersion | Tag>): WorkflowVersion | Tag {
     return versions.reduce((p, c) => (p.id > c.id ? p : c));
   }
 }
