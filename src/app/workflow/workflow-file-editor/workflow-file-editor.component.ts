@@ -117,9 +117,9 @@ export class WorkflowFileEditorComponent extends FileEditing {
           this.workflowsService.getWorkflow(editedWorkflow.id).subscribe(
             (newlyGottenWorkflow: Workflow) => {
               this.workflowService.setWorkflow(newlyGottenWorkflow);
-              const latestSourceFile = this.getNewestVersion(this.originalSourceFiles);
+              const updatedVersion = this.getNewestVersion(newlyGottenWorkflow.workflowVersions);
               this.alertService.detailedSuccess(
-                'Saved version ' + latestSourceFile.absolutePath + ' of hosted workflow ' + newlyGottenWorkflow.repository
+                'Saved version ' + updatedVersion.name + ' of hosted workflow ' + newlyGottenWorkflow.repository
               );
             },
             (error) => {
