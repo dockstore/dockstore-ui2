@@ -66,14 +66,6 @@ export class ToolFileEditorComponent extends FileEditing {
     return this.currentVersion.id === mostRecentId;
   }
 
-  getIdOfNewestVersion(versions: Array<Tag>): number {
-    return versions.reduce((max, n) => Math.max(max, n.id), this.versions[0].id);
-  }
-
-  getNewestVersion(versions: Array<Tag>): Tag {
-    return versions.reduce((p, c) => (p.id > c.id ? p : c));
-  }
-
   /**
    * Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
