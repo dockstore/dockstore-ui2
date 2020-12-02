@@ -17,8 +17,7 @@
 import { Directive } from '@angular/core';
 import { AlertService } from './alert/state/alert.service';
 import { Files } from './files';
-import { WorkflowVersion } from './swagger';
-import { Tag } from './swagger';
+import { Tag, WorkflowVersion } from './swagger';
 import { SourceFile } from './swagger/model/sourceFile';
 
 @Directive()
