@@ -46,7 +46,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Display Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
+      typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
       typeInInput('Organization website', 'www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
@@ -70,7 +70,7 @@ describe('Dockstore Organizations', () => {
   describe('Should be able to view new unapproved organization', () => {
     it('have the fields just entered in during registration', () => {
       cy.contains('Potato');
-      cy.contains("Boil 'em, mash 'em, stick 'em in a stew");
+      cy.contains('Boil \'em, mash \'em, stick \'em in a stew');
       cy.contains('https://www.google.ca');
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
@@ -272,9 +272,10 @@ describe('Dockstore Organizations', () => {
     });
 
     it.skip('be able to remove an entry from a collection', () => {
-      cy.route('api/organizations/Potatoe/collections/veryFakeCollectionName/name').as('getCollection');
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
-      cy.wait('@getCollection');
+      cy.wait(10000);
+      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
+      cy.get('#removeEntryButton').click();
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
       cy.get('#removeEntryButton').click();
       cy.get('#accept-remove-entry-from-org').click();
