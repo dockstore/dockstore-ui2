@@ -125,19 +125,18 @@ export class QueryBuilderService {
   appendFilter(body: any, aggKey: string, filters: any): any {
     filters.forEach((value: Set<string>, key: string) => {
       value.forEach((insideFilter) => {
-        if (aggKey === key && !this.searchService.exclusiveFilters.includes(key)) {
+        const isExclusiveFilter = this.searchService.exclusiveFilters.includes(key);
+        if (aggKey === key && !isExclusiveFilter) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
           body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
         } else {
+          // value refers to the buckets selected
           if (value.size > 1) {
             body = body.orFilter('term', key, insideFilter);
           } else {
-            // A non-verified tool means a tool that isn't verified and a workflow that is not verified a
-            if (key === 'verified' && insideFilter === '0') {
-              body = body.orFilter('term', 'verified', this.convertIntStringToBoolString(insideFilter));
-            } else if (key === 'verified' && insideFilter === '1') {
-              body = body.orFilter('term', 'verified', this.convertIntStringToBoolString(insideFilter));
+            if (isExclusiveFilter) {
+              body = body.filter('term', key, this.convertIntStringToBoolString(insideFilter));
             } else {
               body = body.filter('term', key, insideFilter);
             }
