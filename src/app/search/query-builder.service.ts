@@ -147,15 +147,19 @@ export class QueryBuilderService {
     return body;
   }
 
-  private convertIntStringToBoolString(intString: string) {
-    if (intString === '0') {
+  /**
+   * Aside from the _index key, the exclusive facets have buckets that are boolean values (verified, not verified, etc)
+   * For some reason, ES is expecting booleans to be 'true' and 'false' but is returning values as 0 to 1
+   * @param bucketValue Bucket value of an exclusive facet
+   */
+  private convertIntStringToBoolString(bucketValue: string) {
+    if (bucketValue === '0') {
       return 'false';
     }
-    if (intString === '1') {
+    if (bucketValue === '1') {
       return 'true';
     }
-    console.log('Expecting a 0 or 1 string but got ' + intString);
-    return 'false';
+    return bucketValue;
   }
 
   /**
