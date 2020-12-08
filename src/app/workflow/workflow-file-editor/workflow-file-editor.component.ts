@@ -75,14 +75,6 @@ export class WorkflowFileEditorComponent extends FileEditing {
   getIdOfNewestVersion(versions: Array<WorkflowVersion>): number {
     return versions.reduce((max, n) => Math.max(max, n.id), this.versions[0].id);
   }
-
-  /**
-   * Getting the newest workflowVersion based on the id
-   */
-  getNewestVersion(versions: Array<WorkflowVersion>): WorkflowVersion {
-    return versions.reduce((p, c) => (p.id > c.id ? p : c));
-  }
-
   /**
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    */

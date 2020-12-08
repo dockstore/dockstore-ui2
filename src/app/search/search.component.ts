@@ -368,7 +368,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters,
       this.sortModeMap
     );
-    if (!values) {
+    if (!values && this.filters.size === 0) {
       const toolsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'tools');
       const workflowsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'workflows');
       this.resetEntryOrder();
