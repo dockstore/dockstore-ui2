@@ -135,11 +135,9 @@ export class QueryBuilderService {
           } else {
             // A non-verified tool means a tool that isn't verified and a workflow that is not verified a
             if (key === 'verified' && insideFilter === '0') {
-              body = body.notFilter('term', 'verified', '1');
-              body = body.notFilter('term', 'workflowVersions.verified', '1');
+              body = body.orFilter('term', 'verified', this.convertIntStringToBoolString(insideFilter));
             } else if (key === 'verified' && insideFilter === '1') {
-              body = body.orFilter('term', 'verified', insideFilter);
-              body = body.orFilter('term', 'workflowVersions.verified', insideFilter);
+              body = body.orFilter('term', 'verified', this.convertIntStringToBoolString(insideFilter));
             } else {
               body = body.filter('term', key, insideFilter);
             }
@@ -148,6 +146,17 @@ export class QueryBuilderService {
       });
     });
     return body;
+  }
+
+  private convertIntStringToBoolString(intString: string) {
+    if (intString === '0') {
+      return 'false';
+    }
+    if (intString === '1') {
+      return 'true';
+    }
+    console.log('Expecting a 0 or 1 string but got ' + intString);
+    return 'false';
   }
 
   /**
