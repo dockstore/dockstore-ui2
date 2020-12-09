@@ -114,7 +114,7 @@ export class ToolFileEditorComponent extends FileEditing {
           this.toggleEdit();
           this.containerService.setTool(editedDockstoreTool);
           const updatedVersion = this.getNewestVersion(editedDockstoreTool.workflowVersions);
-          this.alertService.detailedSuccess('Saved version ' + updatedVersion.name + ' of hosted entry ' + editedDockstoreTool.toolname);
+          this.alertService.detailedSuccess('Saved version ' + updatedVersion.name + ' of hosted tool ' + editedDockstoreTool.toolname);
         } else {
           // Probably encountered a 204
           this.handleNoContentResponse();
