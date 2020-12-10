@@ -27,25 +27,34 @@
     </ng-template>
     <div class="mat-tab-content">
       <div *ngIf="toolTagCloudData">
-        <button type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
-          <i [class]="(showToolTagCloud$ | async) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
-          <span>Tag Cloud</span>
-        </button>
-        <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async" data-cy="tagCloud">
-          <angular-tag-cloud
-            [data]="toolTagCloudData"
-            [width]="options.width"
-            [height]="options.height"
-            [overflow]="options.overflow"
-            (clicked)="tagClicked($event)"
-          >
-          </angular-tag-cloud>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+          <span fxFlex="65%">
+            <p>A <b>Tool</b> uses a single container and performs a single action or step that is outlined by a descriptor</p>
+          </span>
+          <div class="tag-cloud-dropdown">
+            <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                  <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
+                  <span class="m-2"><b>Popular Keywords</b></span>
+                </div>
+                <i [class]="(showToolTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
+              </div>
+            </button>
+            <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async">
+              <angular-tag-cloud
+                [data]="toolTagCloudData"
+                [width]="options.width"
+                [height]="options.height"
+                [overflow]="options.overflow"
+                (clicked)="tagClicked($event)"
+              >
+              </angular-tag-cloud>
+            </div>
+          </div>
         </div>
       </div>
-      <span class="m-2">
-        <p>A tool is a docker container with an associated descriptor describing how to run it.</p>
-        <app-search-tool-table></app-search-tool-table>
-      </span>
+      <app-search-tool-table></app-search-tool-table>
     </div>
   </mat-tab>
 
@@ -56,25 +65,34 @@
     </ng-template>
     <div class="mat-tab-content">
       <div *ngIf="workflowTagCloudData">
-        <button type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
-          <i [class]="(showWorkflowTagCloud$ | async) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
-          <span>Tag Cloud</span>
-        </button>
-        <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud$ | async">
-          <angular-tag-cloud
-            [data]="workflowTagCloudData"
-            [width]="options.width"
-            [height]="options.height"
-            [overflow]="options.overflow"
-            (clicked)="tagClicked($event)"
-          >
-          </angular-tag-cloud>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+          <span fxFlex="65%">
+            <p>A <b>Workflow</b> can use multiple containers and executes multiple actions or steps, outlined by one or more descriptors</p>
+          </span>
+          <div class="tag-cloud-dropdown">
+            <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                  <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
+                  <span class="m-2"><b>Popular Keywords</b></span>
+                </div>
+                <i [class]="(showWorkflowTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
+              </div>
+            </button>
+            <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud$ | async">
+              <angular-tag-cloud
+                [data]="workflowTagCloudData"
+                [width]="options.width"
+                [height]="options.height"
+                [overflow]="options.overflow"
+                (clicked)="tagClicked($event)"
+              >
+              </angular-tag-cloud>
+            </div>
+          </div>
         </div>
       </div>
-      <span class="m-2">
-        <p>A workflow is a series of tools strung together, with an associated descriptor describing how to run it.</p>
-        <app-search-workflow-table></app-search-workflow-table>
-      </span>
+      <app-search-workflow-table></app-search-workflow-table>
     </div>
   </mat-tab>
 </mat-tab-group>

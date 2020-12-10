@@ -49,11 +49,15 @@
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
       <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let tool">{{ tool?.author || 'n/a' }}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="descriptorType">
-      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool">{{
-        tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : ''
-      }}</mat-cell>
+    <ng-container matColumnDef="descriptorType" style="width: fit-content">
+      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header fxFlex="15%">Format</mat-header-cell>
+      <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool" fxFlex="15%">
+        <div *ngFor="let language of tool?.descriptorType" class="m-1">
+          <span class="nonclick-badge">
+            {{ language ? (language.toString() | uppercase) : '' }}
+          </span>
+        </div>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Project Links</mat-header-cell>

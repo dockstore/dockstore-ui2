@@ -38,7 +38,7 @@ export class SearchResultsComponent extends Base implements OnInit {
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   options: CloudOptions = {
-    width: 600,
+    width: 500,
     height: 200,
     overflow: false,
   };
