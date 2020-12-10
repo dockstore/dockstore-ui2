@@ -1269,3 +1269,14 @@ mat-tab-group.no-pagination {
   font-size: smaller;
   color: rgba(0, 0, 0, 0.54);
 }
+
+// Styling from design mockups
+// These badges are not clickable, thus different from Material Design Chips
+.nonclick-badge {
+  border-radius: 8px;
+  background-color: #dfe0e2;
+  padding: 5px 8px;
+  color: #151c3d;
+  font-size: 1.3rem;
+  font-weight: 500;
+}

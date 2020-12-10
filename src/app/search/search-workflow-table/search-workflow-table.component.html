@@ -35,7 +35,9 @@
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
       <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow">
-        <span class="language-badge">{{ workflow?.descriptorType | uppercase }}</span>
+        <div>
+          <span class="nonclick-badge">{{ workflow?.descriptorType | uppercase }}</span>
+        </div>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
