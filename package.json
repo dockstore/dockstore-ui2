@@ -67,6 +67,7 @@
     "ngx-clipboard": "^13.0.1",
     "ngx-markdown": "^9.1.1",
     "ngx-sharebuttons": "^8.0.0",
+    "ngx-window-token": "^4.0.0",
     "rxjs": "^6.5.3",
     "ts-md5": "^1.2.6",
     "tslib": "^2.0.0",
