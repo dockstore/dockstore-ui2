@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { OnDestroy } from '@angular/core';
+import { Directive, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 /**
@@ -26,7 +26,8 @@ import { Subject } from 'rxjs';
  * @class Base
  * @implements {OnDestroy}
  */
-// TODO: Add Angular decorator.
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class Base implements OnDestroy {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 

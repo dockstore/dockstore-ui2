@@ -9,7 +9,8 @@ import { EntriesService, OrganizationUpdateTime, UsersService } from '../../shar
  * Base class for logged in homepage widgets that have a filter list
  */
 @Directive()
-export abstract class FilteredListDirective extends Base implements OnInit {
+// tslint:disable-next-line: directive-class-suffix
+export abstract class FilteredList extends Base implements OnInit {
   userId$: Observable<number>;
   public hasItems = false;
   public firstCall = true;
