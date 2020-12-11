@@ -26,6 +26,7 @@ import { Subject } from 'rxjs';
  * @class Base
  * @implements {OnDestroy}
  */
+// TODO: Add Angular decorator.
 export abstract class Base implements OnDestroy {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 

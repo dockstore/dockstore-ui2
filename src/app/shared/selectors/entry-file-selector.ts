@@ -30,6 +30,7 @@ import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version
  */
+// TODO: Add Angular decorator.
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
   id: number;

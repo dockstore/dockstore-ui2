@@ -1,4 +1,4 @@
-import { OnInit } from '@angular/core';
+import { Directive, OnInit } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable, Subject } from 'rxjs';
@@ -8,7 +8,8 @@ import { EntriesService, OrganizationUpdateTime, UsersService } from '../../shar
 /**
  * Base class for logged in homepage widgets that have a filter list
  */
-export abstract class FilteredList extends Base implements OnInit {
+@Directive()
+export abstract class FilteredListDirective extends Base implements OnInit {
   userId$: Observable<number>;
   public hasItems = false;
   public firstCall = true;
