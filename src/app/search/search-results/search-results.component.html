@@ -41,7 +41,7 @@
                 <i [class]="(showToolTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
               </div>
             </button>
-            <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async">
+            <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async" data-cy="tagCloud">
               <angular-tag-cloud
                 [data]="toolTagCloudData"
                 [width]="options.width"

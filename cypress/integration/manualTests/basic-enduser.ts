@@ -111,9 +111,9 @@ describe('Test search page functionality', () => {
   });
   it('has working tag cloud', () => {
     cy.get('[data-cy=tagCloud]').should('not.exist');
-    cy.contains('button', 'Tag Cloud').click();
+    cy.contains('button', 'Popular Keywords').click();
     cy.get('[data-cy=tagCloud]').should('exist');
-    cy.contains('button', 'Tag Cloud').click();
+    cy.contains('button', 'Popular Keywords').click();
     cy.get('[data-cy=tagCloud]').should('not.exist');
   });
   it('searches', () => {
