@@ -220,7 +220,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
   ],
-  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

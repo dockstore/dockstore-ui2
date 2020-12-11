@@ -10,6 +10,5 @@ import { CreateCollectionComponent } from './create-collection/create-collection
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, ReactiveFormsModule, RefreshAlertModule],
   declarations: [CreateCollectionComponent],
-  entryComponents: [CreateCollectionComponent],
 })
 export class CreateCollectionModule {}
