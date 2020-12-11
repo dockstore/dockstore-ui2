@@ -68,7 +68,7 @@
     "ngx-markdown": "^10.1.1",
     "ngx-sharebuttons": "^8.0.0",
     "ngx-window-token": "^4.0.0",
-    "rxjs": "^6.5.3",
+    "rxjs": "^6.6.3",
     "ts-md5": "^1.2.6",
     "tslib": "^1.14.1",
     "uuid": "^7.0.3",
