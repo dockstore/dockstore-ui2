@@ -12,14 +12,16 @@ describe('HomeLoggedInComponent', () => {
   let component: HomeLoggedInComponent;
   let fixture: ComponentFixture<HomeLoggedInComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [HomeLoggedInComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
-      providers: [TwitterService],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [HomeLoggedInComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
+        providers: [TwitterService],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeLoggedInComponent);

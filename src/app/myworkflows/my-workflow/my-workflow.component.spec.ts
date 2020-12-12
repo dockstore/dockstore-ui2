@@ -54,35 +54,37 @@ describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
   let fixture: ComponentFixture<MyWorkflowComponent>;
   let registerWorkflowModalService: RegisterWorkflowModalService;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, CustomMaterialModule, MyEntriesModule],
-      providers: [
-        UserQuery,
-        { provide: Configuration, useClass: ConfigurationStub },
-        { provide: UsersService, useClass: UsersStubService },
-        { provide: AuthService, useClass: AuthStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-        { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-        MyWorkflowsService,
-        MyBioWorkflowsService,
-        MyServicesService,
-        TokenQuery,
-        { provide: AccountsService, useClass: AccountsStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: UrlResolverService, useClass: UrlResolverStubService },
-        {
-          provide: MatDialogRef,
-          useValue: {
-            close: (dialogResult: any) => {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, CustomMaterialModule, MyEntriesModule],
+        providers: [
+          UserQuery,
+          { provide: Configuration, useClass: ConfigurationStub },
+          { provide: UsersService, useClass: UsersStubService },
+          { provide: AuthService, useClass: AuthStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+          { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+          MyWorkflowsService,
+          MyBioWorkflowsService,
+          MyServicesService,
+          TokenQuery,
+          { provide: AccountsService, useClass: AccountsStubService },
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+          { provide: UrlResolverService, useClass: UrlResolverStubService },
+          {
+            provide: MatDialogRef,
+            useValue: {
+              close: (dialogResult: any) => {},
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MyWorkflowComponent);

@@ -31,19 +31,21 @@ describe('RegisterCheckerWorkflowComponent', () => {
   let component: RegisterCheckerWorkflowComponent;
   let fixture: ComponentFixture<RegisterCheckerWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [RegisterCheckerWorkflowComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [FormsModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, CustomMaterialModule],
-      providers: [
-        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
-        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-        DescriptorTypeCompatService,
-        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RegisterCheckerWorkflowComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [FormsModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, CustomMaterialModule],
+        providers: [
+          { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
+          { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+          DescriptorTypeCompatService,
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterCheckerWorkflowComponent);

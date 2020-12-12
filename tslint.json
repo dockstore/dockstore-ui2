@@ -11,10 +11,6 @@
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,
-    "rxjs-proper-imports": true,
-    "rxjs-no-static-observable-methods": true,
-    "rxjs-pipeable-operators-only": true,
-    "rxjs-collapse-imports": true,
     "comment-format": [
       true,
       "check-space"

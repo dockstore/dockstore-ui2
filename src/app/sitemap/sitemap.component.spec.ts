@@ -6,12 +6,14 @@ describe('SitemapComponent', () => {
   let component: SitemapComponent;
   let fixture: ComponentFixture<SitemapComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SitemapComponent],
-      imports: [RouterTestingModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SitemapComponent],
+        imports: [RouterTestingModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SitemapComponent);

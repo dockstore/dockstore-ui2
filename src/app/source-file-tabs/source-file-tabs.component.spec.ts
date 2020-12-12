@@ -12,17 +12,19 @@ describe('SourceFileTabsComponent', () => {
   let component: SourceFileTabsComponent;
   let fixture: ComponentFixture<SourceFileTabsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SourceFileTabsComponent, MapFriendlyValuesPipe],
-      imports: [HttpClientTestingModule],
-      providers: [
-        { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
-        { provide: FileService, useClass: FileStubService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SourceFileTabsComponent, MapFriendlyValuesPipe],
+        imports: [HttpClientTestingModule],
+        providers: [
+          { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
+          { provide: FileService, useClass: FileStubService },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SourceFileTabsComponent);

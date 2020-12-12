@@ -10,12 +10,14 @@ describe('RefreshAlertComponent', () => {
   let component: AlertComponent;
   let fixture: ComponentFixture<AlertComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, MatSnackBarModule, MatIconModule, MatCardModule],
-      declarations: [AlertComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [MatProgressBarModule, MatSnackBarModule, MatIconModule, MatCardModule],
+        declarations: [AlertComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AlertComponent);

@@ -30,17 +30,19 @@ describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
   let fixture: ComponentFixture<SearchResultsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchResultsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [TagCloudModule, RouterTestingModule],
-      providers: [
-        { provide: SearchService, useClass: SearchStubService },
-        { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchResultsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [TagCloudModule, RouterTestingModule],
+        providers: [
+          { provide: SearchService, useClass: SearchStubService },
+          { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchResultsComponent);

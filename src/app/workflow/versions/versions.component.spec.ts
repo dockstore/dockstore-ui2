@@ -67,30 +67,32 @@ class MockVersionModalComponent {
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule],
-      declarations: [
-        VersionsWorkflowComponent,
-        OrderBy,
-        CommitUrlPipe,
-        VerifiedPlatformsPipe,
-        MockViewWorkflowComponent,
-        MockVersionModalComponent,
-      ],
-      providers: [
-        DockstoreService,
-        { provide: DateService, useClass: DateStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-        AlertQuery,
-        ProviderService,
-        WorkflowQuery,
-        { provide: ImageProviderService, useClass: ImageProviderStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule],
+        declarations: [
+          VersionsWorkflowComponent,
+          OrderBy,
+          CommitUrlPipe,
+          VerifiedPlatformsPipe,
+          MockViewWorkflowComponent,
+          MockVersionModalComponent,
+        ],
+        providers: [
+          DockstoreService,
+          { provide: DateService, useClass: DateStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+          AlertQuery,
+          ProviderService,
+          WorkflowQuery,
+          { provide: ImageProviderService, useClass: ImageProviderStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VersionsWorkflowComponent);

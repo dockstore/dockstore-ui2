@@ -53,18 +53,20 @@ describe('SearchComponent', () => {
   let searchQuery: jasmine.SpyObj<SearchQuery>;
   let fixture: ComponentFixture<SearchComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-      imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
-      providers: [
-        { provide: SearchService, useClass: SearchStubService },
-        { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-        { provide: ProviderService, useClass: ProviderStubService },
-        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
+        imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
+        providers: [
+          { provide: SearchService, useClass: SearchStubService },
+          { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+          { provide: ProviderService, useClass: ProviderStubService },
+          { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);

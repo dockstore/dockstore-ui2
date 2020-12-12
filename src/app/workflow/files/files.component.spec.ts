@@ -25,16 +25,18 @@ describe('FilesWorkflowComponent', () => {
   let component: FilesWorkflowComponent;
   let fixture: ComponentFixture<FilesWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [FilesWorkflowComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: ParamfilesService, useClass: ParamFilesStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FilesWorkflowComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          { provide: ParamfilesService, useClass: ParamFilesStubService },
+          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FilesWorkflowComponent);

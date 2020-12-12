@@ -16,19 +16,21 @@ describe('SearchToolTableComponent', () => {
   let component: SearchToolTableComponent;
   let fixture: ComponentFixture<SearchToolTableComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchToolTableComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
-      providers: [
-        { provide: DockstoreService, useClass: DockstoreStubService },
-        DateService,
-        { provide: ListContainersService, useClass: ListContainersStubService },
-        { provide: SearchService, useClass: SearchStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchToolTableComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
+        providers: [
+          { provide: DockstoreService, useClass: DockstoreStubService },
+          DateService,
+          { provide: ListContainersService, useClass: ListContainersStubService },
+          { provide: SearchService, useClass: SearchStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchToolTableComponent);

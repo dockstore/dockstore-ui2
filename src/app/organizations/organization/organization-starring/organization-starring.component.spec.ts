@@ -38,20 +38,22 @@ describe('OrganizationStarringComponent', () => {
   let component: OrganizationStarringComponent;
   let fixture: ComponentFixture<OrganizationStarringComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [MatIconModule, MatSnackBarModule],
-      declarations: [OrganizationStarringComponent],
-      providers: [
-        { provide: TrackLoginService, useClass: TrackLoginStubService },
-        { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },
-        { provide: StarentryService, useClass: StarEntryStubService },
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: StarringService, useClass: StarringStubService },
-        { provide: StarOrganizationService, useClass: StarOrganizationStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [MatIconModule, MatSnackBarModule],
+        declarations: [OrganizationStarringComponent],
+        providers: [
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
+          { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },
+          { provide: StarentryService, useClass: StarEntryStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
+          { provide: StarringService, useClass: StarringStubService },
+          { provide: StarOrganizationService, useClass: StarOrganizationStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrganizationStarringComponent);

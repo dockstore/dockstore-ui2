@@ -73,28 +73,31 @@ describe('Service: CWLViewer', () => {
   }
 
   if (Dockstore.FEATURES.enableCwlViewer) {
-    it('should work if POST returns 202', fakeAsync(() => {
-      cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(
-        (resp) => {
-          expect(resp.svgUrl).toBe(
-            Dockstore.CWL_VISUALIZER_URI + '/graph/svg/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
-          );
-        },
-        () => {}
-      );
-      const response202 = httpMock.expectOne(commonWlEndpoint);
-      response202.flush(null, {
-        headers: {
-          Location: '/queue/1',
-        },
-        status: 202,
-        statusText: 'Accepted',
-      });
-      tick(600);
-      const poll = httpMock.expectOne(Dockstore.CWL_VISUALIZER_URI + '/queue/1');
-      poll.flush(cwlViewerResponse);
-      httpMock.verify();
-    }));
+    it(
+      'should work if POST returns 202',
+      fakewaitForAsync(() => {
+        cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(
+          (resp) => {
+            expect(resp.svgUrl).toBe(
+              Dockstore.CWL_VISUALIZER_URI + '/graph/svg/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
+            );
+          },
+          () => {}
+        );
+        const response202 = httpMock.expectOne(commonWlEndpoint);
+        response202.flush(null, {
+          headers: {
+            Location: '/queue/1',
+          },
+          status: 202,
+          statusText: 'Accepted',
+        });
+        tick(600);
+        const poll = httpMock.expectOne(Dockstore.CWL_VISUALIZER_URI + '/queue/1');
+        poll.flush(cwlViewerResponse);
+        httpMock.verify();
+      })
+    );
   }
 
   if (Dockstore.FEATURES.enableCwlViewer) {
@@ -110,27 +113,30 @@ describe('Service: CWLViewer', () => {
   }
 
   if (Dockstore.FEATURES.enableCwlViewer) {
-    it('should work if queue returns an error', fakeAsync(() => {
-      cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(
-        (resp) => {
-          expect(resp.svgUrl).toBe(
-            Dockstore.CWL_VISUALIZER_URI + '/graph/svg/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
-          );
-        },
-        () => {}
-      );
-      const response202 = httpMock.expectOne(commonWlEndpoint);
-      response202.flush(null, {
-        headers: {
-          Location: '/queue/1',
-        },
-        status: 202,
-        statusText: 'Accepted',
-      });
-      tick(600);
-      const poll = httpMock.expectOne(Dockstore.CWL_VISUALIZER_URI + '/queue/1');
-      poll.flush(cwlViewerError);
-      httpMock.verify();
-    }));
+    it(
+      'should work if queue returns an error',
+      fakewaitForAsync(() => {
+        cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(
+          (resp) => {
+            expect(resp.svgUrl).toBe(
+              Dockstore.CWL_VISUALIZER_URI + '/graph/svg/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
+            );
+          },
+          () => {}
+        );
+        const response202 = httpMock.expectOne(commonWlEndpoint);
+        response202.flush(null, {
+          headers: {
+            Location: '/queue/1',
+          },
+          status: 202,
+          statusText: 'Accepted',
+        });
+        tick(600);
+        const poll = httpMock.expectOne(Dockstore.CWL_VISUALIZER_URI + '/queue/1');
+        poll.flush(cwlViewerError);
+        httpMock.verify();
+      })
+    );
   }
 });

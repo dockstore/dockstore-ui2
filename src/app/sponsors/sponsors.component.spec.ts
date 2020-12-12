@@ -23,13 +23,15 @@ describe('SponsorsComponent', () => {
   let component: SponsorsComponent;
   let fixture: ComponentFixture<SponsorsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SponsorsComponent],
-      providers: [Location],
-      imports: [RouterTestingModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SponsorsComponent],
+        providers: [Location],
+        imports: [RouterTestingModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SponsorsComponent);

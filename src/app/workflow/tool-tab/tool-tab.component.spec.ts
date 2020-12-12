@@ -26,16 +26,18 @@ describe('ToolTabComponent', () => {
   let component: ToolTabComponent;
   let fixture: ComponentFixture<ToolTabComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ToolTabComponent],
-      imports: [FormsModule, CustomMaterialModule, RefreshAlertModule],
-      providers: [
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ToolTabComponent],
+        imports: [FormsModule, CustomMaterialModule, RefreshAlertModule],
+        providers: [
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolTabComponent);

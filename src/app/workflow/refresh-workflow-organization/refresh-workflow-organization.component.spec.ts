@@ -41,20 +41,22 @@ describe('RefreshWorkflowOrganizationComponent', () => {
   let component: RefreshWorkflowOrganizationComponent;
   let fixture: ComponentFixture<RefreshWorkflowOrganizationComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [RefreshWorkflowOrganizationComponent],
-      imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule, HttpClientTestingModule],
-      providers: [
-        { provide: UsersService, useClass: UsersStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-        { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
-        { provide: DateService, useClass: DateStubService },
-        { provide: ProviderService, useClass: ProviderStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RefreshWorkflowOrganizationComponent],
+        imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule, HttpClientTestingModule],
+        providers: [
+          { provide: UsersService, useClass: UsersStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+          { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
+          { provide: DateService, useClass: DateStubService },
+          { provide: ProviderService, useClass: ProviderStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RefreshWorkflowOrganizationComponent);

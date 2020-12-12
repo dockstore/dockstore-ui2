@@ -29,19 +29,21 @@ describe('DagComponent', () => {
   let component: DagComponent;
   let fixture: ComponentFixture<DagComponent>;
   let dagQuery: DagQuery;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DagComponent, CwlViewerComponent],
-      imports: [HttpClientTestingModule, FormsModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        DagStore,
-        DagQuery,
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DagComponent, CwlViewerComponent],
+        imports: [HttpClientTestingModule, FormsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          DagStore,
+          DagQuery,
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DagComponent);

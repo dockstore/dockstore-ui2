@@ -16,29 +16,31 @@ describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
   let fixture: ComponentFixture<SidebarAccordionComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, SelectTabPipe, GithubNameToIdPipe],
-      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
-      providers: [
-        {
-          provide: RegisterWorkflowModalService,
-          useClass: RegisterWorkflowModalStubService,
-        },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        {
-          provide: MatDialogRef,
-          useValue: {
-            close: (dialogResult: any) => {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, SelectTabPipe, GithubNameToIdPipe],
+        imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
+        providers: [
+          {
+            provide: RegisterWorkflowModalService,
+            useClass: RegisterWorkflowModalStubService,
           },
-        },
-        {
-          provide: RefreshService,
-          useClass: RefreshStubService,
-        },
-      ],
-    }).compileComponents();
-  }));
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          {
+            provide: MatDialogRef,
+            useValue: {
+              close: (dialogResult: any) => {},
+            },
+          },
+          {
+            provide: RefreshService,
+            useClass: RefreshStubService,
+          },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarAccordionComponent);

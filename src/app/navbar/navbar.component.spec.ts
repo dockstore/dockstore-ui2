@@ -33,18 +33,20 @@ describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
   let pagenumberService: PagenumberService;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [NavbarComponent],
-      imports: [RouterTestingModule, MatMenuModule, MatButtonModule, MatIconModule, MatDividerModule, MatToolbarModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        PagenumberService,
-        { provide: TrackLoginService, useClass: TrackLoginStubService },
-        { provide: LogoutService, useClass: LogoutStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [NavbarComponent],
+        imports: [RouterTestingModule, MatMenuModule, MatButtonModule, MatIconModule, MatDividerModule, MatToolbarModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          PagenumberService,
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
+          { provide: LogoutService, useClass: LogoutStubService },
+        ],
+      }).compileComponents();
+    })
+  );
   beforeEach(() => {
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;

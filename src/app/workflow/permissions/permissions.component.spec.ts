@@ -11,17 +11,19 @@ describe('PermissionsComponent', () => {
   let component: PermissionsComponent;
   let fixture: ComponentFixture<PermissionsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [PermissionsComponent],
-      imports: [CustomMaterialModule],
-      providers: [
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: TokenService, useClass: TokenStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [PermissionsComponent],
+        imports: [CustomMaterialModule],
+        providers: [
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+          { provide: TokenService, useClass: TokenStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PermissionsComponent);

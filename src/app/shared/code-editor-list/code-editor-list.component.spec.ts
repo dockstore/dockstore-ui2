@@ -22,26 +22,28 @@ describe('CodeEditorListComponent', () => {
   let component: CodeEditorListComponent;
   let fixture: ComponentFixture<CodeEditorListComponent>;
   class FileStubService {}
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CodeEditorListComponent, CodeEditorComponent, PublicFileDownloadPipe, PrivateFileDownloadPipe, PrivateFilePathPipe],
-      imports: [
-        MatButtonModule,
-        MatTabsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatTooltipModule,
-        MatCardModule,
-        ClipboardModule,
-      ],
-      providers: [
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: FileService, useClass: FileStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CodeEditorListComponent, CodeEditorComponent, PublicFileDownloadPipe, PrivateFileDownloadPipe, PrivateFilePathPipe],
+        imports: [
+          MatButtonModule,
+          MatTabsModule,
+          MatToolbarModule,
+          MatIconModule,
+          MatInputModule,
+          MatFormFieldModule,
+          MatTooltipModule,
+          MatCardModule,
+          ClipboardModule,
+        ],
+        providers: [
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: FileService, useClass: FileStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CodeEditorListComponent);

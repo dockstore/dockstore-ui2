@@ -28,17 +28,19 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
   let component: InfoTabCheckerWorkflowPathComponent;
   let fixture: ComponentFixture<InfoTabCheckerWorkflowPathComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule, RouterTestingModule, MatDialogModule, CustomMaterialModule],
-      providers: [
-        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
-      ],
-      declarations: [InfoTabCheckerWorkflowPathComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, RouterTestingModule, MatDialogModule, CustomMaterialModule],
+        providers: [
+          { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+          { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
+        ],
+        declarations: [InfoTabCheckerWorkflowPathComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoTabCheckerWorkflowPathComponent);

@@ -10,12 +10,14 @@ describe('VerifiedDisplayComponent', () => {
   let component: VerifiedDisplayComponent;
   let fixture: ComponentFixture<VerifiedDisplayComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [VerifiedDisplayComponent],
-      imports: [CustomMaterialModule, BrowserAnimationsModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [VerifiedDisplayComponent],
+        imports: [CustomMaterialModule, BrowserAnimationsModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VerifiedDisplayComponent);

@@ -23,13 +23,15 @@ describe('LaunchCheckerWorkflowComponent', () => {
   let component: LaunchCheckerWorkflowComponent;
   let fixture: ComponentFixture<LaunchCheckerWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [LaunchCheckerWorkflowComponent],
-      providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
-      imports: [MatCardModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LaunchCheckerWorkflowComponent],
+        providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
+        imports: [MatCardModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LaunchCheckerWorkflowComponent);

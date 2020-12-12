@@ -7,12 +7,14 @@ describe('VerifiedByComponent', () => {
   let component: VerifiedByComponent;
   let fixture: ComponentFixture<VerifiedByComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CustomMaterialModule],
-      declarations: [VerifiedByComponent],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CustomMaterialModule],
+        declarations: [VerifiedByComponent],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VerifiedByComponent);

@@ -26,7 +26,7 @@
 //   let component: WdlViewerComponent;
 //   let fixture: ComponentFixture<WdlViewerComponent>;
 //
-//   beforeEach(async(() => {
+//   beforeEach(waitForAsync(() => {
 //     TestBed.configureTestingModule({
 //       declarations: [WdlViewerComponent],
 //       schemas: [CUSTOM_ELEMENTS_SCHEMA],

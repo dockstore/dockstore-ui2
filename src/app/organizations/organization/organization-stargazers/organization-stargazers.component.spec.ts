@@ -27,17 +27,19 @@ describe('OrganizationStargazersComponent', () => {
   let component: OrganizationStargazersComponent;
   let fixture: ComponentFixture<OrganizationStargazersComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [OrganizationStargazersComponent],
-      imports: [MatIconModule, MatCardModule],
-      providers: [
-        { provide: UserService, useClass: UserStubService },
-        { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },
-        { provide: StarOrganizationService, useClass: StarOrganizationStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [OrganizationStargazersComponent],
+        imports: [MatIconModule, MatCardModule],
+        providers: [
+          { provide: UserService, useClass: UserStubService },
+          { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },
+          { provide: StarOrganizationService, useClass: StarOrganizationStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OrganizationStargazersComponent);

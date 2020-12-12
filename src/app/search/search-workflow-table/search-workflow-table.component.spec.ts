@@ -16,18 +16,20 @@ describe('SearchWorkflowTableComponent', () => {
   let component: SearchWorkflowTableComponent;
   let fixture: ComponentFixture<SearchWorkflowTableComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchWorkflowTableComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
-      providers: [
-        { provide: DockstoreService, useClass: DockstoreStubService },
-        DateService,
-        { provide: SearchService, useClass: SearchStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchWorkflowTableComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
+        providers: [
+          { provide: DockstoreService, useClass: DockstoreStubService },
+          DateService,
+          { provide: SearchService, useClass: SearchStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchWorkflowTableComponent);

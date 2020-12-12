@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MetadataService } from '../metadata/metadata.service';
@@ -28,13 +28,15 @@ describe('FooterComponent', () => {
   let component: FooterComponent;
   let fixture: ComponentFixture<FooterComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [FooterComponent, GitTagPipe],
-      imports: [RouterTestingModule, MatIconModule],
-      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FooterComponent, GitTagPipe],
+        imports: [RouterTestingModule, MatIconModule],
+        providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FooterComponent);

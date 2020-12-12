@@ -14,14 +14,16 @@ describe('BasicSearchComponent', () => {
   let component: BasicSearchComponent;
   let fixture: ComponentFixture<BasicSearchComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatAutocompleteModule, RouterTestingModule, BrowserAnimationsModule, CustomMaterialModule],
-      declarations: [BasicSearchComponent],
-      providers: [ProviderService, { provide: SearchService, useClass: SearchStubService }],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [MatAutocompleteModule, RouterTestingModule, BrowserAnimationsModule, CustomMaterialModule],
+        declarations: [BasicSearchComponent],
+        providers: [ProviderService, { provide: SearchService, useClass: SearchStubService }],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BasicSearchComponent);

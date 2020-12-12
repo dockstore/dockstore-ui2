@@ -35,19 +35,21 @@ describe('StarringComponent', () => {
   let component: StarringComponent;
   let fixture: ComponentFixture<StarringComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [StarringComponent],
-      imports: [MatIconModule, MatSnackBarModule],
-      providers: [
-        { provide: StarringService, useClass: StarringStubService },
-        { provide: TrackLoginService, useClass: TrackLoginStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: StarentryService, useClass: StarEntryStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [StarringComponent],
+        imports: [MatIconModule, MatSnackBarModule],
+        providers: [
+          { provide: StarringService, useClass: StarringStubService },
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
+          { provide: StarentryService, useClass: StarEntryStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StarringComponent);
