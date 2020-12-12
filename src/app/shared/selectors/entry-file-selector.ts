@@ -30,7 +30,6 @@ import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version
  */
-// TODO: Add Angular decorator.
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
 export abstract class EntryFileSelector implements OnDestroy {
