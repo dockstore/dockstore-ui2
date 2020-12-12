@@ -4,8 +4,7 @@
     "tslint-config-prettier"
   ],
   "rulesDirectory": [
-    "node_modules/codelyzer",
-    "node_modules/rxjs-tslint"
+    "node_modules/codelyzer"
   ],
   "rules": {
     "ordered-imports": true,
