@@ -16,7 +16,7 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';

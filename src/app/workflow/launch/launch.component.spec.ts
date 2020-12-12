@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ContainerService } from '../../shared/container.service';
 import { DescriptorService } from '../../shared/descriptor.service';

@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AccountsService } from 'app/loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RefreshService } from 'app/shared/refresh.service';

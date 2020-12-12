@@ -1,5 +1,5 @@
 import { SecurityContext } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MarkdownModule, MarkdownService, SECURITY_CONTEXT } from 'ngx-markdown';
 import { MarkdownWrapperComponent } from './markdown-wrapper.component';
 

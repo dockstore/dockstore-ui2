@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenService } from '../../shared/state/token.service';

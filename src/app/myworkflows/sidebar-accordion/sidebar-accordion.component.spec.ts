@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
@@ -30,7 +30,7 @@ describe('SidebarAccordionComponent', () => {
           {
             provide: MatDialogRef,
             useValue: {
-              close: (dialogResult: any) => {},
+              close: () => {},
             },
           },
           {
