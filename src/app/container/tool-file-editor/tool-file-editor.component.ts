@@ -119,7 +119,7 @@ export class ToolFileEditorComponent extends FileEditing {
               updatedVersion.name +
               ' of hosted tool ' +
               editedDockstoreTool.name +
-              (editedDockstoreTool.toolname ? '/' + editedDockstoreTool.toolname : null)
+              (editedDockstoreTool.toolname ? '/' + editedDockstoreTool.toolname : '')
           );
         } else {
           // Probably encountered a 204
