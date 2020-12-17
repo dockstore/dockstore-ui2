@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AliasesService } from './state/aliases.service';
-import { AliasesQuery } from './state/aliases.query';
-import { ActivatedRoute, Router } from '../test';
 import { Observable } from 'rxjs';
-import { Organization, Collection, Workflow, WorkflowVersionPathInfo, DockstoreTool } from '../shared/swagger';
-import { Base } from '../shared/base';
 import { takeUntil } from 'rxjs/operators';
+import { Base } from '../shared/base';
+import { Collection, DockstoreTool, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/swagger';
+import { ActivatedRoute, Router } from '../test';
+import { AliasesQuery } from './state/aliases.query';
+import { AliasesService } from './state/aliases.service';
 
 @Component({
   selector: 'aliases',
   templateUrl: './aliases.component.html',
-  styleUrls: ['./aliases.component.scss']
+  styleUrls: ['./aliases.component.scss'],
 })
 export class AliasesComponent extends Base implements OnInit {
   loading$: Observable<boolean>;

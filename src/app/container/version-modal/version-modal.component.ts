@@ -15,9 +15,10 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-
+import { MatDialog } from '@angular/material/dialog';
+import { Base } from 'app/shared/base';
+import { forkJoin } from 'rxjs';
+import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../../containers/list/list.service';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -34,22 +35,19 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
-  styleUrls: ['./version-modal.component.css']
+  styleUrls: ['./version-modal.component.css'],
 })
-export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class VersionModalComponent extends Base implements OnInit, AfterViewChecked, OnDestroy {
   public TagEditorMode = TagEditorMode;
   public DescriptorType = ToolDescriptor.TypeEnum;
   public editMode: boolean;
   public mode: TagEditorMode;
   public tool: DockstoreTool;
-  public unsavedVersion;
-  private savedCWLTestParameterFiles: Array<any>;
-  private savedWDLTestParameterFiles: Array<any>;
+  public unsavedVersion: Tag;
   private savedCWLTestParameterFilePaths: Array<string>;
   private savedWDLTestParameterFilePaths: Array<string>;
   public unsavedCWLTestParameterFilePaths: Array<string> = [];
@@ -58,14 +56,12 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public unsavedTestWDLFile = '';
   public dockerPullCommand = '';
   public DockstoreToolType = DockstoreTool;
-
+  public loading = true;
   public formErrors = formErrors;
   public version: Tag;
   public validationPatterns = validationDescriptorPatterns;
   tagEditorForm: NgForm;
-  @ViewChild('tagEditorForm', { static: false }) currentForm: NgForm;
-
-  private ngUnsubscribe: Subject<{}> = new Subject();
+  @ViewChild('tagEditorForm') currentForm: NgForm;
 
   constructor(
     private paramfilesService: ParamfilesService,
@@ -79,10 +75,12 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     private dateService: DateService,
     private matDialog: MatDialog,
     private toolQuery: ToolQuery
-  ) {}
+  ) {
+    super();
+  }
 
   // Almost all these functions should be moved to a service
-  getSizeString(size) {
+  getSizeString(size: number) {
     return this.versionModalService.getSizeString(size);
   }
 
@@ -101,11 +99,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.tagEditorForm = this.currentForm;
     if (this.tagEditorForm) {
       this.tagEditorForm.valueChanges
-        .pipe(
-          debounceTime(formInputDebounceTime),
-          takeUntil(this.ngUnsubscribe)
-        )
-        .subscribe(data => this.onValueChanged(data));
+        .pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => this.onValueChanged(data));
     }
   }
 
@@ -145,42 +140,46 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
       this.addTestParameterFile(this.DescriptorType.WDL);
     }
 
-    const newCWL = this.unsavedCWLTestParameterFilePaths.filter(x => !this.savedCWLTestParameterFilePaths.includes(x));
+    const newCWL = this.unsavedCWLTestParameterFilePaths.filter((x) => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
       // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService
-        .addTestParameterFiles(id, newCWL, 'CWL', tagName, null)
-        .subscribe(response => {}, err => this.alertService.detailedError(err));
+      this.containersService.addTestParameterFiles(id, newCWL, 'CWL', tagName, null).subscribe(
+        (response) => {},
+        (err) => this.alertService.detailedError(err)
+      );
     }
-    const missingCWL = this.savedCWLTestParameterFilePaths.filter(x => !this.unsavedCWLTestParameterFilePaths.includes(x));
+    const missingCWL = this.savedCWLTestParameterFilePaths.filter((x) => !this.unsavedCWLTestParameterFilePaths.includes(x));
     if (missingCWL && missingCWL.length > 0) {
       // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService
-        .deleteTestParameterFiles(id, missingCWL, 'CWL', tagName)
-        .subscribe(response => {}, err => this.alertService.detailedError(err));
+      this.containersService.deleteTestParameterFiles(id, missingCWL, 'CWL', tagName).subscribe(
+        (response) => {},
+        (err) => this.alertService.detailedError(err)
+      );
     }
-    const newWDL = this.unsavedWDLTestParameterFilePaths.filter(x => !this.savedWDLTestParameterFilePaths.includes(x));
+    const newWDL = this.unsavedWDLTestParameterFilePaths.filter((x) => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
       // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService
-        .addTestParameterFiles(id, newWDL, 'WDL', tagName, null)
-        .subscribe(response => {}, err => this.alertService.detailedError(err));
+      this.containersService.addTestParameterFiles(id, newWDL, 'WDL', tagName, null).subscribe(
+        (response) => {},
+        (err) => this.alertService.detailedError(err)
+      );
     }
-    const missingWDL = this.savedWDLTestParameterFilePaths.filter(x => !this.unsavedWDLTestParameterFilePaths.includes(x));
+    const missingWDL = this.savedWDLTestParameterFilePaths.filter((x) => !this.unsavedWDLTestParameterFilePaths.includes(x));
     if (missingWDL && missingWDL.length > 0) {
       // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService
-        .deleteTestParameterFiles(id, missingWDL, 'WDL', tagName)
-        .subscribe(response => {}, err => this.alertService.detailedError(err));
+      this.containersService.deleteTestParameterFiles(id, missingWDL, 'WDL', tagName).subscribe(
+        (response) => {},
+        (err) => this.alertService.detailedError(err)
+      );
     }
     this.containertagsService.updateTags(id, [this.unsavedVersion]).subscribe(
-      response => {
+      (response) => {
         this.tool = { ...this.tool, workflowVersions: response };
         this.containerService.setTool(this.tool);
         this.alertService.detailedSuccess();
         this.matDialog.closeAll();
       },
-      error => {
+      (error) => {
         this.alertService.detailedError(error);
         this.matDialog.closeAll();
       }
@@ -193,24 +192,25 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   }
 
   setMode(mode: TagEditorMode) {
+    this.loading = true;
     this.unsavedCWLTestParameterFilePaths = [];
     this.unsavedWDLTestParameterFilePaths = [];
     this.savedCWLTestParameterFilePaths = [];
     this.savedWDLTestParameterFilePaths = [];
-    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL).subscribe(file => {
-      this.savedCWLTestParameterFiles = file;
-      this.savedCWLTestParameterFiles.forEach(fileObject => {
-        this.savedCWLTestParameterFilePaths.push(fileObject.path);
-      });
-      this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
-    });
-    this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL).subscribe(file => {
-      this.savedWDLTestParameterFiles = file;
-      this.savedWDLTestParameterFiles.forEach(fileObject => {
-        this.savedWDLTestParameterFilePaths.push(fileObject.path);
-      });
-      this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
-    });
+    forkJoin([
+      this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.CWL),
+      this.paramfilesService.getFiles(this.tool.id, 'containers', this.version.name, ToolDescriptor.TypeEnum.WDL),
+    ])
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(
+        ([cwlFiles, wdlFiles]) => {
+          this.savedCWLTestParameterFilePaths = cwlFiles.map((cwlFile) => cwlFile.path);
+          this.unsavedCWLTestParameterFilePaths = this.savedCWLTestParameterFilePaths.slice();
+          this.savedWDLTestParameterFilePaths = wdlFiles.map((wdlFile) => wdlFile.path);
+          this.unsavedWDLTestParameterFilePaths = this.savedWDLTestParameterFilePaths.slice();
+        },
+        (error) => this.alertService.detailedError(error)
+      );
   }
 
   addTestParameterFile(descriptorType: ToolDescriptor.TypeEnum) {
@@ -264,13 +264,13 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.versionModalService.mode.pipe(takeUntil(this.ngUnsubscribe)).subscribe((mode: TagEditorMode) => (this.mode = mode));
-    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe(version => {
+    this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe((version) => {
       this.version = version;
       this.unsavedVersion = Object.assign({}, this.version);
       this.updateDockerPullCommand();
     });
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.editMode = !publicPage));
-    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => (this.editMode = !publicPage));
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       this.updateDockerPullCommand();
       if (this.mode !== null && this.tool) {
@@ -287,7 +287,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.savedWDLTestParameterFilePaths = [];
   }
 
-  getDateTimeMessage(timestamp) {
+  getDateTimeMessage(timestamp: number) {
     return this.dateService.getDateTimeMessage(timestamp);
   }
 

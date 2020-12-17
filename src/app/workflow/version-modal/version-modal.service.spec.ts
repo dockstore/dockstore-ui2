@@ -36,43 +36,33 @@ describe('Service: version-modal.service.ts', () => {
         { provide: WorkflowQuery, useValue: jasmine.createSpyObj('WorkflowQuery', ['getActive']) },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+      ],
     });
-    workflowQuery = TestBed.get(WorkflowQuery);
+    workflowQuery = TestBed.inject(WorkflowQuery) as jasmine.SpyObj<WorkflowQuery>;
   });
-  const expectedError: any = {
-    message: 'oh no!',
-    errorDetails: 'oh yes'
-  };
-  const expectedWorkflow: any = {
-    repository: 'GitHub',
-    descriptorType: 'cwl',
-    gitUrl: 'asdf',
-    workflowName: ''
-  };
   const expectedVersion: WorkflowVersion = {
     name: 'expectedName',
-    reference: 'expectedReference'
+    reference: 'expectedReference',
   };
   it('should ...', inject([VersionModalService], (service: VersionModalService) => {
     expect(service).toBeTruthy();
   }));
   it('should be able to set version', inject([VersionModalService], (service: VersionModalService) => {
     service.setVersion(expectedVersion);
-    service.version.subscribe(version => expect(version).toEqual(expectedVersion));
+    service.version.subscribe((version) => expect(version).toEqual(expectedVersion));
   }));
   it('should be able to set test parameter files', inject([VersionModalService], (service: VersionModalService) => {
     service.setTestParameterFiles([]);
-    service.testParameterFiles.subscribe(files => expect(files).toEqual([]));
+    service.testParameterFiles.subscribe((files) => expect(files).toEqual([]));
   }));
   it('should be able to save version and clear refreshing state', inject(
     [VersionModalService, AlertQuery],
     (service: VersionModalService, alertQuery: AlertQuery) => {
       workflowQuery.getActive.and.returnValue(<any>{ id: 1 });
-      service.saveVersion(expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
+      service.saveVersion(expectedVersion, expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
       // Refresh service takes modifying the refreshMessage from the third message;
-      alertQuery.message$.subscribe(refreshMessage => expect(refreshMessage).toEqual(''));
+      alertQuery.message$.subscribe((refreshMessage) => expect(refreshMessage).toEqual(''));
     }
   ));
 });

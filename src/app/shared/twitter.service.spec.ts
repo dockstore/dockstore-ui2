@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
 import { TwitterService } from './twitter.service';
 
 describe('TwitterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TwitterService]
+      providers: [TwitterService],
     });
   });
 

@@ -16,8 +16,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { faSort, faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
-import { Observable, Subject } from 'rxjs';
+import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
+import { SearchResponse } from 'elasticsearch';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
@@ -44,10 +45,9 @@ import { Hit, SearchService } from './state/search.service';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  faSort = faSort;
   faSortAlphaDown = faSortAlphaDown;
   faSortAlphaUp = faSortAlphaUp;
   faSortNumericDown = faSortNumericDown;
@@ -70,7 +70,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   public hits: Hit[];
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
-  public readonly query_size = 201;
+  // Set to 201 if searching both queries
+  public readonly query_size = 101;
+  public readonly query_size_full = 201;
   searchTerm = false;
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
@@ -107,6 +109,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
+
+  // For search within facets
+  public facetAutocompleteTerms$: Observable<Array<string>>;
+  public hasFacetAutoCompleteTerms$: Observable<boolean>;
+  public facetSearchText = '';
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -143,18 +150,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.values$ = this.searchQuery.searchText$;
     this.basicSearchText$ = this.searchQuery.basicSearchText$;
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
-    this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(toSaveSearch => {
+    this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toSaveSearch) => {
       if (toSaveSearch) {
         this.saveSearchFilter();
         this.searchService.toSaveSearch$.next(false);
       }
     });
     this.searchQuery.searchText$
-      .pipe(
-        debounceTime(formInputDebounceTime),
-        distinctUntilChanged(),
-        takeUntil(this.ngUnsubscribe)
-      )
+      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchText: string) => {
         this.onKey(searchText);
       });
@@ -170,6 +173,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.updatePermalink();
     });
+
+    this.facetAutocompleteTerms$ = this.searchQuery.facetAutoCompleteTerms$;
+    this.hasFacetAutoCompleteTerms$ = this.searchQuery.hasFacetAutoCompleteTerms$;
   }
 
   /**
@@ -180,16 +186,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!paramMap) {
       return;
     }
-    const newAdvancedSearchObject: AdvancedSearchObject = initialAdvancedSearchObject;
+    // Spread operator for assigning the initialAdvancedSearchObject must be used due to an issue occurring with
+    // only non-prod mode.
+    const newAdvancedSearchObject: AdvancedSearchObject = { ...initialAdvancedSearchObject };
     let newFilters: Map<string, Set<string>> = new Map<string, Set<string>>();
     // URL is gospel, if it doesn't have a search term, then there's no search term
     if (!paramMap.has('search')) {
       this.searchService.setSearchText('');
     }
-    paramMap.keys.forEach(key => {
+    paramMap.keys.forEach((key) => {
       const value = paramMap.getAll(key);
       if (this.friendlyNames.get(key)) {
-        value.forEach(categoryValue => {
+        value.forEach((categoryValue) => {
           categoryValue = decodeURIComponent(categoryValue);
           newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
@@ -231,7 +239,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @memberof SearchComponent
    */
   setupBuckets(key, buckets: any) {
-    buckets.forEach(bucket => {
+    buckets.forEach((bucket) => {
       if (!this.setFilter) {
         this.fullyExpandMap.set(key, false);
       }
@@ -278,7 +286,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @param {*} hits The response hits from elastic search
    * @memberof SearchComponent
    */
-  setupAllBuckets(hits: any) {
+  setupAllBuckets(hits: SearchResponse<Hit>) {
     this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
     Object.entries(aggregations).forEach(([key, value]) => {
@@ -320,7 +328,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       searchValues: values,
       checkbox: this.checkboxMap,
       sortModeMap: this.sortModeMap,
-      advancedSearchObject: advancedSearchObject
+      advancedSearchObject: advancedSearchObject,
     };
     this.searchService.setSearchInfo(searchInfo);
   }
@@ -333,7 +341,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       filter: this.filters,
       searchValues: values,
       advancedSearchObject: advancedSearchObject,
-      searchTerm: this.searchTerm
+      searchTerm: this.searchTerm,
     };
     const linkArray = this.searchService.createPermalinks(searchInfo);
     this.searchService.handleLink(linkArray);
@@ -352,7 +360,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
-      this.query_size,
+      this.query_size_full,
       values,
       advancedSearchObject,
       this.searchTerm,
@@ -360,29 +368,37 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters,
       this.sortModeMap
     );
-    const tableQuery = this.queryBuilderService.getResultQuery(
-      this.query_size,
-      values,
-      advancedSearchObject,
-      this.searchTerm,
-      this.filters
-    );
-    this.resetEntryOrder();
-    this.updateSideBar(sideBarQuery);
-    this.updateResultsTable(tableQuery);
+    if (!values && this.filters.size === 0) {
+      const toolsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'tools');
+      const workflowsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'workflows');
+      this.resetEntryOrder();
+      this.updateSideBar(sideBarQuery);
+      this.updateResultsTableSeparately(toolsQuery, workflowsQuery);
+    } else {
+      const tableQuery = this.queryBuilderService.getResultQuery(
+        this.query_size_full,
+        values,
+        advancedSearchObject,
+        this.searchTerm,
+        this.filters
+      );
+      this.resetEntryOrder();
+      this.updateSideBar(sideBarQuery);
+      this.updateResultsTable(tableQuery);
+    }
   }
 
   updateSideBar(value: string) {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
-      body: value
+      body: value,
     })
-      .then(hits => {
+      .then((hits) => {
         this.setupAllBuckets(hits);
         this.setupOrderBuckets();
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }
 
   /**
@@ -395,11 +411,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
-      body: value
+      body: value,
     })
-      .then(hits => {
+      .then((hits) => {
         this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
         const searchText = this.searchQuery.getValue().searchText;
         this.searchService.setHits(filteredHits[0], filteredHits[1]);
         if (searchText.length > 0 && hits) {
@@ -409,7 +425,37 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.searchService.suggestSearchTerm(searchText);
         }
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
+  }
+
+  /**
+   * Updates the results table when there is no search term
+   * We need to send one request per index
+   * When each index returns its results, join the results into a single array and filter into table
+   *
+   * @param {string} toolsQuery the elastic search query for tools index
+   * @param {string} workflowsQuery the elastic search query for workflows index
+   * @memberof SearchComponent
+   */
+  updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
+    const tools = ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: toolsQuery,
+    }).catch((error) => console.log(error));
+    const workflows = ELASTIC_SEARCH_CLIENT.search({
+      index: 'tools',
+      type: 'entry',
+      body: workflowsQuery,
+    }).catch((error) => console.log(error));
+
+    forkJoin([tools, workflows]).subscribe((results: Array<any>) => {
+      const toolHits = results[0].hits.hits;
+      const workflowHits = results[1].hits.hits;
+      this.hits = toolHits.concat(workflowHits);
+      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+      this.searchService.setHits(filteredHits[0], filteredHits[1]);
+    });
   }
 
   /**===============================================
@@ -418,6 +464,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   resetFilters() {
     this.searchService.reset();
+    this.facetSearchText = '';
   }
 
   resetEntryOrder() {
@@ -445,20 +492,18 @@ export class SearchComponent implements OnInit, OnDestroy {
               field: 'description',
               size: 4,
               order: {
-                _count: 'desc'
+                _count: 'desc',
               },
-              include: {
-                pattern: pattern
-              }
-            }
-          }
-        }
-      }
+              include: pattern,
+            },
+          },
+        },
+      },
     })
-      .then(hits => {
+      .then((hits) => {
         this.searchService.setAutoCompleteTerms(hits);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
     this.searchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
@@ -480,6 +525,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
     }
+    this.facetSearchText = '';
     this.updatePermalink();
   }
 
@@ -518,6 +564,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
     this.orderedBuckets.get(category).Items = orderedMap2;
     this.sortModeMap.get(category).SortBy = sortMode;
+  }
+
+  // Get autocomplete terms
+  onFacetSearchKey(key) {
+    const values = this.facetSearchText.toLowerCase();
+    const unfilteredItems = Array.from(this.orderedBuckets.get(key).Items.entries());
+    const filteredItems = unfilteredItems.filter((item) => item[0].toLowerCase().includes(values)).map((item) => item[0]);
+    this.searchService.setFacetAutocompleteTerms(filteredItems);
   }
 
   /**===============================================

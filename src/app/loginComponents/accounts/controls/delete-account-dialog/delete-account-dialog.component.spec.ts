@@ -2,12 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LogoutService } from '../../../../shared/logout.service';
 import { CustomMaterialModule } from '../../../../shared/modules/material.module';
 import { UsersService } from '../../../../shared/swagger';
 import { LogoutStubService, UsersStubService } from '../../../../test/service-stubs';
 import { DeleteAccountDialogComponent } from './delete-account-dialog.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DeleteAccountDialogComponent', () => {
   let component: DeleteAccountDialogComponent;
@@ -24,10 +24,10 @@ describe('DeleteAccountDialogComponent', () => {
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => {}
-          }
-        }
-      ]
+            close: (dialogResult: any) => {},
+          },
+        },
+      ],
     }).compileComponents();
   }));
 

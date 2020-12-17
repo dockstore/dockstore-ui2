@@ -5,5 +5,6 @@ export enum TokenSource {
   GITLAB = 'gitlab.com',
   ZENODO = 'zenodo.org',
   GOOGLE = 'google.com',
-  DOCKSTORE = 'dockstore'
+  DOCKSTORE = 'dockstore',
+  ORCID = 'orcid.org',
 }

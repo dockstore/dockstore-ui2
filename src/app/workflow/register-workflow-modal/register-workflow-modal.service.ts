@@ -17,7 +17,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
@@ -34,14 +33,13 @@ export class RegisterWorkflowModalService {
   sampleWorkflow: Workflow = <Workflow>{};
   actualWorkflow: Workflow;
   private sourceControlMap = [];
-  workflows: any;
+  workflows: Array<any>;
   isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
   public filteredDescriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
   workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(this.sampleWorkflow);
   constructor(
     private workflowsService: WorkflowsService,
-    private descriptorTypeCompatService: DescriptorTypeCompatService,
     private workflowService: WorkflowService,
     private router: Router,
     private alertService: AlertService,
@@ -54,11 +52,11 @@ export class RegisterWorkflowModalService {
     // because it's not supposed to be compatible yet (in the webservice)
     this.sampleWorkflow.descriptorType = Workflow.DescriptorTypeEnum.CWL;
     this.sampleWorkflow.workflowName = '';
-    this.metadataService.getSourceControlList().subscribe(map => (this.sourceControlMap = map));
-    this.descriptorLanguageService.descriptorLanguages$.subscribe(map => (this.descriptorLanguageMap = map));
+    this.metadataService.getSourceControlList().subscribe((map) => (this.sourceControlMap = map));
+    this.descriptorLanguageService.descriptorLanguages$.subscribe((map) => (this.descriptorLanguageMap = map));
     this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
-    this.workflow.subscribe(workflow => (this.actualWorkflow = workflow));
-    this.workflowService.workflows$.subscribe(workflows => (this.workflows = workflows));
+    this.workflow.subscribe((workflow) => (this.actualWorkflow = workflow));
+    this.workflowService.workflows$.subscribe((workflows) => (this.workflows = workflows));
   }
 
   clearWorkflowRegisterError() {
@@ -75,7 +73,7 @@ export class RegisterWorkflowModalService {
       if (error.status === 0) {
         errorObj = {
           message: 'The webservice is currently down, possibly due to load. Please wait and try again later.',
-          errorDetails: ''
+          errorDetails: '',
         };
       } else {
         errorObj = {
@@ -83,7 +81,7 @@ export class RegisterWorkflowModalService {
             'The webservice encountered an error trying to create this ' +
             'workflow, please ensure that the workflow attributes are ' +
             'valid.',
-          errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' + error.error
+          errorDetails: '[HTTP ' + error.status + '] ' + error.statusText + ': ' + error.error,
         };
       }
     }
@@ -113,14 +111,13 @@ export class RegisterWorkflowModalService {
         this.actualWorkflow.defaultTestParameterFilePath
       )
       .subscribe(
-        result => {
+        (result) => {
           this.workflowsService.refresh(result.id).subscribe(
-            refreshResult => {
+            (refreshResult) => {
               this.workflows.push(refreshResult);
-              this.workflowService.setWorkflows(this.workflows);
               this.alertService.detailedSuccess();
               dialogRef.close();
-              this.router.navigateByUrl('/my-workflows' + '/' + refreshResult.full_workflow_path);
+              this.handleNewWorkflow(this.workflows, refreshResult);
             },
             (error: HttpErrorResponse) => this.alertService.detailedError(error)
           );
@@ -148,13 +145,12 @@ export class RegisterWorkflowModalService {
         hostedWorkflow.entryName ? hostedWorkflow.entryName : undefined
       )
       .subscribe(
-        result => {
+        (result) => {
           this.alertService.detailedSuccess();
           this.workflows.push(result);
-          this.workflowService.setWorkflows(this.workflows);
           dialogRef.close();
           this.clearWorkflowRegisterError();
-          this.router.navigateByUrl('/my-workflows' + '/' + result.full_workflow_path);
+          this.handleNewWorkflow(this.workflows, result);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
@@ -164,8 +160,13 @@ export class RegisterWorkflowModalService {
 
   friendlyRepositoryKeys(): Array<string> {
     if (this.sourceControlMap) {
-      return this.sourceControlMap.map(a => a.friendlyName);
+      return this.sourceControlMap.map((a) => a.friendlyName);
     }
+  }
+
+  handleNewWorkflow(workflows: Array<any>, workflow: Workflow): void {
+    this.workflowService.setWorkflows(workflows);
+    this.router.navigateByUrl('/my-workflows' + '/' + workflow.full_workflow_path);
   }
 
   getDescriptorLanguageKeys(): Array<string> {

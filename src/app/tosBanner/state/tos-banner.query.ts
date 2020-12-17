@@ -16,14 +16,14 @@
 
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { TosBannerStore, TosBannerState } from './tos-banner.store';
 import { Observable } from 'rxjs';
 import { User } from '../../shared/openapi/model/user';
+import { TosBannerState, TosBannerStore } from './tos-banner.store';
 
 @Injectable({ providedIn: 'root' })
 export class TosBannerQuery extends Query<TosBannerState> {
-  dismissedLatestTOS$: Observable<User.TosversionEnum> = this.select(state => state.dismissedLatestTOS);
-  dismissedLatestPrivacyPolicy$: Observable<User.PrivacyPolicyVersionEnum> = this.select(state => state.dismissedLatestPrivacyPolicy);
+  dismissedLatestTOS$: Observable<User.TosversionEnum> = this.select((state) => state.dismissedLatestTOS);
+  dismissedLatestPrivacyPolicy$: Observable<User.PrivacyPolicyVersionEnum> = this.select((state) => state.dismissedLatestPrivacyPolicy);
 
   constructor(protected store: TosBannerStore) {
     super(store);

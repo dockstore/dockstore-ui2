@@ -1,5 +1,5 @@
-import { TimeAgoMsgPipe } from './organization/time-ago-msg.pipe';
 import { DateService } from '../shared/date.service';
+import { TimeAgoMsgPipe } from './organization/time-ago-msg.pipe';
 
 describe('Pipe: TimeAgoMsgPipe', () => {
   it('Create instance', () => {

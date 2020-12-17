@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from 'ng2-ui-auth';
 
@@ -25,7 +25,7 @@ describe('RegisterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
-      providers: [RegisterService, { provide: AuthService, useClass: AuthStubService }]
+      providers: [RegisterService, { provide: AuthService, useClass: AuthStubService }],
     });
   });
 
@@ -33,7 +33,7 @@ describe('RegisterService', () => {
     expect(service).toBeTruthy();
   }));
   it('should be able to authenticate', inject([RegisterService], (service: RegisterService) => {
-    service.authenticate('github').subscribe(user => {
+    service.authenticate('github').subscribe((user) => {
       expect(user).toEqual({});
     });
   }));

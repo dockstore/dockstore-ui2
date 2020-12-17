@@ -34,6 +34,8 @@ export class Dockstore {
   static TERRA_IMPORT_URL = 'https://app.terra.bio/#import-tool/dockstore';
   static CGC_IMPORT_URL = 'https://cgc.sbgenomics.com/integration/trs/import';
   static ANVIL_IMPORT_URL = 'https://anvil.terra.bio/#import-tool/dockstore';
+  static BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = 'https://sb.biodatacatalyst.nhlbi.nih.gov/integration/trs/import';
+  static BD_CATALYST_TERRA_IMPORT_URL = 'https://terra.biodatacatalyst.nhlbi.nih.gov/#import-tool/dockstore';
 
   static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
@@ -61,6 +63,11 @@ export class Dockstore {
   static ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.ZENODO;
   static ZENODO_SCOPE = 'deposit:write deposit:actions';
 
+  static ORCID_AUTH_URL = 'https://orcid.org/oauth/authorize';
+  static ORCID_CLIENT_ID = 'will be filled in by configuration.service';
+  static ORCID_SCOPE = '/authenticate';
+  static ORCID_REDIRECT_URI = Dockstore.HOSTNAME + '/auth/' + Provider.ORCID;
+
   static GOOGLE_CLIENT_ID = 'will be filled in by configuration.service';
   static GOOGLE_SCOPE = 'profile email';
   static GOOGLE_TAG_MANAGER_ID = 'filled in by configuration service';
@@ -72,7 +79,11 @@ export class Dockstore {
   static DOCUMENTATION_URL = 'https://docs.dockstore.org';
   static FEATURED_CONTENT_URL = 'will be filled in by configuration.service';
 
+  static DEPLOY_VERSION = '';
+  static COMPOSE_SETUP_VERSION = '';
+  static WEBSERVICE_COMMIT_ID = '';
+
   static FEATURES = {
-    enableCwlViewer: true
+    enableCwlViewer: true,
   };
 }

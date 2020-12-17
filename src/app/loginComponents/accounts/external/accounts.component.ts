@@ -15,26 +15,23 @@
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 import { Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
-
 import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
+import { TokenQuery } from '../../../shared/state/token.query';
+import { TokenService } from '../../../shared/state/token.service';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserService } from '../../../shared/user/user.service';
-import { UsersService } from './../../../shared/swagger/api/users.service';
-import { Configuration } from './../../../shared/swagger/configuration';
 import { Token } from './../../../shared/swagger/model/token';
 import { AccountsService } from './accounts.service';
-import { TokenService } from '../../../shared/state/token.service';
-import { TokenQuery } from '../../../shared/state/token.query';
 
 @Component({
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.css']
+  styleUrls: ['./accounts.component.css'],
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
@@ -45,47 +42,60 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       source: TokenSource.GITHUB,
       bold: 'One of GitHub or Google is required.',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
-      show: false
+      show: false,
+      logo: 'github.svg',
     },
     {
       name: 'Google',
       source: TokenSource.GOOGLE,
       bold: 'One of GitHub or Google is required.',
       message: 'Google credentials are used for login purposes and integration with Terra.',
-      show: false
+      show: false,
+      logo: 'google.svg',
     },
     {
       name: 'Quay',
       source: TokenSource.QUAY,
       bold: '',
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
-      show: false
+      show: false,
+      logo: 'quay.svg',
     },
     {
       name: 'Bitbucket',
       source: TokenSource.BITBUCKET,
       bold: '',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
-      show: false
+      show: false,
+      logo: 'bitbucket.svg',
     },
     {
       name: 'GitLab',
       source: TokenSource.GITLAB,
       bold: '',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
-      show: false
+      show: false,
+      logo: 'gitlab.svg',
     },
     {
       name: 'Zenodo',
       source: TokenSource.ZENODO,
       bold: '',
       message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
-      show: false
-    }
+      show: false,
+      logo: 'zenodo.jpg',
+    },
+    {
+      name: 'ORCID',
+      source: TokenSource.ORCID,
+      bold: '',
+      message: 'ORCID credentials are used for providing links from your Dockstore contributions to your ORCID account.',
+      show: false,
+      logo: 'orcid.svg',
+    },
   ];
 
   public tokens: Token[];
-  private userId;
   private ngUnsubscribe: Subject<{}> = new Subject();
   public show: false;
   public dockstoreToken: string;
@@ -93,16 +103,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private trackLoginService: TrackLoginService,
     private tokenService: TokenService,
     private userService: UserService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
-    private usersService: UsersService,
     private authService: AuthService,
-    private configuration: Configuration,
     private accountsService: AccountsService,
     private matSnackBar: MatSnackBar,
     private tokenQuery: TokenQuery
   ) {
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(state => {
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
       if (!state) {
         this.router.navigate(['']);
       }
@@ -126,7 +133,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
         () => {
           this.link(source);
         },
-        error => {
+        (error) => {
           this.matSnackBar.open('Failed to relink ' + source + ' account', 'Dismiss');
         }
       );
@@ -146,16 +153,16 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
           this.userService.getUser();
           this.matSnackBar.open('Unlinked ' + source + ' account', 'Dismiss');
         },
-        error => {
+        (error) => {
           this.matSnackBar.open('Failed to unlink ' + source, 'Dismiss');
         }
       );
   }
 
   // Show linked services in the UI
-  private setAvailableTokens(tokens) {
+  private setAvailableTokens(tokens: Token[]) {
     for (const account of this.accountsInfo) {
-      const found = tokens.find(token => token.tokenSource === account.source);
+      const found = tokens.find((token) => token.tokenSource === account.source);
       if (found) {
         account.isLinked = true;
       } else {
@@ -165,7 +172,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   // Set tokens and linked services
-  private setTokens(tokens): void {
+  private setTokens(tokens: Token[]): void {
     this.tokens = tokens;
     if (tokens) {
       this.setAvailableTokens(tokens);

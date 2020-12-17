@@ -30,13 +30,10 @@ describe('Dockstore workflow list page', () => {
     });
     // 1 workflow A/l, no checkers from other tests added
     it('Should have 1 workflow', () => {
-      cy
-        .get('mat-row')
-        .should('have.length', 1);
+      cy.get('mat-row').should('have.length', 1);
     });
     it('Should be able to go to the github.com/A/l workflow', () => {
-      cy
-        .get('mat-cell')
+      cy.get('mat-cell')
         .find('a')
         .contains(/^A\/l$/)
         .click()

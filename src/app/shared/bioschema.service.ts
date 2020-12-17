@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DateService } from './date.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Workflow } from '../shared/swagger/model/workflow';
-import { WorkflowVersion } from './swagger/model/workflowVersion';
-import { Tag } from './swagger';
-import { ExtendedWorkflowsService } from './extended-workflows.service';
+import { DateService } from './date.service';
 import { ExtendedToolsService } from './extended-tools.service';
+import { ExtendedWorkflowsService } from './extended-workflows.service';
+import { Tag } from './swagger';
+import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { WorkflowVersion } from './swagger/model/workflowVersion';
 
 export interface Person {
   '@type': string;
@@ -47,7 +47,7 @@ export class BioschemaService {
       applicationCategory: 'Bioinformatics',
       description: entry.description,
       url: window.location.href,
-      audience: 'Bioinformaticians'
+      audience: 'Bioinformaticians',
     };
     if (selectedVersion) {
       results.softwareVersion = selectedVersion.name;
@@ -58,7 +58,7 @@ export class BioschemaService {
     if (entry.author) {
       results.publisher = {
         '@type': 'Person',
-        name: entry.author
+        name: entry.author,
       };
       if (entry.email) {
         results.publisher.email = entry.email;
@@ -78,7 +78,7 @@ export class BioschemaService {
     if (tool.namespace && !results.publisher) {
       results.publisher = {
         '@type': 'Organization',
-        name: tool.namespace
+        name: tool.namespace,
       };
       if (tool.email) {
         results.publisher.email = tool.email;
@@ -102,7 +102,7 @@ export class BioschemaService {
     if (workflow.organization && !results.publisher) {
       results.publisher = {
         '@type': 'Organization',
-        name: workflow.organization
+        name: workflow.organization,
       };
       if (workflow.email) {
         results.publisher.email = workflow.email;

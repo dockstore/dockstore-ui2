@@ -13,60 +13,64 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import { ContainerService } from '../../shared/container.service';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileService } from '../../shared/file.service';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
+import { EntriesService, GA4GHV20Service } from '../../shared/openapi';
 import { EntryFileSelector } from '../../shared/selectors/entry-file-selector';
-import { ContainersService, GA4GHService, ToolDescriptor, ToolFile } from '../../shared/swagger';
+import { SourceFile, ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { Tag } from '../../shared/swagger/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
-import { ParamfilesService } from './paramfiles.service';
-import { FilesService } from '../../workflow/files/state/files.service';
 import { FilesQuery } from '../../workflow/files/state/files.query';
+import { FilesService } from '../../workflow/files/state/files.service';
+import { ParamfilesService } from './paramfiles.service';
 
 @Component({
   selector: 'app-paramfiles-container',
   templateUrl: './paramfiles.component.html',
-  styleUrls: ['./paramfiles.component.scss']
+  styleUrls: ['./paramfiles.component.scss'],
 })
-export class ParamfilesComponent extends EntryFileSelector {
+export class ParamfilesComponent extends EntryFileSelector implements OnChanges {
   @Input() id: number;
   @Input() entrypath: string;
   @Input() publicPage: boolean;
-  @Input() set selectedVersion(value: Tag) {
-    this.clearContent();
-    this.onVersionChange(value);
-    this.checkIfValid(false, value);
-  }
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
+  @Input() selectedVersion: Tag;
+
   public filePath: string;
   protected entryType: 'tool' | 'workflow' = 'tool';
   public downloadFilePath: string;
   constructor(
-    private containerService: ContainerService,
-    private containersService: ContainersService,
-    protected gA4GHService: GA4GHService,
+    protected gA4GHService: GA4GHV20Service,
     private paramfilesService: ParamfilesService,
     protected gA4GHFilesService: GA4GHFilesService,
     public fileService: FileService,
     private gA4GHFilesQuery: GA4GHFilesQuery,
     private toolQuery: ToolQuery,
     protected filesService: FilesService,
-    protected filesQuery: FilesQuery
+    protected filesQuery: FilesQuery,
+    protected entryService: EntriesService,
+    protected alertService: AlertService
   ) {
-    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery);
+    super(fileService, gA4GHFilesService, gA4GHService, filesService, filesQuery, entryService, alertService);
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.clearContent();
+    this.onVersionChange(this.selectedVersion, this.id);
+    this.checkIfValid(false, this.selectedVersion);
+  }
+
   getDescriptors(version): Array<any> {
-    return this.paramfilesService.getDescriptors(this._selectedVersion);
+    return this.paramfilesService.getDescriptors(this.versionsFileTypes);
   }
 
   getValidDescriptors(version): Array<any> {
-    return this.paramfilesService.getValidDescriptors(this._selectedVersion);
+    return this.paramfilesService.getValidDescriptors(this._selectedVersion, this.versionsFileTypes);
   }
 
   /**

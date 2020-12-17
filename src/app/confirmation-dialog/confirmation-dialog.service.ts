@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ConfirmationDialogComponent, ConfirmationDialogData } from './confirmation-dialog.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfirmationDialogService {
   constructor(public dialog: MatDialog) {}
@@ -20,7 +20,7 @@ export class ConfirmationDialogService {
   openDialog(data: ConfirmationDialogData, size: string): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: size,
-      data: data
+      data: data,
     });
     return dialogRef.afterClosed();
   }

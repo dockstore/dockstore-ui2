@@ -16,11 +16,8 @@
 
 import { setTokenUserViewPort } from '../../support/commands';
 describe('TOS Banner', () => {
-
   function checkForBanner() {
-    cy.
-    get('[data-cy=tos-banner]')
-      .contains('By using our site, you acknowledge that you have read and understand our');
+    cy.get('[data-cy=tos-banner]').contains('By using our site, you acknowledge that you have read and understand our');
   }
 
   beforeEach(() => {
@@ -33,8 +30,7 @@ describe('TOS Banner', () => {
     });
 
     it('Still visible if scrolled down', () => {
-      cy.
-        scrollTo(0, 500);
+      cy.scrollTo(0, 500);
       checkForBanner();
     });
 
@@ -53,20 +49,14 @@ describe('TOS Banner', () => {
     });
 
     it('Disappear once dismissed and reappear if TOS or Privacy policy updated', () => {
-      cy
-        .get('[data-cy=dismiss-tos-banner]')
-        .click();
-      cy
-        .get('[data-cy=tos-banner]')
-        .should('not.exist');
+      cy.get('[data-cy=dismiss-tos-banner]').click();
+      cy.get('[data-cy=tos-banner]').should('not.exist');
 
       cy.clearLocalStorage('dismissedLatestTOS');
       cy.visit('');
       checkForBanner();
 
-      cy
-        .get('[data-cy=dismiss-tos-banner]')
-        .click();
+      cy.get('[data-cy=dismiss-tos-banner]').click();
 
       cy.clearLocalStorage('dismissedLatestPrivacyPolicy');
       cy.visit('');
@@ -79,9 +69,7 @@ describe('TOS Banner', () => {
     it('Disappears once logged in', () => {
       cy.visit('');
       cy.wait(500);
-      cy
-        .get('[data-cy=tos-banner]')
-        .should('not.exist');
+      cy.get('[data-cy=tos-banner]').should('not.exist');
     });
   });
 });

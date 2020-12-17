@@ -9,7 +9,8 @@ The following classes are used style the featured content external html
 }
 
 .feat-content-card {
-  box-shadow: 0 0.4rem 0.8rem 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  border-radius: 0.5rem;
+  box-shadow: 0 0.4rem 0.5rem 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
   text-align: center;
   justify-content: center;
   min-width: 20rem;
@@ -24,15 +25,15 @@ a.cardClick {
   color: #313131;
   height: 100%;
   width: 100%;
-}
-
-a.cardClick:hover {
   text-decoration: none;
 }
 
-h3.feat-content-title {
+.feat-content-title {
   color: #487980;
   margin-top: 1rem;
+}
+.feat-content-card:hover {
+  box-shadow: 0 0.4rem 0.5rem 0 rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 50rem) {

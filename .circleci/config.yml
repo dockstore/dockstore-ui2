@@ -1,20 +1,72 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
+  slack: circleci/slack@3.4.2
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
-      - image: circleci/postgres:10.10-alpine
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
+      - image: circleci/postgres:11.6-alpine-ram
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
+
+  uptime_monitor_no_auth:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - setup_nightly_tests
+      - run:
+          name: Run remote verification test against dev (no auth)
+          command: bash -i -c 'npm run test-dev-no-auth'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-no-auth-[hash].xml
+      - upload_nightly_artifacts
+      - slack/status:
+          fail_only: true
+          failure_message: Nightly non-auth tests failed!
+          webhook: $SLACK_WEBHOOK
+  uptime_monitor_auth:
+    working_directory: ~/repo
+    docker:
+        - image: circleci/buildpack-deps:18.04-browsers
+          auth:
+            username: dockstoretestuser
+            password: $DOCKERHUB_PASSWORD
+    steps:
+      - setup_nightly_tests
+      - run:
+          name: Run remote verification test against dev (with auth)
+          command: bash -i -c 'npm run test-dev-auth'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-auth-[hash].xml
+      - upload_nightly_artifacts
+      - slack/status:
+          fail_only: true
+          failure_message: Nightly auth tests failed!
+          webhook: $SLACK_WEBHOOK
   lint_unit_test_coverage:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -27,7 +79,7 @@ jobs:
             fi
       - install_container_dependencies
       - restore_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
@@ -37,24 +89,29 @@ jobs:
                 bash -i -c 'npm ci'
               fi
       - save_cache:
-          key: dep-cache-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
             - ./node_modules
-      - run:
-          name: Check dependencies
-          command: bash -i -c 'npm ls'
+      - save_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+          paths:
+            - ~/.cache
+              # Disabled until ng2-ui-auth and @ngx-lite/json is replaced. Currently they do not support Angular 9
+              #      - run:
+              #          name: Check dependencies
+              #          command: bash -i -c 'npm ls'
       - run:
           name: Lint
           command: bash -i -c 'npm run lint'
       - run:
           name: Build
-          command: bash -i -c 'npm run build.prod'
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
       - run:
           name: Install codecov
           command: bash -i -c 'npm i --no-save codecov'
       - run:
           name: Unit Test
-          command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless'
+          command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless --source-map=false'
       - run:
           name: Codecov
           command: bash -i -c 'npx codecov'
@@ -62,11 +119,23 @@ jobs:
           root: .
           paths:
             - .
+  licenses_test:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - run: bash scripts/detect-package-json-changes.sh
   integration_test_1:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
@@ -79,6 +148,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
@@ -91,6 +162,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
@@ -102,6 +175,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/python:2.7
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     parameters:
       aws_bucket:
         type: string
@@ -116,10 +192,10 @@ jobs:
             # TODO: https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7) can probably be made into a bash/circle-ci variable.
             - run:
                 name: Swap for CDN paths
-                command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\.\./assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
+                command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\(\.\./\)\+assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
             - run:
                 name: Build
-                command: bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
+                command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
             # Copy to a versioned folder
             - aws-s3/copy:
                 from: dist
@@ -132,6 +208,23 @@ jobs:
                 to: 's3://${AWS_BUCKET}/${CIRCLE_TAG-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/index.html'
                 arguments: |
                   --cache-control max-age=0
+  check_build_develop:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/python:2.7
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - get_workspace
+      - install_container_dependencies
+        # Override the webservice version in package.json to instead build against develop webservice
+      - run:
+          name: set webservice to develop
+          command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+      - run:
+          name: Build
+          command: bash -i -c 'npm run build'
 
 workflows:
   version: 2
@@ -142,24 +235,41 @@ workflows:
           filters:
             tags:
               only: /.*/
+          context:
+            - dockerhub
+      - licenses_test:
+          filters:
+            tags:
+              only: /.*/
+          context:
+            - dockerhub
       - integration_test_1:
           filters:
             tags:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
+          context:
+            - dockerhub
       - integration_test_2:
           filters:
             tags:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
+          context:
+            - dockerhub
       - integration_test_3:
           filters:
             tags:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
+          context:
+            - dockerhub
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
@@ -171,6 +281,33 @@ workflows:
               only: /.*/
             branches:
               only: /.*/
+          context:
+            - dockerhub
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
+          context:
+            - dockerhub
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 11 * * *" # This is 4am PDT / 3am PST
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - uptime_monitor_no_auth:
+          context:
+            - dockerhub
+      - uptime_monitor_auth:
+          context:
+            - dockerhub
+
 commands:
   install_container_dependencies:
     steps:
@@ -207,10 +344,7 @@ commands:
           command: sudo apt install -y postgresql-client || true
       - run:
           name: Install cypress dependencies
-          command: sudo apt install libgtk2.0-0 -yq
-      - run:
-          name: Install cypress
-          command: bash -i -c 'npm i cypress@3.4.1 --no-save'
+          command: sudo apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
@@ -232,3 +366,31 @@ commands:
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh
+  setup_nightly_tests:
+    steps:
+      - checkout
+      - install_container_dependencies
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+            if [ ! -d "./node_modules" ]
+            then
+              bash -i -c 'npm ci'
+            fi
+            mkdir -p nightly-test-results/junit
+      - run:
+          name: Prebuild
+          command: bash -i -c 'npm run prebuild.prod'
+  upload_nightly_artifacts:
+    steps:
+      - store_test_results:
+          path: nightly-test-results/
+      - store_artifacts:
+          path: nightly-test-results/
+      - store_artifacts:
+          path: cypress/videos
+      - store_artifacts:
+          path: cypress/screenshots

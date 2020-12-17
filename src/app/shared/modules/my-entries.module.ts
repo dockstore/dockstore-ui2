@@ -12,6 +12,6 @@ import { MyEntriesStore } from '../state/my-entries.store';
  */
 @NgModule({
   providers: [MyEntriesStateService, MyEntriesStore, MyEntriesQuery],
-  imports: [CommonModule]
+  imports: [CommonModule],
 })
 export class MyEntriesModule {}

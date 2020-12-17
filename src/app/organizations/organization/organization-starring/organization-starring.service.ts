@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Organization, User } from '../../../shared/swagger';
 import { OrganizationsService } from '../../../shared/swagger';
@@ -27,12 +27,15 @@ export class OrganizationStarringService {
   constructor(private usersService: UsersService, private organizationsService: OrganizationsService) {}
 
   setUnstar(organizationID: number): Observable<any> {
-    return this.organizationsService.unstarOrganization(organizationID);
+    const body: StarRequest = {
+      star: false,
+    };
+    return this.organizationsService.starOrganization(organizationID, body);
   }
 
   setStar(organizationID: number): Observable<any> {
     const body: StarRequest = {
-      star: true
+      star: true,
     };
 
     return this.organizationsService.starOrganization(organizationID, body);

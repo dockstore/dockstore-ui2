@@ -8,16 +8,15 @@ import { CollectionsStore } from './collections.store';
 
 describe('CollectionsService', () => {
   let collectionsService: CollectionsService;
-  let collectionsStore: CollectionsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CollectionsService, CollectionsStore],
-      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
     });
 
-    collectionsService = TestBed.get(CollectionsService);
-    collectionsStore = TestBed.get(CollectionsStore);
+    collectionsService = TestBed.inject(CollectionsService);
+    TestBed.inject(CollectionsStore);
   });
 
   it('should be created', () => {

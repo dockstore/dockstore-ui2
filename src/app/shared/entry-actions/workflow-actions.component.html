@@ -26,9 +26,10 @@
     color="primary"
     (click)="refresh()"
     [disabled]="isRefreshing$ | async"
-    *ngIf="!isHosted && canWrite"
+    *ngIf="!isHosted && canWrite && workflow?.mode != WorkflowModel.ModeEnum.DOCKSTOREYML"
     matTooltip="Sync the {{ entryType }} with the source control repository"
+    data-cy="refreshButton"
   >
-    {{ entryType === EntryType.Service ? 'Sync' : 'Refresh' }}
+    {{ 'Refresh' }}
   </button>
 </div>

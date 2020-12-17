@@ -14,19 +14,142 @@
  *     limitations under the License.
  */
 import { of as observableOf } from 'rxjs';
-
+import { first } from 'rxjs/operators';
+import { ToolDescriptor, Workflow } from '../swagger';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 import { DescriptorLanguageService } from './descriptor-language.service';
 
 describe('Service: DescriptorLanguage', () => {
+  let metadataServiceSpy;
+  let workflowQuerySpy;
+  beforeAll(() => {
+    metadataServiceSpy = jasmine.createSpyObj('MetadataService', ['getDescriptorLanguages']);
+    workflowQuerySpy = jasmine.createSpyObj('WorkflowQuery', ['getDescriptorLanguages']);
+  });
   it('should return the descriptor languages in an string array', () => {
-    const metadataServiceSpy = jasmine.createSpyObj('MetadataService', ['getDescriptorLanguages']);
-    const workflowQuerySpy = jasmine.createSpyObj('WorkflowQuery', ['getDescriptorLanguages']);
     const stubValue: Array<DescriptorLanguageBean> = [{ value: 'cwl' }, { value: 'wdl' }, { value: 'nextflow' }];
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(stubValue));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
-    descriptorLanguageService.filteredDescriptorLanguages$.subscribe((languages: Array<string>) => {
+    descriptorLanguageService.filteredDescriptorLanguages$.pipe(first()).subscribe((languages: Array<string>) => {
       expect(languages).toEqual(['cwl', 'wdl', 'nextflow'], 'service returned stub value');
     });
+  });
+  it('should be able to filter service out', () => {
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    descriptorLanguageBeans.push({ friendlyName: 'potato', value: 'potato' });
+    descriptorLanguageBeans.push({ friendlyName: 'beef', value: 'beef' });
+    descriptorLanguageBeans.push({ friendlyName: 'stew', value: 'stew' });
+    descriptorLanguageBeans.push({ friendlyName: 'generic placeholder for services', value: 'service' });
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    const filteredDescriptorLanguageBeans = descriptorLanguageService.filterService(descriptorLanguageBeans);
+    expect(filteredDescriptorLanguageBeans.length).toEqual(3);
+    filteredDescriptorLanguageBeans.forEach((descriptorLanguageBean) => {
+      expect(descriptorLanguageBean.value).not.toEqual(descriptorLanguageService.knownServiceValue);
+    });
+  });
+  it('should be able to get home page inner HTML', () => {
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    descriptorLanguageBeans.push({ friendlyName: 'potato', value: 'CWL' });
+
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
+    expect(innerHTML).toEqual(`<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>`);
+    descriptorLanguageBeans.push({ friendlyName: 'beef', value: 'WDL' });
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
+    expect(innerHTML).toEqual(
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a> or <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>`
+    );
+    descriptorLanguageBeans.push({ friendlyName: 'stew', value: 'NFL' });
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
+    expect(innerHTML).toEqual(
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
+    );
+    descriptorLanguageBeans.push({ friendlyName: 'hmm', value: 'service' });
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
+    expect(innerHTML).toEqual(
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
+    );
+  });
+  it('should be able to get descriptor path placeholder', () => {
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.CWL);
+    expect(placeholder).toEqual('e.g. /Dockstore.cwl');
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.WDL);
+    expect(placeholder).toEqual('e.g. /Dockstore.wdl');
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.NFL);
+    expect(placeholder).toEqual('e.g. /nextflow.config');
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SERVICE);
+    expect(placeholder).toEqual('e.g. /.dockstore.yml');
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.GXFORMAT2);
+    expect(placeholder).toEqual('e.g. /Dockstore.yml');
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    expect(placeholder).toEqual('');
+  });
+  it('should be able to get descriptor path pattern', () => {
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.CWL);
+    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)');
+    placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.WDL);
+    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$');
+    placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.NFL);
+    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)');
+    placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.SERVICE);
+    expect(placeholder).toEqual('.*');
+    placeholder = descriptorLanguageService.getDescriptorPattern(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    expect(placeholder).toEqual('.*');
+  });
+  it('should be able to get weird descriptor type for checker workflow registration', () => {
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.CWL);
+    expect(placeholder).toEqual('cwl');
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.WDL);
+    expect(placeholder).toEqual('wdl');
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.NFL);
+    expect(placeholder).toEqual(null);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.SERVICE);
+    expect(placeholder).toEqual(null);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    expect(placeholder).toEqual(null);
+  });
+  it('should be able to get shortFriendlyName from Worfklow.DescriptorTypeEnum for workflow registration', () => {
+    let placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
+    expect(placeholder).toEqual('CWL');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
+    expect(placeholder).toEqual('WDL');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
+    expect(placeholder).toEqual('Nextflow');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Service);
+    expect(placeholder).toEqual('Service');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Gxformat2);
+    expect(placeholder).toEqual('Galaxy (preview)');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(null);
+    expect(placeholder).toEqual(null);
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(<Workflow.DescriptorTypeEnum>'UnrecognizedType');
+    expect(placeholder).toEqual(null);
+  });
+
+  it('should be able to get defaultDescriptorPath from ToolDescriptor.TypeEnum for workflow stub language changing', () => {
+    let placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.CWL);
+    expect(placeholder).toEqual('/Dockstore.cwl');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.WDL);
+    expect(placeholder).toEqual('/Dockstore.wdl');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.NFL);
+    expect(placeholder).toEqual('/nextflow.config');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SERVICE);
+    expect(placeholder).toEqual('/.dockstore.yml');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.GXFORMAT2);
+    expect(placeholder).toEqual('/Dockstore.yml');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(null);
+    expect(placeholder).toEqual(null);
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    expect(placeholder).toEqual(null);
   });
 });

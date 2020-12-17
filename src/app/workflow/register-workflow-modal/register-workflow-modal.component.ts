@@ -18,20 +18,22 @@ import { NgForm } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { formInputDebounceTime } from '../../shared/constants';
+import { formInputDebounceTime, recommendGitHubApps } from '../../shared/constants';
+import { Dockstore } from '../../shared/dockstore.model';
 import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
+
 import {
   exampleDescriptorPatterns,
   formErrors,
   validationDescriptorPatterns,
-  validationMessages
+  validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
-import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export interface HostedWorkflowObject {
   name: string;
@@ -41,7 +43,7 @@ export interface HostedWorkflowObject {
 @Component({
   selector: 'app-register-workflow-modal',
   templateUrl: './register-workflow-modal.component.html',
-  styleUrls: ['./register-workflow-modal.component.scss']
+  styleUrls: ['./register-workflow-modal.component.scss'],
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   public formErrors = formErrors;
@@ -53,43 +55,60 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public isModalShown: boolean;
   public isRefreshing$: Observable<boolean>;
   public descriptorValidationPattern;
+  public workflowPathError: String | null;
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
+  public workflowPathPlaceholder: string;
+  public gitHubAppInstallationLink$: Observable<string>;
+  public recommendGitHubApps = recommendGitHubApps;
   public hostedWorkflow = {
     repository: '',
-    descriptorType: DescriptorTypeEnum.CWL,
-    entryName: null
+    descriptorType: Workflow.DescriptorTypeEnum.CWL,
+    entryName: null,
   };
-  public options = [
+  private baseOptions = [
     {
-      label: 'Quickly register workflows from GitHub, Bitbucket, and GitLab',
-      value: 0
+      label: 'Quickly register remote workflows',
+      extendedLabel: 'Toggle repositories from GitHub, Bitbucket, and GitLab to quickly create workflows on Dockstore.',
+      value: 1,
     },
     {
-      label: 'Create non-standard workflows from GitHub, Bitbucket, and GitLab',
-      value: 1
+      label: 'Register custom remote workflows',
+      extendedLabel: 'Manually add individual workflows at custom file paths from repositories on GitHub, Bitbucket, and GitLab.',
+      value: 2,
     },
     {
-      label: 'Create and save workflows on Dockstore.org',
-      value: 2
-    }
+      label: 'Create workflows on Dockstore.org',
+      extendedLabel: 'All workflow files are created and stored directly on Dockstore.',
+      value: 3,
+    },
   ];
+  private githubAppOption = {
+    label: 'Register using GitHub Apps' + (this.recommendGitHubApps ? ' (Recommended)' : ''),
+    extendedLabel: 'Install our GitHub App on your repository/organization to automatically sync workflows with GitHub.',
+    value: 0,
+  };
+  public options = this.recommendGitHubApps ? [this.githubAppOption, ...this.baseOptions] : [...this.baseOptions, this.githubAppOption];
+
   public selectedOption = this.options[0];
 
   private ngUnsubscribe: Subject<{}> = new Subject();
 
+  Dockstore = Dockstore;
+
   registerWorkflowForm: NgForm;
-  @ViewChild('registerWorkflowForm', { static: false }) currentForm: NgForm;
+  @ViewChild('registerWorkflowForm') currentForm: NgForm;
 
   constructor(
     private registerWorkflowModalService: RegisterWorkflowModalService,
     public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>,
     private alertQuery: AlertQuery,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    protected sessionQuery: SessionQuery
   ) {}
 
   friendlyRepositoryKeys(): Array<string> {
-    return this.registerWorkflowModalService.friendlyRepositoryKeys().filter(key => key !== 'Dockstore');
+    return this.registerWorkflowModalService.friendlyRepositoryKeys().filter((key) => key !== 'Dockstore');
   }
 
   clearWorkflowRegisterError(): void {
@@ -98,18 +117,20 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
 
   ngOnInit() {
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.registerWorkflowModalService.workflow
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((workflow: Service | BioWorkflow) => (this.workflow = workflow));
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+    this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {
+      this.workflow = workflow;
+      this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
+    });
     this.registerWorkflowModalService.workflowRegisterError$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(workflowRegisterError => (this.workflowRegisterError = workflowRegisterError));
+      .subscribe((workflowRegisterError) => (this.workflowRegisterError = workflowRegisterError));
     this.registerWorkflowModalService.isModalShown$
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(isModalShown => (this.isModalShown = isModalShown));
+      .subscribe((isModalShown) => (this.isModalShown = isModalShown));
     this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
     // Using this to set the initial validation pattern.  TODO: find a better way
-    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<DescriptorTypeEnum>) => {
+    this.descriptorLanguages$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((languages: Array<Workflow.DescriptorTypeEnum>) => {
       if (languages && languages.length > 0) {
         // Set the initial descriptor type selected
         this.workflow.descriptorType = languages[0];
@@ -150,6 +171,10 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.formChanged();
   }
 
+  getWorkflowPathPlaceholder(descriptorType: Workflow.DescriptorTypeEnum): string {
+    return DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
+  }
+
   formChanged() {
     if (this.currentForm === this.registerWorkflowForm) {
       return;
@@ -157,11 +182,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.registerWorkflowForm = this.currentForm;
     if (this.registerWorkflowForm) {
       this.registerWorkflowForm.valueChanges
-        .pipe(
-          debounceTime(formInputDebounceTime),
-          takeUntil(this.ngUnsubscribe)
-        )
-        .subscribe(data => this.onValueChanged(data));
+        .pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe))
+        .subscribe((data) => this.onValueChanged(data));
     }
   }
 
@@ -213,29 +235,28 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * @param {ToolDescriptor.TypeEnum} descriptorType  The current selected descriptor type
    * @memberof RegisterWorkflowModalComponent
    */
-  changeDescriptorType(descriptorType: DescriptorTypeEnum): void {
+  changeDescriptorType(descriptorType: Workflow.DescriptorTypeEnum): void {
+    this.descriptorValidationPattern = DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+      descriptorType
+    ).descriptorPathPattern;
     switch (descriptorType) {
-      case DescriptorTypeEnum.CWL: {
-        this.descriptorValidationPattern = validationDescriptorPatterns.cwlPath;
+      case Workflow.DescriptorTypeEnum.CWL:
+        this.workflowPathError = validationMessages.cwlPath.pattern;
         break;
-      }
-      case DescriptorTypeEnum.WDL: {
-        this.descriptorValidationPattern = validationDescriptorPatterns.wdlPath;
+      case Workflow.DescriptorTypeEnum.WDL:
+        this.workflowPathError = validationMessages.wdlPath.pattern;
         break;
-      }
-      case DescriptorTypeEnum.NFL: {
-        this.descriptorValidationPattern = validationDescriptorPatterns.nflPath;
+      case Workflow.DescriptorTypeEnum.NFL:
+        this.workflowPathError = validationMessages.nflPath.pattern;
         break;
-      }
-      case DescriptorTypeEnum.Service: {
-        this.descriptorValidationPattern = validationDescriptorPatterns.testParameterFilePath;
+      case Workflow.DescriptorTypeEnum.Gxformat2:
+        this.workflowPathError = validationMessages.galaxyPath.pattern;
         break;
-      }
-      default: {
-        console.log('Unrecognized descriptor type: ' + descriptorType);
-        this.descriptorValidationPattern = '.*';
-      }
+      default:
+        console.error('Unknown descriptor type: ' + descriptorType);
+        this.workflowPathError = null;
     }
+    this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
   }
 
   ngOnDestroy() {

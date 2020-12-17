@@ -26,11 +26,12 @@ export interface SearchState {
   searchText: string;
   filterKeys: Array<string>;
   autocompleteTerms: Array<string>;
+  facetAutocompleteTerms: Array<string>;
   suggestTerm: string;
   pageSize: number;
   pageIndex: number;
   advancedSearch: AdvancedSearchObject;
-  showModal: boolean;
+  currentTabIndex: number;
 }
 
 export function createInitialState(): SearchState {
@@ -43,11 +44,12 @@ export function createInitialState(): SearchState {
     searchText: '',
     filterKeys: [],
     autocompleteTerms: [],
+    facetAutocompleteTerms: [],
     suggestTerm: '',
     pageSize: 10,
-    advancedSearch: initialAdvancedSearchObject,
-    showModal: false,
-    pageIndex: 0
+    advancedSearch: { ...initialAdvancedSearchObject },
+    pageIndex: 0,
+    currentTabIndex: 0,
   };
 }
 

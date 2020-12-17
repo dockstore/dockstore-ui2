@@ -29,7 +29,7 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
 @Component({
   selector: 'app-list-containers',
   templateUrl: './list.component.html',
-  styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss']
+  styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
 })
 export class ListContainersComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;

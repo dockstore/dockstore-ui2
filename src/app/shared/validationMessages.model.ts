@@ -14,7 +14,27 @@
  *    limitations under the License.
  */
 
-export const formErrors = {
+interface FormErrors {
+  cwlPath: string;
+  wdlPath: string;
+  dockerfilePath: string;
+  gitPath: string;
+  imagePath: string;
+  label: string;
+  cwlTestParameterFilePath: string;
+  wdlTestParameterFilePath: string;
+  testParameterFilePath: string;
+  toolName: string;
+  email: string;
+  reference: string;
+  versionTag: string;
+  workflow_path: string;
+  workflowName: string;
+  amazonDockerRegistryPath: string;
+  sevenBridgesDockerRegistryPath: string;
+}
+
+export const formErrors: FormErrors = {
   cwlPath: '',
   wdlPath: '',
   dockerfilePath: '',
@@ -31,13 +51,13 @@ export const formErrors = {
   workflow_path: '',
   workflowName: '',
   amazonDockerRegistryPath: '',
-  sevenBridgesDockerRegistryPath: ''
+  sevenBridgesDockerRegistryPath: '',
 };
 
 export const exampleDescriptorPatterns = {
   cwl: 'e.g. /Dockstore.cwl',
   wdl: 'e.g. /Dockstore.wdl',
-  nextflow: 'e.g. /nextflow.config'
+  nextflow: 'e.g. /nextflow.config',
 };
 
 export const validationDescriptorPatterns = {
@@ -52,7 +72,7 @@ export const validationDescriptorPatterns = {
   label: '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   versionTag: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
   reference: '[\\w-]+((/|.)[\\w-]+)*',
-  workflowDescriptorPath: '^/([^\\/?:*|<>]+/)*[^\\/?:*|<>]+.(cwl|wdl|yaml|yml|config)',
+  workflowDescriptorPath: '^/([^\\/?:*|<>]+/)*[^\\/?:*|<>]+.(cwl|wdl|yaml|yml|config|ga)',
   workflowName: '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
   cwlTestParameterFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
   wdlTestParameterFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
@@ -60,104 +80,116 @@ export const validationDescriptorPatterns = {
   // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
   alphanumericInternalUHP: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
   amazonDockerRegistryPath: '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.dkr.ecr.[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.amazonaws.com',
-  sevenBridgesDockerRegistryPath: '^([a-zA-Z0-9]+-)?images.sbgenomics.com'
+  sevenBridgesDockerRegistryPath: '^([a-zA-Z0-9]+-)?images.sbgenomics.com',
 };
 
 export const validationMessages = {
   cwlPath: {
     required: 'This field cannot be empty.',
-    minlength: 'Descriptor Path is too short. (Min. 3 characters.)',
-    maxlength: 'Descriptor Path is too long. (Max 256 characters.)',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.cwl', '*.yml', or '*.yaml'.`
+    minlength: 'Descriptor Path is too short. (Minimum 3 characters)',
+    maxlength: 'Descriptor Path is too long. (Max 1000 characters)',
+    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.cwl', '*.yml', or '*.yaml'.`,
   },
   wdlPath: {
     required: 'This field cannot be empty.',
-    minlength: 'Descriptor Path is too short. (Min. 3 characters.)',
-    maxlength: 'Descriptor Path is too long. (Max 256 characters.)',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.wdl'.`
+    minlength: 'Descriptor Path is too short. (Minimum 3 characters)',
+    maxlength: 'Descriptor Path is too long. (Max 1000 characters)',
+    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.wdl'.`,
+  },
+  nflPath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Descriptor Path is too short. (Minimum 3 characters)',
+    maxlength: 'Descriptor Path is too long. (Max 1000 characters)',
+    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.config'.`,
+  },
+  galaxyPath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Descriptor Path is too short. (Minimum 3 characters)',
+    maxlength: 'Descriptor Path is too long. (Max 1000 characters)',
+    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.ga', '*.yml', or '*.yaml'.`,
   },
   dockerfilePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Dockerfile Path is too short. (Min. 3 characters.)',
-    maxlength: 'Dockerfile Path is too long. (Max 256 characters.)',
+    minlength: 'Dockerfile Path is too short. (Minimum 3 characters)',
+    maxlength: 'Dockerfile Path is too long. (Max 1000 characters)',
     pattern:
       `Must begin with '/' and end with 'Dockerfile'. ` +
-      `Optionally you can use a string as a prefix or a suffix to 'Dockerfile', as long as they are separated by a '.'.`
+      `Optionally you can use a string as a prefix or a suffix to 'Dockerfile', as long as they are separated by a '.'.`,
   },
   gitPath: {
     required: 'This field cannot be empty.',
-    minlength: 'Source Code Repository Path is too short. (Min. 3 characters.)',
-    maxlength: 'Source Code Repository Path is too long. (Max 128 characters.)',
-    pattern: `The namespace and name of the Git repository, separated by a '/'. `
+    minlength: 'Source Code Repository Path is too short. (Minimum 3 characters)',
+    maxlength: 'Source Code Repository Path is too long. (Max 128 characters)',
+    pattern: `The namespace and name of the Git repository, separated by a '/'. `,
   },
   imagePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Image Path is too short. (Min. 3 characters.)',
-    maxlength: 'Image Path is too long. (Max 128 characters.)',
-    pattern: `The namespace and name of the image repository, separated by a '/'. ` + `Use '_' for an empty namespace.`
+    minlength: 'Image Path is too short. (Minimum 3 characters)',
+    maxlength: 'Image Path is too long. (Max 128 characters)',
+    pattern: `The namespace and name of the image repository, separated by a '/'. ` + `Use '_' for an empty namespace.`,
   },
   label: {
-    maxlength: 'Labels string is too long. (Max 512 characters.)',
-    pattern: 'Labels are comma-delimited, and may only consist of alphanumerical characters and internal hyphens.'
+    maxlength: 'Labels string is too long. (Max 512 characters)',
+    pattern: 'Labels are comma-delimited, and may only consist of alphanumerical characters and internal hyphens.',
   },
   cwlTestParameterFilePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Test parameter file path is too short. (Min. 3 characters.)',
-    maxlength: 'Test parameter file path is too long. (Max 256 characters.)',
-    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`
+    minlength: 'Test parameter file path is too short. (Minimum 3 characters)',
+    maxlength: 'Test parameter file path is too long. (Max 1000 characters)',
+    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`,
   },
   wdlTestParameterFilePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Test parameter file path is too short. (Min. 3 characters.)',
-    maxlength: 'Test parameter file path is too long. (Max 256 characters.)',
-    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`
+    minlength: 'Test parameter file path is too short. (Minimum 3 characters)',
+    maxlength: 'Test parameter file path is too long. (Max 1000 characters)',
+    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`,
   },
   testParameterFilePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Test parameter file path is too short. (Min. 3 characters.)',
-    maxlength: 'Test parameter file path is too long. (Max 256 characters.)',
-    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`
+    minlength: 'Test parameter file path is too short. (Minimum 3 characters)',
+    maxlength: 'Test parameter file path is too long. (Max 1000 characters)',
+    pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`,
   },
   toolName: {
-    maxlength: 'Tool Name is too long. (Max 256 characters.)',
-    pattern: 'A Tool Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
+    maxlength: 'Tool Name is too long. (Max 256 characters)',
+    pattern: 'A Tool Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   email: {
-    maxlength: 'Email is too long. (Max 256 characters.)'
+    maxlength: 'Email is too long. (Max 256 characters)',
   },
   reference: {
     required: 'This field cannot be empty.',
-    minlength: 'Git reference is too short. (Min. 3 characters.)',
-    maxlength: 'Git reference is too long. (Max 128 characters.)',
-    pattern: `May only consist of alphanumeric characters, '-' and '_', with interior '/' and '.' separators.`
+    minlength: 'Git reference is too short. (Minimum 3 characters)',
+    maxlength: 'Git reference is too long. (Max 128 characters)',
+    pattern: `May only consist of alphanumeric characters, '-' and '_', with interior '/' and '.' separators.`,
   },
   versionTag: {
     required: 'This field cannot be empty.',
-    maxlength: 'Version Tag is too long. (Max 128 characters.)',
-    pattern: 'A Version Tag may only consist of alphanumeric characters, internal underscores, internal hyphens, and internal periods.'
+    maxlength: 'Version Tag is too long. (Max 128 characters)',
+    pattern: 'A Version Tag may only consist of alphanumeric characters, internal underscores, internal hyphens, and internal periods.',
   },
   workflow_path: {
     required: 'This field cannot be empty.',
-    minlength: 'Workflow Path is too short. (Min. 3 characters.)',
-    maxlength: 'Workflow Path is too long. (Max 256 characters.)',
-    pattern: `Must begin with '/' and end with '*.cwl', '*.yml', '*.yaml', '*.config', or'*.wdl' ` + 'depending on the descriptor type.'
+    minlength: 'Workflow Path is too short. (Minimum 3 characters)',
+    maxlength: 'Workflow Path is too long. (Max 1000 characters)',
+    pattern: `Must begin with '/' and end with '*.cwl', '*.yml', '*.yaml', '*.config', or'*.wdl' ` + 'depending on the descriptor type.',
   },
   repository: {
-    maxlength: 'Repository Name is too long. (Max 256 characters.)',
-    pattern: 'A Repository may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
+    maxlength: 'Repository Name is too long. (Max 256 characters)',
+    pattern: 'A Repository may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   workflowName: {
-    maxlength: 'Workflow Name is too long. (Max 256 characters.)',
-    pattern: 'A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.'
+    maxlength: 'Workflow Name is too long. (Max 256 characters)',
+    pattern: 'A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   amazonDockerRegistryPath: {
-    maxlength: 'Custom docker registry path is too long. (Max 256 characters.)',
+    maxlength: 'Custom docker registry path is too long. (Max 256 characters)',
     pattern:
       'Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character,' +
-      ' internal underscores, and internal hyphens.'
+      ' internal underscores, and internal hyphens.',
   },
   sevenBridgesDockerRegistryPath: {
-    maxlength: 'Custom docker registry path is too long. (Max 256 characters.)',
-    pattern: 'Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.'
-  }
+    maxlength: 'Custom docker registry path is too long. (Max 256 characters)',
+    pattern: 'Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.',
+  },
 };

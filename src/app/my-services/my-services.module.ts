@@ -3,6 +3,6 @@ import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared
 import { MyServicesRoutes } from './my-services.routing';
 
 @NgModule({
-  imports: [MyServicesRoutes, SharedWorkflowServicesModule]
+  imports: [MyServicesRoutes, SharedWorkflowServicesModule],
 })
 export class MyServicesModule {}

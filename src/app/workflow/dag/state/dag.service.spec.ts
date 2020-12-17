@@ -27,7 +27,7 @@ import { DagStore } from './dag.store';
 describe('Service: Dag', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DagService, DagStore, DagQuery, Renderer2, { provide: WorkflowsService, useClass: WorkflowsStubService }]
+      providers: [DagService, DagStore, DagQuery, Renderer2, { provide: WorkflowsService, useClass: WorkflowsStubService }],
     });
   });
 
@@ -35,8 +35,8 @@ describe('Service: Dag', () => {
     expect(service).toBeTruthy();
   }));
   it(`should check if it's n/a`, inject([DagService], (service: DagService) => {
-    expect(service.isNA('n/a')).toBeTruthy();
-    expect(service.isNA('asdf')).toBeFalsy();
+    expect(service.isValidUrl('http://www.google.ca')).toBeTruthy();
+    expect(service.isValidUrl('asdf')).toBeFalsy();
   }));
   it('should set dynamic popover with lots of n/a', inject([DagService], (service: DagService) => {
     const tooltipText = `
@@ -48,16 +48,16 @@ describe('Service: Dag', () => {
     expect(service.getTooltipText(undefined, '', undefined, undefined, undefined)).toEqual(tooltipText);
   }));
   it('should set dynamic popover with lots of other info', inject([DagService], (service: DagService) => {
-    expect(service.getTooltipText(undefined, '', undefined, 'valid link', 'http://fakewebsite.com')).toEqual(`
+    expect(service.getTooltipText(undefined, 'http://validlink.com', undefined, 'valid link', 'http://fakewebsite.com')).toEqual(`
     <div>
     <div><b>Type: </b>n/a</div>
     <div><b>Run: </b> <a href='http://fakewebsite.com'>http://fakewebsite.com</a></div>
-    <div><b>Docker: </b> <a href=''>valid link</a></div>
+    <div><b>Docker: </b> <a href='http://validlink.com'>valid link</a></div>
     </div>`);
   }));
 
   it('should get DAG', inject([DagService], (service: DagService) => {
-    service.getCurrentDAG(2, 2).subscribe(results => expect(results).toEqual('someDAG'));
+    service.getCurrentDAG(2, 2).subscribe((results) => expect(results).toEqual('someDAG'));
     expect(service.getCurrentDAG(null, null)).toBeFalsy();
   }));
 });

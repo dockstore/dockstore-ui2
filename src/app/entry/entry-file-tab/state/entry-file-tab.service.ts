@@ -8,9 +8,10 @@ import { FileService } from 'app/shared/file.service';
 import { GA4GHFiles } from 'app/shared/ga4gh-files/ga4gh-files.model';
 import { GA4GHFilesQuery } from 'app/shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from 'app/shared/ga4gh-files/ga4gh-files.service';
+import { GA4GHV20Service } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile } from 'app/shared/swagger';
+import { FileWrapper, ToolDescriptor, ToolFile, WorkflowVersion } from 'app/shared/swagger';
 import { takeUntil } from 'rxjs/operators';
 import { Validation } from '../../../shared/swagger/model/validation';
 import { EntryFileTabQuery } from './entry-file-tab.query';
@@ -23,7 +24,7 @@ export class EntryFileTabService extends Base {
     private workflowQuery: WorkflowQuery,
     private entryFileTabQuery: EntryFileTabQuery,
     private gA4GHFilesQuery: GA4GHFilesQuery,
-    private ga4ghService: GA4GHService,
+    private ga4ghService: GA4GHV20Service,
     private ga4ghFilesService: GA4GHFilesService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
     private fileService: FileService,
@@ -32,38 +33,85 @@ export class EntryFileTabService extends Base {
     super();
   }
 
+  /**
+   * This is going to be problematic in the future because we need to match the Dockstore Validation.TypeEnum with
+   * TRS ToolFile.FileTypeEnum for plugins that can have anything. Right now it's matching only a select few.
+   *
+   * @static
+   * @param {(ToolFile | null)} toolFile  The file that's currently being viewed by the user (from TRS)
+   * @param {(WorkflowVersion | null)} version  The version that's currently being viewed (from Dockstore proprietary endpoint)
+   * @returns {(Object | null)}
+   * @memberof EntryFileTabService
+   */
+  public static getValidationMessageObject(toolFile: ToolFile | null, version: WorkflowVersion | null): Object | null {
+    if (version && version.validations && toolFile) {
+      const validations = version.validations;
+      const supportedValidationTypeEnum: Validation.TypeEnum[] = EntryFileTabService.toolFileToValdationTypeEnums(toolFile.file_type);
+      const foundValidation: Validation = validations.find((validation) => supportedValidationTypeEnum.includes(validation.type));
+      if (foundValidation) {
+        try {
+          const validationObject = JSON.parse(foundValidation.message);
+          if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
+            return null;
+          } else {
+            return validationObject;
+          }
+        } catch (e) {
+          console.error(e);
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Currently only map PRIMARYDESCRIPTOR and OTHER to DOCKSTORESERVICEYML and DOCKSTOREGXFORMAT2
+   */
+  private static toolFileToValdationTypeEnums(typeEnum: ToolFile.FileTypeEnum | null): Validation.TypeEnum[] {
+    const supportedToolFileFileTypeEnum: ToolFile.FileTypeEnum[] = [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR, ToolFile.FileTypeEnum.OTHER];
+    if (supportedToolFileFileTypeEnum.includes(typeEnum)) {
+      return [Validation.TypeEnum.DOCKSTORESERVICEYML, Validation.TypeEnum.DOCKSTOREGXFORMAT2];
+    } else {
+      return [];
+    }
+  }
+
   private setSelectedFileType(fileType: ToolFile.FileTypeEnum) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        selectedFileType: fileType
+        selectedFileType: fileType,
       };
     });
   }
 
   private setUnfilteredFiles(files: ToolFile[]) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        unfilteredFiles: files
+        unfilteredFiles: files,
       };
     });
   }
 
   private setFiles(files: ToolFile[]) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        files: files
+        files: files,
       };
     });
   }
 
   private setSelectedFile(file: ToolFile) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        selectedFile: file
+        selectedFile: file,
       };
     });
   }
@@ -77,20 +125,20 @@ export class EntryFileTabService extends Base {
    */
   @transaction()
   private setFileContents(fileContents: string) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        fileContents: fileContents
+        fileContents: fileContents,
       };
     });
     this.setLoading(false);
   }
 
   private setDownloadFilePath(downloadFilePath: string) {
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
-        downloadFilePath: downloadFilePath
+        downloadFilePath: downloadFilePath,
       };
     });
   }
@@ -137,29 +185,17 @@ export class EntryFileTabService extends Base {
   private getValidations() {
     const version = this.workflowQuery.getValue().version;
     const file = this.entryFileTabQuery.getValue().selectedFile;
-    if (version && version.validations && file && file.file_type === ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR) {
-      for (const validation of version.validations) {
-        if (validation.type === Validation.TypeEnum.DOCKSTORESERVICEYML) {
-          const validationObject = JSON.parse(validation.message);
-          if (validationObject && Object.keys(validationObject).length === 0 && validationObject.constructor === Object) {
-            this.entryFileTabStore.update(state => {
-              return {
-                ...state,
-                validationMessage: null
-              };
-            });
-          } else {
-            this.entryFileTabStore.update(state => {
-              return {
-                ...state,
-                validationMessage: validationObject
-              };
-            });
-          }
-          break;
-        }
-      }
-    }
+    const validationMessageObject = EntryFileTabService.getValidationMessageObject(file, version);
+    this.setValidationMessage(validationMessageObject);
+  }
+
+  private setValidationMessage(message: Object | null) {
+    this.entryFileTabStore.update((state) => {
+      return {
+        ...state,
+        validationMessage: message,
+      };
+    });
   }
 
   /**
@@ -186,10 +222,11 @@ export class EntryFileTabService extends Base {
    */
   private setAlmostEverything(unfilteredFiles: ToolFile[]) {
     const fileTypes = this.getFileTypes(unfilteredFiles);
-    const selectedFileType: ToolFile.FileTypeEnum = fileTypes[0];
+    const previousFileType = this.entryFileTabQuery.getValue().selectedFileType;
+    const selectedFileType: ToolFile.FileTypeEnum = fileTypes.includes(previousFileType) ? previousFileType : fileTypes[0];
     const files = this.filterFiles(selectedFileType, unfilteredFiles);
     const file = files[0];
-    this.entryFileTabStore.update(state => {
+    this.entryFileTabStore.update((state) => {
       return {
         ...state,
         unfilteredFiles: unfilteredFiles,
@@ -197,7 +234,7 @@ export class EntryFileTabService extends Base {
         selectedFileType: selectedFileType,
         files: files,
         selectedFile: file,
-        fileContents: null
+        fileContents: null,
       };
     });
     this.getValidations();
@@ -212,7 +249,7 @@ export class EntryFileTabService extends Base {
    */
   private getFileTypes(toolFiles: ToolFile[]): ToolFile.FileTypeEnum[] {
     return toolFiles
-      .map(toolFile => toolFile.file_type)
+      .map((toolFile) => toolFile.file_type)
       .filter((v, i, a) => a.indexOf(v) === i)
       .sort();
   }
@@ -244,7 +281,7 @@ export class EntryFileTabService extends Base {
         (fileWrapper: FileWrapper) => {
           this.handleFileWrapperChange(fileWrapper);
         },
-        error => {
+        (error) => {
           this.setFileContents(null);
           this.setDownloadFilePath(null);
         }
@@ -295,6 +332,9 @@ export class EntryFileTabService extends Base {
     const id = prefix + entryPath;
     const versionId = version.name;
     const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(toolDescriptorType);
+    if (!type) {
+      return null;
+    }
     const relativePath = this.entryFileTabQuery.getValue().selectedFile.path;
     return this.fileService.getDownloadFilePath(id, versionId, type, relativePath);
   }
@@ -309,6 +349,6 @@ export class EntryFileTabService extends Base {
    * @memberof EntryFileTabService
    */
   private filterFiles(fileType: ToolFile.FileTypeEnum, toolFiles: ToolFile[]): ToolFile[] {
-    return toolFiles.filter(toolFile => toolFile.file_type === fileType);
+    return toolFiles.filter((toolFile) => toolFile.file_type === fileType);
   }
 }

@@ -6,10 +6,9 @@ import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AdvancedSearchQuery extends Query<SearchState> {
-  advancedSearch$ = this.select(state => state.advancedSearch);
-  showModal$ = this.select(state => state.showModal);
+  advancedSearch$ = this.select((state) => state.advancedSearch);
   hasAdvancedSearchText$: Observable<boolean> = this.advancedSearch$.pipe(
-    map(advancedSearchObject => {
+    map((advancedSearchObject) => {
       if (
         advancedSearchObject &&
         (advancedSearchObject.ANDSplitFilter ||
@@ -23,18 +22,15 @@ export class AdvancedSearchQuery extends Query<SearchState> {
       }
     })
   );
-  aNDSplitFilterText$ = this.advancedSearch$.pipe(map(advancedSearchObject => this.joinComma(advancedSearchObject.ANDSplitFilter)));
-  aNDNoSplitFilterText$ = this.advancedSearch$.pipe(map(advancedSearchObject => this.joinComma(advancedSearchObject.ANDNoSplitFilter)));
-  oRFilterText$ = this.advancedSearch$.pipe(map(advancedSearchObject => this.joinComma(advancedSearchObject.ORFilter)));
-  nOTFilterText$ = this.advancedSearch$.pipe(map(advancedSearchObject => this.joinComma(advancedSearchObject.NOTFilter)));
+  aNDSplitFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => this.joinComma(advancedSearchObject.ANDSplitFilter)));
+  aNDNoSplitFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => this.joinComma(advancedSearchObject.ANDNoSplitFilter)));
+  oRFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => this.joinComma(advancedSearchObject.ORFilter)));
+  nOTFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => this.joinComma(advancedSearchObject.NOTFilter)));
   constructor(protected store: SearchStore) {
     super(store);
   }
 
   joinComma(searchTerm: string): string {
-    return searchTerm
-      .trim()
-      .split(' ')
-      .join(', ');
+    return searchTerm.trim().split(' ').join(', ');
   }
 }

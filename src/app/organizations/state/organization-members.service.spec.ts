@@ -1,21 +1,20 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationMembersStore } from './organization-members.store';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('OrganizationMembersService', () => {
   let organizationMembersService: OrganizationMembersService;
-  let organizationMembersStore: OrganizationMembersStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OrganizationMembersService, OrganizationMembersStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
-    organizationMembersService = TestBed.get(OrganizationMembersService);
-    organizationMembersStore = TestBed.get(OrganizationMembersStore);
+    organizationMembersService = TestBed.inject(OrganizationMembersService);
+    TestBed.inject(OrganizationMembersStore);
   });
 
   it('should be created', () => {

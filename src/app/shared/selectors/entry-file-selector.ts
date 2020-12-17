@@ -18,18 +18,21 @@ import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
+import { FilesQuery } from '../../workflow/files/state/files.query';
+import { FilesService } from '../../workflow/files/state/files.service';
+import { AlertService } from '../alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix } from '../constants';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { FileWrapper, GA4GHService, ToolDescriptor, ToolFile, WorkflowVersion, Tag } from '../swagger';
-import { FilesService } from '../../workflow/files/state/files.service';
-import { FilesQuery } from '../../workflow/files/state/files.query';
+import { EntriesService, GA4GHV20Service } from '../openapi';
+import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
 
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version
  */
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
+  id: number;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected currentDescriptor: ToolDescriptor.TypeEnum;
@@ -56,9 +59,11 @@ export abstract class EntryFileSelector implements OnDestroy {
   constructor(
     protected fileService: FileService,
     protected gA4GHFilesService: GA4GHFilesService,
-    protected gA4GHService: GA4GHService,
+    protected gA4GHService: GA4GHV20Service,
     protected filesService: FilesService,
-    protected filesQuery: FilesQuery
+    protected filesQuery: FilesQuery,
+    protected entryService: EntriesService,
+    protected alertService: AlertService
   ) {}
 
   protected getDescriptorPath(path: string, entryType: 'tool' | 'workflow'): string {
@@ -82,7 +87,7 @@ export abstract class EntryFileSelector implements OnDestroy {
     }
   }
 
-  onDescriptorChange(descriptor) {
+  onDescriptorChange(descriptor: ToolDescriptor.TypeEnum) {
     this.currentDescriptor = descriptor;
     this.reactToDescriptor();
   }
@@ -95,7 +100,7 @@ export abstract class EntryFileSelector implements OnDestroy {
   reactToDescriptor() {
     this.getFiles(this.currentDescriptor)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(files => {
+      .subscribe((files) => {
         this.nullDescriptors = false;
         this.files = files;
         if (!this.files) {
@@ -109,14 +114,14 @@ export abstract class EntryFileSelector implements OnDestroy {
       });
   }
 
-  onFileChange(file) {
+  onFileChange(file: ToolFile) {
     if (this.currentFile !== file) {
       this.currentFile = file;
       this.reactToFile();
     }
   }
 
-  onVersionChange(value) {
+  onVersionChange(value: Tag, entryid: number) {
     this._selectedVersion = value;
     this.reactToVersion();
   }

@@ -17,7 +17,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
-import { DockstoreService } from '../../shared/dockstore.service';
 import { Workflow } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
@@ -30,24 +29,16 @@ import { SearchService } from '../state/search.service';
 @Component({
   selector: 'app-search-workflow-table',
   templateUrl: './search-workflow-table.component.html',
-  styleUrls: ['../../shared/styles/entry-table.scss', './search-workflow-table.component.scss']
+  styleUrls: ['../../shared/styles/entry-table.scss', './search-workflow-table.component.scss'],
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
+  readonly entryType = 'workflow';
   public dataSource: MatTableDataSource<Workflow>;
-  constructor(
-    private dockstoreService: DockstoreService,
-    dateService: DateService,
-    searchQuery: SearchQuery,
-    searchService: SearchService
-  ) {
+  constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);
   }
 
   privateNgOnInit(): Observable<Array<Workflow>> {
     return this.searchQuery.workflows$;
-  }
-
-  getVerified(workflow: Workflow): boolean {
-    return this.dockstoreService.getVersionVerified(workflow.workflowVersions);
   }
 }

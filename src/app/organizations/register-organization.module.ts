@@ -11,6 +11,6 @@ import { RegisterOrganizationComponent } from './registerOrganization/register-o
   imports: [CommonModule, FormsModule, CustomMaterialModule, ReactiveFormsModule, RefreshAlertModule],
   declarations: [RegisterOrganizationComponent],
   providers: [AlertService],
-  entryComponents: [RegisterOrganizationComponent]
+  entryComponents: [RegisterOrganizationComponent],
 })
 export class RegisterOrganizationModule {}

@@ -2,9 +2,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { SessionQuery } from 'app/shared/session/session.query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -17,7 +15,7 @@ import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
-  styleUrls: ['./permissions.component.scss']
+  styleUrls: ['./permissions.component.scss'],
 })
 export class PermissionsComponent implements OnInit {
   public Role = RoleEnum;
@@ -44,18 +42,11 @@ export class PermissionsComponent implements OnInit {
     return this._workflow;
   }
 
-  constructor(
-    private workflowsService: WorkflowsService,
-    private snackBar: MatSnackBar,
-    private alertService: AlertService,
-    private tokenQuery: TokenQuery,
-    private sessionQuery: SessionQuery
-  ) {}
+  constructor(private workflowsService: WorkflowsService, private alertService: AlertService, private tokenQuery: TokenQuery) {}
 
   ngOnInit() {
-    const entryType = this.sessionQuery.getValue().entryType;
-    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokens => {
-      this.hasGoogleAccount = !!tokens.find(token => token.tokenSource === TokenSource.GOOGLE);
+    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens) => {
+      this.hasGoogleAccount = !!tokens.find((token) => token.tokenSource === TokenSource.GOOGLE);
     });
   }
 
@@ -69,12 +60,12 @@ export class PermissionsComponent implements OnInit {
           this.processResponse(userPermissions);
         },
         (e: HttpErrorResponse) => {
-          this.handleError(e, `Error removing user ${entity}.`);
+          this.handleError(e);
         }
       );
   }
 
-  private add(event: MatChipInputEvent, permission: RoleEnum): void {
+  add(event: MatChipInputEvent, permission: RoleEnum): void {
     const input = event.input;
     const value = event.value;
 
@@ -89,7 +80,7 @@ export class PermissionsComponent implements OnInit {
             this.processResponse(userPermissions);
           },
           (e: HttpErrorResponse) => {
-            this.handleError(e, `Error adding user ${value}. Please make sure ${value} is registered with Terra`);
+            this.handleError(e);
           }
         );
     }
@@ -100,9 +91,8 @@ export class PermissionsComponent implements OnInit {
     }
   }
 
-  private handleError(e: HttpErrorResponse, defaultMessage: string) {
+  private handleError(e: HttpErrorResponse) {
     this.updating--;
-    const message = e.error || defaultMessage;
     if (e.status === 409) {
       // A more severe error that deserves more attention than a disappearing snackbar
       this.alertService.detailedError(e);
@@ -127,7 +117,7 @@ export class PermissionsComponent implements OnInit {
   }
 
   private specificPermissionEmails(permissions: Permission[], role: RoleEnum): string[] {
-    return permissions.filter(u => u.role === role).map(c => c.email);
+    return permissions.filter((u) => u.role === role).map((c) => c.email);
   }
 
   private processResponse(userPermissions: Permission[]): void {

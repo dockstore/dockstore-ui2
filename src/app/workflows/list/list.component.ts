@@ -30,7 +30,7 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 @Component({
   selector: 'app-list-workflows',
   templateUrl: './list.component.html',
-  styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss']
+  styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
 })
 export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;

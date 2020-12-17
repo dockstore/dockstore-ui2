@@ -17,12 +17,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { ContainerComponent } from '../../container/container.component';
@@ -53,13 +47,13 @@ import { InfoTabService } from './../../container/info-tab/info-tab.service';
 import { RegisterToolService } from './../../container/register-tool/register-tool.service';
 import { VersionModalComponent } from './../../container/version-modal/version-modal.component';
 import { VersionModalService } from './../../container/version-modal/version-modal.service';
-import { getTooltipConfig } from './../../shared/tooltip';
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { PrivateIconModule } from './../private-icon/private-icon.module';
 import { RefreshService } from './../refresh.service';
 import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
+import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SelectModule } from './select.module';
 
 @NgModule({
@@ -77,33 +71,27 @@ import { SelectModule } from './select.module';
     AddTagComponent,
     VersionModalComponent,
     InfoTabComponent,
-    ToolFileEditorComponent
+    ToolFileEditorComponent,
   ],
   imports: [
-    ButtonsModule.forRoot(),
     CommonModule,
     ClipboardModule,
     CurrentCollectionsModule,
     HeaderModule,
     SelectModule,
     ListContainersModule,
-    TooltipModule.forRoot(),
-    TabsModule.forRoot(),
-    AccordionModule.forRoot(),
-    AlertModule.forRoot(),
     FormsModule,
     OrderByModule,
     PrivateIconModule,
     StarringModule,
-    ModalModule,
     StargazersModule,
     EntryModule,
     AddEntryModule,
     FlexLayoutModule,
-    MarkdownModule
+    MarkdownModule,
+    MarkdownWrapperModule,
   ],
   providers: [
-    { provide: TooltipConfig, useFactory: getTooltipConfig },
     EmailService,
     DateService,
     FileService,
@@ -113,9 +101,9 @@ import { SelectModule } from './select.module';
     RegisterToolService,
     StarringService,
     VersionModalService,
-    InfoTabService
+    InfoTabService,
   ],
   exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent],
-  entryComponents: [VersionModalComponent, AddTagComponent]
+  entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent],
 })
 export class ContainerModule {}

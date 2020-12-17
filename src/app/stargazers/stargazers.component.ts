@@ -14,23 +14,22 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { StarEntry } from 'app/starring/StarEntry';
 import { takeUntil } from 'rxjs/operators';
-
 import { Base } from '../shared/base';
+import { altAvatarImg } from '../shared/constants';
 import { StarentryService } from '../shared/starentry.service';
 import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
-import { altAvatarImg } from '../shared/constants';
-import { StarEntry } from 'app/starring/StarEntry';
 
 @Component({
   selector: 'app-stargazers',
   templateUrl: './stargazers.component.html',
-  styleUrls: ['./stargazers.component.css']
+  styleUrls: ['./stargazers.component.css'],
 })
 export class StargazersComponent extends Base implements OnInit {
   starGazers: any;
-  private altAvatarImg = altAvatarImg;
+  public altAvatarImg = altAvatarImg;
 
   constructor(private starringService: StarringService, private userService: UserService, private starentryService: StarentryService) {
     super();
@@ -39,9 +38,9 @@ export class StargazersComponent extends Base implements OnInit {
   ngOnInit() {
     this.starentryService.starEntry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: StarEntry) => {
       if (entry && entry.theEntry) {
-        this.starringService.getStarring(entry.theEntry.id, entry.theEntryType).subscribe(starring => {
+        this.starringService.getStarring(entry.theEntry.id, entry.theEntryType).subscribe((starring) => {
           this.starGazers = starring;
-          this.starGazers.forEach(user => {
+          this.starGazers.forEach((user) => {
             user.avatarUrl = this.userService.gravatarUrl(user.email, user.avatarUrl);
           });
         });

@@ -28,7 +28,7 @@
   >
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell *matCellDef="let tool">
+      <mat-cell data-cy="toolNames" *matCellDef="let tool">
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
@@ -38,24 +38,30 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
-      <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
-      <mat-cell *matCellDef="let tool">
-        <a *ngIf="getVerified(tool)" href="{{ verifiedLink }}">
+      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
+        <a *ngIf="tool.verified" [href]="verifiedLink">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let tool">{{ tool?.author || 'n/a' }}</mat-cell>
+      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let tool">{{ tool?.author || 'n/a' }}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="descriptorType">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell *matCellDef="let tool">{{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}</mat-cell>
+    <ng-container matColumnDef="descriptorType" style="width: fit-content">
+      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header fxFlex="15%">Format</mat-header-cell>
+      <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool" fxFlex="15%">
+        <div *ngFor="let language of tool?.descriptorType" class="m-1">
+          <span class="nonclick-badge">
+            {{ language ? (language.toString() | uppercase) : '' }}
+          </span>
+        </div>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
-      <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
-      <mat-cell *matCellDef="let tool">
+      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Project Links</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
         <a [href]="tool?.providerUrl" *ngIf="tool?.providerUrl">
           <fa-icon class="fa-lg" [icon]="tool.providerIcon" [matTooltip]="tool?.provider"></fa-icon>
         </a>
@@ -69,7 +75,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
       <mat-cell class="description-cell" *matCellDef="let tool"
         >{{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
-        <mat-icon class="star" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
+        <mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

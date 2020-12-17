@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StoreConfig, EntityState, EntityStore } from '@datorama/akita';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { WdlViewerPipelineResponse } from './wdl-viewer.model';
 
 export interface WdlViewerState extends EntityState<WdlViewerPipelineResponse> {}

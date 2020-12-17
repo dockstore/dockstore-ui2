@@ -13,14 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit, Inject } from '@angular/core';
-import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, AbstractControl } from '@angular/forms';
+import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
 
 @Component({
   templateUrl: './update-organization-description.component.html',
-  styleUrls: ['./update-organization-description.component.scss']
+  styleUrls: ['./update-organization-description.component.scss'],
 })
 export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {
   updateOrganizationOrCollectionDescriptionForm: FormGroup;

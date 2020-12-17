@@ -21,12 +21,13 @@ import { MetadataService } from '../metadata/metadata.service';
 import { Base } from '../shared/base';
 import { Dockstore } from './../shared/dockstore.model';
 import { Metadata } from './../shared/swagger/model/metadata';
+import { FooterService } from './footer.service';
 import { versions } from './versions';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent extends Base implements OnInit {
   version: string;
@@ -34,12 +35,26 @@ export class FooterComponent extends Base implements OnInit {
   public prod = true;
   public dsServerURI: any;
   Dockstore = Dockstore;
+  year: number;
+  content: string;
 
-  constructor(private metadataService: MetadataService) {
+  /**
+   * API Status codes that can indicate the web service is down
+   *
+   * * 0 This may have only happened without the load balancer, but it was already in the code, so leaving it.
+   * * 404 The web service container is down or restarting. While most 404s don't mean the web service is down,
+   * going to assume that a 404 on the TRS metadata endpoint means something is wrong
+   * * 502 The whole compose_setup backend stack is down.
+   * * 504 In a local dev environment, the Angular proxy returns 504 if it can't connect to the web service.
+   */
+  private readonly WEBSERVICE_DOWN_STATUS_CODES = [0, 404, 502, 504];
+
+  constructor(private metadataService: MetadataService, private footerService: FooterService) {
     super();
   }
 
   ngOnInit() {
+    this.year = new Date().getFullYear();
     this.tag = versions.tag;
     this.dsServerURI = Dockstore.API_URI;
     this.metadataService
@@ -48,15 +63,26 @@ export class FooterComponent extends Base implements OnInit {
       .subscribe(
         (metadata: Metadata) => {
           if (metadata.hasOwnProperty('version')) {
-            this.version = metadata['version'];
+            const metadatum = metadata['version'];
+            if (metadatum && (metadatum.includes('SNAPSHOT') || metadatum.includes('development-build'))) {
+              this.version = Dockstore.WEBSERVICE_COMMIT_ID;
+            } else {
+              this.version = metadatum;
+            }
+            this.content = this.footerService.versionsToMarkdown(
+              this.version,
+              this.tag,
+              Dockstore.COMPOSE_SETUP_VERSION,
+              Dockstore.DEPLOY_VERSION
+            );
           } else {
             throw new Error('Version undefined');
           }
         },
         (error: HttpErrorResponse) => {
           console.log(error);
-          // Angular proxy returns 504
-          if ((error.status === 0 || error.status === 504) && window.location.pathname !== '/maintenance') {
+          const webserviceDown = this.WEBSERVICE_DOWN_STATUS_CODES.some((code) => code === error.status);
+          if (webserviceDown && window.location.pathname !== '/maintenance') {
             window.location.href = '/maintenance';
           }
         }

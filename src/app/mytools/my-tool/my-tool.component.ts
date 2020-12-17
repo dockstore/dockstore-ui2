@@ -16,6 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
@@ -30,7 +31,6 @@ import { AccountsService } from '../../loginComponents/accounts/external/account
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ContainerService } from '../../shared/container.service';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
-import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
@@ -38,13 +38,11 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
-import { AlertService } from 'app/shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  providers: [MytoolsService]
 })
 export class MyToolComponent extends MyEntry implements OnInit {
   tools: any;
@@ -62,7 +60,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
     protected activatedRoute: ActivatedRoute,
     private containerService: ContainerService,
     private dialog: MatDialog,
-    private refreshService: RefreshService,
     protected accountsService: AccountsService,
     private registerToolService: RegisterToolService,
     protected tokenQuery: TokenQuery,
@@ -95,7 +92,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
@@ -107,7 +104,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         dialogRef
           .afterClosed()
           .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe(result => {
+          .subscribe(() => {
             this.alertService.clearEverything();
           });
       } else {
@@ -117,13 +114,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
     this.containerService.setTools(null);
-    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => {
+    this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
     });
 
     this.getMyEntries();
 
-    this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tools => {
+    this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tools) => {
       this.tools = tools;
       this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(tools));
     });
@@ -138,7 +135,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
     );
-    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tool => (this.registerTool = tool));
+    this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => (this.registerTool = tool));
   }
 
   protected getMyEntries() {
@@ -164,10 +161,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   showRegisterEntryModal(): void {
     this.registerToolService.setIsModalShown(true);
-  }
-
-  refreshAllEntries(): void {
-    this.refreshService.refreshAllTools(this.user.id);
   }
 
   /**

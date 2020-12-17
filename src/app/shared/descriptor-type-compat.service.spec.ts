@@ -7,7 +7,7 @@ import { ToolDescriptor } from './swagger';
 describe('Service: DescriptorTypeCompat', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DescriptorTypeCompatService]
+      providers: [DescriptorTypeCompatService],
     });
   });
 

@@ -53,9 +53,9 @@ export class UpsertOrganizationMemberService {
       username: new FormControl({ value: username, disabled: disabled }, [
         Validators.required,
         Validators.maxLength(39),
-        Validators.minLength(3)
+        Validators.minLength(3),
       ]),
-      role: [role, []]
+      role: [role, []],
     });
     formsManager.upsert('upsertUser', form);
     return form;

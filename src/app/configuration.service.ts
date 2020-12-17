@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Config, MetadataService } from './shared/swagger';
-import { Dockstore } from './shared/dockstore.model';
 import { ConfigService } from 'ng2-ui-auth';
-import { AuthConfig } from './shared/auth.model';
 import { IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
+import { AuthConfig } from './shared/auth.model';
+import { Dockstore } from './shared/dockstore.model';
+import { Config, MetadataService } from './shared/swagger';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfigurationService {
   constructor(private metadataService: MetadataService, private configService: ConfigService) {}
@@ -21,7 +21,7 @@ export class ConfigurationService {
 
           this.updateAuthProviders();
         },
-        e => {
+        (e) => {
           console.error('Error downloading config.json', e);
           // Less than ideal, but just let the normal error handling in footer.component.ts kick in later.
           Promise.resolve();
@@ -35,6 +35,8 @@ export class ConfigurationService {
     Dockstore.DNASTACK_IMPORT_URL = config.dnaStackImportUrl;
     Dockstore.DNANEXUS_IMPORT_URL = config.dnaNexusImportUrl;
     Dockstore.TERRA_IMPORT_URL = config.terraImportUrl;
+    Dockstore.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = config.bdCatalystSevenBridgesImportUrl;
+    Dockstore.BD_CATALYST_TERRA_IMPORT_URL = config.bdCatalystTerraImportUrl;
 
     Dockstore.GITHUB_CLIENT_ID = config.githubClientId;
     Dockstore.GITHUB_AUTH_URL = config.gitHubAuthUrl;
@@ -60,6 +62,11 @@ export class ConfigurationService {
     Dockstore.ZENODO_REDIRECT_URI = Dockstore.HOSTNAME + config.zenodoRedirectPath;
     Dockstore.ZENODO_SCOPE = config.zenodoScope;
 
+    Dockstore.ORCID_AUTH_URL = config.orcidAuthUrl;
+    Dockstore.ORCID_CLIENT_ID = config.orcidClientId;
+    Dockstore.ORCID_REDIRECT_URI = Dockstore.HOSTNAME + config.orcidRedirectPath;
+    Dockstore.ORCID_SCOPE = config.orcidScope;
+
     Dockstore.GOOGLE_CLIENT_ID = config.googleClientId;
     Dockstore.GOOGLE_SCOPE = config.googleScope;
     Dockstore.GOOGLE_TAG_MANAGER_ID = config.tagManagerId;
@@ -70,6 +77,12 @@ export class ConfigurationService {
 
     Dockstore.DOCUMENTATION_URL = config.documentationUrl;
     Dockstore.FEATURED_CONTENT_URL = config.featuredContentUrl;
+
+    Dockstore.DEPLOY_VERSION = config.deployVersion;
+
+    Dockstore.COMPOSE_SETUP_VERSION = config.composeSetupVersion;
+
+    Dockstore.WEBSERVICE_COMMIT_ID = config.gitCommitId;
   }
 
   /**

@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +12,6 @@ import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organiz
 export class UpdateOrganizationOrCollectionDescriptionService {
   constructor(
     private updateOrganizationOrCollectionDescriptionStore: UpdateOrganizationOrCollectionDescriptionStore,
-    private http: HttpClient,
     private formBuilder: FormBuilder,
     private organizationsService: OrganizationsService,
     private organizationQuery: OrganizationQuery,
@@ -25,7 +23,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
   createForm(data: any): FormGroup {
     const description = data.description;
     const form = this.formBuilder.group({
-      description: [description, []]
+      description: [description, []],
     });
     return form;
   }
@@ -43,7 +41,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
           this.collectionsService.updateCollections(organizationID);
           this.matDialog.closeAll();
         },
-        error => {
+        (error) => {
           this.updateOrganizationOrCollectionDescriptionStore.setError(true);
         }
       );
@@ -62,7 +60,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
           this.organizationService.updateOrganizationFromID(organizationID);
           this.matDialog.closeAll();
         },
-        error => {
+        (error) => {
           this.updateOrganizationOrCollectionDescriptionStore.setError(true);
         }
       );

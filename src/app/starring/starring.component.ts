@@ -18,7 +18,6 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable, Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
 import { isStarredByUser } from '../shared/starring';
 import { User } from '../shared/swagger/model/user';
@@ -30,7 +29,7 @@ import { StarringService } from './starring.service';
 @Component({
   selector: 'app-starring',
   templateUrl: './starring.component.html',
-  styleUrls: ['./starring.component.css']
+  styleUrls: ['./starring.component.css'],
 })
 export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   @Input() tool: any;
@@ -48,16 +47,15 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private trackLoginService: TrackLoginService,
     private userQuery: UserQuery,
-    private containerService: ContainerService,
     private starringService: StarringService,
     private starentryService: StarentryService,
     private alertService: AlertService
   ) {}
 
   ngOnInit() {
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => (this.isLoggedIn = isLoggedIn));
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn));
     // get tool from the observer
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.user = user;
       this.rate = isStarredByUser(this.starredUsers, this.user);
     });
@@ -114,12 +112,12 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
       this.alertService.start(message);
 
       this.setStar().subscribe(
-        data => {
+        (data) => {
           // update total_stars
           this.alertService.simpleSuccess();
           this.getStarredUsers();
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
           this.disableRateButton = false;
         }
@@ -141,7 +139,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
             this.rate = isStarredByUser(starring, this.user);
             this.disableRateButton = false;
           },
-          error => (this.disableRateButton = false)
+          (error) => (this.disableRateButton = false)
         );
     } else {
       this.disableRateButton = false;
@@ -150,7 +148,7 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   getStargazers() {
     const selectedEntry: StarEntry = {
       theEntry: this.entry,
-      theEntryType: this.entryType
+      theEntryType: this.entryType,
     };
     this.starentryService.setEntry(selectedEntry);
     this.change.emit();

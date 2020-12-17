@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
 @Component({
   selector: 'app-select',
-  templateUrl: './select.component.html'
+  templateUrl: './select.component.html',
 })
 export class SelectComponent implements OnChanges {
   @Input() items: Array<any>;

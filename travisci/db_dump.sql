@@ -1928,6 +1928,65 @@ outputs:
 baseCommand: [/bin/my_md5sum]
 ', 'md5sum-tool.cwl', 'DOCKSTORE_CWL', NULL, NULL);
 
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (60, 'version: 1.2
+workflows:
+   - subclass: cwl
+     primaryDescriptorPath: /dockstore.cwl
+', '/.dockstore.yml', 'DOCKSTORE_YML', NULL, NULL);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (61, 'cwlVersion: v1.0
+class: Workflow
+
+inputs:
+  input_file: File
+
+outputs:
+  output_file:
+    type: File
+    outputSource: md5sum/output_file
+
+steps:
+  md5sum:
+    run: md5sum-tool.cwl
+    in:
+      input_file: input_file
+    out: [output_file]
+', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (62, '#!/usr/bin/env cwl-runner
+
+class: CommandLineTool
+id: Md5sum
+label: Simple md5sum tool
+cwlVersion: v1.0
+
+requirements:
+- class: DockerRequirement
+  dockerPull: quay.io/agduncan94/my-md5sum
+- class: InlineJavascriptRequirement
+
+hints:
+- class: ResourceRequirement
+  # The command really requires very little resources.
+  coresMin: 1
+  ramMin: 1024
+  outdirMin: 512
+
+inputs:
+  input_file:
+    type: File
+    inputBinding:
+      position: 1
+    doc: The file that will have its md5sum calculated.
+
+outputs:
+  output_file:
+    type: File
+    format: http://edamontology.org/data_3671
+    outputBinding:
+      glob: md5sum.txt
+    doc: A text file that contains a single line that is the md5sum of the input file.
+
+baseCommand: [/bin/my_md5sum]
+', 'md5sum-tool.cwl', 'DOCKSTORE_CWL', NULL, NULL);
 
 --
 -- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
@@ -2046,6 +2105,8 @@ INSERT INTO public.user_entry (userid, entryid) VALUES (1, 18);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 19);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 20);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 21);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 22);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 30);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 100);
 INSERT INTO public.user_entry (userid, entryid) VALUES (2, 52);
 
@@ -2118,27 +2179,21 @@ INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (7, 36);
 INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (52, 39);
 INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (52, 40);
 INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (52, 41);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (20, 60);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (20, 61);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (20, 62);
 
 
 --
 -- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (7, NULL, NULL, NULL, NULL, 'git@github.com:A/c.git', false, NULL, '2016-11-28 15:00:57.315', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'c', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (8, NULL, NULL, NULL, NULL, 'git@github.com:A/f.git', false, NULL, '2016-11-28 15:00:57.419', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'f', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (9, NULL, NULL, NULL, NULL, 'git@github.com:A/k.git', false, NULL, '2016-11-28 15:00:57.482', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'k', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (10, NULL, NULL, NULL, NULL, 'git@github.com:A/e.git', false, NULL, '2016-11-28 15:00:57.593', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'e', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (12, NULL, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'g', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (13, NULL, NULL, NULL, NULL, 'git@github.com:A/j.git', false, NULL, '2016-11-28 15:00:57.792', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'j', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (14, NULL, NULL, NULL, NULL, 'git@github.com:A/m.git', false, NULL, '2016-11-28 15:00:57.859', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'm', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (16, NULL, NULL, NULL, NULL, 'git@github.com:A/d.git', false, NULL, '2016-11-28 15:00:58.068', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'd', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (17, NULL, NULL, NULL, NULL, 'git@github.com:A/i.git', false, NULL, '2016-11-28 15:00:58.073', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'i', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (18, NULL, NULL, NULL, NULL, 'git@github.com:A/b.git', false, NULL, '2016-11-28 15:00:58.153', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'b', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (19, NULL, NULL, NULL, NULL, 'git@github.com:A/h.git', false, NULL, '2016-11-28 15:00:58.157', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'h', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (20, NULL, NULL, NULL, NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:57.948', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'A', 'a', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
+INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (12, NULL, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', NULL, '/Dockstore.cwl', 'cwl', 'FULL', 'A', 'g', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
 INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (11, NULL, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', NULL, '/1st-workflow.cwl', 'cwl', 'FULL', 'A', 'l', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
-INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', NULL, '/Dockstore.cwl', 'cwl', 'STUB', 'a', 'a', NULL, 'bitbucket.org', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
+INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (6, NULL, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', NULL, '/Dockstore.cwl', 'cwl', 'FULL', 'a', 'a', NULL, 'bitbucket.org', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
 INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (21, NULL, NULL, NULL, NULL, NULL, false, NULL, '2016-11-28 15:00:57.315', NULL, '/Dockstore.wdl', 'wdl', 'HOSTED', 'A', 'hosted-workflow', NULL, 'dockstore.org', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36');
+INSERT INTO public.workflow (id, author, defaultversion, description, email, giturl, ispublished, lastmodified, lastupdated, defaulttestparameterfilepath, defaultworkflowpath, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate) VALUES (30, NULL, NULL, NULL, NULL, 'git@github.com:B/z.git', false, NULL, '2020-01-28 15:00:57.315', NULL, '/Dockstore.cwl', 'cwl', 'DOCKSTORE_YML', 'B', 'z', NULL, 'github.com', NULL, false, '2020-01-08 14:06:36', '2020-01-08 14:06:36');
+
 
 
 --
@@ -2147,6 +2202,7 @@ INSERT INTO public.workflow (id, author, defaultversion, description, email, git
 
 INSERT INTO public.workflow_workflowversion (workflowid, workflowversionid) VALUES (11, 13);
 INSERT INTO public.workflow_workflowversion (workflowid, workflowversionid) VALUES (11, 14);
+INSERT INTO public.workflow_workflowversion (workflowid, workflowversionid) VALUES (30, 20);
 
 
 --
@@ -2155,6 +2211,7 @@ INSERT INTO public.workflow_workflowversion (workflowid, workflowversionid) VALU
 
 INSERT INTO public.workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid) VALUES (13, false, false, '2016-11-28 15:01:57.003', 'master', 'master', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL, '2016-11-28 15:01:59.003', '2016-11-28 15:01:59.003', 'UNSET', NULL, NULL);
 INSERT INTO public.workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid) VALUES (14, false, true, '2016-11-28 15:01:57.003', 'test', 'test', true, false, NULL, '/1st-workflow.cwl', 'NOT_REQUESTED', NULL, '2016-11-28 15:01:57.003', '2016-11-28 15:01:57.003', 'UNSET', NULL, NULL);
+INSERT INTO public.workflowversion (id, dirtybit, hidden, lastmodified, name, reference, valid, verified, verifiedsource, workflowpath, doistatus, doiurl, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid) VALUES (20, false, true, '2020-01-28 15:01:57.003', 'master', 'master', true, false, NULL, '/Dockstore.cwl', 'NOT_REQUESTED', NULL, '2020-01-28 15:01:57.003', '2020-01-28 15:01:57.003', 'BRANCH', NULL, NULL);
 
 
 --

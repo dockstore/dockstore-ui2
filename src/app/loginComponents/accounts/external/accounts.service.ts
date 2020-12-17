@@ -39,15 +39,18 @@ export class AccountsService {
       case TokenSource.QUAY:
         this.openWindow(Links.QUAY());
         break;
+      case TokenSource.ORCID:
+        this.openWindow(Links.ORCID());
+        break;
       case TokenSource.GOOGLE:
         this.loginService
           .authenticate('google')
           .pipe(first())
           .subscribe(
-            response => {
+            (response) => {
               // TODO: Hook up to snackbar
             },
-            error => {
+            (error) => {
               // TODO: Hook up to snackbar
             },
             () => {

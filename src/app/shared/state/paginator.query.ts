@@ -16,16 +16,16 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 
-import { PaginatorState, PaginatorStore } from './paginator.store';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { PaginatorState, PaginatorStore } from './paginator.store';
 
 @Injectable({ providedIn: 'root' })
 export class PaginatorQuery extends Query<PaginatorState> {
-  toolPageSize$: Observable<number> = this.select(state => (this.router.url === '/' ? 10 : state.tool.pageSize));
-  workflowPageSize$: Observable<number> = this.select(state => (this.router.url === '/' ? 10 : state.workflow.pageSize));
-  toolPageIndex$: Observable<number> = this.select(state => (this.router.url === '/' ? 0 : state.tool.pageIndex));
-  workflowPageIndex$: Observable<number> = this.select(state => (this.router.url === '/' ? 0 : state.workflow.pageIndex));
+  toolPageSize$: Observable<number> = this.select((state) => (this.router.url === '/' ? 10 : state.tool.pageSize));
+  workflowPageSize$: Observable<number> = this.select((state) => (this.router.url === '/' ? 10 : state.workflow.pageSize));
+  toolPageIndex$: Observable<number> = this.select((state) => (this.router.url === '/' ? 0 : state.tool.pageIndex));
+  workflowPageIndex$: Observable<number> = this.select((state) => (this.router.url === '/' ? 0 : state.workflow.pageIndex));
   constructor(protected store: PaginatorStore, private router: Router) {
     super(store);
   }

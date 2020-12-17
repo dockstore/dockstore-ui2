@@ -13,21 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
+import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { TokenSource } from '../../shared/enum/token-source.enum';
+import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow, WorkflowVersion } from '../../shared/swagger';
-import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
-import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
-import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
-import { TokenQuery } from '../../shared/state/token.query';
-import { TokenSource } from '../../shared/enum/token-source.enum';
-import { bootstrap4mediumModalSize } from '../../shared/constants';
-import { first } from 'rxjs/operators';
+import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 
 @Injectable()
 export class ViewService {
@@ -72,6 +72,20 @@ export class ViewService {
     );
   }
 
+  updateDefaultVersion(newDefaultVersion: string): void {
+    const workflowId = this.workflowQuery.getActive().id;
+    const message = 'Updating default workflow version';
+    this.alertService.start(message);
+    this.workflowsService.updateWorkflowDefaultVersion(workflowId, newDefaultVersion).subscribe(
+      (updatedWorkflow) => {
+        this.alertService.detailedSuccess();
+        this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
+        this.workflowService.setWorkflow(updatedWorkflow);
+      },
+      (error: HttpErrorResponse) => this.alertService.detailedError(error)
+    );
+  }
+
   /**
    * Opens a confirmation dialog that the asks the Dockstore User if they
    * would like to associate their Zenodo account for requesting DOIs
@@ -85,13 +99,13 @@ export class ViewService {
                 Would you like to link a Zenodo account now?`,
       title: 'Request DOI (Link Zenodo Account)',
       confirmationButtonText: 'Link Zenodo Account',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     };
 
     this.confirmationDialogService
       .openDialog(dialogData, bootstrap4mediumModalSize)
       .pipe(first())
-      .subscribe(confirmationResult => {
+      .subscribe((confirmationResult) => {
         if (confirmationResult) {
           this.accountsService.link(TokenSource.ZENODO);
         } else {
@@ -113,13 +127,13 @@ export class ViewService {
                 DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>? <p><b>Warning: This CANNOT be undone!</b></p>`,
       title: 'Request DOI (Snapshot Version)',
       confirmationButtonText: 'Snapshot Version',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     };
 
     this.confirmationDialogService
       .openDialog(dialogData, bootstrap4mediumModalSize)
       .pipe(first())
-      .subscribe(confirmationResult => {
+      .subscribe((confirmationResult) => {
         if (confirmationResult) {
           this.updateWorkflowToSnapshot(workflow, version, () => this.showRequestDOIDialog(workflow, version));
         } else {
@@ -142,7 +156,7 @@ export class ViewService {
                 <b>${version.name}</b>?`,
       title: 'Request DOI',
       confirmationButtonText: 'Request DOI',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     };
 
     const workflowName: string = workflow.workflowName || workflow.repository;
@@ -150,16 +164,14 @@ export class ViewService {
     this.confirmationDialogService
       .openDialog(dialogData, bootstrap4mediumModalSize)
       .pipe(first())
-      .subscribe(confirmationResult => {
+      .subscribe((confirmationResult) => {
         if (confirmationResult) {
           this.alertService.start(`A Digital Object Identifier (DOI) is being requested for workflow
                                        "${workflowName}" version "${version.name}"!`);
-          this.workflowsService
-            .requestDOIForWorkflowVersion(workflow.id, version.id)
-            .subscribe(
-              (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
-              (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
-            );
+          this.workflowsService.requestDOIForWorkflowVersion(workflow.id, version.id).subscribe(
+            (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
+            (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
+          );
         } else {
           this.alertService.detailedSuccess('You cancelled DOI issuance.');
         }
@@ -200,7 +212,7 @@ export class ViewService {
                 you sure you would like to snapshot version <b>${version.name}</b>? <p><b>Warning: This CANNOT be undone!</b></p>`,
       title: 'Snapshot',
       confirmationButtonText: 'Snapshot Version',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     };
     this.confirmationDialogService
       .openDialog(dialogData, bootstrap4mediumModalSize)

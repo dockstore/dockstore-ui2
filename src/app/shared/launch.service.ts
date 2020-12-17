@@ -28,9 +28,9 @@ export abstract class LaunchService {
   public readonly cwltoolTooltip =
     'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' + this.nonStrict;
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {}
-  abstract getParamsString(path: string, versionName: string, currentDescriptor: string);
-  abstract getCliString(path: string, versionName: string, currentDescriptor: string);
-  abstract getCwlString(path: string, versionName: string, mainDescriptor: string);
+  abstract getParamsString(path: string, versionName: string, currentDescriptor: string): string;
+  abstract getCliString(path: string, versionName: string, currentDescriptor: string): string;
+  abstract getCwlString(path: string, versionName: string, mainDescriptor: string): string;
 
   getConsonanceString(path: string, versionName: string) {
     return `consonance run --tool-dockstore-id ${path}:${versionName} ` + '--run-descriptor Dockstore.json --flavour <AWS instance-type>';
@@ -106,7 +106,7 @@ export abstract class LaunchService {
     if (!filePath) {
       return;
     }
-    let urlType = 'PLAIN_NFL';
+    let urlType;
     switch (descriptorType) {
       case ToolDescriptor.TypeEnum.WDL:
         urlType = 'PLAIN_WDL';
@@ -116,6 +116,9 @@ export abstract class LaunchService {
         break;
       case ToolDescriptor.TypeEnum.NFL:
         urlType = 'PLAIN_NFL';
+        break;
+      case ToolDescriptor.TypeEnum.GXFORMAT2:
+        urlType = 'PLAIN_GAFORMAT2';
         break;
       default:
         console.error('Unknown descriptor type: ' + descriptorType);

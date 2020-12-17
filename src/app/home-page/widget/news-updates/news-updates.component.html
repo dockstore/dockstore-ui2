@@ -1,0 +1,10 @@
+<div data-cy="news-updates-item" *ngFor="let notification of allNotifications$ | async">
+  <div class="news-card" *ngIf="notification.type === notificationTypeEnum.NEWSBODY">
+    <markdown class="markdown-remove-pmargin">
+      {{ notification.message }}
+      <span class="subtitle">
+        {{ notification.dbCreateDate | date: 'mediumDate' }}
+      </span>
+    </markdown>
+  </div>
+</div>

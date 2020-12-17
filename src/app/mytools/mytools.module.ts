@@ -16,11 +16,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RefreshWizardModule } from 'app/container/refresh-wizard.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { TabsModule } from 'ngx-bootstrap/tabs';
-import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { RefreshToolOrganizationComponent } from '../container/refresh-tool-organization/refresh-tool-organization.component';
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
@@ -29,10 +26,10 @@ import { RegisterToolComponent } from './../container/register-tool/register-too
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from './../shared/modules/material.module';
-import { getTooltipConfig } from './../shared/tooltip';
 import { MyToolComponent } from './my-tool/my-tool.component';
 import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
+import { MytoolsService } from './mytools.service';
 import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion.component';
 
 @NgModule({
@@ -43,15 +40,12 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     FormsModule,
     HeaderModule,
     mytoolsRouting,
-    AccordionModule.forRoot(),
-    ModalModule.forRoot(),
-    TabsModule.forRoot(),
-    TooltipModule.forRoot(),
     CustomMaterialModule,
     PipeModule,
-    MyEntriesModule
+    MyEntriesModule,
+    RefreshWizardModule,
   ],
-  providers: [{ provide: TooltipConfig, useFactory: getTooltipConfig }, RegisterToolService, AccountsService],
-  entryComponents: [RegisterToolComponent]
+  providers: [RegisterToolService, AccountsService, MytoolsService],
+  entryComponents: [RegisterToolComponent],
 })
 export class MyToolsModule {}

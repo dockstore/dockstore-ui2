@@ -17,7 +17,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
-import { TabDirective } from 'ngx-bootstrap/tabs';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -32,7 +32,7 @@ import { UserQuery } from '../../shared/user/user.query';
  * @class YoutubeComponent
  */
 @Component({
-  template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>'
+  template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
 })
 export class YoutubeComponent {
   constructor(public dialogRef: MatDialogRef<YoutubeComponent>) {}
@@ -41,28 +41,30 @@ export class YoutubeComponent {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent extends Base implements OnInit, AfterViewInit {
-  public browseToolsTab = 'browseToolsTab';
-  public browseWorkflowsTab = 'browseWorkflowsTab';
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;
-  @ViewChild('twitter', { static: false }) twitterElement: ElementRef;
+  descriptorLanguagesInnerHTML$: Observable<string>;
 
-  @ViewChild('youtube', { static: false }) youtube: ElementRef;
+  @ViewChild('twitter') twitterElement: ElementRef;
+
+  @ViewChild('youtube') youtube: ElementRef;
 
   constructor(
     private dialog: MatDialog,
     private twitterService: TwitterService,
     private userQuery: UserQuery,
-    private homePageService: HomePageService
+    private homePageService: HomePageService,
+    private descriptorLanguageService: DescriptorLanguageService
   ) {
     super();
   }
 
   ngOnInit() {
+    this.descriptorLanguagesInnerHTML$ = this.descriptorLanguageService.descriptorLanguagesInnerHTML$;
     this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {
@@ -77,16 +79,12 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
         () => {
           this.twitterService.createTimeline(this.twitterElement, 2);
         },
-        err => console.error(err)
+        (err) => console.error(err)
       );
   }
 
   goToSearch(searchValue: string) {
     this.homePageService.goToSearch(searchValue);
-  }
-
-  onSelect(data: TabDirective): void {
-    this.selectedTab = data.id;
   }
 
   openYoutube() {

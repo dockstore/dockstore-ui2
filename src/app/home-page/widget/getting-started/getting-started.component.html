@@ -1,0 +1,66 @@
+<div class="tutorial-container">
+  <div class="tutorial-section-card">
+    <h4 class="tutorial-title">Search for tools and workflows to launch</h4>
+    <p>
+      Use our search page to find tools and workflows to launch locally or in a cloud environment. Use advanced search to help you narrow
+      down your search.
+    </p>
+    <div class="button-row">
+      <a class="button-link" mat-button color="accent" [routerLink]="['/search']">Search for tools and workflows</a>
+      <a
+        class="button-link"
+        mat-button
+        color="accent"
+        target="_blank"
+        rel="noopener noreferrer"
+        [href]="Dockstore.DOCUMENTATION_URL + '/launch-with/launch.html'"
+        >Learn how to launch tools and workflows <mat-icon>open_in_new</mat-icon>
+      </a>
+    </div>
+  </div>
+  <div class="tutorial-section-card">
+    <h4 class="tutorial-title">Register and publish your own tools and workflows</h4>
+    <p>
+      Dockstore uses the combination of containers and descriptor languages to make analysis portable and reproducible. Users can register
+      their tools and workflows from a variety of third-party sites like Quay.io, DockerHub, GitHub, Bitbucket, and GitLab.
+    </p>
+    <div class="button-row">
+      <a
+        class="button-link"
+        mat-button
+        color="accent"
+        target="_blank"
+        rel="noopener noreferrer"
+        [href]="Dockstore.DOCUMENTATION_URL + 'getting-started/getting-started.html'"
+        >Learn more about containers and descriptors <mat-icon>open_in_new</mat-icon>
+      </a>
+      <a
+        class="button-link"
+        mat-button
+        color="accent"
+        target="_blank"
+        rel="noopener noreferrer"
+        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/register-on-dockstore.html#linking-with-external-services'"
+        >Learn how to register content <mat-icon>open_in_new</mat-icon>
+      </a>
+    </div>
+  </div>
+  <div class="tutorial-section-card">
+    <h4 class="tutorial-title">Create an organization and add some collections</h4>
+    <p>
+      Users can create organizations for labs, institutions, companies, etc. that let them showcase tools and workflows. Collections can be
+      added to organizations to further group together related tools and workflows.
+    </p>
+    <div class="button-row">
+      <a
+        class="button-link"
+        mat-button
+        color="accent"
+        target="_blank"
+        rel="noopener noreferrer"
+        [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/organizations-and-collections.html'"
+        >Read about organizations and collections <mat-icon>open_in_new</mat-icon>
+      </a>
+    </div>
+  </div>
+</div>

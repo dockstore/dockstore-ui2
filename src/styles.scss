@@ -14,9 +14,12 @@
  *    limitations under the License.
  */
 
+// Must define the material icons font directory path, see https://www.npmjs.com/package/material-design-icons-iconfont
+$material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+@import '~material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';
-@import '~@ngx-share/button/themes/default/default-theme';
+@import '~ngx-sharebuttons/themes/default/default-theme';
 @import 'featured-content.scss';
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
@@ -37,6 +40,19 @@
 /* #dad4d4 BEIGE */
 
 /* Special Fonts */
+
+.beta-label {
+  display: inline-block;
+  height: 2.5rem;
+  width: 7rem;
+  background: #424242;
+  color: #fff;
+  line-height: 2.5rem;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
 
 /* General Layout */
 angular-tag-cloud {
@@ -536,6 +552,13 @@ table {
   border: 1px solid #cfd1d7;
 }
 
+// Decided to not do horizontal scroll. Just wrap no matter what.
+// This is to naturally wrap breakable text. If the text is not breakable, wrap anywhere.
+// This does not affect <mat-table>
+td {
+  word-break: break-word;
+}
+
 td,
 th {
   font-weight: normal;
@@ -772,6 +795,10 @@ div.side-block img {
 
 .mat-icon {
   vertical-align: middle;
+}
+
+.mat-icon-copy-button {
+  transform: scale(0.85);
 }
 
 div.side-block code {
@@ -1123,84 +1150,6 @@ body {
   height: 100%;
 }
 
-// Can't seem to modify .tab-content in homeComponent.scss
-// This contains most of .tab-holder style
-tabset.homeComponent {
-  .tab-content {
-    border: 1px solid #cfd1d7;
-    border-bottom-right-radius: 15px;
-    border-bottom-left-radius: 15px;
-    -webkit-border-top-left-radius: 0px;
-    -moz-border-radius-topleft: 0px;
-    tab {
-      margin-top: 30px;
-      margin-bottom: 20px;
-      margin-right: 10px;
-      margin-left: 10px;
-    }
-  }
-  ul {
-    border-bottom: none;
-    li {
-      // Specifying tab classes to override ds-style-fix.scss
-      &.browseWorkflowsTab,
-      &.browseToolsTab {
-        width: 250px;
-        text-align: center;
-        font-size: 16px;
-        font-weight: bold;
-        border: 1px solid #cfd1d7;
-        padding-top: 3px;
-        background-color: #f4f4f4;
-        a.nav-link {
-          background-color: inherit;
-          outline: 0;
-        }
-        &.active {
-          padding-top: 0px;
-          background-color: #fff;
-          border-bottom: 1px solid #fff;
-        }
-        &:not(.active) {
-          &:hover {
-            padding-top: 4px;
-            padding-bottom: 1px;
-            background-color: #7987aa;
-            a,
-            a:hover,
-            a:focus {
-              color: #ffffff;
-              background-color: #7987aa;
-              border: none;
-            }
-          }
-          a.nav-link {
-            color: #a0adcc;
-          }
-        }
-      } // Browse Tools tab specific styles
-      &.browseToolsTab {
-        border-top-left-radius: 8px;
-        &.active {
-          border-top: 6px solid #51aad8;
-        }
-        a.nav-link {
-          color: #51aad8;
-        }
-      } // Browse Workflows tab specific styles
-      &.browseWorkflowsTab {
-        border-top-right-radius: 8px;
-        &.active {
-          border-top: 6px solid #4ab4a9;
-        }
-        a.nav-link {
-          color: #4ab4a9;
-        }
-      }
-    }
-  }
-}
-
 /* This is for dropdown anchor to have a mouse pointer without redirecting to a different page */
 .dropdown-menu li a {
   cursor: pointer;
@@ -1267,7 +1216,7 @@ app-select.longer {
   width: 50%;
 }
 
-mat-icon.star {
+mat-icon.star-icon {
   font-size: 16px;
   height: 16px;
 }
@@ -1292,7 +1241,42 @@ mat-icon.star {
   text-overflow: ellipsis;
 }
 
+.notification-display p {
+  text-align: center;
+  display: inline-block;
+}
+//removes the 10px margin added to p element on markdown component
+.markdown-remove-pmargin p {
+  margin-bottom: 0px;
+}
+
 #workflow-path,
 #tool-path {
   overflow-wrap: break-word;
+}
+.text-wrap {
+  white-space: normal;
+}
+
+mat-tab-group.no-pagination {
+  .mat-tab-header-pagination {
+    display: none;
+  }
+}
+
+//color from mat-card-subtitle
+.subtitle {
+  font-size: smaller;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+// Styling from design mockups
+// These badges are not clickable, thus different from Material Design Chips
+.nonclick-badge {
+  border-radius: 8px;
+  background-color: #dfe0e2;
+  padding: 5px 8px;
+  color: #151c3d;
+  font-size: 1.3rem;
+  font-weight: 500;
 }

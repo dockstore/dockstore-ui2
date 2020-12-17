@@ -33,7 +33,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 export class InfoTabService {
   public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private workflows: Workflow[];
+  public forumUrlEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguageMap = [];
 
   /**
@@ -66,8 +66,7 @@ export class InfoTabService {
       this.workflow = workflow;
       this.cancelEditing();
     });
-    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe(map => (this.descriptorLanguageMap = map));
-    this.workflowService.workflows$.subscribe(workflows => (this.workflows = workflows));
+    this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((map) => (this.descriptorLanguageMap = map));
   }
   setWorkflowPathEditing(editing: boolean) {
     this.workflowPathEditing$.next(editing);
@@ -77,23 +76,40 @@ export class InfoTabService {
     this.defaultTestFilePathEditing$.next(editing);
   }
 
+  setForumUrlEditing(editing: boolean) {
+    this.forumUrlEditing$.next(editing);
+  }
+
   updateAndRefresh(workflow: Workflow) {
     const message = 'Workflow Info';
-    workflow.workflowVersions = [];
-    this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(response => {
+    const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
+    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe((response) => {
       this.alertService.start('Updating ' + message);
       this.workflowsService.refresh(this.originalWorkflow.id).subscribe(
-        refreshResponse => {
+        (refreshResponse) => {
           this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
           this.workflowService.setWorkflow(refreshResponse);
           this.alertService.detailedSuccess();
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
           this.restoreWorkflow();
         }
       );
     });
+  }
+
+  /**
+   * PUT for an entry only allows the updating of selected properties.
+   * Sending back only the ones relevant.
+   * Additionally, the webservice does not appear to understand starredUsers which causes an error.
+   * Ideally this implementation should be similar to the tool counterpart
+   */
+  private getPartialEntryForUpdate(entry: Workflow): Workflow {
+    entry.workflowVersions = [];
+    entry.starredUsers = [];
+    entry.users = [];
+    return entry;
   }
 
   /**
@@ -123,6 +139,7 @@ export class InfoTabService {
     this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(
       (updatedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
+        this.workflowService.setWorkflow(updatedWorkflow);
         this.alertService.detailedSuccess();
       },
       (error: HttpErrorResponse) => {
@@ -141,18 +158,11 @@ export class InfoTabService {
    */
   private changeWorkflowPathToDefaults(workflow: Workflow): Workflow {
     const descriptorType: ToolDescriptor.TypeEnum = this.descriptorTypeCompatService.stringToDescriptorType(workflow.descriptorType);
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL:
-        workflow.workflow_path = '/Dockstore.cwl';
-        break;
-      case ToolDescriptor.TypeEnum.WDL:
-        workflow.workflow_path = '/Dockstore.wdl';
-        break;
-      case ToolDescriptor.TypeEnum.NFL:
-        workflow.workflow_path = '/nextflow.config';
-        break;
-      default:
-        break;
+    const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
+    if (defaultDescriptorPath) {
+      workflow.workflow_path = defaultDescriptorPath;
+    } else {
+      console.log('Unrecognized descriptor language, possibly from language plugin: ' + workflow.descriptorType);
     }
     return workflow;
   }
@@ -173,6 +183,8 @@ export class InfoTabService {
    */
   cancelEditing(): void {
     this.workflowPathEditing$.next(false);
+    this.defaultTestFilePathEditing$.next(false);
+    this.forumUrlEditing$.next(false);
     this.restoreWorkflow();
   }
 

@@ -15,9 +15,9 @@
  */
 import { inject, TestBed } from '@angular/core/testing';
 
-import { DockstoreStubService, ImageProviderStubService, ProviderStubService, DateStubService } from '../../test/service-stubs';
-import { WorkflowStubService } from '../../test/service-stubs';
 import { sampleWorkflow1 } from '../../test/mocked-objects';
+import { DateStubService, DockstoreStubService, ImageProviderStubService, ProviderStubService } from '../../test/service-stubs';
+import { WorkflowStubService } from '../../test/service-stubs';
 import { DateService } from '../date.service';
 import { DockstoreService } from '../dockstore.service';
 import { ImageProviderService } from '../image-provider.service';
@@ -35,8 +35,8 @@ describe('Service: ExtendedWorkflow', () => {
         { provide: DateService, useClass: DateStubService },
         { provide: DockstoreService, useClass: DockstoreStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: ImageProviderService, useClass: ImageProviderStubService }
-      ]
+        { provide: ImageProviderService, useClass: ImageProviderStubService },
+      ],
     });
   });
 

@@ -14,47 +14,46 @@
   ~    limitations under the License.
   -->
 
-<tabset [justified]="true">
-  <tab heading="Descriptor Files" id="descriptorFilesTab">
-    <app-code-editor-list
-      [sourcefiles]="descriptorFiles"
-      [editing]="editing"
-      [descriptorType]="selectedDescriptorType$ | async"
-      [fileType]="'descriptor'"
-      [selectedVersion]="_selectedVersion"
-      [entryType]="'workflow'"
-      [entrypath]="entrypath"
-    ></app-code-editor-list>
-  </tab>
-  <tab heading="Test Parameter Files" id="testParameterFilesTab">
-    <app-code-editor-list
-      *ngIf="!(isNFL$ | async)"
-      [sourcefiles]="testParameterFiles"
-      [editing]="editing"
-      [descriptorType]="selectedDescriptorType$ | async"
-      [fileType]="'testParam'"
-      [selectedVersion]="_selectedVersion"
-      [entryType]="'workflow'"
-      [entrypath]="entrypath"
-    ></app-code-editor-list>
-    <mat-card class="alert alert-info" role="alert" *ngIf="isNFL$ | async">
-      <mat-icon>warning</mat-icon>
-      &nbsp; Nextflow does not have the concept of a test parameter file.
-    </mat-card>
-  </tab>
-</tabset>
+<mat-tab-group mat-stretch-tabs animationDuration="0ms">
+  <mat-tab label="Descriptor Files">
+    <ng-template matTabContent>
+      <app-code-editor-list
+        [sourcefiles]="descriptorFiles"
+        [editing]="editing"
+        [descriptorType]="selectedDescriptorType$ | async"
+        [fileType]="'descriptor'"
+        [selectedVersion]="_selectedVersion"
+        [entryType]="'workflow'"
+        [entrypath]="entrypath"
+      ></app-code-editor-list>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Test Parameter Files">
+    <ng-template matTabContent>
+      <app-code-editor-list
+        *ngIf="!(isNFL$ | async)"
+        [sourcefiles]="testParameterFiles"
+        [editing]="editing"
+        [descriptorType]="selectedDescriptorType$ | async"
+        [fileType]="'testParam'"
+        [selectedVersion]="_selectedVersion"
+        [entryType]="'workflow'"
+        [entrypath]="entrypath"
+      ></app-code-editor-list>
+      <mat-card class="alert alert-info" role="alert" *ngIf="isNFL$ | async">
+        <mat-icon>warning</mat-icon>
+        &nbsp; Nextflow does not have the concept of a test parameter file.
+      </mat-card>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
 <div class="editor-button-container p-2" *ngIf="!publicPage && canWrite && isNewestVersion">
   <span *ngIf="!editing">
-    <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">
-      Edit Files
-    </button>
+    <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">Edit Files</button>
   </span>
   <span *ngIf="editing">
-    <button id="cancelButton" mat-button color="secondary" (click)="toggleEdit(); resetFiles()">
-      Cancel
-    </button>
-    <button id="saveNewVersionButton" mat-raised-button color="primary" (click)="saveVersion()">
-      Save as New Version
-    </button>
+    <button id="cancelButton" mat-button color="secondary" (click)="toggleEdit(); resetFiles()">Cancel</button>
+    <button id="saveNewVersionButton" mat-raised-button color="primary" (click)="saveVersion()">Save as New Version</button>
   </span>
 </div>

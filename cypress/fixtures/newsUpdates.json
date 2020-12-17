@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "message": "Middle Newsbody Item",
+    "expiration": "2030-06-25T18:45:10.210Z",
+    "type": "NEWSBODY",
+    "priority": "CRITICAL",
+    "dbCreateDate": "2020-01-11T18:45:47.182Z",
+    "dbUpdateDate": "2020-01-11T18:45:47.182Z"
+  },
+  {
+    "id": 2,
+    "message": "Last Newsbody Item",
+    "expiration": "2030-01-25T18:45:10.210Z",
+    "type": "NEWSBODY",
+    "priority": "CRITICAL",
+    "dbCreateDate": "2020-01-12T18:45:47.182Z",
+    "dbUpdateDate": "2020-01-12T18:45:47.182Z"
+  },
+  {
+    "id": 3,
+    "message": "First Newsbody Item",
+    "expiration": "2030-12-25T18:45:10.210Z",
+    "type": "NEWSBODY",
+    "priority": "CRITICAL",
+    "dbCreateDate": "2020-01-13T18:45:47.182Z",
+    "dbUpdateDate": "2020-01-13T18:45:47.182Z"
+  }
+]

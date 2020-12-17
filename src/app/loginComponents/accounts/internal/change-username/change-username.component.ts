@@ -17,19 +17,17 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
-
 import { formInputDebounceTime } from '../../../../shared/constants';
 import { MyErrorStateMatcher } from '../../../../shared/error-state-matcher';
 import { User } from '../../../../shared/swagger/model/user';
 import { UserQuery } from '../../../../shared/user/user.query';
 import { UserService } from '../../../../shared/user/user.service';
-import { RefreshService } from './../../../../shared/refresh.service';
 import { UsersService } from './../../../../shared/swagger/api/users.service';
 
 @Component({
   selector: 'app-change-username',
   templateUrl: './change-username.component.html',
-  styleUrls: ['./change-username.component.scss']
+  styleUrls: ['./change-username.component.scss'],
 })
 export class ChangeUsernameComponent implements OnInit {
   @Input() showText;
@@ -43,18 +41,13 @@ export class ChangeUsernameComponent implements OnInit {
   usernameFormControl = new FormControl('', [
     Validators.required,
     Validators.pattern('^[a-zA-Z][a-zA-Z0-9]*([-_]?[a-zA-Z0-9]+)*$'),
-    Validators.maxLength(39)
+    Validators.maxLength(39),
   ]);
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  constructor(
-    private userService: UserService,
-    private usersService: UsersService,
-    private refreshService: RefreshService,
-    private userQuery: UserQuery
-  ) {}
+  constructor(private userService: UserService, private usersService: UsersService, private userQuery: UserQuery) {}
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       if (user) {
         this.user = user;
         this.username = user.username;
@@ -62,16 +55,11 @@ export class ChangeUsernameComponent implements OnInit {
       }
     });
     this.canChangeUsername$ = this.userQuery.canChangeUsername$;
-    this.usernameFormControl.valueChanges
-      .pipe(
-        debounceTime(formInputDebounceTime),
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(value => {
-        if (this.usernameFormControl.valid) {
-          this.checkIfUsernameExists(value);
-        }
-      });
+    this.usernameFormControl.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe)).subscribe((value) => {
+      if (this.usernameFormControl.valid) {
+        this.checkIfUsernameExists(value);
+      }
+    });
   }
 
   /**
@@ -95,7 +83,7 @@ export class ChangeUsernameComponent implements OnInit {
             this.usernameTaken = userExists;
           }
         },
-        error => {
+        (error) => {
           console.error(error);
         }
       );

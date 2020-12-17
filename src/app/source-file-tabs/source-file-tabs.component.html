@@ -1,0 +1,54 @@
+<app-loading class="w-100" [loading]="loading">
+  <div *ngIf="version" class="p-3">
+    <mat-card class="alert alert-warning" *ngIf="validationMessage">
+      <mat-icon>warning</mat-icon>
+      &nbsp;
+      <span *ngFor="let item of validationMessage | keyvalue">
+        <strong>{{ item.key }}</strong
+        >: {{ item.value }}
+      </span>
+    </mat-card>
+  </div>
+  <div *ngIf="!loading && !files && !displayError" class="p-3">
+    <mat-card class="alert alert-warning"> <mat-icon>warning</mat-icon>This version has no files.</mat-card>
+  </div>
+
+  <div *ngIf="displayError" class="p-3">
+    <mat-card class="alert alert-warning">
+      <mat-icon>warning</mat-icon>There was an error retrieving the files for this version. Please reload the page.</mat-card
+    >
+  </div>
+  <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
+    <mat-tab *ngFor="let fileType of fileTypes" label="{{ 'SourceFile.TypeEnum' | mapFriendlyValue: fileType }}">
+      <ng-template matTabContent>
+        <mat-toolbar color="primary">
+          <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field class="w-50">
+              <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
+                <mat-option [value]="file" *ngFor="let file of filteredFiles"> {{ file.path }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <span>
+              <a
+                mat-icon-button
+                color="secondary"
+                class="mr-1"
+                [href]="customDownloadHREF"
+                [download]="customDownloadPath"
+                type="button"
+                title="{{ filePath }}"
+                matTooltip="Download File"
+              >
+                <mat-icon>save_alt</mat-icon>
+              </a>
+              <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="currentFile.content" matTooltip="Copy File">
+                <mat-icon>file_copy</mat-icon>
+              </button>
+            </span>
+          </div>
+        </mat-toolbar>
+        <app-code-editor [content]="currentFile.content" [filepath]="currentFile.path" [editing]="false"></app-code-editor>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</app-loading>

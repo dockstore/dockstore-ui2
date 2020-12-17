@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 
-import { TrackLoginService } from '../shared/track-login.service';
+import { TrackLoginService } from './track-login.service';
 import { UserService } from './user/user.service';
 
 @Injectable()
@@ -34,8 +34,8 @@ export class LogoutService {
       complete: () => {
         this.userService.remove();
         this.trackLoginService.switchState(false);
-        routeChange ? this.router.navigate([routeChange]) : this.router.navigate(['/login']);
-      }
+        routeChange ? this.router.navigate([routeChange]) : this.router.navigate(['/logout']);
+      },
     });
   }
 }

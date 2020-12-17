@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PopoverModule } from 'ngx-bootstrap';
+import { MdePopoverModule } from '@material-extended/mde';
 import { ClipboardModule } from 'ngx-clipboard';
 import { of } from 'rxjs';
 import { CustomMaterialModule } from '../shared/modules/material.module';
@@ -31,19 +31,19 @@ import { SearchService } from './state/search.service';
 
 @Component({
   selector: 'app-search-results',
-  template: ''
+  template: '',
 })
 class SearchResultsComponent {}
 
 @Component({
   selector: 'app-basic-search',
-  template: ''
+  template: '',
 })
 class BasicSearchComponent {}
 
 @Component({
   selector: 'app-header',
-  template: ''
+  template: '',
 })
 class HeaderComponent {}
 
@@ -56,20 +56,20 @@ describe('SearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-      imports: [CustomMaterialModule, ClipboardModule, PopoverModule.forRoot(), FontAwesomeModule, RouterTestingModule],
+      imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
         { provide: ProviderService, useClass: ProviderStubService },
-        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) }
-      ]
+        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
+      ],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
-    searchQuery = TestBed.get(SearchQuery);
+    searchQuery = TestBed.inject(SearchQuery) as jasmine.SpyObj<SearchQuery>;
     searchQuery.searchText$ = of('');
     searchQuery.getValue.and.returnValue({
       shortUrl: null,
@@ -80,11 +80,12 @@ describe('SearchComponent', () => {
       searchText: '',
       filterKeys: [],
       autocompleteTerms: [],
+      facetAutocompleteTerms: [],
       suggestTerm: '',
       pageSize: 10,
       pageIndex: 0,
       advancedSearch: null,
-      showModal: false
+      currentTabIndex: 0,
     });
     fixture.detectChanges();
   });

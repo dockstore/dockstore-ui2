@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CustomMaterialModule } from './../modules/material.module';
 
@@ -25,6 +25,6 @@ import { SelectComponent } from '../../select/select.component';
   declarations: [SelectComponent],
   imports: [CommonModule, FormsModule, CustomMaterialModule],
   providers: [],
-  exports: [SelectComponent]
+  exports: [SelectComponent],
 })
 export class SelectModule {}

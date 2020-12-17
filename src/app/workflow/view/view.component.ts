@@ -17,12 +17,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { RefreshService } from 'app/shared/refresh.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -38,23 +40,22 @@ import { ViewService } from './view.service';
 @Component({
   selector: 'app-view-workflow',
   templateUrl: './view.component.html',
-  styleUrls: ['./view.component.css']
+  styleUrls: ['./view.component.css'],
 })
 export class ViewWorkflowComponent extends View implements OnInit {
   @Input() workflowId: number;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
+  @Input() defaultVersion: string;
   items: any[];
   isPublic: boolean;
   EntryType = EntryType;
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
-  public isRefreshing$: Observable<boolean>;
-
   constructor(
-    private alertQuery: AlertQuery,
+    alertQuery: AlertQuery,
     private viewService: ViewService,
     private workflowService: WorkflowService,
     private workflowQuery: WorkflowQuery,
@@ -63,23 +64,24 @@ export class ViewWorkflowComponent extends View implements OnInit {
     private workflowsService: WorkflowsService,
     private matDialog: MatDialog,
     private hostedService: HostedService,
+    private refreshService: RefreshService,
     dateService: DateService,
     private alertService: AlertService
   ) {
-    super(dateService);
+    super(dateService, alertQuery);
   }
 
   showVersionModal() {
     this.versionModalService.setVersion(this.version);
     this.alertService.start('Getting test parameter files');
     this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name).subscribe(
-      items => {
+      (items) => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
         this.openVersionModal();
         this.alertService.simpleSuccess();
       },
-      error => {
+      (error) => {
         // TODO: Figure out a better way to handle this
         // If we were to open the modal without test parameter files and the user saves,
         // the legit files that were already there would be wiped out
@@ -90,6 +92,10 @@ export class ViewWorkflowComponent extends View implements OnInit {
     );
   }
 
+  updateDefaultVersion() {
+    this.viewService.updateDefaultVersion(this.version.name);
+  }
+
   /**
    * Opens the version modal
    *
@@ -97,9 +103,9 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   private openVersionModal(): void {
-    const dialogRef = this.matDialog.open(VersionModalComponent, {
+    this.matDialog.open(VersionModalComponent, {
       width: '600px',
-      data: { canRead: this.canRead, canWrite: this.canWrite && !this.version.frozen, isOwner: this.isOwner }
+      data: { canRead: this.canRead, canWrite: this.canWrite && !this.version.frozen, isOwner: this.isOwner },
     });
   }
 
@@ -123,23 +129,32 @@ export class ViewWorkflowComponent extends View implements OnInit {
   }
 
   ngOnInit() {
-    this.isRefreshing$ = this.alertQuery.showInfo$;
     this.entryType$ = this.sessionQuery.entryType$;
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isPublic => (this.isPublic = isPublic));
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => (this.workflow = workflow));
+  }
+
+  refreshVersion() {
+    const prefix = this.sessionQuery.getValue().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
+    this.refreshService.refreshWorkflowVersion(prefix, this.workflow, this.version.name);
   }
 
   deleteHostedVersion() {
-    const deleteMessage =
+    let deleteMessage =
       'Are you sure you want to delete version ' + this.version.name + ' for workflow ' + this.workflow.full_workflow_path + '?';
+    if (this.defaultVersion === this.version.name) {
+      deleteMessage += ' This is the default version and deleting it will set the default version to be the latest version.';
+    }
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
+      this.alertService.start('Deleting version ' + this.version.name);
       this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
-        result => {
+        (result) => {
           this.workflowService.setWorkflow(result);
+          this.alertService.simpleSuccess();
         },
         (error: HttpErrorResponse) => {
-          console.log(error);
+          this.alertService.detailedError(error);
         }
       );
     }

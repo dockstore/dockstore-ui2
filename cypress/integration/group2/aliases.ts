@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore aliases', () => {
   resetDB();
@@ -27,7 +27,7 @@ describe('Dockstore aliases', () => {
         url: '*/aliases/workflow-versions/w11wv13alias',
         method: 'GET',
         status: 200,
-        response: {'fullWorkflowPath' : 'github.com/A/l', 'tagName'  : 'master'}
+        response: { fullWorkflowPath: 'github.com/A/l', tagName: 'master' },
       });
       cy.visit('/aliases/workflow-versions/w11wv13alias');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
@@ -46,7 +46,7 @@ describe('Dockstore aliases', () => {
         url: '*/aliases/workflow-versions/incorrectAlias',
         method: 'GET',
         status: 404,
-        response: {}
+        response: {},
       });
       cy.visit('/aliases/workflow-versions/incorrectAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/aliases/workflow-versions/incorrectAlias');

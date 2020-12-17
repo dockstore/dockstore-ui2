@@ -14,13 +14,13 @@
  *    limitations under the License.
  */
 
+import { inject, TestBed } from '@angular/core/testing';
 import { ListContainersService } from './list.service';
-import { TestBed, inject } from '@angular/core/testing';
 
 describe('listService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ListContainersService]
+      providers: [ListContainersService],
     });
   });
   it('should ...', inject([ListContainersService], (service: ListContainersService) => {

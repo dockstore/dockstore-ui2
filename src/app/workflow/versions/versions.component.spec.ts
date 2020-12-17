@@ -16,12 +16,9 @@
 import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { TooltipModule } from 'ngx-bootstrap';
-
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -39,13 +36,13 @@ import {
   ImageProviderStubService,
   RefreshStubService,
   WorkflowsStubService,
-  WorkflowStubService
+  WorkflowStubService,
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
 
 @Component({
   selector: 'app-view-workflow',
-  template: '<p>App View Component</p>'
+  template: '<p>App View Component</p>',
 })
 class MockViewWorkflowComponent {
   @Input() versions;
@@ -54,11 +51,12 @@ class MockViewWorkflowComponent {
   @Input() canRead;
   @Input() canWrite;
   @Input() isOwner;
+  @Input() defaultVersion;
 }
 
 @Component({
   selector: 'app-version-modal',
-  template: '<p>Version Modal Component</p>'
+  template: '<p>Version Modal Component</p>',
 })
 class MockVersionModalComponent {
   @Input() canRead;
@@ -71,14 +69,14 @@ describe('VersionsWorkflowComponent', () => {
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MatSnackBarModule, FormsModule, TooltipModule, MatTooltipModule, MatIconModule, FontAwesomeModule],
+      imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule],
       declarations: [
         VersionsWorkflowComponent,
         OrderBy,
         CommitUrlPipe,
         VerifiedPlatformsPipe,
         MockViewWorkflowComponent,
-        MockVersionModalComponent
+        MockVersionModalComponent,
       ],
       providers: [
         DockstoreService,
@@ -89,8 +87,8 @@ describe('VersionsWorkflowComponent', () => {
         ProviderService,
         WorkflowQuery,
         { provide: ImageProviderService, useClass: ImageProviderStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+      ],
     }).compileComponents();
   }));
 

@@ -15,78 +15,106 @@
 -->
 
 <div class="p-3">
-  <mat-card class="mb-2" *ngIf="dockstoreToken">
-    <h3>Dockstore Account</h3>
-    <div>
-      Use with our CLI utilities or with our
-      <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch
-      tools and workflows. See the <a href="/onboarding">Onboarding</a> page for more details on using the CLI.
+  <mat-card class="mb-2" fxLayout="row" *ngIf="dockstoreToken">
+    <div fxLayout="column" fxLayoutAlign="center">
+      <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="account-logo" />
     </div>
-    <span fxLayout="row" fxLayoutAlign="start center">
-      <strong>Token</strong>
-      <button [matTooltip]="show ? 'Hide token' : 'Show token'" mat-icon-button color="secondary" (click)="show = !show">
-        <mat-icon *ngIf="show">visibility_off</mat-icon>
-        <mat-icon *ngIf="!show">visibility</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        color="secondary"
-        ngxClipboard
-        [cbContent]="dockstoreToken"
-        (cbOnSuccess)="isCopied1 = true"
-        matTooltip="Copy Token"
-      >
-        <mat-icon>file_copy</mat-icon>
-      </button>
-      <span *ngIf="show" style="overflow: auto;">{{ dockstoreToken }}</span>
-    </span>
+    <div>
+      <h3>Dockstore Account</h3>
+      <div>
+        Use with our CLI utilities or with our
+        <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch
+        tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
+      </div>
+      <span fxLayout="row" fxLayoutAlign="start center">
+        <strong>Token</strong>
+        <button [matTooltip]="show ? 'Hide token' : 'Show token'" mat-icon-button color="secondary" (click)="show = !show">
+          <mat-icon *ngIf="show">visibility_off</mat-icon>
+          <mat-icon *ngIf="!show">visibility</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="secondary"
+          ngxClipboard
+          [cbContent]="dockstoreToken"
+          (cbOnSuccess)="isCopied1 = true"
+          matTooltip="Copy Token"
+        >
+          <mat-icon>file_copy</mat-icon>
+        </button>
+        <span *ngIf="show" style="overflow: auto">{{ dockstoreToken }}</span>
+      </span>
+    </div>
   </mat-card>
 </div>
 
 <div *ngFor="let row of accountsInfo" class="p-3">
-  <mat-card class="mb-2">
-    <div>
-      <h3>
-        <mat-chip-list>
-          <mat-chip *ngIf="row.isLinked" color="accent" selected matTooltip="Account is linked">
-            <mat-icon>link</mat-icon>
-          </mat-chip>
-          {{ row.name }} Account&nbsp;
-          <mat-chip [disabled]="true" *ngIf="row.bold" matTooltip="A method of logging into Dockstore">Login Method</mat-chip>
-        </mat-chip-list>
-      </h3>
+  <mat-card class="mb-2" fxLayout="row">
+    <div fxLayout="column" fxLayoutAlign="center">
+      <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="account-logo" />
     </div>
-    <div>
-      {{ row.message }}
-      <span *ngIf="row.isLinked">If your token has expired, relink your account.</span>
-    </div>
-    <div>
-      {{ row.bold }}
-    </div>
+    <div style="margin-right: auto">
+      <div>
+        <h3>
+          <mat-chip-list>
+            <mat-chip *ngIf="row.isLinked" color="accent" selected matTooltip="Account is linked">
+              <mat-icon>link</mat-icon>
+            </mat-chip>
+            {{ row.name }} Account&nbsp;
+            <mat-chip [disabled]="true" *ngIf="row.bold" matTooltip="A method of logging into Dockstore">Login Method</mat-chip>
+          </mat-chip-list>
+        </h3>
+      </div>
+      <div>
+        {{ row.message }}
+        <span *ngIf="row.isLinked">If your token has expired, relink your account.</span>
+      </div>
+      <div>
+        {{ row.bold }}
+      </div>
 
-    <span fxLayout="row" fxLayoutAlign="start center" *ngIf="row.isLinked">
-      <strong>Token</strong>
-      <button mat-icon-button color="secondary" (click)="row.show = !row.show">
-        <mat-icon *ngIf="row.show">visibility_off</mat-icon>
-        <mat-icon *ngIf="!row.show">visibility</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        color="secondary"
-        ngxClipboard
-        [cbContent]="row.source | getTokenContent: tokens"
-        (cbOnSuccess)="isCopied1 = true"
-      >
-        <mat-icon>file_copy</mat-icon>
-      </button>
-      <span *ngIf="row.show" style="overflow: auto;">{{ row.source | getTokenContent: tokens }}</span>
-    </span>
-
-    <mat-card-footer class="clearfix">
-      <span *ngIf="row.isLinked; else notLinked" class="pull-right">
-        <span class="mr-2">Username: {{ row.source | getTokenUsername: tokens }}</span>
+      <span fxLayout="row" fxLayoutAlign="start center" *ngIf="row.isLinked">
+        <strong>Token</strong>
+        <button mat-icon-button color="secondary" (click)="row.show = !row.show">
+          <mat-icon *ngIf="row.show">visibility_off</mat-icon>
+          <mat-icon *ngIf="!row.show">visibility</mat-icon>
+        </button>
         <button
-          class="mr-2"
+          mat-icon-button
+          color="secondary"
+          ngxClipboard
+          [cbContent]="row.source | getTokenContent: tokens"
+          (cbOnSuccess)="isCopied1 = true"
+        >
+          <mat-icon>file_copy</mat-icon>
+        </button>
+        <span *ngIf="row.show" style="overflow: auto">{{ row.source | getTokenContent: tokens }}</span>
+        <span *ngIf="row.isLinked" class="pull-right">
+          <span class="mx-2">
+            <strong>Username: </strong>
+            {{ row.source | getTokenUsername: tokens }}
+          </span>
+        </span>
+      </span>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="end" style="margin-left: auto">
+      <span class="pull-right" fxLayout="column" fxLayoutAlign="end end">
+        <button
+          *ngIf="row.isLinked === false; else linked"
+          mat-raised-button
+          color="secondary"
+          class="pull-right"
+          [attr.id]="'link-' + row.name"
+          (click)="link(row.source)"
+          matTooltip="Link the account"
+        >
+          <mat-icon>link</mat-icon>
+          <span>Link Account</span>
+        </button>
+      </span>
+      <ng-template #linked>
+        <button
+          class="mb-2"
           mat-raised-button
           color="primary"
           [attr.id]="'relink-' + row.name"
@@ -106,21 +134,7 @@
           <mat-icon>link_off</mat-icon>
           <span>Unlink Account</span>
         </button>
-      </span>
-      <ng-template #notLinked>
-        <button
-          mat-raised-button
-          color="secondary"
-          class="pull-right"
-          [attr.id]="'link-' + row.name"
-          *ngIf="!row.isLinked"
-          (click)="link(row.source)"
-          matTooltip="Link the account"
-        >
-          <mat-icon>link</mat-icon>
-          <span>Link Account</span>
-        </button>
       </ng-template>
-    </mat-card-footer>
+    </div>
   </mat-card>
 </div>

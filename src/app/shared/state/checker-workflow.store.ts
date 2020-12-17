@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { Workflow, Entry } from '../swagger';
+import { Entry, Workflow } from '../swagger';
 
 export interface CheckerWorkflowState {
   entry: Entry;
@@ -25,7 +25,7 @@ export interface CheckerWorkflowState {
 export function createInitialState(): CheckerWorkflowState {
   return {
     entry: null,
-    checkerWorkflow: null
+    checkerWorkflow: null,
   };
 }
 

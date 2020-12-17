@@ -19,9 +19,9 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { UserService } from '../../../shared/user/user.service';
-import { StarOrganizationStubService, OrganizationStarringStubService, UserStubService } from '../../../test/service-stubs';
-import { OrganizationStargazersComponent } from './organization-stargazers.component';
+import { OrganizationStarringStubService, StarOrganizationStubService, UserStubService } from '../../../test/service-stubs';
 import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
+import { OrganizationStargazersComponent } from './organization-stargazers.component';
 
 describe('OrganizationStargazersComponent', () => {
   let component: OrganizationStargazersComponent;
@@ -34,8 +34,8 @@ describe('OrganizationStargazersComponent', () => {
       providers: [
         { provide: UserService, useClass: UserStubService },
         { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },
-        { provide: StarOrganizationService, useClass: StarOrganizationStubService }
-      ]
+        { provide: StarOrganizationService, useClass: StarOrganizationStubService },
+      ],
     }).compileComponents();
   }));
 

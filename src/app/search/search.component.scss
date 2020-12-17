@@ -93,12 +93,16 @@
   font-size: 12px;
   background-color: #ffffff;
   &.active {
-    background-color: #f4f4f4;
-    color: #3b769a;
+    background-color: #487980;
+    color: #ffffff;
+    font-weight: bold;
   }
   &:not(.active) {
     &:hover {
       background-color: #f8f8f8;
+    }
+    .ng-fa-icon {
+      display: none;
     }
   }
 }
@@ -149,14 +153,31 @@
   justify-content: space-between;
 }
 
-.search-facet-holder {
-  display: flex;
+/*for facet histograms*/
+.number-of-items {
+  position: absolute;
+  right: 3rem;
 }
 
-.search-facet-left {
-  justify-content: flex-start;
+/*for facet histograms*/
+.panel-container-label {
+  padding-right: 0;
 }
 
-.search-facet-right {
-  justify-content: flex-end;
+.histogram {
+  background-color: #dddddd;
+  min-height: 2rem;
+}
+
+// For facet search
+input[type='text']:focus,
+textarea:focus {
+  border: none;
+}
+mat-form-field {
+  width: 100%;
+}
+
+input.mat-input-element:not(:focus) {
+  height: 1rem;
 }

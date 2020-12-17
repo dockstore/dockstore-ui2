@@ -14,14 +14,13 @@
  *    limitations under the License.
  */
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContainersService } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
-import { FileStubService, ContainerStubService, ContainersStubService } from './../../test/service-stubs';
 import { FileService } from './../../shared/file.service';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ContainersStubService, ContainerStubService, FileStubService } from './../../test/service-stubs';
 import { DockerfileComponent } from './dockerfile.component';
-class DockerFileStubService {}
 
 describe('DockerfileComponent', () => {
   let component: DockerfileComponent;
@@ -34,8 +33,8 @@ describe('DockerfileComponent', () => {
       providers: [
         { provide: FileService, useClass: FileStubService },
         { provide: ContainerService, useClass: ContainerStubService },
-        { provide: ContainersService, useClass: ContainersStubService }
-      ]
+        { provide: ContainersService, useClass: ContainersStubService },
+      ],
     }).compileComponents();
   }));
 

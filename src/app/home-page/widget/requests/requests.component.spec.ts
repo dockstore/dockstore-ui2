@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RequestsComponent } from './requests.component';
-import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { UsersService } from 'app/shared/swagger';
 import { UsersStubService } from 'app/test/service-stubs';
+import { RequestsComponent } from './requests.component';
 
 describe('RequestsComponent', () => {
   let component: RequestsComponent;
@@ -15,7 +15,7 @@ describe('RequestsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [RequestsComponent],
       imports: [RouterTestingModule, HttpClientTestingModule, CustomMaterialModule],
-      providers: [{ provide: UsersService, useClass: UsersStubService }]
+      providers: [{ provide: UsersService, useClass: UsersStubService }],
     }).compileComponents();
   }));
 

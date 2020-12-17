@@ -3,9 +3,9 @@ import { transaction } from '@datorama/akita';
 import { AuthService } from 'ng2-ui-auth';
 import { Md5 } from 'ts-md5/dist/md5';
 import { AlertService } from '../alert/state/alert.service';
-import { RefreshService } from '../refresh.service';
 import { TokenService } from '../state/token.service';
-import { Configuration, ExtendedUserData, User, UsersService } from '../swagger';
+import { WorkflowService } from '../state/workflow.service';
+import { Configuration, ExtendedUserData, User, UsersService, Workflow } from '../swagger';
 import { UserStore } from './user.store';
 
 @Injectable({ providedIn: 'root' })
@@ -15,29 +15,40 @@ export class UserService {
     private authService: AuthService,
     private usersService: UsersService,
     private configuration: Configuration,
-    private refreshService: RefreshService,
     private tokenService: TokenService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private workflowService: WorkflowService
   ) {
     this.getUser();
   }
 
   updateUser(user: User) {
-    this.userStore.update(state => {
+    this.userStore.update((state) => {
       return {
         ...state,
-        user: user
+        user: user,
       };
     });
   }
 
   updateExtendedUserData(extendeduserData: ExtendedUserData) {
-    this.userStore.update(state => {
+    this.userStore.update((state) => {
       return {
         ...state,
-        extendedUserData: extendeduserData
+        extendedUserData: extendeduserData,
       };
     });
+  }
+
+  addUserToWorkflows(userId: number): void {
+    this.alertService.start('Adding user to existing workflows on Dockstore');
+    this.usersService.addUserToDockstoreWorkflows(userId).subscribe(
+      (workflows: Array<Workflow>) => {
+        this.alertService.detailedSuccess();
+        this.workflowService.setWorkflows(workflows);
+      },
+      (error) => this.alertService.detailedError(error)
+    );
   }
 
   @transaction()
@@ -54,12 +65,10 @@ export class UserService {
   getExtendedUserData(): void {
     this.setupConfigurationToken();
     if (this.configuration.apiKeys['Authorization']) {
-      this.usersService
-        .getExtendedUserData()
-        .subscribe(
-          (extendedUserData: ExtendedUserData) => this.updateExtendedUserData(extendedUserData),
-          error => this.updateExtendedUserData(null)
-        );
+      this.usersService.getExtendedUserData().subscribe(
+        (extendedUserData: ExtendedUserData) => this.updateExtendedUserData(extendedUserData),
+        (error) => this.updateExtendedUserData(null)
+      );
     } else {
       this.updateExtendedUserData(null);
     }
@@ -77,7 +86,7 @@ export class UserService {
             this.tokenService.removeAll();
           }
         },
-        error => {
+        (error) => {
           this.updateUser(null);
           this.tokenService.removeAll();
         }
@@ -117,7 +126,7 @@ export class UserService {
         this.getUser();
         this.alertService.detailedSuccess();
       },
-      error => {
+      (error) => {
         this.alertService.detailedError(error);
       }
     );

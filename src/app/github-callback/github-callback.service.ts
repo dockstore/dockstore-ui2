@@ -3,7 +3,7 @@ import { Params, Router } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GithubCallbackService {
   constructor(private router: Router) {}

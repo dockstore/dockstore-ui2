@@ -20,8 +20,13 @@ zenodoClientID: <fill me in>
 zenodoClientSecret: <fill me in>
 zenodoRedirectURI: http://<fill me in>:8080/auth/zenodo.org
 zenodoUrl: https://zenodo.org
+orcidClientID: <fill me in>
+orcidClientSecret: <fill me in>
 gitHubAppPrivateKeyFile: <fill me in>
 gitHubAppId: <fill me in>
+
+orcidClientID: <fill me in>
+orcidClientSecret: <fill me in>
 
 authorizerType: inmemory
 
@@ -71,6 +76,8 @@ database:
 uiConfig:
   dnaStackImportUrl: https://app.dnastack.com/#/app/workflow/import/dockstore
   dnaNexusImportUrl: https://platform.dnanexus.com/panx/tools/import-workflow
+  bdCatalystTerraImportUrl: https://dev.terra.biodatacatalyst.nhlbi.nih.gov
+  bdCatalystSevenBridgesImportUrl: https://sb.biodatacatalyst.nhlbi.nih.gov 
   terraImportUrl: https://app.terra.bio/#import-tool/dockstore
 
   gitHubAuthUrl: https://github.com/login/oauth/authorize
@@ -90,6 +97,10 @@ uiConfig:
   zenodoAuthUrl: https://zenodo.org/oauth/authorize
   zenodoRedirectPath: /auth/zenodo.org
   zenodoScope: deposit:write deposit:actions
+
+  orcidAuthUrl: https://orcid.org/oauth/authorize
+  orcidRedirectPath: /auth/orcid.org
+  orcidScope: /authenticate
 
   googleScope: profile email
 

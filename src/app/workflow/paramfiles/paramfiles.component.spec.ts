@@ -13,15 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { FileService } from '../../shared/file.service';
-import { GA4GHService } from '../../shared/swagger';
-import { FileStubService, GA4GHStubService, ParamFilesStubService, WorkflowStubService } from '../../test/service-stubs';
-import { ParamfilesWorkflowComponent } from './paramfiles.component';
+import { GA4GHV20Service } from '../../shared/openapi';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { FileStubService, GA4GHV20StubService, ParamFilesStubService, WorkflowStubService } from '../../test/service-stubs';
+import { ParamfilesWorkflowComponent } from './paramfiles.component';
 
 describe('ParamfilesWorkflowComponent', () => {
   let component: ParamfilesWorkflowComponent;
@@ -30,13 +32,14 @@ describe('ParamfilesWorkflowComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ParamfilesWorkflowComponent],
+      imports: [HttpClientModule, MatSnackBarModule],
       providers: [
         { provide: ParamfilesService, useClass: ParamFilesStubService },
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService }
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 

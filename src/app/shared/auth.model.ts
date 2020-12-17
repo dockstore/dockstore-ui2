@@ -13,15 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Dockstore } from '../shared/dockstore.model';
 import { IPartialConfigOptions } from 'ng2-ui-auth/lib/config-interfaces';
+import { Dockstore } from '../shared/dockstore.model';
 
 export const AuthConfig: IPartialConfigOptions = {
   providers: {
     github: {
       url: Dockstore.API_URI + '/auth/tokens/github',
       clientId: Dockstore.GITHUB_CLIENT_ID,
-      scope: [Dockstore.GITHUB_SCOPE]
+      scope: [Dockstore.GITHUB_SCOPE],
     },
     google: {
       url: Dockstore.API_URI + '/auth/tokens/google',
@@ -29,8 +29,8 @@ export const AuthConfig: IPartialConfigOptions = {
       scope: [Dockstore.GOOGLE_SCOPE],
       additionalUrlParams: {
         access_type: 'offline',
-        prompt: 'consent'
-      }
-    }
-  }
+        prompt: 'consent',
+      },
+    },
+  },
 };

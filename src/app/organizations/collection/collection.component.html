@@ -18,7 +18,7 @@
   Collections
 </app-header>
 <!-- Beware of double loading bar (from page and from loading component) -->
-<app-loading [loading]="(loadingCollection$ | async) && (loadingOrganization$ | async)">
+<app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
   <div *ngIf="organization$ | async as organization">
     <div class="container" *ngIf="collection$ | async as collection" fxLayout="column">
       <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === pendingEnum">
@@ -82,53 +82,31 @@
           </mat-card>
 
           <div fxLayout="column" fxLayoutGap="15px">
-            <div *ngFor="let entry of collection?.entries">
+            <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
               <mat-card class="entryCard">
                 <mat-card-header>
                   <mat-card-title>
                     <h4>
-                      <span *ngIf="entry?.full_workflow_path">
-                        <a
-                          *ngIf="entry?.mode === WorkflowMode.SERVICE; else workflow"
-                          [routerLink]="['/services/', entry.full_workflow_path]"
-                        >
-                          {{ entry.full_workflow_path }}
-                        </a>
-                        <ng-template #workflow>
-                          <a [routerLink]="['/workflows/', entry.full_workflow_path]">
-                            {{ entry.full_workflow_path }}
-                          </a>
-                        </ng-template>
-                      </span>
-                      <a *ngIf="entry?.tool_path" [routerLink]="['/containers/', entry.tool_path]">
-                        {{ entry.tool_path }}
+                      <a
+                        [routerLink]="['/' + entry.entryType + 's/', entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')]"
+                      >
+                        {{ entry.entryPath + (entry.versionName ? ':' + entry.versionName : '') }}
                       </a>
                     </h4>
                   </mat-card-title>
                   <mat-card-subtitle> Last updated {{ entry.dbUpdateDate | date }} </mat-card-subtitle>
                 </mat-card-header>
-
                 <mat-card-actions *ngIf="canEdit$ | async" fxLayout="row" fxLayoutAlign="end center">
-                  <span *ngIf="entry?.full_workflow_path; else toolRemoveButton">
+                  <span *ngIf="entry?.entryPath">
                     <button
                       mat-flat-button
                       matTooltip="Remove entry from collection."
-                      id="removeWorkflowButton"
-                      (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.full_workflow_path)"
+                      id="removeEntryButton"
+                      (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.entryPath)"
                     >
                       <mat-icon>clear</mat-icon> Remove
                     </button>
                   </span>
-                  <ng-template #toolRemoveButton>
-                    <button
-                      mat-flat-button
-                      matTooltip="Remove entry from collection."
-                      id="removeToolButton"
-                      (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.tool_path)"
-                    >
-                      <mat-icon>clear</mat-icon> Remove
-                    </button>
-                  </ng-template>
                 </mat-card-actions>
               </mat-card>
             </div>
@@ -152,7 +130,7 @@
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
-            <markdown *ngIf="collection.description" fxFlex [data]="collection.description"></markdown>
+            <markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></markdown-wrapper>
           </mat-card>
         </div>
       </div>

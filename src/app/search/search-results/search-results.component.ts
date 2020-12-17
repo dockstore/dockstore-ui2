@@ -16,6 +16,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Base } from '../../shared/base';
 import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
@@ -24,24 +26,25 @@ import { SearchService } from '../state/search.service';
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
-  styleUrls: ['./search-results.component.scss']
+  styleUrls: ['./search-results.component.scss'],
 })
-export class SearchResultsComponent implements OnInit {
-  public browseToolsTab = 'browseToolsTab';
-  public browseWorkflowsTab = 'browseWorkflowsTab';
-  public activeToolTab$: Observable<boolean>;
+export class SearchResultsComponent extends Base implements OnInit {
+  public activeToolTab$: Observable<number>;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
+  public selectedIndex$: Observable<any>;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   options: CloudOptions = {
-    width: 600,
+    width: 500,
     height: 200,
-    overflow: false
+    overflow: false,
   };
+
   constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
+    super();
     this.activeToolTab$ = this.searchQuery.activeToolTab$;
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
     this.noToolHits$ = this.searchQuery.noToolHits$;
@@ -52,6 +55,11 @@ export class SearchResultsComponent implements OnInit {
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
+    this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
+      map((activeToolTab) => {
+        return { active: activeToolTab };
+      })
+    );
   }
 
   createTagCloud(type: string) {
@@ -67,16 +75,16 @@ export class SearchResultsComponent implements OnInit {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
-      body: toolQuery
+      body: toolQuery,
     })
-      .then(hits => {
+      .then((hits) => {
         let weight = 10;
         let count = 0;
         if (hits && hits.aggregations && hits.aggregations.tagcloud) {
-          hits.aggregations.tagcloud.buckets.forEach(tag => {
+          hits.aggregations.tagcloud.buckets.forEach((tag) => {
             const theTag = {
               text: tag.key,
-              weight: weight
+              weight: weight,
             };
             if (weight === 10) {
               /** just for fun...**/
@@ -100,12 +108,16 @@ export class SearchResultsComponent implements OnInit {
           });
         }
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   }
 
   // Tells the search service to tell the search filters to save its data
   saveSearchFilter() {
     this.searchService.toSaveSearch$.next(true);
+  }
+
+  saveTabIndex(tab) {
+    this.searchService.saveCurrentTab(tab.index);
   }
 
   tagClicked(clicked: CloudData) {

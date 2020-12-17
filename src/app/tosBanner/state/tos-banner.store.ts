@@ -16,8 +16,8 @@
 
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
+import { dismissedLatestPrivacyPolicy, dismissedLatestTOS } from '../../shared/constants';
 import { User } from '../../shared/openapi/model/user';
-import { dismissedLatestTOS, dismissedLatestPrivacyPolicy } from '../../shared/constants';
 
 export interface TosBannerState {
   dismissedLatestTOS: User.TosversionEnum;
@@ -27,7 +27,7 @@ export interface TosBannerState {
 export function createInitialState(): TosBannerState {
   return {
     dismissedLatestTOS: JSON.parse(localStorage.getItem(dismissedLatestTOS)),
-    dismissedLatestPrivacyPolicy: JSON.parse(localStorage.getItem(dismissedLatestPrivacyPolicy))
+    dismissedLatestPrivacyPolicy: JSON.parse(localStorage.getItem(dismissedLatestPrivacyPolicy)),
   };
 }
 

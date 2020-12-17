@@ -18,13 +18,14 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Base } from '../../../shared/base';
 import { StarOrganizationService } from '../../../shared/star-organization.service';
+import { User } from '../../../shared/swagger';
 import { UserService } from '../../../shared/user/user.service';
 import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
-import { User } from '../../../shared/swagger';
 
 @Component({
   selector: 'app-organization-stargazers',
-  templateUrl: '../../../stargazers/stargazers.component.html'
+  templateUrl: '../../../stargazers/stargazers.component.html',
+  styleUrls: ['../../../stargazers/stargazers.component.css'],
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {
   starGazers: Array<User>;
@@ -38,7 +39,7 @@ export class OrganizationStargazersComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    this.starOrganizationService.starOrganization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(organization => {
+    this.starOrganizationService.starOrganization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization) => {
       if (organization && organization.theOrganization) {
         this.organizationStarringService.getStarring(organization.theOrganization.id).subscribe((starring: Array<User>) => {
           this.starGazers = starring;

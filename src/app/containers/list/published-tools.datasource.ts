@@ -19,11 +19,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
+import { EntryType } from 'app/shared/enum/entry-type';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { ProviderService } from '../../shared/provider.service';
 import { ContainersService, DockstoreTool } from '../../shared/swagger';
-import { EntryType } from 'app/shared/enum/entry-type';
 
 @Injectable()
 export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreTool> {
@@ -57,7 +57,7 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
       )
       .subscribe((entries: HttpResponse<Array<DockstoreTool>>) => {
         this.entriesSubject.next(
-          entries.body.map(tool => {
+          entries.body.map((tool) => {
             tool = this.imageProviderService.setUpImageProvider(tool);
             return <ExtendedDockstoreTool>this.providersService.setUpProvider(tool);
           })

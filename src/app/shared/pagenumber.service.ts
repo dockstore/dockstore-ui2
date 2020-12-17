@@ -14,9 +14,7 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router/';
 import { BehaviorSubject } from 'rxjs';
-
 import { PageInfo } from './../shared/models/PageInfo';
 
 @Injectable()
@@ -28,9 +26,8 @@ export class PagenumberService {
   pgNumWorkflows$ = this.pgNumWorkflowsSource.asObservable(); // This is the selected tool
 
   private backRouteSource = new BehaviorSubject<any>(null);
-  private backRoute$ = this.backRouteSource.asObservable();
   needSetPageNumber: boolean;
-  constructor(private router: Router) {
+  constructor() {
     this.needSetPageNumber = false;
   }
   setToolsPageInfo(pginfo: PageInfo) {

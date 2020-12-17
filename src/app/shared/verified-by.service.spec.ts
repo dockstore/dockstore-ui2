@@ -1,19 +1,19 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
+import { versionVerifiedPlatform } from '../test/mocked-objects';
 import { VerifiedByService } from './verified-by.service';
-import { testSourceFiles } from '../test/mocked-objects';
 
 describe('Service: VerifiedBy', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [VerifiedByService]
+      providers: [VerifiedByService],
     });
   });
 
   it('should get verified-by string', inject([VerifiedByService], (service: VerifiedByService) => {
-    expect(service.getVerifiedByString(null)).toEqual([]);
-    expect(service.getVerifiedByString([])).toEqual([]);
-    expect(service.getVerifiedByString(testSourceFiles)).toEqual(['Dockstore CLI 1.0.0']);
+    expect(service.getVerifiedByString(null, null)).toEqual([]);
+    expect(service.getVerifiedByString([], 1)).toEqual([]);
+    expect(service.getVerifiedByString(versionVerifiedPlatform, 1)).toEqual(['Dockstore CLI 1.0.0']);
   }));
 });

@@ -14,6 +14,7 @@
   ~    limitations under the License.
   -->
 <h4 mat-dialog-title>Register Tool</h4>
+<mat-progress-bar mat-dialog-title mode="indeterminate" *ngIf="loading$ | async"></mat-progress-bar>
 <mat-dialog-content>
   <app-alert></app-alert>
   <mat-horizontal-stepper #stepper>
@@ -22,10 +23,7 @@
     </ng-template>
     <mat-step>
       <ng-template matStepLabel>Tool storage type</ng-template>
-      <p>
-        You can write your CWL/WDL and store it on Dockstore.org, or you can register a CWL/WDL on an existing third party repository, such
-        as GitHub, Bitbucket, etc.
-      </p>
+      <p>Tools are a combination of Docker images describing the tool environment and descriptor files describing how the tool is run.</p>
       <div class="modal-body">
         <mat-radio-group class="radio-group" [(ngModel)]="selectedOption">
           <mat-radio-button
@@ -34,23 +32,27 @@
             [value]="option"
             [id]="option.value + '-register-workflow-option'"
           >
-            {{ option.label }}
+            <span class="text-wrap">
+              {{ option.label }}
+              <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
+                {{ selectedOption.extendedLabel }}
+              </div>
+            </span>
           </mat-radio-button>
         </mat-radio-group>
       </div>
       <div class="modal-footer">
-        <button mat-button color="secondary" (click)="hideModal()">
-          Close
-        </button>
-        <button mat-raised-button color="primary" matStepperNext>
-          Next
-        </button>
+        <button mat-button color="secondary" (click)="hideModal()">Close</button>
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a tool</ng-template>
+      <div *ngIf="selectedOption?.value === 0">
+        <refresh-wizard></refresh-wizard>
+      </div>
       <form
-        *ngIf="selectedOption?.value == 0"
+        *ngIf="selectedOption?.value == 1"
         #registerToolForm="ngForm"
         name="registerToolForm"
         class="form-horizontal"
@@ -58,10 +60,12 @@
         novalidate
       >
         <div class="modal-body">
+          <p>
+            Manually register a tool with a custom Docker image and Git repository pairing. Use the optional tool name field to handle
+            multiple tools with the same Docker image.
+          </p>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Source Code Repository:
-            </label>
+            <label class="col-sm-3 control-label"> Source Code Repository: </label>
             <div class="col-sm-9">
               <div class="input-group">
                 <div class="input-group-btn">
@@ -95,9 +99,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Dockerfile Path:
-            </label>
+            <label class="col-sm-3 control-label"> Dockerfile Path: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -105,7 +107,7 @@
                 name="dockerfilePath"
                 [(ngModel)]="tool.default_dockerfile_path"
                 minlength="3"
-                maxlength="256"
+                maxlength="1000"
                 [pattern]="validationPatterns.dockerfilePath"
                 required
                 matTooltip="Default relative path to the Dockerfile in the Git repository."
@@ -115,9 +117,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              CWL Descriptor Path:
-            </label>
+            <label class="col-sm-3 control-label"> CWL Descriptor Path: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -125,7 +125,7 @@
                 name="cwlPath"
                 [(ngModel)]="tool.default_cwl_path"
                 minlength="3"
-                maxlength="256"
+                maxlength="1000"
                 [pattern]="validationPatterns.cwlPath"
                 [required]="!tool.default_wdl_path.length"
                 matTooltip="Default relative path to the CWL Descriptor in the Git repository."
@@ -135,9 +135,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              WDL Descriptor Path:
-            </label>
+            <label class="col-sm-3 control-label"> WDL Descriptor Path: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -145,7 +143,7 @@
                 name="wdlPath"
                 [(ngModel)]="tool.default_wdl_path"
                 minlength="3"
-                maxlength="256"
+                maxlength="1000"
                 [pattern]="validationPatterns.wdlPath"
                 [required]="!tool.default_cwl_path.length"
                 matTooltip="Default relative path to the WDL Descriptor in the Git repository."
@@ -155,9 +153,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              CWL Test Parameter File:
-            </label>
+            <label class="col-sm-3 control-label"> CWL Test Parameter File: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -165,7 +161,7 @@
                 name="cwlTestParameterFilePath"
                 [(ngModel)]="tool.default_cwl_test_parameter_file"
                 minlength="3"
-                maxlength="128"
+                maxlength="1000"
                 [pattern]="validationPatterns.testFilePath"
                 matTooltip="Relative path to a CWL Test Parameter File in the Git repository."
                 placeholder="e.g. /test.cwl.json"
@@ -174,9 +170,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              WDL Test Parameter File:
-            </label>
+            <label class="col-sm-3 control-label"> WDL Test Parameter File: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -184,7 +178,7 @@
                 name="wdlTestParameterFilePath"
                 [(ngModel)]="tool.default_wdl_test_parameter_file"
                 minlength="3"
-                maxlength="128"
+                maxlength="1000"
                 [pattern]="validationPatterns.testFilePath"
                 matTooltip="Relative path to a WDL Test Parameter File in the Git repository."
                 placeholder="e.g. /test.wdl.json"
@@ -193,9 +187,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Image Registry Provider:
-            </label>
+            <label class="col-sm-3 control-label"> Image Registry Provider: </label>
             <div class="col-sm-9">
               <mat-form-field class="w-100">
                 <mat-select [(value)]="tool.irProvider" data-cy="imageRegistryProviderSelect">
@@ -210,9 +202,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Image Registry:
-            </label>
+            <label class="col-sm-3 control-label"> Image Registry: </label>
             <div class="col-sm-9">
               <input
                 id="imageRegistryInput"
@@ -231,9 +221,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Docker Registry Path:
-            </label>
+            <label class="col-sm-3 control-label"> Docker Registry Path: </label>
             <div class="col-sm-9">
               <span *ngIf="showCustomDockerRegistryPath">
                 <span *ngIf="tool.irProvider === 'Amazon ECR'">
@@ -280,9 +268,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Private Image:
-            </label>
+            <label class="col-sm-3 control-label"> Private Image: </label>
             <div class="col-sm-9">
               <label>
                 <input
@@ -297,9 +283,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="tool.private_access">
-            <label class="col-sm-3 control-label">
-              Tool Maintainer Email:
-            </label>
+            <label class="col-sm-3 control-label"> Tool Maintainer Email: </label>
             <div class="col-sm-9">
               <input
                 id="toolMaintainerEmailInput"
@@ -315,9 +299,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Tool Name:
-            </label>
+            <label class="col-sm-3 control-label"> Tool Name: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -334,9 +316,7 @@
           </div>
         </div>
         <div mat-dialog-actions class="pull-right">
-          <button mat-button type="button" color="secondary" data-dismiss="modal" (click)="hideModal()">
-            Close
-          </button>
+          <button mat-button type="button" color="secondary" data-dismiss="modal" (click)="hideModal()">Close</button>
           <button
             id="submitButton"
             type="submit"
@@ -351,7 +331,7 @@
         </div>
       </form>
       <form
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value == 2"
         #registerHostedToolForm="ngForm"
         name="registerHostedToolForm"
         class="form-horizontal"
@@ -359,10 +339,12 @@
         novalidate
       >
         <div class="modal-body">
+          <p>
+            Create a tool with all descriptor files stored and edited on Dockstore.org. Docker images are stored on sites like Quay.io and
+            DockerHub.
+          </p>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Image Registry:
-            </label>
+            <label class="col-sm-3 control-label"> Image Registry: </label>
             <div class="col-sm-9">
               <div class="input-group">
                 <div class="input-group-btn">
@@ -408,9 +390,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Docker Registry Path:
-            </label>
+            <label class="col-sm-3 control-label"> Docker Registry Path: </label>
             <div class="col-sm-9">
               <span *ngIf="hostedTool.registryProvider === 'Seven Bridges' || hostedTool.registryProvider === 'Amazon ECR'">
                 <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">
@@ -459,9 +439,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 control-label">
-              Tool Name:
-            </label>
+            <label class="col-sm-3 control-label"> Tool Name: </label>
             <div class="col-sm-9">
               <input
                 type="text"
@@ -478,9 +456,7 @@
           </div>
         </div>
         <div mat-dialog-actions class="pull-right">
-          <button mat-button type="button" color="secondary" (click)="hideModal()">
-            Close
-          </button>
+          <button mat-button type="button" color="secondary" (click)="hideModal()">Close</button>
           <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedToolForm.form.valid">
             Add Tool
           </button>

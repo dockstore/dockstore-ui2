@@ -17,11 +17,12 @@
 <button
   mat-button
   color="accent"
-  matTooltip="Refresh all entries in the organization"
   type="button"
   class="mr-1"
+  data-cy="refreshOrganization"
   (click)="refreshOrganization()"
   [disabled]="isRefreshing$ | async"
+  matTooltip="{{ tooltipText }}"
 >
   {{ buttonText }}
 </button>

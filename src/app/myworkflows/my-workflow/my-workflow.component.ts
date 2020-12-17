@@ -18,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { User } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
@@ -25,13 +26,13 @@ import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { TokenService } from 'app/shared/state/token.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
+import { UserService } from 'app/shared/user/user.service';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
-import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -61,13 +62,15 @@ import { MyWorkflowsService } from '../myworkflows.service';
 @Component({
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
-  styleUrls: ['../../shared/styles/my-entry.component.scss']
+  styleUrls: ['../../shared/styles/my-entry.component.scss'],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
   entryType: EntryType;
   entryType$: Observable<EntryType>;
+  user: User;
+  user$: Observable<User>;
   myEntryPageTitle$: Observable<string>;
   workflow$: Observable<Service | BioWorkflow>;
   EntryType = EntryType;
@@ -88,7 +91,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected authService: AuthService,
     public dialog: MatDialog,
     protected accountsService: AccountsService,
-    private refreshService: RefreshService,
+    private userService: UserService,
     private router: Router,
     private registerWorkflowModalService: RegisterWorkflowModalService,
     protected urlResolverService: UrlResolverService,
@@ -117,6 +120,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     );
     this.entryType = this.sessionQuery.getValue().entryType;
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
+    this.user = this.userQuery.getValue().user;
+    this.user$ = this.userQuery.user$;
   }
 
   ngOnInit() {
@@ -133,17 +138,17 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.workflow$ = this.workflowQuery.selectActive();
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(event => {
+      .subscribe(() => {
         this.selectEntry(this.myWorkflowsService.recomputeWhatEntryToSelect([...(this.workflows || []), ...(this.sharedWorkflows || [])]));
       });
     this.hasSourceControlToken$ = this.tokenQuery.hasSourceControlToken$;
     this.commonMyEntriesOnInit();
 
     // Updates selected workflow from service and selects in sidebar
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => (this.workflow = workflow));
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => (this.workflow = workflow));
     this.getMyEntries();
 
     // Using the workflows and shared with me workflows, initialize the organization groupings and set the initial entry
@@ -154,10 +159,9 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           if (workflows && sharedWorkflows) {
             this.workflows = workflows;
             this.sharedWorkflows = sharedWorkflows;
-            this.selectEntry(this.myWorkflowsService.recomputeWhatEntryToSelect([...(workflows || []), ...(sharedWorkflows || [])]));
           }
         },
-        error => {
+        () => {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );
@@ -211,8 +215,10 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.myWorkflowsService.registerEntry(this.entryType);
   }
 
-  refreshAllEntries(): void {
-    this.refreshService.refreshAllWorkflows(this.user.id);
+  addToExistingWorkflows(): void {
+    if (this.user) {
+      this.userService.addUserToWorkflows(this.user.id);
+    }
   }
 
   /**
@@ -220,10 +226,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
    */
   public toggleSidebar(): void {
     this.showSidebar = !this.showSidebar;
-  }
-
-  sync(): void {
-    this.refreshService.syncServices();
   }
 }
 

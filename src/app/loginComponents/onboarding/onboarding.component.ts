@@ -1,36 +1,33 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
-
-import { ExtendedUserData, User, UsersService } from '../../shared/swagger';
-import { UserQuery } from '../../shared/user/user.query';
-import { TokenQuery } from '../../shared/state/token.query';
 import { Dockstore } from '../../shared/dockstore.model';
+import { TokenQuery } from '../../shared/state/token.query';
+import { ExtendedUserData, User } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
   selector: 'app-onboarding',
-  templateUrl: './onboarding.component.html'
+  templateUrl: './onboarding.component.html',
+  styleUrls: ['./onboarding.component.scss'],
 })
 export class OnboardingComponent implements OnInit, OnDestroy {
-  public tokenSetComplete;
+  public tokenSetComplete: boolean;
   protected ngUnsubscribe: Subject<{}> = new Subject();
   extendedUser: ExtendedUserData;
   user: User;
   ready = false;
   Dockstore = Dockstore;
-  constructor(private userQuery: UserQuery, private usersService: UsersService, private tokenService: TokenQuery) {}
+  constructor(private userQuery: UserQuery, private tokenService: TokenQuery) {}
   ngOnInit() {
     localStorage.setItem('page', '/onboarding');
-    this.tokenService.userTokenStatusSet$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(tokenStatusSet => {
+    this.tokenService.userTokenStatusSet$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokenStatusSet) => {
       if (tokenStatusSet) {
         this.tokenSetComplete = tokenStatusSet.github;
       }
     });
-    combineLatest(this.userQuery.user$, this.userQuery.extendedUserData$)
-      .pipe(
-        distinctUntilChanged(),
-        takeUntil(this.ngUnsubscribe)
-      )
+    combineLatest([this.userQuery.user$, this.userQuery.extendedUserData$])
+      .pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe(
         ([user, extendedUser]) => {
           this.user = user;
@@ -39,7 +36,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
             this.ready = true;
           }
         },
-        error => {
+        (error) => {
           console.error('Error combining user$ and extendedUser$.  This should never happen: ' + error);
         }
       );

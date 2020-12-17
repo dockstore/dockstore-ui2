@@ -15,16 +15,17 @@
  */
 import { inject, TestBed } from '@angular/core/testing';
 
+import { ga4ghPath } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { ToolDescriptor } from '../../shared/swagger';
 import { WorkflowStubService } from '../../test/service-stubs';
 import { WorkflowLaunchService } from './workflow-launch.service';
-import { ToolDescriptor } from '../../shared/swagger';
 
 describe('WorkflowLaunchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WorkflowLaunchService, { provide: WorkflowService, useClass: WorkflowStubService }]
+      providers: [WorkflowLaunchService, { provide: WorkflowService, useClass: WorkflowStubService }],
     });
   });
 
@@ -47,7 +48,7 @@ describe('WorkflowLaunchService', () => {
     expect(service.getCwlString('a/b', 'c', '%2Fpotato')).toContain('cwl-runner');
     expect(service.getCwlString('a/b', 'c', '%2Fpotato')).not.toContain('non-strict');
     expect(service.getCwlString('a/b', 'c', '%2Fpotato')).toContain(
-      'api/ga4gh/v2/tools/%23workflow%2Fa%2Fb/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json'
+      ga4ghPath + '/tools/%23workflow%2Fa%2Fb/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json'
     );
   }));
   it('should getConsonanceString', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
@@ -67,21 +68,21 @@ describe('WorkflowLaunchService', () => {
       service.getTestJsonString('#workflow/github.com/garyluu/example_cwl_workflow', 'v1.0', ToolDescriptor.TypeEnum.CWL, 'test.json')
     ).toBe(
       `wget --header='Accept: text/plain' ` +
-        `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_CWL/descriptor/test.json ` +
+        `${Dockstore.API_URI}${ga4ghPath}/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_CWL/descriptor/test.json ` +
         `-O Dockstore.json`
     );
     expect(
       service.getTestJsonString('#workflow/github.com/garyluu/example_cwl_workflow', 'v1.0', ToolDescriptor.TypeEnum.WDL, 'test.json')
     ).toBe(
       `wget --header='Accept: text/plain' ` +
-        `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_WDL/descriptor/test.json ` +
+        `${Dockstore.API_URI}${ga4ghPath}/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_WDL/descriptor/test.json ` +
         `-O Dockstore.json`
     );
     expect(
       service.getTestJsonString('#workflow/github.com/garyluu/example_cwl_workflow', 'v1.0', ToolDescriptor.TypeEnum.NFL, 'test.json')
     ).toBe(
       `wget --header='Accept: text/plain' ` +
-        `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_NFL/descriptor/test.json ` +
+        `${Dockstore.API_URI}${ga4ghPath}/tools/%23workflow%2Fgithub.com%2Fgaryluu%2Fexample_cwl_workflow/versions/v1.0/PLAIN_NFL/descriptor/test.json ` +
         `-O Dockstore.json`
     );
     expect(
@@ -93,7 +94,7 @@ describe('WorkflowLaunchService', () => {
       )
     ).toBe(
       `wget --header='Accept: text/plain' ` +
-        `${Dockstore.API_URI}/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN_WDL/descriptor/..%2F..%2Ftest/smartseq2_single_sample/pr/dockstore_test_inputs.json ` +
+        `${Dockstore.API_URI}${ga4ghPath}/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN_WDL/descriptor/..%2F..%2Ftest/smartseq2_single_sample/pr/dockstore_test_inputs.json ` +
         `-O Dockstore.json`
     );
   }));

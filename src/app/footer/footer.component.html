@@ -16,32 +16,39 @@
 
 <div class="container-fluid">
   <div class="container">
-    <div fxLayout="row" fxLayoutAlign="center">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center">
       <div fxFlex="25%">
         <ul class="footer-list m-0">
           <li class="m-0">Dockstore</li>
           <li class="m-0">
             <a
-              href="{{ Dockstore.DOCUMENTATION_URL }}/dockstore-introduction.html"
+              [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html'"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
+              data-cy="footer-about-link"
             >
               <small>About</small>
             </a>
           </li>
           <li class="m-0">
-            <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <a
+              [href]="dsServerURI + '/static/swagger-ui/index.html#'"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+              data-cy="footer-api-link"
+            >
               <small>API </small>
             </a>
             -
             <a
-              href="https://github.com/dockstore/dockstore/releases/tag/{{ version }}"
+              href="https://github.com/dockstore/dockstore/{{ version | gitTag: true }}"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>{{ version }} </small>
+              <small>{{ version | gitTag }} </small>
             </a>
             <a href="https://status.dockstore.org/" target="_blank" rel="noopener noreferrer" class="footer-link">
               <img
@@ -52,16 +59,22 @@
           </li>
           <li class="m-0">
             <a
-              href="https://github.com/dockstore/dockstore-ui2/releases/tag/{{ tag }}"
+              href="https://github.com/dockstore/dockstore-ui2/{{ tag | gitTag: true }}"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
             >
-              <small>UI - {{ tag }}</small>
+              <small>UI - {{ tag | gitTag }}</small>
             </a>
           </li>
           <li class="m-0">
-            <a [href]="dsServerURI + '/metadata/rss'" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <a
+              [href]="dsServerURI + '/metadata/rss'"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+              data-cy="footer-rss-link"
+            >
               <small><mat-icon>rss_feed</mat-icon>RSS</small>
             </a>
           </li>
@@ -70,15 +83,18 @@
               <small>Sitemap</small>
             </a>
           </li>
+          <li class="m-0">
+            <button mat-icon-button>
+              <mat-icon ngxClipboard [cbContent]="content">content_copy</mat-icon> <small>&nbsp;Build Info</small>
+            </button>
+          </li>
         </ul>
       </div>
       <div fxFlex="25%">
         <ul class="footer-list m-0">
+          <li class="m-0">Contact Us</li>
           <li class="m-0">
-            Contact Us
-          </li>
-          <li class="m-0">
-            <a href="https://github.com/ga4gh/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <a href="https://github.com/dockstore/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
               <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/github-mark-light.png" alt="small GitHub logo" /><small>
                 Github</small
               >
@@ -115,16 +131,14 @@
 
       <div fxFlex="25%">
         <ul class="footer-list m-0">
-          <li class="m-0">
-            Legal
-          </li>
+          <li class="m-0">Legal</li>
           <li>
             <a
               href="https://github.com/dockstore/dockstore/blob/{{ version }}/LICENSE"
               target="_blank"
               rel="noopener noreferrer"
               class="footer-link"
-              ><small>&copy; 2019 OICR</small></a
+              ><small>&copy; {{ year }} OICR</small></a
             >
           </li>
           <li class="m-0">
@@ -142,7 +156,7 @@
     </div>
   </div>
   <div class="row" fxLayoutAlign="center center">
-    <a [routerLink]="['/funding']" class="footer-link">
+    <a [routerLink]="['/funding']" class="footer-link p-4">
       <small
         >Support for Dockstore is provided by grants from Genome Canada, the National Institutes of Health, and the Province of
         Ontario.</small

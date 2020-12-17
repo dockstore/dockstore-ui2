@@ -1,7 +1,7 @@
-import { WorkflowVersionsInterceptor } from './workflow-versions.interceptor';
-import { inject, TestBed } from '@angular/core/testing';
 import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
+import { inject, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs';
+import { WorkflowVersionsInterceptor } from './workflow-versions.interceptor';
 
 class SourcefilesEmptyChecker extends HttpHandler {
   handle(req: HttpRequest<any>): Observable<HttpEvent<any>> {
@@ -24,13 +24,13 @@ class RequestUnchangedChecker extends HttpHandler {
 describe('WorkflowVersionsInterceptor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WorkflowVersionsInterceptor]
+      providers: [WorkflowVersionsInterceptor],
     });
   });
 
   it('Should tranform put', inject([WorkflowVersionsInterceptor], (interceptor: WorkflowVersionsInterceptor) => {
     const httpRequest = new HttpRequest('PUT', 'https://dockstore.org/api/workflows/1234/workflowVersions', [
-      { sourceFiles: [{ one: 'something' }] }
+      { sourceFiles: [{ one: 'something' }] },
     ]);
     const httpHandler = new SourcefilesEmptyChecker();
     interceptor.intercept(httpRequest, httpHandler);

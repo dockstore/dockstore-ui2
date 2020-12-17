@@ -13,22 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class LoginService {
-  constructor(private auth: AuthService, private matSnackBar: MatSnackBar, private alertService: AlertService) {}
+  constructor(private auth: AuthService, private alertService: AlertService) {}
 
   authenticate(provider: string): Observable<any> {
-    return Observable.create(observable => {
+    return new Observable((observable) => {
       this.alertService.start('Logging in');
       return this.auth.authenticate(provider).subscribe(
-        user => {
+        (user) => {
           this.alertService.simpleSuccess();
           observable.next(user);
           observable.complete();

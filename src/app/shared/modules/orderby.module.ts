@@ -21,6 +21,6 @@ import { OrderBy } from '../../shared/orderBy';
 
 @NgModule({
   declarations: [OrderBy],
-  exports: [OrderBy]
+  exports: [OrderBy],
 })
 export class OrderByModule {}

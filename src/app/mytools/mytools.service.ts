@@ -49,7 +49,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
       .userContainers(userId)
       .pipe(finalize(() => this.myEntriesService.setRefreshingMyEntries(false)))
       .subscribe(
-        tools => {
+        (tools) => {
           this.containerService.setTools(tools);
           this.alertService.simpleSuccess();
         },
@@ -60,7 +60,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
   }
   selectEntry(tool: DockstoreTool | Workflow | null): void {
     if (tool && tool.id) {
-      this.containersService.getContainer(tool.id, includesValidation).subscribe(result => {
+      this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
         this.location.go('/my-tools/' + result.tool_path);
         this.containerService.setTool(result);
       });
@@ -78,7 +78,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     return {
       registry: tool.registry_string,
       namespace: tool.namespace,
-      ...this.createPartial(tool)
+      ...this.createPartial(tool),
     };
   }
 
@@ -86,7 +86,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     orgToolObjects: OrgToolObject<DockstoreTool>[],
     selectedEntry: DockstoreTool
   ): OrgToolObject<DockstoreTool> | undefined {
-    return orgToolObjects.find(orgToolObject => {
+    return orgToolObjects.find((orgToolObject) => {
       return orgToolObject.namespace === selectedEntry.namespace && orgToolObject.registry === selectedEntry.registry_string;
     });
   }

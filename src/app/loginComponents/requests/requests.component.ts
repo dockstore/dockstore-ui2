@@ -1,16 +1,19 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { RequestsService } from '../state/requests.service';
-import { RequestsQuery } from '../state/requests.query';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { Organization, OrganizationUser } from '../../shared/swagger';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserQuery } from '../../shared/user/user.query';
-import { Base } from '../../shared/base';
 import { takeUntil } from 'rxjs/operators';
+import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
+import { Base } from '../../shared/base';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { Organization, OrganizationUser } from '../../shared/swagger';
+import { UserQuery } from '../../shared/user/user.query';
+import { RequestsQuery } from '../state/requests.query';
+import { RequestsService } from '../state/requests.service';
 
 @Component({
   selector: 'organization-request-confirm-dialog',
-  templateUrl: 'organization-request-confirm-dialog.html'
+  templateUrl: 'organization-request-confirm-dialog.html',
 })
 export class OrganizationRequestConfirmDialogComponent {
   constructor(
@@ -25,7 +28,7 @@ export class OrganizationRequestConfirmDialogComponent {
 
 @Component({
   selector: 'organization-invite-confirm-dialog',
-  templateUrl: 'organization-invite-confirm-dialog.html'
+  templateUrl: 'organization-invite-confirm-dialog.html',
 })
 export class OrganizationInviteConfirmDialogComponent {
   constructor(public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
@@ -44,7 +47,7 @@ export interface DialogData {
 @Component({
   selector: 'requests',
   templateUrl: './requests.component.html',
-  styleUrls: ['./requests.component.scss']
+  styleUrls: ['./requests.component.scss'],
 })
 export class RequestsComponent extends Base implements OnInit {
   public allPendingOrganizations$: Observable<Array<Organization>>;
@@ -55,12 +58,14 @@ export class RequestsComponent extends Base implements OnInit {
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
   userId$: Observable<number>;
+  isAdminOrCurator: boolean;
 
   constructor(
     private requestsQuery: RequestsQuery,
     private requestsService: RequestsService,
     public dialog: MatDialog,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    private confirmationDialogService: ConfirmationDialogService
   ) {
     super();
   }
@@ -78,7 +83,8 @@ export class RequestsComponent extends Base implements OnInit {
     this.isCurator$ = this.userQuery.isCurator$;
     this.userId$ = this.userQuery.userId$;
 
-    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isAdminOrCurator => {
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
+      this.isAdminOrCurator = isAdminOrCurator;
       if (isAdminOrCurator) {
         this.requestsService.updateCuratorOrganizations(); // requires admin or curator permissions
       }
@@ -88,10 +94,10 @@ export class RequestsComponent extends Base implements OnInit {
   openDialog(name: string, id: number, approve: boolean): void {
     const dialogRef = this.dialog.open(OrganizationRequestConfirmDialogComponent, {
       width: '400px',
-      data: { name: name, id: id, approve: approve }
+      data: { name: name, id: id, approve: approve },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.approve) {
           this.requestsService.approveOrganization(result.id);
@@ -105,10 +111,10 @@ export class RequestsComponent extends Base implements OnInit {
   openInviteDialog(name: string, id: number, approve: boolean): void {
     const dialogRef = this.dialog.open(OrganizationInviteConfirmDialogComponent, {
       width: '400px',
-      data: { name: name, id: id, approve: approve }
+      data: { name: name, id: id, approve: approve },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.requestsService.acceptOrRejectOrganizationInvite(result.id, result.approve);
       }
@@ -117,5 +123,23 @@ export class RequestsComponent extends Base implements OnInit {
 
   rerequestReview(membership: OrganizationUser) {
     this.requestsService.requestRereview(membership.organization.id);
+  }
+
+  removeOrganizationDialog(organizationName: string, organizationStatus: string, organizationID: number) {
+    const confirmationDialogData: ConfirmationDialogData = {
+      title: 'Delete Organization',
+      message: `Are you sure you wish to delete this ${organizationStatus.toLowerCase()} organization?
+                All information associated with <b>${organizationName}</b> will be deleted.`,
+      cancelButtonText: 'Cancel',
+      confirmationButtonText: 'Delete',
+    };
+    this.confirmationDialogService
+      .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result) => {
+        if (result) {
+          this.requestsService.deleteOrganization(organizationID, this.isAdminOrCurator);
+        }
+      });
   }
 }

@@ -1,18 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
+import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { Workflow } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
-import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
+import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.component';
 
 @Component({
   selector: 'app-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
-  styleUrls: ['./sidebar-accordion.component.scss']
+  styleUrls: ['./sidebar-accordion.component.scss'],
 })
 export class SidebarAccordionComponent implements OnInit {
   @Input() openOneAtATime;
@@ -27,8 +28,7 @@ export class SidebarAccordionComponent implements OnInit {
     private workflowQuery: WorkflowQuery,
     public dialog: MatDialog,
     private sessionQuery: SessionQuery,
-    private alertQuery: AlertQuery,
-    private refreshService: RefreshService
+    private alertQuery: AlertQuery
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +37,14 @@ export class SidebarAccordionComponent implements OnInit {
     this.workflowId$ = this.workflowQuery.workflowId$;
   }
 
-  syncOrganization(organization: string) {
-    this.refreshService.syncServicesForOrganziation(organization);
+  trackByWorkflowId(index: number, workflow: Workflow) {
+    return workflow.id;
+  }
+
+  trackByOrgWorkflowObject(index: number, orgWorkflowObject: OrgWorkflowObject<Workflow>) {
+    return orgWorkflowObject.sourceControl + '/' + orgWorkflowObject.organization;
+  }
+  openGitHubAppsLogs(organization: string) {
+    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: organization });
   }
 }

@@ -13,7 +13,7 @@ describe('RefreshAlertComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatProgressBarModule, MatSnackBarModule, MatIconModule, MatCardModule],
-      declarations: [AlertComponent]
+      declarations: [AlertComponent],
     }).compileComponents();
   }));
 

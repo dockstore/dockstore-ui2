@@ -15,22 +15,16 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
 import { AuthService } from 'ng2-ui-auth';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable()
 export class TrackLoginService {
   private isLoggedIn: Subject<boolean> = new BehaviorSubject(this.authService.isAuthenticated());
   isLoggedIn$ = this.isLoggedIn.asObservable();
 
-  dockstoreToken: string;
-
   constructor(private authService: AuthService) {}
   switchState(state: boolean) {
     this.isLoggedIn.next(state);
-
-    if (state) {
-      this.dockstoreToken = this.authService.getToken();
-    }
   }
 }

@@ -1,6 +1,7 @@
-import { ContainersService } from './../shared/swagger/api/containers.service';
+import { HttpEvent, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpResponse, HttpEvent } from '@angular/common/http';
+import { ContainersService } from './../shared/swagger/api/containers.service';
 
 /**
  * This is an extension of the generated swagger code. The reason it exists is that for zip download to work,
@@ -11,6 +12,7 @@ import { HttpResponse, HttpEvent } from '@angular/common/http';
  * @extends {ContainersService}
  */
 /* tslint:disable */
+@Injectable()
 export class ExtendedToolsService extends ContainersService {
   /**
    * Download a ZIP file of a tool and all associated files.
@@ -46,7 +48,6 @@ export class ExtendedToolsService extends ContainersService {
     }
 
     // to determine the Content-Type header
-    let consumes: string[] = [];
 
     return this.httpClient.get<any>(
       `${this.configuration.basePath}/containers/${encodeURIComponent(String(toolId))}/zip/${encodeURIComponent(String(tagId))}`,
@@ -55,7 +56,7 @@ export class ExtendedToolsService extends ContainersService {
         headers: headers,
         observe: observe,
         reportProgress: reportProgress,
-        responseType: 'blob' as 'json'
+        responseType: 'blob' as 'json',
       }
     );
   }

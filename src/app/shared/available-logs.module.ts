@@ -27,6 +27,6 @@ import { CustomMaterialModule } from './modules/material.module';
   imports: [CommonModule, CustomMaterialModule, FlexLayoutModule, RefreshAlertModule],
   declarations: [AvailableLogsComponent, VerifiedDisplayComponent, ToolTesterLogPipe, RemoveExtensionPipe],
   exports: [VerifiedDisplayComponent],
-  entryComponents: [AvailableLogsComponent]
+  entryComponents: [AvailableLogsComponent],
 })
 export class AvailableLogsModule {}

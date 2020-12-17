@@ -39,7 +39,7 @@
         <mat-card fxFlexOffset="10px" *ngFor="let org of organizations" class="my-2">
           <mat-card-header>
             <mat-card-title>
-              <a [routerLink]="org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
+              <a data-cy="orgName" [routerLink]="org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
 
               <span fxLayout="row" *ngIf="org?.starredUsers.length !== 0" class="pull-right">
                 <mat-icon class="orgStar">star</mat-icon>

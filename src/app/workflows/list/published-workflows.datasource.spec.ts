@@ -29,8 +29,8 @@ describe('Service: PublishedWorkflowsDataSource', () => {
         PublishedWorkflowsDataSource,
         ImageProviderService,
         ProviderService,
-        { provide: WorkflowsService, useClass: WorkflowsStubService }
-      ]
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+      ],
     });
   });
 

@@ -11,7 +11,7 @@ export function createInitialState(): AlertState {
   return {
     message: '',
     details: '',
-    type: 'info'
+    type: 'info',
   };
 }
 

@@ -13,44 +13,65 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { from } from 'rxjs';
+import { concatMap, takeUntil } from 'rxjs/operators';
+import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
+import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { UsersService } from '../../shared/swagger/api/users.service';
+import { WorkflowsService } from '../../shared/swagger';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-refresh-workflow-organization',
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
-  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
+  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
+  @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;
+
   constructor(
-    private usersService: UsersService,
     userQuery: UserQuery,
     private workflowService: WorkflowService,
+    private workflowsService: WorkflowsService,
     private alertService: AlertService,
-    protected alertQuery: AlertQuery
+    protected alertQuery: AlertQuery,
+    private extendedWorkflowQuery: ExtendedWorkflowQuery
   ) {
     super(userQuery, alertQuery);
     this.buttonText = 'Refresh Organization';
+    this.tooltipText = 'Refresh all workflows in the organization';
   }
 
   refreshOrganization(): void {
-    const message = 'Refreshing ' + this.organization;
-    this.alertService.start(message);
-    this.usersService.refreshWorkflowsByOrganization(this.userId, this.organization).subscribe(
-      (success: Workflow[]) => {
-        this.workflowService.setWorkflows(success);
-        this.alertService.detailedSuccess();
-      },
-      (error: HttpErrorResponse) => this.alertService.detailedError(error)
-    );
+    if (this.orgWorkflowObject) {
+      const workflows = this.orgWorkflowObject.published.concat(this.orgWorkflowObject.unpublished);
+      from(workflows)
+        .pipe(
+          concatMap((workflow) => {
+            this.alertService.start(`Refreshing ${workflow.full_workflow_path}`);
+            return this.workflowsService.refresh(workflow.id);
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe(
+          (workflow) => {
+            const extendedWorkflow = this.extendedWorkflowQuery.getValue();
+            if (extendedWorkflow && extendedWorkflow.id === workflow.id) {
+              this.workflowService.setWorkflow(workflow);
+            } else {
+              this.workflowService.update(workflow.id, workflow);
+            }
+            this.alertService.detailedSuccess();
+          },
+          (err) => this.alertService.detailedError(err)
+        );
+    }
   }
 }

@@ -7,7 +7,7 @@ import { OrgToolObject } from '../my-tool/my-tool.component';
 @Component({
   selector: 'app-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
-  styleUrls: ['./sidebar-accordion.component.scss']
+  styleUrls: ['./sidebar-accordion.component.scss'],
 })
 export class SidebarAccordionComponent implements OnInit {
   constructor(private toolQuery: ToolQuery) {}

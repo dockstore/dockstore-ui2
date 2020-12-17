@@ -15,24 +15,21 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
+import { AlertService } from '../../../shared/alert/state/alert.service';
+import { Base } from '../../../shared/base';
+import { StarOrganizationService } from '../../../shared/star-organization.service';
+import { isStarredByUser } from '../../../shared/starring';
 import { Organization, User } from '../../../shared/swagger';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
-import { ContainerService } from '../../../shared/container.service';
-import { StarringService } from '../../../starring/starring.service';
-import { StarentryService } from '../../../shared/starentry.service';
-import { StarOrganizationService } from '../../../shared/star-organization.service';
-import { AlertService } from '../../../shared/alert/state/alert.service';
-import { first, takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { OrganizationStarringService } from './organization-starring.service';
-import { isStarredByUser } from '../../../shared/starring';
-import { Base } from '../../../shared/base';
 
 @Component({
   selector: 'app-organization-starring',
   templateUrl: '../../../starring/starring.component.html',
-  styleUrls: ['../../../starring/starring.component.css']
+  styleUrls: ['../../../starring/starring.component.css'],
 })
 export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {
   @Input() organization: Organization;
@@ -46,9 +43,6 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
   constructor(
     private trackLoginService: TrackLoginService,
     private userQuery: UserQuery,
-    private containerService: ContainerService,
-    private starringService: StarringService,
-    private starentryService: StarentryService,
     private starOrganizationService: StarOrganizationService,
     private organizationStarringService: OrganizationStarringService,
     private alertService: AlertService
@@ -57,8 +51,8 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
   }
 
   ngOnInit() {
-    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(isLoggedIn => (this.isLoggedIn = isLoggedIn));
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn));
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.user = user;
       this.rate = isStarredByUser(this.starredUsers, this.user);
     });
@@ -87,12 +81,12 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
       this.alertService.start(message);
 
       this.setStar().subscribe(
-        data => {
+        (data) => {
           // update total_stars
           this.alertService.simpleSuccess();
           this.getStarredUsers();
         },
-        error => {
+        (error) => {
           this.alertService.detailedError(error);
           this.disableRateButton = false;
         }
@@ -120,7 +114,7 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
             this.rate = isStarredByUser(starring, this.user);
             this.disableRateButton = false;
           },
-          error => (this.disableRateButton = false)
+          (error) => (this.disableRateButton = false)
         );
     } else {
       this.disableRateButton = false;
@@ -129,7 +123,7 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
 
   getStargazers() {
     const selectedOrganization = {
-      theOrganization: this.organization
+      theOrganization: this.organization,
     };
     this.starOrganizationService.setOrganization(selectedOrganization);
     this.change.emit();

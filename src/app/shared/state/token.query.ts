@@ -7,21 +7,21 @@ import { TokenSource } from '../enum/token-source.enum';
 import { TokenState, TokenStore } from './token.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TokenQuery extends QueryEntity<TokenState, Token> {
   tokens$: Observable<Array<Token>> = this.selectAll();
-  hasGitHubToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasEntity(TokenSource.GITHUB)));
-  hasGoogleToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasEntity(TokenSource.GOOGLE)));
-  hasZenodoToken$: Observable<boolean> = this.tokens$.pipe(map(tokens => this.hasEntity(TokenSource.ZENODO)));
+  hasGitHubToken$: Observable<boolean> = this.tokens$.pipe(map((tokens) => this.hasEntity(TokenSource.GITHUB)));
+  hasGoogleToken$: Observable<boolean> = this.tokens$.pipe(map((tokens) => this.hasEntity(TokenSource.GOOGLE)));
+  hasZenodoToken$: Observable<boolean> = this.tokens$.pipe(map((tokens) => this.hasEntity(TokenSource.ZENODO)));
   gitHubToken$: Observable<string> = this.selectEntity('github.com').pipe(map((token: Token) => (token ? token.token : null)));
-  gitHubOrganizations$: Observable<any> = this.select(state => state.gitHubOrganizations);
+  gitHubOrganizations$: Observable<any> = this.select((state) => state.gitHubOrganizations);
   hasSourceControlToken$: Observable<boolean> = this.tokens$.pipe(
-    map(tokens => this.hasEntity(TokenSource.GITHUB) || this.hasEntity(TokenSource.BITBUCKET) || this.hasEntity(TokenSource.GITLAB))
+    map((tokens) => this.hasEntity(TokenSource.GITHUB) || this.hasEntity(TokenSource.BITBUCKET) || this.hasEntity(TokenSource.GITLAB))
   );
-  userTokenStatusSet$: Observable<any> = this.tokens$.pipe(map(tokens => (tokens ? this.getUserTokenStatusSet(tokens) : null)));
+  userTokenStatusSet$: Observable<any> = this.tokens$.pipe(map((tokens) => (tokens ? this.getUserTokenStatusSet(tokens) : null)));
   tokenSetComplete$: Observable<boolean> = this.userTokenStatusSet$.pipe(
-    map(tokenStatusSet => (tokenStatusSet ? tokenStatusSet.github : false))
+    map((tokenStatusSet) => (tokenStatusSet ? tokenStatusSet.github : false))
   );
 
   constructor(protected store: TokenStore) {
@@ -42,10 +42,10 @@ export class TokenQuery extends QueryEntity<TokenState, Token> {
       bitbucket: false,
       quayio: false,
       gitlab: false,
-      zenodo: false
+      zenodo: false,
     };
     if (tokens) {
-      tokens.forEach(token => {
+      tokens.forEach((token) => {
         switch (token.tokenSource) {
           case 'dockstore':
             tokenStatusSet.dockstore = true;

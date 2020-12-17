@@ -1,12 +1,12 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { ContainersStubService, ContainerStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
+import { exampleEntry } from '../../test/mocked-objects';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { CustomMaterialModule } from '../modules/material.module';
 import { WorkflowService } from '../state/workflow.service';
 import { ContainersService, DockstoreTool, Entry, Tag, Workflow, WorkflowsService } from '../swagger';
 import { EntryActionsService } from './entry-actions.service';
-import { exampleEntry } from '../../test/mocked-objects';
 
 describe('Service: EntryActionsService', () => {
   beforeEach(() => {
@@ -15,22 +15,22 @@ describe('Service: EntryActionsService', () => {
         EntryActionsService,
         {
           provide: WorkflowsService,
-          useClass: WorkflowsStubService
+          useClass: WorkflowsStubService,
         },
         {
           provide: WorkflowService,
-          useClass: WorkflowStubService
+          useClass: WorkflowStubService,
         },
         {
           provide: ContainersService,
-          useClass: ContainersStubService
+          useClass: ContainersStubService,
         },
         {
           provide: ContainerService,
-          useClass: ContainerStubService
-        }
+          useClass: ContainerStubService,
+        },
       ],
-      imports: [CustomMaterialModule]
+      imports: [CustomMaterialModule],
     });
   });
 

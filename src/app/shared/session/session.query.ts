@@ -23,17 +23,18 @@ import { EntryType } from '../enum/entry-type';
 import { SessionState, SessionStore } from './session.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SessionQuery extends Query<SessionState> {
-  isPublic$: Observable<boolean> = this.select(session => session.isPublic);
-  entryType$: Observable<EntryType> = this.select(session => session.entryType);
+  isPublic$: Observable<boolean> = this.select((session) => session.isPublic);
+  entryType$: Observable<EntryType> = this.select((session) => session.entryType);
   entryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => entryType + 's'));
   myEntryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => 'my ' + entryType + 's'));
-  isService$: Observable<boolean> = this.entryType$.pipe(map(entryType => entryType === EntryType.Service));
+  isService$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Service));
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
     map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(entryType) : null))
   );
+  loadingDialog$: Observable<boolean> = this.select((session) => session.loadingDialog);
   constructor(protected store: SessionStore) {
     super(store);
   }

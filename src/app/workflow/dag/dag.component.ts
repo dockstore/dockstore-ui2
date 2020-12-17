@@ -20,14 +20,13 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
+import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor } from '../../shared/swagger';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
-import { WdlViewerService } from './wdl-viewer/state/wdl-viewer.service';
-import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
 
 /**
  * This is the DAG tab
@@ -45,15 +44,16 @@ import { WdlViewerComponent } from './wdl-viewer/wdl-viewer.component';
   selector: 'app-dag',
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
-  providers: [DagStore, DagQuery, DagService, WdlViewerService]
+  providers: [DagStore, DagQuery, DagService],
 })
 export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterViewInit {
   @Input() id: number;
   @Input() selectedVersion: WorkflowVersion;
 
-  @ViewChild('exportLink', { static: false }) exportLink: ElementRef;
-  @ViewChild('cy', { static: false }) cyElement: ElementRef;
-  @ViewChild(WdlViewerComponent, { static: false }) wdlViewer: WdlViewerComponent;
+  @ViewChild('exportLink') exportLink: ElementRef;
+  @ViewChild('cy') cyElement: ElementRef;
+  // ALLOW WDL VIEWER AGAIN
+  // @ViewChild(WdlViewerComponent) wdlViewer: WdlViewerComponent;
   @ViewChild('dagHolder', { static: true }) dagHolderElement: ElementRef;
 
   public dagResult$: Observable<any>;
@@ -70,6 +70,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
   public refreshCounter = 1;
   public dagLoading$: Observable<boolean>;
   public wdlViewerResult$: Observable<boolean>;
+  public isPublic$: Observable<boolean>;
   /**
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
@@ -86,9 +87,10 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
 
   reset() {
     switch (this.dagType) {
-      case 'wdlviewer':
-        this.wdlViewer.reset();
-        break;
+      // ALLOW WDL VIEWER AGAIN
+      // case 'wdlviewer':
+      //   this.wdlViewer.reset();
+      //   break;
       default:
         this.refreshCounter++;
         this.refreshDocument(this.cy);
@@ -100,7 +102,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     private workflowQuery: WorkflowQuery,
     private dagQuery: DagQuery,
     private ngZone: NgZone,
-    private wdlViewerService: WdlViewerService
+    private sessionQuery: SessionQuery
   ) {
     super();
   }
@@ -142,33 +144,31 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
     this.workflow$ = <Observable<BioWorkflow>>this.workflowQuery.workflow$;
     this.missingTool$ = this.dagQuery.missingTool$;
     this.dagService.loadExtensions();
-    this.wdlViewerResult$ = this.wdlViewerService.status$;
+    // this.wdlViewerResult$ = this.wdlViewerService.status$;
+    this.isPublic$ = this.sessionQuery.isPublic$;
   }
 
   ngAfterViewInit(): void {
-    this.dagResult$
-      .pipe(
-        filterNil,
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(
-        dagResults => {
-          this.refreshDocument(this.cy);
-        },
-        error => console.error('Something went terribly wrong with dagResult$')
-      );
+    this.dagResult$.pipe(filterNil, takeUntil(this.ngUnsubscribe)).subscribe(
+      (dagResults) => {
+        this.refreshDocument(this.cy);
+      },
+      (error) => console.error('Something went terribly wrong with dagResult$')
+    );
   }
 
   ngOnChanges() {
-    this.wdlViewerService.setStatus(false);
+    // ALLOW WDL VIEWER AGAIN
+    // this.wdlViewerService.setStatus(false);
     this.dagService.getDAGResults(this.selectedVersion, this.id);
   }
 
   download() {
     switch (this.dagType) {
-      case 'wdlviewer':
-        this.wdlViewer.download(this.exportLink);
-        break;
+      // ALLOW WDL VIEWER AGAIN
+      // case 'wdlviewer':
+      //   this.wdlViewer.download(this.exportLink);
+      //   break;
       default:
         this.dagService.download(this.cy, this.selectedVersion.name, this.exportLink);
         break;

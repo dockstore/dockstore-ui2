@@ -17,19 +17,19 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { User } from 'app/shared/openapi';
+import { UserQuery } from 'app/shared/user/user.query';
+import { Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { Sponsor } from './sponsor.model';
 import { SponsorsService } from './sponsors.service';
-import { UserQuery } from 'app/shared/user/user.query';
-import { User } from 'app/shared/openapi';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sponsors',
   templateUrl: './sponsors.component.html',
   styleUrls: ['./sponsors.component.css'],
-  providers: [SponsorsService]
+  providers: [SponsorsService],
 })
 export class SponsorsComponent extends Base implements OnInit {
   public user$: Observable<User>;
@@ -42,7 +42,7 @@ export class SponsorsComponent extends Base implements OnInit {
     super();
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {

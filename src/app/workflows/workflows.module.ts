@@ -19,6 +19,6 @@ import { workflowsRouting } from './workflows.routing';
 
 @NgModule({
   declarations: [],
-  imports: [workflowsRouting, WorkflowsPageModule]
+  imports: [workflowsRouting, WorkflowsPageModule],
 })
 export class WorkflowsModule {}

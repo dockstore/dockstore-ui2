@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+<div>
   <h4 mat-dialog-title>
     {{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ (isService$ | async) ? 'Service Version' : 'Workflow Version' }}
   </h4>
@@ -23,9 +23,7 @@
       <form #versionEditorForm="ngForm" class="form-horizontal">
         <div class="modal-body tagEditor">
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Git Reference:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Git Reference: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
                 *ngIf="!(isService$ | async)"
@@ -52,7 +50,7 @@
                 name="workflow_path"
                 [(ngModel)]="version.workflow_path"
                 minlength="3"
-                maxlength="128"
+                maxlength="1000"
                 [pattern]="validationPatterns.workflowDescriptorPath"
                 required
                 [matTooltip]="tooltip.workflowPath"
@@ -62,6 +60,7 @@
                   isPublic ||
                   !canWrite ||
                   workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
+                  workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML ||
                   version.frozen ||
                   version.doiURL
                 "
@@ -75,9 +74,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm" *ngIf="!(isService$ | async) && (descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Test Parameter File(s):
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Test Parameter File(s): </label>
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
@@ -91,13 +88,13 @@
                   name="testParameterFilePaths[{{ i }}]"
                   [(ngModel)]="testParameterFilePaths[i]"
                   minlength="3"
-                  maxlength="128"
+                  maxlength="1000"
                   [pattern]="validationPatterns.testFilePath"
                   placeholder="e.g. /test.json"
                   disabled
                   readonly
                 />
-                <span class="input-group-btn">
+                <span class="input-group-btn" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                   <button
                     data-cy="remove-test-parameter-file-button"
                     title="Remove test parameter file"
@@ -116,19 +113,19 @@
               [ngClass]="{ 'col-sm-offset-3': testParameterFilePaths.length > 0 }"
               *ngIf="!isPublic && !(isService$ | async) && !version.frozen"
             >
-              <div class="input-group">
+              <div class="input-group" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                 <input
                   data-cy="test-parameter-file-input"
                   [ngClass]="{ 'input-right-button': !isPublic }"
                   type="text"
                   #model1="ngModel"
                   class="form-control"
-                  name="cwlTestParameterFilePath"
+                  name="testParameterFilePath"
                   [(ngModel)]="testParameterFilePath"
                   minlength="3"
-                  maxlength="128"
+                  maxlength="1000"
                   [pattern]="validationPatterns.testFilePath"
-                  placeholder="e.g. /test.cwl.json"
+                  placeholder="e.g. /test.json"
                   [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
                   [matTooltip]="tooltip.testParameterFile"
                 />
@@ -147,29 +144,30 @@
                     title="Enter a valid path"
                     type="button"
                     class="btn btn-default form-sm-button"
-                    [disabled]="model1.invalid || testParameterFilePath.length == 0 || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+                    [disabled]="
+                      model1.invalid ||
+                      testParameterFilePath.length == 0 ||
+                      workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
+                    "
                     *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
                 </span>
               </div>
-              <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages alert alert-danger">
-                {{ formErrors.cwlTestParameterFilePath }}
+              <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages alert alert-danger">
+                {{ formErrors.testParameterFilePath }}
               </div>
-              <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
-                Duplicate test json files are not allowed.
-              </mat-card>
+              <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger"> Duplicate test json files are not allowed. </mat-card>
             </div>
             <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
               <input class="form-control" placeholder="None provided" disabled />
             </div>
           </div>
           <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3"></div>
-          <div class="form-group form-group-sm" *ngIf="!isPublic" style="clear:both;">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Hidden:
-            </label>
+          <div class="form-group form-group-sm" *ngIf="!isPublic" style="clear: both">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Hidden: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div>
                 <label>
@@ -185,9 +183,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Last Modified:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Last Modified: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ getDateTimeMessage(version.last_modified) }}
@@ -195,9 +191,7 @@
             </div>
           </div>
           <div class="form-group form-group-sm">
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              Valid:
-            </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Valid: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ version.valid ? 'Yes' : 'No' }}

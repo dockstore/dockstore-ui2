@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 
-import { DateService } from './date.service';
-import { TestBed, inject } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { Dockstore } from '../shared/dockstore.model';
+import { DateService } from './date.service';
 
 describe('DateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DateService]
+      providers: [DateService],
     });
   });
 
@@ -30,7 +30,8 @@ describe('DateService', () => {
   }));
   it('should be getDateTimeMessage', inject([DateService], (service: DateService) => {
     const date: String = service.getDateTimeMessage(1504214211322);
-    const result = date === 'Aug. 31 2017 at 9:16:51 PM' || date === 'Aug. 31 2017 at 17:16:51';
+    // The timezone will be different for CI and developers, have to use regex
+    expect(date).toEqual(jasmine.stringMatching(/^Aug\. 31 2017 at [0-9]+:16:51.*$/));
   }));
   it('should be getAgoMessage', inject([DateService], (service: DateService) => {
     expect(service.getAgoMessage(null)).toEqual(null);

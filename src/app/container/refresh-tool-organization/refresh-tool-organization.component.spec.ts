@@ -4,10 +4,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { ExtendedDockstoreToolService } from 'app/shared/extended-dockstoreTool/extended-dockstoreTool.service';
+import { ProviderService } from 'app/shared/provider.service';
+import { ContainersService } from 'app/shared/swagger';
 import { RefreshService } from '../../shared/refresh.service';
-import { ContainerService } from './../../shared/container.service';
 import { UsersService } from './../../shared/swagger/api/users.service';
-import { ContainerStubService, RefreshStubService, UsersStubService } from './../../test/service-stubs';
+import {
+  ContainersStubService,
+  ExtendedDockstoreToolStubService,
+  ProviderStubService,
+  RefreshStubService,
+  UsersStubService,
+} from './../../test/service-stubs';
 import { RefreshToolOrganizationComponent } from './refresh-tool-organization.component';
 
 /*
@@ -36,9 +44,11 @@ describe('RefreshToolOrganizationComponent', () => {
       imports: [MatSnackBarModule, MatIconModule, MatButtonModule, MatTooltipModule],
       providers: [
         { provide: UsersService, useClass: UsersStubService },
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+        { provide: ContainersService, useClass: ContainersStubService },
+        { provide: ProviderService, useClass: ProviderStubService },
+        { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
+      ],
     }).compileComponents();
   }));
 

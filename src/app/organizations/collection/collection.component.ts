@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection, Organization } from '../../shared/swagger';
+import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
+import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
@@ -11,12 +13,10 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organizat
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
-import { OrganizationService } from '../state/organization.service';
-import { Workflow } from '../../shared/swagger/model/workflow';
 
 @Component({
   selector: 'collection-entry-confirm-remove',
-  templateUrl: 'collection-entry-confirm-remove.html'
+  templateUrl: 'collection-entry-confirm-remove.html',
 })
 export class CollectionRemoveEntryDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private collectionsService: CollectionsService) {}
@@ -41,10 +41,11 @@ export interface DialogData {
 @Component({
   selector: 'collection',
   templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.scss', '../organization/organization.component.scss']
+  styleUrls: ['./collection.component.scss', '../organization/organization.component.scss'],
 })
 export class CollectionComponent implements OnInit {
   WorkflowMode = Workflow.ModeEnum;
+  DescriptorType = ToolDescriptor.TypeEnum;
   collection$: Observable<Collection>;
   loadingCollection$: Observable<boolean>;
 
@@ -59,7 +60,6 @@ export class CollectionComponent implements OnInit {
   constructor(
     private collectionsQuery: CollectionsQuery,
     private organizationQuery: OrganizationQuery,
-    private organizationService: OrganizationService,
     private collectionsService: CollectionsService,
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
@@ -75,7 +75,6 @@ export class CollectionComponent implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organization$ = this.organizationQuery.organization$;
     this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
-    this.organizationService.updateOrganizationFromName(organizationName);
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
@@ -97,23 +96,23 @@ export class CollectionComponent implements OnInit {
         entryName: entryName,
         collectionId: collectionId,
         entryId: entryId,
-        organizationId: organizationId
-      }
+        organizationId: organizationId,
+      },
     });
   }
 
   editCollection(collection: Collection) {
     const collectionMap = { key: collection.id, value: collection };
-    const dialogRef = this.dialog.open(CreateCollectionComponent, {
+    this.dialog.open(CreateCollectionComponent, {
       data: { collection: collectionMap, mode: TagEditorMode.Edit },
-      width: '600px'
+      width: '600px',
     });
   }
 
   updateDescription(description: String, collectionId: number) {
     this.dialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'collection', collectionId: collectionId },
-      width: '600px'
+      width: '600px',
     });
   }
 }

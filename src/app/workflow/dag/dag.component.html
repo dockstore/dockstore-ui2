@@ -22,13 +22,16 @@
       </mat-card>
     </div>
     <div fxFlex *ngIf="dagType === 'classic' && !(isNFL$ | async) && !(dagResult$ | async)">
+      <!-- This covers CWL, WDL, Service, and other plugin languages (everything except NFL) -->
       <mat-card class="alert alert-warning" role="alert" *ngIf="!(dagResult$ | async) && !selectedVersion?.valid">
         <mat-icon>warning</mat-icon>&nbsp;
-        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL">
-          A Descriptor associated with this workflow could not be found.
-        </span>
-        <span *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL">
-          Please ensure that the Descriptor is a valid CWL 1.0 workflow.
+        <span *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.SERVICE">
+          The DAG cannot be displayed because the descriptor is either missing or not valid.
+          {{
+            (isPublic$ | async)
+              ? 'Click on the Files tab for more information.'
+              : 'Ensure the descriptor exists and is valid. Click on the Files tab for more information.'
+          }}
         </span>
       </mat-card>
       <mat-card class="alert alert-warning" role="alert" *ngIf="(missingTool$ | async) && selectedVersion?.valid">
@@ -45,18 +48,20 @@
                 (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL &&
                 (workflow$ | async)?.source_control_provider === 'GITHUB'
               "
-              style="line-height: 20px;"
+              style="line-height: 20px"
             >
               <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
               <label class="radio-inline">
                 <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer" />Common Workflow Language Viewer
               </label>
             </div>
-            <div *ngIf="isWDL$ | async" style="line-height: 20px;">
-              <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
-              <label class="radio-inline">
-                <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer" />EPAM WDL Visualizer
-              </label>
+            <div *ngIf="isWDL$ | async" style="line-height: 20px">
+              Classic
+              <!--ALLOW WDL VIEWER AGAIN -->
+              <!--              <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>-->
+              <!--              <label class="radio-inline">-->
+              <!--                <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer" />EPAM WDL Visualizer-->
+              <!--              </label>-->
             </div>
             <div>
               <a
@@ -97,13 +102,13 @@
           [expanded]="expanded"
         >
         </app-cwl-viewer>
-        <app-wdl-viewer
-          *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"
-          [workflow]="workflow$ | async"
-          [selectedVersion]="selectedVersion"
-          [expanded]="expanded"
-        >
-        </app-wdl-viewer>
+        <!--ALLOW WDL VIEWER AGAIN -->
+        <!--        <app-wdl-viewer-->
+        <!--          *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"-->
+        <!--          [workflow]="workflow$ | async"-->
+        <!--          [selectedVersion]="selectedVersion"-->
+        <!--          [expanded]="expanded"-->
+        <!--        </app-wdl-viewer>-->
         <div #cy id="cy" *ngIf="(dagResult$ | async) && !(missingTool$ | async)" class="h-100 w-100" [hidden]="dagType !== 'classic'"></div>
       </div>
     </div>

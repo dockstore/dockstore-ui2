@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { CollectionOrganization, EntriesService } from '../../shared/swagger';
@@ -6,7 +5,7 @@ import { CurrentCollectionsStore } from './current-collections.store';
 
 @Injectable({ providedIn: 'root' })
 export class CurrentCollectionsService {
-  constructor(private currentCollectionsStore: CurrentCollectionsStore, private entriesService: EntriesService, private http: HttpClient) {}
+  constructor(private currentCollectionsStore: CurrentCollectionsStore, private entriesService: EntriesService) {}
 
   @transaction()
   get(id: number) {
@@ -24,7 +23,7 @@ export class CurrentCollectionsService {
     this.currentCollectionsStore.add(currentCollection);
   }
 
-  update(id, currentCollection: Partial<CollectionOrganization>) {
+  update(id: ID, currentCollection: Partial<CollectionOrganization>) {
     this.currentCollectionsStore.update(id, currentCollection);
   }
 

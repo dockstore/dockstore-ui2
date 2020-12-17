@@ -13,47 +13,65 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
+import { ContainersService } from 'app/shared/swagger';
+import { ToolQuery } from 'app/shared/tool/tool.query';
+import { ToolService } from 'app/shared/tool/tool.service';
+import { from } from 'rxjs';
+import { concatMap, takeUntil } from 'rxjs/operators';
+import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { ContainerService } from '../../shared/container.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
-import { UsersService } from '../../shared/swagger/api/users.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { UserQuery } from '../../shared/user/user.query';
-import { RefreshService } from './../../shared/refresh.service';
-import { AlertQuery } from '../../shared/alert/state/alert.query';
 
 @Component({
   selector: 'app-refresh-tool-organization',
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
-  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css']
+  styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
+  @Input() protected orgToolObject: OrgToolObject<DockstoreTool>;
+
   constructor(
     userQuery: UserQuery,
     private alertService: AlertService,
-    private usersService: UsersService,
-    private containerService: ContainerService,
-    private refreshService: RefreshService,
-    protected alertQuery: AlertQuery
+    protected alertQuery: AlertQuery,
+    private toolService: ToolService,
+    private containersService: ContainersService,
+    private toolQuery: ToolQuery
   ) {
     super(userQuery, alertQuery);
     this.buttonText = 'Refresh Namespace';
+    this.tooltipText = 'Refresh all tools in the namespace';
   }
 
   refreshOrganization(): void {
-    const message = 'Refreshing ' + this.organization;
-    const splitOrganization: string[] = this.organization.split('/');
-    const actualOrganization: string = splitOrganization[1];
-    this.alertService.start(message);
-    this.usersService.refreshToolsByOrganization(this.userId, actualOrganization).subscribe(
-      (success: DockstoreTool[]) => {
-        this.containerService.setTools(success);
-        this.alertService.detailedSuccess();
-      },
-      error => this.alertService.detailedError(error)
-    );
+    if (this.orgToolObject) {
+      const entries: DockstoreTool[] = this.orgToolObject.published
+        .concat(this.orgToolObject.unpublished)
+        .filter((entry) => entry.mode !== DockstoreTool.ModeEnum.HOSTED && entry.gitUrl);
+      from(entries)
+        .pipe(
+          concatMap((entry) => {
+            this.alertService.start(`Refreshing ${entry.tool_path}`);
+            return this.containersService.refresh(entry.id);
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe(
+          (entry) => {
+            const activeID = this.toolQuery.getActive().id;
+            if (activeID === entry.id) {
+              // Warning: this may result in an incomplete tool (missing validation, aliases etc)
+              this.toolService.setTool(entry);
+            }
+            this.alertService.detailedSuccess();
+          },
+          (error) => this.alertService.detailedError(error)
+        );
+    }
   }
 }

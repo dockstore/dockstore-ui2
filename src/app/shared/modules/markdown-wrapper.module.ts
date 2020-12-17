@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2020 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,11 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownWrapperComponent } from '../markdown-wrapper/markdown-wrapper.component';
 
-.break {
-  word-break: break-word;
-}
-
-.add-tag {
-  margin-right: 15px;
-}
+@NgModule({
+  declarations: [MarkdownWrapperComponent],
+  imports: [CommonModule, MarkdownModule],
+  providers: [],
+  exports: [MarkdownWrapperComponent],
+  entryComponents: [],
+})
+export class MarkdownWrapperModule {}

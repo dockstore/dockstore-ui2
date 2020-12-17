@@ -18,24 +18,23 @@ import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
-import { SessionQuery } from '../session/session.query';
 import { BioWorkflow, DockstoreTool, Entry, Workflow } from '../swagger';
 import { CheckerWorkflowState, CheckerWorkflowStore } from './checker-workflow.store';
 
 @Injectable({ providedIn: 'root' })
 export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
-  entry$: Observable<Entry> = this.select(state => state.entry);
+  entry$: Observable<Entry> = this.select((state) => state.entry);
   entryId$: Observable<number> = this.entry$.pipe(map((entry: Entry) => (entry ? entry.id : null)));
-  checkerWorkflow$: Observable<Workflow> = this.select(state => (state.checkerWorkflow ? state.checkerWorkflow : null));
+  checkerWorkflow$: Observable<Workflow> = this.select((state) => (state.checkerWorkflow ? state.checkerWorkflow : null));
   isStub$: Observable<boolean> = this.entry$.pipe(
     map((entry: Entry) => (this.isEntryAWorkflow(entry) ? (<Workflow>entry).mode === Workflow.ModeEnum.STUB : false))
   );
-  checkerWorkflowPath$: Observable<string> = this.checkerWorkflow$.pipe(map(workflow => (workflow ? workflow.full_workflow_path : null)));
+  checkerWorkflowPath$: Observable<string> = this.checkerWorkflow$.pipe(map((workflow) => (workflow ? workflow.full_workflow_path : null)));
   parentId$: Observable<number> = this.entry$.pipe(map((entry: BioWorkflow) => (entry ? entry.parent_id : null)));
   checkerId$: Observable<number> = this.entry$.pipe(map((entry: Entry) => (entry ? entry.checker_id : null)));
   entryIsWorkflow$: Observable<boolean> = this.entry$.pipe(map((entry: Entry) => (entry ? this.isEntryAWorkflow(entry) : null)));
   trsId$: Observable<string | null> = this.entry$.pipe(map((entry: Entry | null) => this.getTRSId(entry)));
-  constructor(protected store: CheckerWorkflowStore, private query: SessionQuery) {
+  constructor(protected store: CheckerWorkflowStore) {
     super(store);
   }
 

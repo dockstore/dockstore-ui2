@@ -23,9 +23,7 @@
   </div>
   <ng-container *ngIf="tool?.is_published; then disabledDeleteButton; else enabledDeleteButton"></ng-container>
   <ng-template #disabledDeleteButton>
-    <button *ngIf="tool?.is_published" mat-flat-button color="warn" disabled matTooltip="Delete the tool">
-      Delete
-    </button>
+    <button *ngIf="tool?.is_published" mat-flat-button color="warn" disabled matTooltip="Delete the tool">Delete</button>
   </ng-template>
   <ng-template #enabledDeleteButton>
     <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="isRefreshing$ | async"></app-deregister-modal>

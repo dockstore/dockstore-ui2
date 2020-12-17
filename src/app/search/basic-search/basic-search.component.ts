@@ -1,26 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
-import { formInputDebounceTime } from '../../shared/constants';
+import { bootstrap4largeModalSize, formInputDebounceTime } from '../../shared/constants';
+import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 
 @Component({
   selector: 'app-basic-search',
   templateUrl: './basic-search.component.html',
-  styleUrls: ['./basic-search.component.scss']
+  styleUrls: ['./basic-search.component.scss'],
 })
 export class BasicSearchComponent extends Base implements OnInit {
-  constructor(private searchService: SearchService, private searchQuery: SearchQuery) {
+  constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {
     super();
   }
   public searchFormControl = new FormControl();
   public autocompleteTerms$: Observable<Array<string>>;
   public hasAutoCompleteTerms$: Observable<boolean>;
   ngOnInit() {
-    this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(searchText => {
+    this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((searchText) => {
       // This keeps the state and the view in sync but this is slightly awkward
       // Changes to the searchText$ state will change searchFormControl
       // However, changes to searchFormControl will change searchText$
@@ -32,12 +34,8 @@ export class BasicSearchComponent extends Base implements OnInit {
     this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
 
     this.searchFormControl.valueChanges
-      .pipe(
-        debounceTime(formInputDebounceTime),
-        distinctUntilChanged(),
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(searchText => {
+      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .subscribe((searchText) => {
         this.searchService.setSearchText(searchText);
       });
   }
@@ -49,6 +47,9 @@ export class BasicSearchComponent extends Base implements OnInit {
    * @memberof BasicSearchComponent
    */
   openAdvancedSearch(): void {
-    this.searchService.setShowModal(true);
+    this.matDialog.open(AdvancedSearchComponent, {
+      width: bootstrap4largeModalSize,
+      height: 'auto',
+    });
   }
 }

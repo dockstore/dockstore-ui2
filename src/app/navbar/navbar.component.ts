@@ -18,6 +18,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
+import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
+import { Dockstore } from '../shared/dockstore.model';
 import { toExtendSite } from '../shared/helpers';
 import { UserQuery } from '../shared/user/user.query';
 import { LogoutService } from './../shared/logout.service';
@@ -25,13 +27,11 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
-import { Dockstore } from '../shared/dockstore.model';
-import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent extends Logout implements OnInit {
   public user: User;
@@ -52,7 +52,7 @@ export class NavbarComponent extends Logout implements OnInit {
     super(trackLoginService, logoutService, router);
     this.router.events
       .pipe(
-        filter(event => event instanceof NavigationEnd),
+        filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
@@ -61,13 +61,13 @@ export class NavbarComponent extends Logout implements OnInit {
   }
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(user => {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.user = user;
       if (this.user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
         this.logOutUsersWithoutCurrentTOS();
       }
     });
-    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(extendedUser => (this.extendedUser = extendedUser));
+    this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((extendedUser) => (this.extendedUser = extendedUser));
   }
 
   resetPageNumber() {

@@ -30,7 +30,7 @@ export class TokenService {
     this.tokenStore.add(token);
   }
 
-  update(id, token: Partial<Token>) {
+  update(id: ID, token: Partial<Token>) {
     this.tokenStore.update(id, token);
   }
 
@@ -54,6 +54,8 @@ export class TokenService {
         return this.tokensService.addGitlabToken(token);
       case Provider.ZENODO:
         return this.tokensService.addZenodoToken(token);
+      case Provider.ORCID:
+        return this.tokensService.addOrcidToken(token);
       default: {
         console.log('Unknown provider: ' + provider);
         return throwError('Unknown provider.');
@@ -74,11 +76,11 @@ export class TokenService {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
-          Authorization: 'token ' + token
-        })
+          Authorization: 'token ' + token,
+        }),
       };
       const getOrganizationUrl = 'https://api.github.com/user/orgs';
-      httpClient.get(getOrganizationUrl, httpOptions).subscribe(gitHubOrganizations => this.setGitHubOrganizations(gitHubOrganizations));
+      httpClient.get(getOrganizationUrl, httpOptions).subscribe((gitHubOrganizations) => this.setGitHubOrganizations(gitHubOrganizations));
     } else {
       this.setGitHubOrganizations([]);
     }

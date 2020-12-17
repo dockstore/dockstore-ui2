@@ -1,8 +1,8 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { CwlViewerService } from './cwl-viewer.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Dockstore } from '../../../shared/dockstore.model';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
+import { Dockstore } from '../../../shared/dockstore.model';
+import { CwlViewerService } from './cwl-viewer.service';
 
 describe('Service: CWLViewer', () => {
   let cwlViewerService: CwlViewerService;
@@ -21,7 +21,7 @@ describe('Service: CWLViewer', () => {
       packedId: null,
       url: 'https://github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl',
       rawUrl: 'https://raw.githubusercontent.com/dockstore-testing/Metaphlan-ISBCGC/master/metaphlan_wfl.cwl',
-      type: 'GITHUB'
+      type: 'GITHUB',
     },
     retrievedOn: 1518199020779,
     lastCommit: '9283b35ae651477f5e722111b07c8128aa66c0ea',
@@ -30,7 +30,7 @@ describe('Service: CWLViewer', () => {
     visualisationXdot: '/graph/xdot/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl',
     visualisationPng: '/graph/png/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl',
     visualisationSvg: '/graph/svg/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl',
-    roBundle: '/robundle/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
+    roBundle: '/robundle/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl',
   };
 
   const message =
@@ -40,24 +40,24 @@ describe('Service: CWLViewer', () => {
     '(with --enable-dev flag only)\n';
   const cwlViewerError = {
     cwltoolStatus: 'ERROR',
-    message: message
+    message: message,
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CwlViewerService]
+      providers: [CwlViewerService],
     });
-    cwlViewerService = TestBed.get(CwlViewerService);
+    cwlViewerService = TestBed.inject(CwlViewerService);
     commonWlEndpoint = cwlViewerService.cwlViewerEndpoint(providerUrl, reference, workflowPath);
-    httpMock = TestBed.get(HttpTestingController);
+    httpMock = TestBed.inject(HttpTestingController);
     onDestroy$ = new Subject<void>();
   });
 
   if (Dockstore.FEATURES.enableCwlViewer) {
-    it('should work if POST returns 200', done => {
+    it('should work if POST returns 200', (done) => {
       cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(
-        resp => {
+        (resp) => {
           expect(resp.svgUrl).toBe(
             Dockstore.CWL_VISUALIZER_URI + '/graph/svg/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
           );
@@ -75,7 +75,7 @@ describe('Service: CWLViewer', () => {
   if (Dockstore.FEATURES.enableCwlViewer) {
     it('should work if POST returns 202', fakeAsync(() => {
       cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(
-        resp => {
+        (resp) => {
           expect(resp.svgUrl).toBe(
             Dockstore.CWL_VISUALIZER_URI + '/graph/svg/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
           );
@@ -85,10 +85,10 @@ describe('Service: CWLViewer', () => {
       const response202 = httpMock.expectOne(commonWlEndpoint);
       response202.flush(null, {
         headers: {
-          Location: '/queue/1'
+          Location: '/queue/1',
         },
         status: 202,
-        statusText: 'Accepted'
+        statusText: 'Accepted',
       });
       tick(600);
       const poll = httpMock.expectOne(Dockstore.CWL_VISUALIZER_URI + '/queue/1');
@@ -98,8 +98,11 @@ describe('Service: CWLViewer', () => {
   }
 
   if (Dockstore.FEATURES.enableCwlViewer) {
-    it('should fail if POST returns 400', done => {
-      cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(null, () => done());
+    it('should fail if POST returns 400', (done) => {
+      cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(
+        () => done(),
+        () => done()
+      );
       const response400 = httpMock.expectOne(commonWlEndpoint);
       response400.flush(null, { status: 400, statusText: 'Bad Request' });
       httpMock.verify();
@@ -109,7 +112,7 @@ describe('Service: CWLViewer', () => {
   if (Dockstore.FEATURES.enableCwlViewer) {
     it('should work if queue returns an error', fakeAsync(() => {
       cwlViewerService.getVisualizationUrls(providerUrl, reference, workflowPath, onDestroy$).subscribe(
-        resp => {
+        (resp) => {
           expect(resp.svgUrl).toBe(
             Dockstore.CWL_VISUALIZER_URI + '/graph/svg/github.com/dockstore-testing/Metaphlan-ISBCGC/blob/master/metaphlan_wfl.cwl'
           );
@@ -119,10 +122,10 @@ describe('Service: CWLViewer', () => {
       const response202 = httpMock.expectOne(commonWlEndpoint);
       response202.flush(null, {
         headers: {
-          Location: '/queue/1'
+          Location: '/queue/1',
         },
         status: 202,
-        statusText: 'Accepted'
+        statusText: 'Accepted',
       });
       tick(600);
       const poll = httpMock.expectOne(Dockstore.CWL_VISUALIZER_URI + '/queue/1');

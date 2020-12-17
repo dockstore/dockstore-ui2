@@ -8,7 +8,7 @@ describe('Service: HomePage', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [HomePageService],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     });
   });
 

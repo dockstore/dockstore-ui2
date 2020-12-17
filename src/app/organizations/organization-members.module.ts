@@ -10,6 +10,6 @@ import { UpsertOrganizationMemberModule } from './upsert-organization-member.mod
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, RefreshAlertModule, UpsertOrganizationMemberModule],
   declarations: [OrganizationMembersComponent],
-  exports: [OrganizationMembersComponent]
+  exports: [OrganizationMembersComponent],
 })
 export class OrganizationMembersModule {}

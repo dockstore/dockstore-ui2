@@ -1,18 +1,18 @@
-import { BioschemaService, BioschemaTool } from './bioschema.service';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { inject, TestBed } from '@angular/core/testing';
+import { BioschemaService, BioschemaTool } from './bioschema.service';
 import { DateService } from './date.service';
+import { ExtendedToolsService } from './extended-tools.service';
+import { ExtendedWorkflowsService } from './extended-workflows.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
 import { Tag } from './swagger/model/tag';
 import { Workflow } from './swagger/model/workflow';
 import { WorkflowVersion } from './swagger/model/workflowVersion';
-import { ExtendedToolsService } from './extended-tools.service';
-import { ExtendedWorkflowsService } from './extended-workflows.service';
-import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('BioschemaService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BioschemaService, DateService, ExtendedWorkflowsService, ExtendedToolsService, HttpClient, HttpHandler]
+      providers: [BioschemaService, DateService, ExtendedWorkflowsService, ExtendedToolsService, HttpClient, HttpHandler],
     });
   });
 
@@ -22,7 +22,7 @@ describe('BioschemaService', () => {
   it('should have expected attributes', inject([BioschemaService, DateService], (service: BioschemaService) => {
     // create a DockstoreTool object
     const tag: Tag = { name: '1.0.0', reference: '', id: 2 };
-    const date: Date = new Date('2017-06-28T18:48:18.000Z');
+    const date: number = new Date('2017-06-28T18:48:18.000Z').getTime();
     const tool: DockstoreTool = {
       // Attributes used in the method being tested
       author: 'me',
@@ -42,7 +42,7 @@ describe('BioschemaService', () => {
       mode: DockstoreTool.ModeEnum.HOSTED,
       namespace: '',
       private_access: false,
-      registry_string: ''
+      registry_string: '',
     };
     const result: BioschemaTool = service.getToolSchema(tool, tag);
     expect(result['@context']).toEqual('http://schema.org');
@@ -79,7 +79,8 @@ describe('BioschemaService', () => {
       sourceControl: '',
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
-      defaultTestParameterFilePath: ''
+      defaultTestParameterFilePath: '',
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
     };
     const result: BioschemaTool = service.getWorkflowSchema(workflow, version);
     expect(result['@context']).toEqual('http://schema.org');

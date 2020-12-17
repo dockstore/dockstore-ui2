@@ -22,7 +22,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-workflows',
-  templateUrl: './workflows.component.html'
+  templateUrl: './workflows.component.html',
 })
 export class WorkflowsComponent {
   public entryPageTitle$: Observable<string>;

@@ -1,21 +1,20 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EventsService } from './events.service';
 import { EventsStore } from './events.store';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('EventsService', () => {
   let eventsService: EventsService;
-  let eventsStore: EventsStore;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [EventsService, EventsStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule]
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
-    eventsService = TestBed.get(EventsService);
-    eventsStore = TestBed.get(EventsStore);
+    eventsService = TestBed.inject(EventsService);
+    TestBed.inject(EventsStore);
   });
 
   it('should be created', () => {

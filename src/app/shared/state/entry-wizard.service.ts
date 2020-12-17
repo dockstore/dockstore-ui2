@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { EntryWizardStore } from './entry-wizard.store';
-import { BioWorkflow, WorkflowsService, UsersService } from '../openapi';
-import { AlertService } from '../alert/state/alert.service';
-import { Repository } from '../openapi/model/repository';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
+import { AlertService } from '../alert/state/alert.service';
+import { BioWorkflow, UsersService, Workflow, WorkflowsService } from '../openapi';
+import { Repository } from '../openapi/model/repository';
 import { EntryWizardQuery } from './entry-wizard.query';
+import { EntryWizardStore } from './entry-wizard.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EntryWizardService {
   constructor(
@@ -135,7 +135,7 @@ export class EntryWizardService {
   updateRepoIsPresent(repository: Repository, isPresent: boolean, canDelete: boolean) {
     const state = this.entryWizardQuery.getValue();
     const gitRepos = state.gitRepositories;
-    const index = gitRepos.findIndex(repo => {
+    const index = gitRepos.findIndex((repo) => {
       return repository.path === repo.path && repository.gitRegistry === repo.gitRegistry;
     });
 
@@ -145,7 +145,7 @@ export class EntryWizardService {
       gitRegistry: repository.gitRegistry,
       canDelete: canDelete,
       present: isPresent,
-      path: repository.path
+      path: repository.path,
     };
 
     const updatedGitRepos = Object.assign([], gitRepos);
@@ -157,19 +157,19 @@ export class EntryWizardService {
    * Converts a string source control to a Source Control enum
    * @param sourceControl source control string
    */
-  convertSourceControlStringToEnum(sourceControl: string): BioWorkflow.SourceControlEnum {
+  convertSourceControlStringToEnum(sourceControl: string): Workflow.SourceControlEnum {
     switch (sourceControl) {
-      case BioWorkflow.SourceControlEnum.GithubCom: {
-        return BioWorkflow.SourceControlEnum.GithubCom;
+      case Workflow.SourceControlEnum.GithubCom: {
+        return Workflow.SourceControlEnum.GithubCom;
       }
-      case BioWorkflow.SourceControlEnum.GitlabCom: {
-        return BioWorkflow.SourceControlEnum.GitlabCom;
+      case Workflow.SourceControlEnum.GitlabCom: {
+        return Workflow.SourceControlEnum.GitlabCom;
       }
-      case BioWorkflow.SourceControlEnum.BitbucketOrg: {
-        return BioWorkflow.SourceControlEnum.BitbucketOrg;
+      case Workflow.SourceControlEnum.BitbucketOrg: {
+        return Workflow.SourceControlEnum.BitbucketOrg;
       }
-      case BioWorkflow.SourceControlEnum.DockstoreOrg: {
-        return BioWorkflow.SourceControlEnum.DockstoreOrg;
+      case Workflow.SourceControlEnum.DockstoreOrg: {
+        return Workflow.SourceControlEnum.DockstoreOrg;
       }
       default:
         console.error(sourceControl + ' is not a valid Source Control.');

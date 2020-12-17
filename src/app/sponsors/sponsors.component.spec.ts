@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Location } from '@angular/common';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SponsorsComponent } from './sponsors.component';
 
@@ -27,7 +27,7 @@ describe('SponsorsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SponsorsComponent],
       providers: [Location],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     }).compileComponents();
   }));
 

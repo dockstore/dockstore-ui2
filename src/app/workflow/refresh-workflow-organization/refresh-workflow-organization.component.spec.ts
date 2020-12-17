@@ -13,17 +13,28 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DateService } from '../../shared/date.service';
+import { ExtendedDockstoreToolService } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.service';
+import { ProviderService } from '../../shared/provider.service';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { UsersService } from '../../shared/swagger/api/users.service';
-import { RefreshStubService, UsersStubService, WorkflowStubService } from '../../test/service-stubs';
+import {
+  DateStubService,
+  ExtendedDockstoreToolStubService,
+  ProviderStubService,
+  RefreshStubService,
+  UsersStubService,
+  WorkflowStubService,
+} from '../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
 
 describe('RefreshWorkflowOrganizationComponent', () => {
@@ -33,12 +44,15 @@ describe('RefreshWorkflowOrganizationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RefreshWorkflowOrganizationComponent],
-      imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule],
+      imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule, HttpClientTestingModule],
       providers: [
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: RefreshService, useClass: RefreshStubService }
-      ]
+        { provide: RefreshService, useClass: RefreshStubService },
+        { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
+        { provide: DateService, useClass: DateStubService },
+        { provide: ProviderService, useClass: ProviderStubService },
+      ],
     }).compileComponents();
   }));
 

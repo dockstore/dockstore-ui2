@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ToolDescriptor } from '../../shared/swagger';
+import { SourceFile, ToolDescriptor } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { ToolQuery } from '../../shared/tool/tool.query';
@@ -29,22 +29,17 @@ import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
-  styleUrls: ['./launch.component.css']
+  styleUrls: ['./launch.component.css'],
 })
-export class LaunchComponent extends Base {
+export class LaunchComponent extends Base implements OnInit, OnChanges {
   @Input() basePath: string;
   @Input() path: string;
   @Input() toolname: string;
   @Input() mode: DockstoreTool.ModeEnum | Workflow.ModeEnum;
+  @Input() versionsFileTypes: Array<SourceFile.TypeEnum>;
 
   _selectedVersion: Tag;
-  @Input() set selectedVersion(value: Tag) {
-    if (value != null) {
-      this._selectedVersion = value;
-      this.reactToDescriptor();
-      this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
-    }
-  }
+  @Input() selectedVersion: Tag;
 
   params: string;
   cli: string;
@@ -69,21 +64,30 @@ export class LaunchComponent extends Base {
     private descriptorLanguageService: DescriptorLanguageService
   ) {
     super();
+  }
+
+  ngOnInit(): void {
     this.descriptorLanguageService.filteredDescriptorLanguages$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
         this.descriptors = descriptors;
-        this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion);
+        this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
       });
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this._selectedVersion = this.selectedVersion;
+    this.reactToDescriptor();
+    this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
+  }
+
   // Returns an array of descriptors that are valid for the given tool version
-  filterDescriptors(descriptors: Array<DescriptorTypeEnum>, version: Tag): Array<string> {
+  filterDescriptors(descriptors: Array<DescriptorTypeEnum>, version: Tag, versionsFileTypes: Array<SourceFile.TypeEnum>): Array<string> {
     const newDescriptors: Array<DescriptorTypeEnum> = [];
 
     // Return empty array if no descriptors present yet
-    if (descriptors === undefined || version === undefined) {
+    if (descriptors === undefined || version === undefined || versionsFileTypes === undefined) {
       return newDescriptors;
     }
 
@@ -91,10 +95,10 @@ export class LaunchComponent extends Base {
     let hasCwl = false;
     let hasWdl = false;
 
-    for (const sourceFile of version.sourceFiles) {
-      if (sourceFile.type.toString() === 'DOCKSTORE_CWL') {
+    for (const fileType of versionsFileTypes) {
+      if (fileType === SourceFile.TypeEnum.DOCKSTORECWL) {
         hasCwl = true;
-      } else if (sourceFile.type.toString() === 'DOCKSTORE_WDL') {
+      } else if (fileType === SourceFile.TypeEnum.DOCKSTOREWDL) {
         hasWdl = true;
       }
     }

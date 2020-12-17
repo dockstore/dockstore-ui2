@@ -14,14 +14,15 @@
  *    limitations under the License.
  */
 
-import { MetadataService } from '../metadata/metadata.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { GA4GHStubService } from './../test/service-stubs';
-import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MetadataService } from '../metadata/metadata.service';
+import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
+import { GA4GHStubService } from './../test/service-stubs';
 
 import { FooterComponent } from './footer.component';
+import { GitTagPipe } from './git-tag.pipe';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -29,9 +30,9 @@ describe('FooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FooterComponent],
+      declarations: [FooterComponent, GitTagPipe],
       imports: [RouterTestingModule, MatIconModule],
-      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }]
+      providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }],
     }).compileComponents();
   }));
 

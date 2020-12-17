@@ -13,19 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Input } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
-
 import { DockstoreService } from '../shared/dockstore.service';
 import { EntryTab } from '../shared/entry/entry-tab';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { DateService } from './date.service';
 import { SessionQuery } from './session/session.query';
-import { Tooltip } from './tooltip';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { Tooltip } from './tooltip';
 
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class Versions extends EntryTab {
   @Input() versions: Array<Tag | WorkflowVersion>;
   @Input() verifiedSource: Array<any>;
@@ -35,8 +36,11 @@ export abstract class Versions extends EntryTab {
   defaultVersion: string;
   verifiedLink: string;
   dtOptions;
+  displayedColumns: string[];
+  readonly verifiedVersionTooltip = 'A version has a verified platform if it has been verified to work by a third party';
 
   abstract setNoOrderCols(): Array<number>;
+  abstract setDisplayColumns(publicPage: boolean): void;
   constructor(protected dockstoreService: DockstoreService, private dateService: DateService, protected sessionQuery: SessionQuery) {
     // By default, sort by last_built for tools and last_modified for workflows, latest first
     super();
@@ -45,7 +49,10 @@ export abstract class Versions extends EntryTab {
 
   publicPageSubscription() {
     this.verifiedLink = this.dateService.getVerifiedLink();
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(publicPage => (this.publicPage = publicPage));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => {
+      this.publicPage = publicPage;
+      this.setDisplayColumns(publicPage);
+    });
   }
 
   getDefaultTooltip(publicPage: boolean): string {
@@ -56,7 +63,7 @@ export abstract class Versions extends EntryTab {
     }
   }
 
-  clickSortColumn(columnName) {
+  clickSortColumn(columnName: string) {
     if (this.sortColumn === columnName) {
       this.sortReverse = !this.sortReverse;
     } else {
@@ -64,16 +71,16 @@ export abstract class Versions extends EntryTab {
       this.sortReverse = false;
     }
   }
-  getIconClass(columnName): IconDefinition {
+  getIconClass(columnName: string): IconDefinition {
     return this.dockstoreService.getIconClass(columnName, this.sortColumn, this.sortReverse);
   }
-  convertSorting(mode): string | undefined {
+  convertSorting(mode: string): string | undefined {
     if (mode && mode === DockstoreTool.ModeEnum.HOSTED) {
       this.sortColumn = 'id';
     }
     return this.sortReverse ? '-' + this.sortColumn : this.sortColumn;
   }
-  getDateTimeString(timestamp) {
+  getDateTimeString(timestamp: number) {
     if (timestamp) {
       return this.dateService.getDateTimeMessage(timestamp);
     } else {

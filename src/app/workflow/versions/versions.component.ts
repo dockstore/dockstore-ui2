@@ -13,18 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { WorkflowService } from 'app/shared/state/workflow.service';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
+import { VersionVerifiedPlatform } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Versions } from '../../shared/versions';
@@ -32,11 +32,12 @@ import { Versions } from '../../shared/versions';
 @Component({
   selector: 'app-versions-workflow',
   templateUrl: './versions.component.html',
-  styleUrls: ['./versions.component.css']
+  styleUrls: ['./versions.component.css'],
 })
-export class VersionsWorkflowComponent extends Versions implements OnInit {
+export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   @Input() versions: Array<any>;
   @Input() workflowId: number;
+  @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   zenodoUrl: string;
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;
@@ -45,7 +46,9 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
       this._selectedVersion = value;
     }
   }
+  dataSource = new MatTableDataSource(this.versions);
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
+  @ViewChild(MatSort) sort: MatSort;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
   setNoOrderCols(): Array<number> {
@@ -57,18 +60,32 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
     dateService: DateService,
     private alertService: AlertService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
-    private workflowsService: WorkflowsService,
-    private workflowService: WorkflowService,
     protected sessionQuery: SessionQuery
   ) {
     super(dockstoreService, dateService, sessionQuery);
     this.sortColumn = 'last_modified';
   }
 
+  setDisplayColumns(publicPage: boolean) {
+    if (publicPage) {
+      this.displayedColumns = ['name', 'last_modified', 'valid', 'verified', 'snapshot', 'actions'];
+    } else {
+      this.displayedColumns = ['name', 'last_modified', 'valid', 'hidden', 'verified', 'snapshot', 'actions'];
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
+
+  ngOnChanges() {
+    this.dataSource.data = this.versions;
+  }
+
   ngOnInit() {
-    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '');
+    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.publicPageSubscription();
-    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(workflow => {
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;
@@ -79,27 +96,11 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
         columnDefs: [
           {
             orderable: false,
-            targets: this.setNoOrderCols()
-          }
-        ]
+            targets: this.setNoOrderCols(),
+          },
+        ],
       };
     });
-  }
-
-  updateDefaultVersion(newDefaultVersion: string): void {
-    if (this.publicPage) {
-      return;
-    }
-    const message = 'Updating default workflow version';
-    this.alertService.start(message);
-    this.workflowsService.updateWorkflowDefaultVersion(this.workflowId, newDefaultVersion).subscribe(
-      updatedWorkflow => {
-        this.alertService.detailedSuccess();
-        this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
-        this.workflowService.setWorkflow(updatedWorkflow);
-      },
-      (error: HttpErrorResponse) => this.alertService.detailedError(error)
-    );
   }
 
   /**
@@ -109,6 +110,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit {
    */
   setVersion(version: WorkflowVersion): void {
     this._selectedVersion = version;
+    this.alertService.start('Changing version to ' + version.name);
+    this.alertService.detailedSuccess();
     this.selectedVersionChange.emit(this._selectedVersion);
   }
 }
