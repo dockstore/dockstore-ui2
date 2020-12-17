@@ -150,7 +150,7 @@ describe('Test workflow page functionality', () => {
 });
 //
 describe('Test existence of Logs', () => {
-  it.only('Find Logs in Workflows', () => {
+  it('Find Logs in Workflows', () => {
     cy.visit('/workflows/github.com/DataBiosphere/topmed-workflows/UM_variant_caller_wdl:1.32.0?tab=info');
     cy.get('[data-cy=verificationLogsDialog]').click();
     cy.contains('.mat-card-title', 'Logs').should('exist');
