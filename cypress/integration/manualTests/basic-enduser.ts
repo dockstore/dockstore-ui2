@@ -148,6 +148,20 @@ describe('Test workflow page functionality', () => {
       });
   });
 });
+//
+describe('Test existence of Logs', () => {
+  it.only('Find Logs in Workflows', () => {
+    cy.visit('/workflows/github.com/DataBiosphere/topmed-workflows/UM_variant_caller_wdl:1.32.0?tab=info');
+    cy.get('[data-cy=verificationLogsDialog]').click();
+    cy.contains('.mat-card-title', 'Logs').should('exist');
+    cy.contains(
+      '.mat-card-subtitle',
+      'This tool/workflow version has been verified by certain entities. ' +
+        'The below table shows information about the entity that verified this version.'
+    ).should('exist');
+    // test for components in app-verified-display such as version, verifiedByPlatform
+  });
+});
 
 // pairs of [workflow URL without version number, verified version number, another verified version number, workflow.trsUrl]
 const workflowVersionTuples = [
