@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AccountsService } from 'app/loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RefreshService } from 'app/shared/refresh.service';
@@ -39,22 +39,24 @@ describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;
   let fixture: ComponentFixture<ViewWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CustomMaterialModule],
-      declarations: [ViewWorkflowComponent],
-      providers: [
-        { provide: ViewService },
-        { provide: AccountsService, useClass: AccountsStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: VersionModalService, useClass: VersionModalStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-        { provide: DateService, useClass: DateStubService },
-        { provide: HostedService, useClass: HostedStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CustomMaterialModule],
+        declarations: [ViewWorkflowComponent],
+        providers: [
+          { provide: ViewService },
+          { provide: AccountsService, useClass: AccountsStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: VersionModalService, useClass: VersionModalStubService },
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+          { provide: DateService, useClass: DateStubService },
+          { provide: HostedService, useClass: HostedStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewWorkflowComponent);

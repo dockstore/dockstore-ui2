@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -38,19 +38,21 @@ describe('RefreshToolOrganizationComponent', () => {
   let component: RefreshToolOrganizationComponent;
   let fixture: ComponentFixture<RefreshToolOrganizationComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [RefreshToolOrganizationComponent],
-      imports: [MatSnackBarModule, MatIconModule, MatButtonModule, MatTooltipModule],
-      providers: [
-        { provide: UsersService, useClass: UsersStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-        { provide: ContainersService, useClass: ContainersStubService },
-        { provide: ProviderService, useClass: ProviderStubService },
-        { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RefreshToolOrganizationComponent],
+        imports: [MatSnackBarModule, MatIconModule, MatButtonModule, MatTooltipModule],
+        providers: [
+          { provide: UsersService, useClass: UsersStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+          { provide: ContainersService, useClass: ContainersStubService },
+          { provide: ProviderService, useClass: ProviderStubService },
+          { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RefreshToolOrganizationComponent);

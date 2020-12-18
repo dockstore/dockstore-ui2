@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { OnDestroy } from '@angular/core';
+import { Directive, OnDestroy } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
@@ -30,6 +30,8 @@ import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version
  */
+@Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
   id: number;

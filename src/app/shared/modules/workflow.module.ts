@@ -108,6 +108,5 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
     VersionModalService,
   ],
   exports: [WorkflowComponent, CustomMaterialModule, EntryModule, HeaderModule, CommonModule, WorkflowActionsComponent],
-  entryComponents: [VersionModalComponent],
 })
 export class WorkflowModule {}

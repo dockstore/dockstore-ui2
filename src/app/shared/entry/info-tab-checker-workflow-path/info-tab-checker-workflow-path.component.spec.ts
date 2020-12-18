@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -28,17 +28,19 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
   let component: InfoTabCheckerWorkflowPathComponent;
   let fixture: ComponentFixture<InfoTabCheckerWorkflowPathComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule, RouterTestingModule, MatDialogModule, CustomMaterialModule],
-      providers: [
-        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
-      ],
-      declarations: [InfoTabCheckerWorkflowPathComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, RouterTestingModule, MatDialogModule, CustomMaterialModule],
+        providers: [
+          { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+          { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
+        ],
+        declarations: [InfoTabCheckerWorkflowPathComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoTabCheckerWorkflowPathComponent);

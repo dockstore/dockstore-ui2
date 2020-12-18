@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -30,40 +30,42 @@ describe('ToolFileEditorComponent', () => {
   let component: ToolFileEditorComponent;
   let fixture: ComponentFixture<ToolFileEditorComponent>;
   class FileStubService {}
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ToolFileEditorComponent,
-        CodeEditorListComponent,
-        CodeEditorComponent,
-        PublicFileDownloadPipe,
-        PrivateFileDownloadPipe,
-        PrivateFilePathPipe,
-      ],
-      imports: [
-        MatButtonModule,
-        MatTabsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatSnackBarModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatTooltipModule,
-        MatCardModule,
-        BrowserAnimationsModule,
-        ClipboardModule,
-        HttpClientModule,
-      ],
-      providers: [
-        { provide: HostedService, useClass: HostedStubService },
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: FileService, useClass: FileStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          ToolFileEditorComponent,
+          CodeEditorListComponent,
+          CodeEditorComponent,
+          PublicFileDownloadPipe,
+          PrivateFileDownloadPipe,
+          PrivateFilePathPipe,
+        ],
+        imports: [
+          MatButtonModule,
+          MatTabsModule,
+          MatToolbarModule,
+          MatIconModule,
+          MatSnackBarModule,
+          MatInputModule,
+          MatFormFieldModule,
+          MatSelectModule,
+          MatTooltipModule,
+          MatCardModule,
+          BrowserAnimationsModule,
+          ClipboardModule,
+          HttpClientModule,
+        ],
+        providers: [
+          { provide: HostedService, useClass: HostedStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: FileService, useClass: FileStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolFileEditorComponent);

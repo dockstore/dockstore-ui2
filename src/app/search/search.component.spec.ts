@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MdePopoverModule } from '@material-extended/mde';
@@ -53,18 +53,20 @@ describe('SearchComponent', () => {
   let searchQuery: jasmine.SpyObj<SearchQuery>;
   let fixture: ComponentFixture<SearchComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-      imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
-      providers: [
-        { provide: SearchService, useClass: SearchStubService },
-        { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-        { provide: ProviderService, useClass: ProviderStubService },
-        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
+        imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
+        providers: [
+          { provide: SearchService, useClass: SearchStubService },
+          { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+          { provide: ProviderService, useClass: ProviderStubService },
+          { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);

@@ -15,7 +15,7 @@
  */
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { DescriptorService } from '../../shared/descriptor.service';
@@ -29,19 +29,21 @@ describe('DescriptorsWorkflowComponent', () => {
   let component: DescriptorsWorkflowComponent;
   let fixture: ComponentFixture<DescriptorsWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DescriptorsWorkflowComponent],
-      imports: [HttpClientModule, MatSnackBarModule],
-      providers: [
-        { provide: DescriptorService, useClass: DescriptorsStubService },
-        { provide: FileService, useClass: FileStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DescriptorsWorkflowComponent],
+        imports: [HttpClientModule, MatSnackBarModule],
+        providers: [
+          { provide: DescriptorService, useClass: DescriptorsStubService },
+          { provide: FileService, useClass: FileStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DescriptorsWorkflowComponent);

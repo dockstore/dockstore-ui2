@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,17 +27,19 @@ describe('StargazersComponent', () => {
   let component: StargazersComponent;
   let fixture: ComponentFixture<StargazersComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [StargazersComponent],
-      imports: [MatIconModule, MatCardModule],
-      providers: [
-        { provide: UserService, useClass: UserStubService },
-        { provide: StarringService, useClass: StarringStubService },
-        { provide: StarentryService, useClass: StarEntryStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [StargazersComponent],
+        imports: [MatIconModule, MatCardModule],
+        providers: [
+          { provide: UserService, useClass: UserStubService },
+          { provide: StarringService, useClass: StarringStubService },
+          { provide: StarentryService, useClass: StarEntryStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StargazersComponent);

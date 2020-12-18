@@ -91,7 +91,6 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     RouterModule,
     ReactiveFormsModule,
   ],
-  entryComponents: [RegisterCheckerWorkflowComponent],
   providers: [BioschemaService, EntryActionsService],
 })
 export class EntryModule {}

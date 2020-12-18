@@ -4,19 +4,13 @@
     "tslint-config-prettier"
   ],
   "rulesDirectory": [
-    "node_modules/codelyzer",
-    "node_modules/rxjs-tslint"
+    "node_modules/codelyzer"
   ],
   "rules": {
     "ordered-imports": true,
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,
-    "no-unused-variable": true,
-    "rxjs-proper-imports": true,
-    "rxjs-no-static-observable-methods": true,
-    "rxjs-pipeable-operators-only": true,
-    "rxjs-collapse-imports": true,
     "comment-format": [
       true,
       "check-space"

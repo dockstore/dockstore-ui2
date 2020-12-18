@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
@@ -17,14 +17,16 @@ describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
   let fixture: ComponentFixture<LaunchThirdPartyComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [LaunchThirdPartyComponent],
-      imports: [CustomMaterialModule, HttpClientModule],
-      providers: [GA4GHFilesService, GA4GHV20Service, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LaunchThirdPartyComponent],
+        imports: [CustomMaterialModule, HttpClientModule],
+        providers: [GA4GHFilesService, GA4GHV20Service, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     TestBed.inject(WorkflowsService);

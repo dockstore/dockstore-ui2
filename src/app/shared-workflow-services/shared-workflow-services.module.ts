@@ -48,6 +48,5 @@ const IMPORTS = [
   imports: IMPORTS,
   providers: [MyWorkflowsService, MyBioWorkflowsService, MyServicesService],
   exports: DECLARATIONS.concat(IMPORTS),
-  entryComponents: [RegisterWorkflowModalComponent],
 })
 export class SharedWorkflowServicesModule {}

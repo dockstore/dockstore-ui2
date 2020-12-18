@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ContainerService } from '../../shared/container.service';
 import { DescriptorService } from '../../shared/descriptor.service';
@@ -35,20 +35,22 @@ describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;
   let fixture: ComponentFixture<LaunchWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [LaunchWorkflowComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        WorkflowLaunchService,
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: DescriptorService, useClass: DescriptorsStubService },
-        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LaunchWorkflowComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          WorkflowLaunchService,
+          { provide: ContainerService, useClass: ContainerStubService },
+          { provide: DescriptorService, useClass: DescriptorsStubService },
+          { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LaunchWorkflowComponent);

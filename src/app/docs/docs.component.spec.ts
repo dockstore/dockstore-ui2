@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HeaderModule } from './../shared/modules/header.module';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../test/router-stubs';
 import { DocsComponent } from './docs.component';
@@ -25,12 +25,14 @@ import { DocsComponent } from './docs.component';
 describe('DocsComponent', () => {
   // let component: DocsComponent;
   // let fixture: ComponentFixture<DocsComponent>;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DocsComponent, RouterLinkStubDirective, RouterOutletStubComponent],
-      imports: [HeaderModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DocsComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+        imports: [HeaderModule],
+      }).compileComponents();
+    })
+  );
 
   // beforeEach(() => {
   //   fixture = TestBed.createComponent(DocsComponent);

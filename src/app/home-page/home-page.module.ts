@@ -49,7 +49,6 @@ import { RequestsComponent } from './widget/requests/requests.component';
     GettingStartedComponent,
     EntryToDisplayNamePipe,
   ],
-  entryComponents: [],
   exports: [NgxJsonLdModule],
 })
 export class HomePageModule {}

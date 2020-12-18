@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -11,13 +11,15 @@ describe('RequestsComponent', () => {
   let component: RequestsComponent;
   let fixture: ComponentFixture<RequestsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [RequestsComponent],
-      imports: [RouterTestingModule, HttpClientTestingModule, CustomMaterialModule],
-      providers: [{ provide: UsersService, useClass: UsersStubService }],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RequestsComponent],
+        imports: [RouterTestingModule, HttpClientTestingModule, CustomMaterialModule],
+        providers: [{ provide: UsersService, useClass: UsersStubService }],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RequestsComponent);

@@ -67,6 +67,5 @@ import { SearchService } from './state/search.service';
   ],
   providers: [SearchService, QueryBuilderService],
   exports: [SearchComponent],
-  entryComponents: [AdvancedSearchComponent],
 })
 export class SearchModule {}

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -31,19 +31,21 @@ describe('RegisterCheckerWorkflowComponent', () => {
   let component: RegisterCheckerWorkflowComponent;
   let fixture: ComponentFixture<RegisterCheckerWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [RegisterCheckerWorkflowComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [FormsModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, CustomMaterialModule],
-      providers: [
-        { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
-        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-        DescriptorTypeCompatService,
-        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RegisterCheckerWorkflowComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [FormsModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, CustomMaterialModule],
+        providers: [
+          { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
+          { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+          DescriptorTypeCompatService,
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterCheckerWorkflowComponent);

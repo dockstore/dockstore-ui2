@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -67,30 +67,32 @@ class MockVersionModalComponent {
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule],
-      declarations: [
-        VersionsWorkflowComponent,
-        OrderBy,
-        CommitUrlPipe,
-        VerifiedPlatformsPipe,
-        MockViewWorkflowComponent,
-        MockVersionModalComponent,
-      ],
-      providers: [
-        DockstoreService,
-        { provide: DateService, useClass: DateStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-        AlertQuery,
-        ProviderService,
-        WorkflowQuery,
-        { provide: ImageProviderService, useClass: ImageProviderStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule],
+        declarations: [
+          VersionsWorkflowComponent,
+          OrderBy,
+          CommitUrlPipe,
+          VerifiedPlatformsPipe,
+          MockViewWorkflowComponent,
+          MockVersionModalComponent,
+        ],
+        providers: [
+          DockstoreService,
+          { provide: DateService, useClass: DateStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+          AlertQuery,
+          ProviderService,
+          WorkflowQuery,
+          { provide: ImageProviderService, useClass: ImageProviderStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VersionsWorkflowComponent);
