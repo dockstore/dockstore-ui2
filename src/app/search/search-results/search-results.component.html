@@ -20,48 +20,13 @@
   [selectedIndex]="(selectedIndex$ | async).active"
   (selectedTabChange)="saveTabIndex($event)"
 >
-  <mat-tab data-cy="tools-tab">
-    <ng-template mat-tab-label>
-      <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-tools-blue.png" />
-      Tools
-    </ng-template>
-    <div class="mat-tab-content">
-      <div *ngIf="toolTagCloudData">
-        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-          <span fxFlex="65%">
-            <p>A <b>Tool</b> uses a single container and performs a single action or step that is outlined by a descriptor</p>
-          </span>
-          <div class="tag-cloud-dropdown">
-            <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
-              <div fxLayout="row" fxLayoutAlign="space-between center">
-                <div>
-                  <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
-                  <span class="m-2"><b>Popular Keywords</b></span>
-                </div>
-                <i [class]="(showToolTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
-              </div>
-            </button>
-            <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async" data-cy="tagCloud">
-              <angular-tag-cloud
-                [data]="toolTagCloudData"
-                [width]="options.width"
-                [height]="options.height"
-                [overflow]="options.overflow"
-                (clicked)="tagClicked($event)"
-              >
-              </angular-tag-cloud>
-            </div>
-          </div>
-        </div>
-      </div>
-      <app-search-tool-table></app-search-tool-table>
-    </div>
-  </mat-tab>
-
   <mat-tab class="browserWorkflowsTab" data-cy="workflows-tab">
     <ng-template mat-tab-label>
-      <img class="site-icons-tab" src="../assets/images/dockstore/dockstore-workflows-green.png" />
-      Workflows
+      <div>
+        <img class="site-icons-tab" src="../assets/images/dockstore/workflow.svg" />
+        <b>Workflows</b>
+        <span class="nonclick-badge"> Hello </span>
+      </div>
     </ng-template>
     <div class="mat-tab-content">
       <div *ngIf="workflowTagCloudData">
@@ -93,6 +58,46 @@
         </div>
       </div>
       <app-search-workflow-table></app-search-workflow-table>
+    </div>
+  </mat-tab>
+
+  <mat-tab data-cy="tools-tab">
+    <ng-template mat-tab-label>
+      <div>
+        <img class="site-icons-tab m-2" src="../assets/images/dockstore/tool.svg" />
+        <b>Tools</b>
+      </div>
+    </ng-template>
+    <div class="mat-tab-content">
+      <div *ngIf="toolTagCloudData">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+          <span fxFlex="65%">
+            <p>A <b>Tool</b> uses a single container and performs a single action or step that is outlined by a descriptor</p>
+          </span>
+          <div class="tag-cloud-dropdown">
+            <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div>
+                  <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
+                  <span class="m-2"><b>Popular Keywords</b></span>
+                </div>
+                <i [class]="(showToolTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
+              </div>
+            </button>
+            <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async" data-cy="tagCloud">
+              <angular-tag-cloud
+                [data]="toolTagCloudData"
+                [width]="options.width"
+                [height]="options.height"
+                [overflow]="options.overflow"
+                (clicked)="tagClicked($event)"
+              >
+              </angular-tag-cloud>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-search-tool-table></app-search-tool-table>
     </div>
   </mat-tab>
 </mat-tab-group>

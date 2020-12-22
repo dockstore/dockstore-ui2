@@ -19,7 +19,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
 import { SearchResponse } from 'elasticsearch';
 import { forkJoin, Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -61,6 +61,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   public aNDNoSplitFilterText$: Observable<string>;
   public oRFilterText$: Observable<string>;
   public nOTFilterText$: Observable<string>;
+  public activeToolTab$: Observable<number>;
+  public selectedIndex$: Observable<any>;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
@@ -128,6 +130,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
+    this.activeToolTab$ = this.searchQuery.activeToolTab$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -156,9 +159,11 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.toSaveSearch$.next(false);
       }
     });
-    this.searchQuery.savedTabIndex$.pipe().subscribe((tab: number) => {
-      this.onTabChange();
-    });
+    this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
+      map((activeToolTab) => {
+        return { active: activeToolTab };
+      })
+    );
     this.searchQuery.searchText$
       .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchText: string) => {
@@ -179,6 +184,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.facetAutocompleteTerms$ = this.searchQuery.facetAutoCompleteTerms$;
     this.hasFacetAutoCompleteTerms$ = this.searchQuery.hasFacetAutoCompleteTerms$;
+  }
+
+  saveTabIndex(tab) {
+    this.searchService.saveCurrentTab(tab.index);
+    this.onTabChange();
   }
 
   /**
@@ -360,9 +370,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   updateQuery() {
     let tabIndex;
     if (this.searchQuery.getValue().currentTabIndex === 0) {
-      tabIndex = 'tools';
-    } else {
       tabIndex = 'workflows';
+    } else {
+      tabIndex = 'tools';
     }
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
@@ -519,7 +529,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!this.searchTerm && this.filters.size === 0) {
       this.updateQuery();
     } else {
-      console.log('here');
       this.resetFilters();
     }
   }

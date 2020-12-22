@@ -59,8 +59,8 @@ export class SearchQuery extends Query<SearchState> {
    *
    * @memberof SearchResultsComponent
    */
-  private readonly TOOLS_TAB_INDEX = 0;
-  private readonly WORKFLOWS_TAB_INDEX = 1;
+  private readonly WORKFLOWS_TAB_INDEX = 0;
+  private readonly TOOLS_TAB_INDEX = 1;
   setTabActive(tools: Array<DockstoreTool>, workflows: Array<Workflow>): number {
     if (!tools || !workflows) {
       return this.TOOLS_TAB_INDEX;
@@ -76,7 +76,7 @@ export class SearchQuery extends Query<SearchState> {
     } else if (workflows.length > 0 && tools.length > 0) {
       return this.getValue().currentTabIndex;
     } else {
-      return this.TOOLS_TAB_INDEX;
+      return this.WORKFLOWS_TAB_INDEX;
     }
   }
 

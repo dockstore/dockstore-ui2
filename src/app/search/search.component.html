@@ -18,6 +18,33 @@
   <mat-icon>search</mat-icon>
   Search
 </app-header>
+<mat-tab-group
+  class="homeComponent no-pagination"
+  animationDuration="0ms"
+  mat-align-tabs="center"
+  [selectedIndex]="(selectedIndex$ | async).active"
+  (selectedTabChange)="saveTabIndex($event)"
+>
+  <mat-tab class="browserWorkflowsTab" data-cy="workflows-tab">
+    <ng-template mat-tab-label>
+      <div>
+        <img class="site-icons-tab" src="../assets/images/dockstore/workflow.svg" />
+        <b>Workflows</b>
+      </div>
+    </ng-template>
+    <div class="mat-tab-content"></div>
+  </mat-tab>
+  <mat-tab class="browserToolsTab" data-cy="tools-tab">
+    <ng-template mat-tab-label>
+      <div>
+        <img class="site-icons-tab" src="../assets/images/dockstore/tool.svg" />
+        <b>Tools</b>
+      </div>
+    </ng-template>
+    <div class="mat-tab-content"></div>
+  </mat-tab>
+</mat-tab-group>
+
 <div class="container search-container">
   <div class="row">
     <div class="col-md-3">
@@ -246,7 +273,6 @@
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
           </p>
         </mat-card>
-        <app-search-results></app-search-results>
       </div>
     </div>
   </div>
