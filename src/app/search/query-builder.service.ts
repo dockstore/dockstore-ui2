@@ -49,11 +49,13 @@ export class QueryBuilderService {
     searchTerm: boolean,
     bucketStubs: any,
     filters: any,
-    sortModeMap: any
+    sortModeMap: any,
+    index: 'workflows' | 'tools'
   ): string {
     const count = this.getNumberOfFilters(filters);
     let sidebarBody = bodybuilder().size(query_size);
     sidebarBody = this.excludeContent(sidebarBody);
+    sidebarBody = sidebarBody.query('match', '_index', index);
     sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
     sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, sortModeMap);
     const builtSideBarBody = sidebarBody.build();
@@ -98,10 +100,12 @@ export class QueryBuilderService {
     values: string,
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
-    filters: any
+    filters: any,
+    index: 'tools' | 'workflows'
   ): string {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
+    tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters);
     const builtTableBody = tableBody.build();

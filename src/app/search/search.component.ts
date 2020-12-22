@@ -156,6 +156,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.toSaveSearch$.next(false);
       }
     });
+    this.searchQuery.savedTabIndex$.pipe().subscribe((tab: number) => {
+      this.onTabChange();
+    });
     this.searchQuery.searchText$
       .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchText: string) => {
@@ -273,7 +276,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   setupOrderBuckets() {
     this.entryOrder.forEach((value, key) => {
-      if (value.Items.size > 0 || value.SelectedItems.size > 0) {
+      if ((value.Items.size > 0 || value.SelectedItems.size > 0) && key !== '_index') {
+        // skip the Entry Type bucket, which is only aggregated for filtering results between tabs
         this.orderedBuckets.set(key, value);
       }
     });
@@ -354,6 +358,12 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // Called when any change to the search is made to update the results
   updateQuery() {
+    let tabIndex;
+    if (this.searchQuery.getValue().currentTabIndex === 0) {
+      tabIndex = 'tools';
+    } else {
+      tabIndex = 'workflows';
+    }
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -366,33 +376,27 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.bucketStubs,
       this.filters,
-      this.sortModeMap
+      this.sortModeMap,
+      tabIndex
     );
-    if (!values && this.filters.size === 0) {
-      const toolsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'tools');
-      const workflowsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'workflows');
-      this.resetEntryOrder();
-      this.updateSideBar(sideBarQuery);
-      this.updateResultsTableSeparately(toolsQuery, workflowsQuery);
-    } else {
-      const tableQuery = this.queryBuilderService.getResultQuery(
-        this.query_size_full,
-        values,
-        advancedSearchObject,
-        this.searchTerm,
-        this.filters
-      );
-      this.resetEntryOrder();
-      this.updateSideBar(sideBarQuery);
-      this.updateResultsTable(tableQuery);
-    }
+    const tableQuery = this.queryBuilderService.getResultQuery(
+      this.query_size_full,
+      values,
+      advancedSearchObject,
+      this.searchTerm,
+      this.filters,
+      tabIndex
+    );
+    this.resetEntryOrder();
+    this.updateSideBar(sideBarQuery);
+    this.updateResultsTable(tableQuery);
   }
 
-  updateSideBar(value: string) {
+  updateSideBar(workflowsQuery: string) {
     ELASTIC_SEARCH_CLIENT.search({
       index: 'tools',
       type: 'entry',
-      body: value,
+      body: workflowsQuery,
     })
       .then((hits) => {
         this.setupAllBuckets(hits);
@@ -511,6 +515,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.updatePermalink();
   }
 
+  onTabChange() {
+    if (!this.searchTerm && this.filters.size === 0) {
+      this.updateQuery();
+    } else {
+      console.log('here');
+      this.resetFilters();
+    }
+  }
+
   searchSuggestTerm() {
     this.searchService.searchSuggestTerm();
   }
@@ -524,6 +537,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       const checked = this.checkboxMap.get(category).get(categoryValue);
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
+      // console.log(category, categoryValue, this.filters);
     }
     this.facetSearchText = '';
     this.updatePermalink();
