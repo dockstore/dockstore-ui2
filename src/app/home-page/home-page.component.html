@@ -1,4 +1,4 @@
-<ng-container *ngIf="user$ | async; then loggedInHomePage; else loggedOutHomePage"></ng-container>
+<ng-container *ngIf="(user$ | async) === null; then loggedOutHomePage; else loggedInHomePage"></ng-container>
 
 <ngx-json-ld [json]="orgSchema"></ngx-json-ld>
 <ngx-json-ld [json]="websiteSchema"></ngx-json-ld>
