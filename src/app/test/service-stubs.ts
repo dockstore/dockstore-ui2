@@ -133,6 +133,12 @@ export class GA4GHStubService {
   }
 }
 
+export class ExtendedGA4GHStubService {
+  toolsIndexSearch(): Observable<any> {
+    return observableOf('');
+  }
+}
+
 export class GA4GHV20StubService {}
 
 export class SearchStubService {

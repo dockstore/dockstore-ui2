@@ -15,14 +15,13 @@
  */
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-/* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TagCloudModule } from 'angular-tag-cloud-module';
-import { QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
+import { ExtendedGA4GHStubService, QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
 import { QueryBuilderService } from './../query-builder.service';
 
 import { RouterTestingModule } from '@angular/router/testing';
+import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchService } from '../state/search.service';
 import { SearchResultsComponent } from './search-results.component';
 
@@ -39,6 +38,7 @@ describe('SearchResultsComponent', () => {
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+          { provide: ExtendedGA4GHService, useClass: ExtendedGA4GHStubService },
         ],
       }).compileComponents();
     })

@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
-import { ExtendedGA4GHService } from 'app/shared/swagger';
+import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Base } from '../../shared/base';
