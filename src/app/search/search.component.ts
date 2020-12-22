@@ -17,6 +17,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
+import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -25,7 +26,6 @@ import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/mod
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
 import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.query';
-import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
@@ -123,7 +123,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     public searchService: SearchService,
     private searchQuery: SearchQuery,
     private advancedSearchQuery: AdvancedSearchQuery,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private extendedGA4GHService: ExtendedGA4GHService
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
@@ -389,16 +390,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   updateSideBar(value: string) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: value,
-    })
-      .then((hits) => {
+    this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
+      (hits: any) => {
         this.setupAllBuckets(hits);
         this.setupOrderBuckets();
-      })
-      .catch((error) => console.log(error));
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   /**
@@ -408,12 +408,8 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @memberof SearchComponent
    */
   updateResultsTable(value: string) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: value,
-    })
-      .then((hits) => {
+    this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
+      (hits: any) => {
         this.hits = hits.hits.hits;
         const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
         const searchText = this.searchQuery.getValue().searchText;
@@ -424,8 +420,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         if (this.searchTerm && this.hits.length === 0) {
           this.searchService.suggestSearchTerm(searchText);
         }
-      })
-      .catch((error) => console.log(error));
+      },
+      (error) => console.log(error)
+    );
   }
 
   /**
@@ -438,18 +435,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @memberof SearchComponent
    */
   updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
-    const tools = ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: toolsQuery,
-    }).catch((error) => console.log(error));
-    const workflows = ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: workflowsQuery,
-    }).catch((error) => console.log(error));
-
-    forkJoin([tools, workflows]).subscribe((results: Array<any>) => {
+    const toolsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(toolsQuery);
+    const workflowsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(workflowsQuery);
+    forkJoin([toolsObservable, workflowsObservable]).subscribe((results: Array<any>) => {
       const toolHits = results[0].hits.hits;
       const workflowHits = results[1].hits.hits;
       this.hits = toolHits.concat(workflowHits);
@@ -481,29 +469,29 @@ export class SearchComponent implements OnInit, OnDestroy {
   onKey(searchText: string) {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = searchText + '.*';
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: {
-        size: 0,
-        aggs: {
-          autocomplete: {
-            terms: {
-              field: 'description',
-              size: 4,
-              order: {
-                _count: 'desc',
-              },
-              include: pattern,
+    const body = {
+      size: 0,
+      aggs: {
+        autocomplete: {
+          terms: {
+            field: 'description',
+            size: 4,
+            order: {
+              _count: 'desc',
             },
+            include: pattern,
           },
         },
       },
-    })
-      .then((hits) => {
+    };
+    this.extendedGA4GHService.toolsIndexSearch(JSON.stringify(body)).subscribe(
+      (hits) => {
         this.searchService.setAutoCompleteTerms(hits);
-      })
-      .catch((error) => console.log(error));
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     this.searchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
