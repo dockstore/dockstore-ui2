@@ -392,12 +392,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   updateSideBar(value: string) {
     this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
       (hits: any) => {
-        if (hits) {
-          this.setupAllBuckets(hits);
-          this.setupOrderBuckets();
-        } else {
-          console.error('No hits returned');
-        }
+        this.setupAllBuckets(hits);
+        this.setupOrderBuckets();
       },
       (error) => {
         console.log(error);
@@ -442,15 +438,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     const toolsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(toolsQuery);
     const workflowsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(workflowsQuery);
     forkJoin([toolsObservable, workflowsObservable]).subscribe((results: Array<any>) => {
-      if (results[0] && results[1]) {
-        const toolHits = results[0].hits.hits;
-        const workflowHits = results[1].hits.hits;
-        this.hits = toolHits.concat(workflowHits);
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
-        this.searchService.setHits(filteredHits[0], filteredHits[1]);
-      } else {
-        console.error('No hits returned');
-      }
+      const toolHits = results[0].hits.hits;
+      const workflowHits = results[1].hits.hits;
+      this.hits = toolHits.concat(workflowHits);
+      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+      this.searchService.setHits(filteredHits[0], filteredHits[1]);
     });
   }
 
