@@ -15,7 +15,7 @@
  */
 
 import { Location } from '@angular/common';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SponsorsComponent } from './sponsors.component';
 
@@ -23,13 +23,15 @@ describe('SponsorsComponent', () => {
   let component: SponsorsComponent;
   let fixture: ComponentFixture<SponsorsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SponsorsComponent],
-      providers: [Location],
-      imports: [RouterTestingModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SponsorsComponent],
+        providers: [Location],
+        imports: [RouterTestingModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SponsorsComponent);

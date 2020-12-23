@@ -1,6 +1,5 @@
 /* tslint:disable:no-unused-variable */
 
-import { async, TestBed } from '@angular/core/testing';
 import { CommitUrlPipe } from './commit-url.pipe';
 
 describe('Pipe: CommitUrle', () => {

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,25 +18,27 @@ describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
   let fixture: ComponentFixture<SidebarAccordionComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SidebarAccordionComponent, RefreshToolOrganizationComponent, SelectTabPipe],
-      imports: [
-        MatTabsModule,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatExpansionModule,
-        MatListModule,
-        MatTooltipModule,
-        RouterTestingModule,
-      ],
-      providers: [
-        { provide: RegisterToolService, useClass: RegisterToolStubService },
-        { provide: ContainerService, useClass: ContainerStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SidebarAccordionComponent, RefreshToolOrganizationComponent, SelectTabPipe],
+        imports: [
+          MatTabsModule,
+          MatToolbarModule,
+          MatIconModule,
+          MatButtonModule,
+          MatExpansionModule,
+          MatListModule,
+          MatTooltipModule,
+          RouterTestingModule,
+        ],
+        providers: [
+          { provide: RegisterToolService, useClass: RegisterToolStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarAccordionComponent);

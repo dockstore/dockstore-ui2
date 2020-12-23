@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MatCardModule } from '@angular/material/card';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
@@ -23,13 +23,15 @@ describe('LaunchCheckerWorkflowComponent', () => {
   let component: LaunchCheckerWorkflowComponent;
   let fixture: ComponentFixture<LaunchCheckerWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [LaunchCheckerWorkflowComponent],
-      providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
-      imports: [MatCardModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LaunchCheckerWorkflowComponent],
+        providers: [{ provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService }],
+        imports: [MatCardModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LaunchCheckerWorkflowComponent);

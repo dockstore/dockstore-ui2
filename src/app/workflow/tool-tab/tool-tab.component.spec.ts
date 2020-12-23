@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { RefreshAlertModule } from '../../shared/alert/alert.module';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
@@ -26,16 +26,18 @@ describe('ToolTabComponent', () => {
   let component: ToolTabComponent;
   let fixture: ComponentFixture<ToolTabComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ToolTabComponent],
-      imports: [FormsModule, CustomMaterialModule, RefreshAlertModule],
-      providers: [
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: WorkflowsService, useClass: WorkflowsStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ToolTabComponent],
+        imports: [FormsModule, CustomMaterialModule, RefreshAlertModule],
+        providers: [
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolTabComponent);

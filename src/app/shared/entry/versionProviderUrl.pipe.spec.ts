@@ -1,6 +1,3 @@
-/* tslint:disable:no-unused-variable */
-
-import { async, TestBed } from '@angular/core/testing';
 import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 
 describe('Pipe: VersionProviderUrle', () => {

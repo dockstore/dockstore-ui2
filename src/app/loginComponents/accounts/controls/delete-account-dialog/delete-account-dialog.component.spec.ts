@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -13,23 +13,25 @@ describe('DeleteAccountDialogComponent', () => {
   let component: DeleteAccountDialogComponent;
   let fixture: ComponentFixture<DeleteAccountDialogComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DeleteAccountDialogComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [CustomMaterialModule, ReactiveFormsModule],
-      providers: [
-        { provide: LogoutService, useClass: LogoutStubService },
-        { provide: UsersService, useClass: UsersStubService },
-        {
-          provide: MatDialogRef,
-          useValue: {
-            close: (dialogResult: any) => {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DeleteAccountDialogComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [CustomMaterialModule, ReactiveFormsModule],
+        providers: [
+          { provide: LogoutService, useClass: LogoutStubService },
+          { provide: UsersService, useClass: UsersStubService },
+          {
+            provide: MatDialogRef,
+            useValue: {
+              close: (dialogResult: any) => {},
+            },
           },
-        },
-      ],
-    }).compileComponents();
-  }));
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DeleteAccountDialogComponent);

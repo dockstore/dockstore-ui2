@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -35,19 +35,21 @@ describe('StarringComponent', () => {
   let component: StarringComponent;
   let fixture: ComponentFixture<StarringComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [StarringComponent],
-      imports: [MatIconModule, MatSnackBarModule],
-      providers: [
-        { provide: StarringService, useClass: StarringStubService },
-        { provide: TrackLoginService, useClass: TrackLoginStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: StarentryService, useClass: StarEntryStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [StarringComponent],
+        imports: [MatIconModule, MatSnackBarModule],
+        providers: [
+          { provide: StarringService, useClass: StarringStubService },
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
+          { provide: StarentryService, useClass: StarEntryStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StarringComponent);

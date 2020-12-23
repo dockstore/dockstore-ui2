@@ -12,6 +12,5 @@ import {
   imports: [CommonModule, CustomMaterialModule, RouterModule, FlexLayoutModule],
   declarations: [RequestsComponent, OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent],
   exports: [RequestsComponent, OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent],
-  entryComponents: [OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent],
 })
 export class RequestsModule {}

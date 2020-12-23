@@ -15,7 +15,7 @@
  */
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
@@ -29,19 +29,21 @@ describe('ParamfilesWorkflowComponent', () => {
   let component: ParamfilesWorkflowComponent;
   let fixture: ComponentFixture<ParamfilesWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ParamfilesWorkflowComponent],
-      imports: [HttpClientModule, MatSnackBarModule],
-      providers: [
-        { provide: ParamfilesService, useClass: ParamFilesStubService },
-        { provide: FileService, useClass: FileStubService },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ParamfilesWorkflowComponent],
+        imports: [HttpClientModule, MatSnackBarModule],
+        providers: [
+          { provide: ParamfilesService, useClass: ParamFilesStubService },
+          { provide: FileService, useClass: FileStubService },
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ParamfilesWorkflowComponent);

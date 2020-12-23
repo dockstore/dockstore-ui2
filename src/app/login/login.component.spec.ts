@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { RegisterService } from '../register/register.service';
@@ -28,19 +28,21 @@ describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [LoginComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule],
-      providers: [
-        { provide: TrackLoginService, useClass: TrackLoginStubService },
-        { provide: UserService, useClass: UserStubService },
-        { provide: LoginService, useClass: LoginStubService },
-        { provide: RegisterService, useClass: LoginStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LoginComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [RouterTestingModule],
+        providers: [
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
+          { provide: UserService, useClass: UserStubService },
+          { provide: LoginService, useClass: LoginStubService },
+          { provide: RegisterService, useClass: LoginStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);

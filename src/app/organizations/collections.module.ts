@@ -28,6 +28,5 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],
-  entryComponents: [CollectionRemoveEntryDialogComponent],
 })
 export class CollectionsModule {}

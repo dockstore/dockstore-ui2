@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,27 +19,29 @@ describe('ChangeUsernameComponent', () => {
   let component: ChangeUsernameComponent;
   let fixture: ComponentFixture<ChangeUsernameComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ChangeUsernameComponent],
-      imports: [
-        ReactiveFormsModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTooltipModule,
-        MatProgressSpinnerModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatCardModule,
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        { provide: UserService, useClass: UserStubService },
-        { provide: UsersService, useClass: UsersStubService },
-        { provide: RefreshService, useClass: RefreshStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ChangeUsernameComponent],
+        imports: [
+          ReactiveFormsModule,
+          MatIconModule,
+          MatButtonModule,
+          MatTooltipModule,
+          MatProgressSpinnerModule,
+          MatInputModule,
+          MatFormFieldModule,
+          MatCardModule,
+          BrowserAnimationsModule,
+        ],
+        providers: [
+          { provide: UserService, useClass: UserStubService },
+          { provide: UsersService, useClass: UsersStubService },
+          { provide: RefreshService, useClass: RefreshStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChangeUsernameComponent);

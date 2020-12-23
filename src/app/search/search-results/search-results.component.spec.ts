@@ -16,7 +16,7 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 import { QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
@@ -30,17 +30,19 @@ describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
   let fixture: ComponentFixture<SearchResultsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchResultsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [TagCloudModule, RouterTestingModule],
-      providers: [
-        { provide: SearchService, useClass: SearchStubService },
-        { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchResultsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [TagCloudModule, RouterTestingModule],
+        providers: [
+          { provide: SearchService, useClass: SearchStubService },
+          { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchResultsComponent);
