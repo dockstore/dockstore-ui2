@@ -55,7 +55,8 @@ export class SearchQuery extends Query<SearchState> {
 
   /**
    * This handles the which tab (tool or workflow) is set to active based on hits.
-   * The default is tool if both have hits
+   * The default is workflows when the page is loaded
+   * After that, stay on whatever tab is selected
    *
    * @memberof SearchResultsComponent
    */
@@ -73,10 +74,8 @@ export class SearchQuery extends Query<SearchState> {
       return this.TOOLS_TAB_INDEX;
     } else if (workflows.length === 0 && param === 'workflow') {
       return this.WORKFLOWS_TAB_INDEX;
-    } else if (workflows.length > 0 && tools.length > 0) {
-      return this.getValue().currentTabIndex;
     } else {
-      return this.WORKFLOWS_TAB_INDEX;
+      return this.getValue().currentTabIndex;
     }
   }
 

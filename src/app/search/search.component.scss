@@ -14,7 +14,11 @@
  *    limitations under the License.
  */
 
-.tab-label {
+mat-tab-group.homeComponent {
+  margin: 0.5rem 5rem;
+}
+
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
   color: #151c3d;
 }
 

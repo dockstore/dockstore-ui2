@@ -27,19 +27,15 @@
 >
   <mat-tab class="browserWorkflowsTab" data-cy="workflows-tab">
     <ng-template mat-tab-label>
-      <div>
-        <img class="site-icons-tab" src="../assets/images/dockstore/workflow.svg" />
-        <b>Workflows</b>
-      </div>
+      <img class="site-icons-tab m-2" src="../assets/images/dockstore/workflow.svg" />
+      <b>Workflows</b>
     </ng-template>
     <div class="mat-tab-content"></div>
   </mat-tab>
   <mat-tab class="browserToolsTab" data-cy="tools-tab">
     <ng-template mat-tab-label>
-      <div>
-        <img class="site-icons-tab" src="../assets/images/dockstore/tool.svg" />
-        <b>Tools</b>
-      </div>
+      <img class="site-icons-tab m-2" src="../assets/images/dockstore/tool.svg" />
+      <b>Tools</b>
     </ng-template>
     <div class="mat-tab-content"></div>
   </mat-tab>
@@ -273,6 +269,7 @@
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
           </p>
         </mat-card>
+        <app-search-results></app-search-results>
       </div>
     </div>
   </div>
