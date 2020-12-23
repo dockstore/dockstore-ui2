@@ -30,7 +30,6 @@ import { SearchComponent } from './search.component';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
 
-
 @Component({
   selector: 'app-search-results',
   template: '',
@@ -59,7 +58,7 @@ describe('SearchComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-        imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule, BrowserAnimationsModule],
+        imports: [BrowserAnimationsModule, CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
