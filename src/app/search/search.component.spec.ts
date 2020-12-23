@@ -15,6 +15,7 @@
  */
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MdePopoverModule } from '@material-extended/mde';
@@ -28,6 +29,7 @@ import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
+
 
 @Component({
   selector: 'app-search-results',
@@ -56,7 +58,7 @@ describe('SearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-      imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
+      imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule, BrowserAnimationsModule],
       providers: [
         { provide: SearchService, useClass: SearchStubService },
         { provide: QueryBuilderService, useClass: QueryBuilderStubService },
@@ -71,6 +73,7 @@ describe('SearchComponent', () => {
     component = fixture.componentInstance;
     searchQuery = TestBed.inject(SearchQuery) as jasmine.SpyObj<SearchQuery>;
     searchQuery.searchText$ = of('');
+    searchQuery.activeToolTab$ = of(0);
     searchQuery.getValue.and.returnValue({
       shortUrl: null,
       workflowhit: null,
