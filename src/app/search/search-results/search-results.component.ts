@@ -29,7 +29,6 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent extends Base implements OnInit {
-  public activeToolTab$: Observable<number>;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
@@ -45,7 +44,6 @@ export class SearchResultsComponent extends Base implements OnInit {
 
   constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
     super();
-    this.activeToolTab$ = this.searchQuery.activeToolTab$;
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
     this.noToolHits$ = this.searchQuery.noToolHits$;
     this.showToolTagCloud$ = this.searchQuery.showToolTagCloud$;
@@ -55,11 +53,6 @@ export class SearchResultsComponent extends Base implements OnInit {
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
-    this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
-      map((activeToolTab) => {
-        return { active: activeToolTab };
-      })
-    );
   }
 
   createTagCloud(type: string) {
@@ -114,10 +107,6 @@ export class SearchResultsComponent extends Base implements OnInit {
   // Tells the search service to tell the search filters to save its data
   saveSearchFilter() {
     this.searchService.toSaveSearch$.next(true);
-  }
-
-  saveTabIndex(tab) {
-    this.searchService.saveCurrentTab(tab.index);
   }
 
   getTabIndex() {
