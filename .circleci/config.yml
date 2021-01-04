@@ -224,7 +224,7 @@ jobs:
           command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
       - run:
           name: Build
-          command: bash -i -c 'npm run build'
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
 
 workflows:
   version: 2
