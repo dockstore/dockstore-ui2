@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { EntryType } from 'app/shared/enum/entry-type';
-import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
 import { Dockstore } from './../shared/dockstore.model';
@@ -130,6 +130,12 @@ export class GA4GHStubService {
       api_version: '3',
     };
     return observableOf(metadata);
+  }
+}
+
+export class ExtendedGA4GHStubService {
+  toolsIndexSearch(): Observable<any> {
+    return EMPTY;
   }
 }
 

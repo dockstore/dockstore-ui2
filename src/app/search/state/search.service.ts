@@ -24,9 +24,9 @@ import { BehaviorSubject } from 'rxjs';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
+import { ExtendedGA4GHService } from '../../shared/openapi/api/extendedGA4GH.service';
 import { ProviderService } from '../../shared/provider.service';
 import { DockstoreTool, Workflow } from '../../shared/swagger';
-import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 
@@ -75,7 +75,8 @@ export class SearchService {
     private searchQuery: SearchQuery,
     private providerService: ProviderService,
     private router: Router,
-    private imageProviderService: ImageProviderService
+    private imageProviderService: ImageProviderService,
+    private extendedGA4GHService: ExtendedGA4GHService
   ) {}
 
   /**
@@ -235,29 +236,27 @@ export class SearchService {
   }
 
   suggestSearchTerm(searchText: string) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: {
-        suggest: {
-          do_you_mean: {
-            text: searchText,
-            term: {
-              field: 'description',
-            },
+    const body = {
+      suggest: {
+        do_you_mean: {
+          prefix: searchText,
+          term: {
+            field: 'description',
           },
         },
       },
-    })
-      .then((hits) => {
+    };
+    this.extendedGA4GHService.toolsIndexSearch(JSON.stringify(body)).subscribe(
+      (hits) => {
         const suggestions: Array<any> = hits['suggest']['do_you_mean'][0].options;
         if (suggestions.length > 0) {
           this.setSuggestTerm(suggestions[0].text);
         } else {
           this.setSuggestTerm('');
         }
-      })
-      .catch((error) => console.log(error));
+      },
+      (error) => console.log(error)
+    );
   }
 
   setSuggestTerm(suggestTerm: string) {

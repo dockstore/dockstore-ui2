@@ -15,10 +15,10 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Base } from '../../shared/base';
-import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
@@ -43,7 +43,12 @@ export class SearchResultsComponent extends Base implements OnInit {
     overflow: false,
   };
 
-  constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
+  constructor(
+    private searchService: SearchService,
+    private queryBuilderService: QueryBuilderService,
+    private searchQuery: SearchQuery,
+    private extendedGA4GHService: ExtendedGA4GHService
+  ) {
     super();
     this.activeToolTab$ = this.searchQuery.activeToolTab$;
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
@@ -71,13 +76,9 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.searchService.setShowTagCloud(type);
   }
 
-  createToolTagCloud(toolQuery, type) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: toolQuery,
-    })
-      .then((hits) => {
+  createToolTagCloud(toolQuery: string, type) {
+    this.extendedGA4GHService.toolsIndexSearch(toolQuery).subscribe(
+      (hits: any) => {
         let weight = 10;
         let count = 0;
         if (hits && hits.aggregations && hits.aggregations.tagcloud) {
@@ -107,8 +108,11 @@ export class SearchResultsComponent extends Base implements OnInit {
             count--;
           });
         }
-      })
-      .catch((error) => console.log(error));
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   // Tells the search service to tell the search filters to save its data
