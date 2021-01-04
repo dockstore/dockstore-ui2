@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/dockstore/dockstore-ui2.svg?branch=develop)](https://travis-ci.org/dockstore/dockstore-ui2)
 [![codecov](https://codecov.io/gh/dockstore/dockstore-ui2/branch/develop/graph/badge.svg)](https://codecov.io/gh/dockstore/dockstore-ui2)
 
-Please file issues for this repository and Web site at [the ga4gh/dockstore repository](https://github.com/ga4gh/dockstore/issues)!
+Please file issues for this repository and Web site at [the dockstore/dockstore repository](https://github.com/dockstore/dockstore/issues)!
 
 Table of Contents
 =================
