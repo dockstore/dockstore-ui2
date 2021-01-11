@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ace } from './../grammars/custom-grammars.js';
 
@@ -40,7 +41,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
   @Output() contentChange = new EventEmitter<any>();
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     // The purpose of the aceId is to deal with cases where multiple editors exist on a page
     this.aceId = 'aceEditor_' + ACE_EDITOR_INSTANCE++;
   }
@@ -57,13 +58,32 @@ export class CodeEditorComponent implements AfterViewInit {
       fontSize: '12pt',
     });
 
-    this.editor.getSession().on('change', () => {
-      this.contentChange.emit(this.editor.getValue());
-    });
-
     // Set content if possible
+    const setContent = (content: string): void => {
+      this.editorContent = content;
+      if (this.editorContent) {
+        this.editor.setValue(this.editorContent);
+      }
+
+      this.editor.getSession().on('change', () => {
+        this.contentChange.emit(this.editor.getValue());
+      });
+
+      this.editor.focus();
+    };
+
+    const httpOptions = {responseType: 'text'};
+
     if (this.editorContent) {
-      this.editor.setValue(this.editorContent, -1);
+      setContent(this.editorContent);
+    } else if (this.mode === 'cwl') {
+      this.httpClient.get('assets/text/helloworld.cwl', httpOptions).subscribe(setContent);
+    } else if (this.mode === 'wdl') {
+      this.httpClient.get('assets/text/helloworld.wdl', httpOptions).subscribe(setContent);
+    } else if (this.mode === 'nfl') {
+      this.httpClient.get('assets/text/helloworld.nf', httpOptions).subscribe(setContent);
+    } else {
+      setContent(this.editorContent);
     }
   }
 
