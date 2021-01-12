@@ -72,8 +72,9 @@ export class CodeEditorComponent implements AfterViewInit {
       this.editor.focus();
     };
 
-    const httpOptions = {responseType: 'text'};
+    const httpOptions: Object = { responseType: 'text' };
 
+    // Load helloworld files by default when editing empty CWL/WDL/NF files
     if (this.editorContent) {
       setContent(this.editorContent);
     } else if (this.mode === 'cwl') {
