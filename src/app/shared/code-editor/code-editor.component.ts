@@ -59,10 +59,10 @@ export class CodeEditorComponent implements AfterViewInit {
     });
 
     // Set content if possible
-    const setContent = (content: string): void => {
+    const setContent = (content: string, cursorPos = 0): void => {
       this.editorContent = content;
       if (this.editorContent) {
-        this.editor.setValue(this.editorContent);
+        this.editor.setValue(this.editorContent, cursorPos);
       }
 
       this.editor.getSession().on('change', () => {
@@ -76,7 +76,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
     // Load helloworld files by default when editing empty CWL/WDL/NF files
     if (this.editorContent) {
-      setContent(this.editorContent);
+      setContent(this.editorContent, -1);
     } else if (this.mode === 'cwl') {
       this.httpClient.get('assets/text/helloworld.cwl', httpOptions).subscribe(setContent);
     } else if (this.mode === 'wdl') {
