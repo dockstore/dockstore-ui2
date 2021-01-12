@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CodeEditorComponent } from './code-editor.component';
@@ -10,6 +11,7 @@ describe('CodeEditorComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [CodeEditorComponent],
+        imports: [HttpClientModule],
       }).compileComponents();
     })
   );
