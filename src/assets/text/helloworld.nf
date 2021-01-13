@@ -1,31 +1,16 @@
 #!/usr/bin/env nextflow
 
-// tutorial.nf example from https://www.nextflow.io/docs/latest/getstarted.html
+bamFile = file(params.bam_input)
 
-params.str = 'Hello world!'
-
-process splitLetters {
-
-    output:
-    file 'chunk_*' into letters
-
-    """
-    printf '${params.str}' | split -b 6 - chunk_
-    """
-}
-
-
-process convertToUpper {
-
+process bamstats {
     input:
-    file x from letters.flatten()
+    file bam_input from bamFile
+    val mem_gb from params.mem_gb
 
     output:
-    stdout result
+    file 'bamstats_report.zip'
 
     """
-    cat $x | tr '[a-z]' '[A-Z]'
+    bash /usr/local/bin/bamstats $mem_gb $bam_input
     """
 }
-
-result.view { it.trim() }

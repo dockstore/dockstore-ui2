@@ -16,6 +16,7 @@ export class CodeEditorComponent implements AfterViewInit {
   editorFilepath: string;
   aceId: string;
   readOnly = true;
+  @Input() entryType: string;
   @Input() set editing(value: string) {
     if (value !== undefined) {
       this.toggleReadOnly(!value);
@@ -72,17 +73,27 @@ export class CodeEditorComponent implements AfterViewInit {
       this.editor.focus();
     };
 
-    const httpOptions: Object = { responseType: 'text' };
+    let sampleCodeUrl = '';
 
     // Load helloworld files by default when editing empty CWL/WDL/NF files
-    if (this.editorContent) {
-      setContent(this.editorContent, -1);
-    } else if (this.mode === 'cwl') {
-      this.httpClient.get('assets/text/helloworld.cwl', httpOptions).subscribe(setContent);
-    } else if (this.mode === 'wdl') {
-      this.httpClient.get('assets/text/helloworld.wdl', httpOptions).subscribe(setContent);
-    } else if (this.mode === 'nfl') {
-      this.httpClient.get('assets/text/helloworld.nf', httpOptions).subscribe(setContent);
+    if (!this.editorContent) {
+      if (this.mode === 'cwl') {
+        if (this.entryType === 'tool') {
+          sampleCodeUrl = 'assets/text/helloworld-tool.cwl';
+        } else if (this.entryType === 'workflow') {
+          sampleCodeUrl = 'assets/text/helloworld-workflow.cwl';
+        }
+      } else if (this.mode === 'wdl') {
+        sampleCodeUrl = 'assets/text/helloworld.wdl';
+      } else if (this.mode === 'nfl') {
+        sampleCodeUrl = 'assets/text/helloworld.nf';
+      } else if (this.editorFilepath === '/nextflow.config') {
+        sampleCodeUrl = 'assets/text/nextflow.config';
+      }
+    }
+    if (sampleCodeUrl) {
+      const httpOptions: Object = { responseType: 'text' };
+      this.httpClient.get(sampleCodeUrl, httpOptions).subscribe(setContent);
     } else {
       setContent(this.editorContent);
     }

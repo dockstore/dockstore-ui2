@@ -71,7 +71,12 @@
           </span>
         </mat-toolbar-row>
       </mat-toolbar>
-      <app-code-editor [(content)]="sourcefile.content" [filepath]="sourcefile.path" [editing]="editing"></app-code-editor>
+      <app-code-editor
+        [(content)]="sourcefile.content"
+        [filepath]="sourcefile.path"
+        [editing]="editing"
+        [entryType]="entryType"
+      ></app-code-editor>
     </div>
   </div>
   <button
