@@ -16,7 +16,7 @@ export class CodeEditorComponent implements AfterViewInit {
   editorFilepath: string;
   aceId: string;
   readOnly = true;
-  @Input() entryType: string;
+  @Input() entryType: 'tool' | 'workflow';
   @Input() set editing(value: string) {
     if (value !== undefined) {
       this.toggleReadOnly(!value);
@@ -62,13 +62,14 @@ export class CodeEditorComponent implements AfterViewInit {
     // Set content if possible
     const setContent = (content: string, cursorPos = 0): void => {
       this.editorContent = content;
-      if (this.editorContent) {
-        this.editor.setValue(this.editorContent, cursorPos);
-      }
 
       this.editor.getSession().on('change', () => {
         this.contentChange.emit(this.editor.getValue());
       });
+
+      if (this.editorContent) {
+        this.editor.setValue(this.editorContent, cursorPos);
+      }
 
       this.editor.focus();
     };
@@ -95,7 +96,7 @@ export class CodeEditorComponent implements AfterViewInit {
       const httpOptions: Object = { responseType: 'text' };
       this.httpClient.get(sampleCodeUrl, httpOptions).subscribe(setContent);
     } else {
-      setContent(this.editorContent);
+      setContent(this.editorContent, -1);
     }
   }
 
