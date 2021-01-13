@@ -59,6 +59,7 @@ describe('Dockstore hosted workflows', () => {
       goToTab('Files');
       cy.get('#editFilesButton').click();
       cy.contains('Add File').click();
+      cy.wait(100);
       cy.window().then(function (window: any) {
         cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
