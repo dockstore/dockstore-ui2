@@ -76,18 +76,18 @@ export class CodeEditorComponent implements AfterViewInit {
 
     let sampleCodeUrl = '';
 
-    // Load helloworld files by default when editing empty CWL/WDL/Nextflow files
+    // Load sample code by default when editing empty CWL/WDL/Nextflow files
     if (!this.editorContent) {
       if (this.mode === 'cwl') {
         if (this.entryType === 'tool') {
-          sampleCodeUrl = 'assets/text/helloworld-tool.cwl';
+          sampleCodeUrl = 'assets/text/sample-tool.cwl';
         } else if (this.entryType === 'workflow') {
-          sampleCodeUrl = 'assets/text/helloworld-workflow.cwl';
+          sampleCodeUrl = 'assets/text/sample-workflow.cwl';
         }
       } else if (this.mode === 'wdl') {
-        sampleCodeUrl = 'assets/text/helloworld.wdl';
+        sampleCodeUrl = 'assets/text/sample.wdl';
       } else if (this.mode === 'nfl') {
-        sampleCodeUrl = 'assets/text/helloworld.nf';
+        sampleCodeUrl = 'assets/text/sample.nf';
       } else if (this.editorFilepath === '/nextflow.config') {
         sampleCodeUrl = 'assets/text/nextflow.config';
       }
