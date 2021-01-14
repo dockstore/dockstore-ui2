@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ace } from './../grammars/custom-grammars.js';
 
@@ -15,6 +16,7 @@ export class CodeEditorComponent implements AfterViewInit {
   editorFilepath: string;
   aceId: string;
   readOnly = true;
+  @Input() entryType: 'tool' | 'workflow';
   @Input() set editing(value: string) {
     if (value !== undefined) {
       this.toggleReadOnly(!value);
@@ -40,7 +42,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
   @Output() contentChange = new EventEmitter<any>();
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     // The purpose of the aceId is to deal with cases where multiple editors exist on a page
     this.aceId = 'aceEditor_' + ACE_EDITOR_INSTANCE++;
   }
@@ -57,13 +59,44 @@ export class CodeEditorComponent implements AfterViewInit {
       fontSize: '12pt',
     });
 
-    this.editor.getSession().on('change', () => {
-      this.contentChange.emit(this.editor.getValue());
-    });
-
     // Set content if possible
-    if (this.editorContent) {
-      this.editor.setValue(this.editorContent, -1);
+    const setContent = (content: string, cursorPos = 0): void => {
+      this.editorContent = content;
+
+      this.editor.getSession().on('change', () => {
+        this.contentChange.emit(this.editor.getValue());
+      });
+
+      if (this.editorContent) {
+        this.editor.setValue(this.editorContent, cursorPos);
+      }
+
+      this.editor.focus();
+    };
+
+    let sampleCodeUrl = '';
+
+    // Load sample code by default when editing empty CWL/WDL/Nextflow files
+    if (!this.editorContent) {
+      if (this.mode === 'cwl') {
+        if (this.entryType === 'tool') {
+          sampleCodeUrl = 'assets/text/sample-tool.cwl';
+        } else if (this.entryType === 'workflow') {
+          sampleCodeUrl = 'assets/text/sample-workflow.cwl';
+        }
+      } else if (this.mode === 'wdl') {
+        sampleCodeUrl = 'assets/text/sample.wdl';
+      } else if (this.mode === 'nfl') {
+        sampleCodeUrl = 'assets/text/sample.nf';
+      } else if (this.editorFilepath === '/nextflow.config') {
+        sampleCodeUrl = 'assets/text/nextflow.config';
+      }
+    }
+    if (sampleCodeUrl) {
+      const httpOptions: Object = { responseType: 'text' };
+      this.httpClient.get(sampleCodeUrl, httpOptions).subscribe(setContent);
+    } else {
+      setContent(this.editorContent, -1);
     }
   }
 
