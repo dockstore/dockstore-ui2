@@ -76,7 +76,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
     let sampleCodeUrl = '';
 
-    // Load helloworld files by default when editing empty CWL/WDL/NF files
+    // Load helloworld files by default when editing empty CWL/WDL/Nextflow files
     if (!this.editorContent) {
       if (this.mode === 'cwl') {
         if (this.entryType === 'tool') {
