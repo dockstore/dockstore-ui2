@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
+// import { ClipboardModule } from 'ngx-clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { WorkflowService } from '../state/workflow.service';
 import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-download.pipe';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';

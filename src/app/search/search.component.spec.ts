@@ -13,13 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+// import { ClipboardModule } from 'ngx-clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MdePopoverModule } from '@material-extended/mde';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { of } from 'rxjs';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { ProviderService } from '../shared/provider.service';

@@ -13,12 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+// import { ClipboardModule } from 'ngx-clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { EntryFileTabComponent } from 'app/entry/entry-file-tab/entry-file-tab.component';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { MarkdownModule } from 'ngx-markdown';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
