@@ -171,8 +171,7 @@
                   class="btn btn-default"
                   [ngClass]="{ 'btn-copy': isCopied }"
                   type="button"
-                  ngxClipboard
-                  [cbContent]="shortUrl$ | async"
+                  [cdkCopyToClipboard]="shortUrl$ | async"
                   (cbOnSuccess)="isCopied = true"
                 >
                   <mat-icon>file_copy</mat-icon>

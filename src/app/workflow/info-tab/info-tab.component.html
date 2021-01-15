@@ -54,7 +54,7 @@
         <li *ngIf="isPublic && isValidVersion">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
           <a [href]="trsLink"> #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }} </a>
-          <button mat-icon-button color="secondary" ngxClipboard matTooltip="Copy TRS ID" [cbContent]="displayTextForButton">
+          <button mat-icon-button color="secondary" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton">
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
           </button>
         </li>

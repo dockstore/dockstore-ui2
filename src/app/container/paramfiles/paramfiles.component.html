@@ -82,7 +82,7 @@
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>
-              <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="content">
+              <button mat-icon-button color="secondary" type="button" [cdkCopyToClipboard]="content">
                 <mat-icon>file_copy</mat-icon>
               </button>
             </div>
