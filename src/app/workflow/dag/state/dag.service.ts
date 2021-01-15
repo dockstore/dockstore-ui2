@@ -29,7 +29,7 @@ import { DagStore } from './dag.store';
 
 @Injectable()
 export class DagService {
-  readonly style = [
+  readonly style: cytoscape.Stylesheet[] = [
     {
       selector: 'node',
       style: {
@@ -110,7 +110,7 @@ export class DagService {
     {
       selector: 'edge.notselected',
       style: {
-        opacity: '0.4',
+        opacity: 0.4,
       },
     },
   ];
