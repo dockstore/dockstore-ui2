@@ -1,4 +1,3 @@
-// import { ClipboardModule } from 'ngx-clipboard';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';

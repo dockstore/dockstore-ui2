@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-// import { ClipboardModule } from 'ngx-clipboard';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
