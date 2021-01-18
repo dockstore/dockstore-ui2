@@ -26,8 +26,6 @@ import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 
-import { ClipboardModule } from '@angular/cdk/clipboard';
-
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 
 @Component({
