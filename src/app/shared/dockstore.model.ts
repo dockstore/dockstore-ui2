@@ -26,8 +26,8 @@ export class Dockstore {
   // All the following properties will get updated by configuration.service.ts. You do not
   // need to update them here. Set them in your dockstore.yml for the web service.
 
-  // Discourse URL MUST end with a slash (/)
-  static DISCOURSE_URL = 'http://localhost/';
+  // Discourse URL should not end with a slash (/) but will work fine with one
+  static DISCOURSE_URL = 'http://localhost';
 
   static DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
   static DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
