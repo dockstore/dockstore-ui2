@@ -110,7 +110,7 @@ export class DagService {
     {
       selector: 'edge.notselected',
       style: {
-        opacity: 0.4,
+        opacity: '0.4',
       },
     },
   ];
