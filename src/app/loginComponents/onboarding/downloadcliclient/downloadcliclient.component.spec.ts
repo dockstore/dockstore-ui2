@@ -1,6 +1,6 @@
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AuthService } from 'ng2-ui-auth';
-import { ClipboardModule } from 'ngx-clipboard';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatButtonModule } from '@angular/material/button';

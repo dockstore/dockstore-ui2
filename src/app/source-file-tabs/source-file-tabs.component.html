@@ -41,7 +41,7 @@
               >
                 <mat-icon>save_alt</mat-icon>
               </a>
-              <button mat-icon-button color="secondary" type="button" ngxClipboard [cbContent]="currentFile.content" matTooltip="Copy File">
+              <button mat-icon-button color="secondary" type="button" [cdkCopyToClipboard]="currentFile.content" matTooltip="Copy File">
                 <mat-icon>file_copy</mat-icon>
               </button>
             </span>

@@ -51,7 +51,7 @@
             <mat-icon matTooltip="Verified">done</mat-icon>
           </a>
         </span>
-        <span *ngIf="tool?.private_access" class="private-lock" matTooltip="Private">
+        <span *ngIf="tool?.private_access" class="private-lock">
           <app-private-icon></app-private-icon>
         </span>
         {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
@@ -288,8 +288,7 @@
                 class="btn btn-default form-sm-button-material"
                 [ngClass]="{ 'btn-copy': toolCopyBtn === 'docker_pull_command' }"
                 type="button"
-                ngxClipboard
-                [cbContent]="dockerPullCmd"
+                [cdkCopyToClipboard]="dockerPullCmd"
                 (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')"
               >
                 <mat-icon>file_copy</mat-icon>

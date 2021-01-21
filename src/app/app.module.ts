@@ -13,7 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +25,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
-import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';

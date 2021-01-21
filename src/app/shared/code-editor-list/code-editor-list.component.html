@@ -62,8 +62,7 @@
                 type="button"
                 class="mr-2"
                 matTooltip="Copy to clipboard"
-                ngxClipboard
-                [cbContent]="sourcefile?.content"
+                [cdkCopyToClipboard]="sourcefile?.content"
               >
                 <mat-icon>file_copy</mat-icon>
               </button>
