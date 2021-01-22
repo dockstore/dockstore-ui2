@@ -25,7 +25,7 @@
       <input matInput placeholder="Search tools" #input />
     </mat-form-field>
   </div>
-  <mat-table class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
+  <mat-table class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="asc" matSortDisableClear>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool">
@@ -43,13 +43,6 @@
         <a *ngIf="getVerified(tool)" [href]="verifiedLink">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="stars">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool"
-        >{{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
-        <mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">

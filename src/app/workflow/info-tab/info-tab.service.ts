@@ -102,12 +102,10 @@ export class InfoTabService {
   /**
    * PUT for an entry only allows the updating of selected properties.
    * Sending back only the ones relevant.
-   * Additionally, the webservice does not appear to understand starredUsers which causes an error.
    * Ideally this implementation should be similar to the tool counterpart
    */
   private getPartialEntryForUpdate(entry: Workflow): Workflow {
     entry.workflowVersions = [];
-    entry.starredUsers = [];
     entry.users = [];
     return entry;
   }

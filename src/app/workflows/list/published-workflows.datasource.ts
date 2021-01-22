@@ -44,6 +44,9 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
   loadEntries(entryType: EntryType, filter: string, sortDirection: 'asc' | 'desc', pageIndex: number, pageSize: number, sortCol: string) {
     this.loadingSubject$.next(true);
     const isService = entryType === EntryType.Service;
+    if (sortCol === 'name') {
+      sortCol = 'repository';
+    }
     this.workflowsService
       .allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, isService, 'response')
       .pipe(
