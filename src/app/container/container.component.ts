@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService, BioschemaTool } from '../shared/bioschema.service';
@@ -62,7 +62,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public requestAccessHREF: string;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
-  public tool: DockstoreTool;
+  public tool: ExtendedDockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
@@ -197,8 +197,14 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     if (tool) {
       this.tool = tool;
       this.initTool();
+      this.extendedTool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
+        if (Object.keys(data).length !== 0 ) {
+          this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool, data.imgProvider);
+        } else {
+          this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool, 'not-valid');
+        }
+      });
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
-      this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.updateVerifiedPlatforms(this.tool.id);
     }

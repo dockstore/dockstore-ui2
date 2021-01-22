@@ -19,10 +19,10 @@ export class EmailService {
    * Composes the href for the Request Access email
    * @param tool The tool to request access for
    */
-  public composeRequestAccessEmail(tool: ExtendedDockstoreTool): string {
+  public composeRequestAccessEmail(tool: ExtendedDockstoreTool, imgProvider: string): string {
     const email = this.getRequestEmailMailTo(tool.tool_maintainer_email, tool.email);
     const subject = this.getRequestEmailSubject(tool.tool_path);
-    const body = this.getRequestEmailBody(tool.tool_path, tool.imgProvider);
+    const body = this.getRequestEmailBody(tool.tool_path, imgProvider, tool.users ? tool.users[0].username : 'not-logged-in');
     return this.composeEmail(email, subject, body);
   }
 
@@ -60,8 +60,8 @@ export class EmailService {
    * @param path The path of the tool whose access is being requested
    * @param toolRegistry The tool registry (Quay.io, GitLab, etc) of the tool whose access is being requested
    */
-  private getRequestEmailBody(path: string, toolRegistry: string): string {
-    return encodeURI(`I would like to request access to your Docker image ${path}. ` + `My user name on ${toolRegistry} is <username>`);
+  private getRequestEmailBody(path: string, toolRegistry: string, username: string): string {
+    return encodeURI(`I would like to request access to your Docker image ${path}. ` + `My user name on ${toolRegistry} is ${username}`);
   }
 
   // Contact Author button methods
