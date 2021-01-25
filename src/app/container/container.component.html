@@ -80,7 +80,7 @@
       ></app-starring>
       <h3 class="pull-right">
         <div class="mr-2" *ngIf="publicPage && tool?.private_access">
-          <a mat-raised-button color="accent" [href]="requestAccessHREF"> Request Access </a>
+          <a mat-raised-button color="accent" [href]="requestAccessHREF$ | async"> Request Access </a>
         </div>
         <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
           <a mat-raised-button color="primary" [href]="contactAuthorHREF"> Contact Author </a>

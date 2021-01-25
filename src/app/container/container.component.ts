@@ -59,7 +59,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   containerEditData: any;
   thisisValid = true;
   ModeEnum = DockstoreTool.ModeEnum;
-  public requestAccessHREF: string;
+  public requestAccessHREF$: Observable<string>;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
   public tool: ExtendedDockstoreTool;
@@ -197,13 +197,14 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     if (tool) {
       this.tool = tool;
       this.initTool();
-      this.extendedTool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(data => {
+      this.requestAccessHREF$ = this.extendedTool$.pipe(map(data => {
         if (Object.keys(data).length !== 0 ) {
-          this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool, data.imgProvider);
+          console.log(data);
+          return this.emailService.composeRequestAccessEmail(this.tool, data.imgProvider);
         } else {
-          this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool, 'not-valid');
+          return this.emailService.composeRequestAccessEmail(this.tool, 'undefined');
         }
-      });
+      }));
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.updateVerifiedPlatforms(this.tool.id);
