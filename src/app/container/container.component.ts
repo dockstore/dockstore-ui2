@@ -42,6 +42,7 @@ import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { ToolQuery } from '../shared/tool/tool.query';
 import { ToolService } from '../shared/tool/tool.service';
 import { TrackLoginService } from '../shared/track-login.service';
+import { UserQuery } from '../shared/user/user.query';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 import { ContainersService } from './../shared/swagger/api/containers.service';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
@@ -72,6 +73,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public schema: BioschemaTool;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
+  public username: string;
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -97,7 +99,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     public dialog: MatDialog,
     private toolService: ToolService,
     alertService: AlertService,
-    entryService: EntriesService
+    entryService: EntriesService,
+    private userQuery: UserQuery
   ) {
     super(
       trackLoginService,
@@ -197,8 +200,11 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     if (tool) {
       this.tool = tool;
       this.initTool();
+      this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((userData) => {
+        this.username = userData.username ? userData.username : 'not-logged-in';
+      });
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
-      this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
+      this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool, this.username);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.updateVerifiedPlatforms(this.tool.id);
     }
