@@ -75,7 +75,6 @@ export class RegisterOrganizationService {
     if (data.mode === TagEditorMode.Add) {
       this.createOrganization(form.value);
     } else {
-      console.log(form.value);
       this.updateOrganization(
         form.value,
         data.organization.id,
