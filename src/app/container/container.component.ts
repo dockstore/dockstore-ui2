@@ -62,7 +62,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public requestAccessHREF$: Observable<string>;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
-  public tool: ExtendedDockstoreTool;
+  public tool: DockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
@@ -198,12 +198,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.tool = tool;
       this.initTool();
       this.requestAccessHREF$ = this.extendedTool$.pipe(
-        map((data) => {
-          if (data.imgProvider) {
-            return this.emailService.composeRequestAccessEmail(this.tool, data.imgProvider);
-          } else {
-            return this.emailService.composeRequestAccessEmail(this.tool, 'undefined');
-          }
+        map((extendedTool) => {
+          return this.emailService.composeRequestAccessEmail(extendedTool);
         })
       );
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);

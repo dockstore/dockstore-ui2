@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DockstoreTool } from '../shared/swagger/model/dockstoreTool';
 import { DockstoreService } from './../shared/dockstore.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 
@@ -29,7 +30,11 @@ export class EmailService {
    * @param toolRegistry The tool registry (Quay.io, GitLab, etc) of the tool whose access is being requested
    */
   private static getRequestEmailBody(path: string, toolRegistry: string): string {
-    return encodeURI(`I would like to request access to your Docker image ${path}. ` + `My user name on ${toolRegistry} is <username>`);
+    const imgProvider: string = toolRegistry ? toolRegistry : 'undefined';
+    return encodeURI(
+      `I would like to request access to your Docker image ${path}. ` +
+        `My user name on ${imgProvider} is <put your Docker Hub/quay.io username here>`
+    );
   }
 
   // Contact Author button methods
@@ -62,10 +67,10 @@ export class EmailService {
    * Composes the href for the Request Access email
    * @param tool The tool to request access for
    */
-  public composeRequestAccessEmail(tool: ExtendedDockstoreTool, imgProvider: string): string {
+  public composeRequestAccessEmail(tool: ExtendedDockstoreTool): string {
     const email = this.getRequestEmailMailTo(tool.tool_maintainer_email, tool.email);
     const subject = EmailService.getRequestEmailSubject(tool.tool_path);
-    const body = EmailService.getRequestEmailBody(tool.tool_path, imgProvider);
+    const body = EmailService.getRequestEmailBody(tool.tool_path, tool.imgProvider);
     return EmailService.composeEmail(email, subject, body);
   }
 
@@ -73,7 +78,7 @@ export class EmailService {
    * Composes the href for the Contact Author email
    * @param tool The tool to contact author for
    */
-  public composeContactAuthorEmail(tool: ExtendedDockstoreTool): string {
+  public composeContactAuthorEmail(tool: DockstoreTool): string {
     const email = EmailService.getInquiryEmailMailTo(tool.email);
     const subject = EmailService.getInquiryEmailSubject(tool.tool_path);
     const body = EmailService.getInquiryEmailBody();
