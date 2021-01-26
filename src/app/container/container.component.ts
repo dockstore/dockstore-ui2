@@ -197,14 +197,15 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     if (tool) {
       this.tool = tool;
       this.initTool();
-      this.requestAccessHREF$ = this.extendedTool$.pipe(map(data => {
-        if (Object.keys(data).length !== 0 ) {
-          console.log(data);
-          return this.emailService.composeRequestAccessEmail(this.tool, data.imgProvider);
-        } else {
-          return this.emailService.composeRequestAccessEmail(this.tool, 'undefined');
-        }
-      }));
+      this.requestAccessHREF$ = this.extendedTool$.pipe(
+        map((data) => {
+          if (data.imgProvider) {
+            return this.emailService.composeRequestAccessEmail(this.tool, data.imgProvider);
+          } else {
+            return this.emailService.composeRequestAccessEmail(this.tool, 'undefined');
+          }
+        })
+      );
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.updateVerifiedPlatforms(this.tool.id);

@@ -25,7 +25,7 @@ describe('Service: Email', () => {
 
   it('should get the right request access email href', inject([EmailService], (service: EmailService) => {
     expect(service).toBeTruthy();
-    expect(service.composeRequestAccessEmail(tool)).toEqual(
+    expect(service.composeRequestAccessEmail(tool, tool.imgProvider)).toEqual(
       'mailto:fake@maintainer.email.ca' +
         '?subject=Dockstore%20Request%20for%20Access%20to%20registry.hub.docker.com/postgres/postgres' +
         '&body=I%20would%20like%20to%20request%20access%20to%20your%20Docker%20image%20registry.hub.docker.com/postgres/postgres.%20' +
