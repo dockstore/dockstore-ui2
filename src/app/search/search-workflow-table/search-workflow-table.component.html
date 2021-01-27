@@ -42,7 +42,7 @@
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Project Links</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-md *matCellDef="let entry" zzclass="align-languages">
+      <mat-cell fxShow fxHide.lt-md *matCellDef="let entry" class="align-languages">
         <a [href]="entry?.providerUrl" *ngIf="entry?.providerUrl">
           <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"></fa-icon>
         </a>
