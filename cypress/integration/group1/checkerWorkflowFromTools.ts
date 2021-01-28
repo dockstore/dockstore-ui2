@@ -99,6 +99,7 @@ describe('Checker workflow test from my-tools', () => {
       // cy.url().should('eq','/my-tools/quay.io/A2/b3')
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click();
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish');
+      cy.wait(5000);
       cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
       // In the checker workflow right now
