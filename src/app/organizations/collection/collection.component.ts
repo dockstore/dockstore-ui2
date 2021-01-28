@@ -25,7 +25,8 @@ export class CollectionRemoveEntryDialogComponent {
       this.data.organizationId,
       this.data.collectionId,
       this.data.entryId,
-      this.data.entryName
+      this.data.entryName,
+      this.data.versionName
     );
   }
 }
@@ -36,6 +37,7 @@ export interface DialogData {
   entryName: string;
   entryId: number;
   organizationId: number;
+  versionName: string | null;
 }
 
 @Component({
@@ -88,16 +90,25 @@ export class CollectionComponent implements OnInit {
    * @param collectionName
    * @param entryName
    */
-  openRemoveEntryDialog(organizationId: number, collectionId: number, entryId: number, collectionName: string, entryName: string) {
+  openRemoveEntryDialog(
+    organizationId: number,
+    collectionId: number,
+    entryId: number,
+    collectionName: string,
+    entryName: string,
+    versionName: string | null
+  ) {
+    const data: DialogData = {
+      collectionName: collectionName,
+      entryName: entryName,
+      collectionId: collectionId,
+      entryId: entryId,
+      organizationId: organizationId,
+      versionName: versionName,
+    };
     this.dialog.open(CollectionRemoveEntryDialogComponent, {
       width: '500px',
-      data: {
-        collectionName: collectionName,
-        entryName: entryName,
-        collectionId: collectionId,
-        entryId: entryId,
-        organizationId: organizationId,
-      },
+      data: data,
     });
   }
 

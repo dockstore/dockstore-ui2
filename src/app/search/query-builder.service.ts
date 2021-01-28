@@ -125,21 +125,18 @@ export class QueryBuilderService {
   appendFilter(body: any, aggKey: string, filters: any): any {
     filters.forEach((value: Set<string>, key: string) => {
       value.forEach((insideFilter) => {
-        if (aggKey === key && !this.searchService.exclusiveFilters.includes(key)) {
+        const isExclusiveFilter = this.searchService.exclusiveFilters.includes(key);
+        if (aggKey === key && !isExclusiveFilter) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
           body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
         } else {
+          // value refers to the buckets selected
           if (value.size > 1) {
             body = body.orFilter('term', key, insideFilter);
           } else {
-            // A non-verified tool means a tool that isn't verified and a workflow that is not verified a
-            if (key === 'verified' && insideFilter === '0') {
-              body = body.notFilter('term', 'verified', '1');
-              body = body.notFilter('term', 'workflowVersions.verified', '1');
-            } else if (key === 'verified' && insideFilter === '1') {
-              body = body.orFilter('term', 'verified', insideFilter);
-              body = body.orFilter('term', 'workflowVersions.verified', insideFilter);
+            if (isExclusiveFilter) {
+              body = body.filter('term', key, this.convertIntStringToBoolString(insideFilter));
             } else {
               body = body.filter('term', key, insideFilter);
             }
@@ -148,6 +145,21 @@ export class QueryBuilderService {
       });
     });
     return body;
+  }
+
+  /**
+   * Aside from the _index key, the exclusive facets have buckets that are boolean values (verified, not verified, etc)
+   * For some reason, ES is expecting booleans to be 'true' and 'false' but is returning values as 0 to 1
+   * @param bucketValue Bucket value of an exclusive facet
+   */
+  private convertIntStringToBoolString(bucketValue: string) {
+    if (bucketValue === '0') {
+      return 'false';
+    }
+    if (bucketValue === '1') {
+      return 'true';
+    }
+    return bucketValue;
   }
 
   /**

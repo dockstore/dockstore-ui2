@@ -53,7 +53,7 @@ describe('RegisterOrganizationService', () => {
   it('should handle error when updating an organization', () => {
     organizationsServiceSpy.updateOrganization.and.returnValue(throwError('test 404 error'));
 
-    registerOrganizationService.updateOrganization(exampleFormState, 1, 'potato');
+    registerOrganizationService.updateOrganization(exampleFormState, 1, 'potato', 'fakeOrgName', 'fakeOrgDisplayName');
 
     // Expected createOrganization call to be called (even though it will fail)
     expect(organizationsServiceSpy.updateOrganization.calls.count()).toBe(1, 'spy method was called once');
@@ -65,7 +65,7 @@ describe('RegisterOrganizationService', () => {
     organizationsServiceSpy.updateOrganization.and.returnValue(observableOf(null));
     matDialogSpy.closeAll.and.returnValue(null);
 
-    registerOrganizationService.updateOrganization(exampleFormState, 1, 'potato');
+    registerOrganizationService.updateOrganization(exampleFormState, 1, 'potato', 'fakeOrgName', 'fakeOrgDisplayName');
 
     // Expected createOrganization call to be called (and it will succeed)
     expect(organizationsServiceSpy.updateOrganization.calls.count()).toBe(1, 'spy method was called once');
