@@ -80,16 +80,16 @@ export class CodeEditorComponent implements AfterViewInit {
     if (!this.editorContent) {
       if (this.mode === 'cwl') {
         if (this.entryType === 'tool') {
-          sampleCodeUrl = 'assets/text/sample-tool.cwl';
+          sampleCodeUrl = '../assets/text/sample-tool.cwl';
         } else if (this.entryType === 'workflow') {
-          sampleCodeUrl = 'assets/text/sample-workflow.cwl';
+          sampleCodeUrl = '../assets/text/sample-workflow.cwl';
         }
       } else if (this.mode === 'wdl') {
-        sampleCodeUrl = 'assets/text/sample.wdl';
+        sampleCodeUrl = '../assets/text/sample.wdl';
       } else if (this.mode === 'nfl') {
-        sampleCodeUrl = 'assets/text/sample.nf';
+        sampleCodeUrl = '../assets/text/sample.nf';
       } else if (this.editorFilepath === '/nextflow.config') {
-        sampleCodeUrl = 'assets/text/nextflow.config';
+        sampleCodeUrl = '../assets/text/nextflow.config';
       }
     }
     if (sampleCodeUrl) {
