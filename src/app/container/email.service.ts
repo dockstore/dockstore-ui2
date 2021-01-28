@@ -32,8 +32,7 @@ export class EmailService {
   private static getRequestEmailBody(path: string, toolRegistry: string): string {
     const imgProvider: string = toolRegistry ? toolRegistry : 'undefined';
     return encodeURI(
-      `I would like to request access to your Docker image ${path}. ` +
-        `My user name on ${imgProvider} is <put your Docker Hub/quay.io username here>`
+      `I would like to request access to your Docker image ${path}. ` + `My username on ${imgProvider} is <input username here>`
     );
   }
 
