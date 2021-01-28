@@ -75,7 +75,13 @@ export class RegisterOrganizationService {
     if (data.mode === TagEditorMode.Add) {
       this.createOrganization(form.value);
     } else {
-      this.updateOrganization(form.value, data.organization.id, data.organization.description);
+      this.updateOrganization(
+        form.value,
+        data.organization.id,
+        data.organization.description,
+        data.organization.name,
+        data.organization.displayName
+      );
     }
   }
 
@@ -191,19 +197,23 @@ export class RegisterOrganizationService {
   updateOrganization(
     organizationFormState: FormsState['registerOrganization'],
     organizationId: number,
-    organizationDescription: string
+    organizationDescription: string,
+    organizationName: string,
+    organizationDisplayName: string
   ): void {
     if (!organizationFormState) {
       console.error('Something has gone terribly wrong with the form manager');
       return;
     } else {
       const editedOrganization: Organization = {
-        name: organizationFormState.name,
-        displayName: organizationFormState.displayName,
+        // When name and display name are disabled in the form. The FormsState no longer has those properties.
+        name: organizationFormState.name ? organizationFormState.name : organizationName,
+        displayName: organizationFormState.displayName ? organizationFormState.displayName : organizationDisplayName,
         topic: organizationFormState.topic,
         link: organizationFormState.link,
         location: organizationFormState.location,
         email: organizationFormState.contactEmail,
+        // This is ignored by the webservice because the no one can modify the status with this endpoint
         status: Organization.StatusEnum.PENDING,
         avatarUrl: organizationFormState.avatarUrl || null,
         description: organizationDescription,
