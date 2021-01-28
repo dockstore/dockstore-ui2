@@ -113,6 +113,7 @@ describe('Checker workflow test from my-tools', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/my-tools/quay.io/A2/b3');
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish').click();
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish');
+      cy.wait(5000);
       cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
       // in the checker workflow right now
