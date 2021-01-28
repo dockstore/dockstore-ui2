@@ -29,7 +29,7 @@ describe('Service: Email', () => {
       'mailto:fake@maintainer.email.ca' +
         '?subject=Dockstore%20Request%20for%20Access%20to%20registry.hub.docker.com/postgres/postgres' +
         '&body=I%20would%20like%20to%20request%20access%20to%20your%20Docker%20image%20registry.hub.docker.com/postgres/postgres.%20' +
-        'My%20user%20name%20on%20Docker%20Hub%20is%20%3Cput%20your%20Docker%20Hub/quay.io%20username%20here%3E'
+        'My%20username%20on%20Docker%20Hub%20is%20%3Cinput%20username%20here%3E'
     );
   }));
 
