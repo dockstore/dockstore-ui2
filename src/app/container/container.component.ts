@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { ListContainersService } from '../containers/list/list.service';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService, BioschemaTool } from '../shared/bioschema.service';
@@ -59,7 +59,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   containerEditData: any;
   thisisValid = true;
   ModeEnum = DockstoreTool.ModeEnum;
-  public requestAccessHREF: string;
+  public requestAccessHREF$: Observable<string>;
   public contactAuthorHREF: string;
   public missingWarning: boolean;
   public tool: DockstoreTool;
@@ -197,8 +197,12 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     if (tool) {
       this.tool = tool;
       this.initTool();
+      this.requestAccessHREF$ = this.extendedTool$.pipe(
+        map((extendedTool) => {
+          return this.emailService.composeRequestAccessEmail(extendedTool);
+        })
+      );
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
-      this.requestAccessHREF = this.emailService.composeRequestAccessEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.updateVerifiedPlatforms(this.tool.id);
     }
