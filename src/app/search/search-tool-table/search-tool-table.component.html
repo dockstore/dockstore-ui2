@@ -51,7 +51,7 @@
     </ng-container>
     <ng-container matColumnDef="descriptorType" style="width: fit-content">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header fxFlex="15%">Format</mat-header-cell>
-      <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool" fxFlex="15%">
+      <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool" fxFlex="15%" class="align-languages">
         <div *ngFor="let language of tool?.descriptorType" class="m-1">
           <span class="nonclick-badge">
             {{ language ? (language.toString() | uppercase) : '' }}
