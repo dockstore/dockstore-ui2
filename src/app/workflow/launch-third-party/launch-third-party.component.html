@@ -95,6 +95,18 @@
               >NHLBI BioData Catalyst</a
             >
           </div>
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
+            <a
+              mat-raised-button
+              [matTooltip]="cavaticaTooltip$ | async"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="config.CAVATICA_IMPORT_URL + '?trs=' + trsUrl"
+              [disabled]="disableSevenBridgesPlatform$ | async"
+              color="primary"
+              >img src="../assets/images/thirdparty/cavatica.png" /> Cavatica
+            </a>
+          </div>
         </div>
       </div>
     </div>
