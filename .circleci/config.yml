@@ -249,9 +249,10 @@ workflows:
           filters:
             tags:
               only: /.*/
+          requires:
+            - lint_unit_test_coverage
           context:
             - dockerhub
-            - lint_unit_test_coverage
       - integration_test_1:
           filters:
             tags:
