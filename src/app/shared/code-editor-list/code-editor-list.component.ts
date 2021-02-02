@@ -93,4 +93,19 @@ export class CodeEditorListComponent {
     const descriptorType = this.descriptorType;
     return CodeEditorListService.showSourcefile(type, fileType, descriptorType);
   }
+
+  updateSourceFilePath(newPath: string, index: number) {
+    if (this.verifyFilePath(newPath)) {
+      this.sourcefiles[index].absolutePath = newPath;
+      if (newPath.includes('/')) {
+        this.sourcefiles[index].path = newPath.substring(newPath.lastIndexOf('/'));
+      } else {
+        this.sourcefiles[index].path = newPath;
+      }
+    }
+  }
+
+  verifyFilePath(path: string): boolean {
+    return  !(path.length < 1);
+  }
 }
