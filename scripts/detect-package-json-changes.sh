@@ -1,6 +1,6 @@
 #!/bin/bash
 
-license-checker  --excludePackages dockstore-ui2@2.3.0 --csv > CIRCLE-THIRD-PARTY-LICENSES.csv
+npx license-checker  --excludePackages dockstore-ui2@2.3.0 --csv > CIRCLE-THIRD-PARTY-LICENSES.csv
 licenseFileStatus="$(diff CIRCLE-THIRD-PARTY-LICENSES.csv THIRD-PARTY-LICENSES.csv)"
 
 if [ -n "$licenseFileStatus" ]
