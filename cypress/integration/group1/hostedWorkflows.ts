@@ -182,7 +182,7 @@ describe('Dockstore hosted workflows', () => {
         });
       });
 
-      cy.get('.editor-file-name').invoke('attr', 'value', '/A.cwl').should('have.attr', 'value', '/A.cwl');
+      cy.get('.editor-file-name').invoke('attr', 'value', '/A.cwl').trigger('input').should('have.attr', 'value', '/A.cwl');
 
       // add third file. This will have a default name, so we don't need to modify it.
       cy.contains('Add File').click();
