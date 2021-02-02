@@ -149,7 +149,7 @@ describe('Dockstore hosted workflows', () => {
   });
 
   describe('Should be able have multiple workflows (> 2) in a hosted workflow', () => {
-    it('Register the workflow', () => {
+    it('Add files to hosted workflow', () => {
       // Select the hosted workflow
       getWorkflow();
 
@@ -181,7 +181,7 @@ describe('Dockstore hosted workflows', () => {
           window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
         });
       });
-      cy.get('input[value]').invoke('attr', 'value', '/A.cwl').should('have.attr', 'value', '/A.cwl');
+      cy.get('.input').invoke('attr', 'value', '/A.cwl').should('have.attr', 'value', '/A.cwl');
 
       // add third file. This will have a default name, so we don't need to modify it.
       cy.contains('Add File').click();
