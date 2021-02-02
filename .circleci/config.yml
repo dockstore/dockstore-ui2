@@ -230,19 +230,12 @@ workflows:
               only: /.*/
           context:
             - dockerhub
-      - licenses_test:
-          filters:
-            tags:
-              only: /.*/
-          context:
-            - dockerhub
       - integration_test_1:
           filters:
             tags:
               only: /.*/
           requires:
             - lint_unit_test_coverage
-            - licenses_test
           context:
             - dockerhub
       - integration_test_2:
@@ -251,7 +244,6 @@ workflows:
               only: /.*/
           requires:
             - lint_unit_test_coverage
-            - licenses_test
           context:
             - dockerhub
       - integration_test_3:
@@ -260,7 +252,6 @@ workflows:
               only: /.*/
           requires:
             - lint_unit_test_coverage
-            - licenses_test
           context:
             - dockerhub
       # Upload builds for tags and branches to s3.
