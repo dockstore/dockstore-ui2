@@ -112,7 +112,7 @@ jobs:
       - run:
           name: License Test
           command: |
-            bash -i -c 'npm run license > CIRCLE-THIRD-PARTY-LICENSES.csv'
+            bash -i -c 'npm run circle-ci-license-test-file'
             bash scripts/detect-package-json-changes.sh
       - run:
           name: Unit Test
