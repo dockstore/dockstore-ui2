@@ -1,6 +1,5 @@
 #!/bin/bash
 
-diff CIRCLE-THIRD-PARTY-LICENSES.csv THIRD-PARTY-LICENSES.csv
 licenseFileStatus="$(diff CIRCLE-THIRD-PARTY-LICENSES.csv THIRD-PARTY-LICENSES.csv)"
 
 if [ -n "$licenseFileStatus" ]

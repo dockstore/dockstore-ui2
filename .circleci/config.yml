@@ -128,16 +128,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - checkout
       - install_container_dependencies
-      - run:
-          name: Install dependencies
-          #Only run 'npm ci' if node_modules was not restored from cache
-          command: |
-            if [ ! -d "./node_modules" ]
-            then
-              bash -i -c 'npm ci'
-            fi
+      - restore_cache:
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: License Test
           command: |
@@ -258,6 +251,7 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+            - lint_unit_test_coverage
       - integration_test_1:
           filters:
             tags:
