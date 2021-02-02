@@ -147,4 +147,58 @@ describe('Dockstore hosted workflows', () => {
       cy.contains('/Dockstore.wdl').should('be.visible');
     });
   });
+
+  describe('Should be able have multiple workflows (> 2) in a hosted workflow', () => {
+    it('Register the workflow', () => {
+      // Select the hosted workflow
+      getWorkflow();
+
+      // Check content of the info tab
+      cy.contains('Mode: HOSTED');
+
+      // Add a new version with 3 descriptors
+      goToTab('Files');
+      cy.get('#editFilesButton').click();
+
+      // add first file. This will be the primary descriptor, so we wont need to give it a custom name
+      cy.contains('Add File').click();
+      cy.wait(100);
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
+          const editors = doc.getElementsByClassName('ace_editor');
+          const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
+          window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
+        });
+      });
+
+      // add second file
+      cy.contains('Add File').click();
+      cy.wait(100);
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
+          const editors = doc.getElementsByClassName('ace_editor');
+          const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
+          window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
+        });
+      });
+      cy.get('input[value]').invoke('attr', 'value', '/A.cwl').should('have.attr', 'value', '/A.cwl');
+
+      // add third file. This will have a default name, so we don't need to modify it.
+      cy.contains('Add File').click();
+      cy.wait(100);
+      cy.window().then(function (window: any) {
+        cy.document().then((doc) => {
+          const editors = doc.getElementsByClassName('ace_editor');
+          const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
+          window.ace.edit(editors[2]).setValue(wdlDescriptorFile, -1);
+        });
+      });
+
+      // save as a new version
+      cy.get('#saveNewVersionButton').click();
+
+      // should have 3 descriptors.
+      cy.get('.app-code-editor').should('have.length', 3);
+    });
+  });
 });
