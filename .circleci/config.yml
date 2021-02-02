@@ -110,16 +110,16 @@ jobs:
           name: Install codecov
           command: bash -i -c 'npm i --no-save codecov'
       - run:
+          name: License Test
+          command: |
+            bash -i -c 'npm run license > CIRCLE-THIRD-PARTY-LICENSES.csv'
+            bash -i -c scripts/detect-package-json-changes.sh
+      - run:
           name: Unit Test
           command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless --source-map=false'
       - run:
           name: Codecov
           command: bash -i -c 'npx codecov'
-      - run:
-          name: License Test
-          command: |
-              npm run license > CIRCLE-THIRD-PARTY-LICENSES.csv
-              bash -i -c scripts/detect-package-json-changes.sh
       - persist_to_workspace:
           root: .
           paths:
