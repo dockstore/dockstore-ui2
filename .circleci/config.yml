@@ -115,29 +115,13 @@ jobs:
       - run:
           name: Codecov
           command: bash -i -c 'npx codecov'
+      - run:
+          name: License Test
+          command: bash scripts/detect-package-json-changes.sh
       - persist_to_workspace:
           root: .
           paths:
             - .
-  licenses_test:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/buildpack-deps:18.04-browsers
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - checkout
-      - install_container_dependencies
-      - run:
-          name: Install dependencies
-          #Only run 'npm ci' if node_modules was not restored from cache
-          command: |
-            if [ ! -d "./node_modules" ]
-            then
-              bash -i -c 'npm ci'
-            fi
-      - run: bash scripts/detect-package-json-changes.sh
   integration_test_1:
     executor: integration_test_exec
     working_directory: ~/repo
