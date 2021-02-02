@@ -113,7 +113,7 @@ jobs:
           name: License Test
           command: |
             bash -i -c 'npm run license > CIRCLE-THIRD-PARTY-LICENSES.csv'
-            bash -i -c scripts/detect-package-json-changes.sh
+            bash scripts/detect-package-json-changes.sh
       - run:
           name: Unit Test
           command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless --source-map=false'
