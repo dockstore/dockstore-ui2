@@ -131,6 +131,14 @@ jobs:
       - checkout
       - install_container_dependencies
       - run:
+          name: Install dependencies
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+            if [ ! -d "./node_modules" ]
+            then
+              bash -i -c 'npm ci'
+            fi
+      - run:
           name: License Test
           command: |
             bash -i -c 'npm run circle-ci-license-test-file'
