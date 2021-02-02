@@ -110,11 +110,6 @@ jobs:
           name: Install codecov
           command: bash -i -c 'npm i --no-save codecov'
       - run:
-          name: License Test
-          command: |
-            bash -i -c 'npm run circle-ci-license-test-file'
-            bash scripts/detect-package-json-changes.sh
-      - run:
           name: Unit Test
           command: bash -i -c 'npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless --source-map=false'
       - run:
@@ -124,6 +119,23 @@ jobs:
           root: .
           paths:
             - .
+
+  licenses_test:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - install_container_dependencies
+      - run:
+          name: License Test
+          command: |
+            bash -i -c 'npm run circle-ci-license-test-file'
+            bash scripts/detect-package-json-changes.sh
+
   integration_test_1:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -232,12 +244,19 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+      - licenses_test:
+          filters:
+            tags:
+              only: /.*/
+          context:
+            - dockerhub
       - integration_test_1:
           filters:
             tags:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
           context:
             - dockerhub
       - integration_test_2:
@@ -246,6 +265,7 @@ workflows:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
           context:
             - dockerhub
       - integration_test_3:
@@ -254,6 +274,7 @@ workflows:
               only: /.*/
           requires:
             - lint_unit_test_coverage
+            - licenses_test
           context:
             - dockerhub
       # Upload builds for tags and branches to s3.
