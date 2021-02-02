@@ -199,7 +199,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#saveNewVersionButton').click();
 
       // should have 3 descriptors.
-      cy.get('.app-code-editor').should('have.length', 3);
+      cy.get('app-code-editor').should('have.length', 3);
     });
   });
 });
