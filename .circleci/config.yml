@@ -117,7 +117,9 @@ jobs:
           command: bash -i -c 'npx codecov'
       - run:
           name: License Test
-          command: bash scripts/detect-package-json-changes.sh
+          command: |
+              npm run license > CIRCLE-THIRD-PARTY-LICENSES.csv
+              bash -i -c scripts/detect-package-json-changes.sh
       - persist_to_workspace:
           root: .
           paths:

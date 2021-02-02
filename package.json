@@ -13,7 +13,7 @@
     "prebuild.prod": "npm run prebuild",
     "build.prod": "npx ng build --progress false --prod --subresource-integrity",
     "build": "npx ng build --progress false --subresource-integrity",
-    "license": "license-checker  --excludePackages dockstore-ui2@2.3.0 --csv > THIRD-PARTY-LICENSES.csv",
+    "license": "license-checker  --excludePackages dockstore-ui2@2.3.0 --csv",
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
     "install-git-secrets": "./scripts/install-git-secrets.sh",
     "test": "npx ng test",
