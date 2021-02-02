@@ -94,18 +94,23 @@ export class CodeEditorListComponent {
     return CodeEditorListService.showSourcefile(type, fileType, descriptorType);
   }
 
+  /**
+   * Updates the absolute and relative paths for a sourcefile.
+   * @param newPath {string} the new path to the sourcefile
+   * @param index {number} index of a SourceFile object in the sourcefiles array
+   */
   updateSourceFilePath(newPath: string, index: number) {
     if (this.verifyFilePath(newPath)) {
       this.sourcefiles[index].absolutePath = newPath;
-      if (newPath.includes('/')) {
-        this.sourcefiles[index].path = newPath.substring(newPath.lastIndexOf('/'));
-      } else {
-        this.sourcefiles[index].path = newPath;
-      }
+      this.sourcefiles[index].path = newPath;
     }
   }
 
+  /**
+   * Determines if the newly specified path is valid.
+   * @param path {string} new suggested path to a sourcefile
+   */
   verifyFilePath(path: string): boolean {
-    return  !(path.length < 1);
+    return path.length > 0;
   }
 }
