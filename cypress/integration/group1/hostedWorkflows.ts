@@ -173,7 +173,6 @@ describe('Dockstore hosted workflows', () => {
 
       // add first file. This will be the primary descriptor, so we wont need to give it a custom name
       cy.contains('Add File').click();
-      cy.wait(100);
 
       // add second file
       cy.contains('Add File').click();
