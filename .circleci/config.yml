@@ -128,6 +128,7 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - checkout
       - install_container_dependencies
       - restore_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
