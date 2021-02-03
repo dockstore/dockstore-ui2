@@ -3,8 +3,7 @@
   "version": "2.3.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version": "1.10.1",
-    "ui_version": "2.3.0"
+    "webservice_version": "1.10.1"
   },
   "scripts": {
     "ng": "npx ng",
@@ -14,8 +13,8 @@
     "prebuild.prod": "npm run prebuild",
     "build.prod": "npx ng build --progress false --prod --subresource-integrity",
     "build": "npx ng build --progress false --subresource-integrity",
-    "license": "license-checker --excludePackages dockstore-ui2@$npm_package_config_ui_version --csv > THIRD-PARTY-LICENSES.csv",
-    "circle-ci-license-test-file": "license-checker --excludePackages dockstore-ui2@$npm_package_config_ui_version --csv > CIRCLE-THIRD-PARTY-LICENSES.csv",
+    "license": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > THIRD-PARTY-LICENSES.csv",
+    "circle-ci-license-test-file": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > CIRCLE-THIRD-PARTY-LICENSES.csv",
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
     "install-git-secrets": "./scripts/install-git-secrets.sh",
     "test": "npx ng test",
