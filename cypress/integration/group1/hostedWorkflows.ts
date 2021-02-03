@@ -17,8 +17,9 @@ import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import { clickFirstActionsButton, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore hosted workflows', () => {
-  setTokenUserViewPort();
   resetDB();
+  setTokenUserViewPort();
+
   beforeEach(() => {
     cy.visit('/my-workflows');
 
