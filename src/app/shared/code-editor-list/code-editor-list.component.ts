@@ -100,17 +100,7 @@ export class CodeEditorListComponent {
    * @param index {number} index of a SourceFile object in the sourcefiles array
    */
   updateSourceFilePath(newPath: string, index: number) {
-    if (this.verifyFilePath(newPath)) {
-      this.sourcefiles[index].absolutePath = newPath;
-      this.sourcefiles[index].path = newPath;
-    }
-  }
-
-  /**
-   * Determines if the newly specified path is valid.
-   * @param path {string} new suggested path to a sourcefile
-   */
-  verifyFilePath(path: string): boolean {
-    return path.length > 0;
+    this.sourcefiles[index].absolutePath = newPath;
+    this.sourcefiles[index].path = newPath;
   }
 }

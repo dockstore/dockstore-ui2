@@ -179,16 +179,16 @@ describe('Dockstore hosted workflows', () => {
       // add second file
       cy.contains('Add File').click();
       cy.wait(100);
-      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/AAA.cwl');
+      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/AAA.cwl{enter}');
 
       // add third file
       cy.contains('Add File').click();
       cy.wait(100);
-      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/BBB.cwl');
+      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/BBB.cwl{enter}');
 
       cy.contains('Add File').click();
       cy.wait(100);
-      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/CCC.cwl');
+      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/CCC.cwl{enter}');
 
       // save as a new version
       cy.get('#saveNewVersionButton').click();

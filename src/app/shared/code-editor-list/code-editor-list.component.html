@@ -12,7 +12,7 @@
               <input
                 matInput
                 [value]="sourcefile.absolutePath"
-                (input)="updateSourceFilePath($event.target.value, i)"
+                (change)="updateSourceFilePath($event.target.value, i)"
                 type="text"
                 class="editor-file-name"
               />
