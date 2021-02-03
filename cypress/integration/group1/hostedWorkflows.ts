@@ -150,12 +150,10 @@ describe('Dockstore hosted workflows', () => {
     });
     it('Create a new hosted workflow', () => {
       cy.get('#registerWorkflowButton').should('be.visible').should('be.enabled').click();
-      cy.wait(1000);
       cy.get('#3-register-workflow-option').should('be.visible').click();
       cy.contains('button', 'Next').click();
       cy.get('#hostedWorkflowRepository').type(NEW_WORKFLOW_NAME);
       cy.contains('button', 'Register Workflow').click();
-      cy.wait(1000);
     });
     it('Add files to hosted workflow', () => {
       // navigate to workflow
@@ -187,6 +185,7 @@ describe('Dockstore hosted workflows', () => {
       cy.wait(100);
       cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/BBB.cwl{enter}');
 
+      // add fourth file
       cy.contains('Add File').click();
       cy.wait(100);
       cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/CCC.cwl{enter}');
@@ -195,7 +194,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#saveNewVersionButton').click();
       cy.wait(1000); // have to wait for the response from the webservice, otherwise you may get a false positive
 
-      // should have 3 descriptors.
+      // should have 4 descriptors.
       cy.get('app-code-editor').should('have.length', 4);
     });
   });
