@@ -17,9 +17,8 @@ import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import { clickFirstActionsButton, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore hosted workflows', () => {
-  resetDB();
   setTokenUserViewPort();
-
+  resetDB();
   beforeEach(() => {
     cy.visit('/my-workflows');
 
@@ -35,6 +34,8 @@ describe('Dockstore hosted workflows', () => {
   function getWorkflow() {
     goToUnexpandedSidebarEntry('dockstore.org/A', /hosted/);
   }
+
+  const NEW_WORKFLOW_NAME = 'newHostedWorkflow';
 
   // Ensure tabs are correct for the hosted workflow, try adding a version
   describe('Should be able to register a hosted workflow and add files to it', () => {
@@ -146,12 +147,20 @@ describe('Dockstore hosted workflows', () => {
       goToTab('Files');
       cy.contains('/Dockstore.wdl').should('be.visible');
     });
-  });
-
-  describe('Should be able have multiple workflows (> 2) in a hosted workflow', () => {
+    it('Create a new hosted workflow', () => {
+      cy.get('#registerWorkflowButton').should('be.visible').should('be.enabled').click();
+      cy.wait(1000);
+      cy.get('#3-register-workflow-option').should('be.visible').click();
+      cy.contains('button', 'Next').click();
+      cy.get('#hostedWorkflowRepository').type(NEW_WORKFLOW_NAME);
+      cy.contains('button', 'Register Workflow').click();
+      cy.wait(1000);
+    });
     it('Add files to hosted workflow', () => {
-      // Select the hosted workflow
-      getWorkflow();
+      // navigate to workflow
+      cy.get('.mat-expanded');
+      cy.contains('dockstore.org/user_A').click();
+      cy.contains('a', NEW_WORKFLOW_NAME).click();
 
       // Check content of the info tab
       cy.contains('Mode: HOSTED');
@@ -160,46 +169,33 @@ describe('Dockstore hosted workflows', () => {
       goToTab('Files');
       cy.get('#editFilesButton').click();
 
+      // there should be no descriptors files
+      cy.get('app-code-editor').should('have.length', 0);
+
       // add first file. This will be the primary descriptor, so we wont need to give it a custom name
       cy.contains('Add File').click();
       cy.wait(100);
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
-          const editors = doc.getElementsByClassName('ace_editor');
-          const wdlDescriptorFile = `task md5 { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call md5 { input: inputFile=inputFile } }`;
-          window.ace.edit(editors[0]).setValue(wdlDescriptorFile, -1);
-        });
-      });
 
       // add second file
       cy.contains('Add File').click();
       cy.wait(100);
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
-          const editors = doc.getElementsByClassName('ace_editor');
-          const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
-          window.ace.edit(editors[1]).setValue(wdlDescriptorFile, -1);
-        });
-      });
+      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/AAA.cwl');
 
-      cy.get('.editor-file-name').invoke('attr', 'value', '/A.cwl').trigger('input').should('have.attr', 'value', '/A.cwl');
-
-      // add third file. This will have a default name, so we don't need to modify it.
+      // add third file
       cy.contains('Add File').click();
       cy.wait(100);
-      cy.window().then(function (window: any) {
-        cy.document().then((doc) => {
-          const editors = doc.getElementsByClassName('ace_editor');
-          const wdlDescriptorFile = `task test { File inputFile command { /bin/my_md5sum \${inputFile} } output { File value = \"md5sum.txt\" } runtime { docker: \"quay.io/agduncan94/my-md5sum\" } } workflow ga4ghMd5 { File inputFile call test { input: inputFile=inputFile } }`;
-          window.ace.edit(editors[2]).setValue(wdlDescriptorFile, -1);
-        });
-      });
+      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/BBB.cwl');
+
+      cy.contains('Add File').click();
+      cy.wait(100);
+      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/CCC.cwl');
 
       // save as a new version
       cy.get('#saveNewVersionButton').click();
+      cy.wait(1000); // have to wait for the response from the webservice, otherwise you may get a false positive
 
       // should have 3 descriptors.
-      cy.get('app-code-editor').should('have.length', 3);
+      cy.get('app-code-editor').should('have.length', 4);
     });
   });
 });
