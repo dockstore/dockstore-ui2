@@ -4,19 +4,22 @@
     <div *ngIf="sourcefile?.content !== null && showSourcefile(sourcefile?.type)">
       <mat-toolbar color="primary">
         <mat-toolbar-row>
-          <form style="width: 100%" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)">
+          <form
+            style="width: 100%"
+            *ngIf="editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)"
+          >
             <mat-form-field color="accent" style="width: 40%">
               <input
                 matInput
-                [value]="sourcefile.path"
-                (input)="sourcefile.path = $event.target.value"
+                [value]="sourcefile.absolutePath"
+                (change)="updateSourceFilePath($event.target.value, i)"
                 type="text"
                 class="editor-file-name"
               />
             </mat-form-field>
           </form>
-          <span *ngIf="!editing || isPrimaryDescriptor(sourcefile?.path) || isDockerFile(sourcefile?.path)">
-            {{ sourcefile.path }}
+          <span *ngIf="!editing || isPrimaryDescriptor(sourcefile?.absolutePath) || isDockerFile(sourcefile?.absolutePath)">
+            {{ sourcefile.absolutePath }}
           </span>
           <span class="spacer"></span>
           <span>
@@ -25,7 +28,7 @@
               class="delete-editor-file mr-2"
               color="warn"
               (click)="deleteFile(i)"
-              *ngIf="editing && !isPrimaryDescriptor(sourcefile?.path) && !isDockerFile(sourcefile?.path)"
+              *ngIf="editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)"
               matTooltip="Delete the file"
             >
               <mat-icon>delete</mat-icon>
@@ -38,8 +41,9 @@
                 *ngIf="published$ | async; else unpublishedDownloadLink"
                 download
                 [href]="sourcefile | publicFileDownload: entrypath:selectedVersion:descriptorType:entryType"
+                [download]="sourcefile?.absolutePath | privateFilePath"
                 type="button"
-                matTooltip="Download {{ sourcefile?.path }}"
+                matTooltip="Download {{ sourcefile?.absolutePath }}"
               >
                 <mat-icon>save_alt</mat-icon>
               </a>
@@ -49,9 +53,9 @@
                   color="secondary"
                   class="mr-2 link-button"
                   [href]="sourcefile?.content | privateFileDownload"
-                  [download]="sourcefile?.path | privateFilePath"
+                  [download]="sourcefile?.absolutePath | privateFilePath"
                   type="button"
-                  matTooltip="Download {{ sourcefile?.path }}"
+                  matTooltip="Download {{ sourcefile?.absolutePath }}"
                 >
                   <mat-icon>save_alt</mat-icon>
                 </a>
@@ -72,7 +76,7 @@
       </mat-toolbar>
       <app-code-editor
         [(content)]="sourcefile.content"
-        [filepath]="sourcefile.path"
+        [filepath]="sourcefile.absolutePath"
         [editing]="editing"
         [entryType]="entryType"
       ></app-code-editor>
