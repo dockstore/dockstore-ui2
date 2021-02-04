@@ -39,10 +39,11 @@ export class FooterComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   year: number;
   content: string;
+  displayTooltip = false;
   public sponsors: Sponsor[] = [
     new Sponsor('collaboratory.svg', new URL('https://www.cancercollaboratory.org/')),
     new Sponsor('oicr.svg', new URL('https://oicr.on.ca/')),
-    new Sponsor('broad-gray.png', new URL('https://www.broadinstitute.org/')),
+    new Sponsor('broad-gray.svg', new URL('https://www.broadinstitute.org/')),
     new Sponsor('ga.svg', new URL('https://genomicsandhealth.org/')),
     new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/')),
   ];

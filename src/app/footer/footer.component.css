@@ -43,7 +43,7 @@ li {
 
 .sponsor-img {
   /* auto set height */
-  height: 50px;
+  height: 60px;
   /* align with text */
   vertical-align: middle;
 }
@@ -61,6 +61,7 @@ li a {
 .mat-stroked-button {
   border: #e8eaf6 1px solid;
   margin-top: 5px;
+  padding: 0 7px;
 }
 
 /* very last row of the footer */
