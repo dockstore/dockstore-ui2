@@ -36,7 +36,8 @@ describe('Dockstore hosted workflows', () => {
     goToUnexpandedSidebarEntry('dockstore.org/A', /hosted/);
   }
 
-  const NEW_WORKFLOW_NAME = 'newHostedWorkflow';
+  // using an ugly name to flex workflow naming functionality a bit
+  const NEW_WORKFLOW_NAME = 'new_Hosted-workflow-8_part-2';
 
   // Ensure tabs are correct for the hosted workflow, try adding a version
   describe('Should be able to register a hosted workflow and add files to it', () => {
@@ -174,20 +175,12 @@ describe('Dockstore hosted workflows', () => {
       // add first file. This will be the primary descriptor, so we wont need to give it a custom name
       cy.contains('Add File').click();
 
-      // add second file
-      cy.contains('Add File').click();
-      cy.wait(100);
-      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/AAA.cwl{enter}');
-
-      // add third file
-      cy.contains('Add File').click();
-      cy.wait(100);
-      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/BBB.cwl{enter}');
-
-      // add fourth file
-      cy.contains('Add File').click();
-      cy.wait(100);
-      cy.get('.editor-file-name').last().type('{backspace}{backspace}{backspace}{backspace}{backspace}/CCC.cwl{enter}');
+      // add a bunch of new files
+      for (let i = 0; i < 3; i++) {
+        cy.contains('Add File').click();
+        cy.wait(100); // focus is pulled to the content box of the editor shortly after adding a file, wait for this to occur
+        cy.get('.editor-file-name').last().type(`{selectall}{backspace}/${i}.cwl{enter}`);
+      }
 
       // save as a new version
       cy.get('#saveNewVersionButton').click();
