@@ -16,151 +16,215 @@
 
 <div class="container-fluid">
   <div class="container">
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center">
-      <div fxFlex="25%">
-        <ul class="footer-list m-0">
-          <li class="m-0">Dockstore</li>
-          <li class="m-0">
-            <a
-              [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html'"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-              data-cy="footer-about-link"
-            >
-              <small>About</small>
-            </a>
-          </li>
-          <li class="m-0">
-            <a
-              [href]="dsServerURI + '/static/swagger-ui/index.html#'"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-              data-cy="footer-api-link"
-            >
-              <small>API </small>
-            </a>
-            -
-            <a
-              href="https://github.com/dockstore/dockstore/{{ version | gitTag: true }}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-            >
-              <small>{{ version | gitTag }} </small>
-            </a>
-            <a href="https://status.dockstore.org/" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <img
-                src="https://img.shields.io/uptimerobot/status/m779655940-a297af07d1cac2d6ad40c491.svg"
-                alt="dockstore status indicator"
-              />
-            </a>
-          </li>
-          <li class="m-0">
-            <a
-              href="https://github.com/dockstore/dockstore-ui2/{{ tag | gitTag: true }}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-            >
-              <small>UI - {{ tag | gitTag }}</small>
-            </a>
-          </li>
-          <li class="m-0">
-            <a
-              [href]="dsServerURI + '/metadata/rss'"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-              data-cy="footer-rss-link"
-            >
-              <small><mat-icon>rss_feed</mat-icon>RSS</small>
-            </a>
-          </li>
-          <li class="m-0">
-            <a routerLink="/sitemap" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <small>Sitemap</small>
-            </a>
-          </li>
-          <li class="m-0">
-            <button mat-icon-button>
-              <mat-icon [cdkCopyToClipboard]="content">content_copy</mat-icon> <small>&nbsp;Build Info</small>
-            </button>
-          </li>
-        </ul>
-      </div>
-      <div fxFlex="25%">
-        <ul class="footer-list m-0">
-          <li class="m-0">Contact Us</li>
-          <li class="m-0">
-            <a href="https://github.com/dockstore/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/github-mark-light.png" alt="small GitHub logo" /><small>
-                Github</small
+    <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="space-between stretch">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between stretch" fxFlex="55%">
+        <div fxFlex="45%">
+          <ul class="footer-list m-0">
+            <li class="m-0 title">Dockstore</li>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between">
+              <div fxFlex="50%">
+                <li class="m-0">
+                  <a routerLink="/search" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-about-link">
+                    <small>Explore</small>
+                  </a>
+                </li>
+                <li class="m-0">
+                  <a routerLink="/organizations" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-about-link">
+                    <small>Organizations</small>
+                  </a>
+                </li>
+                <li class="m-0">
+                  <!-- needs to be filled out once About page is implemented -->
+                  <a [href]="" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-about-link">
+                    <small>About</small>
+                  </a>
+                </li>
+              </div>
+              <div fxFlex>
+                <li class="m-0">
+                  <!-- needs to be filled out once The Team page is implemented -->
+                  <a [href]="" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-about-link">
+                    <small>The Team</small>
+                  </a>
+                </li>
+                <li class="m-0">
+                  <a
+                    [href]="Dockstore.DOCKSTORE_REPO + '/wiki/Dockstore-Roadmap'"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="footer-link"
+                    data-cy="footer-about-link"
+                  >
+                    <small>Roadmap</small>
+                  </a>
+                </li>
+              </div>
+            </div>
+            <li class="m-0">
+              <a
+                href="https://github.com/dockstore/dockstore-ui2/{{ tag | gitTag: true }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
               >
-            </a>
-          </li>
-          <li class="m-0">
-            <a href="https://twitter.com/DockstoreOrg" target="_blank" rel="noopener noreferrer" class="footer-link icon">
-              <img
-                class="site-icons-tab hidden-sm"
-                src="../assets/images/dockstore/twitter-logo-white.png"
-                alt="small Twitter logo"
-              /><small> @DockstoreOrg</small>
-            </a>
-          </li>
-          <li class="m-0">
-            <a href="https://gitter.im/ga4gh/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/gitter.png" alt="small Gitter logo" /><small>
-                Gitter</small
+                <small>UI - {{ tag | gitTag }}</small>
+              </a>
+              |
+              <a
+                [href]="dsServerURI + '/static/swagger-ui/index.html#'"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+                data-cy="footer-api-link"
               >
-            </a>
-          </li>
-          <li class="m-0">
-            <a
-              href="https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-            >
-              <small><mat-icon>contact_support</mat-icon> Help Desk</small>
-            </a>
-          </li>
-        </ul>
+                <small>API </small>
+              </a>
+              -
+              <a
+                href="https://github.com/dockstore/dockstore/{{ version | gitTag: true }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+              >
+                <small>{{ version | gitTag }} </small>
+              </a>
+              <a href="https://status.dockstore.org/" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <img
+                  src="https://img.shields.io/uptimerobot/status/m779655940-a297af07d1cac2d6ad40c491.svg"
+                  alt="dockstore status indicator"
+                />
+              </a>
+            </li>
+            <li class="m-0">
+              <button mat-stroked-button [cdkCopyToClipboard]="content">
+                <mat-icon>content_copy</mat-icon>
+                <small>&nbsp;Copy Build Info</small>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div fxFlex="30%">
+          <ul class="footer-list m-0">
+            <li class="m-0 title">Help Resources</li>
+            <li class="m-0">
+              <a
+                [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html'"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+              >
+                <small>Documentation</small>
+              </a>
+            </li>
+            <li class="m-0">
+              <a
+                href="https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+              >
+                <small>Help Desk</small>
+              </a>
+            </li>
+            <li class="m-0">
+              <a href="#" target="_self" rel="noopener noreferrer" class="footer-link">
+                <small>Contact Us</small>
+              </a>
+            </li>
+            <li class="m-0">
+              <a routerLink="/sitemap" target="_self" rel="noopener noreferrer" class="footer-link">
+                <small>Sitemap</small>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div fxFlex>
+          <ul class="footer-list m-0 affiliation-list">
+            <li class="m-0 title">Find us on</li>
+            <li class="m-0">
+              <a [href]="Dockstore.DOCKSTORE_REPO" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <img
+                  class="site-icons-tab hidden-sm"
+                  src="../assets/images/dockstore/github-mark-light.png"
+                  alt="small GitHub logo"
+                /><small> Github</small>
+              </a>
+            </li>
+            <li class="m-0">
+              <a href="https://gitter.im/ga4gh/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
+                <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/gitter.png" alt="small Gitter logo" /><small>
+                  Gitter</small
+                >
+              </a>
+            </li>
+            <li class="m-0">
+              <a href="https://twitter.com/DockstoreOrg" target="_blank" rel="noopener noreferrer" class="footer-link icon">
+                <img
+                  class="site-icons-tab hidden-sm"
+                  src="../assets/images/dockstore/twitter-logo-white.png"
+                  alt="small Twitter logo"
+                /><small> @DockstoreOrg</small>
+              </a>
+            </li>
+            <li class="m-0">
+              <a
+                [href]="dsServerURI + '/metadata/rss'"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+                data-cy="footer-rss-link"
+              >
+                <small><mat-icon>rss_feed</mat-icon>RSS</small>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div fxFlex="25%">
+      <div fxFlex>
         <ul class="footer-list m-0">
-          <li class="m-0">Legal</li>
+          <li class="m-0 title">In Affiliation With</li>
           <li>
-            <a
-              href="https://github.com/dockstore/dockstore/blob/{{ version }}/LICENSE"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-link"
-              ><small>&copy; {{ year }} OICR</small></a
-            >
-          </li>
-          <li class="m-0">
-            <a href="../assets/docs/Dockstore_Terms_of_Service.pdf" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <small>Terms of Service</small>
-            </a>
-          </li>
-          <li class="m-0">
-            <a href="../assets/docs/Dockstore_Privacy Policy_v2.5.pdf" target="_blank" rel="noopener noreferrer" class="footer-link">
-              <small>Privacy Policy</small>
-            </a>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between">
+              <div *ngFor="let sponsor of sponsors" class="pb-5 px-1">
+                <a [href]="sponsor.url" target="_blank" rel="noopener noreferrer">
+                  <!-- Get the sponsor website name from its URL to use as alt text-->
+                  <img class="sponsor-img" [src]="sponsor.current" [alt]="sponsor.url.hostname + ' logo'" />
+                </a>
+              </div>
+            </div>
           </li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="row" fxLayoutAlign="center center">
-    <a [routerLink]="['/funding']" class="footer-link p-4">
-      <small
-        >Support for Dockstore is provided by grants from Genome Canada, the National Institutes of Health, and the Province of
-        Ontario.</small
-      >
-    </a>
+  <hr />
+  <div>
+    <div class="container" fxLayoutAlign="space-between" fxLayout="row" fxLayout.lt-lg="column">
+      <div class="footer-buttons" fxLayout="row">
+        <a
+          href="https://github.com/dockstore/dockstore/blob/{{ version }}/LICENSE"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link"
+          ><small>&copy;{{ year }} OICR</small></a
+        >
+        <span>&nbsp;&#183;&nbsp;</span>
+        <a href="../assets/docs/Dockstore_Terms_of_Service.pdf" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <small>Terms of Service</small>
+        </a>
+        <span>&nbsp;&#183;&nbsp;</span>
+        <a href="../assets/docs/Dockstore_Privacy Policy_v2.5.pdf" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <small>Privacy Policy</small>
+        </a>
+      </div>
+      <div class="row footer-buttons">
+        <small class="p-4" style="text-align: center">
+          <a class="footer-link" [routerLink]="['/funding']" target="_self"> Support for Dockstore </a>
+          <span> is provided by grants from Genome Canada, the National Institutes of Health, and the Province of Ontario. </span>
+        </small>
+      </div>
+    </div>
   </div>
 </div>

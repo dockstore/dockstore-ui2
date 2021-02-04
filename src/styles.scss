@@ -1172,11 +1172,13 @@ body {
 }
 
 .footer-link:link {
-  text-decoration: none;
+  text-decoration: underline;
+  // this is used for making the font "semi-bold" without using font-weight
+  // text-shadow: 0 0 0 #e8eaf6;
 }
 
 .footer-link:hover {
-  text-decoration: underline;
+  color: white;
 }
 
 .my-entry-button-group {
