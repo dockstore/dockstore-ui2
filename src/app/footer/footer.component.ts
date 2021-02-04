@@ -29,7 +29,7 @@ import { versions } from './versions';
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css'],
-  providers: [FooterService]
+  providers: [FooterService],
 })
 export class FooterComponent extends Base implements OnInit {
   version: string;
@@ -44,7 +44,7 @@ export class FooterComponent extends Base implements OnInit {
     new Sponsor('oicr.svg', new URL('https://oicr.on.ca/')),
     new Sponsor('broad-gray.png', new URL('https://www.broadinstitute.org/')),
     new Sponsor('ga.svg', new URL('https://genomicsandhealth.org/')),
-    new Sponsor('ucsc.svg', new URL('https://ucscgenomics.soe.ucsc.edu/'))
+    new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/')),
   ];
 
   /**
