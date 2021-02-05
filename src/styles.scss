@@ -1279,3 +1279,8 @@ mat-tab-group.no-pagination {
     flex-direction: column;
   }
 }
+
+.custom_copy_snack_bar {
+  min-width: 0 !important;
+  background-color: #5c5c5c !important;
+}

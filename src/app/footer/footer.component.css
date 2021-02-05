@@ -52,6 +52,12 @@ hr {
   border: 1px solid #e8eaf6 80%;
 }
 
+@media only screen and (min-width: 1279px) {
+  hr {
+    margin-bottom: 0;
+  }
+}
+
 li a {
   /* gives more space for link to be clicked on */
   padding: 8px 0;

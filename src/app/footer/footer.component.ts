@@ -15,6 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntil } from 'rxjs/operators';
 
 import { MetadataService } from '../metadata/metadata.service';
@@ -39,11 +40,10 @@ export class FooterComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   year: number;
   content: string;
-  displayTooltip = false;
   public sponsors: Sponsor[] = [
     new Sponsor('collaboratory.svg', new URL('https://www.cancercollaboratory.org/')),
     new Sponsor('oicr.svg', new URL('https://oicr.on.ca/')),
-    new Sponsor('broad-gray.svg', new URL('https://www.broadinstitute.org/')),
+    new Sponsor('broad1.svg', new URL('https://www.broadinstitute.org/')),
     new Sponsor('ga.svg', new URL('https://genomicsandhealth.org/')),
     new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/')),
   ];
@@ -59,8 +59,15 @@ export class FooterComponent extends Base implements OnInit {
    */
   private readonly WEBSERVICE_DOWN_STATUS_CODES = [0, 404, 502, 504];
 
-  constructor(private metadataService: MetadataService, private footerService: FooterService) {
+  constructor(private metadataService: MetadataService, private footerService: FooterService, private _snackBar: MatSnackBar) {
     super();
+  }
+
+  openSnackBar() {
+    this._snackBar.open('Copied!', '', {
+      duration: 500,
+      panelClass: 'custom_copy_snack_bar'
+    });
   }
 
   ngOnInit() {
