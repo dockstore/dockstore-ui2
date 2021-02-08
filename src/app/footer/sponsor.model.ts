@@ -15,14 +15,14 @@
  */
 
 export class Sponsor {
-  private static colouredPath = '../assets/images/sponsors/non-coloured/';
+  private static nonColouredPath = '../assets/images/sponsors/non-coloured/';
 
   public current: string;
   public coloured: string;
   public url: URL;
 
   constructor(image: string, url: URL) {
-    this.current = Sponsor.colouredPath + image;
+    this.current = Sponsor.nonColouredPath + image;
     this.url = url;
   }
 }

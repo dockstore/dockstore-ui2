@@ -21,15 +21,11 @@ a {
 }
 
 .container-fluid {
-  padding-top: 20px;
+  padding-top: 2rem;
 }
 
 ul {
   list-style: none;
-}
-
-li {
-  line-height: 26px;
 }
 
 /* the title of each column */
@@ -38,11 +34,10 @@ li {
   text-shadow: 0 0 0 #c5cae9;
   color: #c5cae9;
   text-transform: uppercase;
-  padding: 10px 0;
+  padding: 1rem 0;
 }
 
 .sponsor-img {
-  /* auto set height */
   height: 60px;
   /* align with text */
   vertical-align: middle;
@@ -52,7 +47,7 @@ hr {
   border: 1px solid #e8eaf6 80%;
 }
 
-@media only screen and (min-width: 1279px) {
+@media only screen and (min-width: 80rem) {
   hr {
     margin-bottom: 0;
   }
@@ -60,14 +55,14 @@ hr {
 
 li a {
   /* gives more space for link to be clicked on */
-  padding: 8px 0;
+  padding: 1rem 0;
 }
 
 /* button for "copy build info" */
 .mat-stroked-button {
   border: #e8eaf6 1px solid;
-  margin-top: 5px;
-  padding: 0 7px;
+  margin-top: 1rem;
+  padding: 0 0.45rem;
 }
 
 /* very last row of the footer */
@@ -83,4 +78,8 @@ li a {
 
 .footer-link:hover {
   color: white;
+}
+
+.dockstore-support {
+  text-align: center;
 }
