@@ -24,7 +24,9 @@ export class HomeLoggedInComponent extends Base implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit() {
-    this.loadTwitterWidget();
+    setTimeout(() => {
+      this.loadTwitterWidget();
+    }, 1000);
   }
 
   loadTwitterWidget() {
