@@ -35,7 +35,7 @@ li {
 /* the title of each column */
 .title {
   /* used for making the text semi-bold */
-  text-shadow: 0 0 0#c5cae9;
+  text-shadow: 0 0 0 #c5cae9;
   color: #c5cae9;
   text-transform: uppercase;
   padding: 10px 0;
