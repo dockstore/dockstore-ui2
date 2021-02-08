@@ -33,6 +33,7 @@ import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { FooterService } from './footer/footer.service';
 import { GitTagPipe } from './footer/git-tag.pipe';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
@@ -209,6 +210,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ViewService,
     TosBannerService,
     ConfigurationService,
+    FooterService,
     {
       provide: APP_INITIALIZER,
       useFactory: configurationServiceFactory,
