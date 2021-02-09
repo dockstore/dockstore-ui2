@@ -211,11 +211,11 @@ export class QueryBuilderService {
     return body
       .orQuery('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
       .orQuery('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('wildcard', { 'workflowVersions.sourceFiles.content': { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('wildcard', { 'tags.sourceFiles.content': { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('wildcard', { description: { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('wildcard', { labels: { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('wildcard', { author: { value: '*' + searchString + '*', case_insensitive: true } });
+      .orQuery('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
+      .orQuery('match_phrase', 'tags.sourceFiles.content', searchString)
+      .orQuery('match_phrase', 'description', searchString)
+      .orQuery('match_phrase', 'labels', searchString)
+      .orQuery('match_phrase', 'author', searchString);
   }
 
   /**===============================================
