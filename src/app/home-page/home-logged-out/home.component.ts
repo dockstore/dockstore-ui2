@@ -68,9 +68,7 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.loadTwitterWidget();
-    }, 1000);
+    this.loadTwitterWidget();
   }
 
   loadTwitterWidget() {

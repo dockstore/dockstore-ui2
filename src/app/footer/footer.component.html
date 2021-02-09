@@ -190,7 +190,7 @@
               <div *ngFor="let sponsor of sponsors" class="pb-5 px-1">
                 <a [href]="sponsor.url" target="_blank" rel="noopener noreferrer">
                   <!-- Get the sponsor website name from its URL to use as alt text-->
-                  <img class="sponsor-img" [src]="sponsor.current" [alt]="sponsor.url.hostname + ' logo'" />
+                  <img class="sponsor-img" [src]="sponsor.nonColouredCurrent" [alt]="sponsor.url.hostname + ' logo'" />
                 </a>
               </div>
             </div>

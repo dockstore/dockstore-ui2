@@ -44,7 +44,7 @@ ul {
 }
 
 hr {
-  border: 1px solid #e8eaf6 80%;
+  border: 0.05rem solid #e8eaf6 80%;
 }
 
 @media only screen and (min-width: 80rem) {
@@ -60,7 +60,7 @@ li a {
 
 /* button for "copy build info" */
 .mat-stroked-button {
-  border: #e8eaf6 1px solid;
+  border: #e8eaf6 0.04rem solid;
   margin-top: 1rem;
   padding: 0 0.45rem;
 }
@@ -78,6 +78,10 @@ li a {
 
 .footer-link:hover {
   color: white;
+}
+
+.footer-list li {
+  margin: 0 0 0.6rem 0 !important;
 }
 
 .dockstore-support {

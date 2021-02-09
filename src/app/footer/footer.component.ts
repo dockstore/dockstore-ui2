@@ -20,17 +20,16 @@ import { takeUntil } from 'rxjs/operators';
 
 import { MetadataService } from '../metadata/metadata.service';
 import { Base } from '../shared/base';
+import { Sponsor } from '../sponsors/sponsor.model';
 import { Dockstore } from './../shared/dockstore.model';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { FooterService } from './footer.service';
-import { Sponsor } from './sponsor.model';
 import { versions } from './versions';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
-  providers: [FooterService],
+  styleUrls: ['./footer.component.css']
 })
 export class FooterComponent extends Base implements OnInit {
   version: string;
