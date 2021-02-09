@@ -179,7 +179,7 @@ export class QueryBuilderService {
   appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
     if (values.toString().length > 0) {
-      this.searchEverything(body, values);
+      body = this.searchEverything(body, values);
     } else {
       body = body.query('match_all', {});
     }
@@ -207,8 +207,8 @@ export class QueryBuilderService {
    * @param body Body from the Bodybuilder package which will be mutated
    * @param searchString The string entered into the basic search bar by the user
    */
-  searchEverything(body: bodybuilder.Bodybuilder, searchString: string): void {
-    body = body
+  private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
+    return body
       .orQuery('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
       .orQuery('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
       .orQuery('wildcard', { 'workflowVersions.sourceFiles.content': { value: '*' + searchString + '*', case_insensitive: true } })
