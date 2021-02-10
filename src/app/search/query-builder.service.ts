@@ -201,21 +201,23 @@ export class QueryBuilderService {
    * Some requiremnts:
    * 1. Need to be able to match substring (ex. "chicken pot pie" should match "pot")
    * 2. Need to be able to handle slashes (ex. "beef/stew" should match "beef/stew")
-   * A query (instead of filter) is used to handle #1 because wildcard does work for filters
+   * Wildcard is used for #1
    * The paths use keyword instead of string because #2 wouldn't work otherwise
    *
    * @param body Body from the Bodybuilder package which will be mutated
    * @param searchString The string entered into the basic search bar by the user
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
-    return body
-      .orQuery('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
-      .orQuery('match_phrase', 'tags.sourceFiles.content', searchString)
-      .orQuery('match_phrase', 'description', searchString)
-      .orQuery('match_phrase', 'labels', searchString)
-      .orQuery('match_phrase', 'author', searchString);
+    return body.filter('bool', (filter) =>
+      filter
+        .orFilter('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
+        .orFilter('match_phrase', 'tags.sourceFiles.content', searchString)
+        .orFilter('match_phrase', 'description', searchString)
+        .orFilter('match_phrase', 'labels', searchString)
+        .orFilter('match_phrase', 'author', searchString)
+    );
   }
 
   /**===============================================
