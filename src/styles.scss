@@ -1171,14 +1171,6 @@ body {
   height: 52px;
 }
 
-.footer-link:link {
-  text-decoration: none;
-}
-
-.footer-link:hover {
-  text-decoration: underline;
-}
-
 .my-entry-button-group {
   margin-bottom: 5px;
 }
@@ -1286,4 +1278,9 @@ mat-tab-group.no-pagination {
   .align-languages {
     flex-direction: column;
   }
+}
+
+.custom_copy_snack_bar {
+  min-width: 0 !important;
+  background-color: #5c5c5c !important;
 }

@@ -33,7 +33,6 @@ import { SponsorsService } from './sponsors.service';
 })
 export class SponsorsComponent extends Base implements OnInit {
   public user$: Observable<User>;
-  public sponsors: Sponsor[];
   public partners: Sponsor[];
   public languages: Sponsor[];
   public isHomePage = false;
@@ -52,7 +51,6 @@ export class SponsorsComponent extends Base implements OnInit {
 
   ngOnInit() {
     // Initialize sponsors and partners
-    this.sponsors = this.sponsorsService.getSponsors();
     this.partners = this.sponsorsService.getPartners();
     this.languages = this.sponsorsService.getLanguages();
 

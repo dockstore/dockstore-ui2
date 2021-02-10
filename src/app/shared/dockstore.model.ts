@@ -77,6 +77,7 @@ export class Dockstore {
 
   static GITHUB_APP_INSTALLATION_URL = 'will be filled in by configuration.service';
 
+  static DOCKSTORE_REPO = 'https://github.com/dockstore/dockstore';
   static DOCUMENTATION_URL = 'https://docs.dockstore.org';
   static FEATURED_CONTENT_URL = 'will be filled in by configuration.service';
 

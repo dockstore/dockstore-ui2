@@ -15,10 +15,12 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntil } from 'rxjs/operators';
 
 import { MetadataService } from '../metadata/metadata.service';
 import { Base } from '../shared/base';
+import { Sponsor } from '../sponsors/sponsor.model';
 import { Dockstore } from './../shared/dockstore.model';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { FooterService } from './footer.service';
@@ -27,7 +29,7 @@ import { versions } from './versions';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
+  styleUrls: ['./footer.component.css']
 })
 export class FooterComponent extends Base implements OnInit {
   version: string;
@@ -37,6 +39,13 @@ export class FooterComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   year: number;
   content: string;
+  public sponsors: Sponsor[] = [
+    new Sponsor('collaboratory.svg', new URL('https://www.cancercollaboratory.org/')),
+    new Sponsor('oicr.svg', new URL('https://oicr.on.ca/')),
+    new Sponsor('broad1.svg', new URL('https://www.broadinstitute.org/')),
+    new Sponsor('ga.svg', new URL('https://genomicsandhealth.org/')),
+    new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/')),
+  ];
 
   /**
    * API Status codes that can indicate the web service is down
@@ -49,8 +58,15 @@ export class FooterComponent extends Base implements OnInit {
    */
   private readonly WEBSERVICE_DOWN_STATUS_CODES = [0, 404, 502, 504];
 
-  constructor(private metadataService: MetadataService, private footerService: FooterService) {
+  constructor(private metadataService: MetadataService, private footerService: FooterService, private matSnackBar: MatSnackBar) {
     super();
+  }
+
+  openSnackBar() {
+    this.matSnackBar.open('Copied!', '', {
+      duration: 500,
+      panelClass: 'custom_copy_snack_bar',
+    });
   }
 
   ngOnInit() {
