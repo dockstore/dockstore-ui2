@@ -13,3 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+#file_copy {
+  font-size: initial;
+  transform: scale(1.3);
+  height: fit-content;
+}
