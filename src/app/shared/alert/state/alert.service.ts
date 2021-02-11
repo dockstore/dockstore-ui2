@@ -31,7 +31,7 @@ import { AlertStore } from './alert.store';
  */
 @Injectable({ providedIn: 'root' })
 export class AlertService {
-  constructor(private alertStore: AlertStore, private matSnackBar: MatSnackBar, private alertQuery: AlertQuery, private router: Router) {}
+  constructor(private alertStore: AlertStore, private matSnackBar: MatSnackBar, private alertQuery: AlertQuery) {}
 
   public static getDetailedErrorMessage(error: HttpErrorResponse): string {
     return (
@@ -127,11 +127,7 @@ export class AlertService {
     this.matSnackBar
       .open(detailedError, actionButtonText)
       .onAction()
-      .subscribe(() =>
-        this.router.navigate([]).then(() => {
-          window.open(link, '_blank');
-        })
-      );
+      .subscribe(() => window.open(link, '_blank'));
   }
 
   /**
