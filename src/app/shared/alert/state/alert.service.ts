@@ -16,6 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { AlertQuery } from './alert.query';
 import { AlertStore } from './alert.store';
 
@@ -30,7 +31,7 @@ import { AlertStore } from './alert.store';
  */
 @Injectable({ providedIn: 'root' })
 export class AlertService {
-  constructor(private alertStore: AlertStore, private matSnackBar: MatSnackBar, private alertQuery: AlertQuery) {}
+  constructor(private alertStore: AlertStore, private matSnackBar: MatSnackBar, private alertQuery: AlertQuery, private router: Router) {}
 
   public static getDetailedErrorMessage(error: HttpErrorResponse): string {
     return (
@@ -109,6 +110,28 @@ export class AlertService {
     this.clearEverything();
     const detailedError = AlertService.getDetailedErrorMessage(error);
     this.matSnackBar.open(detailedError);
+  }
+
+  /**
+   *
+   * Handles HTTP error responses that shows a detailed message in the matSnackBar and provides and action button
+   * that links to an external site (such as the documentation)
+   *
+   * @param error {HttpErrorResponse} error  The HttpErrorResponse return by the failed Http call
+   * @param actionButtonText {string} The text of the action button
+   * @param link {link} The link that will open in a new tab
+   */
+  public detailedSnackBarErrorWithLink(error: HttpErrorResponse, actionButtonText: string, link: string) {
+    this.clearEverything();
+    const detailedError: string = AlertService.getDetailedErrorMessage(error);
+    this.matSnackBar
+      .open(detailedError, actionButtonText)
+      .onAction()
+      .subscribe(() =>
+        this.router.navigate([]).then(() => {
+          window.open(link, '_blank');
+        })
+      );
   }
 
   /**
