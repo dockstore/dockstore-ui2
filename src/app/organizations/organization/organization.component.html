@@ -14,8 +14,15 @@
    limitations under the License.
 -->
 <app-header>
-  <mat-icon>people</mat-icon>
-  Organizations
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div fxLayout="row" fxLayoutGap="1rem">
+      <img src="../../../assets/svg/organization.svg" alt="organization icon" />
+      <a class="category-text" [routerLink]="['/organizations/']">Organizations</a>
+      <span>/</span>
+      <span>{{ (organization$ | async)?.displayName }}</span>
+    </div>
+    <!-- <div *ngIf="(organization$ | async)" fxHide.lt-sm>Organization smth of smth</div> -->
+  </div>
 </app-header>
 <app-loading [loading]="loading$ | async">
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
@@ -24,7 +31,7 @@
       <div fxFlex="70">
         <h3>{{ org.displayName }}</h3>
       </div>
-      <div fxFlex="30">
+      <div fxFlex>
         <app-organization-starring
           *ngIf="org?.status === approved"
           [organization]="org"
@@ -61,73 +68,88 @@
       <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
     </mat-card>
 
-    <mat-card fxFlex class="my-3">
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
-        <div>
-          <img [src]="(gravatarUrl$ | async) || '../../../assets/images/dockstore/PlaceholderLC.png'" class="orgLogo" />
+    <div fxFlex class="my-3">
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between">
+        <div fxFlex="90">
+          <div>
+            <h2>{{ org.displayName }}</h2>
+            <span>{{ org.topic }}</span>
+          </div>
         </div>
-        <div>
-          <mat-card-header>
-            <mat-card-title>
-              <h1 [matTooltip]="org?.name">{{ org.displayName }}</h1>
-            </mat-card-title>
-            <mat-card-subtitle>
-              {{ org.topic }}
-            </mat-card-subtitle>
-          </mat-card-header>
+        <div fxFlex>
+          <app-organization-starring
+            *ngIf="org?.status === approved"
+            [organization]="org"
+            class="pull-right starring-button"
+            (change)="organizationStarGazersChange()"
+          ></app-organization-starring>
         </div>
       </div>
-      <mat-card-content>
-        <div fxLayout="row wrap" fxLayout.lt-sm="column wrap" fxLayoutGap="10px" fxLayoutAlign="space-between" class="px-4 py-1">
-          <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.email">
-            <mat-icon>email</mat-icon>
-            <span
-              ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
-            >
-          </span>
-          <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
-            <mat-icon>link</mat-icon>
-            <span
-              ><a [href]="org.link" target="_blank" rel="noopener">{{ org?.link }}</a></span
-            >
-          </span>
-          <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
-            <mat-icon>location_on</mat-icon>
-            <span class="ellipsis-lines">{{ org.location }}</span>
-          </span>
-        </div>
-        <app-organization-starring
-          *ngIf="org?.status === approved"
-          [organization]="org"
-          class="pull-right starring-button"
-          (change)="organizationStarGazersChange()"
-        ></app-organization-starring>
-      </mat-card-content>
       <mat-card-actions *ngIf="canEdit$ | async">
         <div fxFlex></div>
         <button mat-button (click)="editOrganization()" id="editOrgInfo" matTooltip="Edit the organization">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-card-actions>
-    </mat-card>
+    </div>
 
     <!-- Tabs and description -->
-    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" class="my-3" data-cy="organizationDetails">
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="2rem" class="my-3" data-cy="organizationDetails">
       <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
         <mat-tab-group>
-          <mat-tab label="Collections">
-            <collections [organizationID]="org.id" [organizationName]="org.name"></collections>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div fxLayoutGap="0.5rem">
+                <img src="../../../assets/svg/collections.svg" />
+                <span>Collections</span>
+                <span class="tab-chip">{{ collectionsLength ? collectionsLength : 0 }}</span>
+              </div>
+            </ng-template>
+            <collections (collectionsLength)="getCollections($event)" [organizationID]="org.id" [organizationName]="org.name"></collections>
           </mat-tab>
-          <mat-tab label="Members">
-            <organization-members></organization-members>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div fxLayoutGap="0.5rem">
+                <mat-icon class="tab-icons">people</mat-icon>
+                <span>Members</span>
+                <span class="tab-chip">{{ membersLength ? membersLength : 0 }}</span>
+              </div>
+            </ng-template>
+            <organization-members (membersLength)="getMembers($event)"></organization-members>
           </mat-tab>
-          <mat-tab label="Events">
-            <events [organizationID]="org.id"></events>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div fxLayoutGap="0.5rem">
+                <mat-icon class="tab-icons">update</mat-icon>
+                <span>Updates</span>
+                <span class="tab-chip">{{ eventsLength ? eventsLength : 0 }}</span>
+              </div>
+            </ng-template>
+            <events (eventsLength)="getEvents($event)" [organizationID]="org.id"></events>
           </mat-tab>
         </mat-tab-group>
       </div>
       <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
-        <mat-card fxLayout="column" fxLayoutGap="15px" class="my-3">
+        <div fxLayout="column" fxLayoutGap="15px" class="my-3">
+          <h4>About the Organization</h4>
+          <div fxLayout="column" fxLayoutGap="10px" class="px-4 py-1">
+            <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.email">
+              <mat-icon class="side-icons">email</mat-icon>
+              <span
+                ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
+              >
+            </span>
+            <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
+              <mat-icon class="side-icons">link</mat-icon>
+              <span
+                ><a [href]="org.link" target="_blank" rel="noopener">{{ org?.link }}</a></span
+              >
+            </span>
+            <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
+              <mat-icon class="side-icons">location_on</mat-icon>
+              <span class="ellipsis-lines">{{ org.location }}</span>
+            </span>
+          </div>
           <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
             <div *ngIf="!org.description" fxFlex>
               <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
@@ -144,7 +166,7 @@
             </button>
           </div>
           <markdown-wrapper *ngIf="org.description" fxFlex [data]="org.description"></markdown-wrapper>
-        </mat-card>
+        </div>
       </div>
     </div>
   </div>

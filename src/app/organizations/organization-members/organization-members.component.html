@@ -14,26 +14,28 @@
    limitations under the License.
 -->
 <app-loading [loading]="loading$ | async">
-  <div class="pt-2" fxLayout="column" fxLayoutGap="20px">
-    <div *ngFor="let organizationUser of organizationMembers$ | async; let index = index">
-      <mat-card class="m-2" fxFlex *ngIf="organizationUser?.accepted">
-        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-          <div fxFlex fxGrow="3">
-            <mat-card-header>
-              <img *ngIf="organizationUser.user?.avatarUrl" mat-card-avatar class="header-image" [src]="organizationUser.user?.avatarUrl" />
-              <img
-                *ngIf="!organizationUser.user?.avatarUrl"
-                mat-card-avatar
-                class="header-image"
-                src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"
-              />
-              <mat-card-title>{{ organizationUser.user?.username }}</mat-card-title>
-              <mat-card-subtitle>{{ organizationUser.role | titlecase }}</mat-card-subtitle>
-              <mat-card-subtitle *ngIf="organizationUser.user?.orcid">
-                ORCID <img src="../../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo mr-3" />
+  <div class="pt-2" fxLayout="row wrap" fxLayoutGap="1rem">
+    <div *ngFor="let organizationUser of organizationMembers$ | async; let index = index" class="col-xs-12">
+      <mat-card class="m-2" *ngIf="organizationUser?.accepted">
+        <div fxLayout="row" fxLayoutAlign="space-between stretch">
+          <div fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="center center">
+            <img *ngIf="organizationUser.user?.avatarUrl" mat-card-avatar class="header-image" [src]="organizationUser.user?.avatarUrl" />
+            <img
+              *ngIf="!organizationUser.user?.avatarUrl"
+              mat-card-avatar
+              class="header-image"
+              src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"
+            />
+            <div fxFlex="80" fxLayout="column" fxLayoutAlign="start stretch">
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <h6>{{ organizationUser.user?.username }}</h6>
+                <mat-chip>{{ organizationUser.role | titlecase }}</mat-chip>
+              </div>
+              <span *ngIf="organizationUser.user?.orcid" fxLayout="row wrap">
+                <div>ORCID <img src="../../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo mr-3" /></div>
                 <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
-              </mat-card-subtitle>
-            </mat-card-header>
+              </span>
+            </div>
           </div>
           <div fxFlex fxGrow="1" fxLayoutAlign="end center" *ngIf="canEditMembership$ | async">
             <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0">

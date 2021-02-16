@@ -25,17 +25,12 @@ app-page img {
   display: block;
 }
 
-/* header needs proper format */
-app-header img {
-  width: 32px;
-}
-
 app-header h3 {
-  font-size: 20px;
-  color: #21335b;
+  font-size: 1.3rem;
+  color: black;
   margin: 20px 0px 15px 0px;
   display: inline;
-  line-height: 55px;
+  line-height: 4rem;
 }
 
 app-header .container-fluid {
