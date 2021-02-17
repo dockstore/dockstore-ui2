@@ -13,6 +13,5 @@ export class SnackbarDirective {
       duration: 1000,
       panelClass: 'custom_copy_snack_bar',
     });
-    console.log('hi');
   }
 }

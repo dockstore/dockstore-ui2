@@ -15,7 +15,6 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntil } from 'rxjs/operators';
 
 import { MetadataService } from '../metadata/metadata.service';
@@ -29,7 +28,7 @@ import { versions } from './versions';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.css'],
 })
 export class FooterComponent extends Base implements OnInit {
   version: string;
@@ -58,15 +57,8 @@ export class FooterComponent extends Base implements OnInit {
    */
   private readonly WEBSERVICE_DOWN_STATUS_CODES = [0, 404, 502, 504];
 
-  constructor(private metadataService: MetadataService, private footerService: FooterService, private matSnackBar: MatSnackBar) {
+  constructor(private metadataService: MetadataService, private footerService: FooterService) {
     super();
-  }
-
-  openSnackBar() {
-    this.matSnackBar.open('Copied!', '', {
-      duration: 500,
-      panelClass: 'custom_copy_snack_bar',
-    });
   }
 
   ngOnInit() {

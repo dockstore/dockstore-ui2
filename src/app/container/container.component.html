@@ -290,6 +290,7 @@
                 type="button"
                 [cdkCopyToClipboard]="dockerPullCmd"
                 (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')"
+                appSnackbar
               >
                 <mat-icon>file_copy</mat-icon>
               </button>

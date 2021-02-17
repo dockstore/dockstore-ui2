@@ -27,6 +27,7 @@ token: {{ dsToken }}&#13;&#10;server-url: {{ dsServerURI }}</textarea
       type="button"
       [cdkCopyToClipboard]="inputTarget"
       (cbOnSuccess)="isCopied2 = true"
+      appSnackbar
     >
       <mat-icon>file_copy</mat-icon>
     </button>
