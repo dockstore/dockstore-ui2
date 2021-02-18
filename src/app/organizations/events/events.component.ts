@@ -25,8 +25,8 @@ export class EventsComponent extends Base implements OnInit, OnChanges {
   ngOnInit() {
     this.loading$ = this.eventsQuery.loading$;
     this.events$ = this.eventsQuery.organizationEvents$;
-    this.events$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((x) => {
-      this.eventsLength.emit(x.length);
+    this.events$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((eventsList) => {
+      this.eventsLength.emit(eventsList.length);
     });
   }
 

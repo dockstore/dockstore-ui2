@@ -60,8 +60,8 @@ export class OrganizationMembersComponent extends Base implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.canEditMembership$ = this.organizationQuery.canEditMembership$;
     this.organizationMembers$ = this.organizationMembersQuery.sortedOrganizationMembers$;
-    this.organizationMembers$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((x) => {
-      this.membersLength.emit(x.length);
+    this.organizationMembers$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((membersList) => {
+      this.membersLength.emit(membersList.length);
     });
     this.loading$ = this.organizationMembersQuery.selectLoading();
   }

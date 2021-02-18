@@ -43,14 +43,16 @@ export class CollectionsComponent extends Base implements OnInit, OnChanges {
     private organizationQuery: OrganizationQuery,
     private collectionsService: CollectionsService,
     private matDialog: MatDialog
-  ) {super(); }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.loading$ = this.collectionsQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.collections$ = this.collectionsQuery.collections$;
-    this.collections$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(x => {
-      this.collectionsLength.emit(Object.keys(x).length);
+    this.collections$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collectionList) => {
+      this.collectionsLength.emit(Object.keys(collectionList).length);
     });
   }
 

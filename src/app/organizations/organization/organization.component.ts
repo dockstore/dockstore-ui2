@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -35,7 +35,6 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-org
 })
 export class OrganizationComponent implements OnInit {
   public organizationStarGazersClicked = false;
-  @Input() indexNum: number;
   eventsLength: number;
   membersLength: number;
   collectionsLength: number;
