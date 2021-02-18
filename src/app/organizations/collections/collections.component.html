@@ -18,7 +18,7 @@
     <mat-card class="alert alert-info mx-1" role="alert"> <mat-icon>info</mat-icon> No collections found. </mat-card>
   </div>
   <ng-template #hasCollections>
-    <div fxLayout="column" fxLayoutGap="1rem">
+    <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
       <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue" class="m-1">
         <a [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]" data-cy="collectionName">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
