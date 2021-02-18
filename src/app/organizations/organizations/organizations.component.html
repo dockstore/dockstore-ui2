@@ -36,7 +36,6 @@
         <input matInput placeholder="Search organizations" formControlName="name" />
       </mat-form-field>
     </form>
-    <!-- <div>{{organizations.length}}</div> -->
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
       <div fxLayoutAlign="start stretch" fxLayout="column">
         <mat-card fxFlexOffset="10px" *ngFor="let org of organizations" class="my-2">

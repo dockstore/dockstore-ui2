@@ -21,7 +21,6 @@
       <span fxHide.lt-sm>/</span>
       <span fxHide.lt-sm>{{ (organization$ | async)?.displayName }}</span>
     </div>
-    <!-- <div *ngIf="(organization$ | async)" fxHide.lt-sm>Organization smth of smth</div> -->
   </div>
 </app-header>
 <app-loading [loading]="loading$ | async">
@@ -100,7 +99,7 @@
           <mat-tab>
             <ng-template mat-tab-label>
               <div fxLayoutGap="0.5rem">
-                <img src="../../../assets/svg/collections.svg" />
+                <img src="../../../assets/svg/collections.svg" alt="collections icon" />
                 <span>Collections</span>
                 <span class="tab-chip">{{ collectionsLength ? collectionsLength : 0 }}</span>
               </div>
