@@ -25,6 +25,11 @@ app-page img {
   display: block;
 }
 
+/* header needs proper format */
+app-header img {
+  width: 2rem;
+}
+
 app-header h3 {
   font-size: 1.3rem;
   color: black;

@@ -1195,11 +1195,6 @@ app-sidebar-accordion
   }
 }
 
-.mat-tab-labels {
-  justify-content: space-between;
-  display: flex;
-}
-
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names
 // TODO: Ideally this should stretch to the length of the longest dropdown option.
