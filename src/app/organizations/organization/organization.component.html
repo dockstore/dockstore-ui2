@@ -18,8 +18,8 @@
     <div fxLayout="row" fxLayoutGap="1rem">
       <img src="../../../assets/svg/organization.svg" alt="organization icon" />
       <a class="category-text" [routerLink]="['/organizations/']">Organizations</a>
-      <span>/</span>
-      <span>{{ (organization$ | async)?.displayName }}</span>
+      <span fxHide.lt-sm>/</span>
+      <span fxHide.lt-sm>{{ (organization$ | async)?.displayName }}</span>
     </div>
     <!-- <div *ngIf="(organization$ | async)" fxHide.lt-sm>Organization smth of smth</div> -->
   </div>
