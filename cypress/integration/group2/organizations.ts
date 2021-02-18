@@ -46,7 +46,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Display Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
+      typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
       typeInInput('Organization website', 'www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
@@ -70,11 +70,12 @@ describe('Dockstore Organizations', () => {
   describe('Should be able to view new unapproved organization', () => {
     it('have the fields just entered in during registration', () => {
       cy.contains('Potato');
-      cy.contains("Boil 'em, mash 'em, stick 'em in a stew");
+      cy.contains('Boil \'em, mash \'em, stick \'em in a stew');
       cy.contains('https://www.google.ca');
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
       cy.contains('No collections found');
+      cy.wait(5000);
       cy.get('.orgLogo').should('have.attr', 'src').should('include', '../../../assets/images/dockstore/PlaceholderLC.png');
     });
     it('be able to edit an unapproved organization', () => {
@@ -113,6 +114,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('https://www.google.com');
       cy.contains('UCSC Basement');
       cy.contains('asdf@asdf.com');
+      cy.wait(5000);
       cy.get('.orgLogo')
         .should('have.attr', 'src')
         .should('include', 'https://www.gravatar.com/avatar/000?d=' + imageURL);
