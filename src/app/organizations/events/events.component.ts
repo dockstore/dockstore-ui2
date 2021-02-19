@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Base } from '../../shared/base';
 import { Event } from '../../shared/swagger';
 import { EventsQuery } from '../state/events.query';
 import { EventsService } from '../state/events.service';
@@ -11,23 +9,17 @@ import { EventsService } from '../state/events.service';
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
 })
-export class EventsComponent extends Base implements OnInit, OnChanges {
+export class EventsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;
   events$: Observable<Array<Event>>;
   loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
-  @Output() eventsLength = new EventEmitter<number>();
 
-  constructor(private eventsQuery: EventsQuery, private eventsService: EventsService) {
-    super();
-  }
+  constructor(private eventsQuery: EventsQuery, private eventsService: EventsService) {}
 
   ngOnInit() {
     this.loading$ = this.eventsQuery.loading$;
     this.events$ = this.eventsQuery.organizationEvents$;
-    this.events$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((eventsList) => {
-      this.eventsLength.emit(eventsList.length);
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

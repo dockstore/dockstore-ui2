@@ -101,30 +101,30 @@
               <div fxLayoutGap="0.5rem">
                 <img src="../../../assets/svg/collections.svg" alt="collections icon" />
                 <span>Collections</span>
-                <span class="tab-chip">{{ collectionsLength ? collectionsLength : 0 }}</span>
+                <span class="tab-chip">{{ getObjectKeys(collectionsQuery.collections$ | async).length }}</span>
               </div>
             </ng-template>
-            <collections (collectionsLength)="getCollections($event)" [organizationID]="org.id" [organizationName]="org.name"></collections>
+            <collections [organizationID]="org.id" [organizationName]="org.name"></collections>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
               <div fxLayoutGap="0.5rem">
                 <mat-icon class="tab-icons">people</mat-icon>
                 <span>Members</span>
-                <span class="tab-chip">{{ membersLength ? membersLength : 0 }}</span>
+                <span class="tab-chip">{{ (organizationMembersQuery.sortedOrganizationMembers$ | async).length }}</span>
               </div>
             </ng-template>
-            <organization-members (membersLength)="getMembers($event)"></organization-members>
+            <organization-members></organization-members>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
               <div fxLayoutGap="0.5rem">
                 <mat-icon class="tab-icons">update</mat-icon>
                 <span>Updates</span>
-                <span class="tab-chip">{{ eventsLength ? eventsLength : 0 }}</span>
+                <span class="tab-chip">{{ (eventsQuery.organizationEvents$ | async).length }}</span>
               </div>
             </ng-template>
-            <events (eventsLength)="getEvents($event)" [organizationID]="org.id"></events>
+            <events [organizationID]="org.id"></events>
           </mat-tab>
         </mat-tab-group>
       </div>

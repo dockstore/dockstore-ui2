@@ -13,12 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HashMap } from '@datorama/akita';
-import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection } from '../../shared/swagger';
 import { CollectionsQuery } from '../state/collections.query';
@@ -31,29 +29,23 @@ import { CreateCollectionComponent } from './create-collection/create-collection
   templateUrl: './collections.component.html',
   styleUrls: ['./collections.component.scss'],
 })
-export class CollectionsComponent extends Base implements OnInit, OnChanges {
+export class CollectionsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;
   @Input() organizationName: string;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   collections$: Observable<HashMap<Collection>>;
-  @Output() collectionsLength = new EventEmitter<number>();
   constructor(
     private collectionsQuery: CollectionsQuery,
     private organizationQuery: OrganizationQuery,
     private collectionsService: CollectionsService,
     private matDialog: MatDialog
-  ) {
-    super();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loading$ = this.collectionsQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.collections$ = this.collectionsQuery.collections$;
-    this.collections$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collectionList) => {
-      this.collectionsLength.emit(Object.keys(collectionList).length);
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

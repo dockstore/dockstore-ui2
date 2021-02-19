@@ -28,10 +28,15 @@ import { OrganizationService } from '../state/organization.service';
 // tslint:disable-next-line: max-line-length
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 
+import { CollectionsQuery } from '../state/collections.query';
+import { EventsQuery } from '../state/events.query';
+import { OrganizationMembersQuery } from '../state/organization-members.query';
+
 @Component({
   selector: 'organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
+  providers: [OrganizationMembersQuery, CollectionsQuery, EventsQuery],
 })
 export class OrganizationComponent implements OnInit {
   public organizationStarGazersClicked = false;
@@ -54,7 +59,10 @@ export class OrganizationComponent implements OnInit {
     private orgschemaService: OrgSchemaService,
     private matDialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    public organizationMembersQuery: OrganizationMembersQuery,
+    public collectionsQuery: CollectionsQuery,
+    public eventsQuery: EventsQuery
   ) {}
 
   ngOnInit() {
@@ -95,15 +103,7 @@ export class OrganizationComponent implements OnInit {
     this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
   }
 
-  public getEvents(num: number) {
-    this.eventsLength = num;
-  }
-
-  public getMembers(num: number) {
-    this.membersLength = num;
-  }
-
-  public getCollections(num: number) {
-    this.collectionsLength = num;
+  getObjectKeys(hashmap) {
+    return Object.keys(hashmap);
   }
 }

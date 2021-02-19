@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { ConfirmationDialogData } from 'app/confirmation-dialog/confirmation-dialog.component';
@@ -42,7 +42,6 @@ export class OrganizationMembersComponent extends Base implements OnInit {
   canEdit$: Observable<boolean>;
   canEditMembership$: Observable<boolean>;
   userId$: Observable<number>;
-  @Output() membersLength = new EventEmitter<number>();
   constructor(
     private confirmationDialogService: ConfirmationDialogService,
     private organizationMembersQuery: OrganizationMembersQuery,
@@ -60,9 +59,6 @@ export class OrganizationMembersComponent extends Base implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.canEditMembership$ = this.organizationQuery.canEditMembership$;
     this.organizationMembers$ = this.organizationMembersQuery.sortedOrganizationMembers$;
-    this.organizationMembers$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((membersList) => {
-      this.membersLength.emit(membersList.length);
-    });
     this.loading$ = this.organizationMembersQuery.selectLoading();
   }
 
