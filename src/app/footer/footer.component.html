@@ -101,7 +101,7 @@
               </a>
             </li>
             <li class="m-0">
-              <button mat-stroked-button [cdkCopyToClipboard]="content" (click)="openSnackBar()">
+              <button mat-stroked-button [cdkCopyToClipboard]="content" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
                 <small>&nbsp;Copy Build Info</small>
               </button>

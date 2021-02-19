@@ -56,6 +56,7 @@ import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SelectModule } from './select.module';
+import { SnackbarModule } from './snackbar.module';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { SelectModule } from './select.module';
     FlexLayoutModule,
     MarkdownModule,
     MarkdownWrapperModule,
+    SnackbarModule,
   ],
   providers: [
     EmailService,

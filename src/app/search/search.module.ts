@@ -27,6 +27,7 @@ import { TagCloudModule } from 'angular-tag-cloud-module';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
+import { SnackbarModule } from '../shared/modules/snackbar.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
@@ -65,6 +66,7 @@ import { SearchService } from './state/search.service';
     RefreshAlertModule,
     FlexLayoutModule,
     MdePopoverModule,
+    SnackbarModule,
   ],
   providers: [SearchService, QueryBuilderService],
   exports: [SearchComponent],

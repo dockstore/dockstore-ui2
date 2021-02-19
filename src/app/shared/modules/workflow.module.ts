@@ -58,6 +58,7 @@ import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
+import { SnackbarModule } from './snackbar.module';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
     MarkdownModule,
     RefreshAlertModule,
     MarkdownWrapperModule,
+    SnackbarModule,
   ],
   providers: [
     DateService,
