@@ -1,11 +1,5 @@
-@import '~@angular/material/theming';
-
 .header-image {
   background-size: cover;
-}
-
-.mat-card {
-  @include mat-elevation(2);
 }
 
 .mat-card-avatar {
@@ -43,4 +37,8 @@ a {
   border-radius: 1rem;
   padding: 0.5rem 0.7rem;
   font-size: 1.3rem;
+}
+
+* {
+  color: #151c3d;
 }

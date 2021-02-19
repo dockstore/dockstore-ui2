@@ -19,7 +19,7 @@
   </div>
   <ng-template #hasCollections>
     <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
-      <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue" class="m-1">
+      <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue" class="m-1 mat-elevation-z4">
         <a [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]" data-cy="collectionName">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
             <div fxFlex fxGrow="3">
