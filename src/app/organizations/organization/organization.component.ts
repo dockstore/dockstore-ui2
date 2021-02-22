@@ -36,13 +36,10 @@ import { OrganizationMembersQuery } from '../state/organization-members.query';
   selector: 'organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
-  providers: [OrganizationMembersQuery, CollectionsQuery, EventsQuery],
 })
 export class OrganizationComponent implements OnInit {
   public organizationStarGazersClicked = false;
-  eventsLength: number;
-  membersLength: number;
-  collectionsLength: number;
+  collectionsLength$: Observable<number>;
 
   organization$: Observable<Organization>;
   loading$: Observable<boolean>;
@@ -75,6 +72,7 @@ export class OrganizationComponent implements OnInit {
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.schema$ = this.organization$.pipe(map((organization) => this.orgschemaService.getSchema(organization)));
+    this.collectionsLength$ = this.collectionsQuery.collections$.pipe(map((collections) => Object.keys(collections).length));
   }
 
   /**
@@ -101,9 +99,5 @@ export class OrganizationComponent implements OnInit {
 
   organizationStarGazersChange(): void {
     this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
-  }
-
-  getObjectKeys(hashmap) {
-    return Object.keys(hashmap);
   }
 }

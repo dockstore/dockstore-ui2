@@ -101,7 +101,7 @@
               <div fxLayoutGap="0.5rem">
                 <img src="../../../assets/svg/collections.svg" alt="collections icon" />
                 <span>Collections</span>
-                <span class="tab-chip">{{ getObjectKeys(collectionsQuery.collections$ | async).length }}</span>
+                <span class="tab-display">{{ collectionsLength$ | async }}</span>
               </div>
             </ng-template>
             <collections [organizationID]="org.id" [organizationName]="org.name"></collections>
@@ -111,7 +111,7 @@
               <div fxLayoutGap="0.5rem">
                 <mat-icon class="tab-icons">people</mat-icon>
                 <span>Members</span>
-                <span class="tab-chip">{{ (organizationMembersQuery.sortedOrganizationMembers$ | async).length }}</span>
+                <span class="tab-display">{{ (organizationMembersQuery.sortedOrganizationMembers$ | async).length }}</span>
               </div>
             </ng-template>
             <organization-members></organization-members>
@@ -121,7 +121,7 @@
               <div fxLayoutGap="0.5rem">
                 <mat-icon class="tab-icons">update</mat-icon>
                 <span>Updates</span>
-                <span class="tab-chip">{{ (eventsQuery.organizationEvents$ | async).length }}</span>
+                <span class="tab-display">{{ (eventsQuery.organizationEvents$ | async).length }}</span>
               </div>
             </ng-template>
             <events [organizationID]="org.id"></events>
