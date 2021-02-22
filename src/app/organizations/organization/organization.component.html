@@ -130,14 +130,25 @@
       </div>
       <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
         <div fxLayout="column" fxLayoutGap="15px" class="my-3">
-          <h4>About the Organization</h4>
-          <div fxLayout="column" fxLayoutGap="10px" class="px-4 py-1">
-            <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.email">
-              <mat-icon class="side-icons">email</mat-icon>
-              <span
-                ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <h4>About the Organization</h4>
+            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
+              <div *ngIf="!org.description" fxFlex>
+                <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
+                <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
+              </div>
+              <button
+                mat-button
+                *ngIf="canEdit$ | async"
+                (click)="updateDescription()"
+                id="editOrgDescription"
+                matTooltip="Edit the description"
               >
-            </span>
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div fxLayout="column" fxLayoutGap="10px" class="px-4 py-1">
             <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
               <mat-icon class="side-icons">link</mat-icon>
               <span
@@ -148,21 +159,6 @@
               <mat-icon class="side-icons">location_on</mat-icon>
               <span class="ellipsis-lines">{{ org.location }}</span>
             </span>
-          </div>
-          <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
-            <div *ngIf="!org.description" fxFlex>
-              <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
-              <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
-            </div>
-            <button
-              mat-button
-              *ngIf="canEdit$ | async"
-              (click)="updateDescription()"
-              id="editOrgDescription"
-              matTooltip="Edit the description"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
           </div>
           <markdown-wrapper *ngIf="org.description" fxFlex [data]="org.description"></markdown-wrapper>
         </div>

@@ -22,7 +22,7 @@
       <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue" class="m-1 mat-elevation-z4">
         <a [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]" data-cy="collectionName">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <div fxFlex fxGrow="3">
+            <div>
               <mat-card-header>
                 <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                   <img src="../../../assets/svg/collections.svg" alt="collections icon" />
@@ -31,7 +31,7 @@
                 <mat-card-subtitle>{{ collection.value.topic }}</mat-card-subtitle>
               </mat-card-header>
             </div>
-            <div *ngIf="canEdit$ | async" fxFlex fxGrow="1" fxLayoutAlign="flex-end center">
+            <div *ngIf="canEdit$ | async">
               <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0">
                 <button
                   color="basic"
