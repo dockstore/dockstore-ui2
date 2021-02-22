@@ -37,6 +37,7 @@ export class Dockstore {
   static BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = 'https://sb.biodatacatalyst.nhlbi.nih.gov/integration/trs/import';
   static BD_CATALYST_TERRA_IMPORT_URL = 'https://terra.biodatacatalyst.nhlbi.nih.gov/#import-tool/dockstore';
   static CAVATICA_IMPORT_URL = 'https://cavatica.sbgenomics.com/integration/trs/import';
+  static NEXTFLOW_TOWER_IMPORT_URL = 'https://tower.nf/launch';
 
   static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
