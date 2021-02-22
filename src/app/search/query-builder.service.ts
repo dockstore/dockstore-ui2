@@ -198,7 +198,7 @@ export class QueryBuilderService {
   /**
    * Appends search-everything filter to the query
    * Currently searches sourcefiles, description, labels, author, and path
-   * Some requiremnts:
+   * Some requirements:
    * 1. Need to be able to match substring (ex. "chicken pot pie" should match "pot")
    * 2. Need to be able to handle slashes (ex. "beef/stew" should match "beef/stew")
    * Wildcard is used for #1
