@@ -28,6 +28,10 @@ import { OrganizationService } from '../state/organization.service';
 // tslint:disable-next-line: max-line-length
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 
+import { CollectionsQuery } from '../state/collections.query';
+import { EventsQuery } from '../state/events.query';
+import { OrganizationMembersQuery } from '../state/organization-members.query';
+
 @Component({
   selector: 'organization',
   templateUrl: './organization.component.html',
@@ -35,6 +39,7 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-org
 })
 export class OrganizationComponent implements OnInit {
   public organizationStarGazersClicked = false;
+  collectionsLength$: Observable<number>;
 
   organization$: Observable<Organization>;
   loading$: Observable<boolean>;
@@ -51,7 +56,10 @@ export class OrganizationComponent implements OnInit {
     private orgschemaService: OrgSchemaService,
     private matDialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    public organizationMembersQuery: OrganizationMembersQuery,
+    public collectionsQuery: CollectionsQuery,
+    public eventsQuery: EventsQuery
   ) {}
 
   ngOnInit() {
@@ -64,6 +72,7 @@ export class OrganizationComponent implements OnInit {
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.schema$ = this.organization$.pipe(map((organization) => this.orgschemaService.getSchema(organization)));
+    this.collectionsLength$ = this.collectionsQuery.collections$.pipe(map((collections) => Object.keys(collections).length));
   }
 
   /**

@@ -75,7 +75,6 @@ describe('Dockstore Organizations', () => {
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
       cy.contains('No collections found');
-      cy.get('.orgLogo').should('have.attr', 'src').should('include', '../../../assets/images/dockstore/PlaceholderLC.png');
     });
     it('be able to edit an unapproved organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
@@ -113,9 +112,6 @@ describe('Dockstore Organizations', () => {
       cy.contains('https://www.google.com');
       cy.contains('UCSC Basement');
       cy.contains('asdf@asdf.com');
-      cy.get('.orgLogo')
-        .should('have.attr', 'src')
-        .should('include', 'https://www.gravatar.com/avatar/000?d=' + imageURL);
     });
 
     it('have request shown on homepage', () => {
