@@ -44,7 +44,10 @@
           </div>
           <div>
             <h2>
-              Collection: <span [matTooltip]="collection?.name" class="colleciton-name">{{ collection.displayName }}</span>
+              <a [routerLink]="['/organizations/', organization.name]">
+                <span [matTooltip]="organization?.name" class="org-name">{{ organization.displayName }}</span></a
+              >
+              / <span [matTooltip]="collection?.name" class="colleciton-name">{{ collection.displayName }}</span>
             </h2>
             <span>{{ collection.topic }}</span>
           </div>
@@ -76,7 +79,10 @@
               <mat-card class="mat-elevation-z3">
                 <a
                   target="_self"
-                  [routerLink]="['/' + entry.entryType + 's/', entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')]"
+                  [routerLink]="[
+                    '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
+                    entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')
+                  ]"
                 >
                   <div fxLayout="row" fxLayoutAlign="space-between">
                     <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
@@ -114,7 +120,10 @@
                   <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                   <a
                     target="_self"
-                    [routerLink]="['/' + entry.entryType + 's/', entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')]"
+                    [routerLink]="[
+                      '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
+                      entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')
+                    ]"
                   >
                     <button class="btn view-button">View</button>
                   </a>
