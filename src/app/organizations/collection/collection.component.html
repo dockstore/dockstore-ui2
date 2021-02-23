@@ -40,14 +40,14 @@
       <div fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem">
           <div *ngIf="gravatarUrl$ | async" fxLayoutAlign="center center" fxHide.lt-sm>
-            <img [src]="gravatarUrl$ | async" class="orgLogo" />
+            <img [src]="gravatarUrl$ | async" class="orgLogo" alt="organization logo" />
           </div>
           <div>
             <h2>
               <a [routerLink]="['/organizations/', organization.name]">
                 <span [matTooltip]="organization?.name" class="org-name">{{ organization.displayName }}</span></a
               >
-              / <span [matTooltip]="collection?.name" class="colleciton-name">{{ collection.displayName }}</span>
+              : <span [matTooltip]="collection?.name" class="colleciton-name">{{ collection.displayName }}</span>
             </h2>
             <span>{{ collection.topic }}</span>
           </div>
