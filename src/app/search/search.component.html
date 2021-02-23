@@ -99,34 +99,44 @@
             <div class="panel-container-label">
               <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
-                  <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
+                  <div
+                    matTooltip="{{ key | mapFriendlyValue: subBucket }}"
+                    [matTooltipPosition]="'after'"
+                    [matTooltipDisabled]="isDisabled(toolTip)"
+                    #toolTip
+                    class="tooltip-div"
+                  >
                     <mat-checkbox
-                      class="search-facet-checkboxes"
+                      id="search-facet-checkboxes"
                       type="checkbox"
                       [checked]="checkboxMap.get(key).get(subBucket)"
                       (change)="onClick(key, subBucket)"
                     >
                       {{ key | mapFriendlyValue: subBucket }}
                     </mat-checkbox>
-                  </span>
+                  </div>
                 </div>
                 <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
                 <div class="histogram" [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"></div>
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
-                  <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
+                  <div
+                    matTooltip="{{ key | mapFriendlyValue: subBucket }}"
+                    [matTooltipPosition]="'after'"
+                    [matTooltipDisabled]="isDisabled(toolTip)"
+                    #toolTip
+                    class="tooltip-div"
+                  >
                     <mat-checkbox
                       class="search-facet-checkboxes"
-                      matTooltip="{{ subBucket }}"
-                      [matTooltipPosition]="'after'"
                       type="checkbox"
                       [checked]="checkboxMap.get(key).get(subBucket)"
                       (change)="onClick(key, subBucket)"
                     >
                       {{ key | mapFriendlyValue: subBucket }}
                     </mat-checkbox>
-                  </span>
+                  </div>
                 </div>
                 <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
                 <div class="histogram" [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"></div>

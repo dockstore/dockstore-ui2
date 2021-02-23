@@ -179,6 +179,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasFacetAutoCompleteTerms$ = this.searchQuery.hasFacetAutoCompleteTerms$;
   }
 
+  isDisabled(e) {
+    // console.log(e.scrollWidth + " and " + e.clientWidth);
+    return e.scrollWidth <= e.clientWidth;
+  }
+
   /**
    * Applies parameters from the permalink to the search
    */

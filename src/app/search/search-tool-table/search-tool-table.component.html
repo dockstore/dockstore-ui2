@@ -32,7 +32,7 @@
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
-        <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
+        <a [routerLink]="'/containers/' + tool.tool_path">{{
           tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
         }}</a>
       </mat-cell>
@@ -41,7 +41,7 @@
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
         <a *ngIf="tool.verified" [href]="verifiedLink">
-          <mat-icon matTooltip="Verified">check</mat-icon>
+          <mat-icon>check</mat-icon>
         </a>
       </mat-cell>
     </ng-container>
