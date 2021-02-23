@@ -78,7 +78,6 @@
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
               <mat-card class="mat-elevation-z3">
                 <a
-                  target="_self"
                   [routerLink]="[
                     '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
                     entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')
@@ -119,7 +118,6 @@
                 <div fxLayout="row" fxLayoutAlign="space-between">
                   <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                   <a
-                    target="_self"
                     [routerLink]="[
                       '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
                       entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')

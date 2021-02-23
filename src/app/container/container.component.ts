@@ -114,7 +114,6 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       alertService,
       entryService
     );
-    this.location = location;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
     this._toolType = 'containers';
