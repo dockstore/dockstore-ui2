@@ -81,6 +81,7 @@ import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
 import { OrderByModule } from './shared/modules/orderby.module';
+import { SnackbarModule } from './shared/modules/snackbar.module';
 import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
 import { GA4GHV20Service } from './shared/openapi/api/gA4GHV20.service';
 import { PagenumberService } from './shared/pagenumber.service';
@@ -178,6 +179,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     RequestsModule,
     HomePageModule,
     HttpClientModule,
+    SnackbarModule,
   ],
   providers: [
     AccountsService,

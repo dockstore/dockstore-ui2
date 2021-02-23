@@ -31,6 +31,7 @@ import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { EntryActionsService } from '../entry-actions/entry-actions.service';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
 import { CustomMaterialModule } from '../modules/material.module';
+import { SnackbarModule } from '../modules/snackbar.module';
 import { CommitUrlPipe } from './commit-url.pipe';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
@@ -55,6 +56,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     RouterModule,
     ReactiveFormsModule,
     RefreshAlertModule,
+    SnackbarModule,
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,

@@ -1,3 +1,29 @@
 .mat-action-row {
   border: 0;
 }
+
+.view-button {
+  background: #397a84;
+  color: white;
+  font-size: 12px;
+  padding: 0.5rem 1rem;
+}
+
+hr {
+  margin: 0.5rem 0;
+  border: 1px solid #dfe0e2;
+}
+
+.mat-card-title,
+.mat-card-subtitle,
+h4 {
+  color: #151c3d;
+}
+
+.mat-card-title {
+  font-size: 1.7rem;
+}
+
+.mat-card-subtitle {
+  font-size: 1.4rem;
+}

@@ -152,14 +152,11 @@ angular-tag-cloud > span.w1:hover {
 /* Main Styles */
 
 body {
-  font-family: 'Gotham';
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   font-weight: normal;
-  /*font-family: 'Open Sans', sans-serif;*/
   color: #313131;
   font-size: 14px;
-  /* need to fix this this later...*/
   line-height: 2em !important;
-  /*margin: 100px;*/
   margin: 0;
 }
 
@@ -323,11 +320,9 @@ table.homepage-container {
 }
 
 #container-header {
-  background-color: #eef0f6;
   box-shadow: 0px 3px 6px #cfd1d7;
   position: relative;
   z-index: 1;
-  padding-top: 5px;
 }
 
 .sort {
