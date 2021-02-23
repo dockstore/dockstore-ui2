@@ -1,4 +1,36 @@
 .orgLogo {
-  max-height: 150px;
+  max-height: 100px;
   max-width: 200px;
+}
+
+.view-button {
+  background: #397a84;
+  color: white;
+  font-size: 12px;
+  padding: 0.5rem 1rem;
+}
+
+hr {
+  margin: 0.5rem 0;
+  border: 1px solid #dfe0e2;
+}
+
+h5 {
+  color: #151c3d;
+}
+
+.h5:hover {
+  text-decoration: underline;
+}
+
+.mat-card-title {
+  font-size: 1.7rem;
+}
+
+.update-time {
+  font-size: 12px;
+}
+
+.colleciton-name {
+  color: #3f51b5;
 }

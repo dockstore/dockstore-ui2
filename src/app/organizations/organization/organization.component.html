@@ -84,8 +84,7 @@
           ></app-organization-starring>
         </div>
       </div>
-      <mat-card-actions *ngIf="canEdit$ | async">
-        <div fxFlex></div>
+      <mat-card-actions *ngIf="canEdit$ | async" fxLayoutAlign="flex-end">
         <button mat-button (click)="editOrganization()" id="editOrgInfo" matTooltip="Edit the organization">
           <mat-icon>edit</mat-icon>
         </button>
