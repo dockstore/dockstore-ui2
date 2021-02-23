@@ -33,8 +33,10 @@
       <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
-      <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow">
+      <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header fxFlex="20%"
+        >Format</mat-header-cell
+      >
+      <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow" fxFlex="20%">
         <div>
           <span class="nonclick-badge">{{ workflow?.descriptorType | uppercase }}</span>
         </div>
@@ -42,7 +44,7 @@
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Project Links</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-md *matCellDef="let entry" class="align-languages">
+      <mat-cell fxShow fxHide.lt-md *matCellDef="let entry">
         <a [href]="entry?.providerUrl" *ngIf="entry?.providerUrl">
           <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"></fa-icon>
         </a>
