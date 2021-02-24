@@ -47,7 +47,7 @@
               <a [routerLink]="['/organizations/', organization.name]">
                 <span [matTooltip]="organization?.name" class="org-name">{{ organization.displayName }}</span></a
               >
-              : <span [matTooltip]="collection?.name" class="colleciton-name">{{ collection.displayName }}</span>
+              : <span [matTooltip]="collection?.name" class="collection-name">{{ collection.displayName }}</span>
             </h2>
             <span>{{ collection.topic }}</span>
           </div>
@@ -86,13 +86,13 @@
                   <div fxLayout="row" fxLayoutAlign="space-between">
                     <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                       <img *ngIf="entry.entryType === 'workflow'" src="../../../assets/svg/workflow.svg" alt="workflow icon" />
-                      <img *ngIf="entry.entryType === 'tool'" src="../../../assets/svg/tool.svg" alt="tools icon" />
+                      <img *ngIf="entry.entryType === 'tool'" src="../../../assets/svg/tool.svg" alt="tool icon" />
                       <h5>
                         {{ entry.entryPath + (entry.versionName ? ':' + entry.versionName : '') }}
                       </h5>
                     </div>
                     <div *ngIf="canEdit$ | async" fxLayout="row" fxLayoutAlign="end center">
-                      <span *ngIf="entry?.entryPath">
+                      <span>
                         <button
                           mat-flat-button
                           matTooltip="Remove entry from collection."
