@@ -26,8 +26,8 @@ export class Dockstore {
   // All the following properties will get updated by configuration.service.ts. You do not
   // need to update them here. Set them in your dockstore.yml for the web service.
 
-  // Discourse URL MUST end with a slash (/)
-  static DISCOURSE_URL = 'http://localhost/';
+  // Discourse URL should not end with a slash (/) but will work fine with one
+  static DISCOURSE_URL = 'http://localhost';
 
   static DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
   static DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
@@ -36,6 +36,8 @@ export class Dockstore {
   static ANVIL_IMPORT_URL = 'https://anvil.terra.bio/#import-tool/dockstore';
   static BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = 'https://sb.biodatacatalyst.nhlbi.nih.gov/integration/trs/import';
   static BD_CATALYST_TERRA_IMPORT_URL = 'https://terra.biodatacatalyst.nhlbi.nih.gov/#import-tool/dockstore';
+  static CAVATICA_IMPORT_URL = 'https://cavatica.sbgenomics.com/integration/trs/import';
+  static NEXTFLOW_TOWER_IMPORT_URL = 'https://tower.nf/launch';
 
   static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
@@ -76,6 +78,7 @@ export class Dockstore {
 
   static GITHUB_APP_INSTALLATION_URL = 'will be filled in by configuration.service';
 
+  static DOCKSTORE_REPO = 'https://github.com/dockstore/dockstore';
   static DOCUMENTATION_URL = 'https://docs.dockstore.org';
   static FEATURED_CONTENT_URL = 'will be filled in by configuration.service';
 

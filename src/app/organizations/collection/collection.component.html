@@ -40,7 +40,7 @@
       <mat-card fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
           <div>
-            <img [src]="(gravatarUrl$ | async) || '../../../assets/images/dockstore/PlaceholderLC.png'" class="orgLogo" />
+            <img [src]="(gravatarUrl$ | async) || '../../../assets/images/dockstore/PlaceholderLC.png'" alt="placeholder" class="orgLogo" />
           </div>
           <div>
             <mat-card-header>
@@ -102,7 +102,9 @@
                       mat-flat-button
                       matTooltip="Remove entry from collection."
                       id="removeEntryButton"
-                      (click)="openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.entryPath)"
+                      (click)="
+                        openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.entryPath, entry.versionName)
+                      "
                     >
                       <mat-icon>clear</mat-icon> Remove
                     </button>

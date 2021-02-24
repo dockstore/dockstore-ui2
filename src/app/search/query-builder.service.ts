@@ -136,21 +136,18 @@ export class QueryBuilderService {
   appendFilter(body: any, aggKey: string, filters: any): any {
     filters.forEach((value: Set<string>, key: string) => {
       value.forEach((insideFilter) => {
-        if (aggKey === key && !this.searchService.exclusiveFilters.includes(key)) {
+        const isExclusiveFilter = this.searchService.exclusiveFilters.includes(key);
+        if (aggKey === key && !isExclusiveFilter) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
           body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
         } else {
+          // value refers to the buckets selected
           if (value.size > 1) {
             body = body.orFilter('term', key, insideFilter);
           } else {
-            // A non-verified tool means a tool that isn't verified and a workflow that is not verified a
-            if (key === 'verified' && insideFilter === '0') {
-              body = body.notFilter('term', 'verified', '1');
-              body = body.notFilter('term', 'workflowVersions.verified', '1');
-            } else if (key === 'verified' && insideFilter === '1') {
-              body = body.orFilter('term', 'verified', insideFilter);
-              body = body.orFilter('term', 'workflowVersions.verified', insideFilter);
+            if (isExclusiveFilter) {
+              body = body.filter('term', key, this.convertIntStringToBoolString(insideFilter));
             } else {
               body = body.filter('term', key, insideFilter);
             }
@@ -159,6 +156,21 @@ export class QueryBuilderService {
       });
     });
     return body;
+  }
+
+  /**
+   * Aside from the _index key, the exclusive facets have buckets that are boolean values (verified, not verified, etc)
+   * For some reason, ES is expecting booleans to be 'true' and 'false' but is returning values as 0 to 1
+   * @param bucketValue Bucket value of an exclusive facet
+   */
+  private convertIntStringToBoolString(bucketValue: string) {
+    if (bucketValue === '0') {
+      return 'false';
+    }
+    if (bucketValue === '1') {
+      return 'true';
+    }
+    return bucketValue;
   }
 
   /**
@@ -171,7 +183,7 @@ export class QueryBuilderService {
   appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
     if (values.toString().length > 0) {
-      this.searchEverything(body, values);
+      body = this.searchEverything(body, values);
     } else {
       body = body.query('match_all', {});
     }
@@ -190,22 +202,25 @@ export class QueryBuilderService {
   /**
    * Appends search-everything filter to the query
    * Currently searches sourcefiles, description, labels, author, and path
-   * @param {*} body The original body
-   * @param {string} searchString the search string
-   * @memberof QueryBuilderService
+   * Some requirements:
+   * 1. Need to be able to match substring (ex. "chicken pot pie" should match "pot")
+   * 2. Need to be able to handle slashes (ex. "beef/stew" should match "beef/stew")
+   * Wildcard is used for #1
+   * The paths use keyword instead of string because #2 wouldn't work otherwise
+   *
+   * @param body Body from the Bodybuilder package which will be mutated
+   * @param searchString The string entered into the basic search bar by the user
    */
-  searchEverything(body: any, searchString: string): void {
-    body = body.filter('bool', (filter) =>
+  private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
+    return body.filter('bool', (filter) =>
       filter
-        .orFilter('bool', (workflowVersionsFileContent) =>
-          workflowVersionsFileContent.filter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
-        )
-        .orFilter('bool', (tagsFileContent) => tagsFileContent.filter('match_phrase', 'tags.sourceFiles.content', searchString))
-        .orFilter('bool', (descriptionFilter) => descriptionFilter.filter('match_phrase', 'description', searchString))
-        .orFilter('bool', (labelsFilter) => labelsFilter.filter('match_phrase', 'labels', searchString))
-        .orFilter('bool', (authorFilter) => authorFilter.filter('match_phrase', 'author', searchString))
-        .orFilter('bool', (pathFilter) => pathFilter.filter('match_phrase', 'tool_path', searchString))
-        .orFilter('bool', (pathFilter) => pathFilter.filter('match_phrase', 'full_workflow_path', searchString))
+        .orFilter('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
+        .orFilter('match_phrase', 'tags.sourceFiles.content', searchString)
+        .orFilter('match_phrase', 'description', searchString)
+        .orFilter('match_phrase', 'labels', searchString)
+        .orFilter('match_phrase', 'author', searchString)
     );
   }
 

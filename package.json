@@ -3,7 +3,7 @@
   "version": "2.3.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version": "1.10.0"
+    "webservice_version": "1.10.1"
   },
   "scripts": {
     "ng": "npx ng",
@@ -13,7 +13,8 @@
     "prebuild.prod": "npm run prebuild",
     "build.prod": "npx ng build --progress false --prod --subresource-integrity",
     "build": "npx ng build --progress false --subresource-integrity",
-    "license": "license-checker  --excludePackages dockstore-ui2@2.3.0 --csv > THIRD-PARTY-LICENSES.csv",
+    "license": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > THIRD-PARTY-LICENSES.csv",
+    "circle-ci-license-test-file": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > CIRCLE-THIRD-PARTY-LICENSES.csv",
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
     "install-git-secrets": "./scripts/install-git-secrets.sh",
     "test": "npx ng test",
@@ -22,7 +23,7 @@
     "postinstall": "ngcc",
     "test-dev-no-auth": "npx cypress run --record --reporter junit -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/search.ts\"",
     "test-staging-no-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/search.ts\"",
-    "test-prod-no-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/search.ts\"",
+    "test-prod-no-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/manualTests/monitor.ts,cypress/integration/manualTests/basic-enduser.ts,cypress/integration/manualTests/search.ts,cypress/integration/manualTests/basic-enduser-prod-only.ts\"",
     "test-dev-auth": "npx cypress run --record --reporter junit -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/manualTests/auth-tests.ts\"",
     "test-staging-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/manualTests/auth-tests.ts\"",
     "test-prod-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/manualTests/auth-tests.ts\""
@@ -51,7 +52,7 @@
     "@ngx-lite/json-ld": "^0.6.2",
     "ace-builds": "^1.4.6",
     "angular-tag-cloud-module": "^5.2.0",
-    "bodybuilder": "^2.2.17",
+    "bodybuilder": "^2.2.25",
     "bootstrap": "^3.4.1",
     "bootstrap-social": "^5.1.1",
     "core-js": "^3.2.1",
@@ -59,12 +60,10 @@
     "cytoscape-dagre": "^2.2.2",
     "cytoscape-popper": "^1.0.4",
     "dompurify": "^2.2.0",
-    "elasticsearch-browser": "^15.0.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
     "material-design-icons-iconfont": "^6.1.0",
     "ng2-ui-auth": "^10.0.1",
-    "ngx-clipboard": "^14.0.1",
     "ngx-markdown": "^10.1.1",
     "ngx-sharebuttons": "^8.0.0",
     "ngx-window-token": "^4.0.0",

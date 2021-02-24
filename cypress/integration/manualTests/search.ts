@@ -19,8 +19,8 @@ describe('Admin UI', () => {
       cy.contains('the Entry Type is workflow').should('not.exist');
     });
     it('should be able to use basic search box and have suggestions', () => {
-      cy.get('[data-cy=basic-search]').type('dockstore_');
-      cy.contains(' Sorry, no matches found for dockstore');
+      cy.get('[data-cy=basic-search]').type('dockstore_d');
+      cy.contains(' Sorry, no matches found for dockstore_d');
       cy.contains('Do you mean: dockstore?');
       cy.url().should('include', '/search?search=dockstore_');
     });

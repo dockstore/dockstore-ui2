@@ -35,10 +35,10 @@
         <button
           mat-icon-button
           color="secondary"
-          ngxClipboard
-          [cbContent]="dockstoreToken"
+          [cdkCopyToClipboard]="dockstoreToken"
           (cbOnSuccess)="isCopied1 = true"
           matTooltip="Copy Token"
+          appSnackbar
         >
           <mat-icon>file_copy</mat-icon>
         </button>
@@ -82,9 +82,9 @@
         <button
           mat-icon-button
           color="secondary"
-          ngxClipboard
-          [cbContent]="row.source | getTokenContent: tokens"
+          [cdkCopyToClipboard]="row.source | getTokenContent: tokens"
           (cbOnSuccess)="isCopied1 = true"
+          appSnackbar
         >
           <mat-icon>file_copy</mat-icon>
         </button>

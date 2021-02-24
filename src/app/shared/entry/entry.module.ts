@@ -13,13 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { RefreshAlertModule } from '../alert/alert.module';
@@ -30,6 +31,7 @@ import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { EntryActionsService } from '../entry-actions/entry-actions.service';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
 import { CustomMaterialModule } from '../modules/material.module';
+import { SnackbarModule } from '../modules/snackbar.module';
 import { CommitUrlPipe } from './commit-url.pipe';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
@@ -54,6 +56,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     RouterModule,
     ReactiveFormsModule,
     RefreshAlertModule,
+    SnackbarModule,
   ],
   declarations: [
     InfoTabCheckerWorkflowPathComponent,

@@ -16,6 +16,7 @@
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MetadataService } from '../metadata/metadata.service';
 import { GA4GHService } from './../shared/swagger/api/gA4GH.service';
@@ -32,7 +33,7 @@ describe('FooterComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FooterComponent, GitTagPipe],
-        imports: [RouterTestingModule, MatIconModule],
+        imports: [RouterTestingModule, MatIconModule, MatSnackBarModule],
         providers: [MetadataService, { provide: GA4GHService, useClass: GA4GHStubService }],
       }).compileComponents();
     })

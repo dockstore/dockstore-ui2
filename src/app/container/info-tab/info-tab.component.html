@@ -51,7 +51,7 @@
               <a [href]="trsLinkCWL">
                 {{ tool?.tool_path }}
               </a>
-              <button mat-icon-button color="secondary" ngxClipboard [cbContent]="tool?.tool_path" matTooltip="Copy TRS ID">
+              <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
               </button>
             </li>
@@ -60,7 +60,7 @@
               <a [href]="trsLinkWDL">
                 {{ tool?.tool_path }}
               </a>
-              <button mat-icon-button color="secondary" ngxClipboard [cbContent]="tool?.tool_path" matTooltip="Copy TRS ID">
+              <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
               </button>
             </li>

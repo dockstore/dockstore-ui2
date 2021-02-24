@@ -17,18 +17,68 @@
 .container-fluid,
 a {
   background-color: #21335b;
-  color: white;
+  color: #e8eaf6;
 }
 
 .container-fluid {
-  padding-top: 20px;
+  padding-top: 2rem;
 }
 
-.container-fluid,
 ul {
   list-style: none;
 }
 
-.footer-list li:first-child {
-  font-weight: bold;
+/* the title of each column */
+.title {
+  /* used for making the text semi-bold */
+  text-shadow: 0 0 0 #c5cae9;
+  color: #c5cae9;
+  text-transform: uppercase;
+  padding: 1rem 0;
+}
+
+.sponsor-img {
+  height: 60px;
+  vertical-align: middle;
+}
+
+hr {
+  border: 1px solid #e8eaf6 80%;
+}
+
+@media only screen and (min-width: 80rem) {
+  hr {
+    margin-bottom: 0;
+  }
+}
+
+li a {
+  /* gives more space for link to be clicked on */
+  padding: 1rem 0;
+}
+
+/* button for "copy build info" */
+.mat-stroked-button {
+  border: #a4a8be 1px solid;
+  margin-top: 1rem;
+  padding: 0 0.45rem;
+}
+
+/* very last row of the footer */
+.bottom-footer {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.footer-link:link {
+  text-decoration: underline;
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+.dockstore-support {
+  text-align: center;
 }

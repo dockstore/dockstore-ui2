@@ -140,10 +140,10 @@ export class CollectionsService {
    * @param entryId
    * @param entryName
    */
-  removeEntryFromCollection(organizationId: number, collectionId: number, entryId: number, entryName: string) {
+  removeEntryFromCollection(organizationId: number, collectionId: number, entryId: number, entryName: string, versionName: string | null) {
     this.alertService.start('Removing entry ' + entryName);
     this.organizationsService
-      .deleteEntryFromCollection(organizationId, collectionId, entryId)
+      .deleteEntryFromCollection(organizationId, collectionId, entryId, versionName)
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
         (collection: Collection) => {

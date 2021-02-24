@@ -35,16 +35,16 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
-      <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
-      <mat-cell *matCellDef="let workflow">
+      <mat-header-cell *matHeaderCellDef fxHide.xs>Verified</mat-header-cell>
+      <mat-cell *matCellDef="let workflow" fxHide.xs>
         <a *ngIf="getVerified(workflow)" [href]="verifiedLink">
           <mat-icon matTooltip="Verified">done</mat-icon>
         </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let workflow">
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs>Stars</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let workflow" fxHide.xs>
         {{ workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers.length }}
         <mat-icon class="star-icon" *ngIf="workflow?.starredUsers?.length > 0">star_rate</mat-icon>
       </mat-cell>

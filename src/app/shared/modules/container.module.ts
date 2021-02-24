@@ -13,11 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { MarkdownModule } from 'ngx-markdown';
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
@@ -55,6 +56,7 @@ import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SelectModule } from './select.module';
+import { SnackbarModule } from './snackbar.module';
 
 @NgModule({
   declarations: [
@@ -90,6 +92,7 @@ import { SelectModule } from './select.module';
     FlexLayoutModule,
     MarkdownModule,
     MarkdownWrapperModule,
+    SnackbarModule,
   ],
   providers: [
     EmailService,

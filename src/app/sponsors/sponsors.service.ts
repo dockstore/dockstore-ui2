@@ -19,14 +19,6 @@ import { Sponsor } from './sponsor.model';
 
 @Injectable()
 export class SponsorsService {
-  // TODO: UCSC logo is technically different than the one linked to
-  private sponsors: Sponsor[] = [
-    new Sponsor('collaboratory.png', new URL('https://www.cancercollaboratory.org/')),
-    new Sponsor('oicr.png', new URL('https://oicr.on.ca/')),
-    new Sponsor('ga4gh.png', new URL('https://genomicsandhealth.org/')),
-    new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/')),
-  ];
-
   private languages: Sponsor[] = [
     new Sponsor('cwl.png', new URL('https://www.commonwl.org')),
     new Sponsor('wdl.png', new URL('http://openwdl.org')),
@@ -38,10 +30,6 @@ export class SponsorsService {
     new Sponsor('sevenbridges.png', new URL('https://www.sevenbridges.com')),
     new Sponsor('terra.png', new URL('https://terra.bio')),
   ];
-
-  getSponsors(): Sponsor[] {
-    return this.sponsors;
-  }
 
   getPartners(): Sponsor[] {
     return this.partners;

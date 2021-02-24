@@ -29,7 +29,7 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool">
-        <span *ngIf="tool.private_access">
+        <span *ngIf="tool.private_access" fxHide.xs>
           <app-private-icon></app-private-icon>
         </span>
         <a [routerLink]="'/containers/' + tool.tool_path">{{
@@ -38,17 +38,17 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
-      <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
-      <mat-cell *matCellDef="let tool">
+      <mat-header-cell *matHeaderCellDef fxHide.xs>Verified</mat-header-cell>
+      <mat-cell *matCellDef="let tool" fxHide.xs>
         <a *ngIf="getVerified(tool)" [href]="verifiedLink">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool"
-        >{{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
+      <mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs>Stars</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let tool" fxHide.xs>
+        {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
         <mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
       </mat-cell>
     </ng-container>

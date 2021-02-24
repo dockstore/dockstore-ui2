@@ -13,12 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { EntryFileTabComponent } from 'app/entry/entry-file-tab/entry-file-tab.component';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { MarkdownModule } from 'ngx-markdown';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
@@ -57,6 +58,7 @@ import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
+import { SnackbarModule } from './snackbar.module';
 
 @NgModule({
   declarations: [
@@ -96,6 +98,7 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
     MarkdownModule,
     RefreshAlertModule,
     MarkdownWrapperModule,
+    SnackbarModule,
   ],
   providers: [
     DateService,

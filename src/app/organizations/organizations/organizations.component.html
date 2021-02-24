@@ -14,8 +14,10 @@
    limitations under the License.
 -->
 <app-header>
-  <mat-icon>people</mat-icon>
-  Organizations
+  <div fxLayout="row" fxLayoutGap="1rem">
+    <img src="../../../assets/svg/organization.svg" alt="organization icon" />
+    <span>Organizations</span>
+  </div>
 </app-header>
 <div *ngIf="!(loading$ | async)" class="container">
   <button
@@ -40,7 +42,6 @@
           <mat-card-header>
             <mat-card-title>
               <a data-cy="orgName" [routerLink]="org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
-
               <span fxLayout="row" *ngIf="org?.starredUsers.length !== 0" class="pull-right">
                 <mat-icon class="orgStar">star</mat-icon>
                 <span class="ellipsis-lines">{{ org.starredUsers.length }}</span>

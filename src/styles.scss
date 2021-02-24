@@ -152,14 +152,11 @@ angular-tag-cloud > span.w1:hover {
 /* Main Styles */
 
 body {
-  font-family: 'Gotham';
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   font-weight: normal;
-  /*font-family: 'Open Sans', sans-serif;*/
   color: #313131;
   font-size: 14px;
-  /* need to fix this this later...*/
   line-height: 2em !important;
-  /*margin: 100px;*/
   margin: 0;
 }
 
@@ -323,11 +320,9 @@ table.homepage-container {
 }
 
 #container-header {
-  background-color: #eef0f6;
   box-shadow: 0px 3px 6px #cfd1d7;
   position: relative;
   z-index: 1;
-  padding-top: 5px;
 }
 
 .sort {
@@ -1171,14 +1166,6 @@ body {
   height: 52px;
 }
 
-.footer-link:link {
-  text-decoration: none;
-}
-
-.footer-link:hover {
-  text-decoration: underline;
-}
-
 .my-entry-button-group {
   margin-bottom: 5px;
 }
@@ -1273,10 +1260,22 @@ mat-tab-group.no-pagination {
 // Styling from design mockups
 // These badges are not clickable, thus different from Material Design Chips
 .nonclick-badge {
+  display: inline-flex;
   border-radius: 8px;
   background-color: #dfe0e2;
   padding: 5px 8px;
   color: #151c3d;
   font-size: 1.3rem;
   font-weight: 500;
+}
+
+@media only screen and (max-width: 1200px) {
+  .align-languages {
+    flex-direction: column;
+  }
+}
+
+.custom_copy_snack_bar {
+  min-width: 0 !important;
+  background-color: #5c5c5c !important;
 }

@@ -75,9 +75,8 @@ describe('Dockstore Organizations', () => {
       cy.contains('Basement');
       cy.contains('asdf@asdf.ca');
       cy.contains('No collections found');
-      cy.get('.orgLogo').should('have.attr', 'src').should('include', '../../../assets/images/dockstore/PlaceholderLC.png');
     });
-    it('be able to edit organization', () => {
+    it('be able to edit an unapproved organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
       cy.wait(5000);
       typeInInput('Name', 'Potatoe');
@@ -113,9 +112,6 @@ describe('Dockstore Organizations', () => {
       cy.contains('https://www.google.com');
       cy.contains('UCSC Basement');
       cy.contains('asdf@asdf.com');
-      cy.get('.orgLogo')
-        .should('have.attr', 'src')
-        .should('include', 'https://www.gravatar.com/avatar/000?d=' + imageURL);
     });
 
     it('have request shown on homepage', () => {
@@ -272,9 +268,10 @@ describe('Dockstore Organizations', () => {
     });
 
     it.skip('be able to remove an entry from a collection', () => {
-      cy.route('api/organizations/Potatoe/collections/veryFakeCollectionName/name').as('getCollection');
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
-      cy.wait('@getCollection');
+      cy.wait(10000);
+      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
+      cy.get('#removeEntryButton').click();
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
       cy.get('#removeEntryButton').click();
       cy.get('#accept-remove-entry-from-org').click();
@@ -310,6 +307,12 @@ describe('Dockstore Organizations', () => {
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
       cy.contains('mat-card-title', 'potato').parent().parent().parent().contains('Member');
+    });
+
+    it('be able to edit an approved organization', () => {
+      cy.get('#editOrgInfo').should('be.visible').click();
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#createOrUpdateOrganizationButton').should('not.be.visible');
     });
 
     it('be able to Update organization user', () => {

@@ -179,6 +179,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent, hasFileImports]) => !hasContent || (hasFileImports && !this.isGitHubWorkflow()))
   );
 
+  cavaticaTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
+    map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'Cavatica'))
+  );
+
   constructor(
     private workflowsService: WorkflowsService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
