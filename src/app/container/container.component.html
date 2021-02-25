@@ -266,6 +266,7 @@
                 <a
                   [ngStyle]="{ 'font-weight': selectedVersion?.name === sortedVersion?.name ? 'bold' : 'normal' }"
                   (click)="onSelectedVersionChange(sortedVersion)"
+                  class="panel-body-anchor"
                   >{{ sortedVersion.name }}
                 </a>
                 <small>{{ sortedVersion.last_built | date }}</small>

@@ -295,7 +295,6 @@ div.panel-container-label.selected {
   clear: both;
   overflow: hidden;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
   span {
     font-size: 14px;
@@ -733,6 +732,10 @@ div.modal form {
 .top-down-padding {
   padding-top: 2px;
   padding-bottom: 2px;
+}
+
+.panel-body-anchor {
+  word-break: break-word;
 }
 
 .funding-img {
