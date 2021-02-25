@@ -16,7 +16,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { AlertQuery } from './alert.query';
 import { AlertStore } from './alert.store';
 
