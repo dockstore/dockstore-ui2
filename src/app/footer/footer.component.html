@@ -149,28 +149,29 @@
           <ul class="footer-list m-0 affiliation-list">
             <li class="m-0 title">Find us on</li>
             <li class="m-0">
-              <a [href]="Dockstore.DOCKSTORE_REPO" target="_blank" rel="noopener noreferrer" class="footer-link">
-                <img
-                  class="site-icons-tab hidden-sm"
-                  src="../assets/images/dockstore/github-mark-light.png"
-                  alt="small GitHub logo"
-                /><small> Github</small>
-              </a>
-            </li>
-            <li class="m-0">
-              <a href="https://gitter.im/ga4gh/dockstore" target="_blank" rel="noopener noreferrer" class="footer-link">
-                <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/gitter.png" alt="small Gitter logo" /><small>
-                  Gitter</small
+              <a [href]="Dockstore.DOCKSTORE_REPO" target="_blank" rel="noopener noreferrer" class="footer-link" fxLayoutGap="0.5rem">
+                <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/github.svg" alt="small GitHub logo" /><small
+                  >GitHub</small
                 >
               </a>
             </li>
             <li class="m-0">
-              <a href="https://twitter.com/DockstoreOrg" target="_blank" rel="noopener noreferrer" class="footer-link icon">
-                <img
-                  class="site-icons-tab hidden-sm"
-                  src="../assets/images/dockstore/twitter-logo-white.png"
-                  alt="small Twitter logo"
-                /><small> @DockstoreOrg</small>
+              <a
+                href="https://gitter.im/ga4gh/dockstore"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+                fxLayoutGap="0.5rem"
+              >
+                <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/gitter.svg" alt="small Gitter logo" />
+                <small>Gitter</small>
+              </a>
+            </li>
+            <li class="m-0">
+              <a href="https://twitter.com/DockstoreOrg" target="_blank" rel="noopener noreferrer" class="footer-link" fxLayoutGap="0.5rem">
+                <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/twitter.svg" alt="small Twitter logo" /><small
+                  >@DockstoreOrg</small
+                >
               </a>
             </li>
             <li class="m-0">
@@ -179,9 +180,11 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-link"
+                fxLayoutGap="0.5rem"
                 data-cy="footer-rss-link"
               >
-                <small><mat-icon>rss_feed</mat-icon>RSS</small>
+                <img class="site-icons-tab hidden-sm" src="../assets/images/dockstore/rss.svg" alt="rss logo" />
+                <small>RSS</small>
               </a>
             </li>
           </ul>
@@ -225,7 +228,7 @@
           <small>Privacy Policy</small>
         </a>
       </div>
-      <div class="row bottom-footer">
+      <div class="bottom-footer">
         <small class="p-4 dockstore-support">
           <a class="footer-link" [routerLink]="['/funding']" target="_self">Support for Dockstore</a>
           <span> is provided by grants from Genome Canada, the National Institutes of Health, and the Province of Ontario. </span>
