@@ -124,7 +124,7 @@ export class AlertService {
     this.clearEverything();
     const detailedError: string = AlertService.getDetailedErrorMessage(error);
     this.matSnackBar
-      .open(detailedError, actionButtonText)
+      .open(detailedError, actionButtonText, { duration: 10000 })
       .onAction()
       .subscribe(() => window.open(link, '_blank'));
   }
