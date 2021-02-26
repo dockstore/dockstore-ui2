@@ -44,7 +44,7 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+        <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
           <span *ngIf="defaultVersion === version.name" class="label label-primary">Default</span>
           <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->
           <a

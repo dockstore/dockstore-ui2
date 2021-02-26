@@ -295,7 +295,6 @@ div.panel-container-label.selected {
   clear: both;
   overflow: hidden;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
   span {
     font-size: 14px;
@@ -735,6 +734,10 @@ div.modal form {
   padding-bottom: 2px;
 }
 
+.panel-body-anchor {
+  word-break: break-word;
+}
+
 .funding-img {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -751,6 +754,11 @@ div.modal form {
 .mat-chip-list-wrapper .mat-standard-chip,
 .mat-chip-list-wrapper input.mat-input-element {
   margin: 2px !important;
+}
+
+.mat-chip-list-wrapper {
+  display: inline-flex !important;
+  margin: auto !important;
 }
 
 .mat-drawer-container {

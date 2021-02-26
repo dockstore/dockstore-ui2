@@ -1,4 +1,7 @@
-<div *ngIf="workflow?.descriptorType === 'WDL' || workflow?.descriptorType === 'CWL'" class="panel panel-default">
+<div
+  *ngIf="workflow?.descriptorType === 'WDL' || workflow?.descriptorType === 'CWL' || workflow.descriptorType === 'NFL'"
+  class="panel panel-default"
+>
   <div class="panel-heading">
     <h3>Launch with</h3>
   </div>
@@ -105,6 +108,29 @@
               [disabled]="disableSevenBridgesPlatform$ | async"
               color="primary"
               ><img src="../assets/images/thirdparty/cavatica.png" /> Cavatica
+            </a>
+          </div>
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'NFL'">
+            <a
+              mat-raised-button
+              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : 'Export this workflow to Nextflow Tower'"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="
+                config.NEXTFLOW_TOWER_IMPORT_URL +
+                '?pipeline=https://' +
+                workflow.sourceControl +
+                '/' +
+                workflow.organization +
+                '/' +
+                workflow.repository +
+                '&revision=' +
+                selectedVersion.name
+              "
+              [disabled]="!(hasContent$ | async)"
+              color="primary"
+            >
+              <img src="../assets/images/thirdparty/nextflow-icon.png" alt="Nextflow icon" /> Nextflow Tower
             </a>
           </div>
         </div>

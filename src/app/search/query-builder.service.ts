@@ -179,7 +179,7 @@ export class QueryBuilderService {
   appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
     if (values.toString().length > 0) {
-      this.searchEverything(body, values);
+      body = this.searchEverything(body, values);
     } else {
       body = body.query('match_all', {});
     }
@@ -198,22 +198,25 @@ export class QueryBuilderService {
   /**
    * Appends search-everything filter to the query
    * Currently searches sourcefiles, description, labels, author, and path
-   * @param {*} body The original body
-   * @param {string} searchString the search string
-   * @memberof QueryBuilderService
+   * Some requirements:
+   * 1. Need to be able to match substring (ex. "chicken pot pie" should match "pot")
+   * 2. Need to be able to handle slashes (ex. "beef/stew" should match "beef/stew")
+   * Wildcard is used for #1
+   * The paths use keyword instead of string because #2 wouldn't work otherwise
+   *
+   * @param body Body from the Bodybuilder package which will be mutated
+   * @param searchString The string entered into the basic search bar by the user
    */
-  searchEverything(body: any, searchString: string): void {
-    body = body.filter('bool', (filter) =>
+  private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
+    return body.filter('bool', (filter) =>
       filter
-        .orFilter('bool', (workflowVersionsFileContent) =>
-          workflowVersionsFileContent.filter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
-        )
-        .orFilter('bool', (tagsFileContent) => tagsFileContent.filter('match_phrase', 'tags.sourceFiles.content', searchString))
-        .orFilter('bool', (descriptionFilter) => descriptionFilter.filter('match_phrase', 'description', searchString))
-        .orFilter('bool', (labelsFilter) => labelsFilter.filter('match_phrase', 'labels', searchString))
-        .orFilter('bool', (authorFilter) => authorFilter.filter('match_phrase', 'author', searchString))
-        .orFilter('bool', (pathFilter) => pathFilter.filter('match_phrase', 'tool_path', searchString))
-        .orFilter('bool', (pathFilter) => pathFilter.filter('match_phrase', 'full_workflow_path', searchString))
+        .orFilter('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
+        .orFilter('match_phrase', 'tags.sourceFiles.content', searchString)
+        .orFilter('match_phrase', 'description', searchString)
+        .orFilter('match_phrase', 'labels', searchString)
+        .orFilter('match_phrase', 'author', searchString)
     );
   }
 

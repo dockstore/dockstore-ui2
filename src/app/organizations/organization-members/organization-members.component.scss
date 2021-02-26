@@ -3,8 +3,13 @@
 }
 
 .mat-card-avatar {
-  height: 90px !important;
-  width: 90px !important;
+  height: 50px !important;
+  width: 50px !important;
+}
+
+.orcid {
+  font-size: 12px;
+  line-height: none;
 }
 
 .mat-action-row {
@@ -15,4 +20,25 @@
   height: 1.4rem;
   width: 1.4rem;
   vertical-align: sub;
+}
+
+.mat-standard-chip {
+  font-size: 1.1rem;
+  border-radius: 1rem;
+  padding: none;
+}
+
+a {
+  text-decoration: underline;
+}
+
+.role-display {
+  background: #e0e0e0;
+  border-radius: 1rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 1.3rem;
+}
+
+* {
+  color: #151c3d;
 }

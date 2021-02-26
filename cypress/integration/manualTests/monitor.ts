@@ -17,13 +17,15 @@ function checkExternalLink(selector: string, url: string): void {
 const selectorLinkTuples = [
   ['[data-cy=register-button]', '/login'],
   ['[data-cy=homepage-organizations-button]', '/organizations'],
+  ['[data-cy=footer-organizations-link]', '/organizations'],
   ['[data-cy=homepage-search-link]', '/search'],
+  ['[data-cy=footer-search-link]', '/search'],
 ];
 
 const externalLinkTuples = [
   ['[data-cy=homepage-discuss-link]', 'discuss.dockstore.org'],
   ['[data-cy=footer-api-link]', '/static/swagger-ui/index.html'],
-  ['[data-cy=footer-about-link]', '/dockstore-introduction.html'],
+  ['[data-cy=footer-documentation-link]', '/dockstore-introduction.html'],
 ];
 
 before(() => {

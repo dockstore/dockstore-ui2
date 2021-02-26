@@ -173,6 +173,7 @@
                   type="button"
                   [cdkCopyToClipboard]="shortUrl$ | async"
                   (cbOnSuccess)="isCopied = true"
+                  appSnackbar
                 >
                   <mat-icon>file_copy</mat-icon>
                 </button>

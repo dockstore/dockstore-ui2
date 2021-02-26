@@ -24,18 +24,24 @@
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between">
               <div fxFlex="45%">
                 <li class="m-0">
-                  <a routerLink="/search" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-about-link">
+                  <a routerLink="/search" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-search-link">
                     <small>Explore</small>
                   </a>
                 </li>
                 <li class="m-0">
-                  <a routerLink="/organizations" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-about-link">
+                  <a
+                    routerLink="/organizations"
+                    target="_self"
+                    rel="noopener noreferrer"
+                    class="footer-link"
+                    data-cy="footer-organizations-link"
+                  >
                     <small>Organizations</small>
                   </a>
                 </li>
                 <li class="m-0">
                   <!-- needs to be filled out once About page is implemented -->
-                  <a [href]="" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-about-link">
+                  <a [href]="" target="_self" rel="noopener noreferrer" class="footer-link">
                     <small>About</small>
                   </a>
                 </li>
@@ -43,7 +49,7 @@
               <div fxFlex>
                 <li class="m-0">
                   <!-- needs to be filled out once The Team page is implemented -->
-                  <a [href]="" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-about-link">
+                  <a [href]="" target="_self" rel="noopener noreferrer" class="footer-link">
                     <small>The Team</small>
                   </a>
                 </li>
@@ -53,7 +59,6 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     class="footer-link"
-                    data-cy="footer-about-link"
                   >
                     <small>Roadmap</small>
                   </a>
@@ -96,7 +101,7 @@
               </a>
             </li>
             <li class="m-0">
-              <button mat-stroked-button [cdkCopyToClipboard]="content" (click)="openSnackBar()">
+              <button mat-stroked-button [cdkCopyToClipboard]="content" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
                 <small>&nbsp;Copy Build Info</small>
               </button>
@@ -112,6 +117,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="footer-link"
+                data-cy="footer-documentation-link"
               >
                 <small>Documentation</small>
               </a>

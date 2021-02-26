@@ -39,7 +39,9 @@
       (click)="addEntryToCollection()"
       id="addToolToCollectionButton"
     >
-      <mat-icon>add</mat-icon>Add to my collection
+      <mat-icon>add</mat-icon>
+      <span fxHide.lt-lg>Add to my collection</span>
+      <span fxHide fxShow.lt-lg>Add to mine</span>
     </button>
   </div>
 </div>
