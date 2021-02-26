@@ -88,7 +88,15 @@ export class AuthComponent extends Base implements OnInit {
         },
         (error) => {
           this.router.navigate([`${prevPage}`]);
-          this.alertService.detailedSnackBarError(error);
+          if (error.status === 409) {
+            this.alertService.detailedSnackBarErrorWithLink(
+              error,
+              'Docs',
+              'https://docs.dockstore.org/en/latest/faq.html#what-is-the-difference-between-logging-in-with-github-or-logging-in-with-google'
+            );
+          } else {
+            this.alertService.detailedSnackBarError(error);
+          }
         }
       );
   }
