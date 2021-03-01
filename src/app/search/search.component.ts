@@ -73,8 +73,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
   // Set to 201 if searching both queries
-  public readonly query_size = 101;
-  public readonly query_size_full = 201;
+  public readonly query_size = 201;
   searchTerm = false;
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
@@ -381,7 +380,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
-      this.query_size_full,
+      this.query_size,
       values,
       advancedSearchObject,
       this.searchTerm,
@@ -391,7 +390,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       tabIndex
     );
     const tableQuery = this.queryBuilderService.getResultQuery(
-      this.query_size_full,
+      this.query_size,
       values,
       advancedSearchObject,
       this.searchTerm,
@@ -425,7 +424,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
       (hits: any) => {
         this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
         const searchText = this.searchQuery.getValue().searchText;
         this.searchService.setHits(filteredHits[0], filteredHits[1]);
         if (searchText.length > 0 && hits) {
@@ -455,7 +454,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       const toolHits = results[0].hits.hits;
       const workflowHits = results[1].hits.hits;
       this.hits = toolHits.concat(workflowHits);
-      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
       this.searchService.setHits(filteredHits[0], filteredHits[1]);
     });
   }
