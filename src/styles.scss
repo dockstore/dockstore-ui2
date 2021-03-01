@@ -375,7 +375,8 @@ cite {
 }
 
 a {
-  color: #487980;
+  color: #3d7d86;
+  text-decoration: underline;
 }
 
 a.white-link {
@@ -1193,6 +1194,32 @@ app-sidebar-accordion
   .mat-tab-label[role^='tab'] {
     min-width: 80px;
   }
+}
+
+.tool-tab-group.mat-primary .mat-ink-bar {
+  background: #29b6f6 !important;
+}
+
+.workflow-tab-group.mat-primary .mat-ink-bar {
+  background: #26bfa5 !important;
+}
+
+.organization-tab-group.mat-primary .mat-ink-bar {
+  background: #3f51b5 !important;
+}
+
+.container-label-chip {
+  background: #d0effd !important;
+  text-decoration: none !important;
+  border-radius: 1rem !important;
+  font-size: 12px !important;
+}
+
+.workflow-label-chip {
+  background: #d2fbf0 !important;
+  text-decoration: none !important;
+  border-radius: 1rem !important;
+  font-size: 12px !important;
 }
 
 // Make the dropdown at least the size of the default material dropdown.
