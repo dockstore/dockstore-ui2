@@ -69,7 +69,7 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['verified', 'private_access', '_index', 'has_checker'];
+  public exclusiveFilters = ['verified', 'private_access', 'has_checker'];
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
@@ -472,7 +472,6 @@ export class SearchService {
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([
-      ['Entry Type', '_index'],
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Source Control', 'source_control_provider.keyword'],
@@ -492,7 +491,6 @@ export class SearchService {
 
   initializeFriendlyNames() {
     return new Map([
-      ['_index', 'Entry Type'],
       ['descriptorType', 'Language'],
       ['registry', 'Registry'],
       ['source_control_provider.keyword', 'Source Control'],
@@ -528,7 +526,6 @@ export class SearchService {
 
   initializeEntryOrder() {
     return new Map([
-      ['_index', new SubBucket()],
       ['descriptorType', new SubBucket()],
       ['author', new SubBucket()],
       ['registry', new SubBucket()],

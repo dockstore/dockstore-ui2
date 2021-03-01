@@ -35,7 +35,7 @@ import { Hit, SearchService } from './state/search.service';
  * 2 calls are from the tag cloud (1 for tool, 1 for workflow)
  * 1 calls are for the sidebar bucket count
  * 1 call for the autocomplete
- * 1 call for the actual results
+ * 2 calls for the actual results
  *
  * @export
  * @class SearchComponent
@@ -285,7 +285,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   setupOrderBuckets() {
     this.entryOrder.forEach((value, key) => {
-      if ((value.Items.size > 0 || value.SelectedItems.size > 0) && key !== '_index') {
+      if (value.Items.size > 0 || value.SelectedItems.size > 0) {
         // skip the Entry Type bucket, which is only aggregated for filtering results between tabs
         this.orderedBuckets.set(key, value);
       }
