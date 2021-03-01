@@ -33,6 +33,7 @@ export class SearchResultsComponent extends Base implements OnInit {
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
   public selectedIndex$: Observable<any>;
+  public selectedTab: number;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   options: CloudOptions = {

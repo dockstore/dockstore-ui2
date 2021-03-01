@@ -44,18 +44,24 @@
 
   <div class="row m-1">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
-    <div class="col-md-7">
-      <h3 id="tool-path">
-        <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified">
-          <a [href]="getVerifiedLink()" class="verified-check">
-            <mat-icon matTooltip="Verified">done</mat-icon>
-          </a>
+    <div fxFlex="80">
+      <h3 id="tool-path" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+        <span>
+          <img src="../../assets/svg/tool-circle.svg" alt="tool icon" />
         </span>
         <span *ngIf="tool?.private_access" class="private-lock">
           <app-private-icon></app-private-icon>
         </span>
         {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
-        ><span class="ds-green">{{ selectedVersion?.name }}</span>
+        ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
+        <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified">
+          <mat-chip matTooltip="Verified" class="container-label-chip">
+            <a [href]="getVerifiedLink()" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+              <mat-icon class="verified-icon">done</mat-icon>
+              <span>Verified</span>
+            </a>
+          </mat-chip>
+        </span>
       </h3>
 
       <div *ngIf="!publicPage && tool?.workflowVersions.length > 0">
@@ -71,7 +77,7 @@
         >
       </p>
     </div>
-    <div class="col-md-5">
+    <div fxFlex>
       <app-starring
         [tool]="tool"
         class="pull-right starring-button"
@@ -97,7 +103,9 @@
     <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px">
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
-          <mat-chip color="primary" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{ label }}</mat-chip>
+          <mat-chip class="container-label-chip" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
+            label
+          }}</mat-chip>
           <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
             Manage labels
           </button>
@@ -148,13 +156,14 @@
 
   <div class="row m-1" *ngIf="!starGazersClicked">
     <div class="col-sm-12 p-0" [ngClass]="{ 'col-md-9 col-lg-9': isToolPublic }">
-      <div class="ds-tabs" [ngClass]="{ 'mr-3': isToolPublic }">
+      <div [ngClass]="{ 'mr-3': isToolPublic }">
         <mat-tab-group
           dynamicHeight
           (selectedIndexChange)="selected.setValue($event)"
           (selectedTabChange)="selectedTabChange($event)"
           [selectedIndex]="selected.value"
           id="tool_tabs"
+          class="tool-tab-group"
           #entryTabs
           mat-stretch-tabs
         >

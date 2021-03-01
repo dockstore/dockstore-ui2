@@ -14,10 +14,13 @@
   ~    limitations under the License.
   -->
 <app-header>
-  <button mat-icon-button (click)="toggleSidebar()">
-    <mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
-  </button>
-  <img src="../assets/images/dockstore/dockstore-tools-blue.png" /> {{ myEntryPageTitle$ | async | titlecase }}
+  <span fxLayoutAlign="flex-start center" fxLayoutGap="0.5rem">
+    <button mat-icon-button (click)="toggleSidebar()">
+      <mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
+    </button>
+    <img src="../assets/svg/sub-nav/tool.svg" alt="tool icon" />
+    <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
+  </span>
 </app-header>
 
 <div class="container-fluid sidebar-set-height">

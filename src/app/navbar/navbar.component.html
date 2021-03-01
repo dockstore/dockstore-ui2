@@ -21,16 +21,21 @@
           <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="49" alt="dockstore logo" />
         </a>
         <a mat-button class="icon" [routerLink]="['/search']">
-          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png" alt="search button" /> Search
+          <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-search.svg" alt="search button" /> Search
         </a>
         <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
-          <mat-icon class="hidden-sm">people</mat-icon> Organizations
+          <img
+            class="site-icons-small hidden-sm"
+            src="../assets/svg/main-nav/icons-navigation-organization.svg"
+            alt="organization button"
+          />
+          Organizations
         </a>
         <a mat-button class="icon" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
-          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png" alt="stacked pages" /> Docs
+          <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-docs.svg" alt="stacked pages" /> Docs
         </a>
         <a mat-button class="icon" [href]="Dockstore.DISCOURSE_URL" target="_blank" rel="noopener noreferrer">
-          <mat-icon class="hidden-sm">forum</mat-icon> Forum
+          <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-forum.svg" alt="stacked pages" /> Forum
         </a>
         <span class="spacer"></span>
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
