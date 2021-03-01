@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="getTabIndex() == 0">
+<div *ngIf="getTabIndex() === 0">
   <div class="mat-tab-content">
     <div *ngIf="workflowTagCloudData">
       <div fxLayout="row wrap" fxLayoutAlign="space-between center">
@@ -47,7 +47,7 @@
   </div>
 </div>
 
-<div *ngIf="getTabIndex() == 1">
+<div *ngIf="getTabIndex() === 1">
   <div class="mat-tab-content">
     <div *ngIf="toolTagCloudData">
       <div fxLayout="row wrap" fxLayoutAlign="space-between center">

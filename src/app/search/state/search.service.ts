@@ -494,18 +494,18 @@ export class SearchService {
     return new Map([
       ['_index', 'Entry Type'],
       ['descriptorType', 'Language'],
-      ['registry', 'Tool: Registry'],
-      ['source_control_provider.keyword', 'Workflow: Source Control'],
-      ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
+      ['registry', 'Registry'],
+      ['source_control_provider.keyword', 'Source Control'],
+      ['private_access', 'Private Access'],
       ['verified', 'Verified'],
       ['author', 'Author'],
-      ['namespace', 'Tool: Namespace'],
+      ['namespace', 'Namespace'],
       ['labels.value.keyword', 'Labels'],
       ['input_file_formats.value.keyword', 'Input File Formats'],
       ['output_file_formats.value.keyword', 'Output File Formats'],
       [SearchFields.VERIFIED_SOURCE, 'Verified Source'],
       ['has_checker', 'Has Checker Workflows'],
-      ['organization', 'Workflow: Organization'],
+      ['organization', 'Organization'],
       ['verified_platforms.keyword', 'Verified Platforms'],
     ]);
   }
