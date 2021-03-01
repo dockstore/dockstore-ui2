@@ -50,9 +50,10 @@
           <img src="../../assets/svg/workflow-circle.svg" alt="workflow icon" />
         </span>
         <span>
-          {{ title }}
-          <span *ngIf="workflow?.workflowVersions.length > 0">:</span>
-          <span class="ds-steelblue">{{ selectedVersion?.name }}</span>
+          {{ title
+          }}<span *ngIf="workflow?.workflowVersions.length > 0"
+            >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span>
+          </span>
         </span>
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
           <mat-chip matTooltip="Verified" class="workflow-label-chip">
