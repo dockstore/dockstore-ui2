@@ -42,7 +42,7 @@
       </ul>
     </div>
   </div>
-  <div class="row m-1" *ngIf="!showRedirect">
+  <div class="m-1" *ngIf="!showRedirect" fxLayout="row" fxLayout.lt-sm="column">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div fxFlex="80">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
@@ -50,12 +50,11 @@
           <img src="../../assets/svg/workflow-circle.svg" alt="workflow icon" />
         </span>
         <span>
-          {{ title
-          }}<span *ngIf="workflow?.workflowVersions.length > 0"
-            >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span></span
-          >
+          {{ title }}
+          <span *ngIf="workflow?.workflowVersions.length > 0">:</span>
+          <span class="ds-steelblue">{{ selectedVersion?.name }}</span>
         </span>
-        <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified">
+        <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
           <mat-chip matTooltip="Verified" class="workflow-label-chip">
             <a [href]="getVerifiedLink()" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
               <mat-icon class="verified-icon">done</mat-icon>

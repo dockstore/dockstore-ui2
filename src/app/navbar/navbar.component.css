@@ -58,3 +58,7 @@ a:focus {
 mat-menu {
   padding-right: 10px;
 }
+
+.icons {
+  filter: grayscale(100%);
+}
