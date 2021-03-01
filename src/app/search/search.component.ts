@@ -71,8 +71,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private setFilter = false;
   public hits: Hit[];
 
-  // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
-  // Set to 201 if searching both queries
+  // extra +1 is used to see if there are > 200 results
   public readonly query_size = 201;
   searchTerm = false;
 
