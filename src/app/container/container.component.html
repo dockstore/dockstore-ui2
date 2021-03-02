@@ -42,20 +42,18 @@
     </mat-card>
   </div>
 
-  <div class="m-1" fxLayout="row" fxLayout.lt-sm="column">
+  <div class="row m-1" fxLayout.lt-sm="column">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div fxFlex="80">
-      <h3 id="tool-path" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <h3 id="tool-path" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
         <span>
           <img src="../../assets/svg/tool-circle.svg" alt="tool icon" />
         </span>
         <span *ngIf="tool?.private_access" class="private-lock">
           <app-private-icon></app-private-icon>
         </span>
-        {{ tool?.tool_path }}
-        <span *ngIf="tool?.workflowVersions.length > 0">:</span>
-        <span class="ds-steelblue">{{ selectedVersion?.name }}</span>
-        <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified"></span>
+        {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
+        ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
         <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
           <mat-chip matTooltip="Verified" class="container-label-chip">
             <a [href]="getVerifiedLink()" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
