@@ -168,7 +168,7 @@ $ cwltool --version
 \`\`\`
 
 #### Part 5 - Install Nextflow (Optional)
-Nextflow workflows cannot run on the Dockstore CLI. Users must run them directly by using the Nextflow command line tool.
+The Dockstore CLI does not run Nextflow workflows. Users must run them directly by using the Nextflow command line tool.
 1. You can install the Nextflow CLI with the following command:
 \`\`\`
 // Creates a file nextflow in the current directory
