@@ -57,6 +57,8 @@ export enum SearchFields {
 
 @Injectable()
 export class SearchService {
+  private static readonly WORKFLOWS_TAB_INDEX = 0;
+  private static readonly TOOLS_TAB_INDEX = 1;
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
@@ -78,6 +80,14 @@ export class SearchService {
     private imageProviderService: ImageProviderService,
     private extendedGA4GHService: ExtendedGA4GHService
   ) {}
+
+  static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' {
+    return index === this.WORKFLOWS_TAB_INDEX ? 'workflows' : 'tools';
+  }
+
+  static convertEntryTypeToTabIndex(entryType: string): number {
+    return entryType === 'workflows' ? this.WORKFLOWS_TAB_INDEX : this.TOOLS_TAB_INDEX;
+  }
 
   /**
    * Return a negative number if a sorts before b, positive if b sorts before a, and 0 if they are the same,
@@ -326,6 +336,7 @@ export class SearchService {
         httpParams = httpParams.append(key, subBucket);
       });
     });
+    httpParams = httpParams.append('entryType', searchInfo.entryType);
     if (searchInfo.searchValues) {
       httpParams = httpParams.append('search', searchInfo.searchValues);
     } else {

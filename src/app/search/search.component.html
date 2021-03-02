@@ -22,7 +22,7 @@
   class="homeComponent no-pagination"
   animationDuration="0ms"
   mat-align-tabs="center"
-  [selectedIndex]="(selectedIndex$ | async).active"
+  [selectedIndex]="selectedIndex$ | async"
   (selectedTabChange)="saveTabIndex($event)"
 >
   <mat-tab class="browserWorkflowsTab" data-cy="workflows-tab">

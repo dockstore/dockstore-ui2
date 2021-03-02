@@ -31,12 +31,24 @@ import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
 
 /**
- * There are a total of 5 calls per search.
- * 2 calls are from the tag cloud (1 for tool, 1 for workflow)
- * 1 calls are for the sidebar bucket count
- * 1 call for the autocomplete
- * 2 calls for the actual results
  *
+ * In general, the search works like this:
+ * There's the "view" which is what the user clicks which includes facet checkboxes and tab (tools/workflows), etc
+ * This causes some weird combination of the URL and/or Akita store and/or Angular global service to update
+ * The URL change causes the URL to be parsed again which sets the state once more before triggering a new set of ES query
+ *
+ * Additional notes:
+ * The URL is gospel so that that users with links will always work.
+ * The only time the ES queries are performed is after the URL is parsed
+ *
+ * Some manual tests:
+ * 1. Go to the home page and then click search and make sure there's 5 calls (2 tag cloud, 1 sidebar, 1 autocomplete, 1 table results)
+ * 2. Switch to a different tab and there should be 2 calls (1 for sidebar, 1 for table results).
+ * 3. Refresh page, should be 5 calls in total (same as 1.)
+ *
+ * TODO:
+ * Test #1 from above currently fails because this.advancedSearchQuery.advancedSearch$ and this.searchQuery.searchText$ subscriptions
+ * each triggers a parseParam which then causes the 2 more ES queries to get triggered
  * @export
  * @class SearchComponent
  * @implements {OnInit}
@@ -61,8 +73,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public aNDNoSplitFilterText$: Observable<string>;
   public oRFilterText$: Observable<string>;
   public nOTFilterText$: Observable<string>;
-  public activeToolTab$: Observable<number>;
-  public selectedIndex$: Observable<any>;
+  public selectedIndex$: Observable<number>;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
@@ -129,7 +140,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
-    this.activeToolTab$ = this.searchQuery.activeToolTab$;
+    this.selectedIndex$ = this.searchQuery.savedTabIndex$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -151,18 +162,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
     this.basicSearchText$ = this.searchQuery.basicSearchText$;
-    this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
+    this.activatedRoute.queryParams.pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toSaveSearch) => {
       if (toSaveSearch) {
         this.saveSearchFilter();
         this.searchService.toSaveSearch$.next(false);
       }
     });
-    this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
-      map((activeToolTab) => {
-        return { active: activeToolTab };
-      })
-    );
     this.searchQuery.searchText$
       .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchText: string) => {
@@ -187,7 +193,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   saveTabIndex(tab) {
     this.searchService.saveCurrentTab(tab.index);
-    this.onTabChange();
+    this.updatePermalink();
   }
 
   /**
@@ -213,6 +219,8 @@ export class SearchComponent implements OnInit, OnDestroy {
           categoryValue = decodeURIComponent(categoryValue);
           newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
+      } else if (key === 'entryType') {
+        this.searchService.saveCurrentTab(SearchService.convertEntryTypeToTabIndex(value[0]));
       } else if (key === 'search') {
         this.searchTerm = true;
         this.searchService.setSearchText(value[0]);
@@ -355,6 +363,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       searchValues: values,
       advancedSearchObject: advancedSearchObject,
       searchTerm: this.searchTerm,
+      entryType: SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex),
     };
     const linkArray = this.searchService.createPermalinks(searchInfo);
     this.searchService.handleLink(linkArray);
@@ -365,14 +374,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ===============================================
    */
 
-  // Called when any change to the search is made to update the results
+  // Called from one place which is only when the URL has parsed and query non-result state has been set
   updateQuery() {
-    let tabIndex;
-    if (this.searchQuery.getValue().currentTabIndex === 0) {
-      tabIndex = 'workflows';
-    } else {
-      tabIndex = 'tools';
-    }
+    const tabIndex = SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -509,14 +513,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm = false;
     }
     this.updatePermalink();
-  }
-
-  onTabChange() {
-    if (!this.searchTerm && this.filters.size === 0) {
-      this.updateQuery();
-    } else {
-      this.resetFilters();
-    }
   }
 
   searchSuggestTerm() {

@@ -77,7 +77,6 @@ describe('SearchComponent', () => {
     component = fixture.componentInstance;
     searchQuery = TestBed.inject(SearchQuery) as jasmine.SpyObj<SearchQuery>;
     searchQuery.searchText$ = of('');
-    searchQuery.activeToolTab$ = of(0);
     searchQuery.getValue.and.returnValue({
       shortUrl: null,
       workflowhit: null,
