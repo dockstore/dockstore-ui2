@@ -532,7 +532,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       const checked = this.checkboxMap.get(category).get(categoryValue);
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
-      // console.log(category, categoryValue, this.filters);
     }
     this.facetSearchText = '';
     this.updatePermalink();
