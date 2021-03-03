@@ -394,7 +394,7 @@ describe('search table items per page', () => {
     cy.visit('/search');
     cy.get('#mat-select-0 ').click();
     cy.get('#mat-option-1 ').click();
-    cy.contains('a', 'garyluu/dockstore-cgpmap/cgpmap-cramOut').click();
+    cy.contains('A/l').click();
     cy.get('.flex-toolbar ').contains(' Search ').click();
     cy.get('.mat-select-value-text ').contains('20');
   });

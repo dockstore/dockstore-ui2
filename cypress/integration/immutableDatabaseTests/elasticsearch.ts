@@ -18,6 +18,6 @@ describe('elasticsearch from logged-out homepage', () => {
   it('Should be able to search entries for using text', () => {
     cy.visit('/');
     cy.get('#searchBar').should('have.attr', 'placeholder', 'Search...').type('asdf{enter}');
-    cy.url().should('eq', Cypress.config().baseUrl + '/search?search=asdf');
+    cy.url().should('eq', Cypress.config().baseUrl + '/search?entryType=workflows&search=asdf');
   });
 });

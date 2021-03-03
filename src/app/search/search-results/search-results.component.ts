@@ -17,7 +17,6 @@ import { Component, OnInit } from '@angular/core';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
@@ -29,7 +28,6 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent extends Base implements OnInit {
-  public activeToolTab$: Observable<number>;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
@@ -50,7 +48,6 @@ export class SearchResultsComponent extends Base implements OnInit {
     private extendedGA4GHService: ExtendedGA4GHService
   ) {
     super();
-    this.activeToolTab$ = this.searchQuery.activeToolTab$;
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
     this.noToolHits$ = this.searchQuery.noToolHits$;
     this.showToolTagCloud$ = this.searchQuery.showToolTagCloud$;
@@ -60,11 +57,6 @@ export class SearchResultsComponent extends Base implements OnInit {
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
-    this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
-      map((activeToolTab) => {
-        return { active: activeToolTab };
-      })
-    );
   }
 
   createTagCloud(type: string) {
@@ -120,8 +112,8 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.searchService.toSaveSearch$.next(true);
   }
 
-  saveTabIndex(tab) {
-    this.searchService.saveCurrentTab(tab.index);
+  getTabIndex() {
+    return this.searchQuery.getValue().currentTabIndex;
   }
 
   tagClicked(clicked: CloudData) {

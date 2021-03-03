@@ -18,6 +18,29 @@
   <mat-icon>search</mat-icon>
   Search
 </app-header>
+<mat-tab-group
+  class="homeComponent no-pagination"
+  animationDuration="0ms"
+  mat-align-tabs="center"
+  [selectedIndex]="selectedIndex$ | async"
+  (selectedTabChange)="saveTabIndex($event)"
+>
+  <mat-tab class="browserWorkflowsTab" data-cy="workflows-tab">
+    <ng-template mat-tab-label>
+      <img class="site-icons-tab m-2" src="../assets/images/dockstore/workflow.svg" />
+      <b>Workflows</b>
+    </ng-template>
+    <div class="mat-tab-content"></div>
+  </mat-tab>
+  <mat-tab class="browserToolsTab" data-cy="tools-tab">
+    <ng-template mat-tab-label>
+      <img class="site-icons-tab m-2" src="../assets/images/dockstore/tool.svg" />
+      <b>Tools</b>
+    </ng-template>
+    <div class="mat-tab-content"></div>
+  </mat-tab>
+</mat-tab-group>
+
 <div class="container search-container">
   <div class="row">
     <div class="col-md-3">

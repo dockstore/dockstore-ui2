@@ -31,12 +31,24 @@ import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
 
 /**
- * There are a total of 5 calls per search.
- * 2 calls are from the tag cloud (1 for tool, 1 for workflow)
- * 1 calls are for the sidebar bucket count
- * 1 call for the autocomplete
- * 1 call for the actual results
  *
+ * In general, the search works like this:
+ * There's the "view" which is what the user clicks which includes facet checkboxes and tab (tools/workflows), etc
+ * This causes some weird combination of the URL and/or Akita store and/or Angular global service to update
+ * The URL change causes the URL to be parsed again which sets the state once more before triggering a new set of ES query
+ *
+ * Additional notes:
+ * The URL is gospel so that that users with links will always work.
+ * The only time the ES queries are performed is after the URL is parsed
+ *
+ * Some manual tests:
+ * 1. Go to the home page and then click search and make sure there's 5 calls (2 tag cloud, 1 sidebar, 1 autocomplete, 1 table results)
+ * 2. Switch to a different tab and there should be 2 calls (1 for sidebar, 1 for table results).
+ * 3. Refresh page, should be 5 calls in total (same as 1.)
+ *
+ * TODO:
+ * Test #1 from above currently fails because this.advancedSearchQuery.advancedSearch$ and this.searchQuery.searchText$ subscriptions
+ * each triggers a parseParam which then causes the 2 more ES queries to get triggered
  * @export
  * @class SearchComponent
  * @implements {OnInit}
@@ -61,6 +73,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public aNDNoSplitFilterText$: Observable<string>;
   public oRFilterText$: Observable<string>;
   public nOTFilterText$: Observable<string>;
+  public selectedIndex$: Observable<number>;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
@@ -69,10 +82,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   private setFilter = false;
   public hits: Hit[];
 
-  // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
-  // Set to 201 if searching both queries
-  public readonly query_size = 101;
-  public readonly query_size_full = 201;
+  // extra +1 is used to see if there are > 200 results
+  public readonly query_size = 201;
   searchTerm = false;
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
@@ -129,6 +140,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
+    this.selectedIndex$ = this.searchQuery.savedTabIndex$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -150,7 +162,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
     this.basicSearchText$ = this.searchQuery.basicSearchText$;
-    this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
+    this.activatedRoute.queryParams.pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toSaveSearch) => {
       if (toSaveSearch) {
         this.saveSearchFilter();
@@ -179,6 +191,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasFacetAutoCompleteTerms$ = this.searchQuery.hasFacetAutoCompleteTerms$;
   }
 
+  saveTabIndex(tab) {
+    this.searchService.saveCurrentTab(tab.index);
+    this.updatePermalink();
+  }
+
   /**
    * Applies parameters from the permalink to the search
    */
@@ -202,6 +219,8 @@ export class SearchComponent implements OnInit, OnDestroy {
           categoryValue = decodeURIComponent(categoryValue);
           newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
+      } else if (key === 'entryType') {
+        this.searchService.saveCurrentTab(SearchService.convertEntryTypeToTabIndex(value[0]));
       } else if (key === 'search') {
         this.searchTerm = true;
         this.searchService.setSearchText(value[0]);
@@ -275,6 +294,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   setupOrderBuckets() {
     this.entryOrder.forEach((value, key) => {
       if (value.Items.size > 0 || value.SelectedItems.size > 0) {
+        // skip the Entry Type bucket, which is only aggregated for filtering results between tabs
         this.orderedBuckets.set(key, value);
       }
     });
@@ -343,6 +363,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       searchValues: values,
       advancedSearchObject: advancedSearchObject,
       searchTerm: this.searchTerm,
+      entryType: SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex),
     };
     const linkArray = this.searchService.createPermalinks(searchInfo);
     this.searchService.handleLink(linkArray);
@@ -353,40 +374,35 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ===============================================
    */
 
-  // Called when any change to the search is made to update the results
+  // Called from one place which is only when the URL has parsed and query non-result state has been set
   updateQuery() {
+    const tabIndex = SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarQuery(
-      this.query_size_full,
+      this.query_size,
       values,
       advancedSearchObject,
       this.searchTerm,
       this.bucketStubs,
       this.filters,
-      this.sortModeMap
+      this.sortModeMap,
+      tabIndex
     );
-    if (!values && this.filters.size === 0) {
-      const toolsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'tools');
-      const workflowsQuery = this.queryBuilderService.getResultSingleIndexQuery(this.query_size, 'workflows');
-      this.resetEntryOrder();
-      this.updateSideBar(sideBarQuery);
-      this.updateResultsTableSeparately(toolsQuery, workflowsQuery);
-    } else {
-      const tableQuery = this.queryBuilderService.getResultQuery(
-        this.query_size_full,
-        values,
-        advancedSearchObject,
-        this.searchTerm,
-        this.filters
-      );
-      this.resetEntryOrder();
-      this.updateSideBar(sideBarQuery);
-      this.updateResultsTable(tableQuery);
-    }
+    const tableQuery = this.queryBuilderService.getResultQuery(
+      this.query_size,
+      values,
+      advancedSearchObject,
+      this.searchTerm,
+      this.filters,
+      tabIndex
+    );
+    this.resetEntryOrder();
+    this.updateSideBar(sideBarQuery);
+    this.updateResultsTable(tableQuery);
   }
 
   updateSideBar(value: string) {
@@ -411,7 +427,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
       (hits: any) => {
         this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
         const searchText = this.searchQuery.getValue().searchText;
         this.searchService.setHits(filteredHits[0], filteredHits[1]);
         if (searchText.length > 0 && hits) {
@@ -441,7 +457,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       const toolHits = results[0].hits.hits;
       const workflowHits = results[1].hits.hits;
       this.hits = toolHits.concat(workflowHits);
-      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size_full);
+      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
       this.searchService.setHits(filteredHits[0], filteredHits[1]);
     });
   }

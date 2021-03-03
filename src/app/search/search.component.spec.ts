@@ -16,6 +16,7 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MdePopoverModule } from '@material-extended/mde';
@@ -59,7 +60,7 @@ describe('SearchComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-        imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
+        imports: [BrowserAnimationsModule, CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },

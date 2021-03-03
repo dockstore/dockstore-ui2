@@ -14,17 +14,13 @@
  *    limitations under the License.
  */
 
-mat-tab-group.homeComponent {
-  border: 0.0625rem solid #cfd1d7;
-  border-bottom-right-radius: 1rem;
-  border-bottom-left-radius: 1rem;
-}
-
 .mat-tab-content {
   display: block;
   background-color: #fff;
   margin: 1rem 1rem 2rem;
   padding: 0.8rem;
+  border: 0.0625rem solid #cfd1d7;
+  border-radius: 0.3rem;
 }
 
 .tag-cloud-dropdown {

@@ -57,6 +57,8 @@ export enum SearchFields {
 
 @Injectable()
 export class SearchService {
+  private static readonly WORKFLOWS_TAB_INDEX = 0;
+  private static readonly TOOLS_TAB_INDEX = 1;
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
@@ -69,7 +71,7 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['verified', 'private_access', '_index', 'has_checker'];
+  public exclusiveFilters = ['verified', 'private_access', 'has_checker'];
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
@@ -78,6 +80,14 @@ export class SearchService {
     private imageProviderService: ImageProviderService,
     private extendedGA4GHService: ExtendedGA4GHService
   ) {}
+
+  static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' {
+    return index === this.WORKFLOWS_TAB_INDEX ? 'workflows' : 'tools';
+  }
+
+  static convertEntryTypeToTabIndex(entryType: string): number {
+    return entryType === 'workflows' ? this.WORKFLOWS_TAB_INDEX : this.TOOLS_TAB_INDEX;
+  }
 
   /**
    * Return a negative number if a sorts before b, positive if b sorts before a, and 0 if they are the same,
@@ -326,6 +336,7 @@ export class SearchService {
         httpParams = httpParams.append(key, subBucket);
       });
     });
+    httpParams = httpParams.append('entryType', searchInfo.entryType);
     if (searchInfo.searchValues) {
       httpParams = httpParams.append('search', searchInfo.searchValues);
     } else {
@@ -472,7 +483,6 @@ export class SearchService {
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([
-      ['Entry Type', '_index'],
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Source Control', 'source_control_provider.keyword'],
@@ -492,20 +502,19 @@ export class SearchService {
 
   initializeFriendlyNames() {
     return new Map([
-      ['_index', 'Entry Type'],
       ['descriptorType', 'Language'],
-      ['registry', 'Tool: Registry'],
-      ['source_control_provider.keyword', 'Workflow: Source Control'],
-      ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
+      ['registry', 'Registry'],
+      ['source_control_provider.keyword', 'Source Control'],
+      ['private_access', 'Private Access'],
       ['verified', 'Verified'],
       ['author', 'Author'],
-      ['namespace', 'Tool: Namespace'],
+      ['namespace', 'Namespace'],
       ['labels.value.keyword', 'Labels'],
       ['input_file_formats.value.keyword', 'Input File Formats'],
       ['output_file_formats.value.keyword', 'Output File Formats'],
       [SearchFields.VERIFIED_SOURCE, 'Verified Source'],
       ['has_checker', 'Has Checker Workflows'],
-      ['organization', 'Workflow: Organization'],
+      ['organization', 'Organization'],
       ['verified_platforms.keyword', 'Verified Platforms'],
     ]);
   }
@@ -528,7 +537,6 @@ export class SearchService {
 
   initializeEntryOrder() {
     return new Map([
-      ['_index', new SubBucket()],
       ['descriptorType', new SubBucket()],
       ['author', new SubBucket()],
       ['registry', new SubBucket()],
