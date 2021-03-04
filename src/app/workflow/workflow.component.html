@@ -49,7 +49,7 @@
         <span>
           <img src="../../assets/svg/workflow-circle.svg" alt="workflow icon" />
         </span>
-        <span>
+        <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ title
           }}<span *ngIf="workflow?.workflowVersions.length > 0"
             >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span></span
@@ -57,7 +57,7 @@
         </span>
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
           <mat-chip matTooltip="Verified" class="workflow-label-chip">
-            <a [href]="getVerifiedLink()" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+            <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
               <mat-icon class="verified-icon">done</mat-icon>
               <span>Verified</span>
             </a>
@@ -396,7 +396,7 @@
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
                 <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                  <a [href]="getVerifiedLink()" class="verified-check">
+                  <a [href]="verifiedLink" class="verified-check">
                     <mat-icon matTooltip="Verified">done</mat-icon>
                   </a>
                 </span>
