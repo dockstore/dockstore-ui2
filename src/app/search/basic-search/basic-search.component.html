@@ -1,6 +1,6 @@
 <mat-expansion-panel expanded>
   <mat-expansion-panel-header> Search </mat-expansion-panel-header>
-  <mat-form-field>
+  <mat-form-field appearance="outline" class="form-field">
     <input
       matInput
       [matAutocomplete]="auto"
@@ -17,7 +17,5 @@
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of autocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
   </mat-autocomplete>
-  <button data-cy="advanced-search" mat-stroked-button color="primary" type="button" class="w-100" (click)="openAdvancedSearch()">
-    Open Advanced Search
-  </button>
+  <a data-cy="advanced-search" (click)="openAdvancedSearch()"> Open Advanced Search </a>
 </mat-expansion-panel>

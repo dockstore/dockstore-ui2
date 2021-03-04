@@ -3,3 +3,7 @@ input[type='text']:focus,
 textarea:focus {
   border: none;
 }
+
+.form-field {
+  display: inherit;
+}

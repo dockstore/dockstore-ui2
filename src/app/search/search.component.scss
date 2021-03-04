@@ -172,8 +172,13 @@ mat-tab-group.homeComponent {
   padding-right: 0;
 }
 
-.histogram {
-  background-color: #dddddd;
+.workflow-histogram {
+  background-color: #d2fbf0;
+  min-height: 2rem;
+}
+
+.tool-histogram {
+  background-color: #d0effd;
   min-height: 2rem;
 }
 
