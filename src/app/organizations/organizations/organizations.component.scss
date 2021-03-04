@@ -4,14 +4,54 @@
   @extend .pr-5;
 }
 
-.mat-card-title {
-  white-space: nowrap;
+.h5,
+.org-topic {
+  color: #151c3c;
+}
+
+.org-topic {
+  font-weight: 300;
 }
 
 .orgStar {
-  line-height: 1.1em;
+  font-size: 1.5rem;
+  color: #3f51b5;
+  height: auto;
+  padding: 0 !important;
 }
 
-::ng-deep .mat-card-header-text {
-  width: 100%;
+.info.span {
+  font-size: 10px;
+}
+
+.orgLogo {
+  height: 50px;
+  object-fit: scale-down;
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  height: auto;
+  color: #397a84;
+  padding: 0 !important;
+}
+
+.info {
+  font-size: 12px;
+}
+
+hr {
+  margin-bottom: 2rem;
+}
+
+form {
+  font-size: 14px;
+}
+
+.form-field {
+  transform: scale(0.9);
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border: black 2px solid;
 }

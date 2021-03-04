@@ -52,4 +52,23 @@ export class OrganizationsStateService {
       };
     });
   }
+
+  updateSort(sortBy: string): void {
+    this.organizationsStore.update((state: OrganizationsState) => {
+      return {
+        ...state,
+        sortBy: sortBy,
+      };
+    });
+  }
+
+  setPageSizeAndIndex(pageSize: number, pageIndex: number) {
+    this.organizationsStore.update((state) => {
+      return {
+        ...state,
+        pageSize: pageSize,
+        pageIndex: pageIndex,
+      };
+    });
+  }
 }
