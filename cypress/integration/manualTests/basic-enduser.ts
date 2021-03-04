@@ -123,7 +123,6 @@ describe('Test search page functionality', () => {
   it('filters and unfilters by facets', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', 'Nextflow').click();
-    cy.wait(5000);
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
