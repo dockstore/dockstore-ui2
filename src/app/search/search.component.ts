@@ -191,9 +191,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasFacetAutoCompleteTerms$ = this.searchQuery.hasFacetAutoCompleteTerms$;
   }
 
+  /**
+   * Only called when the tab is manually changed by the user
+   */
   saveTabIndex(tab) {
-    this.searchService.saveCurrentTab(tab.index);
-    this.updatePermalink();
+    this.searchService.saveCurrentTabAndClear(tab.index);
   }
 
   /**

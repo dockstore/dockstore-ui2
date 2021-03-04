@@ -30,7 +30,7 @@
               <i [class]="(showWorkflowTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
             </div>
           </button>
-          <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud$ | async">
+          <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud$ | async" data-cy="tagCloud">
             <angular-tag-cloud
               [data]="workflowTagCloudData"
               [width]="options.width"
@@ -64,7 +64,7 @@
               <i [class]="(showToolTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
             </div>
           </button>
-          <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async" data-cy="tagCloud">
+          <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async">
             <angular-tag-cloud
               [data]="toolTagCloudData"
               [width]="options.width"

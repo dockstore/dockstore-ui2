@@ -624,6 +624,17 @@ export class SearchService {
     });
   }
 
+  /**
+   * This navigates to the correct page and clears all facets, search text, and advanced search
+   */
+  saveCurrentTabAndClear(index: number) {
+    if (index === SearchService.WORKFLOWS_TAB_INDEX) {
+      this.router.navigateByUrl('search?entryType=workflows&searchMode=Files');
+    } else {
+      this.router.navigateByUrl('search?entryType=tools&searchMode=Files');
+    }
+  }
+
   goToCleanSearch() {
     this.router.navigateByUrl('search');
   }
