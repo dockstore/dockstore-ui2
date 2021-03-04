@@ -41,40 +41,74 @@
         <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
         <template [ngTemplateOutlet]="loginButton"></template>
         <mat-menu #menuLarge="matMenu">
-          <a mat-menu-item data-cy="my-tools-nav-button" routerLink="/my-tools">
-            <img
-              class="site-icons-tab hidden-sm icons"
-              src="../assets/svg/tool-circle.svg"
-              alt="square and circle logo"
-            />&nbsp;My&nbsp;Tools
-          </a>
-          <a mat-menu-item data-cy="my-workflows-nav-button" routerLink="/my-workflows">
-            <img
-              class="site-icons-tab hidden-sm icons"
-              src="../assets/svg/workflow-circle.svg"
-              alt="square and circle logo"
-            />&nbsp;My&nbsp;Workflows
-          </a>
-          <a mat-menu-item data-cy="my-services-nav-button" routerLink="/my-services">
-            <img
-              class="site-icons-tab hidden-sm icons"
-              src="../assets/svg/service-circle.svg"
-              alt="square and circle logo"
-            />&nbsp;My&nbsp;Services
+          <button
+            mat-menu-item
+            data-cy="my-tools-nav-button"
+            routerLink="/my-tools"
+            fxLayoutGap="0.5rem"
+            (click)="setActiveItem('myTools')"
+            [ngStyle]="{ 'background-color': activeItem === 'myTools' ? '#dfe0e2' : '' }"
+          >
+            <img class="site-icons-tab" src="../assets/svg/tool-circle.svg" alt="tool logo" />
+            <span>My Tools</span>
+          </button>
+          <button
+            mat-menu-item
+            data-cy="my-workflows-nav-button"
+            routerLink="/my-workflows"
+            fxLayoutGap="0.5rem"
+            (click)="setActiveItem('myWorkflows')"
+            [ngStyle]="{ 'background-color': activeItem === 'myWorkflows' ? '#dfe0e2' : '' }"
+          >
+            <img class="site-icons-tab" src="../assets/svg/workflow-circle.svg" alt="workflow logo" />
+            <span>My Workflows</span>
+          </button>
+          <button
+            mat-menu-item
+            data-cy="my-services-nav-button"
+            routerLink="/my-services"
+            fxLayoutGap="0.5rem"
+            (click)="setActiveItem('myServices')"
+            [ngStyle]="{ 'background-color': activeItem === 'myServices' ? '#dfe0e2' : '' }"
+          >
+            <img class="site-icons-tab" src="../assets/svg/service-circle.svg" alt="service logo" />
+            <span>My Services</span>
             <div class="beta-label">preview</div>
-          </a>
+          </button>
           <mat-divider></mat-divider>
-          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
+          <button
+            mat-menu-item
+            id="dropdown-accounts"
+            routerLink="/accounts"
+            (click)="setActiveItem('account')"
+            [ngStyle]="{ 'background-color': activeItem === 'account' ? '#dfe0e2' : '' }"
+          >
             <mat-icon color="accent" *ngIf="user?.isAdmin">lock</mat-icon>
             <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
             <mat-icon color="accent" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>Account
-          </a>
-          <a mat-menu-item id="dropdown-starred" routerLink="/starred"> <mat-icon color="accent">stars</mat-icon>Starred</a>
-          <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding" *ngIf="extendedUser?.canChangeUsername">
+          </button>
+          <button
+            mat-menu-item
+            id="dropdown-starred"
+            routerLink="/starred"
+            color="accent"
+            (click)="setActiveItem('starred')"
+            [ngStyle]="{ 'background-color': activeItem === 'starred' ? '#dfe0e2' : '' }"
+          >
+            <mat-icon>stars</mat-icon>Starred
+          </button>
+          <button
+            mat-menu-item
+            id="dropdown-onboarding"
+            routerLink="/onboarding"
+            *ngIf="extendedUser?.canChangeUsername"
+            (click)="setActiveItem('setup')"
+            [ngStyle]="{ 'background-color': activeItem === 'setup' ? '#dfe0e2' : '' }"
+          >
             <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
-          </a>
+          </button>
           <mat-divider></mat-divider>
-          <a mat-menu-item id="dropdown-logout" (click)="logout()"> <mat-icon color="accent">input</mat-icon>Log out </a>
+          <button mat-menu-item id="dropdown-logout" (click)="logout()"><mat-icon color="accent">input</mat-icon>Log out</button>
         </mat-menu>
       </span>
     </div>

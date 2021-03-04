@@ -41,6 +41,7 @@ export class NavbarComponent extends Logout implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
   private readonly currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   private readonly currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
+  public activeItem: string;
 
   constructor(
     private pagenumberService: PagenumberService,
@@ -84,5 +85,9 @@ export class NavbarComponent extends Logout implements OnInit {
 
   logOutUsersWithoutCurrentTOS() {
     this.logout('/session-expired');
+  }
+
+  setActiveItem(name: string) {
+    this.activeItem = name;
   }
 }
