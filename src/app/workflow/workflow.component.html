@@ -42,20 +42,26 @@
       </ul>
     </div>
   </div>
-  <div class="row m-1" *ngIf="!showRedirect">
+  <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
-    <div class="col-md-7">
+    <div fxFlex="80">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-        <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified">
-          <a [href]="getVerifiedLink()" class="verified-check">
-            <mat-icon matTooltip="Verified">done</mat-icon>
-          </a>
-        </span>
         <span>
+          <img src="../../assets/svg/workflow-circle.svg" alt="workflow icon" />
+        </span>
+        <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ title
           }}<span *ngIf="workflow?.workflowVersions.length > 0"
-            >:<span class="ds-green">{{ selectedVersion?.name }}</span></span
+            >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span></span
           >
+        </span>
+        <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
+          <mat-chip matTooltip="Verified" class="workflow-label-chip">
+            <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+              <mat-icon class="verified-icon">done</mat-icon>
+              <span>Verified</span>
+            </a>
+          </mat-chip>
         </span>
         <div
           matTooltip="Galaxy is currently in preview"
@@ -80,7 +86,7 @@
         >
       </p>
     </div>
-    <div class="col-md-5">
+    <div fxFlex>
       <app-starring
         [workflow]="workflow"
         class="pull-right starring-button"
@@ -105,7 +111,9 @@
     <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px">
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
-          <mat-chip color="primary" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{ label }}</mat-chip>
+          <mat-chip class="workflow-label-chip" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
+            label
+          }}</mat-chip>
           <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
             Manage labels
           </button>
@@ -154,10 +162,10 @@
   </div>
   <div class="row m-1" *ngIf="!starGazersClicked && !showRedirect">
     <div class="col-sm-12 p-0" [ngClass]="{ 'col-md-10 col-lg-9': isWorkflowPublic }">
-      <div class="ds-tabs" [ngClass]="{ 'mr-3': isWorkflowPublic }">
+      <div [ngClass]="{ 'mr-3': isWorkflowPublic }">
         <mat-tab-group
           [selectedIndex]="selected.value"
-          class="ds-tabs"
+          class="workflow-tab-group"
           id="workflow_tabs"
           #entryTabs
           (selectedIndexChange)="selected.setValue($event)"
@@ -388,7 +396,7 @@
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
                 <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                  <a [href]="getVerifiedLink()" class="verified-check">
+                  <a [href]="verifiedLink" class="verified-check">
                     <mat-icon matTooltip="Verified">done</mat-icon>
                   </a>
                 </span>

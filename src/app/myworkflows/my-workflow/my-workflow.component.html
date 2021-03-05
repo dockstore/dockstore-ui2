@@ -19,10 +19,15 @@
       <mat-icon *ngIf="showSidebar">chevron_left</mat-icon>
       <mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
     </button>
-    <img src="../assets/images/dockstore/dockstore-workflows-green.png" /><span
-      >&nbsp;{{ myEntryPageTitle$ | async | titlecase }}&nbsp;</span
-    >
-    <div *ngIf="(myEntryPageTitle$ | async | titlecase) === 'My Services'" class="beta-label">preview</div>
+    <div *ngIf="(myEntryPageTitle$ | async | titlecase) === 'My Workflows'" fxLayoutGap="0.5rem">
+      <img src="../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
+      <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
+    </div>
+    <div *ngIf="(myEntryPageTitle$ | async | titlecase) === 'My Services'" fxLayoutGap="0.5rem">
+      <img src="../assets/svg/sub-nav/services.svg" alt="service icon" />
+      <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
+      <span class="beta-label"> preview </span>
+    </div>
   </div>
 </app-header>
 <div class="container-fluid sidebar-set-height">

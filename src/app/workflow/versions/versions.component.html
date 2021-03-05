@@ -44,13 +44,16 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
-            ><span *ngIf="defaultVersion === version.name" class="label label-primary">Default</span></a
-          >
+        <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+          <mat-chip *ngIf="defaultVersion === version.name" class="workflow-label-chip">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
+              class="verified-check"
+              ><span style="word-break: normal">Default</span></a
+            >
+          </mat-chip>
           <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
           <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
           <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->

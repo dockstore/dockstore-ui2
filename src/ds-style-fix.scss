@@ -187,9 +187,6 @@ table.hosted-tool-versions-grid {
 div.details-container {
   margin-bottom: 14px;
 }
-div.ds-tabs {
-  border: solid 1px #cfd1d7;
-}
 
 ul.nav-tabs {
   background-color: #ffffff;
@@ -240,7 +237,6 @@ div.panel-container-label {
   color: #487980;
   padding: 0 10px;
   clear: both;
-  overflow: hidden;
   .container-name-oflw {
     width: 170px;
     white-space: nowrap;
@@ -680,9 +676,17 @@ div.modal form {
   margin-bottom: 5px;
 }
 
+.verified-check,
 .verified-check:hover,
 .verified-check:visited {
   text-decoration: none;
+  color: #151c3d;
+}
+
+.verified-icon {
+  font-size: 1.5rem;
+  height: auto !important;
+  width: auto !important;
 }
 
 .footer-list li {
@@ -727,6 +731,10 @@ div.modal form {
 
 .ds-green {
   color: #487980 !important;
+}
+
+.ds-steelblue {
+  color: #4053b5;
 }
 
 .top-down-padding {

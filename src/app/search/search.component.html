@@ -24,17 +24,18 @@
   mat-align-tabs="center"
   [selectedIndex]="selectedIndex$ | async"
   (selectedTabChange)="saveTabIndex($event)"
+  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-tab-group' : 'tool-tab-group'"
 >
   <mat-tab class="browserWorkflowsTab" data-cy="workflows-tab">
     <ng-template mat-tab-label>
-      <img class="site-icons-tab m-2" src="../assets/images/dockstore/workflow.svg" />
+      <img class="site-icons-tab m-2" src="../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
       <b>Workflows</b>
     </ng-template>
     <div class="mat-tab-content"></div>
   </mat-tab>
   <mat-tab class="browserToolsTab" data-cy="tools-tab">
     <ng-template mat-tab-label>
-      <img class="site-icons-tab m-2" src="../assets/images/dockstore/tool.svg" />
+      <img class="site-icons-tab m-2" src="../assets/svg/sub-nav/tool.svg" alt="tool icon" />
       <b>Tools</b>
     </ng-template>
     <div class="mat-tab-content"></div>
@@ -134,7 +135,10 @@
                   </span>
                 </div>
                 <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                <div class="histogram" [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"></div>
+                <div
+                  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-histogram' : 'tool-histogram'"
+                  [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"
+                ></div>
               </div>
               <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="container-name-oflw">
@@ -152,7 +156,10 @@
                   </span>
                 </div>
                 <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                <div class="histogram" [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"></div>
+                <div
+                  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-histogram' : 'tool-histogram'"
+                  [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"
+                ></div>
               </div>
             </div>
           </div>
