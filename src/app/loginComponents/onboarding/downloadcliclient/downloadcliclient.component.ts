@@ -166,6 +166,9 @@ pip3 install -r requirements.txt
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
 \`\`\`
+
+#### Part 5 - Install Nextflow (Optional)
+The Dockstore CLI does not run Nextflow workflows. Users can run them directly by using the Nextflow command line tool. For installation instructions, follow [Nextflow's documentation](https://github.com/nextflow-io/nextflow#download-the-package)
 `;
   }
 }
