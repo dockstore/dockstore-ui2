@@ -24,11 +24,11 @@ rm -Rf src/app/shared/openapi
 
 
 # Uncomment these two lines to use the actual Dockstore webservice release from the package.json
-# java -jar openapi-generator-cli.jar generate -i ${BASE_PATH}/dockstore-webservice/src/main/resources/swagger.yaml -g typescript-angular -o src/app/shared/swagger -c swagger-config.json --skip-validate-spec
-# java -jar openapi-generator-cli.jar generate -i ${BASE_PATH}/dockstore-webservice/src/main/resources/openapi3/openapi.yaml -g typescript-angular -o src/app/shared/openapi -c swagger-config.json --skip-validate-spec
+java -jar openapi-generator-cli.jar generate -i ${BASE_PATH}/dockstore-webservice/src/main/resources/swagger.yaml -g typescript-angular -o src/app/shared/swagger -c swagger-config.json --skip-validate-spec
+java -jar openapi-generator-cli.jar generate -i ${BASE_PATH}/dockstore-webservice/src/main/resources/openapi3/openapi.yaml -g typescript-angular -o src/app/shared/openapi -c swagger-config.json --skip-validate-spec
 # Uncomment these two lines to use the CircleCI swagger/openapi instead
-java -jar openapi-generator-cli.jar generate -i ${CIRCLE_CI_PATH}/swagger.yaml -g typescript-angular -o src/app/shared/swagger -c swagger-config.json --skip-validate-spec
-java -jar openapi-generator-cli.jar generate -i ${CIRCLE_CI_PATH}/openapi.yaml -g typescript-angular -o src/app/shared/openapi -c swagger-config.json --skip-validate-spec
+#java -jar openapi-generator-cli.jar generate -i ${CIRCLE_CI_PATH}/swagger.yaml -g typescript-angular -o src/app/shared/swagger -c swagger-config.json --skip-validate-spec
+#java -jar openapi-generator-cli.jar generate -i ${CIRCLE_CI_PATH}/openapi.yaml -g typescript-angular -o src/app/shared/openapi -c swagger-config.json --skip-validate-spec
 
 
 
