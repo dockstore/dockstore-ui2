@@ -100,14 +100,14 @@ describe('Test logged out home page', () => {
   it('home page search bar works', () => {
     cy.visit('/');
     cy.get('input[id=searchBar]').type('test{enter}');
-    cy.url().should('include', '/search?search=test');
+    cy.url().should('include', '/search?entryType=workflows&search=test');
   });
 });
 
 describe('Test search page functionality', () => {
   it('displays tools', () => {
     cy.visit('/search');
-    cy.get('[data-cy=toolNames]').should('have.length.of.at.least', 1);
+    cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
   });
   it('has working tag cloud', () => {
     cy.get('[data-cy=tagCloud]').should('not.exist');
@@ -118,7 +118,7 @@ describe('Test search page functionality', () => {
   });
   it('searches', () => {
     cy.get('[data-cy=basic-search]').type('topmed{enter}');
-    cy.url().should('contain', '/search?search=topmed');
+    cy.url().should('contain', '/search?entryType=workflows&search=topmed');
   });
   it('filters and unfilters by facets', () => {
     cy.visit('/search');
@@ -126,9 +126,11 @@ describe('Test search page functionality', () => {
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
-    cy.url().should('contain', 'search?descriptorType=NFL&searchMode=files');
+    cy.url().should('contain', 'descriptorType=NFL');
+    cy.url().should('contain', 'searchMode=files');
     cy.contains('mat-checkbox', 'Nextflow').click();
-    cy.url().should('contain', 'search?searchMode=files');
+    cy.url().should('not.contain', 'descriptorType=NF');
+    cy.url().should('contain', 'searchMode=files');
   });
 });
 
@@ -136,8 +138,7 @@ describe('Test workflow page functionality', () => {
   it('find a WDL workflow', () => {
     cy.visit('/search');
     cy.contains('.mat-tab-label', 'Workflows');
-    cy.get('[data-cy=toolNames]').should('have.length.of.at.least', 1);
-    goToTab('Workflows');
+    cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
 
     // click twice to sort by descriptor type descending so WDL is at the top
     cy.get('[data-cy=descriptorTypeHeader]').click().click();
