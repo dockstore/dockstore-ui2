@@ -199,7 +199,7 @@ describe('Check organizations page', () => {
 describe('Check external links', () => {
   it('github, twitter, gitter, discuss links are correct', () => {
     cy.visit('');
-    cy.contains('a', 'Github').should('have.attr', 'href', 'https://github.com/dockstore/dockstore');
+    cy.contains('a', 'GitHub').should('have.attr', 'href', 'https://github.com/dockstore/dockstore');
     cy.contains('a', '@DockstoreOrg').should('have.attr', 'href', 'https://twitter.com/DockstoreOrg');
     cy.contains('a', 'Gitter').should('have.attr', 'href', 'https://gitter.im/ga4gh/dockstore');
     cy.contains('a', 'Help Desk').should('have.attr', 'href', 'https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506');
