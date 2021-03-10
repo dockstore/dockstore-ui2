@@ -7,8 +7,6 @@ import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationsQuery extends Query<OrganizationsState> {
-  public pageSize$: Observable<number> = this.select((state) => state.pageSize);
-  public pageIndex$: Observable<number> = this.select((state) => state.pageIndex);
   organizations$: Observable<Array<Organization>> = this.select((state) => state.organizations);
   searchName$: Observable<string> = this.select((state) => state.searchName);
   sortBy$: Observable<string> = this.select((state) => state.sortBy);

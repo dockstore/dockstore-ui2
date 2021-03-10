@@ -61,14 +61,4 @@ export class OrganizationsStateService {
       };
     });
   }
-
-  setPageSizeAndIndex(pageSize: number, pageIndex: number) {
-    this.organizationsStore.update((state) => {
-      return {
-        ...state,
-        pageSize: pageSize,
-        pageIndex: pageIndex,
-      };
-    });
-  }
 }

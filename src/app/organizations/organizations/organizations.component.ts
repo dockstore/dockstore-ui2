@@ -13,14 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-// import { OrganizationsPaginatorDirective } from './organizations-paginator.directive';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -36,14 +33,12 @@ import { OrganizationsStateService } from '../state/organizations.service';
   templateUrl: './organizations.component.html',
   styleUrls: ['./organizations.component.scss'],
 })
-export class OrganizationsComponent extends Base implements OnInit, AfterViewInit {
+export class OrganizationsComponent extends Base implements OnInit {
   public filteredOrganizations$: Observable<Array<Organization>>;
   public organizationSearchForm: FormGroup;
   public loading$: Observable<boolean>;
   public isLoggedIn$: Observable<boolean>;
-  public dataSource: MatTableDataSource<Organization>;
-  @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
-  obs: Observable<Array<Organization>>;
+  public iniOrgLength: number;
 
   constructor(
     private organizationsStateService: OrganizationsStateService,
@@ -51,8 +46,7 @@ export class OrganizationsComponent extends Base implements OnInit, AfterViewIni
     private formBuilder: FormBuilder,
     private alertQuery: AlertQuery,
     private matDialog: MatDialog,
-    private trackLoginService: TrackLoginService,
-    private changeDetectorRef: ChangeDetectorRef
+    private trackLoginService: TrackLoginService
   ) {
     super();
   }
@@ -66,6 +60,10 @@ export class OrganizationsComponent extends Base implements OnInit, AfterViewIni
     // this.loading$ = this.organizationsQuery.loading$;
     this.organizationsStateService.updateOrganizations();
     this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
+    this.filteredOrganizations$.pipe(filter(orgs => orgs != null), take(1))
+    .subscribe((orgs) => {
+      this.iniOrgLength = orgs.length;
+    });
     this.organizationSearchForm
       .get('name')
       .valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
@@ -79,17 +77,7 @@ export class OrganizationsComponent extends Base implements OnInit, AfterViewIni
       .subscribe((sortBy: string) => {
         this.organizationsStateService.updateSort(sortBy);
       });
-
-    this.filteredOrganizations$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((orgs) => (this.dataSource = new MatTableDataSource<Organization>(orgs)));
-    this.changeDetectorRef.detectChanges();
-    this.dataSource.paginator = this.paginator;
-    this.obs = this.dataSource.connect();
-    console.log(this.obs);
   }
-
-  ngAfterViewInit() {}
   /**
    * When the create organization button is clicked.
    * Opens the dialog to create organization
@@ -99,8 +87,4 @@ export class OrganizationsComponent extends Base implements OnInit, AfterViewIni
   createOrganization(): void {
     this.matDialog.open(RegisterOrganizationComponent, { data: { organization: null, mode: TagEditorMode.Add }, width: '600px' });
   }
-
-  // privateNgOnInit(): Observable<Array<Organization>>{
-  //   return this.organizationsQuery.filteredOrganizations$;
-  // }
 }
