@@ -149,7 +149,14 @@
           <ul class="footer-list m-0 affiliation-list">
             <li class="m-0 title">Find us on</li>
             <li class="m-0">
-              <a [href]="Dockstore.DOCKSTORE_REPO" target="_blank" rel="noopener noreferrer" class="footer-link" fxLayoutGap="0.5rem">
+              <a
+                [href]="Dockstore.DOCKSTORE_REPO"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+                fxLayoutGap="0.5rem"
+                data-cy="GitHubFooterLink"
+              >
                 <img class="site-icons-tab" src="../../assets/images/dockstore/github.svg" alt="small GitHub logo" /><small>GitHub</small>
               </a>
             </li>
