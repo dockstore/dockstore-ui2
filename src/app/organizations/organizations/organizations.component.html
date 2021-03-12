@@ -67,7 +67,7 @@
           <div style="height: 100%" fxLayout="column" fxLayoutAlign="space-between stretch">
             <div fxLayout="column" fxLayoutAlign="space-around">
               <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                <img class="orgLogo" [src]="org.avatarUrl || ''" alt="org logo" />
+                <img class="orgLogo" [src]="org.avatarUrl" alt="org logo" />
                 <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
                   <mat-icon class="orgStar">star</mat-icon>
                   <span>{{ org.starredUsers.length }}</span>
