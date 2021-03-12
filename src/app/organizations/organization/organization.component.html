@@ -131,21 +131,19 @@
         <div fxLayout="column" fxLayoutGap="15px" class="my-3">
           <div fxLayout="row" fxLayoutAlign="space-between">
             <h4>About the Organization</h4>
-            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
-              <div *ngIf="!org.description" fxFlex>
-                <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
-                <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
-              </div>
-              <button
-                mat-button
-                *ngIf="canEdit$ | async"
-                (click)="updateDescription()"
-                id="editOrgDescription"
-                matTooltip="Edit the description"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-            </div>
+            <button
+              mat-button
+              *ngIf="canEdit$ | async"
+              (click)="updateDescription()"
+              id="editOrgDescription"
+              matTooltip="Edit the description"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+          <div *ngIf="!org.description" fxFlex>
+            <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
+            <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
           </div>
           <div fxLayout="column" fxLayoutGap="10px" class="px-4 py-1">
             <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">

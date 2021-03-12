@@ -35,6 +35,7 @@ import { OrganizationsStateService } from '../state/organizations.service';
 })
 export class OrganizationsComponent extends Base implements OnInit {
   public filteredOrganizations$: Observable<Array<Organization>>;
+  public orgLength$: Observable<number>;
   public organizationSearchForm: FormGroup;
   public loading$: Observable<boolean>;
   public isLoggedIn$: Observable<boolean>;
@@ -53,20 +54,27 @@ export class OrganizationsComponent extends Base implements OnInit {
   ngOnInit() {
     this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
     this.organizationsStateService.updateSearchNameState('');
-    this.organizationSearchForm = this.formBuilder.group({ name: '' });
+    this.organizationSearchForm = this.formBuilder.group({ name: '', sort: '' });
     this.loading$ = this.alertQuery.showInfo$;
     // The real loading$ is currently not being used because the alertQuery global loading is used instead
     // this.loading$ = this.organizationsQuery.loading$;
     this.organizationsStateService.updateOrganizations();
     this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
+    this.orgLength$ = this.organizationsQuery.orgsLength$;
     this.organizationSearchForm
       .get('name')
       .valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchName: string) => {
         this.organizationsStateService.updateSearchNameState(searchName);
       });
-  }
 
+    this.organizationSearchForm
+      .get('sort')
+      .valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .subscribe((sortBy: 'starred' | 'name') => {
+        this.organizationsStateService.updateSort(sortBy);
+      });
+  }
   /**
    * When the create organization button is clicked.
    * Opens the dialog to create organization
