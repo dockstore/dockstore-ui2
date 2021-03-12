@@ -21,13 +21,7 @@
 </app-header>
 <div *ngIf="!(loading$ | async)" class="container">
   <div *ngIf="filteredOrganizations$ | async as organizations; else noOrganizationsFound">
-    <div
-      fxLayout="row"
-      fxLayoutAlign="space-between center"
-      class="mt-3 mb-3"
-      fxLayout.lt-sm="column-reverse"
-      fxLayoutAlign.lt-sm="start start"
-    >
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="my-3" fxLayout.lt-sm="column-reverse" fxLayoutAlign.lt-sm="start start">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
         <div fxHide.lt-sm>{{ orgLength$ | async }} organizations</div>
         <button
@@ -64,7 +58,7 @@
           fxFlex.lt-lg="48"
           fxFlex.lt-md="100"
         >
-          <div style="height: 100%" fxLayout="column" fxLayoutAlign="space-between stretch">
+          <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
             <div fxLayout="column" fxLayoutAlign="space-around">
               <div fxLayout="row wrap" fxLayoutAlign="space-between start">
                 <img class="orgLogo" [src]="org.avatarUrl" alt="org logo" />
