@@ -10,6 +10,7 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
   organizations$: Observable<Array<Organization>> = this.select((state) => state.organizations);
   searchName$: Observable<string> = this.select((state) => state.searchName);
   sortBy$: Observable<string> = this.select((state) => state.sortBy);
+  orgsLength$: Observable<number> = this.organizations$.pipe(map((orgs) => orgs.length));
   filteredOrganizations$: Observable<Array<Organization>> = combineLatest([this.organizations$, this.searchName$, this.sortBy$]).pipe(
     map(([organizations, searchName, sortBy]: [Array<Organization>, string, string]) => {
       return this.filterAndSortOrganizations(organizations, searchName, sortBy);

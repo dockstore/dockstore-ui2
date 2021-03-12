@@ -29,7 +29,7 @@
       fxLayoutAlign.lt-sm="start start"
     >
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
-        <div fxHide.lt-sm>{{ organizations.length }} organizations</div>
+        <div fxHide.lt-sm>{{ orgLength$ | async }} organizations</div>
         <button
           *ngIf="isLoggedIn$ | async"
           color="primary"
