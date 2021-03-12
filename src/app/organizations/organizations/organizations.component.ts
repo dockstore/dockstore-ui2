@@ -38,7 +38,6 @@ export class OrganizationsComponent extends Base implements OnInit {
   public organizationSearchForm: FormGroup;
   public loading$: Observable<boolean>;
   public isLoggedIn$: Observable<boolean>;
-  public iniOrgLength: number;
 
   constructor(
     private organizationsStateService: OrganizationsStateService,
@@ -60,10 +59,6 @@ export class OrganizationsComponent extends Base implements OnInit {
     // this.loading$ = this.organizationsQuery.loading$;
     this.organizationsStateService.updateOrganizations();
     this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
-    this.filteredOrganizations$.pipe(filter(orgs => orgs != null), take(1))
-    .subscribe((orgs) => {
-      this.iniOrgLength = orgs.length;
-    });
     this.organizationSearchForm
       .get('name')
       .valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
