@@ -17,7 +17,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -71,7 +71,7 @@ export class OrganizationsComponent extends Base implements OnInit {
     this.organizationSearchForm
       .get('sort')
       .valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
-      .subscribe((sortBy: string) => {
+      .subscribe((sortBy: 'starred' | 'name') => {
         this.organizationsStateService.updateSort(sortBy);
       });
   }

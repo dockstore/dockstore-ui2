@@ -53,7 +53,7 @@ export class OrganizationsStateService {
     });
   }
 
-  updateSort(sortBy: string): void {
+  updateSort(sortBy: 'starred' | 'name'): void {
     this.organizationsStore.update((state: OrganizationsState) => {
       return {
         ...state,

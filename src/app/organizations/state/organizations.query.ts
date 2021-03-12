@@ -9,10 +9,10 @@ import { OrganizationsState, OrganizationsStore } from './organizations.store';
 export class OrganizationsQuery extends Query<OrganizationsState> {
   organizations$: Observable<Array<Organization>> = this.select((state) => state.organizations);
   searchName$: Observable<string> = this.select((state) => state.searchName);
-  sortBy$: Observable<string> = this.select((state) => state.sortBy);
+  sortBy$: Observable<'starred' | 'name'> = this.select((state) => state.sortBy);
   orgsLength$: Observable<number> = this.organizations$.pipe(map((orgs) => orgs.length));
   filteredOrganizations$: Observable<Array<Organization>> = combineLatest([this.organizations$, this.searchName$, this.sortBy$]).pipe(
-    map(([organizations, searchName, sortBy]: [Array<Organization>, string, string]) => {
+    map(([organizations, searchName, sortBy]: [Array<Organization>, string, 'starred' | 'name']) => {
       return this.filterAndSortOrganizations(organizations, searchName, sortBy);
     })
   );
@@ -29,11 +29,8 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
    * Partial match
    * Searches the name, description, displayName, location, and topic of each organization (does not search its collections)
    *
-   * Also able to sort the organizations by name or number of stars
-   *
-   * @param {Array<Organization>} organizations  List of all approved organizations
+   * @param {Array<Organization> | null} organizations  List of all approved organizations
    * @param {string} searchName                  Search string
-   * @param {'starred' | 'name'} sortBy                      Search string
    * @returns {(Array<Organization> | null)}     Array of organizations that have been filtered by string
    * @memberof OrganizationsQuery
    */
@@ -56,7 +53,24 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
     return null;
   }
 
-  filterAndSortOrganizations(organizations: Array<Organization> | null, searchName: string, sortBy: string): Array<Organization> | null {
+  /**
+   * Filters the organizations based on a string, and sort the organizations based on either number of stars or name
+   * Case insensitive
+   * Partial match
+   * Searches the name, description, displayName, location, and topic of each organization (does not search its collections)
+   * Also able to sort the organizations by name alphabetically or by number of stars
+   *
+   * @param {Array<Organization> | null} organizations  List of all approved organizations
+   * @param {string} searchName                  Search string
+   * @param {'starred' | 'name'} sortBy          Sort by either 'name' or 'starred'
+   * @returns {(Array<Organization> | null)}     Array of organizations that have been filtered by string
+   * @memberof OrganizationsQuery
+   */
+  filterAndSortOrganizations(
+    organizations: Array<Organization> | null,
+    searchName: string,
+    sortBy: 'starred' | 'name'
+  ): Array<Organization> | null {
     if (organizations) {
       let newOrganizations = this.filterOrganizations(organizations, searchName);
       const arrayForSort = [...newOrganizations];

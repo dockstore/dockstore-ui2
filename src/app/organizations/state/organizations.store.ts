@@ -5,7 +5,7 @@ import { Organization } from '../../shared/swagger';
 export interface OrganizationsState {
   organizations: Array<Organization>;
   searchName: string;
-  sortBy: string;
+  sortBy: 'starred' | 'name';
 }
 
 export function createInitialState(): OrganizationsState {
