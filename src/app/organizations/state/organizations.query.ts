@@ -32,14 +32,14 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
    *
    * @param {Array<Organization>} organizations  List of all approved organizations
    * @param {string} searchName                  Search string
-   * @param {string} sortBy                      Search string
+   * @param {'starred' | 'name'} sortBy                      Search string
    * @returns {(Array<Organization> | null)}     Array of organizations that have been filtered by string
    * @memberof OrganizationsQuery
    */
-  filterOrganizations(organizations: Array<Organization>, searchName: string): Array<Organization> | null {
-    searchName = searchName.toLowerCase();
+  filterOrganizations(organizations: Array<Organization> | null, searchName: string): Array<Organization> | null {
     if (organizations) {
-      return searchName
+      const lowerCaseSearchName: string = searchName.toLowerCase();
+      return lowerCaseSearchName
         ? organizations.filter((organization) => {
             const matchOptions: string[] = [
               organization.description,
@@ -48,25 +48,25 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
               organization.name,
               organization.topic,
             ].filter((matchOption) => !!matchOption);
-            return matchOptions.some((stringIdentifier) => stringIdentifier.toLowerCase().includes(searchName));
+            return matchOptions.some((stringIdentifier) => stringIdentifier.toLowerCase().includes(lowerCaseSearchName));
           })
         : organizations;
     }
     return null;
   }
 
-  filterAndSortOrganizations(organizations: Array<Organization>, searchName: string, sortBy: string): Array<Organization> | null {
+  filterAndSortOrganizations(organizations: Array<Organization> | null, searchName: string, sortBy: string): Array<Organization> | null {
     if (organizations) {
-      organizations = this.filterOrganizations(organizations, searchName);
-      const arrayForSort = [...organizations];
+      let newOrganizations = this.filterOrganizations(organizations, searchName);
+      const arrayForSort = [...newOrganizations];
       if (sortBy === 'name') {
         arrayForSort.sort((a, b) => (a.displayName < b.displayName ? -1 : 1));
-        organizations = arrayForSort;
+        newOrganizations = arrayForSort;
       } else if (sortBy === 'starred') {
         arrayForSort.sort((a, b) => (a.starredUsers.length < b.starredUsers.length ? 1 : -1));
-        organizations = arrayForSort;
+        newOrganizations = arrayForSort;
       }
-      return organizations;
+      return newOrganizations;
     }
     return null;
   }

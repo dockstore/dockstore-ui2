@@ -65,19 +65,20 @@
           fxFlex.lt-md="100"
         >
           <div style="height: 100%" fxLayout="column" fxLayoutAlign="space-between stretch">
-            <a data-cy="orgName" [routerLink]="org.name" [matTooltip]="org?.name">
-              <div fxLayout="column" fxLayoutAlign="space-around">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                  <img class="orgLogo" [src]="org.avatarUrl || ''" alt="org logo" />
-                  <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
-                    <mat-icon class="orgStar">star</mat-icon>
-                    <span>{{ org.starredUsers.length }}</span>
-                  </div>
+            <div fxLayout="column" fxLayoutAlign="space-around">
+              <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <img class="orgLogo" [src]="org.avatarUrl || ''" alt="org logo" />
+                <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
+                  <mat-icon class="orgStar">star</mat-icon>
+                  <span>{{ org.starredUsers.length }}</span>
                 </div>
+              </div>
+              <a data-cy="orgName" [routerLink]="org.name" [matTooltip]="org?.name" fxLayout="column" fxLayoutAlign="space-around">
                 <h5>{{ org.displayName }}</h5>
                 <span class="org-topic">{{ org.topic }}</span>
-              </div>
-            </a>
+              </a>
+            </div>
+
             <div>
               <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
                 <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.email">
