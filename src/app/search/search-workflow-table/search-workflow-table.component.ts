@@ -15,6 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { Workflow } from '../../shared/swagger';
@@ -34,6 +35,9 @@ import { SearchService } from '../state/search.service';
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
   readonly entryType = 'workflow';
   public dataSource: MatTableDataSource<Workflow>;
+  public galaxyShortfriendlyName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+    Workflow.DescriptorTypeEnum.Gxformat2
+  ).split(' ')[0];
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);
   }

@@ -39,7 +39,7 @@
       <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow" fxFlex="20%">
         <div>
           <span class="nonclick-badge">{{
-            workflow?.descriptorType === 'gxformat2' ? 'Galaxy' : (workflow?.descriptorType | uppercase)
+            workflow?.descriptorType === 'gxformat2' ? galaxyShortfriendlyName : (workflow?.descriptorType | uppercase)
           }}</span>
         </div>
       </mat-cell>
