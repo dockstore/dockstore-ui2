@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -21,6 +22,7 @@ import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { AlertService } from '../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -135,7 +137,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private searchQuery: SearchQuery,
     private advancedSearchQuery: AdvancedSearchQuery,
     private activatedRoute: ActivatedRoute,
-    private extendedGA4GHService: ExtendedGA4GHService
+    private extendedGA4GHService: ExtendedGA4GHService,
+    private alertService: AlertService
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
@@ -426,6 +429,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @memberof SearchComponent
    */
   updateResultsTable(value: string) {
+    this.alertService.start('Performing search request');
     this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
       (hits: any) => {
         this.hits = hits.hits.hits;
@@ -438,8 +442,11 @@ export class SearchComponent implements OnInit, OnDestroy {
         if (this.searchTerm && this.hits.length === 0) {
           this.searchService.suggestSearchTerm(searchText);
         }
+        this.alertService.simpleSuccess();
       },
-      (error) => console.log(error)
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
     );
   }
 
