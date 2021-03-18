@@ -38,7 +38,9 @@
       >
       <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow" fxFlex="20%">
         <div>
-          <span class="nonclick-badge">{{ workflow?.descriptorType | uppercase }}</span>
+          <span class="nonclick-badge">{{
+            workflow?.descriptorType === 'gxformat2' ? galaxyShortfriendlyName : (workflow?.descriptorType | uppercase)
+          }}</span>
         </div>
       </mat-cell>
     </ng-container>
