@@ -214,8 +214,8 @@ export class QueryBuilderService {
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
     return body.filter('bool', (filter) =>
       filter
-        .orFilter('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-        .orFilter('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*' } })
+        .orFilter('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*' } })
         .orFilter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
         .orFilter('match_phrase', 'tags.sourceFiles.content', searchString)
         .orFilter('match_phrase', 'description', searchString)
