@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { RouterModule, Routes } from '@angular/router';
+import { AboutComponent } from './about/about.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeLoggedInComponent } from './home-page/home-logged-in/home-logged-in.component';
@@ -94,6 +95,11 @@ const APP_ROUTES: Routes = [
     path: 'aliases',
     loadChildren: () => import('app/aliases/aliases.module').then((m) => m.AliasesModule),
     data: { title: 'Dockstore | Aliases' },
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+    data: { title: 'Dockstore | About' },
   },
   {
     path: 'search',

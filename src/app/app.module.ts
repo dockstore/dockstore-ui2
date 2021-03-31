@@ -27,6 +27,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { MarkdownModule } from 'ngx-markdown';
 import { environment } from '../environments/environment';
+import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
@@ -151,6 +152,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     TosBannerComponent,
     LogoutComponent,
     GitTagPipe,
+    AboutComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

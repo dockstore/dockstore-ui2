@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 
 export interface Funder {
   title: string;
@@ -13,6 +13,7 @@ export interface Funder {
   templateUrl: './funding.component.html',
   styleUrls: ['./funding.component.scss'],
 })
+@Injectable()
 export class FundingComponent {
   GenomeCanadaFunder: Funder = {
     title: 'Genome Canada',
@@ -68,5 +69,9 @@ export class FundingComponent {
     this.BioDataCatalyst,
     this.CFIFunder,
   ];
+
+  getFunders(): Funder[] {
+    return this.funders;
+  }
   constructor() {}
 }
