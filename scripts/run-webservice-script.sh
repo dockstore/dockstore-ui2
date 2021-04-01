@@ -8,10 +8,10 @@ set -o xtrace
 # Uncomment this to use the CircleCI jar
 JAR_PATH="https://9549-33383826-gh.circle-artifacts.com/0/tmp/artifacts/dockstore-webservice-1.11.0-alpha.1-SNAPSHOT.jar"
 
-# wget -O dockstore-webservice.jar --no-verbose --tries=10 ${JAR_PATH}
+wget -O dockstore-webservice.jar --no-verbose --tries=10 ${JAR_PATH}
 chmod u+x dockstore-webservice.jar
-# psql -h localhost -c "create user dockstore with password 'dockstore' createdb;" -U postgres
-# psql -h localhost -c "ALTER USER dockstore WITH superuser;" -U postgres
+psql -h localhost -c "create user dockstore with password 'dockstore' createdb;" -U postgres
+psql -h localhost -c "ALTER USER dockstore WITH superuser;" -U postgres
 psql -h localhost -c 'drop database webservice_test' -U postgres
 psql -h localhost -c 'create database webservice_test with owner = dockstore;' -U postgres
 psql -h localhost -f travisci/db_dump.sql webservice_test -U postgres
