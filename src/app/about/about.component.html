@@ -13,7 +13,7 @@
             the <a target="_blank" rel="noopener" href="https://www.ga4gh.org/">GA4GH</a>.
           </p>
           <a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCFWNYqxQvVLAuZq8rdOSE4g/videos">
-            <button class="btn" fxLayout="row" fxLayoutGap="1rem">
+            <button class="btn mb-5" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-around center">
               <mat-icon [ngStyle]="{ color: 'white' }">play_circle_filled</mat-icon>
               <span fxHide fxShow.lt-sm>Video Tutorials</span>
               <span fxHide.lt-sm>More Videos</span>
@@ -25,11 +25,12 @@
           <iframe
             width="560"
             height="315"
-            [src]="safeURL"
+            [src]="youtubeSafeURL"
             title="YouTube video player"
             frameborder="1rem"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
+            class="mb-5"
           ></iframe>
         </div>
       </div>
@@ -71,10 +72,12 @@
           <img src="../../assets/images/about-page/interoperable-icon.svg" alt="icon" class="principles-icon" />
           <h5>Interoperable</h5>
           <p>
-            Docker repositories (e.g. <a target="_blank" rel="noopener">Docker Hub</a>) and source control repositories (e.g.
-            <a target="_blank" rel="noopener" href="https://github.com/dockstore/dockstore">GitHub</a>) provide much of the needed
-            infrastructure. Contributors are encouraged to provide clear instructions, test data and checker workflows to ensure their
-            software is usable in any environment.
+            Docker repositories (e.g.
+            <a target="_blank" rel="noopener" href="https://hub.docker.com/" data-cy="Docker-hub-about-link">Docker Hub</a>) and source
+            control repositories (e.g.
+            <a target="_blank" rel="noopener" href="https://github.com/dockstore/dockstore" data-cy="Github-about-link">GitHub</a>) provide
+            much of the needed infrastructure. Contributors are encouraged to provide clear instructions, test data and checker workflows to
+            ensure their software is usable in any environment.
           </p>
         </div>
         <div fxLayout="column" fxLayoutAlign="none start">
@@ -89,7 +92,7 @@
       </div>
     </div>
 
-    <div class="register-dockstore">
+    <div class="register-dockstore pt-5 pb-5">
       <div fxLayout="row" class="container" fxLayoutAlign="space-between" fxLayoutGap="3rem">
         <img fxHide.lt-md src="../../assets/images/about-page/diagram-with-logos.png" alt="diagram" fxFlex.gt-sm="45" />
         <div fxLayout="column" fxFlex>
@@ -160,15 +163,15 @@
           </a>
         </div>
         <div fxLayout="column" fxFlex>
-          <mat-tab-group class="workflow-tab-group">
+          <mat-tab-group mat-align-tabs="center" class="workflow-tab-group">
             <mat-tab label="COVID-19">
               <mat-card class="mat-elevation-z4 about-card">
                 <div fxLayout="row" fxLayoutAlign="space-around start">
                   <div fxLayout="column" fxLayoutAlign="space-between start">
-                    <div fxLayout="row">
-                      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
-                        <img src="../../assets/images/sponsors/coloured/ucsc.png" style="width: 200px" />
-                        <mat-chip>smth workflows</mat-chip>
+                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem">
+                      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem" fxLayout.lt-sm="row">
+                        <img src="../../assets/images/sponsors/coloured/broad.svg" />
+                        <span class="workflowlength">{{ workflowsLength$ | async }} workflows</span>
                       </div>
                       <span>
                         The <strong>Broad Viral Genomics & Data Sciences Platform</strong> hit the ground running, producing a collection of
@@ -191,16 +194,9 @@
                 </div>
               </mat-card>
             </mat-tab>
-            <mat-tab label="AnVIL">
-              <mat-card class="mat-elevation-z4 about-card">
-                <mat-card-subtitle>More to come</mat-card-subtitle>
-              </mat-card></mat-tab
-            >
-            <mat-tab label="PCAWG">
-              <mat-card class="mat-elevation-z4 about-card">
-                <mat-card-subtitle>More to come</mat-card-subtitle>
-              </mat-card>
-            </mat-tab>
+            <!-- reserved when the paper is published -->
+            <!-- <mat-tab label="AnVIL"></mat-tab>
+            <mat-tab label="PCAWG"></mat-tab> -->
           </mat-tab-group>
         </div>
       </div>
@@ -215,20 +211,22 @@
         tools.
       </p>
       <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="1rem">
-        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem">
-          <div fxLayout="column" fxHide.lt-md>
+        <div fxLayout="row" fxLayoutGap="4rem" fxLayoutAlign="start center">
+          <div fxLayout="column" fxHide.lt-md fxFlex="10">
             <h5>Funders</h5>
             <span>
-              <a [routerLink]="['/funding']">More Info</a>
+              <a [routerLink]="['/funding']" data-cy="about-more-info-link">More Info</a>
               <mat-icon>keyboard_arrow_right</mat-icon>
             </span>
           </div>
-          <a *ngFor="let funder of funders" [href]="funder.website" target="_blank" rel="noopener">
-            <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
-          </a>
+          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
+            <a *ngFor="let funder of funders" [href]="funder.website" target="_blank" rel="noopener" style="padding: 0.5rem 0">
+              <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
+            </a>
+          </div>
         </div>
         <hr />
-        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="2rem">
+        <div fxLayout="row" fxLayoutGap="4rem" fxLayoutAlign="start center">
           <div fxLayout="column" fxHide.lt-md>
             <h5>Contributors</h5>
             <span>
@@ -236,19 +234,23 @@
               <mat-icon>keyboard_arrow_right</mat-icon>
             </span>
           </div>
-          <a *ngFor="let contributor of contributors" [href]="contributor.url" target="_blank" rel="noopener">
-            <img class="funders" [src]="contributor.current" [alt]="contributor.name" />
-          </a>
+          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
+            <a *ngFor="let contributor of contributors" [href]="contributor.url" target="_blank" rel="noopener" style="padding: 0.5rem 0">
+              <img class="funders" [src]="contributor.current" [alt]="contributor.name" />
+            </a>
+          </div>
         </div>
         <hr />
-        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem">
+        <div fxLayout="row" fxLayoutGap="4rem" fxFlex fxLayoutAlign="start center">
           <div fxLayout="column" fxHide.lt-md>
             <h5>Integration</h5>
             <h5>Partners</h5>
           </div>
-          <a *ngFor="let partner of partners" [href]="partner.url" target="_blank" rel="noopener">
-            <img class="funders" [src]="partner.current" [alt]="partner.name" />
-          </a>
+          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
+            <a *ngFor="let partner of partners" [href]="partner.url" target="_blank" rel="noopener">
+              <img class="funders" [src]="partner.current" [alt]="partner.name" />
+            </a>
+          </div>
         </div>
       </div>
     </div>
