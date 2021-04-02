@@ -1522,7 +1522,7 @@
 "xhr2@0.2.0","MIT","https://github.com/pwnall/node-xhr2"
 "xmlhttprequest-ssl@1.5.5","MIT","https://github.com/mjwwit/node-XMLHttpRequest"
 "xtend@4.0.2","MIT","https://github.com/Raynos/xtend"
-"y18n@4.0.0","ISC","https://github.com/yargs/y18n"
+"y18n@4.0.1","ISC","https://github.com/yargs/y18n"
 "yallist@3.1.1","ISC","https://github.com/isaacs/yallist"
 "yallist@4.0.0","ISC","https://github.com/isaacs/yallist"
 "yargs-parser@13.1.2","ISC","https://github.com/yargs/yargs-parser"
