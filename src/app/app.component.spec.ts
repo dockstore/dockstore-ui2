@@ -14,9 +14,6 @@ class BannerStubComponent {}
 @Component({ selector: 'app-navbar', template: '' })
 class NavbarStubComponent {}
 
-@Component({ selector: 'app-sponsors', template: '' })
-class SponsorsStubComponent {}
-
 @Component({ selector: 'app-footer', template: '' })
 class FooterStubComponent {}
 
@@ -33,7 +30,6 @@ describe('AppComponent', () => {
         declarations: [
           AppComponent,
           NavbarStubComponent,
-          SponsorsStubComponent,
           FooterStubComponent,
           BannerStubComponent,
           RouterLinkStubDirective,

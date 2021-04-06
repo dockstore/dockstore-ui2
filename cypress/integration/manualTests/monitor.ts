@@ -29,7 +29,6 @@ const externalLinkTuples = [
   ['[data-cy=footer-documentation-link]', '/dockstore-introduction.html'],
   ['[data-cy=Docker-hub-about-link]', 'hub.docker.com'],
   ['[data-cy=Github-about-link]', 'github.com/dockstore/dockstore'],
-  ['[data-cy=about-roadmap-link]', 'github.com/dockstore/dockstore'],
 ];
 
 before(() => {

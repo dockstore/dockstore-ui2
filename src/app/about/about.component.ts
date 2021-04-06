@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { OrganizationsService } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Funder, FundingComponent } from '../funding/funding.component';
-import { CollectionsQuery } from '../organizations/state/collections.query';
-import { CollectionsService } from '../organizations/state/collections.service';
 import { Dockstore } from '../shared/dockstore.model';
 import { Sponsor } from '../sponsors/sponsor.model';
 
@@ -42,8 +41,7 @@ export class AboutComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private fundingComponent: FundingComponent,
-    private collectionsQuery: CollectionsQuery,
-    private collectionsService: CollectionsService
+    private organizationsService: OrganizationsService
   ) {
     this.youtubeSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/shMr_Bd01Ko');
   }
@@ -51,21 +49,7 @@ export class AboutComponent implements OnInit {
   ngOnInit() {
     this.funders = this.fundingComponent.getFunders();
 
-    this.collectionsService.updateCollections(this.BROAD_ORGANIZATION_ID);
-    this.workflowsLength$ = this.collectionsQuery.collections$.pipe(
-      map((collections) => {
-        for (const index in collections) {
-          if (collections[index].id === this.BROAD_COLLECTION_ID) {
-            return collections[index].workflowsLength;
-          }
-        }
-      })
-    );
-    // this.collectionsService.updateCollectionFromId(this.BROAD_ORGANIZATION_ID, this.BROAD_COLLECTION_ID);
-    // this.workflowsLength$ = this.collectionsQuery.collections$.pipe(
-    //   map((collections) => {
-    //     return collections[this.BROAD_COLLECTION_ID].workflowsLength;
-    //   })
-    // );
+    this.workflowsLength$ = this.organizationsService
+    .getCollectionById(this.BROAD_ORGANIZATION_ID, this.BROAD_COLLECTION_ID).pipe(map(collection => collection.workflowsLength));
   }
 }

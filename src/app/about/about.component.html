@@ -10,9 +10,9 @@
           </h5>
           <p>
             Established in 2015, Dockstore has been an evolving proof of concept designed as a starting point for community standards within
-            the <a target="_blank" rel="noopener" href="https://www.ga4gh.org/">GA4GH</a>.
+            the <a target="_blank" rel="noopener noreferrer" href="https://www.ga4gh.org/">GA4GH</a>.
           </p>
-          <a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UCFWNYqxQvVLAuZq8rdOSE4g/videos">
+          <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UCFWNYqxQvVLAuZq8rdOSE4g/videos">
             <button class="btn mb-5" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-around center">
               <mat-icon [ngStyle]="{ color: 'white' }">play_circle_filled</mat-icon>
               <span fxHide fxShow.lt-sm>Video Tutorials</span>
@@ -27,7 +27,6 @@
             height="315"
             [src]="youtubeSafeURL"
             title="YouTube video player"
-            frameborder="1rem"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
             class="mb-5"
@@ -37,13 +36,13 @@
     </div>
 
     <div fxLayout="column" class="container" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
-      <h3>Dockstore follow the FAIR Guiding Principles</h3>
+      <h3>Dockstore follows the FAIR Guiding Principles</h3>
       <span
         >Our
         <a
           target="_blank"
-          rel="noopener"
-          href="https://docs.dockstore.org/en/develop/advanced-topics/best-practices/best-practices-secure-fair-workflows.html"
+          rel="noopener noreferrer"
+          [href]="Dockstore.DOCUMENTATION_URL + 'advanced-topics/best-practices/best-practices-secure-fair-workflows.html'"
           >FAIR best practice guide</a
         >
         helps researchers and other contributors create secure and reusable software.</span
@@ -62,10 +61,10 @@
           <h5>Accessible</h5>
           <p>
             Dockstore never requires a user to log in to search for workflows and tools. Once found, analyses can be moved from
-            environment-to-environment (e.g. <a target="_blank" rel="noopener" href="https://terra.bio/">Terra</a>,
-            <a target="_blank" rel="noopener" href="https://www.dnastack.com/">DNAstack</a>, and
-            <a target="_blank" rel="noopener" href="https://www.dnanexus.com/">DNAnexus</a>) and yet be guaranteed to run on anything that
-            supports Docker.
+            environment-to-environment (e.g. <a target="_blank" rel="noopener noreferrer" href="https://terra.bio/">Terra</a>,
+            <a target="_blank" rel="noopener noreferrer" href="https://www.dnastack.com/">DNAstack</a>, and
+            <a target="_blank" rel="noopener noreferrer" href="https://www.dnanexus.com/">DNAnexus</a>) and yet be guaranteed to run on
+            anything that supports Docker.
           </p>
         </div>
         <div fxLayout="column" fxLayoutAlign="none start">
@@ -73,11 +72,11 @@
           <h5>Interoperable</h5>
           <p>
             Docker repositories (e.g.
-            <a target="_blank" rel="noopener" href="https://hub.docker.com/" data-cy="Docker-hub-about-link">Docker Hub</a>) and source
-            control repositories (e.g.
-            <a target="_blank" rel="noopener" href="https://github.com/dockstore/dockstore" data-cy="Github-about-link">GitHub</a>) provide
-            much of the needed infrastructure. Contributors are encouraged to provide clear instructions, test data and checker workflows to
-            ensure their software is usable in any environment.
+            <a target="_blank" rel="noopener noreferrer" href="https://hub.docker.com/" data-cy="Docker-hub-about-link">Docker Hub</a>) and
+            source control repositories (e.g.
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/dockstore/dockstore" data-cy="Github-about-link">GitHub</a
+            >) provide much of the needed infrastructure. Contributors are encouraged to provide clear instructions, test data and checker
+            workflows to ensure their software is usable in any environment.
           </p>
         </div>
         <div fxLayout="column" fxLayoutAlign="none start">
@@ -106,13 +105,13 @@
             </li>
             <li>
               You can use our hosted workflows service to store tools and workflows directly on dockstore.org in order to quickly get
-              started, prototype your ideas, and share workflows with a limited audience.
+              started, prototype your ideas, and share workflows with an audience.
             </li>
             <li>
               Following our
               <a
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
                 href="https://docs.dockstore.org/en/develop/getting-started/getting-started-with-docker.html#"
                 >tutorials</a
               >, you can save your descriptors on GitHub, build your Docker image automatically on Quay.io, and have Dockstore reach out and
@@ -134,23 +133,23 @@
           <h5>Building a Community</h5>
           <p>
             Several large projects and organizations in the Biosciences, specifically cancer sequencing projects such as
-            <a target="_blank" rel="noopener" href="https://dcc.icgc.org/pcawg">PCAWG</a>,
-            <a target="_blank" rel="noopener" href="https://precision.fda.gov/">PrecisionFDA</a>,
-            <a target="_blank" rel="noopener" href="https://www.broadinstitute.org/">the Broad Institute</a>,
-            <a target="_blank" rel="noopener" href="https://www.ucsc.edu/">the University of California Santa Cruz</a>, and
-            <a target="_blank" rel="noopener" href="https://github.com/cancerit">Cancer IT at Sanger</a> have registered between 10-60
-            workflows each in Dockstore. We hope this work will aid the community and promote the registration of a large number of
+            <a target="_blank" rel="noopener noreferrer" href="https://dcc.icgc.org/pcawg">PCAWG</a>,
+            <a target="_blank" rel="noopener noreferrer" href="https://precision.fda.gov/">PrecisionFDA</a>,
+            <a target="_blank" rel="noopener noreferrer" href="https://www.broadinstitute.org/">the Broad Institute</a>,
+            <a target="_blank" rel="noopener noreferrer" href="https://www.ucsc.edu/">the University of California Santa Cruz</a>, and
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/cancerit">Cancer IT at Sanger</a> have registered between
+            10-60 workflows each in Dockstore. We hope this work will aid the community and promote the registration of a large number of
             high-quality workflows and tools in the platform.
           </p>
           <h5>How to Cite Dockstore</h5>
           <ul>
             <li>
               For citing Dockstore as a paper, take a look at our
-              <a target="_blank" rel="noopener" href="https://f1000research.com/articles/6-52/v1">F1000 paper</a>.
+              <a target="_blank" rel="noopener noreferrer" href="https://f1000research.com/articles/6-52/v1">F1000 paper</a>.
             </li>
             <li>
               For citing the actual code, take a look at our
-              <a target="_blank" rel="noopener" href="https://zenodo.org/record/4589367#.YGSZyRNKi3I">Zenodo entry</a>.
+              <a target="_blank" rel="noopener noreferrer" href="https://zenodo.org/record/4589367#.YGSZyRNKi3I">Zenodo entry</a>.
             </li>
           </ul>
           <h5>Future Plans</h5>
@@ -170,7 +169,7 @@
                   <div fxLayout="column" fxLayoutAlign="space-between start">
                     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem">
                       <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem" fxLayout.lt-sm="row">
-                        <img src="../../assets/images/sponsors/coloured/broad.svg" />
+                        <img src="../../assets/images/sponsors/coloured/broad.svg" alt="Broad Image" />
                         <span class="workflowlength">{{ workflowsLength$ | async }} workflows</span>
                       </div>
                       <span>
@@ -187,7 +186,7 @@
                       <li>Pulling data from SRA (via SRA accession #).</li>
                       <li>Prepare your data files for bulk upload to GenBank.</li>
                     </ul>
-                    <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">
+                    <a [href]="['/organizations/BroadInstitute/collections/pgs']" target="_blank" rel="noopener noreferrer">
                       <button class="btn">View the Collection</button>
                     </a>
                   </div>
@@ -207,7 +206,7 @@
     <div fxLayout="column" class="container" fxLayoutAlign="space-between center" fxLayoutGap="3rem">
       <h3>Special Thanks</h3>
       <p>
-        Dockstore is grateful to its team, funders, contributors, and partners who have pulled together a library of over 800 workflows and
+        Dockstore is grateful to its team, funders, contributors, and partners who have pulled together a library of over 1000 workflows and
         tools.
       </p>
       <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="1rem">
@@ -220,7 +219,7 @@
             </span>
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
-            <a *ngFor="let funder of funders" [href]="funder.website" target="_blank" rel="noopener" style="padding: 0.5rem 0">
+            <a *ngFor="let funder of funders" [href]="funder.website" target="_blank" rel="noopener noreferrer" style="padding: 0.5rem 0">
               <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
             </a>
           </div>
@@ -235,7 +234,13 @@
             </span>
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
-            <a *ngFor="let contributor of contributors" [href]="contributor.url" target="_blank" rel="noopener" style="padding: 0.5rem 0">
+            <a
+              *ngFor="let contributor of contributors"
+              [href]="contributor.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="padding: 0.5rem 0"
+            >
               <img class="funders" [src]="contributor.current" [alt]="contributor.name" />
             </a>
           </div>
@@ -247,7 +252,7 @@
             <h5>Partners</h5>
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
-            <a *ngFor="let partner of partners" [href]="partner.url" target="_blank" rel="noopener">
+            <a *ngFor="let partner of partners" [href]="partner.url" target="_blank" rel="noopener noreferrer">
               <img class="funders" [src]="partner.current" [alt]="partner.name" />
             </a>
           </div>

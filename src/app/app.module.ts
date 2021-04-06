@@ -96,7 +96,6 @@ import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
 import { SitemapComponent } from './sitemap/sitemap.component';
-import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
@@ -125,7 +124,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     AppComponent,
     ControlsComponent,
     DeleteAccountDialogComponent,
-    SponsorsComponent,
     NavbarComponent,
     FooterComponent,
     NotificationsComponent,
