@@ -14,12 +14,15 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
+import { formInputDebounceTime } from 'app/shared/constants';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { SearchService } from '../../search/state/search.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { User } from '../../shared/swagger/model/user';
 import { TwitterService } from '../../shared/twitter.service';
@@ -40,10 +43,12 @@ export class YoutubeComponent {
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  templateUrl: './home1.component.html',
+  styleUrls: ['./home1.component.scss'],
+  providers: [SearchService],
 })
 export class HomeComponent extends Base implements OnInit, AfterViewInit {
+  public searchFormControl = new FormControl();
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;
@@ -58,7 +63,8 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     private twitterService: TwitterService,
     private userQuery: UserQuery,
     private homePageService: HomePageService,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private searchService: SearchService
   ) {
     super();
   }
@@ -66,6 +72,11 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   ngOnInit() {
     this.descriptorLanguagesInnerHTML$ = this.descriptorLanguageService.descriptorLanguagesInnerHTML$;
     this.user$ = this.userQuery.user$;
+    this.searchFormControl.valueChanges
+      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+      .subscribe((searchText) => {
+        this.searchService.setSearchText(searchText);
+      });
   }
   ngAfterViewInit() {
     this.loadTwitterWidget();
@@ -77,7 +88,7 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         () => {
-          this.twitterService.createTimeline(this.twitterElement, 2);
+          this.twitterService.createTimeline(this.twitterElement, 1);
         },
         (err) => console.error(err)
       );
