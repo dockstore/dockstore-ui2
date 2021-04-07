@@ -1,5 +1,5 @@
 <div>
-  <div fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="4rem" style="margin-bottom: 2rem">
+  <div fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="4rem" class="mb-5">
     <div class="about-dockstore">
       <div fxLayout="row" fxLayout.lt-md="column" LayoutAlign="space-between center" fxLayoutGap="1rem" class="container">
         <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="2rem">
@@ -91,7 +91,7 @@
       </div>
     </div>
 
-    <div class="register-dockstore pt-5 pb-5">
+    <div class="register-dockstore py-5">
       <div fxLayout="row" class="container" fxLayoutAlign="space-between center" fxLayoutGap="3rem">
         <img fxHide.lt-md src="../../assets/images/about-page/diagram-with-logos.png" alt="diagram" fxFlex.gt-sm="45" class="h-100" />
         <div fxLayout="column" fxFlex>
@@ -219,7 +219,7 @@
             </span>
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
-            <a *ngFor="let funder of funders" [href]="funder.website" target="_blank" rel="noopener noreferrer" style="padding: 0.5rem 0">
+            <a *ngFor="let funder of funders" [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-2">
               <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
             </a>
           </div>
@@ -234,13 +234,7 @@
             </span>
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
-            <a
-              *ngFor="let contributor of contributors"
-              [href]="contributor.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              style="padding: 0.5rem 0"
-            >
+            <a *ngFor="let contributor of contributors" [href]="contributor.url" target="_blank" rel="noopener noreferrer" class="py-2">
               <img class="funders" [src]="contributor.current" [alt]="contributor.name" />
             </a>
           </div>
