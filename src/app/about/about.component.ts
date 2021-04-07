@@ -20,6 +20,14 @@ export class AboutComponent implements OnInit {
   public youtubeSafeURL: SafeResourceUrl;
   public workflowsLength$: Observable<number>;
   public funders: Funder[];
+  BDCatalystGenerated: Funder = {
+    title: 'BioData Catalyst',
+    website: 'http://biodatacatalyst.nhlbi.nih.gov/',
+    imageSource: '../../assets/images/sponsors/BDCatalyst-text-generated.png',
+    altImageText: 'BioData Catalyst Logo',
+    content: null,
+  };
+
   public partners: Sponsor[] = [
     new Sponsor('dnastack.png', new URL('https://dnastack.com')),
     new Sponsor('sevenbridges.png', new URL('https://www.sevenbridges.com')),
@@ -48,8 +56,10 @@ export class AboutComponent implements OnInit {
 
   ngOnInit() {
     this.funders = this.fundingComponent.getFunders();
-
+    // replace the real image with a text generated image, since we do not have permission to use BD Catalyst's logo
+    this.funders[4] = this.BDCatalystGenerated;
     this.workflowsLength$ = this.organizationsService
-    .getCollectionById(this.BROAD_ORGANIZATION_ID, this.BROAD_COLLECTION_ID).pipe(map(collection => collection.workflowsLength));
+      .getCollectionById(this.BROAD_ORGANIZATION_ID, this.BROAD_COLLECTION_ID)
+      .pipe(map((collection) => collection.workflowsLength));
   }
 }
