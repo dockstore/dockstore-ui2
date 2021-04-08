@@ -1,7 +1,30 @@
+<!--
+  ~    Copyright 2019 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
 <div fxLayout="column" fxLayoutGap="4rem">
   <div fxLayout="column" class="title">
-    <div class="container">
-      <div fxLayout="column" fxLayoutGap="3rem" fxLayoutAlign="space-around start" fxFlex="80">
+    <div
+      class="container"
+      fxLayout="row"
+      fxLayout.lt-md="column"
+      fxLayoutAlign="space-between center"
+      fxLayoutAlign.lt-md="space-between stretch"
+      fxLayoutGap="5rem"
+    >
+      <div fxLayout="column" fxLayoutGap="3rem" fxLayoutAlign="space-around start" fxFlex="50" fxFlex.lt-md="100">
         <h2>An app store for bioinformatics</h2>
         <span
           >Dockstore is a free and open source platform for sharing reusable and scalable analytical tools and workflows. It’s developed by
@@ -18,12 +41,23 @@
               About Dockstore
             </button>
           </a>
-          <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=1JWOVGzzgMc">
-            <button class="btn">
-              <mat-icon class="play-icon">play_circle_filled</mat-icon>
-              Watch the Overview
-            </button>
-          </a>
+          <button class="btn" data-cy="video-overview-button" (click)="openYoutube()">
+            <mat-icon class="play-icon">play_circle_filled</mat-icon>
+            Watch the Overview
+          </button>
+        </div>
+      </div>
+      <div class="search-holder" fxFlex>
+        <div class="search-background">
+          <input
+            id="searchBar"
+            aria-label="Search"
+            #search
+            type="text"
+            placeholder="Search..."
+            class="fully-rounded landing-search w-100"
+            (keyup.enter)="goToSearch(search.value)"
+          />
         </div>
       </div>
     </div>
@@ -161,9 +195,9 @@
             <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko"
               ><button class="btn">Tutorial</button></a
             >
-            <a [routerLink]="['/login']">
-              <button class="btn">Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span></button>
-            </a>
+            <button routerLink="/login" class="btn" data-cy="register-button">
+              Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
+            </button>
           </div>
         </div>
       </div>
@@ -187,7 +221,7 @@
         </li>
       </ul>
       <div fxLayoutGap="1rem">
-        <a [routerLink]="['/organizations']"><button class="btn">Browse Organizations</button></a>
+        <button class="btn" routerLink="/organizations" data-cy="homepage-organizations-button">Browse Organizations</button>
         <a
           target="_blank"
           rel="noopener noreferrer"
@@ -248,14 +282,22 @@
       </div>
       <div>
         <h4>
-          <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started.html'"
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started.html'"
+            data-cy="homepage-getting-started-link"
             >Developer Tutorial</a
           >
         </h4>
         <span>An introduction to everything required to properly use Dockstore as a contributor.</span>
       </div>
       <div>
-        <h4><a target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org/">Join the Discussion</a></h4>
+        <h4>
+          <a target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org/" data-cy="homepage-discuss-link"
+            >Join the Discussion</a
+          >
+        </h4>
         <span>Discourse forum about helpful Dockstore topics.</span>
       </div>
     </div>

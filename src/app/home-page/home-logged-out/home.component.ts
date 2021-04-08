@@ -86,9 +86,4 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   openYoutube() {
     this.dialog.open(YoutubeComponent);
   }
-
-  // Router link will not scroll to top of page on change, this fixes that
-  scrollToTop() {
-    window.scrollTo(0, 0);
-  }
 }

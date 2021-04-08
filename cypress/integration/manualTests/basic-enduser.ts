@@ -94,8 +94,6 @@ describe('Test logged out home page', () => {
   it('find buttons', () => {
     cy.visit('/');
     cy.contains('[data-cy=register-button]', 'Register');
-    cy.get('[data-cy=homepage-search-button]').click();
-    cy.url().should('include', '/search');
   });
   it('home page search bar works', () => {
     cy.visit('/');
