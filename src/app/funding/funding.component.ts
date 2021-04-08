@@ -47,10 +47,12 @@ export class FundingComponent {
     biology and medicine by fostering new basic understandings, collaborations, and transdisciplinary initiatives between the
     computational and biomedical sciences.`,
   };
+  // Due to not having permission to use BD Catalyst's logo, the source here is a text generated placeholder
   BioDataCatalyst: Funder = {
     title: 'BioData Catalyst',
     website: 'http://biodatacatalyst.nhlbi.nih.gov/',
-    imageSource: '../assets/images/sponsors/bioDataCatalyst.svg',
+    // imageSource: '../assets/images/sponsors/bioDataCatalyst.svg',
+    imageSource: '../assets/images/sponsors/BDCatalyst-text-generated.png',
     altImageText: 'BioData Catalyst Logo',
     content: `NHLBI BioData Catalyst is a cloud-based platform providing tools, applications, and workflows in secure workspaces. By increasing access to NHLBI datasets and innovative data analysis capabilities, BioData Catalyst accelerates efficient biomedical research that drives discovery and scientific advancement, leading to novel diagnostic tools, therapeutics, and prevention strategies for heart, lung, blood, and sleep disorders.`,
   };
