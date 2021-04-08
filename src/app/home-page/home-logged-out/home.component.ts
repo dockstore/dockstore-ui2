@@ -19,7 +19,6 @@ import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SearchService } from '../../search/state/search.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { User } from '../../shared/swagger/model/user';
 import { TwitterService } from '../../shared/twitter.service';
@@ -42,7 +41,6 @@ export class YoutubeComponent {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  providers: [SearchService],
 })
 export class HomeComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;

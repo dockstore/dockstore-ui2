@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
@@ -32,7 +32,6 @@ import { RequestsComponent } from './widget/requests/requests.component';
     ListWorkflowsModule,
     ListContainersModule,
     FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
     RefreshAlertModule,
     MarkdownModule,
