@@ -411,13 +411,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   updateSideBar(value: string) {
+    this.alertService.start('Updating side bar');
     this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
       (hits: any) => {
         this.setupAllBuckets(hits);
         this.setupOrderBuckets();
+        this.alertService.simpleSuccess();
       },
-      (error) => {
-        console.log(error);
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
       }
     );
   }
@@ -509,12 +511,14 @@ export class SearchComponent implements OnInit, OnDestroy {
         },
       },
     };
+    this.alertService.start('Performing search');
     this.extendedGA4GHService.toolsIndexSearch(JSON.stringify(body)).subscribe(
       (hits) => {
         this.searchService.setAutoCompleteTerms(hits);
+        this.alertService.simpleSuccess();
       },
-      (error) => {
-        console.log(error);
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
       }
     );
     this.searchTerm = true;
