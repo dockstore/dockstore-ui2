@@ -1,218 +1,264 @@
-<!--
-  ~    Copyright 2019 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
-
-<div class="header">
-  <div class="container">
-    <div fxLayout="column wrap" fxLayoutGap="40px" fxLayoutAlign="space-around" class="top-section">
-      <div class="text-center">
-        <h1 class="title">Create, Share, Use</h1>
-        <h2 class="title caption">Docker Tools and Workflows for the Sciences</h2>
-
-        <button
-          *ngIf="!(user$ | async); else loggedIn"
-          mat-flat-button
-          color="accent"
-          routerLink="/login"
-          class="big-button"
-          data-cy="register-button"
+<div fxLayout="column" fxLayoutGap="4rem">
+  <div fxLayout="column" class="title">
+    <div class="container">
+      <div fxLayout="column" fxLayoutGap="3rem" fxLayoutAlign="space-around start" fxFlex="80">
+        <h2>An app store for bioinformatics</h2>
+        <span
+          >Dockstore is a free and open source platform for sharing reusable and scalable analytical tools and workflows. It’s developed by
+          the
+          <a target="_blank" rel="noopener noreferrer" href="https://www.cancercollaboratory.org/" class="white-link"
+            >Cancer Genome Collaboratory</a
+          >
+          and used by the <a target="_blank" rel="noopener noreferrer" href="https://www.ga4gh.org/" class="white-link">GA4GH</a>.</span
         >
-          Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
-        </button>
-
-        <ng-template #loggedIn>
-          <button mat-flat-button color="accent" routerLink="/accounts" class="big-button">Welcome {{ (user$ | async).username }}</button>
-        </ng-template>
-
-        <button mat-flat-button routerLink="/search" class="m-2 big-button" data-cy="homepage-search-button">
-          Browse tools and workflows
-        </button>
-
-        <div class="search-holder">
-          <input
-            id="searchBar"
-            aria-label="Search"
-            #search
-            type="text"
-            placeholder="Search..."
-            class="fully-rounded landing-search"
-            (keyup.enter)="goToSearch(search.value)"
-          />
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start start" fxLayoutGap="2rem">
+          <a [routerLink]="['/about']">
+            <button class="btn">
+              <img src="../../../assets/images/home/icons-navigation-about-white.svg" alt="dockstore icon" />
+              About Dockstore
+            </button>
+          </a>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=1JWOVGzzgMc">
+            <button class="btn">
+              <mat-icon class="play-icon">play_circle_filled</mat-icon>
+              Watch the Overview
+            </button>
+          </a>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div fxLayout="column wrap" fxLayoutAlign="center center" fxLayoutGap="5px" class="pb-3">
-        <h4 class="title caption text-center landing-message">
-          Dockstore, developed by the
-          <a class="white-link" href="https://www.cancercollaboratory.org/" target="_blank">Cancer Genome Collaboratory</a>, is an open
-          platform used by the <a class="white-link" href="https://genomicsandhealth.org/" target="_blank">GA4GH</a> for sharing
-          Docker-based tools described with either the
-          <a class="white-link" href="http://www.commonwl.org/" target="_blank">Common Workflow Language (CWL)</a>, the
-          <a class="white-link" href="https://software.broadinstitute.org/wdl/" target="_blank">Workflow Description Language (WDL)</a>,
-          <a class="white-link" href="https://www.nextflow.io/" target="_blank">Nextflow</a>, or
-          <a class="white-link" href="https://galaxyproject.org/" target="_blank">Galaxy</a>
-        </h4>
+  <div class="container">
+    <mat-tab-group mat-align-tabs="center" class="purple-tab-group">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div fxLayoutGap="0.5rem">
+            <img src="../../../assets/images/home/icons-cloud.svg" alt="cloud icon" />
+            <span>Use In the Cloud</span>
+          </div>
+        </ng-template>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="3rem" class="mt-3">
+          <div fxLayout="column" fxLayoutGap="3rem" fxFlex>
+            <h3><span class="title-strong">Use</span> in many analysis environments.</h3>
+            <span class="subtitle"
+              >Try out the
+              <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master?tab=info'">Hello World Workflow</a> in
+              the cloud.</span
+            >
+            <ul class="ordered-list">
+              <li>
+                Visit the
+                <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master?tab=info'">Hello World Workflow</a>; a
+                tutorial from our
+                <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko&t=3226s">BCC 2020 workshop</a
+                >.
+              </li>
+              <li>
+                Try out the workflow by running it on a variety of launch partners including
+                <a target="_blank" rel="noopener noreferrer" href="https://www.dnastack.com/">DNAstack</a>,
+                <a target="_blank" rel="noopener noreferrer" href="https://terra.bio">Terra</a>,
+                <a target="_blank" rel="noopener noreferrer" href="https://www.dnanexus.com/">DNAnexus</a>, and
+                <a target="_blank" rel="noopener noreferrer" href="https://www.sevenbridges.com">SevenBridges</a>.
+              </li>
+            </ul>
+          </div>
+          <img src="../../../assets/images/home/diagram-launch-with.png" alt="diagram" fxHide.lt-md fxFlex="45" class="contain-img" />
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div fxLayoutGap="0.5rem">
+            <img src="../../../assets/images/home/icons-navigation-about.svg" alt="cloud icon" />
+            <span>Use Locally</span>
+          </div>
+        </ng-template>
+        <div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayout.lt-md="column" fxLayoutGap="2rem" class="mt-3">
+          <div fxLayout="column" fxFlex="50" fxFlex.lt-md="100" fxLayoutGap="3rem">
+            <h3><span class="title-strong">Use</span> in many analysis environments.</h3>
+            <span class="subtitle"
+              >Try out the
+              <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master?tab=info'">Hello World Workflow</a>
+              locally using the Dockstore CLI.</span
+            >
+            <div fxLayout="row" class="gray-sections px-3 pt-3">
+              <span>Requirements</span>
+              <ul class="unordered-list">
+                <li><strong>Linux/Ubuntu</strong> (recommended, tested with 18.04.3 LTS)</li>
+                <li>or <strong>Mac OS X</strong></li>
+              </ul>
+            </div>
+            <ul class="ordered-list">
+              <li>
+                Install
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://www.oracle.com/ca-en/java/technologies/javase-jdk11-downloads.html"
+                  >Java 11</a
+                >
+                and <a target="_blank" rel="noopener noreferrer" href="https://docs.docker.com/get-docker/">Docker</a> dependencies.
+              </li>
+              <li>
+                Download and install the
+                <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/launch-with/launch.html#dockstore-cli'"
+                  >Dockstore CLI</a
+                >
+                and set up the <a [routerLink]="['/quick-start']">configuration file</a>.
+              </li>
+              <li>Run the following launch commands.</li>
+            </ul>
+          </div>
+          <div fxFlex>
+            <pre>
+              <span class="code">## Make a runtime JSON template and fill in desired inputs, outputs, and</span>
+              <span class="code">## other parameters</span>
+              <span class="code">dockstore workflow convert entry2json --entry github.com/dockstore/bcc2020-training/HelloWorld:master > Dockstore.json</span>
+              <span class="code">vim Dockstore.json</span>
+              <span class="code">## or grab one that the workflow author has provided (if applicable)</span>
+              <span class="code">wget --header='Accept: text/plain' https://dockstore.org/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fdockstore%2Fbcc2020-training%2FHelloWorld/versions/master/PLAIN_WDL/descriptor/..%2F..%2Ftest.json -O Dockstore.json</span>
+              <span class="code">## Run locally with the Dockstore CLI</span>
+              <span class="code">dockstore workflow launch --entry github.com/dockstore/bcc2020-training/HelloWorld:master --json Dockstore.json</span>
+            </pre>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <div fxLayout="row" class="gray-sections pt-5 pb-5">
+    <div class="container">
+      <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="3rem">
+        <img
+          src="../../../assets/images/home/illustration-create-logos.png"
+          alt="illustration-create-logo"
+          fxHide.lt-md
+          fxFlex="50"
+          class="contain-img"
+        />
+        <div fxLayout="column" fxLayoutAlign="space-around start" fxFlex>
+          <h3><span class="title-strong">Create</span> reproducible workflows & tools.</h3>
+          <span class="subtitle">No need to reinvent the wheel.</span>
+          <ul class="unordered-list">
+            <li>Create a simple one-step tool or multi-step workflow using popular technologies and standards.</li>
+            <li>
+              The execution environment is simple, it’s described by
+              <a target="_blank" rel="noopener noreferrer" href="https://www.docker.com/">Docker</a> and built on platforms like
+              <a target="_blank" rel="noopener noreferrer" href="https://quay.io/">Quay.io</a> or
+              <a target="_blank" rel="noopener noreferrer" href="https://hub.docker.com/">Docker Hub</a>.
+            </li>
+            <li>
+              To minimizes redundancy and error prone installation, workflows and tools are described with common languages such as
+              <a target="_blank" rel="noopener noreferrer" href="https://www.commonwl.org">CWL</a>,
+              <a target="_blank" rel="noopener noreferrer" href="http://openwdl.org">WDL</a>, or
+              <a target="_blank" rel="noopener noreferrer" href="https://www.nextflow.io">Nextflow</a> and stored on
+              <a target="_blank" rel="noopener noreferrer" href="https://github.com/">GitHub</a>,
+              <a target="_blank" rel="noopener noreferrer" href="https://bitbucket.org/">Bitbucket</a>,
+              <a target="_blank" rel="noopener noreferrer" href="https://www.gitlab.com">GitLab</a>, or directly on Dockstore.
+            </li>
+          </ul>
+          <div fxLayoutGap="1rem">
+            <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko"
+              ><button class="btn">Tutorial</button></a
+            >
+            <a [routerLink]="['/login']">
+              <button class="btn">Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span></button>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="header-lower boat-header" fxLayout="row wrap" fxLayoutAlign="end" fxLayoutGap="20px" fxShow fxHide.lt-md>
-  <img fxFlexAlign="end" src="../assets/images/dockstore/ship.png" alt="ship" />
-  <img fxFlexAlign="end" src="../assets/images/dockstore/truck.png" class="pr-2" alt="truck" />
-</div>
-
-<div class="header-lower" id="overview">
-  <img class="blue-rectangle" src="../assets/images/dockstore/rectangle.png" alt="blue rectangle" />
-
-  <div fxFlex fxLayout="column" fxLayoutAlign="center center">
-    <button data-cy="video-overview-button" mat-raised-button (click)="openYoutube()">
-      <mat-icon>play_circle_outline</mat-icon>
-      <span>&nbsp;Video Overview</span>
-    </button>
+  <div class="container" fxLayout="row" fxLayoutGap="2rem">
+    <div fxLayout="column" fxLayoutAlign="space-around start" fxFlex fxLayoutGap="3rem">
+      <h3><span class="title-strong">Share</span> and curate for stargazing.</h3>
+      <span class="subtitle">Make your work accessible to the community.</span>
+      <ul class="unordered-list">
+        <li>
+          Our implementation of standards from the
+          <a target="_blank" rel="noopener noreferrer" href="https://www.ga4gh.org/">GA4GH</a> ensures your work is findable and
+          interoperable.
+        </li>
+        <li>Create organizations for your lab, company, or university where you can curate collections of related workflows and tools.</li>
+        <li>
+          Create a landing page for your work to share with the community. Keep track of the workflows, tools and organizations you are
+          interested in by starring them.
+        </li>
+      </ul>
+      <div fxLayoutGap="1rem">
+        <a [routerLink]="['/organizations']"><button class="btn">Browse Organizations</button></a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/starring.html?highlight=star#how-to-star-an-entry'"
+        >
+          <button class="btn">How to Star</button></a
+        >
+      </div>
+    </div>
+    <img src="../../../assets/images/home/illustration.png" alt="illustration" fxHide.lt-md fxFlex="40" class="contain-img" />
   </div>
-</div>
 
-<div class="container">
-  <h2 class="text-center">Create</h2>
-  <p class="lead text-center">Create reproducible workflows using popular technologies and standards.</p>
-  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder">
-    <div fxFlex class="small-card">
-      <mat-card fxLayout="column">
-        <h3 class="text-center">Reproducible environment</h3>
-        <p>
-          The execution environment is described by
-          <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer">Docker</a> and built on platforms like
-          <a href="https://quay.io/" target="_blank" rel="noopener noreferrer">Quay.io</a> or
-          <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">Docker Hub</a>.
-        </p>
-      </mat-card>
+  <!-- <div class="gray-sections pt-5 pb-5">
+    <div class="container" fxLayout="column" fxLayoutGap="3rem" fxLayoutAlign="space-around center">
+      <h3>Featured Content</h3>
+      <featured-content></featured-content>
     </div>
-    <div fxFlex class="small-card">
-      <mat-card fxLayout="column">
-        <h3 class="text-center">Workflow descriptions</h3>
-        <p>
-          Workflows are described with <span [innerHTML]="descriptorLanguagesInnerHTML$ | async"></span> and stored on
-          <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>,
-          <a href="https://bitbucket.org/" target="_blank" rel="noopener noreferrer">Bitbucket</a>,
-          <a href="https://www.gitlab.com" target="_blank" rel="noopener noreferrer">GitLab</a>, or directly on Dockstore.
-        </p>
-      </mat-card>
-    </div>
-  </div>
-</div>
+  </div> -->
+  <!-- remove this hr when featured content is populated -->
+  <hr class="my-5" />
 
-<div class="container stripe-holder">
-  <h2 class="text-center">Share</h2>
-  <p class="lead text-center">Make your workflows more accessible to the scientific community.</p>
-  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder container">
-    <div fxFlex class="small-card">
-      <mat-card fxLayout="column" fxLayoutAlign="start center">
-        <h3 class="text-center">Shareable</h3>
-        <p>
-          Our implementation of community standards from the <a href="https://www.ga4gh.org/">GA4GH</a> ensures your workflows are findable
-          and interoperable.
-        </p>
-      </mat-card>
+  <div fxLayout="row" fxLayout.lt-md="column" class="container mt-5" fxLayoutGap="2rem">
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3rem" fxFlex="33" fxFlex.lt-md="100" id="news">
+      <h3>News & Events</h3>
+      <span>
+        <h4>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps.html'"
+            >Dockstore GitHub App</a
+          >
+        </h4>
+        <span
+          >Our Dockstore GitHub App adds support for registering and automatically syncing workflows and services between GitHub and
+          Dockstore. Check it out!</span
+        >
+      </span>
+      <span>
+        <h4>
+          <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">Viral Analysis Workflows for COVID-19</a>
+        </h4>
+        <span
+          >A collection of viral NGS workflows for analyzing COVID-19. Learn how to use them with your own data in linked Terra workspaces
+          from the Broad Viral Genomics & Data Sciences Platform.</span
+        >
+      </span>
     </div>
-    <div fxFlex class="small-card">
-      <mat-card fxLayout="column">
-        <h3 class="text-center">Descriptive</h3>
-        <p>Create a landing page for your workflow to share with the community.</p>
-      </mat-card>
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3rem" fxFlex="33" fxFlex.lt-md="100" id="resources">
+      <h3>Helpful Resources</h3>
+      <div>
+        <h4>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko"
+            >Introduction to Dockstore Webinar</a
+          >
+        </h4>
+        <span>Fundamentals of finding workflows and running analyses.</span>
+      </div>
+      <div>
+        <h4>
+          <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started.html'"
+            >Developer Tutorial</a
+          >
+        </h4>
+        <span>An introduction to everything required to properly use Dockstore as a contributor.</span>
+      </div>
+      <div>
+        <h4><a target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org/">Join the Discussion</a></h4>
+        <span>Discourse forum about helpful Dockstore topics.</span>
+      </div>
     </div>
-    <div fxFlex class="small-card">
-      <mat-card fxLayout="column">
-        <h3 class="text-center">Organizations</h3>
-        <p>Create organizations for your lab, company, or university where you can have collections of workflows.</p>
-      </mat-card>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <h2 class="text-center">Use</h2>
-  <p class="lead text-center">Discover and launch scientific workflows locally and in the cloud.</p>
-
-  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="30px" fxLayoutAlign="center center" class="content-holder container">
-    <div fxFlex class="small-card">
-      <mat-card fxLayout="column">
-        <h3 class="text-center">Online launch</h3>
-        <p>
-          Select from a variety of launch partners including
-          <a href="https://www.dnastack.com/#/" target="_blank" rel="noopener noreferrer">DNAstack</a>,
-          <a href="https://terra.bio/" target="_blank" rel="noopener noreferrer">Terra</a>, and
-          <a href="https://www.dnanexus.com/" target="_blank" rel="noopener noreferrer">DNAnexus</a>.
-        </p>
-      </mat-card>
-    </div>
-    <div fxFlex class="small-card">
-      <mat-card fxLayout="column">
-        <h3 class="text-center">Local launch</h3>
-        <p>
-          Use the <a routerLink="/quick-start" (click)="scrollToTop()">Dockstore CLI</a> to run workflows locally on Linux/Ubuntu and Mac
-          OSX.
-        </p>
-      </mat-card>
-    </div>
-  </div>
-</div>
-
-<div id="next-steps" class="container">
-  <div fxFlex fxLayout="column" fxLayoutGap="20px">
-    <h3 class="text-center">Next steps</h3>
-
-    <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="20px" class="mb-4">
-      <a
-        mat-stroked-button
-        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started.html'"
-        target="_blank"
-        rel="noopener noreferrer"
-        data-cy="homepage-getting-started-link"
-      >
-        Developer tutorial <mat-icon>open_in_new</mat-icon>
-      </a>
-      <a mat-stroked-button [href]="Dockstore.DOCUMENTATION_URL + '/launch-with/launch.html'" target="_blank" rel="noopener noreferrer">
-        Launch workflows <mat-icon>open_in_new</mat-icon>
-      </a>
-      <button mat-stroked-button routerLink="/organizations" (click)="scrollToTop()" data-cy="homepage-organizations-button">
-        Discover Organizations
-      </button>
-      <button mat-stroked-button routerLink="/search" (click)="scrollToTop()" data-cy="homepage-search-link">Discover Workflows</button>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div fxFlex fxLayout="column" fxLayoutGap="20px">
-    <h3 class="text-center">Join the discussion</h3>
-
-    <div fxLayout="row wrap" fxLayoutAlign="center center">
-      <a
-        mat-stroked-button
-        href="https://discuss.dockstore.org"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mr-2"
-        data-cy="homepage-discuss-link"
-      >
-        Discourse <mat-icon>open_in_new</mat-icon>
-      </a>
-    </div>
-    <div fxLayout="row wrap" fxLayoutAlign="center center" class="mb-3">
-      <div class="my-3 twitter" #twitter></div>
-    </div>
+    <div #twitter fxFlex fxLayoutAlign="start start" class="twitter-widget"></div>
   </div>
 </div>
