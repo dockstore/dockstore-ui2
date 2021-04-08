@@ -111,14 +111,14 @@
           </div>
           <div fxFlex>
             <pre>
-              <span class="code">## Make a runtime JSON template and fill in desired inputs, outputs, and</span>
-              <span class="code">## other parameters</span>
-              <span class="code">dockstore workflow convert entry2json --entry github.com/dockstore/bcc2020-training/HelloWorld:master > Dockstore.json</span>
-              <span class="code">vim Dockstore.json</span>
-              <span class="code">## or grab one that the workflow author has provided (if applicable)</span>
-              <span class="code">wget --header='Accept: text/plain' https://dockstore.org/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fdockstore%2Fbcc2020-training%2FHelloWorld/versions/master/PLAIN_WDL/descriptor/..%2F..%2Ftest.json -O Dockstore.json</span>
-              <span class="code">## Run locally with the Dockstore CLI</span>
-              <span class="code">dockstore workflow launch --entry github.com/dockstore/bcc2020-training/HelloWorld:master --json Dockstore.json</span>
+              <span class="code" style="color: #596684">## Make a runtime JSON template and fill in desired inputs, outputs, and</span>
+              <span class="code" style="color: #596684">## other parameters</span>
+              <span class="code"><span style="color: #3f51b5">dockstore</span> <span style="color: #0277bd">workflow convert entry2json --entry </span><span style="color: #c14747">github.com/dockstore/bcc2020-training/HelloWorld:master > Dockstore.json</span></span>
+              <span class="code"><span style="color: #3f51b5">vim</span> <span style="color: #c14747">Dockstore.json</span></span>
+              <span class="code" style="color: #596684">## or grab one that the workflow author has provided (if applicable)</span>
+              <span class="code"><span style="color: #3f51b5">wget --header=</span><span style="color: #0277bd">'Accept: text/plain' </span><span style="color: #c14747">https://dockstore.org/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fdockstore%2Fbcc2020-training%2FHelloWorld/versions/master/PLAIN_WDL/descriptor/..%2F..%2Ftest.json -O Dockstore.json</span></span>
+              <span class="code" style="color: #596684">## Run locally with the Dockstore CLI</span>
+              <span class="code"><span style="color: #3f51b5">dockstore</span><span style="color: #0277bd">' workflow launch --entry </span><span style="color: #c14747">github.com/dockstore/bcc2020-training/HelloWorld:master --json Dockstore.json</span></span>
             </pre>
           </div>
         </div>

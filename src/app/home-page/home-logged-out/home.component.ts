@@ -53,7 +53,12 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
 
   @ViewChild('youtube') youtube: ElementRef;
 
-  constructor(private twitterService: TwitterService, private userQuery: UserQuery, private homePageService: HomePageService) {
+  constructor(
+    private dialog: MatDialog,
+    private twitterService: TwitterService,
+    private userQuery: UserQuery,
+    private homePageService: HomePageService
+  ) {
     super();
   }
 
@@ -78,5 +83,14 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
 
   goToSearch(searchValue: string) {
     this.homePageService.goToSearch(searchValue);
+  }
+
+  openYoutube() {
+    this.dialog.open(YoutubeComponent);
+  }
+
+  // Router link will not scroll to top of page on change, this fixes that
+  scrollToTop() {
+    window.scrollTo(0, 0);
   }
 }
