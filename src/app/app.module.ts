@@ -27,6 +27,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { MarkdownModule } from 'ngx-markdown';
 import { environment } from '../environments/environment';
+import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
@@ -95,7 +96,6 @@ import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
 import { SitemapComponent } from './sitemap/sitemap.component';
-import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
@@ -124,7 +124,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     AppComponent,
     ControlsComponent,
     DeleteAccountDialogComponent,
-    SponsorsComponent,
     NavbarComponent,
     FooterComponent,
     NotificationsComponent,
@@ -151,6 +150,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     TosBannerComponent,
     LogoutComponent,
     GitTagPipe,
+    AboutComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

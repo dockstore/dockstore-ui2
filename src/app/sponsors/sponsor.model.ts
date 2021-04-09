@@ -22,11 +22,13 @@ export class Sponsor {
   public nonColouredCurrent: string;
   public coloured: string;
   public url: URL;
+  public name: string;
 
   constructor(image: string, url: URL) {
     this.current = Sponsor.colouredPath + image;
     // used for "in affiliation with" logos in the footer
     this.nonColouredCurrent = Sponsor.nonColouredPath + image;
     this.url = url;
+    this.name = image;
   }
 }

@@ -20,12 +20,15 @@ const selectorLinkTuples = [
   ['[data-cy=footer-organizations-link]', '/organizations'],
   ['[data-cy=homepage-search-link]', '/search'],
   ['[data-cy=footer-search-link]', '/search'],
+  ['[data-cy=about-more-info-link]', '/funding'],
 ];
 
 const externalLinkTuples = [
   ['[data-cy=homepage-discuss-link]', 'discuss.dockstore.org'],
   ['[data-cy=footer-api-link]', '/static/swagger-ui/index.html'],
   ['[data-cy=footer-documentation-link]', '/dockstore-introduction.html'],
+  ['[data-cy=Docker-hub-about-link]', 'hub.docker.com'],
+  ['[data-cy=Github-about-link]', 'github.com/dockstore/dockstore'],
 ];
 
 before(() => {
