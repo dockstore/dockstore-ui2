@@ -15,5 +15,5 @@ psql -h localhost -c "create user dockstore with password 'dockstore' createdb;"
 psql -h localhost -c "ALTER USER dockstore WITH superuser;" -U postgres
 psql -h localhost -c 'create database webservice_test with owner = dockstore;' -U postgres
 psql -h localhost -f travisci/db_dump.sql webservice_test -U postgres
-java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2 travisci/web.yml
+java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,1.11.0,alter_test_user_1.10.2 travisci/web.yml
 
