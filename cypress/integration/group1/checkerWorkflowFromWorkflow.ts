@@ -67,6 +67,7 @@ describe('Checker workflow test from my-workflows', () => {
       cy.contains('github.com/A/l/_cwl_checker');
       cy.get('#addCheckerWorkflowButton').should('not.be.visible');
       cy.get('#viewParentEntryButton').should('be.visible').click();
+      cy.wait(300);
       cy.get('#workflow-path').contains('github.com/A/l');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
       cy.get('#viewParentEntryButton').should('not.be.visible');
@@ -81,6 +82,7 @@ describe('Checker workflow test from my-workflows', () => {
       goToTab('Launch');
       cy.get('#launchCheckerWorkflow').should('be.visible');
       goToTab('Info');
+      cy.wait(300);
       cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
       // In the checker workflow right now
