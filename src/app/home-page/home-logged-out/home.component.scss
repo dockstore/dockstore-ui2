@@ -14,152 +14,104 @@
  *    limitations under the License.
  */
 
-.mainScreen {
-  padding-top: 30px;
-}
-.twitter {
-  border: 1px solid #cfd1d7;
-  border-radius: 5px;
-}
-/* Video Button */
-.youtube,
-.youtube:active,
-.youtube:focus {
-  float: none;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  background: none;
-  text-transform: uppercase;
-  padding: 8px 22px;
-
-  border: 2px solid #a0adcc;
-  color: #a0adcc;
-}
-
-.youtube:hover {
-  border: 2px solid white;
+.title {
+  background-image: url(../../../assets/images//home/banner-docker-containers.jpg);
   color: white;
+  background-size: 100% 100%;
+  padding: 6rem;
 }
 
-span {
-  vertical-align: middle;
+.gray-sections {
+  background: #f5f5f5;
 }
 
-/*
-* And with max cross-browser enabled.
-* Nobody should ever write this by hand.
-* Use a preprocesser with autoprefixing.
-*/
-.row.is-flex {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-
-.row.is-flex > [class*='col-'] {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.button-row > div > a {
-  width: 90%;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  font-weight: 700;
-}
-
-.button-link {
-  text-decoration: none !important; // Overwrites default link underline
-  color: black !important;
-}
-
-.search-title {
+button {
+  background-color: #397a84;
   color: white;
-  margin: 20px 0px 0px 0px;
+  padding: 1rem;
+  text-decoration: none;
 }
 
-.underlined-link {
-  text-decoration: underline !important;
+pre {
+  font-family: monospace;
+  background-color: #fff;
+  line-height: 0.5rem;
+  counter-reset: line;
 }
 
-.sign-up,
-.sign-up:active,
-.sign-up:focus {
-  float: none;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  background: none;
-  text-transform: uppercase;
-  padding: 8px 22px;
+span.code {
+  display: block;
+  line-height: 1.5rem;
+  white-space: pre-wrap;
 
-  border: 2px solid #5e7ec5;
-  color: #5e7ec5;
-}
-
-.sign-up:hover {
-  border: 2px solid #3b5da5;
-  color: #3b5da5;
-}
-
-.top-section {
-  min-height: 500px;
-}
-
-.header-lower {
-  min-height: 200px;
-}
-
-.boat-header {
-  background-color: #21335b;
-}
-
-.content-holder {
-  padding: 40px 0px 40px 0px;
-  min-height: 300px;
-}
-
-.landing-message {
-  max-width: 700px;
-}
-
-.stripe-holder {
-  min-height: 175px;
-  width: 100%;
-  background-color: #eef0f6;
-  border: 1px solid #cfd1d7;
-}
-
-#next-steps {
-  min-height: 175px;
-  margin: 40px 0px 0px 0px;
-  width: 100%;
-  background-color: #eef0f6;
-  border: 1px solid #cfd1d7;
-}
-
-@media (max-width: 767px) {
-  .hidden-on-mobile {
-    display: none !important;
+  &:before {
+    counter-increment: line;
+    content: counter(line);
+    border-right: 1px solid #ddd;
+    padding: 0 0.5em;
+    margin-right: 0.5em;
+    color: #888;
   }
 }
 
-.small-card,
-.small-card > mat-card {
-  min-height: 150px;
-  width: 100% !important;
+ul.ordered-list > li:before {
+  background-color: #7887cb;
+  border-radius: 50%;
+  margin-right: 1rem;
+  padding: 0.5rem 0.9rem;
+  content: counter(index);
+  counter-increment: index;
+  color: white;
 }
 
-.big-button {
-  font-size: 16px;
+ul.ordered-list > li:first-child {
+  counter-reset: index;
+}
+
+ul.ordered-list {
+  list-style-type: none;
+  margin-left: -40px;
+  line-height: 4rem;
+}
+
+.twitter-widget {
+  overflow: auto;
+  max-height: 400px;
+}
+
+.subtitle {
+  font-size: 1.7rem;
+  color: #3f51b5;
+  line-height: 2.5rem;
+  font-weight: 500;
+}
+
+ul.unordered-list {
+  list-style-image: url(../../../assets/images/home/icon-asterisk.svg);
+}
+
+ul.unordered-list > li {
+  padding: 0 0.5rem;
+}
+
+.title-strong {
+  font-weight: 600;
+  color: #3f51b5;
+}
+
+h3 {
+  font-weight: inherit;
+  font-size: 2.5rem;
+}
+
+.play-icon {
+  font-size: 20px;
+  color: white;
+  display: inline;
+}
+
+.search-background {
+  background: #397a84;
+  padding: 2rem;
+  border-radius: 1rem;
 }

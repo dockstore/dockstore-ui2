@@ -17,7 +17,6 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
-import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -47,7 +46,6 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;
-  descriptorLanguagesInnerHTML$: Observable<string>;
 
   @ViewChild('twitter') twitterElement: ElementRef;
 
@@ -57,14 +55,12 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private twitterService: TwitterService,
     private userQuery: UserQuery,
-    private homePageService: HomePageService,
-    private descriptorLanguageService: DescriptorLanguageService
+    private homePageService: HomePageService
   ) {
     super();
   }
 
   ngOnInit() {
-    this.descriptorLanguagesInnerHTML$ = this.descriptorLanguageService.descriptorLanguagesInnerHTML$;
     this.user$ = this.userQuery.user$;
   }
   ngAfterViewInit() {
@@ -89,10 +85,5 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
 
   openYoutube() {
     this.dialog.open(YoutubeComponent);
-  }
-
-  // Router link will not scroll to top of page on change, this fixes that
-  scrollToTop() {
-    window.scrollTo(0, 0);
   }
 }

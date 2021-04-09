@@ -403,6 +403,10 @@ img.site-icons-tab {
   height: 16px;
 }
 
+img.contain-img {
+  object-fit: contain;
+}
+
 #homeSearch {
   background-color: #487980;
   color: #ffffff;
@@ -1205,7 +1209,7 @@ app-sidebar-accordion
   background: #26bfa5 !important;
 }
 
-.organization-tab-group.mat-primary .mat-ink-bar {
+.purple-tab-group.mat-primary .mat-ink-bar {
   background: #3f51b5 !important;
 }
 
