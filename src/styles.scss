@@ -380,6 +380,15 @@ a {
   text-decoration: underline;
 }
 
+a.no-underline {
+  color: #212121;
+  text-decoration: none;
+}
+
+a.no-underline:hover {
+  text-decoration: none;
+}
+
 a.white-link {
   color: #ffffff;
 }
@@ -1218,6 +1227,7 @@ app-sidebar-accordion
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
+  padding: 0 0.6rem !important;
 }
 
 .workflow-label-chip {
@@ -1225,8 +1235,17 @@ app-sidebar-accordion
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
+  padding: 0 0.6rem !important;
 }
 
+.gray-label-chip {
+  background: #dfe0e2 !important;
+  text-decoration: none !important;
+  border-radius: 1rem !important;
+  font-size: 12px !important;
+  padding: 0 0.6rem !important;
+  text-decoration: none;
+}
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names
 // TODO: Ideally this should stretch to the length of the longest dropdown option.

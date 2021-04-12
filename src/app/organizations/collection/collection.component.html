@@ -82,6 +82,7 @@
                     '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
                     entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')
                   ]"
+                  class="no-underline"
                 >
                   <div fxLayout="row" fxLayoutAlign="space-between">
                     <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
@@ -113,19 +114,32 @@
                       </span>
                     </div>
                   </div>
-                </a>
-                <hr />
-                <div fxLayout="row" fxLayoutAlign="space-between">
-                  <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
-                  <a
-                    [routerLink]="[
-                      '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
-                      entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')
-                    ]"
-                  >
+                  <hr />
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                      <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
+                      <div fxLayout="row wrap" fxLayoutGap="1rem" class="labels">
+                        <span
+                          [ngClass]="entry.entryType == 'workflow' ? 'workflow-label-chip' : 'container-label-chip'"
+                          *ngFor="let label of entry.labels"
+                        >
+                          {{ label }}
+                        </span>
+                        <mat-chip
+                          [ngClass]="entry.entryType == 'workflow' ? 'workflow-label-chip' : 'container-label-chip'"
+                          *ngIf="entry.verified == true"
+                        >
+                          <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                            <mat-icon class="verified-icon">done</mat-icon>
+                            <span>Verified</span>
+                          </span>
+                        </mat-chip>
+                        <span class="gray-label-chip" *ngFor="let descriptorType of entry.descriptorTypes">{{ descriptorType }}</span>
+                      </div>
+                    </div>
                     <button class="btn view-button">View</button>
-                  </a>
-                </div>
+                  </div>
+                </a>
               </mat-card>
             </div>
           </div>
