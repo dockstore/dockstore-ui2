@@ -16,7 +16,6 @@ import { UserService } from '../../shared/user/user.service';
 export class AuthComponent extends Base implements OnInit {
   constructor(
     private tokenService: TokenService,
-    private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertService: AlertService
@@ -83,8 +82,8 @@ export class AuthComponent extends Base implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (token) => {
-          this.userService.getUser();
-          this.router.navigate([`${prevPage}`]);
+          // This component should only exist inside a temporary window used in the OAuth process
+          window.close();
         },
         (error) => {
           this.router.navigate([`${prevPage}`]);

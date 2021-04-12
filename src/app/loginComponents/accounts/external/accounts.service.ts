@@ -18,7 +18,17 @@ export class AccountsService {
   }
 
   private openWindow(url: string): void {
-    window.location.href = this.stripSpace(url);
+    const openedWindow: Window = window.open(
+      this.stripSpace(url),
+      'targetWindow',
+      'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=540px,height=700px'
+    );
+    const interval = window.setInterval(function () {
+      if (openedWindow.closed) {
+        window.clearInterval(interval);
+        window.location.reload();
+      }
+    }, 1000);
   }
 
   // Open a window for the user to login to the appropriate service
