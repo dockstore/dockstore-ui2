@@ -119,9 +119,15 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                       <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                       <div fxLayout="row wrap" fxLayoutGap="1rem" class="labels">
+                        <span
+                          [ngClass]="entry.entryType == 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
+                          *ngFor="let label of entry.labels | slice: 0:3"
+                        >
+                          {{ label }}
+                        </span>
                         <mat-chip
-                          [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
-                          *ngIf="entry.verified"
+                          [ngClass]="entry.entryType == 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
+                          *ngIf="entry.verified == true"
                         >
                           <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                             <mat-icon class="verified-icon">done</mat-icon>
