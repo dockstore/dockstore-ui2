@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'app/shared/user/user.service';
 import { of as observableOf } from 'rxjs';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 
@@ -13,7 +14,13 @@ import { TokenService } from '../../shared/state/token.service';
   templateUrl: './auth.component.html',
 })
 export class AuthComponent extends Base implements OnInit {
-  constructor(private tokenService: TokenService, private activatedRoute: ActivatedRoute, private alertService: AlertService) {
+  constructor(
+    private tokenService: TokenService,
+    private activatedRoute: ActivatedRoute,
+    private alertService: AlertService,
+    private userService: UserService,
+    private router: Router
+  ) {
     super();
   }
 
@@ -71,15 +78,23 @@ export class AuthComponent extends Base implements OnInit {
 
   ngOnInit() {
     const prevPage = localStorage.getItem('page');
-
+    const provider: Provider = this.activatedRoute.snapshot.params['provider'];
     this.addToken()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (token) => {
-          // This component should only exist inside a temporary window used in the OAuth process
-          window.close();
+          if (provider === Provider.ORCID) {
+            // This component should only exist inside a temporary window used in the OAuth process
+            window.close();
+          } else {
+            this.userService.getUser();
+            this.router.navigate([`${prevPage}`]);
+          }
         },
         (error) => {
+          if (provider !== Provider.ORCID) {
+            this.router.navigate([`${prevPage}`]);
+          }
           this.router.navigate([`${prevPage}`]);
           if (error.status === 409) {
             this.alertService.detailedSnackBarErrorWithLink(

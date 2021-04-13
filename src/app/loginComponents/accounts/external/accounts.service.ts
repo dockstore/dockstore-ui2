@@ -18,6 +18,10 @@ export class AccountsService {
   }
 
   private openWindow(url: string): void {
+    window.location.href = this.stripSpace(url);
+  }
+
+  private openSmallWindow(url: string): void {
     const openedWindow: Window = window.open(
       this.stripSpace(url),
       'targetWindow',
@@ -51,7 +55,7 @@ export class AccountsService {
         this.openWindow(Links.QUAY());
         break;
       case TokenSource.ORCID:
-        this.openWindow(Links.ORCID());
+        this.openSmallWindow(Links.ORCID());
         break;
       case TokenSource.GOOGLE:
         this.loginService
