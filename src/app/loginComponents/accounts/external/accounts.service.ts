@@ -23,10 +23,11 @@ export class AccountsService {
       'targetWindow',
       'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=540px,height=700px'
     );
+    const userService = this.userService;
     const interval = window.setInterval(function () {
       if (openedWindow.closed) {
         window.clearInterval(interval);
-        window.location.reload();
+        userService.getUser();
       }
     }, 1000);
   }
