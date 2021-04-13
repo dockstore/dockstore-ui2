@@ -363,7 +363,7 @@ describe('Dropdown test', () => {
   };
 
   const goToAccountsOnboarding = () => {
-    cy.contains('Link External Accounts').click();
+    cy.visit('/accounts');
   };
   describe('Go to setup page', () => {
     beforeEach(() => {
