@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { of as observableOf } from 'rxjs';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 
@@ -7,19 +7,13 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { Provider } from '../../shared/enum/provider.enum';
 import { TokenService } from '../../shared/state/token.service';
-import { UserService } from '../../shared/user/user.service';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
 })
 export class AuthComponent extends Base implements OnInit {
-  constructor(
-    private tokenService: TokenService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private alertService: AlertService
-  ) {
+  constructor(private tokenService: TokenService, private activatedRoute: ActivatedRoute, private alertService: AlertService) {
     super();
   }
 
