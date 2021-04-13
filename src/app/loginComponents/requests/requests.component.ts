@@ -122,7 +122,7 @@ export class RequestsComponent extends Base implements OnInit {
   }
 
   rerequestReview(membership: OrganizationUser) {
-    this.requestsService.requestRereview(membership.organization.id);
+    this.requestsService.requestRereview(membership.organization.id, this.isAdminOrCurator);
   }
 
   removeOrganizationDialog(organizationName: string, organizationStatus: string, organizationID: number) {
