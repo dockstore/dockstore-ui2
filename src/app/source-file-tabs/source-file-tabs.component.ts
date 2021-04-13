@@ -14,6 +14,7 @@ import { SourceFileTabsService } from './source-file-tabs.service';
   styleUrls: ['./source-file-tabs.component.scss'],
 })
 export class SourceFileTabsComponent implements OnChanges {
+  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
   @Input() workflowId: number;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
   // Version is strictly non-null because everything that uses this component has a truthy-check guard
@@ -30,7 +31,19 @@ export class SourceFileTabsComponent implements OnChanges {
   customDownloadPath: String;
   filePath: String;
 
-  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
+  /**
+   * The webservice returns two file types for Nextflow (NEXTFLOW_CONFIG and NEXTFLOW).
+   * However, we're overriding that and just returning a single file type and appending the NEXTFLOW_CONFIG file to the end of NEXTFLOW
+   * @param array The original sourcefiles that have not been transformed
+   */
+  private static hackNextflowFiles(array: SourceFile[]) {
+    const index = array.findIndex((file) => file.type === SourceFile.TypeEnum.NEXTFLOWCONFIG);
+    if (index === -1) {
+      return;
+    }
+    array[index].type = SourceFile.TypeEnum.NEXTFLOW;
+    array.push(array.splice(index, 1)[0]);
+  }
 
   ngOnChanges() {
     this.setupVersionFileTabs();
@@ -48,6 +61,7 @@ export class SourceFileTabsComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
+          SourceFileTabsComponent.hackNextflowFiles(sourceFiles);
           const fileTypes = this.sourceFileTabsService.getFileTypes(sourceFiles);
           if (fileTypes.length > 0) {
             this.changeFileType(fileTypes[0], sourceFiles);
