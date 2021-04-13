@@ -68,7 +68,14 @@
                   <span>{{ org.starredUsers.length }}</span>
                 </div>
               </div>
-              <a data-cy="orgName" [routerLink]="org.name" [matTooltip]="org?.name" fxLayout="column" fxLayoutAlign="space-around">
+              <a
+                data-cy="orgName"
+                [routerLink]="org.name"
+                [matTooltip]="org?.name"
+                fxLayout="column"
+                fxLayoutAlign="space-around"
+                class="no-underline"
+              >
                 <h5>{{ org.displayName }}</h5>
                 <span class="org-topic">{{ org.topic }}</span>
               </a>
@@ -97,9 +104,16 @@
 
             <div>
               <hr class="mb-4" />
-              <a [routerLink]="org.name" fxLayoutAlign="end">
-                <button class="btn view-button">View</button>
-              </a>
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="gray-label-tag">
+                  {{ org.collectionsLength }}
+                  <span *ngIf="org.collectionsLength != 1; else oneCollection"> Collections</span>
+                  <ng-template #oneCollection> Collection</ng-template>
+                </span>
+                <a [routerLink]="org.name" fxLayoutAlign="end" class="no-underline">
+                  <button class="btn view-button">View</button>
+                </a>
+              </div>
             </div>
           </div>
         </mat-card>

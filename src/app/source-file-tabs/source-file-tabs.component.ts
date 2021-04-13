@@ -14,7 +14,6 @@ import { SourceFileTabsService } from './source-file-tabs.service';
   styleUrls: ['./source-file-tabs.component.scss'],
 })
 export class SourceFileTabsComponent implements OnChanges {
-
   constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
   @Input() workflowId: number;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
@@ -38,7 +37,7 @@ export class SourceFileTabsComponent implements OnChanges {
    * @param array The original sourcefiles that have not been transformed
    */
   private static hackNextflowFiles(array: SourceFile[]) {
-    const index = array.findIndex(file => file.type === SourceFile.TypeEnum.NEXTFLOWCONFIG);
+    const index = array.findIndex((file) => file.type === SourceFile.TypeEnum.NEXTFLOWCONFIG);
     if (index === -1) {
       return;
     }
