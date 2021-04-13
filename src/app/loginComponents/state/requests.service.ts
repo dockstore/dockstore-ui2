@@ -170,7 +170,7 @@ export class RequestsService {
       );
   }
 
-  requestRereview(id: number): void {
+  requestRereview(id: number, isAdminOrCurator: boolean): void {
     this.alertService.start('Rerequesting review for organization ' + id);
     this.organizationsService
       .requestOrganizationReview(id)
@@ -178,7 +178,9 @@ export class RequestsService {
       .subscribe(
         (organization: Organization) => {
           this.alertService.simpleSuccess();
-          this.updateCuratorOrganizations();
+          if (isAdminOrCurator) {
+            this.updateCuratorOrganizations();
+          }
           this.updateMyMemberships();
         },
         () => {
