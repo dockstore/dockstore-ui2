@@ -119,22 +119,16 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                       <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                       <div fxLayout="row wrap" fxLayoutGap="1rem" class="labels">
-                        <span
-                          [ngClass]="entry.entryType == 'workflow' ? 'workflow-label-chip' : 'container-label-chip'"
-                          *ngFor="let label of entry.labels"
-                        >
-                          {{ label }}
-                        </span>
                         <mat-chip
-                          [ngClass]="entry.entryType == 'workflow' ? 'workflow-label-chip' : 'container-label-chip'"
-                          *ngIf="entry.verified == true"
+                          [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
+                          *ngIf="entry.verified"
                         >
                           <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                             <mat-icon class="verified-icon">done</mat-icon>
                             <span>Verified</span>
                           </span>
                         </mat-chip>
-                        <span class="gray-label-chip" *ngFor="let descriptorType of entry.descriptorTypes">{{ descriptorType }}</span>
+                        <span class="gray-label-tag" *ngFor="let descriptorType of entry.descriptorTypes">{{ descriptorType }}</span>
                       </div>
                     </div>
                     <button class="btn view-button">View</button>
