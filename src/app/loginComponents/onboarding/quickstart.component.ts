@@ -20,11 +20,14 @@ import { Dockstore } from '../../shared/dockstore.model';
   selector: 'app-onboarding',
   templateUrl: './quickstart.component.html',
 })
-export class QuickStartComponent {
+export class QuickStartComponent implements OnInit {
   public curStep = 1;
   public tokenSetComplete: boolean;
   Dockstore = Dockstore;
   constructor() {}
+  ngOnInit() {
+    localStorage.setItem('page', '/quick-start');
+  }
   prevStep() {
     if (this.curStep > 1) {
       this.curStep--;
@@ -40,7 +43,7 @@ export class QuickStartComponent {
         this.curStep++;
         break;
       default:
-        break;
+        localStorage.setItem('page', '/quick-start');
     }
   }
 }

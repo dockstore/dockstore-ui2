@@ -74,6 +74,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
   public abstract toggleSidebar(): void;
 
   commonMyEntriesOnInit(): void {
+    localStorage.setItem('page', this.pageName);
     const token = this.authService.getToken();
     this.configuration.apiKeys['Authorization'] = token ? 'Bearer ' + token : null;
     this.tokenQuery.hasGitHubToken$
