@@ -20,7 +20,6 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   Dockstore = Dockstore;
   constructor(private userQuery: UserQuery, private tokenService: TokenQuery) {}
   ngOnInit() {
-    localStorage.setItem('page', '/onboarding');
     this.tokenService.userTokenStatusSet$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokenStatusSet) => {
       if (tokenStatusSet) {
         this.tokenSetComplete = tokenStatusSet.github;

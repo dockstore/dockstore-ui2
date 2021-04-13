@@ -20,7 +20,6 @@ export class AccountsComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    localStorage.setItem('page', '/accounts');
     this.parseParam(this.activatedRoute.queryParams);
   }
 

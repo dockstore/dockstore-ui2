@@ -76,8 +76,6 @@ export class AuthComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    const prevPage = localStorage.getItem('page');
-
     this.addToken()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
@@ -86,7 +84,7 @@ export class AuthComponent extends Base implements OnInit {
           window.close();
         },
         (error) => {
-          this.router.navigate([`${prevPage}`]);
+          // TODO: Don't use alert service. Just make this entire component an error message
           if (error.status === 409) {
             this.alertService.detailedSnackBarErrorWithLink(
               error,
