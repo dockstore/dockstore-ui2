@@ -72,7 +72,6 @@ export class LaunchComponent extends Base implements OnInit, OnChanges {
       .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
         this.descriptors = descriptors;
         this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
-        this.reactToDescriptor();
       });
     this.published$ = this.toolQuery.toolIsPublished$;
   }
@@ -81,6 +80,7 @@ export class LaunchComponent extends Base implements OnInit, OnChanges {
     this._selectedVersion = this.selectedVersion;
     this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
     this.reactToDescriptor();
+    this.changeDescriptor();
   }
 
   // Returns an array of descriptors that are valid for the given tool version
@@ -122,12 +122,17 @@ export class LaunchComponent extends Base implements OnInit, OnChanges {
   reactToDescriptor(): void {
     const toolPath = this.path;
     const versionName = this._selectedVersion.name;
-    this.params = this.launchService.getParamsString(toolPath, versionName, this.currentDescriptor);
-    this.cli = this.launchService.getCliString(toolPath, versionName, this.currentDescriptor);
     this.cwl = this.launchService.getCwlString(toolPath, versionName, encodeURIComponent(this._selectedVersion.cwl_path));
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(toolPath, versionName);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(toolPath, versionName);
     this.checkEntryCommand = this.launchService.getCheckToolString(toolPath, versionName);
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
+  }
+
+  changeDescriptor() {
+    const toolPath = this.path;
+    const versionName = this._selectedVersion.name;
+    this.params = this.launchService.getParamsString(toolPath, versionName, this.currentDescriptor);
+    this.cli = this.launchService.getCliString(toolPath, versionName, this.currentDescriptor);
   }
 }
