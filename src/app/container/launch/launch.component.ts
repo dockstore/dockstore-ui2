@@ -72,6 +72,7 @@ export class LaunchComponent extends Base implements OnInit, OnChanges {
       .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
         this.descriptors = descriptors;
         this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
+        this.changeDescriptor();
       });
     this.published$ = this.toolQuery.toolIsPublished$;
   }
