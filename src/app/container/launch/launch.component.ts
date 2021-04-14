@@ -72,14 +72,15 @@ export class LaunchComponent extends Base implements OnInit, OnChanges {
       .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
         this.descriptors = descriptors;
         this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
+        this.reactToDescriptor();
       });
     this.published$ = this.toolQuery.toolIsPublished$;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this._selectedVersion = this.selectedVersion;
-    this.reactToDescriptor();
     this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
+    this.reactToDescriptor();
   }
 
   // Returns an array of descriptors that are valid for the given tool version
