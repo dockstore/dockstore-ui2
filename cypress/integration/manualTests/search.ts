@@ -19,15 +19,15 @@ describe('Admin UI', () => {
       cy.contains('the Language is WDL').should('not.exist');
     });
     it('should be able to use basic search box and have suggestions', () => {
-      cy.get('[data-cy=basic-search]').type('dockstore_d');
-      cy.contains(' Sorry, no matches found for dockstore_d');
+      cy.get('[data-cy=basic-search]').type('dockstore_i');
+      cy.contains(' Sorry, no matches found for dockstore_i');
       cy.contains('Do you mean: dockstore?');
-      cy.url().should('include', 'search=dockstore_');
+      cy.url().should('include', 'search=dockstore_i');
     });
 
     it('should reset filters', () => {
       cy.contains('Reset Filters').click();
-      cy.url().should('include', '/search');
+      cy.url().should('not.include', 'search=dockstore_i');
     });
 
     it('should remember paginator setting', () => {
