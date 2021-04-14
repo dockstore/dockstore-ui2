@@ -27,7 +27,6 @@ describe('Admin UI', () => {
 
     it('should reset filters', () => {
       cy.contains('Reset Filters').click();
-      cy.wait(1000);
       cy.url().should('not.include', 'search=dockstore_i');
     });
 
