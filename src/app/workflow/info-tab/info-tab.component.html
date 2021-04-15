@@ -204,24 +204,14 @@
             [canRead]="canRead"
             [canWrite]="canWrite"
             [isOwner]="isOwner"
-            (changeType)="checkworkflowPathHandler($event)"
+            [isPublished]="workflow?.is_published"
+            [workflowMode]="workflow?.mode"
+            [workflowId]="workflow.id"
           ></app-info-tab-checker-workflow-path>
           <!-- TODO: Remove once hosted workflows and Nextflow support checker workflows -->
           <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async)">
             <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
           </div>
-          <li *ngIf="!isPublic">
-            <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ workflow?.mode }}
-            <button
-              class="btn btn-link push-right"
-              type="button"
-              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !currentlyIsChecker"
-              (click)="restubWorkflow()"
-              [disabled]="isRefreshing$ | async"
-            >
-              <mat-icon>clear</mat-icon> Restub
-            </button>
-          </li>
           <li>
             <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
               <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:

@@ -27,7 +27,6 @@ import { ExtendedWorkflowsService } from '../../shared/extended-workflows.servic
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { WorkflowService } from '../../shared/state/workflow.service';
 import { ToolDescriptor } from '../../shared/swagger';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
@@ -44,7 +43,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
   @Input() defaultVersion;
   @Input() extendedWorkflow: ExtendedWorkflow;
-  currentlyIsChecker: boolean;
   public workflow: Workflow;
   currentVersion: WorkflowVersion;
   downloadZipLink: string;
@@ -70,12 +68,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   public entryType$: Observable<EntryType>;
   public isRefreshing$: Observable<boolean>;
   public recommendGitHubApps = recommendGitHubApps;
-  modeTooltipContent = `STUB: Basic metadata pulled from source control.
-  FULL: Full content synced from source control.
-  HOSTED: Workflow metadata and files hosted on Dockstore.`;
   Dockstore = Dockstore;
   constructor(
-    private workflowService: WorkflowService,
     private workflowsService: ExtendedWorkflowsService,
     private sessionQuery: SessionQuery,
     private infoTabService: InfoTabService,
@@ -126,18 +120,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .subscribe((entryType) => (this.displayTextForButton = '#' + entryType + '/' + this.workflow?.full_workflow_path));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
   }
-  /**
-   * Handle restubbing a workflow
-   * TODO: Handle restub error
-   *
-   * @memberof InfoTabComponent
-   */
-  restubWorkflow() {
-    this.workflowsService.restub(this.workflow.id).subscribe((restubbedWorkflow: Workflow) => {
-      this.workflowService.setWorkflow(restubbedWorkflow);
-      this.workflowService.upsertWorkflowToWorkflow(restubbedWorkflow);
-    });
-  }
 
   downloadZip() {
     this.workflowsService.getWorkflowZip(this.workflow.id, this.currentVersion.id, 'response').subscribe((data: HttpResponse<any>) => {
@@ -187,9 +169,5 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
-  }
-
-  checkworkflowPathHandler(value: boolean) {
-    this.currentlyIsChecker = value;
   }
 }
