@@ -11,6 +11,7 @@
         *ngIf="(checkerWorkflowURL$ | async) && !(isRefreshing$ | async)"
         type="button"
         class="btn btn-link"
+        (click)="goToChecker()"
       >
         <mat-icon>visibility</mat-icon> View
       </a>
@@ -34,7 +35,7 @@
 </li>
 <li *ngIf="parentId$ | async">
   <form class="form-inline">
-    <div>
+    <div id="parent-exists">
       <div class="form-group"><strong matTooltip="The parent entry of this checker workflow">Parent Entry</strong>:</div>
       <span>
         <div class="btn-group" role="group">

@@ -44,6 +44,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
   @Input() defaultVersion;
   @Input() extendedWorkflow: ExtendedWorkflow;
+  currentlyIsChecker: boolean;
   public workflow: Workflow;
   currentVersion: WorkflowVersion;
   downloadZipLink: string;
@@ -186,5 +187,9 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
+  }
+
+  checkworkflowPathHandler(value: boolean) {
+    this.currentlyIsChecker = value;
   }
 }

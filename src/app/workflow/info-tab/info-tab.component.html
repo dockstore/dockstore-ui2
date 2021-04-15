@@ -204,6 +204,7 @@
             [canRead]="canRead"
             [canWrite]="canWrite"
             [isOwner]="isOwner"
+            (changeType)="checkworkflowPathHandler($event)"
           ></app-info-tab-checker-workflow-path>
           <!-- TODO: Remove once hosted workflows and Nextflow support checker workflows -->
           <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async)">
@@ -214,7 +215,7 @@
             <button
               class="btn btn-link push-right"
               type="button"
-              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published"
+              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !currentlyIsChecker"
               (click)="restubWorkflow()"
               [disabled]="isRefreshing$ | async"
             >

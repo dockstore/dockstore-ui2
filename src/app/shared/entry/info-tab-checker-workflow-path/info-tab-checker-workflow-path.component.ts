@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Workflow } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';
 import { SessionQuery } from '../../session/session.query';
@@ -30,7 +31,7 @@ import { RegisterCheckerWorkflowService } from '../register-checker-workflow/reg
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss'],
 })
-export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy {
+export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy, AfterViewInit {
   isPublic$: Observable<boolean>;
   isStub$: Observable<boolean>;
   parentId$: Observable<number>;
@@ -43,6 +44,8 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
   @Input() canRead: boolean;
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
+  isChecker: boolean;
+  @Output() changeType: EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor(
     private checkerWorkflowService: CheckerWorkflowService,
     private checkerWorkflowQuery: CheckerWorkflowQuery,
@@ -68,6 +71,11 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
     this.canAdd$ = this.checkerWorkflowService.canAdd(this.checkerId$, this.parentId$, this.isStub$);
   }
 
+  ngAfterViewInit() {
+    this.isChecker = document.getElementById('parent-exists') == null ? false : true;
+    this.changeChecker();
+  }
+
   add(): void {
     this.registerCheckerWorkflowService.add();
     this.matDialog.open(RegisterCheckerWorkflowComponent, { width: '600px' });
@@ -84,5 +92,16 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
    */
   viewParentEntry(): void {
     this.checkerWorkflowService.goToParentEntry();
+    this.isChecker = false;
+    this.changeChecker();
+  }
+
+  goToChecker(): void {
+    this.isChecker = true;
+    this.changeChecker();
+  }
+
+  changeChecker(): void {
+    this.changeType.emit(this.isChecker);
   }
 }
