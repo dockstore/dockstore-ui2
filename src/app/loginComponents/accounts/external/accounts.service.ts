@@ -21,6 +21,21 @@ export class AccountsService {
     window.location.href = this.stripSpace(url);
   }
 
+  private openSmallWindow(url: string): void {
+    const openedWindow: Window = window.open(
+      this.stripSpace(url),
+      'targetWindow',
+      'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=540px,height=700px'
+    );
+    const userService = this.userService;
+    const interval = window.setInterval(function () {
+      if (openedWindow.closed) {
+        window.clearInterval(interval);
+        userService.getUser();
+      }
+    }, 1000);
+  }
+
   // Open a window for the user to login to the appropriate service
   link(source: string) {
     switch (source) {
@@ -40,7 +55,7 @@ export class AccountsService {
         this.openWindow(Links.QUAY());
         break;
       case TokenSource.ORCID:
-        this.openWindow(Links.ORCID());
+        this.openSmallWindow(Links.ORCID());
         break;
       case TokenSource.GOOGLE:
         this.loginService
