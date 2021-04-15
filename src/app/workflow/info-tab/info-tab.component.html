@@ -17,7 +17,7 @@
   <mat-card
     class="alert alert-info"
     *ngIf="
-      !isPublic &&
+      !(isPublic$ | async) &&
       workflow?.source_control_provider === 'GITHUB' &&
       (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB) &&
       this.recommendGitHubApps
@@ -42,8 +42,11 @@
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
             <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
-            <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
-              {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
+            <a
+              id="sourceRepository"
+              [href]="workflow?.providerUrl | versionProviderUrl: ((isPublic$ | async) ? selectedVersion?.name : '')"
+            >
+              {{ workflow?.providerUrl | urlDeconstruct: ((isPublic$ | async) ? selectedVersion?.name : '') }}
             </a>
           </li>
         </span>
@@ -51,7 +54,7 @@
           <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Source Code</strong>:
           <i>The source code for this workflow is stored on Dockstore.org</i>
         </li>
-        <li *ngIf="isPublic && isValidVersion">
+        <li *ngIf="(isPublic$ | async) && isValidVersion">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
           <a [href]="trsLink"> #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }} </a>
           <button mat-icon-button color="secondary" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton" appSnackbar>
@@ -60,7 +63,7 @@
         </li>
         <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
           <span>
-            <li *ngIf="workflow?.workflow_path || !isPublic">
+            <li *ngIf="workflow?.workflow_path || !(isPublic$ | async)">
               <form
                 #editWorkflowPathForm="ngForm"
                 class="form-inline"
@@ -85,11 +88,11 @@
                   />
                 </div>
                 <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                  <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                  <button *ngIf="!(isPublic$ | async) && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
                   <button
-                    *ngIf="!isPublic"
+                    *ngIf="!(isPublic$ | async)"
                     type="button"
                     [disabled]="
                       defaultTestFilePathEditing ||
@@ -130,11 +133,16 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                  <button *ngIf="!isPublic && defaultTestFilePathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                  <button
+                    *ngIf="!(isPublic$ | async) && defaultTestFilePathEditing"
+                    type="button"
+                    class="btn btn-link"
+                    (click)="cancelEditing()"
+                  >
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
                   <button
-                    *ngIf="!isPublic"
+                    *ngIf="!(isPublic$ | async)"
                     type="button"
                     [disabled]="
                       workflowPathEditing ||
@@ -173,11 +181,11 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                  <button *ngIf="!isPublic && forumUrlEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                  <button *ngIf="!(isPublic$ | async) && forumUrlEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
                   <button
-                    *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
+                    *ngIf="!(isPublic$ | async) && !workflow?.forumUrl && !forumUrlEditing"
                     [disabled]="workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
                     type="button"
                     class="btn btn-link"
@@ -186,7 +194,7 @@
                     <mat-icon>add</mat-icon> Add
                   </button>
                   <button
-                    *ngIf="!isPublic && (workflow?.forumUrl || forumUrlEditing)"
+                    *ngIf="!(isPublic$ | async) && (workflow?.forumUrl || forumUrlEditing)"
                     type="button"
                     class="btn btn-link"
                     (click)="toggleEditForumUrl()"
@@ -276,12 +284,12 @@
         <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-raised-button>Export as ZIP</a>
       </span>
       <div>
-        <div *ngIf="selectedVersion?.description || !isPublic">
+        <div *ngIf="selectedVersion?.description || !(isPublic$ | async)">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
           <div *ngIf="selectedVersion?.description" class="well well-sm">
             <markdown-wrapper [data]="selectedVersion?.description"></markdown-wrapper>
           </div>
-          <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
+          <div *ngIf="!selectedVersion?.description && !(isPublic$ | async)" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
               No description associated with this {{ entryType$ | async }}.

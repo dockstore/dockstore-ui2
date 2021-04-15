@@ -58,7 +58,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   defaultTestFilePathEditing: boolean;
   forumUrlEditing: boolean;
-  isPublic: boolean;
+  isPublic$: Observable<boolean>;
   trsLink: string;
   displayTextForButton: string;
   EntryType = EntryType;
@@ -108,7 +108,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));
+    this.isPublic$ = this.sessionQuery.isPublic$;
     this.infoTabService.workflowPathEditing$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.workflowPathEditing = editing));
