@@ -525,7 +525,7 @@
 "cypress@5.0.0","MIT","https://github.com/cypress-io/cypress"
 "cytoscape-dagre@2.3.2","MIT","https://github.com/cytoscape/cytoscape.js-dagre"
 "cytoscape-popper@1.0.4","MIT","https://github.com/cytoscape/cytoscape.js-popper"
-"cytoscape@3.10.1","MIT","https://github.com/cytoscape/cytoscape.js"
+"cytoscape@3.18.2","MIT","https://github.com/cytoscape/cytoscape.js"
 "d@1.0.1","ISC","https://github.com/medikoo/d"
 "dagre@0.8.5","MIT","https://github.com/dagrejs/dagre"
 "damerau-levenshtein@1.0.6","BSD-2-Clause","https://github.com/tad-lispy/node-damerau-levenshtein"
