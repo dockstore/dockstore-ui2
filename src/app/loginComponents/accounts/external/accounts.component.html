@@ -75,10 +75,8 @@
 
       <span fxLayout="row" fxLayoutAlign="start center" *ngIf="row.isLinked">
         <span *ngIf="row.isLinked" class="pull-right">
-          <span class="mx-2">
-            <strong>Username: </strong>
-            {{ row.source | getTokenUsername: tokens }}
-          </span>
+          <strong>Username: </strong>
+          {{ row.source | getTokenUsername: tokens }}
         </span>
       </span>
     </div>
