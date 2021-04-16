@@ -13,11 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
+import { DateService } from 'app/shared/date.service';
+import { ExtendedWorkflowsService } from 'app/shared/extended-workflows.service';
+import { ProviderService } from 'app/shared/provider.service';
 import { CheckerWorkflowStubService, RegisterCheckerWorkflowStubService } from '../../../test/service-stubs';
 import { CustomMaterialModule } from '../../modules/material.module';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
@@ -35,6 +39,11 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
         providers: [
           { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
           { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
+          ExtendedWorkflowsService,
+          DateService,
+          ProviderService,
+          HttpClient,
+          HttpHandler,
         ],
         declarations: [InfoTabCheckerWorkflowPathComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
