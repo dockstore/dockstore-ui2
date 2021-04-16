@@ -220,6 +220,9 @@
           <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async)">
             <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
           </div>
+          <li *ngIf="!(isPublic$ | async) && (workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async))">
+            <strong>Mode</strong>: {{ workflow?.mode }}
+          </li>
           <li>
             <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
               <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
