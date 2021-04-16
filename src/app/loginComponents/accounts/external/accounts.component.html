@@ -74,21 +74,6 @@
       </div>
 
       <span fxLayout="row" fxLayoutAlign="start center" *ngIf="row.isLinked">
-        <strong>Token</strong>
-        <button mat-icon-button color="secondary" (click)="row.show = !row.show">
-          <mat-icon *ngIf="row.show">visibility_off</mat-icon>
-          <mat-icon *ngIf="!row.show">visibility</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          color="secondary"
-          [cdkCopyToClipboard]="row.source | getTokenContent: tokens"
-          (cbOnSuccess)="isCopied1 = true"
-          appSnackbar
-        >
-          <mat-icon>file_copy</mat-icon>
-        </button>
-        <span *ngIf="row.show" style="overflow: auto">{{ row.source | getTokenContent: tokens }}</span>
         <span *ngIf="row.isLinked" class="pull-right">
           <span class="mx-2">
             <strong>Username: </strong>
