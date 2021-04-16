@@ -29,12 +29,12 @@ import { DagStore } from './dag.store';
 
 @Injectable()
 export class DagService {
-  readonly style = [
+  readonly style: cytoscape.Stylesheet[] = [
     {
       selector: 'node',
       style: {
         content: 'data(name)',
-        'font-size': '16px',
+        'font-size': 16,
         'text-valign': 'center',
         'text-halign': 'center',
         'background-color': '#7a88a9',
@@ -56,7 +56,7 @@ export class DagService {
       selector: 'node[id = "UniqueBeginKey"]',
       style: {
         content: 'Start',
-        'font-size': '16px',
+        'font-size': 16,
         'text-valign': 'center',
         'text-halign': 'center',
         'background-color': '#4caf50',
@@ -67,7 +67,7 @@ export class DagService {
       selector: 'node[id = "UniqueEndKey"]',
       style: {
         content: 'End',
-        'font-size': '16px',
+        'font-size': 16,
         'text-valign': 'center',
         'text-halign': 'center',
         'background-color': '#f44336',
@@ -78,7 +78,7 @@ export class DagService {
       selector: 'node[type = "workflow"]',
       style: {
         content: 'data(name)',
-        'font-size': '16px',
+        'font-size': 16,
         'text-valign': 'center',
         'text-halign': 'center',
         'background-color': '#4ab4a9',
@@ -89,7 +89,7 @@ export class DagService {
       selector: 'node[type = "tool"]',
       style: {
         content: 'data(name)',
-        'font-size': '16px',
+        'font-size': 16,
         'text-valign': 'center',
         'text-halign': 'center',
         'background-color': '#51aad8',
@@ -100,7 +100,7 @@ export class DagService {
       selector: 'node[type = "expressionTool"]',
       style: {
         content: 'data(name)',
-        'font-size': '16px',
+        'font-size': 16,
         'text-valign': 'center',
         'text-halign': 'center',
         'background-color': '#9966FF',
@@ -110,7 +110,7 @@ export class DagService {
     {
       selector: 'edge.notselected',
       style: {
-        opacity: '0.4',
+        opacity: 0.4,
       },
     },
   ];
