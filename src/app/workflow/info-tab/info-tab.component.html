@@ -214,7 +214,7 @@
             <button
               class="btn btn-link push-right"
               type="button"
-              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published"
+              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
               [disabled]="isRefreshing$ | async"
             >
