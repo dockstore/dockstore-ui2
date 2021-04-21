@@ -1,4 +1,3 @@
-import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { Observable, throwError } from 'rxjs';
@@ -9,12 +8,7 @@ import { TokenStore } from './token.store';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
-  constructor(
-    private tokenStore: TokenStore,
-    private tokensService: TokensService,
-    private usersService: UsersService,
-    private httpBackend: HttpBackend
-  ) {}
+  constructor(private tokenStore: TokenStore, private tokensService: TokensService, private usersService: UsersService) {}
 
   @transaction()
   get(userId: number) {
