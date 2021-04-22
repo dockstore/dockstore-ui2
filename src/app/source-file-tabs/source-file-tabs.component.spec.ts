@@ -29,7 +29,7 @@ describe('SourceFileTabsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SourceFileTabsComponent);
     component = fixture.componentInstance;
-    component.version = { id: 0 };
+    component.version = { id: 0, name: 'abc', reference: '1' };
     component.workflowId = 0;
     fixture.detectChanges();
   });

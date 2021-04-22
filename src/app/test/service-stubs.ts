@@ -328,6 +328,9 @@ export class UsersStubService {
   getUserMemberships() {
     return observableOf([]);
   }
+  getMyGitHubOrgs() {
+    return observableOf([]);
+  }
   checkUserExists(username) {
     return observableOf([]);
   }
