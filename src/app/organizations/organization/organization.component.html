@@ -48,7 +48,7 @@
     </button>
   </div>
   <!-- Organization header -->
-  <div class="container" *ngIf="!organizationStarGazersClicked && (organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
+  <div class="container mb-5" *ngIf="!organizationStarGazersClicked && (organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
     <ngx-json-ld [json]="schema$ | async"></ngx-json-ld>
     <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
       <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
@@ -69,7 +69,10 @@
 
     <div fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between">
-        <div fxFlex="90">
+        <div fxFlex="90" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
+          <div *ngIf="gravatarUrl$ | async">
+            <img [src]="gravatarUrl$ | async" class="orgLogo" />
+          </div>
           <div>
             <h2 class="name">{{ org.displayName }}</h2>
             <span>{{ org.topic }}</span>

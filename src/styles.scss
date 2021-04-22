@@ -1341,3 +1341,12 @@ hr {
   margin: 0.5rem 0;
   border: 1px solid #dfe0e2;
 }
+
+.orgLogo {
+  height: 50px;
+  object-fit: scale-down;
+}
+
+.hidden-overflow {
+  overflow: hidden;
+}

@@ -15,7 +15,7 @@
   -->
 <mat-toolbar color="primary">
   <mat-toolbar-row class="toolbar-holder hidden-xs">
-    <div [className]="isExtended ? 'container w-100 navbar-fluid' : 'container navbar-fluid'">
+    <div [ngClass]="'container navbar-fluid'">
       <span class="flex-toolbar">
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
           <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="41" alt="dockstore logo" />

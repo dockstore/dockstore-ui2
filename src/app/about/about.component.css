@@ -22,14 +22,14 @@ button {
   text-decoration: none;
 }
 
-h5 {
+h3 {
   font-size: 1.7rem;
   color: #3f51b5;
   line-height: 2.5rem;
   font-weight: 500;
 }
 
-h3 {
+h2 {
   font-weight: inherit;
   font-size: 2.5rem;
 }
