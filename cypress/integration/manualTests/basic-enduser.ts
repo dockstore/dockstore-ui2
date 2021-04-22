@@ -121,6 +121,9 @@ describe('Test search page functionality', () => {
   it('filters and unfilters by facets', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', 'Nextflow').click();
+    // The purpose of the next two lines is to ensure the result table is properly rendered before moving on
+    cy.contains('mat-checkbox', 'Nextflow').should('not.exist');
+    cy.contains('mat-checkbox', 'Nextflow').should('exist');
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
