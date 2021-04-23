@@ -78,7 +78,7 @@
         {{ row.source | getTokenUsername: tokens }}
         <span *ngIf="row.name === 'ORCID'">
           <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo" />
-          <a href="https://orcid.org/{{ user.orcid }}" style="font-size: 0.8em"> {{ user.orcid }}</a>
+          <a href="https://orcid.org/{{ orcidId$ | async }}"> {{ orcidId$ | async }}</a>
         </span>
       </span>
     </div>

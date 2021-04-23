@@ -17,8 +17,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
-import { Subject } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { first, map, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
@@ -37,7 +37,7 @@ import { AccountsService } from './accounts.service';
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
-  public user: User;
+  public orcidId$: Observable<string>;
   // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
     {
@@ -193,9 +193,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.tokenQuery.tokens$.subscribe((tokens: Token[]) => {
       this.setTokens(tokens);
     });
-    this.userQuery.user$.subscribe((user: User) => {
-      this.user = user;
-    });
+    this.orcidId$ = this.userQuery.user$.pipe(map((user) => user.orcid));
   }
 
   ngOnDestroy() {
