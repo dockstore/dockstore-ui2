@@ -23,7 +23,9 @@ import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
 import { TokenService } from '../../../shared/state/token.service';
+import { User } from '../../../shared/swagger';
 import { TrackLoginService } from '../../../shared/track-login.service';
+import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { Token } from './../../../shared/swagger/model/token';
 import { AccountsService } from './accounts.service';
@@ -35,6 +37,7 @@ import { AccountsService } from './accounts.service';
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
+  public user: User;
   // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
     {
@@ -108,6 +111,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private accountsService: AccountsService,
     private matSnackBar: MatSnackBar,
+    private userQuery: UserQuery,
     private tokenQuery: TokenQuery
   ) {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
@@ -188,6 +192,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.dsServerURI = Dockstore.API_URI;
     this.tokenQuery.tokens$.subscribe((tokens: Token[]) => {
       this.setTokens(tokens);
+    });
+    this.userQuery.user$.subscribe((user: User) => {
+      this.user = user;
     });
   }
 
