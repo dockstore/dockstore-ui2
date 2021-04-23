@@ -127,9 +127,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   ngOnInit() {
     this.myWorkflowsService.clearPartialState();
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
-    this.tokenQuery.gitHubToken$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));
+    this.tokenService.getGitHubOrganizations();
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
