@@ -48,7 +48,6 @@ import { ControlsComponent } from './loginComponents/accounts/controls/controls.
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
-import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
@@ -135,7 +134,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     AccountsExternalComponent,
     AuthComponent,
     GetTokenUsernamePipe,
-    GetTokenContentPipe,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
     MaintenanceComponent,
