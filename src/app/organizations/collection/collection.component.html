@@ -20,7 +20,7 @@
 <!-- Beware of double loading bar (from page and from loading component) -->
 <app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
   <div *ngIf="organization$ | async as organization">
-    <div class="container" *ngIf="collection$ | async as collection" fxLayout="column">
+    <div class="container mb-5" *ngIf="collection$ | async as collection" fxLayout="column">
       <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === pendingEnum">
         <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
         <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
@@ -38,16 +38,14 @@
         approval on the <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
       </mat-card>
       <div fxFlex class="my-3">
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem">
-          <div *ngIf="gravatarUrl$ | async" fxLayoutAlign="center center" fxHide.lt-sm>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
+          <div *ngIf="gravatarUrl$ | async" fxHide.lt-sm>
             <img [src]="gravatarUrl$ | async" class="orgLogo" alt="organization logo" />
           </div>
           <div>
             <h2>
-              <a [routerLink]="['/organizations/', organization.name]">
-                <span [matTooltip]="organization?.name" class="org-name">{{ organization.displayName }}</span></a
-              >
-              : <span [matTooltip]="collection?.name" class="collection-name">{{ collection.displayName }}</span>
+              <span [matTooltip]="organization?.name" class="org-name">Collection:</span
+              ><span [matTooltip]="collection?.name" class="collection-name"> {{ collection.displayName }}</span>
             </h2>
             <span>{{ collection.topic }}</span>
           </div>

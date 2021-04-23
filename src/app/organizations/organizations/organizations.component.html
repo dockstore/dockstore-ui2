@@ -19,7 +19,7 @@
     <span>Organizations</span>
   </div>
 </app-header>
-<div *ngIf="!(loading$ | async)" class="container">
+<div *ngIf="!(loading$ | async)" class="container mb-5">
   <div *ngIf="filteredOrganizations$ | async as organizations; else noOrganizationsFound">
     <div fxLayout="row" fxLayoutAlign="space-between center" class="my-3" fxLayout.lt-sm="column-reverse" fxLayoutAlign.lt-sm="start start">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
@@ -49,71 +49,66 @@
     </div>
     <hr />
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
-      <div fxLayoutAlign="start stretch" fxLayout="row wrap" fxLayoutGap="10px">
+      <div fxLayoutAlign="space-between" fxLayout="row wrap" fxLayoutGap="1rem">
         <mat-card
           style="height: 340px"
           *ngFor="let org of organizations"
-          class="my-2 mat-elevation-z3"
+          class="my-2 mat-elevation-z3 mx-0"
           fxFlex="32"
           fxFlex.lt-lg="48"
           fxFlex.lt-md="100"
         >
           <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-            <div fxLayout="column" fxLayoutAlign="space-around">
-              <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                <img *ngIf="org.avatarUrl; else placeholder" class="orgLogo" [src]="org.avatarUrl" alt="org logo" />
-                <ng-template #placeholder><span style="height: 50px"></span></ng-template>
-                <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
-                  <mat-icon class="orgStar">star</mat-icon>
-                  <span>{{ org.starredUsers.length }}</span>
+            <div class="overflow-scroll" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="1rem">
+              <a [routerLink]="org.name" class="no-underline" target="_self">
+                <div fxLayout="column" fxLayoutAlign="space-around">
+                  <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                    <img *ngIf="org.avatarUrl; else placeholder" class="orgLogo" [src]="org.avatarUrl" alt="org logo" />
+                    <ng-template #placeholder><span style="height: 50px"></span></ng-template>
+                    <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
+                      <mat-icon class="orgStar">star</mat-icon>
+                      <span>{{ org.starredUsers.length }}</span>
+                    </div>
+                  </div>
+                  <div data-cy="orgName">
+                    <h5>{{ org.displayName }}</h5>
+                    <span class="org-topic">{{ org.topic }}</span>
+                  </div>
+                </div>
+              </a>
+              <div>
+                <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
+                  <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.link">
+                    <mat-icon class="info-icon">link</mat-icon>
+                    <span
+                      ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
+                    >
+                  </span>
+                  <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.location">
+                    <mat-icon class="info-icon">location_on</mat-icon>
+                    <span>{{ org.location }}</span>
+                  </span>
+                  <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.email">
+                    <mat-icon class="info-icon">email</mat-icon>
+                    <span
+                      ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
+                    >
+                  </span>
                 </div>
               </div>
-              <a
-                data-cy="orgName"
-                [routerLink]="org.name"
-                [matTooltip]="org?.name"
-                fxLayout="column"
-                fxLayoutAlign="space-around"
-                class="no-underline"
-              >
-                <h5>{{ org.displayName }}</h5>
-                <span class="org-topic">{{ org.topic }}</span>
-              </a>
             </div>
-
-            <div>
-              <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
-                <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.email">
-                  <mat-icon class="info-icon">email</mat-icon>
-                  <span
-                    ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
-                  >
-                </span>
-                <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.link">
-                  <mat-icon class="info-icon">link</mat-icon>
-                  <span
-                    ><a [href]="org.link" target="_blank">{{ org.link }}</a></span
-                  >
-                </span>
-                <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.location">
-                  <mat-icon class="info-icon">location_on</mat-icon>
-                  <span>{{ org.location }}</span>
-                </span>
-              </div>
-            </div>
-
             <div>
               <hr class="mb-4" />
-              <div fxLayout="row" fxLayoutAlign="space-between center">
-                <span class="gray-label-tag">
-                  {{ org.collectionsLength }}
-                  <span *ngIf="org.collectionsLength != 1; else oneCollection"> Collections</span>
-                  <ng-template #oneCollection> Collection</ng-template>
-                </span>
-                <a [routerLink]="org.name" fxLayoutAlign="end" class="no-underline">
+              <a [routerLink]="org.name" class="no-underline" target="_self">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                  <span class="gray-label-tag">
+                    {{ org.collectionsLength }}
+                    <span *ngIf="org.collectionsLength != 1; else oneCollection"> Collections</span>
+                    <ng-template #oneCollection> Collection</ng-template>
+                  </span>
                   <button class="btn view-button">View</button>
-                </a>
-              </div>
+                </div>
+              </a>
             </div>
           </div>
         </mat-card>

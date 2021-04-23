@@ -19,13 +19,13 @@
     <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="space-between stretch">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between stretch" fxFlex="55%">
         <div fxFlex="40%">
-          <ul class="footer-list m-0">
+          <ul class="footer-list m-0 p-0">
             <li class="m-0 title">Dockstore</li>
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between">
               <div fxFlex="45%">
                 <li class="m-0">
                   <a routerLink="/search" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-search-link">
-                    <small>Explore</small>
+                    <small>Search</small>
                   </a>
                 </li>
                 <li class="m-0">
@@ -40,19 +40,18 @@
                   </a>
                 </li>
                 <li class="m-0">
-                  <!-- needs to be filled out once About page is implemented -->
-                  <a [href]="" target="_self" rel="noopener noreferrer" class="footer-link">
+                  <a routerLink="/about" target="_self" rel="noopener noreferrer" class="footer-link" data-cy="footer-search-link">
                     <small>About</small>
                   </a>
                 </li>
               </div>
               <div fxFlex>
-                <li class="m-0">
-                  <!-- needs to be filled out once The Team page is implemented -->
+                <!-- needs to be filled out once The Team page is implemented -->
+                <!-- <li class="m-0">
                   <a [href]="" target="_self" rel="noopener noreferrer" class="footer-link">
                     <small>The Team</small>
                   </a>
-                </li>
+                </li> -->
                 <li class="m-0">
                   <a
                     [href]="Dockstore.DOCKSTORE_REPO + '/wiki/Dockstore-Roadmap'"
@@ -212,9 +211,9 @@
       </div>
     </div>
   </div>
-  <hr />
-  <div>
-    <div class="container" fxLayoutAlign="space-between" fxLayout="row" fxLayout.lt-lg="column">
+  <hr class="w-100" />
+  <div class="container">
+    <div fxLayoutAlign="space-between" fxLayout="row" fxLayout.lt-lg="column">
       <div class="bottom-footer" fxLayout="row">
         <a
           href="https://github.com/dockstore/dockstore/blob/{{ version }}/LICENSE"

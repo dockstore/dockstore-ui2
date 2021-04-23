@@ -4,14 +4,14 @@
   @extend .pr-5;
 }
 
-.h5,
-.org-topic {
-  color: #151c3c;
+.h5 {
+  color: #151c3d;
+  font-weight: 500;
 }
 
 .org-topic {
-  font-weight: 300;
-  line-height: normal;
+  line-height: 1.5;
+  color: #212121;
 }
 
 .orgStar {
@@ -23,11 +23,6 @@
 
 .info.span {
   font-size: 10px;
-}
-
-.orgLogo {
-  height: 50px;
-  object-fit: scale-down;
 }
 
 .info-icon {
