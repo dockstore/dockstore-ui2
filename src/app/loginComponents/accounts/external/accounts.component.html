@@ -89,8 +89,9 @@
           (click)="link(row.source)"
           matTooltip="Link the account"
         >
-          <mat-icon>link</mat-icon>
-          <span>Link Account</span>
+          <mat-icon *ngIf="row.name !== 'ORCID'">link</mat-icon>
+          <img *ngIf="row.name === 'ORCID'" src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo" />
+          <span> Create or connect your {{ row.name }} Account</span>
         </button>
       </span>
       <ng-template #linked>
@@ -102,8 +103,9 @@
           (click)="relink(row.source)"
           matTooltip="Relink the account"
         >
-          <mat-icon>link</mat-icon>
-          <span>Relink Account</span>
+          <mat-icon *ngIf="row.name !== 'ORCID'">link</mat-icon>
+          <img *ngIf="row.name === 'ORCID'" src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo" />
+          <span> Relink {{ row.name }} Account</span>
         </button>
         <button
           mat-raised-button
@@ -112,8 +114,9 @@
           (click)="unlink(row.source)"
           matTooltip="Unlink the account"
         >
-          <mat-icon>link_off</mat-icon>
-          <span>Unlink Account</span>
+          <mat-icon *ngIf="row.name !== 'ORCID'">link_off</mat-icon>
+          <img *ngIf="row.name === 'ORCID'" src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo" />
+          <span> Unlink {{ row.name }} Account</span>
         </button>
       </ng-template>
     </div>
