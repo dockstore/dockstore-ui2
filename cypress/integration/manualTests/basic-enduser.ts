@@ -121,9 +121,8 @@ describe('Test search page functionality', () => {
   it('filters and unfilters by facets', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', 'Nextflow').click();
-    // The purpose of the next two lines is to ensure the result table is properly rendered before moving on
-    cy.contains('mat-checkbox', 'Nextflow').should('not.exist');
-    cy.contains('mat-checkbox', 'Nextflow').should('exist');
+    // Fragile assertion that depends on the below workflow to be in the first table results, but not the 2nd
+    cy.contains('DataBiosphere/topmed-workflows/UM_variant_caller_wdl').should('not.exist');
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
