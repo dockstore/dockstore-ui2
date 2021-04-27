@@ -17,8 +17,8 @@ import { Component, Input } from '@angular/core';
 import { ContainersService } from 'app/shared/swagger';
 import { ToolQuery } from 'app/shared/tool/tool.query';
 import { ToolService } from 'app/shared/tool/tool.service';
-import { from } from 'rxjs';
-import { concatMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, from } from 'rxjs';
+import { catchError, concatMap, takeUntil } from 'rxjs/operators';
 import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -57,7 +57,12 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
         .pipe(
           concatMap((entry) => {
             this.alertService.start(`Refreshing ${entry.tool_path}`);
-            return this.containersService.refresh(entry.id);
+            return this.containersService.refresh(entry.id).pipe(
+              catchError((error) => {
+                this.alertService.detailedError(error);
+                return EMPTY;
+              })
+            );
           }),
           takeUntil(this.ngUnsubscribe)
         )
@@ -70,6 +75,7 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
             }
             this.alertService.detailedSuccess();
           },
+          // This is likely redundant because it was already caught in the inner observable
           (error) => this.alertService.detailedError(error)
         );
     }
