@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { from } from 'rxjs';
-import { concatMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, from } from 'rxjs';
+import { catchError, concatMap, takeUntil } from 'rxjs/operators';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -56,7 +56,12 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
         .pipe(
           concatMap((workflow) => {
             this.alertService.start(`Refreshing ${workflow.full_workflow_path}`);
-            return this.workflowsService.refresh(workflow.id);
+            return this.workflowsService.refresh(workflow.id).pipe(
+              catchError((error) => {
+                this.alertService.detailedError(error);
+                return EMPTY;
+              })
+            );
           }),
           takeUntil(this.ngUnsubscribe)
         )
@@ -70,6 +75,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
             }
             this.alertService.detailedSuccess();
           },
+          // This is likely redundant because it was already caught in the inner observable
           (err) => this.alertService.detailedError(err)
         );
     }
