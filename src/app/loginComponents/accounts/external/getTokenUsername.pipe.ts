@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { Token } from './../../../shared/swagger/model/token';
+import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 
 @Pipe({
   name: 'getTokenUsername',
@@ -11,12 +11,12 @@ export class GetTokenUsernamePipe implements PipeTransform {
    * get the token's username associated with that source.
    *
    * @param {string} source  The token source ('github.com', etc)
-   * @param {Array<Token>} tokens  The user's current list of tokens
+   * @param {Array<TokenUser>} tokens  The user's current list of tokens
    * @returns {string}  The username extracted using that token in a 3rd party site
    * @memberof GetTokenUsernamePipe
    */
-  transform(source: string, tokens: Array<Token>): string {
-    const tokenFound: Token = tokens.find((token) => token.tokenSource === source);
+  transform(source: string, tokens: Array<TokenUser>): string {
+    const tokenFound: TokenUser = tokens.find((token) => token.tokenSource === source);
     if (tokenFound) {
       return tokenFound.username;
     } else {

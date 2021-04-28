@@ -25,7 +25,7 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { StarRequest } from './../shared/swagger/model/starRequest';
-import { Token } from './../shared/swagger/model/token';
+import { TokenUser } from './../shared/swagger/model/tokenUser';
 import { User } from './../shared/swagger/model/user';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
@@ -319,7 +319,7 @@ export class UsersStubService {
   refreshWorkflows(userId: number, extraHttpRequestParams?: any): Observable<Array<Workflow>> {
     return observableOf([]);
   }
-  getUserTokens(userId: number, extraHttpRequestParams?: any): Observable<Array<Token>> {
+  getUserTokens(userId: number, extraHttpRequestParams?: any): Observable<Array<TokenUser>> {
     return observableOf([]);
   }
   getExtendedUserData() {
@@ -530,16 +530,16 @@ export class TokenStubService {
 }
 
 export class TokensStubService {
-  public addQuayToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+  public addQuayToken(accessToken?: string, extraHttpRequestParams?: any): Observable<TokenUser> {
     return observableOf(quayToken);
   }
-  public addBitbucketToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+  public addBitbucketToken(accessToken?: string, extraHttpRequestParams?: any): Observable<TokenUser> {
     return observableOf(bitbucketToken);
   }
-  public addGithubToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+  public addGithubToken(accessToken?: string, extraHttpRequestParams?: any): Observable<TokenUser> {
     return observableOf(gitHubToken);
   }
-  public addGitlabToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+  public addGitlabToken(accessToken?: string, extraHttpRequestParams?: any): Observable<TokenUser> {
     return observableOf(gitLabToken);
   }
   public deleteToken(tokenId: number, extraHttpRequestParams?: any): Observable<{}> {

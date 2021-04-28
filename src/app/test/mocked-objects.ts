@@ -23,7 +23,7 @@ import { Tag, WorkflowVersion } from '../shared/swagger';
 import { Notification } from '../shared/swagger/model/notification';
 import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
-import { Token } from './../shared/swagger/model/token';
+import { TokenUser } from './../shared/swagger/model/tokenUser';
 import { Workflow } from './../shared/swagger/model/workflow';
 
 const DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
@@ -235,39 +235,31 @@ export const orgObj4: OrgToolObject<DockstoreTool> = {
   expanded: false,
 };
 
-export const gitLabToken: Token = {
+export const gitLabToken: TokenUser = {
   id: 4,
   tokenSource: 'gitlab.com',
-  content: 'fakeGitLabToken',
   username: 'fakeGitLabUsername',
-  refreshToken: null,
   userId: 2,
 };
 
-export const gitHubToken: Token = {
+export const gitHubToken: TokenUser = {
   id: 3,
   tokenSource: 'github.com',
-  content: 'fakeGitHubToken',
   username: 'fakeGitHubUsername',
-  refreshToken: null,
   userId: 2,
 };
 
-export const bitbucketToken: Token = {
+export const bitbucketToken: TokenUser = {
   id: 2,
   tokenSource: 'bitbucket.org',
-  content: 'fakeBitbucketToken',
   username: 'fakeBitbucketUsername',
-  refreshToken: null,
   userId: 2,
 };
 
-export const quayToken: Token = {
+export const quayToken: TokenUser = {
   id: 1,
   tokenSource: 'quay.io',
-  content: 'fakeQuayToken',
   username: 'fakeQuayUsername',
-  refreshToken: null,
   userId: 2,
 };
 
