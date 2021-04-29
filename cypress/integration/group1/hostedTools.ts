@@ -161,14 +161,14 @@ describe('Dockstore hosted tools', () => {
     });
   });
 
-  describe('Should not be able to edit unpublished tools', () => {
-    it('Should return an error when editing an unpublished hosted tool', () => {
+  describe('Should be able to edit unpublished tools', () => {
+    it('Should not return an error when editing an unpublished hosted tool', () => {
       getTool();
       goToTab('Versions');
       cy.get('[data-cy=actionsButton]').first().click();
       cy.get('[data-cy=editTagButton]').click();
-      cy.get('.alert').should('exist');
-      cy.get('.error-output').contains('[HTTP 403] Forbidden: Entry not published').should('exist');
+      cy.get('.alert').should('not.exist');
+      cy.get('[data-cy=editToolVersionDialog]').should('exist');
     });
     it('Should not return an error when editing a published hosted tool', () => {
       getTool();
