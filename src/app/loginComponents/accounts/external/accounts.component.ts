@@ -27,7 +27,7 @@ import { User } from '../../../shared/swagger';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
-import { Token } from './../../../shared/swagger/model/token';
+import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
 
 @Component({
@@ -99,7 +99,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public tokens: Token[];
+  public tokens: TokenUser[];
   private ngUnsubscribe: Subject<{}> = new Subject();
   public show: false;
   public dockstoreToken: string;
@@ -165,7 +165,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   // Show linked services in the UI
-  private setAvailableTokens(tokens: Token[]) {
+  private setAvailableTokens(tokens: TokenUser[]) {
     for (const account of this.accountsInfo) {
       const found = tokens.find((token) => token.tokenSource === account.source);
       if (found) {
@@ -177,7 +177,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   // Set tokens and linked services
-  private setTokens(tokens: Token[]): void {
+  private setTokens(tokens: TokenUser[]): void {
     this.tokens = tokens;
     if (tokens) {
       this.setAvailableTokens(tokens);
@@ -190,7 +190,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dsServerURI = Dockstore.API_URI;
-    this.tokenQuery.tokens$.subscribe((tokens: Token[]) => {
+    this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
       this.setTokens(tokens);
     });
     this.orcidId$ = this.userQuery.user$.pipe(map((user) => user.orcid));

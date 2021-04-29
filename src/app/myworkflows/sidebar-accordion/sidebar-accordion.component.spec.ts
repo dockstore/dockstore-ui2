@@ -4,7 +4,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RefreshWorkflowOrganizationComponent } from 'app/workflow/refresh-workflow-organization/refresh-workflow-organization.component';
-import { GithubNameToIdPipe } from '../../github-name-to-id.pipe';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -19,7 +18,7 @@ describe('SidebarAccordionComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, SelectTabPipe, GithubNameToIdPipe],
+        declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, SelectTabPipe],
         imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
         providers: [
           {
