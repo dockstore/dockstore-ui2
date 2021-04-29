@@ -385,3 +385,8 @@ $overflows: scroll, hidden, auto, inherit, initial, unset, visible;
     overflow: $value !important;
   }
 }
+
+.text-break {
+  word-break: break-word !important; // Deprecated, but avoids issues with flex containers
+  word-wrap: break-word !important; // Used instead of `overflow-wrap` for IE & Edge Legacy
+}
