@@ -21,80 +21,65 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
-$my-blue: (
-  50: #e8ecf1,
-  100: #c4cedf,
-  200: #9fafc9,
-  300: #7b8fb2,
-  400: #5d77a3,
-  500: #3f5f95,
-  600: #38578c,
-  700: #304d80,
-  800: #2a4474,
-  900: #21335b,
-  A100: #000c31,
-  A200: #000c31,
-  A400: #000c31,
-  A700: #000c31,
+// The below is new from Kim's new color scheme: https://app.zeplin.io/project/5fc690a2717ee9144814f190/screen/5fc699d068c46f17551f745b.
+// Note: By default, material uses 3 shades of each color (mainly just one). The other shades can be used by manually overriding the default material components.
+// The contrast is not specified in Kim's design. It is chosen from either black or white depending on
+// what's legible in both normal and large text when using https://material.io/resources/color/#!/?view.left=1&view.right=1&primary.color=21335b&secondary.color=487980
+// Accent 1 to 4, warning, grayscale and border is not covered.
+$kim-primary: (
+  1: #121d34,
+  2: #21335b,
+  3: #596684,
+  4: #a6adbd,
+  5: #ced2db,
+  6: #e8eaee,
   contrast: (
-    50: white,
-    100: white,
-    200: white,
-    300: white,
-    400: white,
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-    A100: white,
-    A200: white,
-    A400: white,
-    A700: white,
+    1: white,
+    2: white,
+    3: white,
+    4: black,
+    5: black,
+    6: black,
   ),
 );
 
-$my-teal: (
-  50: #e2f6f8,
-  100: #b9e8ee,
-  200: #8fd8e3,
-  300: #6ec8d6,
-  400: #60bdcc,
-  500: #5cb1c2,
-  600: #56a2b0,
-  700: #4e8d97,
-  800: #487980,
-  900: #3c5657,
-  A100: #194d54,
-  A200: #194d54,
-  A400: #194d54,
-  A700: #194d54,
+$kim-secondary: (
+  1: #295a62,
+  2: #397a84,
+  3: #75a4ab,
+  4: #b0cbcf,
+  5: #ebf2f3,
   contrast: (
-    50: white,
-    100: white,
-    200: white,
-    300: white,
-    400: white,
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-    A100: white,
-    A200: white,
-    A400: white,
-    A700: white,
+    1: white,
+    2: white,
+    3: black,
+    4: black,
+    5: black,
   ),
 );
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://www.google.com/design/spec/style/color.html
-$dockstore-app-primary: mat-palette($my-blue, 900, 200, A100);
-$dockstore-app-accent: mat-palette($my-teal, 800, 200, A100);
+// Using kim's error instead (material doesn't differentiate between error and warn, kim's error seems more suitable)
+$kim-warn: (
+  1: #c14747,
+  2: #e64a46,
+  3: #e96f6c,
+  4: #f5b7b5,
+  5: #fcecec,
+  contrast: (
+    1: white,
+    2: black,
+    3: black,
+    4: black,
+    5: black,
+  ),
+);
 
-// The warn palette is optional (defaults to red).
-$dockstore-app-warn: mat-palette($mat-red);
+// main color is assumed to be 2 based on prevalence of it on the home page (buttons). It's also called default in zeplin
+// 1 is the darker version of it because it's the only one that's darker
+// 4 was arbitarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
+$dockstore-app-primary: mat-palette($kim-primary, 2, 4, 1);
+$dockstore-app-accent: mat-palette($kim-secondary, 2, 4, 1);
+$dockstore-app-warn: mat-palette($kim-warn, 2, 4, 1);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $dockstore-app-theme: mat-light-theme($dockstore-app-primary, $dockstore-app-accent, $dockstore-app-warn);
