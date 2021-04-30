@@ -214,7 +214,7 @@
         tools.
       </p>
       <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="1rem">
-        <div fxLayout="row" fxLayoutGap="4rem" fxLayoutAlign="start center">
+        <div class="w-100" fxLayout="row" fxLayoutGap="4rem" fxLayoutAlign="start center">
           <div fxLayout="column" fxHide.lt-md fxFlex="10">
             <h3>Funders</h3>
             <span>
@@ -229,8 +229,8 @@
           </div>
         </div>
         <hr />
-        <div fxLayout="row" fxLayoutGap="4rem" fxLayoutAlign="start center">
-          <div fxLayout="column" fxHide.lt-md>
+        <div class="w-100" fxLayout="row" fxLayoutGap="4rem" fxLayoutAlign="start center">
+          <div fxLayout="column" fxHide.lt-md fxFlex="10">
             <h3>Contributors</h3>
             <!-- <span>
               Meet the Team
@@ -244,10 +244,9 @@
           </div>
         </div>
         <hr />
-        <div fxLayout="row" fxLayoutGap="4rem" fxFlex fxLayoutAlign="start center">
-          <div fxLayout="column" fxHide.lt-md fxLayoutAlign="start start" fxLayoutGap="0">
-            <h3>Integration</h3>
-            <h3>Partners</h3>
+        <div class="w-100" fxLayout="row" fxLayoutGap="4rem" fxLayoutAlign="start center">
+          <div fxLayout="column" fxHide.lt-md fxFlex="10">
+            <h3 class="text-break">Integration Partners</h3>
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
             <a *ngFor="let partner of partners" [href]="partner.url" target="_blank" rel="noopener noreferrer">
