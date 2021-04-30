@@ -21,6 +21,7 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 @import 'bootstrap4.scss';
 @import '~ngx-sharebuttons/themes/default/default-theme';
 @import 'featured-content.scss';
+@import '/src/materialColorScheme.scss';
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
 /* #487980 GREEN */
@@ -1331,7 +1332,7 @@ mat-tab-group.no-pagination {
 }
 
 .view-button {
-  background: #397a84;
+  background: mat-color($dockstore-app-accent);
   color: white;
   font-size: 12px;
   padding: 0.5rem 1rem;

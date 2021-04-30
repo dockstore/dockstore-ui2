@@ -1,4 +1,5 @@
 @import 'bootstrap4.scss';
+@import '/src/materialColorScheme.scss';
 
 .mat-icon {
   @extend .pr-5;
@@ -28,7 +29,7 @@
 .info-icon {
   font-size: 1.5rem;
   height: auto;
-  color: #397a84;
+  color: mat-color($dockstore-app-accent);
   padding: 0 !important;
 }
 
