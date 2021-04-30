@@ -163,12 +163,12 @@ body {
 }
 
 .main-menu {
-  background-color: #21335b;
+  background-color: mat-color($dockstore-app-primary);
   position: relative;
 }
 
 .header {
-  background-color: #21335b;
+  background-color: mat-color($dockstore-app-primary);
   position: relative;
   img#ship,
   img#truck {
@@ -290,13 +290,13 @@ h2.title.caption {
 
 h3 {
   font-size: 20px;
-  color: #21335b;
+  color: mat-color($dockstore-app-primary);
   font-weight: normal;
 }
 
 h3.available-containers {
   font-size: 20px;
-  color: #21335b;
+  color: mat-color($dockstore-app-primary);
   font-weight: normal;
   margin: 20px 0px 15px 0px;
   display: inline;
@@ -650,7 +650,7 @@ ul.our-sponsors li img {
 }
 
 #footer {
-  background-color: #21335b;
+  background-color: mat-color($dockstore-app-primary);
   /*width: 100%;*/
   /*padding: 0px 100px;*/
   /*position: relative;*/
@@ -793,7 +793,7 @@ div.side-block td {
 div.side-block h3 {
   font-size: 16px;
   margin: 0px;
-  color: #21335b;
+  color: mat-color($dockstore-app-primary);
 }
 
 div.side-block a {

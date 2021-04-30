@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@import 'materialColorScheme.scss';
 
 .container-fluid,
 a {
-  background-color: #21335b;
+  background-color: mat-color($dockstore-app-primary);
   color: #e8eaf6;
 }
 

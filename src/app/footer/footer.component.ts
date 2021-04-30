@@ -28,7 +28,7 @@ import { versions } from './versions';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
+  styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent extends Base implements OnInit {
   version: string;
