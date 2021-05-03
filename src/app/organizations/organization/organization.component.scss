@@ -1,5 +1,7 @@
+@import 'materialColorScheme.scss';
+
 .side-icons {
-  color: #397a84;
+  color: mat-color($dockstore-app-accent);
 }
 
 .tab-icons {
