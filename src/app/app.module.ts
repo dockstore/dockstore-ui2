@@ -61,6 +61,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MetadataService } from './metadata/metadata.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { OrcidComponent } from './orcid/orcid.component';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './register/register.service';
@@ -137,6 +138,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     StarredEntriesComponent,
     DownloadCLIClientComponent,
     MaintenanceComponent,
+    OrcidComponent,
     FundingComponent,
     BannerComponent,
     ChangeUsernameComponent,

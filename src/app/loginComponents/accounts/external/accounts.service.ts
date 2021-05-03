@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { LoginService } from '../../../login/login.service';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
@@ -7,7 +8,7 @@ import { Links } from './links.model';
 
 @Injectable()
 export class AccountsService {
-  constructor(private loginService: LoginService, private userService: UserService) {}
+  constructor(private loginService: LoginService, private userService: UserService, private router: Router) {}
 
   private stripSpace(url: string): string {
     return url.replace(/\s/g, '');
@@ -21,7 +22,7 @@ export class AccountsService {
     window.location.href = this.stripSpace(url);
   }
 
-  private openSmallWindow(url: string): void {
+  private openSmallWindow(url: string, redirectAfterSuccess: boolean): void {
     const openedWindow: Window = window.open(
       this.stripSpace(url),
       'targetWindow',
@@ -31,7 +32,7 @@ export class AccountsService {
     const interval = window.setInterval(function () {
       if (openedWindow.closed) {
         window.clearInterval(interval);
-        userService.getUser();
+        userService.getUser(redirectAfterSuccess, '/orcid');
       }
     }, 1000);
   }
@@ -55,7 +56,7 @@ export class AccountsService {
         this.openWindow(Links.QUAY());
         break;
       case TokenSource.ORCID:
-        this.openSmallWindow(Links.ORCID());
+        this.openSmallWindow(Links.ORCID(), true);
         break;
       case TokenSource.GOOGLE:
         this.loginService
@@ -70,7 +71,7 @@ export class AccountsService {
             },
             () => {
               // Also update user to get the new profile, which causes the token service to trigger and update the tokens too
-              this.userService.getUser();
+              this.userService.getUser(false);
             }
           );
         break;

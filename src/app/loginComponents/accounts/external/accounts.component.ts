@@ -23,7 +23,6 @@ import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
 import { TokenService } from '../../../shared/state/token.service';
-import { User } from '../../../shared/swagger';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
@@ -155,7 +154,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(
         () => {
-          this.userService.getUser();
+          this.userService.getUser(false);
           this.matSnackBar.open('Unlinked ' + source + ' account', 'Dismiss');
         },
         (error) => {

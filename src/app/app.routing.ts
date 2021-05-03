@@ -26,6 +26,7 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { OrcidComponent } from './orcid/orcid.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
@@ -117,6 +118,7 @@ const APP_ROUTES: Routes = [
   { path: 'maintenance', component: MaintenanceComponent, data: { title: 'Dockstore | Maintenance' } },
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
+  { path: 'orcid', component: OrcidComponent, data: { title: 'Dockstore | ORCID' } },
   { path: '**', redirectTo: '' },
 ];
 

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { transaction } from '@datorama/akita';
 import { AuthService } from 'ng2-ui-auth';
+import { Observable } from 'rxjs';
 import { Md5 } from 'ts-md5/dist/md5';
 import { AlertService } from '../alert/state/alert.service';
+import { TokenQuery } from '../state/token.query';
 import { TokenService } from '../state/token.service';
 import { WorkflowService } from '../state/workflow.service';
 import { Configuration, ExtendedUserData, User, UsersService, Workflow } from '../swagger';
@@ -10,6 +13,7 @@ import { UserStore } from './user.store';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+  orcidAccountIsLinked$: Observable<boolean>;
   constructor(
     private userStore: UserStore,
     private authService: AuthService,
@@ -17,9 +21,11 @@ export class UserService {
     private configuration: Configuration,
     private tokenService: TokenService,
     private alertService: AlertService,
-    private workflowService: WorkflowService
+    private workflowService: WorkflowService,
+    private router: Router,
+    private tokenQuery: TokenQuery
   ) {
-    this.getUser();
+    this.getUser(false);
   }
 
   updateUser(user: User) {
@@ -74,7 +80,7 @@ export class UserService {
     }
   }
 
-  getSingleUser(): void {
+  getSingleUser(redirectAfterSuccess: boolean, url?: string): void {
     this.setupConfigurationToken();
     if (this.configuration.apiKeys['Authorization']) {
       this.usersService.getUser().subscribe(
@@ -82,6 +88,20 @@ export class UserService {
           this.updateUser(user);
           if (user) {
             this.tokenService.get(user.id);
+            if (redirectAfterSuccess) {
+              switch (url) {
+                case '/orcid':
+                  this.orcidAccountIsLinked$ = this.tokenQuery.hasOrcidToken$;
+                  this.orcidAccountIsLinked$.subscribe((orcidLinked: boolean) => {
+                    if (orcidLinked) {
+                      this.router.navigateByUrl(url);
+                    }
+                  });
+                  break;
+                default:
+                  break;
+              }
+            }
           } else {
             this.tokenService.removeAll();
           }
@@ -98,9 +118,9 @@ export class UserService {
   }
 
   @transaction()
-  getUser(): void {
+  getUser(redirect: boolean, url?: string): void {
     // Attempt to get user and extended user data if there's a token because it would 401 otherwise
-    this.getSingleUser();
+    url ? this.getSingleUser(redirect, url) : this.getSingleUser(redirect);
     this.getExtendedUserData();
   }
 
@@ -123,7 +143,7 @@ export class UserService {
     this.alertService.start('Updating username');
     this.usersService.changeUsername(username).subscribe(
       (user: User) => {
-        this.getUser();
+        this.getUser(false);
         this.alertService.detailedSuccess();
       },
       (error) => {

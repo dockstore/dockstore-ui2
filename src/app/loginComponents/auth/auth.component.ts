@@ -87,7 +87,7 @@ export class AuthComponent extends Base implements OnInit {
             // This component should only exist inside a temporary window used in the OAuth process
             window.close();
           } else {
-            this.userService.getUser();
+            this.userService.getUser(false);
             this.router.navigate([`${prevPage}`]);
           }
         },

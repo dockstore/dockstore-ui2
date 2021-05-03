@@ -45,7 +45,7 @@ export class LoginComponent {
     observable.subscribe(
       (response) => {
         this.trackLoginService.switchState(true);
-        this.userService.getUser();
+        this.userService.getUser(false);
         this.router.navigate([page]);
       },
       (error) => {
