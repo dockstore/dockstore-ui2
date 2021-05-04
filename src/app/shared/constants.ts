@@ -41,3 +41,5 @@ export const dismissedLatestPrivacyPolicy = 'dismissedLatestPrivacyPolicy';
 // This is used to toggle whether GitHub apps are recommended or not.
 // If it's to be recommended permanently, it's better to revert this commit instead.
 export const recommendGitHubApps = false;
+// There is a search term length limit of 500 on the backend, but two extra characters, '.*', get counted in the backend.
+export const searchTermLengthLimit = 498;
