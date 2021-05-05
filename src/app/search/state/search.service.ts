@@ -21,6 +21,8 @@ import { transaction } from '@datorama/akita';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
 import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { searchTermLengthLimit } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
@@ -78,7 +80,8 @@ export class SearchService {
     private providerService: ProviderService,
     private router: Router,
     private imageProviderService: ImageProviderService,
-    private extendedGA4GHService: ExtendedGA4GHService
+    private extendedGA4GHService: ExtendedGA4GHService,
+    private alertService: AlertService
   ) {}
 
   static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' {
@@ -166,6 +169,10 @@ export class SearchService {
 
   @transaction()
   setSearchText(text: string) {
+    if (text.length > searchTermLengthLimit) {
+      text = '';
+      this.alertService.customDetailedError('Request Entity Too Large', 'Cannot perform search because search term is too large.');
+    }
     this.searchStore.update((state) => {
       return {
         ...state,

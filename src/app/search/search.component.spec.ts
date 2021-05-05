@@ -22,6 +22,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MdePopoverModule } from '@material-extended/mde';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { ProviderService } from '../shared/provider.service';
@@ -60,7 +61,15 @@ describe('SearchComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-        imports: [BrowserAnimationsModule, CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
+        imports: [
+          BrowserAnimationsModule,
+          CustomMaterialModule,
+          ClipboardModule,
+          FontAwesomeModule,
+          RouterTestingModule,
+          MdePopoverModule,
+          MatSnackBarModule,
+        ],
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
