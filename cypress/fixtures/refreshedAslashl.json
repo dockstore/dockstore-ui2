@@ -17,7 +17,7 @@
   "has_checker": false,
   "id": 11,
   "input_file_formats": [],
-  "is_checker": false,
+  "isChecker": false,
   "is_published": true,
   "labels": [],
   "lastUpdated": 1480374057688,

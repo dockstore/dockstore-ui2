@@ -623,7 +623,7 @@ export const elasticSearchResponse: Hit[] = [
       aliases: {},
       is_published: true,
       last_modified_date: null,
-      is_checker: false,
+      isChecker: false,
       checker_id: null,
       type: 'BioWorkflow',
       repository: 'Ginny-9609498',

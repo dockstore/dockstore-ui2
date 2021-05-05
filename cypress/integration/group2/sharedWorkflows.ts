@@ -101,7 +101,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       has_checker: false,
       id: id,
       input_file_formats: [],
-      is_checker: false,
+      isChecker: false,
       is_published: false,
       labels: [],
       lastUpdated: 1530729459933,
