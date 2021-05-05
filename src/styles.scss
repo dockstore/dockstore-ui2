@@ -1235,6 +1235,11 @@ app-sidebar-accordion
   background: #3f51b5 !important;
 }
 
+.mat-tab-label:hover {
+  color: black;
+  opacity: 0.7;
+}
+
 .container-label-tag {
   background: #d0effd !important;
   text-decoration: none !important;
