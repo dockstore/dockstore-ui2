@@ -228,14 +228,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.saveCurrentTab(SearchService.convertEntryTypeToTabIndex(value[0]));
       } else if (key === 'search') {
         this.searchTerm = true;
-        if (value[0].length > searchTermLengthLimit) {
-          value[0] = '';
-          this.alertService.customDetailedError(
-            '[HTTP 413] Request Entity Too Large',
-            'Cannot perform search because search term is too large.'
-          );
-        }
-
         this.searchService.setSearchText(value[0]);
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
         this.searchTerm = false;

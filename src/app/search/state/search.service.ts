@@ -171,10 +171,7 @@ export class SearchService {
   setSearchText(text: string) {
     if (text.length > searchTermLengthLimit) {
       text = '';
-      this.alertService.customDetailedError(
-        '[HTTP 413] Request Entity Too Large',
-        'Cannot perform search because search term is too large.'
-      );
+      this.alertService.customDetailedError('Request Entity Too Large', 'Cannot perform search because search term is too large.');
     }
     this.searchStore.update((state) => {
       return {
