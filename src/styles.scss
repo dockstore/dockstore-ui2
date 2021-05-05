@@ -394,6 +394,10 @@ a.white-link {
   color: #ffffff;
 }
 
+a.white-link:hover {
+  color: mat-color($dockstore-app-accent, lighter);
+}
+
 ul.more li a {
   text-decoration: none;
 }
