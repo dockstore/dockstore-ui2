@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavbarService } from 'app/navbar/navbar.service';
 import { combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -14,13 +15,15 @@ import { UserQuery } from '../../shared/user/user.query';
 export class OnboardingComponent implements OnInit, OnDestroy {
   public tokenSetComplete: boolean;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  readonly pageName = '/onboarding';
   extendedUser: ExtendedUserData;
   user: User;
   ready = false;
   Dockstore = Dockstore;
-  constructor(private userQuery: UserQuery, private tokenService: TokenQuery) {}
+  constructor(private userQuery: UserQuery, private tokenService: TokenQuery, private navbarService: NavbarService) {}
   ngOnInit() {
-    localStorage.setItem('page', '/onboarding');
+    localStorage.setItem('page', this.pageName);
+    this.navbarService.setActivePage(this.pageName);
     this.tokenService.userTokenStatusSet$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokenStatusSet) => {
       if (tokenStatusSet) {
         this.tokenSetComplete = tokenStatusSet.github;

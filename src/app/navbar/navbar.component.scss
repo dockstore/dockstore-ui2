@@ -14,6 +14,8 @@
  *    limitations under the License.
  */
 
+@import 'materialColorScheme.scss';
+
 #dropdown-main {
   font-weight: bold;
   text-decoration: none;
@@ -21,11 +23,25 @@
 }
 
 .icon {
-  padding: 0 14px;
+  padding: 14px 14px;
   font-weight: bold;
   text-decoration: none;
   color: white;
   font-size: 14px;
+  border-radius: 0;
+  height: 64px;
+}
+
+.icon:hover {
+  background-color: #112246;
+}
+
+.icon-active {
+  background-color: mat-color($dockstore-app-primary, darker);
+}
+
+.menu-item-active {
+  background-color: #dfe0e2;
 }
 
 .spacer {

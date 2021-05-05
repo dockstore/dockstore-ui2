@@ -20,10 +20,16 @@
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
           <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="41" alt="dockstore logo" />
         </a>
-        <a mat-button class="icon" [routerLink]="['/search']">
+        <a mat-button class="icon" [routerLink]="['/search']" [ngClass]="{ 'icon-active': activePage === '/search' }">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-search.svg" alt="search button" /> Search
         </a>
-        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
+        <a
+          mat-button
+          class="icon"
+          (click)="resetPageNumber()"
+          routerLink="/organizations"
+          [ngClass]="{ 'icon-active': activePage === '/organizations' }"
+        >
           <img
             class="site-icons-small hidden-sm"
             src="../assets/svg/main-nav/icons-navigation-organization.svg"
@@ -31,7 +37,7 @@
           />
           Organizations
         </a>
-        <a mat-button class="icon" [routerLink]="['/about']">
+        <a mat-button class="icon" [routerLink]="['/about']" [ngClass]="{ 'icon-active': activePage === '/about' }">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-about.svg" alt="about button" /> About
         </a>
         <a mat-button class="icon" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
@@ -49,8 +55,7 @@
             data-cy="my-tools-nav-button"
             routerLink="/my-tools"
             fxLayoutGap="0.5rem"
-            (click)="setActiveItem('myTools')"
-            [ngStyle]="{ 'background-color': activeItem === 'myTools' ? '#dfe0e2' : '' }"
+            [ngClass]="{ 'menu-item-active': activePage === '/my-tools' }"
           >
             <img class="site-icons-tab" src="../assets/svg/tool-circle.svg" alt="tool logo" />
             <span>My Tools</span>
@@ -60,8 +65,7 @@
             data-cy="my-workflows-nav-button"
             routerLink="/my-workflows"
             fxLayoutGap="0.5rem"
-            (click)="setActiveItem('myWorkflows')"
-            [ngStyle]="{ 'background-color': activeItem === 'myWorkflows' ? '#dfe0e2' : '' }"
+            [ngClass]="{ 'menu-item-active': activePage === '/my-workflows' }"
           >
             <img class="site-icons-tab" src="../assets/svg/workflow-circle.svg" alt="workflow logo" />
             <span>My Workflows</span>
@@ -71,8 +75,7 @@
             data-cy="my-services-nav-button"
             routerLink="/my-services"
             fxLayoutGap="0.5rem"
-            (click)="setActiveItem('myServices')"
-            [ngStyle]="{ 'background-color': activeItem === 'myServices' ? '#dfe0e2' : '' }"
+            [ngClass]="{ 'menu-item-active': activePage === '/my-services' }"
           >
             <img class="site-icons-tab" src="../assets/svg/service-circle.svg" alt="service logo" />
             <span>My Services</span>
@@ -83,8 +86,7 @@
             mat-menu-item
             id="dropdown-accounts"
             routerLink="/accounts"
-            (click)="setActiveItem('account')"
-            [ngStyle]="{ 'background-color': activeItem === 'account' ? '#dfe0e2' : '' }"
+            [ngClass]="{ 'menu-item-active': activePage === '/accounts' }"
           >
             <mat-icon color="accent" *ngIf="user?.isAdmin">lock</mat-icon>
             <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
@@ -95,8 +97,7 @@
             id="dropdown-starred"
             routerLink="/starred"
             color="accent"
-            (click)="setActiveItem('starred')"
-            [ngStyle]="{ 'background-color': activeItem === 'starred' ? '#dfe0e2' : '' }"
+            [ngClass]="{ 'menu-item-active': activePage === '/starred' }"
           >
             <mat-icon>stars</mat-icon>Starred
           </button>
@@ -105,13 +106,14 @@
             id="dropdown-onboarding"
             routerLink="/onboarding"
             *ngIf="extendedUser?.canChangeUsername"
-            (click)="setActiveItem('setup')"
-            [ngStyle]="{ 'background-color': activeItem === 'setup' ? '#dfe0e2' : '' }"
+            [ngClass]="{ 'menu-item-active': activePage === '/onboarding' }"
           >
             <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
           </button>
           <mat-divider></mat-divider>
-          <button mat-menu-item id="dropdown-logout" (click)="logout()"><mat-icon color="accent">input</mat-icon>Log out</button>
+          <button mat-menu-item id="dropdown-logout" (click)="logout(); setActivePage('/logout')">
+            <mat-icon color="accent">input</mat-icon>Log out
+          </button>
         </mat-menu>
       </span>
     </div>

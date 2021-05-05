@@ -18,6 +18,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { NavbarService } from '../../navbar/navbar.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
@@ -46,12 +47,14 @@ export class OrganizationsComponent extends Base implements OnInit {
     private formBuilder: FormBuilder,
     private alertQuery: AlertQuery,
     private matDialog: MatDialog,
-    private trackLoginService: TrackLoginService
+    private trackLoginService: TrackLoginService,
+    private navbarService: NavbarService
   ) {
     super();
   }
 
   ngOnInit() {
+    this.navbarService.setActivePage('/organizations');
     this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
     this.organizationsStateService.updateSearchNameState('');
     this.organizationSearchForm = this.formBuilder.group({ name: '', sort: '' });

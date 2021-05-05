@@ -28,6 +28,7 @@ import { RegisterToolComponent } from '../../container/register-tool/register-to
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { NavbarService } from '../../navbar/navbar.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ContainerService } from '../../shared/container.service';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
@@ -69,6 +70,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private toolQuery: ToolQuery,
     private alertQuery: AlertQuery,
     private alertService: AlertService,
+    private navbarService: NavbarService,
     protected sessionQuery: SessionQuery,
     protected myEntriesQuery: MyEntriesQuery,
     protected myEntriesStateService: MyEntriesStateService
@@ -89,6 +91,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
+    this.navbarService.setActivePage(this.pageName);
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.router.events
       .pipe(

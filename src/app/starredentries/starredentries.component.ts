@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavbarService } from 'app/navbar/navbar.service';
 import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
@@ -22,12 +23,14 @@ export class StarredEntriesComponent extends Base implements OnInit {
     private userQuery: UserQuery,
     private imageProviderService: ImageProviderService,
     private providerService: ProviderService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private navbarService: NavbarService
   ) {
     super();
   }
 
   ngOnInit() {
+    this.navbarService.setActivePage('/starred');
     this.userQuery.user$.subscribe((user) => (this.user = user));
     this.usersService.getStarredTools().subscribe((starredTool) => {
       this.starredTools = starredTool.filter((entry: DockstoreTool) => entry.is_published);

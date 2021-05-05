@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { NavbarService } from '../../navbar/navbar.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Collection, Organization } from '../../shared/swagger';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
@@ -65,7 +66,8 @@ export class CollectionComponent implements OnInit {
     private collectionsService: CollectionsService,
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    private navbarService: NavbarService
   ) {}
 
   ngOnInit() {
@@ -80,6 +82,7 @@ export class CollectionComponent implements OnInit {
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
+    this.navbarService.setActivePage('/organizations');
   }
 
   /**

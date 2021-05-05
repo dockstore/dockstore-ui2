@@ -22,6 +22,7 @@ import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { NavbarService } from '../navbar/navbar.service';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
@@ -138,7 +139,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private advancedSearchQuery: AdvancedSearchQuery,
     private activatedRoute: ActivatedRoute,
     private extendedGA4GHService: ExtendedGA4GHService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private navbarService: NavbarService
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
@@ -161,6 +163,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.navbarService.setActivePage('/search');
     this.advancedSearchObject$ = this.advancedSearchQuery.advancedSearch$;
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;

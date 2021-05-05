@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, Params } from '@angular/router';
+import { NavbarService } from 'app/navbar/navbar.service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
@@ -13,14 +14,16 @@ import { Base } from '../../shared/base';
 })
 export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
+  readonly pageName = '/accounts';
   selected = new FormControl();
   validTabs = ['accounts', 'profiles', 'dockstore account controls', 'requests'];
-  constructor(private location: Location, private activatedRoute: ActivatedRoute) {
+  constructor(private location: Location, private activatedRoute: ActivatedRoute, private navbarService: NavbarService) {
     super();
   }
 
   ngOnInit() {
-    localStorage.setItem('page', '/accounts');
+    localStorage.setItem('page', this.pageName);
+    this.navbarService.setActivePage(this.pageName);
     this.parseParam(this.activatedRoute.queryParams);
   }
 
