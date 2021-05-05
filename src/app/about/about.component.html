@@ -13,10 +13,10 @@
             the <a target="_blank" rel="noopener noreferrer" href="https://www.ga4gh.org/">GA4GH</a>.
           </p>
           <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UCFWNYqxQvVLAuZq8rdOSE4g/videos">
-            <button class="btn mb-5" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-around center">
+            <button mat-raised-button color="accent" class="mb-5" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-around center">
               <mat-icon [ngStyle]="{ color: 'white' }">play_circle_filled</mat-icon>
-              <span fxHide fxShow.lt-sm>Video Tutorials</span>
-              <span fxHide.lt-sm>More Videos</span>
+              <span fxHide fxShow.lt-sm> Video Tutorials</span>
+              <span fxHide.lt-sm> More Videos</span>
             </button>
           </a>
           <img fxHide.lt-md src="../../assets/images/about-page/truck.png" alt="truck image" class="truck-img" />
@@ -162,7 +162,7 @@
             for larger features going forward.
           </p>
           <a [href]="Dockstore.DOCKSTORE_REPO + '/wiki/Dockstore-Roadmap'" target="_blank" rel="noopener noreferrer">
-            <button class="btn">Dockstore Roadmap</button>
+            <button mat-raised-button color="accent">Dockstore Roadmap</button>
           </a>
         </div>
         <div fxLayout="column" fxFlex>
@@ -191,7 +191,7 @@
                       <li>Prepare your data files for bulk upload to GenBank.</li>
                     </ul>
                     <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">
-                      <button class="btn">View the Collection</button>
+                      <button mat-raised-button color="accent">View the Collection</button>
                     </a>
                   </div>
                 </div>

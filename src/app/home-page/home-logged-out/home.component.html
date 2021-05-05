@@ -36,12 +36,12 @@
         >
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start start" fxLayoutGap="2rem">
           <a [routerLink]="['/about']">
-            <button class="btn">
+            <button mat-raised-button color="accent">
               <img src="../../../assets/images/home/icons-navigation-about-white.svg" alt="dockstore icon" />
               About Dockstore
             </button>
           </a>
-          <button class="btn" data-cy="video-overview-button" (click)="openYoutube()">
+          <button mat-raised-button color="accent" data-cy="video-overview-button" (click)="openYoutube()">
             <mat-icon class="play-icon">play_circle_filled</mat-icon>
             Watch the Overview
           </button>
@@ -193,9 +193,9 @@
           </ul>
           <div fxLayoutGap="1rem">
             <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko"
-              ><button class="btn">Tutorial</button></a
+              ><button mat-raised-button color="accent">Tutorial</button></a
             >
-            <button routerLink="/login" class="btn" data-cy="register-button">
+            <button mat-raised-button color="accent" routerLink="/login" data-cy="register-button">
               Register with <span class="fa fa-github"></span> or <span class="fa fa-google"></span>
             </button>
           </div>
@@ -221,13 +221,15 @@
         </li>
       </ul>
       <div fxLayoutGap="1rem">
-        <button class="btn" routerLink="/organizations" data-cy="homepage-organizations-button">Browse Organizations</button>
+        <button mat-raised-button color="accent" routerLink="/organizations" data-cy="homepage-organizations-button">
+          Browse Organizations
+        </button>
         <a
           target="_blank"
           rel="noopener noreferrer"
           [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/starring.html?highlight=star#how-to-star-an-entry'"
         >
-          <button class="btn">How to Star</button></a
+          <button mat-raised-button color="accent">How to Star</button></a
         >
       </div>
     </div>
