@@ -17,7 +17,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NavbarService } from '../../navbar/navbar.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
 import { Organization } from '../../shared/swagger';
@@ -55,7 +54,6 @@ export class OrganizationComponent implements OnInit {
     private organizationQuery: OrganizationQuery,
     private organizationService: OrganizationService,
     private orgschemaService: OrgSchemaService,
-    private navbarService: NavbarService,
     private matDialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userQuery: UserQuery,
@@ -66,7 +64,6 @@ export class OrganizationComponent implements OnInit {
 
   ngOnInit() {
     const organizationName = this.activatedRoute.snapshot.paramMap.get('organizationName');
-    this.navbarService.setActivePage('/organizations');
     this.loading$ = this.organizationQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organizationService.updateOrganizationFromName(organizationName);

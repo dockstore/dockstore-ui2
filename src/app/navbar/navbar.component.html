@@ -20,16 +20,10 @@
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
           <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="41" alt="dockstore logo" />
         </a>
-        <a mat-button class="icon" [routerLink]="['/search']" [ngClass]="{ 'icon-active': activePage === '/search' }">
+        <a mat-button class="icon" [routerLink]="['/search']" routerLinkActive="icon-active">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-search.svg" alt="search button" /> Search
         </a>
-        <a
-          mat-button
-          class="icon"
-          (click)="resetPageNumber()"
-          routerLink="/organizations"
-          [ngClass]="{ 'icon-active': activePage === '/organizations' }"
-        >
+        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations" routerLinkActive="icon-active">
           <img
             class="site-icons-small hidden-sm"
             src="../assets/svg/main-nav/icons-navigation-organization.svg"
@@ -37,7 +31,7 @@
           />
           Organizations
         </a>
-        <a mat-button class="icon" [routerLink]="['/about']" [ngClass]="{ 'icon-active': activePage === '/about' }">
+        <a mat-button class="icon" [routerLink]="['/about']" routerLinkActive="icon-active">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-about.svg" alt="about button" /> About
         </a>
         <a mat-button class="icon" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
@@ -56,8 +50,8 @@
             mat-menu-item
             data-cy="my-tools-nav-button"
             routerLink="/my-tools"
+            routerLinkActive="menu-item-active"
             fxLayoutGap="0.5rem"
-            [ngClass]="{ 'menu-item-active': activePage === '/my-tools' }"
           >
             <img class="site-icons-tab" src="../assets/svg/tool-circle.svg" alt="tool logo" />
             <span>My Tools</span>
@@ -66,8 +60,8 @@
             mat-menu-item
             data-cy="my-workflows-nav-button"
             routerLink="/my-workflows"
+            routerLinkActive="menu-item-active"
             fxLayoutGap="0.5rem"
-            [ngClass]="{ 'menu-item-active': activePage === '/my-workflows' }"
           >
             <img class="site-icons-tab" src="../assets/svg/workflow-circle.svg" alt="workflow logo" />
             <span>My Workflows</span>
@@ -76,46 +70,33 @@
             mat-menu-item
             data-cy="my-services-nav-button"
             routerLink="/my-services"
+            routerLinkActive="menu-item-active"
             fxLayoutGap="0.5rem"
-            [ngClass]="{ 'menu-item-active': activePage === '/my-services' }"
           >
             <img class="site-icons-tab" src="../assets/svg/service-circle.svg" alt="service logo" />
             <span>My Services</span>
             <div class="beta-label">preview</div>
           </button>
           <mat-divider></mat-divider>
-          <button
-            mat-menu-item
-            id="dropdown-accounts"
-            routerLink="/accounts"
-            [ngClass]="{ 'menu-item-active': activePage === '/accounts' }"
-          >
+          <button mat-menu-item id="dropdown-accounts" routerLink="/accounts" routerLinkActive="menu-item-active">
             <mat-icon color="accent" *ngIf="user?.isAdmin">lock</mat-icon>
             <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
             <mat-icon color="accent" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>Account
           </button>
-          <button
-            mat-menu-item
-            id="dropdown-starred"
-            routerLink="/starred"
-            color="accent"
-            [ngClass]="{ 'menu-item-active': activePage === '/starred' }"
-          >
+          <button mat-menu-item id="dropdown-starred" routerLink="/starred" routerLinkActive="menu-item-active" color="accent">
             <mat-icon>stars</mat-icon>Starred
           </button>
           <button
             mat-menu-item
             id="dropdown-onboarding"
             routerLink="/onboarding"
+            routerLinkActive="menu-item-active"
             *ngIf="extendedUser?.canChangeUsername"
-            [ngClass]="{ 'menu-item-active': activePage === '/onboarding' }"
           >
             <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
           </button>
           <mat-divider></mat-divider>
-          <button mat-menu-item id="dropdown-logout" (click)="logout(); setActivePage('/logout')">
-            <mat-icon color="accent">input</mat-icon>Log out
-          </button>
+          <button mat-menu-item id="dropdown-logout" (click)="logout()"><mat-icon color="accent">input</mat-icon>Log out</button>
         </mat-menu>
       </span>
     </div>

@@ -16,7 +16,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavbarService } from 'app/navbar/navbar.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
@@ -27,16 +26,10 @@ import { Observable } from 'rxjs';
 })
 export class ContainersComponent implements OnInit {
   entryPageTitle$: Observable<string>;
-  constructor(
-    private sessionService: SessionService,
-    private navbarService: NavbarService,
-    private activatedRoute: ActivatedRoute,
-    private sessionQuery: SessionQuery
-  ) {}
+  constructor(private sessionService: SessionService, private activatedRoute: ActivatedRoute, private sessionQuery: SessionQuery) {}
 
   ngOnInit() {
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.entryPageTitle$ = this.sessionQuery.entryPageTitle$;
-    this.navbarService.setActivePage('/containers');
   }
 }

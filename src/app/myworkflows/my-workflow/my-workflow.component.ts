@@ -17,7 +17,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
-import { NavbarService } from 'app/navbar/navbar.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { User } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -104,8 +103,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected sessionQuery: SessionQuery,
     private myWorkflowsService: MyWorkflowsService,
     protected myEntriesQuery: MyEntriesQuery,
-    protected myEntriesStateService: MyEntriesStateService,
-    private navbarService: NavbarService
+    protected myEntriesStateService: MyEntriesStateService
   ) {
     super(
       accountsService,
@@ -127,11 +125,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   }
 
   ngOnInit() {
-    if (this.entryType === EntryType.Service) {
-      this.navbarService.setActivePage('/my-services');
-    } else {
-      this.navbarService.setActivePage(this.pageName);
-    }
     this.myWorkflowsService.clearPartialState();
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.tokenService.getGitHubOrganizations();

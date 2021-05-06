@@ -18,7 +18,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { NavbarService } from '../navbar/navbar.service';
 import { RegisterService } from '../register/register.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserService } from '../shared/user/user.service';
@@ -36,12 +35,10 @@ export class LoginComponent {
     private registerService: RegisterService,
     private router: Router,
     private userService: UserService,
-    private navbarService: NavbarService,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer
   ) {
     iconRegistry.addSvgIcon('google', sanitizer.bypassSecurityTrustResourceUrl('../assets/svg/btn_google_light_normal_ios.svg'));
-    this.navbarService.setActivePage('/login');
   }
 
   private login(observable, page: string) {

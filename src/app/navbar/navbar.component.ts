@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -27,14 +27,13 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
-import { NavbarService } from './navbar.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent extends Logout implements OnInit, OnDestroy {
+export class NavbarComponent extends Logout implements OnInit {
   public user: User;
   extendedUser: any;
   isExtended = false;
@@ -42,10 +41,8 @@ export class NavbarComponent extends Logout implements OnInit, OnDestroy {
   protected ngUnsubscribe: Subject<{}> = new Subject();
   private readonly currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   private readonly currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
-  public activePage: string;
 
   constructor(
-    private navbarService: NavbarService,
     private pagenumberService: PagenumberService,
     trackLoginService: TrackLoginService,
     logoutService: LogoutService,
@@ -71,7 +68,6 @@ export class NavbarComponent extends Logout implements OnInit, OnDestroy {
       }
     });
     this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((extendedUser) => (this.extendedUser = extendedUser));
-    this.navbarService.activePage$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((activePage) => (this.activePage = activePage));
   }
 
   resetPageNumber() {
@@ -88,14 +84,5 @@ export class NavbarComponent extends Logout implements OnInit, OnDestroy {
 
   logOutUsersWithoutCurrentTOS() {
     this.logout('/session-expired');
-  }
-
-  setActivePage(name: string) {
-    this.navbarService.setActivePage(name);
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

@@ -4,7 +4,6 @@ import { OrganizationsService } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Funder, FundingComponent } from '../funding/funding.component';
-import { NavbarService } from '../navbar/navbar.service';
 import { Dockstore } from '../shared/dockstore.model';
 import { Sponsor } from '../sponsors/sponsor.model';
 
@@ -43,14 +42,12 @@ export class AboutComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private fundingComponent: FundingComponent,
-    private organizationsService: OrganizationsService,
-    private navbarService: NavbarService
+    private organizationsService: OrganizationsService
   ) {
     this.youtubeSafeURL = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/shMr_Bd01Ko');
   }
 
   ngOnInit() {
-    this.navbarService.setActivePage('/about');
     this.funders = this.fundingComponent.getFunders();
     this.workflowsLength$ = this.organizationsService
       .getCollectionById(this.BROAD_ORGANIZATION_ID, this.BROAD_COLLECTION_ID)
