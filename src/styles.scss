@@ -555,10 +555,6 @@ div.button a {
   margin-top: 8px;
 }
 
-.mat-raised-button:hover {
-  text-decoration: none;
-}
-
 .mat-raised-button.mat-accent:hover {
   background-color: mat-color($dockstore-app-accent, darker);
 }
