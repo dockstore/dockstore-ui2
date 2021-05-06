@@ -33,6 +33,8 @@
 }
 
 .icon:hover {
+  // Hover color is darker than mat-color($dockstore-app-primary, default),
+  // but lighter than mat-color($dockstore-app-primary, darker), which is used for the navbar active state
   background-color: #112246;
 }
 
@@ -41,7 +43,7 @@
 }
 
 .menu-item-active {
-  background-color: #dfe0e2;
+  background-color: mat-color($dockstore-app-gray, lighter);
 }
 
 .spacer {

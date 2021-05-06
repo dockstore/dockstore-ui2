@@ -19,7 +19,7 @@
 // Note: By default, material uses 3 shades of each color (mainly just one). The other shades can be used by manually overriding the default material components.
 // The contrast is not specified in Kim's design. It is chosen from either black or white depending on
 // what's legible in both normal and large text when using https://material.io/resources/color/#!/?view.left=1&view.right=1&primary.color=21335b&secondary.color=487980
-// Accent 1 to 4, warning, grayscale and border is not covered.
+// Accent 1 to 4, warning, and border is not covered.
 $kim-primary: (
   1: #121d34,
   2: #21335b,
@@ -68,6 +68,24 @@ $kim-warn: (
   ),
 );
 
+// Grayscale
+$kim-gray: (
+  1: #212121,
+  2: #666f7b,
+  3: #b3b6be,
+  4: #dfe0e2,
+  5: #f5f5f5,
+  6: #eef0f6,
+  contrast: (
+    1: white,
+    2: white,
+    3: black,
+    4: black,
+    5: black,
+    6: black,
+  ),
+);
+
 // main color is assumed to be 2 based on prevalence of it on the home page (buttons). It's also called default in zeplin
 // 1 is the darker version of it because it's the only one that's darker
 // 4 was arbitarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
@@ -75,5 +93,18 @@ $dockstore-app-primary: mat-palette($kim-primary, 2, 4, 1);
 $dockstore-app-accent: mat-palette($kim-secondary, 2, 4, 1);
 $dockstore-app-warn: mat-palette($kim-warn, 2, 4, 1);
 
+// 4 and 1 were chosen as darker and lighter versions, respectively, because those were used in styles.
+// Main color was chosen arbitrarily to be between darker and lighter.
+$dockstore-app-gray: mat-palette($kim-gray, 2, 4, 1);
+
 // Create the theme object (a Sass map containing all of the palettes).
 $dockstore-app-theme: mat-light-theme($dockstore-app-primary, $dockstore-app-accent, $dockstore-app-warn);
+
+// Include the grayscale palette in the theme object
+// Example of getting the palette: map-get($dockstore-app-theme, grayscale)
+$dockstore-app-theme: map_merge(
+  $dockstore-app-theme,
+  (
+    grayscale: $dockstore-app-gray,
+  )
+);

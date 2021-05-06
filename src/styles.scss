@@ -83,7 +83,7 @@ app-header h3 {
 }
 
 app-header .container-fluid {
-  background-color: #eef0f6;
+  background-color: mat-color($dockstore-app-gray, 6);
   box-shadow: 0px 3px 6px #cfd1d7;
   position: relative;
   z-index: 1;
@@ -484,7 +484,7 @@ a {
 }
 
 a.no-underline {
-  color: #212121;
+  color: mat-color($dockstore-app-gray, darker);
   text-decoration: none;
 }
 
@@ -700,7 +700,7 @@ th {
   width: 100%;
   /*height: auto;*/
   height: 65px;
-  background-color: #eef0f6;
+  background-color: mat-color($dockstore-app-gray, 6);
   border: 1px solid #cfd1d7;
   /*margin:0;*/
 }
@@ -714,7 +714,7 @@ th {
 #homeFooter {
   margin: 40px 0px;
   width: 100%;
-  background-color: #eef0f6;
+  background-color: mat-color($dockstore-app-gray, 6);
   border: 1px solid #cfd1d7;
   /*box-shadow: 0px 0px 10px #cfd1d7;*/
 }
@@ -1355,7 +1355,7 @@ app-sidebar-accordion
 }
 
 .gray-label-tag {
-  background: #dfe0e2 !important;
+  background: mat-color($dockstore-app-gray, lighter) !important;
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
@@ -1428,7 +1428,7 @@ mat-tab-group.no-pagination {
 .nonclick-badge {
   display: inline-flex;
   border-radius: 8px;
-  background-color: #dfe0e2;
+  background-color: mat-color($dockstore-app-gray, lighter);
   padding: 5px 8px;
   color: #151c3d;
   font-size: 1.3rem;
@@ -1453,7 +1453,7 @@ mat-tab-group.no-pagination {
 
 hr {
   margin: 0.5rem 0;
-  border: 1px solid #dfe0e2;
+  border: 1px solid mat-color($dockstore-app-gray, lighter);
 }
 
 .orcid-id-logo {

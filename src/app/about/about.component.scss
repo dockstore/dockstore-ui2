@@ -34,7 +34,7 @@ h2 {
 }
 
 .register-dockstore {
-  background: #f5f5f5;
+  background: mat-color($dockstore-app-gray, 5);
 }
 
 ul.ordered-list > li:before {
@@ -79,7 +79,7 @@ hr {
 }
 
 .workflowlength {
-  background: #dfe0e2;
+  background: mat-color($dockstore-app-gray, lighter);
   border-radius: 1rem;
   padding: 0.2rem 0.6rem;
 }
