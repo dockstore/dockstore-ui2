@@ -42,6 +42,108 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 
 /* Special Fonts */
 
+* {
+  margin: 0;
+}
+
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* the bottom margin is the negative value of the footer's height */
+  margin: 0 auto -155px;
+  /* Removing this, it's supposed to be white*/
+  /*background-color: #f4f4f4;*/
+}
+
+.footer,
+.push {
+  /* .push must be the same height as .footer */
+  height: 155px;
+}
+
+/* pages generated from markdown needs to have responsive images */
+app-page img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* header needs proper format */
+app-header img {
+  width: 2rem;
+}
+
+app-header h3 {
+  font-size: 1.3rem;
+  color: black;
+  margin: 20px 0px 15px 0px;
+  display: inline;
+  line-height: 4rem;
+}
+
+app-header .container-fluid {
+  background-color: #eef0f6;
+  box-shadow: 0px 3px 6px #cfd1d7;
+  position: relative;
+  z-index: 1;
+  padding-top: 5px;
+}
+
+#format > tbody > tr > th,
+#format > tbody > tr > td {
+  border-top: none;
+}
+
+/* Code */
+div > pre,
+markdown pre code {
+  color: #487980;
+}
+
+/* Green Login Button */
+.green {
+  margin-top: 5px;
+  background-color: #487980;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.green p {
+  margin: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  line-height: 2.5em;
+}
+
+.green a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.sideblock {
+  background-color: white;
+}
+
+/* Center */
+.absCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+}
+
+.select-box {
+  border-radius: 3px !important;
+}
+
+.starring-button {
+  margin-top: 20px;
+}
+
 .beta-label {
   display: inline-block;
   height: 2.5rem;
