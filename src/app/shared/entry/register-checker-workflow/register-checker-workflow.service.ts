@@ -59,7 +59,7 @@ export class RegisterCheckerWorkflowService {
           (entry: Entry) => {
             // Only update our current list of workflows when the current entry is a workflow
             // Switching to my-workflows will automatically update the entire list with a fresh HTTP request
-            if (entry.hasOwnProperty('is_checker')) {
+            if (entry.hasOwnProperty('isChecker')) {
               this.workflowService.upsertWorkflowToWorkflow(<Workflow>entry);
               this.workflowService.setWorkflow(<Workflow>entry);
             } else {

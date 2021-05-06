@@ -286,7 +286,7 @@ describe('Dockstore tool/workflow search table', () => {
                 aliases: {},
                 is_published: true,
                 last_modified_date: null,
-                is_checker: false,
+                isChecker: false,
                 checker_id: null,
                 repository: 'l',
                 source_control_provider: 'GITHUB',
