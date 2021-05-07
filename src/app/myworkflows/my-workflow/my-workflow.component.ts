@@ -17,6 +17,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { User } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -65,6 +66,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
+  faGithub = faGithub;
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
   entryType: EntryType;

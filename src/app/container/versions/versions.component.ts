@@ -16,6 +16,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
@@ -35,6 +36,8 @@ import { Versions } from '../../shared/versions';
   styleUrls: ['./../../workflow/versions/versions.component.css'],
 })
 export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
+  faTag = faTag;
+  faCodeBranch = faCodeBranch;
   @Input() versions: Array<any>;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   Dockstore = Dockstore;

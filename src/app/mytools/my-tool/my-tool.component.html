@@ -86,9 +86,9 @@
                 </button>
               </ul>
               <div *ngIf="!hasGitHubToken" class="mt-3">
-                <a class="btn btn-block btn-social btn-github" (click)="link()">
-                  <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
-                </a>
+                <button mat-raised-button (click)="link()">
+                  <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
+                </button>
               </div>
             </mat-card>
           </div>

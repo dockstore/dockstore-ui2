@@ -74,8 +74,8 @@
           {{ version?.versionEditor?.name }}
         </div>
         <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-          <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
-          <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
+          <fa-icon *ngIf="version.referenceType === 'BRANCH'" [icon]="faCodeBranch" aria-hidden="true" title="Branch"></fa-icon>
+          <fa-icon *ngIf="version.referenceType === 'TAG'" [icon]="faTag" aria-hidden="true" title="Tag"></fa-icon>
           <span
             *ngIf="version.commitID && (version.commitID | commitUrl: tool?.providerUrl); else noCommitID"
             [matTooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''"
