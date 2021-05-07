@@ -37,12 +37,26 @@
           <mat-tab isActive="true" label="Login">
             <mat-card>
               <p>Login to your existing Dockstore account with any third party application that has been previously linked.</p>
-              <a class="btn btn-block btn-social btn-github" matTooltip="Log in with GitHub account" (click)="loginWith('github')">
-                <span class="fa fa-github"></span> Login with GitHub
-              </a>
-              <a class="btn btn-block btn-social btn-github" matTooltip="Log in with Google account" (click)="loginWith('google')">
-                <span class="fa fa-google"></span> Login with Google
-              </a>
+              <button
+                class="w-100 my-1"
+                color="accent"
+                mat-raised-button
+                matTooltip="Log in with GitHub account"
+                (click)="loginWith('github')"
+              >
+                <fa-icon [icon]="faGithub"></fa-icon> Login with GitHub
+              </button>
+              <br />
+              <button
+                class="w-100 my-1"
+                button
+                color="accent"
+                mat-raised-button
+                matTooltip="Log in with Google account"
+                (click)="loginWith('google')"
+              >
+                <fa-icon [icon]="faGoogle"></fa-icon> Login with Google
+              </button>
               <p>
                 By clicking Login with GitHub or Login with Google, you agree to Dockstore's
                 <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template>
@@ -52,12 +66,26 @@
           <mat-tab label="Register">
             <mat-card>
               <p>Register a new Dockstore account with any third party application.</p>
-              <a class="btn btn-block btn-social btn-github" matTooltip="Register with GitHub account" (click)="registerWith('github')">
-                <span class="fa fa-github"></span> Register with GitHub
-              </a>
-              <a class="btn btn-block btn-social btn-github" matTooltip="Register with Google account" (click)="registerWith('google')">
-                <span class="fa fa-google"></span> Register with Google
-              </a>
+              <button
+                class="w-100 my-1"
+                color="accent"
+                mat-raised-button
+                matTooltip="Register with GitHub account"
+                (click)="registerWith('github')"
+              >
+                <fa-icon [icon]="faGithub"></fa-icon> Register with GitHub
+              </button>
+              <br />
+              <button
+                class="w-100 my-1"
+                button
+                color="accent"
+                mat-raised-button
+                matTooltip="Register with Google account"
+                (click)="registerWith('google')"
+              >
+                <fa-icon [icon]="faGoogle"></fa-icon> Register with Google
+              </button>
               <p>
                 By clicking Register with GitHub or Register with Google, you agree to Dockstore's
                 <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template>
