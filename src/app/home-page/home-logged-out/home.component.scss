@@ -24,14 +24,7 @@
 }
 
 .gray-sections {
-  background: #f5f5f5;
-}
-
-button {
-  background-color: mat-color($dockstore-app-accent);
-  color: white;
-  padding: 1rem;
-  text-decoration: none;
+  background: mat-color($dockstore-app-gray, 5);
 }
 
 pre {

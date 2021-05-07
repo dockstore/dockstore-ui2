@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@import '/src/materialColorScheme.scss';
 
 mat-tab-group.homeComponent {
   margin: 0.5rem 5rem;
@@ -31,7 +32,7 @@ mat-tab-group.homeComponent {
   padding: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: #f5f5f5;
+  background-color: mat-color($dockstore-app-gray, 5);
   border-right: 1px solid #eee;
 }
 
