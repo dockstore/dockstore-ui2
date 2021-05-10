@@ -24,11 +24,6 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-<<<<<<< HEAD
-              "node_modules/font-awesome/css/font-awesome.css",
-=======
-              "node_modules/bootstrap-social/bootstrap-social.css",
->>>>>>> Remove usage of fontawesome
               "src/styles.scss",
               "src/material.scss"
             ],
