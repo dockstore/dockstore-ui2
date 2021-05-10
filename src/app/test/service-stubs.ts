@@ -53,9 +53,6 @@ export class ContainerStubService {
   replaceTool(tools: any, newTool: any) {
     return observableOf(tools);
   }
-  getBuildMode(mode: DockstoreTool.ModeEnum) {
-    return 'Fully-Automated';
-  }
   getBuildModeTooltip(mode: DockstoreTool.ModeEnum) {
     return 'Fully-Automated: All versions are automated builds';
   }

@@ -59,7 +59,6 @@ export class ExtendedDockstoreToolService {
     if (tool) {
       let extendedTool: ExtendedDockstoreTool = { ...tool };
       extendedTool = <ExtendedDockstoreTool>this.providerService.setUpProvider(extendedTool);
-      extendedTool.buildMode = this.getBuildMode(extendedTool.mode);
       extendedTool.buildModeTooltip = this.getBuildModeTooltip(extendedTool.mode);
       extendedTool = this.imageProviderService.setUpImageProvider(extendedTool);
       extendedTool.agoMessage = this.dateService.getAgoMessage(new Date(extendedTool.lastBuild).getTime());
@@ -71,20 +70,6 @@ export class ExtendedDockstoreToolService {
       return extendedTool;
     } else {
       return null;
-    }
-  }
-
-  getBuildMode(mode: DockstoreTool.ModeEnum): string {
-    switch (mode) {
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS:
-        return 'Fully-Automated';
-      case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
-        return 'Partially-Automated';
-      case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
-      case DockstoreTool.ModeEnum.HOSTED:
-        return 'Manual';
-      default:
-        return 'Unknown';
     }
   }
 

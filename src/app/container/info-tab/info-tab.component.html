@@ -252,7 +252,9 @@
           <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
             <strong matTooltip="Currently disabled for Hosted Tools">Checker Workflow</strong>: n/a
           </div>
-          <li *ngIf="tool?.buildMode"><strong matTooltip="{{ tool?.buildModeTooltip }}">Build Mode</strong>: {{ tool?.buildMode }}</li>
+          <li *ngIf="tool?.mode">
+            <strong matTooltip="{{ tool?.buildModeTooltip }}">Build Mode</strong>: {{ 'mode' | mapFriendlyValue: tool?.mode }}
+          </li>
           <li *ngIf="tool?.lastBuildDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <strong matTooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
           </li>

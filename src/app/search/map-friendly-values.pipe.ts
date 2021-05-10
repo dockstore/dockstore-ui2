@@ -15,6 +15,7 @@
  */
 import { Pipe, PipeTransform } from '@angular/core';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { DockstoreTool } from 'app/shared/openapi';
 import { SourceFile, ToolFile, Workflow } from 'app/shared/swagger';
 
 @Pipe({
@@ -43,7 +44,11 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [Workflow.ModeEnum.FULL, 'Full'],
         [Workflow.ModeEnum.STUB, 'Stub'],
         [Workflow.ModeEnum.DOCKSTOREYML, 'Automatically synced via GitHub App'],
-        [Workflow.ModeEnum.HOSTED, 'HOSTED'],
+        [Workflow.ModeEnum.HOSTED, 'Hosted'],
+        [DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS, 'Fully-Automated'],
+        [DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED, 'Partially-Automated'],
+        [DockstoreTool.ModeEnum.MANUALIMAGEPATH, 'Manual'],
+        [DockstoreTool.ModeEnum.HOSTED, 'Hosted'],
       ]),
     ],
     [
