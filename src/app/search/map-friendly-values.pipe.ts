@@ -38,6 +38,15 @@ export class MapFriendlyValuesPipe implements PipeTransform {
    */
   readonly friendlyValueNames = new Map([
     [
+      'mode',
+      new Map([
+        [Workflow.ModeEnum.FULL, 'Full'],
+        [Workflow.ModeEnum.STUB, 'Stub'],
+        [Workflow.ModeEnum.DOCKSTOREYML, 'Automatically synced via GitHub App'],
+        [Workflow.ModeEnum.HOSTED, 'HOSTED'],
+      ]),
+    ],
+    [
       'has_checker',
       new Map([
         ['1', 'has a checker workflow'],
