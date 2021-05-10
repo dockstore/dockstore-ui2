@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from 'app/home-page/home-logged-out/home.component';
@@ -35,6 +36,7 @@ import { RequestsComponent } from './widget/requests/requests.component';
     HttpClientModule,
     RefreshAlertModule,
     MarkdownModule,
+    FontAwesomeModule,
   ],
   declarations: [
     HomePageComponent,

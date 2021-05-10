@@ -15,6 +15,7 @@
  */
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
@@ -43,6 +44,8 @@ export class YoutubeComponent {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent extends Base implements OnInit, AfterViewInit {
+  faGithub = faGithub;
+  faGoogle = faGoogle;
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;

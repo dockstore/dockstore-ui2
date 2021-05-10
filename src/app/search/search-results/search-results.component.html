@@ -27,7 +27,7 @@
                 <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
                 <span class="m-2"><b>Popular Keywords</b></span>
               </div>
-              <i [class]="(showWorkflowTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
+              <fa-icon [icon]="(showWorkflowTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
             </div>
           </button>
           <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud$ | async" data-cy="tagCloud">
@@ -61,7 +61,7 @@
                 <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
                 <span class="m-2"><b>Popular Keywords</b></span>
               </div>
-              <i [class]="(showToolTagCloud$ | async) ? 'fa fa-minus' : 'fa fa-plus'" aria-hidden="true"></i>
+              <fa-icon [icon]="(showToolTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
             </div>
           </button>
           <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async">

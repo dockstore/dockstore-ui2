@@ -165,7 +165,7 @@
           </div>
           <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
             <span style="cursor: pointer" class="pull-right" (click)="clickExpand(key)">
-              <i [class]="fullyExpandMap.get(key) ? 'fa fa-angle-double-up' : 'fa fa-angle-double-down'" aria-hidden="true"></i>
+              <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
               <a *ngIf="key != 'author'">
                 {{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}
               </a>
@@ -223,7 +223,7 @@
               mdePopoverTriggerOn="click"
               class="mr-2"
             >
-              <i class="fa fa-share-alt" aria-hidden="true"></i>
+              <fa-icon [icon]="faShareAlt" aria-hidden="true"></fa-icon>
               Share
             </button>
 

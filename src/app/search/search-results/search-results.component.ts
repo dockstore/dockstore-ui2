@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
@@ -28,6 +29,8 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent extends Base implements OnInit {
+  faPlus = faPlus;
+  faMinus = faMinus;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;

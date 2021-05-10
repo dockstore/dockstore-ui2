@@ -17,7 +17,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDoubleDown,
+  faAngleDoubleUp,
+  faShareAlt,
+  faSortAlphaDown,
+  faSortAlphaUp,
+  faSortNumericDown,
+  faSortNumericUp,
+} from '@fortawesome/free-solid-svg-icons';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
 import { forkJoin, Observable, Subject } from 'rxjs';
@@ -62,6 +70,9 @@ import { Hit, SearchService } from './state/search.service';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
+  faShareAlt = faShareAlt;
+  faAngleDoubleDown = faAngleDoubleDown;
+  faAngleDoubleUp = faAngleDoubleUp;
   faSortAlphaDown = faSortAlphaDown;
   faSortAlphaUp = faSortAlphaUp;
   faSortNumericDown = faSortNumericDown;

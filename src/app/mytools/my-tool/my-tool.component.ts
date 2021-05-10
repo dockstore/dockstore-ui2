@@ -16,6 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
@@ -45,6 +46,7 @@ import { MytoolsService } from '../mytools.service';
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
 })
 export class MyToolComponent extends MyEntry implements OnInit {
+  faGithub = faGithub;
   tools: any;
   tool: any;
   isRefreshing$: Observable<boolean>;
