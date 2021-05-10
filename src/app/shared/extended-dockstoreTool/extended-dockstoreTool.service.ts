@@ -76,9 +76,9 @@ export class ExtendedDockstoreToolService {
   getBuildModeTooltip(mode: DockstoreTool.ModeEnum): string {
     switch (mode) {
       case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS:
-        return 'Fully-Automated: All versions are automated builds';
+        return 'Fully automated: All versions are automated builds';
       case DockstoreTool.ModeEnum.AUTODETECTQUAYTAGSWITHMIXED:
-        return 'Partially-Automated: At least one version is an automated build';
+        return 'Partially automated: At least one version is an automated build';
       case DockstoreTool.ModeEnum.MANUALIMAGEPATH:
       case DockstoreTool.ModeEnum.HOSTED:
         return 'Manual: No versions are automated builds';

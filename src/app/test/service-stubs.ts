@@ -54,7 +54,7 @@ export class ContainerStubService {
     return observableOf(tools);
   }
   getBuildModeTooltip(mode: DockstoreTool.ModeEnum) {
-    return 'Fully-Automated: All versions are automated builds';
+    return 'Fully automated: All versions are automated builds';
   }
 }
 export class ProviderStubService {
