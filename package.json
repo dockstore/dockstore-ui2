@@ -54,7 +54,6 @@
     "angular-tag-cloud-module": "^5.2.0",
     "bodybuilder": "^2.4.0",
     "bootstrap": "^3.4.1",
-    "bootstrap-social": "^5.1.1",
     "core-js": "^3.2.1",
     "cytoscape": "^3.18.2",
     "cytoscape-dagre": "^2.3.2",
