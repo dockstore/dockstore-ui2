@@ -27,9 +27,7 @@
                 <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
                 <span class="m-2"><b>Popular Keywords</b></span>
               </div>
-              <!-- TODO: merge these two -->
-              <fa-icon *ngIf="showWorkflowTagCloud$ | async" [icon]="faMinus" aria-hidden="true"></fa-icon>
-              <fa-icon *ngIf="!(showWorkflowTagCloud$ | async)" [icon]="faPlus" aria-hidden="true"></fa-icon>
+              <fa-icon [icon]="(showWorkflowTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
             </div>
           </button>
           <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud$ | async" data-cy="tagCloud">
@@ -63,9 +61,7 @@
                 <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
                 <span class="m-2"><b>Popular Keywords</b></span>
               </div>
-              <!-- TODO: merge these two -->
-              <fa-icon *ngIf="showToolTagCloud$ | async" [icon]="faMinus" aria-hidden="true"></fa-icon>
-              <fa-icon *ngIf="!(showToolTagCloud$ | async)" [icon]="faPlus" aria-hidden="true"></fa-icon>
+              <fa-icon [icon]="(showToolTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
             </div>
           </button>
           <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async">
