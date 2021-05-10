@@ -179,7 +179,7 @@ describe('Dockstore my workflows', () => {
   it('Should be able to view a dockstore.yml workflow', () => {
     cy.visit('/my-workflows/github.com/B/z');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/B/z');
-    cy.contains('DOCKSTORE_YML');
+    cy.contains('Automatically synced via GitHub App');
 
     cy.get('#publishButton').should('not.be.disabled');
     cy.get('#refreshButton').should('not.exist');

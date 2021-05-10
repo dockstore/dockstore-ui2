@@ -49,7 +49,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       // Check content of the info tab
-      cy.contains('Mode: HOSTED');
+      cy.contains('Mode: Hosted');
 
       // Should not be able to download zip
       cy.get('#downloadZipButton').should('not.be.visible');
@@ -163,7 +163,7 @@ describe('Dockstore hosted workflows', () => {
       cy.contains('a', NEW_WORKFLOW_NAME).click();
 
       // Check content of the info tab
-      cy.contains('Mode: HOSTED');
+      cy.contains('Mode: Hosted');
 
       // Add a new version with 3 descriptors
       goToTab('Files');
