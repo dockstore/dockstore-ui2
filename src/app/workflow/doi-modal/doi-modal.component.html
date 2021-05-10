@@ -1,0 +1,38 @@
+<div>
+  <h4 mat-dialog-title>Request DOI</h4>
+  <div mat-dialog-content>
+    <p>
+      Dockstore can request a Digital Object Identifier, DOI, on zenodo.org for your workflow version.
+      <a
+        [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#advanced-topics/snapshot-and-doi.html'"
+        target="_blank"
+        rel="noopener noreferrer"
+      ></a>
+    </p>
+    <h5>Prerequisites</h5>
+    <p>
+      <mat-icon [ngStyle]="{ color: isSnapshot ? 'green;' : 'red;' }">{{ isSnapshot ? 'check_circle' : 'block' }}</mat-icon> Version
+      snapshot.
+      <span *ngIf="!isSnapshot"
+        >Before you can issue a DOI, you must first snapshot the workflow version. This ensures the contents referenced by the DOI do not
+        change. <a *ngIf="!isSnapshot" href="" (click)="closeForSnapshot()">Snapshot</a>
+      </span>
+    </p>
+    <!--      <p>-->
+    <!--        <mat-icon [ngStyle]="{'color': (isSnapshot) ? 'green;' : 'red;'}">{{ (hasZenodoToken$ | async) ? 'check_circle' : 'block' }}</mat-icon> Zenodo account linked-->
+    <!--        <span *ngIf="!(isSnapshot)">. Requesting a DOI requires an account on Zenodo.org, and having linked-->
+    <!--        that account to Dockstore. <a *ngIf="hasZenodoToken$ | async" [routerLink]="['/accounts']" [queryParams]="{tab: 'accounts'}">Link your Zenodo account.</a></span>-->
+    <!--      </p>-->
+    <p>
+      A Digital Object Identifier (DOI) allows a version to be easily cited in publications and can't be undone, though some metadata will
+      remain editable. It can take some time to request a DOI. Are you sure you want to request a DOI for version <b>{{ version.name }}</b
+      >?
+    </p>
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+    <button mat-button mat-dialog-close color="secondary">Cancel</button>
+    <button color="primary" mat-flat-button [disabled]="!isSnapshot || !(hasZenodoToken$ | async)" (click)="requestDOI()">
+      Request DOI
+    </button>
+  </div>
+</div>

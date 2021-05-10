@@ -100,6 +100,7 @@ import { StarredEntriesComponent } from './starredentries/starredentries.compone
 import { StarringModule } from './starring/starring.module';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
 import { TosBannerComponent } from './tosBanner/tos-banner.component';
+import { DoiModalComponent } from './workflow/doi-modal/doi-modal.component';
 import { ViewService } from './workflow/view/view.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -149,6 +150,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     LogoutComponent,
     GitTagPipe,
     AboutComponent,
+    DoiModalComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

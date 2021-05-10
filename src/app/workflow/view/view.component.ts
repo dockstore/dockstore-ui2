@@ -33,6 +33,7 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
+import { DoiModalComponent } from '../doi-modal/doi-modal.component';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewService } from './view.service';
@@ -115,7 +116,18 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   requestDOIForWorkflowVersion() {
-    this.viewService.requestDOIForWorkflowVersion(this.workflow, this.version);
+    const dialogRef = this.matDialog.open(DoiModalComponent, {
+      width: '600px',
+      data: {
+        workflow: this.workflow,
+        version: this.version,
+      },
+    });
+    dialogRef.afterClosed().subscribe((action) => {
+      if ('snapshot' === action) {
+        this.snapshotVersion();
+      }
+    });
   }
 
   /**
