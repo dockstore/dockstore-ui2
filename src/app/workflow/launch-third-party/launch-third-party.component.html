@@ -1,4 +1,4 @@
-<mat-card *ngIf="workflow?.descriptorType === 'WDL' || workflow?.descriptorType === 'CWL' || workflow.descriptorType === 'NFL'">
+<mat-card *ngIf="workflow?.descriptorType === 'WDL' || workflow?.descriptorType === 'CWL' || workflow.descriptorType === 'NFL' || workflow.descriptorType === 'gxformat2'">
   <mat-card-header>
     <mat-card-title>Launch with</mat-card-title>
   </mat-card-header>
@@ -110,7 +110,7 @@
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'NFL'">
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : 'Export this workflow to Nextflow Tower'"
+              [matTooltip]="!(hasContent$ | async) ? 'The Nextflow has no content.' : 'Export this workflow to Nextflow Tower'"
               target="_blank"
               rel="noopener"
               [attr.href]="
