@@ -1,5 +1,10 @@
 <div
-  *ngIf="workflow?.descriptorType === 'WDL' || workflow?.descriptorType === 'CWL' || workflow.descriptorType === 'NFL'"
+  *ngIf="
+    workflow?.descriptorType === 'WDL' ||
+    workflow?.descriptorType === 'CWL' ||
+    workflow.descriptorType === 'NFL' ||
+    workflow.descriptorType === 'gxformat2'
+  "
   class="panel panel-default"
 >
   <div class="panel-heading">
@@ -110,10 +115,101 @@
               ><img src="../assets/images/thirdparty/cavatica.png" /> Cavatica
             </a>
           </div>
+
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'gxformat2'">
+            <a
+              mat-raised-button
+              [matTooltip]="!(hasContent$ | async) ? 'The Galaxy has no content.' : 'Export this workflow to Galaxy instance'"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="config.GALAXY_INSTANCE_IMPORT_URL + '%23workflow/' + workflow?.full_workflow_path"
+              color="primary"
+              ><img src="../assets/images/thirdparty/cavatica.png" /> Galaxy
+            </a>
+          </div>
+
+          <!--          <div fxFlex="100%">-->
+          <!--            <button mat-raised-button [matMenuTriggerFor]="menu"> Galaxy </button>-->
+          <!--            <mat-menu #menu="matMenu" xPosition="before" yPosition="above">-->
+          <!--              Please choose a well-known server to launch on, or specify your own.-->
+          <!--              <mat-radio-group fxLayout="column" name="launchWithUrl" [(ngModel)]="launchWithOption" (click)="$event.stopPropagation();">-->
+          <!--                <mat-radio-button name="launchWithUrl" value="https://UseGalaxy.org/workflows/trs_import?trs_server=dockstore.org&trs_id="> UseGalaxy.org (Main) </mat-radio-button>-->
+          <!--                <mat-radio-button name="launchWithUrl" value="https://UseGalaxy.eu/workflows/trs_import?trs_server=dockstore.org&trs_id="> UseGalaxy.eu </mat-radio-button>-->
+          <!--                <mat-radio-button name="launchWithUrl" value="https://UseGalaxy.org.au/workflows/trs_import?trs_server=dockstore.org&trs_id="> UseGalaxy.org.au </mat-radio-button>-->
+          <!--                <mat-form-field>-->
+          <!--                  <input matInput placeholder="Specify a url..." [(ngModel)]="_customLaunchWithOption" (ngModelChange)="launchWithOption = 'other'" name="something">-->
+          <!--                </mat-form-field>-->
+          <!--              </mat-radio-group>-->
+          <!--              Launch {{launchWith.url}}-->
+          <!--              <button mat-button (click)="closeMatMenu()">Cancel</button>-->
+          <!--              <a-->
+          <!--                mat-raised-button-->
+          <!--                [matTooltip]="!(hasContent$ | async) ? 'The Galaxy has no content.' : 'Export this workflow to Galaxy instance'"-->
+          <!--                target="_blank"-->
+          <!--                rel="noopener"-->
+          <!--                [attr.href]="launchWith.url + '%23workflow/' + workflow?.full_workflow_path"-->
+          <!--                color="secondary"-->
+          <!--                (click) = selectDefault()-->
+          <!--              ><img src="../assets/images/thirdparty/cavatica.png" /> Launch-->
+          <!--              </a>-->
+          <!--              Galaxy Default {{galaxyDefault}}-->
+          <!--            </mat-menu>-->
+          <!--          </div>-->
+
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'gxformat2'">
+            <button mat-raised-button [matMenuTriggerFor]="menu">Galaxy</button>
+            <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
+              Please choose a well-known server to launch on, or specify your own.
+              <mat-radio-group fxLayout="column" name="launchWithUrl" [(ngModel)]="launchWithOption" (click)="$event.stopPropagation()">
+                <mat-radio-button
+                  *ngFor="let galaxyInstance of cloudInstances | filterCloudInstances: 'GALAXY'"
+                  name="launchWithUrl"
+                  value="{{ galaxyInstance.url }}"
+                  [checked]="this.galaxyDefault === galaxyInstance.url"
+                >
+                  {{ galaxyInstance.displayName }}
+                </mat-radio-button>
+                <ng-container *ngIf="user">
+                  <mat-radio-button
+                    *ngFor="let usersGalaxyInstance of usersCloudInstances | filterCloudInstances: 'GALAXY'"
+                    name="launchWithUrl"
+                    value="{{ usersGalaxyInstance.url }}"
+                    [checked]="this.galaxyDefault === usersGalaxyInstance.url"
+                  >
+                    {{ usersGalaxyInstance.displayName }} (Custom)
+                  </mat-radio-button>
+                  <mat-radio-button value="other">
+                    <mat-form-field>
+                      <input
+                        matInput
+                        placeholder="Specify a url..."
+                        [(ngModel)]="customLaunchWithOption"
+                        (ngModelChange)="launchWithOption = 'other'"
+                        name="something"
+                      />
+                    </mat-form-field>
+                  </mat-radio-button>
+                </ng-container>
+              </mat-radio-group>
+              <button mat-button (click)="closeMatMenu()">Cancel</button>
+              <a
+                mat-raised-button
+                [matTooltip]="!(hasContent$ | async) ? 'The Galaxy has no content.' : 'Export this workflow to Galaxy instance'"
+                target="_blank"
+                rel="noopener"
+                [attr.href]="launchWith.url + '%23workflow/' + workflow?.full_workflow_path"
+                color="secondary"
+                (click)="selectDefault()"
+                ><img src="../assets/images/thirdparty/cavatica.png" /> Launch
+              </a>
+              {{ launchWith.url }}
+            </mat-menu>
+          </div>
+
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'NFL'">
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : 'Export this workflow to Nextflow Tower'"
+              [matTooltip]="!(hasContent$ | async) ? 'The Nextflow has no content.' : 'Export this workflow to Nextflow Tower'"
               target="_blank"
               rel="noopener"
               [attr.href]="

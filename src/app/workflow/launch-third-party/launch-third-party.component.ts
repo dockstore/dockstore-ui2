@@ -1,6 +1,8 @@
-import { HttpUrlEncodingCodec } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { HttpErrorResponse, HttpUrlEncodingCodec } from '@angular/common/http';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
+import FileTypeEnum = ToolFile.FileTypeEnum;
+import { MatMenuTrigger } from '@angular/material/menu';
 import { DomSanitizer } from '@angular/platform-browser';
 import { combineLatest, Observable } from 'rxjs';
 import { map, share, takeUntil } from 'rxjs/operators';
@@ -8,13 +10,14 @@ import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { CloudInstance, CloudInstancesService, Language, User, UsersService } from '../../shared/openapi';
 import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { UserQuery } from '../../shared/user/user.query';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
-import FileTypeEnum = ToolFile.FileTypeEnum;
 
 // tslint:disable:max-line-length
 /**
@@ -95,6 +98,7 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
   providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore],
 })
 export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit {
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   /**
    * The workflow
    */
@@ -106,6 +110,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    */
   @Input()
   selectedVersion: WorkflowVersion;
+
+  user: User;
 
   /**
    * Indicates whether the selected version has any content
@@ -146,6 +152,14 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    */
   workflowPathAsQueryValue: string;
 
+  _customLaunchWithOption: string;
+
+  _launchWithOption: string;
+
+  launchWith = { url: '' };
+
+  galaxyDefault: string;
+
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
   cgcTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'the CGC'))
@@ -183,6 +197,9 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'Cavatica'))
   );
 
+  cloudInstances: Array<CloudInstance>;
+  usersCloudInstances: Array<CloudInstance>;
+
   constructor(
     private workflowsService: WorkflowsService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
@@ -190,7 +207,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     sanitizer: DomSanitizer,
     private gA4GHFilesQuery: GA4GHFilesQuery,
     private descriptorsQuery: DescriptorsQuery,
-    private descriptorsService: DescriptorsService
+    private descriptorsService: DescriptorsService,
+    private cloudInstanceService: CloudInstancesService,
+    private usersService: UsersService,
+    private userQuery: UserQuery
   ) {
     super();
     iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
@@ -199,6 +219,18 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   }
 
   ngOnInit(): void {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => (this.user = user));
+    this.galaxyDefault = localStorage.getItem('galaxyDefault');
+    this.cloudInstanceService.getCloudInstances().subscribe((cloudInstances: Array<CloudInstance>) => {
+      this.cloudInstances = cloudInstances;
+    });
+
+    if (this.user) {
+      this.usersService.getUserCloudInstances(this.user.id).subscribe((cloudInstances: Array<CloudInstance>) => {
+        this.usersCloudInstances = cloudInstances;
+      });
+    }
+
     this.gA4GHFilesQuery
       .getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType), [
         FileTypeEnum.PRIMARYDESCRIPTOR,
@@ -255,5 +287,61 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       return `This version of the WDL has file-path imports, which are only supported by ${platform} for GitHub-based workflows.`;
     }
     return `Export this workflow version to ${platform}.`;
+  }
+
+  get launchWithOption(): string {
+    return this._launchWithOption;
+  }
+  set launchWithOption(value: string) {
+    this._launchWithOption = value;
+    // this.galaxyDefault = value;
+    // localStorage.setItem('galaxyDefault', this.galaxyDefault);
+    this.updateLaunchWithUrl();
+  }
+
+  get customLaunchWithOption(): string {
+    return this._customLaunchWithOption;
+  }
+
+  set customLaunchWithOption(value: string) {
+    this._customLaunchWithOption = value;
+    // this.galaxyDefault = value;
+    // localStorage.setItem('galaxyDefault', this.galaxyDefault);
+    this.updateLaunchWithUrl();
+  }
+
+  private selectDefault(): void {
+    localStorage.setItem('galaxyDefault', this.launchWith.url);
+    this.galaxyDefault = localStorage.getItem('galaxyDefault');
+    console.log('Custom Launch Option: ' + this._customLaunchWithOption);
+
+    if (this._launchWithOption === 'other' && this.user) {
+      const url: URL = new URL(this.launchWith.url);
+      const newCustomInstance: CloudInstance = {
+        url: this.launchWith.url,
+        partner: CloudInstance.PartnerEnum.GALAXY,
+        supportsFileImports: null,
+        supportsHttpImports: null,
+        supportedLanguages: new Array<Language>(),
+        displayName: url.hostname,
+      };
+
+      this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
+        (usersCloudInstances: Array<CloudInstance>) => {
+          this.usersCloudInstances = usersCloudInstances;
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error.message);
+        }
+      );
+    }
+  }
+
+  private updateLaunchWithUrl(): void {
+    this.launchWith.url = this._launchWithOption === 'other' ? this._customLaunchWithOption : this._launchWithOption;
+  }
+
+  closeMatMenu() {
+    this.trigger.closeMenu();
   }
 }
