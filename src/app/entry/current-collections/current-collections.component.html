@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<mat-card class="mb-3" *ngIf="(isLoggedIn$ | async) || (currentCollections$ | async).length > 0">
+<mat-card *ngIf="(isLoggedIn$ | async) || (currentCollections$ | async).length > 0">
   <mat-card-header>
     <mat-card-title>Collections</mat-card-title>
   </mat-card-header>

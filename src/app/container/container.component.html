@@ -262,8 +262,8 @@
       </div>
     </div>
 
-    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
-      <mat-card class="mb-3">
+    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
+      <mat-card>
         <mat-card-header>
           <mat-card-title>Recent Versions</mat-card-title>
         </mat-card-header>
@@ -290,7 +290,7 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <mat-card class="mb-3" *ngIf="tool">
+      <mat-card *ngIf="tool">
         <mat-card-header>
           <mat-card-title>Docker Pull Command</mat-card-title>
         </mat-card-header>
@@ -312,10 +312,11 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <mat-card class="mb-3" *ngIf="extendedTool$ | async">
+      <mat-card *ngIf="extendedTool$ | async">
         <mat-card-header>
           <mat-card-title>Source Repositories</mat-card-title>
         </mat-card-header>
+        <!-- Overflow hidden to fix the protruding image due to float right -->
         <mat-card-content class="overflow-hidden">
           <div class="container-source-repos">
             <p>
@@ -357,7 +358,7 @@
         [version]="selectedVersion"
         [verifiedByPlatform]="versionsWithVerifiedPlatforms"
       ></app-verified-by>
-      <mat-card class="mb-3" *ngIf="tool">
+      <mat-card class="mb-1" *ngIf="tool">
         <mat-card-header>
           <mat-card-title>Sharing</mat-card-title>
         </mat-card-header>
