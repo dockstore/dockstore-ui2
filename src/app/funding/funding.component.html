@@ -13,23 +13,21 @@
       Support for Dockstore is provided by grants from Genome Canada, the National Institutes of Health, and the Province of Ontario.
     </p>
     <div *ngFor="let funder of funders" class="col-xs-12 col-md-6 col-lg-6">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">{{ funder.title }}</h3>
+      <mat-card class="my-3">
+        <mat-card-header>
+          <mat-card-title>{{ funder.title }}</mat-card-title>
+        </mat-card-header>
+        <div class="image-wrapper">
+          <a [href]="funder.website">
+            <img [src]="funder.imageSource" [alt]="funder.altImageText" class="center-block funding-img" />
+          </a>
         </div>
-        <div class="panel-body">
-          <div class="col-sm-12" style="min-height: 150px !important">
-            <a [href]="funder.website">
-              <img [src]="funder.imageSource" class="center-block img-responsive funding-img" [alt]="funder.altImageText" />
-            </a>
-          </div>
-          <div class="col-sm-12" style="min-height: 210px !important">
-            <p>
-              {{ funder.content }}
-            </p>
-          </div>
-        </div>
-      </div>
+        <mat-card-content>
+          <p>
+            {{ funder.content }}
+          </p>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

@@ -262,12 +262,12 @@
       </div>
     </div>
 
-    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
-      <div class="panel panel-default mb-3">
-        <div class="panel-heading">
-          <h3>Recent Versions</h3>
-        </div>
-        <div class="p-3 panel-body">
+    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Recent Versions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div>
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
@@ -288,13 +288,13 @@
             </span>
             <a (click)="selectTab(2)">See all tags</a>
           </div>
-        </div>
-      </div>
-      <div class="panel panel-default mb-3" *ngIf="tool">
-        <div class="panel-heading">
-          <h3>Docker Pull Command</h3>
-        </div>
-        <div class="p-3 panel-body">
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="tool">
+        <mat-card-header>
+          <mat-card-title>Docker Pull Command</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div class="input-group">
             <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{ dockerPullCmd }}" readonly />
             <span class="input-group-btn">
@@ -310,13 +310,14 @@
               </button>
             </span>
           </div>
-        </div>
-      </div>
-      <div class="panel panel-default mb-3" *ngIf="extendedTool$ | async">
-        <div class="panel-heading">
-          <h3>Source Repositories</h3>
-        </div>
-        <div class="p-3 panel-body">
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="extendedTool$ | async">
+        <mat-card-header>
+          <mat-card-title>Source Repositories</mat-card-title>
+        </mat-card-header>
+        <!-- Overflow hidden to fix the protruding image due to float right -->
+        <mat-card-content class="overflow-hidden">
           <div class="container-source-repos">
             <p>
               Git Repository:
@@ -349,19 +350,19 @@
               </span>
             </p>
           </div>
-        </div>
-      </div>
+        </mat-card-content>
+      </mat-card>
       <current-collections [id]="tool.id" [versions]="tool.workflowVersions"></current-collections>
       <app-verified-by
         *ngIf="selectedVersion"
         [version]="selectedVersion"
         [verifiedByPlatform]="versionsWithVerifiedPlatforms"
       ></app-verified-by>
-      <div class="panel panel-default mb-3" *ngIf="tool">
-        <div class="panel-heading">
-          <h3>Sharing</h3>
-        </div>
-        <div class="p-3 panel-body">
+      <mat-card class="mb-1" *ngIf="tool">
+        <mat-card-header>
+          <mat-card-title>Sharing</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div class="container-sharing">
             <share-buttons
               [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
@@ -370,9 +371,9 @@
               [autoSetMeta]="false"
             ></share-buttons>
           </div>
-        </div>
-      </div>
-      <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
+        </mat-card-content>
+      </mat-card>
+      <!-- Re-enable the below and change to material card once ga4gh/dockstore#442 is complete -->
       <!-- <div class="panel panel-default mb-3">
       <div class="panel-heading">
         <h3>DOI</h3>

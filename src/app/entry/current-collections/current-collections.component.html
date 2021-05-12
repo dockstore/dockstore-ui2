@@ -13,35 +13,37 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<div class="panel panel-default mb-3" *ngIf="(isLoggedIn$ | async) || (currentCollections$ | async).length > 0">
-  <div class="panel-heading">
-    <h3>Collections</h3>
-  </div>
-  <mat-list>
-    <mat-list-item
-      [matTooltip]="collectionOrganizations.organizationDisplayName"
-      *ngFor="let collectionOrganizations of currentCollections$ | async"
-    >
-      <a
-        [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]"
-        routerLinkActive="router-link-active"
-        >{{ collectionOrganizations.collectionDisplayName }}</a
+<mat-card *ngIf="(isLoggedIn$ | async) || (currentCollections$ | async).length > 0">
+  <mat-card-header>
+    <mat-card-title>Collections</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item
+        [matTooltip]="collectionOrganizations.organizationDisplayName"
+        *ngFor="let collectionOrganizations of currentCollections$ | async"
       >
-    </mat-list-item>
-  </mat-list>
-  <div class="p-3 panel-body">
-    <button
-      *ngIf="isLoggedIn$ | async"
-      fxFlex
-      mat-raised-button
-      color="default"
-      matTooltip="Add the entry to a collection"
-      (click)="addEntryToCollection()"
-      id="addToolToCollectionButton"
-    >
-      <mat-icon>add</mat-icon>
-      <span fxHide.lt-lg>Add to my collection</span>
-      <span fxHide fxShow.lt-lg>Add to mine</span>
-    </button>
-  </div>
-</div>
+        <a
+          [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]"
+          routerLinkActive="router-link-active"
+          >{{ collectionOrganizations.collectionDisplayName }}</a
+        >
+      </mat-list-item>
+    </mat-list>
+    <div class="p-3">
+      <button
+        *ngIf="isLoggedIn$ | async"
+        fxFlex
+        mat-raised-button
+        color="default"
+        matTooltip="Add the entry to a collection"
+        (click)="addEntryToCollection()"
+        id="addToolToCollectionButton"
+      >
+        <mat-icon>add</mat-icon>
+        <span fxHide.lt-lg>Add to my collection</span>
+        <span fxHide fxShow.lt-lg>Add to mine</span>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

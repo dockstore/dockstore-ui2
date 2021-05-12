@@ -1,0 +1,18 @@
+.funding-img {
+  left: 50%;
+  top: 50%;
+  max-width: 350px;
+  padding: 10px;
+}
+
+// Not used in most places because we don't have a similar min-height requirement where each card needs to be the same height
+// This does not work if one of the funder's content exceeds 210px in any screen
+mat-card-content p {
+  min-height: 210px;
+}
+
+// Not used in most places because we don't images that can't be stretched
+// This does not work if one of the funder's logo exceeds 150px height in any screen
+.image-wrapper {
+  min-height: 150px;
+}
