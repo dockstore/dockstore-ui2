@@ -32,6 +32,7 @@ import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descrip
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
 import { FilterCloudInstancesPipe } from '../../workflow/launch-third-party/filterCloudInstances.pipe';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
+import { MultiCloudLaunchComponent } from '../../workflow/launch-third-party/multi-cloud-launch/multi-cloud-launch.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { WorkflowLaunchService } from '../../workflow/launch/workflow-launch.service';
 import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfiles.component';
@@ -80,6 +81,7 @@ import { SnackbarModule } from './snackbar.module';
     EntryFileTabComponent,
     SourceFileTabsComponent,
     FilterCloudInstancesPipe,
+    MultiCloudLaunchComponent,
   ],
   imports: [
     CommonModule,
