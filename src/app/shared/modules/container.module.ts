@@ -41,6 +41,7 @@ import { StarringService } from '../../starring/starring.service';
 import { DateService } from '../date.service';
 import { ToolActionsComponent } from '../entry-actions/tool-actions.component';
 import { FileService } from '../file.service';
+import { PipeModule } from '../pipe/pipe.module';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
@@ -92,6 +93,7 @@ import { SnackbarModule } from './snackbar.module';
     FlexLayoutModule,
     MarkdownModule,
     MarkdownWrapperModule,
+    PipeModule,
     SnackbarModule,
   ],
   providers: [
