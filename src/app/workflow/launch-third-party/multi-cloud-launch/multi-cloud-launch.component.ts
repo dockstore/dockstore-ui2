@@ -37,7 +37,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
 
   partner: string;
 
-  constructor(private cloudInstanceService: CloudInstancesService, private usersService: UsersService, private userQuery: UserQuery) {
+  constructor(private usersService: UsersService) {
     super();
   }
 

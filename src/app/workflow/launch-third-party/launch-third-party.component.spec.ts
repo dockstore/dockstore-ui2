@@ -7,10 +7,10 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { GA4GHFilesStore } from '../../shared/ga4gh-files/ga4gh-files.store';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
-import { GA4GHV20Service } from '../../shared/openapi';
+import { CloudInstancesService, GA4GHV20Service, UsersService } from '../../shared/openapi';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { sampleWdlWorkflow2, sampleWorkflowVersion } from '../../test/mocked-objects';
-import { WorkflowsStubService } from '../../test/service-stubs';
+import { CloudInstancesStubService, UsersStubService, WorkflowsStubService } from '../../test/service-stubs';
 import { LaunchThirdPartyComponent } from './launch-third-party.component';
 
 describe('LaunchThirdPartyComponent', () => {
@@ -22,7 +22,14 @@ describe('LaunchThirdPartyComponent', () => {
       TestBed.configureTestingModule({
         declarations: [LaunchThirdPartyComponent],
         imports: [CustomMaterialModule, HttpClientModule],
-        providers: [GA4GHFilesService, GA4GHV20Service, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
+        providers: [
+          GA4GHFilesService,
+          GA4GHV20Service,
+          GA4GHFilesStore,
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+          { provide: CloudInstancesService, useClass: CloudInstancesStubService },
+          { provide: UsersService, useClass: UsersStubService },
+        ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
@@ -31,6 +38,8 @@ describe('LaunchThirdPartyComponent', () => {
   beforeEach(() => {
     TestBed.inject(WorkflowsService);
     TestBed.inject(GA4GHFilesService);
+    TestBed.inject(CloudInstancesService);
+    TestBed.inject(UsersService);
     fixture = TestBed.createComponent(LaunchThirdPartyComponent);
     component = fixture.componentInstance;
     component.workflow = sampleWdlWorkflow2;

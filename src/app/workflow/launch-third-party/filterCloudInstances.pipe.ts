@@ -5,7 +5,7 @@ import { CloudInstance } from '../../shared/openapi';
   name: 'filterCloudInstances',
 })
 export class FilterCloudInstancesPipe implements PipeTransform {
-  transform(cloudInstances: Array<CloudInstance>, filterFor: string): Array<CloudInstance> {
+  transform(cloudInstances: Array<CloudInstance>, filterFor: string): Array<CloudInstance> | null {
     if (cloudInstances && filterFor) {
       return cloudInstances.filter((ci: CloudInstance) => ci.partner === filterFor);
     }

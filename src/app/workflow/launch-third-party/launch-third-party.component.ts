@@ -1,8 +1,7 @@
-import { HttpErrorResponse, HttpUrlEncodingCodec } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { HttpUrlEncodingCodec } from '@angular/common/http';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import FileTypeEnum = ToolFile.FileTypeEnum;
-import { MatMenuTrigger } from '@angular/material/menu';
 import { DomSanitizer } from '@angular/platform-browser';
 import { combineLatest, Observable } from 'rxjs';
 import { map, share, takeUntil } from 'rxjs/operators';
@@ -98,7 +97,6 @@ import { DescriptorsService } from './state/descriptors.service';
   providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore],
 })
 export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit {
-  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   /**
    * The workflow
    */
