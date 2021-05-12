@@ -6,9 +6,6 @@
 // Those rules should not be turned on, and tests here can demonstrate
 // URLs and requests that would break if a rule were turned on.
 
-// Other portions of the WAF could be tested here, including rate limiting
-// and IP banning.
-
 before(() => {
   cy.visit('');
 });
@@ -64,24 +61,21 @@ describe('Test AWS Managed Common Rule Set', () => {
       expect(resp.status).to.eq(403);
     });
   });
-  //   GenericLFI_URIPATH 	Inspects for the presence of Local File Inclusion (LFI) exploits in the URI path.
-  //   Examples include path traversal attempts using techniques like ../../.
-  //   We definitely want URLs like this to work
+  // GenericLFI_URIPATH 	Inspects for the presence of Local File Inclusion (LFI) exploits in the URI path.
+  // Examples include path traversal attempts using techniques like ../../.
+  // We definitely want URLs like this to work
   it('Try a URL that will break if GenericLFI_URIPATH were turned on', () => {
     const uglyUrl =
       '/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FNCI-GDC%2Fgdc-dnaseq-cwl%2FGDC_DNASeq/versions/master/CWL/descriptor/..%2F..%2Ftools%2Fbam_readgroup_to_json.cwl';
     cy.request(uglyUrl).its('body').should('have.property', 'content');
   });
-  //   GenericLFI_BODY 	Inspects for the presence of Local File Inclusion (LFI) exploits in the request body.
-  //   Examples include path traversal attempts using techniques like ../../.
-
   // RestrictedExtensions_URIPATH 	Inspects requests whose URI path includes system file extensions that the
   // clients shouldn't read or run. Example patterns include extensions like .log and .ini.
-  // it('Try a URL that would break if RestrictedExtensions_URIPATH were turned on', () => {
-  //   const longUrl =
-  //     '/api/ga4gh/trs/v2/tools/%23workflow%2Fgithub.com%2Fnf-core%2Fhlatyping/versions/1.1.2/plain-NFL/descriptor//nextflow.config';
-  //   cy.request(longUrl).its('body').should('include', 'nfcore/hlatyping:1.1.2');
-  // });
+  it('Try a URL that would break if RestrictedExtensions_URIPATH were turned on', () => {
+    const longUrl =
+      '/api/ga4gh/trs/v2/tools/%23workflow%2Fgithub.com%2Fnf-core%2Fhlatyping/versions/1.1.2/plain-NFL/descriptor//nextflow.config';
+    cy.request(longUrl).its('body').should('include', 'nfcore/hlatyping:1.1.2');
+  });
   // RestrictedExtensions_QUERYARGUMENTS 	Inspects requests whose query arguments are system file extensions
   // that the clients shouldn't read or run. Example patterns include extensions like .log and .ini.
   // it('Try arguments that SHOULD be blocked if RestrictedExtensions_QUERYARGUMENTS were turned on', () => {
@@ -100,16 +94,15 @@ describe('Test AWS Managed Common Rule Set', () => {
   // GenericRFI_QUERYARGUMENTS 	Inspects the values of all query parameters and blocks requests attempting to
   // exploit RFI (Remote File Inclusion) in web applications. Examples include patterns like ://.
 
-  //   GenericRFI_BODY 	Inspects the values of the request body and blocks requests attempting to exploit RFI
-  //   (Remote File Inclusion) in web applications. Examples include patterns like ://.
-
-  //   GenericRFI_URIPATH 	Inspects the values of the URI path and blocks requests attempting to exploit RFI
-  //   (Remote File Inclusion) in web applications. Examples include patterns like ://.
-
   //   CrossSiteScripting_COOKIE 	Inspects the value of cookie headers and blocks common cross-site scripting
   //   (XSS) patterns using the built-in XSS detection rule in AWS WAF. Example patterns
   //   include scripts like <script>alert("hello")</script>.
-
+  it('Try a request that SHOULD be blocked if CrossSiteScripting_COOKIE were turned on', () => {
+    const cookieHeader = '<script>window.alert("test");</script>';
+    cy.request({ url: '/', failOnStatusCode: false, headers: { Cookie: cookieHeader } }).then((resp) => {
+      expect(resp.status).to.eq(403);
+    });
+  });
   // CrossSiteScripting_QUERYARGUMENTS 	Inspects the value of query arguments and blocks common cross-site
   // scripting (XSS) patterns using the built-in XSS detection rule in AWS WAF. Example patterns include
   // scripts like <script>alert("hello")</script>.
