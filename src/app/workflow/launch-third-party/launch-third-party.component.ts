@@ -151,14 +151,9 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    * The workflow path encoded for use as a query parameter value.
    */
   workflowPathAsQueryValue: string;
-
-  _customLaunchWithOption: string;
-
-  _launchWithOption: string;
-
-  launchWith = { url: '' };
-
-  galaxyDefault: string;
+  partner = CloudInstance.PartnerEnum;
+  cloudInstances: Array<CloudInstance>;
+  usersCloudInstances: Array<CloudInstance>;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
   cgcTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
@@ -197,9 +192,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'Cavatica'))
   );
 
-  cloudInstances: Array<CloudInstance>;
-  usersCloudInstances: Array<CloudInstance>;
-
   constructor(
     private workflowsService: WorkflowsService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
@@ -220,7 +212,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
 
   ngOnInit(): void {
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => (this.user = user));
-    this.galaxyDefault = localStorage.getItem('galaxyDefault');
     this.cloudInstanceService.getCloudInstances().subscribe((cloudInstances: Array<CloudInstance>) => {
       this.cloudInstances = cloudInstances;
     });
@@ -287,61 +278,5 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       return `This version of the WDL has file-path imports, which are only supported by ${platform} for GitHub-based workflows.`;
     }
     return `Export this workflow version to ${platform}.`;
-  }
-
-  get launchWithOption(): string {
-    return this._launchWithOption;
-  }
-  set launchWithOption(value: string) {
-    this._launchWithOption = value;
-    // this.galaxyDefault = value;
-    // localStorage.setItem('galaxyDefault', this.galaxyDefault);
-    this.updateLaunchWithUrl();
-  }
-
-  get customLaunchWithOption(): string {
-    return this._customLaunchWithOption;
-  }
-
-  set customLaunchWithOption(value: string) {
-    this._customLaunchWithOption = value;
-    // this.galaxyDefault = value;
-    // localStorage.setItem('galaxyDefault', this.galaxyDefault);
-    this.updateLaunchWithUrl();
-  }
-
-  private selectDefault(): void {
-    localStorage.setItem('galaxyDefault', this.launchWith.url);
-    this.galaxyDefault = localStorage.getItem('galaxyDefault');
-    console.log('Custom Launch Option: ' + this._customLaunchWithOption);
-
-    if (this._launchWithOption === 'other' && this.user) {
-      const url: URL = new URL(this.launchWith.url);
-      const newCustomInstance: CloudInstance = {
-        url: this.launchWith.url,
-        partner: CloudInstance.PartnerEnum.GALAXY,
-        supportsFileImports: null,
-        supportsHttpImports: null,
-        supportedLanguages: new Array<Language>(),
-        displayName: url.hostname,
-      };
-
-      this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
-        (usersCloudInstances: Array<CloudInstance>) => {
-          this.usersCloudInstances = usersCloudInstances;
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error.message);
-        }
-      );
-    }
-  }
-
-  private updateLaunchWithUrl(): void {
-    this.launchWith.url = this._launchWithOption === 'other' ? this._customLaunchWithOption : this._launchWithOption;
-  }
-
-  closeMatMenu() {
-    this.trigger.closeMenu();
   }
 }

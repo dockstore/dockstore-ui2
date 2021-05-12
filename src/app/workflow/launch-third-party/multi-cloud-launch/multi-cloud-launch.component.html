@@ -1,0 +1,47 @@
+<button mat-raised-button [matMenuTriggerFor]="menu">{{ this.partner }}</button>
+<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
+  Please choose a well-known server to launch on, or specify your own. ddd
+  <mat-radio-group fxLayout="column" name="launchWithUrl" [(ngModel)]="launchWithOption" (click)="$event.stopPropagation()">
+    <mat-radio-button
+      *ngFor="let instance of cloudInstances | filterCloudInstances: languagePartner"
+      name="launchWithUrl"
+      value="{{ instance.url }}"
+      [checked]="this.defaultLaunchWith === instance.url"
+    >
+      {{ instance.displayName }}
+    </mat-radio-button>
+    <ng-container *ngIf="user">
+      <mat-radio-button
+        *ngFor="let usersInstance of usersCloudInstances | filterCloudInstances: languagePartner"
+        name="launchWithUrl"
+        value="{{ usersInstance.url }}"
+        [checked]="this.defaultLaunchWith === usersInstance.url"
+      >
+        {{ usersInstance.displayName }} (Custom)
+      </mat-radio-button>
+      <mat-radio-button value="other">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Specify a url..."
+            [(ngModel)]="customLaunchWithOption"
+            (ngModelChange)="launchWithOption = 'other'"
+            name="something"
+          />
+        </mat-form-field>
+      </mat-radio-button>
+    </ng-container>
+  </mat-radio-group>
+  <button mat-button (click)="closeMatMenu()">Cancel</button>
+  <a
+    mat-raised-button
+    target="_blank"
+    rel="noopener"
+    [attr.href]="launchWith.url + launchUrlAppend"
+    color="secondary"
+    [disabled]="this._launchWithOption === 'other' && (_customLaunchWithOption == null || _customLaunchWithOption === '')"
+    (click)="selectDefault()"
+  >
+    Launch
+  </a>
+</mat-menu>
