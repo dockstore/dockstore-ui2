@@ -268,72 +268,6 @@ div.panel-container-label.selected {
     color: #ffffff;
   }
 }
-.panel {
-  border-radius: 0 !important;
-  border-color: #ddd;
-}
-.panel.containers-accordion {
-  .panel-body {
-    padding: 0;
-    padding-bottom: 10px;
-    font-size: 12px;
-  }
-}
-.panel-group {
-  margin-bottom: 14px;
-}
-.panel-heading {
-  border-radius: 0;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: #f4f4f4;
-  color: #487980;
-  clear: both;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  span {
-    font-size: 14px;
-  }
-}
-.ns-containers-accordion {
-  div.panel-group {
-    margin-bottom: 14px;
-  }
-  div.panel {
-    border-radius: 0;
-    border-color: #ddd;
-    div.container-namespace-label-oflw {
-      width: 230px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    div.container-label {
-      background-color: #ffffff;
-      color: #487980;
-      clear: both;
-      overflow: hidden;
-      div.container-name-oflw {
-        width: 170px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      a {
-        color: #487980;
-      }
-    }
-    div.container-label:hover,
-    div.container-label.selected {
-      background-color: #7987a5;
-      color: #ffffff;
-      a {
-        color: #ffffff;
-      }
-    }
-  }
-}
 
 @keyframes spin {
   from {
@@ -527,13 +461,6 @@ div.modal form {
   span.nav-menu-usericon {
     display: inline;
   }
-  .ns-containers-accordion div.panel {
-    div.container-label {
-      div.container-name-oflw {
-        width: 80%;
-      }
-    }
-  }
   .header-lower .row {
     padding-bottom: 30px;
   }
@@ -623,13 +550,6 @@ div.modal form {
   }
 }
 @media (min-width: 992px) and (max-width: 1200px) {
-  .ns-containers-accordion div.panel {
-    div.container-label {
-      div.container-name-oflw {
-        width: 138px;
-      }
-    }
-  }
   .header-lower div.button {
     width: 210px;
   }

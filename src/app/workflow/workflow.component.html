@@ -414,7 +414,7 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <mat-card class="panel panel-default mb-3" *ngIf="!isStub() && !isHosted()">
+      <mat-card *ngIf="!isStub() && !isHosted()">
         <mat-card-header>
           <mat-card-title>Source Repositories</mat-card-title>
         </mat-card-header>
@@ -449,7 +449,7 @@
           </div>
         </mat-card-header>
       </mat-card>
-      <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
+      <!-- Re-enable the below and change to material once ga4gh/dockstore#442 is complete -->
       <!-- <div class="panel panel-default mb-3">
       <div class="panel-heading">
         <h3>DOI</h3>
