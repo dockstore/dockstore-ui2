@@ -385,13 +385,13 @@
         </ng-template>
       </div>
     </div>
-    <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
+    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
-      <div class="panel panel-default mb-3">
-        <div class="panel-heading">
-          <h3>Recent Versions</h3>
-        </div>
-        <div class="p-3 panel-body">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Recent Versions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div>
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
@@ -412,13 +412,13 @@
             </span>
             <a (click)="selectVersionsTab()">See all versions</a>
           </div>
-        </div>
-      </div>
-      <div class="panel panel-default mb-3" *ngIf="!isStub() && !isHosted()">
-        <div class="panel-heading">
-          <h3>Source Repositories</h3>
-        </div>
-        <div class="p-3 panel-body">
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="panel panel-default mb-3" *ngIf="!isStub() && !isHosted()">
+        <mat-card-header>
+          <mat-card-title>Source Repositories</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div class="container-source-repos">
             <p>
               <span *ngIf="(extendedWorkflow$ | async).provider">
@@ -429,16 +429,16 @@
               </span>
             </p>
           </div>
-        </div>
-      </div>
+        </mat-card-content>
+      </mat-card>
       <current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></current-collections>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
-      <div class="panel panel-default mb-3" *ngIf="workflow">
-        <div class="panel-heading">
-          <h3>Sharing</h3>
-        </div>
-        <div class="p-3 panel-body">
+      <mat-card *ngIf="workflow">
+        <mat-card-header>
+          <mat-card-title>Sharing</mat-card-title>
+        </mat-card-header>
+        <mat-card-header>
           <div class="container-sharing">
             <share-buttons
               [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
@@ -447,8 +447,8 @@
               [autoSetMeta]="false"
             ></share-buttons>
           </div>
-        </div>
-      </div>
+        </mat-card-header>
+      </mat-card>
       <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
       <!-- <div class="panel panel-default mb-3">
       <div class="panel-heading">
