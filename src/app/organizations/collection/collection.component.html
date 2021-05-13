@@ -14,8 +14,18 @@
    limitations under the License.
 -->
 <app-header>
-  <mat-icon>people</mat-icon>
-  Collections
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div fxLayout="row" fxLayoutGap="1rem">
+      <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization icon" />
+      <a class="category-text" [routerLink]="['/organizations/']">Organizations</a>
+      <span fxHide.lt-sm>/</span>
+      <a class="category-text" [routerLink]="['/organizations/', (organization$ | async)?.name]" fxHide.lt-sm>{{
+        (organization$ | async)?.displayName
+      }}</a>
+      <span fxHide.lt-sm>/</span>
+      <span fxHide.lt-sm>{{ (collection$ | async)?.displayName }}</span>
+    </div>
+  </div>
 </app-header>
 <!-- Beware of double loading bar (from page and from loading component) -->
 <app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
