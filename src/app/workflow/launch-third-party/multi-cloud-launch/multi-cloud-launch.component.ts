@@ -35,6 +35,8 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
 
   defaultLaunchWith: string;
 
+  customDefaultLaunchWith: string;
+
   partner: string;
 
   constructor(private usersService: UsersService) {
@@ -46,6 +48,16 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
     if (this.defaultLaunchWith) {
       this.launchWith.url = this.defaultLaunchWith;
     }
+
+    // Set the text of the custom launch with field if it's ever been used previously
+    if (localStorage.getItem('customDefaultLaunchWith')) {
+      this._customLaunchWithOption = this.defaultLaunchWith;
+    }
+    // Select the custom option by default if it was used the time before
+    if (localStorage.getItem('useCustomLaunch') === 'true') {
+      this._launchWithOption = 'other';
+    }
+
     switch (this.languagePartner) {
       case 'GALAXY':
         this.partner = 'Galaxy';
@@ -80,26 +92,35 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
     this.defaultLaunchWith = localStorage.getItem('defaultLaunchWith');
     console.log('Custom Launch Option: ' + this._customLaunchWithOption);
 
-    if (this._launchWithOption === 'other' && this.user) {
-      const url: URL = new URL(this.launchWith.url);
-      const newCustomInstance: CloudInstance = {
-        url: this.launchWith.url,
-        partner: this.languagePartner,
-        supportsFileImports: null,
-        supportsHttpImports: null,
-        supportedLanguages: new Array<Language>(),
-        displayName: url.hostname,
-      };
-
-      this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
-        (usersCloudInstances: Array<CloudInstance>) => {
-          this.usersCloudInstances = usersCloudInstances;
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error.message);
-        }
-      );
+    // If the user launches with the custom launch option, then save the url to local storage and mark to use it at the default.
+    if (this._launchWithOption === 'other') {
+      localStorage.setItem('useCustomLaunch', 'true');
+      localStorage.setItem('customDefaultLaunchWith', this.launchWith.url);
+    } else {
+      localStorage.setItem('useCustomLaunch', 'false');
     }
+
+    // Uncomment when we want to create and save a user's custom launch entry
+    // if (this._launchWithOption === 'other' && this.user) {
+    //   const url: URL = new URL(this.launchWith.url);
+    //   const newCustomInstance: CloudInstance = {
+    //     url: this.launchWith.url,
+    //     partner: this.languagePartner,
+    //     supportsFileImports: null,
+    //     supportsHttpImports: null,
+    //     supportedLanguages: new Array<Language>(),
+    //     displayName: url.hostname,
+    //   };
+    //
+    //   this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
+    //     (usersCloudInstances: Array<CloudInstance>) => {
+    //       this.usersCloudInstances = usersCloudInstances;
+    //     },
+    //     (error: HttpErrorResponse) => {
+    //       console.log(error.message);
+    //     }
+    //   );
+    // }
   }
 
   private updateLaunchWithUrl(): void {

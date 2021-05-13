@@ -213,12 +213,12 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     this.cloudInstanceService.getCloudInstances().subscribe((cloudInstances: Array<CloudInstance>) => {
       this.cloudInstances = cloudInstances;
     });
-
-    if (this.user) {
-      this.usersService.getUserCloudInstances(this.user.id).subscribe((cloudInstances: Array<CloudInstance>) => {
-        this.usersCloudInstances = cloudInstances;
-      });
-    }
+    // Uncomment when we want to get the users custom cloud instances
+    // if (this.user) {
+    //   this.usersService.getUserCloudInstances(this.user.id).subscribe((cloudInstances: Array<CloudInstance>) => {
+    //     this.usersCloudInstances = cloudInstances;
+    //   });
+    // }
 
     this.gA4GHFilesQuery
       .getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType), [

@@ -11,14 +11,15 @@
       {{ instance.displayName }}
     </mat-radio-button>
     <ng-container *ngIf="user">
-      <mat-radio-button
-        *ngFor="let usersInstance of usersCloudInstances | filterCloudInstances: languagePartner"
-        name="launchWithUrl"
-        value="{{ usersInstance.url }}"
-        [checked]="this.defaultLaunchWith === usersInstance.url"
-      >
-        {{ usersInstance.displayName }} (Custom)
-      </mat-radio-button>
+      <!--     Uncomment when we want to get the users custom cloud instances-->
+      <!--      <mat-radio-button-->
+      <!--        *ngFor="let usersInstance of usersCloudInstances | filterCloudInstances: languagePartner"-->
+      <!--        name="launchWithUrl"-->
+      <!--        value="{{ usersInstance.url }}"-->
+      <!--        [checked]="this.defaultLaunchWith === usersInstance.url"-->
+      <!--      >-->
+      <!--        {{ usersInstance.displayName }} (Custom)-->
+      <!--      </mat-radio-button>-->
       <mat-radio-button value="other">
         <mat-form-field>
           <input
