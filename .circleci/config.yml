@@ -36,6 +36,11 @@ jobs:
           command: bash -i -c 'npm run test-dev-no-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-dev-no-auth-[hash].xml
+      - run:
+          name: Run remote verification of WAF against dev
+          command: bash -i -c 'npm run test-dev-waf'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-waf-[hash].xml
       - upload_nightly_artifacts
       - slack/status:
           fail_only: true
@@ -59,25 +64,6 @@ jobs:
       - slack/status:
           fail_only: true
           failure_message: Nightly auth tests failed!
-          webhook: $SLACK_WEBHOOK
-  uptime_monitor_waf:
-    working_directory: ~/repo
-    docker:
-      - image: circleci/buildpack-deps:18.04-browsers
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - setup_nightly_tests
-      - run:
-          name: Run remote verification against WAF in dev
-          command: bash -i -c 'npm run test-dev-waf'
-          environment:
-            MOCHA_FILE: nightly-test-results/junit/test-dev-waf-[hash].xml
-      - upload_nightly_artifacts
-      - slack/status:
-          fail_only: true
-          failure_message: Nightly WAF tests failed!
           webhook: $SLACK_WEBHOOK
   lint_license_unit_test_coverage:
     working_directory: ~/repo
@@ -310,9 +296,6 @@ workflows:
           context:
             - dockerhub
       - uptime_monitor_auth:
-          context:
-            - dockerhub
-      - uptime_monitor_waf:
           context:
             - dockerhub
 
