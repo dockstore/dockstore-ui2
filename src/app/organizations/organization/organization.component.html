@@ -19,7 +19,16 @@
       <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization icon" />
       <a class="category-text" [routerLink]="['/organizations/']">Organizations</a>
       <span fxHide.lt-sm>/</span>
-      <span fxHide.lt-sm>{{ (organization$ | async)?.displayName }}</span>
+      <div fxHide.lt-sm *ngIf="organizationStarGazersClicked; else organizationName" fxLayoutGap="1rem">
+        <a class="category-text" [routerLink]="['./']" (click)="organizationStarGazersChange()">{{
+          (organization$ | async)?.displayName
+        }}</a>
+        <span>/</span>
+        <span>Stargazers</span>
+      </div>
+      <ng-template #organizationName>
+        <span fxHide.lt-sm>{{ (organization$ | async)?.displayName }}</span>
+      </ng-template>
     </div>
   </div>
 </app-header>
