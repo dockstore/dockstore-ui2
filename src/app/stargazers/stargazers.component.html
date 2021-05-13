@@ -28,19 +28,26 @@
     <mat-card-header>
       <mat-card-title>Stargazers</mat-card-title>
     </mat-card-header>
-    <div fxLayout="row wrap">
-      <div *ngFor="let stargazer of starGazers">
-        <div fxFlex="90%" class="mx-3 text-center">
+    <div fxLayoutAlign="space-between" fxLayout="row wrap" fxLayoutGap="1rem">
+      <mat-card
+        style="height: 280px"
+        *ngFor="let stargazer of starGazers"
+        class="my-2 mat-elevation-z3 mx-0"
+        fxFlex="19"
+        fxFlex.lt-lg="30"
+        fxFlex.lt-md="100"
+      >
+        <div class="h-100" fxLayout="column" fxLayoutAlign="start center">
           <img src="{{ stargazer.avatarUrl }}" class="stargazer-img" alt="{{ altAvatarImg }}" />
-          <div style="width: 15rem">
-            <h5 class="text-center">{{ stargazer.username }}</h5>
+          <div fxLayout="column" fxLayoutAlign="space-between center" style="word-break: break-word">
+            <h5>{{ stargazer.username }}</h5>
             <h6 *ngIf="stargazer.orcid">
               ORCID <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo" />
               <a href="https://orcid.org/{{ stargazer.orcid }}" style="font-size: 0.8em">{{ stargazer.orcid }}</a>
             </h6>
           </div>
         </div>
-      </div>
+      </mat-card>
     </div>
   </mat-card-content>
 </mat-card>
