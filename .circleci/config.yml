@@ -36,6 +36,11 @@ jobs:
           command: bash -i -c 'npm run test-dev-no-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-dev-no-auth-[hash].xml
+      - run:
+          name: Run remote verification of WAF against dev
+          command: bash -i -c 'npm run test-dev-waf'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-dev-waf-[hash].xml
       - upload_nightly_artifacts
       - slack/status:
           fail_only: true
