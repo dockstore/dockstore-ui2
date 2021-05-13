@@ -24,7 +24,9 @@
     [ngClass]="rate ? 'btn btn-default active' : 'btn btn-default'"
   >
     <mat-icon id="unstarringButtonIcon" *ngIf="rate">star</mat-icon>
-    <mat-icon id="starringButtonIcon" *ngIf="!rate">star_border</mat-icon>
+    <mat-icon id="starringButtonIcon" *ngIf="!rate" matTooltip="Login to star this page" [matTooltipDisabled]="isLoggedIn"
+      >star_border</mat-icon
+    >
   </button>
   <button id="starCountButton" (click)="getStargazers()" style="height: 38px" class="btn btn-default">{{ total_stars }}</button>
 </div>
