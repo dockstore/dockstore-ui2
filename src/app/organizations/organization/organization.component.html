@@ -62,7 +62,7 @@
           </div>
           <div>
             <h2 class="name">{{ org.displayName }}</h2>
-            <span>{{ org.topic }}</span>
+            <span style="word-break: break-word">{{ org.topic }}</span>
           </div>
         </div>
         <div fxFlex>
@@ -152,7 +152,7 @@
               </span>
               <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
                 <mat-icon class="side-icons">location_on</mat-icon>
-                <span>{{ org.location }}</span>
+                <span style="word-break: break-word">{{ org.location }}</span>
               </span>
             </div>
             <markdown-wrapper *ngIf="org.description" fxFlex [data]="org.description"></markdown-wrapper>
