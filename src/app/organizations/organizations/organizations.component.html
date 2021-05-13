@@ -59,7 +59,7 @@
           fxFlex.lt-md="100"
         >
           <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-            <div class="overflow-scroll" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="1rem">
+            <div fxLayout="column" fxLayoutGap="2rem">
               <a [routerLink]="org.name" class="no-underline" target="_self">
                 <div fxLayout="column" fxLayoutAlign="space-around">
                   <div fxLayout="row wrap" fxLayoutAlign="space-between start">
@@ -80,17 +80,17 @@
                 <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
                   <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.link">
                     <mat-icon class="info-icon">link</mat-icon>
-                    <span
+                    <span class="info-overflow"
                       ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
                     >
                   </span>
                   <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.location">
                     <mat-icon class="info-icon">location_on</mat-icon>
-                    <span>{{ org.location }}</span>
+                    <span class="info-overflow">{{ org.location }}</span>
                   </span>
                   <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.email">
                     <mat-icon class="info-icon">email</mat-icon>
-                    <span
+                    <span class="info-overflow"
                       ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
                     >
                   </span>

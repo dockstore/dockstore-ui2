@@ -13,6 +13,13 @@
 .org-topic {
   line-height: 1.5;
   color: mat-color($dockstore-app-gray, darker);
+  // Hide overflow if longer than 3 lines
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
 
 .orgStar {
@@ -36,6 +43,16 @@
 .info {
   font-size: 12px;
   line-height: 2rem;
+}
+
+.info-overflow {
+  // Hide overflow if longer than 1 line
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 form {
