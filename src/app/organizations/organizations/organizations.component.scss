@@ -13,7 +13,7 @@
 .org-topic {
   line-height: 1.5;
   color: mat-color($dockstore-app-gray, darker);
-  // Hide overflow if longer than 3 lines
+  // Hide overflow if longer than 4 lines
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: initial;
