@@ -22,8 +22,8 @@
       <a class="category-text" [routerLink]="['/organizations/', (organization$ | async)?.name]" fxHide.lt-sm>{{
         (organization$ | async)?.displayName
       }}</a>
-      <span fxHide.lt-sm>/</span>
-      <span fxHide.lt-sm>{{ (collection$ | async)?.displayName }}</span>
+      <span fxHide.lt-md>/</span>
+      <span fxHide.lt-md>{{ (collection$ | async)?.displayName }}</span>
     </div>
   </div>
 </app-header>
