@@ -60,8 +60,8 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
       case 'GALAXY':
         this.partner = 'Galaxy';
         break;
-      case 'DNA_NEXUS':
-        this.partner = 'DNAnexus';
+      case 'DNA_STACK':
+        this.partner = 'DNAstack';
         break;
       default:
         this.partner = null;
