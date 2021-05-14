@@ -39,7 +39,7 @@
       >
         <div class="h-100" fxLayout="column" fxLayoutAlign="start center">
           <img src="{{ stargazer.avatarUrl }}" class="stargazer-img" alt="{{ altAvatarImg }}" />
-          <div fxLayout="column" fxLayoutAlign="space-between center" style="word-break: break-word">
+          <div class="text-break" fxLayout="column" fxLayoutAlign="space-between center">
             <h5>{{ stargazer.username }}</h5>
             <h6 *ngIf="stargazer.orcid">
               ORCID <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo" />

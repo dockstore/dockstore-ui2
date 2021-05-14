@@ -62,7 +62,7 @@
           </div>
           <div>
             <h2 class="name">{{ org.displayName }}</h2>
-            <span style="word-break: break-word">{{ org.topic }}</span>
+            <span class="text-break">{{ org.topic }}</span>
           </div>
         </div>
         <div fxFlex>
@@ -140,7 +140,7 @@
               </button>
             </div>
             <div *ngIf="!org.description" fxFlex>
-              <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
+              <div *ngIf="canEdit$ | async" class="text-muted">Click edit to add a markdown description</div>
               <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
             </div>
             <div fxLayout="column" fxLayoutGap="10px" class="px-4 py-1">
@@ -152,7 +152,7 @@
               </span>
               <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
                 <mat-icon class="side-icons">location_on</mat-icon>
-                <span style="word-break: break-word">{{ org.location }}</span>
+                <span class="text-break">{{ org.location }}</span>
               </span>
             </div>
             <markdown-wrapper *ngIf="org.description" fxFlex [data]="org.description"></markdown-wrapper>
