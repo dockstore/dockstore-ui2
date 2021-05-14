@@ -29,7 +29,7 @@
       <div class="modal-body">
         <mat-radio-group [(ngModel)]="selectedOption">
           <mat-radio-button *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
-            <span class="text-wrap">
+            <span class="text-wrap normal-font-weight">
               {{ option.label }}
               <div *ngIf="option.value === 0 && !this.recommendGitHubApps" class="beta-label">preview</div>
               <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
@@ -131,7 +131,9 @@
         >
           <mat-label>Descriptor Type: </mat-label>
           <mat-radio-button class="radio-button" *ngFor="let descriptorType of descriptorLanguages$ | async" [value]="descriptorType">
-            {{ descriptorType === 'gxformat2' ? 'Galaxy' : ('descriptor_type' | mapFriendlyValue: descriptorType) }}
+            <span class="normal-font-weight">
+              {{ descriptorType === 'gxformat2' ? 'Galaxy' : ('descriptor_type' | mapFriendlyValue: descriptorType) }}
+            </span>
             <div *ngIf="descriptorType === 'gxformat2'" class="beta-label">preview</div>
           </mat-radio-button>
         </mat-radio-group>
@@ -227,7 +229,9 @@
             *ngFor="let descriptorType of descriptorLanguages$ | async"
             [value]="descriptorType"
           >
-            {{ descriptorType === 'gxformat2' ? 'Galaxy' : ('descriptor_type' | mapFriendlyValue: descriptorType) }}
+            <span class="normal-font-weight">
+              {{ descriptorType === 'gxformat2' ? 'Galaxy' : ('descriptor_type' | mapFriendlyValue: descriptorType) }}</span
+            >
             <div *ngIf="descriptorType === 'gxformat2'" class="beta-label">preview</div>
           </mat-radio-button>
         </mat-radio-group>

@@ -1466,3 +1466,8 @@ hr {
   max-width: 200px;
   margin-top: 1.5rem;
 }
+
+// material sometimes sets the font-weight to be bold (radio buttons for example) when we want it to be normal.
+.normal-font-weight {
+  font-weight: normal;
+}

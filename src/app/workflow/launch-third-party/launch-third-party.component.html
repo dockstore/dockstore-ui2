@@ -13,7 +13,7 @@
             </div>
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ''"
+              [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
               target="_blank"
               rel="noopener"
               [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
@@ -25,7 +25,7 @@
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ''"
+              [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
               target="_blank"
               rel="noopener"
               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
@@ -113,7 +113,7 @@
               [cloudInstances]="cloudInstances"
               [usersCloudInstances]="usersCloudInstances"
               [languagePartner]="partner.GALAXY"
-              [launchUrlAppend]="'%23workflow/' + workflow?.full_workflow_path"
+              [appendToLaunchUrl]="'%23workflow/' + workflow?.full_workflow_path"
               [user]="user"
             ></app-multi-cloud-launch>
           </div>
@@ -121,7 +121,7 @@
           <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'NFL'">
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The Nextflow has no content.' : 'Export this workflow to Nextflow Tower'"
+              [matTooltip]="!(hasContent$ | async) ? 'The Nextflow workflow has no content.' : 'Export this workflow to Nextflow Tower'"
               target="_blank"
               rel="noopener"
               [attr.href]="

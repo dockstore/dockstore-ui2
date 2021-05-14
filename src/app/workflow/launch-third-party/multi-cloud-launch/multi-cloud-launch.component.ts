@@ -21,13 +21,14 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
   languagePartner: CloudInstance.PartnerEnum;
 
   @Input()
-  launchUrlAppend: string;
+  appendToLaunchUrl: string;
 
   @Input()
   user: User;
-  _customLaunchWithOption: string;
 
-  _launchWithOption: string;
+  customLaunchWithOption: string;
+
+  presetLaunchWithOption: string;
 
   launchWith = { url: '' };
 
@@ -48,19 +49,20 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
     }
 
     // Set the text of the custom launch with field if it's ever been used previously
-    if (localStorage.getItem('customDefaultLaunchWith')) {
-      this._customLaunchWithOption = this.defaultLaunchWith;
+    const localCustomLaunchWith: string = localStorage.getItem('customDefaultLaunchWith');
+    if (localCustomLaunchWith) {
+      this.customLaunchWithOption = localCustomLaunchWith;
     }
     // Select the custom option by default if it was used the time before
     if (localStorage.getItem('useCustomLaunch') === 'true') {
-      this._launchWithOption = 'other';
+      this.presetLaunchWithOption = 'other';
     }
 
     switch (this.languagePartner) {
-      case 'GALAXY':
+      case CloudInstance.PartnerEnum.GALAXY:
         this.partner = 'Galaxy';
         break;
-      case 'DNA_STACK':
+      case CloudInstance.PartnerEnum.DNASTACK:
         this.partner = 'DNAstack';
         break;
       default:
@@ -68,30 +70,29 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
     }
   }
 
-  get launchWithOption(): string {
-    return this._launchWithOption;
+  get presetLaunchWith(): string {
+    return this.presetLaunchWithOption;
   }
-  set launchWithOption(value: string) {
-    this._launchWithOption = value;
+  set presetLaunchWith(value: string) {
+    this.presetLaunchWithOption = value;
     this.updateLaunchWithUrl();
   }
 
-  get customLaunchWithOption(): string {
-    return this._customLaunchWithOption;
+  get customLaunchWith(): string {
+    return this.customLaunchWithOption;
   }
 
-  set customLaunchWithOption(value: string) {
-    this._customLaunchWithOption = value;
+  set customLaunchWith(value: string) {
+    this.customLaunchWithOption = value;
     this.updateLaunchWithUrl();
   }
 
   selectDefault(): void {
     localStorage.setItem('defaultLaunchWith', this.launchWith.url);
     this.defaultLaunchWith = localStorage.getItem('defaultLaunchWith');
-    console.log('Custom Launch Option: ' + this._customLaunchWithOption);
 
     // If the user launches with the custom launch option, then save the url to local storage and mark to use it at the default.
-    if (this._launchWithOption === 'other') {
+    if (this.presetLaunchWithOption === 'other') {
       localStorage.setItem('useCustomLaunch', 'true');
       localStorage.setItem('customDefaultLaunchWith', this.launchWith.url);
     } else {
@@ -99,7 +100,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
     }
 
     // Uncomment when we want to create and save a user's custom launch entry
-    // if (this._launchWithOption === 'other' && this.user) {
+    // if (this.presetLaunchWithOption === 'other' && this.user) {
     //   const url: URL = new URL(this.launchWith.url);
     //   const newCustomInstance: CloudInstance = {
     //     url: this.launchWith.url,
@@ -122,7 +123,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
   }
 
   private updateLaunchWithUrl(): void {
-    this.launchWith.url = this._launchWithOption === 'other' ? this._customLaunchWithOption : this._launchWithOption;
+    this.launchWith.url = this.presetLaunchWithOption === 'other' ? this.customLaunchWithOption : this.presetLaunchWithOption;
   }
 
   closeMatMenu() {

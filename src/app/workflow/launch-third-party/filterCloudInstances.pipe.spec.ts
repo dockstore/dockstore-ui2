@@ -23,8 +23,8 @@ describe('Pipe: filter cloud instances', () => {
   it('create instance and test', () => {
     const pipe = new FilterCloudInstancesPipe();
     expect(pipe).toBeTruthy();
-    expect(pipe.transform(cloudInstances, null)).toBe(null);
-    expect(pipe.transform(cloudInstances, '')).toBe(null);
+    expect(pipe.transform(cloudInstances, null).length).toEqual(2);
+    expect(pipe.transform(cloudInstances, '').length).toEqual(2);
     expect(pipe.transform(cloudInstances, CloudInstance.PartnerEnum.DNANEXUS).length).toEqual(1);
   });
 });

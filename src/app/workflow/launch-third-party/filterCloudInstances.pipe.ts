@@ -6,9 +6,10 @@ import { CloudInstance } from '../../shared/openapi';
 })
 export class FilterCloudInstancesPipe implements PipeTransform {
   transform(cloudInstances: Array<CloudInstance>, filterFor: string): Array<CloudInstance> | null {
-    if (cloudInstances && filterFor) {
-      return cloudInstances.filter((ci: CloudInstance) => ci.partner === filterFor);
+    if (!cloudInstances || !filterFor) {
+      return cloudInstances;
     }
-    return null;
+
+    return cloudInstances.filter((ci: CloudInstance) => ci.partner === filterFor);
   }
 }

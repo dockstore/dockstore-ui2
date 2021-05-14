@@ -152,6 +152,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   partner = CloudInstance.PartnerEnum;
   cloudInstances: Array<CloudInstance>;
   usersCloudInstances: Array<CloudInstance>;
+  WorkflowModel = Workflow;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
   cgcTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
@@ -213,7 +214,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     this.cloudInstanceService.getCloudInstances().subscribe((cloudInstances: Array<CloudInstance>) => {
       this.cloudInstances = cloudInstances;
     });
-    // Uncomment when we want to get the users custom cloud instances
+    // Uncomment when we want to get the users custom cloud instances, but may not work if user object is slow to get
     // if (this.user) {
     //   this.usersService.getUserCloudInstances(this.user.id).subscribe((cloudInstances: Array<CloudInstance>) => {
     //     this.usersCloudInstances = cloudInstances;

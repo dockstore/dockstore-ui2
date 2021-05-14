@@ -1,12 +1,12 @@
 <button mat-raised-button [matMenuTriggerFor]="menu">{{ this.partner }}</button>
 <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
-  <div class="mat-menu-content-formatting" fxLayout="column" fxLayoutAlign="center start">
+  <div class="px-4" fxLayout="column" fxLayoutAlign="center start">
     <p>Please choose a well-known server to launch on, or specify your own.</p>
     <mat-radio-group
       fxLayout="column"
       fxLayoutAlign="center start"
       name="launchWithUrl"
-      [(ngModel)]="launchWithOption"
+      [(ngModel)]="presetLaunchWith"
       (click)="$event.stopPropagation()"
     >
       <mat-radio-button
@@ -15,7 +15,7 @@
         value="{{ instance.url }}"
         [checked]="this.defaultLaunchWith === instance.url"
       >
-        <span class="radio-options"> {{ instance.displayName }} </span>
+        <span class="normal-font-weight"> {{ instance.displayName }} </span>
       </mat-radio-button>
       <ng-container *ngIf="user">
         <!--     Uncomment when we want to get the users custom cloud instances-->
@@ -32,8 +32,8 @@
             <input
               matInput
               placeholder="Specify a url..."
-              [(ngModel)]="customLaunchWithOption"
-              (ngModelChange)="launchWithOption = 'other'"
+              [(ngModel)]="customLaunchWith"
+              (ngModelChange)="presetLaunchWith = 'other'"
               name="something"
             />
           </mat-form-field>
@@ -41,16 +41,16 @@
       </ng-container>
     </mat-radio-group>
   </div>
-  <div class="mat-menu-content-formatting" fxLayout="row" fxLayoutAlign="end end">
-    <button mat-button class="launch-buttons" color="accent" (click)="closeMatMenu()">Cancel</button>
+  <div class="px-4" fxLayout="row" fxLayoutAlign="end end">
+    <button mat-button class="view-button" color="accent" (click)="closeMatMenu()">Cancel</button>
     <a
       mat-raised-button
-      class="launch-buttons"
+      class="view-button"
       target="_blank"
       rel="noopener"
-      [attr.href]="launchWith.url + launchUrlAppend"
+      [attr.href]="launchWith.url + appendToLaunchUrl"
       color="accent"
-      [disabled]="this._launchWithOption === 'other' && (_customLaunchWithOption == null || _customLaunchWithOption === '')"
+      [disabled]="this.presetLaunchWithOption === 'other' && (customLaunchWithOption == null || customLaunchWithOption === '')"
       (click)="selectDefault()"
     >
       Launch
