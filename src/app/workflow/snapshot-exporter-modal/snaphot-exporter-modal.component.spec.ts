@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DoiModalComponent } from './doi-modal.component';
+import { SnaphotExporterModalComponent } from './snaphot-exporter-modal.component';
 
 describe('SnapshotDoiOrcidComponentComponent', () => {
-  let component: DoiModalComponent;
-  let fixture: ComponentFixture<DoiModalComponent>;
+  let component: SnaphotExporterModalComponent;
+  let fixture: ComponentFixture<SnaphotExporterModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DoiModalComponent],
+      declarations: [SnaphotExporterModalComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DoiModalComponent);
+    fixture = TestBed.createComponent(SnaphotExporterModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

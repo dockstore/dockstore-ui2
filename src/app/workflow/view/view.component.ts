@@ -33,7 +33,7 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
-import { DoiModalComponent } from '../doi-modal/doi-modal.component';
+import { SnaphotExporterModalComponent, SnapshotExporterAction } from '../snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewService } from './view.service';
@@ -116,18 +116,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   requestDOIForWorkflowVersion() {
-    const dialogRef = this.matDialog.open(DoiModalComponent, {
-      width: '600px',
-      data: {
-        workflow: this.workflow,
-        version: this.version,
-      },
-    });
-    dialogRef.afterClosed().subscribe((action) => {
-      if ('snapshot' === action) {
-        this.snapshotVersion();
-      }
-    });
+    this.snaphshotExportDialog(SnapshotExporterAction.DOI);
   }
 
   /**
@@ -137,9 +126,19 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   snapshotVersion(): void {
-    this.viewService.snapshotVersion(this.workflow, this.version);
+    this.snaphshotExportDialog(SnapshotExporterAction.SNAPSHOT);
   }
 
+  private snaphshotExportDialog(action: SnapshotExporterAction) {
+    const dialogRef = this.matDialog.open(SnaphotExporterModalComponent, {
+      width: '600px',
+      data: {
+        workflow: this.workflow,
+        version: this.version,
+        action: action,
+      },
+    });
+  }
   ngOnInit() {
     this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));

@@ -10,26 +10,36 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { BioWorkflow, WorkflowVersion } from '../../shared/swagger';
 import { ViewService } from '../view/view.service';
 
-export interface DoiModalDialogData {
+export enum SnapshotExporterAction {
+  SNAPSHOT,
+  DOI,
+  ORCID,
+}
+
+export interface SnapshotExporterDialogData {
   workflow: BioWorkflow;
   version: WorkflowVersion;
+  action: SnapshotExporterAction;
 }
 
 @Component({
-  selector: 'app-doi-modal-component',
-  templateUrl: './doi-modal.component.html',
-  styleUrls: ['./doi-modal.component.scss'],
+  selector: 'app-snapshot-exporter-modal-component',
+  templateUrl: './snaphot-exporter-modal.component.html',
+  styleUrls: ['./snaphot-exporter-modal.component.scss'],
 })
-export class DoiModalComponent extends Base implements OnInit {
+export class SnaphotExporterModalComponent extends Base implements OnInit {
   public hasZenodoToken$: Observable<boolean> = this.tokenQuery.hasZenodoToken$;
   public isSnapshot: boolean = this.dialogData.version.frozen;
   public workflow: BioWorkflow;
   public version: WorkflowVersion;
   public Dockstore = Dockstore;
+  public SnapshotExporterAction = SnapshotExporterAction;
+  public title: String;
+  public action: SnapshotExporterAction;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: DoiModalDialogData,
-    private dialogRef: MatDialogRef<DoiModalComponent>,
+    @Inject(MAT_DIALOG_DATA) private dialogData: SnapshotExporterDialogData,
+    private dialogRef: MatDialogRef<SnaphotExporterModalComponent>,
     private tokenQuery: TokenQuery,
     private alertService: AlertService,
     private viewService: ViewService,
@@ -38,6 +48,8 @@ export class DoiModalComponent extends Base implements OnInit {
     super();
     this.workflow = dialogData.workflow;
     this.version = dialogData.version;
+    this.action = dialogData.action;
+    this.title = this.calculateTitle(dialogData.action);
   }
 
   ngOnInit(): void {
@@ -50,6 +62,10 @@ export class DoiModalComponent extends Base implements OnInit {
       .subscribe(() => this.dialogRef.close());
   }
 
+  snapshot() {
+    this.dialogRef.close();
+  }
+
   requestDOI() {
     this.viewService.requestDOIForWorkflowVersion(this.workflow, this.version);
     this.dialogRef.close(0);
@@ -57,5 +73,16 @@ export class DoiModalComponent extends Base implements OnInit {
 
   closeForSnapshot() {
     this.dialogRef.close('snapshot');
+  }
+
+  private calculateTitle(action: SnapshotExporterAction) {
+    switch (action) {
+      case SnapshotExporterAction.SNAPSHOT:
+        return 'Snapshot';
+      case SnapshotExporterAction.DOI:
+        return 'Request DOI';
+      case SnapshotExporterAction.ORCID:
+        return 'Export to ORCID';
+    }
   }
 }

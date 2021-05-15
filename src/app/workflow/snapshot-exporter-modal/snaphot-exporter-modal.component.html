@@ -1,0 +1,25 @@
+<div>
+  <h4 mat-dialog-title>
+    {{ title }}: <span style="color: #3f51b5">Version {{ version.name }}</span>
+  </h4>
+  <div [ngSwitch]="action">
+    <div *ngSwitchCase="SnapshotExporterAction.SNAPSHOT">
+      <p>
+        A snapshot freezes the workflow version, ensuring that the content of the workflow does not change if cited in publications.
+        <b>Important note: once a snapshot is made, the workflow version becomes uneditable, apart from some metadata.</b>
+      </p>
+      <p>
+        You can then use this snapshot to request a DOI or export to your ORCID profile.
+        <b>Are you sure you want to snapshot this version?</b>
+      </p>
+      <div>
+        <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+          <button color="primary" mat-flat-button (click)="snapshot()">Snapshot</button>
+          <button mat-button mat-dialog-close color="secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="SnapshotExporterAction.DOI">tbd</div>
+    <div *ngSwitchCase="SnapshotExporterAction.ORCID">tbd</div>
+  </div>
+</div>
