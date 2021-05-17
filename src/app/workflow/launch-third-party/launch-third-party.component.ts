@@ -9,7 +9,7 @@ import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
-import { CloudInstance, CloudInstancesService, Language, User, UsersService } from '../../shared/openapi';
+import { CloudInstance, CloudInstancesService, User, UsersService } from '../../shared/openapi';
 import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
