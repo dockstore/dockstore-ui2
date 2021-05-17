@@ -19,37 +19,24 @@
       <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization icon" />
       <a class="category-text" [routerLink]="['/organizations/']">Organizations</a>
       <span fxHide.lt-sm>/</span>
-      <span fxHide.lt-sm>{{ (organization$ | async)?.displayName }}</span>
+      <div fxHide.lt-sm *ngIf="organizationStarGazersClicked; else organizationName" fxLayoutGap="1rem">
+        <a class="category-text" [routerLink]="['./']" (click)="organizationStarGazersChange()">{{
+          (organization$ | async)?.displayName
+        }}</a>
+        <span>/</span>
+        <span>Stargazers</span>
+      </div>
+      <ng-template #organizationName>
+        <span fxHide.lt-sm>{{ (organization$ | async)?.displayName }}</span>
+      </ng-template>
     </div>
   </div>
 </app-header>
 <app-loading [loading]="loading$ | async">
   <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
-  <div class="container" *ngIf="organizationStarGazersClicked && (organization$ | async) as org">
-    <div fxLayout="row">
-      <div fxFlex="70">
-        <h3>{{ org.displayName }}</h3>
-      </div>
-      <div fxFlex>
-        <app-organization-starring
-          *ngIf="org?.status === approved"
-          [organization]="org"
-          class="pull-right starring-button"
-          (change)="organizationStarGazersChange()"
-        ></app-organization-starring>
-      </div>
-    </div>
-    <p class="update">
-      <span [matTooltip]="org?.dbUpdateDate | date: 'medium'">Last updated: {{ org?.dbUpdateDate | timeAgoMessage }}</span>
-    </p>
-    <app-organization-stargazers></app-organization-stargazers>
-    <button mat-flat-button color="primary" id="backButton" type="button" (click)="organizationStarGazersClicked = false">
-      <mat-icon>chevron_left</mat-icon>Back to details
-    </button>
-  </div>
   <!-- Organization header -->
-  <div class="container mb-5" *ngIf="!organizationStarGazersClicked && (organization$ | async) as org" fxLayout="column" fxLayoutGap="10px">
-    <ngx-json-ld [json]="schema$ | async"></ngx-json-ld>
+  <div class="container mb-5" *ngIf="organization$ | async as org" fxLayout="column" fxLayoutGap="10px">
+    <ngx-json-ld [json]="schema$ | async" class="m-0"></ngx-json-ld>
     <mat-card fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
       <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
       <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
@@ -71,11 +58,11 @@
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between">
         <div fxFlex="90" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
           <div *ngIf="gravatarUrl$ | async">
-            <img [src]="gravatarUrl$ | async" class="orgLogo" alt="avatar" />
+            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="avatar" />
           </div>
           <div>
             <h2 class="name">{{ org.displayName }}</h2>
-            <span>{{ org.topic }}</span>
+            <span class="text-break">{{ org.topic }}</span>
           </div>
         </div>
         <div fxFlex>
@@ -87,82 +74,91 @@
           ></app-organization-starring>
         </div>
       </div>
-      <mat-card-actions *ngIf="canEdit$ | async" fxLayoutAlign="flex-end">
+      <mat-card-actions *ngIf="(canEdit$ | async) && !organizationStarGazersClicked" fxLayoutAlign="flex-end">
         <button mat-button (click)="editOrganization()" id="editOrgInfo" matTooltip="Edit the organization">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-card-actions>
     </div>
 
+    <div *ngIf="organizationStarGazersClicked; else tabsAndDescription">
+      <app-organization-stargazers></app-organization-stargazers>
+      <button mat-flat-button color="primary" id="backButton" type="button" (click)="organizationStarGazersClicked = false">
+        <mat-icon>chevron_left</mat-icon>Back to details
+      </button>
+    </div>
+
     <!-- Tabs and description -->
-    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="2rem" class="my-3" data-cy="organizationDetails">
-      <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
-        <mat-tab-group class="purple-tab-group">
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <div fxLayoutGap="0.5rem">
-                <img src="../../../assets/svg/sub-nav/collections.svg" alt="collections icon" />
-                <span>Collections</span>
-                <span class="tab-display">{{ collectionsLength$ | async }}</span>
-              </div>
-            </ng-template>
-            <collections [organizationID]="org.id" [organizationName]="org.name"></collections>
-          </mat-tab>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <div fxLayoutGap="0.5rem">
-                <mat-icon class="tab-icons">people</mat-icon>
-                <span>Members</span>
-                <span class="tab-display">{{ (organizationMembersQuery.sortedOrganizationMembers$ | async).length }}</span>
-              </div>
-            </ng-template>
-            <organization-members></organization-members>
-          </mat-tab>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <div fxLayoutGap="0.5rem">
-                <mat-icon class="tab-icons">update</mat-icon>
-                <span>Updates</span>
-                <span class="tab-display">{{ (eventsQuery.organizationEvents$ | async).length }}</span>
-              </div>
-            </ng-template>
-            <events [organizationID]="org.id"></events>
-          </mat-tab>
-        </mat-tab-group>
-      </div>
-      <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
-        <div fxLayout="column" fxLayoutGap="15px" class="my-3">
-          <div fxLayout="row" fxLayoutAlign="space-between">
-            <h4>About the Organization</h4>
-            <button
-              mat-button
-              *ngIf="canEdit$ | async"
-              (click)="updateDescription()"
-              id="editOrgDescription"
-              matTooltip="Edit the description"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-          </div>
-          <div *ngIf="!org.description" fxFlex>
-            <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
-            <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
-          </div>
-          <div fxLayout="column" fxLayoutGap="10px" class="px-4 py-1">
-            <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
-              <mat-icon class="side-icons">link</mat-icon>
-              <span
-                ><a [href]="org.link" target="_blank" rel="noopener">{{ org?.link }}</a></span
+    <ng-template #tabsAndDescription>
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="2rem" class="my-3" data-cy="organizationDetails">
+        <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
+          <mat-tab-group class="purple-tab-group">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <div fxLayoutGap="0.5rem">
+                  <img src="../../../assets/svg/sub-nav/collections.svg" alt="collections icon" />
+                  <span>Collections</span>
+                  <span class="tab-display">{{ collectionsLength$ | async }}</span>
+                </div>
+              </ng-template>
+              <collections [organizationID]="org.id" [organizationName]="org.name"></collections>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <div fxLayoutGap="0.5rem">
+                  <mat-icon class="tab-icons">people</mat-icon>
+                  <span>Members</span>
+                  <span class="tab-display">{{ (organizationMembersQuery.sortedOrganizationMembers$ | async).length }}</span>
+                </div>
+              </ng-template>
+              <organization-members></organization-members>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <div fxLayoutGap="0.5rem">
+                  <mat-icon class="tab-icons">update</mat-icon>
+                  <span>Updates</span>
+                  <span class="tab-display">{{ (eventsQuery.organizationEvents$ | async).length }}</span>
+                </div>
+              </ng-template>
+              <events [organizationID]="org.id"></events>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+        <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
+          <div fxLayout="column" fxLayoutGap="15px" class="my-3">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+              <h4>About the Organization</h4>
+              <button
+                mat-button
+                *ngIf="canEdit$ | async"
+                (click)="updateDescription()"
+                id="editOrgDescription"
+                matTooltip="Edit the description"
               >
-            </span>
-            <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
-              <mat-icon class="side-icons">location_on</mat-icon>
-              <span class="ellipsis-lines">{{ org.location }}</span>
-            </span>
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="!org.description" fxFlex>
+              <div *ngIf="canEdit$ | async" class="text-muted">Click edit to add a markdown description</div>
+              <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
+            </div>
+            <div fxLayout="column" fxLayoutGap="10px" class="px-4 py-1">
+              <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">
+                <mat-icon class="side-icons">link</mat-icon>
+                <span
+                  ><a [href]="org.link" target="_blank" rel="noopener">{{ org?.link }}</a></span
+                >
+              </span>
+              <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.location">
+                <mat-icon class="side-icons">location_on</mat-icon>
+                <span class="text-break">{{ org.location }}</span>
+              </span>
+            </div>
+            <markdown-wrapper *ngIf="org.description" fxFlex [data]="org.description"></markdown-wrapper>
           </div>
-          <markdown-wrapper *ngIf="org.description" fxFlex [data]="org.description"></markdown-wrapper>
         </div>
       </div>
-    </div>
+    </ng-template>
   </div>
 </app-loading>

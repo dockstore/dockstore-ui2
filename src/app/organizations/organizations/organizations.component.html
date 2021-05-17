@@ -59,11 +59,11 @@
           fxFlex.lt-md="100"
         >
           <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-            <div class="overflow-scroll" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="1rem">
+            <div fxLayout="column" fxLayoutGap="2rem">
               <a [routerLink]="org.name" class="no-underline" target="_self">
                 <div fxLayout="column" fxLayoutAlign="space-around">
                   <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                    <img *ngIf="org.avatarUrl; else placeholder" class="orgLogo" [src]="org.avatarUrl" alt="org logo" />
+                    <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
                     <ng-template #placeholder><span style="height: 50px"></span></ng-template>
                     <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
                       <mat-icon class="orgStar">star</mat-icon>
@@ -71,7 +71,7 @@
                     </div>
                   </div>
                   <div data-cy="orgName">
-                    <h5>{{ org.displayName }}</h5>
+                    <h5 class="text-break">{{ org.displayName }}</h5>
                     <span class="org-topic">{{ org.topic }}</span>
                   </div>
                 </div>
@@ -80,17 +80,17 @@
                 <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
                   <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.link">
                     <mat-icon class="info-icon">link</mat-icon>
-                    <span
+                    <span class="info-overflow"
                       ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
                     >
                   </span>
                   <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.location">
                     <mat-icon class="info-icon">location_on</mat-icon>
-                    <span>{{ org.location }}</span>
+                    <span class="info-overflow">{{ org.location }}</span>
                   </span>
                   <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.email">
                     <mat-icon class="info-icon">email</mat-icon>
-                    <span
+                    <span class="info-overflow"
                       ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
                     >
                   </span>

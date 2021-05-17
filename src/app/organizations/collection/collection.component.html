@@ -14,8 +14,18 @@
    limitations under the License.
 -->
 <app-header>
-  <mat-icon>people</mat-icon>
-  Collections
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div fxLayout="row" fxLayoutGap="1rem">
+      <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization icon" />
+      <a class="category-text" [routerLink]="['/organizations/']">Organizations</a>
+      <span fxHide.lt-sm>/</span>
+      <a class="category-text" [routerLink]="['/organizations/', (organization$ | async)?.name]" fxHide.lt-sm>{{
+        (organization$ | async)?.displayName
+      }}</a>
+      <span fxHide.lt-md>/</span>
+      <span fxHide.lt-md>{{ (collection$ | async)?.displayName }}</span>
+    </div>
+  </div>
 </app-header>
 <!-- Beware of double loading bar (from page and from loading component) -->
 <app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
@@ -40,7 +50,7 @@
       <div fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
           <div *ngIf="gravatarUrl$ | async" fxHide.lt-sm>
-            <img [src]="gravatarUrl$ | async" class="orgLogo" alt="organization logo" />
+            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="organization logo" />
           </div>
           <div>
             <h2>
@@ -82,7 +92,7 @@
                   ]"
                   class="no-underline"
                 >
-                  <div fxLayout="row" fxLayoutAlign="space-between">
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                       <img *ngIf="entry.entryType === 'workflow'" src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
                       <img *ngIf="entry.entryType === 'tool'" src="../../../assets/svg/sub-nav/tool.svg" alt="tool icon" />

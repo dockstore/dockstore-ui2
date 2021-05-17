@@ -16,13 +16,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { OrganizationStarringComponent } from './organization-starring.component';
 import { OrganizationStarringService } from './organization-starring.service';
 
 @NgModule({
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, MatTooltipModule],
   declarations: [OrganizationStarringComponent],
   exports: [OrganizationStarringComponent],
   providers: [OrganizationStarringService, StarOrganizationService],

@@ -1235,12 +1235,6 @@ div.tabs > div:target > div,
   color: #808080;
 }
 
-.ellipsis-lines {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
 .test_parameter_input {
   width: 90%;
   float: left;
@@ -1462,7 +1456,13 @@ hr {
   vertical-align: sub;
 }
 
-.orgLogo {
+.small-org-logo {
   height: 50px;
   object-fit: scale-down;
+}
+
+.big-org-logo {
+  max-height: 100px;
+  max-width: 200px;
+  margin-top: 1.5rem;
 }
