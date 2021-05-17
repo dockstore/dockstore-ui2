@@ -109,7 +109,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   @Input()
   selectedVersion: WorkflowVersion;
 
-  user: User;
+  user$: Observable<User>;
 
   /**
    * Indicates whether the selected version has any content
@@ -210,7 +210,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   }
 
   ngOnInit(): void {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => (this.user = user));
+    this.user$ = this.userQuery.user$;
     this.cloudInstanceService.getCloudInstances().subscribe((cloudInstances: Array<CloudInstance>) => {
       this.cloudInstances = cloudInstances;
     });

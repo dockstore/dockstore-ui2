@@ -108,13 +108,16 @@
             </a>
           </div>
 
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'gxformat2'">
+          <div
+            fxFlex="100%"
+            *ngIf="config.FEATURES.enableLaunchWithGalaxy && workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2"
+          >
             <app-multi-cloud-launch
               [cloudInstances]="cloudInstances"
               [usersCloudInstances]="usersCloudInstances"
               [languagePartner]="partner.GALAXY"
               [appendToLaunchUrl]="'%23workflow/' + workflow?.full_workflow_path"
-              [user]="user"
+              [user]="user$ | async"
             ></app-multi-cloud-launch>
           </div>
 

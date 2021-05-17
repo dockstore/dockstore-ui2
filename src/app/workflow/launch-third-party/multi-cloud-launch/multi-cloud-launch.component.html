@@ -15,30 +15,31 @@
         value="{{ instance.url }}"
         [checked]="this.defaultLaunchWith === instance.url"
       >
-        <span class="normal-font-weight"> {{ instance.displayName }} </span>
+        {{ instance.displayName }}
       </mat-radio-button>
-      <ng-container *ngIf="user">
-        <!--     Uncomment when we want to get the users custom cloud instances-->
-        <!--      <mat-radio-button-->
-        <!--        *ngFor="let usersInstance of usersCloudInstances | filterCloudInstances: languagePartner"-->
-        <!--        name="launchWithUrl"-->
-        <!--        value="{{ usersInstance.url }}"-->
-        <!--        [checked]="this.defaultLaunchWith === usersInstance.url"-->
-        <!--      >-->
-        <!--        {{ usersInstance.displayName }} (Custom)-->
-        <!--      </mat-radio-button>-->
-        <mat-radio-button value="other">
-          <mat-form-field color="accent">
-            <input
-              matInput
-              placeholder="Specify a url..."
-              [(ngModel)]="customLaunchWith"
-              (ngModelChange)="presetLaunchWith = 'other'"
-              name="something"
-            />
-          </mat-form-field>
-        </mat-radio-button>
-      </ng-container>
+      <!--     Uncomment when we want to get the users custom cloud instances-->
+      <!--      <ng-container *ngIf="user">-->
+
+      <!--      <mat-radio-button-->
+      <!--        *ngFor="let usersInstance of usersCloudInstances | filterCloudInstances: languagePartner"-->
+      <!--        name="launchWithUrl"-->
+      <!--        value="{{ usersInstance.url }}"-->
+      <!--        [checked]="this.defaultLaunchWith === usersInstance.url"-->
+      <!--      >-->
+      <!--        {{ usersInstance.displayName }} (Custom)-->
+      <!--      </mat-radio-button>-->
+      <mat-radio-button value="other">
+        <mat-form-field class="small-text" color="accent">
+          <input
+            matInput
+            placeholder="Specify a url..."
+            [(ngModel)]="customLaunchWith"
+            (ngModelChange)="presetLaunchWith = 'other'"
+            name="something"
+          />
+        </mat-form-field>
+      </mat-radio-button>
+      <!--      </ng-container>-->
     </mat-radio-group>
   </div>
   <div class="px-4" fxLayout="row" fxLayoutAlign="end end">
