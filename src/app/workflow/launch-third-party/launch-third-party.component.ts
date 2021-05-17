@@ -1,7 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
-import FileTypeEnum = ToolFile.FileTypeEnum;
 import { DomSanitizer } from '@angular/platform-browser';
 import { combineLatest, Observable } from 'rxjs';
 import { map, share, takeUntil } from 'rxjs/operators';
@@ -17,6 +16,7 @@ import { UserQuery } from '../../shared/user/user.query';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
+import FileTypeEnum = ToolFile.FileTypeEnum;
 
 // tslint:disable:max-line-length
 /**
