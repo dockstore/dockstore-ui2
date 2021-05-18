@@ -16,6 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -34,11 +35,13 @@ import { OrganizationsStateService } from '../state/organizations.service';
   styleUrls: ['./organizations.component.scss'],
 })
 export class OrganizationsComponent extends Base implements OnInit {
-  public filteredOrganizations$: Observable<Array<Organization>>;
   public orgLength$: Observable<number>;
   public organizationSearchForm: FormGroup;
   public loading$: Observable<boolean>;
   public isLoggedIn$: Observable<boolean>;
+  public pagedOrganizations: Array<Organization>;
+  public readonly initialPageSize = 9;
+  private filteredOrganizations: Array<Organization>;
 
   constructor(
     private organizationsStateService: OrganizationsStateService,
@@ -59,7 +62,12 @@ export class OrganizationsComponent extends Base implements OnInit {
     // The real loading$ is currently not being used because the alertQuery global loading is used instead
     // this.loading$ = this.organizationsQuery.loading$;
     this.organizationsStateService.updateOrganizations();
-    this.filteredOrganizations$ = this.organizationsQuery.filteredOrganizations$;
+    this.organizationsQuery.filteredOrganizations$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((filteredOrganizations) => {
+      this.filteredOrganizations = filteredOrganizations;
+      if (filteredOrganizations) {
+        this.pagedOrganizations = filteredOrganizations.slice(0, this.initialPageSize);
+      }
+    });
     this.orgLength$ = this.organizationsQuery.orgsLength$;
     this.organizationSearchForm
       .get('name')
@@ -83,5 +91,16 @@ export class OrganizationsComponent extends Base implements OnInit {
    */
   createOrganization(): void {
     this.matDialog.open(RegisterOrganizationComponent, { data: { organization: null, mode: TagEditorMode.Add }, width: '600px' });
+  }
+
+  onPageChange(event: PageEvent) {
+    const organizations = this.filteredOrganizations;
+    const length = organizations.length;
+    const startIndex = event.pageIndex * event.pageSize;
+    let endIndex = startIndex + event.pageSize;
+    if (endIndex > length) {
+      endIndex = length;
+    }
+    this.pagedOrganizations = organizations.slice(startIndex, endIndex);
   }
 }
