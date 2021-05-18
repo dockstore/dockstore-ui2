@@ -34,8 +34,9 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   public version: WorkflowVersion;
   public Dockstore = Dockstore;
   public SnapshotExporterAction = SnapshotExporterAction;
-  public title: String;
+  public title: string;
   public action: SnapshotExporterAction;
+  public doiRequested = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: SnapshotExporterDialogData,

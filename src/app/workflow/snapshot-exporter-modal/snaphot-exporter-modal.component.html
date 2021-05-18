@@ -19,7 +19,53 @@
         </div>
       </div>
     </div>
-    <div *ngSwitchCase="SnapshotExporterAction.DOI">tbd</div>
-    <div *ngSwitchCase="SnapshotExporterAction.ORCID">tbd</div>
+    <div *ngSwitchCase="SnapshotExporterAction.DOI">
+      <mat-horizontal-stepper linear>
+        <mat-step label="Snapshot">
+          <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
+          <div>
+            <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+              <div fxFlex *ngIf="doiRequested" class="confirmation" style="display: inline-block">
+                Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.
+              </div>
+              <div fxFlex fxLayoutAlign="end" fxLayout="row">
+                <button color="primary" mat-flat-button (click)="doiRequested = true" *ngIf="!doiRequested">Request DOI</button>
+                <button color="primary" mat-flat-button (click)="snapshot()" *ngIf="doiRequested">Confirm</button>
+                <button mat-button mat-dialog-close color="secondary">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </mat-step>
+        <mat-step label="DOI">
+          <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+    <div *ngSwitchCase="SnapshotExporterAction.ORCID">
+      <mat-horizontal-stepper linear>
+        <mat-step label="Snapshot">
+          <div>Snapshot</div>
+        </mat-step>
+        <mat-step label="DOI">
+          <div>DOI</div>
+        </mat-step>
+        <mat-step label="ORCID">
+          <div>ORCID</div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
   </div>
+  <ng-template #doiBlurb>
+    <p>A Digital Object Identifier (DOI) allows a workflow version to be easily cited in publications. What’s involved in the request:</p>
+    <ol>
+      <li>
+        Before a DOI can be issued, a snapshot of the workflow version must be made to ensure that the content referenced by the DOI does
+        not change. Please note: a snapshot will make the workflow version uneditable, apart from some metadata.
+      </li>
+      <li>
+        Next, a DOI is requested, providing a unique identifier for this workflow version. The DOI identifier will be displayed in the
+        snapshot column of the versions table.
+      </li>
+    </ol>
+  </ng-template>
 </div>
