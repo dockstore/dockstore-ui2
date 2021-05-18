@@ -131,7 +131,7 @@
         >
           <mat-label>Descriptor Type: </mat-label>
           <mat-radio-button class="radio-button" *ngFor="let descriptorType of descriptorLanguages$ | async" [value]="descriptorType">
-            {{ descriptorType === 'gxformat2' ? 'Galaxy' : ('descriptor_type' | mapFriendlyValue: descriptorType) }}
+            {{ descriptorType | mapFriendlyValue: descriptorType }}
           </mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="w-100">
@@ -226,7 +226,7 @@
             *ngFor="let descriptorType of descriptorLanguages$ | async"
             [value]="descriptorType"
           >
-            {{ descriptorType === 'gxformat2' ? 'Galaxy' : ('descriptor_type' | mapFriendlyValue: descriptorType) }}
+            {{ descriptorType | mapFriendlyValue: descriptorType }}
           </mat-radio-button>
         </mat-radio-group>
 
