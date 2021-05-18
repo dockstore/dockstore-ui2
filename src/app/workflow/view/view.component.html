@@ -56,6 +56,19 @@
     >
       Request DOI
     </button>
+    <button
+      mat-menu-item
+      id="OrcidButton"
+      color="accent"
+      class="btn-block"
+      (click)="exportToOrcid()"
+      [disabled]="isRefreshing$ | async"
+      data-cy="dockstore-export-orcid-button"
+      *ngIf="version.referenceType !== 'BRANCH' && !version.versionMetadata?.orcidPutCode && workflow?.is_published"
+      matTooltip="Export this version to ORCID."
+    >
+      Export to ORCID
+    </button>
     <button mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion" (click)="updateDefaultVersion()">
       Set as Default Version
     </button>

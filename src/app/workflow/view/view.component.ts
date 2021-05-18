@@ -129,6 +129,10 @@ export class ViewWorkflowComponent extends View implements OnInit {
     this.snaphshotExportDialog(SnapshotExporterAction.SNAPSHOT);
   }
 
+  exportToOrcid() {
+    this.snaphshotExportDialog(SnapshotExporterAction.ORCID);
+  }
+
   private snaphshotExportDialog(action: SnapshotExporterAction) {
     const dialogRef = this.matDialog.open(SnaphotExporterModalComponent, {
       width: '600px',
