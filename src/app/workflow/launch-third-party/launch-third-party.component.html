@@ -1,4 +1,11 @@
-<mat-card *ngIf="workflow?.descriptorType === 'WDL' || workflow?.descriptorType === 'CWL' || workflow.descriptorType === 'NFL'">
+<mat-card
+  *ngIf="
+    workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL ||
+    workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL ||
+    workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL ||
+    workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2
+  "
+>
   <mat-card-header>
     <mat-card-title>Launch with</mat-card-title>
   </mat-card-header>
@@ -6,14 +13,14 @@
     <div class="container-source-repos">
       <div class="container-launch-with">
         <div fxLayout="row wrap">
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
             <div *ngIf="(hasFileImports$ | async) || (hasHttpImports$ | async)" class="import-warning">
               Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without
               imports in DNAstack.
             </div>
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ''"
+              [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
               target="_blank"
               rel="noopener"
               [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
@@ -22,10 +29,10 @@
               ><img data-cy="dnastackIcon" src="../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
             >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : ''"
+              [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
               target="_blank"
               rel="noopener"
               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
@@ -34,7 +41,7 @@
               ><mat-icon svgIcon="dnanexus" data-cy="dnanexusIcon"></mat-icon> DNAnexus &raquo;</a
             >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
             <a
               mat-raised-button
               [matTooltip]="terraTooltip$ | async"
@@ -46,7 +53,7 @@
               ><mat-icon svgIcon="terra" data-cy="terraIcon"></mat-icon> Terra &raquo;</a
             >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL">
             <a
               mat-raised-button
               [matTooltip]="cgcTooltip$ | async"
@@ -58,7 +65,7 @@
               ><img src="../assets/images/thirdparty/cgc.png" /> CGC
             </a>
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL">
             <a
               mat-raised-button
               [matTooltip]="bdCatalystSevenBridgesTooltip$ | async"
@@ -70,7 +77,7 @@
               >NHLBI BioData Catalyst
             </a>
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
             <a
               mat-raised-button
               [matTooltip]="anvilTooltip$ | async"
@@ -82,7 +89,7 @@
               ><mat-icon class="anvil-icon" svgIcon="anvil" data-cy="anvilIcon"></mat-icon> AnVIL &raquo;</a
             >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'WDL'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
             <a
               mat-raised-button
               [matTooltip]="bdCatalystTerraTooltip$ | async"
@@ -95,7 +102,7 @@
               >NHLBI BioData Catalyst</a
             >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'CWL'">
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL">
             <a
               mat-raised-button
               [matTooltip]="cavaticaTooltip$ | async"
@@ -107,10 +114,24 @@
               ><img src="../assets/images/thirdparty/cavatica.png" /> Cavatica
             </a>
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === 'NFL'">
+
+          <div
+            fxFlex="100%"
+            *ngIf="config.FEATURES.enableLaunchWithGalaxy && workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2"
+          >
+            <app-multi-cloud-launch
+              [cloudInstances]="cloudInstances"
+              [usersCloudInstances]="usersCloudInstances"
+              [languagePartner]="partner.GALAXY"
+              [appendToLaunchUrl]="'%23workflow/' + workflow?.full_workflow_path"
+              [user]="user$ | async"
+            ></app-multi-cloud-launch>
+          </div>
+
+          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL">
             <a
               mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The WDL has no content.' : 'Export this workflow to Nextflow Tower'"
+              [matTooltip]="!(hasContent$ | async) ? 'The Nextflow workflow has no content.' : 'Export this workflow to Nextflow Tower'"
               target="_blank"
               rel="noopener"
               [attr.href]="

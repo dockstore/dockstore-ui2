@@ -17,6 +17,9 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
+import RoleEnum = Permission.RoleEnum;
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { CloudInstance } from '../shared/openapi';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
@@ -30,8 +33,6 @@ import { User } from './../shared/swagger/model/user';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
-import RoleEnum = Permission.RoleEnum;
-import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export class ContainerStubService {
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -332,6 +333,13 @@ export class UsersStubService {
     return observableOf([]);
   }
   changeUsername(username) {
+    return observableOf([]);
+  }
+  getUserCloudInstances(userId: number): Observable<Array<CloudInstance>> {
+    return observableOf([]);
+  }
+
+  postUserCloudInstance(userId: number, body: CloudInstance): Observable<Array<CloudInstance>> {
     return observableOf([]);
   }
 }
@@ -696,6 +704,12 @@ export class OrganizationsStubService {
     return observableOf({});
   }
   getStarredUsersForApprovedOrganization(entryId: number): Observable<Array<User>> {
+    return observableOf([]);
+  }
+}
+
+export class CloudInstancesStubService {
+  getCloudInstances(): Observable<Array<CloudInstance>> {
     return observableOf([]);
   }
 }

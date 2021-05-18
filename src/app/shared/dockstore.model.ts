@@ -88,5 +88,6 @@ export class Dockstore {
 
   static FEATURES = {
     enableCwlViewer: true,
+    enableLaunchWithGalaxy: true,
   };
 }
