@@ -2,8 +2,8 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router/';
-import { EMPTY, Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { concat, EMPTY, Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -61,43 +61,79 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
 
   ngOnInit(): void {}
 
-  snapshot() {
-    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
-      tap(() => {
-        this.dialogRef.close();
-      })
-      // If there's an error, leave dialog up. this.snapshotExporterModalService.snapshotWorkflowVersion displays error message
-    );
+  linkAccount() {
+    this.dialogRef.close();
+    this.router.navigate(['/accounts']);
   }
 
-  requestDOI() {
+  snapshot() {
+    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version)
+      .subscribe(() => this.dialogRef.close());
+      // If there's an error, leave dialog up. this.snapshotExporterModalService.snapshotWorkflowVersion displays error message
+  }
+
+  snapshotAndDOI() {
+    const observables: Observable<void>[] = [];
     if (!this.version.frozen) {
-      this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
-        map((result) => {
-          this.stepper.selected.completed = true;
-          this.stepper.next();
-          this.snapshotExporterModalService.requestDOI(this.workflow, this.version);
-        })
-      );
+      observables.push(this.snapshotStep());
     }
-    this.snapshotExporterModalService.requestDOI(this.workflow, this.version).pipe(
-      map(() => {
-        if (this.action === SnapshotExporterAction.ORCID) {
-          this.stepper.next();
-          this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version);
-        } else {
-        }
-      }),
+    observables.push(this.requestDOIStep());
+    concat(observables).subscribe(() => {
+
+      },
+      (error) => {
+
+      });
+  }
+
+  snapshotDoiAndOrcid() {
+    const observables: Observable<void>[] = [];
+    if (!this.version.frozen) {
+      observables.push(this.snapshotStep());
+    }
+    if (!this.version.doiURL) {
+      observables.push(this.requestDOIStep());
+    }
+    observables.push(this.orcidStep());
+    concat(observables).subscribe(() => {
+
+      },
+      (error) => {
+
+      });
+  }
+
+  private requestDOIStep() {
+    return this.snapshotExporterModalService.requestDOI(this.workflow, this.version).pipe(
+      tap(this.stepCompleted()),
       catchError((error) => {
         return EMPTY;
       })
     );
   }
 
-  linkAccount() {
-    this.dialogRef.close();
-    this.router.navigate(['/accounts']);
+  private snapshotStep() {
+    return this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version)
+      .pipe(
+        tap(this.stepCompleted())
+      );
   }
+
+  private orcidStep() {
+    return this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version)
+      .pipe(
+        tap(this.stepCompleted)
+      );
+  }
+
+  private stepCompleted() {
+    return () => {
+      this.stepper.selected.completed = true;
+      this.stepper.next();
+    };
+  }
+
+
 
   private calculateTitle() {
     switch (this.action) {

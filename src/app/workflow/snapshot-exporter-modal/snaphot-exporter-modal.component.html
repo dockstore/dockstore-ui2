@@ -36,7 +36,7 @@
                 >
                   Request DOI
                 </button>
-                <button color="primary" mat-flat-button (click)="requestDOI()" *ngIf="doiRequested">Confirm</button>
+                <button color="primary" mat-flat-button (click)="snapshotAndDOI()" *ngIf="doiRequested">Confirm</button>
                 <button mat-button mat-dialog-close color="secondary">Cancel</button>
               </div>
             </div>
@@ -45,7 +45,7 @@
         <mat-step label="DOI">
           <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
           <div fxFlex fxLayoutAlign="end" fxLayout="row">
-            <button [disabled]="!(hasZenodoToken$ | async)" color="primary" mat-flat-button (click)="requestDOI()">Request DOI</button>
+            <button [disabled]="!(hasZenodoToken$ | async)" color="primary" mat-flat-button (click)="snapshotAndDOI()">Request DOI</button>
             <button mat-button mat-dialog-close color="secondary">Cancel</button>
           </div>
         </mat-step>
