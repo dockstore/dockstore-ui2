@@ -1,5 +1,4 @@
-import { EventEmitter } from '@angular/core';
-import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Base } from '../../../shared/base';
 import { CloudInstance, User } from '../../../shared/openapi';
