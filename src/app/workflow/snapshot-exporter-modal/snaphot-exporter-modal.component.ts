@@ -1,14 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NavigationStart, Router, RouterEvent } from '@angular/router/';
+import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router/';
 import { Observable } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenQuery } from '../../shared/state/token.query';
 import { BioWorkflow, WorkflowVersion } from '../../shared/swagger';
 import { ViewService } from '../view/view.service';
+import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
 
 export enum SnapshotExporterAction {
   SNAPSHOT,
@@ -29,6 +31,7 @@ export interface SnapshotExporterDialogData {
 })
 export class SnaphotExporterModalComponent extends Base implements OnInit {
   public hasZenodoToken$: Observable<boolean> = this.tokenQuery.hasZenodoToken$;
+  public hasOrcidToken$: Observable<boolean> = this.tokenQuery.hasOrcidToken$;
   public isSnapshot: boolean = this.dialogData.version.frozen;
   public workflow: BioWorkflow;
   public version: WorkflowVersion;
@@ -38,9 +41,12 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   public action: SnapshotExporterAction;
   public doiRequested = false;
 
+  @ViewChild('stepper') private stepper: MatStepper;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: SnapshotExporterDialogData,
     private dialogRef: MatDialogRef<SnaphotExporterModalComponent>,
+    private snapshotExporterModalService: SnapshotExporterModalService,
     private tokenQuery: TokenQuery,
     private alertService: AlertService,
     private viewService: ViewService,
@@ -50,21 +56,24 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     this.workflow = dialogData.workflow;
     this.version = dialogData.version;
     this.action = dialogData.action;
-    this.title = this.calculateTitle(dialogData.action);
+    this.title = this.calculateTitle();
   }
 
-  ngOnInit(): void {
-    // All of this so that click on a router link dismisses the dialog
-    this.router.events
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        filter((e: RouterEvent) => e instanceof NavigationStart)
-      )
-      .subscribe(() => this.dialogRef.close());
-  }
+  ngOnInit(): void {}
 
   snapshot() {
-    this.dialogRef.close();
+    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
+      map(() => {
+        switch (this.action) {
+          case SnapshotExporterAction.SNAPSHOT:
+            this.dialogRef.close();
+            break;
+          case SnapshotExporterAction.DOI:
+          case SnapshotExporterAction.ORCID:
+            this.stepper.next();
+        }
+      })
+    );
   }
 
   requestDOI() {
@@ -72,12 +81,13 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     this.dialogRef.close(0);
   }
 
-  closeForSnapshot() {
-    this.dialogRef.close('snapshot');
+  linkAccount() {
+    this.dialogRef.close();
+    this.router.navigate(['/accounts']);
   }
 
-  private calculateTitle(action: SnapshotExporterAction) {
-    switch (action) {
+  private calculateTitle() {
+    switch (this.action) {
       case SnapshotExporterAction.SNAPSHOT:
         return 'Snapshot';
       case SnapshotExporterAction.DOI:

@@ -19,17 +19,28 @@
         </div>
       </div>
     </div>
-    <div *ngSwitchCase="SnapshotExporterAction.DOI">
-      <mat-horizontal-stepper linear>
+
+    <div *ngSwitchDefault>
+      <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
+      <div *ngIf="action === SnapshotExporterAction.ORCID"><ng-template *ngTemplateOutlet="orcidCheck"></ng-template></div>
+      <mat-horizontal-stepper linear #stepper>
         <mat-step label="Snapshot">
           <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
           <div>
             <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-              <div fxFlex *ngIf="doiRequested" class="confirmation" style="display: inline-block">
+              <div fxFlex="60" *ngIf="doiRequested" class="confirmation">
                 Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.
               </div>
-              <div fxFlex fxLayoutAlign="end" fxLayout="row">
-                <button color="primary" mat-flat-button (click)="doiRequested = true" *ngIf="!doiRequested">Request DOI</button>
+              <div fxFlex fxLayoutAlign="end" fxLayout="row" fxflex>
+                <button
+                  [disabled]="!(hasZenodoToken$ | async)"
+                  color="primary"
+                  mat-flat-button
+                  (click)="doiRequested = true"
+                  *ngIf="!doiRequested"
+                >
+                  Request DOI
+                </button>
                 <button color="primary" mat-flat-button (click)="snapshot()" *ngIf="doiRequested">Confirm</button>
                 <button mat-button mat-dialog-close color="secondary">Cancel</button>
               </div>
@@ -39,33 +50,58 @@
         <mat-step label="DOI">
           <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
         </mat-step>
-      </mat-horizontal-stepper>
-    </div>
-    <div *ngSwitchCase="SnapshotExporterAction.ORCID">
-      <mat-horizontal-stepper linear>
-        <mat-step label="Snapshot">
-          <div>Snapshot</div>
-        </mat-step>
-        <mat-step label="DOI">
-          <div>DOI</div>
-        </mat-step>
-        <mat-step label="ORCID">
-          <div>ORCID</div>
-        </mat-step>
+        <mat-step label="ORCID" *ngIf="action === SnapshotExporterAction.ORCID"> TBD </mat-step>
       </mat-horizontal-stepper>
     </div>
   </div>
+
   <ng-template #doiBlurb>
     <p>A Digital Object Identifier (DOI) allows a workflow version to be easily cited in publications. What’s involved in the request:</p>
     <ol>
       <li>
-        Before a DOI can be issued, a snapshot of the workflow version must be made to ensure that the content referenced by the DOI does
-        not change. Please note: a snapshot will make the workflow version uneditable, apart from some metadata.
+        Before a DOI can be issued, a <b>snapshot</b> of the workflow version must be made to ensure that the content referenced by the DOI
+        does not change. <b>Please note: a snapshot will make the workflow version uneditable, apart from some metadata.</b>
       </li>
       <li>
         Next, a DOI is requested, providing a unique identifier for this workflow version. The DOI identifier will be displayed in the
         snapshot column of the versions table.
       </li>
     </ol>
+  </ng-template>
+
+  <ng-template #zenodoCheck>
+    <div *ngIf="!(hasZenodoToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end center">
+      <div><mat-icon color="red">warning</mat-icon></div>
+      <div>
+        <div>
+          To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to
+          this screen and try again.
+        </div>
+        <div>
+          <button class="link-action" mat-button (click)="linkAccount()">
+            <mat-icon>link</mat-icon>
+            Link account now
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #orcidCheck>
+    <div *ngIf="!(hasOrcidToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end center">
+      <div><mat-icon color="red">warning</mat-icon></div>
+      <div>
+        <div>
+          To request a DOI, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking, come back to
+          this screen and try again.
+        </div>
+        <div>
+          <button class="link-action" mat-button (click)="linkAccount()">
+            <mat-icon>link</mat-icon>
+            Link account now
+          </button>
+        </div>
+      </div>
+    </div>
   </ng-template>
 </div>
