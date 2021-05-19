@@ -123,7 +123,7 @@
               [cloudInstances]="cloudInstances"
               [usersCloudInstances]="usersCloudInstances"
               [languagePartner]="partner.GALAXY"
-              [appendToLaunchUrl]="'%23workflow/' + workflow?.full_workflow_path"
+              [appendToLaunchUrl]="config.GALAXY_IMPORT_URL + workflow?.full_workflow_path"
               [user]="user$ | async"
             ></app-multi-cloud-launch>
           </div>

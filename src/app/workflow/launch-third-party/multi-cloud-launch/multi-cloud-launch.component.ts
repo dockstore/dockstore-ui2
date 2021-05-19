@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { Base } from '../../../shared/base';
 import { CloudInstance, User } from '../../../shared/openapi';
@@ -25,6 +26,8 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
   @Input()
   user: User;
 
+  @Output() closed: EventEmitter<void>;
+
   customLaunchWithOption: string;
 
   presetLaunchWithOption: string;
@@ -36,6 +39,8 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
   customDefaultLaunchWith: string;
 
   partner: string;
+
+  expanded = false;
 
   constructor() {
     super();
@@ -84,6 +89,14 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
   set customLaunchWith(value: string) {
     this.customLaunchWithOption = value;
     this.updateLaunchWithUrl();
+  }
+
+  toggleExpanded(): void {
+    this.expanded = !this.expanded;
+  }
+
+  menuClosed() {
+    this.expanded = !this.expanded;
   }
 
   selectDefault(): void {

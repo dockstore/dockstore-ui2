@@ -1,4 +1,6 @@
-<button mat-raised-button [matMenuTriggerFor]="menu">{{ this.partner }}</button>
+<button mat-raised-button [matMenuTriggerFor]="menu" (click)="toggleExpanded()" (menuClosed)="menuClosed()">
+  {{ this.partner }} <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+</button>
 <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
   <div class="px-4" fxLayout="column" fxLayoutAlign="center start">
     <p>Please choose a well-known server to launch on, or specify your own.</p>
@@ -51,7 +53,7 @@
       rel="noopener"
       [attr.href]="launchWith.url + appendToLaunchUrl"
       color="accent"
-      [disabled]="this.presetLaunchWithOption === 'other' && (customLaunchWithOption == null || customLaunchWithOption === '')"
+      [disabled]="(!this.defaultLaunchWith && !this.launchWith.url) || (this.presetLaunchWithOption === 'other' && !customLaunchWithOption)"
       (click)="selectDefault()"
     >
       Launch

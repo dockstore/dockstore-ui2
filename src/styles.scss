@@ -1474,3 +1474,13 @@ hr {
 .mat-form-field.small-text {
   font-size: 12px;
 }
+
+// Style the float label of the mat-form-field
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
+  color: mat-color($dockstore-app-accent, 1);
+}
+// Keep the outer circle in a radio button gray even when selected
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: mat-color($dockstore-app-gray, 2) !important;
+}
