@@ -4,14 +4,7 @@
   </h4>
   <div [ngSwitch]="action">
     <div *ngSwitchCase="SnapshotExporterAction.SNAPSHOT">
-      <p>
-        A snapshot freezes the workflow version, ensuring that the content of the workflow does not change if cited in publications.
-        <b>Important note: once a snapshot is made, the workflow version becomes uneditable, apart from some metadata.</b>
-      </p>
-      <p>
-        You can then use this snapshot to request a DOI or export to your ORCID profile.
-        <b>Are you sure you want to snapshot this version?</b>
-      </p>
+      <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
       <div>
         <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
           <button color="primary" mat-flat-button (click)="snapshot()">Snapshot</button>
@@ -22,16 +15,18 @@
 
     <div *ngSwitchDefault>
       <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
-      <div *ngIf="action === SnapshotExporterAction.ORCID"><ng-template *ngTemplateOutlet="orcidCheck"></ng-template></div>
-      <mat-horizontal-stepper linear #stepper>
-        <mat-step label="Snapshot">
+      <div *ngIf="action === SnapshotExporterAction.ORCID">
+        <ng-template *ngTemplateOutlet="orcidCheck"></ng-template>
+      </div>
+      <mat-horizontal-stepper linear #stepper [selectedIndex]="version.frozen ? (version.doiURL ? 2 : 1) : 0">
+        <mat-step label="Snapshot" state="snapshot" [completed]="version?.frozen">
           <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
           <div>
             <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
               <div fxFlex="60" *ngIf="doiRequested" class="confirmation">
                 Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.
               </div>
-              <div fxFlex fxLayoutAlign="end" fxLayout="row" fxflex>
+              <div fxFlex fxLayoutAlign="end" fxLayout="row">
                 <button
                   [disabled]="!(hasZenodoToken$ | async)"
                   color="primary"
@@ -41,7 +36,7 @@
                 >
                   Request DOI
                 </button>
-                <button color="primary" mat-flat-button (click)="snapshot()" *ngIf="doiRequested">Confirm</button>
+                <button color="primary" mat-flat-button (click)="requestDOI()" *ngIf="doiRequested">Confirm</button>
                 <button mat-button mat-dialog-close color="secondary">Cancel</button>
               </div>
             </div>
@@ -49,11 +44,26 @@
         </mat-step>
         <mat-step label="DOI">
           <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
+          <div fxFlex fxLayoutAlign="end" fxLayout="row">
+            <button [disabled]="!(hasZenodoToken$ | async)" color="primary" mat-flat-button (click)="requestDOI()">Request DOI</button>
+            <button mat-button mat-dialog-close color="secondary">Cancel</button>
+          </div>
         </mat-step>
         <mat-step label="ORCID" *ngIf="action === SnapshotExporterAction.ORCID"> TBD </mat-step>
       </mat-horizontal-stepper>
     </div>
   </div>
+
+  <ng-template #snapshotBlurb>
+    <p>
+      A snapshot freezes the workflow version, ensuring that the content of the workflow does not change if cited in publications.
+      <b>Important note: once a snapshot is made, the workflow version becomes uneditable, apart from some metadata.</b>
+    </p>
+    <p>
+      You can then use this snapshot to request a DOI or export to your ORCID profile.
+      <b>Are you sure you want to snapshot this version?</b>
+    </p>
+  </ng-template>
 
   <ng-template #doiBlurb>
     <p>A Digital Object Identifier (DOI) allows a workflow version to be easily cited in publications. What’s involved in the request:</p>
@@ -92,8 +102,8 @@
       <div><mat-icon color="red">warning</mat-icon></div>
       <div>
         <div>
-          To request a DOI, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking, come back to
-          this screen and try again.
+          To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
+          come back to this screen and try again.
         </div>
         <div>
           <button class="link-action" mat-button (click)="linkAccount()">

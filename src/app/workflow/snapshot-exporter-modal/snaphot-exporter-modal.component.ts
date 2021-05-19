@@ -2,8 +2,8 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router/';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -63,22 +63,35 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
 
   snapshot() {
     this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
-      map(() => {
-        switch (this.action) {
-          case SnapshotExporterAction.SNAPSHOT:
-            this.dialogRef.close();
-            break;
-          case SnapshotExporterAction.DOI:
-          case SnapshotExporterAction.ORCID:
-            this.stepper.next();
-        }
+      tap(() => {
+        this.dialogRef.close();
       })
+      // If there's an error, leave dialog up. this.snapshotExporterModalService.snapshotWorkflowVersion displays error message
     );
   }
 
   requestDOI() {
-    this.viewService.requestDOIForWorkflowVersion(this.workflow, this.version);
-    this.dialogRef.close(0);
+    if (!this.version.frozen) {
+      this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
+        map((result) => {
+          this.stepper.selected.completed = true;
+          this.stepper.next();
+          this.snapshotExporterModalService.requestDOI(this.workflow, this.version);
+        })
+      );
+    }
+    this.snapshotExporterModalService.requestDOI(this.workflow, this.version).pipe(
+      map(() => {
+        if (this.action === SnapshotExporterAction.ORCID) {
+          this.stepper.next();
+          this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version);
+        } else {
+        }
+      }),
+      catchError((error) => {
+        return EMPTY;
+      })
+    );
   }
 
   linkAccount() {
@@ -96,4 +109,5 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
         return 'Export to ORCID';
     }
   }
+
 }
