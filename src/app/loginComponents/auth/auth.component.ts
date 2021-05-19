@@ -95,7 +95,6 @@ export class AuthComponent extends Base implements OnInit {
           if (provider !== Provider.ORCID) {
             this.router.navigate([`${prevPage}`]);
           }
-          this.router.navigate([`${prevPage}`]);
           if (error.status === 409) {
             this.alertService.detailedSnackBarErrorWithLink(
               error,
