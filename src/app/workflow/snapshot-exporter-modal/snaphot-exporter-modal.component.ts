@@ -4,6 +4,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router/';
 import { concat, EMPTY, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -32,6 +33,7 @@ export interface SnapshotExporterDialogData {
 export class SnaphotExporterModalComponent extends Base implements OnInit {
   public hasZenodoToken$: Observable<boolean> = this.tokenQuery.hasZenodoToken$;
   public hasOrcidToken$: Observable<boolean> = this.tokenQuery.hasOrcidToken$;
+  public isAjaxing$ = this.alertQuery.showInfo$;
   public isSnapshot: boolean = this.dialogData.version.frozen;
   public workflow: BioWorkflow;
   public version: WorkflowVersion;
@@ -48,6 +50,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     private dialogRef: MatDialogRef<SnaphotExporterModalComponent>,
     private snapshotExporterModalService: SnapshotExporterModalService,
     private tokenQuery: TokenQuery,
+    private alertQuery: AlertQuery,
     private alertService: AlertService,
     private viewService: ViewService,
     private router: Router
@@ -67,9 +70,8 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   }
 
   snapshot() {
-    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version)
-      .subscribe(() => this.dialogRef.close());
-      // If there's an error, leave dialog up. this.snapshotExporterModalService.snapshotWorkflowVersion displays error message
+    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).subscribe(() => this.dialogRef.close());
+    // If there's an error, leave dialog up. this.snapshotExporterModalService.snapshotWorkflowVersion displays error message
   }
 
   snapshotAndDOI() {
@@ -78,12 +80,10 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       observables.push(this.snapshotStep());
     }
     observables.push(this.requestDOIStep());
-    concat(observables).subscribe(() => {
-
-      },
-      (error) => {
-
-      });
+    concat(observables).subscribe(
+      () => {},
+      (error) => {}
+    );
   }
 
   snapshotDoiAndOrcid() {
@@ -95,12 +95,10 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       observables.push(this.requestDOIStep());
     }
     observables.push(this.orcidStep());
-    concat(observables).subscribe(() => {
-
-      },
-      (error) => {
-
-      });
+    concat(observables).subscribe(
+      () => {},
+      (error) => {}
+    );
   }
 
   private requestDOIStep() {
@@ -113,17 +111,11 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   }
 
   private snapshotStep() {
-    return this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version)
-      .pipe(
-        tap(this.stepCompleted())
-      );
+    return this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(tap(this.stepCompleted()));
   }
 
   private orcidStep() {
-    return this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version)
-      .pipe(
-        tap(this.stepCompleted)
-      );
+    return this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version).pipe(tap(this.stepCompleted));
   }
 
   private stepCompleted() {
@@ -132,8 +124,6 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       this.stepper.next();
     };
   }
-
-
 
   private calculateTitle() {
     switch (this.action) {
@@ -145,5 +135,4 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
         return 'Export to ORCID';
     }
   }
-
 }

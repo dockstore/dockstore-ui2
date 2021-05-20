@@ -20,6 +20,7 @@ export class SnapshotExporterModalService {
   ) {}
 
   public snapshotWorkflowVersion(workflow: Workflow, version: WorkflowVersion): Observable<void> {
+    this.alertService.start(`Snapshotting workflow ${workflow.workflowName} version ${version.name}`);
     const snapshot: WorkflowVersion = { ...version, frozen: true };
     return this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).pipe(
       map((workflowVersions: Array<WorkflowVersion>) => {

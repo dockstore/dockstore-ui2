@@ -2,12 +2,13 @@
   <h4 mat-dialog-title>
     {{ title }}: <span style="color: #3f51b5">Version {{ version.name }}</span>
   </h4>
+
   <div [ngSwitch]="action">
     <div *ngSwitchCase="SnapshotExporterAction.SNAPSHOT">
       <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
       <div>
         <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button color="primary" mat-flat-button (click)="snapshot()">Snapshot</button>
+          <button color="primary" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">Snapshot</button>
           <button mat-button mat-dialog-close color="secondary">Cancel</button>
         </div>
       </div>
@@ -18,8 +19,11 @@
       <div *ngIf="action === SnapshotExporterAction.ORCID">
         <ng-template *ngTemplateOutlet="orcidCheck"></ng-template>
       </div>
-      <mat-horizontal-stepper linear #stepper [selectedIndex]="version.frozen ? (version.doiURL ? 2 : 1) : 0">
-        <mat-step label="Snapshot" state="snapshot" [completed]="version?.frozen">
+      <mat-horizontal-stepper #stepper [selectedIndex]="version.frozen ? (version.doiURL ? 2 : 1) : 0">
+        <mat-step [editable]="false" [completed]="version?.frozen" state="snapshot">
+          <ng-template matStepLabel>{{ version?.frozen ? 'Snapshot completed' : 'Snaphshot' }}</ng-template>
+          <ng-template matStepperIcon="snapshot"><mat-icon>photo_camera</mat-icon></ng-template>
+          <ng-template matStepperIcon="done"><mat-icon>photo_camera</mat-icon></ng-template>
           <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
           <div>
             <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
@@ -28,7 +32,7 @@
               </div>
               <div fxFlex fxLayoutAlign="end" fxLayout="row">
                 <button
-                  [disabled]="!(hasZenodoToken$ | async)"
+                  [disabled]="!(hasZenodoToken$ | async) || (isAjaxing$ | async)"
                   color="primary"
                   mat-flat-button
                   (click)="doiRequested = true"
@@ -36,20 +40,31 @@
                 >
                   Request DOI
                 </button>
-                <button color="primary" mat-flat-button (click)="snapshotAndDOI()" *ngIf="doiRequested">Confirm</button>
+                <button color="primary" mat-flat-button [disabled]="isAjaxing$ | async" (click)="snapshotAndDOI()" *ngIf="doiRequested">
+                  Confirm
+                </button>
                 <button mat-button mat-dialog-close color="secondary">Cancel</button>
               </div>
             </div>
           </div>
         </mat-step>
-        <mat-step label="DOI">
+        <mat-step label="DOI" [editable]="false" state="doi">
           <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
           <div fxFlex fxLayoutAlign="end" fxLayout="row">
-            <button [disabled]="!(hasZenodoToken$ | async)" color="primary" mat-flat-button (click)="snapshotAndDOI()">Request DOI</button>
+            <button
+              [disabled]="!(hasZenodoToken$ | async) || (isAjaxing$ | async)"
+              color="primary"
+              mat-flat-button
+              (click)="snapshotAndDOI()"
+            >
+              Request DOI
+            </button>
             <button mat-button mat-dialog-close color="secondary">Cancel</button>
           </div>
         </mat-step>
-        <mat-step label="ORCID" *ngIf="action === SnapshotExporterAction.ORCID"> TBD </mat-step>
+        <mat-step label="ORCID" *ngIf="action === SnapshotExporterAction.ORCID" [editable]="false">
+          <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
+        </mat-step>
       </mat-horizontal-stepper>
     </div>
   </div>
@@ -79,9 +94,25 @@
     </ol>
   </ng-template>
 
+  <ng-template #orcidBlurb>
+    <p>
+      Exporting to ORCID requires a Digital Object Identifier (DOI), which allows a workflow version to be easily cited in publications.
+      What’s involved:
+    </p>
+
+    <ol>
+      <li>
+        Before a DOI can be issued, a snapshot of the workflow version must be made to ensure that the content referenced by the DOI does
+        not change. Please note: a snapshot will make the workflow version uneditable, apart from some metadata.
+      </li>
+      <li>Next, a DOI is requested, providing a unique identifier for this workflow version.</li>
+      <li>Lastly, the workflow will be exported to your ORCID profile.</li>
+    </ol>
+  </ng-template>
+
   <ng-template #zenodoCheck>
-    <div *ngIf="!(hasZenodoToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end center">
-      <div><mat-icon color="red">warning</mat-icon></div>
+    <div *ngIf="!(hasZenodoToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+      <div><mat-icon style="color: #e34348">warning</mat-icon></div>
       <div>
         <div>
           To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to
@@ -98,15 +129,13 @@
   </ng-template>
 
   <ng-template #orcidCheck>
-    <div *ngIf="!(hasOrcidToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end center">
-      <div><mat-icon color="red">warning</mat-icon></div>
+    <div *ngIf="!(hasOrcidToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+      <div><mat-icon style="color: #e34348">warning</mat-icon></div>
       <div>
         <div>
           To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
           come back to this screen and try again.
-        </div>
-        <div>
-          <button class="link-action" mat-button (click)="linkAccount()">
+          <button class="link-action" mat-button (click)="linkAccount()" style="color: #3f51b5; background-color: white">
             <mat-icon>link</mat-icon>
             Link account now
           </button>
