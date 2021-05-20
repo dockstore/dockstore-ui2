@@ -21,7 +21,9 @@ import { Provider } from './enum/provider.enum';
 
 export class Dockstore {
   static readonly HOSTNAME = window.location.protocol + '//' + window.location.host;
+  static readonly HOSTNAME_NO_PROTOCOL = window.location.hostname;
   static readonly API_URI = Dockstore.HOSTNAME + '/api';
+  static readonly GALAXY_IMPORT_URL = '/workflows/trs_import?trs_server=' + Dockstore.HOSTNAME_NO_PROTOCOL + '&trs_id=%23workflow/';
 
   // All the following properties will get updated by configuration.service.ts. You do not
   // need to update them here. Set them in your dockstore.yml for the web service.
@@ -38,7 +40,6 @@ export class Dockstore {
   static BD_CATALYST_TERRA_IMPORT_URL = 'https://terra.biodatacatalyst.nhlbi.nih.gov/#import-tool/dockstore';
   static CAVATICA_IMPORT_URL = 'https://cavatica.sbgenomics.com/integration/trs/import';
   static NEXTFLOW_TOWER_IMPORT_URL = 'https://tower.nf/launch';
-  static GALAXY_IMPORT_URL = '/workflows/trs_import?trs_server=dockstore.org&trs_id=%23workflow/';
 
   static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';

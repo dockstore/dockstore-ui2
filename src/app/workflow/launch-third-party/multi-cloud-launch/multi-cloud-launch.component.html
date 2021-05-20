@@ -1,5 +1,5 @@
 <button mat-raised-button [matMenuTriggerFor]="menu" (click)="toggleExpanded()" (menuClosed)="menuClosed()">
-  {{ this.partner }} <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+  <img [src]="imagePath" [class]="className" /> <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
 </button>
 <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
   <div class="px-4" fxLayout="column" fxLayoutAlign="center start">

@@ -25,6 +25,12 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
   @Input()
   user: User;
 
+  @Input()
+  imagePath: string;
+
+  @Input()
+  className: string;
+
   @Output() closed: EventEmitter<void>;
 
   customLaunchWithOption: string;
