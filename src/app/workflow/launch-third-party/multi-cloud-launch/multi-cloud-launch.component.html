@@ -31,14 +31,9 @@
       <!--        {{ usersInstance.displayName }} (Custom)-->
       <!--      </mat-radio-button>-->
       <mat-radio-button value="other">
-        <mat-form-field class="small-text" color="accent">
-          <input
-            matInput
-            placeholder="Specify a url..."
-            [(ngModel)]="customLaunchWith"
-            (ngModelChange)="presetLaunchWith = 'other'"
-            name="something"
-          />
+        <mat-form-field class="small-text" color="accent" appearance="outline">
+          <mat-label>Specify a url...</mat-label>
+          <input matInput [(ngModel)]="customLaunchWith" (ngModelChange)="presetLaunchWith = 'other'" name="something" />
         </mat-form-field>
       </mat-radio-button>
       <!--      </ng-container>-->

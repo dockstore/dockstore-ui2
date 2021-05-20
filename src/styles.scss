@@ -1480,7 +1480,25 @@ hr {
   .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
   color: mat-color($dockstore-app-accent, 1);
 }
+
 // Keep the outer circle in a radio button gray even when selected
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
   border-color: mat-color($dockstore-app-gray, 2) !important;
+}
+
+// Remove some padding from mat form fields that are part of a radio group
+.mat-radio-label-content > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
+  padding: 0.5em 0 0.5em 0;
+}
+// Align the radio button with the form field (only applies to form fields that are part of a radio group and is due to the style directly above)
+.mat-radio-label-content > .mat-form-field > .mat-form-field-wrapper {
+  padding: 0;
+}
+// Center align the place holder text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
+.mat-radio-button .mat-form-field-appearance-outline .mat-form-field-label {
+  top: 1.4em;
+}
+// Align the floating text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
+.mat-radio-button .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  top: 1.8em;
 }
