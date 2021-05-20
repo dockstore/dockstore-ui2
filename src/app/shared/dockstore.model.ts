@@ -23,7 +23,8 @@ export class Dockstore {
   static readonly HOSTNAME = window.location.protocol + '//' + window.location.host;
   static readonly HOSTNAME_NO_PROTOCOL = window.location.hostname;
   static readonly API_URI = Dockstore.HOSTNAME + '/api';
-  static readonly GALAXY_IMPORT_URL = '/workflows/trs_import?trs_server=' + Dockstore.HOSTNAME_NO_PROTOCOL + '&trs_id=%23workflow/';
+  static readonly GALAXY_IMPORT_PATH_PORTION =
+    '/workflows/trs_import?trs_server=' + Dockstore.HOSTNAME_NO_PROTOCOL + '&trs_id=%23workflow/';
 
   // All the following properties will get updated by configuration.service.ts. You do not
   // need to update them here. Set them in your dockstore.yml for the web service.
