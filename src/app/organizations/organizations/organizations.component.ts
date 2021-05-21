@@ -103,4 +103,8 @@ export class OrganizationsComponent extends Base implements OnInit {
     }
     this.pagedOrganizations = organizations.slice(startIndex, endIndex);
   }
+
+  changeImageVisibility(event): void {
+    event.target.style.visibility = 'hidden';
+  }
 }
