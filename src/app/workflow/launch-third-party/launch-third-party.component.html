@@ -123,8 +123,10 @@
               [cloudInstances]="cloudInstances"
               [usersCloudInstances]="usersCloudInstances"
               [languagePartner]="partner.GALAXY"
-              [appendToLaunchUrl]="'%23workflow/' + workflow?.full_workflow_path"
+              [appendToLaunchUrl]="config.GALAXY_IMPORT_PATH_PORTION + workflow?.full_workflow_path"
               [user]="user$ | async"
+              [imagePath]="'../assets/images/thirdparty/galaxy.png'"
+              [className]="'galaxy-launch'"
             ></app-multi-cloud-launch>
           </div>
 
