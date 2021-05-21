@@ -64,10 +64,11 @@
                 <div fxLayout="column" fxLayoutAlign="space-around">
                   <div fxLayout="row wrap" fxLayoutAlign="space-between start">
                     <img
+                      #orgLogoImage
                       *ngIf="org.avatarUrl; else placeholder"
                       class="small-org-logo"
                       [src]="org.avatarUrl"
-                      (error)="changeImageVisibility($event)"
+                      (error)="orgLogoImage.style.visibility = 'hidden'"
                       alt="org logo"
                     />
                     <ng-template #placeholder><span style="height: 50px"></span></ng-template>

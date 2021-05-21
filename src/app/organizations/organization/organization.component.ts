@@ -100,8 +100,4 @@ export class OrganizationComponent implements OnInit {
   organizationStarGazersChange(): void {
     this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
   }
-
-  changeImageVisibility(event): void {
-    event.target.style.visibility = 'hidden';
-  }
 }
