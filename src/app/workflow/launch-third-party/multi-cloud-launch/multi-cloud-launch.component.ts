@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
 import { CloudInstance, Language, User, UsersService } from '../../../shared/openapi';
 
@@ -48,7 +49,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
 
   expanded = false;
 
-  constructor(private usersService: UsersService) {
+  constructor(private usersService: UsersService, private alertService: AlertService) {
     super();
   }
 
@@ -119,7 +120,20 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
 
     // Create and save a user's custom launch entry to the db
     if (this.presetLaunchWithOption === 'other' && this.user) {
-      const url: URL = new URL(this.launchWith.url);
+      let url: URL;
+      try {
+        this.alertService.start('Constructing URL');
+        url = new URL(this.launchWith.url);
+        this.alertService.simpleSuccess();
+      } catch (error) {
+        this.alertService.customDetailedError(
+          'Invalid URL',
+          this.launchWith.url +
+            ' is is not a valid URL. ' +
+            'Make sure your URL starts with "https://" and ends with a top-level domain like ".com" or ".eu".'
+        );
+      }
+
       const newCustomInstance: CloudInstance = {
         url: this.launchWith.url,
         partner: this.languagePartner,
@@ -134,7 +148,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
           this.usersCloudInstances = usersCloudInstances;
         },
         (error: HttpErrorResponse) => {
-          // It's okay for the save to the db to fail for now. At this step, we only want to track what URL's users
+          // It's okay for the save to the db to fail for now. At this step, we only care about what URL's users
           // are trying to use. Probably most of these failures will be the for violating the uniqueness constraint
           console.log(error.message);
         }
