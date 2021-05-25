@@ -111,6 +111,11 @@ h3 {
   border-radius: 1rem;
 }
 
+.close-alignment {
+  position: fixed;
+  transform: translate(-40px, 5px);
+}
+
 .primary-3 {
   color: mat-color($dockstore-app-primary, 3);
 }

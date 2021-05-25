@@ -54,10 +54,14 @@
             aria-label="Search"
             #search
             type="text"
+            [(ngModel)]="search.value"
             placeholder="Search..."
             class="fully-rounded landing-search w-100"
             (keyup.enter)="goToSearch(search.value)"
           />
+          <button mat-button class="close-alignment" *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
+            <mat-icon [ngStyle]="{ color: 'black' }" inline="true">close</mat-icon>
+          </button>
         </div>
       </div>
     </div>

@@ -560,6 +560,7 @@ img.contain-img {
   -moz-border-radius: 8px;
   border-radius: 8px;
   margin-top: 8px;
+  padding-right: 35px;
 }
 
 .button.login p {
@@ -1473,4 +1474,20 @@ hr {
 
 .mat-form-field.small-text {
   font-size: 12px;
+}
+
+.search-form-field {
+  max-width: 200px;
+}
+
+.search-form-field input {
+  padding-right: 35px;
+  transform: translateY(-3px);
+}
+
+.search-form-field button {
+  position: absolute;
+  left: -100;
+  right: 0;
+  bottom: -5px;
 }

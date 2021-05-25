@@ -42,6 +42,7 @@ export class OrganizationsComponent extends Base implements OnInit {
   public pagedOrganizations: Array<Organization>;
   public readonly initialPageSize = 9;
   private filteredOrganizations: Array<Organization>;
+  value = '';
 
   constructor(
     private organizationsStateService: OrganizationsStateService,
