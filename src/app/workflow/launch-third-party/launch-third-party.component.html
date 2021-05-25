@@ -50,7 +50,7 @@
               rel="noopener"
               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
               [disabled]="!(hasContent$ | async)"
-              ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png"
+              ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
             /></a>
             <a
               mat-raised-button
@@ -60,7 +60,7 @@
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-              ><img class="partner-launch" src="../assets/images/thirdparty/terra.png"
+              ><img class="partner-launch" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo"
             /></a>
             <a
               mat-raised-button
@@ -70,7 +70,7 @@
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-              ><img class="partner-launch" src="../assets/images/thirdparty/anvil.png"
+              ><img class="partner-launch" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
             /></a>
             <a
               mat-raised-button
@@ -95,7 +95,8 @@
                 [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
                 [disabled]="!(hasContent$ | async)"
                 color="primary"
-                ><img class="partner-icon" data-cy="dnastackIcon" src="../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
+                ><img class="partner-icon" data-cy="dnastackIcon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" />
+                DNAstack &raquo;</a
               >
               <a
                 mat-raised-button
@@ -160,7 +161,7 @@
             [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
             [disabled]="disableSevenBridgesPlatform$ | async"
             color="primary"
-            ><img class="partner-icon" src="../assets/images/thirdparty/cgc.png" /> CGC
+            ><img class="partner-icon" src="../assets/images/thirdparty/cgc.png" alt="CGC icon" /> CGC
           </a>
           <a
             mat-raised-button
@@ -182,7 +183,7 @@
             [attr.href]="config.CAVATICA_IMPORT_URL + '?trs=' + trsUrl"
             [disabled]="disableSevenBridgesPlatform$ | async"
             color="primary"
-            ><img class="partner-icon" src="../assets/images/thirdparty/cavatica.png" /> Cavatica
+            ><img class="partner-icon" src="../assets/images/thirdparty/cavatica.png" alt="Cavatica icon" /> Cavatica
           </a>
         </div>
         <div *ngIf="config.FEATURES.enableLaunchWithGalaxy && workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2">
