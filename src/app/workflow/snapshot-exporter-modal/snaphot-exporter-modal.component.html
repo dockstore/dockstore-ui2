@@ -8,64 +8,74 @@
       <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
       <div>
         <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button color="primary" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">Snapshot</button>
           <button mat-button mat-dialog-close color="secondary">Cancel</button>
+          <button color="primary" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">Snapshot</button>
         </div>
       </div>
     </div>
 
-    <div *ngSwitchDefault>
-      <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
-      <div *ngIf="action === SnapshotExporterAction.ORCID">
-        <ng-template *ngTemplateOutlet="orcidCheck"></ng-template>
+    <div *ngSwitchCase="SnapshotExporterAction.DOI">
+      <div fxLayout="row" fxLayoutAlign="space-evenly center" class="rectangle">
+        <mat-icon class="snapshot-icon">photo_camera</mat-icon>
+        <mat-icon svgIcon="doi"></mat-icon>
       </div>
-      <mat-horizontal-stepper #stepper [selectedIndex]="version.frozen ? (version.doiURL ? 2 : 1) : 0">
-        <mat-step [editable]="false" [completed]="version?.frozen" state="snapshot">
-          <ng-template matStepLabel>{{ version?.frozen ? 'Snapshot completed' : 'Snaphshot' }}</ng-template>
-          <ng-template matStepperIcon="snapshot"><mat-icon>photo_camera</mat-icon></ng-template>
-          <ng-template matStepperIcon="done"><mat-icon>photo_camera</mat-icon></ng-template>
-          <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
-          <div>
-            <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-              <div fxFlex="60" *ngIf="doiRequested" class="confirmation">
-                Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.
-              </div>
-              <div fxFlex fxLayoutAlign="end" fxLayout="row">
-                <button
-                  [disabled]="!(hasZenodoToken$ | async) || (isAjaxing$ | async)"
-                  color="primary"
-                  mat-flat-button
-                  (click)="doiRequested = true"
-                  *ngIf="!doiRequested"
-                >
-                  Request DOI
-                </button>
-                <button color="primary" mat-flat-button [disabled]="isAjaxing$ | async" (click)="snapshotAndDOI()" *ngIf="doiRequested">
-                  Confirm
-                </button>
-                <button mat-button mat-dialog-close color="secondary">Cancel</button>
-              </div>
-            </div>
-          </div>
-        </mat-step>
-        <mat-step label="DOI" [editable]="false" state="doi">
-          <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
-          <div fxFlex fxLayoutAlign="end" fxLayout="row">
-            <button
-              [disabled]="!(hasZenodoToken$ | async) || (isAjaxing$ | async)"
-              color="primary"
-              mat-flat-button
-              (click)="snapshotAndDOI()"
-            >
-              Request DOI
-            </button>
-            <button mat-button mat-dialog-close color="secondary">Cancel</button>
-          </div>
-        </mat-step>
-        <mat-step label="ORCID" *ngIf="action === SnapshotExporterAction.ORCID" [editable]="false">
-          <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
-        </mat-step>
-      </mat-horizontal-stepper>
+      <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
+      <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
+      <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+        <div *ngIf="doiRequested" class="confirmation-box" fxLayout="row" fxLayoutAlign="end" fxFlex="50" fxFlexOffset="50">
+          <span class="confirmation-text"
+            >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span
+          >
+        </div>
+        <div fxFlex fxLayoutAlign="end" fxLayout="row" fxFlex="50">
+          <button mat-button mat-dialog-close color="secondary">Cancel</button>
+          <button
+            [disabled]="!(hasZenodoToken$ | async) || (isAjaxing$ | async)"
+            color="primary"
+            mat-flat-button
+            (click)="doiRequested = true"
+            *ngIf="!doiRequested"
+          >
+            Request DOI
+          </button>
+          <button color="primary" mat-flat-button [disabled]="isAjaxing$ | async" (click)="snapshotAndDOI()" *ngIf="doiRequested">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="SnapshotExporterAction.ORCID">
+      <div fxLayout="row" fxLayoutAlign="space-evenly center" class="rectangle">
+        <mat-icon class="snapshot-icon">photo_camera</mat-icon>
+        <div class="oval">
+          <mat-icon svgIcon="doi"></mat-icon>
+        </div>
+        <fa-icon [icon]="faOrcid" class="snapshot-icon"></fa-icon>
+      </div>
+      <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
+      <ng-template *ngTemplateOutlet="orcidCheck"></ng-template>
+      <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <div *ngIf="doiRequested" class="confirmation">
+          Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.
+        </div>
+      </div>
+      <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <div fxFlex fxLayoutAlign="end" fxLayout="row">
+          <button mat-button mat-dialog-close color="secondary">Cancel</button>
+          <button
+            [disabled]="!(hasZenodoToken$ | async) || (isAjaxing$ | async)"
+            color="primary"
+            mat-flat-button
+            (click)="doiRequested = true"
+            *ngIf="!doiRequested"
+          >
+            Export to ORCID
+          </button>
+          <button color="primary" mat-flat-button [disabled]="isAjaxing$ | async" (click)="snapshotDoiAndOrcid()">Confirm</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -112,7 +122,9 @@
 
   <ng-template #zenodoCheck>
     <div *ngIf="!(hasZenodoToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
-      <div><mat-icon style="color: #e34348">warning</mat-icon></div>
+      <div>
+        <mat-icon style="color: #e34348">warning</mat-icon>
+      </div>
       <div>
         <div>
           To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to
@@ -130,7 +142,9 @@
 
   <ng-template #orcidCheck>
     <div *ngIf="!(hasOrcidToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
-      <div><mat-icon style="color: #e34348">warning</mat-icon></div>
+      <div>
+        <mat-icon style="color: #e34348">warning</mat-icon>
+      </div>
       <div>
         <div>
           To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,

@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -222,8 +221,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
-    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false }
-    }
   ],
   bootstrap: [AppComponent],
 })

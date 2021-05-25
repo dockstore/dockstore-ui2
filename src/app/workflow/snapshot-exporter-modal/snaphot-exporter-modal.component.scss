@@ -1,8 +1,13 @@
-.confirmation {
-  padding: 8px 6.3px 8px 10.7px;
+.confirmation-box {
+  width: 327px;
+  height: 48px;
+  margin: 0 0 9px;
+  padding: 8px 0.3px 8px 10.7px;
   border-radius: 8px;
   border: solid 1px #fff176;
   background-color: #fffde7;
+}
+.confirmation-text {
   font-family: Roboto;
   font-size: 12px;
   font-weight: bold;
@@ -12,6 +17,7 @@
   letter-spacing: normal;
   color: #212121;
 }
+
 .account-link {
   padding: 5px 15.3px 12px 10.7px;
   border-radius: 8px;
@@ -28,4 +34,20 @@
   line-height: normal;
   letter-spacing: normal;
   color: #3f51b5;
+}
+.oval {
+  width: 49px;
+  height: 49px;
+  padding: 16px 12px 16px 13px;
+  background-color: #3f51b5;
+}
+.rectangle {
+  width: 270px;
+  height: 4px;
+  margin: 24px 33px 27px 47px;
+  background-color: #b3b6be;
+}
+.snapshot-icon {
+  transform: scale(2);
+  color: #4354b3;
 }

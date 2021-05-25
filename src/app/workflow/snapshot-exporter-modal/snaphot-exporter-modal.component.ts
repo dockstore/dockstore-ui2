@@ -1,7 +1,9 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatStepper } from '@angular/material/stepper';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router/';
+import { faOrcid } from '@fortawesome/free-brands-svg-icons';
 import { concat, EMPTY, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -42,8 +44,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   public title: string;
   public action: SnapshotExporterAction;
   public doiRequested = false;
-
-  @ViewChild('stepper') private stepper: MatStepper;
+  public faOrcid = faOrcid;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: SnapshotExporterDialogData,
@@ -53,13 +54,16 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     private alertQuery: AlertQuery,
     private alertService: AlertService,
     private viewService: ViewService,
-    private router: Router
+    private router: Router,
+    private iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
   ) {
     super();
     this.workflow = dialogData.workflow;
     this.version = dialogData.version;
     this.action = dialogData.action;
     this.title = this.calculateTitle();
+    this.iconRegistry.addSvgIcon('doi', sanitizer.bypassSecurityTrustResourceUrl('../assets/svg/icon-DOI.svg'));
   }
 
   ngOnInit(): void {}
@@ -119,10 +123,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   }
 
   private stepCompleted() {
-    return () => {
-      this.stepper.selected.completed = true;
-      this.stepper.next();
-    };
+    return () => {};
   }
 
   private calculateTitle() {
