@@ -12,147 +12,215 @@
   <mat-card-content>
     <div class="container-source-repos">
       <div class="container-launch-with">
-        <div fxLayout="row wrap">
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
-            <div *ngIf="(hasFileImports$ | async) || (hasHttpImports$ | async)" class="import-warning">
-              Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without
-              imports in DNAstack.
-            </div>
-            <a
-              mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
-              target="_blank"
-              rel="noopener"
-              [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
-              [disabled]="!(hasContent$ | async)"
-              color="primary"
-              ><img data-cy="dnastackIcon" src="../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
-            >
+        <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
+          <div *ngIf="(hasFileImports$ | async) || (hasHttpImports$ | async)" class="import-warning">
+            Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without imports
+            in DNAstack.
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
+          <div
+            *ngIf="config.FEATURES.enableMultiCloudLaunchWithDNAstack; else oldWdlLaunch"
+            fxLayout="column"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="0.625rem"
+          >
+            <app-multi-cloud-launch
+              [cloudInstances]="cloudInstances"
+              [usersCloudInstances]="usersCloudInstances"
+              [languagePartner]="partner.DNASTACK"
+              [appendToLaunchUrl]="
+                config.DNASTACK_IMPORT_PATH_PORTION +
+                '%23workflow/' +
+                workflowPathAsQueryValue +
+                '&trs_version_id=' +
+                selectedVersion?.name +
+                '&trs_type=' +
+                WorkflowModel.DescriptorTypeEnum.WDL
+              "
+              [user]="user$ | async"
+              [imagePath]="'../assets/images/thirdparty/dnastack-multi-cloud.png'"
+              [className]="'partner-launch'"
+              [disabled]="!(hasContent$ | async)"
+              [tooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
+            ></app-multi-cloud-launch>
             <a
               mat-raised-button
+              class="launch-with-button"
               [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
               target="_blank"
               rel="noopener"
               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
               [disabled]="!(hasContent$ | async)"
-              color="primary"
-              ><mat-icon svgIcon="dnanexus" data-cy="dnanexusIcon"></mat-icon> DNAnexus &raquo;</a
-            >
-          </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
+              ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png"
+            /></a>
             <a
               mat-raised-button
+              class="launch-with-button"
               [matTooltip]="terraTooltip$ | async"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-              color="primary"
-              ><mat-icon svgIcon="terra" data-cy="terraIcon"></mat-icon> Terra &raquo;</a
-            >
-          </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL">
+              ><img class="partner-launch" src="../assets/images/thirdparty/terra.png"
+            /></a>
             <a
               mat-raised-button
-              [matTooltip]="cgcTooltip$ | async"
-              target="_blank"
-              rel="noopener"
-              [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
-              [disabled]="disableSevenBridgesPlatform$ | async"
-              color="primary"
-              ><img src="../assets/images/thirdparty/cgc.png" /> CGC
-            </a>
-          </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL">
-            <a
-              mat-raised-button
-              [matTooltip]="bdCatalystSevenBridgesTooltip$ | async"
-              target="_blank"
-              rel="noopener"
-              [attr.href]="config.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL + '?trs=' + trsUrl"
-              [disabled]="disableSevenBridgesPlatform$ | async"
-              color="primary"
-              >NHLBI BioData Catalyst
-            </a>
-          </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
-            <a
-              mat-raised-button
+              class="launch-with-button"
               [matTooltip]="anvilTooltip$ | async"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-              color="primary"
-              ><mat-icon class="anvil-icon" svgIcon="anvil" data-cy="anvilIcon"></mat-icon> AnVIL &raquo;</a
-            >
-          </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
+              ><img class="partner-launch" src="../assets/images/thirdparty/anvil.png"
+            /></a>
             <a
               mat-raised-button
+              class="launch-with-button"
               [matTooltip]="bdCatalystTerraTooltip$ | async"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-              color="primary"
               data-cy="nhlbiWdlButton"
-              >NHLBI BioData Catalyst</a
+              ><span class="partner-name">NHLBI BioData Catalyst</span></a
             >
           </div>
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL">
-            <a
-              mat-raised-button
-              [matTooltip]="cavaticaTooltip$ | async"
-              target="_blank"
-              rel="noopener"
-              [attr.href]="config.CAVATICA_IMPORT_URL + '?trs=' + trsUrl"
-              [disabled]="disableSevenBridgesPlatform$ | async"
-              color="primary"
-              ><img src="../assets/images/thirdparty/cavatica.png" /> Cavatica
-            </a>
-          </div>
-
-          <div
-            fxFlex="100%"
-            *ngIf="config.FEATURES.enableLaunchWithGalaxy && workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2"
+          <ng-template #oldWdlLaunch>
+            <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
+              <a
+                mat-raised-button
+                class="old-launch-with-button"
+                [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
+                target="_blank"
+                rel="noopener"
+                [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
+                [disabled]="!(hasContent$ | async)"
+                color="primary"
+                ><img class="partner-icon" data-cy="dnastackIcon" src="../assets/images/thirdparty/dnastack.png" /> DNAstack &raquo;</a
+              >
+              <a
+                mat-raised-button
+                class="old-launch-with-button"
+                [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
+                target="_blank"
+                rel="noopener"
+                [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
+                [disabled]="!(hasContent$ | async)"
+                color="primary"
+                ><mat-icon svgIcon="dnanexus" data-cy="dnanexusIcon"></mat-icon> DNAnexus &raquo;</a
+              >
+              <a
+                mat-raised-button
+                class="old-launch-with-button"
+                [matTooltip]="terraTooltip$ | async"
+                target="_blank"
+                rel="noopener"
+                [disabled]="disableTerraPlatform$ | async"
+                [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+                color="primary"
+                ><mat-icon svgIcon="terra" data-cy="terraIcon"></mat-icon> Terra &raquo;</a
+              >
+              <a
+                mat-raised-button
+                class="old-launch-with-button"
+                [matTooltip]="anvilTooltip$ | async"
+                target="_blank"
+                rel="noopener"
+                [disabled]="disableTerraPlatform$ | async"
+                [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+                color="primary"
+                ><mat-icon class="anvil-icon" svgIcon="anvil" data-cy="anvilIcon"></mat-icon> AnVIL &raquo;</a
+              >
+              <a
+                mat-raised-button
+                class="old-launch-with-button"
+                [matTooltip]="bdCatalystTerraTooltip$ | async"
+                target="_blank"
+                rel="noopener"
+                [disabled]="disableTerraPlatform$ | async"
+                [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+                color="primary"
+                data-cy="nhlbiWdlButton"
+                >NHLBI BioData Catalyst</a
+              >
+            </div>
+          </ng-template>
+        </div>
+        <div
+          fxLayout="column"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="0.625rem"
+          *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL"
+        >
+          <a
+            mat-raised-button
+            class="old-launch-with-button"
+            [matTooltip]="cgcTooltip$ | async"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
+            [disabled]="disableSevenBridgesPlatform$ | async"
+            color="primary"
+            ><img class="partner-icon" src="../assets/images/thirdparty/cgc.png" /> CGC
+          </a>
+          <a
+            mat-raised-button
+            class="old-launch-with-button"
+            [matTooltip]="bdCatalystSevenBridgesTooltip$ | async"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="config.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL + '?trs=' + trsUrl"
+            [disabled]="disableSevenBridgesPlatform$ | async"
+            color="primary"
+            >NHLBI BioData Catalyst
+          </a>
+          <a
+            mat-raised-button
+            class="old-launch-with-button"
+            [matTooltip]="cavaticaTooltip$ | async"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="config.CAVATICA_IMPORT_URL + '?trs=' + trsUrl"
+            [disabled]="disableSevenBridgesPlatform$ | async"
+            color="primary"
+            ><img class="partner-icon" src="../assets/images/thirdparty/cavatica.png" /> Cavatica
+          </a>
+        </div>
+        <div *ngIf="config.FEATURES.enableLaunchWithGalaxy && workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2">
+          <app-multi-cloud-launch
+            [cloudInstances]="cloudInstances"
+            [usersCloudInstances]="usersCloudInstances"
+            [languagePartner]="partner.GALAXY"
+            [appendToLaunchUrl]="config.GALAXY_IMPORT_PATH_PORTION + workflow?.full_workflow_path"
+            [user]="user$ | async"
+            [imagePath]="'../assets/images/thirdparty/galaxy.png'"
+            [className]="'galaxy-launch'"
+            [disabled]="!(hasContent$ | async)"
+            [tooltip]="!(hasContent$ | async) ? 'The Galaxy workflow has no content.' : ''"
+          ></app-multi-cloud-launch>
+        </div>
+        <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL">
+          <a
+            mat-raised-button
+            class="old-launch-with-button"
+            [matTooltip]="!(hasContent$ | async) ? 'The Nextflow workflow has no content.' : 'Export this workflow to Nextflow Tower'"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="
+              config.NEXTFLOW_TOWER_IMPORT_URL +
+              '?pipeline=https://' +
+              workflow.sourceControl +
+              '/' +
+              workflow.organization +
+              '/' +
+              workflow.repository +
+              '&revision=' +
+              selectedVersion.name
+            "
+            [disabled]="!(hasContent$ | async)"
+            color="primary"
           >
-            <app-multi-cloud-launch
-              [cloudInstances]="cloudInstances"
-              [usersCloudInstances]="usersCloudInstances"
-              [languagePartner]="partner.GALAXY"
-              [appendToLaunchUrl]="config.GALAXY_IMPORT_PATH_PORTION + workflow?.full_workflow_path"
-              [user]="user$ | async"
-              [imagePath]="'../assets/images/thirdparty/galaxy.png'"
-              [className]="'galaxy-launch'"
-            ></app-multi-cloud-launch>
-          </div>
-
-          <div fxFlex="100%" *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL">
-            <a
-              mat-raised-button
-              [matTooltip]="!(hasContent$ | async) ? 'The Nextflow workflow has no content.' : 'Export this workflow to Nextflow Tower'"
-              target="_blank"
-              rel="noopener"
-              [attr.href]="
-                config.NEXTFLOW_TOWER_IMPORT_URL +
-                '?pipeline=https://' +
-                workflow.sourceControl +
-                '/' +
-                workflow.organization +
-                '/' +
-                workflow.repository +
-                '&revision=' +
-                selectedVersion.name
-              "
-              [disabled]="!(hasContent$ | async)"
-              color="primary"
-            >
-              <img src="../assets/images/thirdparty/nextflow-icon.png" alt="Nextflow icon" /> Nextflow Tower
-            </a>
-          </div>
+            <img class="partner-icon" src="../assets/images/thirdparty/nextflow-icon.png" alt="Nextflow icon" /> Nextflow Tower
+          </a>
         </div>
       </div>
     </div>

@@ -1,12 +1,14 @@
-a {
-  margin-bottom: 0.625rem;
-  width: 18.5rem;
+// Old launch with buttons are the blue buttons used before the UI redesign.
+.old-launch-with-button {
+  width: 20rem;
   max-width: 98%;
-  img {
-    width: 24px;
-    height: 24px;
-  }
 }
+
+.partner-icon {
+  width: 24px;
+  height: 24px;
+}
+
 .import-warning {
   font-size: 11px;
   font-style: italic;

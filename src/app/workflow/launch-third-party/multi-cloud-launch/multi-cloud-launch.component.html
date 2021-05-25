@@ -1,6 +1,16 @@
-<button mat-raised-button [matMenuTriggerFor]="menu" (click)="toggleExpanded()" (menuClosed)="menuClosed()">
-  <img [src]="imagePath" [class]="className" alt="launch with logo" /> <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
-</button>
+<div [matTooltip]="tooltip">
+  <button
+    mat-raised-button
+    class="launch-with-button"
+    [matMenuTriggerFor]="menu"
+    [disabled]="disabled"
+    (click)="toggleExpanded()"
+    (menuClosed)="menuClosed()"
+  >
+    <img [src]="imagePath" [class]="className" [alt]="partner + ' launch with logo'" />
+    <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+  </button>
+</div>
 <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
   <div class="px-4" fxLayout="column" fxLayoutAlign="center start">
     <p>Please choose a well-known server to launch on, or specify your own.</p>
