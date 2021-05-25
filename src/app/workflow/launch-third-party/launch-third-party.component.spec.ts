@@ -57,11 +57,13 @@ describe('LaunchThirdPartyComponent', () => {
 
     // Verify urls are correct; got these from prod (except for Terra, which is new) to verify there is no breakage.
     // tslint:disable:max-line-length
-    expect(
-      nativeElement.querySelector(
-        'a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'
-      )
-    ).toBeTruthy();
+    if (!Dockstore.FEATURES.enableMultiCloudLaunchWithDNAstack) {
+      expect(
+        nativeElement.querySelector(
+          'a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'
+        )
+      ).toBeTruthy();
+    }
     // https://platform.dnanexus.com/panx/tools/import-workflow?source=https://dockstore.org:443/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master
     expect(
       nativeElement.querySelector(
