@@ -6,7 +6,7 @@ import { CloudInstance, User } from '../../../shared/openapi';
 @Component({
   selector: 'app-multi-cloud-launch',
   templateUrl: './multi-cloud-launch.component.html',
-  styleUrls: ['./multi-cloud-launch.component.scss'],
+  styleUrls: ['./multi-cloud-launch.component.scss', '../launch-third-party.component.scss'],
 })
 export class MultiCloudLaunchComponent extends Base implements OnInit {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
