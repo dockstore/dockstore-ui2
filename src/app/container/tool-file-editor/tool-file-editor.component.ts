@@ -67,7 +67,7 @@ export class ToolFileEditorComponent extends FileEditing {
   }
 
   /**
-   * Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of stepState management.
+   * Fix the JSON.parse later.  Currently used to deep copy values but not keep the read-only attribute of state management.
    * Splits up the sourcefiles for the version into descriptor files and test parameter files
    * Reason for JSON -> stringify -> JSON:
    * Leftover issue with Akita integration. Akita has readonly objects but we sometimes use it as-is with something like
@@ -135,7 +135,7 @@ export class ToolFileEditorComponent extends FileEditing {
   }
 
   /**
-   * Resets the files back to their original stepState
+   * Resets the files back to their original state
    */
   resetFiles(): void {
     this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);

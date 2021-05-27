@@ -56,7 +56,7 @@ describe('Service: version-modal.service.ts', () => {
     service.setTestParameterFiles([]);
     service.testParameterFiles.subscribe((files) => expect(files).toEqual([]));
   }));
-  it('should be able to save version and clear refreshing stepState', inject(
+  it('should be able to save version and clear refreshing state', inject(
     [VersionModalService, AlertQuery],
     (service: VersionModalService, alertQuery: AlertQuery) => {
       workflowQuery.getActive.and.returnValue(<any>{ id: 1 });

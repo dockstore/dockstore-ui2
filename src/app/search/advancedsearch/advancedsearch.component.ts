@@ -62,7 +62,7 @@ export class AdvancedSearchComponent extends Base implements OnInit {
   clearAll(): void {
     this.searchService.clear();
     // No easy and correct way to get searchInfo for `this.searchService.createPermalinks(searchInfo)` without major changes
-    // because it's not in the stepState
+    // because it's not in the state
     this.searchService.goToCleanSearch();
     this.closeDialog();
   }

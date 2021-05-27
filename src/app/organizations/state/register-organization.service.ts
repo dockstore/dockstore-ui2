@@ -10,7 +10,7 @@ import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationService } from './organization.service';
 
-// This is recorded into the Akita stepState
+// This is recorded into the Akita state
 export interface FormsState {
   registerOrganization: {
     name: string;
@@ -146,7 +146,7 @@ export class RegisterOrganizationService {
   /**
    * Add not yet approved organization to Dockstore
    *
-   * @param {FormsState['organization']} organizationFormState  The organization form stepState
+   * @param {FormsState['organization']} organizationFormState  The organization form state
    * @memberof RegisterOrganizationService
    */
   createOrganization(organizationFormState: FormsState['registerOrganization']): void {

@@ -26,8 +26,8 @@ import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
 })
 export class GA4GHFilesQuery extends QueryEntity<GA4GHFilesState, GA4GHFiles> {
   /**
-   * Returns an Observable array of ToolFile, unless the store is an error stepState, in which case it returns
-   * a null. The store can be in an error stepState, for example, if there was an error in the Ajax request.
+   * Returns an Observable array of ToolFile, unless the store is an error state, in which case it returns
+   * a null. The store can be in an error state, for example, if there was an error in the Ajax request.
    * @param descriptorType
    * @param fileTypes
    */

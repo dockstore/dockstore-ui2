@@ -11,7 +11,7 @@ import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationQuery } from './organization.query';
 import { UpsertOrganizationMemberStore } from './upsert-organization-member.store';
 
-// This is recorded into the Akita stepState
+// This is recorded into the Akita state
 export interface FormsState {
   upsertUser: {
     username: string;
@@ -76,7 +76,7 @@ export class UpsertOrganizationMemberService {
   /**
    * Add not yet approved organization to Dockstore
    *
-   * @param {FormsState['organization']} formState  The organization form stepState
+   * @param {FormsState['organization']} formState  The organization form state
    * @memberof RegisterOrganizationService
    */
   upsertUser(formState: FormsState['upsertUser'], data: any): void {

@@ -23,8 +23,8 @@ export class BasicSearchComponent extends Base implements OnInit {
   public hasAutoCompleteTerms$: Observable<boolean>;
   ngOnInit() {
     this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((searchText) => {
-      // This keeps the stepState and the view in sync but this is slightly awkward
-      // Changes to the searchText$ stepState will change searchFormControl
+      // This keeps the state and the view in sync but this is slightly awkward
+      // Changes to the searchText$ state will change searchFormControl
       // However, changes to searchFormControl will change searchText$
       // The ONLY reason why this doesn't go infinite loop is because Akita doesn't emit when it's the same value
       // Ideally, we should probably be using AkitaFormManager because then there would only be one variable

@@ -19,7 +19,7 @@
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 // import { FileService } from '../../../shared/file.service';
 //
-// import { WdlViewerService } from './stepState/wdl-viewer.service';
+// import { WdlViewerService } from './state/wdl-viewer.service';
 // import { WdlViewerComponent } from './wdl-viewer.component';
 //
 // describe('WdlViewerComponent', () => {

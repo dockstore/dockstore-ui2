@@ -27,15 +27,15 @@ describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
     setTokenUserViewPort();
     it('Redirects to my-tools', () => {
-      cy.visit('/githubCallback?stepState=tool');
+      cy.visit('/githubCallback?state=tool');
       cy.url().should('contain', '/my-tools');
     });
     it('Redirects to my-workflows', () => {
-      cy.visit('/githubCallback?stepState=workflow');
+      cy.visit('/githubCallback?state=workflow');
       cy.url().should('contain', '/my-workflows');
     });
     it('Redirects to my-services', () => {
-      cy.visit('/githubCallback?stepState=service');
+      cy.visit('/githubCallback?state=service');
       cy.url().should('contain', '/my-services');
     });
   });

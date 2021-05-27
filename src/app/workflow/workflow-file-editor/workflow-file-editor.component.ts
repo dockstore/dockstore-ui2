@@ -147,7 +147,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
   }
 
   /**
-   * Resets the files back to their original stepState
+   * Resets the files back to their original state
    */
   resetFiles() {
     this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);

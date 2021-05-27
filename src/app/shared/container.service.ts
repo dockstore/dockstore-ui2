@@ -73,7 +73,7 @@ export class ContainerService {
   replaceTool(newTool: DockstoreTool | null) {
     const tools = this.tools$.getValue();
     if (!tools) {
-      console.error('tools in stepState is falsey');
+      console.error('tools in state is falsey');
       return;
     }
     if (!newTool) {

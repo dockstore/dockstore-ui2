@@ -38,7 +38,7 @@ export class AddEntryService {
   }
 
   /**
-   * Updates the memberships stepState
+   * Updates the memberships state
    * @param memberships
    */
   updateMembershipsState(memberships: Array<OrganizationUser>): void {
@@ -77,7 +77,7 @@ export class AddEntryService {
   }
 
   /**
-   * Updates the collections stepState
+   * Updates the collections state
    * @param collections
    */
   updateCollectionsState(collections: Array<Collection>): void {

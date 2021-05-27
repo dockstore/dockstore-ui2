@@ -16,7 +16,7 @@ export class UrlResolverService {
    * @param {string} currentUrl  '/tools/quay.io/pancancer/pcawg-dkfz-workflow:2.2.0?tab=info'
    * @param {(WorkflowVersion | Tag | null)} selectedVersion  The version that's currently selected
    * @param {string} tabName  Name of the currently selected tab ('info', 'launch')
-   * @returns {string}  The path that reflects the current stepState
+   * @returns {string}  The path that reflects the current state
    * @memberof UrlResolverService
    */
   getPath(
