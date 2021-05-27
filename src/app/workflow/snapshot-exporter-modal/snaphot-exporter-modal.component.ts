@@ -1,7 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router/';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
 import { concat, EMPTY, Observable } from 'rxjs';
@@ -27,6 +25,18 @@ export interface SnapshotExporterDialogData {
   action: SnapshotExporterAction;
 }
 
+export enum StepState {
+  INITIAL,
+  COMPLETED,
+  ERROR
+}
+
+export interface State {
+  snapshot: StepState;
+  doi: StepState;
+  orcid: StepState;
+}
+
 @Component({
   selector: 'app-snapshot-exporter-modal-component',
   templateUrl: './snaphot-exporter-modal.component.html',
@@ -41,10 +51,12 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   public version: WorkflowVersion;
   public Dockstore = Dockstore;
   public SnapshotExporterAction = SnapshotExporterAction;
+  public StepState = StepState;
   public title: string;
   public action: SnapshotExporterAction;
-  public doiRequested = false;
+  public promptToConfirmSnapshot = false;
   public faOrcid = faOrcid;
+  public state: State;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: SnapshotExporterDialogData,
@@ -55,15 +67,13 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     private alertService: AlertService,
     private viewService: ViewService,
     private router: Router,
-    private iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
   ) {
     super();
     this.workflow = dialogData.workflow;
     this.version = dialogData.version;
     this.action = dialogData.action;
     this.title = this.calculateTitle();
-    this.iconRegistry.addSvgIcon('doi', sanitizer.bypassSecurityTrustResourceUrl('../assets/svg/icon-DOI.svg'));
+    this.state = this.calculateState();
   }
 
   ngOnInit(): void {}
@@ -73,57 +83,69 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     this.router.navigate(['/accounts']);
   }
 
+  /**
+   * Invoked when snapshotting only (not exporting). Closes the dialog on success
+   */
   snapshot() {
-    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).subscribe(() => this.dialogRef.close());
+    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version)
+      .subscribe(() => this.dialogRef.close());
     // If there's an error, leave dialog up. this.snapshotExporterModalService.snapshotWorkflowVersion displays error message
   }
 
-  snapshotAndDOI() {
-    const observables: Observable<void>[] = [];
-    if (!this.version.frozen) {
-      observables.push(this.snapshotStep());
-    }
-    observables.push(this.requestDOIStep());
-    concat(observables).subscribe(
-      () => {},
-      (error) => {}
-    );
-  }
+  /**
+   * Invoked when exporting to DOI and/or ORCID. Executes all steps as necessary
+   * @param snapshotConfirmed - if true, caller has confirmed that they want do do the snapshot step
+   */
+  export(snapshotConfirmed: boolean) {
+    if (!this.isSnapshot && !snapshotConfirmed) {
+      this.promptToConfirmSnapshot = true;
+    } else {
+      const observables: Observable<void>[] = [];
+      if (!this.isSnapshot) {
+        observables.push(this.snapshotStep());
+      }
+      if (!this.version.doiURL) {
+        observables.push(this.requestDOIStep());
+      }
+      if (this.action === SnapshotExporterAction.ORCID) {
+        observables.push(this.orcidStep());
+      }
 
-  snapshotDoiAndOrcid() {
-    const observables: Observable<void>[] = [];
-    if (!this.version.frozen) {
-      observables.push(this.snapshotStep());
+      // The individual observables update state, but we need to subscribe to trigger observables
+      concat(observables).subscribe(
+        () => {},
+        (error) => {}
+      );
     }
-    if (!this.version.doiURL) {
-      observables.push(this.requestDOIStep());
-    }
-    observables.push(this.orcidStep());
-    concat(observables).subscribe(
-      () => {},
-      (error) => {}
-    );
   }
 
   private requestDOIStep() {
     return this.snapshotExporterModalService.requestDOI(this.workflow, this.version).pipe(
-      tap(this.stepCompleted()),
+      tap(() => this.state.doi = StepState.COMPLETED),
       catchError((error) => {
+        this.state.doi = StepState.ERROR;
         return EMPTY;
       })
     );
   }
 
   private snapshotStep() {
-    return this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(tap(this.stepCompleted()));
+    return this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
+      tap(() => this.state.snapshot = StepState.COMPLETED),
+      catchError((error) => {
+          this.state.snapshot = StepState.ERROR;
+          return EMPTY;
+        }
+      ));
   }
 
   private orcidStep() {
-    return this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version).pipe(tap(this.stepCompleted));
-  }
-
-  private stepCompleted() {
-    return () => {};
+    return this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version).pipe(
+      tap(() => this.state.orcid = StepState.COMPLETED),
+      catchError((error) => {
+        this.state.orcid = StepState.ERROR;
+        return EMPTY;
+      }));
   }
 
   private calculateTitle() {
@@ -135,5 +157,13 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       case SnapshotExporterAction.ORCID:
         return 'Export to ORCID';
     }
+  }
+
+  private calculateState(): State {
+    return {
+      snapshot: this.isSnapshot ? StepState.COMPLETED : StepState.INITIAL,
+      doi: this.version.doiURL ? StepState.COMPLETED : StepState.INITIAL,
+      orcid: this.version.versionMetadata.orcidPutCode ? StepState.COMPLETED : StepState.INITIAL
+    };
   }
 }

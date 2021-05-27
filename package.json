@@ -53,6 +53,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@material-extended/mde": "^3.0.3",
     "@ngx-lite/json-ld": "^0.6.2",
+    "academicons": "^1.8.6",
     "ace-builds": "^1.4.6",
     "angular-tag-cloud-module": "^5.2.0",
     "bodybuilder": "^2.4.0",

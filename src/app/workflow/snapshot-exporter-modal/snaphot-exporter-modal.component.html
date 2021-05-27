@@ -14,66 +14,70 @@
       </div>
     </div>
 
-    <div *ngSwitchCase="SnapshotExporterAction.DOI">
-      <div fxLayout="row" fxLayoutAlign="space-evenly center" class="rectangle">
-        <mat-icon class="snapshot-icon">photo_camera</mat-icon>
-        <mat-icon svgIcon="doi"></mat-icon>
+    <div *ngSwitchDefault>
+      <div fxLayout="row" fxLayoutAlign="space-evenly center" style="padding-bottom: 54px">
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <mat-icon *ngIf="state.snapshot === StepState.INITIAL" class="exporter-icon">photo_camera</mat-icon>
+          <mat-icon *ngIf="state.snapshot === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
+          <mat-icon *ngIf="state.snapshot === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
+          <div *ngIf="state.snapshot !== StepState.INITIAL" class="status-text">
+            Snapshot {{ state.snapshot === StepState.COMPLETED ? 'created' : 'error' }}
+          </div>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <i *ngIf="state.doi === StepState.INITIAL" class="ai ai-doi exporter-icon ai-3x"></i>
+          <mat-icon *ngIf="state.doi === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
+          <mat-icon *ngIf="state.doi === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
+          <div *ngIf="state.doi !== StepState.INITIAL" class="status-text">
+            DOI {{ state.doi === StepState.COMPLETED ? 'exported' : 'error' }}
+          </div>
+        </div>
+
+        <div *ngIf="action === SnapshotExporterAction.ORCID" fxLayout="column" fxLayoutAlign="center center">
+          <fa-icon *ngIf="state.orcid === StepState.INITIAL" [icon]="faOrcid" class="exporter-icon" size="3x"></fa-icon>
+          <mat-icon *ngIf="state.orcid === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
+          <mat-icon *ngIf="state.orcid === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
+          <div *ngIf="state.orcid !== StepState.INITIAL" class="status-text">
+            ORCID {{ state.orcid === StepState.COMPLETED ? 'exported' : 'error' }}
+          </div>
+        </div>
       </div>
+
       <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
-      <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
+      <div *ngIf="action === SnapshotExporterAction.ORCID">
+        <ng-template *ngTemplateOutlet="orcidCheck"></ng-template>
+      </div>
+
+      <div *ngIf="action === SnapshotExporterAction.DOI">
+        <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
+      </div>
+      <div *ngIf="action === SnapshotExporterAction.ORCID">
+        <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
+      </div>
+
       <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
-        <div *ngIf="doiRequested" class="confirmation-box" fxLayout="row" fxLayoutAlign="end" fxFlex="50" fxFlexOffset="50">
+        <div *ngIf="promptToConfirmSnapshot" class="confirmation-box" fxLayout="row" fxLayoutAlign="end" fxFlex="50" fxFlexOffset="50">
           <span class="confirmation-text"
             >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span
           >
         </div>
-        <div fxFlex fxLayoutAlign="end" fxLayout="row" fxFlex="50">
+        <div fxLayoutAlign="end" fxLayout="row" fxFlex="50">
           <button mat-button mat-dialog-close color="secondary">Cancel</button>
           <button
-            [disabled]="!(hasZenodoToken$ | async) || (isAjaxing$ | async)"
+            [disabled]="
+              !(hasZenodoToken$ | async) || (action === SnapshotExporterAction.ORCID && !(hasOrcidToken$ | async)) || (isAjaxing$ | async)
+            "
             color="primary"
             mat-flat-button
-            (click)="doiRequested = true"
-            *ngIf="!doiRequested"
+            (click)="export(false)"
+            *ngIf="!promptToConfirmSnapshot"
           >
-            Request DOI
+            {{ action === SnapshotExporterAction.DOI ? 'Request DOI' : 'Export' }}
           </button>
-          <button color="primary" mat-flat-button [disabled]="isAjaxing$ | async" (click)="snapshotAndDOI()" *ngIf="doiRequested">
+          <button color="primary" mat-flat-button [disabled]="isAjaxing$ | async" (click)="export(true)" *ngIf="promptToConfirmSnapshot">
             Confirm
           </button>
-        </div>
-      </div>
-    </div>
-
-    <div *ngSwitchCase="SnapshotExporterAction.ORCID">
-      <div fxLayout="row" fxLayoutAlign="space-evenly center" class="rectangle">
-        <mat-icon class="snapshot-icon">photo_camera</mat-icon>
-        <div class="oval">
-          <mat-icon svgIcon="doi"></mat-icon>
-        </div>
-        <fa-icon [icon]="faOrcid" class="snapshot-icon"></fa-icon>
-      </div>
-      <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
-      <ng-template *ngTemplateOutlet="orcidCheck"></ng-template>
-      <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
-      <div fxLayout="row" fxLayoutAlign="end center">
-        <div *ngIf="doiRequested" class="confirmation">
-          Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.
-        </div>
-      </div>
-      <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-        <div fxFlex fxLayoutAlign="end" fxLayout="row">
-          <button mat-button mat-dialog-close color="secondary">Cancel</button>
-          <button
-            [disabled]="!(hasZenodoToken$ | async) || (isAjaxing$ | async)"
-            color="primary"
-            mat-flat-button
-            (click)="doiRequested = true"
-            *ngIf="!doiRequested"
-          >
-            Export to ORCID
-          </button>
-          <button color="primary" mat-flat-button [disabled]="isAjaxing$ | async" (click)="snapshotDoiAndOrcid()">Confirm</button>
         </div>
       </div>
     </div>

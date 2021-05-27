@@ -47,7 +47,25 @@
   margin: 24px 33px 27px 47px;
   background-color: #b3b6be;
 }
-.snapshot-icon {
-  transform: scale(2);
-  color: #4354b3;
+
+.mat-icon.exporter-icon {
+  transform: scale(1.8);
+}
+
+.exporter-icon {
+  color: blue;
+}
+.status-text {
+  width: 95px;
+  height: 16px;
+  margin: 10px 0 0;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  color: #212121;
+  text-align: center;
 }
