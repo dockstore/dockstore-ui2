@@ -20,6 +20,7 @@
           <mat-icon *ngIf="state.snapshot === StepState.INITIAL" class="exporter-icon">photo_camera</mat-icon>
           <mat-icon *ngIf="state.snapshot === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
           <mat-icon *ngIf="state.snapshot === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
+          <mat-progress-spinner *ngIf="state.snapshot === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
           <div *ngIf="state.snapshot !== StepState.INITIAL" class="status-text">
             Snapshot {{ state.snapshot === StepState.COMPLETED ? 'created' : 'error' }}
           </div>
@@ -29,6 +30,7 @@
           <i *ngIf="state.doi === StepState.INITIAL" class="ai ai-doi exporter-icon ai-3x"></i>
           <mat-icon *ngIf="state.doi === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
           <mat-icon *ngIf="state.doi === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
+          <mat-progress-spinner *ngIf="state.doi === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
           <div *ngIf="state.doi !== StepState.INITIAL" class="status-text">
             DOI {{ state.doi === StepState.COMPLETED ? 'exported' : 'error' }}
           </div>
@@ -38,6 +40,7 @@
           <fa-icon *ngIf="state.orcid === StepState.INITIAL" [icon]="faOrcid" class="exporter-icon" size="3x"></fa-icon>
           <mat-icon *ngIf="state.orcid === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
           <mat-icon *ngIf="state.orcid === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
+          <mat-progress-spinner *ngIf="state.orcid === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
           <div *ngIf="state.orcid !== StepState.INITIAL" class="status-text">
             ORCID {{ state.orcid === StepState.COMPLETED ? 'exported' : 'error' }}
           </div>

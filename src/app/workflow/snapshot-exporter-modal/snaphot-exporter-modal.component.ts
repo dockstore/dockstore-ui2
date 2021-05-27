@@ -2,8 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router/';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
-import { concat, EMPTY, Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { concat, EMPTY, Observable, of as observableOf } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
@@ -27,6 +27,7 @@ export interface SnapshotExporterDialogData {
 
 export enum StepState {
   INITIAL,
+  EXECUTING,
   COMPLETED,
   ERROR
 }
@@ -111,41 +112,47 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
         observables.push(this.orcidStep());
       }
 
-      // The individual observables update state, but we need to subscribe to trigger observables
-      concat(observables).subscribe(
-        () => {},
-        (error) => {}
+      // The individual observables update state, but we need to subscribe to trigger them
+      concat(...observables).subscribe(
+        () => {}
       );
     }
   }
 
   private requestDOIStep() {
-    return this.snapshotExporterModalService.requestDOI(this.workflow, this.version).pipe(
-      tap(() => this.state.doi = StepState.COMPLETED),
-      catchError((error) => {
-        this.state.doi = StepState.ERROR;
-        return EMPTY;
-      })
-    );
+    return observableOf(1).pipe(
+      tap(() => this.state.doi = StepState.EXECUTING),
+      switchMap(
+        () => this.snapshotExporterModalService.requestDOI(this.workflow, this.version).pipe(
+          tap(() => this.state.doi = StepState.COMPLETED),
+          catchError((error) => {
+            this.state.doi = StepState.ERROR;
+            return EMPTY;
+          })
+        )));
   }
 
   private snapshotStep() {
-    return this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
-      tap(() => this.state.snapshot = StepState.COMPLETED),
-      catchError((error) => {
-          this.state.snapshot = StepState.ERROR;
-          return EMPTY;
-        }
-      ));
+    return observableOf(1).pipe(
+      tap(() => { console.log('hello'); this.state.snapshot = StepState.EXECUTING; }),
+      switchMap(() => this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
+        tap(() => this.state.snapshot = StepState.COMPLETED),
+        catchError((error) => {
+            this.state.snapshot = StepState.ERROR;
+            return EMPTY;
+          }
+        ))));
   }
 
   private orcidStep() {
-    return this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version).pipe(
-      tap(() => this.state.orcid = StepState.COMPLETED),
-      catchError((error) => {
-        this.state.orcid = StepState.ERROR;
-        return EMPTY;
-      }));
+    return observableOf(null).pipe(
+      tap(() => this.state.orcid = StepState.EXECUTING),
+      switchMap(() => this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version).pipe(
+        tap(() => this.state.orcid = StepState.COMPLETED),
+        catchError((error) => {
+          this.state.orcid = StepState.ERROR;
+          return EMPTY;
+        }))));
   }
 
   private calculateTitle() {
