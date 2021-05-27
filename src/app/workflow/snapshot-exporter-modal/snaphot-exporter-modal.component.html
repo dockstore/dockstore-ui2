@@ -17,7 +17,7 @@
     </div>
 
     <div *ngSwitchDefault>
-      <div fxLayout="row" fxLayoutAlign="space-evenly center" style="padding-bottom: 54px">
+      <div fxLayout="row" fxLayoutAlign="space-evenly center">
         <app-exporter-step
           [stepState]="state.snapshot"
           matIcon="photo_camera"
@@ -63,6 +63,7 @@
             "
             color="primary"
             mat-flat-button
+            data-cy="export-button"
             (click)="export(false)"
             *ngIf="!promptToConfirmSnapshot"
           >
@@ -123,12 +124,12 @@
         <mat-icon style="color: #e34348">warning</mat-icon>
       </div>
       <div>
-        <div>
+        <div data-cy="zenodo-not-linked">
           To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to
           this screen and try again.
         </div>
         <div>
-          <button class="link-action" mat-button (click)="linkAccount()">
+          <button class="link-action" data-cy="link-zenodo" mat-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>

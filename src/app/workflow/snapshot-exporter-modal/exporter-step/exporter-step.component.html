@@ -1,5 +1,5 @@
 <div fxLayout="column" fxLayoutAlign="center center">
-  <div style="height: 50px" fxLayout="row" fxLayoutAlign="center center">
+  <div fxLayout="row" fxLayoutAlign="center center" style="height: 40px">
     <div *ngIf="matIcon">
       <mat-icon *ngIf="stepState === StepState.INITIAL" class="exporter-icon">{{ matIcon }}</mat-icon>
     </div>
@@ -14,7 +14,7 @@
     <mat-progress-spinner *ngIf="stepState === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
   </div>
   <div fxLayout="row">
-    <div [ngSwitch]="stepState">
+    <div [ngSwitch]="stepState" class="status-text">
       <div *ngSwitchCase="StepState.COMPLETED">{{ successText }}</div>
       <div *ngSwitchCase="StepState.ERROR">{{ errorText }}</div>
       <div *ngSwitchDefault>{{ defaultText }}</div>

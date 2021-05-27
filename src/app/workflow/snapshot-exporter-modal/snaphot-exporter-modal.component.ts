@@ -107,9 +107,8 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       if (this.action === SnapshotExporterAction.ORCID) {
         observables.push(this.orcidStep());
       }
-
-      // The individual observables update stepState, but we need to subscribe to trigger them
-      concat(...observables).subscribe(() => {});
+      // Leave the dialog open if there's an error
+      concat(...observables).subscribe(() => this.dialogRef.close());
     }
   }
 
