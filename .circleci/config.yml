@@ -21,13 +21,11 @@ executors:
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
+  # TODO: Add auth tests once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done
   uptime_monitor_staging_no_auth:
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
     steps:
       - setup_nightly_tests:
           webpage_URL: "https://staging.dockstore.org"
@@ -41,6 +39,29 @@ jobs:
           command: bash -i -c 'npm run test-staging-waf'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-staging-waf-[hash].xml
+
+  # TODO: Add auth tests once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done
+  uptime_monitor_prod_no_auth:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/buildpack-deps:18.04-browsers
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - setup_nightly_tests:
+          webpage_URL: "https://dockstore.org"
+      - run:
+          name: Run remote verification test against prod (no auth)
+          command: bash -i -c 'npm run test-prod-no-auth'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-prod-no-auth-[hash].xml
+      - run:
+          name: Run remote verification of WAF against staging
+          command: bash -i -c 'npm run test-prod-waf'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-prod-waf-[hash].xml
+
   uptime_monitor_no_auth:
     working_directory: ~/repo
     docker:
