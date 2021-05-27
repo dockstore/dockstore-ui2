@@ -16,35 +16,19 @@
 
     <div *ngSwitchDefault>
       <div fxLayout="row" fxLayoutAlign="space-evenly center" style="padding-bottom: 54px">
-        <div fxLayout="column" fxLayoutAlign="center center">
-          <mat-icon *ngIf="state.snapshot === StepState.INITIAL" class="exporter-icon">photo_camera</mat-icon>
-          <mat-icon *ngIf="state.snapshot === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
-          <mat-icon *ngIf="state.snapshot === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
-          <mat-progress-spinner *ngIf="state.snapshot === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
-          <div *ngIf="state.snapshot !== StepState.INITIAL" class="status-text">
-            Snapshot {{ state.snapshot === StepState.COMPLETED ? 'created' : 'error' }}
-          </div>
-        </div>
-
-        <div fxLayout="column" fxLayoutAlign="center center">
-          <i *ngIf="state.doi === StepState.INITIAL" class="ai ai-doi exporter-icon ai-3x"></i>
-          <mat-icon *ngIf="state.doi === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
-          <mat-icon *ngIf="state.doi === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
-          <mat-progress-spinner *ngIf="state.doi === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
-          <div *ngIf="state.doi !== StepState.INITIAL" class="status-text">
-            DOI {{ state.doi === StepState.COMPLETED ? 'exported' : 'error' }}
-          </div>
-        </div>
-
-        <div *ngIf="action === SnapshotExporterAction.ORCID" fxLayout="column" fxLayoutAlign="center center">
-          <fa-icon *ngIf="state.orcid === StepState.INITIAL" [icon]="faOrcid" class="exporter-icon" size="3x"></fa-icon>
-          <mat-icon *ngIf="state.orcid === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
-          <mat-icon *ngIf="state.orcid === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
-          <mat-progress-spinner *ngIf="state.orcid === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
-          <div *ngIf="state.orcid !== StepState.INITIAL" class="status-text">
-            ORCID {{ state.orcid === StepState.COMPLETED ? 'exported' : 'error' }}
-          </div>
-        </div>
+        <app-exporter-step
+          [stepState]="state.snapshot"
+          matIcon="photo_camera"
+          successText="Snapshot created"
+          errorText="Snapshot error"
+        ></app-exporter-step>
+        <app-exporter-step [stepState]="state.doi" aiIcon="ai-doi" successText="DOI created" errorText="DOI error"></app-exporter-step>
+        <app-exporter-step
+          [stepState]="state.orcid"
+          [faIcon]="faOrcid"
+          successText="ORCID created"
+          errorText="ORCID error"
+        ></app-exporter-step>
       </div>
 
       <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>

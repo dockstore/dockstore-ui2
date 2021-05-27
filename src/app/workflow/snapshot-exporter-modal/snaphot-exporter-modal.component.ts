@@ -29,7 +29,7 @@ export enum StepState {
   INITIAL,
   EXECUTING,
   COMPLETED,
-  ERROR
+  ERROR,
 }
 
 export interface State {
@@ -67,7 +67,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     private alertQuery: AlertQuery,
     private alertService: AlertService,
     private viewService: ViewService,
-    private router: Router,
+    private router: Router
   ) {
     super();
     this.workflow = dialogData.workflow;
@@ -88,8 +88,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
    * Invoked when snapshotting only (not exporting). Closes the dialog on success
    */
   snapshot() {
-    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version)
-      .subscribe(() => this.dialogRef.close());
+    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).subscribe(() => this.dialogRef.close());
     // If there's an error, leave dialog up. this.snapshotExporterModalService.snapshotWorkflowVersion displays error message
   }
 
@@ -112,47 +111,57 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
         observables.push(this.orcidStep());
       }
 
-      // The individual observables update state, but we need to subscribe to trigger them
-      concat(...observables).subscribe(
-        () => {}
-      );
+      // The individual observables update stepState, but we need to subscribe to trigger them
+      concat(...observables).subscribe(() => {});
     }
   }
 
   private requestDOIStep() {
     return observableOf(1).pipe(
-      tap(() => this.state.doi = StepState.EXECUTING),
-      switchMap(
-        () => this.snapshotExporterModalService.requestDOI(this.workflow, this.version).pipe(
-          tap(() => this.state.doi = StepState.COMPLETED),
+      tap(() => (this.state.doi = StepState.EXECUTING)),
+      switchMap(() =>
+        this.snapshotExporterModalService.requestDOI(this.workflow, this.version).pipe(
+          tap(() => (this.state.doi = StepState.COMPLETED)),
           catchError((error) => {
             this.state.doi = StepState.ERROR;
             return EMPTY;
           })
-        )));
+        )
+      )
+    );
   }
 
   private snapshotStep() {
     return observableOf(1).pipe(
-      tap(() => { console.log('hello'); this.state.snapshot = StepState.EXECUTING; }),
-      switchMap(() => this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
-        tap(() => this.state.snapshot = StepState.COMPLETED),
-        catchError((error) => {
+      tap(() => {
+        console.log('hello');
+        this.state.snapshot = StepState.EXECUTING;
+      }),
+      switchMap(() =>
+        this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).pipe(
+          tap(() => (this.state.snapshot = StepState.COMPLETED)),
+          catchError((error) => {
             this.state.snapshot = StepState.ERROR;
             return EMPTY;
-          }
-        ))));
+          })
+        )
+      )
+    );
   }
 
   private orcidStep() {
     return observableOf(null).pipe(
-      tap(() => this.state.orcid = StepState.EXECUTING),
-      switchMap(() => this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version).pipe(
-        tap(() => this.state.orcid = StepState.COMPLETED),
-        catchError((error) => {
-          this.state.orcid = StepState.ERROR;
-          return EMPTY;
-        }))));
+      tap(() => (this.state.orcid = StepState.EXECUTING)),
+      switchMap(() =>
+        this.snapshotExporterModalService.exportToOrcid(this.workflow, this.version).pipe(
+          tap(() => (this.state.orcid = StepState.COMPLETED)),
+          catchError((error) => {
+            this.state.orcid = StepState.ERROR;
+            return EMPTY;
+          })
+        )
+      )
+    );
   }
 
   private calculateTitle() {
@@ -170,7 +179,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     return {
       snapshot: this.isSnapshot ? StepState.COMPLETED : StepState.INITIAL,
       doi: this.version.doiURL ? StepState.COMPLETED : StepState.INITIAL,
-      orcid: this.version.versionMetadata.orcidPutCode ? StepState.COMPLETED : StepState.INITIAL
+      orcid: this.version.versionMetadata.orcidPutCode ? StepState.COMPLETED : StepState.INITIAL,
     };
   }
 }

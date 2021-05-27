@@ -141,7 +141,7 @@ export class AlertService {
   }
 
   /**
-   * Resets the state of the alerts (as if the user has not interacted with anything)
+   * Resets the stepState of the alerts (as if the user has not interacted with anything)
    *
    * @memberof AlertService
    */
@@ -156,7 +156,7 @@ export class AlertService {
   }
 
   /**
-   * Set error state
+   * Set error stepState
    *
    * @private
    * @param {string} message  The short error message
@@ -175,7 +175,7 @@ export class AlertService {
   }
 
   /**
-   * Set info state
+   * Set info stepState
    *
    * @private
    * @param {string} message  The short message indicating what is currently happening

@@ -49,7 +49,7 @@ export class OrganizationMembersService {
 
   /**
    * Remove a user from an organization in Dockstore
-   * Uses the alertService but setting the state loading/error too just in case it's used in the future
+   * Uses the alertService but setting the stepState loading/error too just in case it's used in the future
    * @param {OrganizationUser} organizationUser  The organization user to remove from the organization
    * @memberof OrganizationMembersService
    */

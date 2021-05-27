@@ -45,7 +45,7 @@ import { Hit, SearchService } from './state/search.service';
  * In general, the search works like this:
  * There's the "view" which is what the user clicks which includes facet checkboxes and tab (tools/workflows), etc
  * This causes some weird combination of the URL and/or Akita store and/or Angular global service to update
- * The URL change causes the URL to be parsed again which sets the state once more before triggering a new set of ES query
+ * The URL change causes the URL to be parsed again which sets the stepState once more before triggering a new set of ES query
  *
  * Additional notes:
  * The URL is gospel so that that users with links will always work.
@@ -195,8 +195,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.oRFilterText$ = this.advancedSearchQuery.oRFilterText$;
     this.nOTFilterText$ = this.advancedSearchQuery.nOTFilterText$;
     // The reason why we have this here is because the updatePermalink function isn't in a service...
-    // because the function modifies something that's in this component and not in the state.
-    // TODO:move it to the state
+    // because the function modifies something that's in this component and not in the stepState.
+    // TODO:move it to the stepState
     this.advancedSearchQuery.advancedSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.updatePermalink();
     });
@@ -390,7 +390,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ===============================================
    */
 
-  // Called from one place which is only when the URL has parsed and query non-result state has been set
+  // Called from one place which is only when the URL has parsed and query non-result stepState has been set
   updateQuery() {
     const tabIndex = SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)

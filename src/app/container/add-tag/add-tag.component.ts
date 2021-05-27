@@ -99,7 +99,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.initializeTag();
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
-      // One day, we will figure out how to handle form changes with state management's read only state
+      // One day, we will figure out how to handle form changes with stepState management's read only stepState
       this.tool = JSON.parse(JSON.stringify(tool));
       this.loadDefaults();
     });

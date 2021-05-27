@@ -24,11 +24,11 @@
 // import { delay, take, takeUntil } from 'rxjs/operators';
 // import { FileService } from '../../../shared/file.service';
 // import { GA4GHFilesService } from '../../../shared/ga4gh-files/ga4gh-files.service';
-// import { WorkflowQuery } from '../../../shared/state/workflow.query';
+// import { WorkflowQuery } from '../../../shared/stepState/workflow.query';
 // import { ToolDescriptor, Workflow, WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
-// import { WdlViewerPipelineResponse } from './state/wdl-viewer.model';
-// import { WdlViewerQuery } from './state/wdl-viewer.query';
-// import { WdlViewerService } from './state/wdl-viewer.service';
+// import { WdlViewerPipelineResponse } from './stepState/wdl-viewer.model';
+// import { WdlViewerQuery } from './stepState/wdl-viewer.query';
+// import { WdlViewerService } from './stepState/wdl-viewer.service';
 //
 // @Component({
 //   selector: 'app-wdl-viewer',

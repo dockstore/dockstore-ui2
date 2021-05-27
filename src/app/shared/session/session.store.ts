@@ -31,7 +31,7 @@ export function createInitialState(): SessionState {
   };
 }
 /**
- * This store is for app-wide state information such as:
+ * This store is for app-wide stepState information such as:
  * whether the current public page or not
  * what type of entry is currently viewed
  * what user is logged in currently

@@ -38,7 +38,7 @@ export class ToolTabComponent extends EntryTab {
   toolExcerptHeaderName$: Observable<string>;
   workflowExcerptRowHeading$: Observable<string>;
   displayedColumns: string[] = ['workflowExcerpt', 'toolExcerpt'];
-  // TODO: Put most of this stuff in Akita state
+  // TODO: Put most of this stuff in Akita stepState
   hasContent = false;
   nullContent = false;
   noContent = false;

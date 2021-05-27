@@ -231,7 +231,7 @@ export class ViewService {
   }
 
   /**
-   * Entry function for issuing a DOI, opens a dialog depending on the state of the
+   * Entry function for issuing a DOI, opens a dialog depending on the stepState of the
    * version.
    *
    * @memberof ViewService

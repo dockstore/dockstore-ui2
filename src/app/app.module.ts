@@ -100,6 +100,7 @@ import { StarredEntriesComponent } from './starredentries/starredentries.compone
 import { StarringModule } from './starring/starring.module';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
 import { TosBannerComponent } from './tosBanner/tos-banner.component';
+import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/exporter-step/exporter-step.component';
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 
@@ -151,6 +152,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     GitTagPipe,
     AboutComponent,
     SnaphotExporterModalComponent,
+    ExporterStepComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

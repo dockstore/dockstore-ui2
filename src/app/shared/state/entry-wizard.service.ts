@@ -117,7 +117,7 @@ export class EntryWizardService {
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been deleted');
           // move this to be called right away
-          // on error, will revert state back
+          // on error, will revert stepState back
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);

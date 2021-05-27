@@ -82,7 +82,7 @@ export class CheckerWorkflowService extends Base {
   }
 
   public updateCheckerWorkflow(id: number, isPublic: boolean, entry) {
-    // This sets the checker-workflow.checkerWorkflow state
+    // This sets the checker-workflow.checkerWorkflow stepState
     if (isPublic) {
       this.workflowsService
         .getPublishedWorkflow(id, includesValidation)
