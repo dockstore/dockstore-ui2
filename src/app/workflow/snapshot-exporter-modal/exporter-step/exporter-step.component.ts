@@ -14,6 +14,7 @@ export class ExporterStepComponent implements OnInit {
   @Input() faIcon: IconDefinition;
   @Input() successText: string;
   @Input() errorText: string;
+  @Input() defaultText: string;
 
   public readonly StepState = StepState;
 

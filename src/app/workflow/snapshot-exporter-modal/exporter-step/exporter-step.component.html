@@ -1,16 +1,23 @@
 <div fxLayout="column" fxLayoutAlign="center center">
-  <div *ngIf="matIcon">
-    <mat-icon *ngIf="stepState === StepState.INITIAL" class="exporter-icon">{{ matIcon }}</mat-icon>
+  <div style="height: 50px" fxLayout="row" fxLayoutAlign="center center">
+    <div *ngIf="matIcon">
+      <mat-icon *ngIf="stepState === StepState.INITIAL" class="exporter-icon">{{ matIcon }}</mat-icon>
+    </div>
+    <div *ngIf="aiIcon">
+      <i *ngIf="stepState === StepState.INITIAL" class="ai {{ aiIcon }} exporter-icon ai-3x"></i>
+    </div>
+    <div *ngIf="faIcon">
+      <fa-icon *ngIf="stepState === StepState.INITIAL" [icon]="faIcon" class="exporter-icon" size="3x"></fa-icon>
+    </div>
+    <mat-icon *ngIf="stepState === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
+    <mat-icon *ngIf="stepState === StepState.ERROR" class="exporter-icon" style="color: red">error</mat-icon>
+    <mat-progress-spinner *ngIf="stepState === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
   </div>
-  <div *ngIf="aiIcon">
-    <i *ngIf="stepState === StepState.INITIAL" class="ai {{ aiIcon }} exporter-icon ai-3x"></i>
+  <div fxLayout="row">
+    <div [ngSwitch]="stepState">
+      <div *ngSwitchCase="StepState.COMPLETED">{{ successText }}</div>
+      <div *ngSwitchCase="StepState.ERROR">{{ errorText }}</div>
+      <div *ngSwitchDefault>{{ defaultText }}</div>
+    </div>
   </div>
-  <div *ngIf="faIcon">
-    <fa-icon *ngIf="stepState === StepState.INITIAL" [icon]="faIcon" class="exporter-icon" size="3x"></fa-icon>
-  </div>
-  <mat-icon *ngIf="stepState === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
-  <mat-icon *ngIf="stepState === StepState.ERROR" class="exporter-icon" style="color: red">error </mat-icon>
-  <mat-progress-spinner *ngIf="stepState === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
-  <div *ngIf="stepState === StepState.COMPLETED">{{ successText }}</div>
-  <div *ngIf="stepState === StepState.ERROR">{{ errorText }}</div>
 </div>

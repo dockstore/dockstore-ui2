@@ -21,13 +21,17 @@
           matIcon="photo_camera"
           successText="Snapshot created"
           errorText="Snapshot error"
+          defaultText="Snapshot"
         ></app-exporter-step>
-        <app-exporter-step [stepState]="state.doi" aiIcon="ai-doi" successText="DOI created" errorText="DOI error"></app-exporter-step>
+        <app-exporter-step [stepState]="state.doi" aiIcon="ai-doi" successText="DOI created" errorText="DOI error" defaultText="DOI">
+        </app-exporter-step>
         <app-exporter-step
+          *ngIf="action === SnapshotExporterAction.ORCID"
           [stepState]="state.orcid"
           [faIcon]="faOrcid"
           successText="ORCID created"
           errorText="ORCID error"
+          defaultText="ORCID"
         ></app-exporter-step>
       </div>
 
