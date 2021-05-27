@@ -10,7 +10,6 @@ import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenQuery } from '../../shared/state/token.query';
 import { BioWorkflow, WorkflowVersion } from '../../shared/swagger';
-import { ViewService } from '../view/view.service';
 import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
 
 export enum SnapshotExporterAction {
@@ -52,7 +51,6 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   public version: WorkflowVersion;
   public Dockstore = Dockstore;
   public SnapshotExporterAction = SnapshotExporterAction;
-  public StepState = StepState;
   public title: string;
   public action: SnapshotExporterAction;
   public promptToConfirmSnapshot = false;
@@ -66,7 +64,6 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     private tokenQuery: TokenQuery,
     private alertQuery: AlertQuery,
     private alertService: AlertService,
-    private viewService: ViewService,
     private router: Router
   ) {
     super();
