@@ -169,7 +169,7 @@ describe('Dockstore my workflows', () => {
 
       cy.get('[data-cy=dockstore-snapshot]').first().click();
 
-      cy.get('[data-cy=confirm-dialog-button]').click();
+      cy.get('[data-cy=snapshot-button]').click();
 
       cy.wait(250);
       cy.get('[data-cy=dockstore-snapshot-locked').should('have.length', 1);

@@ -9,7 +9,9 @@
       <div>
         <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
           <button mat-button mat-dialog-close color="secondary">Cancel</button>
-          <button color="primary" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">Snapshot</button>
+          <button color="primary" data-cy="snapshot-button" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">
+            Snapshot
+          </button>
         </div>
       </div>
     </div>

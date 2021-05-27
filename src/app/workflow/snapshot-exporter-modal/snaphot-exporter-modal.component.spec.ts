@@ -20,22 +20,28 @@ describe('SnapshotDoiOrcidComponent', () => {
       declarations: [SnaphotExporterModalComponent],
       imports: [MatSnackBarModule, HttpClientTestingModule, RouterTestingModule],
       providers: [
-        {provide: MAT_DIALOG_DATA, useValue: {
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: {
             workflow: {},
             version: {
               frozen: false,
-              versionMetadata: {}
+              versionMetadata: {},
             },
-            action: SnapshotExporterAction.SNAPSHOT
-          }},
-        {provide: MatDialogRef, useValue: {
-            close: (dialogResult: any) => {}
-          }},
-        {provide: AuthService, useValue: AuthStubService},
-        {provide: AccountsService, useValue: AccountsStubService},
+            action: SnapshotExporterAction.SNAPSHOT,
+          },
+        },
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: (dialogResult: any) => {},
+          },
+        },
+        { provide: AuthService, useClass: AuthStubService },
+        { provide: AccountsService, useClass: AccountsStubService },
         DateService,
-        ProviderService
-      ]
+        ProviderService,
+      ],
     }).compileComponents();
   });
 
