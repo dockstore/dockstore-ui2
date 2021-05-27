@@ -305,6 +305,8 @@ workflows:
                 - develop
     jobs:
       - uptime_monitor_no_auth:
+          stack: "dev"
+          webpage_URL: "https://dev.dockstore.net"
           context:
             - dockerhub
       - uptime_monitor_auth:
