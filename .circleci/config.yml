@@ -21,26 +21,6 @@ executors:
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
-  nightly_staging_smoke_tests:
-    steps:
-      - checkout
-      - run:
-          name: Get commit id.
-          command: |
-            git checkout $(curl https://dev.dockstore.net | \
-            grep -Eoi "https:\/\/gui\.dockstore\.org\/[A-Za-z0-9]+-[A-Za-z0-9]+" | \
-            head -1 | \
-            grep -Eoi "[A-Za-z0-9]+$")
-      - install_container_dependencies
-      - run:
-          name: Execute staging no-auth smoke tests
-          command: |
-            bash -i -c 'npm run test-staging-no-auth'
-      - run:
-          name: Execute prod no-auth smoke tests
-          command: |
-            bash -i -c 'npm run test-prod-no-auth'
-
   uptime_monitor_no_auth:
     working_directory: ~/repo
     docker:
@@ -49,7 +29,8 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - setup_nightly_tests
+      - setup_nightly_tests:
+          webpage_URL: "https://dev.dockstore.net"
       - run:
           name: Run remote verification test against dev (no auth)
           command: bash -i -c 'npm run test-dev-no-auth'
@@ -73,7 +54,8 @@ jobs:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
-      - setup_nightly_tests
+      - setup_nightly_tests:
+          webpage_URL: "https://dev.dockstore.net"
       - run:
           name: Run remote verification test against dev (with auth)
           command: bash -i -c 'npm run test-dev-auth'
@@ -250,6 +232,9 @@ workflows:
   everything:
     jobs:
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - uptime_monitor_no_auth:
+          context:
+            - dockerhub
       - lint_license_unit_test_coverage:
           filters:
             tags:
@@ -377,8 +362,19 @@ commands:
           name: Wait for services
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
+    parameters:
+      webpage_URL:
+        type: string
     steps:
       - checkout
+      - run:
+          name: Get and checkout commit id from the current webpage.
+          command: |
+            COMMIT_ID=$(curl << parameters.webpage_URL >> | \
+                        grep -Eoi "https:\/\/gui\.dockstore\.org\/[A-Za-z0-9\.]+-[A-Za-z0-9]+" | \
+                        head -1 | \
+                        grep -Eoi "[A-Za-z0-9]+$")
+            git checkout $COMMIT_ID
       - install_container_dependencies
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
