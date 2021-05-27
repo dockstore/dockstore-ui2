@@ -21,6 +21,26 @@ executors:
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
 jobs:
+  nightly_staging_smoke_tests:
+    steps:
+      - checkout
+      - run:
+          name: Get commit id.
+          command: |
+            git checkout
+            $(curl https://dev.dockstore.net | \
+            grep -Eoi "https:\/\/gui\.dockstore\.org\/[A-Za-z0-9]+-[A-Za-z0-9]+" | \
+            head -1 | \
+            grep -Eoi "[A-Za-z0-9]+$")
+      - install_container_dependencies
+      - run:
+          name: Execute staging no-auth smoke tests
+          command: |
+            bash -i -c 'npm run test-staging-no-auth'
+      - run:
+          name: Execute prod no-auth smoke tests
+          command: |
+            bash -i -c 'npm run test-prod-no-auth'
 
   uptime_monitor_no_auth:
     working_directory: ~/repo
