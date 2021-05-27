@@ -274,6 +274,7 @@
 "JSONStream@1.3.5","(MIT OR Apache-2.0)","https://github.com/dominictarr/JSONStream"
 "abab@2.0.5","BSD-3-Clause","https://github.com/jsdom/abab"
 "abbrev@1.1.1","ISC","https://github.com/isaacs/abbrev-js"
+"academicons@1.8.6","OFL-1.1","https://github.com/jpswalsh/academicons"
 "accepts@1.3.5","MIT","https://github.com/jshttp/accepts"
 "accepts@1.3.7","MIT","https://github.com/jshttp/accepts"
 "ace-builds@1.4.6","BSD-3-Clause","https://github.com/ajaxorg/ace-builds"
