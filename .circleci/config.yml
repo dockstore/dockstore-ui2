@@ -48,7 +48,7 @@ jobs:
       - upload_nightly_artifacts
       - slack/status:
         fail_only: true
-        failure_message: Nightly << parameters.stack >> non-auth tests failed!
+        failure_message: "Nightly << parameters.stack >> non-auth tests failed!"
         webhook: $SLACK_WEBHOOK
 
   # TODO: Add auth tests for staging/prod once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done.
