@@ -151,17 +151,17 @@ describe('Test workflow page functionality', () => {
 });
 
 // pairs of [workflow URL without version number, verified version number, another verified version number, workflow.trsUrl]
-// TODO re add this after https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done: [
-//     'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl',
-//     '1.32.0',
-//     'develop',
-//     window.location.origin +
-//       '/api' +
-//       ga4ghPath +
-//       '/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/develop',
-//     'WDL',
-//   ],
 const workflowVersionTuples = [
+  [
+    'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl',
+    '1.32.0',
+    'develop',
+    window.location.origin +
+      '/api' +
+      ga4ghPath +
+      '/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/develop',
+    'WDL',
+  ],
   [
     'github.com/NCI-GDC/gdc-dnaseq-cwl/GDC_DNASeq',
     'dev',
