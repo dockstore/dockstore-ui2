@@ -56,6 +56,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   public promptToConfirmSnapshot = false;
   public faOrcid = faOrcid;
   public state: State;
+  public error = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: SnapshotExporterDialogData,
@@ -97,19 +98,54 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     if (!this.isSnapshot && !snapshotConfirmed) {
       this.promptToConfirmSnapshot = true;
     } else {
-      const observables: Observable<void>[] = [];
-      if (!this.isSnapshot) {
-        observables.push(this.snapshotStep());
-      }
-      if (!this.version.doiURL) {
-        observables.push(this.requestDOIStep());
-      }
-      if (this.action === SnapshotExporterAction.ORCID) {
-        observables.push(this.orcidStep());
-      }
+      const observables = this.getSteps();
       // Leave the dialog open if there's an error
-      concat(...observables).subscribe(() => this.dialogRef.close());
+      concat(...observables).subscribe(
+        () => {},
+        () => this.error = true,
+        () => {
+          if (!this.error) {
+            this.dialogRef.close();
+          }
+        });
     }
+  }
+
+  private getSteps() {
+    const observables: Observable<void>[] = [];
+    if (!this.isSnapshot) {
+      observables.push(this.snapshotStep());
+    }
+    if (!this.version.doiURL) {
+      observables.push(this.requestDOIStep());
+    }
+    if (this.action === SnapshotExporterAction.ORCID) {
+      observables.push(this.orcidStep());
+    }
+
+    // This code is useful if you want to test the UI only
+    // const observables: Observable<any>[] = [];
+    // if (!this.isSnapshot) {
+    //   observables.push(observableOf(1).pipe(
+    //     tap(() => { console.log('snapshotting...'); this.state.snapshot = StepState.EXECUTING; }),
+    //     delay(5000),
+    //     switchMap(() => observableOf(1).pipe(tap(() => this.state.snapshot = StepState.COMPLETED))))
+    //   );
+    // }
+    // if (!this.version.doiURL) {
+    //   observables.push(observableOf(1).pipe(
+    //     tap(() => {console.log('doi....'); this.state.doi = StepState.EXECUTING; }),
+    //     delay(5000),
+    //     switchMap(() => observableOf(1).pipe(tap(() => this.state.doi = StepState.COMPLETED))))
+    //   );
+    // }
+    // if (this.action === SnapshotExporterAction.ORCID) {
+    //   observables.push(observableOf(1).pipe(
+    //     tap(() => this.state.orcid = StepState.EXECUTING),
+    //     delay(5000),
+    //     switchMap(() => observableOf(1).pipe(tap(() => this.state.orcid = StepState.COMPLETED)))));
+    // }
+    return observables;
   }
 
   private requestDOIStep() {
@@ -130,7 +166,6 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   private snapshotStep() {
     return observableOf(1).pipe(
       tap(() => {
-        console.log('hello');
         this.state.snapshot = StepState.EXECUTING;
       }),
       switchMap(() =>

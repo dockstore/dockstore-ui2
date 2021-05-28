@@ -49,7 +49,7 @@ export class SnapshotExporterModalService {
       map((versions) => {
         const selectedWorkflow = { ...this.workflowQuery.getActive() };
         if (selectedWorkflow.id === workflow.id) {
-          this.workflowService.setWorkflow(workflow);
+          this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: versions });
         }
 
         const workflowName: string = workflow.workflowName || workflow.repository;
