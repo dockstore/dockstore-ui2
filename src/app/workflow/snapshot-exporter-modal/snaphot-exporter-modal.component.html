@@ -59,7 +59,9 @@
           <button mat-button mat-dialog-close color="secondary">Cancel</button>
           <button
             [disabled]="
-              !(hasZenodoToken$ | async) || (action === SnapshotExporterAction.ORCID && !(hasOrcidToken$ | async)) || (isAjaxing$ | async)
+              !(hasZenodoToken$ | async) ||
+              (action === SnapshotExporterAction.ORCID && !(hasOrcidToken$ | async)) ||
+              state.overall !== StepState.INITIAL
             "
             color="primary"
             mat-flat-button
@@ -69,7 +71,13 @@
           >
             {{ action === SnapshotExporterAction.DOI ? 'Request DOI' : 'Export' }}
           </button>
-          <button color="primary" mat-flat-button [disabled]="isAjaxing$ | async" (click)="export(true)" *ngIf="promptToConfirmSnapshot">
+          <button
+            color="primary"
+            mat-flat-button
+            [disabled]="state.overall !== StepState.INITIAL"
+            (click)="export(true)"
+            *ngIf="promptToConfirmSnapshot"
+          >
             Confirm
           </button>
         </div>

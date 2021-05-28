@@ -5,7 +5,6 @@ import { faOrcid } from '@fortawesome/free-brands-svg-icons';
 import { concat, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenQuery } from '../../shared/state/token.query';
@@ -35,6 +34,7 @@ export interface State {
   snapshot: StepState;
   doi: StepState;
   orcid: StepState;
+  overall: StepState;
 }
 
 @Component({
@@ -50,13 +50,13 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
   public workflow: BioWorkflow;
   public version: WorkflowVersion;
   public Dockstore = Dockstore;
+  public StepState = StepState;
   public SnapshotExporterAction = SnapshotExporterAction;
   public title: string;
   public action: SnapshotExporterAction;
   public promptToConfirmSnapshot = false;
   public faOrcid = faOrcid;
   public state: State;
-  public error = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: SnapshotExporterDialogData,
@@ -64,7 +64,6 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     private snapshotExporterModalService: SnapshotExporterModalService,
     private tokenQuery: TokenQuery,
     private alertQuery: AlertQuery,
-    private alertService: AlertService,
     private router: Router
   ) {
     super();
@@ -99,12 +98,12 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       this.promptToConfirmSnapshot = true;
     } else {
       const observables = this.getSteps();
-      // Leave the dialog open if there's an error
+      this.state.overall = StepState.EXECUTING;
       concat(...observables).subscribe(
         () => {},
-        () => this.error = true,
+        () => this.state.overall = StepState.ERROR,
         () => {
-          if (!this.error) {
+          if (this.state.overall !== StepState.ERROR) {
             this.dialogRef.close();
           }
         });
@@ -211,6 +210,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       snapshot: this.isSnapshot ? StepState.COMPLETED : StepState.INITIAL,
       doi: this.version.doiURL ? StepState.COMPLETED : StepState.INITIAL,
       orcid: this.version.versionMetadata.orcidPutCode ? StepState.COMPLETED : StepState.INITIAL,
+      overall: StepState.INITIAL
     };
   }
 }
