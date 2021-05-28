@@ -105,6 +105,8 @@ describe('Dockstore Workflow Details', () => {
     it('Change to fullscreen and back', () => {
       cy.get('.mat-tab-header-pagination-after').click();
       goToTab('DAG');
+      cy.wait(1000);
+      goToTab('DAG');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=dag');
       cy.get('[data-cy=dag-holder]').should('have.class', 'small');
       cy.get('[data-cy=dag-holder]').should('not.have.class', 'big');
