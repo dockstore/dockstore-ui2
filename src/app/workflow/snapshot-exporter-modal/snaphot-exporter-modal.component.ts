@@ -1,8 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router/';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
-import { concat, EMPTY, Observable, of as observableOf } from 'rxjs';
+import { concat, Observable, of as observableOf, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
@@ -42,7 +42,7 @@ export interface State {
   templateUrl: './snaphot-exporter-modal.component.html',
   styleUrls: ['./snaphot-exporter-modal.component.scss'],
 })
-export class SnaphotExporterModalComponent extends Base implements OnInit {
+export class SnaphotExporterModalComponent extends Base {
   public hasZenodoToken$: Observable<boolean> = this.tokenQuery.hasZenodoToken$;
   public hasOrcidToken$: Observable<boolean> = this.tokenQuery.hasOrcidToken$;
   public isAjaxing$ = this.alertQuery.showInfo$;
@@ -74,8 +74,6 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     this.state = this.calculateState();
   }
 
-  ngOnInit(): void {}
-
   linkAccount() {
     this.dialogRef.close();
     this.router.navigate(['/accounts']);
@@ -100,13 +98,16 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       const observables = this.getSteps();
       this.state.overall = StepState.EXECUTING;
       concat(...observables).subscribe(
-        () => {},
-        () => this.state.overall = StepState.ERROR,
+        () => {
+          // Intentionally not doing anything
+        },
+        () => (this.state.overall = StepState.ERROR),
         () => {
           if (this.state.overall !== StepState.ERROR) {
             this.dialogRef.close();
           }
-        });
+        }
+      );
     }
   }
 
@@ -127,8 +128,13 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
     // if (!this.isSnapshot) {
     //   observables.push(observableOf(1).pipe(
     //     tap(() => { console.log('snapshotting...'); this.state.snapshot = StepState.EXECUTING; }),
+    //     // tap(() => {throw throwError('whatevs'); }),
     //     delay(5000),
-    //     switchMap(() => observableOf(1).pipe(tap(() => this.state.snapshot = StepState.COMPLETED))))
+    //     switchMap(() => observableOf(1).pipe(tap(() => this.state.snapshot = StepState.COMPLETED))),
+    //     catchError((error) =>  {
+    //       this.state.snapshot = StepState.ERROR;
+    //       throw throwError(error); })
+    //     )
     //   );
     // }
     // if (!this.version.doiURL) {
@@ -155,7 +161,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
           tap(() => (this.state.doi = StepState.COMPLETED)),
           catchError((error) => {
             this.state.doi = StepState.ERROR;
-            return EMPTY;
+            throw throwError(error);
           })
         )
       )
@@ -172,7 +178,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
           tap(() => (this.state.snapshot = StepState.COMPLETED)),
           catchError((error) => {
             this.state.snapshot = StepState.ERROR;
-            return EMPTY;
+            throw throwError(error);
           })
         )
       )
@@ -187,7 +193,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
           tap(() => (this.state.orcid = StepState.COMPLETED)),
           catchError((error) => {
             this.state.orcid = StepState.ERROR;
-            return EMPTY;
+            throw throwError(error);
           })
         )
       )
@@ -210,7 +216,7 @@ export class SnaphotExporterModalComponent extends Base implements OnInit {
       snapshot: this.isSnapshot ? StepState.COMPLETED : StepState.INITIAL,
       doi: this.version.doiURL ? StepState.COMPLETED : StepState.INITIAL,
       orcid: this.version.versionMetadata.orcidPutCode ? StepState.COMPLETED : StepState.INITIAL,
-      overall: StepState.INITIAL
+      overall: StepState.INITIAL,
     };
   }
 }

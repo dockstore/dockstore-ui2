@@ -34,7 +34,9 @@ describe('SnapshotDoiOrcidComponent', () => {
         {
           provide: MatDialogRef,
           useValue: {
-            close: (dialogResult: any) => {},
+            close: (dialogResult: any) => {
+              // Do nothing
+            },
           },
         },
         { provide: AuthService, useClass: AuthStubService },

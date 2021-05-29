@@ -1,14 +1,16 @@
 @import 'materialColorScheme.scss';
 
-.mat-icon.exporter-icon {
+.mat-icon {
   transform: scale(1.8);
 }
 .exporter-icon {
-  color: #3f51bf;
+  color: mat-color($dockstore-app-primary);
+}
+.icon-row {
+  height: 40px;
 }
 .status-text {
   margin: 10px 0 0;
-  font-family: Roboto;
   font-size: 12px;
   font-weight: bold;
   font-stretch: normal;
@@ -17,4 +19,12 @@
   letter-spacing: normal;
   color: mat-color($dockstore-app-gray, darken);
   text-align: center;
+}
+
+// https://app.zeplin.io/project/5fc690a2717ee9144814f190/screen/609ec8bb82aeac2798ee9044
+.completed {
+  color: #00bfa5;
+}
+.execution-error {
+  color: mat-color($dockstore-app-warn);
 }

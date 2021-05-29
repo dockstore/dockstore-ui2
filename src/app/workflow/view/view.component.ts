@@ -24,7 +24,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
+import { bootstrap4largeModalSize, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
@@ -134,8 +134,8 @@ export class ViewWorkflowComponent extends View implements OnInit {
   }
 
   private snaphshotExportDialog(action: SnapshotExporterAction) {
-    const dialogRef = this.matDialog.open(SnaphotExporterModalComponent, {
-      width: '600px',
+    this.matDialog.open(SnaphotExporterModalComponent, {
+      width: bootstrap4largeModalSize,
       data: {
         workflow: this.workflow,
         version: this.version,

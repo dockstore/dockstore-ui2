@@ -156,7 +156,7 @@ describe('Dockstore my workflows', () => {
     });
   });
 
-  describe('Should be able to snapshot, request DOI, and export to ORCID', () => {
+  describe.only('Should be able to snapshot, request DOI, and export to ORCID', () => {
     function gotoVersionsAndClickActions() {
       cy.visit('/my-workflows/github.com/A/l');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
@@ -189,8 +189,9 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=link-zenodo]').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
     });
-    it('Export button should work', () => {
+    it('Export DOI should result in badge', () => {
       cy.server();
+      // tokens.json indicates a Zenodo token
       cy.fixture('tokens.json').then((json) => {
         cy.route({
           url: '/api/users/1/tokens',
@@ -199,9 +200,22 @@ describe('Dockstore my workflows', () => {
           response: json,
         });
       });
+      // doiResponse.json has a workflow version with a DOI
+      cy.fixture('doiResponse.json').then((json) => {
+        cy.route({
+          url: '/api/**/requestDOI/*',
+          method: 'PUT',
+          status: 200,
+          response: json,
+        });
+      });
+      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist');
       gotoVersionsAndClickActions();
+      // Make sure there are no existing Zenodo badges
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
+      cy.get('[data-cy=export-button').click();
+      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0);
     });
   });
 

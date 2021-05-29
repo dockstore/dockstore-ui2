@@ -1,5 +1,5 @@
 <div fxLayout="column" fxLayoutAlign="center center">
-  <div fxLayout="row" fxLayoutAlign="center center" style="height: 40px">
+  <div fxLayout="row" fxLayoutAlign="center center" class="icon-row">
     <div *ngIf="matIcon">
       <mat-icon *ngIf="stepState === StepState.INITIAL" class="exporter-icon">{{ matIcon }}</mat-icon>
     </div>
@@ -9,8 +9,8 @@
     <div *ngIf="faIcon">
       <fa-icon *ngIf="stepState === StepState.INITIAL" [icon]="faIcon" class="exporter-icon" size="3x"></fa-icon>
     </div>
-    <mat-icon *ngIf="stepState === StepState.COMPLETED" class="exporter-icon" style="color: green"> check_circle </mat-icon>
-    <mat-icon *ngIf="stepState === StepState.ERROR" class="exporter-icon" style="color: red">error</mat-icon>
+    <mat-icon *ngIf="stepState === StepState.COMPLETED" class="completed"> check_circle </mat-icon>
+    <mat-icon *ngIf="stepState === StepState.ERROR" class="execution-error">error</mat-icon>
     <mat-progress-spinner *ngIf="stepState === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
   </div>
   <div fxLayout="row">

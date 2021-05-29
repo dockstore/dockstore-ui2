@@ -1,6 +1,6 @@
 <div>
   <h4 mat-dialog-title>
-    {{ title }}: <span style="color: #3f51b5">Version {{ version.name }}</span>
+    {{ title }}: <span class="version">Version {{ version.name }}</span>
   </h4>
 
   <div [ngSwitch]="action">
@@ -50,7 +50,14 @@
       </div>
 
       <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
-        <div *ngIf="promptToConfirmSnapshot" class="confirmation-box" fxLayout="row" fxLayoutAlign="end" fxFlex="50" fxFlexOffset="50">
+        <div
+          *ngIf="promptToConfirmSnapshot && state.overall === StepState.INITIAL"
+          class="inline-confirmation"
+          fxLayout="row"
+          fxLayoutAlign="end"
+          fxFlex="50"
+          fxFlexOffset="50"
+        >
           <span class="confirmation-text"
             >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span
           >
@@ -59,8 +66,8 @@
           <button mat-button mat-dialog-close color="secondary">Cancel</button>
           <button
             [disabled]="
-              !(hasZenodoToken$ | async) ||
-              (action === SnapshotExporterAction.ORCID && !(hasOrcidToken$ | async)) ||
+              (hasZenodoToken$ | async) !== true ||
+              (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) !== true) ||
               state.overall !== StepState.INITIAL
             "
             color="primary"
@@ -87,7 +94,7 @@
 
   <ng-template #snapshotBlurb>
     <p>
-      A snapshot freezes the workflow version, ensuring that the content of the workflow does not change if cited in publications.
+      A snapshot freezes the workflow version, ensuring that the content of the workflow does not change, e.g., if cited in publications.
       <b>Important note: once a snapshot is made, the workflow version becomes uneditable, apart from some metadata.</b>
     </p>
     <p>
@@ -129,7 +136,7 @@
   <ng-template #zenodoCheck>
     <div *ngIf="!(hasZenodoToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
-        <mat-icon style="color: #e34348">warning</mat-icon>
+        <mat-icon class="account-warning">warning</mat-icon>
       </div>
       <div>
         <div data-cy="zenodo-not-linked">
@@ -149,13 +156,13 @@
   <ng-template #orcidCheck>
     <div *ngIf="!(hasOrcidToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
-        <mat-icon style="color: #e34348">warning</mat-icon>
+        <mat-icon class="account-warning">warning</mat-icon>
       </div>
       <div>
         <div>
           To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
           come back to this screen and try again.
-          <button class="link-action" mat-button (click)="linkAccount()" style="color: #3f51b5; background-color: white">
+          <button class="link-action" mat-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>

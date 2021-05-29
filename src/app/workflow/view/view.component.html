@@ -16,7 +16,7 @@
 
 <button mat-button [matMenuTriggerFor]="menu">Actions<mat-icon>arrow_drop_down</mat-icon></button>
 <mat-menu #menu="matMenu">
-  <button type="button" mat-menu-item color="accent" class="btn-block" (click)="showVersionModal()">
+  <button type="button" mat-menu-item color="accent" (click)="showVersionModal()">
     {{ isPublic || !canWrite ? 'View' : 'Edit' }}
   </button>
   <ng-container *ngIf="!isPublic">
@@ -35,7 +35,6 @@
       type="button"
       mat-menu-item
       color="accent"
-      class="btn-block"
       [disabled]="(isRefreshing$ | async) || !(!version.frozen && version.referenceType !== 'BRANCH')"
       (click)="snapshotVersion()"
       data-cy="dockstore-snapshot"
@@ -47,7 +46,6 @@
       mat-menu-item
       id="DOIButton"
       color="accent"
-      class="btn-block"
       (click)="requestDOIForWorkflowVersion()"
       [disabled]="isRefreshing$ | async"
       data-cy="dockstore-request-doi-button"
@@ -60,7 +58,6 @@
       mat-menu-item
       id="OrcidButton"
       color="accent"
-      class="btn-block"
       (click)="exportToOrcid()"
       [disabled]="isRefreshing$ | async"
       data-cy="dockstore-export-orcid-button"
@@ -75,7 +72,6 @@
     <button
       mat-menu-item
       color="accent"
-      class="btn-block"
       [disabled]="
         (isRefreshing$ | async) || version.frozen || (workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML && !version.legacyVersion)
       "

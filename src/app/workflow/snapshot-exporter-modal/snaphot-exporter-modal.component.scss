@@ -1,6 +1,10 @@
 @import 'materialColorScheme.scss';
 
-.confirmation-box {
+$emphasis-color: #3f51b5;
+
+// See https://app.zeplin.io/project/5fc690a2717ee9144814f190/screen/609ecd5b5409f124f0ec2ca3
+// An "inline" confirmation, which we don't do anywhere else, AFAIK
+.inline-confirmation {
   margin: 0 0 9px;
   padding: 8px 0.3px 8px 10.7px;
   border-radius: 8px;
@@ -33,5 +37,12 @@
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: #3f51b5;
+  color: $emphasis-color;
+  background-color: white;
+}
+.version {
+  color: $emphasis-color;
+}
+.account-warning {
+  color: mat-color($dockstore-app-warn);
 }
