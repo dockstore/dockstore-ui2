@@ -3,6 +3,7 @@
   <mat-form-field appearance="outline" class="search-form-field">
     <input
       matInput
+      #search
       [matAutocomplete]="auto"
       [formControl]="searchFormControl"
       matTooltip="Find tools and workflows"
@@ -10,10 +11,9 @@
       list="suggestions"
       placeholder="Enter search term"
       type="text"
-      [(ngModel)]="value"
       data-cy="basic-search"
     />
-    <button mat-button *ngIf="value" matSuffix mat-icon-button (click)="value = ''">
+    <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>

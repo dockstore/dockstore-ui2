@@ -43,8 +43,8 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" class="search-form-field">
-          <input matInput placeholder="Search organizations" formControlName="name" [(ngModel)]="value" />
-          <button mat-button *ngIf="value" matSuffix mat-icon-button (click)="value = ''">
+          <input #search matInput placeholder="Search organizations" formControlName="name" />
+          <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
             <mat-icon class="close-alignment" inline="true">close</mat-icon>
           </button>
         </mat-form-field>
