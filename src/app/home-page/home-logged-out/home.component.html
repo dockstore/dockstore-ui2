@@ -236,41 +236,17 @@
     <img src="../../../assets/images/home/illustration.png" alt="illustration" fxHide.lt-md fxFlex="40" class="contain-img" />
   </div>
 
-  <!-- <div class="gray-sections pt-5 pb-5">
+  <div class="gray-sections pt-5 pb-5">
     <div class="container" fxLayout="column" fxLayoutGap="3rem" fxLayoutAlign="space-around center">
       <h3>Featured Content</h3>
       <featured-content></featured-content>
     </div>
-  </div> -->
-  <!-- remove this hr when featured content is populated -->
-  <hr class="my-5" />
+  </div>
 
   <div fxLayout="row" fxLayout.lt-md="column" class="container mt-5" fxLayoutGap="2rem">
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3rem" fxFlex="33" fxFlex.lt-md="100" id="news">
       <h3>News & Events</h3>
-      <span>
-        <h4>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps.html'"
-            >Dockstore GitHub App</a
-          >
-        </h4>
-        <span
-          >Our Dockstore GitHub App adds support for registering and automatically syncing workflows and services between GitHub and
-          Dockstore. Check it out!</span
-        >
-      </span>
-      <span>
-        <h4>
-          <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">Viral Analysis Workflows for COVID-19</a>
-        </h4>
-        <span
-          >A collection of viral NGS workflows for analyzing COVID-19. Learn how to use them with your own data in linked Terra workspaces
-          from the Broad Viral Genomics & Data Sciences Platform.</span
-        >
-      </span>
+      <featured-news></featured-news>
     </div>
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3rem" fxFlex="33" fxFlex.lt-md="100" id="resources">
       <h3>Helpful Resources</h3>
