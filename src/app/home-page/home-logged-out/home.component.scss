@@ -111,15 +111,17 @@ h3 {
   border-radius: 1rem;
 }
 
-.close-alignment {
-  position: fixed;
-  transform: translate(-40px, 5px);
-}
-
 .primary-3 {
   color: mat-color($dockstore-app-primary, 3);
 }
 
 .warn-1 {
   color: mat-color($dockstore-app-warn, darker);
+}
+
+// Style home search bar
+::ng-deep .mat-form-field-wrapper {
+  margin-top: -0.5em;
+  margin-bottom: -1.25em;
+  padding-bottom: 2rem;
 }

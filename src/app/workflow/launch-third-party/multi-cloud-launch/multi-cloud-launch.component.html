@@ -1,4 +1,16 @@
-<button mat-raised-button [matMenuTriggerFor]="menu">{{ this.partner }}</button>
+<div [matTooltip]="tooltip">
+  <button
+    mat-raised-button
+    class="launch-with-button"
+    [matMenuTriggerFor]="menu"
+    [disabled]="disabled"
+    (click)="toggleExpanded()"
+    (menuClosed)="menuClosed()"
+  >
+    <img [src]="imagePath" [class]="className" [alt]="partner + ' launch with logo'" />
+    <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+  </button>
+</div>
 <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
   <div class="px-4" fxLayout="column" fxLayoutAlign="center start">
     <p>Please choose a well-known server to launch on, or specify your own.</p>
@@ -29,14 +41,9 @@
       <!--        {{ usersInstance.displayName }} (Custom)-->
       <!--      </mat-radio-button>-->
       <mat-radio-button value="other">
-        <mat-form-field class="small-text" color="accent">
-          <input
-            matInput
-            placeholder="Specify a url..."
-            [(ngModel)]="customLaunchWith"
-            (ngModelChange)="presetLaunchWith = 'other'"
-            name="something"
-          />
+        <mat-form-field class="small-text" color="accent" appearance="outline">
+          <mat-label>Specify a url...</mat-label>
+          <input matInput [(ngModel)]="customLaunchWith" (ngModelChange)="presetLaunchWith = 'other'" name="something" />
         </mat-form-field>
       </mat-radio-button>
       <!--      </ng-container>-->
@@ -51,7 +58,7 @@
       rel="noopener"
       [attr.href]="launchWith.url + appendToLaunchUrl"
       color="accent"
-      [disabled]="this.presetLaunchWithOption === 'other' && (customLaunchWithOption == null || customLaunchWithOption === '')"
+      [disabled]="(!this.defaultLaunchWith && !this.launchWith.url) || (this.presetLaunchWithOption === 'other' && !customLaunchWithOption)"
       (click)="selectDefault()"
     >
       Launch

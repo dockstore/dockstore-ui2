@@ -1,11 +1,14 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
-import { CloudInstance, User } from '../../../shared/openapi';
+import { CloudInstance, Language, User, UsersService } from '../../../shared/openapi';
 
 @Component({
   selector: 'app-multi-cloud-launch',
   templateUrl: './multi-cloud-launch.component.html',
+  styleUrls: ['./multi-cloud-launch.component.scss', '../launch-third-party.component.scss'],
 })
 export class MultiCloudLaunchComponent extends Base implements OnInit {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
@@ -25,6 +28,20 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
   @Input()
   user: User;
 
+  @Input()
+  imagePath: string;
+
+  @Input()
+  className: string;
+
+  @Input()
+  disabled: boolean;
+
+  @Input()
+  tooltip: string;
+
+  @Output() closed: EventEmitter<void>;
+
   customLaunchWithOption: string;
 
   presetLaunchWithOption: string;
@@ -37,7 +54,9 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
 
   partner: string;
 
-  constructor() {
+  expanded = false;
+
+  constructor(private usersService: UsersService, private alertService: AlertService) {
     super();
   }
 
@@ -86,6 +105,14 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
     this.updateLaunchWithUrl();
   }
 
+  toggleExpanded(): void {
+    this.expanded = !this.expanded;
+  }
+
+  menuClosed() {
+    this.expanded = !this.expanded;
+  }
+
   selectDefault(): void {
     localStorage.setItem('defaultLaunchWith', this.launchWith.url);
     this.defaultLaunchWith = localStorage.getItem('defaultLaunchWith');
@@ -98,27 +125,42 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
       localStorage.setItem('useCustomLaunch', 'false');
     }
 
-    // Uncomment when we want to create and save a user's custom launch entry
-    // if (this.presetLaunchWithOption === 'other' && this.user) {
-    //   const url: URL = new URL(this.launchWith.url);
-    //   const newCustomInstance: CloudInstance = {
-    //     url: this.launchWith.url,
-    //     partner: this.languagePartner,
-    //     supportsFileImports: null,
-    //     supportsHttpImports: null,
-    //     supportedLanguages: new Array<Language>(),
-    //     displayName: url.hostname,
-    //   };
-    //
-    //   this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
-    //     (usersCloudInstances: Array<CloudInstance>) => {
-    //       this.usersCloudInstances = usersCloudInstances;
-    //     },
-    //     (error: HttpErrorResponse) => {
-    //       console.log(error.message);
-    //     }
-    //   );
-    // }
+    // Create and save a user's custom launch entry to the db
+    if (this.presetLaunchWithOption === 'other' && this.user) {
+      let url: URL;
+      try {
+        this.alertService.start('Constructing URL');
+        url = new URL(this.launchWith.url);
+        this.alertService.simpleSuccess();
+      } catch (error) {
+        this.alertService.customDetailedError(
+          'Invalid URL',
+          this.launchWith.url +
+            ' is is not a valid URL. ' +
+            'Make sure your URL starts with "https://" and ends with a top-level domain like ".com" or ".eu".'
+        );
+      }
+
+      const newCustomInstance: CloudInstance = {
+        url: this.launchWith.url,
+        partner: this.languagePartner,
+        supportsFileImports: null,
+        supportsHttpImports: null,
+        supportedLanguages: new Array<Language>(),
+        displayName: url.hostname,
+      };
+
+      this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
+        (usersCloudInstances: Array<CloudInstance>) => {
+          this.usersCloudInstances = usersCloudInstances;
+        },
+        (error: HttpErrorResponse) => {
+          // It's okay for the save to the db to fail for now. At this step, we only care about what URL's users
+          // are trying to use. Probably most of these failures will be the for violating the uniqueness constraint
+          console.log(error.message);
+        }
+      );
+    }
   }
 
   private updateLaunchWithUrl(): void {

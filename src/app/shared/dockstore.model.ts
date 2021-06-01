@@ -21,7 +21,11 @@ import { Provider } from './enum/provider.enum';
 
 export class Dockstore {
   static readonly HOSTNAME = window.location.protocol + '//' + window.location.host;
+  static readonly HOSTNAME_NO_PROTOCOL = window.location.hostname;
   static readonly API_URI = Dockstore.HOSTNAME + '/api';
+  static readonly GALAXY_IMPORT_PATH_PORTION =
+    '/workflows/trs_import?trs_server=' + Dockstore.HOSTNAME_NO_PROTOCOL + '&trs_id=%23workflow/';
+  static readonly DNASTACK_IMPORT_PATH_PORTION = '/import?trs_server=' + Dockstore.HOSTNAME_NO_PROTOCOL + '&trs_id=';
 
   // All the following properties will get updated by configuration.service.ts. You do not
   // need to update them here. Set them in your dockstore.yml for the web service.
@@ -89,5 +93,6 @@ export class Dockstore {
   static FEATURES = {
     enableCwlViewer: true,
     enableLaunchWithGalaxy: true,
+    enableMultiCloudLaunchWithDNAstack: true,
   };
 }

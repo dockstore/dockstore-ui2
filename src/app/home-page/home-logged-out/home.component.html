@@ -49,19 +49,12 @@
       </div>
       <div class="search-holder" fxFlex>
         <div class="search-background">
-          <input
-            id="searchBar"
-            aria-label="Search"
-            #search
-            type="text"
-            [(ngModel)]="search.value"
-            placeholder="Search..."
-            class="fully-rounded landing-search w-100"
-            (keyup.enter)="goToSearch(search.value)"
-          />
-          <button mat-button class="close-alignment" *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
-            <mat-icon [ngStyle]="{ color: 'black' }" inline="true">close</mat-icon>
-          </button>
+          <mat-form-field appearance="none" class="fully-rounded landing-search w-100">
+            <input matInput id="searchBar" aria-label="Search" #search placeholder="Search..." (keyup.enter)="goToSearch(search.value)" />
+            <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
+              <mat-icon inline="true">close</mat-icon>
+            </button>
+          </mat-form-field>
         </div>
       </div>
     </div>
@@ -199,7 +192,7 @@
             <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko"
               ><button mat-raised-button color="accent">Tutorial</button></a
             >
-            <button mat-raised-button color="accent" routerLink="/login" data-cy="register-button">
+            <button mat-raised-button color="accent" routerLink="/register" data-cy="register-button">
               Register with <fa-icon [icon]="faGithub"></fa-icon> or <fa-icon [icon]="faGoogle"></fa-icon>
             </button>
           </div>

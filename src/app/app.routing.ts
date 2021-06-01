@@ -106,6 +106,7 @@ const APP_ROUTES: Routes = [
     loadChildren: () => import('app/search/search.module').then((m) => m.SearchModule),
     data: { title: 'Dockstore | Search' },
   },
+  { path: 'register', component: LoginComponent, data: { title: 'Dockstore | Register' } },
   { path: 'login', component: LoginComponent, data: { title: 'Dockstore | Login' } },
   { path: 'logout', component: LogoutComponent, data: { title: 'Dockstore | Logout' } },
   { path: 'session-expired', component: SessionExpiredComponent, data: { title: 'Dockstore | Session Expired' } },
@@ -120,4 +121,8 @@ const APP_ROUTES: Routes = [
   { path: '**', redirectTo: '' },
 ];
 
-export const routing = RouterModule.forRoot(APP_ROUTES, { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' });
+export const routing = RouterModule.forRoot(APP_ROUTES, {
+  scrollPositionRestoration: 'enabled',
+  anchorScrolling: 'enabled',
+  relativeLinkResolution: 'legacy',
+});
