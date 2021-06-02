@@ -132,6 +132,15 @@ describe('Test search page functionality', () => {
     cy.url().should('not.contain', 'descriptorType=NF');
     cy.url().should('contain', 'searchMode=files');
   });
+  it.only('boolean facet filters', () => {
+    cy.visit('/search');
+    cy.contains('mat-checkbox', /^[ ]*verified/).click();
+    cy.url().should('contain', 'verified=1');
+    cy.get('[data-cy=verificationStatus]').each(($el, index, $list) => {
+      console.log($el);
+      cy.wrap($el).contains('done');
+    });
+  });
 });
 
 describe('Test workflow page functionality', () => {
