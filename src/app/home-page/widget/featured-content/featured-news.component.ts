@@ -9,7 +9,7 @@ import { Dockstore } from '../../../shared/dockstore.model';
 })
 export class FeaturedNewsComponent implements OnInit {
   // TODO should parameterize FeaturedContentComponent or something
-  public myExternalHTML: any = '';
+  public myExternalHTML = '';
 
   constructor(private http: HttpClient, private alertService: AlertService) {}
   ngOnInit() {

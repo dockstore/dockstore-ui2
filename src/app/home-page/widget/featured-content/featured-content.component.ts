@@ -8,7 +8,7 @@ import { Dockstore } from '../../../shared/dockstore.model';
   template: ` <div [innerHTML]="myExternalHTML"></div> `,
 })
 export class FeaturedContentComponent implements OnInit {
-  public myExternalHTML: any = '';
+  public myExternalHTML = '';
 
   constructor(private http: HttpClient, private alertService: AlertService) {}
   ngOnInit() {
