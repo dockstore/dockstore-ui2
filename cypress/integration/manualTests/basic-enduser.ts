@@ -75,6 +75,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
       ['AnVIL', url + ':' + version2],
       ['NHLBI BioData Catalyst', url + ':' + version2],
     ];
+  } else if (type === 'NFL') {
+    launchWithTuples = [['Nextflow Tower', url + '&revision=' + version2]];
   } else {
     launchWithTuples = [];
   }
@@ -132,7 +134,7 @@ describe('Test search page functionality', () => {
     cy.url().should('not.contain', 'descriptorType=NF');
     cy.url().should('contain', 'searchMode=files');
   });
-  it.only('boolean facet filters', () => {
+  it('boolean facet filters', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', /^[ ]*verified/).click();
     cy.url().should('contain', 'verified=1');
@@ -162,16 +164,6 @@ describe('Test workflow page functionality', () => {
 // pairs of [workflow URL without version number, verified version number, another verified version number, workflow.trsUrl]
 const workflowVersionTuples = [
   [
-    'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl',
-    '1.32.0',
-    'develop',
-    window.location.origin +
-      '/api' +
-      ga4ghPath +
-      '/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/develop',
-    'WDL',
-  ],
-  [
     'github.com/NCI-GDC/gdc-dnaseq-cwl/GDC_DNASeq',
     'dev',
     'master',
@@ -183,7 +175,7 @@ const workflowVersionTuples = [
 
 const organizations = [['Broad Institute']];
 
-describe('Monitor workflows', () => {
+describe.only('Monitor workflows', () => {
   workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
 });
 
