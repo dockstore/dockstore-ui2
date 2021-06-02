@@ -282,7 +282,7 @@
           </a>
           <span *ngIf="!selectedVersion?.email"> n/a </span>
         </div>
-        <span *ngIf="isValidVersion" id="downloadZipButton">
+        <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
           <button *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
           <a [href]="downloadZipLink" *ngIf="tool?.is_published" mat-raised-button>Export as ZIP</a>
         </span>
