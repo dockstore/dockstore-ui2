@@ -1,6 +1,6 @@
 <div>
   <h4 mat-dialog-title>
-    {{ title }}: <span class="element-highlight">Version {{ version.name }}</span>
+    {{ title }}: <span class="blue-highlight">Version {{ version.name }}</span>
   </h4>
 
   <div [ngSwitch]="action">
@@ -57,7 +57,9 @@
           fxFlex="50"
           fxFlexOffset="50"
         >
-          <span class="alert-warning">Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span>
+          <span class="alert-warning pb-2 mb-2"
+            >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span
+          >
         </div>
         <div fxLayoutAlign="end" fxLayout="row" fxFlex="50">
           <button mat-button mat-dialog-close color="secondary">Cancel</button>
@@ -132,7 +134,7 @@
   </ng-template>
 
   <ng-template #zenodoCheck>
-    <div *ngIf="!(hasZenodoToken$ | async)" class="alert-danger" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+    <div *ngIf="!(hasZenodoToken$ | async)" class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
         <mat-icon class="warning-icon">warning</mat-icon>
       </div>
@@ -142,7 +144,7 @@
           this screen and try again.
         </div>
         <div>
-          <button data-cy="link-zenodo" mat-flat-button color="accent" (click)="linkAccount()">
+          <button data-cy="link-zenodo" class="ml-1" mat-flat-button color="accent" (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>
@@ -152,7 +154,7 @@
   </ng-template>
 
   <ng-template #orcidCheck>
-    <div *ngIf="!(hasOrcidToken$ | async)" class="alert-danger" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+    <div *ngIf="!(hasOrcidToken$ | async)" class="alert-danger pb-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
         <mat-icon class="account-warning">warning</mat-icon>
       </div>
@@ -160,7 +162,7 @@
         <div>
           To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
           come back to this screen and try again.
-          <button mat-flat-button (click)="linkAccount()">
+          <button class="ml-1" mat-flat-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>

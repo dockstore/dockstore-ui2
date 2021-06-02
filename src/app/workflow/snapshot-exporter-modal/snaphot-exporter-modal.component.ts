@@ -40,7 +40,6 @@ export interface State {
 @Component({
   selector: 'app-snapshot-exporter-modal-component',
   templateUrl: './snaphot-exporter-modal.component.html',
-  styleUrls: ['./snaphot-exporter-modal.component.scss'],
 })
 export class SnaphotExporterModalComponent extends Base {
   public hasZenodoToken$: Observable<boolean> = this.tokenQuery.hasZenodoToken$;

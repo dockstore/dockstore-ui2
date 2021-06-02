@@ -1467,22 +1467,18 @@ hr {
   margin-top: 1.5rem;
 }
 
-// Icon colors used by DOI/ORCID exporter
-.progress-icon.primary {
+// Surface Material primary color for use in non-Angular components/HTML
+.primary-color {
   color: mat-color($dockstore-app-primary);
 }
-.progress-icon.completed {
+
+// To indicate success of an operation.
+.success-color {
   color: #00bfa5;
 }
-.progress-icon.execution-error {
-  color: mat-color($dockstore-app-warn);
-}
 
-.warning-icon {
-  color: mat-color($dockstore-app-warn);
-}
-
-.element-highlight {
+// For highlighting or distinguishing part of a title or header, e.g., "Version 0.14" in "Request DOI: Version 0.14"
+.blue-highlight {
   color: #3f51b5;
 }
 
