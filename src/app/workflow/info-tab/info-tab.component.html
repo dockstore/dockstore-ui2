@@ -42,7 +42,11 @@
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
             <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
-            <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
+            <a
+              id="sourceRepository"
+              data-cy="sourceRepository"
+              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+            >
               {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
           </li>
