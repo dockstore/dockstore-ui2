@@ -75,6 +75,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
       ['AnVIL', url + ':' + version2],
       ['NHLBI BioData Catalyst', url + ':' + version2],
     ];
+  } else if (type === 'NFL') {
+    launchWithTuples = [['Nextflow Tower', url + '&revision=' + version2]];
   } else {
     launchWithTuples = [];
   }
@@ -132,7 +134,7 @@ describe('Test search page functionality', () => {
     cy.url().should('not.contain', 'descriptorType=NF');
     cy.url().should('contain', 'searchMode=files');
   });
-  it.only('boolean facet filters', () => {
+  it('boolean facet filters', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', /^[ ]*verified/).click();
     cy.url().should('contain', 'verified=1');
@@ -183,7 +185,7 @@ const workflowVersionTuples = [
 
 const organizations = [['Broad Institute']];
 
-describe('Monitor workflows', () => {
+describe.only('Monitor workflows', () => {
   workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
 });
 
