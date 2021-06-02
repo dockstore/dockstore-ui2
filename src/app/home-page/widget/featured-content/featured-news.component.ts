@@ -13,7 +13,7 @@ export class FeaturedNewsComponent implements OnInit {
 
   constructor(private http: HttpClient, private alertService: AlertService) {}
   ngOnInit() {
-    this.alertService.start('Retrieve featured content');
+    this.alertService.start('Retrieving featured news');
     this.http
       .get(
         Dockstore.FEATURED_NEWS_URL,
