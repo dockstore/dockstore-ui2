@@ -1,16 +1,16 @@
 <div fxLayout="column" fxLayoutAlign="center center">
   <div fxLayout="row" fxLayoutAlign="center center" class="icon-row">
     <div *ngIf="matIcon">
-      <mat-icon *ngIf="stepState === StepState.INITIAL" class="exporter-icon">{{ matIcon }}</mat-icon>
+      <mat-icon *ngIf="stepState === StepState.INITIAL" class="progress-icon primary">{{ matIcon }}</mat-icon>
     </div>
     <div *ngIf="aiIcon">
-      <i *ngIf="stepState === StepState.INITIAL" class="ai {{ aiIcon }} exporter-icon ai-3x"></i>
+      <i *ngIf="stepState === StepState.INITIAL" class="ai {{ aiIcon }} progress-icon primary ai-3x"></i>
     </div>
     <div *ngIf="faIcon">
-      <fa-icon *ngIf="stepState === StepState.INITIAL" [icon]="faIcon" class="exporter-icon" size="3x"></fa-icon>
+      <fa-icon *ngIf="stepState === StepState.INITIAL" [icon]="faIcon" class="progress-icon primary" size="3x"></fa-icon>
     </div>
-    <mat-icon *ngIf="stepState === StepState.COMPLETED" class="completed"> check_circle </mat-icon>
-    <mat-icon *ngIf="stepState === StepState.ERROR" class="execution-error">error</mat-icon>
+    <mat-icon *ngIf="stepState === StepState.COMPLETED" class="progress-icon completed"> check_circle </mat-icon>
+    <mat-icon *ngIf="stepState === StepState.ERROR" class="progress-icon execution-error">error</mat-icon>
     <mat-progress-spinner *ngIf="stepState === StepState.EXECUTING" mode="indeterminate" diameter="48"></mat-progress-spinner>
   </div>
   <div fxLayout="row">

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router/';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
 import { concat, Observable, of as observableOf, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, first, switchMap, tap } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -83,7 +83,10 @@ export class SnaphotExporterModalComponent extends Base {
    * Invoked when snapshotting only (not exporting). Closes the dialog on success
    */
   snapshot() {
-    this.snapshotExporterModalService.snapshotWorkflowVersion(this.workflow, this.version).subscribe(() => this.dialogRef.close());
+    this.snapshotExporterModalService
+      .snapshotWorkflowVersion(this.workflow, this.version)
+      .pipe(first())
+      .subscribe(() => this.dialogRef.close());
     // If there's an error, leave dialog up. this.snapshotExporterModalService.snapshotWorkflowVersion displays error message
   }
 
@@ -128,8 +131,8 @@ export class SnaphotExporterModalComponent extends Base {
     // if (!this.isSnapshot) {
     //   observables.push(observableOf(1).pipe(
     //     tap(() => { console.log('snapshotting...'); this.state.snapshot = StepState.EXECUTING; }),
-    //     // tap(() => {throw throwError('whatevs'); }),
     //     delay(5000),
+    //     tap(() => {throw throwError('whatevs'); }),
     //     switchMap(() => observableOf(1).pipe(tap(() => this.state.snapshot = StepState.COMPLETED))),
     //     catchError((error) =>  {
     //       this.state.snapshot = StepState.ERROR;

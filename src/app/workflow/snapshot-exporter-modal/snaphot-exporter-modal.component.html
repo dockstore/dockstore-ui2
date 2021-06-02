@@ -1,6 +1,6 @@
 <div>
   <h4 mat-dialog-title>
-    {{ title }}: <span class="version">Version {{ version.name }}</span>
+    {{ title }}: <span class="element-highlight">Version {{ version.name }}</span>
   </h4>
 
   <div [ngSwitch]="action">
@@ -52,15 +52,12 @@
       <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
         <div
           *ngIf="promptToConfirmSnapshot && state.overall === StepState.INITIAL"
-          class="inline-confirmation"
           fxLayout="row"
           fxLayoutAlign="end"
           fxFlex="50"
           fxFlexOffset="50"
         >
-          <span class="confirmation-text"
-            >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span
-          >
+          <span class="alert-warning">Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span>
         </div>
         <div fxLayoutAlign="end" fxLayout="row" fxFlex="50">
           <button mat-button mat-dialog-close color="secondary">Cancel</button>
@@ -135,9 +132,9 @@
   </ng-template>
 
   <ng-template #zenodoCheck>
-    <div *ngIf="!(hasZenodoToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+    <div *ngIf="!(hasZenodoToken$ | async)" class="alert-danger" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
-        <mat-icon class="account-warning">warning</mat-icon>
+        <mat-icon class="warning-icon">warning</mat-icon>
       </div>
       <div>
         <div data-cy="zenodo-not-linked">
@@ -145,7 +142,7 @@
           this screen and try again.
         </div>
         <div>
-          <button class="link-action" data-cy="link-zenodo" mat-button (click)="linkAccount()">
+          <button data-cy="link-zenodo" mat-flat-button color="accent" (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>
@@ -155,7 +152,7 @@
   </ng-template>
 
   <ng-template #orcidCheck>
-    <div *ngIf="!(hasOrcidToken$ | async)" class="account-link" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+    <div *ngIf="!(hasOrcidToken$ | async)" class="alert-danger" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
         <mat-icon class="account-warning">warning</mat-icon>
       </div>
@@ -163,7 +160,7 @@
         <div>
           To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
           come back to this screen and try again.
-          <button class="link-action" mat-button (click)="linkAccount()">
+          <button mat-flat-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>

@@ -156,7 +156,7 @@ describe('Dockstore my workflows', () => {
     });
   });
 
-  describe.only('Should be able to snapshot, request DOI, and export to ORCID', () => {
+  describe('Should be able to snapshot, request DOI, and export to ORCID', () => {
     function gotoVersionsAndClickActions() {
       cy.visit('/my-workflows/github.com/A/l');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');

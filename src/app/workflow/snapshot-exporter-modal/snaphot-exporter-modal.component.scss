@@ -1,48 +1,9 @@
 @import 'materialColorScheme.scss';
 
-$emphasis-color: #3f51b5;
-
-// See https://app.zeplin.io/project/5fc690a2717ee9144814f190/screen/609ecd5b5409f124f0ec2ca3
-// An "inline" confirmation, which we don't do anywhere else, AFAIK
-.inline-confirmation {
-  margin: 0 0 9px;
-  padding: 8px 0.3px 8px 10.7px;
-  border-radius: 8px;
-  border: solid 1px #fff176;
-  background-color: #fffde7;
+.alert-warning {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
 }
-
-.confirmation-text {
-  font-size: 12px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.33;
-  letter-spacing: normal;
-  color: mat-color($dockstore-app-gray, darken);
-}
-
-.account-link {
-  padding: 5px 15.3px 12px 10.7px;
-  border-radius: 8px;
-  border: solid 1px mat-color($dockstore-app-warn, 4);
-  background-color: mat-color($dockstore-app-warn, 5);
-}
-
-.link-action {
-  margin: 0 0 0 4px;
-  font-size: 12px;
-  font-weight: bold;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  color: $emphasis-color;
-  background-color: white;
-}
-.version {
-  color: $emphasis-color;
-}
-.account-warning {
-  color: mat-color($dockstore-app-warn);
+.alert-danger {
+  padding: 0.5rem;
 }

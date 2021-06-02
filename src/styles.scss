@@ -1467,6 +1467,25 @@ hr {
   margin-top: 1.5rem;
 }
 
+// Icon colors used by DOI/ORCID exporter
+.progress-icon.primary {
+  color: mat-color($dockstore-app-primary);
+}
+.progress-icon.completed {
+  color: #00bfa5;
+}
+.progress-icon.execution-error {
+  color: mat-color($dockstore-app-warn);
+}
+
+.warning-icon {
+  color: mat-color($dockstore-app-warn);
+}
+
+.element-highlight {
+  color: #3f51b5;
+}
+
 .mat-radio-label-content {
   font-weight: normal;
 }
