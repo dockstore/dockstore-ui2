@@ -27,6 +27,7 @@
             <a
               *ngIf="tool?.providerUrl"
               id="sourceRepository"
+              data-cy="sourceRepository"
               [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
             >
               {{ tool?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
