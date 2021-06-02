@@ -2,6 +2,70 @@ import { ga4ghPath } from '../../../src/app/shared/constants';
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import { goToTab } from '../../support/commands';
 
+// Test an entry, these should be ambiguous between tools and workflows.
+describe('run stochastic smoke test', () => {
+  testEntry('Tools');
+  testEntry('Workflows');
+});
+function testEntry(tab: string) {
+  beforeEach('get random entry on first page', () => {
+    cy.visit('/search');
+    goToTab(tab);
+    const linkName = tab === 'Workflows' ? 'workflowColumn' : 'toolNames';
+    // select a random entry on the first page and navigate to it
+    let chosen_index = 0;
+    cy.get('[data-cy=' + linkName + ']')
+      .then(($list) => {
+        chosen_index = Math.floor(Math.random() * $list.length);
+      })
+      .eq(chosen_index)
+      .within(() => {
+        cy.get('a').then((el) => {
+          cy.log(el.prop('href')); // log the href in case a test fails
+          cy.visit(el.prop('href'));
+        });
+      });
+  });
+
+  it('check info tab', () => {
+    // test export to zip button
+    goToTab('Info');
+
+    cy.get('[data-cy=downloadZip]').within(() => {
+      cy.get('a').then((el) => {
+        cy.request(el.prop('href')).its('status').should('eq', 200);
+      });
+    });
+    cy.get('[data-cy=sourceRepository]').should('have.attr', 'href');
+  });
+
+  it('files tab works', () => {
+    goToTab('Files');
+    cy.url().should('contain', '?tab=files');
+    cy.contains('Descriptor Files');
+  });
+
+  it('versions tab works', () => {
+    goToTab('Versions');
+    cy.url().should('contain', '?tab=versions');
+    cy.get('[data-cy=versionRow]').should('have.length.of.at.least', 1);
+  });
+}
+
+// pairs of [workflow URL without version number, verified version number, another verified version number, workflow.trsUrl]
+const workflowVersionTuples = [
+  [
+    'github.com/NCI-GDC/gdc-dnaseq-cwl/GDC_DNASeq',
+    'dev',
+    'master',
+    window.location.origin + '/api' + ga4ghPath + '/tools/%23workflow%2Fgithub.com%2FNCI-GDC%2Fgdc-dnaseq-cwl%2FGDC_DNASeq/versions/master',
+    'CWL',
+  ],
+  ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
+];
+describe('Monitor workflows', () => {
+  workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
+});
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
   it('info tab works', () => {
     cy.visit('/workflows/' + url + ':' + version1);
@@ -9,16 +73,13 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.url().should('contain', '?tab=launch');
     cy.contains('mat-card-header', 'Workflow Information');
 
-
     goToTab('Info');
 
     // test export to zip button
     cy.get('[data-cy=downloadZip]')
       .contains('a')
-      .then(el => {
-        cy.request(el.prop('href'))
-          .its('status')
-          .should('eq', 200);
+      .then((el) => {
+        cy.request(el.prop('href')).its('status').should('eq', 200);
       });
 
     // test source links
@@ -106,6 +167,25 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   });
 }
 
+const organizations = [['Broad Institute']];
+describe('Check organizations page', () => {
+  it('has multiple organizations', () => {
+    cy.contains('a', 'Organizations').click();
+    cy.url().should('contain', '/organizations');
+    cy.get('[data-cy=orgName]').should('have.length.of.at.least', 2);
+  });
+
+  organizations.forEach((t) => {
+    it('organization page and collections work', () => {
+      cy.contains('[data-cy=orgName]', t[0]).click();
+      cy.get('[data-cy=collectionName').should('have.length.of.at.least', 1);
+      cy.get('[data-cy=collectionName').first().click();
+      cy.url().should('contain', 'collections');
+      cy.get('[data-cy=collectionEntry]').should('have.length.of.at.least', 1);
+    });
+  });
+});
+
 describe('Test logged out home page', () => {
   it('find buttons', () => {
     cy.visit('/');
@@ -172,42 +252,6 @@ describe('Test workflow page functionality', () => {
       .within(() => {
         cy.get('a').click(); // click on the link to the first workflow
       });
-  });
-});
-
-// pairs of [workflow URL without version number, verified version number, another verified version number, workflow.trsUrl]
-const workflowVersionTuples = [
-  [
-    'github.com/NCI-GDC/gdc-dnaseq-cwl/GDC_DNASeq',
-    'dev',
-    'master',
-    window.location.origin + '/api' + ga4ghPath + '/tools/%23workflow%2Fgithub.com%2FNCI-GDC%2Fgdc-dnaseq-cwl%2FGDC_DNASeq/versions/master',
-    'CWL',
-  ],
-  ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
-];
-
-const organizations = [['Broad Institute']];
-
-describe('Monitor workflows', () => {
-  workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
-});
-
-describe('Check organizations page', () => {
-  it('has multiple organizations', () => {
-    cy.contains('a', 'Organizations').click();
-    cy.url().should('contain', '/organizations');
-    cy.get('[data-cy=orgName]').should('have.length.of.at.least', 2);
-  });
-
-  organizations.forEach((t) => {
-    it('organization page and collections work', () => {
-      cy.contains('[data-cy=orgName]', t[0]).click();
-      cy.get('[data-cy=collectionName').should('have.length.of.at.least', 1);
-      cy.get('[data-cy=collectionName').first().click();
-      cy.url().should('contain', 'collections');
-      cy.get('[data-cy=collectionEntry]').should('have.length.of.at.least', 1);
-    });
   });
 });
 
