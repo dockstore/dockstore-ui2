@@ -6,7 +6,7 @@ import { EntryWizardQuery } from '../state/entry-wizard.query';
 import { EntryWizardService } from '../state/entry-wizard.service';
 
 @Component({
-  selector: 'entry-wizard',
+  selector: 'app-entry-wizard',
   templateUrl: './entry-wizard.component.html',
   styleUrls: ['./entry-wizard.component.scss'],
 })
