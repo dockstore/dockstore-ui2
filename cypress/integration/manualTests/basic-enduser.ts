@@ -82,18 +82,6 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     goToTab('Launch');
     cy.url().should('contain', '?tab=launch');
     cy.contains('mat-card-header', 'Workflow Information');
-
-    goToTab('Info');
-
-    // test export to zip button
-    cy.get('[data-cy=downloadZip]')
-      .contains('a')
-      .then((el) => {
-        cy.request(el.prop('href')).its('status').should('eq', 200);
-      });
-
-    // test source links
-    cy.get('[data-cy=sourceRepository]').should('have.attr', 'href');
   });
 
   it('versions tab works', () => {
