@@ -50,6 +50,7 @@
               rel="noopener"
               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
               [disabled]="!(hasContent$ | async)"
+              data-cy="dnanexusLaunchWith"
               ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
             /></a>
             <a
@@ -60,6 +61,7 @@
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              data-cy="terraLaunchWith"
               ><img class="partner-launch" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo"
             /></a>
             <a
@@ -70,6 +72,7 @@
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              data-cy="anvilLaunchWith"
               ><img class="partner-launch" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
             /></a>
             <a
@@ -80,7 +83,7 @@
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-              data-cy="nhlbiWdlButton"
+              data-cy="nhlbiLaunchWith"
               ><span class="partner-name">NHLBI BioData Catalyst</span></a
             >
           </div>
@@ -95,8 +98,8 @@
                 [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
                 [disabled]="!(hasContent$ | async)"
                 color="primary"
-                ><img class="partner-icon" data-cy="dnastackIcon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" />
-                DNAstack &raquo;</a
+                data-cy="dnastackLaunchWith"
+                ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a
               >
               <a
                 mat-raised-button
@@ -107,7 +110,8 @@
                 [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
                 [disabled]="!(hasContent$ | async)"
                 color="primary"
-                ><mat-icon svgIcon="dnanexus" data-cy="dnanexusIcon"></mat-icon> DNAnexus &raquo;</a
+                data-cy="dnanexusLaunchWith"
+                ><mat-icon svgIcon="dnanexus"></mat-icon> DNAnexus &raquo;</a
               >
               <a
                 mat-raised-button
@@ -118,7 +122,8 @@
                 [disabled]="disableTerraPlatform$ | async"
                 [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
                 color="primary"
-                ><mat-icon svgIcon="terra" data-cy="terraIcon"></mat-icon> Terra &raquo;</a
+                data-cy="terraLaunchWith"
+                ><mat-icon svgIcon="terra"></mat-icon> Terra &raquo;</a
               >
               <a
                 mat-raised-button
@@ -129,7 +134,8 @@
                 [disabled]="disableTerraPlatform$ | async"
                 [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
                 color="primary"
-                ><mat-icon class="anvil-icon" svgIcon="anvil" data-cy="anvilIcon"></mat-icon> AnVIL &raquo;</a
+                data-cy="anvilLaunchWith"
+                ><mat-icon class="anvil-icon" svgIcon="anvil"></mat-icon> AnVIL &raquo;</a
               >
               <a
                 mat-raised-button
@@ -140,7 +146,7 @@
                 [disabled]="disableTerraPlatform$ | async"
                 [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
                 color="primary"
-                data-cy="nhlbiWdlButton"
+                data-cy="nhlbiLaunchWith"
                 >NHLBI BioData Catalyst</a
               >
             </div>
@@ -161,6 +167,7 @@
             [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
             [disabled]="disableSevenBridgesPlatform$ | async"
             color="primary"
+            data-cy="cgcLaunchWith"
             ><img class="partner-icon" src="../assets/images/thirdparty/cgc.png" alt="CGC icon" /> CGC
           </a>
           <a
@@ -172,6 +179,7 @@
             [attr.href]="config.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL + '?trs=' + trsUrl"
             [disabled]="disableSevenBridgesPlatform$ | async"
             color="primary"
+            data-cy="nhlbiLaunchWith"
             >NHLBI BioData Catalyst
           </a>
           <a
@@ -183,6 +191,7 @@
             [attr.href]="config.CAVATICA_IMPORT_URL + '?trs=' + trsUrl"
             [disabled]="disableSevenBridgesPlatform$ | async"
             color="primary"
+            data-cy="cavaticaLaunchWith"
             ><img class="partner-icon" src="../assets/images/thirdparty/cavatica.png" alt="Cavatica icon" /> Cavatica
           </a>
         </div>
@@ -219,6 +228,7 @@
             "
             [disabled]="!(hasContent$ | async)"
             color="primary"
+            data-cy="nextflowtowerLaunchWith"
           >
             <img class="partner-icon" src="../assets/images/thirdparty/nextflow-icon.png" alt="Nextflow icon" /> Nextflow Tower
           </a>
