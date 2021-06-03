@@ -110,7 +110,7 @@
                 #editTestFilePathForm="ngForm"
                 class="form-inline"
                 fxLayout
-                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+                *ngIf="(isNFL$ | async) !== true && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
               >
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
@@ -155,7 +155,7 @@
                 #editForumUrl="ngForm"
                 class="form-inline"
                 fxLayout
-                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+                *ngIf="(isNFL$ | async) !== true && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
               >
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Link to a discussion forum for this workflow">Discussion Forum</strong>:
@@ -200,7 +200,7 @@
             </li>
           </span>
           <app-info-tab-checker-workflow-path
-            *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && !(isNFL$ | async)"
+            *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && (isNFL$ | async) !== true"
             [canRead]="canRead"
             [canWrite]="canWrite"
             [isOwner]="isOwner"

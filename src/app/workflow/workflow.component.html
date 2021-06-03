@@ -178,7 +178,7 @@
           </mat-tab>
           <div *ngIf="entryType === EntryType.BioWorkflow">
             <mat-tab id="launchTab" label="Launch">
-              <div *ngIf="!(launchSupport$ | async); else launchSupported">
+              <div *ngIf="(launchSupport$ | async) !== true; else launchSupported">
                 <div class="p-3">
                   <mat-card class="alert alert-warning" role="alert">
                     <mat-icon>warning</mat-icon> Dockstore does not yet have customized launch-with instructions for this language.

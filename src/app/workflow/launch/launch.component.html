@@ -26,7 +26,7 @@
     </div>
     <div *ngIf="_selectedVersion.valid">
       <div>
-        <mat-card *ngIf="!(isNFL$ | async)" class="m-2" matTooltip="Commands for creating a runtime JSON template">
+        <mat-card *ngIf="(isNFL$ | async) !== true" class="m-2" matTooltip="Commands for creating a runtime JSON template">
           Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
           <pre>{{ params }}</pre>
           <span *ngIf="wgetTestJsonDescription">
@@ -35,7 +35,7 @@
           </span>
         </mat-card>
         <mat-card
-          *ngIf="!(isNFL$ | async)"
+          *ngIf="(isNFL$ | async) !== true"
           class="m-2"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >

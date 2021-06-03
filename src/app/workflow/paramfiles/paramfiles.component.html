@@ -28,7 +28,7 @@
   </mat-card>
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
-    <mat-card class="alert alert-warning" role="alert" *ngIf="!content && !(isNFL$ | async)">
+    <mat-card class="alert alert-warning" role="alert" *ngIf="!content && (isNFL$ | async) !== true">
       <mat-icon>warning</mat-icon>
       &nbsp; A Test Parameter File associated with this workflow could not be found.
     </mat-card>

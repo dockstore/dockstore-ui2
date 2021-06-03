@@ -26,7 +26,7 @@
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Git Reference: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
-                *ngIf="!(isService$ | async)"
+                *ngIf="(isService$ | async) !== true"
                 type="text"
                 class="form-control"
                 name="reference"
@@ -44,7 +44,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
-                *ngIf="!(isService$ | async)"
+                *ngIf="(isService$ | async) !== true"
                 type="text"
                 class="form-control"
                 name="workflow_path"
@@ -68,12 +68,15 @@
               <div *ngIf="isService$ | async" class="label-value">
                 {{ version.workflow_path }}
               </div>
-              <mat-card *ngIf="formErrors.workflow_path && !(isService$ | async)" class="alert alert-danger">
+              <mat-card *ngIf="formErrors.workflow_path && (isService$ | async) !== true" class="alert alert-danger">
                 {{ formErrors.workflow_path }}
               </mat-card>
             </div>
           </div>
-          <div class="form-group form-group-sm" *ngIf="!(isService$ | async) && (descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL">
+          <div
+            class="form-group form-group-sm"
+            *ngIf="(isService$ | async) !== true && (descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL"
+          >
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Test Parameter File(s): </label>
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
@@ -111,7 +114,7 @@
             <div
               class="col-sm-9 col-md-9 col-lg-9"
               [ngClass]="{ 'col-sm-offset-3': testParameterFilePaths.length > 0 }"
-              *ngIf="!isPublic && !(isService$ | async) && !version.frozen"
+              *ngIf="!isPublic && (isService$ | async) !== true && !version.frozen"
             >
               <div class="input-group" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
                 <input
