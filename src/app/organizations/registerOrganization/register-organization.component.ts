@@ -31,7 +31,7 @@ import { FormsState, RegisterOrganizationService } from '../state/register-organ
  * @implements {OnDestroy}
  */
 @Component({
-  selector: 'register-organization',
+  selector: 'app-register-organization',
   templateUrl: './register-organization.component.html',
   styleUrls: ['./register-organization.component.scss'],
 })

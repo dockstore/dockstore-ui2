@@ -30,7 +30,7 @@ import { OrganizationsQuery } from '../state/organizations.query';
 import { OrganizationsStateService } from '../state/organizations.service';
 
 @Component({
-  selector: 'organizations',
+  selector: 'app-organizations',
   templateUrl: './organizations.component.html',
   styleUrls: ['./organizations.component.scss'],
 })
