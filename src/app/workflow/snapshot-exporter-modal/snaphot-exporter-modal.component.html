@@ -8,8 +8,8 @@
       <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
       <div>
         <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button mat-button mat-dialog-close color="secondary">Cancel</button>
-          <button color="primary" data-cy="snapshot-button" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">
+          <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
+          <button class="bg-accent-1-dark" data-cy="snapshot-button" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">
             Snapshot
           </button>
         </div>
@@ -62,14 +62,14 @@
           >
         </div>
         <div fxLayoutAlign="end" fxLayout="row" fxFlex="50">
-          <button mat-button mat-dialog-close color="secondary">Cancel</button>
+          <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
           <button
             [disabled]="
               (hasZenodoToken$ | async) !== true ||
               (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) !== true) ||
               state.overall !== StepState.INITIAL
             "
-            color="primary"
+            class="bg-accent-1-dark"
             mat-flat-button
             data-cy="export-button"
             (click)="export(false)"
@@ -78,7 +78,7 @@
             {{ action === SnapshotExporterAction.DOI ? 'Request DOI' : 'Export' }}
           </button>
           <button
-            color="primary"
+            class="bg-accent-1-dark"
             mat-flat-button
             [disabled]="state.overall !== StepState.INITIAL"
             (click)="export(true)"
@@ -144,7 +144,7 @@
           this screen and try again.
         </div>
         <div>
-          <button data-cy="link-zenodo" class="ml-1" mat-flat-button color="accent" (click)="linkAccount()">
+          <button data-cy="link-zenodo" class="ml-1 accent-1-dark" mat-flat-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>
@@ -154,7 +154,7 @@
   </ng-template>
 
   <ng-template #orcidCheck>
-    <div *ngIf="!(hasOrcidToken$ | async)" class="alert-danger pb-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+    <div *ngIf="!(hasOrcidToken$ | async)" class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
         <mat-icon class="account-warning">warning</mat-icon>
       </div>
@@ -162,7 +162,7 @@
         <div>
           To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
           come back to this screen and try again.
-          <button class="ml-1" mat-flat-button (click)="linkAccount()">
+          <button class="ml-1 accent-1-dark" mat-flat-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>
