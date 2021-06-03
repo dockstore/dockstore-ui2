@@ -1511,13 +1511,3 @@ hr {
 .mat-radio-button .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   top: 1.8em;
 }
-
-// Style home search mat-form-field
-// Make mat-form-field match home search bar, could look into more solutions
-.home-field .mat-form-field-wrapper {
-  padding-bottom: 0;
-}
-.home-field .mat-form-field-infix {
-  padding: 0.8em 0 0.8em 0;
-  border-top: 0em;
-}
