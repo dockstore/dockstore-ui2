@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
@@ -26,12 +26,10 @@ import { RegisterToolService } from './../register-tool/register-tool.service';
   templateUrl: './deregister-modal.component.html',
   styleUrls: ['./deregister-modal.component.css'],
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent {
   @Input() refreshMessage: boolean;
 
   constructor(private registerToolService: RegisterToolService, private confirmationDialogService: ConfirmationDialogService) {}
-
-  ngOnInit() {}
   deregister() {
     this.registerToolService.deregisterTool();
   }

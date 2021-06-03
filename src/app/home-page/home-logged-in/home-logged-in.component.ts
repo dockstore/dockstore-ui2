@@ -7,7 +7,7 @@ import { User } from '../../shared/swagger/model/user';
 import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
-  selector: 'home-logged-in',
+  selector: 'app-home-logged-in',
   templateUrl: './home-logged-in.component.html',
   styleUrls: ['./home-logged-in.component.scss'],
 })

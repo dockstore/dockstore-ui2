@@ -70,7 +70,7 @@
             *ngIf="org?.status === approved"
             [organization]="org"
             class="pull-right starring-button"
-            (change)="organizationStarGazersChange()"
+            (stargazersChange)="organizationStarGazersChange()"
           ></app-organization-starring>
         </div>
       </div>
@@ -101,7 +101,7 @@
                   <span class="tab-display">{{ collectionsLength$ | async }}</span>
                 </div>
               </ng-template>
-              <collections [organizationID]="org.id" [organizationName]="org.name"></collections>
+              <app-collections [organizationID]="org.id" [organizationName]="org.name"></app-collections>
             </mat-tab>
             <mat-tab>
               <ng-template mat-tab-label>
@@ -111,7 +111,7 @@
                   <span class="tab-display">{{ (organizationMembersQuery.sortedOrganizationMembers$ | async).length }}</span>
                 </div>
               </ng-template>
-              <organization-members></organization-members>
+              <app-organization-members></app-organization-members>
             </mat-tab>
             <mat-tab>
               <ng-template mat-tab-label>
@@ -121,7 +121,7 @@
                   <span class="tab-display">{{ (eventsQuery.organizationEvents$ | async).length }}</span>
                 </div>
               </ng-template>
-              <events [organizationID]="org.id"></events>
+              <app-events [organizationID]="org.id"></app-events>
             </mat-tab>
           </mat-tab-group>
         </div>

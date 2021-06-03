@@ -1,6 +1,6 @@
 <div
   *ngIf="
-    !(isLoggedIn$ | async) &&
+    (isLoggedIn$ | async) === false &&
     ((dismissedLatestTOS$ | async) !== currentTOSVersion || (dismissedLatestPrivacyPolicy$ | async) !== currentPrivacyPolicyVersion)
   "
   class="push-tos"

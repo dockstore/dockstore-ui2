@@ -424,7 +424,7 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></current-collections>
+      <app-current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></app-current-collections>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
       <mat-card *ngIf="workflow">

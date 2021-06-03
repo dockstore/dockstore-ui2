@@ -33,7 +33,7 @@ import { EventsQuery } from '../state/events.query';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
 
 @Component({
-  selector: 'organization',
+  selector: 'app-organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
 })

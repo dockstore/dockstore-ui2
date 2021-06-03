@@ -9,7 +9,7 @@ import { CurrentCollectionsQuery } from '../state/current-collections.query';
 import { CurrentCollectionsService } from '../state/current-collections.service';
 
 @Component({
-  selector: 'current-collections',
+  selector: 'app-current-collections',
   templateUrl: './current-collections.component.html',
   styleUrls: ['./current-collections.component.scss'],
 })

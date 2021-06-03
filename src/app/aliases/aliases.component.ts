@@ -8,7 +8,7 @@ import { AliasesQuery } from './state/aliases.query';
 import { AliasesService } from './state/aliases.service';
 
 @Component({
-  selector: 'aliases',
+  selector: 'app-aliases',
   templateUrl: './aliases.component.html',
   styleUrls: ['./aliases.component.scss'],
 })

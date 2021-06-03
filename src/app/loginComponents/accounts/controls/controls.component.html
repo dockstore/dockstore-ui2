@@ -10,7 +10,7 @@
   <mat-card>
     <h3>Delete your Dockstore Account</h3>
     <p>Only available for accounts with no published tools/workflows and have shared no workflows via permissions.</p>
-    <button class="mr-1" mat-raised-button color="warn" (click)="deleteAccount()" [disabled]="!(canChangeUsername$ | async)">
+    <button class="mr-1" mat-raised-button color="warn" (click)="deleteAccount()" [disabled]="(canChangeUsername$ | async) === false">
       Delete Dockstore Account
     </button>
   </mat-card>

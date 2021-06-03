@@ -12,7 +12,7 @@ import { RecentEventsService } from '../state/recent-events.service';
  * TODO: collapse events with the same date (refresh all adding multiple versions at the same time)
  */
 @Component({
-  selector: 'recent-events',
+  selector: 'app-recent-events',
   templateUrl: './recent-events.component.html',
   styleUrls: ['./recent-events.component.scss'],
 })

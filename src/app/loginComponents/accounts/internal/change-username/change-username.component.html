@@ -5,7 +5,7 @@
 </p>
 
 <p>
-  You <strong>can<span *ngIf="!(canChangeUsername$ | async)">'t</span></strong> change your username.
+  You <strong>can<span *ngIf="(canChangeUsername$ | async) === false">'t</span></strong> change your username.
 </p>
 
 <mat-card class="alert alert-warning" role="alert" *ngIf="showEmailWarning">
@@ -40,7 +40,7 @@
       mat-raised-button
       color="primary"
       id="updateUsername"
-      [disabled]="usernameTaken || usernameFormControl.invalid || !(canChangeUsername$ | async)"
+      [disabled]="usernameTaken || usernameFormControl.invalid || (canChangeUsername$ | async) === false"
       (click)="updateUsername()"
     >
       Update Username

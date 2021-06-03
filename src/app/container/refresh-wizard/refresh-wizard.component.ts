@@ -8,7 +8,7 @@ import { RefreshWizardService } from '../state/refresh-wizard.service';
 import { RefreshWizardStore } from '../state/refresh-wizard.store';
 
 @Component({
-  selector: 'refresh-wizard',
+  selector: 'app-refresh-wizard',
   templateUrl: './refresh-wizard.component.html',
   styleUrls: ['./refresh-wizard.component.scss'],
   providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService],
