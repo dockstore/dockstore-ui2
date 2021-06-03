@@ -34,7 +34,13 @@
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height: 100%">
     <mat-sidenav-container autosize class="sidebar-set-height">
-      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12" *ngIf="!(refreshingMyEntries$ | async)">
+      <mat-sidenav
+        #sidenav
+        mode="side"
+        [(opened)]="showSidebar"
+        class="col-sm-3 col-xs-12"
+        *ngIf="(refreshingMyEntries$ | async) === false"
+      >
         <div id="parent">
           <div id="child">
             <div
@@ -74,7 +80,7 @@
                             color="primary"
                             type="button"
                             (click)="addToExistingWorkflows()"
-                            [disabled]="(isRefreshing$ | async) || !(user$ | async)"
+                            [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
                             matTooltip="Discover workflows added by others using your linked source control accounts"
                             matTooltipPosition="after"
                             id="addToExistingWorkflows"
@@ -99,7 +105,7 @@
                 </mat-toolbar-row>
               </mat-toolbar>
             </div>
-            <p *ngIf="!(hasGroupEntriesObject$ | async)">You have not registered any {{ entryType$ | async }}s</p>
+            <p *ngIf="(hasGroupEntriesObject$ | async) === false">You have not registered any {{ entryType$ | async }}s</p>
             <app-sidebar-accordion
               [openOneAtATime]="oneAtATime"
               [groupEntriesObject]="groupEntriesObject$ | async"
@@ -117,7 +123,7 @@
               <div class="clearfix sidebar-header">
                 <h3 class="sidebar-header">Shared with me</h3>
               </div>
-              <p *ngIf="!(hasGroupSharedEntriesObject$ | async)">You have no {{ entryType$ | async }}s shared with you</p>
+              <p *ngIf="(hasGroupSharedEntriesObject$ | async) === false">You have no {{ entryType$ | async }}s shared with you</p>
               <app-sidebar-accordion
                 [openOneAtATime]="oneAtATime"
                 [groupEntriesObject]="groupSharedEntriesObject$ | async"
@@ -127,7 +133,13 @@
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div *ngIf="!(isRefreshing$ | async) && !(hasGroupEntriesObject$ | async) && !(hasGroupSharedEntriesObject$ | async)">
+        <div
+          *ngIf="
+            (isRefreshing$ | async) === false &&
+            (hasGroupEntriesObject$ | async) === false &&
+            (hasGroupSharedEntriesObject$ | async) === false
+          "
+        >
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>
@@ -161,7 +173,7 @@
                     color="primary"
                     type="button"
                     (click)="addToExistingWorkflows()"
-                    [disabled]="(isRefreshing$ | async) || !(user$ | async)"
+                    [disabled]="(isRefreshing$ | async) || (user$ | async) === (false || null || undefined)"
                     matTooltip="Discover workflows added by others using your linked source control accounts"
                   >
                     Discover Existing Dockstore Workflows

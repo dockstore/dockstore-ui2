@@ -33,7 +33,7 @@
   </div>
 </app-header>
 <app-loading [loading]="loading$ | async">
-  <div class="container" *ngIf="!(organization$ | async)">Organization not found</div>
+  <div class="container" *ngIf="(organization$ | async) === false">Organization not found</div>
   <!-- Organization header -->
   <div class="container mb-5" *ngIf="organization$ | async as org" fxLayout="column" fxLayoutGap="10px">
     <ngx-json-ld [json]="schema$ | async" class="m-0"></ngx-json-ld>
@@ -141,7 +141,7 @@
             </div>
             <div *ngIf="!org.description" fxFlex>
               <div *ngIf="canEdit$ | async" class="text-muted">Click edit to add a markdown description</div>
-              <div *ngIf="!(canEdit$ | async)" class="text-muted">This organization does not have a description</div>
+              <div *ngIf="(canEdit$ | async) === false" class="text-muted">This organization does not have a description</div>
             </div>
             <div fxLayout="column" fxLayoutGap="10px" class="px-4 py-1">
               <span fxLayout="row" fxLayoutGap="10px" *ngIf="org?.link">

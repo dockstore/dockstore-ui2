@@ -27,7 +27,13 @@
     <mat-card
       class="alert alert-warning"
       role="alert"
-      *ngIf="types.includes(type) && !(organization$ | async) && !(collection$ | async) && !(workflow$ | async) && !(tool$ | async)"
+      *ngIf="
+        types.includes(type) &&
+        (organization$ | async) === (false || null || undefined) &&
+        (collection$ | async) === (false || null || undefined) &&
+        (workflow$ | async) === (false || null || undefined) &&
+        (tool$ | async) === (false || null || undefined)
+      "
     >
       <mat-icon>warning</mat-icon>
       &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
