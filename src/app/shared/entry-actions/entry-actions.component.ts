@@ -6,7 +6,7 @@ import { BioWorkflow, DockstoreTool, Service } from '../swagger';
 import { EntryActionsService } from './entry-actions.service';
 
 @Directive()
-// tslint:disable-next-line: directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class EntryActionsComponent {
   @Input() entryType: EntryType;
   publishDisabled: boolean;

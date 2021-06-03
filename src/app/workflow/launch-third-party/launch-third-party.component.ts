@@ -18,7 +18,7 @@ import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
-// tslint:disable:max-line-length
+/* eslint-disable max-len */
 /**
  *  # Overview
  *
@@ -88,7 +88,7 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
  *
  */
 
-// tslint:enable:max-line-length
+/* eslint-enable max-len */
 
 @Component({
   selector: 'app-launch-third-party',

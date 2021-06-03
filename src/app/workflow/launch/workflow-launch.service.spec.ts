@@ -62,7 +62,7 @@ describe('WorkflowLaunchService', () => {
     expect(service.getCheckWorkflowString('potato', 'stew')).toBe('dockstore checker launch --entry potato:stew --json checkparam.json');
     expect(service.getCheckWorkflowString(null, null)).toBe('');
   }));
-  // tslint:disable:max-line-length
+  /* eslint-disable max-len */
   it('should get the wget test parameter file command', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {
     expect(
       service.getTestJsonString('#workflow/github.com/garyluu/example_cwl_workflow', 'v1.0', ToolDescriptor.TypeEnum.CWL, 'test.json')

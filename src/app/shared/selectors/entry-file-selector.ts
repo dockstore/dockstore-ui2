@@ -31,7 +31,7 @@ import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../
  * Abstract class to be implemented by components that have select boxes for a given entry and version
  */
 @Directive()
-// tslint:disable-next-line: directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
   id: number;

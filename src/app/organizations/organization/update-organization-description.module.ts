@@ -10,7 +10,7 @@ import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { OrgSchemaService } from '../../shared/org-schema.service';
 import { StarOrganizationService } from '../../shared/star-organization.service';
 import { OrganizationStarringService } from './organization-starring/organization-starring.service';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 
 @NgModule({
