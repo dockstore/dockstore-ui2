@@ -21,7 +21,7 @@ function testEntry(tab: string) {
       .eq(chosen_index)
       .within(() => {
         cy.get('a').then((el) => {
-          cy.log(el.prop('href')); // log the href in case a test fails
+          cy.task('log', el.prop('href')); // log the href in case a test fails
           cy.visit(el.prop('href'));
         });
       });
@@ -39,13 +39,13 @@ function testEntry(tab: string) {
     cy.get('[data-cy=sourceRepository]').should('have.attr', 'href');
   });
 
-  it('files tab works', () => {
+  it('check files tab', () => {
     goToTab('Files');
     cy.url().should('contain', '?tab=files');
     cy.contains('Descriptor Files');
   });
 
-  it('versions tab works', () => {
+  it('check versions tab', () => {
     goToTab('Versions');
     cy.url().should('contain', '?tab=versions');
     cy.get('[data-cy=versionRow]').should('have.length.of.at.least', 1);
@@ -113,13 +113,11 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.url().should('contain', '?tab=tools');
   });
 
-  // This tends to be flaky so we are leaving it out for now
-  //
-  // it('DAG tab works', () => {
-  //   goToTab('DAG');
-  //   cy.url().should('contain', '?tab=dag');
-  //   cy.get('[data-cy=dag-holder]');
-  // });
+  it('DAG tab works', () => {
+    cy.contains('.mat-tab-label', 'DAG').click();
+    cy.url().should('contain', '?tab=dag');
+    cy.get('[data-cy=dag-holder]');
+  });
 
   let launchWithTuples: any[] = [];
   if (type === 'WDL') {
