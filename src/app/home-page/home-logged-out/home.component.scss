@@ -118,10 +118,3 @@ h3 {
 .warn-1 {
   color: mat-color($dockstore-app-warn, darker);
 }
-
-// Style home search bar
-::ng-deep .mat-form-field-wrapper {
-  margin-top: -0.5em;
-  margin-bottom: -1.25em;
-  padding-bottom: 2rem;
-}
