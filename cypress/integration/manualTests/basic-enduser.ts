@@ -114,7 +114,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   it('DAG tab works', () => {
     cy.contains('.mat-tab-label', 'DAG').click();
     cy.url().should('contain', '?tab=dag');
-    cy.get('[data-cy=dag-holder]');
+    cy.get('[data-cy=dag-holder]')
+      .children().should('have.length.of.at.least', 1);
   });
 
   let launchWithTuples: any[] = [];
