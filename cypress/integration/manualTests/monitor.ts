@@ -22,7 +22,7 @@ function aboutPageExternalLink(selector: string, url: string): void {
 }
 
 const selectorLinkTuples = [
-  ['[data-cy=register-button]', '/login'],
+  ['[data-cy=register-button]', '/register'],
   ['[data-cy=footer-about-link]', '/about'],
   ['[data-cy=homepage-organizations-button]', '/organizations'],
   ['[data-cy=footer-organizations-link]', '/organizations'],
