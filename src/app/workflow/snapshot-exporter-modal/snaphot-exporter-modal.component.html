@@ -65,8 +65,8 @@
           <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
           <button
             [disabled]="
-              (hasZenodoToken$ | async) !== true ||
-              (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) !== true) ||
+              (hasZenodoToken$ | async) === false ||
+              (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false) ||
               state.overall !== StepState.INITIAL
             "
             class="bg-accent-1-dark"
@@ -134,7 +134,13 @@
   </ng-template>
 
   <ng-template #zenodoCheck>
-    <div *ngIf="!(hasZenodoToken$ | async)" class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+    <div
+      *ngIf="(hasZenodoToken$ | async) === false"
+      class="alert-danger p-2"
+      fxLayout="row"
+      fxLayoutGap="0.625rem;"
+      fxLayoutAlign="end top"
+    >
       <div>
         <mat-icon class="warning-icon">warning</mat-icon>
       </div>
@@ -154,7 +160,7 @@
   </ng-template>
 
   <ng-template #orcidCheck>
-    <div *ngIf="!(hasOrcidToken$ | async)" class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+    <div *ngIf="(hasOrcidToken$ | async) === false" class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
         <mat-icon class="account-warning">warning</mat-icon>
       </div>
