@@ -68,6 +68,23 @@ $kim-warn: (
   ),
 );
 
+$kim-accent1-success: (
+  1: #3f51b5,
+  2: #7986cb,
+  3: #9fa8da,
+  4: #c5cae9,
+  5: #dde1f2,
+  6: #e8eaf6,
+  contrast: (
+    1: white,
+    2: black,
+    3: black,
+    4: black,
+    5: black,
+    6: black,
+  ),
+);
+
 // Grayscale
 $kim-gray: (
   1: #212121,
@@ -92,6 +109,7 @@ $kim-gray: (
 $dockstore-app-primary: mat-palette($kim-primary, 2, 4, 1);
 $dockstore-app-accent: mat-palette($kim-secondary, 2, 4, 1);
 $dockstore-app-warn: mat-palette($kim-warn, 2, 4, 1);
+$dockstore-app-accent-1: mat-palette($kim-accent1-success, 2, 4, 1);
 
 // 4 and 1 were chosen as darker and lighter versions, respectively, because those were used in styles.
 // Main color was chosen arbitrarily to be between darker and lighter.

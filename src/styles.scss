@@ -1472,14 +1472,13 @@ hr {
   color: mat-color($dockstore-app-primary);
 }
 
-// To indicate success of an operation.
-.success-color {
+.accent-3-dark {
   color: #00bfa5;
 }
 
 // For highlighting or distinguishing part of a title or header, e.g., "Version 0.14" in "Request DOI: Version 0.14"
-.blue-highlight {
-  color: #3f51b5;
+.accent-1-dark {
+  color: mat-color($dockstore-app-accent-1, darker);
 }
 
 .mat-radio-label-content {
