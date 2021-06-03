@@ -85,6 +85,7 @@ export class Dockstore {
   static DOCKSTORE_REPO = 'https://github.com/dockstore/dockstore';
   static DOCUMENTATION_URL = 'https://docs.dockstore.org';
   static FEATURED_CONTENT_URL = 'will be filled in by configuration.service';
+  static FEATURED_NEWS_URL = 'will be filled in by configuration.service';
 
   static DEPLOY_VERSION = '';
   static COMPOSE_SETUP_VERSION = '';
