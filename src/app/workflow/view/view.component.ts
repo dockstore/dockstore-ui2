@@ -24,8 +24,9 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
+import { bootstrap4largeModalSize, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
+import { Dockstore } from '../../shared/dockstore.model';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -33,6 +34,7 @@ import { HostedService } from '../../shared/swagger/api/hosted.service';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { View } from '../../shared/view';
+import { SnaphotExporterModalComponent, SnapshotExporterAction } from '../snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewService } from './view.service';
@@ -54,6 +56,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
   public WorkflowType = Workflow;
+  public enableExportToOrcid = Dockstore.FEATURES.enableOrcidExport;
   constructor(
     alertQuery: AlertQuery,
     private viewService: ViewService,
@@ -115,7 +118,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   requestDOIForWorkflowVersion() {
-    this.viewService.requestDOIForWorkflowVersion(this.workflow, this.version);
+    this.snaphshotExportDialog(SnapshotExporterAction.DOI);
   }
 
   /**
@@ -125,9 +128,23 @@ export class ViewWorkflowComponent extends View implements OnInit {
    * @memberof ViewWorkflowComponent
    */
   snapshotVersion(): void {
-    this.viewService.snapshotVersion(this.workflow, this.version);
+    this.snaphshotExportDialog(SnapshotExporterAction.SNAPSHOT);
   }
 
+  exportToOrcid() {
+    this.snaphshotExportDialog(SnapshotExporterAction.ORCID);
+  }
+
+  private snaphshotExportDialog(action: SnapshotExporterAction) {
+    this.matDialog.open(SnaphotExporterModalComponent, {
+      width: bootstrap4largeModalSize,
+      data: {
+        workflow: this.workflow,
+        version: this.version,
+        action: action,
+      },
+    });
+  }
   ngOnInit() {
     this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));

@@ -16,17 +16,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
-import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { bootstrap4mediumModalSize } from '../../shared/constants';
-import { TokenSource } from '../../shared/enum/token-source.enum';
-import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { Workflow, WorkflowVersion } from '../../shared/swagger';
+import { WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 
 @Injectable()
@@ -35,9 +28,6 @@ export class ViewService {
 
   constructor(
     private alertService: AlertService,
-    private accountsService: AccountsService,
-    private confirmationDialogService: ConfirmationDialogService,
-    private tokenQuery: TokenQuery,
     private workflowQuery: WorkflowQuery,
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService
@@ -50,27 +40,6 @@ export class ViewService {
    * @private
    * @memberof ViewService
    */
-  private updateWorkflowToSnapshot(workflow: Workflow, version: WorkflowVersion, cb: Function): void {
-    const snapshot: WorkflowVersion = { ...version, frozen: true };
-    this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).subscribe(
-      (workflowVersions: Array<WorkflowVersion>) => {
-        this.alertService.detailedSuccess(`A snapshot was created for workflow
-                                       "${workflow.workflowName}" version "${version.name}"!`);
-        const selectedWorkflow = { ...this.workflowQuery.getActive() };
-        if (selectedWorkflow.id === workflow.id) {
-          this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: workflowVersions });
-        }
-        cb(workflowVersions);
-      },
-      (error: HttpErrorResponse) => {
-        if (error) {
-          this.alertService.detailedError(error);
-        } else {
-          this.alertService.simpleError();
-        }
-      }
-    );
-  }
 
   updateDefaultVersion(newDefaultVersion: string): void {
     const workflowId = this.workflowQuery.getActive().id;
@@ -84,170 +53,5 @@ export class ViewService {
       },
       (error: HttpErrorResponse) => this.alertService.detailedError(error)
     );
-  }
-
-  /**
-   * Opens a confirmation dialog that the asks the Dockstore User if they
-   * would like to associate their Zenodo account for requesting DOIs
-   *
-   * @memberof ViewService
-   */
-  private showLinkZenodoDialog(): void {
-    const dialogData: ConfirmationDialogData = {
-      message: `It looks like you have not yet linked your Zenodo and Dockstore accounts. Dockstore integrates with
-                Zenodo to make it easy to request Digital Object Identifiers (DOIs) for your workflow and only takes a moment.
-                Would you like to link a Zenodo account now?`,
-      title: 'Request DOI (Link Zenodo Account)',
-      confirmationButtonText: 'Link Zenodo Account',
-      cancelButtonText: 'Cancel',
-    };
-
-    this.confirmationDialogService
-      .openDialog(dialogData, bootstrap4mediumModalSize)
-      .pipe(first())
-      .subscribe((confirmationResult) => {
-        if (confirmationResult) {
-          this.accountsService.link(TokenSource.ZENODO);
-        } else {
-          this.alertService.detailedSuccess('You cancelled DOI creation.');
-        }
-      });
-  }
-
-  /**
-   * Opens a confirmation dialog that the Dockstore User can use to
-   * confirm they want before creating a DOI. Then opens the DOI dialog.
-   *
-   * @memberof ViewService
-   */
-  private showSnapshotBeforeDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
-    const dialogData: ConfirmationDialogData = {
-      message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and is only
-                available for versions that have been snapshotted. You will then be asked if you want to generate a
-                DOI. <p>Would you like to create a snapshot for <b>${version.name}</b>? <p><b>Warning: This CANNOT be undone!</b></p>`,
-      title: 'Request DOI (Snapshot Version)',
-      confirmationButtonText: 'Snapshot Version',
-      cancelButtonText: 'Cancel',
-    };
-
-    this.confirmationDialogService
-      .openDialog(dialogData, bootstrap4mediumModalSize)
-      .pipe(first())
-      .subscribe((confirmationResult) => {
-        if (confirmationResult) {
-          this.updateWorkflowToSnapshot(workflow, version, () => this.showRequestDOIDialog(workflow, version));
-        } else {
-          this.alertService.detailedSuccess('You cancelled DOI creation.');
-        }
-      });
-  }
-
-  /**
-   * Opens a dialog to request whether the user would like to request a DOI.
-   *
-   * @private
-   * @memberof ViewService
-   */
-  private showRequestDOIDialog(workflow: Workflow, version: WorkflowVersion): void {
-    const dialogData: ConfirmationDialogData = {
-      message: `A Digital Object Identifier (DOI) allows a version to be easily cited in publications and can't be
-                undone, though some metadata will remain editable. It can take some time to request a DOI.
-                Are you sure you'd like to request a DOI for version
-                <b>${version.name}</b>?`,
-      title: 'Request DOI',
-      confirmationButtonText: 'Request DOI',
-      cancelButtonText: 'Cancel',
-    };
-
-    const workflowName: string = workflow.workflowName || workflow.repository;
-
-    this.confirmationDialogService
-      .openDialog(dialogData, bootstrap4mediumModalSize)
-      .pipe(first())
-      .subscribe((confirmationResult) => {
-        if (confirmationResult) {
-          this.alertService.start(`A Digital Object Identifier (DOI) is being requested for workflow
-                                       "${workflowName}" version "${version.name}"!`);
-          this.workflowsService.requestDOIForWorkflowVersion(workflow.id, version.id).subscribe(
-            (versions: Array<WorkflowVersion>) => this.requestDOISuccess({ ...workflow, workflowVersions: versions }, version),
-            (errorResponse: HttpErrorResponse) => this.alertService.detailedError(errorResponse)
-          );
-        } else {
-          this.alertService.detailedSuccess('You cancelled DOI issuance.');
-        }
-      });
-  }
-
-  /**
-   * A helper function for updating the store and relating success on DOI creation.
-   *
-   * @private
-   * @memberof ViewService
-   */
-  private requestDOISuccess(workflow: Workflow, version: WorkflowVersion): void {
-    const selectedWorkflow = { ...this.workflowQuery.getActive() };
-    if (selectedWorkflow.id === workflow.id) {
-      this.workflowService.setWorkflow(workflow);
-    }
-
-    const workflowName: string = workflow.workflowName || workflow.repository;
-
-    this.alertService.detailedSuccess(`A Digital Object Identifier (DOI) was created for workflow
-                                       "${workflowName}" version "${version.name}"!`);
-  }
-
-  /**
-   * Opens a confirmation dialog that the Dockstore User can use to
-   * confirm they want a snapshot.
-   *
-   * @memberof ViewService
-   */
-  snapshotVersion(workflow: Workflow, version: WorkflowVersion): void {
-    if (version.frozen) {
-      // Guarantee we don't snapshot a snapshot
-      return;
-    }
-    const dialogData: ConfirmationDialogData = {
-      message: `Snapshotting a version will make it so it <b>can no longer be edited and cannot be undone</b>. <p>Are
-                you sure you would like to snapshot version <b>${version.name}</b>? <p><b>Warning: This CANNOT be undone!</b></p>`,
-      title: 'Snapshot',
-      confirmationButtonText: 'Snapshot Version',
-      cancelButtonText: 'Cancel',
-    };
-    this.confirmationDialogService
-      .openDialog(dialogData, bootstrap4mediumModalSize)
-      .pipe(first())
-      .subscribe((confirmationResult: boolean) => {
-        if (confirmationResult) {
-          this.updateWorkflowToSnapshot(workflow, version, () => {
-            const workflowName: string = workflow.workflowName || workflow.repository;
-            this.alertService.detailedSuccess(`A snapshot was created for workflow
-                                       "${workflowName}" version "${version.name}"!`);
-          });
-        } else {
-          this.alertService.detailedSuccess('You cancelled creating a snapshot.');
-        }
-      });
-  }
-
-  /**
-   * Entry function for issuing a DOI, opens a dialog depending on the state of the
-   * version.
-   *
-   * @memberof ViewService
-   */
-  requestDOIForWorkflowVersion(workflow: Workflow, version: WorkflowVersion): void {
-    // Set the dialog to open a snapshot if its not frozen
-    this.tokenQuery.hasZenodoToken$.pipe(first()).subscribe((hasZenodoToken: boolean) => {
-      if (hasZenodoToken) {
-        if (!version.frozen) {
-          this.showSnapshotBeforeDOIDialog(workflow, version);
-        } else {
-          this.showRequestDOIDialog(workflow, version);
-        }
-      } else {
-        this.showLinkZenodoDialog();
-      }
-    });
   }
 }

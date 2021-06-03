@@ -1,0 +1,179 @@
+<div>
+  <h4 mat-dialog-title>
+    {{ title }}: <span class="accent-1-dark">Version {{ version.name }}</span>
+  </h4>
+
+  <div [ngSwitch]="action">
+    <div *ngSwitchCase="SnapshotExporterAction.SNAPSHOT">
+      <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
+      <div>
+        <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+          <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
+          <button class="bg-accent-1-dark" data-cy="snapshot-button" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">
+            Snapshot
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngSwitchDefault>
+      <div fxLayout="row" fxLayoutAlign="space-evenly center">
+        <app-exporter-step
+          [stepState]="state.snapshot"
+          matIcon="photo_camera"
+          successText="Snapshot created"
+          errorText="Snapshot error"
+          defaultText="Snapshot"
+        ></app-exporter-step>
+        <app-exporter-step [stepState]="state.doi" aiIcon="ai-doi" successText="DOI created" errorText="DOI error" defaultText="DOI">
+        </app-exporter-step>
+        <app-exporter-step
+          *ngIf="action === SnapshotExporterAction.ORCID"
+          [stepState]="state.orcid"
+          [faIcon]="faOrcid"
+          successText="ORCID created"
+          errorText="ORCID error"
+          defaultText="ORCID"
+        ></app-exporter-step>
+      </div>
+
+      <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
+      <div *ngIf="action === SnapshotExporterAction.ORCID">
+        <ng-template *ngTemplateOutlet="orcidCheck"></ng-template>
+      </div>
+
+      <div *ngIf="action === SnapshotExporterAction.DOI">
+        <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
+      </div>
+      <div *ngIf="action === SnapshotExporterAction.ORCID">
+        <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
+      </div>
+
+      <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+        <div
+          *ngIf="promptToConfirmSnapshot && state.overall === StepState.INITIAL"
+          fxLayout="row"
+          fxLayoutAlign="end"
+          fxFlex="50"
+          fxFlexOffset="50"
+        >
+          <span class="alert-warning pb-2 mb-2"
+            >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span
+          >
+        </div>
+        <div fxLayoutAlign="end" fxLayout="row" fxFlex="50">
+          <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
+          <button
+            [disabled]="
+              (hasZenodoToken$ | async) === false ||
+              (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false) ||
+              state.overall !== StepState.INITIAL
+            "
+            class="bg-accent-1-dark"
+            mat-flat-button
+            data-cy="export-button"
+            (click)="export(false)"
+            *ngIf="!promptToConfirmSnapshot"
+          >
+            {{ action === SnapshotExporterAction.DOI ? 'Request DOI' : 'Export' }}
+          </button>
+          <button
+            class="bg-accent-1-dark"
+            mat-flat-button
+            [disabled]="state.overall !== StepState.INITIAL"
+            (click)="export(true)"
+            *ngIf="promptToConfirmSnapshot"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #snapshotBlurb>
+    <p>
+      A snapshot freezes the workflow version, ensuring that the content of the workflow does not change, e.g., if cited in publications.
+      <strong>Important note: once a snapshot is made, the workflow version becomes uneditable, apart from some metadata.</strong>
+    </p>
+    <p>
+      You can then use this snapshot to request a DOI or export to your ORCID record.
+      <strong>Are you sure you want to snapshot this version?</strong>
+    </p>
+  </ng-template>
+
+  <ng-template #doiBlurb>
+    <p>A Digital Object Identifier (DOI) allows a workflow version to be easily cited in publications. What’s involved in the request:</p>
+    <ol>
+      <li>
+        Before a DOI can be issued, a <strong>snapshot</strong> of the workflow version must be made to ensure that the content referenced
+        by the DOI does not change.
+        <strong>Please note: a snapshot will make the workflow version uneditable, apart from some metadata.</strong>
+      </li>
+      <li>
+        Next, a DOI is requested, providing a unique identifier for this workflow version. The DOI identifier will be displayed in the
+        snapshot column of the versions table.
+      </li>
+    </ol>
+  </ng-template>
+
+  <ng-template #orcidBlurb>
+    <p>
+      Exporting to ORCID requires a Digital Object Identifier (DOI), which allows a workflow version to be easily cited in publications.
+      What’s involved:
+    </p>
+
+    <ol>
+      <li>
+        Before a DOI can be issued, a snapshot of the workflow version must be made to ensure that the content referenced by the DOI does
+        not change. Please note: a snapshot will make the workflow version uneditable, apart from some metadata.
+      </li>
+      <li>Next, a DOI is requested, providing a unique identifier for this workflow version.</li>
+      <li>Lastly, the workflow will be exported to your ORCID record.</li>
+    </ol>
+  </ng-template>
+
+  <ng-template #zenodoCheck>
+    <div
+      *ngIf="(hasZenodoToken$ | async) === false"
+      class="alert-danger p-2"
+      fxLayout="row"
+      fxLayoutGap="0.625rem;"
+      fxLayoutAlign="end top"
+    >
+      <div>
+        <mat-icon class="warning-icon">warning</mat-icon>
+      </div>
+      <div>
+        <div data-cy="zenodo-not-linked">
+          To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to
+          this screen and try again.
+        </div>
+        <div>
+          <button data-cy="link-zenodo" class="ml-1 accent-1-dark" mat-flat-button (click)="linkAccount()">
+            <mat-icon>link</mat-icon>
+            Link account now
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #orcidCheck>
+    <div *ngIf="(hasOrcidToken$ | async) === false" class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+      <div>
+        <mat-icon class="account-warning">warning</mat-icon>
+      </div>
+      <div>
+        <div>
+          To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
+          come back to this screen and try again.
+          <button class="ml-1 accent-1-dark" mat-flat-button (click)="linkAccount()">
+            <mat-icon>link</mat-icon>
+            Link account now
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

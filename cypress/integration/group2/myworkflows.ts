@@ -154,14 +154,19 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=save-version').click();
       cy.get('[data-cy=save-version').should('not.be.visible');
     });
+  });
 
-    it('Should be able to snapshot', () => {
+  describe('Should be able to snapshot, request DOI, and export to ORCID', () => {
+    function gotoVersionsAndClickActions() {
       cy.visit('/my-workflows/github.com/A/l');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
       goToTab('Versions');
+      cy.get('td').contains('Actions').click();
+    }
+    it('Should be able to snapshot', () => {
+      gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
       // The buttons should be present
-      cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button]').its('length').should('be.gt', 0);
       cy.get('[data-cy=dockstore-snapshot]').its('length').should('be.gt', 0);
 
@@ -169,10 +174,48 @@ describe('Dockstore my workflows', () => {
 
       cy.get('[data-cy=dockstore-snapshot]').first().click();
 
-      cy.get('[data-cy=confirm-dialog-button]').click();
+      cy.get('[data-cy=snapshot-button]').click();
 
       cy.wait(250);
       cy.get('[data-cy=dockstore-snapshot-locked').should('have.length', 1);
+    });
+    it('Request DOI should require linked account', () => {
+      gotoVersionsAndClickActions();
+      cy.get('[data-cy=dockstore-request-doi-button]').click();
+
+      cy.get('[data-cy=zenodo-not-linked]').its('length').should('be.gt', 0);
+      cy.get('[data-cy=export-button').should('be.disabled');
+
+      cy.get('[data-cy=link-zenodo]').click();
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
+    });
+    it('Export DOI should result in badge', () => {
+      cy.server();
+      // tokens.json indicates a Zenodo token
+      cy.fixture('tokens.json').then((json) => {
+        cy.route({
+          url: '/api/users/1/tokens',
+          method: 'GET',
+          status: 200,
+          response: json,
+        });
+      });
+      // doiResponse.json has a workflow version with a DOI
+      cy.fixture('doiResponse.json').then((json) => {
+        cy.route({
+          url: '/api/**/requestDOI/*',
+          method: 'PUT',
+          status: 200,
+          response: json,
+        });
+      });
+      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist');
+      gotoVersionsAndClickActions();
+      // Make sure there are no existing Zenodo badges
+      cy.get('[data-cy=dockstore-request-doi-button]').click();
+      cy.get('[data-cy=export-button').should('be.enabled');
+      cy.get('[data-cy=export-button').click();
+      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0);
     });
   });
 
