@@ -84,7 +84,7 @@
         [workflow]="workflow"
         class="pull-right starring-button"
         *ngIf="isWorkflowPublic && workflow"
-        (change)="starGazersChange()"
+        (starGazersChange)="starGazersChange()"
       ></app-starring>
     </div>
     <div *ngIf="!publicPage" class="col-md-5">
