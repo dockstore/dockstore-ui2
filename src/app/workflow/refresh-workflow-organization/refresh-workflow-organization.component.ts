@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { EMPTY, from } from 'rxjs';
 import { catchError, concatMap, takeUntil } from 'rxjs/operators';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
@@ -33,20 +33,25 @@ import { UserQuery } from '../../shared/user/user.query';
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
-export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent {
+export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent implements OnInit {
   @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;
 
   constructor(
-    userQuery: UserQuery,
+    private userQuery: UserQuery,
     private workflowService: WorkflowService,
     private workflowsService: WorkflowsService,
     private alertService: AlertService,
     protected alertQuery: AlertQuery,
     private extendedWorkflowQuery: ExtendedWorkflowQuery
   ) {
-    super(userQuery, alertQuery);
+    super();
     this.buttonText = 'Refresh Organization';
     this.tooltipText = 'Refresh all workflows in the organization';
+  }
+
+  ngOnInit() {
+    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((userId) => (this.userId = userId));
+    this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
   refreshOrganization(): void {
