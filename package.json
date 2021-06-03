@@ -132,7 +132,7 @@
       "git add"
     ],
     "*.ts": [
-      "tslint --fix",
+      "eslint --fix",
       "git add"
     ]
   }
