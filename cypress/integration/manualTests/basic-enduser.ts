@@ -21,7 +21,7 @@ function testEntry(tab: string) {
       .eq(chosen_index)
       .within(() => {
         cy.get('a').then((el) => {
-          cy.task('log', el.prop('href')); // log the href in case a test fails
+          cy.log(el.prop('href')); // log the href in case a test fails
           cy.visit(el.prop('href'));
         });
       });
@@ -55,6 +55,16 @@ function testEntry(tab: string) {
 // pairs of [workflow URL without version number, verified version number, another verified version number, workflow.trsUrl]
 const workflowVersionTuples = [
   [
+    'github.com/briandoconnor/dockstore-workflow-md5sum/dockstore-wdl-workflow-md5sum',
+    '1.4.0',
+    'develop',
+    window.location.origin +
+      '/api' +
+      ga4ghPath +
+      '/tools/%23workflow%2Fgithub.com%2Fbriandoconnor%2Fdockstore-workflow-md5sum%2Fdockstore-wdl-workflow-md5sum/versions/develop',
+    'WDL',
+  ],
+  [
     'github.com/NCI-GDC/gdc-dnaseq-cwl/GDC_DNASeq',
     'dev',
     'master',
@@ -63,7 +73,7 @@ const workflowVersionTuples = [
   ],
   ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
 ];
-describe.only('Monitor workflows', () => {
+describe('Monitor workflows', () => {
   workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
 });
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
@@ -122,14 +132,14 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   let launchWithTuples: any[] = [];
   if (type === 'WDL') {
     it('get the svg icons', () => {
-      cy.get('[data-cy=dnanexusIcon]').within(() => {
-        cy.get('svg').should('exist');
+      cy.get('[data-cy=dnanexusLaunchWith]').within(() => {
+        cy.get('img').should('exist');
       });
-      cy.get('[data-cy=terraIcon]').within(() => {
-        cy.get('svg').should('exist');
+      cy.get('[data-cy=terraLaunchWith]').within(() => {
+        cy.get('img').should('exist');
       });
-      cy.get('[data-cy=anvilIcon]').within(() => {
-        cy.get('svg').should('exist');
+      cy.get('[data-cy=anvilLaunchWith]').within(() => {
+        cy.get('img').should('exist');
       });
     });
   }
@@ -143,7 +153,6 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   } else if (type === 'WDL') {
     launchWithTuples = [
       // pairs of [launch button text, expected href]
-      ['dnastackLaunchWith', '?descriptorType=wdl&path=' + url],
       ['dnanexusLaunchWith', '?source=' + trsUrl],
       ['terraLaunchWith', url + ':' + version2],
       ['anvilLaunchWith', url + ':' + version2],
