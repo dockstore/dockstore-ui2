@@ -15,7 +15,7 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -53,7 +53,7 @@ import { EmailService } from './email.service';
   selector: 'app-container',
   templateUrl: './container.component.html',
 })
-export class ContainerComponent extends Entry implements AfterViewInit {
+export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
   containerEditData: any;
@@ -118,6 +118,10 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
     this._toolType = 'containers';
     this.redirectToCanonicalURL('/my-tools');
+  }
+
+  ngOnInit() {
+    this.init();
   }
 
   ngAfterViewInit() {

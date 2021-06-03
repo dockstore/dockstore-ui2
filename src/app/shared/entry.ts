@@ -42,7 +42,7 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 @Directive()
 @Injectable()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class Entry implements OnInit, OnDestroy {
+export abstract class Entry implements OnDestroy {
   @ViewChild('entryTabs') entryTabs: MatTabGroup;
   protected shareURL: string;
   public starGazersClicked = false;
@@ -90,7 +90,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     this.gA4GHFilesService.clearFiles();
   }
 
-  ngOnInit() {
+  init() {
     this.clearState();
     this.subscriptions();
     this.router.events
