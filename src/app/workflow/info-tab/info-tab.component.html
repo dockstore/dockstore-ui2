@@ -42,7 +42,11 @@
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
             <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
-            <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
+            <a
+              id="sourceRepository"
+              data-cy="sourceRepository"
+              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+            >
               {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
           </li>
@@ -280,7 +284,7 @@
         </a>
         <span *ngIf="!selectedVersion?.email"> n/a </span>
       </div>
-      <span *ngIf="isValidVersion" id="downloadZipButton">
+      <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
         <button *ngIf="!workflow?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
         <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-raised-button>Export as ZIP</a>
       </span>
