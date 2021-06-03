@@ -173,7 +173,7 @@
                 <div *ngIf="!(canEdit$ | async)" class="text-muted">This collection does not have a description</div>
               </div>
             </div>
-            <markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></markdown-wrapper>
+            <app-markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></app-markdown-wrapper>
           </div>
         </div>
       </div>
