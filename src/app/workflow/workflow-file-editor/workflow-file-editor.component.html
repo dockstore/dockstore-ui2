@@ -31,7 +31,7 @@
   <mat-tab label="Test Parameter Files">
     <ng-template matTabContent>
       <app-code-editor-list
-        *ngIf="(isNFL$ | async) === true"
+        *ngIf="(isNFL$ | async) === false"
         [sourcefiles]="testParameterFiles"
         [editing]="editing"
         [descriptorType]="selectedDescriptorType$ | async"

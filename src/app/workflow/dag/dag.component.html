@@ -21,9 +21,9 @@
         <mat-icon>warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
       </mat-card>
     </div>
-    <div fxFlex *ngIf="dagType === 'classic' && (isNFL$ | async) !== true && (dagResult$ | async) !== true">
+    <div fxFlex *ngIf="dagType === 'classic' && (isNFL$ | async) === false && (dagResult$ | async) === false">
       <!-- This covers CWL, WDL, Service, and other plugin languages (everything except NFL) -->
-      <mat-card class="alert alert-warning" role="alert" *ngIf="(dagResult$ | async) !== true && !selectedVersion?.valid">
+      <mat-card class="alert alert-warning" role="alert" *ngIf="(dagResult$ | async) === false && !selectedVersion?.valid">
         <mat-icon>warning</mat-icon>&nbsp;
         <span *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.SERVICE">
           The DAG cannot be displayed because the descriptor is either missing or not valid.
@@ -39,7 +39,7 @@
       </mat-card>
     </div>
     <div fxFlex #dagHolder id="dag-holder">
-      <div [ngClass]="{ 'p-3': expanded }" *ngIf="selectedVersion?.valid && (missingTool$ | async) !== true">
+      <div [ngClass]="{ 'p-3': expanded }" *ngIf="selectedVersion?.valid && (missingTool$ | async) === false">
         <div fxLayout="row" fxLayoutAlign="space-between start">
           <div fxFlex>
             <div
@@ -112,7 +112,7 @@
         <div
           #cy
           id="cy"
-          *ngIf="(dagResult$ | async) && (missingTool$ | async) !== true"
+          *ngIf="(dagResult$ | async) && (missingTool$ | async) === false"
           class="h-100 w-100"
           [hidden]="dagType !== 'classic'"
         ></div>
