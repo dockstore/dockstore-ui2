@@ -63,7 +63,7 @@ const workflowVersionTuples = [
   ],
   ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
 ];
-describe('Monitor workflows', () => {
+describe.only('Monitor workflows', () => {
   workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
 });
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
@@ -136,20 +136,21 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   if (type === 'CWL') {
     launchWithTuples = [
       // pairs of [launch button text, expected href]
-      ['CGC', '?trs=' + trsUrl],
-      ['NHLBI BioData Catalyst', '?trs=' + trsUrl],
+      ['cgcLaunchWith', '?trs=' + trsUrl],
+      ['nhlbiLaunchWith', '?trs=' + trsUrl],
+      ['cavaticaLaunchWith', '?trs=' + trsUrl],
     ];
   } else if (type === 'WDL') {
     launchWithTuples = [
       // pairs of [launch button text, expected href]
-      ['DNAstack', '?descriptorType=wdl&path=' + url],
-      ['DNAnexus', '?source=' + trsUrl],
-      ['Terra', url + ':' + version2],
-      ['AnVIL', url + ':' + version2],
-      ['NHLBI BioData Catalyst', url + ':' + version2],
+      ['dnastackLaunchWith', '?descriptorType=wdl&path=' + url],
+      ['dnanexusLaunchWith', '?source=' + trsUrl],
+      ['terraLaunchWith', url + ':' + version2],
+      ['anvilLaunchWith', url + ':' + version2],
+      ['nhlbiLaunchWith', url + ':' + version2],
     ];
   } else if (type === 'NFL') {
-    launchWithTuples = [['Nextflow Tower', url + '&revision=' + version2]];
+    launchWithTuples = [['nextflowtowerLaunchWith', url + '&revision=' + version2]];
   } else {
     launchWithTuples = [];
   }
@@ -157,7 +158,7 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   // click on each launch button and confirm the url changes
   launchWithTuples.forEach((t) => {
     it('launch with buttons go to external site', () => {
-      cy.contains('a', t[0]).should(($el) => {
+      cy.get('[data-cy=' + t[0] + ']').should(($el) => {
         // @ts-ignore
         expect($el.attr('href')).to.contain(t[1]);
       });
