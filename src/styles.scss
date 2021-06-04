@@ -1495,6 +1495,15 @@ hr {
   font-size: 12px;
 }
 
+// Can use this class for all search bars
+.search-form-field {
+  width: 200px;
+  button {
+    // Workaround for Firefox since x icon does not align correctly, but can remove this if using angular 11
+    display: inline-block !important;
+  }
+}
+
 // Style the float label of the mat-form-field
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
   .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {

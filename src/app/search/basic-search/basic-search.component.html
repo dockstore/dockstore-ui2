@@ -1,18 +1,21 @@
 <mat-expansion-panel expanded>
   <mat-expansion-panel-header> Search </mat-expansion-panel-header>
-  <mat-form-field appearance="outline" class="form-field">
+  <mat-form-field appearance="outline" class="search-form-field">
+    <mat-label>Enter search term</mat-label>
     <input
       matInput
+      #search
       [matAutocomplete]="auto"
       [formControl]="searchFormControl"
       matTooltip="Find tools and workflows"
       [matTooltipPosition]="'after'"
       list="suggestions"
-      class="w-100 mb-3"
-      placeholder="Enter search term"
       type="text"
       data-cy="basic-search"
     />
+    <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
+      <mat-icon>close</mat-icon>
+    </button>
   </mat-form-field>
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of autocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
