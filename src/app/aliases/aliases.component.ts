@@ -19,8 +19,7 @@ export class AliasesComponent extends Base implements OnInit {
   workflow$: Observable<Workflow | null>;
   workflowVersionPathInfo$: Observable<WorkflowVersionPathInfo | null>;
   tool$: Observable<DockstoreTool | null>;
-  // No aliases found for any of the types
-  allEmpty$: Observable<boolean>;
+  aliasNotFound$: Observable<boolean>;
   public type: string | null;
   public alias: string | null;
   public validType: boolean;
@@ -40,7 +39,6 @@ export class AliasesComponent extends Base implements OnInit {
     this.alias = this.route.snapshot.paramMap.get('alias');
     this.validType = this.type ? this.types.includes(this.type) : false;
     this.loading$ = this.aliasesQuery.loading$;
-
     if (this.type === 'organizations' && this.alias) {
       this.aliasesService.updateOrganizationFromAlias(this.alias);
       this.organization$ = this.aliasesQuery.organization$;
@@ -48,6 +46,7 @@ export class AliasesComponent extends Base implements OnInit {
         if (organization) {
           this.router.navigate(['/organizations', organization.name]);
         }
+        this.aliasNotFound$ = this.organization$.pipe(map((tool) => !tool));
       });
     } else if (this.type === 'collections' && this.alias) {
       this.aliasesService.updateCollectionFromAlias(this.alias);
@@ -56,6 +55,7 @@ export class AliasesComponent extends Base implements OnInit {
         if (collection) {
           this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
         }
+        this.aliasNotFound$ = this.collection$.pipe(map((tool) => !tool));
       });
     } else if (this.type === 'workflow-versions' && this.alias) {
       this.aliasesService.updateWorkflowVersionPathInfoFromAlias(this.alias);
@@ -64,6 +64,7 @@ export class AliasesComponent extends Base implements OnInit {
         if (workflowVersionPathInfo) {
           this.router.navigate(['/workflows', workflowVersionPathInfo.fullWorkflowPath + ':' + workflowVersionPathInfo.tagName]);
         }
+        this.aliasNotFound$ = this.workflowVersionPathInfo$.pipe(map((tool) => !tool));
       });
     } else if (this.type === 'workflows' && this.alias) {
       this.aliasesService.updateWorkflowFromAlias(this.alias);
@@ -72,6 +73,7 @@ export class AliasesComponent extends Base implements OnInit {
         if (workflow) {
           this.router.navigate(['/workflows', workflow.full_workflow_path]);
         }
+        this.aliasNotFound$ = this.workflow$.pipe(map((tool) => !tool));
       });
     } else if ((this.type === 'tools' || this.type === 'containers') && this.alias) {
       this.aliasesService.updateToolFromAlias(this.alias);
@@ -81,9 +83,7 @@ export class AliasesComponent extends Base implements OnInit {
           this.router.navigate(['/tools', tool.tool_path]);
         }
       });
+      this.aliasNotFound$ = this.tool$.pipe(map((tool) => !tool));
     }
-    this.allEmpty$ = combineLatest([this.organization$, this.collection$, this.workflow$, this.tool$]).pipe(
-      map(([organization, collection, workflow, tool]) => !(organization || collection || workflow || tool))
-    );
   }
 }
