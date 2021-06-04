@@ -1,4 +1,4 @@
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 import { inject, TestBed } from '@angular/core/testing';
 import { versionVerifiedPlatform } from '../test/mocked-objects';

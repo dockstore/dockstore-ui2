@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
@@ -23,7 +23,7 @@ import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
   templateUrl: './launch-checker-workflow.component.html',
   styleUrls: ['./launch-checker-workflow.component.scss'],
 })
-export class LaunchCheckerWorkflowComponent implements OnInit {
+export class LaunchCheckerWorkflowComponent {
   @Input() command: string;
   @Input() versionName: string;
   command$: Observable<string>;
@@ -31,6 +31,4 @@ export class LaunchCheckerWorkflowComponent implements OnInit {
   constructor(private checkerWorkflowQuery: CheckerWorkflowQuery) {
     this.checkerWorkflowPath$ = this.checkerWorkflowQuery.checkerWorkflowPath$;
   }
-
-  ngOnInit() {}
 }

@@ -86,7 +86,7 @@
         [tool]="tool"
         class="pull-right starring-button"
         *ngIf="isToolPublic && tool"
-        (change)="starGazersChange()"
+        (starGazersChange)="starGazersChange()"
       ></app-starring>
       <h3 class="pull-right">
         <div class="mr-2" *ngIf="publicPage && tool?.private_access">
@@ -352,7 +352,7 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <current-collections [id]="tool.id" [versions]="tool.workflowVersions"></current-collections>
+      <app-current-collections [id]="tool.id" [versions]="tool.workflowVersions"></app-current-collections>
       <app-verified-by
         *ngIf="selectedVersion"
         [version]="selectedVersion"

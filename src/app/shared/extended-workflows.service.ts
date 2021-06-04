@@ -11,7 +11,7 @@ import { WorkflowsService } from './../shared/swagger/api/workflows.service';
  * @class ExtendedWorkflowsService
  * @extends {WorkflowsService}
  */
-/* tslint:disable */
+/* eslint-disable */
 @Injectable()
 export class ExtendedWorkflowsService extends WorkflowsService {
   /**

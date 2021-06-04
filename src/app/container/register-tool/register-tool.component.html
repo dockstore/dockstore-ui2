@@ -49,7 +49,7 @@
     <mat-step>
       <ng-template matStepLabel>Create a tool</ng-template>
       <div *ngIf="selectedOption?.value === 0">
-        <refresh-wizard></refresh-wizard>
+        <app-refresh-wizard></app-refresh-wizard>
       </div>
       <form
         *ngIf="selectedOption?.value == 1"

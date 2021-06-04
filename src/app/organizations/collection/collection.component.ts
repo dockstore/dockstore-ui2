@@ -8,14 +8,14 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 
 @Component({
-  selector: 'collection-entry-confirm-remove',
+  selector: 'app-collection-entry-confirm-remove',
   templateUrl: 'collection-entry-confirm-remove.html',
 })
 export class CollectionRemoveEntryDialogComponent {
@@ -41,7 +41,7 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'collection',
+  selector: 'app-collection',
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss', '../organization/organization.component.scss'],
 })

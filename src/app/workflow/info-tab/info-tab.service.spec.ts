@@ -44,7 +44,7 @@ describe('ValueService', () => {
     const entryType: EntryType = EntryType.BioWorkflow;
     expect(service.getTRSLink(path, versionName, descriptorType, descriptorPath, entryType)).toContain(
       ga4ghPath +
-        // tslint:disable-next-line: max-line-length
+        // eslint-disable-next-line max-len
         '/tools/%23workflow%2Fgithub.com%2Fdockstore-testing%2FMetaphlan-ISBCGC/versions/master/plain-CWL/descriptor//metaphlan_wfl.cwl'
     );
     // TODO: service test

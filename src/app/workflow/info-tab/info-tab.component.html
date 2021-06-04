@@ -110,7 +110,7 @@
                 #editTestFilePathForm="ngForm"
                 class="form-inline"
                 fxLayout
-                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+                *ngIf="(isNFL$ | async) === false && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
               >
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
@@ -155,7 +155,7 @@
                 #editForumUrl="ngForm"
                 class="form-inline"
                 fxLayout
-                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+                *ngIf="(isNFL$ | async) === false && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
               >
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Link to a discussion forum for this workflow">Discussion Forum</strong>:
@@ -200,7 +200,7 @@
             </li>
           </span>
           <app-info-tab-checker-workflow-path
-            *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && !(isNFL$ | async)"
+            *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && (isNFL$ | async) === false"
             [canRead]="canRead"
             [canWrite]="canWrite"
             [isOwner]="isOwner"
@@ -288,7 +288,7 @@
         <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
           <div *ngIf="selectedVersion?.description" class="well well-sm">
-            <markdown-wrapper [data]="selectedVersion?.description"></markdown-wrapper>
+            <app-markdown-wrapper [data]="selectedVersion?.description"></app-markdown-wrapper>
           </div>
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>

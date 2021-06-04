@@ -25,7 +25,7 @@ import { ActivatedRoute } from '../../test';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
-// tslint:disable-next-line: max-line-length
+// eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 
 import { CollectionsQuery } from '../state/collections.query';
@@ -33,7 +33,7 @@ import { EventsQuery } from '../state/events.query';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
 
 @Component({
-  selector: 'organization',
+  selector: 'app-organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
 })

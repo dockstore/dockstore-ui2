@@ -34,7 +34,7 @@ import { StarringService } from './starring.service';
 export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   @Input() tool: any;
   @Input() workflow: any;
-  @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() starGazersChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   private user: any;
   private entry: any;
   private entryType: EntryType;
@@ -151,6 +151,6 @@ export class StarringComponent implements OnInit, OnDestroy, OnChanges {
       theEntryType: this.entryType,
     };
     this.starentryService.setEntry(selectedEntry);
-    this.change.emit();
+    this.starGazersChange.emit();
   }
 }

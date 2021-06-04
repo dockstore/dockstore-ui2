@@ -6,7 +6,7 @@ import { AddEntryQuery } from '../state/add-entry.query';
 import { AddEntryService } from '../state/add-entry.service';
 
 @Component({
-  selector: 'add-entry',
+  selector: 'app-add-entry',
   templateUrl: './add-entry.component.html',
   styleUrls: ['./add-entry.component.scss'],
 })

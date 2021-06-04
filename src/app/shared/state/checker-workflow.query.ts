@@ -33,6 +33,7 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
   parentId$: Observable<number> = this.entry$.pipe(map((entry: BioWorkflow) => (entry ? entry.parent_id : null)));
   checkerId$: Observable<number> = this.entry$.pipe(map((entry: Entry) => (entry ? entry.checker_id : null)));
   entryIsWorkflow$: Observable<boolean> = this.entry$.pipe(map((entry: Entry) => (entry ? this.isEntryAWorkflow(entry) : null)));
+  noChecker$: Observable<boolean> = this.checkerId$.pipe(map((checkerId) => !checkerId));
   trsId$: Observable<string | null> = this.entry$.pipe(map((entry: Entry | null) => this.getTRSId(entry)));
   constructor(protected store: CheckerWorkflowStore) {
     super(store);

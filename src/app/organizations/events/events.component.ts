@@ -5,7 +5,7 @@ import { EventsQuery } from '../state/events.query';
 import { EventsService } from '../state/events.service';
 
 @Component({
-  selector: 'events',
+  selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
 })

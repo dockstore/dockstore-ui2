@@ -6,6 +6,7 @@ import { Base } from 'app/shared/base';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { ToolFile, WorkflowVersion } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { EntryFileTabQuery } from './state/entry-file-tab.query';
 import { EntryFileTabService } from './state/entry-file-tab.service';
 import { EntryFileTabStore } from './state/entry-file-tab.store';
@@ -34,6 +35,7 @@ export class EntryFileTabComponent extends Base implements OnInit {
   customDownloadPath$: Observable<string>;
   fileTypes$: Observable<ToolFile.FileTypeEnum[]>;
   files$: Observable<ToolFile[]>;
+  noFiles$: Observable<boolean>;
   fileContents$: Observable<string>;
   downloadButtonTooltip$: Observable<string>;
   loading$: Observable<boolean>;
@@ -59,6 +61,7 @@ export class EntryFileTabComponent extends Base implements OnInit {
     this.loading$ = this.entryFileTabQuery.selectLoading();
     this.validationMessage$ = this.entryFileTabQuery.validationMessage$;
     this.entryFileTabService.init();
+    this.noFiles$ = this.files$.pipe(map((files) => !files || files.length === 0));
   }
 
   matTabChange(event: MatTabChangeEvent) {

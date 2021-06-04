@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import { MarkdownService } from 'ngx-markdown';
 
 @Component({
-  selector: 'markdown-wrapper',
+  selector: 'app-markdown-wrapper',
   templateUrl: './markdown-wrapper.component.html',
   styleUrls: ['./markdown-wrapper.component.scss'],
 })

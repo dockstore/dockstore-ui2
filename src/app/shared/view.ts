@@ -20,7 +20,7 @@ import { DateService } from './date.service';
 import { Tag, WorkflowVersion } from './swagger';
 
 @Directive()
-// tslint:disable-next-line: directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class View implements OnDestroy {
   @Input() version: WorkflowVersion | Tag;
   @Input() defaultVersion: string;
