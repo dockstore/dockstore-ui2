@@ -36,9 +36,6 @@ export class AliasesComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    this.allEmpty$ = combineLatest([this.organization$, this.collection$, this.workflow$, this.tool$]).pipe(
-      map(([organization, collection, workflow, tool]) => !(organization || collection || workflow || tool))
-    );
     this.type = this.route.snapshot.paramMap.get('type');
     this.alias = this.route.snapshot.paramMap.get('alias');
     this.validType = this.type ? this.types.includes(this.type) : false;
@@ -85,5 +82,8 @@ export class AliasesComponent extends Base implements OnInit {
         }
       });
     }
+    this.allEmpty$ = combineLatest([this.organization$, this.collection$, this.workflow$, this.tool$]).pipe(
+      map(([organization, collection, workflow, tool]) => !(organization || collection || workflow || tool))
+    );
   }
 }
