@@ -133,7 +133,7 @@ describe('Create Zenodo DOI for workflow version', () => {
     });
 
     cy.get('[id=saveNewVersionButton]').click();
-    cy.contains('Save as New Version').should('not.be.visible');
+    cy.contains('Save as New Version').should('not.exist');
 
     // Wait for the Publish button so it has a size greater than zero
     // There doesn't seem to be a way around this issue
@@ -172,7 +172,7 @@ describe('Create Zenodo DOI for workflow version', () => {
     // finding the 1st row in the Versions table.
     cy.get('@versionrows').first().get('[data-cy=dockstore-snapshot-locked]').should('be.visible');
 
-    cy.get('[data-cy=confirm-dialog-button]').should('not.be.visible');
+    cy.get('[data-cy=confirm-dialog-button]').should('not.exist');
 
     // Wait for the Request DOI button so it has a size greater than zero
     // There doesn't seem to be a way around this issue
@@ -184,7 +184,7 @@ describe('Create Zenodo DOI for workflow version', () => {
 
     cy.get('[data-cy=confirm-dialog-button]').should('be.visible');
     cy.get('[data-cy=confirm-dialog-button]').click();
-    cy.get('[data-cy=confirm-dialog-button]', { timeout: 20000 }).should('not.be.visible');
+    cy.get('[data-cy=confirm-dialog-button]', { timeout: 20000 }).should('not.exist');
 
     cy.get('[data-cy=workflow-version-DOI-badge]').should('be.visible');
 

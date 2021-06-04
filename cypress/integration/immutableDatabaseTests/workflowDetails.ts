@@ -91,7 +91,7 @@ describe('Dockstore Workflow Details', () => {
       });
 
       it('Should not have content in file viewer', () => {
-        cy.get('.ace_content').should('not.be.visible');
+        cy.get('.ace_content').should('not.exist');
       });
     });
   });

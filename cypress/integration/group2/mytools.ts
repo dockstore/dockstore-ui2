@@ -107,7 +107,7 @@ describe('Dockstore my tools', () => {
       cy.get('#removeCWLTestParameterFileButton').click();
       cy.get('#removeWDLTestParameterFileButton').click();
       cy.get('#saveVersionModal').click();
-      cy.get('#saveVersionModal').should('not.be.visible');
+      cy.get('#saveVersionModal').should('not.exist');
     });
   });
 
@@ -119,7 +119,7 @@ describe('Dockstore my tools', () => {
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
 
-      cy.get('#viewPublicToolButton').should('not.be.visible');
+      cy.get('#viewPublicToolButton').should('not.exist');
 
       cy.get('#publishToolButton')
         .should('contain', 'Publish')

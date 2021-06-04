@@ -46,7 +46,7 @@ describe('Dockstore hosted tools', () => {
       cy.get('#publishToolButton').should('be.disabled');
 
       // Should not be able to download zip
-      cy.get('#downloadZipButton').should('not.be.visible');
+      cy.get('#downloadZipButton').should('not.exist');
 
       // Check content of the version tab. New hosted tool, there's no versions
       goToTab('Versions');

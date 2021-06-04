@@ -426,10 +426,10 @@ describe('Dropdown test', () => {
     //         .should('be.visible')
     //     cy
     //         .get('h3').contains('Step 2')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 3')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('#next_step')
     //         .click()
@@ -437,13 +437,13 @@ describe('Dropdown test', () => {
     //     // Should now be on step 2
     //     cy
     //         .get('h3').contains('Step 1')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 2')
     //         .should('be.visible')
     //     cy
     //         .get('h3').contains('Step 3')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('#next_step')
     //         .click()
@@ -451,10 +451,10 @@ describe('Dropdown test', () => {
     //     // Should now be on step 3
     //     cy
     //         .get('h3').contains('Step 1')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 2')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 3')
     //         .should('be.visible')
