@@ -308,7 +308,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('button', 'Next').click();
 
       // Select github.com in git registry
-      cy.get('entry-wizard').within(() => {
+      cy.get('app-entry-wizard').within(() => {
         cy.get('mat-select').eq(0).click().type('{enter}');
         cy.get('mat-select').eq(1).click().type('{enter}');
 
