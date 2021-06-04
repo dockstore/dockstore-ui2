@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ExtendedUserData, User } from '../swagger';
 import { UserState, UserStore } from './user.store';
@@ -8,6 +9,7 @@ import { UserState, UserStore } from './user.store';
 @Injectable({ providedIn: 'root' })
 export class UserQuery extends Query<UserState> {
   user$: Observable<User> = this.select((state) => state.user);
+  noUser$ = this.user$.pipe(map((user) => !user));
   isCurator$: Observable<boolean> = this.select((state) => (state.user ? state.user.curator : null));
   isAdmin$: Observable<boolean> = this.select((state) => (state.user ? state.user.isAdmin : null));
   isAdminOrCurator$: Observable<boolean> = this.select((state) => (state.user ? state.user.curator || state.user.isAdmin : null));

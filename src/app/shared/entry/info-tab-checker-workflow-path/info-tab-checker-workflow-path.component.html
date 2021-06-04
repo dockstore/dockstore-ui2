@@ -3,7 +3,7 @@
     <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
       <strong matTooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
     </div>
-    <span *ngIf="(checkerId$ | async) === (false || null || undefined) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
+    <span *ngIf="(noChecker$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
     <div class="btn-group" role="group">
       <a
         [routerLink]="checkerWorkflowURL$ | async"

@@ -173,7 +173,7 @@
                     color="primary"
                     type="button"
                     (click)="addToExistingWorkflows()"
-                    [disabled]="(isRefreshing$ | async) || (user$ | async) === (false || null || undefined)"
+                    [disabled]="(isRefreshing$ | async) || (noUser$ | async)"
                     matTooltip="Discover workflows added by others using your linked source control accounts"
                   >
                     Discover Existing Dockstore Workflows

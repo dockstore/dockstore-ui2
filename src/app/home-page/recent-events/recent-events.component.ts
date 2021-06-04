@@ -3,6 +3,7 @@ import { ID } from '@datorama/akita';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { Event } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { RecentEventsQuery } from '../state/recent-events.query';
 import { RecentEventsService } from '../state/recent-events.service';
 
@@ -20,6 +21,7 @@ export class RecentEventsComponent implements OnInit {
   events$: Observable<Event[]>;
   loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
+  noEvents$: Observable<boolean>;
   readonly starringDocUrl = `${Dockstore.DOCUMENTATION_URL}/end-user-topics/starring.html#starring-tools-and-workflows`;
   homepage = true;
   readonly supportedEventTypes = [Event.TypeEnum.ADDVERSIONTOENTRY, Event.TypeEnum.CREATECOLLECTION, Event.TypeEnum.ADDTOCOLLECTION];
@@ -30,7 +32,7 @@ export class RecentEventsComponent implements OnInit {
       filterBy: (entity) => this.supportedEventTypes.includes(entity.type),
     });
     this.loading$ = this.recentEventsQuery.selectLoading();
-
+    this.noEvents$ = this.events$.pipe(map((events) => !events || events.length === 0));
     this.recentEventsService.get();
   }
 
