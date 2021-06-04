@@ -318,11 +318,11 @@ workflows:
           webpage_URL: "https://staging.dockstore.org"
           context:
             - dockerhub
-      - uptime_monitor_no_auth:
-          stack: "prod"
-          webpage_URL: "https://dockstore.org"
-          context:
-            - dockerhub
+#      - uptime_monitor_no_auth:
+#          stack: "prod"
+#          webpage_URL: "https://dockstore.org"
+#          context:
+#            - dockerhub
       # TODO: Add auth tests for staging/prod once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done.
       - uptime_monitor_auth:
           stack: "dev"
