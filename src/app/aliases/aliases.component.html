@@ -24,17 +24,7 @@
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       Redirecting to the tool <strong>{{ tool.tool_path }}</strong>
     </div>
-    <mat-card
-      class="alert alert-warning"
-      role="alert"
-      *ngIf="
-        types.includes(type) &&
-        (organization$ | async) === (false || null || undefined) &&
-        (collection$ | async) === (false || null || undefined) &&
-        (workflow$ | async) === (false || null || undefined) &&
-        (tool$ | async) === (false || null || undefined)
-      "
-    >
+    <mat-card class="alert alert-warning" role="alert" *ngIf="types.includes(type) && (allEmpty$ | async)">
       <mat-icon>warning</mat-icon>
       &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
     </mat-card>

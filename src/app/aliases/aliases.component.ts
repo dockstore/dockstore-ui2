@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { Collection, DockstoreTool, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/swagger';
 import { ActivatedRoute, Router } from '../test';
@@ -19,7 +19,8 @@ export class AliasesComponent extends Base implements OnInit {
   workflow$: Observable<Workflow | null>;
   workflowVersionPathInfo$: Observable<WorkflowVersionPathInfo | null>;
   tool$: Observable<DockstoreTool | null>;
-
+  // No aliases found for any of the types
+  allEmpty$: Observable<boolean>;
   public type: string | null;
   public alias: string | null;
   public validType: boolean;
@@ -35,6 +36,9 @@ export class AliasesComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
+    this.allEmpty$ = combineLatest([this.organization$, this.collection$, this.workflow$, this.tool$]).pipe(
+      map(([organization, collection, workflow, tool]) => !(organization || collection || workflow || tool))
+    );
     this.type = this.route.snapshot.paramMap.get('type');
     this.alias = this.route.snapshot.paramMap.get('alias');
     this.validType = this.type ? this.types.includes(this.type) : false;
