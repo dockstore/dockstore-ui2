@@ -102,7 +102,8 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
       });
 
       it('Should not have content in file viewer', () => {
-        cy.get('.ace_content').should('not.exist');
+        // The editor is merely hidden, not removed from DOM
+        cy.get('.ace_content').should('not.be.visible');
         cy.contains('A Test Parameter File associated with this Docker container, descriptor type and version could not be found.');
       });
     });

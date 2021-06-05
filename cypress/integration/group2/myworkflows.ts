@@ -17,7 +17,7 @@ import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
-  resetDB();
+  // resetDB();
   setTokenUserViewPort();
 
   const cwlDescriptorType = 'CWL';
@@ -176,13 +176,13 @@ describe('Dockstore my workflows', () => {
     });
   });
 
-  it('Should be able to view a dockstore.yml workflow', () => {
+  it.only('Should be able to view a dockstore.yml workflow', () => {
     cy.visit('/my-workflows/github.com/B/z');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/B/z');
     cy.contains('Automatically synced via GitHub App');
 
     cy.get('#publishButton').should('not.be.disabled');
-    cy.get('#refreshButton').should('not.exist');
+    cy.get('[data-cy=refreshButton]').should('not.exist');
 
     cy.contains('Workflow Path').should('not.exist');
     cy.contains('Test File Path').should('not.exist');
@@ -240,10 +240,10 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Look at an invalid workflow', () => {
-    it('Invalid workflow should not be publishable', () => {
+    it.only('Invalid workflow should not be publishable', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.get('#publishButton').should('be.disabled');
-      cy.get('#refreshButton').should('not.be.disabled');
+      cy.get('[data-cy=refreshButton]').should('not.be.disabled');
     });
   });
 

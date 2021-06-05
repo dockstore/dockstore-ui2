@@ -131,7 +131,7 @@ describe('Dockstore hosted tools', () => {
       cy.get('table').contains('span', /\b2\b/).click();
 
       // Should be able to publish
-      cy.get('#publishButton').should('not.be.disabled');
+      cy.get('#publishToolButton').should('not.be.disabled');
 
       // Try deleting a file (.cwl file)
       goToTab('Files');
