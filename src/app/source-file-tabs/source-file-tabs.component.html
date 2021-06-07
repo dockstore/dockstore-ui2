@@ -23,6 +23,7 @@
       <ng-template matTabContent>
         <mat-toolbar color="primary">
           <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
+            <button mat-raised-button (click)="openFileTree()">Select File</button>
             <mat-form-field class="w-50">
               <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
                 <mat-option [value]="file" *ngFor="let file of filteredFiles"> {{ file.path }} </mat-option>
