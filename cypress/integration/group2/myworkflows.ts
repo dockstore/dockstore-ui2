@@ -17,7 +17,7 @@ import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
-  // resetDB();
+  resetDB();
   setTokenUserViewPort();
 
   const cwlDescriptorType = 'CWL';
