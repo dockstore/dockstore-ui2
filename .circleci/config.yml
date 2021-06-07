@@ -398,7 +398,7 @@ commands:
           name: Get and checkout commit id from the current webpage.
           command: |
             COMMIT_ID=$(curl << parameters.webpage_URL >> | \
-                        grep -Eoi "https:\/\/gui\.dockstore\.org\/[A-Za-z0-9\.]+-[A-Za-z0-9]+" | \
+                        grep -Eoi "https:\/\/gui\.dockstore\.org\/[A-Za-z0-9\.\-]+-[A-Za-z0-9]+" | \
                         head -1 | \
                         grep -Eoi "[A-Za-z0-9]+$")
             git checkout $COMMIT_ID
