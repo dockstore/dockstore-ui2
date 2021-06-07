@@ -17,7 +17,7 @@ interface VersionVerifiedInformation {
 }
 
 @Component({
-  selector: 'available-logs',
+  selector: 'app-available-logs',
   templateUrl: './available-logs.component.html',
   styleUrls: ['./available-logs.component.scss'],
 })

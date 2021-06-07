@@ -15,7 +15,7 @@
  */
 
 import { SearchStubService } from './../test/service-stubs';
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 import { inject, TestBed } from '@angular/core/testing';
 import { QueryBuilderService } from './query-builder.service';

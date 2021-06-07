@@ -7,7 +7,7 @@ import { OrganizationUser } from '../../shared/swagger';
 import { FormsState, UpsertOrganizationMemberService } from '../state/upsert-organization-member.service';
 
 @Component({
-  selector: 'upsert-organization-member',
+  selector: 'app-upsert-organization-member',
   templateUrl: './upsert-organization-member.component.html',
   styleUrls: ['./upsert-organization-member.component.scss'],
 })

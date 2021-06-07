@@ -56,7 +56,7 @@ describe('LaunchThirdPartyComponent', () => {
     const nativeElement: HTMLElement = fixture.nativeElement;
 
     // Verify urls are correct; got these from prod (except for Terra, which is new) to verify there is no breakage.
-    // tslint:disable:max-line-length
+    /* eslint-disable max-len */
     if (!Dockstore.FEATURES.enableMultiCloudLaunchWithDNAstack) {
       expect(
         nativeElement.querySelector(

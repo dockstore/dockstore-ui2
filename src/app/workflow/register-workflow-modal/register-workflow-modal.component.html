@@ -76,7 +76,7 @@
         </div>
       </div>
       <div *ngIf="selectedOption?.value === 1">
-        <entry-wizard></entry-wizard>
+        <app-entry-wizard></app-entry-wizard>
         <div class="modal-footer">
           <button mat-button color="secondary" matStepperPrevious>Back</button>
           <button type="button" mat-flat-button color="primary" [mat-dialog-close]="true" (click)="clearWorkflowRegisterError()">

@@ -19,7 +19,7 @@
     <span>Organizations</span>
   </div>
 </app-header>
-<div *ngIf="!(loading$ | async)" class="container mb-5">
+<div *ngIf="(loading$ | async) === false" class="container mb-5">
   <div *ngIf="pagedOrganizations as organizations; else noOrganizationsFound">
     <div fxLayout="row" fxLayoutAlign="space-between center" class="my-3" fxLayout.lt-sm="column-reverse" fxLayoutAlign.lt-sm="start start">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">

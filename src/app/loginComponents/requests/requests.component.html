@@ -2,7 +2,7 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-template>
 
-<div *ngIf="!(isLoading$ | async); else loading">
+<div *ngIf="(isLoading$ | async) === false; else loading">
   <!-- Curator/Admin Pending Organizations -->
   <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
     <h3>Curator Requests</h3>

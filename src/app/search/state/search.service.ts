@@ -529,7 +529,7 @@ export class SearchService {
   initializeToolTips() {
     return new Map([
       // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
-      /* tslint:disable-next-line:quotemark*/
+      /* eslint-disable-next-line quotes, @typescript-eslint/quotes */
       ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
       ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
       [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],

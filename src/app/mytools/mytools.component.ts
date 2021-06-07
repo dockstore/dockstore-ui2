@@ -13,15 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-mytools',
   templateUrl: './mytools.component.html',
   styleUrls: ['./mytools.component.css'],
 })
-export class MyToolsComponent implements OnInit {
+export class MyToolsComponent {
   constructor() {}
-
-  ngOnInit() {}
 }

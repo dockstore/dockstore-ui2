@@ -15,7 +15,7 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -62,7 +62,7 @@ import { EntriesService } from '../shared/openapi';
   templateUrl: './workflow.component.html',
   styleUrls: ['./workflow.component.css'],
 })
-export class WorkflowComponent extends Entry implements AfterViewInit {
+export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service;
@@ -147,6 +147,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit {
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.launchSupport$ = this.workflowQuery.launchSupport$;
+  }
+
+  ngOnInit() {
+    this.init();
   }
 
   ngAfterViewInit() {

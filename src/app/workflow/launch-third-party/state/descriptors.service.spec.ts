@@ -21,7 +21,7 @@ describe('DescriptorsService', () => {
 
   it('should generate correct TRS url', inject([DescriptorsService], (service: DescriptorsService) => {
     expect(service.trsUrl(path, version))
-      // tslint:disable:max-line-length
+      /* eslint-disable max-len */
       .toEqual(
         `${Dockstore.API_URI}${ga4ghPath}/tools/%23workflow%2Fgithub.com%2Fgatk-workflows%2Fgatk4-germline-snps-indels/versions/1.0.1`
       );

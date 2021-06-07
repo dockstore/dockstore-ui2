@@ -16,7 +16,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'policy-update',
+  selector: 'app-policy-update',
   templateUrl: './session-expired.component.html',
 })
 export class SessionExpiredComponent {

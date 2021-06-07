@@ -39,7 +39,7 @@
               [user]="user$ | async"
               [imagePath]="'../assets/images/thirdparty/dnastack-multi-cloud.png'"
               [className]="'partner-launch'"
-              [disabled]="!(hasContent$ | async)"
+              [disabled]="(hasContent$ | async) === false"
               [tooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"
             ></app-multi-cloud-launch>
             <a
@@ -49,8 +49,8 @@
               target="_blank"
               rel="noopener"
               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
-              [disabled]="!(hasContent$ | async)"
               data-cy="dnanexusLaunchWith"
+              [disabled]="(hasContent$ | async) === false"
               ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
             /></a>
             <a
@@ -96,7 +96,7 @@
                 target="_blank"
                 rel="noopener"
                 [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
-                [disabled]="!(hasContent$ | async)"
+                [disabled]="(hasContent$ | async) === false"
                 color="primary"
                 data-cy="dnastackLaunchWith"
                 ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a
@@ -108,7 +108,7 @@
                 target="_blank"
                 rel="noopener"
                 [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
-                [disabled]="!(hasContent$ | async)"
+                [disabled]="(hasContent$ | async) === false"
                 color="primary"
                 data-cy="dnanexusLaunchWith"
                 ><mat-icon svgIcon="dnanexus"></mat-icon> DNAnexus &raquo;</a
@@ -204,7 +204,7 @@
             [user]="user$ | async"
             [imagePath]="'../assets/images/thirdparty/galaxy.png'"
             [className]="'galaxy-launch'"
-            [disabled]="!(hasContent$ | async)"
+            [disabled]="(hasContent$ | async) === false"
             [tooltip]="!(hasContent$ | async) ? 'The Galaxy workflow has no content.' : ''"
           ></app-multi-cloud-launch>
         </div>
@@ -226,7 +226,7 @@
               '&revision=' +
               selectedVersion.name
             "
-            [disabled]="!(hasContent$ | async)"
+            [disabled]="(hasContent$ | async) === false"
             color="primary"
             data-cy="nextflowtowerLaunchWith"
           >

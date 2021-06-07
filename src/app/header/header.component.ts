@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -23,7 +23,7 @@ import { toExtendSite } from '../shared/helpers';
   selector: 'app-header',
   templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   isExtended = false;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -37,6 +37,4 @@ export class HeaderComponent implements OnInit {
         this.isExtended = toExtendSite(this.router.url);
       });
   }
-
-  ngOnInit() {}
 }

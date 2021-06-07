@@ -15,7 +15,7 @@
  */
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Directive, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Directive, Injectable, Input, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
@@ -41,8 +41,8 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 
 @Directive()
 @Injectable()
-// tslint:disable-next-line: directive-class-suffix
-export abstract class Entry implements OnInit, OnDestroy {
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
+export abstract class Entry implements OnDestroy {
   @ViewChild('entryTabs') entryTabs: MatTabGroup;
   protected shareURL: string;
   public starGazersClicked = false;
@@ -90,7 +90,7 @@ export abstract class Entry implements OnInit, OnDestroy {
     this.gA4GHFilesService.clearFiles();
   }
 
-  ngOnInit() {
+  init() {
     this.clearState();
     this.subscriptions();
     this.router.events

@@ -26,7 +26,7 @@ export class SelectComponent implements OnChanges {
   @Input() default?: any;
   @Input() placeholder?: string;
 
-  @Output() select: EventEmitter<any> = new EventEmitter();
+  @Output() selectionChange: EventEmitter<any> = new EventEmitter();
 
   obj: any;
 
@@ -35,6 +35,6 @@ export class SelectComponent implements OnChanges {
   }
 
   changedSelect(obj) {
-    this.select.emit(obj);
+    this.selectionChange.emit(obj);
   }
 }

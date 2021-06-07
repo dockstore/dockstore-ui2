@@ -25,7 +25,7 @@ import { OrganizationQuery } from '../state/organization.query';
 import { CreateCollectionComponent } from './create-collection/create-collection.component';
 
 @Component({
-  selector: 'collections',
+  selector: 'app-collections',
   templateUrl: './collections.component.html',
   styleUrls: ['./collections.component.scss'],
 })

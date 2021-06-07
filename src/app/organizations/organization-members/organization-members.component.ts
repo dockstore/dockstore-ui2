@@ -32,7 +32,7 @@ import { OrganizationQuery } from '../state/organization.query';
 import { UpsertOrganizationMemberComponent } from '../upsert-organization-member/upsert-organization-member.component';
 
 @Component({
-  selector: 'organization-members',
+  selector: 'app-organization-members',
   templateUrl: './organization-members.component.html',
   styleUrls: ['./organization-members.component.scss'],
 })
