@@ -69,11 +69,11 @@ describe('Logged out Dockstore Home', () => {
       cy.get('[data-cy=video-overview-button]').should('be.visible');
     });
     it('open and close video', () => {
-      cy.get('#youtubeModal').should('not.be.visible');
+      cy.get('#youtubeModal').should('not.exist');
       cy.get('[data-cy=video-overview-button]').should('be.visible').click();
       cy.get('#youtubeModal').should('be.visible');
       cy.get('body').type('{esc}');
-      cy.get('#youtubeModal').should('not.be.visible');
+      cy.get('#youtubeModal').should('not.exist');
     });
     it('should have the twitter timeline', () => {
       cy.scrollTo('bottom');

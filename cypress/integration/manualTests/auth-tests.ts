@@ -27,9 +27,7 @@ function storeToken() {
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
-    cy.get('#publishToolButton')
-      .contains('Unpublish')
-      .click();
+    cy.get('#publishToolButton').contains('Unpublish').click();
   });
 }
 
@@ -139,9 +137,7 @@ function registerToolOnDockstore(repo: string, name: string) {
     cy.wait('@docker');
     cy.wait('@sourceControl');
     cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
-    cy.get('#register_tool_button')
-      .should('be.visible')
-      .click();
+    cy.get('#register_tool_button').should('be.visible').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').click();
       cy.contains('button', 'Next').click();
@@ -216,9 +212,7 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.get('[data-cy=refreshButton]').click();
       cy.wait('@refresh');
       cy.route('post', '**/publish').as('publish');
-      cy.contains('button', 'Publish')
-        .should('be.enabled')
-        .click();
+      cy.contains('button', 'Publish').should('be.enabled').click();
       cy.wait('@publish');
     });
 
@@ -231,9 +225,7 @@ function testWorkflow(registry: string, repo: string, name: string) {
       goToTab('Versions');
 
       cy.contains('button', 'Actions').should('be.visible');
-      cy.contains('td', 'Actions')
-        .first()
-        .click();
+      cy.contains('td', 'Actions').first().click();
       cy.get('.mat-menu-content').within(() => {
         cy.contains('button', 'Snapshot');
         cy.contains('button', 'Edit').click();
@@ -242,9 +234,7 @@ function testWorkflow(registry: string, repo: string, name: string) {
     });
     it('unpublish and stub', () => {
       storeToken();
-      cy.get('#publishButton')
-        .contains('Unpublish')
-        .click({ force: true });
+      cy.get('#publishButton').contains('Unpublish').click({ force: true });
 
       goToTab('Info');
       cy.contains('button', 'Restub').click();
@@ -262,25 +252,17 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.server();
       cy.route('post', '**/collections/**').as('postToCollection');
       cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
-      cy.get('#addToolToCollectionButton')
-        .should('be.visible')
-        .click();
+      cy.get('#addToolToCollectionButton').should('be.visible').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectOrganization').click();
-      cy.get('mat-option')
-        .contains(org)
-        .click();
+      cy.get('mat-option').contains(org).click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectCollection').click();
-      cy.get('mat-option')
-        .contains(collection)
-        .click();
-      cy.get('#addEntryToCollectionButton')
-        .should('not.be.disabled')
-        .click();
+      cy.get('mat-option').contains(collection).click();
+      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
       cy.wait('@postToCollection');
-      cy.get('#addEntryToCollectionButton').should('not.be.visible');
-      cy.get('mat-progress-bar').should('not.be.visible');
+      cy.get('#addEntryToCollectionButton').should('not.exist');
+      cy.get('mat-progress-bar').should('not.exist');
     });
 
     it('be able to remove an entry from a collection', () => {

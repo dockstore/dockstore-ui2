@@ -52,7 +52,7 @@ describe('Dockstore hosted workflows', () => {
       cy.contains('Mode: Hosted');
 
       // Should not be able to download zip
-      cy.get('#downloadZipButton').should('not.be.visible');
+      cy.get('#downloadZipButton').should('not.exist');
 
       // Should have alert saying there are no versions
       goToTab('Versions');

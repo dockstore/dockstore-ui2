@@ -41,11 +41,11 @@ describe('Checker workflow test from my-workflows', () => {
       cy.server();
       getWorkflow();
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-      cy.get('#viewCheckerWorkflowButton').should('not.be.visible');
-      cy.get('#viewParentEntryButton').should('not.be.visible');
+      cy.get('#viewCheckerWorkflowButton').should('not.exist');
+      cy.get('#viewParentEntryButton').should('not.exist');
       cy.get('#addCheckerWorkflowButton').should('be.visible');
       goToTab('Launch');
-      cy.get('#launchCheckerWorkflow').should('not.be.visible');
+      cy.get('#launchCheckerWorkflow').should('not.exist');
       goToTab('Info');
       cy.get('#addCheckerWorkflowButton').should('be.visible').click();
       cy.get('#checkerWorkflowPath').type('/Dockstore.cwl');
@@ -61,24 +61,24 @@ describe('Checker workflow test from my-workflows', () => {
 
       // Actions should be possible right after registering checker workflow
       cy.get('#viewCheckerWorkflowButton').should('be.visible');
-      cy.get('#viewParentEntryButton').should('not.be.visible');
+      cy.get('#viewParentEntryButton').should('not.exist');
       cy.get('#viewCheckerWorkflowButton').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l/_cwl_checker');
       cy.contains('github.com/A/l/_cwl_checker');
-      cy.get('#addCheckerWorkflowButton').should('not.be.visible');
+      cy.get('#addCheckerWorkflowButton').should('not.exist');
       cy.get('#viewParentEntryButton').should('be.visible').click();
       cy.wait(300);
       cy.get('#workflow-path').contains('github.com/A/l');
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-      cy.get('#viewParentEntryButton').should('not.be.visible');
+      cy.get('#viewParentEntryButton').should('not.exist');
       cy.get('#viewCheckerWorkflowButton').should('be.visible');
     });
     it('visit the workflow and its checker workflow and have the correct buttons', () => {
       getWorkflow();
       // In the parent workflow right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-      cy.get('#viewParentEntryButton').should('not.be.visible');
-      cy.get('#addCheckerWorkflowButton').should('not.be.visible');
+      cy.get('#viewParentEntryButton').should('not.exist');
+      cy.get('#addCheckerWorkflowButton').should('not.exist');
       goToTab('Launch');
       cy.get('#launchCheckerWorkflow').should('be.visible');
       goToTab('Info');
@@ -88,17 +88,17 @@ describe('Checker workflow test from my-workflows', () => {
       // In the checker workflow right now
 
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l/_cwl_checker');
-      cy.get('#viewCheckerWorkflowButton').should('not.be.visible');
-      cy.get('#addCheckerWorkflowButton').should('not.be.visible');
+      cy.get('#viewCheckerWorkflowButton').should('not.exist');
+      cy.get('#addCheckerWorkflowButton').should('not.exist');
       goToTab('Launch');
-      cy.get('#launchCheckerWorkflow').should('not.be.visible');
+      cy.get('#launchCheckerWorkflow').should('not.exist');
       goToTab('Info');
       cy.get('#viewParentEntryButton').should('be.visible').click();
 
       // In the parent workflow right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-      cy.get('#viewParentEntryButton').should('not.be.visible');
-      cy.get('#addCheckerWorkflowButton').should('not.be.visible');
+      cy.get('#viewParentEntryButton').should('not.exist');
+      cy.get('#addCheckerWorkflowButton').should('not.exist');
       goToTab('Launch');
       cy.get('#launchCheckerWorkflow').should('be.visible');
       goToTab('Info');
@@ -154,17 +154,17 @@ describe('Should be able to see the checker workflow from a workflow', () => {
     // In the checker workflow right now
     // TODO: The version is not set because the checker does not actually have any versions. We should add some.
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l/_cwl_checker?tab=info');
-    cy.get('#viewCheckerWorkflowButton').should('not.be.visible');
-    cy.get('#addCheckerWorkflowButton').should('not.be.visible');
+    cy.get('#viewCheckerWorkflowButton').should('not.exist');
+    cy.get('#addCheckerWorkflowButton').should('not.exist');
     goToTab('Launch');
-    cy.get('#launchCheckerWorkflow').should('not.be.visible');
+    cy.get('#launchCheckerWorkflow').should('not.exist');
     goToTab('Info');
     cy.get('#viewParentEntryButton').should('be.visible').click();
 
     // In the parent workflow right now
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
-    cy.get('#viewParentEntryButton').should('not.be.visible');
-    cy.get('#addCheckerWorkflowButton').should('not.be.visible');
+    cy.get('#viewParentEntryButton').should('not.exist');
+    cy.get('#addCheckerWorkflowButton').should('not.exist');
     goToTab('Launch');
     cy.get('#launchCheckerWorkflow').should('be.visible');
     goToTab('Info');
@@ -172,10 +172,10 @@ describe('Should be able to see the checker workflow from a workflow', () => {
 
     // In the checker workflow right now
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l/_cwl_checker?tab=info');
-    cy.get('#viewCheckerWorkflowButton').should('not.be.visible');
-    cy.get('#addCheckerWorkflowButton').should('not.be.visible');
+    cy.get('#viewCheckerWorkflowButton').should('not.exist');
+    cy.get('#addCheckerWorkflowButton').should('not.exist');
     goToTab('Launch');
-    cy.get('#launchCheckerWorkflow').should('not.be.visible');
+    cy.get('#launchCheckerWorkflow').should('not.exist');
     goToTab('Info');
     cy.get('#viewParentEntryButton').should('be.visible');
   });

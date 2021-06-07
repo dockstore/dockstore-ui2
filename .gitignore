@@ -46,6 +46,7 @@ testem.log
 src/app/footer/versions.ts
 cypress/videos
 cypress/screenshots
+cypress/downloads
 
 # e2e
 /e2e/*.js

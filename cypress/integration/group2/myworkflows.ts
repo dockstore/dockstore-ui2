@@ -152,7 +152,7 @@ describe('Dockstore my workflows', () => {
       cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
       cy.get('[data-cy=remove-test-parameter-file-button]').click();
       cy.get('[data-cy=save-version').click();
-      cy.get('[data-cy=save-version').should('not.be.visible');
+      cy.get('[data-cy=save-version').should('not.exist');
     });
 
     it('Should be able to snapshot', () => {
@@ -176,13 +176,13 @@ describe('Dockstore my workflows', () => {
     });
   });
 
-  it('Should be able to view a dockstore.yml workflow', () => {
+  it.only('Should be able to view a dockstore.yml workflow', () => {
     cy.visit('/my-workflows/github.com/B/z');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/B/z');
     cy.contains('Automatically synced via GitHub App');
 
     cy.get('#publishButton').should('not.be.disabled');
-    cy.get('#refreshButton').should('not.exist');
+    cy.get('[data-cy=refreshButton]').should('not.exist');
 
     cy.contains('Workflow Path').should('not.exist');
     cy.contains('Test File Path').should('not.exist');
@@ -240,10 +240,10 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Look at an invalid workflow', () => {
-    it('Invalid workflow should not be publishable', () => {
+    it.only('Invalid workflow should not be publishable', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.get('#publishButton').should('be.disabled');
-      cy.get('#refreshButton').should('not.be.disabled');
+      cy.get('[data-cy=refreshButton]').should('not.be.disabled');
     });
   });
 
@@ -252,7 +252,7 @@ describe('Dockstore my workflows', () => {
   }
 
   function notHaveAlert() {
-    cy.get('.mat-error').should('not.be.visible');
+    cy.get('.mat-error').should('not.exist');
   }
 
   describe('Test workflow wizard form', () => {
@@ -353,7 +353,7 @@ describe('Dockstore my workflows', () => {
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.cwl');
       notHaveAlert();
       cy.get('#closeRegisterWorkflowModalButton').contains('button', 'Close').should('be.visible').should('be.enabled').click();
-      cy.get('#closeRegisterWorkflowModalButton').should('not.be.visible');
+      cy.get('#closeRegisterWorkflowModalButton').should('not.exist');
     });
   });
 
@@ -372,7 +372,7 @@ describe('Dockstore my workflows', () => {
 
       cy.get('#publishButton').should('contain', 'Unpublish').click();
 
-      cy.get('#viewPublicWorkflowButton').should('not.be.visible');
+      cy.get('#viewPublicWorkflowButton').should('not.exist');
 
       cy.get('#publishButton').should('be.visible').should('contain', 'Publish').click();
 

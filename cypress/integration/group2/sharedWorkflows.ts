@@ -216,11 +216,11 @@ describe('Shared with me workflow test from my-workflows', () => {
       goToTab('Versions');
       clickFirstActionsButton();
       cy.contains('View').should('be.visible');
-      cy.contains('Edit').should('not.be.visible');
-      cy.contains('Delete').should('not.be.visible');
+      cy.contains('Edit').should('not.exist');
+      cy.contains('Delete').should('not.exist');
       cancelMatMenu();
       goToTab('Files');
-      cy.contains('Edit Files').should('not.be.visible');
+      cy.contains('Edit Files').should('not.exist');
     });
 
     it('select a workflow you are a WRITER of and try to perform actions', () => {
@@ -231,7 +231,7 @@ describe('Shared with me workflow test from my-workflows', () => {
 
       goToTab('Versions');
       clickFirstActionsButton();
-      cy.contains('View').should('not.be.visible');
+      cy.contains('View').should('not.exist');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
       cancelMatMenu();
@@ -247,7 +247,7 @@ describe('Shared with me workflow test from my-workflows', () => {
 
       goToTab('Versions');
       clickFirstActionsButton();
-      cy.contains('View').should('not.be.visible');
+      cy.contains('View').should('not.exist');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
       cancelMatMenu();

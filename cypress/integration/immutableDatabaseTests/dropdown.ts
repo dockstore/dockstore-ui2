@@ -39,8 +39,8 @@ describe('Dropdown test', () => {
     });
 
     it('Should have nothing starred', () => {
-      cy.get('#starCountButton').should('not.be.visible');
-      cy.get('#starringButton').should('not.be.visible');
+      cy.get('#starCountButton').should('not.exist');
+      cy.get('#starringButton').should('not.exist');
     });
 
     it('cy.should - assert that <title> is correct', () => {
@@ -178,11 +178,11 @@ describe('Dropdown test', () => {
 
       // Ensure that there is one org
       cy.get('#my-rejected-org-card-0').should('be.visible');
-      cy.get('#my-rejected-org-card-1').should('not.be.visible');
+      cy.get('#my-rejected-org-card-1').should('not.exist');
 
       // Request re-review
       cy.get('#request-re-review-0').should('be.visible').click();
-      cy.get('#my-rejected-org-card-0').should('not.be.visible');
+      cy.get('#my-rejected-org-card-0').should('not.exist');
 
       // Should now have org in pending (3 Total)
       cy.get('#pending-org-card-0').should('be.visible');
@@ -221,7 +221,7 @@ describe('Dropdown test', () => {
 
       // Ensure that only one org exists now
       cy.get('#pending-org-card-0').should('be.visible');
-      cy.get('#pending-org-card-1').should('not.be.visible');
+      cy.get('#pending-org-card-1').should('not.exist');
     });
 
     it('Should have a pending invite', () => {
@@ -426,10 +426,10 @@ describe('Dropdown test', () => {
     //         .should('be.visible')
     //     cy
     //         .get('h3').contains('Step 2')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 3')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('#next_step')
     //         .click()
@@ -437,13 +437,13 @@ describe('Dropdown test', () => {
     //     // Should now be on step 2
     //     cy
     //         .get('h3').contains('Step 1')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 2')
     //         .should('be.visible')
     //     cy
     //         .get('h3').contains('Step 3')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('#next_step')
     //         .click()
@@ -451,10 +451,10 @@ describe('Dropdown test', () => {
     //     // Should now be on step 3
     //     cy
     //         .get('h3').contains('Step 1')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 2')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 3')
     //         .should('be.visible')
