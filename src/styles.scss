@@ -1467,12 +1467,41 @@ hr {
   margin-top: 1.5rem;
 }
 
+// To indicate success of an operation.
+.accent-3-dark {
+  color: #00bfa5;
+}
+
+// Following 4 items are for stepper/stepper-like dialogs
+.accent-1-dark {
+  color: mat-color($dockstore-app-accent-1, darker);
+}
+.mat-flat-button.bg-accent-1-dark {
+  background-color: mat-color($dockstore-app-accent-1, darker);
+  color: white;
+}
+.mat-flat-button.secondary-1 {
+  color: mat-color($dockstore-app-accent);
+}
+.mat-flat-button.accent-1-dark {
+  color: mat-color($dockstore-app-accent-1, darker);
+}
+
 .mat-radio-label-content {
   font-weight: normal;
 }
 
 .mat-form-field.small-text {
   font-size: 12px;
+}
+
+// Can use this class for all search bars
+.search-form-field {
+  width: 200px;
+  button {
+    // Workaround for Firefox since x icon does not align correctly, but can remove this if using angular 11
+    display: inline-block !important;
+  }
 }
 
 // Style the float label of the mat-form-field

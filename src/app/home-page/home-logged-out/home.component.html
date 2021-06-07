@@ -49,15 +49,12 @@
       </div>
       <div class="search-holder" fxFlex>
         <div class="search-background">
-          <input
-            id="searchBar"
-            aria-label="Search"
-            #search
-            type="text"
-            placeholder="Search..."
-            class="fully-rounded landing-search w-100"
-            (keyup.enter)="goToSearch(search.value)"
-          />
+          <mat-form-field appearance="none" class="home-field fully-rounded landing-search w-100">
+            <input matInput id="searchBar" aria-label="Search" #search placeholder="Search..." (keyup.enter)="goToSearch(search.value)" />
+            <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
+              <mat-icon inline="true">close</mat-icon>
+            </button>
+          </mat-form-field>
         </div>
       </div>
     </div>
@@ -182,7 +179,7 @@
               <a target="_blank" rel="noopener noreferrer" href="https://hub.docker.com/">Docker Hub</a>.
             </li>
             <li>
-              To minimizes redundancy and error prone installation, workflows and tools are described with common languages such as
+              To minimize redundancy and error prone installation, workflows and tools are described with common languages such as
               <a target="_blank" rel="noopener noreferrer" href="https://www.commonwl.org">CWL</a>,
               <a target="_blank" rel="noopener noreferrer" href="https://openwdl.org">WDL</a>, or
               <a target="_blank" rel="noopener noreferrer" href="https://www.nextflow.io">Nextflow</a> and stored on
@@ -236,41 +233,17 @@
     <img src="../../../assets/images/home/illustration.png" alt="illustration" fxHide.lt-md fxFlex="40" class="contain-img" />
   </div>
 
-  <!-- <div class="gray-sections pt-5 pb-5">
+  <div class="gray-sections py-5">
     <div class="container" fxLayout="column" fxLayoutGap="3rem" fxLayoutAlign="space-around center">
       <h3>Featured Content</h3>
       <app-featured-content></app-featured-content>
     </div>
-  </div> -->
-  <!-- remove this hr when featured content is populated -->
-  <hr class="my-5" />
+  </div>
 
   <div fxLayout="row" fxLayout.lt-md="column" class="container mt-5" fxLayoutGap="2rem">
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3rem" fxFlex="33" fxFlex.lt-md="100" id="news">
       <h3>News & Events</h3>
-      <span>
-        <h4>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps.html'"
-            >Dockstore GitHub App</a
-          >
-        </h4>
-        <span
-          >Our Dockstore GitHub App adds support for registering and automatically syncing workflows and services between GitHub and
-          Dockstore. Check it out!</span
-        >
-      </span>
-      <span>
-        <h4>
-          <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">Viral Analysis Workflows for COVID-19</a>
-        </h4>
-        <span
-          >A collection of viral NGS workflows for analyzing COVID-19. Learn how to use them with your own data in linked Terra workspaces
-          from the Broad Viral Genomics & Data Sciences Platform.</span
-        >
-      </span>
+      <app-featured-news></app-featured-news>
     </div>
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3rem" fxFlex="33" fxFlex.lt-md="100" id="resources">
       <h3>Helpful Resources</h3>

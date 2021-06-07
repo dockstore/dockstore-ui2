@@ -18,6 +18,7 @@ import { HomePageComponent } from './home-page.component';
 import { RecentEventsComponent } from './recent-events/recent-events.component';
 import { EntriesComponent } from './widget/entries/entries.component';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
+import { FeaturedNewsComponent } from './widget/featured-content/featured-news.component';
 import { GettingStartedComponent } from './widget/getting-started/getting-started.component';
 import { NewsUpdatesComponent } from './widget/news-updates/news-updates.component';
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
@@ -47,6 +48,7 @@ import { RequestsComponent } from './widget/requests/requests.component';
     EntriesComponent,
     OrganizationsComponent,
     FeaturedContentComponent,
+    FeaturedNewsComponent,
     NewsUpdatesComponent,
     GettingStartedComponent,
     EntryToDisplayNamePipe,

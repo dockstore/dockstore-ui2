@@ -1,9 +1,4 @@
-@import 'bootstrap4.scss';
 @import '/src/materialColorScheme.scss';
-
-.mat-icon {
-  @extend .pr-5;
-}
 
 .h5 {
   color: #151c3d;
@@ -59,10 +54,6 @@
 
 form {
   margin-bottom: -1rem;
-}
-
-.form-field {
-  transform: scale(0.9);
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline {

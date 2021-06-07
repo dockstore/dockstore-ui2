@@ -123,6 +123,7 @@
       [ngClass]="{ highlight: version.name === selectedTag.name }"
       mat-row
       *matRowDef="let row; columns: displayedColumns; let version"
+      data-cy="versionRow"
     ></tr>
   </table>
 </div>
