@@ -1,12 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SourceFile } from 'app/shared/swagger';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
   name: string;
+  absolutePath: string;
   children?: FileNode[];
 }
 
@@ -17,9 +18,17 @@ export interface FileNode {
 export interface FlatTreeNode {
   name: string;
   level: number;
+  absolutePath: string;
   expandable: boolean;
 }
 
+/**
+ * TODO: Shift the file (not folders) to the left so that it's aligned with the folders
+ * TODO: Title? Dialog actions?
+ * TODO: Hook up file select
+ * TODO: Not obvious to click?
+ * Stretch TODO: Make sure there's always more than one child node, otherwise collapse child with parent (i.e. instead of parentname => childname, it's just parentname/childname)
+ */
 @Component({
   selector: 'app-file-tree',
   templateUrl: './file-tree.component.html',
@@ -34,7 +43,7 @@ export class FileTreeComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: SourceFile[]) {
+  constructor(private matDialogRef: MatDialogRef<FileTreeComponent>, @Inject(MAT_DIALOG_DATA) public data: SourceFile[]) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
 
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
@@ -47,6 +56,7 @@ export class FileTreeComponent {
     return {
       name: node.name,
       level,
+      absolutePath: node.absolutePath,
       expandable: !!node.children && node.children.length > 0,
     };
   }
@@ -72,21 +82,21 @@ export class FileTreeComponent {
   }
 
   selectFile(node: FileNode) {
-    console.log(node.name);
+    this.matDialogRef.close(node.absolutePath);
   }
 
   private convertSourceFilesToTree(sourceFiles: SourceFile[]): FileNode[] {
-    const paths = sourceFiles.map((sourceFile) => sourceFile.absolutePath);
-    let result = [];
+    // Everything is assumed to be an absolute path starting with "/", removing that slash as it's not needed for path.split
+    const paths = sourceFiles.map((sourceFile) => sourceFile.absolutePath.substring(1));
+    let result: FileNode[] = [];
     let level = { result };
     paths.forEach((path) => {
-      path.split('/').reduce((r, name, i, a) => {
-        if (!r[name]) {
-          r[name] = { result: [] };
-          r.result.push({ name, children: r[name].result });
+      path.split('/').reduce((accumulator, filename, i, a) => {
+        if (!accumulator[filename]) {
+          accumulator[filename] = { result: [] };
+          accumulator.result.push({ name: filename, children: accumulator[filename].result, absolutePath: '/' + a.join('/') });
         }
-
-        return r[name];
+        return accumulator[filename];
       }, level);
     });
     return result;
