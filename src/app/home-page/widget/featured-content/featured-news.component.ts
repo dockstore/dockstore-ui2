@@ -4,7 +4,7 @@ import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Dockstore } from '../../../shared/dockstore.model';
 
 @Component({
-  selector: 'featured-news',
+  selector: 'app-featured-news',
   template: ` <div [innerHTML]="myExternalHTML"></div> `,
 })
 export class FeaturedNewsComponent implements OnInit {
