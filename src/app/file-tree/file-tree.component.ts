@@ -25,8 +25,9 @@ export interface FlatTreeNode {
 /**
  * TODO: Shift the file (not folders) to the left so that it's aligned with the folders
  * TODO: Title? Dialog actions?
- * TODO: Hook up file select
- * TODO: Not obvious to click?
+ * TODO: In the tree, it's not obvious to click on file to select
+ * TODO: When to actually use this instead of the simpler dropdown? Over a certain amount of files?
+ * TODO: What's my current selected file?
  * Stretch TODO: Make sure there's always more than one child node, otherwise collapse child with parent (i.e. instead of parentname => childname, it's just parentname/childname)
  */
 @Component({
