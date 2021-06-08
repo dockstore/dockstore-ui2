@@ -22,7 +22,7 @@ import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { formInputDebounceTime, recommendGitHubApps } from '../../shared/constants';
+import { formInputDebounceTime } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/swagger';
 import { Tooltip } from '../../shared/tooltip';
@@ -60,7 +60,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
   public gitHubAppInstallationLink$: Observable<string>;
-  public recommendGitHubApps = recommendGitHubApps;
   public hostedWorkflow = {
     repository: '',
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
@@ -84,11 +83,11 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     },
   ];
   private githubAppOption = {
-    label: 'Register using GitHub Apps' + (this.recommendGitHubApps ? ' (Recommended)' : ''),
+    label: 'Register using GitHub Apps (Recommended)',
     extendedLabel: 'Install our GitHub App on your repository/organization to automatically sync workflows with GitHub.',
     value: 0,
   };
-  public options = this.recommendGitHubApps ? [this.githubAppOption, ...this.baseOptions] : [...this.baseOptions, this.githubAppOption];
+  public options = [this.githubAppOption, ...this.baseOptions];
 
   public selectedOption = this.options[0];
 
