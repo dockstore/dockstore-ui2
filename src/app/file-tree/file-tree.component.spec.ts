@@ -1,5 +1,6 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule } from '@angular/material/tree';
 
@@ -13,7 +14,11 @@ describe('FileTreeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FileTreeComponent],
-        imports: [MatButtonModule, MatIconModule, MatTreeModule],
+        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule],
+        providers: [
+          { provide: MatDialogRef, useValue: {} },
+          { provide: MAT_DIALOG_DATA, useValue: [] },
+        ],
       }).compileComponents();
     })
   );
