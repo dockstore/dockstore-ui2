@@ -19,10 +19,10 @@ describe('Admin UI', () => {
       cy.contains('the Language is WDL').should('not.exist');
     });
     it('should be able to use basic search box and have suggestions', () => {
-      const search_str = 'dockstore_I_am_an_unlikely_text_search';
-      cy.get('[data-cy=basic-search]').type(search_str);
-      cy.contains(' Sorry, no matches found for ' + search_str);
-      cy.url().should('include', 'search=' + search_str);
+      cy.get('[data-cy=basic-search]').type('dockstore_i');
+      cy.contains(' Sorry, no matches found for dockstore_i');
+      cy.contains(/Do[ ]you[ ]mean:[ ].+/);
+      cy.url().should('include', 'search=dockstore_i');
     });
 
     it('should reset filters', () => {
