@@ -22,7 +22,7 @@ describe('Admin UI', () => {
       const search_str = 'dockstore_I_am_an_unlikely_text_search';
       cy.get('[data-cy=basic-search]').type(search_str);
       cy.contains(' Sorry, no matches found for ' + search_str);
-      cy.url().should('include', search_str);
+      cy.url().should('include', 'search=' + search_str);
     });
 
     it('should reset filters', () => {
