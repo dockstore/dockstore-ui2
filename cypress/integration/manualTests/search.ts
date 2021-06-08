@@ -18,7 +18,7 @@ describe('Admin UI', () => {
       cy.url().should('not.include', '/search?descriptorType=WDL');
       cy.contains('the Language is WDL').should('not.exist');
     });
-    it('should be able to use basic search box and have suggestions', () => {
+    it('should be able to use basic search box and alert when there are no matches', () => {
       const search_str = 'dockstore_I_am_an_unlikely_text_search';
       cy.get('[data-cy=basic-search]').type(search_str);
       cy.contains(' Sorry, no matches found for ' + search_str);
