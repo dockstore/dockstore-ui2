@@ -23,11 +23,12 @@ export interface FlatTreeNode {
 }
 
 /**
- * TODO: Shift the file (not folders) to the left so that it's aligned with the folders
- * TODO: Title? Dialog actions?
- * TODO: In the tree, it's not obvious to click on file to select
- * TODO: When to actually use this instead of the simpler dropdown? Over a certain amount of files?
- * TODO: What's my current selected file?
+ * TODO: Dialog title? Dialog actions?
+ * TODO: In the tree, it's not obvious to click on a file to select
+ * TODO: When to actually use this component instead of the simpler dropdown? Over a certain amount of files?
+ * TODO: Add a better indicator for currently selected file in the tree
+ * TODO: Expand the parent nodes where the selected file is a child of
+ * TODO: Truncate new file label (fix the select file button shrinking without css, add padding between the label and the button)
  * Stretch TODO: Make sure there's always more than one child node, otherwise collapse child with parent (i.e. instead of parentname => childname, it's just parentname/childname)
  */
 @Component({
@@ -44,12 +45,14 @@ export class FileTreeComponent {
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
 
-  constructor(private matDialogRef: MatDialogRef<FileTreeComponent>, @Inject(MAT_DIALOG_DATA) public data: SourceFile[]) {
+  constructor(
+    private matDialogRef: MatDialogRef<FileTreeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { files: SourceFile[]; selectedFile: SourceFile }
+  ) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
-
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    this.dataSource.data = this.convertSourceFilesToTree(data);
+    this.dataSource.data = this.convertSourceFilesToTree(data.files);
   }
 
   /** Transform the data to something the tree can read. */

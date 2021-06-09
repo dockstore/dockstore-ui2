@@ -24,6 +24,7 @@
         <mat-toolbar color="primary">
           <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
             <button color="accent" *ngIf="filteredFiles.length > 10" mat-raised-button (click)="openFileTree()">Select File</button>
+            <span class="ellipsis-overflow" *ngIf="filteredFiles.length > 10"> {{ currentFile.path }} </span>
             <mat-form-field *ngIf="filteredFiles.length <= 10" class="w-50">
               <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
                 <mat-option [value]="file" *ngFor="let file of filteredFiles"> {{ file.path }} </mat-option>

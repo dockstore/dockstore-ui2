@@ -120,7 +120,7 @@ export class SourceFileTabsComponent implements OnChanges {
 
   openFileTree() {
     this.matDialog
-      .open(FileTreeComponent, { width: bootstrap4largeModalSize, data: this.filteredFiles })
+      .open(FileTreeComponent, { width: bootstrap4largeModalSize, data: { files: this.filteredFiles, selectedFile: this.currentFile } })
       .afterClosed()
       .subscribe((absoluteFilePath) => {
         const foundFile = this.filteredFiles.find((file) => file.absolutePath === absoluteFilePath);
