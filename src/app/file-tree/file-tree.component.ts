@@ -89,16 +89,20 @@ export class FileTreeComponent {
     this.matDialogRef.close(node.absolutePath);
   }
 
-  private convertSourceFilesToTree(sourceFiles: SourceFile[]): FileNode[] {
+  convertSourceFilesToTree(sourceFiles: SourceFile[]): FileNode[] {
+    if (!sourceFiles || sourceFiles.length === 0) {
+      return [];
+    }
     // Everything is assumed to be an absolute path starting with "/", removing that slash as it's not needed for path.split
     const paths = sourceFiles.map((sourceFile) => sourceFile.absolutePath.substring(1));
     let result: FileNode[] = [];
     let level = { result };
     paths.forEach((path) => {
-      path.split('/').reduce((accumulator, filename, i, a) => {
+      path.split('/').reduce((accumulator, filename) => {
+        console.log(filename);
         if (!accumulator[filename]) {
           accumulator[filename] = { result: [] };
-          accumulator.result.push({ name: filename, children: accumulator[filename].result, absolutePath: '/' + a.join('/') });
+          accumulator.result.push({ name: filename, children: accumulator[filename].result, absolutePath: '/' + path });
         }
         return accumulator[filename];
       }, level);
