@@ -21,7 +21,7 @@ describe('Admin UI', () => {
     it('should be able to use basic search box and have suggestions', () => {
       cy.get('[data-cy=basic-search]').type('dockstore_i');
       cy.contains(' Sorry, no matches found for dockstore_i');
-      cy.contains('Do you mean: dockstore\'s?');
+      cy.contains(/Do[ ]you[ ]mean:[ ].+/);
       cy.url().should('include', 'search=dockstore_i');
     });
 
