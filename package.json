@@ -110,7 +110,6 @@
     "license-checker": "^25.0.1",
     "lint-staged": "^9.4.0",
     "prettier": "^2.1.1",
-    "rxjs-tslint-rules": "^4.34.7",
     "ts-loader": "^5.4.5",
     "ts-node": "^8.4.1",
     "tslint-config-prettier": "^1.18.0",
