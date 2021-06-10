@@ -29,6 +29,7 @@ export interface FlatTreeNode {
  * TODO: Add a better indicator for currently selected file in the tree
  * TODO: Expand the parent nodes where the selected file is a child of
  * TODO: Truncate new file label (fix the select file button shrinking without css, add padding between the label and the button)
+ * TODO: Remove the bootstrap focus border
  * Stretch TODO: Make sure there's always more than one child node, otherwise collapse child with parent (i.e. instead of parentname => childname, it's just parentname/childname)
  */
 @Component({
@@ -44,7 +45,6 @@ export class FileTreeComponent {
 
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
-
   constructor(
     private matDialogRef: MatDialogRef<FileTreeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { files: SourceFile[]; selectedFile: SourceFile }
@@ -98,15 +98,20 @@ export class FileTreeComponent {
     let result: FileNode[] = [];
     let level = { result };
     paths.forEach((path) => {
-      path.split('/').reduce((accumulator, filename) => {
-        console.log(filename);
-        if (!accumulator[filename]) {
-          accumulator[filename] = { result: [] };
-          accumulator.result.push({ name: filename, children: accumulator[filename].result, absolutePath: '/' + path });
+      path.split('/').reduce((accumulator, pathSegment) => {
+        if (!accumulator[pathSegment]) {
+          accumulator[pathSegment] = { result: [] };
+          accumulator.result.push({ name: pathSegment, children: accumulator[pathSegment].result, absolutePath: '/' + path });
         }
-        return accumulator[filename];
+        return accumulator[pathSegment];
       }, level);
     });
     return result;
+  }
+
+  filter(filterText: string) {
+    const originalFiles = this.data.files;
+    const filteredFiles = originalFiles.filter((thing) => thing.absolutePath.includes(filterText));
+    this.dataSource.data = this.convertSourceFilesToTree(filteredFiles);
   }
 }
