@@ -52,8 +52,6 @@ export class FileTreeComponent {
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = this.convertSourceFilesToTree(data.files);
-    console.log(this.dataSource.data);
-    console.log(this.treeControl.dataNodes);
   }
 
   /** Transform the data to something the tree can read. */
