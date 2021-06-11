@@ -29,7 +29,6 @@ export interface FlatTreeNode {
  * TODO: Add a better indicator for currently selected file in the tree
  * TODO: Expand the parent nodes where the selected file is a child of
  * TODO: Truncate new file label (fix the select file button shrinking without css, add padding between the label and the button)
- * TODO: Remove the bootstrap focus border
  * Stretch TODO: Make sure there's always more than one child node, otherwise collapse child with parent (i.e. instead of parentname => childname, it's just parentname/childname)
  */
 @Component({
@@ -116,7 +115,9 @@ export class FileTreeComponent {
    */
   filter(filterText: string) {
     const originalFiles = this.data.files;
-    const filteredFiles = originalFiles.filter((sourcefile) => sourcefile.absolutePath.toLowerCase().includes(filterText.toLowerCase()));
+    const filteredFiles = originalFiles.filter((sourcefile) =>
+      sourcefile.absolutePath.toLowerCase().includes(filterText.toLowerCase().trim())
+    );
     this.dataSource.data = this.convertSourceFilesToTree(filteredFiles);
   }
 }
