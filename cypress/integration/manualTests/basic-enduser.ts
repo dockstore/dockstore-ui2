@@ -112,24 +112,19 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   });
 
   it('DAG tab works', () => {
+    /// New material have to click twice
+    cy.contains('.mat-tab-label', 'DAG').click();
     cy.contains('.mat-tab-label', 'DAG').click();
     cy.url().should('contain', '?tab=dag');
-    cy.get('[data-cy=dag-holder]')
-      .children().should('have.length.of.at.least', 1);
+    cy.get('[data-cy=dag-holder]').children().should('have.length.of.at.least', 1);
   });
 
   let launchWithTuples: any[] = [];
   if (type === 'WDL') {
     it('get the svg icons', () => {
-      cy.get('[data-cy=dnanexusLaunchWith]').within(() => {
-        cy.get('img').should('exist');
-      });
-      cy.get('[data-cy=terraLaunchWith]').within(() => {
-        cy.get('img').should('exist');
-      });
-      cy.get('[data-cy=anvilLaunchWith]').within(() => {
-        cy.get('img').should('exist');
-      });
+      cy.get('[data-cy=dnanexusLaunchWith] img').should('exist');
+      cy.get('[data-cy=terraLaunchWith] img').should('exist');
+      cy.get('[data-cy=anvilLaunchWith] img').should('exist');
     });
   }
   if (type === 'CWL') {
