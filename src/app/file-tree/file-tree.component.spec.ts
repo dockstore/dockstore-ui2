@@ -49,7 +49,7 @@ describe('FileTreeComponent', () => {
           Object({ name: 'file1', children: [], absolutePath: '/folder1/file1' }),
           Object({ name: 'file2', children: [], absolutePath: '/folder1/file2' }),
         ],
-        absolutePath: '/folder1/file1',
+        absolutePath: '/folder1',
       }),
     ];
     expect(component.convertSourceFilesToTree(sourcefiles)).toEqual(expectedNodes);

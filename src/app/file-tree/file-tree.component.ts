@@ -52,6 +52,8 @@ export class FileTreeComponent {
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = this.convertSourceFilesToTree(data.files);
+    console.log(this.dataSource.data);
+    console.log(this.treeControl.dataNodes);
   }
 
   /** Transform the data to something the tree can read. */
@@ -97,10 +99,14 @@ export class FileTreeComponent {
     let result: FileNode[] = [];
     let level = { result };
     paths.forEach((path) => {
-      path.split('/').reduce((accumulator, pathSegment) => {
+      path.split('/').reduce((accumulator, pathSegment, index, array) => {
         if (!accumulator[pathSegment]) {
           accumulator[pathSegment] = { result: [] };
-          accumulator.result.push({ name: pathSegment, children: accumulator[pathSegment].result, absolutePath: '/' + path });
+          accumulator.result.push({
+            name: pathSegment,
+            children: accumulator[pathSegment].result,
+            absolutePath: '/' + array.slice(0, index + 1).join('/'),
+          });
         }
         return accumulator[pathSegment];
       }, level);
@@ -119,5 +125,10 @@ export class FileTreeComponent {
       sourcefile.absolutePath.toLowerCase().includes(filterText.toLowerCase().trim())
     );
     this.dataSource.data = this.convertSourceFilesToTree(filteredFiles);
+    // Questionably expand all nodes when searching, collapse all when when not searching
+    this.treeControl.expandAll();
+    if (!filterText) {
+      this.treeControl.collapseAll();
+    }
   }
 }
