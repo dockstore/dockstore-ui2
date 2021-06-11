@@ -109,9 +109,14 @@ export class FileTreeComponent {
     return result;
   }
 
+  /**
+   * Filters out the files and nodes that do not include the search text in the absolute path
+   * Case insensitive
+   * @param filterText The files must contain this filterText in the absolute path
+   */
   filter(filterText: string) {
     const originalFiles = this.data.files;
-    const filteredFiles = originalFiles.filter((thing) => thing.absolutePath.includes(filterText));
+    const filteredFiles = originalFiles.filter((sourcefile) => sourcefile.absolutePath.toLowerCase().includes(filterText.toLowerCase()));
     this.dataSource.data = this.convertSourceFilesToTree(filteredFiles);
   }
 }
