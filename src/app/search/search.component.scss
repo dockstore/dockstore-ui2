@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@use '~@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
 mat-tab-group.homeComponent {
@@ -32,7 +33,7 @@ mat-tab-group.homeComponent {
   padding: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: mat-color($dockstore-app-gray, 5);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
   border-right: 1px solid #eee;
 }
 

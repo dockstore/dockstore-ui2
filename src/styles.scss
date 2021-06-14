@@ -16,6 +16,7 @@
 
 // Must define the material icons font directory path, see https://www.npmjs.com/package/material-design-icons-iconfont
 $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+@use '~@angular/material' as mat;
 @import '~material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';
@@ -83,7 +84,7 @@ app-header h3 {
 }
 
 app-header .container-fluid {
-  background-color: mat-color($dockstore-app-gray, 6);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
   box-shadow: 0px 3px 6px #cfd1d7;
   position: relative;
   z-index: 1;
@@ -265,12 +266,12 @@ body {
 }
 
 .main-menu {
-  background-color: mat-color($dockstore-app-primary);
+  background-color: mat.get-color-from-palette($dockstore-app-primary);
   position: relative;
 }
 
 .header {
-  background-color: mat-color($dockstore-app-primary);
+  background-color: mat.get-color-from-palette($dockstore-app-primary);
   position: relative;
   img#ship,
   img#truck {
@@ -392,13 +393,13 @@ h2.title.caption {
 
 h3 {
   font-size: 20px;
-  color: mat-color($dockstore-app-primary);
+  color: mat.get-color-from-palette($dockstore-app-primary);
   font-weight: normal;
 }
 
 h3.available-containers {
   font-size: 20px;
-  color: mat-color($dockstore-app-primary);
+  color: mat.get-color-from-palette($dockstore-app-primary);
   font-weight: normal;
   margin: 20px 0px 15px 0px;
   display: inline;
@@ -484,7 +485,7 @@ a {
 }
 
 a.no-underline {
-  color: mat-color($dockstore-app-gray, darker);
+  color: mat.get-color-from-palette($dockstore-app-gray, darker);
   text-decoration: none;
 }
 
@@ -497,7 +498,7 @@ a.white-link {
 }
 
 a.white-link:hover {
-  color: mat-color($dockstore-app-accent, lighter);
+  color: mat.get-color-from-palette($dockstore-app-accent, lighter);
 }
 
 ul.more li a {
@@ -658,7 +659,7 @@ div.button a {
 }
 
 .mat-raised-button.mat-accent:hover {
-  background-color: mat-color($dockstore-app-accent, darker);
+  background-color: mat.get-color-from-palette($dockstore-app-accent, darker);
 }
 
 table a {
@@ -700,7 +701,7 @@ th {
   width: 100%;
   /*height: auto;*/
   height: 65px;
-  background-color: mat-color($dockstore-app-gray, 6);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
   border: 1px solid #cfd1d7;
   /*margin:0;*/
 }
@@ -714,7 +715,7 @@ th {
 #homeFooter {
   margin: 40px 0px;
   width: 100%;
-  background-color: mat-color($dockstore-app-gray, 6);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
   border: 1px solid #cfd1d7;
   /*box-shadow: 0px 0px 10px #cfd1d7;*/
 }
@@ -760,7 +761,7 @@ ul.our-sponsors li img {
 }
 
 #footer {
-  background-color: mat-color($dockstore-app-primary);
+  background-color: mat.get-color-from-palette($dockstore-app-primary);
   /*width: 100%;*/
   /*padding: 0px 100px;*/
   /*position: relative;*/
@@ -903,7 +904,7 @@ div.side-block td {
 div.side-block h3 {
   font-size: 16px;
   margin: 0px;
-  color: mat-color($dockstore-app-primary);
+  color: mat.get-color-from-palette($dockstore-app-primary);
 }
 
 div.side-block a {
@@ -1349,7 +1350,7 @@ app-sidebar-accordion
 }
 
 .gray-label-tag {
-  background: mat-color($dockstore-app-gray, lighter) !important;
+  background: mat.get-color-from-palette($dockstore-app-gray, lighter) !important;
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
@@ -1422,7 +1423,7 @@ mat-tab-group.no-pagination {
 .nonclick-badge {
   display: inline-flex;
   border-radius: 8px;
-  background-color: mat-color($dockstore-app-gray, lighter);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, lighter);
   padding: 5px 8px;
   color: #151c3d;
   font-size: 1.3rem;
@@ -1447,7 +1448,7 @@ mat-tab-group.no-pagination {
 
 hr {
   margin: 0.5rem 0;
-  border: 1px solid mat-color($dockstore-app-gray, lighter);
+  border: 1px solid mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
 
 .orcid-id-logo {
@@ -1474,17 +1475,17 @@ hr {
 
 // Following 4 items are for stepper/stepper-like dialogs
 .accent-1-dark {
-  color: mat-color($dockstore-app-accent-1, darker);
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 .mat-flat-button.bg-accent-1-dark {
-  background-color: mat-color($dockstore-app-accent-1, darker);
+  background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;
 }
 .mat-flat-button.secondary-1 {
-  color: mat-color($dockstore-app-accent);
+  color: mat.get-color-from-palette($dockstore-app-accent);
 }
 .mat-flat-button.accent-1-dark {
-  color: mat-color($dockstore-app-accent-1, darker);
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 .mat-radio-label-content {
@@ -1507,12 +1508,12 @@ hr {
 // Style the float label of the mat-form-field
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
   .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
-  color: mat-color($dockstore-app-accent, 1);
+  color: mat.get-color-from-palette($dockstore-app-accent, 1);
 }
 
 // Keep the outer circle in a radio button gray even when selected
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: mat-color($dockstore-app-gray, 2) !important;
+  border-color: mat.get-color-from-palette($dockstore-app-gray, 2) !important;
 }
 
 // Remove some padding from mat form fields that are part of a radio group
