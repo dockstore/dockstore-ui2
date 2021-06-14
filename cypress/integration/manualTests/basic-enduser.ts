@@ -229,7 +229,6 @@ describe('Test search page functionality', () => {
     // Fragile assertion that depends on the below workflow to be in the first table results, but not the 2nd
     cy.contains('nf-core/exoseq').should('not.exist');
     cy.get('[data-cy=verificationStatus]').each(($el, index, $list) => {
-      console.log($el);
       cy.wrap($el).contains('done');
     });
   });
