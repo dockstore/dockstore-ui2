@@ -166,10 +166,10 @@
           <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
             <span style="cursor: pointer" class="pull-right" (click)="clickExpand(key)">
               <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
-              <a *ngIf="key != 'author'">
+              <a *ngIf="key !== 'author'">
                 {{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}
               </a>
-              <a *ngIf="key == 'author'">
+              <a *ngIf="key === 'author'">
                 {{ fullyExpandMap.get(key) ? 'Hide' : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchText) }}
               </a>
             </span>

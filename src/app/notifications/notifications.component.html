@@ -1,6 +1,6 @@
 <div *ngFor="let notification of activeNotifications$ | async">
   <div class="container text-center notification-bar {{ notification.priority?.toLowerCase() }}">
-    <div *ngIf="notification.type == 'SITEWIDE'">
+    <div *ngIf="notification.type === 'SITEWIDE'">
       <div class="container-fluid text-center" fxLayoutAlign="center center" data-cy="notification-banner">
         <div class="notification-display">
           <markdown class="markdown-remove-pmargin" [data]="notification.message"></markdown>
