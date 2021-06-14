@@ -139,7 +139,7 @@
                     class="btn btn-default form-sm-button"
                     [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
                     (click)="addTestParameterFile()"
-                    *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length == 0)"
+                    *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
@@ -149,11 +149,11 @@
                     class="btn btn-default form-sm-button"
                     [disabled]="
                       model1.invalid ||
-                      testParameterFilePath.length == 0 ||
+                      testParameterFilePath.length === 0 ||
                       workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
                       workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
                     "
-                    *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length == 0)"
+                    *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
@@ -164,7 +164,7 @@
               </div>
               <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger"> Duplicate test json files are not allowed. </mat-card>
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length == 0 && isPublic">
+            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length === 0 && isPublic">
               <input class="form-control" placeholder="None provided" disabled />
             </div>
           </div>

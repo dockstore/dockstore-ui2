@@ -52,7 +52,7 @@
         <app-refresh-wizard></app-refresh-wizard>
       </div>
       <form
-        *ngIf="selectedOption?.value == 1"
+        *ngIf="selectedOption?.value === 1"
         #registerToolForm="ngForm"
         name="registerToolForm"
         class="form-horizontal"
@@ -331,7 +331,7 @@
         </div>
       </form>
       <form
-        *ngIf="selectedOption?.value == 2"
+        *ngIf="selectedOption?.value === 2"
         #registerHostedToolForm="ngForm"
         name="registerHostedToolForm"
         class="form-horizontal"

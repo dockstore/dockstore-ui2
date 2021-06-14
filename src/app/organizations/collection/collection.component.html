@@ -75,7 +75,7 @@
           </button>
         </mat-card-actions>
       </div>
-      <mat-card class="alert alert-info" *ngIf="collection?.entries?.length == 0">
+      <mat-card class="alert alert-info" *ngIf="collection?.entries?.length === 0">
         <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
         workflow you want to add and select `Add to collection`
       </mat-card>
@@ -135,7 +135,7 @@
                         </span>
                         <mat-chip
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
-                          *ngIf="entry.verified == true"
+                          *ngIf="entry.verified"
                         >
                           <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                             <mat-icon class="verified-icon">done</mat-icon>

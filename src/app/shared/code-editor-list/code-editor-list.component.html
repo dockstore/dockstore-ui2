@@ -1,5 +1,5 @@
 <div>
-  <mat-card class="alert alert-info" role="alert" *ngIf="sourcefiles?.length == 0"> No files exist. </mat-card>
+  <mat-card class="alert alert-info" role="alert" *ngIf="sourcefiles?.length === 0"> No files exist. </mat-card>
   <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom: 10px">
     <div *ngIf="sourcefile?.content !== null && showSourcefile(sourcefile?.type)">
       <mat-toolbar color="primary">
@@ -88,7 +88,7 @@
     mat-raised-button
     color="primary"
     (click)="addFile()"
-    *ngIf="editing && (fileType !== 'dockerfile' || (fileType === 'dockerfile' && sourcefiles?.length == 0))"
+    *ngIf="editing && (fileType !== 'dockerfile' || (fileType === 'dockerfile' && sourcefiles?.length === 0))"
   >
     Add File
   </button>

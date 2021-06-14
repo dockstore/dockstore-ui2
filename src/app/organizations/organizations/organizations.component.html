@@ -101,7 +101,7 @@
                   <div fxLayout="row" fxLayoutAlign="space-between center">
                     <span class="gray-label-tag">
                       {{ org.collectionsLength }}
-                      <span *ngIf="org.collectionsLength != 1; else oneCollection"> Collections</span>
+                      <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                       <ng-template #oneCollection> Collection</ng-template>
                     </span>
                     <button mat-raised-button color="accent" class="view-button">View</button>
