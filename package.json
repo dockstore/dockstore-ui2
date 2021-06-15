@@ -124,16 +124,13 @@
   },
   "lint-staged": {
     "src/**/*.{ts,html,js,css,scss,json,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "cypress/**/*.{ts,js}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.ts": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   }
 }
