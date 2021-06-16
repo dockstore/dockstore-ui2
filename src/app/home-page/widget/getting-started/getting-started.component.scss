@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import 'materialColorScheme.scss';
 
 .tutorial-section-card {
@@ -13,5 +14,5 @@
 }
 
 .tutorial-title {
-  color: mat-color($dockstore-app-primary);
+  color: mat.get-color-from-palette($dockstore-app-primary);
 }

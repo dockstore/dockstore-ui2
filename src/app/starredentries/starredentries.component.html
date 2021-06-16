@@ -22,7 +22,7 @@
       <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Tools</h3>
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredTools.length == 0">
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredTools.length === 0">
             <mat-icon>warning</mat-icon>
             You have no starred tools.
           </mat-card>
@@ -54,7 +54,7 @@
       <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Workflows</h3>
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length == 0">
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length === 0">
             <mat-icon>warning</mat-icon>
             You have no starred workflows.
           </mat-card>
@@ -90,7 +90,7 @@
       <div class="container">
         <div class="row">
           <h3 class="starred-header">Starred Organizations</h3>
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredOrganizations.length == 0">
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredOrganizations.length === 0">
             <mat-icon>warning</mat-icon>
             You have no starred organizations.
           </mat-card>

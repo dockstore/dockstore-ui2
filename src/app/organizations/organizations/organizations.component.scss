@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
 .h5 {
@@ -7,7 +8,7 @@
 
 .org-topic {
   line-height: 1.5;
-  color: mat-color($dockstore-app-gray, darker);
+  color: mat.get-color-from-palette($dockstore-app-gray, darker);
   // Hide overflow if longer than 4 lines
   overflow: hidden;
   text-overflow: ellipsis;
@@ -32,7 +33,7 @@
 .info-icon {
   font-size: 1.5rem;
   height: auto;
-  color: mat-color($dockstore-app-accent);
+  color: mat.get-color-from-palette($dockstore-app-accent);
   padding: 0 !important;
 }
 

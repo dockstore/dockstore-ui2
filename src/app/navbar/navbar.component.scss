@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+@use '~@angular/material' as mat;
 @import 'materialColorScheme.scss';
 
 #dropdown-main {
@@ -33,17 +34,17 @@
 }
 
 .icon:hover {
-  // Hover color is darker than mat-color($dockstore-app-primary, default),
-  // but lighter than mat-color($dockstore-app-primary, darker), which is used for the navbar active state
+  // Hover color is darker than mat.get-color-from-palette($dockstore-app-primary, default),
+  // but lighter than mat.get-color-from-palette($dockstore-app-primary, darker), which is used for the navbar active state
   background-color: #112246;
 }
 
 .icon-active {
-  background-color: mat-color($dockstore-app-primary, darker);
+  background-color: mat.get-color-from-palette($dockstore-app-primary, darker);
 }
 
 .menu-item-active {
-  background-color: mat-color($dockstore-app-gray, lighter);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
 
 .spacer {
