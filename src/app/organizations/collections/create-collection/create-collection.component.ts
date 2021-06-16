@@ -17,7 +17,6 @@ import { CreateCollectionService, FormsState } from '../state/create-collection.
  */
 @Component({
   templateUrl: './create-collection.component.html',
-  styleUrls: ['./create-collection.component.scss'],
 })
 export class CreateCollectionComponent implements OnInit, OnDestroy {
   createCollectionForm: FormGroup;
