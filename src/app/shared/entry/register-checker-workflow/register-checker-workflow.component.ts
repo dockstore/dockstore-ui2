@@ -33,7 +33,6 @@ import { RegisterCheckerWorkflowService } from './register-checker-workflow.serv
 
 @Component({
   templateUrl: './register-checker-workflow.component.html',
-  styleUrls: ['./register-checker-workflow.component.scss'],
 })
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
   constructor(
