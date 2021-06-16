@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+import { NgFormsManager } from '@ngneat/forms-manager';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrganizationUser } from '../../shared/swagger';
 import { FormsState, UpsertOrganizationMemberService } from '../state/upsert-organization-member.service';
@@ -15,7 +15,7 @@ export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
 
   constructor(
     private upsertOrganizationMemberService: UpsertOrganizationMemberService,
-    private formsManager: AkitaNgFormsManager<FormsState>,
+    private formsManager: NgFormsManager<FormsState>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.roleKeys = Object.keys(this.RoleEnum);
