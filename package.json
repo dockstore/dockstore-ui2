@@ -1,9 +1,9 @@
 {
   "name": "dockstore-ui2",
-  "version": "2.3.0",
+  "version": "2.8.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version": "https://app.circleci.com/pipelines/github/dockstore/dockstore/5927/workflows/fa63bb79-cd13-4cf6-9c44-92fb1e90f368/jobs/10638/artifacts"
+    "webservice_version": "1.11.0"
   },
   "scripts": {
     "ng": "npx ng",
