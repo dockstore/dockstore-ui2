@@ -253,7 +253,7 @@ workflows:
             - dockerhub
       - uptime_monitor_no_auth:
           stack: "staging"
-          smoke_testing_branch: "stagingSmokeTests"
+          smoke_testing_branch: "develop"
           context:
             - dockerhub
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
