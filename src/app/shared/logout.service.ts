@@ -14,28 +14,16 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'ng2-ui-auth';
 
-import { TrackLoginService } from './track-login.service';
 import { UserService } from './user/user.service';
 
 @Injectable()
 export class LogoutService {
   constructor(
-    private trackLoginService: TrackLoginService,
-    private router: Router,
     private userService: UserService,
-    private auth: AuthService
   ) {}
 
   logout(routeChange?: string) {
-    this.auth.logout().subscribe({
-      complete: () => {
-        this.userService.remove();
-        this.trackLoginService.switchState(false);
-        routeChange ? this.router.navigate([routeChange]) : this.router.navigate(['/logout']);
-      },
-    });
+    this.userService.logout(routeChange);
   }
 }
