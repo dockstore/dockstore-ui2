@@ -247,15 +247,15 @@ workflows:
   everything:
     jobs:
       - uptime_monitor_no_auth:
-        stack: "dev"
-        smoke_testing_branch: "develop"
-        context:
-          - dockerhub
-    - uptime_monitor_no_auth:
-        stack: "staging"
-        smoke_testing_branch: "stagingSmokeTests"
-        context:
-          - dockerhub
+          stack: "dev"
+          smoke_testing_branch: "develop"
+          context:
+            - dockerhub
+      - uptime_monitor_no_auth:
+          stack: "staging"
+          smoke_testing_branch: "stagingSmokeTests"
+          context:
+            - dockerhub
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
       - lint_license_unit_test_coverage:
           filters:
