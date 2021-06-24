@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
-import { Router } from 'app/test';
+import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 import { Md5 } from 'ts-md5/dist/md5';
 import { AlertService } from '../alert/state/alert.service';
