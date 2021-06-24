@@ -124,9 +124,9 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   let launchWithTuples: any[] = [];
   if (type === 'WDL') {
     it('get the svg icons', () => {
-      cy.get('[data-cy=dnanexusLaunchWith] img').should('exist');
-      cy.get('[data-cy=terraLaunchWith] img').should('exist');
-      cy.get('[data-cy=anvilLaunchWith] img').should('exist');
+      cy.get('[data-cy=dnanexusLaunchWith] svg').should('exist');
+      cy.get('[data-cy=terraLaunchWith] svg').should('exist');
+      cy.get('[data-cy=anvilLaunchWith] svg').should('exist');
     });
   }
   if (type === 'CWL') {
