@@ -1,6 +1,6 @@
-import { ga4ghPath } from '../../../src/app/shared/constants';
-import { Dockstore } from '../../../src/app/shared/dockstore.model';
-import { goToTab } from '../../support/commands';
+import { ga4ghPath } from '../../../../src/app/shared/constants';
+import { Dockstore } from '../../../../src/app/shared/dockstore.model';
+import { goToTab } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools and workflows.
 describe('run stochastic smoke test', () => {
