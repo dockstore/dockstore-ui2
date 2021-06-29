@@ -34,7 +34,7 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - setup_nightly_tests:
+      - setup_nightly_tests
       - run:
           name: Run remote verification test against << parameters.stack >> (no auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
@@ -46,10 +46,10 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
       - upload_nightly_artifacts
-      - slack/status:
-          fail_only: true
-          failure_message: Nightly << parameters.stack >> non-auth tests failed!
-          webhook: $SLACK_WEBHOOK
+#      - slack/status:
+#          fail_only: true
+#          failure_message: Nightly << parameters.stack >> non-auth tests failed!
+#          webhook: $SLACK_WEBHOOK
 
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
@@ -64,7 +64,7 @@ jobs:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
-      - setup_nightly_tests:
+      - setup_nightly_tests
       - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
@@ -241,6 +241,14 @@ workflows:
   everything:
     jobs:
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - uptime_monitor_no_auth:
+          stack: "dev"
+          context:
+            - dockerhub
+      - uptime_monitor_no_auth:
+          stack: "staging"
+          context:
+            - dockerhub
       - lint_license_unit_test_coverage:
           filters:
             tags:
