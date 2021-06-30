@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
+import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 import { Md5 } from 'ts-md5/dist/md5';
 import { AlertService } from '../alert/state/alert.service';
 import { TokenService } from '../state/token.service';
 import { WorkflowService } from '../state/workflow.service';
 import { Configuration, ExtendedUserData, User, UsersService, Workflow } from '../swagger';
+import { TrackLoginService } from '../track-login.service';
 import { UserStore } from './user.store';
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +19,9 @@ export class UserService {
     private configuration: Configuration,
     private tokenService: TokenService,
     private alertService: AlertService,
-    private workflowService: WorkflowService
+    private workflowService: WorkflowService,
+    private trackLoginService: TrackLoginService,
+    private router: Router
   ) {
     this.getUser();
   }
@@ -89,12 +93,23 @@ export class UserService {
         (error) => {
           this.updateUser(null);
           this.tokenService.removeAll();
+          this.logout();
         }
       );
     } else {
       this.updateUser(null);
       this.tokenService.removeAll();
     }
+  }
+
+  logout(routeChange?: string) {
+    this.authService.logout().subscribe({
+      complete: () => {
+        this.remove();
+        this.trackLoginService.switchState(false);
+        routeChange ? this.router.navigate([routeChange]) : this.router.navigate(['/logout']);
+      },
+    });
   }
 
   @transaction()
