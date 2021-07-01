@@ -85,7 +85,7 @@
     "@angular-eslint/template-parser": "^12.0.0",
     "@angular/cli": "^12.0.4",
     "@angular/compiler-cli": "^12.0.4",
-    "@angular/language-service": "^12.0.4",
+    "@angular/language-service": "^12.1.1",
     "@datorama/akita-ngdevtools": "^6.0.0",
     "@types/cytoscape": "^3.14.15",
     "@types/elastic.js": "^1.2.8",
