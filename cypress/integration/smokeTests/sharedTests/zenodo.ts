@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab } from '../../support/commands';
+import { goToTab } from '../../../support/commands';
 
 function createRandomString() {
   let text = 'zenodo_test_workflow_';
