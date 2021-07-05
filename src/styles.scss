@@ -799,73 +799,9 @@ div.tabs > div:target > div,
   z-index: -1;
 }
 
-.starRating {
-  float: right;
-  margin-top: 35px;
-}
-
-.starRating:not(old) {
-  display: inline-block;
-  width: 7.5em;
-  height: 1.5em;
-  overflow: hidden;
-  vertical-align: bottom;
-}
-
-.starRating:not(old) > input {
-  margin-right: -100%;
-  opacity: 0;
-}
-
-.starRating:not(old) > label {
-  display: block;
-  float: right;
-  position: relative;
-  background: url('assets/svg/star-off.svg');
-  background-size: contain;
-}
-
-.starRating:not(old) > label:before {
-  content: '';
-  display: block;
-  width: 1.5em;
-  height: 1.5em;
-  background: url('assets/svg/star-on.svg');
-  background-size: contain;
-  opacity: 0;
-  transition: opacity 0.2s linear;
-}
-
-.starRating:not(old) > label:hover:before,
-.starRating:not(old) > label:hover ~ label:before,
-.starRating:not(:hover) > :checked ~ label:before {
-  opacity: 1;
-}
-
-/* Begin Temporary Styles - Need to Refactor Later */
-
-.hori-offset-4 {
-  margin-left: 4px;
-}
-
-.hori-offset-8 {
-  margin-left: 8px;
-}
-
+// Replace with bootstrap4 ml-something
 .hori-offset-12 {
   margin-left: 12px;
-}
-
-.vert-offset-4 {
-  margin-top: 4px;
-}
-
-.vert-offset-8 {
-  margin-top: 8px;
-}
-
-.vert-offset-12 {
-  margin-top: 12px;
 }
 
 /* Dockstore Grid */
@@ -878,98 +814,10 @@ div.tabs > div:target > div,
   margin-top: -25px;
 }
 
-.signup-or-separator {
-  position: relative;
-  height: 34px;
-  text-align: center;
-  background: none;
-}
-
-.signup-or-separator hr {
-  width: 90%;
-  margin: -16px auto 10px auto;
-  border-top: 1px solid #dce0e0;
-}
-
-.signup-or-separator .text {
-  display: inline-block;
-  padding: 8px;
-  margin: 0;
-  background-color: #fff;
-}
-
-.btn-login {
-  width: 100%;
-}
-
-.btn-sad {
-  background-color: white;
-  box-shadow: none;
-}
-
-#label-holder {
-  padding-right: 0em;
-  max-height: 1.5em;
-  line-height: 1.5em;
-  min-height: 0em;
-  overflow: hidden;
-}
-
-#label-button {
-  font-weight: bold;
-  background-color: #337ab7;
-  border-color: #2e6da4;
-}
-
-.search-dropdown {
-  top: 100%;
-}
-
 // This currently breaks the new ngx-tabset
 // .nav-item {
 //   height:50px;
 // }
-.nav-item-text {
-  padding-top: 10px;
-}
-
-.nav-item-button {
-  padding-top: 8px;
-}
-
-.radio-button-reference {
-  margin-top: -1px;
-  vertical-align: middle;
-}
-
-.home-search-entry-holder {
-  width: 475px;
-  overflow: hidden;
-  padding-left: 10px;
-}
-
-.home-search-entry-type {
-  float: right;
-  width: 130px;
-  background: #f4f4f4;
-  padding-left: 15px;
-  padding-right: 15px;
-  font-size: 10px;
-}
-
-.home-search-entry-name {
-  float: left;
-  width: 325px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.custom-typeahead-popup {
-  padding: 0px;
-  border: 1px solid #ccc;
-  margin: 0px;
-}
 
 .fullscreen {
   z-index: 100000;
@@ -982,69 +830,19 @@ div.tabs > div:target > div,
   margin: 0px;
 }
 
+// Currently only used by the DAG tooltip, consider using this for any non-material tooltips
 .bootstrap-tooltip-z-index {
   z-index: 1070;
 }
 
+// Currently only used by the DAG tooltip, probably pretty unique and should be moved to the DAG scss
 .opaq {
   opacity: 0.825;
-}
-
-.no-display {
-  display: none;
-}
-
-#dag-popover {
-  z-index: 9999;
-  position: absolute;
-  max-width: 250px;
-}
-
-#tooltiptext {
-  display: none;
-}
-
-.file-tabs {
-  padding-bottom: 5px;
-}
-
-.search-description {
-  padding: 0px 35px 10px 35px;
-  line-height: 1.5;
-  font-size: 90%;
-}
-
-.search-with-description td {
-  border-bottom: 0px;
-}
-
-.search-date {
-  color: #808080;
 }
 
 .test_parameter_input {
   width: 90%;
   float: left;
-}
-
-.test_parameter_remove_button {
-  margin-left: 2px;
-  width: 9%;
-  float: left;
-  padding: 4px 0px 4px 0px;
-}
-
-.test_parameter_add_button {
-  float: right;
-}
-
-.test_parameter_div {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-#githubSyncUserButton {
-  float: right;
 }
 
 html,
@@ -1067,14 +865,6 @@ body {
   &:hover {
     background-color: #f2f2f2;
   }
-}
-
-.entry-row {
-  height: 52px;
-}
-
-.my-entry-button-group {
-  margin-bottom: 5px;
 }
 
 .nav-tabs.nav-justified > li > a {
@@ -1114,6 +904,7 @@ app-sidebar-accordion
   background: #3f51b5 !important;
 }
 
+// Automatically used by Angular Material
 .mat-tab-label:hover {
   color: black;
   opacity: 0.7;
@@ -1274,10 +1065,12 @@ hr {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
+// Automatically used by Angular Material
 .mat-radio-label-content {
   font-weight: normal;
 }
 
+// Used for smaller than usual forms
 .mat-form-field.small-text {
   font-size: 12px;
 }
