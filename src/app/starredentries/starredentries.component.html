@@ -175,6 +175,8 @@
     <!-- <div *ngIf="starredServices">
       <div class="container">
         <div class="row">
+          <h3 class="starred-header">Starred Services</h3>
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredServices.length == 0">
             <mat-icon>warning</mat-icon>
             You have no starred services.
           </mat-card>
