@@ -49,7 +49,7 @@ export class FundingComponent {
   };
   // Due to not having permission to use BD Catalyst's logo, the source here is a text generated placeholder
   BioDataCatalyst: Funder = {
-    title: 'BioData Catalyst',
+    title: '',
     website: 'https://biodatacatalyst.nhlbi.nih.gov/',
     // imageSource: '../assets/images/sponsors/bioDataCatalyst.svg',
     imageSource: '../assets/images/sponsors/BDCatalyst-text-generated.png',
