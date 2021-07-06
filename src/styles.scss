@@ -102,31 +102,6 @@ markdown pre code {
   color: #487980;
 }
 
-/* Green Login Button */
-.green {
-  margin-top: 5px;
-  background-color: #487980;
-  border-radius: 8px;
-  display: inline-block;
-}
-
-.green p {
-  margin: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-  line-height: 2.5em;
-}
-
-.green a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.sideblock {
-  background-color: white;
-}
-
 /* Center */
 .absCenter {
   display: flex;
@@ -135,10 +110,6 @@ markdown pre code {
 
   min-height: 100%; /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
-}
-
-.select-box {
-  border-radius: 3px !important;
 }
 
 .starring-button {
@@ -265,11 +236,6 @@ body {
   margin: 0;
 }
 
-.main-menu {
-  background-color: mat.get-color-from-palette($dockstore-app-primary);
-  position: relative;
-}
-
 .header {
   background-color: mat.get-color-from-palette($dockstore-app-primary);
   position: relative;
@@ -280,22 +246,6 @@ body {
   }
   img#truck {
     padding-left: 45px;
-  }
-}
-
-.header-lower {
-  min-height: 144px;
-  background-color: #2a3e6b;
-  height: 100%;
-  .button {
-    margin-top: 5px;
-  }
-  img.blue-rectangle {
-    position: absolute;
-    right: 0px;
-  }
-  &.row {
-    padding-top: 30px;
   }
 }
 
@@ -367,14 +317,6 @@ p {
   font-size: 14px;
 }
 
-.row-center {
-  text-align: center;
-}
-
-.header-lower .button {
-  width: 250px;
-}
-
 h1.title {
   font-size: 56px;
   color: white;
@@ -397,6 +339,8 @@ h3 {
   font-weight: normal;
 }
 
+// Used by funding page, login page, maintenance page, and sitemap page
+// Unclear why it's not used for search page, organization page, etc
 h3.available-containers {
   font-size: 20px;
   color: mat.get-color-from-palette($dockstore-app-primary);
@@ -404,12 +348,6 @@ h3.available-containers {
   margin: 20px 0px 15px 0px;
   display: inline;
   line-height: 55px;
-}
-
-table.homepage-container {
-  /*margin-top: 2px;*/
-  width: 100%;
-  /*z-index: -1;*/
 }
 
 @media (min-width: 992px) {
@@ -438,28 +376,11 @@ table.homepage-container {
   right: 350px;
 }
 
-.tools {
-  font-size: 14px;
-  font-weight: bold;
-  color: #7a88a9;
-  /*position: relative;*/
-  position: absolute;
-  right: 450px;
-  /*text-align: right;*/
-}
-
 // Globally allow any material tooltip to break the word if it's too long
 // Long sentences should still break on spaces if needed
 // Long continous words (without spaces and hyphens) will break at different points depending on browser
 .mat-tooltip {
   overflow-wrap: break-word;
-}
-
-.public-lists {
-  font-size: 14px;
-  font-weight: bold;
-  color: #7a88a9;
-  padding-left: 4px;
 }
 
 h4.title.caption {
@@ -470,20 +391,13 @@ h4.title.caption {
   margin: 0;
 }
 
-blockquote {
-  color: #a0adcc;
-}
-
-cite {
-  color: #cfd1d7;
-  font-size: 80%;
-}
-
 a {
   color: #3d7d86;
   text-decoration: underline;
 }
 
+// Some links (anchors) do not require an underline and also have a different color
+// Unclear when to use this
 a.no-underline {
   color: mat.get-color-from-palette($dockstore-app-gray, darker);
   text-decoration: none;
@@ -493,6 +407,7 @@ a.no-underline:hover {
   text-decoration: none;
 }
 
+// Used when the background and the default anchor color doesn't have enough contrast
 a.white-link {
   color: #ffffff;
 }
@@ -505,6 +420,7 @@ ul.more li a {
   text-decoration: none;
 }
 
+// Some icons are these two size...others aren't. Size seems random right now (14px, 24 px, etc)
 img.site-icons-small {
   width: 16px;
   height: 16px;
@@ -520,42 +436,12 @@ img.site-icons-tab {
   height: 16px;
 }
 
+// Used in home page, don't know when and why to use it elsewhere
 img.contain-img {
   object-fit: contain;
 }
 
-#homeSearch {
-  background-color: #487980;
-  color: #ffffff;
-  width: 100px;
-}
-
 /* SEARCH BAR - - - - - - - - - - - - */
-
-.rounded {
-  -webkit-border-top-right-radius: 8px;
-  -webkit-border-bottom-right-radius: 8px;
-  -moz-border-radius-topright: 8px;
-  -moz-border-radius-bottomright: 8px;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-
-.rounded-left {
-  -webkit-border-top-left-radius: 8px;
-  -webkit-border-bottom-left-radius: 8px;
-  -moz-border-radius-topleft: 8px;
-  -moz-border-radius-bottomleft: 8px;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  -webkit-border-top-right-radius: 0px;
-  -webkit-border-bottom-right-radius: 0px;
-  -moz-border-radius-topright: 0px;
-  -moz-border-radius-bottomright: 0px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
 .fully-rounded {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
@@ -578,36 +464,6 @@ img.contain-img {
   background: white url(../images/search-button.png) left center no-repeat;
   background-position: 5px;
   outline: none;
-}
-
-.docker-pull {
-  font-size: 12px;
-  width: 280px;
-  position: relative;
-  padding-left: 8px;
-  padding-right: 32px;
-  border: 1px solid #cfd1d7;
-  line-height: 2em;
-  background: white url(../images/copy-button.png) right center no-repeat;
-  background-position: 245px;
-  margin-right: 10px;
-  outline: none;
-}
-
-.rounded2 {
-  -webkit-border-top-left-radius: 4px !important;
-  -webkit-border-bottom-left-radius: 4px !important;
-  -moz-border-top-left-radius: 4px !important;
-  -moz-border-bottom-left-radius: 4px !important;
-  border-top-left-radius: 4px !important;
-  border-bottom-left-radius: 4px !important;
-}
-
-.account-dropdown {
-  padding-left: 15px;
-  padding-right: 15px;
-  line-height: 2.5em;
-  margin: 0;
 }
 
 .push-right {
@@ -699,60 +555,6 @@ th {
   background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
   border: 1px solid #cfd1d7;
   /*margin:0;*/
-}
-
-// Commenting this out because pagination formatting is done by Angular-Datatables
-// ul.pagination li{
-//   padding-top: 5px;
-//   display: inline;
-//   margin: 3px;
-// }
-#homeFooter {
-  margin: 40px 0px;
-  width: 100%;
-  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
-  border: 1px solid #cfd1d7;
-  /*box-shadow: 0px 0px 10px #cfd1d7;*/
-}
-
-.button.homeFooter {
-  /*width: auto;*/
-  text-align: center;
-  margin: 10px;
-  margin-top: 2px;
-  margin-bottom: 28px;
-  width: 280px;
-}
-
-#homeFooter ul {
-  padding-left: 15px;
-  margin-top: 0;
-}
-
-#homeFooter ul li {
-  font-size: 14px;
-}
-
-#homeFooter h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-#our-sponsors {
-  padding-top: 10px;
-  padding-bottom: 40px;
-}
-
-ul.our-sponsors li {
-  display: inline;
-  padding-right: 32px;
-  a {
-    text-decoration: none;
-  }
-}
-
-ul.our-sponsors li img {
-  margin-top: 15px;
 }
 
 #footer {
@@ -858,15 +660,7 @@ code {
 
 /* CONTAINERS-LIST PAGE */
 
-.detail-view {
-  background-color: #f4f4f4;
-}
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-.button.back-to-containers {
-  margin-top: 8px;
-}
 
 h5,
 .h5 {
@@ -875,13 +669,10 @@ h5,
   font-weight: normal;
 }
 
+// Used by container and workflow's last build/modified "subtitle"
 p.update {
   font-weight: bold;
   color: #7987aa;
-}
-
-div.side-block {
-  padding: 0px;
 }
 
 div.side-block table,
@@ -1008,73 +799,9 @@ div.tabs > div:target > div,
   z-index: -1;
 }
 
-.starRating {
-  float: right;
-  margin-top: 35px;
-}
-
-.starRating:not(old) {
-  display: inline-block;
-  width: 7.5em;
-  height: 1.5em;
-  overflow: hidden;
-  vertical-align: bottom;
-}
-
-.starRating:not(old) > input {
-  margin-right: -100%;
-  opacity: 0;
-}
-
-.starRating:not(old) > label {
-  display: block;
-  float: right;
-  position: relative;
-  background: url('assets/svg/star-off.svg');
-  background-size: contain;
-}
-
-.starRating:not(old) > label:before {
-  content: '';
-  display: block;
-  width: 1.5em;
-  height: 1.5em;
-  background: url('assets/svg/star-on.svg');
-  background-size: contain;
-  opacity: 0;
-  transition: opacity 0.2s linear;
-}
-
-.starRating:not(old) > label:hover:before,
-.starRating:not(old) > label:hover ~ label:before,
-.starRating:not(:hover) > :checked ~ label:before {
-  opacity: 1;
-}
-
-/* Begin Temporary Styles - Need to Refactor Later */
-
-.hori-offset-4 {
-  margin-left: 4px;
-}
-
-.hori-offset-8 {
-  margin-left: 8px;
-}
-
+// Replace with bootstrap4 ml-something
 .hori-offset-12 {
   margin-left: 12px;
-}
-
-.vert-offset-4 {
-  margin-top: 4px;
-}
-
-.vert-offset-8 {
-  margin-top: 8px;
-}
-
-.vert-offset-12 {
-  margin-top: 12px;
 }
 
 /* Dockstore Grid */
@@ -1087,98 +814,10 @@ div.tabs > div:target > div,
   margin-top: -25px;
 }
 
-.signup-or-separator {
-  position: relative;
-  height: 34px;
-  text-align: center;
-  background: none;
-}
-
-.signup-or-separator hr {
-  width: 90%;
-  margin: -16px auto 10px auto;
-  border-top: 1px solid #dce0e0;
-}
-
-.signup-or-separator .text {
-  display: inline-block;
-  padding: 8px;
-  margin: 0;
-  background-color: #fff;
-}
-
-.btn-login {
-  width: 100%;
-}
-
-.btn-sad {
-  background-color: white;
-  box-shadow: none;
-}
-
-#label-holder {
-  padding-right: 0em;
-  max-height: 1.5em;
-  line-height: 1.5em;
-  min-height: 0em;
-  overflow: hidden;
-}
-
-#label-button {
-  font-weight: bold;
-  background-color: #337ab7;
-  border-color: #2e6da4;
-}
-
-.search-dropdown {
-  top: 100%;
-}
-
 // This currently breaks the new ngx-tabset
 // .nav-item {
 //   height:50px;
 // }
-.nav-item-text {
-  padding-top: 10px;
-}
-
-.nav-item-button {
-  padding-top: 8px;
-}
-
-.radio-button-reference {
-  margin-top: -1px;
-  vertical-align: middle;
-}
-
-.home-search-entry-holder {
-  width: 475px;
-  overflow: hidden;
-  padding-left: 10px;
-}
-
-.home-search-entry-type {
-  float: right;
-  width: 130px;
-  background: #f4f4f4;
-  padding-left: 15px;
-  padding-right: 15px;
-  font-size: 10px;
-}
-
-.home-search-entry-name {
-  float: left;
-  width: 325px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.custom-typeahead-popup {
-  padding: 0px;
-  border: 1px solid #ccc;
-  margin: 0px;
-}
 
 .fullscreen {
   z-index: 100000;
@@ -1191,69 +830,19 @@ div.tabs > div:target > div,
   margin: 0px;
 }
 
+// Currently only used by the DAG tooltip, consider using this for any non-material tooltips
 .bootstrap-tooltip-z-index {
   z-index: 1070;
 }
 
+// Currently only used by the DAG tooltip, probably pretty unique and should be moved to the DAG scss
 .opaq {
   opacity: 0.825;
-}
-
-.no-display {
-  display: none;
-}
-
-#dag-popover {
-  z-index: 9999;
-  position: absolute;
-  max-width: 250px;
-}
-
-#tooltiptext {
-  display: none;
-}
-
-.file-tabs {
-  padding-bottom: 5px;
-}
-
-.search-description {
-  padding: 0px 35px 10px 35px;
-  line-height: 1.5;
-  font-size: 90%;
-}
-
-.search-with-description td {
-  border-bottom: 0px;
-}
-
-.search-date {
-  color: #808080;
 }
 
 .test_parameter_input {
   width: 90%;
   float: left;
-}
-
-.test_parameter_remove_button {
-  margin-left: 2px;
-  width: 9%;
-  float: left;
-  padding: 4px 0px 4px 0px;
-}
-
-.test_parameter_add_button {
-  float: right;
-}
-
-.test_parameter_div {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-#githubSyncUserButton {
-  float: right;
 }
 
 html,
@@ -1276,14 +865,6 @@ body {
   &:hover {
     background-color: #f2f2f2;
   }
-}
-
-.entry-row {
-  height: 52px;
-}
-
-.my-entry-button-group {
-  margin-bottom: 5px;
 }
 
 .nav-tabs.nav-justified > li > a {
@@ -1323,6 +904,7 @@ app-sidebar-accordion
   background: #3f51b5 !important;
 }
 
+// Automatically used by Angular Material
 .mat-tab-label:hover {
   color: black;
   opacity: 0.7;
@@ -1483,10 +1065,12 @@ hr {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
+// Automatically used by Angular Material
 .mat-radio-label-content {
   font-weight: normal;
 }
 
+// Used for smaller than usual forms
 .mat-form-field.small-text {
   font-size: 12px;
 }
