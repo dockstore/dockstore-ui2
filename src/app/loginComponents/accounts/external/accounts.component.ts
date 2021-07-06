@@ -38,6 +38,7 @@ import { AccountsService } from './accounts.service';
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
   public orcidId$: Observable<string>;
+  public TokenSource = TokenSource;
   // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
     {
