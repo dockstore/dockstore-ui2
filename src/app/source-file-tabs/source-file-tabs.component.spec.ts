@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -12,22 +12,24 @@ describe('SourceFileTabsComponent', () => {
   let component: SourceFileTabsComponent;
   let fixture: ComponentFixture<SourceFileTabsComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SourceFileTabsComponent, MapFriendlyValuesPipe],
-      imports: [HttpClientTestingModule],
-      providers: [
-        { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
-        { provide: FileService, useClass: FileStubService },
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SourceFileTabsComponent, MapFriendlyValuesPipe],
+        imports: [HttpClientTestingModule],
+        providers: [
+          { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
+          { provide: FileService, useClass: FileStubService },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SourceFileTabsComponent);
     component = fixture.componentInstance;
-    component.version = { id: 0 };
+    component.version = { id: 0, name: 'abc', reference: '1' };
     component.workflowId = 0;
     fixture.detectChanges();
   });

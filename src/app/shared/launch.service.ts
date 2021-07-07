@@ -73,7 +73,7 @@ export abstract class LaunchService {
    * @param versionName The ToolVersion's name
    */
   getNextflowNativeLaunchString(workflowPath: string, versionName: string) {
-    return `nextflow run http://${workflowPath} -r ${versionName}`;
+    return `nextflow run https://${workflowPath} -r ${versionName}`;
   }
 
   /**

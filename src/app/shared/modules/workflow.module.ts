@@ -13,12 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { EntryFileTabComponent } from 'app/entry/entry-file-tab/entry-file-tab.component';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { MarkdownModule } from 'ngx-markdown';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
@@ -29,7 +30,9 @@ import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
 import { FilesWorkflowComponent } from '../../workflow/files/files.component';
+import { FilterCloudInstancesPipe } from '../../workflow/launch-third-party/filterCloudInstances.pipe';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
+import { MultiCloudLaunchComponent } from '../../workflow/launch-third-party/multi-cloud-launch/multi-cloud-launch.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { WorkflowLaunchService } from '../../workflow/launch/workflow-launch.service';
 import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfiles.component';
@@ -57,6 +60,7 @@ import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
+import { SnackbarModule } from './snackbar.module';
 
 @NgModule({
   declarations: [
@@ -76,6 +80,8 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
     ToolTabComponent,
     EntryFileTabComponent,
     SourceFileTabsComponent,
+    FilterCloudInstancesPipe,
+    MultiCloudLaunchComponent,
   ],
   imports: [
     CommonModule,
@@ -96,6 +102,7 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
     MarkdownModule,
     RefreshAlertModule,
     MarkdownWrapperModule,
+    SnackbarModule,
   ],
   providers: [
     DateService,
@@ -107,7 +114,14 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
     RegisterWorkflowModalService,
     VersionModalService,
   ],
-  exports: [WorkflowComponent, CustomMaterialModule, EntryModule, HeaderModule, CommonModule, WorkflowActionsComponent],
-  entryComponents: [VersionModalComponent],
+  exports: [
+    WorkflowComponent,
+    CustomMaterialModule,
+    EntryModule,
+    HeaderModule,
+    CommonModule,
+    WorkflowActionsComponent,
+    FilterCloudInstancesPipe,
+  ],
 })
 export class WorkflowModule {}

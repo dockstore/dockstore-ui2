@@ -14,9 +14,12 @@
  *     limitations under the License.
  */
 import { EntryType } from 'app/shared/enum/entry-type';
-import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
+import RoleEnum = Permission.RoleEnum;
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+import { CloudInstance } from '../shared/openapi';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
@@ -25,13 +28,11 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { Metadata } from './../shared/swagger/model/metadata';
 import { SourceFile } from './../shared/swagger/model/sourceFile';
 import { StarRequest } from './../shared/swagger/model/starRequest';
-import { Token } from './../shared/swagger/model/token';
+import { TokenUser } from './../shared/swagger/model/tokenUser';
 import { User } from './../shared/swagger/model/user';
 import { Workflow } from './../shared/swagger/model/workflow';
 import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
-import RoleEnum = Permission.RoleEnum;
-import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export class ContainerStubService {
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -53,11 +54,8 @@ export class ContainerStubService {
   replaceTool(tools: any, newTool: any) {
     return observableOf(tools);
   }
-  getBuildMode(mode: DockstoreTool.ModeEnum) {
-    return 'Fully-Automated';
-  }
   getBuildModeTooltip(mode: DockstoreTool.ModeEnum) {
-    return 'Fully-Automated: All versions are automated builds';
+    return 'Fully automated: All versions are automated builds';
   }
 }
 export class ProviderStubService {
@@ -111,6 +109,9 @@ export class QueryBuilderStubService {
   ): string {
     return 'thisissomefakequery';
   }
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
+    return 'thisissomefakequery';
+  }
   getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
     return 'thisissomefakequery';
   }
@@ -127,6 +128,12 @@ export class GA4GHStubService {
       api_version: '3',
     };
     return observableOf(metadata);
+  }
+}
+
+export class ExtendedGA4GHStubService {
+  toolsIndexSearch(): Observable<any> {
+    return EMPTY;
   }
 }
 
@@ -310,7 +317,7 @@ export class UsersStubService {
   refreshWorkflows(userId: number, extraHttpRequestParams?: any): Observable<Array<Workflow>> {
     return observableOf([]);
   }
-  getUserTokens(userId: number, extraHttpRequestParams?: any): Observable<Array<Token>> {
+  getUserTokens(userId: number, extraHttpRequestParams?: any): Observable<Array<TokenUser>> {
     return observableOf([]);
   }
   getExtendedUserData() {
@@ -319,10 +326,20 @@ export class UsersStubService {
   getUserMemberships() {
     return observableOf([]);
   }
+  getMyGitHubOrgs() {
+    return observableOf([]);
+  }
   checkUserExists(username) {
     return observableOf([]);
   }
   changeUsername(username) {
+    return observableOf([]);
+  }
+  getUserCloudInstances(userId: number): Observable<Array<CloudInstance>> {
+    return observableOf([]);
+  }
+
+  postUserCloudInstance(userId: number, body: CloudInstance): Observable<Array<CloudInstance>> {
     return observableOf([]);
   }
 }
@@ -518,16 +535,16 @@ export class TokenStubService {
 }
 
 export class TokensStubService {
-  public addQuayToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+  public addQuayToken(accessToken?: string, extraHttpRequestParams?: any): Observable<TokenUser> {
     return observableOf(quayToken);
   }
-  public addBitbucketToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+  public addBitbucketToken(accessToken?: string, extraHttpRequestParams?: any): Observable<TokenUser> {
     return observableOf(bitbucketToken);
   }
-  public addGithubToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+  public addGithubToken(accessToken?: string, extraHttpRequestParams?: any): Observable<TokenUser> {
     return observableOf(gitHubToken);
   }
-  public addGitlabToken(accessToken?: string, extraHttpRequestParams?: any): Observable<Token> {
+  public addGitlabToken(accessToken?: string, extraHttpRequestParams?: any): Observable<TokenUser> {
     return observableOf(gitLabToken);
   }
   public deleteToken(tokenId: number, extraHttpRequestParams?: any): Observable<{}> {
@@ -687,6 +704,12 @@ export class OrganizationsStubService {
     return observableOf({});
   }
   getStarredUsersForApprovedOrganization(entryId: number): Observable<Array<User>> {
+    return observableOf([]);
+  }
+}
+
+export class CloudInstancesStubService {
+  getCloudInstances(): Observable<Array<CloudInstance>> {
     return observableOf([]);
   }
 }

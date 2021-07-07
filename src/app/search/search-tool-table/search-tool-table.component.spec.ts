@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RouterTestingModule } from '@angular/router/testing';
@@ -16,19 +16,21 @@ describe('SearchToolTableComponent', () => {
   let component: SearchToolTableComponent;
   let fixture: ComponentFixture<SearchToolTableComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchToolTableComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
-      providers: [
-        { provide: DockstoreService, useClass: DockstoreStubService },
-        DateService,
-        { provide: ListContainersService, useClass: ListContainersStubService },
-        { provide: SearchService, useClass: SearchStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchToolTableComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
+        providers: [
+          { provide: DockstoreService, useClass: DockstoreStubService },
+          DateService,
+          { provide: ListContainersService, useClass: ListContainersStubService },
+          { provide: SearchService, useClass: SearchStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchToolTableComponent);

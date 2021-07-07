@@ -1,3 +1,5 @@
+@import 'materialColorScheme.scss';
+
 .tutorial-section-card {
   border-radius: 0.5rem;
   min-width: 20rem;
@@ -11,5 +13,5 @@
 }
 
 .tutorial-title {
-  color: #21335b;
+  color: mat-color($dockstore-app-primary);
 }

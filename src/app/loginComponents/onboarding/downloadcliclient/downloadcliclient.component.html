@@ -25,8 +25,9 @@ token: {{ dsToken }}&#13;&#10;server-url: {{ dsServerURI }}</textarea
       class="btn btn-default textarea btn"
       [ngClass]="{ 'btn-copy': isCopied2 }"
       type="button"
-      [ngxClipboard]="inputTarget"
+      [cdkCopyToClipboard]="inputTarget"
       (cbOnSuccess)="isCopied2 = true"
+      appSnackbar
     >
       <mat-icon>file_copy</mat-icon>
     </button>

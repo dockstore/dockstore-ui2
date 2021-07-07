@@ -42,28 +42,27 @@
       </ul>
     </div>
   </div>
-  <div class="row m-1" *ngIf="!showRedirect">
+  <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
-    <div class="col-md-7">
+    <div fxFlex="80">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-        <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified">
-          <a [href]="getVerifiedLink()" class="verified-check">
-            <mat-icon matTooltip="Verified">done</mat-icon>
-          </a>
-        </span>
         <span>
+          <img src="../../assets/svg/workflow-circle.svg" alt="workflow icon" />
+        </span>
+        <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ title
           }}<span *ngIf="workflow?.workflowVersions.length > 0"
-            >:<span class="ds-green">{{ selectedVersion?.name }}</span></span
+            >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span></span
           >
         </span>
-        <div
-          matTooltip="Galaxy is currently in preview"
-          *ngIf="workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2"
-          class="beta-label"
-        >
-          preview
-        </div>
+        <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
+          <mat-chip matTooltip="Verified" class="workflow-label-tag">
+            <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+              <mat-icon class="verified-icon">done</mat-icon>
+              <span>Verified</span>
+            </a>
+          </mat-chip>
+        </span>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
         <mat-form-field>
@@ -80,7 +79,7 @@
         >
       </p>
     </div>
-    <div class="col-md-5">
+    <div fxFlex>
       <app-starring
         [workflow]="workflow"
         class="pull-right starring-button"
@@ -105,7 +104,9 @@
     <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px">
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
-          <mat-chip color="primary" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{ label }}</mat-chip>
+          <mat-chip class="workflow-label-tag" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
+            label
+          }}</mat-chip>
           <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
             Manage labels
           </button>
@@ -146,7 +147,7 @@
       </span>
     </div>
   </div>
-  <div class="row ml-4 mr-4" *ngIf="starGazersClicked">
+  <div class="row ml-4 mr-4 mb-4" *ngIf="starGazersClicked">
     <app-stargazers></app-stargazers>
     <button id="backButton" type="button" (click)="starGazersClicked = false" mat-flat-button color="primary">
       <mat-icon>chevron_left</mat-icon>Back to details
@@ -154,10 +155,10 @@
   </div>
   <div class="row m-1" *ngIf="!starGazersClicked && !showRedirect">
     <div class="col-sm-12 p-0" [ngClass]="{ 'col-md-10 col-lg-9': isWorkflowPublic }">
-      <div class="ds-tabs" [ngClass]="{ 'mr-3': isWorkflowPublic }">
+      <div [ngClass]="{ 'mr-3': isWorkflowPublic }">
         <mat-tab-group
           [selectedIndex]="selected.value"
-          class="ds-tabs"
+          class="workflow-tab-group"
           id="workflow_tabs"
           #entryTabs
           (selectedIndexChange)="selected.setValue($event)"
@@ -377,24 +378,25 @@
         </ng-template>
       </div>
     </div>
-    <div class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
+    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
-      <div class="panel panel-default mb-3">
-        <div class="panel-heading">
-          <h3>Recent Versions</h3>
-        </div>
-        <div class="p-3 panel-body">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Recent Versions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div>
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
                 <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                  <a [href]="getVerifiedLink()" class="verified-check">
+                  <a [href]="verifiedLink" class="verified-check">
                     <mat-icon matTooltip="Verified">done</mat-icon>
                   </a>
                 </span>
                 <a
                   [ngStyle]="{ 'font-weight': selectedVersion?.name === sortedVersion?.name ? 'bold' : 'normal' }"
                   (click)="onSelectedVersionChange(sortedVersion)"
+                  class="panel-body-anchor"
                   >{{ sortedVersion.name }}
                 </a>
                 <small>{{ sortedVersion.last_modified | date }}</small>
@@ -403,13 +405,13 @@
             </span>
             <a (click)="selectVersionsTab()">See all versions</a>
           </div>
-        </div>
-      </div>
-      <div class="panel panel-default mb-3" *ngIf="!isStub() && !isHosted()">
-        <div class="panel-heading">
-          <h3>Source Repositories</h3>
-        </div>
-        <div class="p-3 panel-body">
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="!isStub() && !isHosted()">
+        <mat-card-header>
+          <mat-card-title>Source Repositories</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div class="container-source-repos">
             <p>
               <span *ngIf="(extendedWorkflow$ | async).provider">
@@ -420,16 +422,16 @@
               </span>
             </p>
           </div>
-        </div>
-      </div>
+        </mat-card-content>
+      </mat-card>
       <current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></current-collections>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
-      <div class="panel panel-default mb-3" *ngIf="workflow">
-        <div class="panel-heading">
-          <h3>Sharing</h3>
-        </div>
-        <div class="p-3 panel-body">
+      <mat-card *ngIf="workflow">
+        <mat-card-header>
+          <mat-card-title>Sharing</mat-card-title>
+        </mat-card-header>
+        <mat-card-header>
           <div class="container-sharing">
             <share-buttons
               [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
@@ -438,9 +440,9 @@
               [autoSetMeta]="false"
             ></share-buttons>
           </div>
-        </div>
-      </div>
-      <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
+        </mat-card-header>
+      </mat-card>
+      <!-- Re-enable the below and change to material once ga4gh/dockstore#442 is complete -->
       <!-- <div class="panel panel-default mb-3">
       <div class="panel-heading">
         <h3>DOI</h3>

@@ -21,13 +21,17 @@ import { Provider } from './enum/provider.enum';
 
 export class Dockstore {
   static readonly HOSTNAME = window.location.protocol + '//' + window.location.host;
+  static readonly HOSTNAME_NO_PROTOCOL = window.location.hostname;
   static readonly API_URI = Dockstore.HOSTNAME + '/api';
+  static readonly GALAXY_IMPORT_PATH_PORTION =
+    '/workflows/trs_import?trs_server=' + Dockstore.HOSTNAME_NO_PROTOCOL + '&trs_id=%23workflow/';
+  static readonly DNASTACK_IMPORT_PATH_PORTION = '/import?trs_server=' + Dockstore.HOSTNAME_NO_PROTOCOL + '&trs_id=';
 
   // All the following properties will get updated by configuration.service.ts. You do not
   // need to update them here. Set them in your dockstore.yml for the web service.
 
-  // Discourse URL MUST end with a slash (/)
-  static DISCOURSE_URL = 'http://localhost/';
+  // Discourse URL should not end with a slash (/) but will work fine with one
+  static DISCOURSE_URL = 'http://localhost';
 
   static DNASTACK_IMPORT_URL = 'https://app.dnastack.com/#/app/workflow/import/dockstore';
   static DNANEXUS_IMPORT_URL = 'https://platform.dnanexus.com/panx/tools/import-workflow';
@@ -37,6 +41,7 @@ export class Dockstore {
   static BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = 'https://sb.biodatacatalyst.nhlbi.nih.gov/integration/trs/import';
   static BD_CATALYST_TERRA_IMPORT_URL = 'https://terra.biodatacatalyst.nhlbi.nih.gov/#import-tool/dockstore';
   static CAVATICA_IMPORT_URL = 'https://cavatica.sbgenomics.com/integration/trs/import';
+  static NEXTFLOW_TOWER_IMPORT_URL = 'https://tower.nf/launch';
 
   static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
@@ -77,8 +82,10 @@ export class Dockstore {
 
   static GITHUB_APP_INSTALLATION_URL = 'will be filled in by configuration.service';
 
+  static DOCKSTORE_REPO = 'https://github.com/dockstore/dockstore';
   static DOCUMENTATION_URL = 'https://docs.dockstore.org';
   static FEATURED_CONTENT_URL = 'will be filled in by configuration.service';
+  static FEATURED_NEWS_URL = 'will be filled in by configuration.service';
 
   static DEPLOY_VERSION = '';
   static COMPOSE_SETUP_VERSION = '';
@@ -86,5 +93,8 @@ export class Dockstore {
 
   static FEATURES = {
     enableCwlViewer: true,
+    enableLaunchWithGalaxy: true,
+    enableMultiCloudLaunchWithDNAstack: false,
+    enableOrcidExport: true,
   };
 }

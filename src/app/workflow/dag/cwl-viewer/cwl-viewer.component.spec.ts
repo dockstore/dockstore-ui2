@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { DateService } from '../../../shared/date.service';
 import { DockstoreService } from '../../../shared/dockstore.service';
@@ -13,14 +13,16 @@ describe('cwl-viewerComponent', () => {
   let component: CwlViewerComponent;
   let fixture: ComponentFixture<CwlViewerComponent>;
   let workflowService: WorkflowService;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [CwlViewerComponent],
-      imports: [HttpClientTestingModule, FormsModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [DockstoreService, DateService, ProviderService, WorkflowService],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CwlViewerComponent],
+        imports: [HttpClientTestingModule, FormsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [DockstoreService, DateService, ProviderService, WorkflowService],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CwlViewerComponent);

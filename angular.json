@@ -24,9 +24,7 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/bootstrap-social/bootstrap-social.css",
-              "src/styles.css",
+              "node_modules/academicons/css/academicons.css",
               "src/styles.scss",
               "src/material.scss"
             ],
@@ -133,9 +131,6 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/bootstrap-social/bootstrap-social.css",
-              "src/styles.css",
               "src/styles.scss",
               "src/material.scss"
             ],

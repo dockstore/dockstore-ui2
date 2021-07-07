@@ -46,6 +46,5 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     RefreshWizardModule,
   ],
   providers: [RegisterToolService, AccountsService, MytoolsService],
-  entryComponents: [RegisterToolComponent],
 })
 export class MyToolsModule {}

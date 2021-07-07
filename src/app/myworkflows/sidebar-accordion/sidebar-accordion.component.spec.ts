@@ -1,10 +1,9 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RefreshWorkflowOrganizationComponent } from 'app/workflow/refresh-workflow-organization/refresh-workflow-organization.component';
-import { GithubNameToIdPipe } from '../../github-name-to-id.pipe';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -16,29 +15,31 @@ describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
   let fixture: ComponentFixture<SidebarAccordionComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, SelectTabPipe, GithubNameToIdPipe],
-      imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
-      providers: [
-        {
-          provide: RegisterWorkflowModalService,
-          useClass: RegisterWorkflowModalStubService,
-        },
-        { provide: WorkflowService, useClass: WorkflowStubService },
-        {
-          provide: MatDialogRef,
-          useValue: {
-            close: (dialogResult: any) => {},
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, SelectTabPipe],
+        imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
+        providers: [
+          {
+            provide: RegisterWorkflowModalService,
+            useClass: RegisterWorkflowModalStubService,
           },
-        },
-        {
-          provide: RefreshService,
-          useClass: RefreshStubService,
-        },
-      ],
-    }).compileComponents();
-  }));
+          { provide: WorkflowService, useClass: WorkflowStubService },
+          {
+            provide: MatDialogRef,
+            useValue: {
+              close: () => {},
+            },
+          },
+          {
+            provide: RefreshService,
+            useClass: RefreshStubService,
+          },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarAccordionComponent);

@@ -17,15 +17,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
-import { Subject } from 'rxjs';
-import { first, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { first, map, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
 import { TokenService } from '../../../shared/state/token.service';
 import { TrackLoginService } from '../../../shared/track-login.service';
+import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
-import { Token } from './../../../shared/swagger/model/token';
+import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
 
 @Component({
@@ -35,6 +36,9 @@ import { AccountsService } from './accounts.service';
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
+  public orcidId$: Observable<string>;
+  public TokenSource = TokenSource;
+  Dockstore = Dockstore;
   // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
     {
@@ -89,13 +93,14 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'ORCID',
       source: TokenSource.ORCID,
       bold: '',
-      message: 'ORCID credentials are used for providing links from your Dockstore contributions to your ORCID account.',
+      message:
+        'ORCID credentials are used for creating ORCID works by exporting snapshotted entries and versions from Dockstore and to link to your ORCID record when your Dockstore account is displayed on the site.',
       show: false,
       logo: 'orcid.svg',
     },
   ];
 
-  public tokens: Token[];
+  public tokens: TokenUser[];
   private ngUnsubscribe: Subject<{}> = new Subject();
   public show: false;
   public dockstoreToken: string;
@@ -107,6 +112,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private accountsService: AccountsService,
     private matSnackBar: MatSnackBar,
+    private userQuery: UserQuery,
     private tokenQuery: TokenQuery
   ) {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
@@ -160,7 +166,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   // Show linked services in the UI
-  private setAvailableTokens(tokens: Token[]) {
+  private setAvailableTokens(tokens: TokenUser[]) {
     for (const account of this.accountsInfo) {
       const found = tokens.find((token) => token.tokenSource === account.source);
       if (found) {
@@ -172,7 +178,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   // Set tokens and linked services
-  private setTokens(tokens: Token[]): void {
+  private setTokens(tokens: TokenUser[]): void {
     this.tokens = tokens;
     if (tokens) {
       this.setAvailableTokens(tokens);
@@ -185,9 +191,10 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.dsServerURI = Dockstore.API_URI;
-    this.tokenQuery.tokens$.subscribe((tokens: Token[]) => {
+    this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
       this.setTokens(tokens);
     });
+    this.orcidId$ = this.userQuery.user$.pipe(map((user) => user.orcid));
   }
 
   ngOnDestroy() {

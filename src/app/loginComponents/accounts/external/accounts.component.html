@@ -35,10 +35,10 @@
         <button
           mat-icon-button
           color="secondary"
-          ngxClipboard
-          [cbContent]="dockstoreToken"
+          [cdkCopyToClipboard]="dockstoreToken"
           (cbOnSuccess)="isCopied1 = true"
           matTooltip="Copy Token"
+          appSnackbar
         >
           <mat-icon>file_copy</mat-icon>
         </button>
@@ -69,31 +69,19 @@
         {{ row.message }}
         <span *ngIf="row.isLinked">If your token has expired, relink your account.</span>
       </div>
+      <div *ngIf="row.source === TokenSource.ORCID">
+        See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for information on what is ORCID.
+      </div>
       <div>
         {{ row.bold }}
       </div>
 
-      <span fxLayout="row" fxLayoutAlign="start center" *ngIf="row.isLinked">
-        <strong>Token</strong>
-        <button mat-icon-button color="secondary" (click)="row.show = !row.show">
-          <mat-icon *ngIf="row.show">visibility_off</mat-icon>
-          <mat-icon *ngIf="!row.show">visibility</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          color="secondary"
-          ngxClipboard
-          [cbContent]="row.source | getTokenContent: tokens"
-          (cbOnSuccess)="isCopied1 = true"
-        >
-          <mat-icon>file_copy</mat-icon>
-        </button>
-        <span *ngIf="row.show" style="overflow: auto">{{ row.source | getTokenContent: tokens }}</span>
-        <span *ngIf="row.isLinked" class="pull-right">
-          <span class="mx-2">
-            <strong>Username: </strong>
-            {{ row.source | getTokenUsername: tokens }}
-          </span>
+      <span *ngIf="row.isLinked">
+        <strong>Username: </strong>
+        {{ row.source | getTokenUsername: tokens }}
+        <span *ngIf="row.name === 'ORCID'">
+          <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo" />
+          <a href="https://orcid.org/{{ orcidId$ | async }}"> {{ orcidId$ | async }}</a>
         </span>
       </span>
     </div>
@@ -108,8 +96,8 @@
           (click)="link(row.source)"
           matTooltip="Link the account"
         >
-          <mat-icon>link</mat-icon>
-          <span>Link Account</span>
+          <mat-icon *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
+          <span> Create or connect your {{ row.name }} Account</span>
         </button>
       </span>
       <ng-template #linked>
@@ -121,8 +109,8 @@
           (click)="relink(row.source)"
           matTooltip="Relink the account"
         >
-          <mat-icon>link</mat-icon>
-          <span>Relink Account</span>
+          <mat-icon *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
+          <span> Relink {{ row.name }} Account</span>
         </button>
         <button
           mat-raised-button
@@ -131,9 +119,12 @@
           (click)="unlink(row.source)"
           matTooltip="Unlink the account"
         >
-          <mat-icon>link_off</mat-icon>
-          <span>Unlink Account</span>
+          <mat-icon *ngIf="row.name !== 'ORCID'; else orcid">link_off</mat-icon>
+          <span> Unlink {{ row.name }} Account</span>
         </button>
+      </ng-template>
+      <ng-template #orcid>
+        <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo" />
       </ng-template>
     </div>
   </mat-card>

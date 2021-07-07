@@ -8,11 +8,11 @@ import { Dockstore } from '../../../shared/dockstore.model';
   template: ` <div [innerHTML]="myExternalHTML"></div> `,
 })
 export class FeaturedContentComponent implements OnInit {
-  public myExternalHTML: any = '';
+  public myExternalHTML = '';
 
   constructor(private http: HttpClient, private alertService: AlertService) {}
   ngOnInit() {
-    this.alertService.start('Retrieve featured content');
+    this.alertService.start('Retrieving featured content');
     this.http
       .get(
         Dockstore.FEATURED_CONTENT_URL,

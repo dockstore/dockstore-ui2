@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -22,10 +23,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MdePopoverModule } from '@material-extended/mde';
 import { TagCloudModule } from 'angular-tag-cloud-module';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
+import { SnackbarModule } from '../shared/modules/snackbar.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
@@ -64,9 +66,9 @@ import { SearchService } from './state/search.service';
     RefreshAlertModule,
     FlexLayoutModule,
     MdePopoverModule,
+    SnackbarModule,
   ],
   providers: [SearchService, QueryBuilderService],
   exports: [SearchComponent],
-  entryComponents: [AdvancedSearchComponent],
 })
 export class SearchModule {}

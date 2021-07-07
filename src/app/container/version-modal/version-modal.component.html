@@ -393,8 +393,8 @@
                   disabled
                 />
                 <span class="input-group-btn" id="clipboard">
-                  <button class="btn btn-default btn-sm form-sm-button" type="button" [ngxClipboard]="inputTarget">
-                    <mat-icon>file_copy</mat-icon>
+                  <button class="btn btn-default btn-sm form-sm-button" type="button" [cdkCopyToClipboard]="inputTarget" appSnackbar>
+                    <mat-icon id="file_copy">file_copy</mat-icon>
                   </button>
                 </span>
               </div>

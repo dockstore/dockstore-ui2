@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Base } from '../../shared/base';
-import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
@@ -29,23 +29,29 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent extends Base implements OnInit {
-  public activeToolTab$: Observable<number>;
+  faPlus = faPlus;
+  faMinus = faMinus;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
   public selectedIndex$: Observable<any>;
+  public selectedTab: number;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   options: CloudOptions = {
-    width: 600,
+    width: 500,
     height: 200,
     overflow: false,
   };
 
-  constructor(private searchService: SearchService, private queryBuilderService: QueryBuilderService, private searchQuery: SearchQuery) {
+  constructor(
+    private searchService: SearchService,
+    private queryBuilderService: QueryBuilderService,
+    private searchQuery: SearchQuery,
+    private extendedGA4GHService: ExtendedGA4GHService
+  ) {
     super();
-    this.activeToolTab$ = this.searchQuery.activeToolTab$;
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
     this.noToolHits$ = this.searchQuery.noToolHits$;
     this.showToolTagCloud$ = this.searchQuery.showToolTagCloud$;
@@ -55,11 +61,6 @@ export class SearchResultsComponent extends Base implements OnInit {
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
-    this.selectedIndex$ = this.searchQuery.activeToolTab$.pipe(
-      map((activeToolTab) => {
-        return { active: activeToolTab };
-      })
-    );
   }
 
   createTagCloud(type: string) {
@@ -71,13 +72,9 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.searchService.setShowTagCloud(type);
   }
 
-  createToolTagCloud(toolQuery, type) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: toolQuery,
-    })
-      .then((hits) => {
+  createToolTagCloud(toolQuery: string, type) {
+    this.extendedGA4GHService.toolsIndexSearch(toolQuery).subscribe(
+      (hits: any) => {
         let weight = 10;
         let count = 0;
         if (hits && hits.aggregations && hits.aggregations.tagcloud) {
@@ -107,8 +104,11 @@ export class SearchResultsComponent extends Base implements OnInit {
             count--;
           });
         }
-      })
-      .catch((error) => console.log(error));
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   // Tells the search service to tell the search filters to save its data
@@ -116,8 +116,8 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.searchService.toSaveSearch$.next(true);
   }
 
-  saveTabIndex(tab) {
-    this.searchService.saveCurrentTab(tab.index);
+  getTabIndex() {
+    return this.searchQuery.getValue().currentTabIndex;
   }
 
   tagClicked(clicked: CloudData) {

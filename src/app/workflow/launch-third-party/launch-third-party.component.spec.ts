@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
@@ -7,28 +7,39 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { GA4GHFilesStore } from '../../shared/ga4gh-files/ga4gh-files.store';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
-import { GA4GHV20Service } from '../../shared/openapi';
+import { CloudInstancesService, GA4GHV20Service, UsersService } from '../../shared/openapi';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { sampleWdlWorkflow2, sampleWorkflowVersion } from '../../test/mocked-objects';
-import { WorkflowsStubService } from '../../test/service-stubs';
+import { CloudInstancesStubService, UsersStubService, WorkflowsStubService } from '../../test/service-stubs';
 import { LaunchThirdPartyComponent } from './launch-third-party.component';
 
 describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
   let fixture: ComponentFixture<LaunchThirdPartyComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [LaunchThirdPartyComponent],
-      imports: [CustomMaterialModule, HttpClientModule],
-      providers: [GA4GHFilesService, GA4GHV20Service, GA4GHFilesStore, { provide: WorkflowsService, useClass: WorkflowsStubService }],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LaunchThirdPartyComponent],
+        imports: [CustomMaterialModule, HttpClientModule],
+        providers: [
+          GA4GHFilesService,
+          GA4GHV20Service,
+          GA4GHFilesStore,
+          { provide: WorkflowsService, useClass: WorkflowsStubService },
+          { provide: CloudInstancesService, useClass: CloudInstancesStubService },
+          { provide: UsersService, useClass: UsersStubService },
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     TestBed.inject(WorkflowsService);
     TestBed.inject(GA4GHFilesService);
+    TestBed.inject(CloudInstancesService);
+    TestBed.inject(UsersService);
     fixture = TestBed.createComponent(LaunchThirdPartyComponent);
     component = fixture.componentInstance;
     component.workflow = sampleWdlWorkflow2;
@@ -46,11 +57,13 @@ describe('LaunchThirdPartyComponent', () => {
 
     // Verify urls are correct; got these from prod (except for Terra, which is new) to verify there is no breakage.
     // tslint:disable:max-line-length
-    expect(
-      nativeElement.querySelector(
-        'a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'
-      )
-    ).toBeTruthy();
+    if (!Dockstore.FEATURES.enableMultiCloudLaunchWithDNAstack) {
+      expect(
+        nativeElement.querySelector(
+          'a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'
+        )
+      ).toBeTruthy();
+    }
     // https://platform.dnanexus.com/panx/tools/import-workflow?source=https://dockstore.org:443/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master
     expect(
       nativeElement.querySelector(

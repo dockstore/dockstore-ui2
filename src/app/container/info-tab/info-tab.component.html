@@ -27,6 +27,7 @@
             <a
               *ngIf="tool?.providerUrl"
               id="sourceRepository"
+              data-cy="sourceRepository"
               [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
             >
               {{ tool?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
@@ -51,7 +52,7 @@
               <a [href]="trsLinkCWL">
                 {{ tool?.tool_path }}
               </a>
-              <button mat-icon-button color="secondary" ngxClipboard [cbContent]="tool?.tool_path" matTooltip="Copy TRS ID">
+              <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
               </button>
             </li>
@@ -60,7 +61,7 @@
               <a [href]="trsLinkWDL">
                 {{ tool?.tool_path }}
               </a>
-              <button mat-icon-button color="secondary" ngxClipboard [cbContent]="tool?.tool_path" matTooltip="Copy TRS ID">
+              <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
               </button>
             </li>
@@ -252,7 +253,9 @@
           <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
             <strong matTooltip="Currently disabled for Hosted Tools">Checker Workflow</strong>: n/a
           </div>
-          <li *ngIf="tool?.buildMode"><strong matTooltip="{{ tool?.buildModeTooltip }}">Build Mode</strong>: {{ tool?.buildMode }}</li>
+          <li *ngIf="tool?.mode">
+            <strong matTooltip="{{ tool?.buildModeTooltip }}">Build Mode</strong>: {{ 'mode' | mapFriendlyValue: tool?.mode }}
+          </li>
           <li *ngIf="tool?.lastBuildDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <strong matTooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}
           </li>
@@ -279,7 +282,7 @@
           </a>
           <span *ngIf="!selectedVersion?.email"> n/a </span>
         </div>
-        <span *ngIf="isValidVersion" id="downloadZipButton">
+        <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
           <button *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
           <a [href]="downloadZipLink" *ngIf="tool?.is_published" mat-raised-button>Export as ZIP</a>
         </span>
@@ -300,7 +303,7 @@
                 >Dockstore's Getting Started With CWL</a
               >
               and
-              <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool" target="_blank" rel="noopener noreferrer"
                 >commonwl.org</a
               >
               for how to define a description for this tool.

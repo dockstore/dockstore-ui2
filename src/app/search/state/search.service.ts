@@ -21,12 +21,14 @@ import { transaction } from '@datorama/akita';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
 import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { searchTermLengthLimit } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
+import { ExtendedGA4GHService } from '../../shared/openapi/api/extendedGA4GH.service';
 import { ProviderService } from '../../shared/provider.service';
 import { DockstoreTool, Workflow } from '../../shared/swagger';
-import { ELASTIC_SEARCH_CLIENT } from '../elastic-search-client';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 
@@ -57,6 +59,8 @@ export enum SearchFields {
 
 @Injectable()
 export class SearchService {
+  private static readonly WORKFLOWS_TAB_INDEX = 0;
+  private static readonly TOOLS_TAB_INDEX = 1;
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
@@ -69,14 +73,24 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['verified', 'private_access', '_index', 'has_checker'];
+  public exclusiveFilters = ['verified', 'private_access', 'has_checker'];
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
     private providerService: ProviderService,
     private router: Router,
-    private imageProviderService: ImageProviderService
+    private imageProviderService: ImageProviderService,
+    private extendedGA4GHService: ExtendedGA4GHService,
+    private alertService: AlertService
   ) {}
+
+  static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' {
+    return index === this.WORKFLOWS_TAB_INDEX ? 'workflows' : 'tools';
+  }
+
+  static convertEntryTypeToTabIndex(entryType: string): number {
+    return entryType === 'workflows' ? this.WORKFLOWS_TAB_INDEX : this.TOOLS_TAB_INDEX;
+  }
 
   /**
    * Return a negative number if a sorts before b, positive if b sorts before a, and 0 if they are the same,
@@ -155,6 +169,10 @@ export class SearchService {
 
   @transaction()
   setSearchText(text: string) {
+    if (text.length > searchTermLengthLimit) {
+      text = '';
+      this.alertService.customDetailedError('Request Entity Too Large', 'Cannot perform search because search term is too large.');
+    }
     this.searchStore.update((state) => {
       return {
         ...state,
@@ -235,29 +253,27 @@ export class SearchService {
   }
 
   suggestSearchTerm(searchText: string) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: {
-        suggest: {
-          do_you_mean: {
-            text: searchText,
-            term: {
-              field: 'description',
-            },
+    const body = {
+      suggest: {
+        do_you_mean: {
+          prefix: searchText,
+          term: {
+            field: 'description',
           },
         },
       },
-    })
-      .then((hits) => {
+    };
+    this.extendedGA4GHService.toolsIndexSearch(JSON.stringify(body)).subscribe(
+      (hits) => {
         const suggestions: Array<any> = hits['suggest']['do_you_mean'][0].options;
         if (suggestions.length > 0) {
           this.setSuggestTerm(suggestions[0].text);
         } else {
           this.setSuggestTerm('');
         }
-      })
-      .catch((error) => console.log(error));
+      },
+      (error) => console.log(error)
+    );
   }
 
   setSuggestTerm(suggestTerm: string) {
@@ -327,6 +343,7 @@ export class SearchService {
         httpParams = httpParams.append(key, subBucket);
       });
     });
+    httpParams = httpParams.append('entryType', searchInfo.entryType);
     if (searchInfo.searchValues) {
       httpParams = httpParams.append('search', searchInfo.searchValues);
     } else {
@@ -473,7 +490,6 @@ export class SearchService {
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([
-      ['Entry Type', '_index'],
       ['Language', 'descriptorType'],
       ['Registry', 'registry'],
       ['Source Control', 'source_control_provider.keyword'],
@@ -493,20 +509,19 @@ export class SearchService {
 
   initializeFriendlyNames() {
     return new Map([
-      ['_index', 'Entry Type'],
       ['descriptorType', 'Language'],
-      ['registry', 'Tool: Registry'],
-      ['source_control_provider.keyword', 'Workflow: Source Control'],
-      ['private_access', 'Tool: Private Access'], // Workflow has no counterpart
+      ['registry', 'Registry'],
+      ['source_control_provider.keyword', 'Source Control'],
+      ['private_access', 'Private Access'],
       ['verified', 'Verified'],
       ['author', 'Author'],
-      ['namespace', 'Tool: Namespace'],
+      ['namespace', 'Namespace'],
       ['labels.value.keyword', 'Labels'],
       ['input_file_formats.value.keyword', 'Input File Formats'],
       ['output_file_formats.value.keyword', 'Output File Formats'],
       [SearchFields.VERIFIED_SOURCE, 'Verified Source'],
       ['has_checker', 'Has Checker Workflows'],
-      ['organization', 'Workflow: Organization'],
+      ['organization', 'Organization'],
       ['verified_platforms.keyword', 'Verified Platforms'],
     ]);
   }
@@ -529,7 +544,6 @@ export class SearchService {
 
   initializeEntryOrder() {
     return new Map([
-      ['_index', new SubBucket()],
       ['descriptorType', new SubBucket()],
       ['author', new SubBucket()],
       ['registry', new SubBucket()],
@@ -615,6 +629,17 @@ export class SearchService {
         currentTabIndex: index,
       };
     });
+  }
+
+  /**
+   * This navigates to the correct page and clears all facets, search text, and advanced search
+   */
+  saveCurrentTabAndClear(index: number) {
+    if (index === SearchService.WORKFLOWS_TAB_INDEX) {
+      this.router.navigateByUrl('search?entryType=workflows&searchMode=Files');
+    } else {
+      this.router.navigateByUrl('search?entryType=tools&searchMode=Files');
+    }
   }
 
   goToCleanSearch() {

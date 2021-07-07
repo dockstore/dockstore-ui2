@@ -44,15 +44,18 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <span fxLayout="row" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
-            ><span *ngIf="defaultVersion === version.name" class="label label-primary">Default</span></a
-          >
-          <i *ngIf="version.referenceType === 'BRANCH'" class="fa fa-code-fork" aria-hidden="true" title="Branch"></i>
-          <i *ngIf="version.referenceType === 'TAG'" class="fa fa-tag" aria-hidden="true" title="Tag"></i>
+        <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+          <mat-chip *ngIf="defaultVersion === version.name" class="workflow-label-tag">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
+              class="verified-check"
+              ><span style="word-break: normal">Default</span></a
+            >
+          </mat-chip>
+          <fa-icon *ngIf="version.referenceType === 'BRANCH'" [icon]="faCodeBranch" aria-hidden="true" title="Branch"></fa-icon>
+          <fa-icon *ngIf="version.referenceType === 'TAG'" [icon]="faTag" aria-hidden="true" title="Tag"></fa-icon>
           <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->
           <a
             href="javascript:undefined"
@@ -178,6 +181,7 @@
       [ngClass]="{ highlight: version.name === _selectedVersion.name }"
       mat-row
       *matRowDef="let row; columns: displayedColumns; let version"
+      data-cy="versionRow"
     ></tr>
   </table>
 </div>

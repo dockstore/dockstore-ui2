@@ -13,11 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { ClipboardModule } from 'ngx-clipboard';
+
 import { MarkdownModule } from 'ngx-markdown';
 import { ContainerComponent } from '../../container/container.component';
 import { DescriptorsComponent } from '../../container/descriptors/descriptors.component';
@@ -40,6 +41,7 @@ import { StarringService } from '../../starring/starring.service';
 import { DateService } from '../date.service';
 import { ToolActionsComponent } from '../entry-actions/tool-actions.component';
 import { FileService } from '../file.service';
+import { PipeModule } from '../pipe/pipe.module';
 import { AddTagComponent } from './../../container/add-tag/add-tag.component';
 import { ModalComponent } from './../../container/deregister-modal/deregister-modal.component';
 import { InfoTabComponent } from './../../container/info-tab/info-tab.component';
@@ -55,6 +57,7 @@ import { HeaderModule } from './header.module';
 import { ListContainersModule } from './list-containers.module';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SelectModule } from './select.module';
+import { SnackbarModule } from './snackbar.module';
 
 @NgModule({
   declarations: [
@@ -90,6 +93,8 @@ import { SelectModule } from './select.module';
     FlexLayoutModule,
     MarkdownModule,
     MarkdownWrapperModule,
+    PipeModule,
+    SnackbarModule,
   ],
   providers: [
     EmailService,
@@ -104,6 +109,5 @@ import { SelectModule } from './select.module';
     InfoTabService,
   ],
   exports: [ContainerComponent, CustomMaterialModule, EntryModule, ToolActionsComponent],
-  entryComponents: [ModalComponent, VersionModalComponent, AddTagComponent],
 })
 export class ContainerModule {}

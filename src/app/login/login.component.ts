@@ -17,6 +17,7 @@ import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { RegisterService } from '../register/register.service';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -29,6 +30,9 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+  faGithub = faGithub;
+  faGoogle = faGoogle;
+  public tabindex: number;
   constructor(
     private trackLoginService: TrackLoginService,
     private loginService: LoginService,
@@ -38,6 +42,11 @@ export class LoginComponent {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer
   ) {
+    if (this.router.url.includes('register')) {
+      this.tabindex = 1;
+    } else {
+      this.tabindex = 0;
+    }
     iconRegistry.addSvgIcon('google', sanitizer.bypassSecurityTrustResourceUrl('../assets/svg/btn_google_light_normal_ios.svg'));
   }
 

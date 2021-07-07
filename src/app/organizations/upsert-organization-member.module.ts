@@ -10,6 +10,5 @@ import { UpsertOrganizationMemberComponent } from './upsert-organization-member/
 @NgModule({
   imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, ReactiveFormsModule, RefreshAlertModule],
   declarations: [UpsertOrganizationMemberComponent],
-  entryComponents: [UpsertOrganizationMemberComponent],
 })
 export class UpsertOrganizationMemberModule {}

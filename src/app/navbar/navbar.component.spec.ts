@@ -14,14 +14,13 @@
  *    limitations under the License.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { LogoutService } from '../shared/logout.service';
 import { PageInfo } from '../shared/models/PageInfo';
 import { PagenumberService } from '../shared/pagenumber.service';
@@ -33,18 +32,20 @@ describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
   let pagenumberService: PagenumberService;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [NavbarComponent],
-      imports: [RouterTestingModule, MatMenuModule, MatButtonModule, MatIconModule, MatDividerModule, MatToolbarModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        PagenumberService,
-        { provide: TrackLoginService, useClass: TrackLoginStubService },
-        { provide: LogoutService, useClass: LogoutStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [NavbarComponent],
+        imports: [RouterTestingModule, MatMenuModule, MatButtonModule, MatIconModule, MatDividerModule, MatToolbarModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          PagenumberService,
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
+          { provide: LogoutService, useClass: LogoutStubService },
+        ],
+      }).compileComponents();
+    })
+  );
   beforeEach(() => {
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;

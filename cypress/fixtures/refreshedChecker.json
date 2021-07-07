@@ -15,11 +15,11 @@
   "full_workflow_path": "github.com\/A\/l\/_cwl_checker",
   "gitUrl": "git@github.com:A\/l.git",
   "has_checker": false,
-  "id": 103,
+  "id": 102,
   "input_file_formats": [
 
   ],
-  "is_checker": true,
+  "isChecker": true,
   "is_published": true,
   "labels": [
 

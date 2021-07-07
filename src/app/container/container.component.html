@@ -42,20 +42,30 @@
     </mat-card>
   </div>
 
-  <div class="row m-1">
+  <div class="row m-1" fxLayout.lt-sm="column">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
-    <div class="col-md-7">
-      <h3 id="tool-path">
-        <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified">
-          <a [href]="getVerifiedLink()" class="verified-check">
-            <mat-icon matTooltip="Verified">done</mat-icon>
-          </a>
+    <div fxFlex="80">
+      <h3 id="tool-path" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+        <span fxLayout.lt-sm="column">
+          <span>
+            <img src="../../assets/svg/tool-circle.svg" alt="tool icon" />
+          </span>
+          <span *ngIf="tool?.private_access" class="private-lock">
+            <app-private-icon></app-private-icon>
+          </span>
         </span>
-        <span *ngIf="tool?.private_access" class="private-lock" matTooltip="Private">
-          <app-private-icon></app-private-icon>
+        <span fxLayout.lt-sm="column" style="word-break: break-word">
+          {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
+          ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
+          <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
+            <mat-chip matTooltip="Verified" class="container-label-tag">
+              <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                <mat-icon class="verified-icon">done</mat-icon>
+                <span>Verified</span>
+              </a>
+            </mat-chip>
+          </span>
         </span>
-        {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
-        ><span class="ds-green">{{ selectedVersion?.name }}</span>
       </h3>
 
       <div *ngIf="!publicPage && tool?.workflowVersions.length > 0">
@@ -71,7 +81,7 @@
         >
       </p>
     </div>
-    <div class="col-md-5">
+    <div fxFlex>
       <app-starring
         [tool]="tool"
         class="pull-right starring-button"
@@ -80,7 +90,7 @@
       ></app-starring>
       <h3 class="pull-right">
         <div class="mr-2" *ngIf="publicPage && tool?.private_access">
-          <a mat-raised-button color="accent" [href]="requestAccessHREF"> Request Access </a>
+          <a mat-raised-button color="accent" [href]="requestAccessHREF$ | async"> Request Access </a>
         </div>
         <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
           <a mat-raised-button color="primary" [href]="contactAuthorHREF"> Contact Author </a>
@@ -97,7 +107,9 @@
     <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px">
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
-          <mat-chip color="primary" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{ label }}</mat-chip>
+          <mat-chip class="container-label-tag" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
+            label
+          }}</mat-chip>
           <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
             Manage labels
           </button>
@@ -139,7 +151,7 @@
       </span>
     </div>
   </div>
-  <div class="row ml-4 mr-4" *ngIf="starGazersClicked">
+  <div class="row ml-4 mr-4 mb-4" *ngIf="starGazersClicked">
     <app-stargazers></app-stargazers>
     <button mat-flat-button color="primary" id="backButton" type="button" (click)="starGazersClicked = false">
       <mat-icon>chevron_left</mat-icon>Back to details
@@ -148,13 +160,14 @@
 
   <div class="row m-1" *ngIf="!starGazersClicked">
     <div class="col-sm-12 p-0" [ngClass]="{ 'col-md-9 col-lg-9': isToolPublic }">
-      <div class="ds-tabs" [ngClass]="{ 'mr-3': isToolPublic }">
+      <div [ngClass]="{ 'mr-3': isToolPublic }">
         <mat-tab-group
           dynamicHeight
           (selectedIndexChange)="selected.setValue($event)"
           (selectedTabChange)="selectedTabChange($event)"
           [selectedIndex]="selected.value"
           id="tool_tabs"
+          class="tool-tab-group"
           #entryTabs
           mat-stretch-tabs
         >
@@ -249,23 +262,24 @@
       </div>
     </div>
 
-    <div class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
-      <div class="panel panel-default mb-3">
-        <div class="panel-heading">
-          <h3>Recent Versions</h3>
-        </div>
-        <div class="p-3 panel-body">
+    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Recent Versions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div>
             <span *ngFor="let sortedVersion of sortedVersions">
               <p class="top-down-padding m-0">
                 <span id="verifiedIcon" *ngIf="sortedVersion?.verified">
-                  <a [href]="getVerifiedLink()" class="verified-check">
+                  <a [href]="verifiedLink" class="verified-check">
                     <mat-icon matTooltip="Verified">done</mat-icon>
                   </a>
                 </span>
                 <a
                   [ngStyle]="{ 'font-weight': selectedVersion?.name === sortedVersion?.name ? 'bold' : 'normal' }"
                   (click)="onSelectedVersionChange(sortedVersion)"
+                  class="panel-body-anchor"
                   >{{ sortedVersion.name }}
                 </a>
                 <small>{{ sortedVersion.last_built | date }}</small>
@@ -274,13 +288,13 @@
             </span>
             <a (click)="selectTab(2)">See all tags</a>
           </div>
-        </div>
-      </div>
-      <div class="panel panel-default mb-3" *ngIf="tool">
-        <div class="panel-heading">
-          <h3>Docker Pull Command</h3>
-        </div>
-        <div class="p-3 panel-body">
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="tool">
+        <mat-card-header>
+          <mat-card-title>Docker Pull Command</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div class="input-group">
             <input type="text" class="form-control" [(ngModel)]="dockerPullCmd" value="{{ dockerPullCmd }}" readonly />
             <span class="input-group-btn">
@@ -288,21 +302,22 @@
                 class="btn btn-default form-sm-button-material"
                 [ngClass]="{ 'btn-copy': toolCopyBtn === 'docker_pull_command' }"
                 type="button"
-                ngxClipboard
-                [cbContent]="dockerPullCmd"
+                [cdkCopyToClipboard]="dockerPullCmd"
                 (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')"
+                appSnackbar
               >
                 <mat-icon>file_copy</mat-icon>
               </button>
             </span>
           </div>
-        </div>
-      </div>
-      <div class="panel panel-default mb-3" *ngIf="extendedTool$ | async">
-        <div class="panel-heading">
-          <h3>Source Repositories</h3>
-        </div>
-        <div class="p-3 panel-body">
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="extendedTool$ | async">
+        <mat-card-header>
+          <mat-card-title>Source Repositories</mat-card-title>
+        </mat-card-header>
+        <!-- Overflow hidden to fix the protruding image due to float right -->
+        <mat-card-content class="overflow-hidden">
           <div class="container-source-repos">
             <p>
               Git Repository:
@@ -335,19 +350,19 @@
               </span>
             </p>
           </div>
-        </div>
-      </div>
+        </mat-card-content>
+      </mat-card>
       <current-collections [id]="tool.id" [versions]="tool.workflowVersions"></current-collections>
       <app-verified-by
         *ngIf="selectedVersion"
         [version]="selectedVersion"
         [verifiedByPlatform]="versionsWithVerifiedPlatforms"
       ></app-verified-by>
-      <div class="panel panel-default mb-3" *ngIf="tool">
-        <div class="panel-heading">
-          <h3>Sharing</h3>
-        </div>
-        <div class="p-3 panel-body">
+      <mat-card class="mb-1" *ngIf="tool">
+        <mat-card-header>
+          <mat-card-title>Sharing</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           <div class="container-sharing">
             <share-buttons
               [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
@@ -356,9 +371,9 @@
               [autoSetMeta]="false"
             ></share-buttons>
           </div>
-        </div>
-      </div>
-      <!-- Re-enable the below once ga4gh/dockstore#442 is complete -->
+        </mat-card-content>
+      </mat-card>
+      <!-- Re-enable the below and change to material card once ga4gh/dockstore#442 is complete -->
       <!-- <div class="panel panel-default mb-3">
       <div class="panel-heading">
         <h3>DOI</h3>

@@ -1,7 +1,7 @@
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { ClipboardModule } from 'ngx-clipboard';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -27,22 +27,24 @@ describe('VersionModalComponent', () => {
   let component: VersionModalComponent;
   let fixture: ComponentFixture<VersionModalComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [VersionModalComponent],
-      imports: [FormsModule, ClipboardModule, MatSnackBarModule, MatDialogModule],
-      providers: [
-        { provide: ParamfilesService, useClass: ParamFilesStubService },
-        { provide: VersionModalService, useClass: VersionModalStubService },
-        { provide: ListContainersService, useClass: ListContainersService },
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: ContainersService, useClass: ContainersStubService },
-        { provide: ContainertagsService, useClass: ContainertagsStubService },
-        { provide: DateService, useClass: DateStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [VersionModalComponent],
+        imports: [FormsModule, ClipboardModule, MatSnackBarModule, MatDialogModule],
+        providers: [
+          { provide: ParamfilesService, useClass: ParamFilesStubService },
+          { provide: VersionModalService, useClass: VersionModalStubService },
+          { provide: ListContainersService, useClass: ListContainersService },
+          { provide: ContainerService, useClass: ContainerStubService },
+          { provide: ContainersService, useClass: ContainersStubService },
+          { provide: ContainertagsService, useClass: ContainertagsStubService },
+          { provide: DateService, useClass: DateStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VersionModalComponent);

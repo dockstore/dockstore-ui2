@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from '../alert/state/alert.service';
+import { includesVersions } from '../constants';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { WorkflowService } from '../state/workflow.service';
@@ -116,7 +117,7 @@ export class EntryActionsService {
           this.alertService.detailedSuccess();
           // Publishing a workflow with a checker also updates the checker workflow in my-workflows
           if (response.checker_id) {
-            this.workflowsService.getWorkflow(response.checker_id).subscribe(
+            this.workflowsService.getWorkflow(response.checker_id, includesVersions).subscribe(
               (responseWorkflow: Workflow) => {
                 this.workflowService.upsertWorkflowToWorkflow(responseWorkflow);
               },

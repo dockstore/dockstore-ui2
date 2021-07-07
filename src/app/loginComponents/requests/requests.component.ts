@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
@@ -122,7 +122,7 @@ export class RequestsComponent extends Base implements OnInit {
   }
 
   rerequestReview(membership: OrganizationUser) {
-    this.requestsService.requestRereview(membership.organization.id);
+    this.requestsService.requestRereview(membership.organization.id, this.isAdminOrCurator);
   }
 
   removeOrganizationDialog(organizationName: string, organizationStatus: string, organizationID: number) {

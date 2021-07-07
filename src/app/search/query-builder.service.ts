@@ -49,11 +49,13 @@ export class QueryBuilderService {
     searchTerm: boolean,
     bucketStubs: any,
     filters: any,
-    sortModeMap: any
+    sortModeMap: any,
+    index: 'workflows' | 'tools'
   ): string {
     const count = this.getNumberOfFilters(filters);
     let sidebarBody = bodybuilder().size(query_size);
     sidebarBody = this.excludeContent(sidebarBody);
+    sidebarBody = sidebarBody.query('match', '_index', index);
     sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
     sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, sortModeMap);
     const builtSideBarBody = sidebarBody.build();
@@ -65,26 +67,24 @@ export class QueryBuilderService {
     return body.rawOption('_source', false);
   }
 
-  private excludeVerifiedContent(body: any) {
-    // TODO: it should be possible to exclude tags and workflowVersions too
-    // however, it currently breaks the contents of the datatables since verified information is not aggregated by
-    // tool or workflow properly.
-    return body.rawOption('_source', {
-      excludes: [
-        '*.content',
-        '*.sourceFiles',
-        'description',
-        'users',
-        'workflowVersions.dirtyBit',
-        'workflowVersions.hidden',
-        'workflowVersions.last_modified',
-        'workflowVersions.name',
-        'workflowVersions.valid',
-        'workflowVersions.workflow_path',
-        'workflowVersions.workingDirectory',
-        'workflowVersions.reference',
-      ],
-    });
+  // These are the properties to return in the search to display the results table correctly
+  private sourceOptions(body: any) {
+    return body.rawOption('_source', [
+      'author',
+      'descriptorType',
+      'full_workflow_path',
+      'gitUrl',
+      'name',
+      'namespace',
+      'organization',
+      'providerUrl',
+      'repository',
+      'starredUsers',
+      'toolname',
+      'tool_path',
+      'verified',
+      'workflowName',
+    ]);
   }
 
   getNumberOfFilters(filters: any) {
@@ -100,15 +100,26 @@ export class QueryBuilderService {
     values: string,
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
-    filters: any
+    filters: any,
+    index: 'tools' | 'workflows'
   ): string {
     let tableBody = bodybuilder().size(query_size);
-    tableBody = this.excludeVerifiedContent(tableBody);
+    tableBody = this.sourceOptions(tableBody);
+    tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters);
     const builtTableBody = tableBody.build();
     const tableQuery = JSON.stringify(builtTableBody);
     return tableQuery;
+  }
+
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
+    let body = bodybuilder().size(query_size);
+    body = this.sourceOptions(body);
+    body = body.query('match', '_index', index);
+    const builtBody = body.build();
+    const singleIndexQuery = JSON.stringify(builtBody);
+    return singleIndexQuery;
   }
 
   /**===============================================
@@ -172,7 +183,7 @@ export class QueryBuilderService {
   appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
     if (values.toString().length > 0) {
-      this.searchEverything(body, values);
+      body = this.searchEverything(body, values);
     } else {
       body = body.query('match_all', {});
     }
@@ -191,22 +202,25 @@ export class QueryBuilderService {
   /**
    * Appends search-everything filter to the query
    * Currently searches sourcefiles, description, labels, author, and path
-   * @param {*} body The original body
-   * @param {string} searchString the search string
-   * @memberof QueryBuilderService
+   * Some requirements:
+   * 1. Need to be able to match substring (ex. "chicken pot pie" should match "pot")
+   * 2. Need to be able to handle slashes (ex. "beef/stew" should match "beef/stew")
+   * Wildcard is used for #1
+   * The paths use keyword instead of string because #2 wouldn't work otherwise
+   *
+   * @param body Body from the Bodybuilder package which will be mutated
+   * @param searchString The string entered into the basic search bar by the user
    */
-  searchEverything(body: any, searchString: string): void {
-    body = body.filter('bool', (filter) =>
+  private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
+    return body.filter('bool', (filter) =>
       filter
-        .orFilter('bool', (workflowVersionsFileContent) =>
-          workflowVersionsFileContent.filter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
-        )
-        .orFilter('bool', (tagsFileContent) => tagsFileContent.filter('match_phrase', 'tags.sourceFiles.content', searchString))
-        .orFilter('bool', (descriptionFilter) => descriptionFilter.filter('match_phrase', 'description', searchString))
-        .orFilter('bool', (labelsFilter) => labelsFilter.filter('match_phrase', 'labels', searchString))
-        .orFilter('bool', (authorFilter) => authorFilter.filter('match_phrase', 'author', searchString))
-        .orFilter('bool', (pathFilter) => pathFilter.filter('match_phrase', 'tool_path', searchString))
-        .orFilter('bool', (pathFilter) => pathFilter.filter('match_phrase', 'full_workflow_path', searchString))
+        .orFilter('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+        .orFilter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
+        .orFilter('match_phrase', 'tags.sourceFiles.content', searchString)
+        .orFilter('match_phrase', 'description', searchString)
+        .orFilter('match_phrase', 'labels', searchString)
+        .orFilter('match_phrase', 'author', searchString)
     );
   }
 

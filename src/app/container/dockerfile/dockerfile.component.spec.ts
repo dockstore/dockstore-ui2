@@ -15,7 +15,7 @@
  */
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContainersService } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
 import { FileService } from './../../shared/file.service';
@@ -26,17 +26,19 @@ describe('DockerfileComponent', () => {
   let component: DockerfileComponent;
   let fixture: ComponentFixture<DockerfileComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DockerfileComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: FileService, useClass: FileStubService },
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: ContainersService, useClass: ContainersStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DockerfileComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          { provide: FileService, useClass: FileStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
+          { provide: ContainersService, useClass: ContainersStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DockerfileComponent);

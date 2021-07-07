@@ -65,7 +65,7 @@ describe('Dockstore my tools', () => {
       cy.contains('Last Build');
       cy.contains('Last Updated');
       cy.contains('Build Mode');
-      cy.contains('Fully-Automated');
+      cy.contains('Fully automated');
       cy.contains('/Dockstore.cwl');
       // Change the dockerfile path
       cy.contains('button', ' Edit ').click();

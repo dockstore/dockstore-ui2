@@ -17,3 +17,7 @@
 .link-with-underline {
   text-decoration: underline;
 }
+
+a {
+  word-break: break-word;
+}

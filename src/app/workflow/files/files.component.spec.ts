@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { GA4GHV20Service } from '../../shared/openapi';
@@ -25,16 +25,18 @@ describe('FilesWorkflowComponent', () => {
   let component: FilesWorkflowComponent;
   let fixture: ComponentFixture<FilesWorkflowComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [FilesWorkflowComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: ParamfilesService, useClass: ParamFilesStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FilesWorkflowComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          { provide: ParamfilesService, useClass: ParamFilesStubService },
+          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FilesWorkflowComponent);

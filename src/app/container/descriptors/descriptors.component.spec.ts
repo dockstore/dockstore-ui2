@@ -15,7 +15,7 @@
  */
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ContainersStubService, ContainerStubService, EntryStubService, GA4GHV20StubService } from '../../../../src/app/test/service-stubs';
@@ -32,21 +32,23 @@ describe('DescriptorsComponent', () => {
   let fixture: ComponentFixture<DescriptorsComponent>;
 
   class FileStubService {}
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DescriptorsComponent],
-      imports: [HttpClientModule, MatSnackBarModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        DescriptorService,
-        { provide: ContainersService, useClass: ContainersStubService },
-        { provide: ContainerService, useClass: ContainerStubService },
-        { provide: FileService, useClass: FileStubService },
-        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-        { provide: EntriesService, useClass: EntryStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DescriptorsComponent],
+        imports: [HttpClientModule, MatSnackBarModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          DescriptorService,
+          { provide: ContainersService, useClass: ContainersStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
+          { provide: FileService, useClass: FileStubService },
+          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+          { provide: EntriesService, useClass: EntryStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DescriptorsComponent);

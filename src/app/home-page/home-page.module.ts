@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from 'app/home-page/home-logged-out/home.component';
@@ -17,6 +18,7 @@ import { HomePageComponent } from './home-page.component';
 import { RecentEventsComponent } from './recent-events/recent-events.component';
 import { EntriesComponent } from './widget/entries/entries.component';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
+import { FeaturedNewsComponent } from './widget/featured-content/featured-news.component';
 import { GettingStartedComponent } from './widget/getting-started/getting-started.component';
 import { NewsUpdatesComponent } from './widget/news-updates/news-updates.component';
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
@@ -35,6 +37,7 @@ import { RequestsComponent } from './widget/requests/requests.component';
     HttpClientModule,
     RefreshAlertModule,
     MarkdownModule,
+    FontAwesomeModule,
   ],
   declarations: [
     HomePageComponent,
@@ -45,11 +48,11 @@ import { RequestsComponent } from './widget/requests/requests.component';
     EntriesComponent,
     OrganizationsComponent,
     FeaturedContentComponent,
+    FeaturedNewsComponent,
     NewsUpdatesComponent,
     GettingStartedComponent,
     EntryToDisplayNamePipe,
   ],
-  entryComponents: [],
   exports: [NgxJsonLdModule],
 })
 export class HomePageModule {}

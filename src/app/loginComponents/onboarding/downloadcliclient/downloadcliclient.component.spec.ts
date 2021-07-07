@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AuthService } from 'ng2-ui-auth';
-import { ClipboardModule } from 'ngx-clipboard';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,25 +18,27 @@ describe('DownloadCLIClientComponent', () => {
   let component: DownloadCLIClientComponent;
   let fixture: ComponentFixture<DownloadCLIClientComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DownloadCLIClientComponent, RouterLinkStubDirective, RouterOutletStubComponent],
-      imports: [
-        ClipboardModule,
-        MarkdownModule.forRoot(),
-        MatIconModule,
-        MatButtonModule,
-        HttpClientTestingModule,
-        MatTabsModule,
-        NoopAnimationsModule,
-      ],
-      providers: [
-        { provide: AuthService, useClass: AuthStubService },
-        { provide: GA4GHService, useClass: GA4GHStubService },
-        MetadataService,
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DownloadCLIClientComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+        imports: [
+          ClipboardModule,
+          MarkdownModule.forRoot(),
+          MatIconModule,
+          MatButtonModule,
+          HttpClientTestingModule,
+          MatTabsModule,
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: AuthService, useClass: AuthStubService },
+          { provide: GA4GHService, useClass: GA4GHStubService },
+          MetadataService,
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DownloadCLIClientComponent);

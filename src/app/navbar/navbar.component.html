@@ -15,61 +15,93 @@
   -->
 <mat-toolbar color="primary">
   <mat-toolbar-row class="toolbar-holder hidden-xs">
-    <div [className]="isExtended ? 'container w-100 navbar-fluid' : 'container navbar-fluid'">
+    <div [ngClass]="'container navbar-fluid'">
       <span class="flex-toolbar">
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
-          <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="49" alt="dockstore logo" />
+          <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="41" alt="dockstore logo" />
         </a>
-        <a mat-button class="icon" [routerLink]="['/search']">
-          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/search-button.png" alt="search button" /> Search
+        <a mat-button class="icon" [routerLink]="['/search']" routerLinkActive="icon-active">
+          <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-search.svg" alt="search button" /> Search
         </a>
-        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations">
-          <mat-icon class="hidden-sm">people</mat-icon> Organizations
+        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations" routerLinkActive="icon-active">
+          <img
+            class="site-icons-small hidden-sm"
+            src="../assets/svg/main-nav/icons-navigation-organization.svg"
+            alt="organization button"
+          />
+          Organizations
+        </a>
+        <a mat-button class="icon" [routerLink]="['/about']" routerLinkActive="icon-active">
+          <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-about.svg" alt="about button" /> About
         </a>
         <a mat-button class="icon" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
-          <img class="site-icons-small hidden-sm" src="../assets/images/dockstore/dockstore-documentation.png" alt="stacked pages" /> Docs
+          <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-docs.svg" alt="stacked pages" /> Docs
         </a>
         <a mat-button class="icon" [href]="Dockstore.DISCOURSE_URL" target="_blank" rel="noopener noreferrer">
-          <mat-icon class="hidden-sm">forum</mat-icon> Forum
+          <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-forum.svg" alt="stacked pages" /> Forum
         </a>
         <span class="spacer"></span>
-        <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
+        <div fxLayoutGap="1rem" *ngIf="!isLoggedIn">
+          <a routerLink="/login">
+            <button mat-raised-button color="accent">Login</button>
+          </a>
+          <a routerLink="/register">
+            <button mat-raised-button color="accent">Register</button>
+          </a>
+        </div>
         <template [ngTemplateOutlet]="loginButton"></template>
         <mat-menu #menuLarge="matMenu">
-          <a mat-menu-item data-cy="my-tools-nav-button" routerLink="/my-tools">
-            <img
-              class="site-icons-small hidden-sm"
-              src="../assets/images/dockstore/dockstore-tools-purple.png"
-              alt="square and circle logo"
-            />&nbsp;My&nbsp;Tools
-          </a>
-          <a mat-menu-item data-cy="my-workflows-nav-button" routerLink="/my-workflows">
-            <img
-              class="site-icons-small hidden-sm"
-              src="../assets/images/dockstore/dockstore-workflows-purple.png"
-              alt="square and circle logo"
-            />&nbsp;My&nbsp;Workflows
-          </a>
-          <a mat-menu-item data-cy="my-services-nav-button" routerLink="/my-services">
-            <img
-              class="site-icons-small hidden-sm"
-              src="../assets/images/dockstore/dockstore-workflows-purple.png"
-              alt="square and circle logo"
-            />&nbsp;My&nbsp;Services
+          <button
+            mat-menu-item
+            data-cy="my-tools-nav-button"
+            routerLink="/my-tools"
+            routerLinkActive="menu-item-active"
+            fxLayoutGap="0.5rem"
+          >
+            <img class="site-icons-tab" src="../assets/svg/tool-circle.svg" alt="tool logo" />
+            <span>My Tools</span>
+          </button>
+          <button
+            mat-menu-item
+            data-cy="my-workflows-nav-button"
+            routerLink="/my-workflows"
+            routerLinkActive="menu-item-active"
+            fxLayoutGap="0.5rem"
+          >
+            <img class="site-icons-tab" src="../assets/svg/workflow-circle.svg" alt="workflow logo" />
+            <span>My Workflows</span>
+          </button>
+          <button
+            mat-menu-item
+            data-cy="my-services-nav-button"
+            routerLink="/my-services"
+            routerLinkActive="menu-item-active"
+            fxLayoutGap="0.5rem"
+          >
+            <img class="site-icons-tab" src="../assets/svg/service-circle.svg" alt="service logo" />
+            <span>My Services</span>
             <div class="beta-label">preview</div>
-          </a>
+          </button>
           <mat-divider></mat-divider>
-          <a mat-menu-item id="dropdown-accounts" routerLink="/accounts">
+          <button mat-menu-item id="dropdown-accounts" routerLink="/accounts" routerLinkActive="menu-item-active">
             <mat-icon color="accent" *ngIf="user?.isAdmin">lock</mat-icon>
             <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
             <mat-icon color="accent" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>Account
-          </a>
-          <a mat-menu-item id="dropdown-starred" routerLink="/starred"> <mat-icon color="accent">stars</mat-icon>Starred</a>
-          <a mat-menu-item id="dropdown-onboarding" routerLink="/onboarding" *ngIf="extendedUser?.canChangeUsername">
+          </button>
+          <button mat-menu-item id="dropdown-starred" routerLink="/starred" routerLinkActive="menu-item-active" color="accent">
+            <mat-icon>stars</mat-icon>Starred
+          </button>
+          <button
+            mat-menu-item
+            id="dropdown-onboarding"
+            routerLink="/onboarding"
+            routerLinkActive="menu-item-active"
+            *ngIf="extendedUser?.canChangeUsername"
+          >
             <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
-          </a>
+          </button>
           <mat-divider></mat-divider>
-          <a mat-menu-item id="dropdown-logout" (click)="logout()"> <mat-icon color="accent">input</mat-icon>Log out </a>
+          <button mat-menu-item id="dropdown-logout" (click)="logout()"><mat-icon color="accent">input</mat-icon>Log out</button>
         </mat-menu>
       </span>
     </div>
@@ -87,9 +119,9 @@
   </mat-toolbar-row>
   <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
     <div class="container-fluid navbar-holder">
-      <a mat-button class="icon icon-sm" routerLink="/search">Search</a>
-      <a mat-button class="icon icon-sm" routerLink="/organizations">Organizations</a>
-      <a mat-button class="icon icon-sm" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">Docs</a>
+      <a mat-button class="icon" routerLink="/search">Search</a>
+      <a mat-button class="icon" routerLink="/organizations">Organizations</a>
+      <a mat-button class="icon" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">Docs</a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

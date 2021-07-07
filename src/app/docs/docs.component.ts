@@ -58,7 +58,7 @@ export class DocsComponent implements OnInit {
   // Generate redirect link based on path
   getLink() {
     const currentPath = window.location.pathname;
-    const redirectBase = 'http://docs.dockstore.org';
+    const redirectBase = 'https://docs.dockstore.org';
 
     // Fallback path for docs that don't match existing paths
     let redirectPath = '/docs';

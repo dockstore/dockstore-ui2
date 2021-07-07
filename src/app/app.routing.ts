@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { RouterModule, Routes } from '@angular/router';
+import { AboutComponent } from './about/about.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeLoggedInComponent } from './home-page/home-logged-in/home-logged-in.component';
@@ -96,10 +97,16 @@ const APP_ROUTES: Routes = [
     data: { title: 'Dockstore | Aliases' },
   },
   {
+    path: 'about',
+    component: AboutComponent,
+    data: { title: 'Dockstore | About' },
+  },
+  {
     path: 'search',
     loadChildren: () => import('app/search/search.module').then((m) => m.SearchModule),
     data: { title: 'Dockstore | Search' },
   },
+  { path: 'register', component: LoginComponent, data: { title: 'Dockstore | Register' } },
   { path: 'login', component: LoginComponent, data: { title: 'Dockstore | Login' } },
   { path: 'logout', component: LogoutComponent, data: { title: 'Dockstore | Logout' } },
   { path: 'session-expired', component: SessionExpiredComponent, data: { title: 'Dockstore | Session Expired' } },

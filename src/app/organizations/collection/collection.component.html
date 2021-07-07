@@ -14,13 +14,23 @@
    limitations under the License.
 -->
 <app-header>
-  <mat-icon>people</mat-icon>
-  Collections
+  <div fxLayout="row" fxLayoutAlign="space-between stretch">
+    <div fxLayout="row" fxLayoutGap="1rem">
+      <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization icon" />
+      <a class="category-text" [routerLink]="['/organizations/']">Organizations</a>
+      <span fxHide.lt-sm>/</span>
+      <a class="category-text" [routerLink]="['/organizations/', (organization$ | async)?.name]" fxHide.lt-sm>{{
+        (organization$ | async)?.displayName
+      }}</a>
+      <span fxHide.lt-md>/</span>
+      <span fxHide.lt-md>{{ (collection$ | async)?.displayName }}</span>
+    </div>
+  </div>
 </app-header>
 <!-- Beware of double loading bar (from page and from loading component) -->
 <app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
   <div *ngIf="organization$ | async as organization">
-    <div class="container" *ngIf="collection$ | async as collection" fxLayout="column">
+    <div class="container mb-5" *ngIf="collection$ | async as collection" fxLayout="column">
       <mat-card fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === pendingEnum">
         <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
         <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
@@ -37,25 +47,17 @@
         <mat-icon>info</mat-icon> This collection is part of an organization that has been rejected by a curator. Members can re-request
         approval on the <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
       </mat-card>
-      <mat-card fxFlex class="my-3">
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
-          <div>
-            <img [src]="(gravatarUrl$ | async) || '../../../assets/images/dockstore/PlaceholderLC.png'" class="orgLogo" />
+      <div fxFlex class="my-3">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
+          <div *ngIf="gravatarUrl$ | async" fxHide.lt-sm>
+            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="organization logo" />
           </div>
           <div>
-            <mat-card-header>
-              <mat-card-title>
-                <h1>
-                  <a [routerLink]="['/organizations/', organization.name]"
-                    ><span [matTooltip]="organization?.name">{{ organization.displayName }}</span></a
-                  >
-                  / <span [matTooltip]="collection?.name">{{ collection.displayName }}</span>
-                </h1>
-              </mat-card-title>
-              <mat-card-subtitle>
-                {{ collection.topic }}
-              </mat-card-subtitle>
-            </mat-card-header>
+            <h2>
+              <span [matTooltip]="organization?.name" class="org-name">Collection:</span
+              ><span [matTooltip]="collection?.name" class="collection-name"> {{ collection.displayName }}</span>
+            </h2>
+            <span>{{ collection.topic }}</span>
           </div>
         </div>
 
@@ -72,68 +74,107 @@
             <mat-icon>edit</mat-icon>
           </button>
         </mat-card-actions>
+      </div>
+      <mat-card class="alert alert-info" *ngIf="collection?.entries?.length == 0">
+        <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
+        workflow you want to add and select `Add to collection`
       </mat-card>
-
-      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="15px" class="my-3">
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px" class="my-3">
         <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
-          <mat-card class="alert alert-info" *ngIf="collection?.entries?.length == 0">
-            <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
-            workflow you want to add and select `Add to collection`
-          </mat-card>
-
           <div fxLayout="column" fxLayoutGap="15px">
+            <h3>Workflows & Tools</h3>
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
-              <mat-card class="entryCard">
-                <mat-card-header>
-                  <mat-card-title>
-                    <h4>
-                      <a
-                        [routerLink]="['/' + entry.entryType + 's/', entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')]"
-                      >
+              <mat-card class="mat-elevation-z3">
+                <a
+                  [routerLink]="[
+                    '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
+                    entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')
+                  ]"
+                  class="no-underline"
+                >
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+                      <img *ngIf="entry.entryType === 'workflow'" src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
+                      <img *ngIf="entry.entryType === 'tool'" src="../../../assets/svg/sub-nav/tool.svg" alt="tool icon" />
+                      <h5>
                         {{ entry.entryPath + (entry.versionName ? ':' + entry.versionName : '') }}
-                      </a>
-                    </h4>
-                  </mat-card-title>
-                  <mat-card-subtitle> Last updated {{ entry.dbUpdateDate | date }} </mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-actions *ngIf="canEdit$ | async" fxLayout="row" fxLayoutAlign="end center">
-                  <span *ngIf="entry?.entryPath">
-                    <button
-                      mat-flat-button
-                      matTooltip="Remove entry from collection."
-                      id="removeEntryButton"
-                      (click)="
-                        openRemoveEntryDialog(organization.id, collection.id, entry.id, collection.name, entry.entryPath, entry.versionName)
-                      "
-                    >
-                      <mat-icon>clear</mat-icon> Remove
-                    </button>
-                  </span>
-                </mat-card-actions>
+                      </h5>
+                    </div>
+                    <div *ngIf="canEdit$ | async" fxLayout="row" fxLayoutAlign="end center">
+                      <span>
+                        <button
+                          mat-flat-button
+                          matTooltip="Remove entry from collection."
+                          id="removeEntryButton"
+                          (click)="
+                            openRemoveEntryDialog(
+                              organization.id,
+                              collection.id,
+                              entry.id,
+                              collection.name,
+                              entry.entryPath,
+                              entry.versionName
+                            )
+                          "
+                        >
+                          <mat-icon>clear</mat-icon> Remove
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                  <hr />
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
+                      <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
+                      <div fxLayout="row wrap" fxLayoutGap="1rem" class="labels">
+                        <span
+                          [ngClass]="entry.entryType == 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
+                          *ngFor="let label of entry.labels | slice: 0:3"
+                        >
+                          {{ label }}
+                        </span>
+                        <mat-chip
+                          [ngClass]="entry.entryType == 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
+                          *ngIf="entry.verified == true"
+                        >
+                          <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                            <mat-icon class="verified-icon">done</mat-icon>
+                            <span>Verified</span>
+                          </span>
+                        </mat-chip>
+                        <span class="gray-label-tag" *ngFor="let descriptorType of entry.descriptorTypes">{{ descriptorType }}</span>
+                      </div>
+                    </div>
+                    <button mat-raised-button color="accent" class="view-button">View</button>
+                  </div>
+                </a>
               </mat-card>
             </div>
           </div>
         </div>
 
         <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
-          <mat-card fxLayout="column" fxLayoutGap="15px">
-            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="end center">
+          <div fxLayout="column" fxLayoutGap="15px">
+            <div fxLayout="column" fxLayoutGap="15px">
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <h3>About the Collection</h3>
+                <button
+                  mat-button
+                  *ngIf="canEdit$ | async"
+                  (click)="updateDescription(collection.description, collection.id)"
+                  id="editCollectionDescription"
+                  matTooltip="Edit the description"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
               <div *ngIf="!collection.description" fxFlex>
                 <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
                 <div *ngIf="!(canEdit$ | async)" class="text-muted">This collection does not have a description</div>
               </div>
-              <button
-                mat-button
-                *ngIf="canEdit$ | async"
-                (click)="updateDescription(collection.description, collection.id)"
-                id="editCollectionDescription"
-                matTooltip="Edit the description"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
             </div>
             <markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></markdown-wrapper>
-          </mat-card>
+          </div>
         </div>
       </div>
     </div>

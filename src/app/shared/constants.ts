@@ -22,6 +22,7 @@ export const formInputDebounceTime = 250;
 export const ga4ghWorkflowIdPrefix = '#workflow/';
 export const ga4ghServiceIdPrefix = '#service/';
 export const includesValidation = 'validations';
+export const includesVersions = 'versions';
 export const bootstrap4smallModalSize = '300px';
 export const bootstrap4mediumModalSize = '500px';
 export const bootstrap4largeModalSize = '800px';
@@ -37,6 +38,5 @@ export const currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVER
 export const currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
 export const dismissedLatestTOS = 'dismissedLatestTOS';
 export const dismissedLatestPrivacyPolicy = 'dismissedLatestPrivacyPolicy';
-// This is used to toggle whether GitHub apps are recommended or not.
-// If it's to be recommended permanently, it's better to revert this commit instead.
-export const recommendGitHubApps = false;
+// There is a search term length limit of 500 on the backend, but two extra characters, '.*', get counted in the backend.
+export const searchTermLengthLimit = 498;

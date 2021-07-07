@@ -13,11 +13,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<div class="panel panel-default" *ngIf="verifiedByStringArray && verifiedByStringArray.length > 0">
-  <div class="panel-heading">
-    <h3>Verification and Logs</h3>
-  </div>
-  <div class="p-3 panel-body">
+<mat-card *ngIf="verifiedByStringArray && verifiedByStringArray.length > 0">
+  <mat-card-header>
+    <mat-card-title>Verification and Logs</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
     <div class="container-source-repos">
       <strong>{{ version.name }} is verified with: </strong>
       <br />
@@ -30,5 +30,5 @@
         More Info
       </button>
     </div>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>

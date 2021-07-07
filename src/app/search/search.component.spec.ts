@@ -13,16 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MdePopoverModule } from '@material-extended/mde';
-import { ClipboardModule } from 'ngx-clipboard';
+import { ExtendedGA4GHService } from 'app/shared/openapi';
+
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { ProviderService } from '../shared/provider.service';
-import { ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
+import { ExtendedGA4GHStubService, ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
@@ -53,18 +57,29 @@ describe('SearchComponent', () => {
   let searchQuery: jasmine.SpyObj<SearchQuery>;
   let fixture: ComponentFixture<SearchComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
-      imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MdePopoverModule],
-      providers: [
-        { provide: SearchService, useClass: SearchStubService },
-        { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-        { provide: ProviderService, useClass: ProviderStubService },
-        { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
+        imports: [
+          BrowserAnimationsModule,
+          CustomMaterialModule,
+          ClipboardModule,
+          FontAwesomeModule,
+          RouterTestingModule,
+          MdePopoverModule,
+          MatSnackBarModule,
+        ],
+        providers: [
+          { provide: SearchService, useClass: SearchStubService },
+          { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+          { provide: ProviderService, useClass: ProviderStubService },
+          { provide: ExtendedGA4GHService, useClass: ExtendedGA4GHStubService },
+          { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);

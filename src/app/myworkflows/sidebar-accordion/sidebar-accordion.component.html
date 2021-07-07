@@ -45,21 +45,14 @@
         </mat-list>
       </mat-tab>
     </mat-tab-group>
-    <mat-action-row>
-      <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
+    <mat-action-row *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
+      <div>
         <span *ngIf="orgObj.sourceControl.startsWith('github.com')">
           <button color="accent" (click)="openGitHubAppsLogs(orgObj.organization)" mat-button>See GitHub Apps Logs</button>
         </span>
         <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
           <app-refresh-workflow-organization [orgWorkflowObject]="orgObj"></app-refresh-workflow-organization>
         </span>
-      </div>
-      <div *ngIf="(entryType$ | async) === EntryType.Service">
-        <ng-container *ngIf="orgObj?.organization | githubNameToId | async as link">
-          <a mat-icon-button target="_blank" rel="noopener noreferrer" [href]="link" matTooltip="Manage Organization on GitHub"
-            ><mat-icon>add</mat-icon></a
-          >
-        </ng-container>
       </div>
     </mat-action-row>
   </mat-expansion-panel>

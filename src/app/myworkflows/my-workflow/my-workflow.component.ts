@@ -17,6 +17,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router/';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { User } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -65,6 +66,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
+  faGithub = faGithub;
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
   entryType: EntryType;
@@ -127,9 +129,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   ngOnInit() {
     this.myWorkflowsService.clearPartialState();
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
-    this.tokenQuery.gitHubToken$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((token: string) => this.tokenService.getGitHubOrganizations(token));
+    this.tokenService.getGitHubOrganizations();
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url

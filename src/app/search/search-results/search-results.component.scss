@@ -14,42 +14,38 @@
  *    limitations under the License.
  */
 
-mat-tab-group.homeComponent {
-  border: 0.0625rem solid #cfd1d7;
-  border-bottom-right-radius: 1rem;
-  border-bottom-left-radius: 1rem;
-}
-
 .mat-tab-content {
   display: block;
   background-color: #fff;
-  margin: 3rem 1rem 2rem;
+  margin: 1rem 1rem 2rem;
   padding: 0.8rem;
+  border: 0.0625rem solid #cfd1d7;
+  border-radius: 0.3rem;
+}
+
+.tag-cloud-dropdown {
+  position: relative;
+  display: inline-block;
 }
 
 .tagCloud {
-  padding-left: 10%;
-  margin-bottom: 30px;
-  border-radius: 10px;
-  &.tool {
-    background-color: #f2faff;
-    box-shadow: 0 0 10px 0px #b0e0ee;
-  }
-  &.workflow {
-    background-color: #f2fffc;
-    box-shadow: 0 0 10px 0px #b0eed7;
-  }
+  position: absolute;
+  right: 0;
+  top: 3.5rem;
+  z-index: 1;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 0 10px 0px #cfd1d7;
 }
 
 .tagCloud-btn {
-  width: 100%;
+  box-shadow: 1px 3px 5px 0px #cfd1d7;
+  color: #151c3d;
+  border: none;
   &.tool {
-    color: #2e629d;
     background-color: #aadeee;
   }
   &.workflow {
-    color: #198055;
-    background-color: #aaeed2;
-    border-color: #3fd999;
+    background-color: #b0f8e6;
   }
 }

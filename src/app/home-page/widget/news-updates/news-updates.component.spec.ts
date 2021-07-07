@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MarkdownModule } from 'ngx-markdown';
@@ -8,12 +8,14 @@ describe('NewsUpdatesComponent', () => {
   let component: NewsUpdatesComponent;
   let fixture: ComponentFixture<NewsUpdatesComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [NewsUpdatesComponent],
-      imports: [MarkdownModule, HttpClientTestingModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [NewsUpdatesComponent],
+        imports: [MarkdownModule, HttpClientTestingModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NewsUpdatesComponent);

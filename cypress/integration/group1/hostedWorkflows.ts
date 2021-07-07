@@ -36,6 +36,9 @@ describe('Dockstore hosted workflows', () => {
     goToUnexpandedSidebarEntry('dockstore.org/A', /hosted/);
   }
 
+  // using an ugly name to flex workflow naming functionality a bit
+  const NEW_WORKFLOW_NAME = 'new_Hosted-workflow-8_part-2';
+
   // Ensure tabs are correct for the hosted workflow, try adding a version
   describe('Should be able to register a hosted workflow and add files to it', () => {
     it('Register the workflow', () => {
@@ -46,7 +49,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       // Check content of the info tab
-      cy.contains('Mode: HOSTED');
+      cy.contains('Mode: Hosted');
 
       // Should not be able to download zip
       cy.get('#downloadZipButton').should('not.be.visible');
@@ -59,6 +62,7 @@ describe('Dockstore hosted workflows', () => {
       goToTab('Files');
       cy.get('#editFilesButton').click();
       cy.contains('Add File').click();
+      cy.wait(100);
       cy.window().then(function (window: any) {
         cy.document().then((doc) => {
           const editors = doc.getElementsByClassName('ace_editor');
@@ -144,6 +148,46 @@ describe('Dockstore hosted workflows', () => {
 
       goToTab('Files');
       cy.contains('/Dockstore.wdl').should('be.visible');
+    });
+    it('Create a new hosted workflow', () => {
+      cy.get('#registerWorkflowButton').should('be.visible').should('be.enabled').click();
+      cy.get('#3-register-workflow-option').should('be.visible').click();
+      cy.contains('button', 'Next').click();
+      cy.get('#hostedWorkflowRepository').type(NEW_WORKFLOW_NAME);
+      cy.contains('button', 'Register Workflow').click();
+    });
+    it('Add files to hosted workflow', () => {
+      // navigate to workflow
+      cy.get('.mat-expanded');
+      cy.contains('dockstore.org/user_A').click();
+      cy.contains('a', NEW_WORKFLOW_NAME).click();
+
+      // Check content of the info tab
+      cy.contains('Mode: Hosted');
+
+      // Add a new version with 3 descriptors
+      goToTab('Files');
+      cy.get('#editFilesButton').click();
+
+      // there should be no descriptors files
+      cy.get('app-code-editor').should('have.length', 0);
+
+      // add first file. This will be the primary descriptor, so we wont need to give it a custom name
+      cy.contains('Add File').click();
+
+      // add a bunch of new files
+      for (let i = 0; i < 3; i++) {
+        cy.contains('Add File').click();
+        cy.wait(100); // focus is pulled to the content box of the editor shortly after adding a file, wait for this to occur
+        cy.get('.editor-file-name').last().type(`{selectall}{backspace}/${i}.cwl{enter}`);
+      }
+
+      // save as a new version
+      cy.get('#saveNewVersionButton').click();
+      cy.wait(1000); // have to wait for the response from the webservice, otherwise you may get a false positive
+
+      // should have 4 descriptors.
+      cy.get('app-code-editor').should('have.length', 4);
     });
   });
 });

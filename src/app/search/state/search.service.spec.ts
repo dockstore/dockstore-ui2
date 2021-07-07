@@ -15,6 +15,7 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
@@ -29,7 +30,7 @@ describe('SearchService', () => {
   let searchService: SearchService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MatSnackBarModule],
       providers: [
         ImageProviderService,
         SearchService,
@@ -122,16 +123,17 @@ describe('SearchService', () => {
       workflow_path: '',
       defaultTestParameterFilePath: '',
       descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
-      full_workflow_path: 'abc'
+      full_workflow_path: 'abc',
     };
 
     const b: Workflow = {
-      ...a, author: 'B',
+      ...a,
+      author: 'B',
       full_workflow_path: 'Bcd',
-      starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }]
+      starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }],
     };
 
-    const c: Workflow = {...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
+    const c: Workflow = { ...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
 
     expect(searchService.compareAttributes(a, b, 'author', 'asc', 'workflow')).toEqual(-1);
     expect(searchService.compareAttributes(a, b, 'author', 'desc', 'workflow')).toEqual(1);

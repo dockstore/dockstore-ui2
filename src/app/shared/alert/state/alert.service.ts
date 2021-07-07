@@ -112,6 +112,24 @@ export class AlertService {
   }
 
   /**
+   *
+   * Handles HTTP error responses that shows a detailed message in the matSnackBar and provides and action button
+   * that links to an external site (such as the documentation)
+   *
+   * @param error {HttpErrorResponse} error  The HttpErrorResponse return by the failed Http call
+   * @param actionButtonText {string} The text of the action button
+   * @param link {link} The link that will open in a new tab
+   */
+  public detailedSnackBarErrorWithLink(error: HttpErrorResponse, actionButtonText: string, link: string) {
+    this.clearEverything();
+    const detailedError: string = AlertService.getDetailedErrorMessage(error);
+    this.matSnackBar
+      .open(detailedError, actionButtonText, { duration: 10000 })
+      .onAction()
+      .subscribe(() => window.open(link, '_blank'));
+  }
+
+  /**
    * Handles error HTTP response and show matSnackBar
    *
    * @memberof AlertService

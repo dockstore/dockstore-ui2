@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { GithubNameToIdPipe } from 'app/github-name-to-id.pipe';
 import { FilePathPipe } from '../../entry/file-path.pipe';
 import { TimeAgoMsgPipe } from '../../organizations/organization/time-ago-msg.pipe';
 import { GetFacetSearchUpdatePipe } from '../../search/facet-search/facet-search-update.pipe';
@@ -14,7 +13,6 @@ const DECLARATIONS: any[] = [
   MapFriendlyValuesPipe,
   SelectTabPipe,
   TimeAgoMsgPipe,
-  GithubNameToIdPipe,
   GetHistogramWidthPipe,
   GetFacetSearchResultsPipe,
   GetFacetSearchUpdatePipe,

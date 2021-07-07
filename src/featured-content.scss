@@ -1,3 +1,5 @@
+@import '/src/materialColorScheme.scss';
+
 /*
 The following classes are used style the featured content external html
  */
@@ -14,7 +16,7 @@ The following classes are used style the featured content external html
   text-align: center;
   justify-content: center;
   min-width: 20rem;
-  background-color: #eef0f6;
+  background-color: mat-color($dockstore-app-gray, 6);
   padding: 1rem;
   margin: 1rem;
   flex: 1;

@@ -14,67 +14,113 @@
    limitations under the License.
 -->
 <app-header>
-  <mat-icon>people</mat-icon>
-  Organizations
+  <div fxLayout="row" fxLayoutGap="1rem">
+    <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization icon" />
+    <span>Organizations</span>
+  </div>
 </app-header>
-<div *ngIf="!(loading$ | async)" class="container">
-  <button
-    *ngIf="isLoggedIn$ | async"
-    class="pull-right"
-    color="primary"
-    mat-raised-button
-    (click)="createOrganization()"
-    matTooltip="Create Organization Request"
-  >
-    Create Organization Request
-  </button>
-  <div *ngIf="filteredOrganizations$ | async as organizations; else noOrganizationsFound">
-    <form [formGroup]="organizationSearchForm">
-      <mat-form-field>
-        <input matInput placeholder="Search organizations" formControlName="name" />
-      </mat-form-field>
-    </form>
+<div *ngIf="!(loading$ | async)" class="container mb-5">
+  <div *ngIf="pagedOrganizations as organizations; else noOrganizationsFound">
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="my-3" fxLayout.lt-sm="column-reverse" fxLayoutAlign.lt-sm="start start">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
+        <div fxHide.lt-sm>{{ orgLength$ | async }} organizations</div>
+        <button
+          *ngIf="isLoggedIn$ | async"
+          color="primary"
+          mat-raised-button
+          (click)="createOrganization()"
+          matTooltip="Create Organization Request"
+        >
+          Create Organization Request
+        </button>
+      </div>
+      <form [formGroup]="organizationSearchForm" fxLayoutGap="1.5rem" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="-1rem">
+        <mat-form-field appearance="outline" class="search-form-field">
+          <mat-label>Sort by...</mat-label>
+          <mat-select formControlName="sort">
+            <mat-option value="name">Name</mat-option>
+            <mat-option value="starred">Starred</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="search-form-field">
+          <mat-label>Search Organizations</mat-label>
+          <input #search matInput formControlName="name" />
+          <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
+            <mat-icon inline="true">close</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
+    </div>
+    <hr class="mb-3" />
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
-      <div fxLayoutAlign="start stretch" fxLayout="column">
-        <mat-card fxFlexOffset="10px" *ngFor="let org of organizations" class="my-2">
-          <mat-card-header>
-            <mat-card-title>
-              <a data-cy="orgName" [routerLink]="org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
-
-              <span fxLayout="row" *ngIf="org?.starredUsers.length !== 0" class="pull-right">
-                <mat-icon class="orgStar">star</mat-icon>
-                <span class="ellipsis-lines">{{ org.starredUsers.length }}</span>
-              </span>
-            </mat-card-title>
-            <mat-card-subtitle>
-              {{ org.topic }}
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="space-between" class="mx-4">
-              <span fxLayout="row" *ngIf="org?.email">
-                <mat-icon>email</mat-icon>
-                <span
-                  ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
-                >
-              </span>
-              <span fxLayout="row" *ngIf="org?.link">
-                <mat-icon>link</mat-icon>
-                <span
-                  ><a [href]="org.link" target="_blank">{{ org.link }}</a></span
-                >
-              </span>
-              <span fxLayout="row" *ngIf="org?.location">
-                <mat-icon>location_on</mat-icon>
-                <span class="ellipsis-lines">{{ org.location }}</span>
-              </span>
+      <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="2rem grid">
+        <div *ngFor="let org of organizations" fxFlex="33.3" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card style="height: 340px" class="mat-elevation-z3">
+            <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
+              <div fxLayout="column" fxLayoutGap="2rem">
+                <a [routerLink]="org.name" class="no-underline" target="_self">
+                  <div fxLayout="column" fxLayoutAlign="space-around">
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                      <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
+                      <ng-template #placeholder><span style="height: 50px"></span></ng-template>
+                      <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
+                        <mat-icon class="orgStar">star</mat-icon>
+                        <span>{{ org.starredUsers.length }}</span>
+                      </div>
+                    </div>
+                    <div data-cy="orgName">
+                      <h5 class="text-break">{{ org.displayName }}</h5>
+                      <span class="org-topic">{{ org.topic }}</span>
+                    </div>
+                  </div>
+                </a>
+                <div>
+                  <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
+                    <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.link">
+                      <mat-icon class="info-icon">link</mat-icon>
+                      <span class="info-overflow"
+                        ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
+                      >
+                    </span>
+                    <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.location">
+                      <mat-icon class="info-icon">location_on</mat-icon>
+                      <span class="info-overflow">{{ org.location }}</span>
+                    </span>
+                    <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.email">
+                      <mat-icon class="info-icon">email</mat-icon>
+                      <span class="info-overflow"
+                        ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <hr class="mb-4" />
+                <a [routerLink]="org.name" class="no-underline" target="_self">
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <span class="gray-label-tag">
+                      {{ org.collectionsLength }}
+                      <span *ngIf="org.collectionsLength != 1; else oneCollection"> Collections</span>
+                      <ng-template #oneCollection> Collection</ng-template>
+                    </span>
+                    <button mat-raised-button color="accent" class="view-button">View</button>
+                  </div>
+                </a>
+              </div>
             </div>
-          </mat-card-content>
-        </mat-card>
+          </mat-card>
+        </div>
       </div>
     </div>
+    <mat-paginator
+      [pageSize]="initialPageSize"
+      [pageSizeOptions]="[9, 18, 36]"
+      (page)="onPageChange($event)"
+      [length]="filteredOrganizations.length"
+    ></mat-paginator>
   </div>
   <ng-template #noOrganizationsFound>
-    <mat-card class="alert alert-info"><mat-icon>info</mat-icon>No organizations found</mat-card>
+    <mat-card class="alert alert-info"><mat-icon class="pr-5">info</mat-icon>No organizations found</mat-card>
   </ng-template>
 </div>

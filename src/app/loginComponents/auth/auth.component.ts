@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'app/shared/user/user.service';
 import { of as observableOf } from 'rxjs';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 
@@ -7,7 +8,6 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { Provider } from '../../shared/enum/provider.enum';
 import { TokenService } from '../../shared/state/token.service';
-import { UserService } from '../../shared/user/user.service';
 
 @Component({
   selector: 'app-auth',
@@ -16,10 +16,10 @@ import { UserService } from '../../shared/user/user.service';
 export class AuthComponent extends Base implements OnInit {
   constructor(
     private tokenService: TokenService,
-    private userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private userService: UserService,
+    private router: Router
   ) {
     super();
   }
@@ -78,17 +78,32 @@ export class AuthComponent extends Base implements OnInit {
 
   ngOnInit() {
     const prevPage = localStorage.getItem('page');
-
+    const provider: Provider = this.activatedRoute.snapshot.params['provider'];
     this.addToken()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (token) => {
-          this.userService.getUser();
-          this.router.navigate([`${prevPage}`]);
+          if (provider === Provider.ORCID) {
+            // This component should only exist inside a temporary window used in the OAuth process
+            window.close();
+          } else {
+            this.userService.getUser();
+            this.router.navigate([`${prevPage}`]);
+          }
         },
         (error) => {
-          this.router.navigate([`${prevPage}`]);
-          this.alertService.detailedSnackBarError(error);
+          if (provider !== Provider.ORCID) {
+            this.router.navigate([`${prevPage}`]);
+          }
+          if (error.status === 409) {
+            this.alertService.detailedSnackBarErrorWithLink(
+              error,
+              'Docs',
+              'https://docs.dockstore.org/en/latest/faq.html#what-is-the-difference-between-logging-in-with-github-or-logging-in-with-google'
+            );
+          } else {
+            this.alertService.detailedSnackBarError(error);
+          }
         }
       );
   }

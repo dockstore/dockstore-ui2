@@ -1,4 +1,24 @@
-.orgLogo {
-  max-height: 150px;
-  max-width: 200px;
+@import 'materialColorScheme.scss';
+
+.side-icons {
+  color: mat-color($dockstore-app-accent);
+}
+
+.tab-icons {
+  color: #7887cb;
+}
+
+.tab-display {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1.3rem;
+  background-color: #e0e0e0;
+}
+
+.category-text {
+  text-decoration: underline;
+}
+
+.name {
+  color: #151c3d;
 }

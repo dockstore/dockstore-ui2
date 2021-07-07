@@ -47,7 +47,7 @@ export class CheckerWorkflowQuery extends Query<CheckerWorkflowState> {
     if (!entry) {
       return null;
     }
-    return entry.hasOwnProperty('is_checker');
+    return entry.hasOwnProperty('isChecker');
   }
 
   /**

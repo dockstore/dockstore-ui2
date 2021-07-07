@@ -1,17 +1,61 @@
-@import 'bootstrap4.scss';
+@import '/src/materialColorScheme.scss';
 
-.mat-icon {
-  @extend .pr-5;
+.h5 {
+  color: #151c3d;
+  font-weight: 500;
 }
 
-.mat-card-title {
-  white-space: nowrap;
+.org-topic {
+  line-height: 1.5;
+  color: mat-color($dockstore-app-gray, darker);
+  // Hide overflow if longer than 4 lines
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
 }
 
 .orgStar {
-  line-height: 1.1em;
+  font-size: 1.5rem;
+  color: #3f51b5;
+  height: auto;
+  padding: 0 !important;
 }
 
-::ng-deep .mat-card-header-text {
-  width: 100%;
+.info.span {
+  font-size: 10px;
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  height: auto;
+  color: mat-color($dockstore-app-accent);
+  padding: 0 !important;
+}
+
+.info {
+  font-size: 12px;
+  line-height: 2rem;
+}
+
+.info-overflow {
+  // Hide overflow if longer than 1 line
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+form {
+  margin-bottom: -1rem;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border: black 2px solid;
 }

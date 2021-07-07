@@ -52,4 +52,13 @@ export class OrganizationsStateService {
       };
     });
   }
+
+  updateSort(sortBy: 'starred' | 'name'): void {
+    this.organizationsStore.update((state: OrganizationsState) => {
+      return {
+        ...state,
+        sortBy: sortBy,
+      };
+    });
+  }
 }

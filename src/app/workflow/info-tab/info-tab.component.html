@@ -19,8 +19,7 @@
     *ngIf="
       !isPublic &&
       workflow?.source_control_provider === 'GITHUB' &&
-      (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB) &&
-      this.recommendGitHubApps
+      (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB)
     "
   >
     Keep your workflow automatically in sync with GitHub with our new registration process. Click
@@ -42,7 +41,11 @@
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
             <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
-            <a id="sourceRepository" [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')">
+            <a
+              id="sourceRepository"
+              data-cy="sourceRepository"
+              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+            >
               {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
             </a>
           </li>
@@ -54,7 +57,7 @@
         <li *ngIf="isPublic && isValidVersion">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
           <a [href]="trsLink"> #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }} </a>
-          <button mat-icon-button color="secondary" ngxClipboard matTooltip="Copy TRS ID" [cbContent]="displayTextForButton">
+          <button mat-icon-button color="secondary" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton" appSnackbar>
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
           </button>
         </li>
@@ -210,11 +213,11 @@
             <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
           </div>
           <li *ngIf="!isPublic">
-            <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ workflow?.mode }}
+            <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
             <button
               class="btn btn-link push-right"
               type="button"
-              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published"
+              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
               [disabled]="isRefreshing$ | async"
             >
@@ -280,7 +283,7 @@
         </a>
         <span *ngIf="!selectedVersion?.email"> n/a </span>
       </div>
-      <span *ngIf="isValidVersion" id="downloadZipButton">
+      <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
         <button *ngIf="!workflow?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
         <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-raised-button>Export as ZIP</a>
       </span>
@@ -303,7 +306,7 @@
                     rel="noopener noreferrer"
                     >CWL Best Practices</a
                   >
-                  and <a href="http://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a
+                  and <a href="https://www.commonwl.org/v1.0/CommandLineTool.html#CommandLineTool">commonwl.org</a> for how to define a
                   description for this tool.
                 </span>
                 <span *ngSwitchCase="ToolDescriptor.TypeEnum.WDL">

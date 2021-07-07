@@ -111,7 +111,7 @@ export class UserService {
       if (defaultImg) {
         return defaultImg;
       } else {
-        return 'http://www.gravatar.com/avatar/?d=mm&s=500';
+        return 'https://www.gravatar.com/avatar/?d=mm&s=500';
       }
     }
   }

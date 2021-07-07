@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './test/router-stubs';
 
@@ -14,9 +14,6 @@ class BannerStubComponent {}
 @Component({ selector: 'app-navbar', template: '' })
 class NavbarStubComponent {}
 
-@Component({ selector: 'app-sponsors', template: '' })
-class SponsorsStubComponent {}
-
 @Component({ selector: 'app-footer', template: '' })
 class FooterStubComponent {}
 
@@ -27,27 +24,31 @@ class TosBannerStubComponent {}
 class NotificationStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        NavbarStubComponent,
-        SponsorsStubComponent,
-        FooterStubComponent,
-        BannerStubComponent,
-        RouterLinkStubDirective,
-        RouterOutletStubComponent,
-        TosBannerStubComponent,
-        NotificationStubComponent,
-      ],
-      imports: [RouterTestingModule, MatSnackBarModule],
-      providers: [{ provide: TrackLoginService, useClass: TrackLoginStubService }],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          AppComponent,
+          NavbarStubComponent,
+          FooterStubComponent,
+          BannerStubComponent,
+          RouterLinkStubDirective,
+          RouterOutletStubComponent,
+          TosBannerStubComponent,
+          NotificationStubComponent,
+        ],
+        imports: [RouterTestingModule, MatSnackBarModule],
+        providers: [{ provide: TrackLoginService, useClass: TrackLoginStubService }],
+      }).compileComponents();
+    })
+  );
 
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
+  it(
+    'should create the app',
+    waitForAsync(() => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.debugElement.componentInstance;
+      expect(app).toBeTruthy();
+    })
+  );
 });

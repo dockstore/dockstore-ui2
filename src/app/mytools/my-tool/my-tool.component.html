@@ -14,10 +14,13 @@
   ~    limitations under the License.
   -->
 <app-header>
-  <button mat-icon-button (click)="toggleSidebar()">
-    <mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
-  </button>
-  <img src="../assets/images/dockstore/dockstore-tools-blue.png" /> {{ myEntryPageTitle$ | async | titlecase }}
+  <span fxLayoutAlign="flex-start center" fxLayoutGap="0.5rem">
+    <button mat-icon-button (click)="toggleSidebar()">
+      <mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
+    </button>
+    <img src="../assets/svg/sub-nav/tool.svg" alt="tool icon" />
+    <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
+  </span>
 </app-header>
 
 <div class="container-fluid sidebar-set-height">
@@ -83,9 +86,9 @@
                 </button>
               </ul>
               <div *ngIf="!hasGitHubToken" class="mt-3">
-                <a class="btn btn-block btn-social btn-github" (click)="link()">
-                  <span class="fa fa-github"></span> You do not have a linked GitHub token, click here to link a GitHub token
-                </a>
+                <button mat-raised-button (click)="link()">
+                  <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
+                </button>
               </div>
             </mat-card>
           </div>

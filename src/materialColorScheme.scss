@@ -1,0 +1,128 @@
+/*
+ *     Copyright 2018 OICR
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+@import '~@angular/material/theming';
+
+// The below is new from Kim's new color scheme: https://app.zeplin.io/project/5fc690a2717ee9144814f190/screen/5fc699d068c46f17551f745b.
+// Note: By default, material uses 3 shades of each color (mainly just one). The other shades can be used by manually overriding the default material components.
+// The contrast is not specified in Kim's design. It is chosen from either black or white depending on
+// what's legible in both normal and large text when using https://material.io/resources/color/#!/?view.left=1&view.right=1&primary.color=21335b&secondary.color=487980
+// Accent 1 to 4, warning, and border is not covered.
+$kim-primary: (
+  1: #121d34,
+  2: #21335b,
+  3: #596684,
+  4: #a6adbd,
+  5: #ced2db,
+  6: #e8eaee,
+  contrast: (
+    1: white,
+    2: white,
+    3: white,
+    4: black,
+    5: black,
+    6: black,
+  ),
+);
+
+$kim-secondary: (
+  1: #295a62,
+  2: #397a84,
+  3: #75a4ab,
+  4: #b0cbcf,
+  5: #ebf2f3,
+  contrast: (
+    1: white,
+    2: white,
+    3: black,
+    4: black,
+    5: black,
+  ),
+);
+
+// Using kim's error instead (material doesn't differentiate between error and warn, kim's error seems more suitable)
+$kim-warn: (
+  1: #c14747,
+  2: #e64a46,
+  3: #e96f6c,
+  4: #f5b7b5,
+  5: #fcecec,
+  contrast: (
+    1: white,
+    2: black,
+    3: black,
+    4: black,
+    5: black,
+  ),
+);
+
+$kim-accent1-success: (
+  1: #3f51b5,
+  2: #7986cb,
+  3: #9fa8da,
+  4: #c5cae9,
+  5: #dde1f2,
+  6: #e8eaf6,
+  contrast: (
+    1: white,
+    2: black,
+    3: black,
+    4: black,
+    5: black,
+    6: black,
+  ),
+);
+
+// Grayscale
+$kim-gray: (
+  1: #212121,
+  2: #666f7b,
+  3: #b3b6be,
+  4: #dfe0e2,
+  5: #f5f5f5,
+  6: #eef0f6,
+  contrast: (
+    1: white,
+    2: white,
+    3: black,
+    4: black,
+    5: black,
+    6: black,
+  ),
+);
+
+// main color is assumed to be 2 based on prevalence of it on the home page (buttons). It's also called default in zeplin
+// 1 is the darker version of it because it's the only one that's darker
+// 4 was arbitarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
+$dockstore-app-primary: mat-palette($kim-primary, 2, 4, 1);
+$dockstore-app-accent: mat-palette($kim-secondary, 2, 4, 1);
+$dockstore-app-warn: mat-palette($kim-warn, 2, 4, 1);
+$dockstore-app-accent-1: mat-palette($kim-accent1-success, 2, 4, 1);
+
+// 4 and 1 were chosen as darker and lighter versions, respectively, because those were used in styles.
+// Main color was chosen arbitrarily to be between darker and lighter.
+$dockstore-app-gray: mat-palette($kim-gray, 2, 4, 1);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$dockstore-app-theme: mat-light-theme($dockstore-app-primary, $dockstore-app-accent, $dockstore-app-warn);
+
+// Include the grayscale palette in the theme object
+// Example of getting the palette: map-get($dockstore-app-theme, grayscale)
+$dockstore-app-theme: map_merge(
+  $dockstore-app-theme,
+  (
+    grayscale: $dockstore-app-gray,
+  )
+);

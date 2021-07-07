@@ -18,7 +18,3 @@
   font-display: swap;
   src: url('../assets/fonts/Gotham-BookItalic.otf') format('opentype');
 }
-
-* {
-  font-family: 'Gotham';
-}

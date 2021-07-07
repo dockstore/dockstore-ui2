@@ -93,4 +93,14 @@ export class CodeEditorListComponent {
     const descriptorType = this.descriptorType;
     return CodeEditorListService.showSourcefile(type, fileType, descriptorType);
   }
+
+  /**
+   * Updates the absolute and relative paths for a sourcefile.
+   * @param newPath {string} the new path to the sourcefile
+   * @param index {number} index of a SourceFile object in the sourcefiles array
+   */
+  updateSourceFilePath(newPath: string, index: number) {
+    this.sourcefiles[index].absolutePath = newPath;
+    this.sourcefiles[index].path = newPath;
+  }
 }

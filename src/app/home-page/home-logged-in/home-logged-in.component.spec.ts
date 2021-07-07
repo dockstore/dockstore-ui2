@@ -1,6 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,14 +11,16 @@ describe('HomeLoggedInComponent', () => {
   let component: HomeLoggedInComponent;
   let fixture: ComponentFixture<HomeLoggedInComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [HomeLoggedInComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
-      providers: [TwitterService],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [HomeLoggedInComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule],
+        providers: [TwitterService],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeLoggedInComponent);

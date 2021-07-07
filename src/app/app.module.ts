@@ -13,20 +13,21 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
-import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { environment } from '../environments/environment';
+import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
@@ -47,7 +48,6 @@ import { ControlsComponent } from './loginComponents/accounts/controls/controls.
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
-import { GetTokenContentPipe } from './loginComponents/accounts/external/getTokenContent.pipe';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
 import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
@@ -81,6 +81,7 @@ import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
 import { OrderByModule } from './shared/modules/orderby.module';
+import { SnackbarModule } from './shared/modules/snackbar.module';
 import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
 import { GA4GHV20Service } from './shared/openapi/api/gA4GHV20.service';
 import { PagenumberService } from './shared/pagenumber.service';
@@ -94,12 +95,13 @@ import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
 import { SitemapComponent } from './sitemap/sitemap.component';
-import { SponsorsComponent } from './sponsors/sponsors.component';
 import { StargazersModule } from './stargazers/stargazers.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
 import { TosBannerComponent } from './tosBanner/tos-banner.component';
+import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/exporter-step/exporter-step.component';
+import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -123,7 +125,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     AppComponent,
     ControlsComponent,
     DeleteAccountDialogComponent,
-    SponsorsComponent,
     NavbarComponent,
     FooterComponent,
     NotificationsComponent,
@@ -135,7 +136,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     AccountsExternalComponent,
     AuthComponent,
     GetTokenUsernamePipe,
-    GetTokenContentPipe,
     StarredEntriesComponent,
     DownloadCLIClientComponent,
     MaintenanceComponent,
@@ -150,6 +150,9 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     TosBannerComponent,
     LogoutComponent,
     GitTagPipe,
+    AboutComponent,
+    SnaphotExporterModalComponent,
+    ExporterStepComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -178,6 +181,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     RequestsModule,
     HomePageModule,
     HttpClientModule,
+    SnackbarModule,
   ],
   providers: [
     AccountsService,
@@ -220,7 +224,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
   ],
-  entryComponents: [DeleteAccountDialogComponent, YoutubeComponent, ConfirmationDialogComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

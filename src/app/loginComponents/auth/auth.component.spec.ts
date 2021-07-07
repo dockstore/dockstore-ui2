@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -11,16 +11,18 @@ describe('AuthComponent', () => {
   let component: AuthComponent;
   let fixture: ComponentFixture<AuthComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AuthComponent],
-      imports: [RouterTestingModule.withRoutes([{ path: '**', component: AuthComponent }]), MatSnackBarModule],
-      providers: [
-        { provide: UserService, useClass: UserStubService },
-        { provide: TokenService, useClass: TokenStubService },
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AuthComponent],
+        imports: [RouterTestingModule.withRoutes([{ path: '**', component: AuthComponent }]), MatSnackBarModule],
+        providers: [
+          { provide: UserService, useClass: UserStubService },
+          { provide: TokenService, useClass: TokenStubService },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AuthComponent);

@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/dockstore/dockstore-ui2.svg?branch=develop)](https://travis-ci.org/dockstore/dockstore-ui2)
 [![codecov](https://codecov.io/gh/dockstore/dockstore-ui2/branch/develop/graph/badge.svg)](https://codecov.io/gh/dockstore/dockstore-ui2)
 
-Please file issues for this repository and Web site at [the ga4gh/dockstore repository](https://github.com/ga4gh/dockstore/issues)!
+Please file issues for this repository and Web site at [the dockstore/dockstore repository](https://github.com/dockstore/dockstore/issues)!
 
 Table of Contents
 =================
@@ -211,16 +211,6 @@ Before running the tests make sure you:
 - have a postgresql database
 - serve the app via `ng serve` or similar.
 - have the Dockstore webservice jar in the root directory and run it (see scripts/run-webservice-script.sh for guideline)
-
-## Documentation Generation
-
-This should eventually be done automatically on the master branch and have GitHub pages point to the docs folder.
-To manually run it:
-```
-npm install -g @compodoc/compodoc
-npm run compodoc
-```
-Then open `docs/index.html` with browser
 
 ## Further help
 

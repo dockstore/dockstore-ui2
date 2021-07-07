@@ -8,9 +8,11 @@ import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
+import { CloudInstance, CloudInstancesService, User, UsersService } from '../../shared/openapi';
 import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { UserQuery } from '../../shared/user/user.query';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
@@ -107,6 +109,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   @Input()
   selectedVersion: WorkflowVersion;
 
+  user$: Observable<User>;
+
   /**
    * Indicates whether the selected version has any content
    */
@@ -145,6 +149,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    * The workflow path encoded for use as a query parameter value.
    */
   workflowPathAsQueryValue: string;
+  partner = CloudInstance.PartnerEnum;
+  cloudInstances: Array<CloudInstance>;
+  usersCloudInstances: Array<CloudInstance>;
+  WorkflowModel = Workflow;
 
   // Note: intentionally not using this.hasContent$ in the next line, as that does not work
   cgcTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
@@ -190,7 +198,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     sanitizer: DomSanitizer,
     private gA4GHFilesQuery: GA4GHFilesQuery,
     private descriptorsQuery: DescriptorsQuery,
-    private descriptorsService: DescriptorsService
+    private descriptorsService: DescriptorsService,
+    private cloudInstanceService: CloudInstancesService,
+    private usersService: UsersService,
+    private userQuery: UserQuery
   ) {
     super();
     iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
@@ -199,6 +210,17 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   }
 
   ngOnInit(): void {
+    this.user$ = this.userQuery.user$;
+    this.cloudInstanceService.getCloudInstances().subscribe((cloudInstances: Array<CloudInstance>) => {
+      this.cloudInstances = cloudInstances;
+    });
+    // Uncomment when we want to get the users custom cloud instances, but may not work if user object is slow to get
+    // if (this.user) {
+    //   this.usersService.getUserCloudInstances(this.user.id).subscribe((cloudInstances: Array<CloudInstance>) => {
+    //     this.usersCloudInstances = cloudInstances;
+    //   });
+    // }
+
     this.gA4GHFilesQuery
       .getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType), [
         FileTypeEnum.PRIMARYDESCRIPTOR,

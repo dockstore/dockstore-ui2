@@ -23,6 +23,5 @@ import { MarkdownWrapperComponent } from '../markdown-wrapper/markdown-wrapper.c
   imports: [CommonModule, MarkdownModule],
   providers: [],
   exports: [MarkdownWrapperComponent],
-  entryComponents: [],
 })
 export class MarkdownWrapperModule {}

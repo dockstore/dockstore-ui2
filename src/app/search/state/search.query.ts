@@ -22,9 +22,6 @@ export class SearchQuery extends Query<SearchState> {
     )
   );
   public savedTabIndex$: Observable<number> = this.select((state) => state.currentTabIndex);
-  public activeToolTab$: Observable<number> = combineLatest([this.tools$, this.workflows$]).pipe(
-    map(([tools, workflows]) => this.setTabActive(tools, workflows))
-  );
   public noToolHits$: Observable<boolean> = this.tools$.pipe(map((tools: Array<DockstoreTool>) => this.haveNoHits(tools)));
   public noWorkflowHits$: Observable<boolean> = this.workflows$.pipe(map((workflows: Array<Workflow>) => this.haveNoHits(workflows)));
   public searchText$: Observable<string> = this.select((state) => state.searchText);
@@ -51,33 +48,6 @@ export class SearchQuery extends Query<SearchState> {
 
   constructor(protected store: SearchStore, private route: ActivatedRoute) {
     super(store);
-  }
-
-  /**
-   * This handles the which tab (tool or workflow) is set to active based on hits.
-   * The default is tool if both have hits
-   *
-   * @memberof SearchResultsComponent
-   */
-  private readonly TOOLS_TAB_INDEX = 0;
-  private readonly WORKFLOWS_TAB_INDEX = 1;
-  setTabActive(tools: Array<DockstoreTool>, workflows: Array<Workflow>): number {
-    if (!tools || !workflows) {
-      return this.TOOLS_TAB_INDEX;
-    }
-    const param = this.route.snapshot.queryParams['_type'];
-
-    if (tools.length === 0 && workflows.length > 0) {
-      return this.WORKFLOWS_TAB_INDEX;
-    } else if (workflows.length === 0 && tools.length > 0) {
-      return this.TOOLS_TAB_INDEX;
-    } else if (workflows.length === 0 && param === 'workflow') {
-      return this.WORKFLOWS_TAB_INDEX;
-    } else if (workflows.length > 0 && tools.length > 0) {
-      return this.getValue().currentTabIndex;
-    } else {
-      return this.TOOLS_TAB_INDEX;
-    }
   }
 
   haveNoHits(object: Array<any>): boolean {

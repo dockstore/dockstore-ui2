@@ -13,30 +13,52 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { faSortAlphaDown, faSortAlphaUp, faSortNumericDown, faSortNumericUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleDoubleDown,
+  faAngleDoubleUp,
+  faShareAlt,
+  faSortAlphaDown,
+  faSortAlphaUp,
+  faSortNumericDown,
+  faSortNumericUp,
+} from '@fortawesome/free-solid-svg-icons';
+import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
-import { Observable, Subject } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { AlertService } from '../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
 import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.query';
-import { ELASTIC_SEARCH_CLIENT } from './elastic-search-client';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
 
 /**
- * There are a total of 5 calls per search.
- * 2 calls are from the tag cloud (1 for tool, 1 for workflow)
- * 1 calls are for the sidebar bucket count
- * 1 call for the autocomplete
- * 1 call for the actual results
  *
+ * In general, the search works like this:
+ * There's the "view" which is what the user clicks which includes facet checkboxes and tab (tools/workflows), etc
+ * This causes some weird combination of the URL and/or Akita store and/or Angular global service to update
+ * The URL change causes the URL to be parsed again which sets the state once more before triggering a new set of ES query
+ *
+ * Additional notes:
+ * The URL is gospel so that that users with links will always work.
+ * The only time the ES queries are performed is after the URL is parsed
+ *
+ * Some manual tests:
+ * 1. Go to the home page and then click search and make sure there's 5 calls (2 tag cloud, 1 sidebar, 1 autocomplete, 1 table results)
+ * 2. Switch to a different tab and there should be 2 calls (1 for sidebar, 1 for table results).
+ * 3. Refresh page, should be 5 calls in total (same as 1.)
+ *
+ * TODO:
+ * Test #1 from above currently fails because this.advancedSearchQuery.advancedSearch$ and this.searchQuery.searchText$ subscriptions
+ * each triggers a parseParam which then causes the 2 more ES queries to get triggered
  * @export
  * @class SearchComponent
  * @implements {OnInit}
@@ -48,6 +70,9 @@ import { Hit, SearchService } from './state/search.service';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
+  faShareAlt = faShareAlt;
+  faAngleDoubleDown = faAngleDoubleDown;
+  faAngleDoubleUp = faAngleDoubleUp;
   faSortAlphaDown = faSortAlphaDown;
   faSortAlphaUp = faSortAlphaUp;
   faSortNumericDown = faSortNumericDown;
@@ -61,6 +86,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public aNDNoSplitFilterText$: Observable<string>;
   public oRFilterText$: Observable<string>;
   public nOTFilterText$: Observable<string>;
+  public selectedIndex$: Observable<number>;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
@@ -69,7 +95,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private setFilter = false;
   public hits: Hit[];
 
-  // Possibly 100 workflows and 100 tools (extra +1 is used to see if there are > 200 results)
+  // extra +1 is used to see if there are > 200 results
   public readonly query_size = 201;
   searchTerm = false;
 
@@ -121,11 +147,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     public searchService: SearchService,
     private searchQuery: SearchQuery,
     private advancedSearchQuery: AdvancedSearchQuery,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private extendedGA4GHService: ExtendedGA4GHService,
+    private alertService: AlertService
   ) {
     this.shortUrl$ = this.searchQuery.shortUrl$;
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
+    this.selectedIndex$ = this.searchQuery.savedTabIndex$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
     this.friendlyNames = this.searchService.initializeFriendlyNames();
@@ -147,7 +176,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
     this.basicSearchText$ = this.searchQuery.basicSearchText$;
-    this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
+    this.activatedRoute.queryParams.pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe)).subscribe(() => this.parseParams());
     this.searchService.toSaveSearch$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toSaveSearch) => {
       if (toSaveSearch) {
         this.saveSearchFilter();
@@ -177,6 +206,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Only called when the tab is manually changed by the user
+   */
+  saveTabIndex(tab) {
+    this.searchService.saveCurrentTabAndClear(tab.index);
+  }
+
+  /**
    * Applies parameters from the permalink to the search
    */
   parseParams() {
@@ -199,6 +235,8 @@ export class SearchComponent implements OnInit, OnDestroy {
           categoryValue = decodeURIComponent(categoryValue);
           newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
+      } else if (key === 'entryType') {
+        this.searchService.saveCurrentTab(SearchService.convertEntryTypeToTabIndex(value[0]));
       } else if (key === 'search') {
         this.searchTerm = true;
         this.searchService.setSearchText(value[0]);
@@ -272,6 +310,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   setupOrderBuckets() {
     this.entryOrder.forEach((value, key) => {
       if (value.Items.size > 0 || value.SelectedItems.size > 0) {
+        // skip the Entry Type bucket, which is only aggregated for filtering results between tabs
         this.orderedBuckets.set(key, value);
       }
     });
@@ -340,6 +379,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       searchValues: values,
       advancedSearchObject: advancedSearchObject,
       searchTerm: this.searchTerm,
+      entryType: SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex),
     };
     const linkArray = this.searchService.createPermalinks(searchInfo);
     this.searchService.handleLink(linkArray);
@@ -350,8 +390,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ===============================================
    */
 
-  // Called when any change to the search is made to update the results
+  // Called from one place which is only when the URL has parsed and query non-result state has been set
   updateQuery() {
+    const tabIndex = SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -364,14 +405,16 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.bucketStubs,
       this.filters,
-      this.sortModeMap
+      this.sortModeMap,
+      tabIndex
     );
     const tableQuery = this.queryBuilderService.getResultQuery(
       this.query_size,
       values,
       advancedSearchObject,
       this.searchTerm,
-      this.filters
+      this.filters,
+      tabIndex
     );
     this.resetEntryOrder();
     this.updateSideBar(sideBarQuery);
@@ -379,16 +422,17 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   updateSideBar(value: string) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: value,
-    })
-      .then((hits) => {
+    this.alertService.start('Updating side bar');
+    this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
+      (hits: any) => {
         this.setupAllBuckets(hits);
         this.setupOrderBuckets();
-      })
-      .catch((error) => console.log(error));
+        this.alertService.simpleSuccess();
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
   }
 
   /**
@@ -398,12 +442,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @memberof SearchComponent
    */
   updateResultsTable(value: string) {
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: value,
-    })
-      .then((hits) => {
+    this.alertService.start('Performing search request');
+    this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
+      (hits: any) => {
         this.hits = hits.hits.hits;
         const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
         const searchText = this.searchQuery.getValue().searchText;
@@ -414,8 +455,33 @@ export class SearchComponent implements OnInit, OnDestroy {
         if (this.searchTerm && this.hits.length === 0) {
           this.searchService.suggestSearchTerm(searchText);
         }
-      })
-      .catch((error) => console.log(error));
+        this.alertService.simpleSuccess();
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
+  }
+
+  /**
+   * Updates the results table when there is no search term
+   * We need to send one request per index
+   * When each index returns its results, join the results into a single array and filter into table
+   *
+   * @param {string} toolsQuery the elastic search query for tools index
+   * @param {string} workflowsQuery the elastic search query for workflows index
+   * @memberof SearchComponent
+   */
+  updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
+    const toolsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(toolsQuery);
+    const workflowsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(workflowsQuery);
+    forkJoin([toolsObservable, workflowsObservable]).subscribe((results: Array<any>) => {
+      const toolHits = results[0].hits.hits;
+      const workflowHits = results[1].hits.hits;
+      this.hits = toolHits.concat(workflowHits);
+      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+      this.searchService.setHits(filteredHits[0], filteredHits[1]);
+    });
   }
 
   /**===============================================
@@ -441,29 +507,31 @@ export class SearchComponent implements OnInit, OnDestroy {
   onKey(searchText: string) {
     /*TODO: FOR DEMO USE, make this better later...*/
     const pattern = searchText + '.*';
-    ELASTIC_SEARCH_CLIENT.search({
-      index: 'tools',
-      type: 'entry',
-      body: {
-        size: 0,
-        aggs: {
-          autocomplete: {
-            terms: {
-              field: 'description',
-              size: 4,
-              order: {
-                _count: 'desc',
-              },
-              include: pattern,
+    const body = {
+      size: 0,
+      aggs: {
+        autocomplete: {
+          terms: {
+            field: 'description',
+            size: 4,
+            order: {
+              _count: 'desc',
             },
+            include: pattern,
           },
         },
       },
-    })
-      .then((hits) => {
+    };
+    this.alertService.start('Performing search');
+    this.extendedGA4GHService.toolsIndexSearch(JSON.stringify(body)).subscribe(
+      (hits) => {
         this.searchService.setAutoCompleteTerms(hits);
-      })
-      .catch((error) => console.log(error));
+        this.alertService.simpleSuccess();
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
     this.searchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;

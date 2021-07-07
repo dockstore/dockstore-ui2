@@ -21,6 +21,7 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 @import 'bootstrap4.scss';
 @import '~ngx-sharebuttons/themes/default/default-theme';
 @import 'featured-content.scss';
+@import '/src/materialColorScheme.scss';
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
 /* #487980 GREEN */
@@ -41,6 +42,108 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 
 /* Special Fonts */
 
+* {
+  margin: 0;
+}
+
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* the bottom margin is the negative value of the footer's height */
+  margin: 0 auto -155px;
+  /* Removing this, it's supposed to be white*/
+  /*background-color: #f4f4f4;*/
+}
+
+.footer,
+.push {
+  /* .push must be the same height as .footer */
+  height: 155px;
+}
+
+/* pages generated from markdown needs to have responsive images */
+app-page img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* header needs proper format */
+app-header img {
+  width: 2rem;
+}
+
+app-header h3 {
+  font-size: 1.3rem;
+  color: black;
+  margin: 20px 0px 15px 0px;
+  display: inline;
+  line-height: 4rem;
+}
+
+app-header .container-fluid {
+  background-color: mat-color($dockstore-app-gray, 6);
+  box-shadow: 0px 3px 6px #cfd1d7;
+  position: relative;
+  z-index: 1;
+  padding-top: 5px;
+}
+
+#format > tbody > tr > th,
+#format > tbody > tr > td {
+  border-top: none;
+}
+
+/* Code */
+div > pre,
+markdown pre code {
+  color: #487980;
+}
+
+/* Green Login Button */
+.green {
+  margin-top: 5px;
+  background-color: #487980;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.green p {
+  margin: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  line-height: 2.5em;
+}
+
+.green a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.sideblock {
+  background-color: white;
+}
+
+/* Center */
+.absCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+}
+
+.select-box {
+  border-radius: 3px !important;
+}
+
+.starring-button {
+  margin-top: 20px;
+}
+
 .beta-label {
   display: inline-block;
   height: 2.5rem;
@@ -52,6 +155,7 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
   text-align: center;
   text-transform: uppercase;
   font-size: 1rem;
+  padding: 0 0.5rem;
 }
 
 /* General Layout */
@@ -152,24 +256,21 @@ angular-tag-cloud > span.w1:hover {
 /* Main Styles */
 
 body {
-  font-family: 'Gotham';
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   font-weight: normal;
-  /*font-family: 'Open Sans', sans-serif;*/
   color: #313131;
   font-size: 14px;
-  /* need to fix this this later...*/
   line-height: 2em !important;
-  /*margin: 100px;*/
   margin: 0;
 }
 
 .main-menu {
-  background-color: #21335b;
+  background-color: mat-color($dockstore-app-primary);
   position: relative;
 }
 
 .header {
-  background-color: #21335b;
+  background-color: mat-color($dockstore-app-primary);
   position: relative;
   img#ship,
   img#truck {
@@ -237,7 +338,7 @@ body {
 }
 
 #home-nav-button {
-  padding: 8px !important;
+  padding: 8px 8px 8px 0px !important;
 }
 
 nav {
@@ -291,13 +392,13 @@ h2.title.caption {
 
 h3 {
   font-size: 20px;
-  color: #21335b;
+  color: mat-color($dockstore-app-primary);
   font-weight: normal;
 }
 
 h3.available-containers {
   font-size: 20px;
-  color: #21335b;
+  color: mat-color($dockstore-app-primary);
   font-weight: normal;
   margin: 20px 0px 15px 0px;
   display: inline;
@@ -323,11 +424,9 @@ table.homepage-container {
 }
 
 #container-header {
-  background-color: #eef0f6;
   box-shadow: 0px 3px 6px #cfd1d7;
   position: relative;
   z-index: 1;
-  padding-top: 5px;
 }
 
 .sort {
@@ -380,11 +479,25 @@ cite {
 }
 
 a {
-  color: #487980;
+  color: #3d7d86;
+  text-decoration: underline;
+}
+
+a.no-underline {
+  color: mat-color($dockstore-app-gray, darker);
+  text-decoration: none;
+}
+
+a.no-underline:hover {
+  text-decoration: none;
 }
 
 a.white-link {
   color: #ffffff;
+}
+
+a.white-link:hover {
+  color: mat-color($dockstore-app-accent, lighter);
 }
 
 ul.more li a {
@@ -402,8 +515,12 @@ img.site-icons-medium {
 }
 
 img.site-icons-tab {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
+}
+
+img.contain-img {
+  object-fit: contain;
 }
 
 #homeSearch {
@@ -540,6 +657,10 @@ div.button a {
   margin-top: 8px;
 }
 
+.mat-raised-button.mat-accent:hover {
+  background-color: mat-color($dockstore-app-accent, darker);
+}
+
 table a {
   text-decoration: underline;
 }
@@ -579,7 +700,7 @@ th {
   width: 100%;
   /*height: auto;*/
   height: 65px;
-  background-color: #eef0f6;
+  background-color: mat-color($dockstore-app-gray, 6);
   border: 1px solid #cfd1d7;
   /*margin:0;*/
 }
@@ -593,7 +714,7 @@ th {
 #homeFooter {
   margin: 40px 0px;
   width: 100%;
-  background-color: #eef0f6;
+  background-color: mat-color($dockstore-app-gray, 6);
   border: 1px solid #cfd1d7;
   /*box-shadow: 0px 0px 10px #cfd1d7;*/
 }
@@ -639,7 +760,7 @@ ul.our-sponsors li img {
 }
 
 #footer {
-  background-color: #21335b;
+  background-color: mat-color($dockstore-app-primary);
   /*width: 100%;*/
   /*padding: 0px 100px;*/
   /*position: relative;*/
@@ -754,7 +875,7 @@ code {
 h5,
 .h5 {
   font-size: 16px;
-  color: #21335b;
+  color: #151c3d;
   font-weight: normal;
 }
 
@@ -782,7 +903,7 @@ div.side-block td {
 div.side-block h3 {
   font-size: 16px;
   margin: 0px;
-  color: #21335b;
+  color: mat-color($dockstore-app-primary);
 }
 
 div.side-block a {
@@ -1114,12 +1235,6 @@ div.tabs > div:target > div,
   color: #808080;
 }
 
-.ellipsis-lines {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
 .test_parameter_input {
   width: 90%;
   float: left;
@@ -1171,14 +1286,6 @@ body {
   height: 52px;
 }
 
-.footer-link:link {
-  text-decoration: none;
-}
-
-.footer-link:hover {
-  text-decoration: underline;
-}
-
 .my-entry-button-group {
   margin-bottom: 5px;
 }
@@ -1208,6 +1315,46 @@ app-sidebar-accordion
   }
 }
 
+.tool-tab-group.mat-primary .mat-ink-bar {
+  background: #29b6f6 !important;
+}
+
+.workflow-tab-group.mat-primary .mat-ink-bar {
+  background: #26bfa5 !important;
+}
+
+.purple-tab-group.mat-primary .mat-ink-bar {
+  background: #3f51b5 !important;
+}
+
+.mat-tab-label:hover {
+  color: black;
+  opacity: 0.7;
+}
+
+.container-label-tag {
+  background: #d0effd !important;
+  text-decoration: none !important;
+  border-radius: 1rem !important;
+  font-size: 12px !important;
+  padding: 0 0.6rem !important;
+}
+
+.workflow-label-tag {
+  background: #d2fbf0 !important;
+  text-decoration: none !important;
+  border-radius: 1rem !important;
+  font-size: 12px !important;
+  padding: 0 0.6rem !important;
+}
+
+.gray-label-tag {
+  background: mat-color($dockstore-app-gray, lighter) !important;
+  text-decoration: none !important;
+  border-radius: 1rem !important;
+  font-size: 12px !important;
+  padding: 0 0.6rem !important;
+}
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names
 // TODO: Ideally this should stretch to the length of the longest dropdown option.
@@ -1268,4 +1415,119 @@ mat-tab-group.no-pagination {
 .subtitle {
   font-size: smaller;
   color: rgba(0, 0, 0, 0.54);
+}
+
+// Styling from design mockups
+// These badges are not clickable, thus different from Material Design Chips
+.nonclick-badge {
+  display: inline-flex;
+  border-radius: 8px;
+  background-color: mat-color($dockstore-app-gray, lighter);
+  padding: 5px 8px;
+  color: #151c3d;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 1200px) {
+  .align-languages {
+    flex-direction: column;
+  }
+}
+
+.custom_copy_snack_bar {
+  min-width: 0 !important;
+  background-color: #5c5c5c !important;
+}
+
+.view-button {
+  font-size: 12px !important;
+  line-height: inherit !important;
+}
+
+hr {
+  margin: 0.5rem 0;
+  border: 1px solid mat-color($dockstore-app-gray, lighter);
+}
+
+.orcid-id-logo {
+  height: 1.6rem;
+  width: 1.6rem;
+  vertical-align: sub;
+}
+
+.small-org-logo {
+  height: 50px;
+  object-fit: scale-down;
+}
+
+.big-org-logo {
+  max-height: 100px;
+  max-width: 200px;
+  margin-top: 1.5rem;
+}
+
+// To indicate success of an operation.
+.accent-3-dark {
+  color: #00bfa5;
+}
+
+// Following 4 items are for stepper/stepper-like dialogs
+.accent-1-dark {
+  color: mat-color($dockstore-app-accent-1, darker);
+}
+.mat-flat-button.bg-accent-1-dark {
+  background-color: mat-color($dockstore-app-accent-1, darker);
+  color: white;
+}
+.mat-flat-button.secondary-1 {
+  color: mat-color($dockstore-app-accent);
+}
+.mat-flat-button.accent-1-dark {
+  color: mat-color($dockstore-app-accent-1, darker);
+}
+
+.mat-radio-label-content {
+  font-weight: normal;
+}
+
+.mat-form-field.small-text {
+  font-size: 12px;
+}
+
+// Can use this class for all search bars
+.search-form-field {
+  width: 200px;
+  button {
+    // Workaround for Firefox since x icon does not align correctly, but can remove this if using angular 11
+    display: inline-block !important;
+  }
+}
+
+// Style the float label of the mat-form-field
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
+  color: mat-color($dockstore-app-accent, 1);
+}
+
+// Keep the outer circle in a radio button gray even when selected
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: mat-color($dockstore-app-gray, 2) !important;
+}
+
+// Remove some padding from mat form fields that are part of a radio group
+.mat-radio-label-content > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
+  padding: 0.5em 0 0.5em 0;
+}
+// Align the radio button with the form field (only applies to form fields that are part of a radio group and is due to the style directly above)
+.mat-radio-label-content > .mat-form-field > .mat-form-field-wrapper {
+  padding: 0;
+}
+// Center align the place holder text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
+.mat-radio-button .mat-form-field-appearance-outline .mat-form-field-label {
+  top: 1.4em;
+}
+// Align the floating text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
+.mat-radio-button .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  top: 1.8em;
 }

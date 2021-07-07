@@ -24,6 +24,5 @@ import { AddEntryComponent } from './add-entry/add-entry.component';
 @NgModule({
   imports: [CommonModule, CustomMaterialModule, CurrentCollectionsModule, FlexLayoutModule, RefreshAlertModule],
   declarations: [AddEntryComponent],
-  entryComponents: [AddEntryComponent],
 })
 export class AddEntryModule {}
