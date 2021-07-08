@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
-import { DockstoreTool } from '../../shared/swagger';
+import { AppTool, DockstoreTool } from '../../shared/swagger';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
@@ -18,12 +18,16 @@ import { SearchService } from '../state/search.service';
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
   readonly entryType = 'tool';
-  public dataSource: MatTableDataSource<DockstoreTool>;
+  public dataSource: MatTableDataSource<DockstoreTool | AppTool>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);
   }
 
-  privateNgOnInit(): Observable<Array<DockstoreTool>> {
+  privateNgOnInit(): Observable<Array<DockstoreTool> | Array<AppTool>> {
     return this.searchQuery.tools$;
+  }
+
+  isAppTool(tool: DockstoreTool | AppTool): tool is AppTool {
+    return (tool as AppTool).full_workflow_path !== undefined;
   }
 }

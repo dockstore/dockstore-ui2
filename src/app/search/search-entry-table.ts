@@ -21,7 +21,7 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { DateService } from '../shared/date.service';
-import { DockstoreTool, Workflow } from '../shared/swagger';
+import { AppTool, DockstoreTool, Workflow } from '../shared/swagger';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
 
@@ -55,8 +55,8 @@ export abstract class SearchEntryTable extends Base implements OnInit {
         // Must set data after paginator, just a material datatables thing.
         this.dataSource.data = entries || [];
       });
-    this.dataSource.sortData = (data: DockstoreTool[] | Workflow[], sort: MatSort) => {
-      return data.slice().sort((a: Workflow | DockstoreTool, b: Workflow | DockstoreTool) => {
+    this.dataSource.sortData = (data: DockstoreTool[] | AppTool[] | Workflow[], sort: MatSort) => {
+      return data.slice().sort((a: Workflow | AppTool | DockstoreTool, b: Workflow | AppTool | DockstoreTool) => {
         return this.searchService.compareAttributes(a, b, sort.active, sort.direction, this.entryType);
       });
     };
