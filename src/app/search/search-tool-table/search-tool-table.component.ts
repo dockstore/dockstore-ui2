@@ -26,8 +26,4 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
   privateNgOnInit(): Observable<Array<DockstoreTool> | Array<AppTool>> {
     return this.searchQuery.tools$;
   }
-
-  isAppTool(tool: DockstoreTool | AppTool): tool is AppTool {
-    return (tool as AppTool).full_workflow_path !== undefined;
-  }
 }
