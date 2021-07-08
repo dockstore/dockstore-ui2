@@ -313,6 +313,7 @@ workflows:
           context:
             - dockerhub
 #      - uptime_monitor_no_auth:
+#          name: "uptime_monitor_no_auth-prod"
 #          stack: "prod"
 #          context:
 #            - dockerhub
