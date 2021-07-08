@@ -94,7 +94,7 @@ export class Dockstore {
   static FEATURES = {
     enableCwlViewer: true,
     enableLaunchWithGalaxy: true,
-    enableMultiCloudLaunchWithDNAstack: false,
+    enableMultiCloudLaunchWithDNAstack: true,
     enableOrcidExport: true,
   };
 }
