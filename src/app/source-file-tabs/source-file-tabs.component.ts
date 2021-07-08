@@ -1,7 +1,10 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SafeUrl } from '@angular/platform-browser';
+import { FileTreeComponent } from 'app/file-tree/file-tree.component';
+import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
 import { Validation } from 'app/shared/swagger';
@@ -14,7 +17,7 @@ import { SourceFileTabsService } from './source-file-tabs.service';
   styleUrls: ['./source-file-tabs.component.scss'],
 })
 export class SourceFileTabsComponent implements OnChanges {
-  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
+  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService, private matDialog: MatDialog) {}
   @Input() workflowId: number;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
   // Version is strictly non-null because everything that uses this component has a truthy-check guard
@@ -113,5 +116,17 @@ export class SourceFileTabsComponent implements OnChanges {
 
   matSelectChange(event: MatSelectChange) {
     this.selectFile(event.value);
+  }
+
+  openFileTree() {
+    this.matDialog
+      .open(FileTreeComponent, { width: bootstrap4largeModalSize, data: { files: this.filteredFiles, selectedFile: this.currentFile } })
+      .afterClosed()
+      .subscribe((absoluteFilePath) => {
+        const foundFile = this.filteredFiles.find((file) => file.absolutePath === absoluteFilePath);
+        if (foundFile) {
+          this.selectFile(foundFile);
+        }
+      });
   }
 }

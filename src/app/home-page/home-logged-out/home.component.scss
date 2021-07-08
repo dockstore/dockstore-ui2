@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+@use '~@angular/material' as mat;
 @import 'materialColorScheme.scss';
 
 .title {
@@ -24,7 +25,7 @@
 }
 
 .gray-sections {
-  background: mat-color($dockstore-app-gray, 5);
+  background: mat.get-color-from-palette($dockstore-app-gray, 5);
 }
 
 pre {
@@ -106,17 +107,17 @@ h3 {
 }
 
 .search-background {
-  background: mat-color($dockstore-app-accent);
+  background: mat.get-color-from-palette($dockstore-app-accent);
   padding: 2rem;
   border-radius: 1rem;
 }
 
 .primary-3 {
-  color: mat-color($dockstore-app-primary, 3);
+  color: mat.get-color-from-palette($dockstore-app-primary, 3);
 }
 
 .warn-1 {
-  color: mat-color($dockstore-app-warn, darker);
+  color: mat.get-color-from-palette($dockstore-app-warn, darker);
 }
 
 // Style home search mat-form-field

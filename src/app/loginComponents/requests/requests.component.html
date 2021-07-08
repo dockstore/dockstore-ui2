@@ -7,7 +7,7 @@
   <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
     <h3>Curator Requests</h3>
     <p>As a curator/admin, you can approve and reject organization requests.</p>
-    <mat-card class="alert alert-info" role="alert" *ngIf="(allPendingOrganizations$ | async)?.length == 0">
+    <mat-card class="alert alert-info" role="alert" *ngIf="(allPendingOrganizations$ | async)?.length === 0">
       <mat-icon>info</mat-icon> There are no organizations waiting for approval.
     </mat-card>
 
@@ -67,7 +67,7 @@
   <div class="p-3">
     <h3>My Requests</h3>
     <p>The following organizations that you have created are pending approval.</p>
-    <mat-card class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length == 0">
+    <mat-card class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length === 0">
       <mat-icon>info</mat-icon> You have no organizations pending approval.
     </mat-card>
 
@@ -100,7 +100,7 @@
     </div>
 
     <p class="pt-2">The following organizations that you have created are rejected.</p>
-    <mat-card class="alert alert-info" role="alert" *ngIf="(myRejectedOrganizationRequests$ | async)?.length == 0">
+    <mat-card class="alert alert-info" role="alert" *ngIf="(myRejectedOrganizationRequests$ | async)?.length === 0">
       <mat-icon>info</mat-icon> You have no rejected organizations.
     </mat-card>
     <div fxLayout="column" fxLayoutGap="32px">
@@ -147,7 +147,7 @@
   <div class="p-3">
     <h3>Organization Invites</h3>
     <p>Accept and decline invitations to join organizations.</p>
-    <mat-card class="alert alert-info" role="alert" *ngIf="(myOrganizationInvites$ | async)?.length == 0">
+    <mat-card class="alert alert-info" role="alert" *ngIf="(myOrganizationInvites$ | async)?.length === 0">
       <mat-icon>info</mat-icon> You have no pending organization invites.
     </mat-card>
 

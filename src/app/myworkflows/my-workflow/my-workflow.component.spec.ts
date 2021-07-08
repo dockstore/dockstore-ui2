@@ -19,6 +19,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TrackLoginService } from 'app/shared/track-login.service';
 import { AuthService } from 'ng2-ui-auth';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
@@ -39,6 +40,7 @@ import {
   ConfigurationStub,
   RefreshStubService,
   RegisterWorkflowModalStubService,
+  TrackLoginStubService,
   UrlResolverStubService,
   UsersStubService,
   WorkflowsStubService,
@@ -75,6 +77,7 @@ describe('MyWorkflowsComponent', () => {
           { provide: AccountsService, useClass: AccountsStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: UrlResolverService, useClass: UrlResolverStubService },
+          { provide: TrackLoginService, useClass: TrackLoginStubService},
           {
             provide: MatDialogRef,
             useValue: {

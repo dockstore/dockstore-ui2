@@ -166,10 +166,10 @@
           <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
             <span style="cursor: pointer" class="pull-right" (click)="clickExpand(key)">
               <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
-              <a *ngIf="key != 'author'">
+              <a *ngIf="key !== 'author'">
                 {{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}
               </a>
-              <a *ngIf="key == 'author'">
+              <a *ngIf="key === 'author'">
                 {{ fullyExpandMap.get(key) ? 'Hide' : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchText) }}
               </a>
             </span>
@@ -181,7 +181,7 @@
     </div>
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
-        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
+        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning text-break">
           Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
           >.
           <span *ngIf="suggestTerm$ | async"
@@ -213,7 +213,7 @@
         </mde-popover>
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
-          <mat-card class="alert alert-info">
+          <mat-card class="alert alert-info text-break">
             <button
               data-cy="share_button"
               mat-raised-button

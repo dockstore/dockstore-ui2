@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+import { NgFormsManager } from '@ngneat/forms-manager';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
@@ -96,12 +96,12 @@ export class CreateCollectionService {
    * @returns {FormGroup}
    * @memberof CreateCollectionService
    */
-  createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
+  createForm(formsManager: NgFormsManager<FormsState>, data: any): FormGroup {
     const mode: TagEditorMode = data.mode;
     let name = null;
     let topic = null;
     let displayName = null;
-    formsManager.remove('createOrUpdateCollection');
+    formsManager.clear('createOrUpdateCollection');
     if (mode !== TagEditorMode.Add) {
       const collection: Collection = data.collection.value;
       name = collection.name;

@@ -1,12 +1,6 @@
 // Importing bootstrap 4 scss utility classes to extend
 @import 'bootstrap4.scss';
 
-// Overriding the border added in the style.scss
-input[type='text']:focus,
-textarea:focus {
-  border: none;
-}
-
 mat-form-field {
   @extend .w-100;
 }

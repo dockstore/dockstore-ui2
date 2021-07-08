@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+import { NgFormsManager } from '@ngneat/forms-manager';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -34,13 +34,13 @@ export class UpsertOrganizationMemberService {
   /**
    * Creates the organization (create and update) form based on the mode given
    *
-   * @param {AkitaNgFormsManager<FormsState>} formsManager
+   * @param {NgFormsManager<FormsState>} formsManager
    * @param {*} data
    * @returns {FormGroup}
    * @memberof UpsertOrganizationMemberService
    */
-  createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
-    formsManager.remove('upsertUser');
+  createForm(formsManager: NgFormsManager<FormsState>, data: any): FormGroup {
+    formsManager.clear('upsertUser');
     let username = null;
     let role = OrganizationUser.RoleEnum.MEMBER;
     let disabled = false;

@@ -1,7 +1,8 @@
 import * as ace from '../../../../node_modules/ace-builds/src-min-noconflict/ace.js';
 ('use strict');
 
-// CWL Grammar
+// CWL Grammar generated originally from the CSON of https://github.com/manabuishii/language-cwl using https://github.com/ajaxorg/ace/wiki/Importing-.tmtheme-and-.tmlanguage-Files-into-Ace#importing-textmatesublime-languages
+// https://github.com/rabix/benten/blob/master/vscode-client/cwl.tmGrammar.json is another option (but haven't noticed any major differences)
 ace.define('ace/mode/cwl_highlight_rules', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/mode/yaml_highlight_rules'], function (
   require,
   exports,
@@ -158,7 +159,7 @@ ace.define('ace/mode/cwl', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/
   exports.Mode = Mode;
 });
 
-// WDL Grammar
+// WDL Grammar generated originally from the tmLanguage of https://github.com/broadinstitute/wdl-sublime-syntax-highlighter using https://github.com/ajaxorg/ace/wiki/Importing-.tmtheme-and-.tmlanguage-Files-into-Ace#importing-textmatesublime-languages
 ace.define('ace/mode/wdl_highlight_rules', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/mode/yaml_highlight_rules'], function (
   require,
   exports,

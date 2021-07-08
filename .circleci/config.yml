@@ -27,8 +27,6 @@ jobs:
     parameters:
       stack:
         type: string
-      webpage_URL:
-        type: string
     working_directory: ~/repo
     docker:
       - image: circleci/buildpack-deps:18.04-browsers
@@ -36,8 +34,7 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - setup_nightly_tests:
-          webpage_URL: << parameters.webpage_URL >>
+      - setup_nightly_tests
       - run:
           name: Run remote verification test against << parameters.stack >> (no auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
@@ -60,8 +57,6 @@ jobs:
     parameters:
       stack:
         type: string
-      webpage_URL:
-        type: string
     working_directory: ~/repo
     docker:
         - image: circleci/buildpack-deps:18.04-browsers
@@ -69,8 +64,7 @@ jobs:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
-      - setup_nightly_tests:
-          webpage_URL: << parameters.webpage_URL >>
+      - setup_nightly_tests
       - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
@@ -310,23 +304,19 @@ workflows:
     jobs:
       - uptime_monitor_no_auth:
           stack: "dev"
-          webpage_URL: "https://dev.dockstore.net"
           context:
             - dockerhub
       - uptime_monitor_no_auth:
           stack: "staging"
-          webpage_URL: "https://staging.dockstore.org"
           context:
             - dockerhub
 #      - uptime_monitor_no_auth:
 #          stack: "prod"
-#          webpage_URL: "https://dockstore.org"
 #          context:
 #            - dockerhub
       # TODO: Add auth tests for staging/prod once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done.
       - uptime_monitor_auth:
           stack: "dev"
-          webpage_URL: "https://dev.dockstore.net"
           context:
             - dockerhub
 
@@ -389,19 +379,8 @@ commands:
           name: Wait for services
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
-    parameters:
-      webpage_URL:
-        type: string
     steps:
       - checkout
-      - run:
-          name: Get and checkout commit id from the current webpage.
-          command: |
-            COMMIT_ID=$(curl << parameters.webpage_URL >> | \
-                        grep -Eoi "https:\/\/gui\.dockstore\.org\/[A-Za-z0-9\.\-]+-[A-Za-z0-9]+" | \
-                        head -1 | \
-                        grep -Eoi "[A-Za-z0-9]+$")
-            git checkout $COMMIT_ID
       - install_container_dependencies
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
