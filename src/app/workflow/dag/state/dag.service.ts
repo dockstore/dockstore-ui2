@@ -322,7 +322,7 @@ export class DagService {
         },
         popper: { removeOnDestroy: true },
       });
-      popper.scheduleUpdate();
+      popper.update();
     };
     const destroy = () => {
       try {
