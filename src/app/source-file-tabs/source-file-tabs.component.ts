@@ -19,14 +19,14 @@ import { SourceFileTabsService } from './source-file-tabs.service';
 export class SourceFileTabsComponent implements OnChanges {
   constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService, private matDialog: MatDialog) {}
   @Input() workflowId: number;
+  // Used to generate the TRS file path
   @Input() descriptorType: ToolDescriptor.TypeEnum;
   // Version is strictly non-null because everything that uses this component has a truthy-check guard
   @Input() version: WorkflowVersion;
   loading = true;
   displayError = false;
   currentFile: SourceFile;
-  currentFileType: SourceFile.TypeEnum;
-  validationMessage: Object;
+  validationMessage: Map<string, string>;
   customDownloadHREF: SafeUrl;
   customDownloadPath: String;
   filePath: String;

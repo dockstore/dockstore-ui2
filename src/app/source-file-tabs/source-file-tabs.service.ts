@@ -56,7 +56,7 @@ export class SourceFileTabsService {
   /**
    * Given the sourcefiles in the current tab, return the validation message object that should be shown
    */
-  getValidationMessage(sourcefiles: SourceFile[], version: WorkflowVersion): Object {
+  getValidationMessage(sourcefiles: SourceFile[], version: WorkflowVersion): Map<string, string> {
     let validationMessage = null;
     version.validations.forEach((validation: Validation) => {
       sourcefiles.forEach(file => {
