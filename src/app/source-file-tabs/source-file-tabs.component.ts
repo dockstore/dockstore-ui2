@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
@@ -33,19 +34,20 @@ export class SourceFileTabsComponent implements OnChanges {
   customDownloadHREF: SafeUrl;
   customDownloadPath: String;
   filePath: String;
+  fileTabs: Map<string, SourceFile[]>;
+
+  readonly fileTab1 = {tabName: "Dockerfile", fileTypes: [SourceFile.TypeEnum.DOCKERFILE]}
+  readonly fileTab2 = {tabName: "Configuration", fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICEYML]}
+  readonly fileTab3 = {tabName: "Descriptor Files", fileTypes: [SourceFile.TypeEnum.DOCKSTORECWL, SourceFile.TypeEnum.DOCKSTOREWDL, SourceFile.TypeEnum.NEXTFLOWCONFIG, SourceFile.TypeEnum.DOCKSTORESWL, SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2]}
+  readonly fileTab4 = {tabName: "Test Parameter Files", fileTypes: [SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.SWLTESTJSON]}
+  readonly fileTab5 = {tabName: "Configuration", fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML]}
+  readonly fileTabsSchematic = [this.fileTab1, this.fileTab2, this.fileTab3, this.fileTab4, this.fileTab5]
 
   /**
-   * The webservice returns two file types for Nextflow (NEXTFLOW_CONFIG and NEXTFLOW).
-   * However, we're overriding that and just returning a single file type and appending the NEXTFLOW_CONFIG file to the end of NEXTFLOW
-   * @param array The original sourcefiles that have not been transformed
+   * To prevent the Angular keyvalue pipe from sorting
    */
-  private static hackNextflowFiles(array: SourceFile[]) {
-    const index = array.findIndex((file) => file.type === SourceFile.TypeEnum.NEXTFLOWCONFIG);
-    if (index === -1) {
-      return;
-    }
-    array[index].type = SourceFile.TypeEnum.NEXTFLOW;
-    array.push(array.splice(index, 1)[0]);
+  originalOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
+    return 0;
   }
 
   ngOnChanges() {
@@ -64,7 +66,7 @@ export class SourceFileTabsComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
-          SourceFileTabsComponent.hackNextflowFiles(sourceFiles);
+          this.fileTabs = this.convertSourceFilesToFileTabs(sourceFiles);
           const fileTypes = this.sourceFileTabsService.getFileTypes(sourceFiles);
           if (fileTypes.length > 0) {
             this.changeFileType(fileTypes[0], sourceFiles);
@@ -76,6 +78,27 @@ export class SourceFileTabsComponent implements OnChanges {
           this.displayError = true;
         }
       );
+  }
+
+  private convertSourceFilesToFileTabs(sourcefiles: SourceFile[]):  Map<string, SourceFile[]> {
+    let fileTabs = new Map<string, SourceFile[]>();
+    if (!sourcefiles || sourcefiles.length === 0) {
+      return fileTabs;
+    }
+    this.fileTabsSchematic.forEach(fileTab => {
+      fileTab.fileTypes.forEach(fileType => {
+        const sourceFilesMatchingType = sourcefiles.filter(sourcefile => sourcefile.type === fileType);
+        if (sourceFilesMatchingType.length > 0) {
+          if (fileTabs.has(fileTab.tabName)) {
+            fileTabs.set(fileTab.tabName, fileTabs.get(fileTab.tabName).concat(sourceFilesMatchingType));
+          } else {
+            fileTabs.set(fileTab.tabName, sourceFilesMatchingType);
+          }
+        }
+      });
+    });
+    console.log(fileTabs);
+    return fileTabs;
   }
 
   /**
@@ -115,15 +138,16 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   matSelectChange(event: MatSelectChange) {
+    console.log(event);
     this.selectFile(event.value);
   }
 
-  openFileTree() {
+  openFileTree(sourceFiles: SourceFile[]) {
     this.matDialog
-      .open(FileTreeComponent, { width: bootstrap4largeModalSize, data: { files: this.filteredFiles, selectedFile: this.currentFile } })
+      .open(FileTreeComponent, { width: bootstrap4largeModalSize, data: { files: sourceFiles, selectedFile: this.currentFile } })
       .afterClosed()
       .subscribe((absoluteFilePath) => {
-        const foundFile = this.filteredFiles.find((file) => file.absolutePath === absoluteFilePath);
+        const foundFile = sourceFiles.find((file) => file.absolutePath === absoluteFilePath);
         if (foundFile) {
           this.selectFile(foundFile);
         }
