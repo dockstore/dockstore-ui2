@@ -244,29 +244,7 @@
             <ng-template matTabContent>
               <!-- Check if there's versions, then check workflow mode, then check descriptor type -->
               <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
-                <div [ngSwitch]="workflow.mode">
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.STUB">
-                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
-                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else dockstoreYmlComponent" class="p-3">
-                      <ng-container *ngTemplateOutlet="dockstoreYmlComponent"></ng-container>
-                    </div>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
-                    <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML">
-                    <ng-container *ngTemplateOutlet="dockstoreYmlComponent"></ng-container>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.FULL">
-                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
-                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else dockstoreYmlComponent" class="p-3">
-                      <ng-container *ngTemplateOutlet="dockstoreYmlComponent"></ng-container>
-                    </div>
-                  </div>
-                  <div *ngSwitchDefault>
-                    <ng-container *ngTemplateOutlet="dockstoreYmlComponent"></ng-container>
-                  </div>
-                </div>
+                <ng-container *ngIf="workflow.mode === WorkflowModel.ModeEnum.HOSTED; then hostedComponent; else dockstoreYmlComponent"></ng-container>
               </div>
               <ng-template #noVersionsFilesTab>
                 <div [ngSwitch]="workflow.mode" class="p-3">
