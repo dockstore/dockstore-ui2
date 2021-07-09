@@ -41,7 +41,7 @@ export class SourceFileTabsComponent implements OnChanges {
   readonly fileTabsSchematic = [this.fileTab1, this.fileTab2, this.fileTab3, this.fileTab4, this.fileTab5]
 
   /**
-   * To prevent the Angular keyvalue pipe from sorting
+   * To prevent the Angular's keyvalue pipe from sorting by key
    */
   originalOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
     return 0;
