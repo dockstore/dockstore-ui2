@@ -8,7 +8,6 @@ import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
-import { Validation } from 'app/shared/swagger';
 import { finalize } from 'rxjs/operators';
 import { SourceFileTabsService } from './source-file-tabs.service';
 
@@ -33,13 +32,6 @@ export class SourceFileTabsComponent implements OnChanges {
   filePath: String;
   fileTabs: Map<string, SourceFile[]>;
 
-  readonly fileTab1 = {tabName: "Dockerfile", fileTypes: [SourceFile.TypeEnum.DOCKERFILE]}
-  readonly fileTab2 = {tabName: "Configuration", fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICEYML]}
-  readonly fileTab3 = {tabName: "Descriptor Files", fileTypes: [SourceFile.TypeEnum.DOCKSTORECWL, SourceFile.TypeEnum.DOCKSTOREWDL, SourceFile.TypeEnum.NEXTFLOWCONFIG, SourceFile.TypeEnum.DOCKSTORESWL, SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2]}
-  readonly fileTab4 = {tabName: "Test Parameter Files", fileTypes: [SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.SWLTESTJSON]}
-  readonly fileTab5 = {tabName: "Configuration", fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML]}
-  readonly fileTabsSchematic = [this.fileTab1, this.fileTab2, this.fileTab3, this.fileTab4, this.fileTab5]
-
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
    */
@@ -63,7 +55,7 @@ export class SourceFileTabsComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
-          this.fileTabs = this.convertSourceFilesToFileTabs(sourceFiles);
+          this.fileTabs = this.sourceFileTabsService.convertSourceFilesToFileTabs(sourceFiles);
           if (this.fileTabs.size > 0) {
             this.changeFileType(this.fileTabs.values().next().value);
           }
@@ -74,41 +66,14 @@ export class SourceFileTabsComponent implements OnChanges {
       );
   }
 
-  private convertSourceFilesToFileTabs(sourcefiles: SourceFile[]):  Map<string, SourceFile[]> {
-    let fileTabs = new Map<string, SourceFile[]>();
-    if (!sourcefiles || sourcefiles.length === 0) {
-      return fileTabs;
-    }
-    this.fileTabsSchematic.forEach(fileTab => {
-      fileTab.fileTypes.forEach(fileType => {
-        const sourceFilesMatchingType = sourcefiles.filter(sourcefile => sourcefile.type === fileType);
-        if (sourceFilesMatchingType.length > 0) {
-          if (fileTabs.has(fileTab.tabName)) {
-            fileTabs.set(fileTab.tabName, fileTabs.get(fileTab.tabName).concat(sourceFilesMatchingType));
-          } else {
-            fileTabs.set(fileTab.tabName, sourceFilesMatchingType);
-          }
-        }
-      });
-    });
-    return fileTabs;
-  }
 
   /**
-   * Sets the file type to display and loads validation messages
+   * Sets the validation message and new default selected file
    * @param fileType
    */
   changeFileType(files: SourceFile[]) {
-    let validationMessage = null;
-    this.version.validations.forEach((validation: Validation) => {
-      files.forEach(file => {
-        if (validation.type === file.type && !validation.valid) {
-          validationMessage = JSON.parse(validation.message);
-        }
-      })
-    });
     this.selectFile(files[0]);
-    this.validationMessage = validationMessage;
+    this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
   }
 
   selectFile(file: SourceFile) {
