@@ -25,10 +25,7 @@ export class SourceFileTabsComponent implements OnChanges {
   @Input() version: WorkflowVersion;
   loading = true;
   displayError = false;
-  files: SourceFile[];
-  filteredFiles: SourceFile[];
   currentFile: SourceFile;
-  fileTypes: SourceFile.TypeEnum[];
   currentFileType: SourceFile.TypeEnum;
   validationMessage: Object;
   customDownloadHREF: SafeUrl;
@@ -67,12 +64,9 @@ export class SourceFileTabsComponent implements OnChanges {
       .subscribe(
         (sourceFiles: SourceFile[]) => {
           this.fileTabs = this.convertSourceFilesToFileTabs(sourceFiles);
-          const fileTypes = this.sourceFileTabsService.getFileTypes(sourceFiles);
-          if (fileTypes.length > 0) {
-            this.changeFileType(fileTypes[0], sourceFiles);
+          if (this.fileTabs.size > 0) {
+            this.changeFileType(this.fileTabs.values().next().value);
           }
-          this.files = sourceFiles;
-          this.fileTypes = fileTypes;
         },
         () => {
           this.displayError = true;
@@ -97,7 +91,6 @@ export class SourceFileTabsComponent implements OnChanges {
         }
       });
     });
-    console.log(fileTabs);
     return fileTabs;
   }
 
@@ -105,23 +98,16 @@ export class SourceFileTabsComponent implements OnChanges {
    * Sets the file type to display and loads validation messages
    * @param fileType
    */
-  changeFileType(fileType: SourceFile.TypeEnum, files: SourceFile[]) {
+  changeFileType(files: SourceFile[]) {
     let validationMessage = null;
     this.version.validations.forEach((validation: Validation) => {
-      if (validation.type === fileType && !validation.valid) {
-        validationMessage = JSON.parse(validation.message);
-      }
+      files.forEach(file => {
+        if (validation.type === file.type && !validation.valid) {
+          validationMessage = JSON.parse(validation.message);
+        }
+      })
     });
-
-    const filteredFiles = files.filter((file: SourceFile) => {
-      return file.type === fileType;
-    });
-    if (filteredFiles.length > 0) {
-      this.selectFile(filteredFiles[0]);
-    }
-
-    this.currentFileType = fileType;
-    this.filteredFiles = filteredFiles;
+    this.selectFile(files[0]);
     this.validationMessage = validationMessage;
   }
 
@@ -133,12 +119,10 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   matTabChange(event: MatTabChangeEvent) {
-    const fileType: SourceFile.TypeEnum = this.fileTypes[event.index];
-    this.changeFileType(fileType, this.files);
+    this.changeFileType(this.fileTabs.get(event.tab.textLabel));
   }
 
   matSelectChange(event: MatSelectChange) {
-    console.log(event);
     this.selectFile(event.value);
   }
 
