@@ -18,11 +18,10 @@ export class SourceFileTabsService {
 
 
   readonly fileTab1 = {tabName: "Dockerfile", fileTypes: [SourceFile.TypeEnum.DOCKERFILE]}
-  readonly fileTab2 = {tabName: "Configuration", fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICEYML]}
-  readonly fileTab3 = {tabName: "Descriptor Files", fileTypes: [SourceFile.TypeEnum.DOCKSTORECWL, SourceFile.TypeEnum.DOCKSTOREWDL, SourceFile.TypeEnum.NEXTFLOWCONFIG, SourceFile.TypeEnum.DOCKSTORESWL, SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2]}
-  readonly fileTab4 = {tabName: "Test Parameter Files", fileTypes: [SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.SWLTESTJSON]}
-  readonly fileTab5 = {tabName: "Configuration", fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML]}
-  readonly fileTabsSchematic = [this.fileTab1, this.fileTab2, this.fileTab3, this.fileTab4, this.fileTab5]
+  readonly fileTab2 = {tabName: "Descriptor Files", fileTypes: [SourceFile.TypeEnum.DOCKSTORECWL, SourceFile.TypeEnum.DOCKSTOREWDL, SourceFile.TypeEnum.NEXTFLOWCONFIG, SourceFile.TypeEnum.DOCKSTORESWL, SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2]}
+  readonly fileTab3 = {tabName: "Test Parameter Files", fileTypes: [SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.SWLTESTJSON]}
+  readonly fileTab4 = {tabName: "Configuration", fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML, SourceFile.TypeEnum.DOCKSTORESERVICEYML]}
+  readonly fileTabsSchematic = [this.fileTab1, this.fileTab2, this.fileTab3, this.fileTab4];
 
   /**
    * Retrieve all source files for the given workflow version
