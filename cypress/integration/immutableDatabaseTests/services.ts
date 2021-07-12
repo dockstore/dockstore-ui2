@@ -133,7 +133,6 @@ describe('Dockstore Home', () => {
     goToTab('Files');
 
     // Files Tab
-    goToTab('Descriptor Files');
     cy.contains('README.md');
     cy.contains('# another-test-serviceaaaa');
 
