@@ -446,7 +446,6 @@ img.contain-img {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
-  margin-top: 8px;
 }
 
 .button.login p {
@@ -947,7 +946,7 @@ mat-icon.star-icon {
 }
 
 .landing-search {
-  width: 60%;
+  margin-top: 8px;
   max-width: 600px;
   padding-left: 30px;
   padding-top: 3px;
