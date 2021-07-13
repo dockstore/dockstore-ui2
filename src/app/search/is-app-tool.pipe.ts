@@ -6,6 +6,8 @@ import { AppTool, DockstoreTool } from '../shared/swagger';
 })
 export class IsAppToolPipe implements PipeTransform {
   transform(tool: DockstoreTool | AppTool): tool is AppTool {
-    return (tool as AppTool).full_workflow_path !== undefined;
+    if (tool !== null) {
+      return (tool as AppTool).full_workflow_path !== undefined;
+    }
   }
 }
