@@ -19,6 +19,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { SessionQuery } from 'app/shared/session/session.query';
+import { UserQuery } from 'app/shared/user/user.query';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -65,6 +66,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
     entryName: null,
   };
+  public username$: Observable<string>;
   private baseOptions = [
     {
       label: 'Quickly register remote workflows',
@@ -103,7 +105,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>,
     private alertQuery: AlertQuery,
     private descriptorLanguageService: DescriptorLanguageService,
-    protected sessionQuery: SessionQuery
+    protected sessionQuery: SessionQuery,
+    private userQuery: UserQuery
   ) {}
 
   friendlyRepositoryKeys(): Array<string> {
@@ -115,6 +118,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   }
 
   ngOnInit() {
+    this.username$ = this.userQuery.username$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {

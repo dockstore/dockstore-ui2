@@ -338,7 +338,7 @@
         (ngSubmit)="registerHostedTool()"
         novalidate
       >
-        <div class="modal-body">
+        <mat-dialog-content>
           <p>
             Create a tool with all descriptor files stored and edited on Dockstore.org. Docker images are stored on sites like Quay.io and
             DockerHub.
@@ -454,7 +454,8 @@
               <div *ngIf="formErrors.toolName" class="alert alert-danger">{{ formErrors.toolName }}</div>
             </div>
           </div>
-        </div>
+          <div *ngIf="hostedTool.path">Final tool path: {{hostedTool.registry}}/{{hostedTool.path}}{{hostedTool.entryName ? '/' + hostedTool.entryName : ''}}</div>
+        </mat-dialog-content>
         <div mat-dialog-actions class="pull-right">
           <button mat-button type="button" color="secondary" (click)="hideModal()">Close</button>
           <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedToolForm.form.valid">
