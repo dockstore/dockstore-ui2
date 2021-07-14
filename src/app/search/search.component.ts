@@ -417,6 +417,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       tabIndex
     );
     this.resetEntryOrder();
+    this.resetPageIndex();
     this.updateSideBar(sideBarQuery);
     this.updateResultsTable(tableQuery);
   }
@@ -497,6 +498,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.entryOrder.clear();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.orderedBuckets.clear();
+  }
+
+  resetPageIndex() {
+    this.searchService.setPageSizeAndIndex(this.searchQuery.getValue().pageSize, 0);
   }
 
   /**===============================================
