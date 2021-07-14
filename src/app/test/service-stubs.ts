@@ -175,6 +175,8 @@ export class SearchStubService {
 
   setFilterKeys(filters: Map<string, Set<string>>) {}
 
+  setPageSizeAndIndex(pageSize: number, pageIndex: number) {}
+
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([
