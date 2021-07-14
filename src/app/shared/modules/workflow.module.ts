@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
-import { EntryFileTabComponent } from 'app/entry/entry-file-tab/entry-file-tab.component';
 
 import { MarkdownModule } from 'ngx-markdown';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
@@ -28,14 +27,11 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
 import { SourceFileTabsComponent } from '../../source-file-tabs/source-file-tabs.component';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
-import { DescriptorsWorkflowComponent } from '../../workflow/descriptors/descriptors.component';
-import { FilesWorkflowComponent } from '../../workflow/files/files.component';
 import { FilterCloudInstancesPipe } from '../../workflow/launch-third-party/filterCloudInstances.pipe';
 import { LaunchThirdPartyComponent } from '../../workflow/launch-third-party/launch-third-party.component';
 import { MultiCloudLaunchComponent } from '../../workflow/launch-third-party/multi-cloud-launch/multi-cloud-launch.component';
 import { LaunchWorkflowComponent } from '../../workflow/launch/launch.component';
 import { WorkflowLaunchService } from '../../workflow/launch/workflow-launch.service';
-import { ParamfilesWorkflowComponent } from '../../workflow/paramfiles/paramfiles.component';
 import { PermissionsComponent } from '../../workflow/permissions/permissions.component';
 import { VersionsWorkflowComponent } from '../../workflow/versions/versions.component';
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
@@ -65,10 +61,7 @@ import { SnackbarModule } from './snackbar.module';
 @NgModule({
   declarations: [
     WorkflowComponent,
-    DescriptorsWorkflowComponent,
-    FilesWorkflowComponent,
     WorkflowFileEditorComponent,
-    ParamfilesWorkflowComponent,
     VersionsWorkflowComponent,
     LaunchThirdPartyComponent,
     LaunchWorkflowComponent,
@@ -78,7 +71,6 @@ import { SnackbarModule } from './snackbar.module';
     WorkflowActionsComponent,
     InfoTabComponent,
     ToolTabComponent,
-    EntryFileTabComponent,
     SourceFileTabsComponent,
     FilterCloudInstancesPipe,
     MultiCloudLaunchComponent,
