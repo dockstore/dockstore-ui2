@@ -38,11 +38,9 @@
           }}</a>
         </div>
         <ng-template #docktoreToolName>
-          <div *ngIf="!(tool | isAppTool)">
-            <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
-              tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
-            }}</a>
-          </div>
+          <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
+            tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
+          }}</a>
         </ng-template>
       </mat-cell>
     </ng-container>
