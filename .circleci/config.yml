@@ -303,14 +303,17 @@ workflows:
                 - develop
     jobs:
       - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth-dev"
           stack: "dev"
           context:
             - dockerhub
       - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth-staging"
           stack: "staging"
           context:
             - dockerhub
 #      - uptime_monitor_no_auth:
+#          name: "uptime_monitor_no_auth-prod"
 #          stack: "prod"
 #          context:
 #            - dockerhub
