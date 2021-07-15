@@ -51,7 +51,7 @@
         <div class="search-background">
           <mat-form-field appearance="none" class="home-field fully-rounded landing-search w-100">
             <input matInput id="searchBar" aria-label="Search" #search placeholder="Search..." (keyup.enter)="goToSearch(search.value)" />
-            <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
+            <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''" style="top: 2px">
               <mat-icon inline="true">close</mat-icon>
             </button>
           </mat-form-field>
