@@ -39,6 +39,7 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
+import { IsAppToolPipe } from './is-app-tool.pipe';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { SearchService } from './state/search.service';
     SearchToolTableComponent,
     SearchWorkflowTableComponent,
     BasicSearchComponent,
+    IsAppToolPipe,
   ],
   imports: [
     CommonModule,
@@ -69,6 +71,6 @@ import { SearchService } from './state/search.service';
     SnackbarModule,
   ],
   providers: [SearchService, QueryBuilderService],
-  exports: [SearchComponent],
+  exports: [SearchComponent, IsAppToolPipe],
 })
 export class SearchModule {}

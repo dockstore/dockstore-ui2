@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Query } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { AppTool, DockstoreTool, Workflow } from '../../shared/swagger';
 import { SearchState, SearchStore } from './search.store';
 
 @Injectable({ providedIn: 'root' })
@@ -16,7 +16,7 @@ export class SearchQuery extends Query<SearchState> {
       elasticSearchResults ? elasticSearchResults.map((elasticSearchResult) => elasticSearchResult._source) : null
     )
   );
-  public tools$: Observable<Array<DockstoreTool>> = this.toolhit$.pipe(
+  public tools$: Observable<Array<DockstoreTool> | Array<AppTool>> = this.toolhit$.pipe(
     map((elasticSearchResults: Array<any>) =>
       elasticSearchResults ? elasticSearchResults.map((elasticSearchResult) => elasticSearchResult._source) : null
     )

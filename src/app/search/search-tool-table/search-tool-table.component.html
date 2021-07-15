@@ -32,9 +32,16 @@
         <span *ngIf="tool.private_access">
           <app-private-icon></app-private-icon>
         </span>
-        <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
-          tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
-        }}</a>
+        <div *ngIf="tool | isAppTool; else docktoreToolName">
+          <a [matTooltip]="tool?.full_workflow_path" [routerLink]="'/containers/' + tool.full_workflow_path">{{
+            tool?.organization + '/' + tool?.repository + (tool?.workflowName ? '/' + tool?.workflowName : '')
+          }}</a>
+        </div>
+        <ng-template #docktoreToolName>
+          <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
+            tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
+          }}</a>
+        </ng-template>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
@@ -52,11 +59,18 @@
     <ng-container matColumnDef="descriptorType" style="width: fit-content">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header fxFlex="15%">Format</mat-header-cell>
       <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool" fxFlex="15%" class="align-languages">
-        <div *ngFor="let language of tool?.descriptorType" class="m-1">
-          <span class="nonclick-badge">
-            {{ language ? (language.toString() | uppercase) : '' }}
-          </span>
-        </div>
+        <ng-container *ngIf="tool | isAppTool; else dockstoreToolDescriptorType">
+          <div class="m-1">
+            <span class="nonclick-badge">{{ tool?.descriptorType | uppercase }}</span>
+          </div>
+        </ng-container>
+        <ng-template #dockstoreToolDescriptorType>
+          <div *ngFor="let language of tool?.descriptorType" class="m-1">
+            <span class="nonclick-badge">
+              {{ language ? (language.toString() | uppercase) : '' }}
+            </span>
+          </div>
+        </ng-template>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
