@@ -9,7 +9,7 @@
       </span>
     </mat-card>
   </div>
-  <div *ngIf="!loading && !fileTabs && !displayError" class="p-3">
+  <div *ngIf="!loading && (!fileTabs || fileTabs.size === 0) && !displayError" class="p-3">
     <mat-card class="alert alert-warning"> <mat-icon>warning</mat-icon>This version has no files.</mat-card>
   </div>
 

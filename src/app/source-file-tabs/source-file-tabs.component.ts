@@ -55,7 +55,7 @@ export class SourceFileTabsComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
-          this.fileTabs = this.sourceFileTabsService.convertSourceFilesToFileTabs(sourceFiles);
+          this.fileTabs = this.sourceFileTabsService.convertSourceFilesToFileTabs(sourceFiles, this.version.workflow_path);
           if (this.fileTabs.size > 0) {
             this.changeFileType(this.fileTabs.values().next().value);
           }
