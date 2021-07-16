@@ -50,7 +50,7 @@
       <div fxFlex>
         <div class="search-background">
           <mat-form-field appearance="outline" class="w-100 landing-search fully-rounded">
-            <mat-icon matPrefix>search</mat-icon>
+            <mat-icon class="search-icon" matPrefix>search</mat-icon>
             <input #search matInput placeholder="Search..." />
             <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
               <mat-icon>close</mat-icon>
