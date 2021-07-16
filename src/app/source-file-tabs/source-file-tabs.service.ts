@@ -32,14 +32,21 @@ export class SourceFileTabsService {
     return this.workflowsService.getWorkflowVersionsSourcefiles(workflowId, versionId);
   }
 
-  convertSourceFilesToFileTabs(sourcefiles: SourceFile[]):  Map<string, SourceFile[]> {
+  convertSourceFilesToFileTabs(sourcefiles: SourceFile[], mainDescriptorAbsolutePath: string):  Map<string, SourceFile[]> {
     let fileTabs = new Map<string, SourceFile[]>();
     if (!sourcefiles || sourcefiles.length === 0) {
       return fileTabs;
     }
     this.fileTabsSchematic.forEach(fileTab => {
       fileTab.fileTypes.forEach(fileType => {
-        const sourceFilesMatchingType = sourcefiles.filter(sourcefile => sourcefile.type === fileType);
+        // Find all the files of the type that's not the main descriptor
+        const sourceFilesMatchingType = sourcefiles.filter(sourcefile => sourcefile.type === fileType && sourcefile.absolutePath !== mainDescriptorAbsolutePath);
+        // Find the file of the type that is the main descriptor 
+        const mainDescriptorFile = sourcefiles.find(sourcefile => sourcefile.type === fileType && sourcefile.absolutePath === mainDescriptorAbsolutePath);
+        if (mainDescriptorFile) {
+          // Add main descriptor to the front of the array
+          sourceFilesMatchingType.unshift(mainDescriptorFile);
+        }
         if (sourceFilesMatchingType.length > 0) {
           if (fileTabs.has(fileTab.tabName)) {
             fileTabs.set(fileTab.tabName, fileTabs.get(fileTab.tabName).concat(sourceFilesMatchingType));
@@ -58,11 +65,10 @@ export class SourceFileTabsService {
   getValidationMessage(sourcefiles: SourceFile[], version: WorkflowVersion): Map<string, string> {
     let validationMessage = null;
     version.validations.forEach((validation: Validation) => {
-      sourcefiles.forEach(file => {
-        if (validation.type === file.type && !validation.valid) {
+      const matchingSourcefile = sourcefiles.find(file => validation.type === file.type && !validation.valid);
+      if (matchingSourcefile) {
           validationMessage = JSON.parse(validation.message);
         }
-      })
     });
     return validationMessage;
   }
