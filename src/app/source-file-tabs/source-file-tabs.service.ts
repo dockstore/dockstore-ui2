@@ -16,11 +16,31 @@ export class SourceFileTabsService {
     private descriptorTypeCompatService: DescriptorTypeCompatService
   ) {}
 
-
-  readonly fileTab1 = {tabName: "Dockerfile", fileTypes: [SourceFile.TypeEnum.DOCKERFILE]}
-  readonly fileTab2 = {tabName: "Descriptor Files", fileTypes: [SourceFile.TypeEnum.DOCKSTORECWL, SourceFile.TypeEnum.DOCKSTOREWDL, SourceFile.TypeEnum.NEXTFLOWCONFIG, SourceFile.TypeEnum.DOCKSTORESWL, SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2]}
-  readonly fileTab3 = {tabName: "Test Parameter Files", fileTypes: [SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.SWLTESTJSON]}
-  readonly fileTab4 = {tabName: "Configuration", fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML, SourceFile.TypeEnum.DOCKSTORESERVICEYML]}
+  readonly fileTab1 = { tabName: 'Dockerfile', fileTypes: [SourceFile.TypeEnum.DOCKERFILE] };
+  readonly fileTab2 = {
+    tabName: 'Descriptor Files',
+    fileTypes: [
+      SourceFile.TypeEnum.DOCKSTORECWL,
+      SourceFile.TypeEnum.DOCKSTOREWDL,
+      SourceFile.TypeEnum.NEXTFLOWCONFIG,
+      SourceFile.TypeEnum.DOCKSTORESWL,
+      SourceFile.TypeEnum.NEXTFLOW,
+      SourceFile.TypeEnum.DOCKSTORESERVICEOTHER,
+      SourceFile.TypeEnum.DOCKSTOREGXFORMAT2,
+    ],
+  };
+  readonly fileTab3 = {
+    tabName: 'Test Parameter Files',
+    fileTypes: [
+      SourceFile.TypeEnum.CWLTESTJSON,
+      SourceFile.TypeEnum.WDLTESTJSON,
+      SourceFile.TypeEnum.NEXTFLOWTESTPARAMS,
+      SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON,
+      SourceFile.TypeEnum.GXFORMAT2TESTFILE,
+      SourceFile.TypeEnum.SWLTESTJSON,
+    ],
+  };
+  readonly fileTab4 = { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML, SourceFile.TypeEnum.DOCKSTORESERVICEYML] };
   readonly fileTabsSchematic = [this.fileTab1, this.fileTab2, this.fileTab3, this.fileTab4];
 
   /**
@@ -34,6 +54,9 @@ export class SourceFileTabsService {
 
   convertSourceFilesToFileTabs(sourcefiles: SourceFile[], mainDescriptorAbsolutePath: string):  Map<string, SourceFile[]> {
     let fileTabs = new Map<string, SourceFile[]>();
+    // Always have the Descriptor Files Tab and Test Parameter Files tab
+    fileTabs.set(this.fileTab2.tabName, []);
+    fileTabs.set(this.fileTab3.tabName, []);
     if (!sourcefiles || sourcefiles.length === 0) {
       return fileTabs;
     }
