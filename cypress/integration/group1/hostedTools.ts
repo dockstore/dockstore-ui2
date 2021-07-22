@@ -176,6 +176,7 @@ describe('Dockstore hosted tools', () => {
       cy.get('#publishToolButton').click();
       // Disabled since it is already published
       cy.get('#publishToolButton').contains('Unpublish');
+      cy.wait(1000);
       cy.get('[data-cy=actionsButton]').first().click();
       cy.get('[data-cy=editTagButton]').click();
       cy.get('.alert').should('not.exist');

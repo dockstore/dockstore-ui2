@@ -1,6 +1,7 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { Dockstore } from '../../../../src/app/shared/dockstore.model';
 import { goToTab } from '../../../support/commands';
+import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDescriptor';
 
 // Test an entry, these should be ambiguous between tools and workflows.
 describe('run stochastic smoke test', () => {
@@ -200,12 +201,19 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     goToTab('Files');
     cy.url().should('contain', '?tab=files');
     cy.contains('Descriptor Files');
-    cy.get('[data-cy=descriptorFiles]');
+    cy.get('.ace_editor').should('be.visible');
     goToTab('Test Parameter Files');
-    if (type === 'NFL') {
-      cy.contains('Nextflow does not have the concept of a test parameter file.');
+    if (Cypress.config('baseUrl') === 'https://dev.dockstore.net' || Cypress.config('baseUrl') === 'http://localhost:4200') {
+      if (type === ToolDescriptor.TypeEnum.NFL) {
+        cy.contains('This version has no files of this type.');
+        cy.get('.ace_editor').should('not.be.visible');
+      }
     } else {
-      cy.get('[data-cy=testParamFiles]');
+      if (type === ToolDescriptor.TypeEnum.NFL) {
+        cy.contains('Nextflow does not have the concept of a test parameter file.');
+      } else {
+        cy.get('[data-cy=testParamFiles]');
+      }
     }
   });
 

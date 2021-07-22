@@ -25,7 +25,8 @@ export class SourceFileTabsComponent implements OnChanges {
   @Input() version: WorkflowVersion;
   loading = true;
   displayError = false;
-  currentFile: SourceFile;
+  currentFile: SourceFile | null;
+  noFileInTabWarning: string;
   validationMessage: Map<string, string>;
   customDownloadHREF: SafeUrl;
   customDownloadPath: String;
@@ -35,9 +36,9 @@ export class SourceFileTabsComponent implements OnChanges {
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
    */
-  originalOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
     return 0;
-  }
+  };
 
   ngOnChanges() {
     this.setupVersionFileTabs();
@@ -66,7 +67,6 @@ export class SourceFileTabsComponent implements OnChanges {
       );
   }
 
-
   /**
    * Sets the validation message and new default selected file
    * @param fileType
@@ -77,9 +77,15 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   selectFile(file: SourceFile) {
-    this.customDownloadHREF = this.fileService.getFileData(file.content);
-    this.customDownloadPath = this.fileService.getFileName(file.path);
-    this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.version.name);
+    if (file) {
+      this.customDownloadHREF = this.fileService.getFileData(file.content);
+      this.customDownloadPath = this.fileService.getFileName(file.path);
+      this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.version.name);
+    } else {
+      this.customDownloadHREF = null;
+      this.customDownloadPath = null;
+      this.filePath = null;
+    }
     this.currentFile = file;
   }
 
