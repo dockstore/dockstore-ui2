@@ -62,7 +62,7 @@
                 <fa-icon [icon]="faGoogle"></fa-icon> Login with Google
               </button>
               <mat-checkbox class="text-wrap" *ngIf="mustAcceptCurrentTOS" (change)="loginDisabled = !loginDisabled">
-                You must accept Dockstore's current <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template
+                I agree to Dockstore's current <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template
               ></mat-checkbox>
             </mat-card>
           </mat-tab>
@@ -94,7 +94,7 @@
                 <fa-icon [icon]="faGoogle"></fa-icon> Register with Google
               </button>
               <mat-checkbox class="text-wrap" (change)="registrationDisabled = !registrationDisabled"
-                >I agree to the <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template
+                >I agree to Dockstore's <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template
               ></mat-checkbox>
               <!-- Attempt at using  -->
               <!-- <mat-icon svgIcon="google"></mat-icon> -->

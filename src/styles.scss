@@ -1110,6 +1110,7 @@ hr {
   top: 1.8em;
 }
 
+// The material checkbox overflows text by default so this style wraps the text instead.
 .mat-checkbox.text-wrap > label.mat-checkbox-layout {
   white-space: normal;
 }

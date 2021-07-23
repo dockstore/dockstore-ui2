@@ -106,7 +106,7 @@ describe('TOS Banner', () => {
     });
 
     setTokenUserViewPort();
-    it('Auto logg out if policies are not up to date and force a check if accepted policy in local storage is out of date.', () => {
+    it('Auto log out if policies are not up to date and force a check if accepted policy in local storage is out of date.', () => {
       localStorage.setItem(acceptedTOSVersion, 'TOS_VERSION_1');
       cy.visit('/login');
       cy.get('[data-cy=login-with-google]').should('be.disabled');
