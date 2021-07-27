@@ -22,12 +22,14 @@ import { User } from '../../shared/openapi/model/user';
 export interface TosBannerState {
   dismissedLatestTOS: User.TosversionEnum;
   dismissedLatestPrivacyPolicy: User.PrivacyPolicyVersionEnum;
+  displayLoggedInTOSBanner: boolean;
 }
 
 export function createInitialState(): TosBannerState {
   return {
     dismissedLatestTOS: JSON.parse(localStorage.getItem(dismissedLatestTOS)),
     dismissedLatestPrivacyPolicy: JSON.parse(localStorage.getItem(dismissedLatestPrivacyPolicy)),
+    displayLoggedInTOSBanner: true,
   };
 }
 

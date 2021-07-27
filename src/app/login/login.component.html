@@ -43,7 +43,6 @@
                 mat-raised-button
                 matTooltip="Log in with GitHub account"
                 (click)="loginWith('github')"
-                [disabled]="loginDisabled"
                 data-cy="login-with-github"
               >
                 <fa-icon [icon]="faGithub"></fa-icon> Login with GitHub
@@ -56,14 +55,10 @@
                 mat-raised-button
                 matTooltip="Log in with Google account"
                 (click)="loginWith('google')"
-                [disabled]="loginDisabled"
                 data-cy="login-with-google"
               >
                 <fa-icon [icon]="faGoogle"></fa-icon> Login with Google
               </button>
-              <mat-checkbox class="text-wrap" *ngIf="mustAcceptCurrentTOS" (change)="loginDisabled = !loginDisabled">
-                I agree to Dockstore's current <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template
-              ></mat-checkbox>
             </mat-card>
           </mat-tab>
           <mat-tab label="Register">

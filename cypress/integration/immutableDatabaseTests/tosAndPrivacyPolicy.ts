@@ -15,7 +15,6 @@
  */
 
 import { setTokenUserViewPort } from '../../support/commands';
-import { acceptedTOSVersion } from '../../../src/app/shared/constants';
 describe('TOS Banner', () => {
   function checkForBanner() {
     cy.get('[data-cy=tos-banner]').contains('By using our site, you acknowledge that you have read and understand our');
@@ -85,36 +84,21 @@ describe('TOS Banner', () => {
       cy.get('[data-cy=register-with-github]').should('not.be.disabled');
     });
 
-    it('Login buttons should be disabled until checkbox is clicked', () => {
-      cy.visit('/login');
-      cy.get('[data-cy=login-with-google]').should('be.disabled');
-      cy.get('[data-cy=login-with-github]').should('be.disabled');
-
-      cy.get('.mat-checkbox-inner-container').click();
-      cy.get('[data-cy=login-with-google]').should('not.be.disabled');
-      cy.get('[data-cy=login-with-github]').should('not.be.disabled');
-    });
-
     setTokenUserViewPort();
-    it('User that has accepted latest policies does not need to acknowledge it again to login.', () => {
-      cy.visit('/');
-      cy.wait(500);
-      cy.clearLocalStorage('ng2-ui-auth_token');
-      cy.visit('/login');
-      cy.get('[data-cy=login-with-google]').should('not.be.disabled');
-      cy.get('[data-cy=login-with-github]').should('not.be.disabled');
-    });
+    it('Confirm banner appears for logged in users who do not have the latest tos/privacy policy accepted', () => {
+      cy.server();
+      cy.fixture('outOfDateUser.json').then((json) => {
+        cy.route({
+          method: 'GET',
+          url: '*/users/user',
+          response: json,
+        });
+      });
+      cy.visit('');
+      cy.get('[data-cy=tos-banner]').should('exist');
 
-    setTokenUserViewPort();
-    it('Auto log out if policies are not up to date and force a check if accepted policy in local storage is out of date.', () => {
-      localStorage.setItem(acceptedTOSVersion, 'TOS_VERSION_1');
-      cy.visit('/login');
-      cy.get('[data-cy=login-with-google]').should('be.disabled');
-      cy.get('[data-cy=login-with-github]').should('be.disabled');
-
-      cy.get('.mat-checkbox-inner-container').click();
-      cy.get('[data-cy=login-with-google]').should('not.be.disabled');
-      cy.get('[data-cy=login-with-github]').should('not.be.disabled');
+      cy.get('[data-cy=dismiss-tos-banner]').click();
+      cy.get('[data-cy=tos-banner]').should('not.exist');
     });
   });
 });

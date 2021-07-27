@@ -1,0 +1,25 @@
+{
+  "avatarUrl": null,
+  "curator": true,
+  "id": 1,
+  "isAdmin": true,
+  "name": "user_A",
+  "orcid": null,
+  "privacyPolicyVersion": "PRIVACY_POLICY_VERSION_2_5",
+  "privacyPolicyVersionAcceptanceDate": null,
+  "setupComplete": false,
+  "tosacceptanceDate": null,
+  "tosversion": "TOS_VERSION_1",
+  "userProfiles": {
+    "github.com": {
+      "avatarURL": null,
+      "bio": null,
+      "company": null,
+      "email": null,
+      "location": null,
+      "name": "",
+      "username": "user_A"
+    }
+  },
+  "username": "user_A"
+}

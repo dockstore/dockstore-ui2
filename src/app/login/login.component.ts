@@ -23,20 +23,17 @@ import { RegisterService } from '../register/register.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserService } from '../shared/user/user.service';
 import { LoginService } from './login.service';
-import { acceptedTOSVersion, currentTOSVersion } from '../shared/constants';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   faGithub = faGithub;
   faGoogle = faGoogle;
   public tabindex: number;
   public registrationDisabled = true;
-  public loginDisabled = true;
-  public mustAcceptCurrentTOS: boolean;
   constructor(
     private trackLoginService: TrackLoginService,
     private loginService: LoginService,
@@ -52,15 +49,6 @@ export class LoginComponent implements OnInit {
       this.tabindex = 0;
     }
     iconRegistry.addSvgIcon('google', sanitizer.bypassSecurityTrustResourceUrl('../assets/svg/btn_google_light_normal_ios.svg'));
-  }
-
-  ngOnInit(): void {
-    const usersTosVersion = localStorage.getItem(acceptedTOSVersion);
-    if (usersTosVersion == null || usersTosVersion != currentTOSVersion) {
-      this.mustAcceptCurrentTOS = true;
-    } else {
-      this.loginDisabled = false;
-    }
   }
 
   private login(observable, page: string) {
