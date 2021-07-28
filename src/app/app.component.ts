@@ -24,7 +24,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public displayLoggedInTOSBanner$: Observable<boolean>;
   public currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   public currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
-  public user: User;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(
@@ -47,9 +46,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dismissedLatestTOS$ = this.tosBannerQuery.dismissedLatestTOS$;
     this.dismissedLatestPrivacyPolicy$ = this.tosBannerQuery.dismissedLatestPrivacyPolicy$;
     this.displayLoggedInTOSBanner$ = this.tosBannerQuery.displayLoggedInTOSBanner$;
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
-      this.user = user;
-      if (this.user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
+    this.userQuery.user$.pipe().subscribe((user) => {
+      if (user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
         this.tosBannerService.setDisplayLoggedInTOSBanner(true);
       } else {
         this.tosBannerService.setDisplayLoggedInTOSBanner(false);

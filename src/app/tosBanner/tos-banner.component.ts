@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { TosBannerService } from './state/tos-banner.service';
-import { User } from '../shared/openapi';
 
 @Component({
   selector: 'app-tos-banner',
@@ -12,8 +11,6 @@ export class TosBannerComponent {
   public bannerText: string;
   @Input()
   public loggedIn: boolean;
-  @Input()
-  public user: User;
 
   constructor(private tosBannerService: TosBannerService) {}
 
@@ -22,6 +19,6 @@ export class TosBannerComponent {
   }
 
   acceptTOS(): void {
-    this.tosBannerService.acceptTOS(this.user);
+    this.tosBannerService.acceptTOS();
   }
 }
