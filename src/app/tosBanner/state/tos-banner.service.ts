@@ -18,7 +18,6 @@ import { Injectable } from '@angular/core';
 import { currentPrivacyPolicyVersion, currentTOSVersion, dismissedLatestPrivacyPolicy, dismissedLatestTOS } from '../../shared/constants';
 import { TosBannerStore } from './tos-banner.store';
 import { User, UsersService } from '../../shared/openapi';
-import { takeUntil } from 'rxjs/operators';
 import { UserQuery } from '../../shared/user/user.query';
 import { Subject } from 'rxjs';
 
