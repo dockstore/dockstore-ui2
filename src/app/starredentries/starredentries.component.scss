@@ -77,6 +77,32 @@
   margin-right: 15px !important;
 }
 
-// .star {
-//   color: #7986cb !important;
-// }
+.card-spacing {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+// Used for workflow, tools, and services
+.card-style {
+  margin-bottom: 10px !important;
+}
+
+// Style for organization card
+.org-style {
+  height: 340px;
+  margin: 10px;
+}
+
+// Used as a placeholder when there is no logo for the organization
+.logo-height {
+  height: 50px;
+}
+
+// Hide overflow for description of each starred entry for workflow, tools and services
+.overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
