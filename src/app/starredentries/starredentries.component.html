@@ -44,7 +44,7 @@
       </div>
       <div *ngIf="starredWorkflows">
         <div class="row">
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length == 0">
+          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length === 0">
             <mat-icon>warning</mat-icon>
             You have no starred workflows.
           </mat-card>
@@ -83,7 +83,7 @@
                           <mat-chip class="gray-label-tag">
                             {{ workflow?.descriptorType | uppercase }}
                           </mat-chip>
-                          <mat-chip class="gray-label-tag" *ngIf="workflow.verified == true">
+                          <mat-chip class="gray-label-tag" *ngIf="workflow.verified === true">
                             <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                               <mat-icon class="verified-icon">done</mat-icon>
                               <span>Verified</span>
@@ -246,7 +246,7 @@
                       <div fxLayout="row" fxLayoutAlign="space-between center">
                         <span class="gray-label-tag">
                           {{ org.collectionsLength }}
-                          <span *ngIf="org.collectionsLength != 1; else oneCollection"> Collections</span>
+                          <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                           <ng-template #oneCollection> Collection</ng-template>
                         </span>
                         <button mat-raised-button color="accent" class="view-button">View</button>
