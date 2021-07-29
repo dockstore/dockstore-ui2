@@ -890,20 +890,26 @@ app-sidebar-accordion
   }
 }
 
+$tool-color: #29b6f6;
+$workflow-color: #26bfa5;
+$service-color: #ff6c44;
+// Used for several components (including organization)
+$purple-color: #3f51b5;
+
 .tool-tab-group.mat-primary .mat-ink-bar {
-  background: #29b6f6 !important;
+  background: $tool-color !important;
 }
 
 .workflow-tab-group.mat-primary .mat-ink-bar {
-  background: #26bfa5 !important;
+  background: $workflow-color !important;
 }
 
 .service-tab-group.mat-primary .mat-ink-bar {
-  background: #ff6c44 !important;
+  background: $service-color !important;
 }
 
 .purple-tab-group.mat-primary .mat-ink-bar {
-  background: #3f51b5 !important;
+  background: $purple-color !important;
 }
 
 // Automatically used by Angular Material
@@ -1098,6 +1104,7 @@ hr {
   top: 1.8em;
 }
 
+// Used for mat tabs to display the number of items
 .tab-display {
   border-radius: 0.5rem;
   padding: 0.5rem;
@@ -1105,6 +1112,7 @@ hr {
   background-color: #e0e0e0;
 }
 
+// Used for the styling for organization cards for organization page and starred page
 .info.span {
   font-size: 10px;
 }
@@ -1112,7 +1120,7 @@ hr {
 .info-icon {
   font-size: 1.5rem;
   height: auto;
-  color: mat-color($dockstore-app-accent);
+  color: mat.get-color-from-palette($dockstore-app-primary);
   padding: 0 !important;
 }
 
