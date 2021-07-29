@@ -40,13 +40,11 @@ export class TosBannerService {
   }
 
   acceptTOS() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
-      if (user) {
-        this.userService.updateAcceptedDocuments().subscribe((updatedUser: User) => {
-          this.setDisplayLoggedInTOSBanner(false);
-        });
-      }
-    });
+    if (this.userQuery.getValue().user) {
+      this.userService.updateAcceptedDocuments().subscribe((updatedUser: User) => {
+        this.setDisplayLoggedInTOSBanner(false);
+      });
+    }
   }
 
   setDisplayLoggedInTOSBanner(display: boolean) {
