@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
 import { DockstoreTool, Organization, Workflow } from '../shared/swagger';
 import { UserQuery } from '../shared/user/user.query';
 import { UsersService } from './../shared/swagger/api/users.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-starredentries',
@@ -13,15 +14,14 @@ import { UsersService } from './../shared/swagger/api/users.service';
   styleUrls: ['./starredentries.component.scss'],
 })
 export class StarredEntriesComponent extends Base implements OnInit {
+  selected = new FormControl(0);
   starredTools: any;
   starredWorkflows: any;
   starredServices: any;
   starredOrganizations: Array<Organization>;
-  // collectionsLength$: Observable<number>;
   user: any;
   starGazersClicked = false;
   organizationStarGazersClicked = false;
-  public selectedIndex$: Observable<number>;
 
   constructor(
     private userQuery: UserQuery,
@@ -76,5 +76,9 @@ export class StarredEntriesComponent extends Base implements OnInit {
 
   organizationStarGazersChange() {
     this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
+  }
+
+  onTabChange(event: MatTabChangeEvent) {
+    this.selected.setValue(event.index);
   }
 }
