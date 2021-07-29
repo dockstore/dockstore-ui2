@@ -20,6 +20,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
   };
   workflowLaunchSupport: boolean;
   testParameterFileType: SourceFile.TypeEnum;
+  fileTabs: Array<{ tabName: string; fileTypes: Array<SourceFile.TypeEnum> }>;
 }
 
 const extendedCWL: ExtendedDescriptorLanguageBean = {
@@ -39,6 +40,17 @@ const extendedCWL: ExtendedDescriptorLanguageBean = {
   },
   workflowLaunchSupport: true,
   testParameterFileType: SourceFile.TypeEnum.CWLTESTJSON,
+  fileTabs: [
+    {
+      tabName: 'Descriptor Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTORECWL],
+    },
+    {
+      tabName: 'Test Parameter Files',
+      fileTypes: [SourceFile.TypeEnum.CWLTESTJSON],
+    },
+    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+  ],
 };
 
 const extendedWDL: ExtendedDescriptorLanguageBean = {
@@ -58,6 +70,17 @@ const extendedWDL: ExtendedDescriptorLanguageBean = {
   },
   workflowLaunchSupport: true,
   testParameterFileType: SourceFile.TypeEnum.WDLTESTJSON,
+  fileTabs: [
+    {
+      tabName: 'Descriptor Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTOREWDL],
+    },
+    {
+      tabName: 'Test Parameter Files',
+      fileTypes: [SourceFile.TypeEnum.WDLTESTJSON],
+    },
+    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+  ],
 };
 
 const extendedNFL: ExtendedDescriptorLanguageBean = {
@@ -77,6 +100,17 @@ const extendedNFL: ExtendedDescriptorLanguageBean = {
   },
   workflowLaunchSupport: true,
   testParameterFileType: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS,
+  fileTabs: [
+    {
+      tabName: 'Descriptor Files',
+      fileTypes: [SourceFile.TypeEnum.NEXTFLOWCONFIG, SourceFile.TypeEnum.NEXTFLOW],
+    },
+    {
+      tabName: 'Test Parameter Files',
+      fileTypes: [SourceFile.TypeEnum.NEXTFLOWTESTPARAMS],
+    },
+    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+  ],
 };
 
 const extendedService: ExtendedDescriptorLanguageBean = {
@@ -97,6 +131,17 @@ const extendedService: ExtendedDescriptorLanguageBean = {
   },
   workflowLaunchSupport: true,
   testParameterFileType: SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON,
+  fileTabs: [
+    {
+      tabName: 'Descriptor Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER],
+    },
+    {
+      tabName: 'Test Parameter Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON],
+    },
+    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICEYML] },
+  ],
 };
 
 const extendedGalaxy: ExtendedDescriptorLanguageBean = {
@@ -116,6 +161,17 @@ const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   },
   workflowLaunchSupport: false,
   testParameterFileType: SourceFile.TypeEnum.GXFORMAT2TESTFILE,
+  fileTabs: [
+    {
+      tabName: 'Descriptor Files',
+      fileTypes: [SourceFile.TypeEnum.GXFORMAT2TESTFILE],
+    },
+    {
+      tabName: 'Test Parameter Files',
+      fileTypes: [SourceFile.TypeEnum.GXFORMAT2TESTFILE],
+    },
+    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+  ],
 };
 
 export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
@@ -135,6 +191,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
   },
   workflowLaunchSupport: false,
   testParameterFileType: null,
+  fileTabs: [],
 };
 export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
   extendedCWL,
