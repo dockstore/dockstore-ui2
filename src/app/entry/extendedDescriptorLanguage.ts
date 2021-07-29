@@ -1,6 +1,10 @@
 import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 
 /**
+ * The idea is that this file serves as a collection of language plugins.
+ * Each ExtendedDescriptorLanguageBean is a plugin of sorts.
+ * Ideally, there would be no code in the project that specifically references a certain language (e.x. if it's Galaxy, do this)
+ * since this file would specify what to do in certain situations
  * TODO: Use the value property to map the DescriptorLanguageBean to this
  */
 export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
@@ -164,7 +168,7 @@ const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   fileTabs: [
     {
       tabName: 'Descriptor Files',
-      fileTypes: [SourceFile.TypeEnum.GXFORMAT2TESTFILE],
+      fileTypes: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
     },
     {
       tabName: 'Test Parameter Files',
