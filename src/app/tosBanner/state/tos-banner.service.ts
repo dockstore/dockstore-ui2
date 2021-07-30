@@ -19,7 +19,6 @@ import { currentPrivacyPolicyVersion, currentTOSVersion, dismissedLatestPrivacyP
 import { TosBannerStore } from './tos-banner.store';
 import { User, UsersService } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
-import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TosBannerService {
