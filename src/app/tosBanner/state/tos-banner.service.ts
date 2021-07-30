@@ -24,7 +24,6 @@ import { Subject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class TosBannerService {
   constructor(private tosBannerStore: TosBannerStore, private userService: UsersService, private userQuery: UserQuery) {}
-  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   dismissTOS() {
     localStorage.setItem(dismissedLatestTOS, JSON.stringify(currentTOSVersion));

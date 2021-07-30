@@ -24,7 +24,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public displayLoggedInTOSBanner$: Observable<boolean>;
   public currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   public currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(
     private router: Router,
