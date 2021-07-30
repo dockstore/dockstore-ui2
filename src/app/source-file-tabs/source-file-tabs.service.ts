@@ -3,7 +3,7 @@ import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.s
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
-import { Validation, Workflow } from 'app/shared/swagger';
+import { Validation } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 
