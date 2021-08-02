@@ -27,10 +27,11 @@ describe('Logged in Dockstore Home', () => {
     // expect(browser.getLocationAbsUrl()).toMatch("/");
   });
 
-  it('should have the twitter timeline', () => {
-    cy.scrollTo('bottom');
-    cy.get('.twitter-timeline').should('be.visible');
-  });
+  // Twitter is broken now... https://ucsc-gi.slack.com/archives/C16ET3CF4/p1627670404003200
+  // it('should have the twitter timeline', () => {
+  //   cy.scrollTo('bottom');
+  //   cy.get('.twitter-timeline').should('be.visible');
+  // });
 
   describe('Navigation', () => {
     it('My Tools visible', () => {
@@ -75,9 +76,11 @@ describe('Logged out Dockstore Home', () => {
       cy.get('body').type('{esc}');
       cy.get('#youtubeModal').should('not.exist');
     });
-    it('should have the twitter timeline', () => {
-      cy.scrollTo('bottom');
-      cy.get('.twitter-timeline').should('be.visible');
-    });
+
+    // Twitter is broken now... https://ucsc-gi.slack.com/archives/C16ET3CF4/p1627670404003200
+    // it('should have the twitter timeline', () => {
+    //   cy.scrollTo('bottom');
+    //   cy.get('.twitter-timeline').should('be.visible');
+    // });
   });
 });
