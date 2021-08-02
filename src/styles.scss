@@ -1093,3 +1093,8 @@ hr {
 .mat-radio-button .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   top: 1.8em;
 }
+
+// The material checkbox overflows text by default so this style wraps the text instead.
+.mat-checkbox.text-wrap > label.mat-checkbox-layout {
+  white-space: normal;
+}

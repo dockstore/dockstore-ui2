@@ -17,10 +17,12 @@
 import { Injectable } from '@angular/core';
 import { currentPrivacyPolicyVersion, currentTOSVersion, dismissedLatestPrivacyPolicy, dismissedLatestTOS } from '../../shared/constants';
 import { TosBannerStore } from './tos-banner.store';
+import { User, UsersService } from '../../shared/openapi';
+import { UserQuery } from '../../shared/user/user.query';
 
 @Injectable({ providedIn: 'root' })
 export class TosBannerService {
-  constructor(private tosBannerStore: TosBannerStore) {}
+  constructor(private tosBannerStore: TosBannerStore, private userService: UsersService, private userQuery: UserQuery) {}
 
   dismissTOS() {
     localStorage.setItem(dismissedLatestTOS, JSON.stringify(currentTOSVersion));
@@ -30,6 +32,23 @@ export class TosBannerService {
         ...state,
         dismissedLatestTOS: currentTOSVersion,
         dismissedLatestPrivacyPolicy: currentPrivacyPolicyVersion,
+      };
+    });
+  }
+
+  acceptTOS() {
+    if (this.userQuery.getValue().user) {
+      this.userService.updateAcceptedDocuments().subscribe((updatedUser: User) => {
+        this.setDisplayLoggedInTOSBanner(false);
+      });
+    }
+  }
+
+  setDisplayLoggedInTOSBanner(display: boolean) {
+    this.tosBannerStore.update((state) => {
+      return {
+        ...state,
+        displayLoggedInTOSBanner: display,
       };
     });
   }

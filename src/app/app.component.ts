@@ -9,6 +9,8 @@ import { Dockstore } from './shared/dockstore.model';
 import { User } from './shared/openapi/model/user';
 import { TrackLoginService } from './shared/track-login.service';
 import { TosBannerQuery } from './tosBanner/state/tos-banner.query';
+import { UserQuery } from './shared/user/user.query';
+import { TosBannerService } from './tosBanner/state/tos-banner.service';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public isLoggedIn$: Observable<boolean>;
   public dismissedLatestTOS$: Observable<User.TosversionEnum>;
   public dismissedLatestPrivacyPolicy$: Observable<User.PrivacyPolicyVersionEnum>;
+  public displayLoggedInTOSBanner$: Observable<boolean>;
   public currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   public currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
 
@@ -28,7 +31,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private titleService: Title,
     private alertService: AlertService,
     private trackLoginService: TrackLoginService,
-    private tosBannerQuery: TosBannerQuery
+    private tosBannerQuery: TosBannerQuery,
+    private tosBannerService: TosBannerService,
+    private userQuery: UserQuery
   ) {
     this.injectGoogleTagManagerScript();
   }
@@ -39,6 +44,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isLoggedIn$ = this.trackLoginService.isLoggedIn$;
     this.dismissedLatestTOS$ = this.tosBannerQuery.dismissedLatestTOS$;
     this.dismissedLatestPrivacyPolicy$ = this.tosBannerQuery.dismissedLatestPrivacyPolicy$;
+    this.displayLoggedInTOSBanner$ = this.tosBannerQuery.displayLoggedInTOSBanner$;
+    this.userQuery.user$.pipe().subscribe((user) => {
+      if (user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
+        this.tosBannerService.setDisplayLoggedInTOSBanner(true);
+      } else {
+        this.tosBannerService.setDisplayLoggedInTOSBanner(false);
+      }
+    });
+
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
