@@ -21,7 +21,7 @@
 
 .orgStar {
   font-size: 1.5rem;
-  color: #3f51b5;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   height: auto;
   padding: 0 !important;
 }
