@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
 import { Validation } from 'app/shared/swagger';
@@ -16,33 +17,6 @@ export class SourceFileTabsService {
     private descriptorTypeCompatService: DescriptorTypeCompatService
   ) {}
 
-  readonly fileTab1 = { tabName: 'Dockerfile', fileTypes: [SourceFile.TypeEnum.DOCKERFILE] };
-  readonly fileTab2 = {
-    tabName: 'Descriptor Files',
-    fileTypes: [
-      SourceFile.TypeEnum.DOCKSTORECWL,
-      SourceFile.TypeEnum.DOCKSTOREWDL,
-      SourceFile.TypeEnum.NEXTFLOWCONFIG,
-      SourceFile.TypeEnum.DOCKSTORESWL,
-      SourceFile.TypeEnum.NEXTFLOW,
-      SourceFile.TypeEnum.DOCKSTORESERVICEOTHER,
-      SourceFile.TypeEnum.DOCKSTOREGXFORMAT2,
-    ],
-  };
-  readonly fileTab3 = {
-    tabName: 'Test Parameter Files',
-    fileTypes: [
-      SourceFile.TypeEnum.CWLTESTJSON,
-      SourceFile.TypeEnum.WDLTESTJSON,
-      SourceFile.TypeEnum.NEXTFLOWTESTPARAMS,
-      SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON,
-      SourceFile.TypeEnum.GXFORMAT2TESTFILE,
-      SourceFile.TypeEnum.SWLTESTJSON,
-    ],
-  };
-  readonly fileTab4 = { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML, SourceFile.TypeEnum.DOCKSTORESERVICEYML] };
-  readonly fileTabsSchematic = [this.fileTab1, this.fileTab2, this.fileTab3, this.fileTab4];
-
   /**
    * Retrieve all source files for the given workflow version
    * @param workflowId
@@ -52,20 +26,30 @@ export class SourceFileTabsService {
     return this.workflowsService.getWorkflowVersionsSourcefiles(workflowId, versionId);
   }
 
-  convertSourceFilesToFileTabs(sourcefiles: SourceFile[], mainDescriptorAbsolutePath: string):  Map<string, SourceFile[]> {
+  convertSourceFilesToFileTabs(
+    sourcefiles: SourceFile[],
+    mainDescriptorAbsolutePath: string,
+    descriptorLanguage: ToolDescriptor.TypeEnum
+  ): Map<string, SourceFile[]> {
     let fileTabs = new Map<string, SourceFile[]>();
+    const fileTabsSchematic = DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorLanguage).fileTabs;
+
     // Always have the Descriptor Files Tab and Test Parameter Files tab
-    fileTabs.set(this.fileTab2.tabName, []);
-    fileTabs.set(this.fileTab3.tabName, []);
+    fileTabs.set(fileTabsSchematic[0].tabName, []);
+    fileTabs.set(fileTabsSchematic[1].tabName, []);
     if (!sourcefiles || sourcefiles.length === 0) {
       return fileTabs;
     }
-    this.fileTabsSchematic.forEach(fileTab => {
-      fileTab.fileTypes.forEach(fileType => {
+    fileTabsSchematic.forEach((fileTab) => {
+      fileTab.fileTypes.forEach((fileType) => {
         // Find all the files of the type that's not the main descriptor
-        const sourceFilesMatchingType = sourcefiles.filter(sourcefile => sourcefile.type === fileType && sourcefile.absolutePath !== mainDescriptorAbsolutePath);
-        // Find the file of the type that is the main descriptor 
-        const mainDescriptorFile = sourcefiles.find(sourcefile => sourcefile.type === fileType && sourcefile.absolutePath === mainDescriptorAbsolutePath);
+        const sourceFilesMatchingType = sourcefiles.filter(
+          (sourcefile) => sourcefile.type === fileType && sourcefile.absolutePath !== mainDescriptorAbsolutePath
+        );
+        // Find the file of the type that is the main descriptor
+        const mainDescriptorFile = sourcefiles.find(
+          (sourcefile) => sourcefile.type === fileType && sourcefile.absolutePath === mainDescriptorAbsolutePath
+        );
         if (mainDescriptorFile) {
           // Add main descriptor to the front of the array
           sourceFilesMatchingType.unshift(mainDescriptorFile);
@@ -88,10 +72,10 @@ export class SourceFileTabsService {
   getValidationMessage(sourcefiles: SourceFile[], version: WorkflowVersion): Map<string, string> {
     let validationMessage = null;
     version.validations.forEach((validation: Validation) => {
-      const matchingSourcefile = sourcefiles.find(file => validation.type === file.type && !validation.valid);
+      const matchingSourcefile = sourcefiles.find((file) => validation.type === file.type && !validation.valid);
       if (matchingSourcefile) {
-          validationMessage = JSON.parse(validation.message);
-        }
+        validationMessage = JSON.parse(validation.message);
+      }
     });
     return validationMessage;
   }
