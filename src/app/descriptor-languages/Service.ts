@@ -2,6 +2,7 @@ import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLang
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 
 export const extendedService: ExtendedDescriptorLanguageBean = {
+  descriptorLanguageEnum: 'SERVICE',
   value: 'service',
   shortFriendlyName: 'Service',
   friendlyName: 'generic placeholder for services',

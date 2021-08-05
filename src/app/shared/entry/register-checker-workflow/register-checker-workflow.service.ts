@@ -16,6 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DescriptorLanguageEnum, ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
 import { BehaviorSubject, merge as observableMerge, Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 import { AlertService } from '../../alert/state/alert.service';
@@ -48,44 +49,42 @@ export class RegisterCheckerWorkflowService {
     });
   }
 
-  registerCheckerWorkflow(workflowPath: string, testParameterFilePath: string, lowerCaseDescriptorTypeNoNFL: 'cwl' | 'wdl'): void {
+  registerCheckerWorkflow(workflowPath: string, testParameterFilePath: string, descriptorLanguageEnum: DescriptorLanguageEnum): void {
     if (this.entryId) {
       const message = 'Registering checker workflow';
       this.alertService.start(message);
       // Figure out why testParameterFilePath and descriptorType is swapped
-      this.workflowsService
-        .registerCheckerWorkflow(workflowPath, this.entryId, lowerCaseDescriptorTypeNoNFL, testParameterFilePath)
-        .subscribe(
-          (entry: Entry) => {
-            // Only update our current list of workflows when the current entry is a workflow
-            // Switching to my-workflows will automatically update the entire list with a fresh HTTP request
-            if (entry.hasOwnProperty('isChecker')) {
-              this.workflowService.upsertWorkflowToWorkflow(<Workflow>entry);
-              this.workflowService.setWorkflow(<Workflow>entry);
-            } else {
-              this.containerService.upsertToolToTools(<DockstoreTool>entry);
-              this.containerService.setTool(<DockstoreTool>entry);
-            }
-            const refreshCheckerMessage = 'Refreshing checker workflow';
-            this.alertService.start(refreshCheckerMessage);
-            this.workflowsService
-              .refresh(entry.checker_id)
-              .pipe(first())
-              .subscribe(
-                (workflow: Workflow) => {
-                  this.workflowService.upsertWorkflowToWorkflow(workflow);
-                  this.alertService.detailedSuccess();
-                  this.matDialog.closeAll();
-                },
-                (error: HttpErrorResponse) => {
-                  this.alertService.detailedError(error);
-                }
-              );
-          },
-          (error: HttpErrorResponse) => {
-            this.alertService.detailedError(error);
+      this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, 'GXFORMAT2', testParameterFilePath).subscribe(
+        (entry: Entry) => {
+          // Only update our current list of workflows when the current entry is a workflow
+          // Switching to my-workflows will automatically update the entire list with a fresh HTTP request
+          if (entry.hasOwnProperty('isChecker')) {
+            this.workflowService.upsertWorkflowToWorkflow(<Workflow>entry);
+            this.workflowService.setWorkflow(<Workflow>entry);
+          } else {
+            this.containerService.upsertToolToTools(<DockstoreTool>entry);
+            this.containerService.setTool(<DockstoreTool>entry);
           }
-        );
+          const refreshCheckerMessage = 'Refreshing checker workflow';
+          this.alertService.start(refreshCheckerMessage);
+          this.workflowsService
+            .refresh(entry.checker_id)
+            .pipe(first())
+            .subscribe(
+              (workflow: Workflow) => {
+                this.workflowService.upsertWorkflowToWorkflow(workflow);
+                this.alertService.detailedSuccess();
+                this.matDialog.closeAll();
+              },
+              (error: HttpErrorResponse) => {
+                this.alertService.detailedError(error);
+              }
+            );
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
     }
   }
 
