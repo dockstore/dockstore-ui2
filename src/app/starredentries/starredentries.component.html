@@ -205,7 +205,7 @@
             You have no starred organizations.
           </mat-card>
         </div>
-        <div *ngIf="starredOrganizations.length > 0; else noOrganizationsFound">
+        <div *ngIf="starredOrganizations.length > 0">
           <div fxLayoutAlign="start" fxLayout="row wrap">
             <div *ngFor="let org of starredOrganizations; let last = last" fxFlex="33.3" fxFlex.lt-lg="500" fxFlex.lt-md="100">
               <mat-card class="org-style mat-elevation-z3">
