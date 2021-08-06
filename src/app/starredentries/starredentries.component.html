@@ -80,6 +80,12 @@
                           <mat-chip class="workflow-label-tag" *ngFor="let label of workflow?.labels | slice: 0:3">{{
                             label.value
                           }}</mat-chip>
+                          <mat-chip class="gray-label-tag" *ngIf="workflow.verified === true">
+                            <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                              <mat-icon class="verified-icon">done</mat-icon>
+                              <span>Verified</span>
+                            </span>
+                          </mat-chip>
                           <mat-chip class="gray-label-tag">
                             {{ workflow?.descriptorType | uppercase }}
                           </mat-chip>
@@ -141,22 +147,18 @@
                 <div fxLayout="row" fxLayoutAlign="space-between stretch">
                   <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                     <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
-
                     <mat-chip-list>
                       <mat-chip class="container-label-tag" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
-                      <mat-chip class="gray-label-tag" *ngFor="let descriptortype of tool?.descriptorType">
-                        {{ descriptortype }}
-                      </mat-chip>
-                    </mat-chip-list>
-
-                    <span id="verifiedIcon" *ngIf="(tool$ | async)?.versionVerified" fxHide.lt-sm>
-                      <mat-chip matTooltip="Verified" class="gray-label-tag">
-                        <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                      <mat-chip *ngIf="tool?.verified" matTooltip="Verified" class="gray-label-tag">
+                        <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                           <mat-icon class="verified-icon">done</mat-icon>
                           <span>Verified</span>
                         </a>
                       </mat-chip>
-                    </span>
+                      <mat-chip class="gray-label-tag" *ngFor="let descriptortype of tool?.descriptorType">
+                        {{ descriptortype }}
+                      </mat-chip>
+                    </mat-chip-list>
                   </div>
                   <div><button mat-raised-button color="accent" class="view-button">View</button></div>
                 </div>
@@ -174,9 +176,15 @@
       <div fxLayoutGap="0.5rem">
         <img class="site-icons-tab" src="../../../assets/svg/sub-nav/services.svg" alt="service logo" />
         <span>Services</span>
-        <span class="tab-display"></span>
+        <span class="tab-display">0</span>
       </div>
     </ng-template>
+    <div class="card-spacing">
+      <mat-card class="alert alert-info starred-header" role="alert">
+        <mat-icon>warning</mat-icon>
+        You have no starred services.
+      </mat-card>
+    </div>
   </mat-tab>
 
   <mat-tab>
