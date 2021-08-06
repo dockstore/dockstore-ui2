@@ -530,6 +530,8 @@ export class UserStubService {
   getExtendedUserData() {}
 }
 
+export class TosBannerStubService {}
+
 export class TokenStubService {
   tokens$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);
   hasGitHubToken$ = observableOf(false);

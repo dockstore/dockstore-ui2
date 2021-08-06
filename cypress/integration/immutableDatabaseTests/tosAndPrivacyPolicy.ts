@@ -15,6 +15,7 @@
  */
 
 import { setTokenUserViewPort } from '../../support/commands';
+import { User } from '../../../src/app/shared/openapi';
 describe('TOS Banner', () => {
   function checkForBanner() {
     cy.get('[data-cy=tos-banner]').contains('By using our site, you acknowledge that you have read and understand our');
@@ -69,6 +70,60 @@ describe('TOS Banner', () => {
     it('Disappears once logged in', () => {
       cy.visit('');
       cy.wait(500);
+      cy.get('[data-cy=tos-banner]').should('not.exist');
+    });
+  });
+
+  describe('Disable buttons until TOS and Privacy Policy are acknowledged', () => {
+    it('Register buttons should be disabled until checkbox is clicked', () => {
+      cy.visit('/register');
+      cy.get('[data-cy=register-with-google]').should('be.disabled');
+      cy.get('[data-cy=register-with-github]').should('be.disabled');
+
+      cy.get('.mat-checkbox-inner-container').click();
+      cy.get('[data-cy=register-with-google]').should('not.be.disabled');
+      cy.get('[data-cy=register-with-github]').should('not.be.disabled');
+    });
+
+    setTokenUserViewPort();
+    it('Confirm banner appears for logged in users who do not have the latest tos/privacy policy accepted', () => {
+      const outOfDateUser: User = {
+        avatarUrl: undefined,
+        curator: true,
+        id: 1,
+        isAdmin: true,
+        name: 'user_A',
+        orcid: undefined,
+        privacyPolicyVersion: 'PRIVACY_POLICY_VERSION_2_5',
+        privacyPolicyVersionAcceptanceDate: undefined,
+        setupComplete: false,
+        tosacceptanceDate: undefined,
+        tosversion: 'TOS_VERSION_1',
+        userProfiles: {
+          'github.com': {
+            avatarURL: undefined,
+            bio: undefined,
+            company: undefined,
+            email: undefined,
+            location: undefined,
+            name: '',
+            username: 'user_A',
+          },
+        },
+        username: 'user_A',
+      };
+
+      cy.server();
+      cy.route({
+        method: 'GET',
+        url: '*/users/user',
+        response: outOfDateUser,
+      });
+
+      cy.visit('');
+      cy.get('[data-cy=tos-banner]').should('exist');
+
+      cy.get('[data-cy=dismiss-tos-banner]').click();
       cy.get('[data-cy=tos-banner]').should('not.exist');
     });
   });
