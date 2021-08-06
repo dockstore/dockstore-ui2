@@ -75,6 +75,7 @@ describe('Logged out Dockstore Home', () => {
       cy.get('body').type('{esc}');
       cy.get('#youtubeModal').should('not.exist');
     });
+
     it('should have the twitter timeline', () => {
       cy.scrollTo('bottom');
       cy.get('.twitter-timeline').should('be.visible');

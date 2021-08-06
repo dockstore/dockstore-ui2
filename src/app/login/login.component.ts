@@ -33,6 +33,7 @@ export class LoginComponent {
   faGithub = faGithub;
   faGoogle = faGoogle;
   public tabindex: number;
+  public registrationDisabled = true;
   constructor(
     private trackLoginService: TrackLoginService,
     private loginService: LoginService,
