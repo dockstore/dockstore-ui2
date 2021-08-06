@@ -24,6 +24,7 @@ import { TosBannerState, TosBannerStore } from './tos-banner.store';
 export class TosBannerQuery extends Query<TosBannerState> {
   dismissedLatestTOS$: Observable<User.TosversionEnum> = this.select((state) => state.dismissedLatestTOS);
   dismissedLatestPrivacyPolicy$: Observable<User.PrivacyPolicyVersionEnum> = this.select((state) => state.dismissedLatestPrivacyPolicy);
+  displayLoggedInTOSBanner$: Observable<boolean> = this.select((state) => state.displayLoggedInTOSBanner);
 
   constructor(protected store: TosBannerStore) {
     super(store);

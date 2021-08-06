@@ -5,7 +5,14 @@
   "
   class="push-tos"
 >
-  <app-tos-banner class="scroll-tos-banner"></app-tos-banner>
+  <app-tos-banner
+    class="scroll-tos-banner"
+    [bannerText]="'By using our site, you acknowledge that you have read and understand our '"
+    [loggedIn]="false"
+  ></app-tos-banner>
+</div>
+<div *ngIf="(isLoggedIn$ | async) && (displayLoggedInTOSBanner$ | async)" class="push-tos">
+  <app-tos-banner class="scroll-tos-banner" [bannerText]="'You have not accepted the latest '" [loggedIn]="true"></app-tos-banner>
 </div>
 <div class="wrapper">
   <app-notifications></app-notifications>
