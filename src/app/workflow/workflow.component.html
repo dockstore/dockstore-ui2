@@ -244,7 +244,9 @@
             <ng-template matTabContent>
               <!-- Check if there's versions, then check workflow mode, then check descriptor type -->
               <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
-                <ng-container *ngIf="workflow.mode === WorkflowModel.ModeEnum.HOSTED; then hostedComponent; else dockstoreYmlComponent"></ng-container>
+                <ng-container
+                  *ngIf="workflow.mode === WorkflowModel.ModeEnum.HOSTED; then hostedComponent; else dockstoreYmlComponent"
+                ></ng-container>
               </div>
               <ng-template #noVersionsFilesTab>
                 <div [ngSwitch]="workflow.mode" class="p-3">
@@ -374,7 +376,7 @@
           <div class="container-source-repos">
             <p>
               <span *ngIf="(extendedWorkflow$ | async).provider">
-                <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank">
+                <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank" rel="noopener">
                   {{ (extendedWorkflow$ | async).provider }}
                   <mat-icon>open_in_new</mat-icon>
                 </a>
