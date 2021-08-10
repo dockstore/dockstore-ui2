@@ -12,7 +12,7 @@
     "prebuild": "ts-node -O '{\"module\":\"commonjs\"}' git.version.ts && ./scripts/generate-openapi-script.sh",
     "prebuild.prod": "npm run prebuild",
     "build.prod": "npx ng build --prod --subresource-integrity",
-    "build": "npx ng build --subresource-integrity",
+    "build": "npx ng build --prod --subresource-integrity",
     "license": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > THIRD-PARTY-LICENSES.csv",
     "circle-ci-license-test-file": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > CIRCLE-THIRD-PARTY-LICENSES.csv",
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
