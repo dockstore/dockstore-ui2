@@ -23,8 +23,8 @@
       <h3>Dockstore Account</h3>
       <div>
         Use with our CLI utilities or with our
-        <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch
-        tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
+        <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank" rel="noopener">REST web service interface</a> to work
+        with and launch tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
       </div>
       <span fxLayout="row" fxLayoutAlign="start center">
         <strong>Token</strong>
@@ -69,6 +69,11 @@
         {{ row.message }}
         <span *ngIf="row.isLinked">If your token has expired, relink your account.</span>
       </div>
+      <div *ngIf="row.source === TokenSource.ORCID">
+        See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and
+        <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for
+        information on what is ORCID.
+      </div>
       <div>
         {{ row.bold }}
       </div>
@@ -77,7 +82,7 @@
         <strong>Username: </strong>
         {{ row.source | getTokenUsername: tokens }}
         <span *ngIf="row.name === 'ORCID'">
-          <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo" />
+          <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
           <a href="https://orcid.org/{{ orcidId$ | async }}"> {{ orcidId$ | async }}</a>
         </span>
       </span>
@@ -121,7 +126,7 @@
         </button>
       </ng-template>
       <ng-template #orcid>
-        <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo" />
+        <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
       </ng-template>
     </div>
   </mat-card>

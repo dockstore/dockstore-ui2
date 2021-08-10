@@ -65,7 +65,7 @@
           <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
           <button
             [disabled]="
-              (hasZenodoToken$ | async) === false ||
+              ((hasZenodoToken$ | async) === false && !version.doiURL) ||
               (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false) ||
               state.overall !== StepState.INITIAL
             "
@@ -135,7 +135,7 @@
 
   <ng-template #zenodoCheck>
     <div
-      *ngIf="(hasZenodoToken$ | async) === false"
+      *ngIf="((hasZenodoToken$ | async) === false) && !version.doiURL"
       class="alert-danger p-2"
       fxLayout="row"
       fxLayoutGap="0.625rem;"

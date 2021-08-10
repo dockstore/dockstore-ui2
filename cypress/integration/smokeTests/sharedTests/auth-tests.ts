@@ -1,4 +1,4 @@
-import { goToTab } from '../../support/commands';
+import { goToTab } from '../../../support/commands';
 
 /**
  * To run these on tests you have the following:

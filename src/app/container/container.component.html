@@ -262,7 +262,7 @@
       </div>
     </div>
 
-    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
+    <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
       <mat-card>
         <mat-card-header>
           <mat-card-title>Recent Versions</mat-card-title>
@@ -322,7 +322,7 @@
             <p>
               Git Repository:
               <span *ngIf="(extendedTool$ | async).provider">
-                <a [href]="(extendedTool$ | async).providerUrl" target="_blank">
+                <a [href]="(extendedTool$ | async).providerUrl" target="_blank" rel="noopener">
                   {{ (extendedTool$ | async).provider }}
                   <mat-icon>open_in_new</mat-icon>
                 </a>
@@ -334,7 +334,7 @@
                 {{ (extendedTool$ | async)?.imgProvider }}</span
               >
               <span *ngIf="(extendedTool$ | async).imgProviderUrl && !privateOnlyRegistry">
-                <a *ngIf="(extendedTool$ | async).imgProviderUrl !== null" [href]="(extendedTool$ | async).imgProviderUrl" target="_blank">
+                <a [href]="(extendedTool$ | async).imgProviderUrl" target="_blank" rel="noopener">
                   {{ (extendedTool$ | async)?.imgProvider }}
                   <mat-icon>open_in_new</mat-icon>
                 </a>
@@ -344,7 +344,7 @@
                 *ngIf="(extendedTool$ | async)?.imgProviderUrl && (extendedTool$ | async).imgProviderUrl.startsWith('https://quay.io')"
                 class="pull-right"
               >
-                <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank">
+                <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank" rel="noopener">
                   <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" />
                 </a>
               </span>

@@ -244,29 +244,9 @@
             <ng-template matTabContent>
               <!-- Check if there's versions, then check workflow mode, then check descriptor type -->
               <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
-                <div [ngSwitch]="workflow.mode">
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.STUB">
-                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
-                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else newComponent" class="p-3">
-                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
-                    </div>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
-                    <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML">
-                    <ng-container *ngTemplateOutlet="dockstoreYmlComponent"></ng-container>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.FULL">
-                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
-                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else newComponent" class="p-3">
-                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
-                    </div>
-                  </div>
-                  <div *ngSwitchDefault>
-                    <ng-container *ngTemplateOutlet="newComponent"></ng-container>
-                  </div>
-                </div>
+                <ng-container
+                  *ngIf="workflow.mode === WorkflowModel.ModeEnum.HOSTED; then hostedComponent; else dockstoreYmlComponent"
+                ></ng-container>
               </div>
               <ng-template #noVersionsFilesTab>
                 <div [ngSwitch]="workflow.mode" class="p-3">
@@ -286,25 +266,6 @@
                   </mat-card>
                 </div>
               </ng-template>
-              <ng-template #oldComponent>
-                <app-files-workflow
-                  [entrypath]="workflow.full_workflow_path"
-                  [id]="workflow?.id"
-                  [versions]="validVersions"
-                  [default]="defaultVersion"
-                  [selectedVersion]="selectedVersion"
-                  [descriptorType]="descriptorType$ | async"
-                  [canRead]="canRead"
-                  [canWrite]="canWrite"
-                  [isOwner]="isOwner"
-                  [versionsFileTypes]="versionsFileTypes"
-                >
-                </app-files-workflow>
-              </ng-template>
-              <ng-template #newComponent>
-                <app-entry-file-tab [version]="selectedVersion"></app-entry-file-tab>
-              </ng-template>
-
               <ng-template #dockstoreYmlComponent>
                 <app-source-file-tabs
                   [workflowId]="workflow?.id"
@@ -378,7 +339,7 @@
         </ng-template>
       </div>
     </div>
-    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
+    <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
       <mat-card>
         <mat-card-header>
@@ -415,7 +376,7 @@
           <div class="container-source-repos">
             <p>
               <span *ngIf="(extendedWorkflow$ | async).provider">
-                <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank">
+                <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank" rel="noopener">
                   {{ (extendedWorkflow$ | async).provider }}
                   <mat-icon>open_in_new</mat-icon>
                 </a>

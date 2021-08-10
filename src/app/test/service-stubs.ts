@@ -175,6 +175,8 @@ export class SearchStubService {
 
   setFilterKeys(filters: Map<string, Set<string>>) {}
 
+  setPageSizeAndIndex(pageSize: number, pageIndex: number) {}
+
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([
@@ -527,6 +529,8 @@ export class UserStubService {
   updateUser() {}
   getExtendedUserData() {}
 }
+
+export class TosBannerStubService {}
 
 export class TokenStubService {
   tokens$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);

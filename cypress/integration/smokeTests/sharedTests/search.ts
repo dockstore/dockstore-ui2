@@ -46,11 +46,16 @@ describe('Admin UI', () => {
       cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
       cy.get('a').contains('Organizations').click();
       cy.go('back');
-      cy.get('[data-cy=search-workflow-table-paginator]').within(() => {
-        cy.get('.mat-paginator-range-label').contains('40 of');
-      });
-      cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
-      cy.contains('pancancer/pcawg-dkfz-workflow').should('not.exist');
+      if (Cypress.config('baseUrl') === 'https://dev.dockstore.net' || Cypress.config('baseUrl') === 'http://localhost:4200') {
+        cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
+        cy.contains('DataBiosphere/topmed-workflows/UM_variant_caller_wdl').should('exist');
+      } else {
+        cy.get('[data-cy=search-workflow-table-paginator]').within(() => {
+          cy.get('.mat-paginator-range-label').contains('40 of');
+        });
+        cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
+        cy.contains('DataBiosphere/topmed-workflows/UM_variant_caller_wdl').should('not.exist');
+      }
     });
     it('should have basic search and advanced search mutually exclusive', () => {
       cy.get('[data-cy=basic-search]').type('dockstore_');

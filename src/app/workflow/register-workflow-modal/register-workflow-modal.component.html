@@ -31,7 +31,6 @@
           <mat-radio-button *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
             <span class="text-wrap">
               {{ option.label }}
-              <div *ngIf="option.value === 0 && !this.recommendGitHubApps" class="beta-label">preview</div>
               <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
                 {{ selectedOption.extendedLabel }}
               </div>
@@ -230,7 +229,7 @@
           </mat-radio-button>
         </mat-radio-group>
 
-        <mat-form-field class="w-100">
+        <mat-form-field appearance="outline" class="w-100">
           <mat-label>Repository</mat-label>
           <input
             matInput
@@ -254,6 +253,8 @@
             placeholder="e.g. liftover-fast (optional)" />
           <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
         </mat-form-field> -->
+
+        <div *ngIf="hostedWorkflow.repository">Final workflow path: dockstore.org/{{username$ | async}}/{{hostedWorkflow.repository}}</div>
 
         <div class="modal-footer">
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
