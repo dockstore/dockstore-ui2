@@ -14,7 +14,7 @@
     "webservice": "./scripts/run-webservice-script.sh",
     "prebuild": "ts-node -O '{\"module\":\"commonjs\"}' git.version.ts && ./scripts/generate-openapi-script.sh",
     "prebuild.prod": "npm run prebuild",
-    "build.prod": "npx ng build --prod --subresource-integrity",
+    "build.prod": "npx ng build",
     "build": "npx ng build",
     "watch": "ng build --watch --configuration development",
     "license": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > THIRD-PARTY-LICENSES.csv",
