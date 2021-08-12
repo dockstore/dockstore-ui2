@@ -2,6 +2,7 @@ import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLang
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 
 export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
+  descriptorLanguageEnum: 'GXFORMAT2',
   value: 'gxformat2',
   shortFriendlyName: 'Galaxy',
   friendlyName: 'Galaxy Workflow Format',

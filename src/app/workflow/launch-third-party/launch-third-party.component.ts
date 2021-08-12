@@ -2,6 +2,7 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, share, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
@@ -230,12 +231,14 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       .subscribe((fileDescriptors) => {
         if (fileDescriptors && fileDescriptors.length) {
           // No idea if this.workflow.descriptorType is the one that's required or if it's some other enum
-          const descriptorType: string = this.workflow.descriptorType;
+          const descriptorType = this.workflow.descriptorType;
+          const descriptorLanguageEnum =
+            DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorLanguageEnum;
           this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
             if (fileDescriptors.some((file) => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
               this.workflowsService
-                .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, descriptorType)
+                .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, descriptorLanguageEnum)
                 .subscribe((sourceFiles: Array<SourceFile>) => {
                   this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
                 });

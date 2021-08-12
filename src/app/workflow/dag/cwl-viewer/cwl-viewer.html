@@ -9,7 +9,9 @@
   <div>
     <span *ngIf="!cwlViewerError"
       >See on
-      <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank">Common Workflow Language Viewer <mat-icon>open_in_new</mat-icon></a></span
+      <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank" rel="noopener"
+        >Common Workflow Language Viewer <mat-icon>open_in_new</mat-icon></a
+      ></span
     >
   </div>
   <div class="image">

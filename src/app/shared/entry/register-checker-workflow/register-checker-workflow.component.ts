@@ -16,6 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
 import { Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../alert/state/alert.query';
@@ -129,9 +130,14 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   }
 
   registerCheckerWorkflow(): void {
-    const weirdDescriptorType = this.descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(this.descriptorType);
-    if (weirdDescriptorType) {
-      this.registerCheckerWorkflowService.registerCheckerWorkflow(this.workflowPath, this.testParameterFilePath, weirdDescriptorType);
+    const extendedDescriptorLanguageBean: ExtendedDescriptorLanguageBean =
+      DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(this.descriptorType);
+    if (extendedDescriptorLanguageBean) {
+      this.registerCheckerWorkflowService.registerCheckerWorkflow(
+        this.workflowPath,
+        this.testParameterFilePath,
+        extendedDescriptorLanguageBean.descriptorLanguageEnum
+      );
     }
   }
 
