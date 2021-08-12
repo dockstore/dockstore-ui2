@@ -28,7 +28,7 @@ import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
-import { User } from '/Users/elin/dockstore-ui2/src/app/shared/swagger/model/user';
+import { User } from '../../../shared/swagger/model/user';
 
 @Component({
   selector: 'app-accounts-external',
