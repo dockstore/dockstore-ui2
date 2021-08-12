@@ -1,0 +1,7 @@
+@use '~@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
+.button {
+  color: white;
+  background: mat.get-color-from-palette($dockstore-app-warn);
+}

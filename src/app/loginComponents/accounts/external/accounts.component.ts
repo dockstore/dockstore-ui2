@@ -28,16 +28,18 @@ import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
+import { User } from '/Users/elin/dockstore-ui2/src/app/shared/swagger/model/user';
 
 @Component({
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.css'],
+  styleUrls: ['./accounts.component.scss'],
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
   public orcidId$: Observable<string>;
   public TokenSource = TokenSource;
+  public user: User;
   Dockstore = Dockstore;
   // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
@@ -45,6 +47,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'GitHub',
       source: TokenSource.GITHUB,
       bold: 'One of GitHub or Google is required.',
+      control: 'Source Control',
+      research: '',
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
       show: false,
       logo: 'github.svg',
@@ -53,6 +57,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Google',
       source: TokenSource.GOOGLE,
       bold: 'One of GitHub or Google is required.',
+      control: '',
+      docker: '',
+      research: '',
       message: 'Google credentials are used for login purposes and integration with Terra.',
       show: false,
       logo: 'google.svg',
@@ -61,6 +68,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Quay',
       source: TokenSource.QUAY,
       bold: '',
+      control: '',
+      docker: 'Docker Repository',
+      research: '',
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
       show: false,
       logo: 'quay.svg',
@@ -69,6 +79,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Bitbucket',
       source: TokenSource.BITBUCKET,
       bold: '',
+      control: 'Source Control',
+      docker: '',
+      research: '',
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false,
       logo: 'bitbucket.svg',
@@ -77,6 +90,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'GitLab',
       source: TokenSource.GITLAB,
       bold: '',
+      control: 'Source Control',
+      docker: '',
+      research: '',
       message: 'GitLab credentials are used for pulling source code from GitLab.',
       show: false,
       logo: 'gitlab.svg',
@@ -85,6 +101,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Zenodo',
       source: TokenSource.ZENODO,
       bold: '',
+      control: '',
+      docker: '',
+      research: 'Research',
       message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
       show: false,
       logo: 'zenodo.jpg',
@@ -93,8 +112,10 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'ORCID',
       source: TokenSource.ORCID,
       bold: '',
-      message:
-        'ORCID credentials are used for creating ORCID works by exporting snapshotted entries and versions from Dockstore and to link to your ORCID record when your Dockstore account is displayed on the site.',
+      control: '',
+      docker: '',
+      research: 'Research',
+      message: 'ORCID credentials are used for linking ORCID IDs to workflows published on Zenodo.',
       show: false,
       logo: 'orcid.svg',
     },
@@ -190,6 +211,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
+      this.user = user;
+    });
     this.dsServerURI = Dockstore.API_URI;
     this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
       this.setTokens(tokens);

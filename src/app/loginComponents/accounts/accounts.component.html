@@ -2,6 +2,7 @@
   <mat-icon class="mb-2 align-middle">account_circle</mat-icon>
   Profiles, Accounts and Controls
 </app-header>
+
 <div class="container">
   <mat-tab-group
     [selectedIndex]="selected.value"
@@ -9,13 +10,13 @@
     (selectedTabChange)="selectedTabChange($event)"
     mat-stretch-tabs
   >
-    <mat-tab label="Accounts">
+    <mat-tab label="Linked Accounts & Tokens">
       <app-accounts-external></app-accounts-external>
     </mat-tab>
     <mat-tab label="Profiles">
       <app-accounts-internal></app-accounts-internal>
     </mat-tab>
-    <mat-tab label="Dockstore Account Controls">
+    <mat-tab label="Dockstore Account & Preferences">
       <ng-template matTabContent>
         <app-controls></app-controls>
       </ng-template>
