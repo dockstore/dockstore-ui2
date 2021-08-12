@@ -13,6 +13,10 @@ import { extendedCWL } from '../descriptor-languages/CWL';
  * TODO: Use the value property to map the DescriptorLanguageBean to this
  */
 export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
+  // There's supposed to be a DescriptorLanguage enum in the openapi.yaml, this is to replace it.
+  // If a new language is added to the DescriptorLanguage.java, then its toString() value should be added here
+  // For some reason the OpenAPI yaml shows DescriptorLanguage with uppercase and lowercase names, but the generated API uses all uppercase which still works
+  descriptorLanguageEnum: DescriptorLanguageEnum;
   shortFriendlyName: string;
   defaultDescriptorPath: string;
   descriptorPathPattern: string;
@@ -34,6 +38,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
 
 export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
   value: null,
+  descriptorLanguageEnum: null,
   shortFriendlyName: null,
   friendlyName: null,
   defaultDescriptorPath: null,
@@ -60,3 +65,5 @@ export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
   extendedService,
   extendedGalaxy,
 ];
+
+export type DescriptorLanguageEnum = 'CWL' | 'WDL' | 'GXFORMAT2' | 'SWL' | 'NEXTFLOW' | 'SERVICE';

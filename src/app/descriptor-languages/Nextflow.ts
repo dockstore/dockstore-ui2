@@ -2,6 +2,7 @@ import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLang
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 
 export const extendedNFL: ExtendedDescriptorLanguageBean = {
+  descriptorLanguageEnum: 'NEXTFLOW',
   value: 'NFL',
   shortFriendlyName: 'Nextflow',
   friendlyName: 'Nextflow',
