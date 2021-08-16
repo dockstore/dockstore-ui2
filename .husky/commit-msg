@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-git secrets --commit_msg_hook -- ${HUSKY_GIT_PARAMS}
+echo git secrets --commit_msg_hook -- "$@"
+git secrets --commit_msg_hook -- "$@"
