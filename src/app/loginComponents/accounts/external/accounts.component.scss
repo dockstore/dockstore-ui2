@@ -1,44 +1,44 @@
 @use '~@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
+@import '/src/styles.scss';
 
+// Resizing the logos to fit nicely in the card
 .account-logo {
   width: 3.5em;
   margin-right: 1em;
 }
 
+// Style for the token form field
 .token-form-field {
   width: 300px;
   font-size: 12px;
 }
 
-.color {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-}
-
+// Positioning the badge to the upper right corner of each logo
 .mat-badge-medium.mat-badge-above .mat-badge-content {
   top: 0px;
   left: 40px;
-  background: #26bfa5;
+  background: $green-color;
 }
 
-.card-style {
-  height: 100%;
-}
-
+// Making the unlink/link button smaller to make the card look more uniform
 .button-size {
   transform-origin: 100% 50%;
   transform: scale(0.85);
 }
 
+// Changing the colours of the unlink button to differ from the link button
 .unlink-button {
   background: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;
 }
 
+// Making this button smaller to match the size of the token field
 .show-button {
   transform: scale(0.85);
 }
 
+// Making the space between account name and username smaller
 .title {
   font-size: 16px;
   margin-bottom: 6px !important;

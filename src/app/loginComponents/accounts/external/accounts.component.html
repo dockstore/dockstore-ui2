@@ -14,17 +14,16 @@
    limitations under the License.
 -->
 
-
 <div fxLayout="row wrap">
   <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
-    <mat-card class="mb-2 card-style" *ngIf="dockstoreToken">
+    <mat-card class="mb-2 h-100" *ngIf="dockstoreToken">
       <div fxLayoutAlign="space-between">
         <mat-card-header fxLayoutAlign="flex-start" fxLayoutGap="3rem">
           <div mat-card-avatar matBadge="✓">
             <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="account-logo" />
           </div>
           <mat-card-title class="title">Dockstore Account</mat-card-title>
-          <mat-card-subtitle class="color">
+          <mat-card-subtitle class="accent-1-dark">
             <strong>Username: {{ user?.username }} </strong>
           </mat-card-subtitle>
         </mat-card-header>
@@ -40,14 +39,14 @@
         </div>
       </mat-card-content>
       <mat-form-field appearance="outline" class="token-form-field">
-        <mat-label class="color">
+        <mat-label class="accent-1-dark">
           <strong>Token</strong>
         </mat-label>
         <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
         <button
           mat-icon-button
           matSuffix
-          class="color"
+          class="accent-1-dark"
           [cdkCopyToClipboard]="dockstoreToken"
           (cbOnSuccess)="isCopied1 = true"
           matTooltip="Copy Token"
@@ -60,7 +59,7 @@
         [matTooltip]="show ? 'Hide token' : 'Show token'"
         mat-button
         color="secondary"
-        class="color show-button"
+        class="accent-1-dark show-button"
         (click)="show = !show"
       >
         <mat-icon>{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
@@ -69,19 +68,18 @@
     </mat-card>
   </div>
 
-
   <div *ngFor="let row of accountsInfo" class="p-3" fxFlex="50" fxFlex.lt-md="100">
-    <mat-card class="mb-2 card-style">
+    <mat-card class="mb-2 h-100">
       <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
         <div>
           <div fxLayoutAlign="space-between">
             <mat-card-header fxLayoutAlign="flex-start" fxLayoutGap="1.5rem">
               <div mat-card-avatar>
-                <div *ngIf="row.isLinked" matBadge="✓" matBadgeColor="green"></div>
+                <div *ngIf="row.isLinked" matBadge="✓" background="green-color"></div>
                 <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="account-logo" />
               </div>
               <mat-card-title class="title">{{ row.name }} Account&nbsp;</mat-card-title>
-              <mat-card-subtitle class="color" *ngIf="row.isLinked; else placeholder">
+              <mat-card-subtitle class="accent-1-dark" *ngIf="row.isLinked; else placeholder">
                 <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
                 <span *ngIf="row.name === 'ORCID'">
                   <strong> ID: </strong>
@@ -102,9 +100,11 @@
               {{ row.message }}
               <strong>{{ row.bold }}</strong>
             </p>
-            <!-- <div *ngIf="row.source === TokenSource.ORCID">
-              See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for information on what is ORCID.
-            </div> -->
+            <div *ngIf="row.source === TokenSource.ORCID">
+              See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and
+              <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for
+              information on what is ORCID.
+            </div>
           </mat-card-content>
         </div>
         <div>
@@ -113,7 +113,7 @@
             <button
               *ngIf="row.isLinked === false; else linked"
               mat-raised-button
-              class="color"
+              class="accent-1-dark"
               [attr.id]="'link-' + row.name"
               (click)="link(row.source)"
               matTooltip="Link the account"
