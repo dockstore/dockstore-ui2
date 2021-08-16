@@ -1,0 +1,11 @@
+{
+    "src/**/*.{ts,html,js,css,scss,json,md}": [
+      "prettier --write"
+    ],
+    "cypress/**/*.{ts,js}": [
+      "prettier --write"
+    ],
+    "*.ts": [
+      "eslint --fix"
+    ]
+}
