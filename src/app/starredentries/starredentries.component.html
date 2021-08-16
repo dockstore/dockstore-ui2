@@ -51,7 +51,7 @@
         </div>
         <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
           <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="card-style m-1 mat-elevation-z4">
-            <a.no-underline routerLink="/workflows/{{ workflow.full_workflow_path }}" target="_blank" rel="noopener">
+            <a routerLink="/workflows/{{ workflow.full_workflow_path }}" target="_blank" rel="noopener" class="no-underline">
               <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
                 <div>
                   <mat-card-header>
@@ -102,7 +102,7 @@
                   <div><button mat-raised-button color="accent" class="view-button">View</button></div>
                 </div>
               </div>
-            </a.no-underline>
+            </a>
           </mat-card>
         </div>
       </div>
@@ -129,7 +129,7 @@
         </div>
         <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
           <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="card-style m-1 mat-elevation-z4">
-            <a.no-underline routerLink="/containers/{{ tool.tool_path }}" target="_blank" rel="noopener">
+            <a routerLink="/containers/{{ tool.tool_path }}" target="_blank" rel="noopener" class="no-underline">
               <div fxLayout="row" fxLayoutAlign="space-between">
                 <div>
                   <mat-card-header>
@@ -163,7 +163,7 @@
                   <div><button mat-raised-button color="accent" class="view-button">View</button></div>
                 </div>
               </div>
-            </a.no-underline>
+            </a>
           </mat-card>
         </div>
       </div>
@@ -211,7 +211,13 @@
               <mat-card class="org-style mat-elevation-z3">
                 <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
                   <div fxLayout="column" fxLayoutGap="2rem">
-                    <a.no-underline routerLink="/organizations/{{ org.name }}" [matTooltip]="org?.name" target="_blank" rel="noopener">
+                    <a
+                      routerLink="/organizations/{{ org.name }}"
+                      [matTooltip]="org?.name"
+                      target="_blank"
+                      rel="noopener"
+                      class="no-underline"
+                    >
                       <div fxLayout="row wrap" fxLayoutAlign="space-between start">
                         <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
                         <ng-template #placeholder><span class="logo-height"></span></ng-template>
@@ -226,7 +232,7 @@
                         <h5 class="text-break">{{ org.displayName }}</h5>
                         <span class="org-overflow">{{ org.topic }}</span>
                       </div>
-                    </a.no-underline>
+                    </a>
                     <div>
                       <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
                         <span fxLayout="row" *ngIf="org?.link">
