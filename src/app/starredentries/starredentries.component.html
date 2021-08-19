@@ -211,13 +211,7 @@
               <mat-card class="org-style mat-elevation-z3">
                 <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
                   <div fxLayout="column" fxLayoutGap="2rem">
-                    <a
-                      routerLink="/organizations/{{ org.name }}"
-                      [matTooltip]="org?.name"
-                      target="_blank"
-                      rel="noopener"
-                      class="no-underline"
-                    >
+                    <a routerLink="/organizations/{{ org.name }}" target="_blank" rel="noopener" class="no-underline">
                       <div fxLayout="row wrap" fxLayoutAlign="space-between start">
                         <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
                         <ng-template #placeholder><span class="logo-height"></span></ng-template>
