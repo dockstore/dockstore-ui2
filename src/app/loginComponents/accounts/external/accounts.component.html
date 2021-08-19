@@ -82,7 +82,7 @@
               <mat-card-subtitle class="accent-1-dark" *ngIf="row.isLinked; else placeholder">
                 <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
                 <span *ngIf="row.name === 'ORCID'">
-                  <strong> ID: </strong>
+                  <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
                   <a href="https://orcid.org/{{ orcidId$ | async }}"> {{ orcidId$ | async }}</a>
                 </span>
               </mat-card-subtitle>
