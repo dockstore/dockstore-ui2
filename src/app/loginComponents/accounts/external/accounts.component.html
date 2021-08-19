@@ -89,10 +89,28 @@
               <ng-template #placeholder><br /></ng-template>
             </mat-card-header>
             <mat-chip-list>
-              <mat-chip class="gray-label-tag" *ngIf="row.control" matTooltip="TBD"> Source Control </mat-chip>
+              <mat-chip
+                class="gray-label-tag"
+                *ngIf="row.control"
+                matTooltip="Pull your workflows from cloud source control to make them available on Dockstore"
+              >
+                Source Control
+              </mat-chip>
               <mat-chip class="gray-label-tag" *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
-              <mat-chip class="gray-label-tag" *ngIf="row.docker" matTooltip="TBD"> Docker Repository </mat-chip>
-              <mat-chip class="gray-label-tag" *ngIf="row.research" matTooltip="TBD"> Research </mat-chip>
+              <mat-chip
+                class="gray-label-tag"
+                *ngIf="row.docker"
+                matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
+              >
+                Docker Repository
+              </mat-chip>
+              <mat-chip
+                class="gray-label-tag"
+                *ngIf="row.research"
+                matTooltip="Services popular among scientific researchers to aid with publications and citation"
+              >
+                Research
+              </mat-chip>
             </mat-chip-list>
           </div>
           <mat-card-content>
