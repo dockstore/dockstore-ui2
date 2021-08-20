@@ -51,58 +51,58 @@
         </div>
         <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
           <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="card-style m-1 mat-elevation-z4">
-            <a routerLink="/workflows/{{ workflow.full_workflow_path }}" target="_blank" rel="noopener" class="no-underline">
-              <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-                <div>
-                  <mat-card-header>
-                    <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
-                      <img src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
-                      <h4>
-                        {{ workflow?.organization + '/' + workflow?.repository + (workflow?.toolname ? '/' + workflow?.toolname : '') }}
-                      </h4>
-                    </mat-card-title>
-                  </mat-card-header>
-                </div>
-                <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
-              </div>
-              <mat-card-header>
-                <div *ngIf="workflow?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
-                <mat-card-subtitle class="overflow">{{ workflow?.description }}</mat-card-subtitle>
-              </mat-card-header>
-              <div>
-                <hr />
-                <div fxLayout="row" fxLayoutAlign="space-between stretch">
-                  <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                    <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
-                    <div fxLayout="row wrap" fxLayoutGap="1rem">
-                      <span>
-                        <mat-chip-list>
-                          <mat-chip class="workflow-label-tag" *ngFor="let label of workflow?.labels | slice: 0:3">{{
-                            label.value
-                          }}</mat-chip>
-                          <mat-chip class="gray-label-tag" *ngIf="workflow.verified === true">
-                            <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                              <mat-icon class="verified-icon">done</mat-icon>
-                              <span>Verified</span>
-                            </span>
-                          </mat-chip>
-                          <mat-chip class="gray-label-tag">
-                            {{ workflow?.descriptorType | uppercase }}
-                          </mat-chip>
-                          <mat-chip class="gray-label-tag" *ngIf="workflow.verified === true">
-                            <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                              <mat-icon class="verified-icon">done</mat-icon>
-                              <span>Verified</span>
-                            </span>
-                          </mat-chip>
-                        </mat-chip-list>
-                      </span>
-                    </div>
+            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
+              <a routerLink="/workflows/{{ workflow.full_workflow_path }}" target="_blank" rel="noopener" class="no-underline">
+                <mat-card-header>
+                  <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
+                    <img src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
+                    <h4>
+                      {{ workflow?.organization + '/' + workflow?.repository + (workflow?.toolname ? '/' + workflow?.toolname : '') }}
+                    </h4>
+                  </mat-card-title>
+                </mat-card-header>
+              </a>
+              <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
+            </div>
+            <mat-card-header>
+              <div *ngIf="workflow?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
+              <mat-card-subtitle class="overflow">{{ workflow?.description }}</mat-card-subtitle>
+            </mat-card-header>
+            <div>
+              <hr />
+              <div fxLayout="row" fxLayoutAlign="space-between stretch">
+                <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+                  <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
+                  <div fxLayout="row wrap" fxLayoutGap="1rem">
+                    <span>
+                      <mat-chip-list>
+                        <mat-chip class="workflow-label-tag" *ngFor="let label of workflow?.labels | slice: 0:3">{{
+                          label.value
+                        }}</mat-chip>
+                        <mat-chip class="gray-label-tag" *ngIf="workflow.verified === true">
+                          <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                            <mat-icon class="verified-icon">done</mat-icon>
+                            <span>Verified</span>
+                          </span>
+                        </mat-chip>
+                        <mat-chip class="gray-label-tag">
+                          {{ workflow?.descriptorType | uppercase }}
+                        </mat-chip>
+                        <mat-chip class="gray-label-tag" *ngIf="workflow.verified === true">
+                          <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                            <mat-icon class="verified-icon">done</mat-icon>
+                            <span>Verified</span>
+                          </span>
+                        </mat-chip>
+                      </mat-chip-list>
+                    </span>
                   </div>
-                  <div><button mat-raised-button color="accent" class="view-button">View</button></div>
                 </div>
+                <a routerLink="/workflows/{{ workflow.full_workflow_path }}" target="_blank" rel="noopener" class="no-underline">
+                  <button mat-raised-button color="accent" class="view-button">View</button>
+                </a>
               </div>
-            </a>
+            </div>
           </mat-card>
         </div>
       </div>
@@ -129,41 +129,41 @@
         </div>
         <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
           <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="card-style m-1 mat-elevation-z4">
-            <a routerLink="/containers/{{ tool.tool_path }}" target="_blank" rel="noopener" class="no-underline">
-              <div fxLayout="row" fxLayoutAlign="space-between">
-                <div>
-                  <mat-card-header>
-                    <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                      <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
-                      <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
-                    </mat-card-title>
-                    <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
-                  </mat-card-header>
+            <div fxLayout="row" fxLayoutAlign="space-between">
+              <a routerLink="/containers/{{ tool.tool_path }}" target="_blank" rel="noopener" class="no-underline">
+                <mat-card-header>
+                  <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+                    <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
+                    <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
+                  </mat-card-title>
+                  <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
+                </mat-card-header>
+              </a>
+              <app-starring class="pull-right" [tool]="tool" (starGazersChange)="starGazersChange()"></app-starring>
+            </div>
+            <div>
+              <hr />
+              <div fxLayout="row" fxLayoutAlign="space-between stretch">
+                <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+                  <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
+                  <mat-chip-list>
+                    <mat-chip class="container-label-tag" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                    <mat-chip *ngIf="tool?.verified" matTooltip="Verified" class="gray-label-tag">
+                      <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                        <mat-icon class="verified-icon">done</mat-icon>
+                        <span>Verified</span>
+                      </a>
+                    </mat-chip>
+                    <mat-chip class="gray-label-tag" *ngFor="let descriptortype of tool?.descriptorType">
+                      {{ descriptortype }}
+                    </mat-chip>
+                  </mat-chip-list>
                 </div>
-                <app-starring class="pull-right" [tool]="tool" (starGazersChange)="starGazersChange()"></app-starring>
+                <a routerLink="/containers/{{ tool.tool_path }}" target="_blank" rel="noopener" class="no-underline">
+                  <button mat-raised-button color="accent" class="view-button">View</button>
+                </a>
               </div>
-              <div>
-                <hr />
-                <div fxLayout="row" fxLayoutAlign="space-between stretch">
-                  <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                    <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
-                    <mat-chip-list>
-                      <mat-chip class="container-label-tag" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
-                      <mat-chip *ngIf="tool?.verified" matTooltip="Verified" class="gray-label-tag">
-                        <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                          <mat-icon class="verified-icon">done</mat-icon>
-                          <span>Verified</span>
-                        </a>
-                      </mat-chip>
-                      <mat-chip class="gray-label-tag" *ngFor="let descriptortype of tool?.descriptorType">
-                        {{ descriptortype }}
-                      </mat-chip>
-                    </mat-chip-list>
-                  </div>
-                  <div><button mat-raised-button color="accent" class="view-button">View</button></div>
-                </div>
-              </div>
-            </a>
+            </div>
           </mat-card>
         </div>
       </div>
@@ -210,23 +210,23 @@
             <div *ngFor="let org of starredOrganizations; let last = last" fxFlex="33.3" fxFlex.lt-lg="500" fxFlex.lt-md="100">
               <mat-card class="org-style mat-elevation-z3">
                 <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-                  <div fxLayout="column" fxLayoutGap="2rem">
-                    <a routerLink="/organizations/{{ org.name }}" target="_blank" rel="noopener" class="no-underline">
-                      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                  <div fxLayout="column" fxLayoutGap="1rem">
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                      <a routerLink="/organizations/{{ org.name }}" target="_blank" rel="noopener" class="no-underline">
                         <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
                         <ng-template #placeholder><span class="logo-height"></span></ng-template>
-                        <div *ngIf="org?.starredUsers.length !== 0">
-                          <app-organization-starring
-                            [organization]="org"
-                            (stargazersChange)="organizationStarGazersChange()"
-                          ></app-organization-starring>
-                        </div>
-                      </div>
-                      <div data-cy="orgName">
+                      </a>
+                      <app-organization-starring
+                        [organization]="org"
+                        (stargazersChange)="organizationStarGazersChange()"
+                      ></app-organization-starring>
+                    </div>
+                    <div data-cy="orgName">
+                      <a routerLink="/organizations/{{ org.name }}" target="_blank" rel="noopener" class="no-underline">
                         <h5 class="text-break">{{ org.displayName }}</h5>
                         <span class="org-overflow">{{ org.topic }}</span>
-                      </div>
-                    </a>
+                      </a>
+                    </div>
                     <div>
                       <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
                         <span fxLayout="row" *ngIf="org?.link">
@@ -250,7 +250,7 @@
                   </div>
                   <div>
                     <hr class="mb-4" />
-                    <a routerLink="/organizations/{{ org.name }}" class="no-underline" target="_self">
+                    <a routerLink="/organizations/{{ org.name }}" target="_blank" rel="noopener" class="no-underline">
                       <div fxLayout="row" fxLayoutAlign="space-between center">
                         <span class="gray-label-tag">
                           {{ org.collectionsLength }}
