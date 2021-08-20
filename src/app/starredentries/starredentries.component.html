@@ -19,8 +19,6 @@
 <mat-tab-group
   mat-stretch-tabs
   class="container"
-  #tabGroup
-  [formControl]="selected"
   *ngIf="!starGazersClicked && !organizationStarGazersClicked"
   [selectedIndex]="selected.value"
   (selectedTabChange)="onTabChange($event)"
