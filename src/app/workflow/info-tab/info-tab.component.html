@@ -284,7 +284,7 @@
         <span *ngIf="!selectedVersion?.email"> n/a </span>
       </div>
       <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
-        <strong matTooltip="Version has a test parameter file where all URLs are publicly accessible">Publicly Acessible Test Parameter File</strong>: 
+        <strong matTooltip="Version has a test parameter file where all URLs are publicly accessible">Test Parameter File With Open Data</strong>: 
         {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
       </div>
       <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
