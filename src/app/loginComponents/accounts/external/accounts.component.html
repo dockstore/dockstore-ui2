@@ -127,16 +127,16 @@
         </div>
         <div>
           <hr />
-          <span class="pull-right button-size" fxLayoutAlign="end end">
+          <span class="pull-right" fxLayoutAlign="end end">
             <button
               *ngIf="row.isLinked === false; else linked"
               mat-raised-button
-              class="accent-1-dark"
+              class="accent-1-dark mat-btn-sm"
               [attr.id]="'link-' + row.name"
               (click)="link(row.source)"
               matTooltip="Link the account"
             >
-              <mat-icon *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
+              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
               <span> Link Account</span>
             </button>
           </span>

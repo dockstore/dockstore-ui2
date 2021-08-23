@@ -1060,6 +1060,25 @@ hr {
   font-size: 12px;
 }
 
+// Applied to buttons to make them smaller than Material defaults
+.mat-btn-sm {
+  // This overrides .mat-raised-button's 36px line-height
+  line-height: 26px;
+  // This overrides .mat-button and most other material buttons' 12px font with font-weight normal
+  font-size: 12px;
+  font-weight: bold;
+
+}
+
+// Applied to mat-icons to make them smaller than Material defaults. 16px was chosen based on ORCID's recommended min logo size.
+.mat-icon-sm {
+  // These two override .mat-icon's default 24px height and width
+  height: 16px;
+  width: 16px;
+  // This overrides .material-icon's default 24px font-size
+  font-size: 16px;
+}
+
 // Can use this class for all search bars
 .search-form-field {
   width: 200px;
