@@ -900,7 +900,7 @@ app-sidebar-accordion
 }
 
 .workflow-tab-group.mat-primary .mat-ink-bar {
-  background: $green-color !important;
+  background: #26bfa5 !important;
 }
 
 .purple-tab-group.mat-primary .mat-ink-bar {
@@ -1034,17 +1034,19 @@ hr {
 
 // To indicate success of an operation.
 .accent-3-dark {
-  color: #00bfa5;
+  color: $accent-3-dark;
 }
 
-// Following 4 items are for stepper/stepper-like dialogs
+// Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
 .accent-1-dark {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
-.mat-flat-button.bg-accent-1-dark {
+
+button.accent-1-dark-btn {
   background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;
 }
+
 .mat-flat-button.secondary-1 {
   color: mat.get-color-from-palette($dockstore-app-accent);
 }

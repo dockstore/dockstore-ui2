@@ -2,24 +2,7 @@
 @import '/src/materialColorScheme.scss';
 @import '/src/styles.scss';
 
-// Style for the token form field
-.token-form-field {
-  width: 300px;
-  font-size: 12px;
-}
-
 // Positioning the badge to the upper right corner of each logo
 .mat-badge-medium.mat-badge-above .mat-badge-content {
-  background: $green-color;
-}
-
-// Changing the colours of the unlink button to differ from the link button
-.unlink-button {
-  background: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-  color: white;
-}
-
-// Making this button smaller to match the size of the token field
-.show-button {
-  transform: scale(0.85);
+  background: $accent-3-dark;
 }

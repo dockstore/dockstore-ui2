@@ -38,7 +38,7 @@
           tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
         </div>
       </mat-card-content>
-      <mat-form-field appearance="outline" class="token-form-field">
+      <mat-form-field appearance="outline" class="w-75">
         <mat-label class="accent-1-dark">
           <strong>Token</strong>
         </mat-label>
@@ -59,10 +59,10 @@
         [matTooltip]="show ? 'Hide token' : 'Show token'"
         mat-button
         color="secondary"
-        class="accent-1-dark show-button"
+        class="accent-1-dark mat-btn-sm"
         (click)="show = !show"
       >
-        <mat-icon>{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
+        <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
         <span> Show </span>
       </button>
     </mat-card>
@@ -128,6 +128,7 @@
         <div>
           <hr />
           <span class="pull-right" fxLayoutAlign="end end">
+            <!-- This button needs to be vertically centered -->
             <button
               *ngIf="row.isLinked === false; else linked"
               mat-raised-button
@@ -141,9 +142,10 @@
             </button>
           </span>
           <ng-template #linked>
+            <!-- This button needs to be vertically centered -->
             <button
               mat-raised-button
-              class="unlink-button mat-btn-sm"
+              class="accent-1-dark-btn mat-btn-sm"
               [attr.id]="'unlink-' + row.name"
               (click)="unlink(row.source)"
               matTooltip="Unlink the account"
