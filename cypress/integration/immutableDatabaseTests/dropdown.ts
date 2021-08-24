@@ -73,7 +73,7 @@ describe('Dropdown test', () => {
     });
     it('Change tab to Dockstore Account & Preferences', () => {
       goToTab('Dockstore Account & Preferences');
-      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20controls');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20and%20preferences');
     });
     it('Change tab to requests', () => {
       goToTab('Requests');
@@ -89,7 +89,7 @@ describe('Dropdown test', () => {
       isActiveTab('Profiles');
     });
     it('Link to Dockstore Account & Preferences tab', () => {
-      cy.visit('/accounts?tab=dockstore%20account%20controls');
+      cy.visit('/accounts?tab=dockstore%20account%20and%20preferences');
       isActiveTab('Dockstore Account & Preferences');
     });
     it('Link to requests tab', () => {
