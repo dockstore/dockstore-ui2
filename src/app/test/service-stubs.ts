@@ -447,12 +447,12 @@ export class MetadataStubService {
       url: 'https://gitlab.com/',
     },
     {
-      dockerPath: null,
+      dockerPath: 'public.ecr.aws',
       customDockerPath: 'true',
-      privateOnly: 'true',
+      privateOnly: 'false',
       enum: 'AMAZON_ECR',
       friendlyName: 'Amazon ECR',
-      url: null,
+      url: 'https://gallery.ecr.aws/',
     },
     {
       dockerPath: null,
