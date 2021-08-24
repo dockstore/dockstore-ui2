@@ -204,20 +204,38 @@
           <div class="form-group form-group-sm">
             <label class="col-sm-3 control-label"> Image Registry: </label>
             <div class="col-sm-9">
-              <input
-                id="imageRegistryInput"
-                type="text"
-                class="form-control"
-                name="imagePath"
-                [(ngModel)]="tool.imagePath"
-                minlength="3"
-                maxlength="128"
-                [pattern]="validationPatterns.imagePath"
-                required
-                matTooltip="Docker Image Registry path."
-                placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
-              />
-              <div *ngIf="formErrors.imagePath" class="alert alert-danger">{{ formErrors.imagePath }}</div>
+              <span *ngIf="tool.irProvider === 'Amazon ECR'">
+                <input
+                  id="imageRegistryInput"
+                  type="text"
+                  class="form-control"
+                  name="repoNameWithSlashesImagePath"
+                  [(ngModel)]="tool.imagePath"
+                  minlength="3"
+                  maxlength="128"
+                  [pattern]="validationPatterns.repoNameWithSlashesImagePath"
+                  required
+                  matTooltip="Docker Image Registry path."
+                  placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
+                />
+                <div *ngIf="formErrors.repoNameWithSlashesImagePath" class="alert alert-danger">{{ formErrors.repoNameWithSlashesImagePath }}</div>
+              </span>
+              <span *ngIf="tool.irProvider !== 'Amazon ECR'">
+                <input
+                  id="imageRegistryInput"
+                  type="text"
+                  class="form-control"
+                  name="imagePath"
+                  [(ngModel)]="tool.imagePath"
+                  minlength="3"
+                  maxlength="128"
+                  [pattern]="validationPatterns.imagePath"
+                  required
+                  matTooltip="Docker Image Registry path."
+                  placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
+                />
+                <div *ngIf="formErrors.imagePath" class="alert alert-danger">{{ formErrors.imagePath }}</div>
+              </span>
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -378,14 +396,15 @@
                   [(ngModel)]="hostedTool.path"
                   minlength="3"
                   maxlength="128"
-                  [pattern]="validationPatterns.imagePath"
+                  [pattern]="hostedTool.registryProvider === 'Amazon ECR' ? validationPatterns.repoNameWithSlashesImagePath : validationPatterns.imagePath"
                   required
                   matTooltip="Docker Image Registry path."
                   placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
                 />
               </div>
               <div *ngIf="hostedImagePath?.errors?.pattern" class="alert alert-danger">
-                The namespace and name of the image repository, separated by a '/'. Use '_' for an empty namespace.
+                <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">{{ validationMessages.repoNameWithSlashesImagePath.pattern }}</span>
+                <span *ngIf="hostedTool.registryProvider !== 'Amazon ECR'">{{ validationMessages.imagePath.pattern }}</span>
               </div>
             </div>
           </div>

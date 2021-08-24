@@ -20,6 +20,7 @@ interface FormErrors {
   dockerfilePath: string;
   gitPath: string;
   imagePath: string;
+  repoNameWithSlashesImagePath: string;
   label: string;
   cwlTestParameterFilePath: string;
   wdlTestParameterFilePath: string;
@@ -40,6 +41,7 @@ export const formErrors: FormErrors = {
   dockerfilePath: '',
   gitPath: '',
   imagePath: '',
+  repoNameWithSlashesImagePath: '',
   label: '',
   cwlTestParameterFilePath: '',
   wdlTestParameterFilePath: '',
@@ -68,6 +70,7 @@ export const validationDescriptorPatterns = {
   dockerfilePath: '^/([^/?:*|<>]+/)*(([a-zA-Z]+[.])?Dockerfile|Dockerfile([.][a-zA-Z]+)?)$',
   testFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
   imagePath: '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
+  repoNameWithSlashesImagePath: '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_./][a-zA-Z0-9]+)*)$',
   toolName: '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',
   label: '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   versionTag: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
@@ -127,6 +130,12 @@ export const validationMessages = {
     minlength: 'Image Path is too short. (Minimum 3 characters)',
     maxlength: 'Image Path is too long. (Max 128 characters)',
     pattern: `The namespace and name of the image repository, separated by a '/'. ` + `Use '_' for an empty namespace.`,
+  },
+  repoNameWithSlashesImagePath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Image Path is too short. (Minimum 3 characters)',
+    maxlength: 'Image Path is too long. (Max 128 characters)',
+    pattern: `The namespace and name of the image repository, separated by a '/'. The name of the image repository may contain additional '/'. ` + `Use '_' for an empty namespace.`,
   },
   label: {
     maxlength: 'Labels string is too long. (Max 512 characters)',

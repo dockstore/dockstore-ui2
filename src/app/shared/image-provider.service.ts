@@ -88,7 +88,7 @@ export class ImageProviderService {
 
   private getImageProviderUrl(path: string, registry) {
     if (path) {
-      const imageRegExp = /^(.*)\/(.*)\/(.*)\/?$/i;
+      const imageRegExp = /^([a-zA-Z0-9-_.]+)\/([a-zA-Z0-9-_.]+)\/([a-zA-Z0-9-_./]+)$/;
       const match = imageRegExp.exec(path);
 
       if (match) {

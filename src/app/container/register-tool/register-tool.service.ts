@@ -134,7 +134,7 @@ export class RegisterToolService {
   registerHostedTool(hostedTool: any): void {
     const splitPath = hostedTool.path.split('/');
     const namespace = splitPath[0];
-    const name = splitPath[1];
+    const name = splitPath.slice(1, splitPath.length).join("/");
     this.alertService.start('Registering tool');
     this.hostedService
       .createHostedTool(name, hostedTool.registry, undefined, namespace, hostedTool.entryName ? hostedTool.entryName : undefined)
@@ -191,7 +191,7 @@ export class RegisterToolService {
   getImagePath(imagePath: string, part: string) {
     /** Defines the regex that an image path (namespace/name) must match.
          Group 1 = namespace, Group 2 = name*/
-    const imagePathRegexp = /^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)\/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$/i;
+    const imagePathRegexp = /^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)\/([a-zA-Z0-9]+([-_./][a-zA-Z0-9]+)*)$/i;
     const matchObj = imagePath.match(imagePathRegexp);
     let imageName = '';
     if (matchObj && matchObj.length > 2) {
