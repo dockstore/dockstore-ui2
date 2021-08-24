@@ -123,6 +123,20 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     this.disablePrivateCheckbox = this.registerToolService.disabledPrivateCheckbox;
   }
 
+  togglePrivateAccess() {
+    // Amazon ECR is a public and private registry, but it has custom docker paths for its private registries.
+    // If tool is private, allow the docker registry path to be edited.
+    // If tool is public, disable the docker registry path input field and set it to the public docker registry path (public.ecr.aws)
+    if (this.tool.irProvider === 'Amazon ECR') {
+      this.registerToolService.setShowCustomDockerRegistryPath(this.tool.private_access);
+      if (this.tool.private_access) {
+        this.registerToolService.setCustomDockerRegistryPath(null);
+      } else {
+        this.registerToolService.setCustomDockerRegistryPath(this.registerToolService.getImageRegistryPath(this.tool.irProvider));
+      }      
+    }
+  }
+
   hideModal() {
     this.registerToolService.setIsModalShown(false);
     this.alertService.clearEverything();

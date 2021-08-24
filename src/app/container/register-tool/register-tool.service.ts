@@ -239,7 +239,16 @@ export class RegisterToolService {
           this.disabledPrivateCheckbox = false;
         }
 
-        if (registry.customDockerPath === 'true') {
+        if (registry.friendlyName === 'Amazon ECR') {
+          // Amazon ECR is a special case where it's a public and private registry but it has custom docker paths for its private repositories
+          if (toolObj.private_access) {
+            this.setShowCustomDockerRegistryPath(true);
+            this.setCustomDockerRegistryPath(null);
+          } else {
+            this.setShowCustomDockerRegistryPath(false);
+            this.setCustomDockerRegistryPath(this.getImageRegistryPath(toolObj.irProvider));
+          }
+        } else if (registry.customDockerPath === 'true') {
           this.setShowCustomDockerRegistryPath(true);
           this.setCustomDockerRegistryPath(null);
         } else {

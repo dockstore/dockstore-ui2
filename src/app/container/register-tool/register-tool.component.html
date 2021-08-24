@@ -251,7 +251,7 @@
                     maxlength="256"
                     matTooltip="Custom Docker registry path"
                     placeholder="e.g. *.dkr.ecr.*.amazonaws.com"
-                    [pattern]="validationPatterns.amazonDockerRegistryPath"
+                    [pattern]="validationPatterns.privateAmazonDockerRegistryPath"
                   />
                   <div *ngIf="formErrors.amazonDockerRegistryPath" class="alert alert-danger">
                     {{ formErrors.amazonDockerRegistryPath }}
@@ -294,6 +294,7 @@
                   [disabled]="disablePrivateCheckbox"
                   name="tool.private_access"
                   [(ngModel)]="tool.private_access"
+                  (change)="togglePrivateAccess()"
                   matTooltip="Image registry entry is private."
                   id="privateTool"
                 />
@@ -419,13 +420,14 @@
                     name="amazonDockerRegistryPath"
                     #amazonDockerRegistryPath="ngModel"
                     [(ngModel)]="hostedTool.registry"
+                    required
                     maxlength="256"
                     matTooltip="Custom Docker registry path"
-                    placeholder="e.g. *.dkr.ecr.*.amazonaws.com"
+                    placeholder="e.g. public.ecr.aws or *.dkr.ecr.*.amazonaws.com"
                     [pattern]="validationPatterns.amazonDockerRegistryPath"
                   />
                   <div *ngIf="amazonDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
-                    Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character.
+                    {{ validationMessages.amazonDockerRegistryPath.pattern }}
                   </div>
                 </span>
                 <span *ngIf="hostedTool.registryProvider === 'Seven Bridges'">
@@ -441,7 +443,7 @@
                     [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"
                   />
                   <div *ngIf="sevenBridgesDockerRegistryPath?.errors?.pattern" class="alert alert-danger">
-                    Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.
+                    {{ validationMessages.sevenBridgesDockerRegistryPath.pattern }}
                   </div>
                 </span>
               </span>
@@ -464,13 +466,14 @@
                 type="text"
                 class="form-control"
                 name="toolName"
+                #toolName="ngModel"
                 [(ngModel)]="hostedTool.entryName"
                 maxlength="256"
                 [pattern]="validationPatterns.toolName"
                 matTooltip="Name to distinguish between multiple tools within the same repository"
                 placeholder="e.g. liftover-fast (optional)"
               />
-              <div *ngIf="formErrors.toolName" class="alert alert-danger">{{ formErrors.toolName }}</div>
+              <div *ngIf="toolName?.errors?.pattern" class="alert alert-danger">{{ validationMessages.toolName.pattern }}</div>
             </div>
           </div>
           <div *ngIf="hostedTool.path">Final tool path: {{hostedTool.registry}}/{{hostedTool.path}}{{hostedTool.entryName ? '/' + hostedTool.entryName : ''}}</div>

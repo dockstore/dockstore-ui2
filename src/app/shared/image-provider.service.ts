@@ -51,7 +51,7 @@ export class ImageProviderService {
     const friendlyRegistryName = registry ? registry.friendlyName : null;
     tool.imgProvider = friendlyRegistryName;
     if (registry) {
-      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry);
+      tool.imgProviderUrl = this.getImageProviderUrl(tool.path, registry, tool.private_access);
       tool.imgProviderIcon = this.getImageProviderIcon(tool.registry);
     }
     return tool;
@@ -86,7 +86,7 @@ export class ImageProviderService {
     }
   }
 
-  private getImageProviderUrl(path: string, registry) {
+  private getImageProviderUrl(path: string, registry, private_access: boolean) {
     if (path) {
       const imageRegExp = /^([a-zA-Z0-9-_.]+)\/([a-zA-Z0-9-_.]+)\/([a-zA-Z0-9-_./]+)$/;
       const match = imageRegExp.exec(path);
@@ -102,7 +102,7 @@ export class ImageProviderService {
           suffix = '/container_registry';
         }
 
-        if (containerRegistry === 'AMAZON_ECR' || containerRegistry === 'SEVEN_BRIDGES') {
+        if (containerRegistry === 'SEVEN_BRIDGES' || (containerRegistry === 'AMAZON_ECR' && private_access)) {
           url = match[1] + '/';
         }
 
