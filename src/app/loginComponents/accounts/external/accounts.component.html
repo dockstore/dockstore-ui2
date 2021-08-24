@@ -20,10 +20,10 @@
       <div fxLayoutAlign="space-between">
         <mat-card-header fxLayoutAlign="flex-start" fxLayoutGap="3rem">
           <div mat-card-avatar matBadge="✓">
-            <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="account-logo" />
+            <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
           </div>
-          <mat-card-title class="title">Dockstore Account</mat-card-title>
-          <mat-card-subtitle class="accent-1-dark">
+          <mat-card-title class="normal-line-height">Dockstore Account</mat-card-title>
+          <mat-card-subtitle class="accent-1-dark normal-line-height">
             <strong>Username: {{ user?.username }} </strong>
           </mat-card-subtitle>
         </mat-card-header>
@@ -73,13 +73,13 @@
       <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
         <div>
           <div fxLayoutAlign="space-between">
-            <mat-card-header fxLayoutAlign="flex-start" fxLayoutGap="1.5rem">
-              <div mat-card-avatar>
-                <div *ngIf="row.isLinked" matBadge="✓" background="green-color"></div>
-                <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="account-logo" />
+            <mat-card-header>
+              <div mat-card-avatar matBadge="✓">
+                <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
               </div>
-              <mat-card-title class="title">{{ row.name }} Account&nbsp;</mat-card-title>
-              <mat-card-subtitle class="accent-1-dark" *ngIf="row.isLinked; else placeholder">
+              <mat-card-title class="normal-line-height">{{ row.name }} Account&nbsp;</mat-card-title>
+              <!-- TODO: Reduce margin bottom from subtitle's default 16px to 7px -->
+              <mat-card-subtitle class="accent-1-dark normal-line-height" *ngIf="row.isLinked; else placeholder">
                 <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
                 <span *ngIf="row.name === 'ORCID'">
                   <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
@@ -143,12 +143,12 @@
           <ng-template #linked>
             <button
               mat-raised-button
-              class="unlink-button"
+              class="unlink-button mat-btn-sm"
               [attr.id]="'unlink-' + row.name"
               (click)="unlink(row.source)"
               matTooltip="Unlink the account"
             >
-              <mat-icon *ngIf="row.name !== 'ORCID'; else orcid">link_off</mat-icon>
+              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link_off</mat-icon>
               <span> Unlink Account</span>
             </button>
           </ng-template>
