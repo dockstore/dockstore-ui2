@@ -43,9 +43,6 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 
 /* Special Fonts */
 
-// Color used for workflow and verified check on accounts page
-$green-color: #26bfa5 !important;
-
 * {
   margin: 0;
 }
@@ -237,6 +234,11 @@ body {
   font-size: 14px;
   line-height: 2em !important;
   margin: 0;
+}
+
+// Used when the body class that applies line-height 2em is somehow applied to an item that isn't considered body
+.normal-line-height {
+  line-height: normal;
 }
 
 .header {
@@ -898,7 +900,7 @@ app-sidebar-accordion
 }
 
 .workflow-tab-group.mat-primary .mat-ink-bar {
-  background: $green-color !important;
+  background: #26bfa5 !important;
 }
 
 .purple-tab-group.mat-primary .mat-ink-bar {
@@ -1032,17 +1034,19 @@ hr {
 
 // To indicate success of an operation.
 .accent-3-dark {
-  color: #00bfa5;
+  color: $accent-3-dark;
 }
 
-// Following 4 items are for stepper/stepper-like dialogs
+// Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
 .accent-1-dark {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
-.mat-flat-button.bg-accent-1-dark {
+
+button.accent-1-dark-btn {
   background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;
 }
+
 .mat-flat-button.secondary-1 {
   color: mat.get-color-from-palette($dockstore-app-accent);
 }
@@ -1058,6 +1062,27 @@ hr {
 // Used for smaller than usual forms
 .mat-form-field.small-text {
   font-size: 12px;
+}
+
+// Applied to buttons to make them smaller than Material defaults. 
+// Use whenever the developer thinks a more compact button is more suitable
+.mat-btn-sm {
+  // This overrides .mat-raised-button's 36px line-height
+  line-height: 26px;
+  // This overrides .mat-button and most other material buttons' 12px font with font-weight normal
+  font-size: 12px;
+  font-weight: bold;
+}
+
+// Applied to mat-icons to make them smaller than Material defaults. 16px was chosen based on ORCID's recommended min logo size.
+// Typically acompanied with mat-btn-sm above.
+// This is also the same size as site-icons-small
+.mat-icon-sm {
+  // These two override .mat-icon's default 24px height and width
+  height: 16px;
+  width: 16px;
+  // This overrides .material-icon's default 24px font-size, changing the font-size fixes the position of it
+  font-size: 16px;
 }
 
 // Can use this class for all search bars
