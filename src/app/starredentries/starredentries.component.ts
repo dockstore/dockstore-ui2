@@ -15,10 +15,10 @@ import { FormControl } from '@angular/forms';
 })
 export class StarredEntriesComponent extends Base implements OnInit {
   selected = new FormControl(0);
-  starredTools: any;
-  starredWorkflows: any;
-  starredServices: any;
-  starredOrganizations: Array<Organization>;
+  starredTools: Array<any> | null;
+  starredWorkflows: Array<any> | null;
+  starredServices: Array<any> | null;
+  starredOrganizations: Array<Organization> | null;
   user: any;
   starGazersClicked = false;
   organizationStarGazersClicked = false;

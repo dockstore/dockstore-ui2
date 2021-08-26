@@ -1128,18 +1128,27 @@ hr {
   line-height: 2rem;
 }
 
-.info-overflow {
-  // Hide overflow if longer than 1 line
+// The material checkbox overflows text by default so this style wraps the text instead.
+.mat-checkbox.text-wrap > label.mat-checkbox-layout {
+  white-space: normal;
+}
+
+// Hide overflow for 1 line text 
+.truncate-text-1 {
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: initial;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
 
-// The material checkbox overflows text by default so this style wraps the text instead.
-.mat-checkbox.text-wrap > label.mat-checkbox-layout {
-  white-space: normal;
+// Hide overflow for 3 lines of text
+.truncate-text-3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
 }
