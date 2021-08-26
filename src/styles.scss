@@ -952,10 +952,10 @@ mat-icon.star-icon {
   height: 16px;
 }
 
-.ellipsis-overflow {
+.no-wrap {
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .notification-display p {
@@ -1131,7 +1131,7 @@ hr {
 $truncate-text-values: 1, 3;
 
 // Hide overflow, values denote the number of lines to keep
-// TODO: possibly similar to ellipsis-overflow and no-wrap. See if this can be used
+// Similar no-wrap except those are more meant single "words", this is for sentences
 @each $value in $truncate-text-values {
   .truncate-text-#{$value} {
     overflow: hidden;
