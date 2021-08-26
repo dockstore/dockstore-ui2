@@ -127,7 +127,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       control: false,
       docker: false,
       research: true,
-      message: 'ORCID credentials are used for linking ORCID IDs to workflows published on Zenodo.',
+      message: 'ORCID credentials are used for creating ORCID works by exporting snapshotted entries and versions from Dockstore and to link to your ORCID record when your Dockstore account is displayed on the site.',
       show: false,
       logo: 'orcid.svg',
     },
