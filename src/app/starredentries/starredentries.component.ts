@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
-import { DockstoreTool, Organization, Workflow } from '../shared/swagger';
+import { DockstoreTool, Entry, Organization, Workflow } from '../shared/swagger';
 import { UserQuery } from '../shared/user/user.query';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { FormControl } from '@angular/forms';
+import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
+import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 
 @Component({
   selector: 'app-starredentries',
@@ -15,9 +17,9 @@ import { FormControl } from '@angular/forms';
 })
 export class StarredEntriesComponent extends Base implements OnInit {
   selected = new FormControl(0);
-  starredTools: Array<any> | null;
-  starredWorkflows: Array<any> | null;
-  starredServices: Array<any> | null;
+  starredTools: Array<ExtendedDockstoreTool> | null;
+  starredWorkflows: Array<ExtendedWorkflow> | null;
+  starredServices: Array<Entry> | null;
   starredOrganizations: Array<Organization> | null;
   user: any;
   starGazersClicked = false;
@@ -35,7 +37,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
   ngOnInit() {
     this.userQuery.user$.subscribe((user) => (this.user = user));
     this.usersService.getStarredTools().subscribe((starredTool) => {
-      this.starredTools = starredTool.filter((entry: DockstoreTool) => entry.is_published);
+      this.starredTools = <ExtendedDockstoreTool[]> starredTool.filter((entry: DockstoreTool) => entry.is_published);
       this.starredTools.forEach((tool) => {
         if (!tool.providerUrl) {
           this.providerService.setUpProvider(tool);
@@ -46,7 +48,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
       });
     });
     this.usersService.getStarredWorkflows().subscribe((starredWorkflow) => {
-      this.starredWorkflows = starredWorkflow.filter((entry: Workflow) => entry.is_published);
+      this.starredWorkflows = <ExtendedWorkflow[]>starredWorkflow.filter((entry: Workflow) => entry.is_published);
       this.starredWorkflows.forEach((workflow) => {
         if (!workflow.providerUrl) {
           this.providerService.setUpProvider(workflow);
