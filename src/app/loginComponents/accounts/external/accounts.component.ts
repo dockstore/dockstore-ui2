@@ -29,13 +29,11 @@ import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
 import { User } from '../../../shared/swagger/model/user';
-import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./accounts.component.scss']
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;

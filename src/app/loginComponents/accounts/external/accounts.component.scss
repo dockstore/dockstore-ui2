@@ -1,6 +1,4 @@
-@use '~@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
-@import '/src/styles.scss';
 
 // Positioning the badge to the upper right corner of each logo
 .mat-badge-medium.mat-badge-above .mat-badge-content {
