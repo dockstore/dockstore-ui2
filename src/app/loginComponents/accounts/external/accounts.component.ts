@@ -39,7 +39,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
   public orcidId$: Observable<string>;
   public TokenSource = TokenSource;
-  public user: User;
+  public username$: Observable<string>;
   Dockstore = Dockstore;
   // TODO: Uncomment section when GitLab is enabled
   accountsInfo: Array<any> = [
@@ -212,13 +212,11 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
-      this.user = user;
-    });
     this.dsServerURI = Dockstore.API_URI;
     this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
       this.setTokens(tokens);
     });
+    this.username$ = this.userQuery.username$;
     this.orcidId$ = this.userQuery.user$.pipe(map((user) => user.orcid));
   }
 

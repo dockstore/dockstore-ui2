@@ -24,7 +24,7 @@
           </div>
           <mat-card-title class="normal-line-height">Dockstore Account</mat-card-title>
           <mat-card-subtitle class="accent-1-dark normal-line-height">
-            <strong>Username: {{ user?.username }} </strong>
+            <strong>Username: {{ username$ | async }} </strong>
           </mat-card-subtitle>
         </mat-card-header>
         <mat-chip-list>
