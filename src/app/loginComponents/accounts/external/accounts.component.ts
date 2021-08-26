@@ -28,7 +28,19 @@ import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
-import { User } from '../../../shared/swagger/model/user';
+
+interface AccountInfo {
+  name: string;
+  source: TokenSource;
+  bold: string;
+  control: boolean;
+  docker: boolean;
+  research: boolean;
+  message: string;
+  show: boolean;
+  logo: string;
+  isLinked?: boolean;
+}
 
 @Component({
   selector: 'app-accounts-external',
@@ -41,8 +53,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public TokenSource = TokenSource;
   public username$: Observable<string>;
   Dockstore = Dockstore;
-  // TODO: Uncomment section when GitLab is enabled
-  accountsInfo: Array<any> = [
+  accountsInfo: Array<AccountInfo> = [
     {
       name: 'GitHub',
       source: TokenSource.GITHUB,
