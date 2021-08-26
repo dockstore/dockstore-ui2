@@ -29,15 +29,15 @@
     'purple-tab-group': selected.value === 3
   }"
 >
-  <mat-tab>
+  <mat-tab *ngIf="starredWorkflows">
     <ng-template mat-tab-label>
       <div fxLayoutGap="0.5rem">
         <img class="site-icons-tab" src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
         <span>Workflows</span>
-        <span class="tab-display">{{ starredWorkflows.length }}</span>
+        <span class="tab-display">{{ starredWorkflows?.length }}</span>
       </div>
     </ng-template>
-    <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows.length === 0">
+    <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows?.length === 0">
       <mat-icon>warning</mat-icon>
       You have no starred workflows.
     </mat-card>
@@ -97,16 +97,16 @@
     </div>
   </mat-tab>
 
-  <mat-tab>
+  <mat-tab *ngIf="starredTools">
     <ng-template mat-tab-label>
       <div fxLayoutGap="0.5rem">
         <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
         <span>Tools</span>
-        <span class="tab-display">{{ starredTools.length }}</span>
+        <span class="tab-display">{{ starredTools?.length }}</span>
       </div>
     </ng-template>
     <div>
-      <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredTools.length === 0">
+      <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredTools?.length === 0">
         <mat-icon>warning</mat-icon>
         You have no starred tools.
       </mat-card>
@@ -153,7 +153,7 @@
   </mat-tab>
 
   <!-- Services not done -->
-  <!-- <mat-tab>
+  <mat-tab *ngIf="starredServices">
     <ng-template mat-tab-label>
       <div fxLayoutGap="0.5rem">
         <img class="site-icons-tab" src="../../../assets/svg/sub-nav/services.svg" alt="service logo" />
@@ -165,21 +165,21 @@
       <mat-icon>warning</mat-icon>
       You have no starred services.
     </mat-card>
-  </mat-tab> -->
+  </mat-tab>
 
-  <mat-tab>
+  <mat-tab *ngIf="starredOrganizations">
     <ng-template mat-tab-label>
       <div fxLayoutGap="0.5rem">
         <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization logo" />
         <span>Organizations</span>
-        <span class="tab-display">{{ starredOrganizations.length }}</span>
+        <span class="tab-display">{{ starredOrganizations?.length }}</span>
       </div>
     </ng-template>
-    <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredOrganizations.length === 0">
+    <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredOrganizations?.length === 0">
       <mat-icon>warning</mat-icon>
       You have no starred organizations.
     </mat-card>
-    <div *ngIf="starredOrganizations.length > 0">
+    <div *ngIf="starredOrganizations?.length > 0">
       <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="1rem" class="mb-2 mx-1">
         <div *ngFor="let org of starredOrganizations; let last = last" fxFlex="33.3" fxFlex.lt-lg="500" fxFlex.lt-md="100">
           <mat-card class="org-style mat-elevation-z3">
