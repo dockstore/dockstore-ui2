@@ -71,9 +71,9 @@ describe('Dropdown test', () => {
       goToTab('Profiles');
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=profiles');
     });
-    it('Change tab to dockstore account controls', () => {
-      goToTab('Dockstore Account Controls');
-      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20controls');
+    it('Change tab to Dockstore Account & Preferences', () => {
+      goToTab('Dockstore Account & Preferences');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20and%20preferences');
     });
     it('Change tab to requests', () => {
       goToTab('Requests');
@@ -88,9 +88,9 @@ describe('Dropdown test', () => {
       cy.visit('/accounts?tab=profiles');
       isActiveTab('Profiles');
     });
-    it('Link to dockstore account controls tab', () => {
-      cy.visit('/accounts?tab=dockstore%20account%20controls');
-      isActiveTab('Dockstore Account Controls');
+    it('Link to Dockstore Account & Preferences tab', () => {
+      cy.visit('/accounts?tab=dockstore%20account%20and%20preferences');
+      isActiveTab('Dockstore Account & Preferences');
     });
     it('Link to requests tab', () => {
       cy.visit('/accounts?tab=requests');
@@ -328,7 +328,7 @@ describe('Dropdown test', () => {
     });
   });
 
-  describe('Go to enabled Dockstore Account Controls', () => {
+  describe('Go to enabled Dockstore Account & Preferences', () => {
     beforeEach(() => {
       // Select dropdown accounts
       cy.server().route({
@@ -337,7 +337,7 @@ describe('Dropdown test', () => {
         response: 'true',
       });
       cy.get('#dropdown-accounts').click();
-      cy.contains('Dockstore Account Controls').click();
+      cy.contains('Dockstore Account & Preferences').click();
     });
     it('Should have the danger alert', () => {
       cy.get('.alert-danger').should('be.visible');
