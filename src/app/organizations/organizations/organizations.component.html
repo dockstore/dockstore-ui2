@@ -78,17 +78,17 @@
                   <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
                     <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.link">
                       <mat-icon class="info-icon">link</mat-icon>
-                      <span class="info-overflow"
+                      <span class="truncate-text-1"
                         ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
                       >
                     </span>
                     <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.location">
                       <mat-icon class="info-icon">location_on</mat-icon>
-                      <span class="info-overflow">{{ org.location }}</span>
+                      <span class="truncate-text-1">{{ org.location }}</span>
                     </span>
                     <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.email">
                       <mat-icon class="info-icon">email</mat-icon>
-                      <span class="info-overflow"
+                      <span class="truncate-text-1"
                         ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
                       >
                     </span>

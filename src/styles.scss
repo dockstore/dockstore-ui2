@@ -952,10 +952,10 @@ mat-icon.star-icon {
   height: 16px;
 }
 
-.ellipsis-overflow {
+.no-wrap {
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .notification-display p {
@@ -1111,11 +1111,6 @@ hr {
   background-color: #e0e0e0;
 }
 
-// Used for the styling for organization cards for organization page and starred page
-.info.span {
-  font-size: 10px;
-}
-
 .info-icon {
   font-size: 1.5rem;
   height: auto;
@@ -1128,18 +1123,22 @@ hr {
   line-height: 2rem;
 }
 
-.info-overflow {
-  // Hide overflow if longer than 1 line
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: initial;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  word-break: break-word;
-}
-
 // The material checkbox overflows text by default so this style wraps the text instead.
 .mat-checkbox.text-wrap > label.mat-checkbox-layout {
   white-space: normal;
+}
+
+$truncate-text-values: 1, 3;
+
+// Hide overflow, values denote the number of lines to keep
+// Similar no-wrap except those are more meant single "words", this is for sentences
+@each $value in $truncate-text-values {
+  .truncate-text-#{$value} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $value;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
 }

@@ -62,11 +62,11 @@ describe('Tool, Workflow, and Organization starring', () => {
     cy.get('[data-cy=dropdown-main]:visible').click();
     cy.get('#dropdown-starred').click();
     if (entity === 'tool') {
-      cy.get('.mat-tab-label-content').contains('Tools').click();
+      cy.contains('.mat-tab-label-content', 'Tools').click();
     } else if (entity === 'workflow') {
-      cy.get('.mat-tab-label-content').contains('Workflows').click();
+      cy.contains('.mat-tab-label-content', 'Workflows').click();
     } else {
-      cy.get('.mat-tab-label-content').contains('Organizations').click();
+      cy.contains('.mat-tab-label-content', 'Organizations').click();
     }
     cy.get('#starringButton').should('exist');
     cy.get('#starCountButton').should('exist');
