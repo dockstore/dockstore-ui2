@@ -1098,3 +1098,14 @@ hr {
 .mat-checkbox.text-wrap > label.mat-checkbox-layout {
   white-space: normal;
 }
+
+// The material form field hints and errors are absolute by default, so if the hint/error is multi-line, it will overlap the elements below it.
+// This style prevents multi-line hints/errors from overlapping the elements below it.
+mat-form-field .mat-form-field {
+  &-underline {
+    position: static;
+  }
+  &-subscript-wrapper {
+    position: static;
+  }
+}
