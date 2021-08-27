@@ -288,13 +288,13 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
 
-      cy.get('#privateTool').check();
+      cy.get('#privateTool').find('input').check({force: true});
 
       cy.get('#dockerRegistryPathInput').type('amazon.dkr.ecr.test-1.amazonaws.com');
 
       cy.get('#toolMaintainerEmailInput').type('test@email.com');
 
-      cy.get('#imageRegistryInput').type('testnamespace/testname');
+      cy.get('#imageRegistryInput').type('_/testname');
 
       cy.get('#submitButton').click();
 
