@@ -14,27 +14,39 @@
    limitations under the License.
 -->
 
-<div class="p-3">
-  <mat-card class="mb-2" fxLayout="row" *ngIf="dockstoreToken">
-    <div fxLayout="column" fxLayoutAlign="center">
-      <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="account-logo" />
-    </div>
-    <div>
-      <h3>Dockstore Account</h3>
-      <div>
-        Use with our CLI utilities or with our
-        <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank" rel="noopener">REST web service interface</a> to work
-        with and launch tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
+<div fxLayout="row wrap">
+  <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
+    <mat-card class="mb-2 h-100" *ngIf="dockstoreToken">
+      <div fxLayoutAlign="space-between">
+        <mat-card-header>
+          <div mat-card-avatar matBadge="✓">
+            <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
+          </div>
+          <mat-card-title class="normal-line-height">Dockstore Account</mat-card-title>
+          <mat-card-subtitle class="accent-1-dark normal-line-height">
+            <strong>Username: {{ username$ | async }} </strong>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-chip-list>
+          <mat-chip class="gray-label-tag"> Main Account </mat-chip>
+        </mat-chip-list>
       </div>
-      <span fxLayout="row" fxLayoutAlign="start center">
-        <strong>Token</strong>
-        <button [matTooltip]="show ? 'Hide token' : 'Show token'" mat-icon-button color="secondary" (click)="show = !show">
-          <mat-icon *ngIf="show">visibility_off</mat-icon>
-          <mat-icon *ngIf="!show">visibility</mat-icon>
-        </button>
+      <mat-card-content>
+        <div>
+          Use with our CLI utilities or with our
+          <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch
+          tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
+        </div>
+      </mat-card-content>
+      <mat-form-field appearance="outline" class="w-75">
+        <mat-label class="accent-1-dark">
+          <strong>Token</strong>
+        </mat-label>
+        <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
         <button
           mat-icon-button
-          color="secondary"
+          matSuffix
+          class="accent-1-dark"
           [cdkCopyToClipboard]="dockstoreToken"
           (cbOnSuccess)="isCopied1 = true"
           matTooltip="Copy Token"
@@ -42,92 +54,111 @@
         >
           <mat-icon>file_copy</mat-icon>
         </button>
-        <span *ngIf="show" style="overflow: auto">{{ dockstoreToken }}</span>
-      </span>
-    </div>
-  </mat-card>
-</div>
+      </mat-form-field>
+      <button
+        [matTooltip]="show ? 'Hide token' : 'Show token'"
+        mat-button
+        color="secondary"
+        class="accent-1-dark mat-btn-sm"
+        (click)="show = !show"
+      >
+        <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
+        <span> Show </span>
+      </button>
+    </mat-card>
+  </div>
 
-<div *ngFor="let row of accountsInfo" class="p-3">
-  <mat-card class="mb-2" fxLayout="row">
-    <div fxLayout="column" fxLayoutAlign="center">
-      <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="account-logo" />
-    </div>
-    <div style="margin-right: auto">
-      <div>
-        <h3>
-          <mat-chip-list>
-            <mat-chip *ngIf="row.isLinked" color="accent" selected matTooltip="Account is linked">
-              <mat-icon>link</mat-icon>
-            </mat-chip>
-            {{ row.name }} Account&nbsp;
-            <mat-chip [disabled]="true" *ngIf="row.bold" matTooltip="A method of logging into Dockstore">Login Method</mat-chip>
-          </mat-chip-list>
-        </h3>
+  <div *ngFor="let row of accountsInfo" class="p-3" fxFlex="50" fxFlex.lt-md="100">
+    <mat-card class="mb-2 h-100">
+      <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
+        <div>
+          <div fxLayoutAlign="space-between">
+            <mat-card-header>
+              <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked">
+                <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
+              </div>
+              <mat-card-title class="normal-line-height">{{ row.name }} Account&nbsp;</mat-card-title>
+              <!-- TODO: Reduce margin bottom from subtitle's default 16px to 7px -->
+              <mat-card-subtitle class="accent-1-dark normal-line-height" *ngIf="row.isLinked; else placeholder">
+                <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
+                <span *ngIf="row.name === 'ORCID'">
+                  <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
+                  <a href="https://orcid.org/{{ orcidId$ | async }}"> {{ orcidId$ | async }}</a>
+                </span>
+              </mat-card-subtitle>
+              <ng-template #placeholder><br /></ng-template>
+            </mat-card-header>
+            <mat-chip-list>
+              <mat-chip
+                class="gray-label-tag"
+                *ngIf="row.control"
+                matTooltip="Pull your workflows from cloud source control to make them available on Dockstore"
+              >
+                Source Control
+              </mat-chip>
+              <mat-chip class="gray-label-tag" *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
+              <mat-chip
+                class="gray-label-tag"
+                *ngIf="row.docker"
+                matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
+              >
+                Docker Repository
+              </mat-chip>
+              <mat-chip
+                class="gray-label-tag"
+                *ngIf="row.research"
+                matTooltip="Services popular among scientific researchers to aid with publications and citation"
+              >
+                Research
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+          <mat-card-content>
+            <p>
+              {{ row.message }}
+              <strong>{{ row.bold }}</strong>
+            </p>
+            <div *ngIf="row.source === TokenSource.ORCID">
+              See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and
+              <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for
+              information on what is ORCID.
+            </div>
+          </mat-card-content>
+        </div>
+        <div>
+          <hr />
+          <span class="pull-right" fxLayoutAlign="end end">
+            <!-- This button needs to be vertically centered -->
+            <button
+              *ngIf="row.isLinked === false; else linked"
+              mat-raised-button
+              class="accent-1-dark mat-btn-sm"
+              [attr.id]="'link-' + row.name"
+              (click)="link(row.source)"
+              matTooltip="Link the account"
+            >
+              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
+              <span> Link Account</span>
+            </button>
+          </span>
+          <ng-template #linked>
+            <!-- This button needs to be vertically centered -->
+            <button
+              mat-raised-button
+              class="accent-1-dark-btn mat-btn-sm"
+              [attr.id]="'unlink-' + row.name"
+              (click)="unlink(row.source)"
+              matTooltip="Unlink the account"
+            >
+              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link_off</mat-icon>
+              <span> Unlink Account</span>
+            </button>
+          </ng-template>
+          <ng-template #orcid>
+            <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
+          </ng-template>
+        </div>
       </div>
-      <div>
-        {{ row.message }}
-        <span *ngIf="row.isLinked">If your token has expired, relink your account.</span>
-      </div>
-      <div *ngIf="row.source === TokenSource.ORCID">
-        See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and
-        <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for
-        information on what is ORCID.
-      </div>
-      <div>
-        {{ row.bold }}
-      </div>
-
-      <span *ngIf="row.isLinked">
-        <strong>Username: </strong>
-        {{ row.source | getTokenUsername: tokens }}
-        <span *ngIf="row.name === 'ORCID'">
-          <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
-          <a href="https://orcid.org/{{ orcidId$ | async }}"> {{ orcidId$ | async }}</a>
-        </span>
-      </span>
-    </div>
-    <div fxLayout="column" fxLayoutAlign="end" style="margin-left: auto">
-      <span class="pull-right" fxLayout="column" fxLayoutAlign="end end">
-        <button
-          *ngIf="row.isLinked === false; else linked"
-          mat-raised-button
-          color="secondary"
-          class="pull-right"
-          [attr.id]="'link-' + row.name"
-          (click)="link(row.source)"
-          matTooltip="Link the account"
-        >
-          <mat-icon *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
-          <span> Create or connect your {{ row.name }} Account</span>
-        </button>
-      </span>
-      <ng-template #linked>
-        <button
-          class="mb-2"
-          mat-raised-button
-          color="primary"
-          [attr.id]="'relink-' + row.name"
-          (click)="relink(row.source)"
-          matTooltip="Relink the account"
-        >
-          <mat-icon *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
-          <span> Relink {{ row.name }} Account</span>
-        </button>
-        <button
-          mat-raised-button
-          color="primary"
-          [attr.id]="'unlink-' + row.name"
-          (click)="unlink(row.source)"
-          matTooltip="Unlink the account"
-        >
-          <mat-icon *ngIf="row.name !== 'ORCID'; else orcid">link_off</mat-icon>
-          <span> Unlink {{ row.name }} Account</span>
-        </button>
-      </ng-template>
-      <ng-template #orcid>
-        <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
-      </ng-template>
-    </div>
-  </mat-card>
+    </mat-card>
+  </div>
 </div>
