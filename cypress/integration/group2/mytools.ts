@@ -13,6 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { DockstoreTool } from '../../../src/app/shared/openapi';
 import { goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore my tools', () => {
@@ -145,14 +146,14 @@ describe('Dockstore my tools', () => {
 
   describe('Manually register a public Amazon ECR tool', () => {
     it('register tool', () => {
-      const toolObject = {
+      const toolObject: DockstoreTool = {
         id: 40000,
-        author: null,
-        description: null,
+        author: undefined,
+        description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: null,
-        defaultVersion: null,
+        email: undefined,
+        defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
         mode: 'MANUAL_IMAGE_PATH',
@@ -160,16 +161,16 @@ describe('Dockstore my tools', () => {
         toolname: '',
         namespace: 'testnamespace',
         registry: 'AMAZON_ECR',
-        lastBuild: null,
+        lastBuild: undefined,
         tags: [],
         is_published: false,
-        last_modified: null,
+        last_modified: undefined,
         default_dockerfile_path: '/Dockerfile',
         defaultCWLTestParameterFile: '/test.cwl.json',
         defaultWDLTestParameterFile: '/test.wdl.json',
         default_cwl_path: '/Dockstore.cwl',
         default_wdl_path: '/Dockstore.wdl',
-        tool_maintainer_email: null,
+        tool_maintainer_email: undefined,
         private_access: false,
         path: 'public.ecr.aws/testnamespace/testname',
         tool_path: 'public.ecr.aws/testnamespace/testname',
@@ -220,14 +221,14 @@ describe('Dockstore my tools', () => {
 
   describe('Manually register a private Amazon ECR tool', () => {
     it('register tool', () => {
-      const toolObject = {
+      const toolObject: DockstoreTool = {
         id: 40000,
-        author: null,
-        description: null,
+        author: undefined,
+        description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: null,
-        defaultVersion: null,
+        email: undefined,
+        defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
         mode: 'MANUAL_IMAGE_PATH',
@@ -235,10 +236,10 @@ describe('Dockstore my tools', () => {
         toolname: '',
         namespace: 'testnamespace',
         registry: 'AMAZON_ECR',
-        lastBuild: null,
+        lastBuild: undefined,
         tags: [],
         is_published: false,
-        last_modified: null,
+        last_modified: undefined,
         default_dockerfile_path: '/Dockerfile',
         defaultCWLTestParameterFile: '/test.cwl.json',
         defaultWDLTestParameterFile: '/test.wdl.json',
