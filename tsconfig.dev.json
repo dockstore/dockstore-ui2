@@ -1,0 +1,7 @@
+{
+	"extends": "tsconfig.dev.json",
+	"angularCompilerOptions": {
+		"fullTemplateTypeCheck": true,
+		"strictTemplates": true
+	  }
+}
