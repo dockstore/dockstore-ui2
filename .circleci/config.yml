@@ -11,7 +11,7 @@ executors:
           password: $DOCKERHUB_PASSWORD
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
-      - image: circleci/postgres:11.6-alpine-ram
+      - image: circleci/postgres:13.3
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
