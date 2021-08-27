@@ -49,7 +49,7 @@
               <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                 <img src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
                 <h4>
-                  {{ workflow?.organization + '/' + workflow?.repository + (workflow?.toolname ? '/' + workflow?.toolname : '') }}
+                  {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
                 </h4>
               </mat-card-title>
             </mat-card-header>
@@ -69,7 +69,7 @@
                 <span>
                   <mat-chip-list>
                     <mat-chip class="workflow-label-tag" *ngFor="let label of workflow?.labels | slice: 0:3">{{ label.value }}</mat-chip>
-                    <mat-chip class="gray-label-tag" *ngIf="workflow.verified === true">
+                    <mat-chip class="gray-label-tag" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                         <mat-icon class="verified-icon">done</mat-icon>
                         <span>Verified</span>
@@ -78,7 +78,7 @@
                     <mat-chip class="gray-label-tag">
                       {{ workflow?.descriptorType | uppercase }}
                     </mat-chip>
-                    <mat-chip class="gray-label-tag" *ngIf="workflow.verified === true">
+                    <mat-chip class="gray-label-tag" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                         <mat-icon class="verified-icon">done</mat-icon>
                         <span>Verified</span>
@@ -111,7 +111,7 @@
         You have no starred tools.
       </mat-card>
       <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-        <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="card-style m-1 mat-elevation-z4">
+        <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 mat-elevation-z4">
           <div fxLayout="row" fxLayoutAlign="space-between">
             <a routerLink="/containers/{{ tool.tool_path }}" target="_blank" rel="noopener" class="no-underline">
               <mat-card-header>
@@ -131,7 +131,7 @@
                 <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
                 <mat-chip-list>
                   <mat-chip class="container-label-tag" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
-                  <mat-chip *ngIf="tool?.verified" matTooltip="Verified" class="gray-label-tag">
+                  <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="gray-label-tag">
                     <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                       <mat-icon class="verified-icon">done</mat-icon>
                       <span>Verified</span>
