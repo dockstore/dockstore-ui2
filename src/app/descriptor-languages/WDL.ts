@@ -2,6 +2,7 @@ import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLang
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 
 export const extendedWDL: ExtendedDescriptorLanguageBean = {
+  descriptorLanguageEnum: 'WDL',
   value: 'WDL',
   shortFriendlyName: 'WDL',
   friendlyName: 'Workflow Description Language',

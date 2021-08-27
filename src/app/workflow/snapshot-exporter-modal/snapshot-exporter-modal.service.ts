@@ -20,12 +20,13 @@ export class SnapshotExporterModalService {
   ) {}
 
   public snapshotWorkflowVersion(workflow: Workflow, version: WorkflowVersion): Observable<void> {
-    this.alertService.start(`Snapshotting workflow ${workflow.workflowName} version ${version.name}`);
+    const workflowName: string = workflow.workflowName || workflow.repository;
+    this.alertService.start(`Snapshotting workflow ${workflowName} version ${version.name}`);
     const snapshot: WorkflowVersion = { ...version, frozen: true };
     return this.workflowsService.updateWorkflowVersion(workflow.id, [snapshot]).pipe(
       map((workflowVersions: Array<WorkflowVersion>) => {
         this.alertService.detailedSuccess(`A snapshot was created for workflow
-                                       "${workflow.workflowName}" version "${version.name}"!`);
+                                       "${workflowName}" version "${version.name}"!`);
         const selectedWorkflow = { ...this.workflowQuery.getActive() };
         if (selectedWorkflow.id === workflow.id) {
           this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: workflowVersions });
@@ -43,17 +44,15 @@ export class SnapshotExporterModalService {
   }
 
   public requestDOI(workflow: Workflow, version: WorkflowVersion): Observable<void> {
+    const workflowName: string = workflow.workflowName || workflow.repository;
     this.alertService.start(`A Digital Object Identifier (DOI) is being requested for workflow
-                                       "${workflow.workflowName}" version "${version.name}"!`);
+                                       "${workflowName}" version "${version.name}"!`);
     return this.workflowsService.requestDOIForWorkflowVersion(workflow.id, version.id).pipe(
       map((versions) => {
         const selectedWorkflow = { ...this.workflowQuery.getActive() };
         if (selectedWorkflow.id === workflow.id) {
           this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: versions });
         }
-
-        const workflowName: string = workflow.workflowName || workflow.repository;
-
         this.alertService.detailedSuccess(`A Digital Object Identifier (DOI) was created for workflow
                                        "${workflowName}" version "${version.name}"!`);
       }),
@@ -64,10 +63,11 @@ export class SnapshotExporterModalService {
   }
 
   public exportToOrcid(workflow: Workflow, version: WorkflowVersion): Observable<void> {
-    this.alertService.start(`Exporting workflow ${workflow.workflowName} version ${version.name} to ORCID`);
+    const workflowName: string = workflow.workflowName || workflow.repository;
+    this.alertService.start(`Exporting workflow ${workflowName} version ${version.name} to ORCID`);
     return this.entriesService.exportToORCID(workflow.id, version.id).pipe(
       map((result) => {
-        this.alertService.detailedSuccess(`Exported workflow ${workflow.workflowName} version ${version.name} to ORCID`);
+        this.alertService.detailedSuccess(`Exported workflow ${workflowName} version ${version.name} to ORCID`);
       }),
       catchError((error) => {
         this.alertService.detailedError(error);

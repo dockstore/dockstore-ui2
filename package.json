@@ -3,10 +3,10 @@
   "version": "2.8.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version": "1.11.3",
+    "webservice_version": "1.11.6",
     "use_circle": true,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/6287/workflows/42edf33d-97cd-4ef1-9cea-01912f558112/jobs/12497/artifacts",
-    "circle_build_id": "12497"
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/6388/workflows/34b3c871-e880-41c8-b1b8-53e36bf57ed6/jobs/12712/artifacts",
+    "circle_build_id": "12712"
   },
   "scripts": {
     "ng": "npx ng",
@@ -14,8 +14,9 @@
     "webservice": "./scripts/run-webservice-script.sh",
     "prebuild": "ts-node -O '{\"module\":\"commonjs\"}' git.version.ts && ./scripts/generate-openapi-script.sh",
     "prebuild.prod": "npm run prebuild",
-    "build.prod": "npx ng build --prod --subresource-integrity",
-    "build": "npx ng build --subresource-integrity",
+    "build.prod": "npx ng build",
+    "build": "npx ng build",
+    "watch": "ng build --watch --configuration development",
     "license": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > THIRD-PARTY-LICENSES.csv",
     "circle-ci-license-test-file": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > CIRCLE-THIRD-PARTY-LICENSES.csv",
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
@@ -32,7 +33,8 @@
     "test-prod-no-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/smokeTests/prodOnly/monitor.ts,cypress/integration/smokeTests/prodOnly/basic-enduser.ts,cypress/integration/smokeTests/prodOnly/search.ts,cypress/integration/smokeTests/prodOnly/basic-enduser-prod-only.ts,cypress/integration/smokeTests/sharedTests/monitor.ts,cypress/integration/smokeTests/sharedTests/basic-enduser.ts,cypress/integration/smokeTests/sharedTests/search.ts\"",
     "test-dev-auth": "npx cypress run --record --reporter junit -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/smokeTests/devOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
     "test-staging-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/smokeTests/stagingOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
-    "test-prod-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/smokeTests/prodOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\""
+    "test-prod-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/smokeTests/prodOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -101,7 +103,7 @@
     "@typescript-eslint/parser": "^4.27.0",
     "cypress": "^8.0.0",
     "eslint": "^7.28.0",
-    "husky": "^4.3.8",
+    "husky": "^7.0.0",
     "jasmine-core": "^3.7.1",
     "jasmine-spec-reporter": "^7.0.0",
     "karma": "^6.3.4",
@@ -117,23 +119,5 @@
     "ts-node": "^10.0.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.2.4"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && git secrets --pre_commit_hook -- ${HUSKY_GIT_PARAMS}",
-      "commit-msg": "git secrets --commit_msg_hook -- ${HUSKY_GIT_PARAMS}",
-      "prepare-commit-msg": "git secrets --prepare_commit_msg_hook -- ${HUSKY_GIT_PARAMS}"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{ts,html,js,css,scss,json,md}": [
-      "prettier --write"
-    ],
-    "cypress/**/*.{ts,js}": [
-      "prettier --write"
-    ],
-    "*.ts": [
-      "eslint --fix"
-    ]
   }
 }

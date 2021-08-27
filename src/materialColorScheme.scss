@@ -61,7 +61,7 @@ $kim-warn: (
   5: #fcecec,
   contrast: (
     1: white,
-    2: black,
+    2: white,
     3: black,
     4: black,
     5: black,
@@ -127,6 +127,12 @@ $dockstore-app-theme: map_merge(
   )
 );
 
+// The following are common colors used that are not used in Material paletttes
+// It is not placed in styles.scss to prevent importing styles.scss multiple times
+
 $tool-color: #29b6f6;
 $workflow-color: #26bfa5;
 $service-color: #ff6c44;
+
+// Color used to indicate success in general (of an operation, verified badge, etc).
+$accent-3-dark: #00bfa5 !important;

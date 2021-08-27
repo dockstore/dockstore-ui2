@@ -15,13 +15,13 @@
  */
 import { setTokenUserViewPort } from '../../support/commands';
 
-describe('Go to disabled Dockstore Account Controls', () => {
+describe('Go to disabled Dockstore Account & Preferences', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('');
     cy.get('[data-cy=dropdown-main]:visible').click();
     cy.get('#dropdown-accounts').click();
-    cy.contains('Dockstore Account Controls').click();
+    cy.contains('Dockstore Account & Preferences').click();
   });
   it('Should not have the danger alert', () => {
     cy.get('.alert-danger').should('not.exist');
