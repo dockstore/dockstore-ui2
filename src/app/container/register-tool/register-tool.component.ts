@@ -133,7 +133,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
         this.registerToolService.setCustomDockerRegistryPath(null);
       } else {
         this.registerToolService.setCustomDockerRegistryPath(this.registerToolService.getImageRegistryPath(this.tool.irProvider));
-      }      
+      }
     }
   }
 
@@ -177,6 +177,8 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
         .subscribe((data) => this.onValueChanged(data));
     }
   }
+
+  // Shows one form error at a time
   onValueChanged(data?: any) {
     if (!this.registerToolForm) {
       return;
@@ -191,7 +193,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
           const messages = validationMessages[field];
           for (const key in control.errors) {
             if (control.errors.hasOwnProperty(key)) {
-              formErrors[field] += messages[key] + ' ';
+              formErrors[field] = messages[key];
             }
           }
         }

@@ -33,6 +33,7 @@ interface FormErrors {
   workflow_path: string;
   workflowName: string;
   amazonDockerRegistryPath: string;
+  privateAmazonDockerRegistryPath: string;
   sevenBridgesDockerRegistryPath: string;
 }
 
@@ -55,6 +56,7 @@ export const formErrors: FormErrors = {
   workflow_path: '',
   workflowName: '',
   amazonDockerRegistryPath: '',
+  privateAmazonDockerRegistryPath: '',
   sevenBridgesDockerRegistryPath: '',
 };
 
@@ -95,33 +97,31 @@ export const validationMessages = {
     required: 'This field cannot be empty.',
     minlength: 'Descriptor Path is too short (minimum 3 characters).',
     maxlength: 'Descriptor Path is too long (max 1000 characters).',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.cwl', '*.yml', or '*.yaml'.`,
+    pattern: `Descriptor Path must begin with '/' and end with '*.cwl', '*.yml', or '*.yaml'.`,
   },
   wdlPath: {
     required: 'This field cannot be empty.',
     minlength: 'Descriptor Path is too short (minimum 3 characters).',
     maxlength: 'Descriptor Path is too long (max 1000 characters).',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.wdl'.`,
+    pattern: `Descriptor Path must begin with '/' and end with '*.wdl'.`,
   },
   nflPath: {
     required: 'This field cannot be empty.',
     minlength: 'Descriptor Path is too short (minimum 3 characters).',
     maxlength: 'Descriptor Path is too long (max 1000 characters).',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.config'.`,
+    pattern: `Descriptor Path must begin with '/' and end with '*.config'.`,
   },
   galaxyPath: {
     required: 'This field cannot be empty.',
     minlength: 'Descriptor Path is too short (minimum 3 characters).',
     maxlength: 'Descriptor Path is too long (max 1000 characters).',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.ga', '*.yml', or '*.yaml'.`,
+    pattern: `Descriptor Path must begin with '/' and end with '*.ga', '*.yml', or '*.yaml'.`,
   },
   dockerfilePath: {
     required: 'This field cannot be empty.',
     minlength: 'Dockerfile Path is too short (minimum 3 characters).',
     maxlength: 'Dockerfile Path is too long (max 1000 characters).',
-    pattern:
-      `Must begin with '/' and end with 'Dockerfile'. ` +
-      `Optionally you can use a string as a prefix or a suffix to 'Dockerfile', as long as they are separated by a '.'.`,
+    pattern: `Must have the form /Dockerfile, /<prefix>.Dockerfile, or /Dockerfile.<suffix>`,
   },
   gitPath: {
     required: 'This field cannot be empty.',
@@ -133,19 +133,19 @@ export const validationMessages = {
     required: 'This field cannot be empty.',
     minlength: 'Image Path is too short (minimum 3 characters).',
     maxlength: 'Image Path is too long (max 128 characters).',
-    pattern: `The namespace and name of the image repository, separated by a '/'. The name of the image repository cannot contain additional '/'.`,
+    pattern: `Must have the form <namespace>/<name>. The <name> cannot contain additional '/'.`,
   },
   repoNameWithSlashesImagePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Image Path is too short (minimum 3 characters). ',
+    minlength: 'Image path is too short (minimum 3 characters).',
     maxlength: 'Image Path is too long (max 128 characters).',
-    pattern: `The namespace and name of the image repository, separated by a '/'. The name of the image repository may contain additional '/'.`,
+    pattern: `Must have the form <namespace>/<name>. The <name> may contain additional '/'.`,
   },
   privateAmazonImagePath: {
     required: 'This field cannot be empty.',
     minlength: 'Image Path is too short (minimum 3 characters).',
     maxlength: 'Image Path is too long (max 128 characters).',
-    pattern: `The namespace and name of the image repository, separated by a '/'. The namespace must be empty (use '_'). The name of the image repository may contain additional '/'.`,
+    pattern: `Must have the form <namespace>/<name>. The namespace must be empty (use '_').`,
   },
   label: {
     maxlength: 'Labels string is too long (max 512 characters).',
@@ -171,7 +171,7 @@ export const validationMessages = {
   },
   toolName: {
     maxlength: 'Tool Name is too long (max 256 characters).',
-    pattern: 'A Tool Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
+    pattern: 'May only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   email: {
     required: 'This field cannot be empty.',
@@ -196,22 +196,25 @@ export const validationMessages = {
   },
   repository: {
     maxlength: 'Repository Name is too long (max 256 characters).',
-    pattern: 'A Repository may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
+    pattern: 'May only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   workflowName: {
     maxlength: 'Workflow Name is too long (max 256 characters).',
-    pattern: 'A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
+    pattern: 'May only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   amazonDockerRegistryPath: {
     required: 'This field cannot be empty.',
     maxlength: 'Custom docker registry path is too long (max 256 characters).',
-    pattern:
-      'Must be of the form *.dkr.ecr.*.amazonaws.com or public.ecr.aws, where * can be any alphanumeric character,' +
-      ' internal underscores, and internal hyphens.',
+    pattern: 'Must be of the form <aws-account-id>.dkr.ecr.<region>.amazonaws.com or public.ecr.aws.',
+  },
+  privateAmazonDockerRegistryPath: {
+    required: 'This field cannot be empty.',
+    maxlength: 'Custom docker registry path is too long (max 256 characters).',
+    pattern: 'Must be of the form <aws-account-id>.dkr.ecr.<region>.amazonaws.com.',
   },
   sevenBridgesDockerRegistryPath: {
     required: 'This field cannot be empty.',
     maxlength: 'Custom docker registry path is too long (max 256 characters).',
-    pattern: 'Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.',
+    pattern: 'Must be of the form *-images.sbgenomics.com or images.sbgenomics.com.',
   },
 };

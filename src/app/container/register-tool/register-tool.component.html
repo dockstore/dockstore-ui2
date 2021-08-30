@@ -71,6 +71,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+
           <mat-form-field>
             <mat-label>Source Code Repository</mat-label>
             <input
@@ -166,6 +167,7 @@
             />
             <mat-error *ngIf="formErrors.wdlTestParameterFilePath">{{ formErrors.wdlTestParameterFilePath }}</mat-error>
           </mat-form-field>
+
           <mat-form-field>
             <mat-label>Image Registry Provider</mat-label>
             <mat-select [(value)]="tool.irProvider" data-cy="imageRegistryProviderSelect">
@@ -192,10 +194,10 @@
                 maxlength="128"
                 [pattern]="validationPatterns.privateAmazonImagePath"
                 required
-                matTooltip="Docker Image Registry path."
+                matTooltip="Docker Image Registry path"
                 placeholder="e.g. _/dockstore-tool-liftover"
               />
-              <mat-hint>Has the form &lt;namespace&gt;/&lt;name&gt;. The &lt;namespace&gt; must be empty, represented by a '_'.</mat-hint>
+              <mat-hint>Has the form &lt;namespace&gt;/&lt;name&gt;. The &lt;namespace&gt; must be empty (use '_').</mat-hint>
               <mat-error *ngIf="formErrors.privateAmazonImagePath">{{ formErrors.privateAmazonImagePath }}</mat-error>
             </mat-form-field>
             <mat-form-field *ngIf="!tool.private_access">
@@ -213,7 +215,6 @@
                 matTooltip="Docker Image Registry path."
                 placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
               />
-              <mat-hint>Has the form &lt;namespace&gt;/&lt;name&gt;</mat-hint>
               <mat-error *ngIf="formErrors.repoNameWithSlashesImagePath">{{ formErrors.repoNameWithSlashesImagePath }}</mat-error>
             </mat-form-field>
           </ng-container>
@@ -232,7 +233,6 @@
               matTooltip="Docker Image Registry path."
               placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
             />
-            <mat-hint>Has the form &lt;namespace&gt;/&lt;name&gt;</mat-hint>
             <mat-error *ngIf="formErrors.imagePath">{{ formErrors.imagePath }}</mat-error>
           </mat-form-field>
 
@@ -240,10 +240,10 @@
           <ng-container *ngIf="showCustomDockerRegistryPath">
             <mat-form-field *ngIf="tool.irProvider === 'Amazon ECR'">
               <mat-label>Docker Registry Path</mat-label>
-              <input 
+              <input
                 matInput
                 id="dockerRegistryPathInput"
-                name="amazonDockerRegistryPath"
+                name="privateAmazonDockerRegistryPath"
                 [(ngModel)]="customDockerRegistryPath"
                 required
                 maxlength="256"
@@ -252,11 +252,11 @@
                 [pattern]="validationPatterns.privateAmazonDockerRegistryPath"
               />
               <mat-hint>Has the form &lt;aws-account-id&gt;.dkr.ecr.&lt;region&gt;.amazonaws.com</mat-hint>
-              <mat-error *ngIf="formErrors.amazonDockerRegistryPath">{{ formErrors.amazonDockerRegistryPath }}</mat-error>
+              <mat-error *ngIf="formErrors.privateAmazonDockerRegistryPath">{{ formErrors.privateAmazonDockerRegistryPath }}</mat-error>
             </mat-form-field>
             <mat-form-field *ngIf="tool.irProvider === 'Seven Bridges'">
               <mat-label>Docker Registry Path</mat-label>
-              <input 
+              <input
                 matInput
                 id="dockerRegistryPathInput"
                 name="sevenBridgesDockerRegistryPath"
@@ -272,6 +272,7 @@
             </mat-form-field>
           </ng-container>
           <mat-form-field *ngIf="!showCustomDockerRegistryPath">
+            <mat-label>Docker Registry Path</mat-label>
             <input
               matInput
               id="dockerRegistryPathInput"
@@ -285,8 +286,8 @@
             <mat-hint>Read-only</mat-hint>
           </mat-form-field>
 
-          <mat-checkbox 
-            class="mb-2"
+          <mat-checkbox
+            class="mt-4 mb-2"
             [disabled]="disablePrivateCheckbox"
             name="tool.private_access"
             [(ngModel)]="tool.private_access"
@@ -294,7 +295,9 @@
             matTooltip="Image registry entry is private."
             labelPosition="before"
             id="privateTool"
-          > Private Image:</mat-checkbox>
+          >
+            Private Image:</mat-checkbox
+          >
           <mat-form-field *ngIf="tool.private_access">
             <mat-label>Tool Maintainer Email</mat-label>
             <input
@@ -311,7 +314,7 @@
             <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
             <mat-hint>Email of the person responsible for giving users access to your tool on external sites</mat-hint>
           </mat-form-field>
-          
+
           <mat-form-field>
             <mat-label>Tool Name</mat-label>
             <input
@@ -335,9 +338,7 @@
             type="submit"
             mat-raised-button
             color="primary"
-            [disabled]="
-              !registerToolForm.form.valid || savingActive || (isRefreshing$ | async) || isInvalidCustomRegistry() || isInvalidPrivateTool()
-            "
+            [disabled]="!registerToolForm.form.valid || (isRefreshing$ | async) || isInvalidCustomRegistry() || isInvalidPrivateTool()"
           >
             Add Tool
           </button>
@@ -362,7 +363,7 @@
               <mat-option
                 *ngFor="let registry of friendlyRegistryKeys()"
                 value="{{ registry }}"
-                (click)="hostedTool.registryProvider = registry; hostedTool.registry = getToolRegistry(registry, null);"
+                (click)="hostedTool.registryProvider = registry; hostedTool.registry = getToolRegistry(registry, null)"
                 >{{ registry }}</mat-option
               >
             </mat-select>
@@ -378,16 +379,23 @@
               [(ngModel)]="hostedTool.path"
               minlength="3"
               maxlength="128"
-              [pattern]="hostedTool.registryProvider === 'Amazon ECR' ? validationPatterns.repoNameWithSlashesImagePath : validationPatterns.imagePath"
+              [pattern]="
+                hostedTool.registryProvider === 'Amazon ECR'
+                  ? validationPatterns.repoNameWithSlashesImagePath
+                  : validationPatterns.imagePath
+              "
               required
               placeholder="e.g. cancercollaboratory/dockstore-tool-liftover"
               matTooltip="Docker Image Repository"
             />
-            <mat-hint *ngIf="hostedTool.registryProvider === 'Amazon ECR'">Has the form &lt;namespace&gt;/&lt;name&gt;. An empty namespace, represented by '_', must be used if the registry is private.</mat-hint>
-            <mat-hint *ngIf="hostedTool.registryProvider !== 'Amazon ECR'">Has the form &lt;namespace&gt;/&lt;name&gt;</mat-hint>
+            <mat-hint *ngIf="hostedTool.registryProvider === 'Amazon ECR'"
+              >Has the form &lt;namespace&gt;/&lt;name&gt;. If the registry is private, use '_' as the namespace.</mat-hint
+            >
             <mat-error *ngIf="hostedImagePath?.errors?.required">{{ validationMessages.imagePath.required }}</mat-error>
             <mat-error *ngIf="hostedImagePath?.errors?.pattern">
-              <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">{{ validationMessages.repoNameWithSlashesImagePath.pattern }}</span>
+              <span *ngIf="hostedTool.registryProvider === 'Amazon ECR'">{{
+                validationMessages.repoNameWithSlashesImagePath.pattern
+              }}</span>
               <span *ngIf="hostedTool.registryProvider !== 'Amazon ECR'">{{ validationMessages.imagePath.pattern }}</span>
             </mat-error>
           </mat-form-field>
@@ -406,8 +414,12 @@
               [pattern]="validationPatterns.amazonDockerRegistryPath"
             />
             <mat-hint>Use public.ecr.aws for a public registry or *.dkr.ecr.*.amazonaws.com for a private registry</mat-hint>
-            <mat-error *ngIf="amazonDockerRegistryPath?.errors?.required">{{ validationMessages.amazonDockerRegistryPath.required }}</mat-error>
-            <mat-error *ngIf="amazonDockerRegistryPath?.errors?.pattern">{{ validationMessages.amazonDockerRegistryPath.pattern }}</mat-error>
+            <mat-error *ngIf="amazonDockerRegistryPath?.errors?.required">{{
+              validationMessages.amazonDockerRegistryPath.required
+            }}</mat-error>
+            <mat-error *ngIf="amazonDockerRegistryPath?.errors?.pattern">{{
+              validationMessages.amazonDockerRegistryPath.pattern
+            }}</mat-error>
           </mat-form-field>
           <mat-form-field *ngIf="hostedTool.registryProvider === 'Seven Bridges'">
             <mat-label>Docker Registry Path</mat-label>
@@ -424,8 +436,12 @@
               [pattern]="validationPatterns.sevenBridgesDockerRegistryPath"
             />
             <mat-hint>Has the form *-images.sbgenomics.com</mat-hint>
-            <mat-error *ngIf="sevenBridgesDockerRegistryPath?.errors?.required">{{ validationMessages.sevenBridgesDockerRegistryPath.required }}</mat-error>
-            <mat-error *ngIf="sevenBridgesDockerRegistryPath?.errors?.pattern">{{ validationMessages.sevenBridgesDockerRegistryPath.pattern }}</mat-error>
+            <mat-error *ngIf="sevenBridgesDockerRegistryPath?.errors?.required">{{
+              validationMessages.sevenBridgesDockerRegistryPath.required
+            }}</mat-error>
+            <mat-error *ngIf="sevenBridgesDockerRegistryPath?.errors?.pattern">{{
+              validationMessages.sevenBridgesDockerRegistryPath.pattern
+            }}</mat-error>
           </mat-form-field>
           <mat-form-field *ngIf="hostedTool.registryProvider !== 'Amazon ECR' && hostedTool.registryProvider !== 'Seven Bridges'">
             <mat-label>Docker Registry Path</mat-label>
@@ -457,7 +473,9 @@
             <mat-hint>Name to distinguish between multiple tools within the same repository</mat-hint>
             <mat-error *ngIf="toolName?.errors?.pattern">{{ validationMessages.toolName.pattern }}</mat-error>
           </mat-form-field>
-          <div *ngIf="hostedTool.path">Final tool path: {{hostedTool.registry}}/{{hostedTool.path}}{{hostedTool.entryName ? '/' + hostedTool.entryName : ''}}</div>
+          <div *ngIf="hostedTool.path" class="mt-4">
+            Final tool path: {{ hostedTool.registry }}/{{ hostedTool.path }}{{ hostedTool.entryName ? '/' + hostedTool.entryName : '' }}
+          </div>
         </div>
         <div mat-dialog-actions class="pull-right">
           <button mat-button type="button" color="secondary" (click)="hideModal()">Close</button>
