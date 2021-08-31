@@ -145,7 +145,7 @@ export const validationMessages = {
     required: 'This field cannot be empty.',
     minlength: 'Image Path is too short (minimum 3 characters).',
     maxlength: 'Image Path is too long (max 128 characters).',
-    pattern: `Must have the form <namespace>/<name>. The namespace must be empty (use '_').`,
+    pattern: `Must have the form _/<name> because the Amazon ECR registry is private.`,
   },
   label: {
     maxlength: 'Labels string is too long (max 512 characters).',
