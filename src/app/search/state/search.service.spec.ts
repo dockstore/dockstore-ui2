@@ -90,7 +90,7 @@ describe('SearchService', () => {
           privateOnly: 'false',
           url: 'https://gitlab.com/',
         },
-        { customDockerPath: 'true', dockerPath: null, enum: 'AMAZON_ECR', friendlyName: 'Amazon ECR', privateOnly: 'true', url: null },
+        { customDockerPath: 'true', dockerPath: 'public.ecr.aws', enum: 'AMAZON_ECR', friendlyName: 'Amazon ECR', privateOnly: 'false', url: "https://gallery.ecr.aws/" },
         {
           customDockerPath: 'true',
           dockerPath: null,
