@@ -77,7 +77,7 @@ ul.ordered-list {
 
 .subtitle {
   font-size: 1.7rem;
-  color: #3f51b5;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   line-height: 2.5rem;
   font-weight: 500;
 }
@@ -92,7 +92,7 @@ ul.unordered-list > li {
 
 .title-strong {
   font-weight: 600;
-  color: #3f51b5;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 h3 {

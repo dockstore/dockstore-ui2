@@ -20,7 +20,7 @@
 
 h3 {
   font-size: 1.7rem;
-  color: #3f51b5;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   line-height: 2.5rem;
   font-weight: 500;
 }

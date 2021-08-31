@@ -896,15 +896,19 @@ app-sidebar-accordion
 }
 
 .tool-tab-group.mat-primary .mat-ink-bar {
-  background: #29b6f6 !important;
+  background: $tool-color !important;
 }
 
 .workflow-tab-group.mat-primary .mat-ink-bar {
-  background: #26bfa5 !important;
+  background: $workflow-color !important;
+}
+
+.service-tab-group.mat-primary .mat-ink-bar {
+  background: $service-color !important;
 }
 
 .purple-tab-group.mat-primary .mat-ink-bar {
-  background: #3f51b5 !important;
+  background: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
 // Automatically used by Angular Material
@@ -949,10 +953,10 @@ mat-icon.star-icon {
   height: 16px;
 }
 
-.ellipsis-overflow {
+.no-wrap {
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .notification-display p {
@@ -1024,6 +1028,7 @@ hr {
 .small-org-logo {
   height: 50px;
   object-fit: scale-down;
+  max-width: 250px;
 }
 
 .big-org-logo {
@@ -1122,7 +1127,42 @@ button.accent-1-dark-btn {
   top: 1.8em;
 }
 
+// Used for mat tabs to display the number of items
+.tab-display {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1.3rem;
+  background-color: #e0e0e0;
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  height: auto;
+  color: mat.get-color-from-palette($dockstore-app-primary);
+  padding: 0 !important;
+}
+
+.info {
+  font-size: 12px;
+  line-height: 2rem;
+}
+
 // The material checkbox overflows text by default so this style wraps the text instead.
 .mat-checkbox.text-wrap > label.mat-checkbox-layout {
   white-space: normal;
+}
+
+$truncate-text-values: 1, 3;
+
+// Hide overflow, values denote the number of lines to keep
+// Similar no-wrap except those are more meant single "words", this is for sentences
+@each $value in $truncate-text-values {
+  .truncate-text-#{$value} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $value;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
 }

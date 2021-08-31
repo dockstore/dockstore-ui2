@@ -16,7 +16,7 @@
         <input matInput [(ngModel)]="filterText" (keyup)="onTextChange($event)" placeholder="Find entries..." />
       </mat-form-field>
 
-      <div *ngFor="let entry of myItems" class="w-100 ellipsis-overflow">
+      <div *ngFor="let entry of myItems" class="w-100 no-wrap">
         <span [matTooltip]="entry.prettyPath">
           <a
             *ngIf="entry.entryType === entryTypeEnum.TOOL"

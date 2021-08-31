@@ -25,7 +25,7 @@
         />
       </mat-form-field>
 
-      <div *ngFor="let organization of myItems" class="w-100 ellipsis-overflow">
+      <div *ngFor="let organization of myItems" class="w-100 no-wrap">
         <span [matTooltip]="organization.displayName">
           <a [routerLink]="'/organizations/' + organization.name" routerLinkActive="router-link-active">{{ organization.displayName }}</a>
         </span>
