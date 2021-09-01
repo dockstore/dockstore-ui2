@@ -222,6 +222,12 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     return this.authService.getToken();
   }
 
+  // Compute the root portion of a URL.  Adapted from:
+  // https://stackoverflow.com/questions/1368264/how-to-extract-the-hostname-portion-of-a-url-in-javascript
+  getRoot(url: string) {
+    return (url.replace(/^(.*\/\/[^\/?#]*).*$/,"$1"));
+  }
+
   ngOnInit() {
     this.dsServerURI = Dockstore.API_URI;
     this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
