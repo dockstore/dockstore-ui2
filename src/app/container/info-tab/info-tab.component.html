@@ -39,11 +39,11 @@
           </li>
           <li *ngIf="tool?.imgProviderUrl">
             <strong matTooltip="Docker registry for the associated Docker images">Docker Image</strong>:
-            <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
-              {{ tool?.imgProviderUrl | urlDeconstruct }}
+            <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!tool?.private_access">
+              {{ tool?.path }}
             </a>
-            <span *ngIf="privateOnlyRegistry">
-              {{ tool?.imgProviderUrl }}
+            <span *ngIf="tool?.private_access">
+              {{ tool?.path }}
             </span>
           </li>
           <span *ngIf="isPublic && isValidVersion">

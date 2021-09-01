@@ -14,7 +14,7 @@ import { Base } from '../../shared/base';
 export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
   selected = new FormControl();
-  validTabs = ['accounts', 'profiles', 'dockstore account controls', 'requests'];
+  validTabs = ['linked accounts and tokens', 'profiles', 'dockstore account and preferences', 'requests'];
   constructor(private location: Location, private activatedRoute: ActivatedRoute) {
     super();
   }
@@ -40,7 +40,7 @@ export class AccountsComponent extends Base implements OnInit {
       }
     } // if not found, default to the 'accounts' tab
     this.selectTab(this.validTabs.indexOf(this.currentTab));
-    this.setAccountsTab();
+    this.setAccountsTab(this.currentTab);
   }
 
   selectTab(tabIndex: number): void {
@@ -51,10 +51,12 @@ export class AccountsComponent extends Base implements OnInit {
   selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
     // called on tab change event
     this.currentTab = matTabChangeEvent.tab.textLabel.toLowerCase();
-    this.setAccountsTab();
+    this.setAccountsTab(this.currentTab);
   }
 
-  setAccountsTab() {
-    this.location.replaceState('accounts?tab=' + this.currentTab);
+  setAccountsTab(tabName: string) {
+    // Adding the & symbol causes the URL to be parsed in an unexpected way.
+    // TODO: Change replace to replaceAll once we use EC2021
+    this.location.replaceState('accounts?tab=' + tabName.replace('&', 'and'));
   }
 }

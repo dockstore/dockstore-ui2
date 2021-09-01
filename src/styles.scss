@@ -236,6 +236,11 @@ body {
   margin: 0;
 }
 
+// Used when the body class that applies line-height 2em is somehow applied to an item that isn't considered body
+.normal-line-height {
+  line-height: normal;
+}
+
 .header {
   background-color: mat.get-color-from-palette($dockstore-app-primary);
   position: relative;
@@ -891,15 +896,19 @@ app-sidebar-accordion
 }
 
 .tool-tab-group.mat-primary .mat-ink-bar {
-  background: #29b6f6 !important;
+  background: $tool-color !important;
 }
 
 .workflow-tab-group.mat-primary .mat-ink-bar {
-  background: #26bfa5 !important;
+  background: $workflow-color !important;
+}
+
+.service-tab-group.mat-primary .mat-ink-bar {
+  background: $service-color !important;
 }
 
 .purple-tab-group.mat-primary .mat-ink-bar {
-  background: #3f51b5 !important;
+  background: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
 // Automatically used by Angular Material
@@ -944,10 +953,10 @@ mat-icon.star-icon {
   height: 16px;
 }
 
-.ellipsis-overflow {
+.no-wrap {
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .notification-display p {
@@ -1019,6 +1028,7 @@ hr {
 .small-org-logo {
   height: 50px;
   object-fit: scale-down;
+  max-width: 250px;
 }
 
 .big-org-logo {
@@ -1029,17 +1039,19 @@ hr {
 
 // To indicate success of an operation.
 .accent-3-dark {
-  color: #00bfa5;
+  color: $accent-3-dark;
 }
 
-// Following 4 items are for stepper/stepper-like dialogs
+// Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
 .accent-1-dark {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
-.mat-flat-button.bg-accent-1-dark {
+
+button.accent-1-dark-btn {
   background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;
 }
+
 .mat-flat-button.secondary-1 {
   color: mat.get-color-from-palette($dockstore-app-accent);
 }
@@ -1055,6 +1067,27 @@ hr {
 // Used for smaller than usual forms
 .mat-form-field.small-text {
   font-size: 12px;
+}
+
+// Applied to buttons to make them smaller than Material defaults.
+// Use whenever the developer thinks a more compact button is more suitable
+.mat-btn-sm {
+  // This overrides .mat-raised-button's 36px line-height
+  line-height: 26px;
+  // This overrides .mat-button and most other material buttons' 12px font with font-weight normal
+  font-size: 12px;
+  font-weight: bold;
+}
+
+// Applied to mat-icons to make them smaller than Material defaults. 16px was chosen based on ORCID's recommended min logo size.
+// Typically acompanied with mat-btn-sm above.
+// This is also the same size as site-icons-small
+.mat-icon-sm {
+  // These two override .mat-icon's default 24px height and width
+  height: 16px;
+  width: 16px;
+  // This overrides .material-icon's default 24px font-size, changing the font-size fixes the position of it
+  font-size: 16px;
 }
 
 // Can use this class for all search bars
@@ -1094,7 +1127,42 @@ hr {
   top: 1.8em;
 }
 
+// Used for mat tabs to display the number of items
+.tab-display {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1.3rem;
+  background-color: #e0e0e0;
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  height: auto;
+  color: mat.get-color-from-palette($dockstore-app-primary);
+  padding: 0 !important;
+}
+
+.info {
+  font-size: 12px;
+  line-height: 2rem;
+}
+
 // The material checkbox overflows text by default so this style wraps the text instead.
 .mat-checkbox.text-wrap > label.mat-checkbox-layout {
   white-space: normal;
+}
+
+$truncate-text-values: 1, 3;
+
+// Hide overflow, values denote the number of lines to keep
+// Similar no-wrap except those are more meant single "words", this is for sentences
+@each $value in $truncate-text-values {
+  .truncate-text-#{$value} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $value;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
 }

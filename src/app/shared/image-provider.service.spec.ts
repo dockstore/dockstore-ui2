@@ -61,9 +61,15 @@ describe('ImageProviderService', () => {
     };
     expect(service.checkPrivateOnlyRegistry(tool)).toBeFalsy();
     const tool2 = tool;
+    tool2.registry_string = 'test-images.sbgenomics.com';
+    tool2.registry = DockstoreTool.RegistryEnum.SEVENBRIDGES;
+    expect(service.checkPrivateOnlyRegistry(tool2)).toBeTruthy();
     tool2.registry_string = 'amazon.dkr.ecr.test.amazonaws.com';
     tool2.registry = DockstoreTool.RegistryEnum.AMAZONECR;
-    expect(service.checkPrivateOnlyRegistry(tool2)).toBeTruthy();
+    expect(service.checkPrivateOnlyRegistry(tool2)).toBeFalsy();
+    tool2.registry_string = 'public.ecr.aws';
+    tool2.registry = DockstoreTool.RegistryEnum.AMAZONECR;
+    expect(service.checkPrivateOnlyRegistry(tool2)).toBeFalsy();
     tool2.registry_string = null;
     tool2.registry = null;
     expect(service.checkPrivateOnlyRegistry(tool)).toBeFalsy();
@@ -100,6 +106,9 @@ describe('ImageProviderService', () => {
     expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual(
       'https://gitlab.com/dockstore-testing/dockstore-tool-bamstats/container_registry'
     );
+    tool.registry_string = 'public.ecr.aws';
+    tool.registry = DockstoreTool.RegistryEnum.AMAZONECR;
+    expect(service.setUpImageProvider(tool).imgProviderUrl).toEqual('https://gallery.ecr.aws/dockstore-testing/dockstore-tool-bamstats');
   }));
   it('should display appropriate icons for imgProviders', inject([ImageProviderService], (service: ImageProviderService) => {
     const tool: ExtendedDockstoreTool = validTool;

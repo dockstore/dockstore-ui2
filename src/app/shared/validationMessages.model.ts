@@ -20,6 +20,8 @@ interface FormErrors {
   dockerfilePath: string;
   gitPath: string;
   imagePath: string;
+  repoNameWithSlashesImagePath: string;
+  privateAmazonImagePath: string;
   label: string;
   cwlTestParameterFilePath: string;
   wdlTestParameterFilePath: string;
@@ -31,6 +33,7 @@ interface FormErrors {
   workflow_path: string;
   workflowName: string;
   amazonDockerRegistryPath: string;
+  privateAmazonDockerRegistryPath: string;
   sevenBridgesDockerRegistryPath: string;
 }
 
@@ -40,6 +43,8 @@ export const formErrors: FormErrors = {
   dockerfilePath: '',
   gitPath: '',
   imagePath: '',
+  repoNameWithSlashesImagePath: '',
+  privateAmazonImagePath: '',
   label: '',
   cwlTestParameterFilePath: '',
   wdlTestParameterFilePath: '',
@@ -51,6 +56,7 @@ export const formErrors: FormErrors = {
   workflow_path: '',
   workflowName: '',
   amazonDockerRegistryPath: '',
+  privateAmazonDockerRegistryPath: '',
   sevenBridgesDockerRegistryPath: '',
 };
 
@@ -68,6 +74,8 @@ export const validationDescriptorPatterns = {
   dockerfilePath: '^/([^/?:*|<>]+/)*(([a-zA-Z]+[.])?Dockerfile|Dockerfile([.][a-zA-Z]+)?)$',
   testFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
   imagePath: '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
+  repoNameWithSlashesImagePath: '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_./][a-zA-Z0-9]+)*)$',
+  privateAmazonImagePath: '^_/([a-zA-Z0-9]+([-_./][a-zA-Z0-9]+)*)$', // Has an empty namespace. Allows for slashes in repo name
   toolName: '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',
   label: '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   versionTag: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
@@ -79,117 +87,134 @@ export const validationDescriptorPatterns = {
   testParameterFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
   // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
   alphanumericInternalUHP: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
-  amazonDockerRegistryPath: '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.dkr.ecr.[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.amazonaws.com',
+  amazonDockerRegistryPath: '(^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.dkr.ecr.[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.amazonaws.com)|(public.ecr.aws)', // public and private path
+  privateAmazonDockerRegistryPath: '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.dkr.ecr.[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.amazonaws.com',
   sevenBridgesDockerRegistryPath: '^([a-zA-Z0-9]+-)?images.sbgenomics.com',
 };
 
 export const validationMessages = {
   cwlPath: {
     required: 'This field cannot be empty.',
-    minlength: 'Descriptor Path is too short. (Minimum 3 characters)',
-    maxlength: 'Descriptor Path is too long. (Max 1000 characters)',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.cwl', '*.yml', or '*.yaml'.`,
+    minlength: 'Descriptor Path is too short (minimum 3 characters).',
+    maxlength: 'Descriptor Path is too long (max 1000 characters).',
+    pattern: `Descriptor Path must begin with '/' and end with '*.cwl', '*.yml', or '*.yaml'.`,
   },
   wdlPath: {
     required: 'This field cannot be empty.',
-    minlength: 'Descriptor Path is too short. (Minimum 3 characters)',
-    maxlength: 'Descriptor Path is too long. (Max 1000 characters)',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.wdl'.`,
+    minlength: 'Descriptor Path is too short (minimum 3 characters).',
+    maxlength: 'Descriptor Path is too long (max 1000 characters).',
+    pattern: `Descriptor Path must begin with '/' and end with '*.wdl'.`,
   },
   nflPath: {
     required: 'This field cannot be empty.',
-    minlength: 'Descriptor Path is too short. (Minimum 3 characters)',
-    maxlength: 'Descriptor Path is too long. (Max 1000 characters)',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.config'.`,
+    minlength: 'Descriptor Path is too short (minimum 3 characters).',
+    maxlength: 'Descriptor Path is too long (max 1000 characters).',
+    pattern: `Descriptor Path must begin with '/' and end with '*.config'.`,
   },
   galaxyPath: {
     required: 'This field cannot be empty.',
-    minlength: 'Descriptor Path is too short. (Minimum 3 characters)',
-    maxlength: 'Descriptor Path is too long. (Max 1000 characters)',
-    pattern: `Invalid Descriptor Path format. Descriptor Path must begin with '/' and end with '*.ga', '*.yml', or '*.yaml'.`,
+    minlength: 'Descriptor Path is too short (minimum 3 characters).',
+    maxlength: 'Descriptor Path is too long (max 1000 characters).',
+    pattern: `Descriptor Path must begin with '/' and end with '*.ga', '*.yml', or '*.yaml'.`,
   },
   dockerfilePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Dockerfile Path is too short. (Minimum 3 characters)',
-    maxlength: 'Dockerfile Path is too long. (Max 1000 characters)',
-    pattern:
-      `Must begin with '/' and end with 'Dockerfile'. ` +
-      `Optionally you can use a string as a prefix or a suffix to 'Dockerfile', as long as they are separated by a '.'.`,
+    minlength: 'Dockerfile Path is too short (minimum 3 characters).',
+    maxlength: 'Dockerfile Path is too long (max 1000 characters).',
+    pattern: `Must have the form /Dockerfile, /<prefix>.Dockerfile, or /Dockerfile.<suffix>`,
   },
   gitPath: {
     required: 'This field cannot be empty.',
-    minlength: 'Source Code Repository Path is too short. (Minimum 3 characters)',
-    maxlength: 'Source Code Repository Path is too long. (Max 128 characters)',
+    minlength: 'Source Code Repository Path is too short (minimum 3 characters).',
+    maxlength: 'Source Code Repository Path is too long (max 128 characters).',
     pattern: `The namespace and name of the Git repository, separated by a '/'. `,
   },
   imagePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Image Path is too short. (Minimum 3 characters)',
-    maxlength: 'Image Path is too long. (Max 128 characters)',
-    pattern: `The namespace and name of the image repository, separated by a '/'. ` + `Use '_' for an empty namespace.`,
+    minlength: 'Image Path is too short (minimum 3 characters).',
+    maxlength: 'Image Path is too long (max 128 characters).',
+    pattern: `Must have the form <namespace>/<name>. The <name> cannot contain additional '/'.`,
+  },
+  repoNameWithSlashesImagePath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Image path is too short (minimum 3 characters).',
+    maxlength: 'Image Path is too long (max 128 characters).',
+    pattern: `Must have the form <namespace>/<name>. The <name> may contain additional '/'.`,
+  },
+  privateAmazonImagePath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Image Path is too short (minimum 3 characters).',
+    maxlength: 'Image Path is too long (max 128 characters).',
+    pattern: `Must have the form _/<name> because the Amazon ECR registry is private.`,
   },
   label: {
-    maxlength: 'Labels string is too long. (Max 512 characters)',
+    maxlength: 'Labels string is too long (max 512 characters).',
     pattern: 'Labels are comma-delimited, and may only consist of alphanumerical characters and internal hyphens.',
   },
   cwlTestParameterFilePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Test parameter file path is too short. (Minimum 3 characters)',
-    maxlength: 'Test parameter file path is too long. (Max 1000 characters)',
+    minlength: 'Test parameter file path is too short (minimum 3 characters).',
+    maxlength: 'Test parameter file path is too long (max 1000 characters).',
     pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`,
   },
   wdlTestParameterFilePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Test parameter file path is too short. (Minimum 3 characters)',
-    maxlength: 'Test parameter file path is too long. (Max 1000 characters)',
+    minlength: 'Test parameter file path is too short (minimum 3 characters).',
+    maxlength: 'Test parameter file path is too long (max 1000 characters).',
     pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`,
   },
   testParameterFilePath: {
     required: 'This field cannot be empty.',
-    minlength: 'Test parameter file path is too short. (Minimum 3 characters)',
-    maxlength: 'Test parameter file path is too long. (Max 1000 characters)',
+    minlength: 'Test parameter file path is too short (minimum 3 characters).',
+    maxlength: 'Test parameter file path is too long (max 1000 characters).',
     pattern: `Must begin with '/' and end with '*.json', '*.yml', or '*.yaml'.`,
   },
   toolName: {
-    maxlength: 'Tool Name is too long. (Max 256 characters)',
-    pattern: 'A Tool Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
+    maxlength: 'Tool Name is too long (max 256 characters).',
+    pattern: 'May only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   email: {
-    maxlength: 'Email is too long. (Max 256 characters)',
+    required: 'This field cannot be empty.',
+    maxlength: 'Email is too long (max 256 characters).',
   },
   reference: {
     required: 'This field cannot be empty.',
-    minlength: 'Git reference is too short. (Minimum 3 characters)',
-    maxlength: 'Git reference is too long. (Max 128 characters)',
+    minlength: 'Git reference is too short (minimum 3 characters).',
+    maxlength: 'Git reference is too long (max 128 characters).',
     pattern: `May only consist of alphanumeric characters, '-' and '_', with interior '/' and '.' separators.`,
   },
   versionTag: {
     required: 'This field cannot be empty.',
-    maxlength: 'Version Tag is too long. (Max 128 characters)',
+    maxlength: 'Version Tag is too long (max 128 characters).',
     pattern: 'A Version Tag may only consist of alphanumeric characters, internal underscores, internal hyphens, and internal periods.',
   },
   workflow_path: {
     required: 'This field cannot be empty.',
-    minlength: 'Workflow Path is too short. (Minimum 3 characters)',
-    maxlength: 'Workflow Path is too long. (Max 1000 characters)',
+    minlength: 'Workflow Path is too short (minimum 3 characters).',
+    maxlength: 'Workflow Path is too long (max 1000 characters).',
     pattern: `Must begin with '/' and end with '*.cwl', '*.yml', '*.yaml', '*.config', or'*.wdl' ` + 'depending on the descriptor type.',
   },
   repository: {
-    maxlength: 'Repository Name is too long. (Max 256 characters)',
-    pattern: 'A Repository may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
+    maxlength: 'Repository Name is too long (max 256 characters).',
+    pattern: 'May only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   workflowName: {
-    maxlength: 'Workflow Name is too long. (Max 256 characters)',
-    pattern: 'A Workflow Name may only consist of alphanumeric characters, internal underscores, and internal hyphens.',
+    maxlength: 'Workflow Name is too long (max 256 characters).',
+    pattern: 'May only consist of alphanumeric characters, internal underscores, and internal hyphens.',
   },
   amazonDockerRegistryPath: {
-    maxlength: 'Custom docker registry path is too long. (Max 256 characters)',
-    pattern:
-      'Must be of the form *.dkr.ecr.*.amazonaws.com, where * can be any alphanumeric character,' +
-      ' internal underscores, and internal hyphens.',
+    required: 'This field cannot be empty.',
+    maxlength: 'Custom docker registry path is too long (max 256 characters).',
+    pattern: 'Must be of the form <aws-account-id>.dkr.ecr.<region>.amazonaws.com or public.ecr.aws.',
+  },
+  privateAmazonDockerRegistryPath: {
+    required: 'This field cannot be empty.',
+    maxlength: 'Custom docker registry path is too long (max 256 characters).',
+    pattern: 'Must be of the form <aws-account-id>.dkr.ecr.<region>.amazonaws.com.',
   },
   sevenBridgesDockerRegistryPath: {
-    maxlength: 'Custom docker registry path is too long. (Max 256 characters)',
-    pattern: 'Must be of the form *-images.sbgenomics.com or images.sbgenomics.com, where * can be any alphanumeric character.',
+    required: 'This field cannot be empty.',
+    maxlength: 'Custom docker registry path is too long (max 256 characters).',
+    pattern: 'Must be of the form *-images.sbgenomics.com or images.sbgenomics.com.',
   },
 };

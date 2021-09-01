@@ -21,36 +21,9 @@
 
 .orgStar {
   font-size: 1.5rem;
-  color: #3f51b5;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   height: auto;
   padding: 0 !important;
-}
-
-.info.span {
-  font-size: 10px;
-}
-
-.info-icon {
-  font-size: 1.5rem;
-  height: auto;
-  color: mat.get-color-from-palette($dockstore-app-accent);
-  padding: 0 !important;
-}
-
-.info {
-  font-size: 12px;
-  line-height: 2rem;
-}
-
-.info-overflow {
-  // Hide overflow if longer than 1 line
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: initial;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  word-break: break-word;
 }
 
 form {
