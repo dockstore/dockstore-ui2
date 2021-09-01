@@ -46,6 +46,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   public workflow: Workflow;
   currentVersion: WorkflowVersion;
   downloadZipLink: string;
+  publicAccessibleTestParameterFile: boolean | null;
   isValidVersion = false;
   zenodoUrl: string;
   @Input() selectedVersion: WorkflowVersion;
@@ -89,6 +90,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.temporaryDescriptorType = this.workflow.descriptorType;
     if (this.selectedVersion && this.workflow) {
       this.currentVersion = this.selectedVersion;
+      this.publicAccessibleTestParameterFile = this.selectedVersion?.versionMetadata?.publicAccessibleTestParameterFile;
       this.trsLink = this.infoTabService.getTRSLink(
         this.workflow.full_workflow_path,
         this.selectedVersion.name,
