@@ -21,4 +21,9 @@ describe('Service: Accounts', () => {
   it('should ...', inject([AccountsService], (service: AccountsService) => {
     expect(service).toBeTruthy();
   }));
+
+  it('should compute correct root urls', inject([AccountsService], (service: AccountsService) => {
+    expect(service.getRoot('https://sandbox.orcid.org/oauth/authorize')).toBe('https://sandbox.orcid.org');
+    expect(service.getRoot('https://orcid.org/oauth/authorize')).toBe('https://orcid.org');
+  }));
 });
