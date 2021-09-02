@@ -89,19 +89,25 @@ exec newgrp docker
 `;
     this.textDataMacOs = `
 #### Part 1 - Install dependencies
-1. We'll cover two ways to install Java 11. One way is to download the JDK for MacOS from [OpenJDK](https://jdk.java.net/archive/) and executing the following commands.
+1. We'll cover two ways to install Java 11. One way is to download the JDK for MacOS from [OpenJDK](https://jdk.java.net/archive/) and executing the following commands.  First, unpack the downloaded tar archive, then move the resulting JDK directory to its standard location and check the Java version:
 \`\`\`
-// put the JDK in its standard location
-sudo mv jdk-11.0.2.jdk /Library/Java/JavaVirtualMachines/ \n\n // List the JDKs that are installed; you should see version 11
-/usr/libexec/java_home -V \n\n // If you need to switch to Java 11, run the following
-/usr/libexec/java_home -v 11.0.2 \n\n // Check that if $JAVA_HOME is set to the correct JDK. Should look similar to /Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/
-echo $JAVA_HOME/ \n \n // If it is not check your .bashrc or .bash_profile to find out where it is being set. Fix it and/or source the correct one.
-/usr/libexec/java_home \n\n // Use the output from the above command and run
-export JAVA_HOME={OUTPUT FROM ABOVE COMMAND} \n\n // Check that the default version is JDK 11
+sudo mv jdk-11.0.2.jdk /Library/Java/JavaVirtualMachines/
 java -version
 \`\`\`
+If the reported version is JDK 11, you've correctly installed Java!  If not, check the list of the JDKs that are installed; you should see version 11:
+\`\`\`
+/usr/libexec/java_home -V
+\`\`\`
+Next, set the \`JAVA_HOME\` environment variable to the correct JDK system path
+and confirm the Java version:
+\`\`\`
+unset JAVA_HOME
+export JAVA_HOME=\`/usr/libexec/java_home -v 11\`
+java -version
+\`\`\`
+Add the above export line to your \`.bashrc\` or \`.bash_profile\` to set \`JAVA_HOME\` properly every time you invoke a shell.
 
-2. Or to install using Homebrew, execute the following commands:
+2. Or to install Java 11 using Homebrew, execute the following commands:
 \`\`\`
 brew tap AdoptOpenJDK/openjdk
 brew cask install adoptopenjdk11
