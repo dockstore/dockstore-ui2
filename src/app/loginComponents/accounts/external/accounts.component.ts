@@ -224,7 +224,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   // Compute the root portion of a URL.  Adapted from:
   // https://stackoverflow.com/questions/1368264/how-to-extract-the-hostname-portion-of-a-url-in-javascript
-  getRoot(url: string) {
+  getRoot(url: string): string {
     return (url.replace(/^(.*\/\/[^\/?#]*).*$/,"$1"));
   }
 
