@@ -83,7 +83,7 @@
                 <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
                 <span *ngIf="row.name === 'ORCID'">
                   <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
-                  <a href="{{ this.accountsService.getRoot(Dockstore.ORCID_AUTH_URL) }}/{{ orcidId$ | async }}"> {{ orcidId$ | async }}</a>
+                  <a href="{{ orcidRootUrl }}/{{ orcidId$ | async }}"> {{ orcidId$ | async }}</a>
                 </span>
               </mat-card-subtitle>
               <ng-template #placeholder><br /></ng-template>
