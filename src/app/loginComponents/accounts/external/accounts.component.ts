@@ -137,6 +137,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   public show: false;
   public dockstoreToken: string;
+  public orcidRootUrl: string;
   constructor(
     private trackLoginService: TrackLoginService,
     private tokenService: TokenService,
@@ -154,6 +155,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       }
     });
     this.dockstoreToken = this.getDockstoreToken();
+    this.orcidRootUrl = this.accountsService.getRoot(Dockstore.ORCID_AUTH_URL);
   }
 
   // Delete token by id
