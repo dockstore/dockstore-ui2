@@ -285,6 +285,7 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+            - aws
       - check_build_develop:
           requires:
             - upload_to_s3
