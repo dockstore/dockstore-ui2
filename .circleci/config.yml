@@ -49,6 +49,7 @@ jobs:
       - upload_nightly_artifacts
       - slack/status:
           fail_only: true
+          channel: << parameters.stack >>_id
           failure_message: Nightly << parameters.stack >> non-auth tests failed!
           webhook: $SLACK_WEBHOOK
 
@@ -74,6 +75,7 @@ jobs:
       - upload_nightly_artifacts
       - slack/status:
           fail_only: true
+          channel: << parameters.stack >>_id
           failure_message: Nightly << parameters.stack >> auth tests failed!
           webhook: $SLACK_WEBHOOK
   lint_license_unit_test_coverage:
