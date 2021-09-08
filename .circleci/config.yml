@@ -50,7 +50,6 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-          # failure_message: Nightly << parameters.stack >> non-auth tests failed!
           webhook: $SLACK_WEBHOOK
           channel: dockstore-<< parameters.stack >>-info
 
@@ -77,7 +76,6 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-          # failure_message: Nightly << parameters.stack >> auth tests failed!
           webhook: $SLACK_WEBHOOK
           channel: dockstore-<< parameters.stack >>-info
   lint_license_unit_test_coverage:
