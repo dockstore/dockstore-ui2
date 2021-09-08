@@ -250,6 +250,13 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+      - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth-dev"
+          stack: "dev"
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub            
       - integration_test_1:
           filters:
             tags:
