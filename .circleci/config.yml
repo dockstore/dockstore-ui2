@@ -249,7 +249,7 @@ workflows:
             tags:
               only: /.*/
           context:
-            - dockerhub        
+            - dockerhub
       - integration_test_1:
           filters:
             tags:
