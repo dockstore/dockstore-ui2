@@ -48,7 +48,7 @@ jobs:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
       - upload_nightly_artifacts
       - slack/status:
-          fail_only: false
+          fail_only: true
           channel: $<< parameters.stack >>_id
           failure_message: Nightly << parameters.stack >> non-auth tests failed!
           webhook: $SLACK_WEBHOOK
@@ -74,7 +74,7 @@ jobs:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
       - upload_nightly_artifacts
       - slack/status:
-          fail_only: false
+          fail_only: true
           channel: $<< parameters.stack >>_id
           failure_message: Nightly << parameters.stack >> auth tests failed!
           webhook: $SLACK_WEBHOOK
@@ -249,14 +249,7 @@ workflows:
             tags:
               only: /.*/
           context:
-            - dockerhub
-      - uptime_monitor_no_auth:
-          name: "uptime_monitor_no_auth-dev"
-          stack: "dev"
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub            
+            - dockerhub        
       - integration_test_1:
           filters:
             tags:
