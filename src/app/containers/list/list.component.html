@@ -25,7 +25,7 @@
       <input matInput placeholder="Search tools" #input />
     </mat-form-field>
   </div>
-  <mat-table class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
+  <mat-table [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool">
