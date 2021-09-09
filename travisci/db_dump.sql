@@ -3434,7 +3434,7 @@ SELECT pg_catalog.setval('public.organization_id_seq', 1, false);
 -- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.sourcefile_id_seq', 41, true);
+SELECT pg_catalog.setval('public.sourcefile_id_seq', 72, true);
 
 
 --
