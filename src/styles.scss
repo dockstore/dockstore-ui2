@@ -535,22 +535,6 @@ td {
   word-break: break-word;
 }
 
-td,
-th {
-  font-weight: normal;
-  border-bottom: 1px solid #cfd1d7;
-}
-
-td,
-th {
-  padding: 10px 26px;
-}
-
-th {
-  background-color: #f4f4f4;
-  text-align: left;
-}
-
 #container-pagination {
   width: 100%;
   /*height: auto;*/
@@ -668,7 +652,7 @@ code {
 h5,
 .h5 {
   font-size: 16px;
-  color: #151c3d;
+  color: $header-color;
   font-weight: normal;
 }
 
@@ -995,7 +979,7 @@ mat-tab-group.no-pagination {
   border-radius: 8px;
   background-color: mat.get-color-from-palette($dockstore-app-gray, lighter);
   padding: 5px 8px;
-  color: #151c3d;
+  color: $header-color;
   font-size: 1.3rem;
   font-weight: 500;
 }
@@ -1023,6 +1007,7 @@ hr {
 
 .orcid-id-logo {
   vertical-align: sub;
+  margin-right: 0.5rem;
 }
 
 .small-org-logo {
@@ -1137,7 +1122,7 @@ button.accent-1-dark-btn {
 
 .info-icon {
   font-size: 1.5rem;
-  height: auto;
+  height: auto !important;
   color: mat.get-color-from-palette($dockstore-app-primary);
   padding: 0 !important;
 }
@@ -1165,4 +1150,32 @@ $truncate-text-values: 1, 3;
     -webkit-box-orient: vertical;
     word-break: break-word;
   }
+}
+
+// The following styles are for mat-tables.
+// The redesigned tables have no borders, bolded headers, no left-padding on the first elements and no right-padding on the last elements.
+.mat-table {
+  border: none;
+}
+
+.mat-header-cell {
+  font-weight: bold !important;
+  color: $header-color !important;
+}
+
+.mat-header-cell:first-of-type,
+.mat-cell:first-of-type,
+.mat-footer-cell:first-of-type {
+  padding-left: 0 !important;
+}
+
+.mat-cell:last-of-type,
+.mat-header-cell:last-of-type,
+.mat-footer-cell:last-of-type {
+  padding-right: 0 !important;
+}
+
+// This style is used by table headers when there is no data to display
+.inactive-table-header {
+  color: #d8d8d8 !important;
 }

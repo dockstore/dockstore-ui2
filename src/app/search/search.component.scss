@@ -21,7 +21,7 @@ mat-tab-group.homeComponent {
 }
 
 ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
-  color: #151c3d;
+  color: $header-color;
 }
 
 .sidebar {

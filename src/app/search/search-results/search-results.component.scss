@@ -14,6 +14,9 @@
  *    limitations under the License.
  */
 
+@use '~@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
 .mat-tab-content {
   display: block;
   background-color: #fff;
@@ -40,7 +43,7 @@
 
 .tagCloud-btn {
   box-shadow: 1px 3px 5px 0px #cfd1d7;
-  color: #151c3d;
+  color: $header-color;
   border: none;
   &.tool {
     background-color: #aadeee;

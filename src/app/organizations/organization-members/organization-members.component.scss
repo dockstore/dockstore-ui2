@@ -1,3 +1,6 @@
+@use '~@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
 .header-image {
   background-size: cover;
 }
@@ -34,5 +37,5 @@ a {
 }
 
 * {
-  color: #151c3d;
+  color: $header-color;
 }

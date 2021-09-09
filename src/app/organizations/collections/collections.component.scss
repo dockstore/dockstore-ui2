@@ -1,3 +1,6 @@
+@use '~@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
 .mat-action-row {
   border: 0;
 }
@@ -5,7 +8,7 @@
 .mat-card-title,
 .mat-card-subtitle,
 h4 {
-  color: #151c3d;
+  color: $header-color;
 }
 
 .mat-card-title {
