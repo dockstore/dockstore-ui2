@@ -1082,7 +1082,7 @@ button.accent-1-dark-btn {
 // Applied to mat-icons to make them smaller than Material defaults. 16px was chosen based on ORCID's recommended min logo size.
 // Typically acompanied with mat-btn-sm above.
 // This is also the same size as site-icons-small
-.mat-icon-sm {
+mat-icon.mat-icon-sm {
   // These two override .mat-icon's default 24px height and width
   height: 16px;
   width: 16px;
