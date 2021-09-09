@@ -23,6 +23,7 @@ export const ga4ghWorkflowIdPrefix = '#workflow/';
 export const ga4ghServiceIdPrefix = '#service/';
 export const includesValidation = 'validations';
 export const includesVersions = 'versions';
+export const includesAuthors = 'authors';
 export const bootstrap4smallModalSize = '300px';
 export const bootstrap4mediumModalSize = '500px';
 export const bootstrap4largeModalSize = '800px';
