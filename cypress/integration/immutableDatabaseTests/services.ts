@@ -115,8 +115,8 @@ describe('Dockstore Home', () => {
     cy.contains('Descriptor Type: ').should('not.exist');
     // Info Tab Service Version Information
     cy.contains('Service Version Information');
-    cy.contains('Author: ');
-    cy.contains('E-mail: ');
+    cy.contains('tr', 'Author');
+    cy.contains('tr', 'Email');
     cy.contains('Export as ZIP');
   }
 
