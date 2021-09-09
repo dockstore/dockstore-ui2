@@ -49,9 +49,7 @@ export function resetDB() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
     // cy.exec('docker exec -i postgres1 psql webservice_test -U postgres < travisci/db_dump.sql');
     cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
-    cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0 travisci/web.yml'
-    );
+    cy.exec('java -jar dockstore-webservice.jar db migrate -i 1.12.0 travisci/web.yml');
   });
 }
 
@@ -83,6 +81,6 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | 
 
 export function approvePotatoMembership() {
   cy.exec(
-    'PGPASSWORD=dockstore psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore'
+    "PGPASSWORD=dockstore psql -h localhost -c 'update organization_user set accepted=true where userid=2 and organizationid=1' webservice_test -U dockstore"
   );
 }
