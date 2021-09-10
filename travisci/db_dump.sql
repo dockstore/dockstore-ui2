@@ -3357,7 +3357,7 @@ SELECT pg_catalog.setval('public.collection_id_seq', 1, false);
 -- Name: container_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.container_id_seq', 101, true);
+SELECT pg_catalog.setval('public.container_id_seq', 102, true);
 
 
 --
