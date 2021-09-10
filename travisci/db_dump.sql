@@ -3455,7 +3455,7 @@ SELECT pg_catalog.setval('public.token_id_seq', 10, true);
 -- Name: validation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.validation_id_seq', 1, false);
+SELECT pg_catalog.setval('public.validation_id_seq', 9, false);
 
 
 --
