@@ -29,6 +29,7 @@ import { BioschemaService } from '../shared/bioschema.service';
 import {
   ga4ghServiceIdPrefix,
   ga4ghWorkflowIdPrefix,
+  includesAuthors,
   includesValidation,
   myBioWorkflowsURLSegment,
   myServicesURLSegment,
@@ -298,7 +299,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.workflowsService
-        .getPublishedWorkflowByPath(this.title, includesValidation, this.entryType === EntryType.Service, this.urlVersion)
+        .getPublishedWorkflowByPath(
+          this.title,
+          includesValidation + ',' + includesAuthors,
+          this.entryType === EntryType.Service,
+          this.urlVersion
+        )
         .subscribe(
           (workflow) => {
             this.workflowService.setWorkflow(workflow);

@@ -19,7 +19,7 @@ import { transaction } from '@datorama/akita';
 import { combineLatest, merge as observableMerge, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, first, map, takeUntil } from 'rxjs/operators';
 import { Base } from '../base';
-import { includesValidation } from '../constants';
+import { includesAuthors, includesValidation } from '../constants';
 import { SessionQuery } from '../session/session.query';
 import { ContainersService } from '../swagger/api/containers.service';
 import { WorkflowsService } from '../swagger/api/workflows.service';
@@ -85,7 +85,7 @@ export class CheckerWorkflowService extends Base {
     // This sets the checker-workflow.checkerWorkflow state
     if (isPublic) {
       this.workflowsService
-        .getPublishedWorkflow(id, includesValidation)
+        .getPublishedWorkflow(id, includesValidation + ',' + includesAuthors)
         .pipe(first())
         .subscribe(
           (workflow: Workflow) => {

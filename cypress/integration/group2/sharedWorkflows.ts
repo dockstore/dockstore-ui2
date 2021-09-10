@@ -133,6 +133,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       workflowName: undefined,
       workflowVersions: [
         {
+          authors: [],
           commitID: undefined,
           dirtyBit: false,
           doiStatus: 'NOT_REQUESTED',
@@ -142,6 +143,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           input_file_formats: [],
           last_modified: 1530729511472,
           name: '1',
+          orcidAuthors: [],
           output_file_formats: [],
           reference: '1',
           referenceType: 'TAG',
@@ -162,6 +164,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           workingDirectory: '',
         },
         {
+          authors: [],
           commitID: undefined,
           dirtyBit: false,
           doiStatus: 'NOT_REQUESTED',
@@ -171,6 +174,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           input_file_formats: [],
           last_modified: 1530729532618,
           name: '2',
+          orcidAuthors: [],
           output_file_formats: [],
           reference: '2',
           referenceType: 'TAG',

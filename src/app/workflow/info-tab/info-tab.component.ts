@@ -27,7 +27,7 @@ import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor } from '../../shared/swagger';
+import { Author, OrcidAuthor, ToolDescriptor } from '../../shared/swagger';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
@@ -62,6 +62,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   isPublic: boolean;
   trsLink: string;
   displayTextForButton: string;
+  displayedColumns: string[] = ['name', 'role', 'affiliation', 'email', 'orcid_id'];
+  authors: (Author | OrcidAuthor)[];
   EntryType = EntryType;
   descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
@@ -101,6 +103,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
+      this.authors = [...this.selectedVersion.authors, ...this.selectedVersion.orcidAuthors];
     } else {
       this.isValidVersion = false;
       this.trsLink = null;

@@ -13,7 +13,7 @@
         <mat-label>Filter</mat-label>
         <input #filter matInput (keyup)="applyFilter(filter.value)" placeholder="Ex. PUSH" />
       </mat-form-field>
-      <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z3 w-100" matSort>
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="w-100" matSort>
         <ng-container matColumnDef="eventDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
           <td mat-cell *matCellDef="let element">

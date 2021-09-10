@@ -23,7 +23,7 @@
       <mat-icon>warning</mat-icon>
       Some tools associated with this workflow are missing from Git repo.
     </mat-card>
-    <table *ngIf="hasContent" mat-table [dataSource]="toolContent" class="mat-elevation-z1 w-100">
+    <table *ngIf="hasContent" mat-table [dataSource]="toolContent" class="w-100">
       <ng-container matColumnDef="workflowExcerpt">
         <th mat-header-cell *matHeaderCellDef>Workflow Excerpt</th>
         <td mat-cell *matCellDef="let tool">
