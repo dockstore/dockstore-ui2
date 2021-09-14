@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  aws-s3: circleci/aws-s3@1.0.0
+  aws-s3: circleci/aws-s3@3.0.0
   slack: circleci/slack@3.4.2
 executors:
   integration_test_exec: # declares a reusable executor
@@ -187,7 +187,7 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: circleci/python:2.7
+      - image: cimg/python:2.7
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -224,7 +224,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: circleci/python:2.7
+      - image: cimg/python:2.7
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
