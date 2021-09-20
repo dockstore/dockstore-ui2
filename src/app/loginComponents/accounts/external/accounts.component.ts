@@ -29,7 +29,7 @@ import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
 
-interface AccountInfo {
+export interface AccountInfo {
   name: string;
   source: TokenSource;
   bold: string;
@@ -45,7 +45,7 @@ interface AccountInfo {
 @Component({
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.scss']
+  styleUrls: ['./accounts.component.scss'],
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
@@ -127,7 +127,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       control: false,
       docker: false,
       research: true,
-      message: 'ORCID credentials are used for creating ORCID works by exporting snapshotted entries and versions from Dockstore and to link to your ORCID record when your Dockstore account is displayed on the site.',
+      message:
+        'ORCID credentials are used for creating ORCID works by exporting snapshotted entries and versions from Dockstore and to link to your ORCID record when your Dockstore account is displayed on the site.',
       show: false,
       logo: 'orcid.svg',
     },

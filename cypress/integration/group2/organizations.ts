@@ -14,6 +14,8 @@
  *    limitations under the License.
  */
 import { approvePotatoMembership, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { TokenUser } from '../../../src/app/shared/swagger';
+import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
 
 const imageURL = 'https://fakeUrl.com/potato.png';
 describe('Dockstore Organizations', () => {
@@ -32,6 +34,25 @@ describe('Dockstore Organizations', () => {
     cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('textarea').clear().type(text);
   }
 
+  describe('Should need to link two external accounts', () => {
+    beforeEach(() => {
+      const userTokens: Array<TokenUser> = [{ tokenSource: TokenSource.DOCKSTORE, id: 1, username: 'user_A' }];
+      cy.server().route({
+        method: 'GET',
+        url: '*/users/1/tokens',
+        response: userTokens,
+      });
+    });
+
+    it('Next button should be disabled on form', () => {
+      cy.visit('/organizations');
+      cy.contains('button', 'Create Organization Request').should('be.visible').click();
+      cy.contains('button', 'Link Accounts').should('be.visible');
+      cy.contains('button', 'Next').should('be.disabled');
+      cy.contains('button', 'Link Accounts').should('be.visible').click();
+      cy.contains('Linked Accounts & Tokens');
+    });
+  });
   describe('Should be able to request new organization', () => {
     it('visit the organizations page from the home page', () => {
       cy.visit('/');
@@ -41,12 +62,15 @@ describe('Dockstore Organizations', () => {
 
     it('create a new unapproved organization', () => {
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
+      cy.contains('button', 'Next').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Display Name', 'Potato');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
+      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
+      typeInInput('Email', 'fake@potato.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
       typeInInput('Organization website', 'www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');

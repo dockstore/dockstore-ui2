@@ -17,10 +17,11 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
-import { Organization } from 'app/shared/swagger';
+import { Organization, TokenUser } from 'app/shared/swagger';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { FormsState, RegisterOrganizationService } from '../state/register-organization.service';
+import { TokenQuery } from '../../shared/state/token.query';
 
 /**
  * This is actually create and update organization dialog
@@ -40,15 +41,24 @@ export class RegisterOrganizationComponent implements OnInit, OnDestroy {
   public title: string;
   public TagEditorMode = TagEditorMode;
   public Organization = Organization;
+  public numLinkedAccounts: number = 0;
   constructor(
     private registerOrganizationService: RegisterOrganizationService,
     private formsManager: NgFormsManager<FormsState>,
+    private tokenQuery: TokenQuery,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
   ngOnInit() {
     this.registerOrganizationForm = this.registerOrganizationService.createForm(this.formsManager, this.data);
     this.title = this.registerOrganizationService.getTitle(this.data);
+    this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
+      tokens.forEach((token) => {
+        this.numLinkedAccounts++;
+      });
+      // The Dockstore token is included in the list, so decrease count by 1
+      this.numLinkedAccounts--;
+    });
   }
 
   createOrUpdateOrganization(): void {

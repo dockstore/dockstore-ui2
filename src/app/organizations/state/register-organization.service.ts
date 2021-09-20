@@ -124,7 +124,7 @@ export class RegisterOrganizationService {
       topic: [topic, Validators.required],
       link: [link, Validators.pattern(this.urlRegex)],
       location: [location],
-      contactEmail: [contactEmail, [Validators.email]],
+      contactEmail: [contactEmail, [Validators.email, Validators.required]],
       avatarUrl: [avatarUrl, Validators.pattern(this.logoUrlRegex)],
     });
     formsManager.upsert('registerOrganization', registerOrganizationForm);
