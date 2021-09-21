@@ -13,96 +13,73 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<mat-horizontal-stepper [linear]="true">
-  <mat-step [completed]="numLinkedAccounts >= 2">
-    <ng-template matStepLabel> User Verification </ng-template>
-    <p>
-      For verification purposes, you are required to have at least two external accounts linked to your Dockstore account. However, it's
-      preferrable to have more than two because Dockstore curators will use that information to verify that your organization request is
-      legitimate.
-    </p>
-    <p>You have {{ numLinkedAccounts }} account(s) linked.</p>
-    <div mat-dialog-actions class="pull-right">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-flat-button mat-dialog-close color="primary" routerLink="/accounts">Link Accounts</button>
-      <button mat-flat-button color="primary" matStepperNext [disabled]="numLinkedAccounts < 2">Next</button>
-    </div>
-  </mat-step>
-  <mat-step>
-    <h1 mat-dialog-title>{{ title }}</h1>
-    <div mat-dialog-content>
-      <p *ngIf="data.mode === TagEditorMode.Add">
-        Fill out the form to send an organization request to a Dockstore curator to approve. Once approved, the organization will be
-        publicly visible.
-      </p>
-      <app-alert></app-alert>
-      <form [formGroup]="registerOrganizationForm">
-        <mat-form-field
-          [matTooltip]="data.organization?.status === Organization.StatusEnum.APPROVED ? 'Contact Dockstore to change name' : ''"
-        >
-          <input type="text" matInput formControlName="name" placeholder="Name" required />
-          <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
-          <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
-          <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
-          <mat-error *ngIf="name.hasError('pattern')"
-            >Name can only contain alphanumeric characters. It must begin with a letter.</mat-error
-          >
-          <mat-hint>The name of the organization</mat-hint>
-        </mat-form-field>
-        <mat-form-field
-          [matTooltip]="data.organization?.status === Organization.StatusEnum.APPROVED ? 'Contact Dockstore to change display name' : ''"
-        >
-          <input type="text" matInput formControlName="displayName" placeholder="Display Name" required />
-          <mat-error *ngIf="displayName.hasError('required')">Display Name is required</mat-error>
-          <mat-error *ngIf="displayName.hasError('minlength')">Display Name should be at least 3 characters long</mat-error>
-          <mat-error *ngIf="displayName.hasError('maxlength')">Display Name should be at most 50 characters long</mat-error>
-          <mat-error *ngIf="displayName.hasError('pattern')"
-            >Display Name can contain alphanumeric characters, spaces, and some punctuation.</mat-error
-          >
-          <mat-hint>The display name of the organization</mat-hint>
-        </mat-form-field>
-        <mat-form-field>
-          <input type="text" matInput formControlName="topic" placeholder="Topic" required />
-          <mat-error *ngIf="topic.hasError('required')">Topic is required</mat-error>
-          <mat-hint>A short description of the organization</mat-hint>
-        </mat-form-field>
-        <mat-form-field>
-          <input type="text" matInput formControlName="link" placeholder="Organization website" />
-          <mat-error *ngIf="link.hasError('pattern')">Link must be a valid URL and start with http:// or https://</mat-error>
-          <mat-hint>Link to organization website</mat-hint>
-        </mat-form-field>
-        <mat-form-field>
-          <input type="text" matInput formControlName="location" placeholder="Location" />
-          <mat-hint>The location of the organization</mat-hint>
-        </mat-form-field>
-        <mat-form-field>
-          <input type="email" matInput formControlName="contactEmail" placeholder="Contact Email Address" />
-          <mat-error *ngIf="contactEmail.hasError('email') || contactEmail.hasError('required')"
-            >Please enter a valid contact email address</mat-error
-          >
-          <mat-hint>Once approved, this email address will be publicly visible</mat-hint>
-        </mat-form-field>
-        <mat-form-field>
-          <input data-cy="image-url-input" type="text" matInput formControlName="avatarUrl" placeholder="Image URL" />
-          <mat-error *ngIf="avatarUrl.hasError('pattern')">Link must end in .jpg, .jpeg, .png, or .gif</mat-error>
-          <mat-hint>Link to your organization's logo. Link must end in .jpg, .jpeg, .png, or .gif</mat-hint>
-        </mat-form-field>
-      </form>
-    </div>
-    <div mat-dialog-actions class="pull-right">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button
-        id="createOrUpdateOrganizationButton"
-        [matTooltip]="title"
-        mat-flat-button
-        color="primary"
-        [disabled]="!registerOrganizationForm.valid"
-        (click)="createOrUpdateOrganization()"
-        cdkFocusInitial
-        mat-dialog-close
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <p *ngIf="data.mode === TagEditorMode.Add">
+    Fill out the form to send an organization request to a Dockstore curator to approve. Once approved, the organization will be publicly
+    visible.
+  </p>
+  <app-alert></app-alert>
+  <form [formGroup]="registerOrganizationForm">
+    <mat-form-field [matTooltip]="data.organization?.status === Organization.StatusEnum.APPROVED ? 'Contact Dockstore to change name' : ''">
+      <input type="text" matInput formControlName="name" placeholder="Name" required />
+      <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
+      <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
+      <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
+      <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
+      <mat-hint>The name of the organization</mat-hint>
+    </mat-form-field>
+    <mat-form-field
+      [matTooltip]="data.organization?.status === Organization.StatusEnum.APPROVED ? 'Contact Dockstore to change display name' : ''"
+    >
+      <input type="text" matInput formControlName="displayName" placeholder="Display Name" required />
+      <mat-error *ngIf="displayName.hasError('required')">Display Name is required</mat-error>
+      <mat-error *ngIf="displayName.hasError('minlength')">Display Name should be at least 3 characters long</mat-error>
+      <mat-error *ngIf="displayName.hasError('maxlength')">Display Name should be at most 50 characters long</mat-error>
+      <mat-error *ngIf="displayName.hasError('pattern')"
+        >Display Name can contain alphanumeric characters, spaces, and some punctuation.</mat-error
       >
-        {{ title }}
-      </button>
-    </div>
-  </mat-step>
-</mat-horizontal-stepper>
+      <mat-hint>The display name of the organization</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput formControlName="topic" placeholder="Topic" required />
+      <mat-error *ngIf="topic.hasError('required')">Topic is required</mat-error>
+      <mat-hint>A short description of the organization</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="email" matInput formControlName="contactEmail" placeholder="Contact Email Address" required />
+      <mat-error *ngIf="contactEmail.hasError('required')"></mat-error>
+      <mat-error *ngIf="contactEmail.hasError('email')">Please enter a valid contact email address</mat-error>
+      <mat-hint>Once approved, this email address will be publicly visible.</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput formControlName="link" placeholder="Organization website" />
+      <mat-error *ngIf="link.hasError('pattern')">Link must be a valid URL and start with http:// or https://</mat-error>
+      <mat-hint>Link to organization website</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput formControlName="location" placeholder="Location" />
+      <mat-hint>The location of the organization</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <input data-cy="image-url-input" type="text" matInput formControlName="avatarUrl" placeholder="Image URL" />
+      <mat-error *ngIf="avatarUrl.hasError('pattern')">Link must end in .jpg, .jpeg, .png, or .gif</mat-error>
+      <mat-hint>Link to your organization's logo. Link must end in .jpg, .jpeg, .png, or .gif</mat-hint>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions class="pull-right">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    id="createOrUpdateOrganizationButton"
+    [matTooltip]="title"
+    mat-flat-button
+    color="primary"
+    [disabled]="!registerOrganizationForm.valid"
+    (click)="createOrUpdateOrganization()"
+    cdkFocusInitial
+    mat-dialog-close
+  >
+    {{ title }}
+  </button>
+</div>

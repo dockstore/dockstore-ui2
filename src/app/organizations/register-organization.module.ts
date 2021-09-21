@@ -7,10 +7,11 @@ import { AlertService } from '../shared/alert/state/alert.service';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { RegisterOrganizationComponent } from './registerOrganization/register-organization.component';
 import { RouterModule } from '@angular/router';
+import { RequireAccountsModalComponent } from './registerOrganization/requireAccountsModal/require-accounts-modal.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, CustomMaterialModule, ReactiveFormsModule, RefreshAlertModule, RouterModule],
-  declarations: [RegisterOrganizationComponent],
+  declarations: [RegisterOrganizationComponent, RequireAccountsModalComponent],
   providers: [AlertService],
 })
 export class RegisterOrganizationModule {}

@@ -53,6 +53,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('Linked Accounts & Tokens');
     });
   });
+
   describe('Should be able to request new organization', () => {
     it('visit the organizations page from the home page', () => {
       cy.visit('/');
