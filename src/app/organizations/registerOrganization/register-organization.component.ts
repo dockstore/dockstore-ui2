@@ -17,11 +17,10 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
-import { Organization, TokenUser } from 'app/shared/swagger';
+import { Organization } from 'app/shared/swagger';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { FormsState, RegisterOrganizationService } from '../state/register-organization.service';
-import { TokenQuery } from '../../shared/state/token.query';
 
 /**
  * This is actually create and update organization dialog
