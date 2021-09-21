@@ -94,9 +94,10 @@ describe('Tool, Workflow, and Organization starring', () => {
     it('Organization can be starred/unstarred', () => {
       cy.visit('/organizations');
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
+      cy.contains('button', 'Next').should('be.visible').click();
       typeInInput('Name', 'Potato');
       typeInInput('Display Name', 'Potato');
-      typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
+      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
 
