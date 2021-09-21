@@ -98,6 +98,7 @@ describe('Tool, Workflow, and Organization starring', () => {
       typeInInput('Name', 'Potato');
       typeInInput('Display Name', 'Potato');
       typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
+      typeInInput('Email', 'yukon@potato.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
 
