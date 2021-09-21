@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenQuery } from '../../../shared/state/token.query';
 import { MatDialog } from '@angular/material/dialog';
-import { TokenUser } from '../../../shared/swagger';
 import { RegisterOrganizationComponent } from '../register-organization.component';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-require-accounts-modal',
   templateUrl: './require-accounts-modal.component.html',
 })
 export class RequireAccountsModalComponent implements OnInit {
-  public numLinkedAccounts: number = 0;
-  private ngUnsubscribe: Subject<{}> = new Subject();
+  public numLinkedAccounts$: Observable<number>;
   messageMapping: any = {
     '=1': '1 account',
     other: '# accounts',
@@ -21,9 +19,7 @@ export class RequireAccountsModalComponent implements OnInit {
   constructor(private tokenQuery: TokenQuery, private matDialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens: TokenUser[]) => {
-      this.numLinkedAccounts = tokens.length - 1;
-    });
+    this.numLinkedAccounts$ = this.tokenQuery.tokens$.pipe(map((tokens) => tokens.length - 1));
   }
 
   createOrganization(): void {
