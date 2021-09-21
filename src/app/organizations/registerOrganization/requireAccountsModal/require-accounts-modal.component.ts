@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TokenUser } from '../../../shared/swagger';
 import { RegisterOrganizationComponent } from '../register-organization.component';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-require-accounts-modal',
@@ -11,15 +13,16 @@ import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
 })
 export class RequireAccountsModalComponent implements OnInit {
   public numLinkedAccounts: number = 0;
+  private ngUnsubscribe: Subject<{}> = new Subject();
+  messageMapping: any = {
+    '=1': '1 account',
+    other: '# accounts',
+  };
   constructor(private tokenQuery: TokenQuery, private matDialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
-      tokens.forEach((token) => {
-        this.numLinkedAccounts++;
-      });
-      // The Dockstore token is included in the list, so decrease count by 1
-      this.numLinkedAccounts--;
+    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens: TokenUser[]) => {
+      this.numLinkedAccounts = tokens.length - 1;
     });
   }
 

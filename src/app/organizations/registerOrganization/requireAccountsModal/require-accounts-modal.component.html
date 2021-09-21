@@ -4,8 +4,8 @@
   preferrable to have more than two because Dockstore curators will use that information to verify that your organization request is
   legitimate.
 </p>
-<p>You have {{ numLinkedAccounts }} account(s) linked.</p>
-<div mat-dialog-actions class="pull-right">
+<p>You have {{ numLinkedAccounts | i18nPlural: messageMapping }} linked.</p>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-flat-button mat-dialog-close color="primary" routerLink="/accounts">Link Accounts</button>
   <button mat-flat-button mat-dialog-close color="primary" [disabled]="numLinkedAccounts < 2" (click)="createOrganization()">Next</button>

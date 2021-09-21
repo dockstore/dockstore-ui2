@@ -68,7 +68,7 @@
     </mat-form-field>
   </form>
 </div>
-<div mat-dialog-actions class="pull-right">
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
   <button mat-button mat-dialog-close>Cancel</button>
   <button
     id="createOrUpdateOrganizationButton"
@@ -78,7 +78,6 @@
     [disabled]="!registerOrganizationForm.valid"
     (click)="createOrUpdateOrganization()"
     cdkFocusInitial
-    mat-dialog-close
   >
     {{ title }}
   </button>
