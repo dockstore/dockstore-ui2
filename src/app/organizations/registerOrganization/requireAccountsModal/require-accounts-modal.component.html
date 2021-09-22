@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>User Verification</h1>
+<p>
+  For verification purposes, you are required to have at least two external accounts linked to your Dockstore account. However, it's
+  preferrable to have more than two because Dockstore curators will use that information to verify that your organization request is
+  legitimate.
+</p>
+<p>You have {{ numLinkedAccounts$ | async | i18nPlural: messageMapping }} linked.</p>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button mat-dialog-close color="primary" routerLink="/accounts">Link Accounts</button>
+  <button mat-flat-button mat-dialog-close color="primary" [disabled]="(numLinkedAccounts$ | async) < 2" (click)="createOrganization()">
+    Next
+  </button>
+</div>
