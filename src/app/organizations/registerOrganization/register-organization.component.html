@@ -48,7 +48,7 @@
     </mat-form-field>
     <mat-form-field>
       <input type="email" matInput formControlName="contactEmail" placeholder="Contact Email Address" required />
-      <mat-error *ngIf="contactEmail.hasError('required')"></mat-error>
+      <mat-error *ngIf="contactEmail.hasError('required')">Email is required</mat-error>
       <mat-error *ngIf="contactEmail.hasError('email')">Please enter a valid contact email address</mat-error>
       <mat-hint>Once approved, this email address will be publicly visible.</mat-hint>
     </mat-form-field>
