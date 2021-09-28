@@ -18,31 +18,22 @@
 <button data-cy="actionsButton" mat-button [matMenuTriggerFor]="menu">Actions<mat-icon>arrow_drop_down</mat-icon></button>
 <mat-menu #menu="matMenu">
   <button type="button" mat-menu-item color="accent" *ngIf="isPublic$ | async" (click)="setMode(TagEditorMode.View); (false)">View</button>
-  <button
-    data-cy="editTagButton"
-    type="button"
-    mat-menu-item
-    color="accent"
-    *ngIf="(isPublic$ | async) === false"
-    (click)="setMode(TagEditorMode.Edit); (false)"
-  >
-    Edit
-  </button>
-  <button type="button" mat-menu-item color="warn" *ngIf="(isPublic$ | async) === false && isManualTool" (click)="deleteTag(); (false)">
-    Delete
-  </button>
-  <button
-    type="button"
-    mat-menu-item
-    color="warn"
-    class="deleteVersionButton"
-    *ngIf="(isPublic$ | async) === false && tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-    (click)="deleteHostedTag(); (false)"
-  >
-    Delete
-  </button>
-  <button mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion" (click)="updateDefaultVersion()">
-    Set as Default Version
-  </button>
+  <ng-container *ngIf="(isPublic$ | async) === false">
+    <button data-cy="editTagButton" type="button" mat-menu-item color="accent" (click)="setMode(TagEditorMode.Edit); (false)">Edit</button>
+    <button type="button" mat-menu-item color="warn" *ngIf="isManualTool" (click)="deleteTag(); (false)">Delete</button>
+    <button
+      type="button"
+      mat-menu-item
+      color="warn"
+      class="deleteVersionButton"
+      *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+      (click)="deleteHostedTag(); (false)"
+    >
+      Delete
+    </button>
+    <button mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion" (click)="updateDefaultVersion()">
+      Set as Default Version
+    </button>
+  </ng-container>
   <!-- Modal -->
 </mat-menu>
