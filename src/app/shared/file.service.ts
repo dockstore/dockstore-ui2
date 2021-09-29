@@ -14,10 +14,8 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-
 import * as FileSaver from 'file-saver';
-
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from './constants';
 import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';

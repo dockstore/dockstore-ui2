@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { Directive, OnDestroy } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 

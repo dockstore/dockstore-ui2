@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { finalize, first } from 'rxjs/operators';
 
