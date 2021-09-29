@@ -11,7 +11,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { WorkflowService } from '../state/workflow.service';
-import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-download.pipe';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
 import { PublicFileDownloadPipe } from './../../shared/entry/public-file-download.pipe';
 import { FileService } from './../../shared/file.service';
@@ -26,7 +25,7 @@ describe('CodeEditorListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CodeEditorListComponent, CodeEditorComponent, PublicFileDownloadPipe, PrivateFileDownloadPipe, PrivateFilePathPipe],
+        declarations: [CodeEditorListComponent, CodeEditorComponent, PublicFileDownloadPipe, PrivateFilePathPipe],
         imports: [
           MatButtonModule,
           MatTabsModule,

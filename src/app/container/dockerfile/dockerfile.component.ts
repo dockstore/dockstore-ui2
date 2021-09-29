@@ -41,7 +41,6 @@ export class DockerfileComponent {
   content: string;
   filePath: string;
   public published$: Observable<boolean>;
-  public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
   public loading = true;
   constructor(public fileService: FileService, private toolQuery: ToolQuery, private containersService: ContainersService) {
@@ -75,7 +74,10 @@ export class DockerfileComponent {
   }
 
   customDownloadFile(): void {
-    this.customDownloadHREF = this.fileService.getFileData(this.content);
     this.customDownloadPath = this.fileService.getFileName(this.filePath);
+  }
+
+  downloadFileContent() {
+    this.fileService.downloadFileContent(this.content, this.customDownloadPath.toString());
   }
 }

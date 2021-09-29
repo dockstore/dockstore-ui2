@@ -46,7 +46,6 @@ export abstract class EntryFileSelector implements OnDestroy {
   public files: Array<ToolFile>;
   public published$: Observable<boolean>;
   public downloadFilePath: string;
-  public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
   public loading = false;
   public validationMessage = null;
@@ -138,7 +137,6 @@ export abstract class EntryFileSelector implements OnDestroy {
    * @memberof EntryFileSelector
    */
   updateCustomDownloadFileButtonAttributes(): void {
-    this.customDownloadHREF = this.fileService.getFileData(this.content);
     this.customDownloadPath = this.fileService.getFileName(this.filePath);
   }
 

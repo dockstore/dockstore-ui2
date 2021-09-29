@@ -41,11 +41,10 @@
                   mat-icon-button
                   color="secondary"
                   class="mr-1"
-                  [href]="customDownloadHREF"
-                  [download]="customDownloadPath"
                   type="button"
                   title="{{ filePath }}"
                   matTooltip="Download File"
+                  (click)="downloadFileContent()"
                 >
                   <mat-icon>save_alt</mat-icon>
                 </a>

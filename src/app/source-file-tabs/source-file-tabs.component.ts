@@ -3,7 +3,6 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SafeUrl } from '@angular/platform-browser';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
@@ -28,7 +27,6 @@ export class SourceFileTabsComponent implements OnChanges {
   currentFile: SourceFile | null;
   noFileInTabWarning: string;
   validationMessage: Map<string, string>;
-  customDownloadHREF: SafeUrl;
   customDownloadPath: String;
   filePath: String;
   fileTabs: Map<string, SourceFile[]>;
@@ -82,11 +80,9 @@ export class SourceFileTabsComponent implements OnChanges {
 
   selectFile(file: SourceFile) {
     if (file) {
-      this.customDownloadHREF = this.fileService.getFileData(file.content);
       this.customDownloadPath = this.fileService.getFileName(file.path);
       this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.version.name);
     } else {
-      this.customDownloadHREF = null;
       this.customDownloadPath = null;
       this.filePath = null;
     }
@@ -111,5 +107,9 @@ export class SourceFileTabsComponent implements OnChanges {
           this.selectFile(foundFile);
         }
       });
+  }
+
+  downloadFileContent() {
+    this.fileService.downloadFileContent(this.currentFile.content, this.customDownloadPath.toString());
   }
 }

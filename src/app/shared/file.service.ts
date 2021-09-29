@@ -14,6 +14,9 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
+
+import * as FileSaver from 'file-saver';
+
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from './constants';
 import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
@@ -91,21 +94,16 @@ export class FileService {
   }
 
   /**
-   * Constructing the custom download link involves setting 2 attributes ('href' and 'download')
-   * A custom download link is used when the TRS (auth or no auth) does not offer a plain text response of the contents (CONTAINERFILE)
-   * This gets the 'href' attribute
+   * Takes a string and downloads it as a file
    * @param {string} content  The file contents
-   * @returns {SafeUrl}    What to set for the 'href' attribute
+   * @param {string} fileName The name for the file that will be downloaded
+   * @returns {void}
    * @memberof FileService
    */
-  getFileData(content: string): SafeUrl {
-    if (content) {
-      // This uses the Data URI scheme, 'data:[<media type>][;base64],<data>'. For security
-      // purposes, it is important that the prefix is 'data:text/plain,' as this forces the user-input content to
-      // only be treated as plain text data. Other Data URI media types (such as text/html) could lead to potential XSS vulnerabilities.
-      return this.sanitizer.bypassSecurityTrustUrl('data:text/plain,' + encodeURIComponent(content));
-    } else {
-      return null;
+  downloadFileContent(content: string, fileName: string) {
+    if (content && fileName) {
+      var data = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      FileSaver.saveAs(data, fileName);
     }
   }
 

@@ -6,6 +6,7 @@ import { SourceFile } from '../swagger';
 import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
 import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
 import { CodeEditorListService } from './code-editor-list.service';
+import { FileService } from 'app/shared/file.service';
 
 export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
 
@@ -26,7 +27,7 @@ export class CodeEditorListComponent {
   public downloadFilePath: string;
   public DescriptorType = ToolDescriptor.TypeEnum;
 
-  constructor(private workflowQuery: WorkflowQuery) {
+  constructor(private fileService: FileService, private workflowQuery: WorkflowQuery) {
     this.published$ = this.workflowQuery.workflowIsPublished$;
   }
 
@@ -102,5 +103,10 @@ export class CodeEditorListComponent {
   updateSourceFilePath(newPath: string, index: number) {
     this.sourcefiles[index].absolutePath = newPath;
     this.sourcefiles[index].path = newPath;
+  }
+
+  downloadFileContent(content: string, filePath: string) {
+    let fileName = this.fileService.getFileName(filePath);
+    this.fileService.downloadFileContent(content, fileName);
   }
 }

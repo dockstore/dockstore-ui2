@@ -33,15 +33,7 @@
           <span>{{ filePath }}</span>
           <span class="spacer"></span>
           <div class="btn-group pull-right" role="group">
-            <a
-              mat-icon-button
-              color="secondary"
-              class="mr-1"
-              [href]="customDownloadHREF"
-              [download]="customDownloadPath"
-              type="button"
-              title="{{ filePath }}"
-            >
+            <a mat-icon-button color="secondary" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
               <mat-icon>save_alt</mat-icon>
             </a>
             <button mat-icon-button color="secondary" type="button" [cdkCopyToClipboard]="content">
