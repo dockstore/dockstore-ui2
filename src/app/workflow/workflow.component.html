@@ -181,7 +181,7 @@
               [isOwner]="isOwner"
             ></app-info-tab>
           </mat-tab>
-          <div *ngIf="entryType === EntryType.BioWorkflow">
+          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
             <mat-tab id="launchTab" label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
@@ -200,6 +200,7 @@
                   [canWrite]="canWrite"
                   [isOwner]="isOwner"
                   [mode]="workflow?.mode"
+                  [entryType]="entryType"
                 ></app-launch>
               </ng-template>
               <ng-template #noVersions>
@@ -211,6 +212,7 @@
               </ng-template>
             </mat-tab>
           </div>
+          <div *ngIf="entryType === EntryType.Tool"></div>
           <mat-tab id="versionsTab" label="Versions">
             <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
               <app-versions-workflow
@@ -346,7 +348,11 @@
       </div>
     </div>
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
-      <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
+      <app-launch-third-party
+        *ngIf="entryType !== EntryType.Tool"
+        [workflow]="workflow"
+        [selectedVersion]="selectedVersion"
+      ></app-launch-third-party>
       <mat-card>
         <mat-card-header>
           <mat-card-title>Recent Versions</mat-card-title>

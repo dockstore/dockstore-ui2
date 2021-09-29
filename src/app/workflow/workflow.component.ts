@@ -33,6 +33,7 @@ import {
   includesValidation,
   myBioWorkflowsURLSegment,
   myServicesURLSegment,
+  myToolsURLSegment,
 } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
@@ -56,7 +57,7 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
-import { EntriesService } from '../shared/openapi';
+import { EntriesService, WorkflowSubClass } from '../shared/openapi';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
@@ -144,6 +145,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     if (this.entryType === EntryType.BioWorkflow) {
       this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
+    } else if (this.entryType === EntryType.Tool) {
+      this.validTabs = ['info', 'launch', 'versions', 'files'];
+      this.redirectToCanonicalURL('/' + myToolsURLSegment);
     } else {
       this.validTabs = ['info', 'versions', 'files'];
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
@@ -308,13 +312,16 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     if (url.includes('workflows') || url.includes('services')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
+      let subclass: WorkflowSubClass;
+      if (this.entryType === EntryType.Tool) {
+        subclass = WorkflowSubClass.APPTOOL;
+      } else if (this.entryType === EntryType.BioWorkflow) {
+        subclass = WorkflowSubClass.BIOWORKFLOW;
+      } else {
+        subclass = WorkflowSubClass.SERVICE;
+      }
       this.workflowsService
-        .getPublishedWorkflowByPath(
-          this.title,
-          includesValidation + ',' + includesAuthors,
-          this.entryType === EntryType.Service,
-          this.urlVersion
-        )
+        .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
         .subscribe(
           (workflow) => {
             this.workflowService.setWorkflow(workflow);
@@ -353,6 +360,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       const entryPath = workflow.full_workflow_path;
       if (this.entryType === EntryType.BioWorkflow) {
         this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
+      } else if (this.entryType === EntryType.Tool) {
+        this.updateUrl(entryPath, myToolsURLSegment, 'containers');
       } else {
         this.updateUrl(entryPath, myServicesURLSegment, 'services');
       }

@@ -59,6 +59,7 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SelectModule } from './select.module';
 import { SnackbarModule } from './snackbar.module';
 import { CategoryButtonModule } from './../../categories/button/category-button.module';
+import { WorkflowModule } from './workflow.module';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { CategoryButtonModule } from './../../categories/button/category-button.
     PipeModule,
     SnackbarModule,
     CategoryButtonModule,
+    WorkflowModule,
   ],
   providers: [
     EmailService,

@@ -224,7 +224,9 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   }
 
   public setupPublicEntry(url: String) {
-    if (url.includes('containers') || url.includes('tools')) {
+    if (url.includes('github.com')) {
+      this.containerService.setTool(null);
+    } else if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title, includesValidation).subscribe(
@@ -238,6 +240,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
           }
         },
         () => {
+          //this.containerService.setTool(null);
           this.router.navigate(['../']);
         }
       );
