@@ -6,6 +6,7 @@ import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'a
 import { Validation } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
+import { Workflow } from '../shared/openapi/model/workflow';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,16 @@ export class SourceFileTabsService {
    */
   getSourceFiles(workflowId: number, versionId: number): Observable<SourceFile[]> {
     return this.workflowsService.getWorkflowVersionsSourcefiles(workflowId, versionId);
+  }
+
+  /**
+   * Retrieve the given workflow path, i.e. the repository path for use
+   * in creating the TRS URL, e.g. github.com/wshands/hmmer-docker
+   * and find out whether the workflow is published
+   * @param workflowId
+   */
+  getWorkflow(workflowId: number): Observable<Workflow> {
+    return this.workflowsService.getWorkflow(workflowId, '');
   }
 
   convertSourceFilesToFileTabs(
@@ -112,12 +123,18 @@ export class SourceFileTabsService {
    * @param filePath
    * @param versionName
    */
-  getDescriptorPath(descriptorType: ToolDescriptor.TypeEnum, filePath: string, versionName: string): string {
+  getDescriptorPath(
+    workflowId: number,
+    descriptorType: ToolDescriptor.TypeEnum,
+    fileId: string,
+    versionName: string,
+    relativePath: string
+  ): string {
     const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(descriptorType);
     if (type === null) {
       return null;
     }
-    const id = ga4ghWorkflowIdPrefix + filePath;
-    return this.fileService.getDownloadFilePath(id, versionName, type, filePath);
+    const id = ga4ghWorkflowIdPrefix + fileId;
+    return this.fileService.getDownloadFilePath(id, versionName, type, relativePath);
   }
 }

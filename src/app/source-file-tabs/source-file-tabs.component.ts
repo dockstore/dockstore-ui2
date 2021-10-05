@@ -6,9 +6,11 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
-import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
+import { SourceFile, ToolDescriptor, WorkflowVersion, Workflow } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 import { SourceFileTabsService } from './source-file-tabs.service';
+import { ToolQuery } from '../shared/tool/tool.query';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -27,9 +29,11 @@ export class SourceFileTabsComponent implements OnChanges {
   currentFile: SourceFile | null;
   noFileInTabWarning: string;
   validationMessage: Map<string, string>;
-  customDownloadPath: String;
-  filePath: String;
+  fileName: String;
+  relativePath: String;
+  downloadFilePath: String;
   fileTabs: Map<string, SourceFile[]>;
+  isPublished: boolean;
 
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
@@ -70,6 +74,36 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   /**
+   * Sets up the TRS URL of the selected file and whether it is published
+   */
+  setupDownloadFilePath(relativePath: String) {
+    this.loading = true;
+    this.displayError = false;
+    this.sourceFileTabsService
+      .getWorkflow(this.workflowId)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(
+        (currentWorkflow: Workflow) => {
+          this.isPublished = currentWorkflow.is_published;
+          this.downloadFilePath = this.sourceFileTabsService.getDescriptorPath(
+            this.workflowId,
+            this.descriptorType,
+            currentWorkflow.full_workflow_path,
+            this.version.name,
+            relativePath.toString()
+          );
+        },
+        () => {
+          this.displayError = true;
+        }
+      );
+  }
+
+  /**
    * Sets the validation message and new default selected file
    * @param fileType
    */
@@ -80,11 +114,13 @@ export class SourceFileTabsComponent implements OnChanges {
 
   selectFile(file: SourceFile) {
     if (file) {
-      this.customDownloadPath = this.fileService.getFileName(file.path);
-      this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.version.name);
+      this.fileName = this.fileService.getFileName(file.path);
+      this.relativePath = file.absolutePath;
+      this.setupDownloadFilePath(this.relativePath);
     } else {
-      this.customDownloadPath = null;
-      this.filePath = null;
+      this.fileName = null;
+      this.relativePath = null;
+      this.downloadFilePath = null;
     }
     this.currentFile = file;
   }
@@ -110,6 +146,6 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   downloadFileContent() {
-    this.fileService.downloadFileContent(this.currentFile.content, this.customDownloadPath.toString());
+    this.fileService.downloadFileContent(this.currentFile.content, this.relativePath.toString());
   }
 }
