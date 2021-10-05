@@ -100,7 +100,7 @@ export class FileService {
    */
   downloadFileContent(content: string, fileName: string) {
     if (content && fileName) {
-      var data = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const data = new Blob([content], { type: 'text/plain;charset=utf-8' });
       FileSaver.saveAs(data, fileName);
     }
   }

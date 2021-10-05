@@ -106,7 +106,7 @@ export class CodeEditorListComponent {
   }
 
   downloadFileContent(content: string, filePath: string) {
-    let fileName = this.fileService.getFileName(filePath);
+    const fileName = this.fileService.getFileName(filePath);
     this.fileService.downloadFileContent(content, fileName);
   }
 }
