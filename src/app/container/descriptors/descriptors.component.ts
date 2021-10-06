@@ -87,6 +87,6 @@ export class DescriptorsComponent extends EntryFileSelector implements OnChanges
   }
 
   downloadFileContent() {
-    this.fileService.downloadFileContent(this.content, this.customDownloadPath.toString());
+    this.fileService.downloadFileContent(this.content, this.customDownloadPath);
   }
 }
