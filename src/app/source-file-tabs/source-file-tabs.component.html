@@ -43,7 +43,7 @@
                   class="mr-1"
                   type="button"
                   *ngIf="isPublished; else unpublishedDownloadLink"
-                  download
+                  download="{{ fileName }}"
                   [href]="downloadFilePath"
                   matTooltip="Download {{ fileName }}"
                 >

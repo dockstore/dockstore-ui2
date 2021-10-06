@@ -135,6 +135,7 @@ export class SourceFileTabsService {
       return null;
     }
     const id = ga4ghWorkflowIdPrefix + fileId;
-    return this.fileService.getDownloadFilePath(id, versionName, type, relativePath);
+    const relativePathWithoutSlash = relativePath.replace(/^\/+/, '');
+    return this.fileService.getDownloadFilePath(id, versionName, type, relativePathWithoutSlash);
   }
 }

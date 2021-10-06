@@ -9,8 +9,6 @@ import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowVersion, Workflow } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 import { SourceFileTabsService } from './source-file-tabs.service';
-import { ToolQuery } from '../shared/tool/tool.query';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -29,9 +27,9 @@ export class SourceFileTabsComponent implements OnChanges {
   currentFile: SourceFile | null;
   noFileInTabWarning: string;
   validationMessage: Map<string, string>;
-  fileName: String;
-  relativePath: String;
-  downloadFilePath: String;
+  fileName: string;
+  relativePath: string;
+  downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
   isPublished: boolean;
 
@@ -76,7 +74,7 @@ export class SourceFileTabsComponent implements OnChanges {
   /**
    * Sets up the TRS URL of the selected file and whether it is published
    */
-  setupDownloadFilePath(relativePath: String) {
+  setupDownloadFilePath(relativePath: string) {
     this.loading = true;
     this.displayError = false;
     this.sourceFileTabsService
@@ -94,7 +92,7 @@ export class SourceFileTabsComponent implements OnChanges {
             this.descriptorType,
             currentWorkflow.full_workflow_path,
             this.version.name,
-            relativePath.toString()
+            relativePath
           );
         },
         () => {
@@ -146,6 +144,6 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   downloadFileContent() {
-    this.fileService.downloadFileContent(this.currentFile.content, this.relativePath.toString());
+    this.fileService.downloadFileContent(this.currentFile.content, this.fileName);
   }
 }
