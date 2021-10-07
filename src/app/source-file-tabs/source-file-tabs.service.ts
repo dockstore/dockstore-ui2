@@ -6,7 +6,6 @@ import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'a
 import { Validation } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
-import { Workflow } from '../shared/openapi/model/workflow';
 
 @Injectable({
   providedIn: 'root',
@@ -25,16 +24,6 @@ export class SourceFileTabsService {
    */
   getSourceFiles(workflowId: number, versionId: number): Observable<SourceFile[]> {
     return this.workflowsService.getWorkflowVersionsSourcefiles(workflowId, versionId);
-  }
-
-  /**
-   * Retrieve the given workflow path, i.e. the repository path for use
-   * in creating the TRS URL, e.g. github.com/wshands/hmmer-docker
-   * and find out whether the workflow is published
-   * @param workflowId
-   */
-  getWorkflow(workflowId: number): Observable<Workflow> {
-    return this.workflowsService.getWorkflow(workflowId, '');
   }
 
   convertSourceFilesToFileTabs(
@@ -135,7 +124,6 @@ export class SourceFileTabsService {
       return null;
     }
     const id = ga4ghWorkflowIdPrefix + fileId;
-    const relativePathWithoutSlash = relativePath.replace(/^\/+/, '');
-    return this.fileService.getDownloadFilePath(id, versionName, type, relativePathWithoutSlash);
+    return this.fileService.getDownloadFilePath(id, versionName, type, relativePath);
   }
 }

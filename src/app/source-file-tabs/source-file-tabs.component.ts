@@ -6,9 +6,12 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
-import { SourceFile, ToolDescriptor, WorkflowVersion, Workflow } from 'app/shared/openapi';
+import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 import { SourceFileTabsService } from './source-file-tabs.service';
+
+import { WorkflowQuery } from '../shared/state/workflow.query';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -16,7 +19,16 @@ import { SourceFileTabsService } from './source-file-tabs.service';
   styleUrls: ['./source-file-tabs.component.scss'],
 })
 export class SourceFileTabsComponent implements OnChanges {
-  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService, private matDialog: MatDialog) {}
+  constructor(
+    private fileService: FileService,
+    private sourceFileTabsService: SourceFileTabsService,
+    private matDialog: MatDialog,
+    private workflowQuery: WorkflowQuery
+  ) {
+    this.isPublished$ = this.workflowQuery.workflowIsPublished$;
+  }
+  // Used to generate the TRS file path
+  @Input() entryPath: string;
   @Input() workflowId: number;
   // Used to generate the TRS file path
   @Input() descriptorType: ToolDescriptor.TypeEnum;
@@ -25,14 +37,12 @@ export class SourceFileTabsComponent implements OnChanges {
   loading = true;
   displayError = false;
   currentFile: SourceFile | null;
-  noFileInTabWarning: string;
   validationMessage: Map<string, string>;
   fileName: string;
   relativePath: string;
   downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
-  isPublished: boolean;
-
+  protected isPublished$: Observable<boolean>;
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
    */
@@ -72,36 +82,6 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   /**
-   * Sets up the TRS URL of the selected file and whether it is published
-   */
-  setupDownloadFilePath(relativePath: string) {
-    this.loading = true;
-    this.displayError = false;
-    this.sourceFileTabsService
-      .getWorkflow(this.workflowId)
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-        })
-      )
-      .subscribe(
-        (currentWorkflow: Workflow) => {
-          this.isPublished = currentWorkflow.is_published;
-          this.downloadFilePath = this.sourceFileTabsService.getDescriptorPath(
-            this.workflowId,
-            this.descriptorType,
-            currentWorkflow.full_workflow_path,
-            this.version.name,
-            relativePath
-          );
-        },
-        () => {
-          this.displayError = true;
-        }
-      );
-  }
-
-  /**
    * Sets the validation message and new default selected file
    * @param fileType
    */
@@ -114,7 +94,13 @@ export class SourceFileTabsComponent implements OnChanges {
     if (file) {
       this.fileName = this.fileService.getFileName(file.path);
       this.relativePath = file.absolutePath;
-      this.setupDownloadFilePath(this.relativePath);
+      this.downloadFilePath = this.sourceFileTabsService.getDescriptorPath(
+        this.workflowId,
+        this.descriptorType,
+        this.entryPath,
+        this.version.name,
+        this.relativePath
+      );
     } else {
       this.fileName = null;
       this.relativePath = null;
