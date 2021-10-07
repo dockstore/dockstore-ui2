@@ -11,8 +11,7 @@ describe('run stochastic smoke test', () => {
 function testEntry(tab: string) {
   beforeEach('get random entry on first page', () => {
     cy.visit('/search');
-    // Fragile assertion that depends on the below workflow to be in the first table results, but not the 2nd
-    cy.contains('DataBiosphere/topmed-workflows/UM_variant_caller_wdl');
+    cy.get('[data-cy=workflowColumn] a');
     goToTab(tab);
     const linkName = tab === 'Workflows' ? 'workflowColumn' : 'toolNames';
     // select a random entry on the first page and navigate to it
@@ -58,19 +57,19 @@ function testEntry(tab: string) {
 const organizations = [['Broad Institute']];
 describe('Check organizations page', () => {
   it('has multiple organizations', () => {
+    cy.visit('/');
     cy.contains('a', 'Organizations').click();
     cy.url().should('contain', '/organizations');
-    cy.get('[data-cy=orgName]').should('have.length.of.at.least', 2);
+    cy.get('[data-cy=orgName]').should('have.length.of.at.least', 1);
   });
 
-  organizations.forEach((t) => {
-    it('organization page and collections work', () => {
-      cy.contains('[data-cy=orgName]', t[0]).click();
-      cy.get('[data-cy=collectionName').should('have.length.of.at.least', 1);
-      cy.get('[data-cy=collectionName').first().click();
-      cy.url().should('contain', 'collections');
-      cy.get('[data-cy=collectionEntry]').should('have.length.of.at.least', 1);
-    });
+  it('has organizations with content', () => {
+    // Makes the assumption that the first org has at least 1 collection and at least 1 entry in
+    cy.get('[data-cy=orgName]').first().click();
+    cy.get('[data-cy=collectionName').should('have.length.of.at.least', 1);
+    cy.get('[data-cy=collectionName').first().click();
+    cy.url().should('contain', 'collections');
+    cy.get('[data-cy=collectionEntry]').should('have.length.of.at.least', 1);
   });
 });
 
@@ -105,24 +104,24 @@ describe('Test search page functionality', () => {
   it('filters and unfilters by facets', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', 'Nextflow').click();
-    // Fragile assertion that depends on the below workflow to be in the first table results, but not the 2nd
-    cy.contains('DataBiosphere/topmed-workflows/UM_variant_caller_wdl').should('not.exist');
+    cy.get('[data-cy=workflowColumn] a');
+    cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
     cy.url().should('contain', 'descriptorType=NFL');
     cy.url().should('contain', 'searchMode=files');
     cy.contains('mat-checkbox', 'Nextflow').click();
-    cy.url().should('not.contain', 'descriptorType=NF');
+    cy.url().should('not.contain', 'descriptorType=NFL');
     cy.url().should('contain', 'searchMode=files');
   });
   it('boolean facet filters', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', /^[ ]*verified/).click();
     cy.url().should('contain', 'verified=1');
-    // Fragile assertion that depends on the below workflow to be in the first table results, but not the 2nd
-    cy.contains('nf-core/exoseq').should('not.exist');
-    cy.get('[data-cy=verificationStatus]').each(($el, index, $list) => {
+    cy.get('[data-cy=workflowColumn] a');
+    cy.contains('mat-checkbox', /^[ ]*verified/);
+    cy.get('[data-cy=verificationStatus] a').each(($el, index, $list) => {
       cy.wrap($el).contains('done');
     });
   });
@@ -136,11 +135,7 @@ describe('Test workflow page functionality', () => {
 
     // click twice to sort by descriptor type descending so WDL is at the top
     cy.get('[data-cy=descriptorTypeHeader]').click().click();
-    cy.get('[data-cy=workflowColumn]')
-      .first()
-      .within(() => {
-        cy.get('a').click(); // click on the link to the first workflow
-      });
+    cy.get('[data-cy=workflowColumn] a').first().click();
   });
 });
 
