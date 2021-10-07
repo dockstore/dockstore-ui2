@@ -64,7 +64,7 @@ describe('Check organizations page', () => {
   });
 
   it('has organizations with content', () => {
-    // Makes the assumption that the first org has atleast 1 collection and atleast 1 entry in
+    // Makes the assumption that the first org has at least 1 collection and at least 1 entry in
     cy.get('[data-cy=orgName]').first().click();
     cy.get('[data-cy=collectionName').should('have.length.of.at.least', 1);
     cy.get('[data-cy=collectionName').first().click();
@@ -105,7 +105,7 @@ describe('Test search page functionality', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', 'Nextflow').click();
     cy.get('[data-cy=workflowColumn] a');
-    cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reapper, indicating the filtering is complete
+    cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
