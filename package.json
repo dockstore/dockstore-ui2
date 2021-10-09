@@ -67,6 +67,7 @@
     "cytoscape-dagre": "^2.3.2",
     "cytoscape-popper": "^2.0.0",
     "dompurify": "^2.2.9",
+    "file-saver": "^2.0.5",
     "jquery": "^3.6.0",
     "material-design-icons-iconfont": "^6.1.0",
     "ng2-ui-auth": "^10.0.1",

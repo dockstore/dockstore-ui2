@@ -83,4 +83,8 @@ export class ParamfilesComponent extends EntryFileSelector implements OnChanges 
   getFiles(descriptorType: ToolDescriptor.TypeEnum): Observable<Array<ToolFile>> {
     return this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
   }
+
+  downloadFileContent() {
+    this.fileService.downloadFileContent(this.content, this.customDownloadPath);
+  }
 }

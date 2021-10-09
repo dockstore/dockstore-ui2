@@ -70,15 +70,7 @@
                 <mat-icon>save_alt</mat-icon>
               </a>
               <ng-template #unpublishedDownloadLink>
-                <a
-                  mat-icon-button
-                  color="secondary"
-                  class="mr-1"
-                  [href]="customDownloadHREF"
-                  [download]="customDownloadPath"
-                  type="button"
-                  title="{{ filePath }}"
-                >
+                <a mat-icon-button color="secondary" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>

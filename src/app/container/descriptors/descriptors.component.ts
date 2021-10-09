@@ -85,4 +85,8 @@ export class DescriptorsComponent extends EntryFileSelector implements OnChanges
       ToolFile.FileTypeEnum.SECONDARYDESCRIPTOR,
     ]);
   }
+
+  downloadFileContent() {
+    this.fileService.downloadFileContent(this.content, this.customDownloadPath);
+  }
 }

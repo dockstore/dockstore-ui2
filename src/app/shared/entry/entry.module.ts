@@ -35,7 +35,6 @@ import { SnackbarModule } from '../modules/snackbar.module';
 import { CommitUrlPipe } from './commit-url.pipe';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
-import { PrivateFileDownloadPipe } from './private-file-download.pipe';
 import { PrivateFilePathPipe } from './private-file-path.pipe';
 import { RegisterCheckerWorkflowComponent } from './register-checker-workflow/register-checker-workflow.component';
 import { UrlDeconstructPipe } from './url-deconstruct.pipe';
@@ -69,7 +68,6 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
-    PrivateFileDownloadPipe,
     PrivateFilePathPipe,
     UrlDeconstructPipe,
   ],

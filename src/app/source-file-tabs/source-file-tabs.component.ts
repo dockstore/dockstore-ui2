@@ -3,7 +3,6 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SafeUrl } from '@angular/platform-browser';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
@@ -11,13 +10,25 @@ import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi'
 import { finalize } from 'rxjs/operators';
 import { SourceFileTabsService } from './source-file-tabs.service';
 
+import { WorkflowQuery } from '../shared/state/workflow.query';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-source-file-tabs',
   templateUrl: './source-file-tabs.component.html',
   styleUrls: ['./source-file-tabs.component.scss'],
 })
 export class SourceFileTabsComponent implements OnChanges {
-  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService, private matDialog: MatDialog) {}
+  constructor(
+    private fileService: FileService,
+    private sourceFileTabsService: SourceFileTabsService,
+    private matDialog: MatDialog,
+    private workflowQuery: WorkflowQuery
+  ) {
+    this.isPublished$ = this.workflowQuery.workflowIsPublished$;
+  }
+  // Used to generate the TRS file path
+  @Input() entryPath: string;
   @Input() workflowId: number;
   // Used to generate the TRS file path
   @Input() descriptorType: ToolDescriptor.TypeEnum;
@@ -26,13 +37,12 @@ export class SourceFileTabsComponent implements OnChanges {
   loading = true;
   displayError = false;
   currentFile: SourceFile | null;
-  noFileInTabWarning: string;
   validationMessage: Map<string, string>;
-  customDownloadHREF: SafeUrl;
-  customDownloadPath: String;
-  filePath: String;
+  fileName: string;
+  relativePath: string;
+  downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
-
+  protected isPublished$: Observable<boolean>;
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
    */
@@ -82,13 +92,19 @@ export class SourceFileTabsComponent implements OnChanges {
 
   selectFile(file: SourceFile) {
     if (file) {
-      this.customDownloadHREF = this.fileService.getFileData(file.content);
-      this.customDownloadPath = this.fileService.getFileName(file.path);
-      this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.version.name);
+      this.fileName = this.fileService.getFileName(file.path);
+      this.relativePath = file.absolutePath;
+      this.downloadFilePath = this.sourceFileTabsService.getDescriptorPath(
+        this.workflowId,
+        this.descriptorType,
+        this.entryPath,
+        this.version.name,
+        this.relativePath
+      );
     } else {
-      this.customDownloadHREF = null;
-      this.customDownloadPath = null;
-      this.filePath = null;
+      this.fileName = null;
+      this.relativePath = null;
+      this.downloadFilePath = null;
     }
     this.currentFile = file;
   }
@@ -111,5 +127,9 @@ export class SourceFileTabsComponent implements OnChanges {
           this.selectFile(foundFile);
         }
       });
+  }
+
+  downloadFileContent() {
+    this.fileService.downloadFileContent(this.currentFile.content, this.fileName);
   }
 }
