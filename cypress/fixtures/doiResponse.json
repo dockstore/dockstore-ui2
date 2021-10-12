@@ -31,7 +31,7 @@
     "versionEditor": null,
     "versionMetadata": {
       "id": 13,
-      "orcidPutCode": null,
+      "userIdToOrcidPutCode": {},
       "parsedInformationSet": []
     },
     "workflow_path": "/1st-workflow.cwl",
@@ -69,7 +69,7 @@
     "versionEditor": null,
     "versionMetadata": {
       "id": 14,
-      "orcidPutCode": null,
+      "userIdToOrcidPutCode": {},
       "parsedInformationSet": []
     },
     "workflow_path": "/1st-workflow.cwl",
