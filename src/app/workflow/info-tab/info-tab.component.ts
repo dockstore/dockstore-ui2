@@ -103,7 +103,10 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
-      this.authors = [...this.selectedVersion.authors, ...this.selectedVersion.orcidAuthors];
+      this.authors = this.selectedVersion.authors;
+      if (this.selectedVersion.orcidAuthors) {
+        this.authors.concat(this.selectedVersion.orcidAuthors);
+      }
     } else {
       this.isValidVersion = false;
       this.trsLink = null;
