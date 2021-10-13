@@ -102,8 +102,8 @@ describe('Dockstore my workflows', () => {
         response: realResponse,
       }).as('refreshWorkflow');
       cy.contains('See GitHub Apps Logs').click();
-      cy.contains('2020-02-20T02:20');
-      cy.contains('2020-06-05T14:40');
+      cy.contains('2020-02-19T21:20');
+      cy.contains('2020-06-05T10:40');
       cy.contains('1 – 2 of 2');
       cy.contains('Close').click();
     });
@@ -216,6 +216,35 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
       cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0);
+    });
+    it('Export to ORCID should require linked account', () => {
+      gotoVersionsAndClickActions();
+      cy.get('[data-cy=dockstore-export-orcid-button]').click();
+      cy.get('[data-cy=orcid-not-linked]').its('length').should('be.gt', 0);
+      cy.get('[data-cy=export-button').should('be.disabled');
+      cy.get('[data-cy=link-orcid]').click();
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
+    });
+    it('Export to ORCID should work', () => {
+      cy.server();
+      // tokens.json indicates an ORCID token
+      cy.fixture('tokens.json').then((json) => {
+        cy.route({
+          url: '/api/users/1/tokens',
+          method: 'GET',
+          status: 200,
+          response: json,
+        });
+      });
+      cy.route({
+        url: '/api/entries/*/exportToOrcid?versionId=*',
+        method: 'POST',
+        status: 204,
+        response: {},
+      });
+      gotoVersionsAndClickActions();
+      cy.get('[data-cy=dockstore-export-orcid-button]').click();
+      cy.get('[data-cy=export-button').should('be.enabled');
     });
   });
 
