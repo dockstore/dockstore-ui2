@@ -11,7 +11,7 @@ export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   descriptorPathPlaceholder: 'e.g. /Dockstore.yml',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.GXFORMAT2,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Gxformat2,
-  plainTRS: '<FILL-IN>',
+  plainTRS: 'PLAIN_GALAXY',
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',

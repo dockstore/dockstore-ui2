@@ -561,6 +561,7 @@
 "figgy-pudding@3.5.2","ISC","https://github.com/npm/figgy-pudding"
 "figures@3.2.0","MIT","https://github.com/sindresorhus/figures"
 "file-entry-cache@6.0.1","MIT","https://github.com/royriojas/file-entry-cache"
+"file-saver@2.0.5","MIT","https://github.com/eligrey/FileSaver.js"
 "file-uri-to-path@1.0.0","MIT","https://github.com/TooTallNate/file-uri-to-path"
 "fill-range@4.0.0","MIT","https://github.com/jonschlinkert/fill-range"
 "fill-range@7.0.1","MIT","https://github.com/jonschlinkert/fill-range"

@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { Directive, OnDestroy } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
@@ -46,7 +45,6 @@ export abstract class EntryFileSelector implements OnDestroy {
   public files: Array<ToolFile>;
   public published$: Observable<boolean>;
   public downloadFilePath: string;
-  public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
   public loading = false;
   public validationMessage = null;
@@ -138,7 +136,6 @@ export abstract class EntryFileSelector implements OnDestroy {
    * @memberof EntryFileSelector
    */
   updateCustomDownloadFileButtonAttributes(): void {
-    this.customDownloadHREF = this.fileService.getFileData(this.content);
     this.customDownloadPath = this.fileService.getFileName(this.filePath);
   }
 

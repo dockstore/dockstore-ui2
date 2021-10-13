@@ -18,7 +18,6 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 import { CodeEditorListComponent } from './../../shared/code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from './../../shared/code-editor/code-editor.component';
 import { ContainerService } from './../../shared/container.service';
-import { PrivateFileDownloadPipe } from './../../shared/entry/private-file-download.pipe';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
 import { PublicFileDownloadPipe } from './../../shared/entry/public-file-download.pipe';
 import { FileService } from './../../shared/file.service';
@@ -34,14 +33,7 @@ describe('ToolFileEditorComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          ToolFileEditorComponent,
-          CodeEditorListComponent,
-          CodeEditorComponent,
-          PublicFileDownloadPipe,
-          PrivateFileDownloadPipe,
-          PrivateFilePathPipe,
-        ],
+        declarations: [ToolFileEditorComponent, CodeEditorListComponent, CodeEditorComponent, PublicFileDownloadPipe, PrivateFilePathPipe],
         imports: [
           MatButtonModule,
           MatTabsModule,
