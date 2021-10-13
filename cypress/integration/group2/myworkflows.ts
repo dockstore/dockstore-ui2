@@ -102,8 +102,8 @@ describe('Dockstore my workflows', () => {
         response: realResponse,
       }).as('refreshWorkflow');
       cy.contains('See GitHub Apps Logs').click();
-      cy.contains('2020-02-19T21:20');
-      cy.contains('2020-06-05T10:40');
+      cy.contains('2020-02-20T02:20');
+      cy.contains('2020-06-05T14:40');
       cy.contains('1 – 2 of 2');
       cy.contains('Close').click();
     });

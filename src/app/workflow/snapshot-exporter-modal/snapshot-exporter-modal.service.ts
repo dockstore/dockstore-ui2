@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { EntriesService } from '../../shared/openapi';
@@ -38,7 +38,7 @@ export class SnapshotExporterModalService {
         } else {
           this.alertService.simpleError();
         }
-        return EMPTY;
+        throw throwError(error);
       })
     );
   }
@@ -57,7 +57,12 @@ export class SnapshotExporterModalService {
                                        "${workflowName}" version "${version.name}"!`);
       }),
       catchError((error) => {
-        return EMPTY;
+        if (error) {
+          this.alertService.detailedError(error);
+        } else {
+          this.alertService.simpleError();
+        }
+        throw throwError(error);
       })
     );
   }
@@ -70,8 +75,12 @@ export class SnapshotExporterModalService {
         this.alertService.detailedSuccess(`Exported workflow ${workflowName} version ${version.name} to ORCID`);
       }),
       catchError((error) => {
-        this.alertService.detailedError(error);
-        return EMPTY;
+        if (error) {
+          this.alertService.detailedError(error);
+        } else {
+          this.alertService.simpleError();
+        }
+        throw throwError(error);
       })
     );
   }

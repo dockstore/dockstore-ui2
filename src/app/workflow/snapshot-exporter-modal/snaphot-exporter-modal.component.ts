@@ -106,7 +106,7 @@ export class SnaphotExporterModalComponent extends Base {
         () => {
           // Intentionally not doing anything
         },
-        () => (this.state.overall = StepState.ERROR),
+        () => (this.state.overall = StepState.ERROR), // Don't close dialog if there's an error
         () => {
           if (this.state.overall !== StepState.ERROR) {
             this.dialogRef.close();
