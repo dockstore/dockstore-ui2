@@ -105,7 +105,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
       this.authors = this.selectedVersion.authors;
       if (this.selectedVersion.orcidAuthors) {
-        this.authors.concat(this.selectedVersion.orcidAuthors);
+        this.authors = this.authors.concat(this.selectedVersion.orcidAuthors);
       }
     } else {
       this.isValidVersion = false;
