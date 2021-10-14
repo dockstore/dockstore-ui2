@@ -245,6 +245,7 @@ describe('Dockstore my workflows', () => {
       gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-export-orcid-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
+      cy.get('[data-cy=export-button').click();
     });
   });
 
