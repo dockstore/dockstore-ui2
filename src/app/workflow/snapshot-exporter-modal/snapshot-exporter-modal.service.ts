@@ -71,7 +71,12 @@ export class SnapshotExporterModalService {
     const workflowName: string = workflow.workflowName || workflow.repository;
     this.alertService.start(`Exporting workflow ${workflowName} version ${version.name} to ORCID`);
     return this.entriesService.exportToORCID(workflow.id, version.id).pipe(
-      map((result) => {
+      map((entry) => {
+        const selectedWorkflow = { ...this.workflowQuery.getActive() };
+        const versions = entry.workflowVersions;
+        if (selectedWorkflow.id === workflow.id) {
+          this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: <WorkflowVersion[]>versions });
+        }
         this.alertService.detailedSuccess(`Exported workflow ${workflowName} version ${version.name} to ORCID`);
       }),
       catchError((error) => {

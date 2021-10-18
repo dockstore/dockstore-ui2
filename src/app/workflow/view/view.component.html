@@ -61,7 +61,12 @@
       (click)="exportToOrcid()"
       [disabled]="isRefreshing$ | async"
       data-cy="dockstore-export-orcid-button"
-      *ngIf="enableExportToOrcid && version.referenceType !== 'BRANCH' && workflow?.is_published"
+      *ngIf="
+        enableExportToOrcid &&
+        version.referenceType !== 'BRANCH' &&
+        !version.versionMetadata?.userIdToOrcidPutCode[userId] &&
+        workflow?.is_published
+      "
       matTooltip="Export this version to ORCID."
     >
       Export to ORCID

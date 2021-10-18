@@ -150,10 +150,12 @@ export class ViewWorkflowComponent extends View implements OnInit {
     });
   }
   ngOnInit() {
+    if (this.userQuery.getValue().user) {
+      this.userId = this.userQuery.getValue().user.id;
+    }
     this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => (this.workflow = workflow));
-    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((userId) => (this.userId = userId));
   }
 
   refreshVersion() {
