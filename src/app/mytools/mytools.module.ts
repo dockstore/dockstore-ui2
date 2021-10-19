@@ -31,6 +31,8 @@ import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
 import { MytoolsService } from './mytools.service';
 import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion.component';
+import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
+import { IsAppToolPipe } from '../search/is-app-tool.pipe';
 
 @NgModule({
   declarations: [MyToolsComponent, RegisterToolComponent, RefreshToolOrganizationComponent, MyToolComponent, SidebarAccordionComponent],
@@ -44,7 +46,8 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
     PipeModule,
     MyEntriesModule,
     RefreshWizardModule,
+    SharedWorkflowServicesModule,
   ],
-  providers: [RegisterToolService, AccountsService, MytoolsService],
+  providers: [RegisterToolService, AccountsService, MytoolsService, IsAppToolPipe],
 })
 export class MyToolsModule {}

@@ -22,11 +22,12 @@ import { includesValidation } from 'app/shared/constants';
 import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
-import { ContainersService, DockstoreTool, UsersService, Workflow } from 'app/shared/swagger';
+import { AppTool, ContainersService, DockstoreTool, UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { finalize } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
 import { OrgToolObject } from './my-tool/my-tool.component';
+import { WorkflowService } from '../shared/state/workflow.service';
 
 @Injectable()
 export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObject<DockstoreTool>> {
@@ -34,6 +35,8 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     private alertService: AlertService,
     private usersService: UsersService,
     private containerService: ContainerService,
+    private workflowService: WorkflowService,
+    private workflowsService: WorkflowsService,
     private myEntriesService: MyEntriesStateService,
     private location: Location,
     protected urlResolverService: UrlResolverService,
@@ -57,12 +60,28 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
           this.alertService.detailedError(error);
         }
       );
+
+    this.usersService
+      .userAppTools(userId)
+      .pipe(finalize(() => this.myEntriesService.setRefreshingMyEntries(false)))
+      .subscribe((appTools: Array<Workflow>) => {
+        this.workflowService.setWorkflows(appTools);
+      });
   }
+
   selectEntry(tool: DockstoreTool | Workflow | null): void {
     if (tool && tool.id) {
+      if (tool.path.includes('github.com')) {
+        this.workflowsService.getWorkflow(tool.id, includesValidation).subscribe((result) => {
+          this.location.go('/my-tools/' + result.full_workflow_path);
+          this.workflowService.setWorkflow(<AppTool>result);
+          this.containerService.setTool(null);
+        });
+      }
       this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
         this.location.go('/my-tools/' + result.tool_path);
         this.containerService.setTool(result);
+        this.workflowService.setWorkflow(null);
       });
     }
   }
@@ -95,21 +114,65 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     return entry.tool_path || '';
   }
 
-  sortEntry(entryA: DockstoreTool, entryB: DockstoreTool): number {
-    const registryA = entryA.registry_string.toLowerCase();
-    const registryB = entryB.registry_string.toLowerCase();
-    const compareRegistry = registryA.localeCompare(registryB);
+  sortEntry(entryA: DockstoreTool | Workflow, entryB: DockstoreTool | Workflow): number {
+    let topLevelA: string;
+    let topLevelB: string;
+    let midLevelA: string;
+    let midLevelB: string;
+    let lowerLevelA: string;
+    let lowerLevelB: string;
+    if ('full_workflow_path' in entryA) {
+      topLevelA = entryA.sourceControl;
+      midLevelA = entryA.organization;
+      lowerLevelA = entryA.full_workflow_path || '';
+    } else if ('tool_path' in entryA) {
+      topLevelA = entryA.registry_string;
+      midLevelA = entryA.namespace;
+      lowerLevelA = entryA.tool_path || '';
+    }
+
+    if ('full_workflow_path' in entryB) {
+      topLevelB = entryB.sourceControl;
+      midLevelB = entryB.organization;
+      lowerLevelB = entryB.full_workflow_path || '';
+    } else if ('tool_path' in entryB) {
+      topLevelB = entryB.registry_string;
+      midLevelB = entryB.namespace;
+      lowerLevelB = entryB.tool_path || '';
+    }
+
+    topLevelA = topLevelA.toLowerCase();
+    topLevelB = topLevelB.toLowerCase();
+    const compareRegistry = topLevelA.localeCompare(topLevelB);
     if (compareRegistry) {
       return compareRegistry;
     }
-    const namespaceA = entryA.namespace.toLowerCase();
-    const namespaceB = entryB.namespace.toLowerCase();
-    const compareNamespace = namespaceA.localeCompare(namespaceB);
-    if (compareNamespace) {
-      return compareNamespace;
+
+    midLevelA = midLevelA.toLowerCase();
+    midLevelB = midLevelB.toLowerCase();
+    const compareMidLevel = midLevelA.localeCompare(midLevelB);
+    if (compareMidLevel) {
+      return compareMidLevel;
     }
-    const keyA = (entryA.tool_path || '').toLowerCase();
-    const keyB = (entryB.tool_path || '').toLowerCase();
-    return keyA.localeCompare(keyB);
+
+    lowerLevelA = lowerLevelA.toLowerCase();
+    lowerLevelB = lowerLevelB.toLowerCase();
+    return lowerLevelA.localeCompare(lowerLevelB);
+
+    //   const registryA = entryA.registry_string.toLowerCase();
+    //   const registryB = entryB.registry_string.toLowerCase();
+    //   const compareRegistry = registryA.localeCompare(registryB);
+    //   if (compareRegistry) {
+    //     return compareRegistry;
+    //   }
+    //   const namespaceA = entryA.namespace.toLowerCase();
+    //   const namespaceB = entryB.namespace.toLowerCase();
+    //   const compareNamespace = namespaceA.localeCompare(namespaceB);
+    //   if (compareNamespace) {
+    //     return compareNamespace;
+    //   }
+    //   const keyA = (entryA.tool_path || '').toLowerCase();
+    //   const keyB = (entryB.tool_path || '').toLowerCase();
+    //   return keyA.localeCompare(keyB);
   }
 }

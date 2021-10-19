@@ -16,13 +16,13 @@
 import { OrgToolObject } from 'app/mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from 'app/myworkflows/my-workflow/my-workflow.component';
 import { EntryType } from './enum/entry-type';
-import { DockstoreTool, Workflow } from './swagger';
+import { AppTool, DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 
 export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O extends OrgToolObject<E> | OrgWorkflowObject<E>> {
   constructor(protected urlResolverService: UrlResolverService) {}
 
-  recomputeWhatEntryToSelect(entries: E[]): E | null {
+  recomputeWhatEntryToSelect(entries: Array<DockstoreTool | Workflow>): DockstoreTool | Workflow | null {
     const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), entries);
     if (foundEntry) {
       return foundEntry;
@@ -75,21 +75,24 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
   abstract getMyEntries(userId: number, entryType: EntryType): void;
   abstract registerEntry(entryType: EntryType): void;
 
-  protected findEntryFromPath(path: string | null, entries: Array<E> | null): E | null | undefined {
+  protected findEntryFromPath(
+    path: string | null,
+    entries: Array<DockstoreTool | Workflow> | null
+  ): DockstoreTool | Workflow | null | undefined {
     if (!path || !entries || entries.length === 0) {
       return null;
     }
     return entries.find((entry) => this.getPath(entry) === path);
   }
 
-  abstract getPath(entry: E): string;
+  abstract getPath(entry: DockstoreTool | Workflow): string;
 
   /**
    * Precondition: URL does not yield any useful entry
    * Select the first published entry. If there's no published, select the first unpublished entry.
    * @param entries
    */
-  protected getInitialEntry(entries: Array<E> | null): E | null {
+  protected getInitialEntry(entries: Array<DockstoreTool | Workflow> | null): DockstoreTool | Workflow | null {
     if (!entries || entries.length === 0) {
       return null;
     }
