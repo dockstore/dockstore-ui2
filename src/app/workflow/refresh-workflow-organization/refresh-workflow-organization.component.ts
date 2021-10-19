@@ -63,9 +63,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
             this.alertService.start(`Refreshing ${workflow.full_workflow_path}`);
             return this.workflowsService.refresh(workflow.id).pipe(
               catchError((error) => {
-                // For some reason, Angular httpclient reports 304s as error.
-                // The error is being ignored because the user doesn't quite need to know about this (refreshing GitHub Apps)
-                if (error.status !== 304) {
+                if (error.error !== 'Cannot refresh .dockstore.yml workflows') {
                   this.alertService.detailedError(error);
                 }
                 return EMPTY;
