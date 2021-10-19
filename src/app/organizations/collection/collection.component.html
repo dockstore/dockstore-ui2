@@ -73,6 +73,16 @@
           >
             <mat-icon>edit</mat-icon>
           </button>
+          <button
+            color="basic"
+            *ngIf="canDelete$ | async"
+            mat-button
+            (click)="deleteCollection(collection)"
+            id="deleteCollection"
+            matTooltip="Remove the collection"
+          >
+            <mat-icon>clear</mat-icon> Remove
+          </button>
         </mat-card-actions>
       </div>
       <mat-card class="alert alert-info" *ngIf="collection?.entries?.length === 0">

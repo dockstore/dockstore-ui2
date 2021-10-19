@@ -122,6 +122,11 @@ export class CollectionComponent implements OnInit {
     });
   }
 
+  deleteCollection(collection: Collection) {
+    const collectionMap = { key: collection.id, value: collection };
+    console.log('deleteCollection');
+  }
+
   updateDescription(description: String, collectionId: number) {
     this.dialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'collection', collectionId: collectionId },
