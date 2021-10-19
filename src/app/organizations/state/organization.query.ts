@@ -11,6 +11,7 @@ export class OrganizationQuery extends Query<OrganizationState> {
   loading$ = this.selectLoading();
   canEdit$ = this.select((state) => state.canEdit);
   canEditMembership$ = this.select((state) => state.canEditMembership);
+  canDeleteCollection$ = this.select((state) => state.canDeleteCollection);
   gravatarUrl$ = this.organization$.pipe(
     map((organization: Organization) => {
       if (organization && organization.avatarUrl) {

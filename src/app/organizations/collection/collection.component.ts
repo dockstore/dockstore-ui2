@@ -54,6 +54,7 @@ export class CollectionComponent implements OnInit {
   organization$: Observable<Collection>;
   loadingOrganization$: Observable<boolean>;
   canEdit$: Observable<boolean>;
+  canDelete$: Observable<boolean>;
   pendingEnum = Organization.StatusEnum.PENDING;
   gravatarUrl$: Observable<string>;
 
@@ -75,6 +76,7 @@ export class CollectionComponent implements OnInit {
     this.collection$ = this.collectionsQuery.selectActive();
     this.loadingOrganization$ = this.organizationQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
+    this.canDelete$ = this.organizationQuery.canDeleteCollection$;
     this.organization$ = this.organizationQuery.organization$;
     this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);

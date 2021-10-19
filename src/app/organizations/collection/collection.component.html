@@ -167,6 +167,7 @@
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
+                <span *ngIf="canDelete$ | async">DELETE</span>
               </div>
               <div *ngIf="!collection.description" fxFlex>
                 <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
