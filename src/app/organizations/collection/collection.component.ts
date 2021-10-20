@@ -8,7 +8,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
-import { DeleteCollectionDialogComponent, CollectionDialogData } from '../collections/delete-collection/delete-collection.component';
+import { RemoveCollectionDialogComponent, CollectionDialogData } from '../collections/remove-collection/remove-collection.component';
 // eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
 import { CollectionsQuery } from '../state/collections.query';
@@ -135,7 +135,7 @@ export class CollectionComponent implements OnInit {
       organizationName: organizationName,
       collectionName: collectionName,
     };
-    this.dialog.open(DeleteCollectionDialogComponent, {
+    this.dialog.open(RemoveCollectionDialogComponent, {
       width: '600px',
       data: data,
     });
