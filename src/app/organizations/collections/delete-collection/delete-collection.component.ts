@@ -1,8 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NgFormsManager } from '@ngneat/forms-manager';
-import { Observable } from 'rxjs';
 import { CollectionsService } from '../../state/collections.service';
 
 @Component({
