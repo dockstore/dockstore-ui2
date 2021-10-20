@@ -157,4 +157,23 @@ export class CollectionsService {
         }
       );
   }
+
+  deleteCollection(organizationId: number, collectionId: number, collectionName: string) {
+    this.alertService.start('Removing collection ' + collectionName);
+    this.organizationsService
+      .deleteCollection(organizationId, collectionId)
+      .pipe(finalize(() => this.collectionsStore.setLoading(false)))
+      .subscribe(
+        () => {
+          this.alertService.simpleSuccess();
+	  this.organizationService.updateOrganizationFromID(organizationId);
+          this.matDialog.closeAll();
+          this.router.navigate(['/organizations', { id: organizationId }]);
+        },
+        () => {
+          this.collectionsStore.setError(true);
+          this.alertService.simpleError();
+        }
+      );
+  }
 }
