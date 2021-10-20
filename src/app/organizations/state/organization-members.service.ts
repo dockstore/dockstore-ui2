@@ -137,7 +137,7 @@ export class OrganizationMembersService {
         ...state,
         canEdit: canEdit,
         canEditMembership: canEditMembers,
-        canDeleteCollection: canEditMembers,
+        canDeleteCollection: canDeleteCollection,
       };
     });
   }

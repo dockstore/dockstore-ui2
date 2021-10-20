@@ -139,7 +139,6 @@ export class CollectionComponent implements OnInit {
       width: '600px',
       data: data,
     });
-    console.log('deleteCollection');
   }
 
   updateDescription(description: String, collectionId: number) {

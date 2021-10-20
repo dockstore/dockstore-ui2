@@ -9,7 +9,7 @@ import { CollectionsService } from '../../state/collections.service';
 export class DeleteCollectionDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: CollectionDialogData, private collectionsService: CollectionsService) {}
   deleteCollection() {
-    console.log("delete collection "+this.data.collectionName);
+    this.collectionsService.deleteCollection(this.data.organizationId, this.data.collectionId, this.data.organizationName, this.data.collectionName);
   }
 }
 

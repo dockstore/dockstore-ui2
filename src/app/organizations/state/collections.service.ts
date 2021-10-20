@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -20,6 +21,7 @@ import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Collection, OrganizationsService } from '../../shared/swagger';
+import { OrganizationsService as OpenApiOrganizationsService } from '../../shared/openapi';
 import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
@@ -30,6 +32,7 @@ export class CollectionsService {
   constructor(
     private collectionsStore: CollectionsStore,
     private organizationsService: OrganizationsService,
+    private openApiOrganizationsService: OpenApiOrganizationsService,
     private alertService: AlertService,
     private organizationService: OrganizationService,
     private organizationStore: OrganizationQuery,
@@ -158,21 +161,22 @@ export class CollectionsService {
       );
   }
 
-  deleteCollection(organizationId: number, collectionId: number, collectionName: string) {
+  deleteCollection(organizationId: number, collectionId: number, organizationName: string, collectionName: string) {
     this.alertService.start('Removing collection ' + collectionName);
-    this.organizationsService
+    this.openApiOrganizationsService
       .deleteCollection(organizationId, collectionId)
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
         () => {
-          this.alertService.simpleSuccess();
-	  this.organizationService.updateOrganizationFromID(organizationId);
+          this.collectionsStore.setError(false);
           this.matDialog.closeAll();
-          this.router.navigate(['/organizations', { id: organizationId }]);
+          this.alertService.detailedSuccess();
+          this.organizationService.updateOrganizationFromID(organizationId);
+          this.router.navigate(['/organizations', organizationName]);
         },
-        () => {
+        (error: HttpErrorResponse) => {
           this.collectionsStore.setError(true);
-          this.alertService.simpleError();
+          this.alertService.detailedError(error);
         }
       );
   }
