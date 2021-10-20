@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Remove Collection</h1>
+<div mat-dialog-content>
+  <!-- <app-alert></app-alert> -->
+  <p>
+    Are you sure you want to <strong>remove</strong> the collection <strong>{{data.collectionName}}</strong>?
+  </p>
+  <p>
+    <strong>The collection will be permanently deleted.</strong>
+  </p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button id="accept-remove-collection" (click)="deleteCollection()">Remove</button>
+</div>

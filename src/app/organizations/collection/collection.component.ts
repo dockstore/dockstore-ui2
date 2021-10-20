@@ -8,6 +8,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
+import { DeleteCollectionDialogComponent, CollectionDialogData } from '../collections/delete-collection/delete-collection.component';
 // eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
 import { CollectionsQuery } from '../state/collections.query';
@@ -19,7 +20,7 @@ import { OrganizationQuery } from '../state/organization.query';
   templateUrl: 'collection-entry-confirm-remove.html',
 })
 export class CollectionRemoveEntryDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private collectionsService: CollectionsService) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: EntryDialogData, private collectionsService: CollectionsService) {}
   deleteCollection() {
     this.collectionsService.removeEntryFromCollection(
       this.data.organizationId,
@@ -31,7 +32,7 @@ export class CollectionRemoveEntryDialogComponent {
   }
 }
 
-export interface DialogData {
+export interface EntryDialogData {
   collectionName: string;
   collectionId: number;
   entryName: string;
@@ -100,7 +101,7 @@ export class CollectionComponent implements OnInit {
     entryName: string,
     versionName: string | null
   ) {
-    const data: DialogData = {
+    const data: EntryDialogData = {
       collectionName: collectionName,
       entryName: entryName,
       collectionId: collectionId,
@@ -122,8 +123,22 @@ export class CollectionComponent implements OnInit {
     });
   }
 
-  deleteCollection(collection: Collection) {
-    const collectionMap = { key: collection.id, value: collection };
+  deleteCollection(
+    organizationId: number,
+    collectionId: number,
+    organizationName: string,
+    collectionName: string,
+  ) {
+    const data: CollectionDialogData = {
+      organizationId: organizationId,
+      collectionId: collectionId,
+      organizationName: organizationName,
+      collectionName: collectionName,
+    };
+    this.dialog.open(DeleteCollectionDialogComponent, {
+      width: '600px',
+      data: data,
+    });
     console.log('deleteCollection');
   }
 
