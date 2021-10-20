@@ -8,7 +8,7 @@ import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
-import { CollectionComponent, CollectionRemoveEntryDialogComponent } from './collection/collection.component';
+import { CollectionComponent, CollectionRemoveEntryDialogComponent, DeleteCollectionDialogComponent } from './collection/collection.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
@@ -26,7 +26,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     UpdateOrganizationDescriptionModule,
     MarkdownWrapperModule,
   ],
-  declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent],
+  declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent, DeleteCollectionDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],
 })
 export class CollectionsModule {}

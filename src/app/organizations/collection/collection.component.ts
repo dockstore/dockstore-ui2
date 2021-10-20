@@ -8,7 +8,7 @@ import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
-import { DeleteCollectionDialogComponent, CollectionDialogData } from '../collections/delete-collection/delete-collection.component';
+// import { DeleteCollectionDialogComponent, CollectionDialogData } from '../collections/delete-collection/delete-collection.component';
 // eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
 import { CollectionsQuery } from '../state/collections.query';
@@ -39,6 +39,24 @@ export interface EntryDialogData {
   entryId: number;
   organizationId: number;
   versionName: string | null;
+}
+
+@Component({
+  selector: 'app-collection-confirm-delete',
+  templateUrl: 'delete-collection.component.html',
+})
+export class DeleteCollectionDialogComponent {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: CollectionDialogData, private collectionsService: CollectionsService) {}
+  deleteCollection() {
+    console.log("delete collection "+this.data.collectionName);
+  }
+}
+
+export interface CollectionDialogData {
+  organizationId: number;
+  collectionId: number;
+  organizationName: string;
+  collectionName: string;
 }
 
 @Component({
