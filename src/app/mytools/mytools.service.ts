@@ -18,7 +18,7 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { includesValidation } from 'app/shared/constants';
+import { includesAuthors, includesValidation } from 'app/shared/constants';
 import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
@@ -72,7 +72,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
   selectEntry(tool: DockstoreTool | Workflow | null): void {
     if (tool && tool.id) {
       if (tool.path.includes('github.com')) {
-        this.workflowsService.getWorkflow(tool.id, includesValidation).subscribe((result) => {
+        this.workflowsService.getWorkflow(tool.id, includesValidation + ',' + includesAuthors).subscribe((result) => {
           this.location.go('/my-tools/' + result.full_workflow_path);
           this.workflowService.setWorkflow(<AppTool>result);
           this.containerService.setTool(null);
