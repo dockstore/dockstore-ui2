@@ -56,16 +56,16 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
 
   refreshOrganization(): void {
     if (this.orgWorkflowObject) {
-      const workflows = this.orgWorkflowObject.published.concat(this.orgWorkflowObject.unpublished);
+      const workflows = this.orgWorkflowObject.published
+        .concat(this.orgWorkflowObject.unpublished)
+        .filter((workflow) => workflow.mode !== Workflow.ModeEnum.DOCKSTOREYML);
       from(workflows)
         .pipe(
           concatMap((workflow) => {
             this.alertService.start(`Refreshing ${workflow.full_workflow_path}`);
             return this.workflowsService.refresh(workflow.id).pipe(
               catchError((error) => {
-                if (error.error !== 'Cannot refresh .dockstore.yml workflows') {
-                  this.alertService.detailedError(error);
-                }
+                this.alertService.detailedError(error);
                 return EMPTY;
               })
             );
