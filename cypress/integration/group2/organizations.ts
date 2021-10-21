@@ -304,6 +304,18 @@ describe('Dockstore Organizations', () => {
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').should('be.visible');
     });
+
+    it('be able to remove the collection', () => {
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.get('#removeCollectionButton').click();
+      cy.get('#cancel-remove-collection').click();
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('veryFakeCollectionName');
+      cy.get('#removeCollectionButton').click();
+      cy.get('#accept-remove-collection').click();
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('veryFakeCollectionName').should('not.exist');
+    });
   });
 
   describe.skip('Should be able to CRUD user', () => {
