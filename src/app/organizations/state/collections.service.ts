@@ -168,10 +168,10 @@ export class CollectionsService {
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
         () => {
-          this.collectionsStore.setError(false);
-          this.matDialog.closeAll();
           this.alertService.detailedSuccess();
-          this.organizationService.updateOrganizationFromID(organizationId);
+          this.updateCollections(organizationId);
+          this.organizationService.updateOrganizationFromID(organizationId); // Organization has collectionsLength property so we update it.
+          this.matDialog.closeAll();
           this.router.navigate(['/organizations', organizationName]);
         },
         (error: HttpErrorResponse) => {
