@@ -139,7 +139,11 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       entryService,
       entryCategoriesService
     );
-    this._toolType = 'workflows';
+    if (this.isAppTool(window.location.href)) {
+      this._toolType = 'containers';
+    } else {
+      this._toolType = 'workflows';
+    }
     this.location = location;
     this.entryType = this.sessionQuery.getValue().entryType;
     if (this.entryType === EntryType.BioWorkflow) {

@@ -124,6 +124,13 @@ export abstract class Entry implements OnDestroy {
     }
   }
 
+  protected isAppTool(url: String): boolean {
+    if (url.includes('containers') && url.includes('github.com')) {
+      return true;
+    }
+    return false;
+  }
+
   starGazersChange(): void {
     this.starGazersClicked = !this.starGazersClicked;
   }

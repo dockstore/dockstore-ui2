@@ -55,6 +55,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   apptools: Array<AppTool>;
   allTools: any;
   tool: any;
+  appTool: AppTool;
   isRefreshing$: Observable<boolean>;
   readonly pageName = '/my-tools';
   private registerTool: Tool;
@@ -131,6 +132,9 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.workflowService.setWorkflows(null);
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
+    });
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((appTool) => {
+      this.appTool = appTool;
     });
 
     this.getMyEntries();

@@ -70,6 +70,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
+  public displayAppTool: boolean = false;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema: BioschemaTool;
@@ -226,6 +227,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   public setupPublicEntry(url: String) {
     if (url.includes('github.com')) {
       this.containerService.setTool(null);
+      this.displayAppTool = true;
     } else if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.

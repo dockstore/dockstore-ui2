@@ -50,7 +50,7 @@
         <span *ngIf="orgObj.sourceControl.startsWith('github.com')">
           <button color="accent" (click)="openGitHubAppsLogs(orgObj.organization)" mat-button>See GitHub Apps Logs</button>
         </span>
-        <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org')">
+        <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org') && (entryType$ | async) !== EntryType.Tool">
           <app-refresh-workflow-organization [orgWorkflowObject]="orgObj"></app-refresh-workflow-organization>
         </span>
       </div>
