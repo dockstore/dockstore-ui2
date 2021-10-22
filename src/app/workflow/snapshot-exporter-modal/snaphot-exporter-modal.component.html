@@ -135,7 +135,7 @@
 
   <ng-template #zenodoCheck>
     <div
-      *ngIf="((hasZenodoToken$ | async) === false) && !version.doiURL"
+      *ngIf="(hasZenodoToken$ | async) === false && !version.doiURL"
       class="alert-danger p-2"
       fxLayout="row"
       fxLayoutGap="0.625rem;"
@@ -165,10 +165,10 @@
         <mat-icon class="account-warning">warning</mat-icon>
       </div>
       <div>
-        <div>
+        <div data-cy="orcid-not-linked">
           To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
           come back to this screen and try again.
-          <button class="ml-1 accent-1-dark" mat-flat-button (click)="linkAccount()">
+          <button data-cy="link-orcid" class="ml-1 accent-1-dark" mat-flat-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>

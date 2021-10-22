@@ -26,9 +26,12 @@ describe('SnapshotDoiOrcidComponent', () => {
             workflow: {},
             version: {
               frozen: false,
-              versionMetadata: {},
+              versionMetadata: {
+                userIdToOrcidPutCode: {},
+              },
             },
             action: SnapshotExporterAction.SNAPSHOT,
+            userId: 5,
           },
         },
         {

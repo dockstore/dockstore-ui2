@@ -163,6 +163,7 @@ describe('Dockstore my workflows', () => {
       goToTab('Versions');
       cy.get('td').contains('Actions').click();
     }
+
     it('Should be able to snapshot', () => {
       gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
@@ -177,8 +178,11 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=snapshot-button]').click();
 
       cy.wait(250);
-      cy.get('[data-cy=dockstore-snapshot-locked').should('have.length', 1);
+      cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 1);
+      cy.get('td').contains('Actions').click();
+      cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
     });
+
     it('Request DOI should require linked account', () => {
       gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-request-doi-button]').click();
@@ -189,9 +193,19 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=link-zenodo]').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
     });
-    it('Export DOI should result in badge', () => {
+
+    it('Export to ORCID should require linked account', () => {
+      gotoVersionsAndClickActions();
+      cy.get('[data-cy=dockstore-export-orcid-button]').click();
+      cy.get('[data-cy=orcid-not-linked]').its('length').should('be.gt', 0);
+      cy.get('[data-cy=export-button').should('be.disabled');
+      cy.get('[data-cy=link-orcid]').click();
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
+    });
+
+    it('Should be able to request DOI and then export to ORCID', () => {
       cy.server();
-      // tokens.json indicates a Zenodo token
+      // tokens.json indicates a Zenodo token and an ORCID token
       cy.fixture('tokens.json').then((json) => {
         cy.route({
           url: '/api/users/1/tokens',
@@ -209,17 +223,36 @@ describe('Dockstore my workflows', () => {
           response: json,
         });
       });
-      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist');
+      // orcidExportResponse.json has a workflow version with an ORCID put code
+      cy.fixture('orcidExportResponse.json').then((json) => {
+        cy.route({
+          url: '/api/entries/*/exportToOrcid?versionId=*',
+          method: 'POST',
+          status: 200,
+          response: json,
+        });
+      });
+
+      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist'); // Make sure there are no existing Zenodo badges
       gotoVersionsAndClickActions();
-      // Make sure there are no existing Zenodo badges
+      // Request DOI
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0);
+      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0); // Should have a DOI badge now
+      cy.get('td').contains('Actions').click();
+      cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
+
+      // Export to ORCID
+      cy.get('[data-cy=dockstore-export-orcid-button]').click();
+      cy.get('[data-cy=export-button').should('be.enabled');
+      cy.get('[data-cy=export-button').click();
+      cy.get('td').contains('Actions').click();
+      cy.get('[data-cy=dockstore-export-orcid-button]').should('not.exist'); // Should not be able to export to ORCID again
     });
   });
 
-  it.only('Should be able to view a dockstore.yml workflow', () => {
+  it('Should be able to view a dockstore.yml workflow', () => {
     cy.visit('/my-workflows/github.com/B/z');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/B/z');
     cy.contains('Automatically synced via GitHub App');
@@ -283,7 +316,7 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Look at an invalid workflow', () => {
-    it.only('Invalid workflow should not be publishable', () => {
+    it('Invalid workflow should not be publishable', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.get('#publishButton').should('be.disabled');
       cy.get('[data-cy=refreshButton]').should('not.be.disabled');

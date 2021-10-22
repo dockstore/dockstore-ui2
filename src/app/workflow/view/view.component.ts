@@ -20,6 +20,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { RefreshService } from 'app/shared/refresh.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
+import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -52,6 +53,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   @Input() defaultVersion: string;
   items: any[];
   isPublic: boolean;
+  userId: number;
   EntryType = EntryType;
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service;
@@ -69,7 +71,8 @@ export class ViewWorkflowComponent extends View implements OnInit {
     private hostedService: HostedService,
     private refreshService: RefreshService,
     dateService: DateService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private userQuery: UserQuery
   ) {
     super(dateService, alertQuery);
   }
@@ -142,10 +145,14 @@ export class ViewWorkflowComponent extends View implements OnInit {
         workflow: this.workflow,
         version: this.version,
         action: action,
+        userId: this.userId,
       },
     });
   }
   ngOnInit() {
+    if (this.userQuery.getValue().user) {
+      this.userId = this.userQuery.getValue().user.id;
+    }
     this.entryType$ = this.sessionQuery.entryType$;
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isPublic) => (this.isPublic = isPublic));
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => (this.workflow = workflow));

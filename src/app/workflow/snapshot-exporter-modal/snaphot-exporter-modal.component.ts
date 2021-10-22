@@ -21,6 +21,7 @@ export interface SnapshotExporterDialogData {
   workflow: BioWorkflow;
   version: WorkflowVersion;
   action: SnapshotExporterAction;
+  userId: number;
 }
 
 export enum StepState {
@@ -56,6 +57,7 @@ export class SnaphotExporterModalComponent extends Base {
   public promptToConfirmSnapshot = false;
   public faOrcid = faOrcid;
   public state: State;
+  public userId: number;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: SnapshotExporterDialogData,
@@ -69,6 +71,7 @@ export class SnaphotExporterModalComponent extends Base {
     this.workflow = dialogData.workflow;
     this.version = dialogData.version;
     this.action = dialogData.action;
+    this.userId = dialogData.userId;
     this.title = this.calculateTitle();
     this.state = this.calculateState();
   }
@@ -103,7 +106,7 @@ export class SnaphotExporterModalComponent extends Base {
         () => {
           // Intentionally not doing anything
         },
-        () => (this.state.overall = StepState.ERROR),
+        () => (this.state.overall = StepState.ERROR), // Don't close dialog if there's an error
         () => {
           if (this.state.overall !== StepState.ERROR) {
             this.dialogRef.close();
@@ -217,7 +220,7 @@ export class SnaphotExporterModalComponent extends Base {
     return {
       snapshot: this.isSnapshot ? StepState.COMPLETED : StepState.INITIAL,
       doi: this.version.doiURL ? StepState.COMPLETED : StepState.INITIAL,
-      orcid: this.version.versionMetadata.orcidPutCode ? StepState.COMPLETED : StepState.INITIAL,
+      orcid: this.version.versionMetadata.userIdToOrcidPutCode[this.userId] ? StepState.COMPLETED : StepState.INITIAL,
       overall: StepState.INITIAL,
     };
   }
