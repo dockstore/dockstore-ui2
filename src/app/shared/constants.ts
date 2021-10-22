@@ -39,5 +39,5 @@ export const currentTOSVersion: User.TosversionEnum = User.TosversionEnum.TOSVER
 export const currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = User.PrivacyPolicyVersionEnum.PRIVACYPOLICYVERSION25;
 export const dismissedLatestTOS = 'dismissedLatestTOS';
 export const dismissedLatestPrivacyPolicy = 'dismissedLatestPrivacyPolicy';
-// There is a search term length limit of 500 on the backend, but two extra characters, '.*', get counted in the backend.
-export const searchTermLengthLimit = 498;
+// There is a search term length limit of 256 on the backend, but two extra characters, '.*', get counted in the backend.
+export const searchTermLengthLimit = 254;
