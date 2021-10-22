@@ -41,6 +41,7 @@
                 {{ selectedOption.extendedLabel }}
               </div>
             </span>
+            {{ selectedOption.value }}
           </mat-radio-button>
         </mat-radio-group>
       </div>
@@ -53,6 +54,29 @@
       <ng-template matStepLabel>Create a tool</ng-template>
       <div *ngIf="selectedOption?.value === 0">
         <app-refresh-wizard></app-refresh-wizard>
+      </div>
+      <div *ngIf="selectedOption?.value === 3">
+        <p>
+          Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
+          <a
+            href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps/github-apps.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            documentation <mat-icon>open_in_new</mat-icon>
+          </a>
+          for how to use GitHub Apps to automatically sync your workflows with GitHub. A .dockstore.yml file is required.
+        </p>
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
+          <a
+            mat-flat-button
+            type="button"
+            color="primary"
+            [href]="gitHubAppInstallationLink$ | async"
+            matTooltip="Manage Dockstore Installations on GitHub"
+            ><mat-icon>add</mat-icon> Manage Dockstore Installations on GitHub</a
+          >
+        </div>
       </div>
       <form
         *ngIf="selectedOption?.value === 1"
