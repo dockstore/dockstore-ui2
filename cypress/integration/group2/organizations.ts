@@ -304,6 +304,21 @@ describe('Dockstore Organizations', () => {
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').should('be.visible');
     });
+
+    // test the fix for DOCK-1945
+    it('stay on collections page when removing an entry',  () => {
+      var url: string = '/organizations/Potatoe/collections/veryFakeCollectionName';
+      cy.visit(url);
+      cy.url().should('include', url);
+      cy.get('#removeEntryButton').click();
+      cy.url().should('include', url);
+      cy.get('#cancel-remove-entry-from-org').click();
+      cy.url().should('include', url);
+      cy.get('#removeEntryButton').click();
+      cy.url().should('include', url);
+      cy.get('#accept-remove-entry-from-org').click();
+      cy.url().should('include', url);
+    });
   });
 
   describe.skip('Should be able to CRUD user', () => {

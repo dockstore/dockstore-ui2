@@ -114,7 +114,9 @@
                               collection.name,
                               entry.entryPath,
                               entry.versionName
-                            )
+                            );
+                            $event.stopPropagation();
+                            $event.preventDefault()
                           "
                         >
                           <mat-icon>clear</mat-icon> Remove
