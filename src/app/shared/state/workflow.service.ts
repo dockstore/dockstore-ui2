@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AppTool, Workflow, WorkflowVersion } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
@@ -18,6 +18,8 @@ export class WorkflowService {
   nsSharedWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject<Array<Workflow>>(null);
   // This contains the list of sorted workflows
   nsWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject<Array<Workflow>>(null);
+
+  isAppTool$: Observable<boolean>;
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
   constructor(

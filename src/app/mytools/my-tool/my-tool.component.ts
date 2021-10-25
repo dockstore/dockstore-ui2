@@ -55,6 +55,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   apptools: Array<AppTool>;
   allTools: any;
   tool: any;
+  tool$: Observable<DockstoreTool | null>;
   appTool: AppTool;
   isRefreshing$: Observable<boolean>;
   readonly pageName = '/my-tools';
@@ -130,6 +131,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.containerService.setTools(null);
     this.workflowService.setWorkflow(null);
     this.workflowService.setWorkflows(null);
+    this.tool$ = this.toolQuery.tool$;
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
     });

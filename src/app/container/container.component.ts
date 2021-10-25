@@ -49,6 +49,8 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
+import { WorkflowQuery } from '../shared/state/workflow.query';
+import { Workflow } from '../shared/swagger';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Component({
@@ -71,6 +73,8 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
   public displayAppTool: boolean = false;
+  tool$: Observable<DockstoreTool | null>;
+  apptool$: Observable<Workflow | null>;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema: BioschemaTool;
@@ -102,7 +106,8 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     private toolService: ToolService,
     alertService: AlertService,
     entryService: EntriesService,
-    private titleService: Title,
+    private titleService: Title
+    private workflowQuery: WorkflowQuery
     protected entryCategoriesService: EntryCategoriesService,
   ) {
     super(
@@ -189,6 +194,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
+        this.displayAppTool = true;
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;

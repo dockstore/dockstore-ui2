@@ -6,7 +6,14 @@ import { Service } from '../swagger/model/service';
 
 export interface WorkflowState extends EntityState<Service | BioWorkflow>, ActiveState {
   version: WorkflowVersion;
+  isAppTool: boolean;
 }
+
+// export function createInitialState(): WorkflowState {
+//   return {
+//     isAppTool: undefined
+//   }
+// }
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'workflow' })
