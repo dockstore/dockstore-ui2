@@ -271,7 +271,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.visit(`/organizations/${org}/collections/${collection}`);
       cy.contains(`quay.io/${repo}/${name}`);
       cy.get('#removeEntryButton').click();
-      cy.get('#accept-remove-entry-from-org').click();
+      cy.get('[data-cy=accept-remove-entry-from-org]').click();
       cy.contains('This collection has no associated entries');
       cy.visit(`/organizations/${org}`);
       cy.contains('Members').should('be.visible');
