@@ -137,6 +137,7 @@
         }
       ],
       "subClass": null,
+      "userIdToOrcidPutCode": {},
       "valid": true,
       "validations": null,
       "verified": false,

@@ -102,7 +102,7 @@ describe('Dockstore Workflow Details', () => {
   });
 
   describe('Change tab to dag', () => {
-    it.only('Change to fullscreen and back', () => {
+    it('Change to fullscreen and back', () => {
       cy.get('.mat-tab-header-pagination-after').click();
       goToTab('DAG');
       goToTab('DAG');
