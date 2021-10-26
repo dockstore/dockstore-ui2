@@ -161,6 +161,13 @@ export class CollectionsService {
       );
   }
 
+ /**
+  * Deletes the given collection
+  * @param organizationId
+  * @param collectionId
+  * @param organizationName
+  * @param collectionName
+  */
   deleteCollection(organizationId: number, collectionId: number, organizationName: string, collectionName: string) {
     this.alertService.start('Removing collection ' + collectionName);
     this.openApiOrganizationsService
@@ -170,7 +177,7 @@ export class CollectionsService {
         () => {
           this.alertService.detailedSuccess();
           this.updateCollections(organizationId);
-          this.organizationService.updateOrganizationFromID(organizationId); // Organization has collectionsLength property so we update it.
+          this.organizationService.updateOrganizationFromID(organizationId); // Organization has a collectionsLength property so we update it.
           this.matDialog.closeAll();
           this.router.navigate(['/organizations', organizationName]);
         },
