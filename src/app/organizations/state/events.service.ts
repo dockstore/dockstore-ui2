@@ -24,6 +24,7 @@ export class EventsService {
             EventType.MODIFYORG,
             EventType.CREATECOLLECTION,
             EventType.MODIFYCOLLECTION,
+            EventType.DELETECOLLECTION,
             EventType.ADDTOCOLLECTION,
             EventType.REMOVEFROMCOLLECTION,
           ];

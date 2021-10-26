@@ -162,7 +162,7 @@ export class CollectionsService {
   }
 
  /**
-  * Deletes the given collection
+  * Deletes the specified collection
   * @param organizationId
   * @param collectionId
   * @param organizationName
@@ -170,20 +170,29 @@ export class CollectionsService {
   */
   deleteCollection(organizationId: number, collectionId: number, organizationName: string, collectionName: string) {
     this.alertService.start('Removing collection ' + collectionName);
+    // In some cases, similar existing functions do not set the collectionStore loading/error flags, either before or after.
+    // Gary's advice regarding setting the collectionStore flags is as follows:
+    //  "so before the http request, set flags. on success set flags,
+    //   on fail, set flags. if the success calls another function that
+    //   makes another http request, probably set flags inside that
+    //   function instead of the first's success"
+    // We implement the above advice:
+    this.collectionsStore.setLoading(true);
+    this.collectionsStore.setError(false);
     this.openApiOrganizationsService
       .deleteCollection(organizationId, collectionId)
-      .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
         () => {
           this.alertService.detailedSuccess();
+          this.matDialog.closeAll();
           this.updateCollections(organizationId);
           this.organizationService.updateOrganizationFromID(organizationId); // Organization has a collectionsLength property so we update it.
-          this.matDialog.closeAll();
           this.router.navigate(['/organizations', organizationName]);
         },
         (error: HttpErrorResponse) => {
-          this.collectionsStore.setError(true);
           this.alertService.detailedError(error);
+          this.collectionsStore.setLoading(false);
+          this.collectionsStore.setError(true);
         }
       );
   }
