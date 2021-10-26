@@ -56,7 +56,9 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
 
   refreshOrganization(): void {
     if (this.orgWorkflowObject) {
-      const workflows = this.orgWorkflowObject.published.concat(this.orgWorkflowObject.unpublished);
+      const workflows = this.orgWorkflowObject.published
+        .concat(this.orgWorkflowObject.unpublished)
+        .filter((workflow) => workflow.mode !== Workflow.ModeEnum.DOCKSTOREYML);
       from(workflows)
         .pipe(
           concatMap((workflow) => {
