@@ -307,12 +307,12 @@ describe('Dockstore Organizations', () => {
 
     it('be able to remove the collection', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
-      cy.get('#removeCollectionButton').click();
-      cy.get('#cancel-remove-collection').click();
+      cy.get('[data-cy=removeCollectionButton]').click();
+      cy.get('[data-cy=cancel-remove-collection]').click();
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('veryFakeCollectionName');
-      cy.get('#removeCollectionButton').click();
-      cy.get('#accept-remove-collection').click();
+      cy.get('[data-cy=removeCollectionButton]').click();
+      cy.get('[data-cy=accept-remove-collection]').click();
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('veryFakeCollectionName').should('not.exist');
     });
