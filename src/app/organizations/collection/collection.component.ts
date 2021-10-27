@@ -14,6 +14,7 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organizat
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
@@ -136,7 +137,7 @@ export class CollectionComponent implements OnInit {
       collectionName: collectionName,
     };
     this.dialog.open(RemoveCollectionDialogComponent, {
-      width: '600px',
+      width: bootstrap4mediumModalSize,
       data: data,
     });
   }

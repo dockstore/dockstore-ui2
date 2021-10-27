@@ -9,6 +9,6 @@
   </p>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close cdkFocusInitial data-cy="cancel-remove-collection">Cancel</button>
-  <button mat-flat-button (click)="removeCollection()" data-cy="accept-remove-collection">Remove</button>
+  <button mat-button mat-dialog-close cdkFocusInitial matTooltip="Cancel" data-cy="cancel-remove-collection">Cancel</button>
+  <button mat-flat-button (click)="removeCollection()" matTooltip="Remove the collection" data-cy="accept-remove-collection">Remove</button>
 </div>
