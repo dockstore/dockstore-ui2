@@ -13,9 +13,9 @@ describe('Pipe: GetHistogramStyle', () => {
   it('should return histogram width as percentage of items in facet', () => {
     const pipe = new GetHistogramStylePipe();
     expect(pipe).toBeTruthy();
-    expect(pipe.transform(buckets, 'foo1', 0)).toBe({ background: 'linear-gradient(to left, #d2fbf0 7.5%, transparent 7.5%)' });
-    expect(pipe.transform(buckets, 'foo2', 1)).toBe({ background: 'linear-gradient(to left, #d0effd 15%, transparent 15%)' });
-    expect(pipe.transform(buckets, 'foo3', 0)).toBe({ background: 'linear-gradient(to left, #d2fbf0 22.5%, transparent 22.5%)' });
-    expect(pipe.transform(buckets, 'foo4', 1)).toBe({ background: 'linear-gradient(to left, #d0effd 30%, transparent 30%)' });
+    expect(pipe.transform(buckets, 'foo1', 0)).toEqual({ background: 'linear-gradient(to left, #d2fbf0 7.5%, transparent 7.5%)' });
+    expect(pipe.transform(buckets, 'foo2', 1)).toEqual({ background: 'linear-gradient(to left, #d0effd 15%, transparent 15%)' });
+    expect(pipe.transform(buckets, 'foo3', 0)).toEqual({ background: 'linear-gradient(to left, #d2fbf0 22.5%, transparent 22.5%)' });
+    expect(pipe.transform(buckets, 'foo4', 1)).toEqual({ background: 'linear-gradient(to left, #d0effd 30%, transparent 30%)' });
   });
 });
