@@ -58,6 +58,7 @@ export class CollectionsService {
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
         (collections: Array<Collection>) => {
+          this.collectionsStore.remove();
           this.addAll(collections);
           if (activeId) {
             this.updateCollectionFromId(organizationID, activeId as number);
@@ -184,10 +185,19 @@ export class CollectionsService {
         () => {
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
-          // In some cases, the following two updates are redundant, but if this method is called from the organization page, they are necessary.
-          this.updateCollections(organizationId);
-          this.organizationService.updateOrganizationFromID(organizationId); // Organization has a collectionsLength property so we update it, too.
-          this.router.navigate(['/organizations', organizationName]);
+          // Navigate to the organization page.
+          // The following code avoids the possibility of overlapping duplicate update requests.
+          if (this.router.url.endsWith('/organizations/' + organizationName)) {
+            // We're already on the organization page, update the state manually.
+            this.updateCollections(organizationId);
+            // Organization has a collectionsLength property so we update it, too.
+            this.organizationService.updateOrganizationFromID(organizationId);
+          } else {
+            this.collectionsStore.setLoading(false);
+            this.collectionsStore.setError(false);
+            // The organization component will update the necessary state via ngOnInit/etc.
+            this.router.navigate(['/organizations', organizationName]);
+          }
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
