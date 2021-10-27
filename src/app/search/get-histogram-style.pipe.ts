@@ -5,10 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class GetHistogramStylePipe implements PipeTransform {
   /**
-   * This pipe sums number of items in a facet and returns the width of the histogram as a proportion
+   * This pipe sums number of items in a facet and returns the histogram style
    *
    * @param {Map<string, number>} bucket The items in one facet
    * @param {string} subBucket The sub-bucket value (e.g. http://edamontology.org/data_9090)
+   * @param selectedIndex 0 means it's the workflows tab, 1 means it's the tools tab
    * @returns {number} The width of the histogram for that row
    * @memberof GetHistogramStylePipe
    */
