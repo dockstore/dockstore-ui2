@@ -103,74 +103,104 @@
             </button>
           </div>
           <div *ngFor="let subBucket of getBucketKeys(key); let i = index">
-            <div class="panel-container-label selected-item" fxLayout="row" fxLayoutAlign="space-between center">
-              <div class="container-name-oflw">
-                <span>
-                  <mat-checkbox
-                    class="search-facet-checkboxes"
-                    type="checkbox"
-                    [checked]="checkboxMap.get(key).get(subBucket)"
-                    (change)="onClick(key, subBucket)"
-                  >
-                    {{ key | mapFriendlyValue: subBucket }}
-                  </mat-checkbox>
-                </span>
+            <!-- Priority: Hover > histogram > selected -->
+            <div class="my-1 selected-item">
+              <!-- TODO: Somehow make this re-useable, and make it so that the histogram is slightly thinner (less height) than the selected background -->
+              <div
+                *ngIf="orderedBuckets.get(key) | getHistogramWidth: subBucket as percentage"
+                [ngStyle]="{
+                  background:
+                    'linear-gradient(to left, ' +
+                    ((selectedIndex$ | async) === 0 ? '#d2fbf0' : '#d0effd') +
+                    ' ' +
+                    percentage +
+                    '%, transparent ' +
+                    percentage +
+                    '%)'
+                }"
+              >
+                <div class="panel-container-label">
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="container-name-oflw">
+                      <span>
+                        <mat-checkbox
+                          class="search-facet-checkboxes"
+                          type="checkbox"
+                          [checked]="checkboxMap.get(key).get(subBucket)"
+                          (change)="onClick(key, subBucket)"
+                        >
+                          {{ key | mapFriendlyValue: subBucket }}
+                        </mat-checkbox>
+                      </span>
+                    </div>
+                    <span>{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
+                  </div>
+                </div>
               </div>
-              <span>{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
             </div>
           </div>
           <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index">
-            <div class="panel-container-label">
-              <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="container-name-oflw">
-                  <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
-                    <mat-checkbox
-                      class="search-facet-checkboxes"
-                      type="checkbox"
-                      [checked]="checkboxMap.get(key).get(subBucket)"
-                      (change)="onClick(key, subBucket)"
-                    >
-                      {{ key | mapFriendlyValue: subBucket }}
-                    </mat-checkbox>
-                  </span>
+            <div
+              class="my-1"
+              *ngIf="orderedBuckets.get(key) | getHistogramWidth: subBucket as percentage"
+              [ngStyle]="{
+                background:
+                  'linear-gradient(to left, ' +
+                  ((selectedIndex$ | async) === 0 ? '#d2fbf0' : '#d0effd') +
+                  ' ' +
+                  percentage +
+                  '%, transparent ' +
+                  percentage +
+                  '%)'
+              }"
+            >
+              <div class="panel-container-label">
+                <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
+                  <div class="container-name-oflw">
+                    <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
+                      <mat-checkbox
+                        class="search-facet-checkboxes"
+                        type="checkbox"
+                        [checked]="checkboxMap.get(key).get(subBucket)"
+                        (change)="onClick(key, subBucket)"
+                      >
+                        {{ key | mapFriendlyValue: subBucket }}
+                      </mat-checkbox>
+                    </span>
+                  </div>
+                  <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
                 </div>
-                <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                <div
-                  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-histogram' : 'tool-histogram'"
-                  [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"
-                ></div>
-              </div>
-              <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="container-name-oflw">
-                  <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
-                    <mat-checkbox
-                      class="search-facet-checkboxes"
-                      matTooltip="{{ subBucket }}"
-                      [matTooltipPosition]="'after'"
-                      type="checkbox"
-                      [checked]="checkboxMap.get(key).get(subBucket)"
-                      (change)="onClick(key, subBucket)"
-                    >
-                      {{ key | mapFriendlyValue: subBucket }}
-                    </mat-checkbox>
-                  </span>
+                <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
+                  <div class="container-name-oflw">
+                    <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
+                      <mat-checkbox
+                        class="search-facet-checkboxes"
+                        matTooltip="{{ subBucket }}"
+                        [matTooltipPosition]="'after'"
+                        type="checkbox"
+                        [checked]="checkboxMap.get(key).get(subBucket)"
+                        (change)="onClick(key, subBucket)"
+                      >
+                        {{ key | mapFriendlyValue: subBucket }}
+                      </mat-checkbox>
+                    </span>
+                  </div>
+                  <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
                 </div>
-                <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                <div
-                  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-histogram' : 'tool-histogram'"
-                  [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"
-                ></div>
               </div>
             </div>
           </div>
-          <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
+          <div *ngIf="orderedBuckets.get(key).Items.size > 5">
             <span style="cursor: pointer" class="pull-right" (click)="clickExpand(key)">
-              <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
-              <a *ngIf="key !== 'author'">
-                {{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}
-              </a>
-              <a *ngIf="key === 'author'">
-                {{ fullyExpandMap.get(key) ? 'Hide' : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchText) }}
+              <!-- The anchor is an easy way to change the color of the icon and "more" -->
+              <a>
+                <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
+                <span *ngIf="key !== 'author'">{{
+                  fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more'
+                }}</span>
+                <span *ngIf="key === 'author'">{{
+                  fullyExpandMap.get(key) ? 'Hide' : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchText)
+                }}</span>
               </a>
             </span>
           </div>

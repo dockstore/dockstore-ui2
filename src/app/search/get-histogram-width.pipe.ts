@@ -12,7 +12,8 @@ export class GetHistogramWidthPipe implements PipeTransform {
    * @returns {number} The width of the histogram for that row
    * @memberof GetHistogramWidthPipe
    */
-  transform(bucket: Map<string, number>, subBucket: string): number {
+  transform(buckets: { Items: Map<string, number>; SelectedItems: Map<string, number> }, subBucket: string): number {
+    const bucket = new Map([...buckets.Items, ...buckets.SelectedItems]);
     // Get number of items in the subBucket
     const items = bucket.get(subBucket);
 
@@ -22,6 +23,9 @@ export class GetHistogramWidthPipe implements PipeTransform {
 
     // Width of histogram is percetange of items out of total items in the bucket
     const histogramWidth = (Number(items) / divisor) * 100;
-    return histogramWidth;
+
+    // Arbitrary scaling so that selected boolean facets (like Verified) won't have the histogram take up the entire width
+    // Downside is that the histogram doesn't appear to "add" up to 100% when looking at a single facet
+    return histogramWidth * 0.75;
   }
 }

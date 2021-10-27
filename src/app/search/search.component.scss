@@ -150,7 +150,6 @@ mat-tab-group.homeComponent {
 
 .selected-item {
   background-color: #e7f1fb;
-  color: #487980;
 }
 
 .mat-expansion-panel-spacing {
@@ -163,25 +162,12 @@ mat-tab-group.homeComponent {
   justify-content: space-between;
 }
 
-/*for facet histograms*/
-.number-of-items {
-  position: absolute;
-  right: 3rem;
-}
-
-/*for facet histograms*/
-.panel-container-label {
-  padding-right: 0;
-}
-
 .workflow-histogram {
   background-color: #d2fbf0;
-  min-height: 2rem;
 }
 
 .tool-histogram {
   background-color: #d0effd;
-  min-height: 2rem;
 }
 
 mat-form-field {
