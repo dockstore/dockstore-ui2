@@ -299,10 +299,25 @@ describe('Dockstore Organizations', () => {
       cy.get('#removeEntryButton').click();
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
       cy.get('#removeEntryButton').click();
-      cy.get('#accept-remove-entry-from-org').click();
+      cy.get('[data-cy=accept-remove-entry-from-org]').click();
       cy.contains('This collection has no associated entries');
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').should('be.visible');
+    });
+
+    // test the fix for DOCK-1945
+    it('stay on collections page when removing an entry',  () => {
+      const url: string = '/organizations/Potatoe/collections/veryFakeCollectionName';
+      cy.visit(url);
+      cy.url().should('include', url);
+      cy.get('#removeEntryButton').click();
+      cy.url().should('include', url);
+      cy.get('[data-cy=cancel-remove-entry-from-org]').click();
+      cy.url().should('include', url);
+      cy.get('#removeEntryButton').click();
+      cy.url().should('include', url);
+      cy.get('[data-cy=accept-remove-entry-from-org]').click();
+      cy.url().should('include', url);
     });
   });
 
