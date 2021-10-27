@@ -184,13 +184,7 @@ export class CollectionsService {
         () => {
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
-          // Remove deleted collection from local store.
-          // This makes the local collections state consistent with the db collections state with high probability,
-          // ensuring the org page appears correct and doesn't try to get details about the deleted collection
-          // during the short period while we're waiting for an updated collections response.
-          this.remove(collectionId);
-          // In some cases, the following two updates are redundant, but if this method
-          // is called from the organization page, they may be necessary.
+          // In some cases, the following two updates are redundant, but if this method is called from the organization page, they are necessary.
           this.updateCollections(organizationId);
           this.organizationService.updateOrganizationFromID(organizationId); // Organization has a collectionsLength property so we update it, too.
           this.router.navigate(['/organizations', organizationName]);
