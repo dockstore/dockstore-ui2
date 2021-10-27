@@ -102,7 +102,7 @@ export class OrganizationMembersService {
             const canEditMembers = organizationUsers.some(
               (user) => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.ADMIN
             );
-            // If a user can edit the organization, they can delete a collection.
+            // If a user can edit the organization, allow them to delete a collection.
             const canDeleteCollection = canEdit;
             this.setCanModifyState(canEdit, canEditMembers, canDeleteCollection);
           } else {

@@ -2,13 +2,13 @@
 <div mat-dialog-content>
   <app-alert></app-alert>
   <p>
-    Are you sure you want to <strong>remove</strong> the collection <strong>{{data.collectionName}}</strong>?
+    Are you sure you want to <strong>remove</strong> the collection <strong>{{data.collection.name}}</strong>?
   </p>
   <p>
     <strong>The collection will be permanently deleted.</strong>
   </p>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close data-cy="cancel-remove-collection">Cancel</button>
+  <button mat-button mat-dialog-close autofocus data-cy="cancel-remove-collection">Cancel</button>
   <button mat-flat-button data-cy="accept-remove-collection" (click)="removeCollection()">Remove</button>
 </div>

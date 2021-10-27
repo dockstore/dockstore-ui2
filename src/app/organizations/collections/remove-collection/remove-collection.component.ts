@@ -15,6 +15,7 @@
  */
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Collection, Organization } from '../../../shared/swagger';
 import { CollectionsService } from '../../state/collections.service';
 
 @Component({
@@ -24,13 +25,11 @@ import { CollectionsService } from '../../state/collections.service';
 export class RemoveCollectionDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: CollectionDialogData, private collectionsService: CollectionsService) {}
   removeCollection() {
-    this.collectionsService.deleteCollection(this.data.organizationId, this.data.collectionId, this.data.organizationName, this.data.collectionName);
+    this.collectionsService.deleteCollection(this.data.organization.id, this.data.collection.id, this.data.organization.name, this.data.collection.name);
   }
 }
 
 export interface CollectionDialogData {
-  organizationId: number;
-  collectionId: number;
-  organizationName: string;
-  collectionName: string;
+  organization: Organization;
+  collection: Collection;
 }

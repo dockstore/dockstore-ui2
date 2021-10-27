@@ -170,12 +170,11 @@ export class CollectionsService {
   */
   deleteCollection(organizationId: number, collectionId: number, organizationName: string, collectionName: string) {
     this.alertService.start('Removing collection ' + collectionName);
-    // In some cases, similar existing functions do not set the collectionStore loading/error flags, either before or after.
-    // Gary's advice regarding setting the collectionStore flags is as follows:
-    //  "so before the http request, set flags. on success set flags,
-    //   on fail, set flags. if the success calls another function that
-    //   makes another http request, probably set flags inside that
-    //   function instead of the first's success"
+    // In some cases, similar existing functions do not set all of the collectionsStore loading/error flags, either before or after.
+    // Gary's advice regarding setting the collectionsStore loading/error flags is as follows:
+    //  "so before the http request, set flags. on success set flags, on fail, set flags.
+    //   if the success calls another function that makes another http request,
+    //   probably set flags inside that function instead of the first's success"
     // We implement the above advice:
     this.collectionsStore.setLoading(true);
     this.collectionsStore.setError(false);
@@ -185,8 +184,15 @@ export class CollectionsService {
         () => {
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
+          // Remove deleted collection from local store.
+          // This makes the local collections state consistent with the db collections state with high probability,
+          // ensuring the org page appears correct and doesn't try to get details about the deleted collection
+          // during the short period while we're waiting for an updated collections response.
+          this.remove(collectionId);
+          // In some cases, the following two updates are redundant, but if this method
+          // is called from the organization page, they may be necessary.
           this.updateCollections(organizationId);
-          this.organizationService.updateOrganizationFromID(organizationId); // Organization has a collectionsLength property so we update it.
+          this.organizationService.updateOrganizationFromID(organizationId); // Organization has a collectionsLength property so we update it, too.
           this.router.navigate(['/organizations', organizationName]);
         },
         (error: HttpErrorResponse) => {

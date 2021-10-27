@@ -123,17 +123,13 @@ export class CollectionComponent implements OnInit {
     });
   }
 
-  deleteCollection(
-    organizationId: number,
-    collectionId: number,
-    organizationName: string,
-    collectionName: string,
+  removeCollection(
+    organization: Organization,
+    collection: Collection,
   ) {
     const data: CollectionDialogData = {
-      organizationId: organizationId,
-      collectionId: collectionId,
-      organizationName: organizationName,
-      collectionName: collectionName,
+      organization: organization,
+      collection: collection,
     };
     this.dialog.open(RemoveCollectionDialogComponent, {
       width: '600px',
