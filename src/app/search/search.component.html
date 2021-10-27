@@ -83,12 +83,13 @@
               <mat-option *ngFor="let option of facetAutocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
             </mat-autocomplete>
           </div>
-          <div *ngIf="orderedBuckets.get(key).Items.size > 10">
+          <!-- overflow-hidden because buttons are using floats causing the parent div to be 0 height -->
+          <div class="overflow-hidden my-1" *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button
               mat-stroked-button
               (click)="clickSortMode(key, false)"
               [ngClass]="{ active: !sortModeMap.get(key).SortBy }"
-              class="col-md-6 sortBtn mb-1"
+              class="col-md-6 sortBtn"
             >
               <fa-icon [icon]="sortModeMap.get(key).AlphabetOrderBy ? faSortAlphaUp : faSortAlphaDown"></fa-icon>
               Alphabetical
@@ -97,14 +98,14 @@
               mat-stroked-button
               (click)="clickSortMode(key, true)"
               [ngClass]="{ active: sortModeMap.get(key).SortBy }"
-              class="col-md-6 sortBtn mb-1"
+              class="col-md-6 sortBtn"
             >
               <fa-icon [icon]="sortModeMap.get(key).CountOrderBy ? faSortNumericUp : faSortNumericDown"></fa-icon> Count
             </button>
           </div>
-          <div *ngFor="let subBucket of getBucketKeys(key); let i = index">
+          <div class="my-1" *ngFor="let subBucket of getBucketKeys(key); let i = index">
             <!-- Priority: Hover > histogram > selected -->
-            <div class="my-1 selected-item">
+            <div class="selected-item">
               <!-- TODO: Somehow make this re-useable, and make it so that the histogram is slightly thinner (less height) than the selected background -->
               <div
                 *ngIf="orderedBuckets.get(key) | getHistogramWidth: subBucket as percentage"
@@ -139,9 +140,11 @@
               </div>
             </div>
           </div>
-          <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index">
+          <div
+            class="my-1"
+            *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index"
+          >
             <div
-              class="my-1"
               *ngIf="orderedBuckets.get(key) | getHistogramWidth: subBucket as percentage"
               [ngStyle]="{
                 background:
