@@ -74,7 +74,7 @@ export class OrganizationMembersService {
   }
 
   /**
-   * Figures out whether the can modify the organization or the collections it owns
+   * Figures out whether the user can modify the organization or the collections it owns
    *
    * @param {Organization} organization  The current organization being viewed
    * @returns {boolean}                  Whether the user belongs to this organization and can edit
@@ -130,7 +130,7 @@ export class OrganizationMembersService {
     this.organizationMembersStore.setError(false);
   }
 
-  setCanModifyState(canEdit: boolean, canEditMembers: boolean, canDeleteCollection) {
+  setCanModifyState(canEdit: boolean, canEditMembers: boolean, canDeleteCollection: boolean) {
     this.organizationStore.update((state) => {
       return {
         ...state,
