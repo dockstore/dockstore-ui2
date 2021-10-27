@@ -1,18 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'getHistogramWidth',
+  name: 'getHistogramStyle',
 })
-export class GetHistogramWidthPipe implements PipeTransform {
+export class GetHistogramStylePipe implements PipeTransform {
   /**
    * This pipe sums number of items in a facet and returns the width of the histogram as a proportion
    *
    * @param {Map<string, number>} bucket The items in one facet
    * @param {string} subBucket The sub-bucket value (e.g. http://edamontology.org/data_9090)
    * @returns {number} The width of the histogram for that row
-   * @memberof GetHistogramWidthPipe
+   * @memberof GetHistogramStylePipe
    */
-  transform(buckets: { Items: Map<string, number>; SelectedItems: Map<string, number> }, subBucket: string): number {
+  transform(buckets: { Items: Map<string, number>; SelectedItems: Map<string, number> }, subBucket: string, selectedIndex: number): any {
     const bucket = new Map([...buckets.Items, ...buckets.SelectedItems]);
     // Get number of items in the subBucket
     const items = bucket.get(subBucket);
@@ -26,6 +26,9 @@ export class GetHistogramWidthPipe implements PipeTransform {
 
     // Arbitrary scaling so that selected boolean facets (like Verified) won't have the histogram take up the entire width
     // Downside is that the histogram doesn't appear to "add" up to 100% when looking at a single facet
-    return histogramWidth * 0.75;
+    const scaledHistogramWidth = histogramWidth * 0.75;
+    // #d2fbf0 is the workflow color, #d0effd is the tool color
+    const histogramColor = selectedIndex === 0 ? '#d2fbf0' : '#d0effd';
+    return { background: `linear-gradient(to left, ${histogramColor} ${scaledHistogramWidth}%, transparent ${scaledHistogramWidth}%)` };
   }
 }

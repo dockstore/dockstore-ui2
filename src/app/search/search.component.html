@@ -107,19 +107,7 @@
             <!-- Priority: Hover > histogram > selected -->
             <div class="selected-item">
               <!-- TODO: Somehow make this re-useable, and make it so that the histogram is slightly thinner (less height) than the selected background -->
-              <div
-                *ngIf="orderedBuckets.get(key) | getHistogramWidth: subBucket as percentage"
-                [ngStyle]="{
-                  background:
-                    'linear-gradient(to left, ' +
-                    ((selectedIndex$ | async) === 0 ? '#d2fbf0' : '#d0effd') +
-                    ' ' +
-                    percentage +
-                    '%, transparent ' +
-                    percentage +
-                    '%)'
-                }"
-              >
+              <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
                 <div class="panel-container-label">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div class="container-name-oflw">
@@ -144,19 +132,7 @@
             class="my-1"
             *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index"
           >
-            <div
-              *ngIf="orderedBuckets.get(key) | getHistogramWidth: subBucket as percentage"
-              [ngStyle]="{
-                background:
-                  'linear-gradient(to left, ' +
-                  ((selectedIndex$ | async) === 0 ? '#d2fbf0' : '#d0effd') +
-                  ' ' +
-                  percentage +
-                  '%, transparent ' +
-                  percentage +
-                  '%)'
-              }"
-            >
+            <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
               <div class="panel-container-label">
                 <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
                   <div class="container-name-oflw">
