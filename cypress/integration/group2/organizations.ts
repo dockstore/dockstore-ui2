@@ -305,18 +305,6 @@ describe('Dockstore Organizations', () => {
       cy.contains('Members').should('be.visible');
     });
 
-    it('be able to remove the collection', () => {
-      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
-      cy.get('[data-cy=removeCollectionButton]').click();
-      cy.get('[data-cy=cancel-remove-collection]').click();
-      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
-      cy.contains('veryFakeCollectionName');
-      cy.get('[data-cy=removeCollectionButton]').click();
-      cy.get('[data-cy=accept-remove-collection]').click();
-      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
-      cy.contains('veryFakeCollectionName').should('not.exist');
-    });
-
     // test the fix for DOCK-1945
     it('stay on collections page when removing an entry',  () => {
       const url: string = '/organizations/Potatoe/collections/veryFakeCollectionName';
@@ -330,6 +318,18 @@ describe('Dockstore Organizations', () => {
       cy.url().should('include', url);
       cy.get('[data-cy=accept-remove-entry-from-org]').click();
       cy.url().should('include', url);
+    });
+
+    it('be able to remove the collection', () => {
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.get('[data-cy=removeCollectionButton]').click();
+      cy.get('[data-cy=cancel-remove-collection]').click();
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('veryFakeCollectionName');
+      cy.get('[data-cy=removeCollectionButton]').click();
+      cy.get('[data-cy=accept-remove-collection]').click();
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('veryFakeCollectionName').should('not.exist');
     });
   });
 
