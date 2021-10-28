@@ -18,6 +18,7 @@ import { Location } from '@angular/common';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Observable } from 'rxjs';
@@ -97,7 +98,8 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     public dialog: MatDialog,
     private toolService: ToolService,
     alertService: AlertService,
-    entryService: EntriesService
+    entryService: EntriesService,
+    private titleService: Title
   ) {
     super(
       trackLoginService,
@@ -129,6 +131,8 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
       this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
         if (tool && tool.topicId) {
           this.discourseHelper(tool.topicId);
+          const previousTitle = this.titleService.getTitle();
+          this.titleService.setTitle(`${previousTitle} | ${tool.tool_path}`);
         }
       });
     }
