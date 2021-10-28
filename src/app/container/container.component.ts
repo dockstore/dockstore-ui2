@@ -129,10 +129,12 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     if (this.publicPage) {
       this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
-        if (tool && tool.topicId) {
-          this.discourseHelper(tool.topicId);
+        if (tool) {
           const previousTitle = this.titleService.getTitle();
           this.titleService.setTitle(`${previousTitle} | ${tool.tool_path}`);
+          if (tool.topicId) {
+            this.discourseHelper(tool.topicId);
+          }
         }
       });
     }

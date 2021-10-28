@@ -159,10 +159,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     if (this.publicPage) {
       this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
-        if (workflow && workflow.topicId) {
-          this.discourseHelper(workflow.topicId);
+        if (workflow) {
           const previousTitle = this.titleService.getTitle();
           this.titleService.setTitle(`${previousTitle} | ${workflow.full_workflow_path}`);
+          if (workflow.topicId) {
+            this.discourseHelper(workflow.topicId);
+          }
         }
       });
     }
