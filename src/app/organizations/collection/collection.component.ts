@@ -125,16 +125,14 @@ export class CollectionComponent implements OnInit {
   }
 
   removeCollection(
-    organizationId: number,
-    collectionId: number,
-    organizationName: string,
-    collectionName: string,
+    organization: Organization,
+    collection: Collection
   ) {
     const data: CollectionDialogData = {
-      organizationId: organizationId,
-      collectionId: collectionId,
-      organizationName: organizationName,
-      collectionName: collectionName,
+      organizationId: organization.id,
+      collectionId: collection.id,
+      organizationName: organization.name,
+      collectionName: collection.name,
     };
     this.dialog.open(RemoveCollectionDialogComponent, {
       width: bootstrap4mediumModalSize,

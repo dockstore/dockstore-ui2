@@ -171,38 +171,42 @@ export class CollectionsService {
   */
   deleteCollection(organizationId: number, collectionId: number, organizationName: string, collectionName: string) {
     this.alertService.start('Removing collection ' + collectionName);
-    // In some cases, similar existing functions do not set all of the collectionsStore loading/error flags, either before or after.
+    // Some existing functions do not set all of the collectionsStore loading/error flags, either before or after.
     // Gary's advice regarding setting the collectionsStore loading/error flags is as follows:
     //  "so before the http request, set flags. on success set flags, on fail, set flags.
     //   if the success calls another function that makes another http request,
     //   probably set flags inside that function instead of the first's success"
-    // We implement the above advice:
+    // PR feedback suggests a different last sentence which might result in safer/clearer code:
+    //   on success, set flags before calling another function that makes another http request.
+    // We implement the above advice, coded for clarity and somewhat defensively:
     this.collectionsStore.setLoading(true);
     this.collectionsStore.setError(false);
     this.openApiOrganizationsService
       .deleteCollection(organizationId, collectionId)
       .subscribe(
         () => {
+          this.collectionsStore.setLoading(false);
+          this.collectionsStore.setError(false);
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
           // Navigate to the organization page.
-          // The following code avoids the possibility of overlapping duplicate update requests.
+          // In the following if-else statement, both code paths trigger http requests.
+          // Do one or the other to avoid duplicate and possibly-overlapping updates.
           if (this.router.url.endsWith('/organizations/' + organizationName)) {
-            // We're already on the organization page, update the state manually.
+            // We're already on the organization page, so router.navigate will not trigger noOnInit/etc.
+            // Update the state manually.
             this.updateCollections(organizationId);
             // Organization has a collectionsLength property so we update it, too.
             this.organizationService.updateOrganizationFromID(organizationId);
           } else {
-            this.collectionsStore.setLoading(false);
-            this.collectionsStore.setError(false);
             // The organization component will update the necessary state via ngOnInit/etc.
             this.router.navigate(['/organizations', organizationName]);
           }
         },
         (error: HttpErrorResponse) => {
-          this.alertService.detailedError(error);
           this.collectionsStore.setLoading(false);
           this.collectionsStore.setError(true);
+          this.alertService.detailedError(error);
         }
       );
   }

@@ -67,7 +67,7 @@
             color="basic"
             *ngIf="canDelete$ | async"
             mat-button
-            (click)="removeCollection(organization.id,collection.id,organization.name,collection.name)"
+            (click)="removeCollection(organization, collection)"
             data-cy="removeCollectionButton"
             matTooltip="Remove the collection"
           >

@@ -22,6 +22,7 @@ import { CollectionsService } from '../../state/collections.service';
   templateUrl: './remove-collection.component.html',
 })
 export class RemoveCollectionDialogComponent {
+  public removeClicked: boolean = false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: CollectionDialogData, private collectionsService: CollectionsService) {}
   removeCollection() {
     this.collectionsService.deleteCollection(this.data.organizationId, this.data.collectionId, this.data.organizationName, this.data.collectionName);
