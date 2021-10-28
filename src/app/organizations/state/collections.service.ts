@@ -170,17 +170,11 @@ export class CollectionsService {
   * @param collectionName
   */
   deleteCollection(organizationId: number, collectionId: number, organizationName: string, collectionName: string) {
-    this.alertService.start('Removing collection ' + collectionName);
-    // Some existing functions do not set all of the collectionsStore loading/error flags, either before or after.
-    // Gary's advice regarding setting the collectionsStore loading/error flags is as follows:
-    //  "so before the http request, set flags. on success set flags, on fail, set flags.
-    //   if the success calls another function that makes another http request,
-    //   probably set flags inside that function instead of the first's success"
-    // PR feedback suggests a different last sentence which might result in safer/clearer code:
-    //   on success, set flags before calling another function that makes another http request.
-    // We implement the above advice, coded for clarity and somewhat defensively:
+    // Implement the store setLoading/Error and alertService calls per the recommendations here:
+    // https://github.com/dockstore/dockstore/wiki/Dockstore-Frontend-Opinionated-Style-Guide#notifications-user-feedback
     this.collectionsStore.setLoading(true);
     this.collectionsStore.setError(false);
+    this.alertService.start('Removing collection ' + collectionName);
     this.openApiOrganizationsService
       .deleteCollection(organizationId, collectionId)
       .subscribe(
@@ -191,7 +185,7 @@ export class CollectionsService {
           this.matDialog.closeAll();
           // Navigate to the organization page.
           // In the following if-else statement, both code paths trigger http requests.
-          // Do one or the other to avoid duplicate and possibly-overlapping updates.
+          // Do one or the other to avoid duplicate and possibly-overlapping requests and store updates.
           if (this.router.url.endsWith('/organizations/' + organizationName)) {
             // We're already on the organization page, so router.navigate will not trigger noOnInit/etc.
             // Update the state manually.
