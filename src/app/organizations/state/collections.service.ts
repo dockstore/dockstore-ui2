@@ -183,17 +183,22 @@ export class CollectionsService {
           this.collectionsStore.setError(false);
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
-          // Navigate to the organization page.
-          // In the following if-else statement, both code paths trigger http requests.
-          // Do one or the other to avoid duplicate and possibly-overlapping requests and store updates.
+          // Update and display the org page.
+          // There are at least two reasonable places for a delete collection button to appear in our UI:
+          // 1) on the collection page
+          // 2) on each collection summary on the org page
+          // So, this delete might have been invoked from the org page, and we're there already. Or not.
+          // Gracefully handle both cases, so that no matter how the UI evolves, this function works properly:
           if (this.router.url.endsWith('/organizations/' + organizationName)) {
-            // We're already on the organization page, so router.navigate will not trigger noOnInit/etc.
+            // We're already on the organization page.
+            // A router.navigate to the current page won't trigger the org component ngOnInit to update the state.
             // Update the state manually.
             this.updateCollections(organizationId);
             // Organization has a collectionsLength property so we update it, too.
             this.organizationService.updateOrganizationFromID(organizationId);
           } else {
-            // The organization component will update the necessary state via ngOnInit/etc.
+            // Navigate to the organization page.
+            // Router.navigate will trigger the org component ngOnInit, which updates the necessary state.
             this.router.navigate(['/organizations', organizationName]);
           }
         },
