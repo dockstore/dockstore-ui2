@@ -1,12 +1,12 @@
-{
+492
   "name": "dockstore-ui2",
   "version": "2.8.0",
   "license": "Apache License 2.0",
   "config": {
     "webservice_version": "1.11.8",
     "use_circle": true,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/6822/workflows/c106cfea-311f-4a1a-8241-60ac7e0c22b0/jobs/14977/artifacts",
-    "circle_build_id": "14977"
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/6823/workflows/15ca1634-bba7-4499-ad22-6275700af129/jobs/14985/artifacts",
+    "circle_build_id": "14985"
   },
   "scripts": {
     "ng": "npx ng",
