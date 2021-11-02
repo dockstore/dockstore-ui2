@@ -27,9 +27,9 @@ function storeToken() {
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
-    cy.get('#publishToolButton').contains('Unpublish').click();
-    cy.contains('button', 'Publish').should('be.enabled');
-    cy.contains('button', 'Delete').should('be.enabled');
+    cy.contains('#publishToolButton', 'Unpublish').should('be.enabled').click();
+    cy.contains('#publishToolButton', 'Publish').should('be.enabled');
+    cy.contains('#deregisterButton', 'Delete').should('be.enabled');
   });
 }
 
@@ -39,8 +39,8 @@ function deleteTool() {
     cy.server();
     cy.route('delete', '**/containers/**').as('containers');
     cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
-    cy.contains('button', 'Delete').should('be.visible');
-    cy.contains('button', 'Delete').click();
+    cy.contains('#deregisterButton', 'Delete').should('be.enabled');
+    cy.contains('#deregisterButton', 'Delete').click();
     // cy.get('#deregisterButton').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
       cy.contains('button', 'Delete').click();
