@@ -5,13 +5,13 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: circleci/buildpack-deps:18.04-browsers
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
-      - image: circleci/postgres:13.3
+      - image: cimg/postgres:13.3
         command: postgres -c max_connections=200 -c jit=off
         auth:
           username: dockstoretestuser
@@ -30,7 +30,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-      - image: circleci/buildpack-deps:18.04-browsers
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -61,7 +61,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-        - image: circleci/buildpack-deps:18.04-browsers
+        - image: cimg/base:stable-20.04
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
@@ -81,7 +81,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: circleci/buildpack-deps:18.04-browsers
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
