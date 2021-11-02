@@ -28,6 +28,8 @@ function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
     cy.get('#publishToolButton').contains('Unpublish').click();
+    cy.contains('button', 'Publish').should('be.enabled');
+    cy.contains('button', 'Delete').should('be.enabled');
   });
 }
 
