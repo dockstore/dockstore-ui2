@@ -6,7 +6,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/base:stable-18.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -31,7 +31,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/base:stable-18.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -63,7 +63,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-        - image: cimg/base:stable-20.04
+        - image: cimg/base:stable-18.04
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
@@ -84,7 +84,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/base:stable-18.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
