@@ -15,15 +15,19 @@
  */
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { CollectionsService } from '../../state/collections.service';
+import { CollectionsQuery } from '../../state/collections.query';
 
 @Component({
   selector: 'app-collection-confirm-remove',
   templateUrl: './remove-collection.component.html',
 })
 export class RemoveCollectionDialogComponent {
-  public removeClicked: boolean = false;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: CollectionDialogData, private collectionsService: CollectionsService) {}
+  public collectionsQueryLoading$: Observable<boolean>;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: CollectionDialogData, private collectionsService: CollectionsService, private collectionsQuery: CollectionsQuery) {
+    this.collectionsQueryLoading$ = collectionsQuery.selectLoading();
+  }
   removeCollection() {
     this.collectionsService.deleteCollection(this.data.organizationId, this.data.collectionId, this.data.organizationName, this.data.collectionName);
   }
