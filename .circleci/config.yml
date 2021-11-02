@@ -375,6 +375,8 @@ commands:
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
+          environment: 
+            TERM: xterm-256color # https://github.com/fastlane/fastlane/issues/11732#issuecomment-386429867
       - run:
           name: Install nginx
           command: sudo apt install -y nginx || true
