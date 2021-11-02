@@ -64,7 +64,15 @@
         <mat-card-actions>
           <div fxFlex></div>
           <button
-            color="basic"
+            *ngIf="canDelete$ | async"
+            mat-button
+            (click)="removeCollection(organization, collection)"
+            data-cy="removeCollectionButton"
+            matTooltip="Remove the collection"
+          >
+            <mat-icon>clear</mat-icon> Remove
+          </button>
+          <button
             *ngIf="canEdit$ | async"
             mat-button
             (click)="editCollection(collection)"

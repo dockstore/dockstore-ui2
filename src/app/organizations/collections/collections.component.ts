@@ -34,6 +34,7 @@ export class CollectionsComponent implements OnInit, OnChanges {
   @Input() organizationName: string;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;
+  canDelete$: Observable<boolean>;
   collections$: Observable<HashMap<Collection>>;
   constructor(
     private collectionsQuery: CollectionsQuery,
@@ -45,6 +46,7 @@ export class CollectionsComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.loading$ = this.collectionsQuery.loading$;
     this.canEdit$ = this.organizationQuery.canEdit$;
+    this.canDelete$ = this.organizationQuery.canDeleteCollection$;
     this.collections$ = this.collectionsQuery.collections$;
   }
 

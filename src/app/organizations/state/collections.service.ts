@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -20,6 +21,7 @@ import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { Collection, OrganizationsService } from '../../shared/swagger';
+import { OrganizationsService as OpenApiOrganizationsService } from '../../shared/openapi';
 import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
@@ -30,6 +32,7 @@ export class CollectionsService {
   constructor(
     private collectionsStore: CollectionsStore,
     private organizationsService: OrganizationsService,
+    private openApiOrganizationsService: OpenApiOrganizationsService,
     private alertService: AlertService,
     private organizationService: OrganizationService,
     private organizationStore: OrganizationQuery,
@@ -55,6 +58,7 @@ export class CollectionsService {
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
         (collections: Array<Collection>) => {
+          this.collectionsStore.remove();
           this.addAll(collections);
           if (activeId) {
             this.updateCollectionFromId(organizationID, activeId as number);
@@ -154,6 +158,54 @@ export class CollectionsService {
         () => {
           this.collectionsStore.setError(true);
           this.alertService.simpleError();
+        }
+      );
+  }
+
+ /**
+  * Deletes the specified collection
+  * @param organizationId
+  * @param collectionId
+  * @param organizationName
+  * @param collectionName
+  */
+  deleteCollection(organizationId: number, collectionId: number, organizationName: string, collectionName: string) {
+    // Implement the store setLoading/Error and alertService calls per the recommendations here:
+    // https://github.com/dockstore/dockstore/wiki/Dockstore-Frontend-Opinionated-Style-Guide#notifications-user-feedback
+    this.collectionsStore.setLoading(true);
+    this.collectionsStore.setError(false);
+    this.alertService.start('Removing collection ' + collectionName);
+    this.openApiOrganizationsService
+      .deleteCollection(organizationId, collectionId)
+      .subscribe(
+        () => {
+          this.collectionsStore.setLoading(false);
+          this.collectionsStore.setError(false);
+          this.alertService.detailedSuccess();
+          this.matDialog.closeAll();
+          // Update and display the org page.
+          // There are at least two reasonable places for a delete collection button to appear in our UI:
+          // 1) on the collection page
+          // 2) on each collection summary on the org page
+          // So, this delete might have been invoked from the org page, and we're there already. Or not.
+          // Gracefully handle both cases, so that no matter how the UI evolves, this function works properly:
+          if (this.router.url.endsWith('/organizations/' + organizationName)) {
+            // We're already on the organization page.
+            // A router.navigate to the current page won't trigger the org component ngOnInit to update the state.
+            // Update the state manually.
+            this.updateCollections(organizationId);
+            // Organization has a collectionsLength property so we update it, too.
+            this.organizationService.updateOrganizationFromID(organizationId);
+          } else {
+            // Navigate to the organization page.
+            // Router.navigate will trigger the org component ngOnInit, which updates the necessary state.
+            this.router.navigate(['/organizations', organizationName]);
+          }
+        },
+        (error: HttpErrorResponse) => {
+          this.collectionsStore.setLoading(false);
+          this.collectionsStore.setError(true);
+          this.alertService.detailedError(error);
         }
       );
   }

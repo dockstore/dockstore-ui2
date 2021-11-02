@@ -48,7 +48,7 @@ export class OrganizationService {
         (organization: Organization) => {
           this.organizationStore.setError(false);
           this.updateOrganization(organization);
-          this.organizationMembersService.updateCanEdit(organizationID);
+          this.organizationMembersService.updateCanModify(organizationID);
         },
         () => {
           this.organizationStore.setError(true);
@@ -76,7 +76,7 @@ export class OrganizationService {
         (organization: Organization) => {
           this.organizationStore.setError(false);
           this.updateOrganization(organization);
-          this.organizationMembersService.updateCanEdit(organization.id);
+          this.organizationMembersService.updateCanModify(organization.id);
         },
         () => {
           this.organizationStore.setError(true);
