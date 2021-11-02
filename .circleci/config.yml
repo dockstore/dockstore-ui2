@@ -375,6 +375,8 @@ commands:
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
+          environment:
+            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0       
       - run:
           name: Install nginx
           command: sudo apt install -y nginx || true
