@@ -129,7 +129,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   private entryOrder: Map<string, SubBucket>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
-
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
