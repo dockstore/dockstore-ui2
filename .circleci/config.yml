@@ -250,6 +250,12 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+      - uptime_monitor_auth:
+          stack: "dev"
+          context:
+            - dockerhub
+          requires:
+            - lint_license_unit_test_coverage
       - integration_test_1:
           filters:
             tags:
