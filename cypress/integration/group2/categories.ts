@@ -1,27 +1,15 @@
 import { resetDB, setTokenUserViewPort, addOrganizationAdminUser } from '../../support/commands';
 
-const categoryName = 'foooo';
-const workflowPath = '/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info';
-const workflowSnippet = '3.0.0-rc8';
-
 describe('Dockstore Categories', () => {
+  const categoryName = 'foooo';
+  const toolPath = '/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info';
+  const toolSnippet = 'cgpmap-cramOut';
+
   resetDB();
   setTokenUserViewPort();
 
   function typeInInput(fieldName: string, text: string) {
     cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
-  }
-
-  function clearInput(fieldName: string) {
-    cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').clear();
-  }
-
-  function typeInTextArea(fieldName: string, text: string) {
-    cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('textarea').clear().type(text);
-  }
-
-  function clickCheckbox(labelName: string) {
-    cy.contains('span', labelName).parentsUntil('.mat-checkbox-layout').find('input').click();
   }
 
   describe('Should be able to create a category', () => {
@@ -39,9 +27,9 @@ describe('Dockstore Categories', () => {
     });
   });
 
-  describe('Should be able to add a workflow to a category', () => {
-    it('be able to add workflow to category', () => {
-      cy.visit(workflowPath);
+  describe('Should be able to add a tool to a category', () => {
+    it('be able to add tool to category', () => {
+      cy.visit(toolPath);
       cy.get('#addToolToCollectionButton').should('be.visible').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectOrganization').click();
@@ -53,16 +41,19 @@ describe('Dockstore Categories', () => {
     });
   });
 
-  describe('Category and categorized workflow should appear in search', () => {
+  describe('Category and categorized tool should appear in search', () => {
     it('appear in search sidebar', () => {
-      cy.visit('/search');
+      cy.visit('/search?entryType=tools');
       cy.get('.search-container').get('mat-accordion').contains('Category');
       cy.get('.search-container').get('mat-accordion').contains(categoryName);
     });
-    it('appear in search results if Category checkbox is clicked', () => {
-      cy.visit('/search');
-      clickCheckbox(categoryName);
-      cy.get('.search-container').contains(workflowSnippet);
+    it('appear exclusively in search results if Category checkbox is clicked', () => {
+      cy.visit('/search?entryType=tools');
+      cy.get('app-search-results').contains(toolSnippet);
+      cy.get('app-search-results').contains('A2/a');
+      cy.contains('mat-checkbox', categoryName).click();
+      cy.get('app-search-results').contains(toolSnippet);
+      cy.get('app-search-results').contains('A2/a').should('not.exist');
     });
   });
 });
