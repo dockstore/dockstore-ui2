@@ -204,7 +204,7 @@ describe('Dockstore Organizations', () => {
   describe('should be able to view a collection', () => {
     beforeEach(() => {
       const memberships = [
-        { id: 1, role: 'MAINTAINER', accepted: true, organization: { id: 1, status: 'APPROVED', name: 'Potatoe', displayName: 'Potatoe' } },
+        { id: 1, role: 'MAINTAINER', accepted: true, organization: { id: 2, status: 'APPROVED', name: 'Potatoe', displayName: 'Potatoe' } },
       ];
       cy.server().route({
         method: 'GET',
@@ -318,6 +318,18 @@ describe('Dockstore Organizations', () => {
       cy.url().should('include', url);
       cy.get('[data-cy=accept-remove-entry-from-org]').click();
       cy.url().should('include', url);
+    });
+
+    it('be able to remove the collection', () => {
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.get('[data-cy=removeCollectionButton]').click();
+      cy.get('[data-cy=cancel-remove-collection]').click();
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('veryFakeCollectionName');
+      cy.get('[data-cy=removeCollectionButton]').click();
+      cy.get('[data-cy=accept-remove-collection]').click();
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('veryFakeCollectionName').should('not.exist');
     });
   });
 

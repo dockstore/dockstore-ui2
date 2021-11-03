@@ -27,6 +27,13 @@
             <mat-chip>{{ event.collection.name }}</mat-chip>
           </mat-chip-list>
         </div>
+        <div *ngIf="event?.type === EventType.DELETECOLLECTION" class="my-3">
+          <mat-chip-list [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
+            <mat-chip>{{ event.initiatorUser.username }}</mat-chip>
+            &nbsp;removed&nbsp;the&nbsp;collection&nbsp;
+            <mat-chip>{{ event.collection.name }}</mat-chip>
+          </mat-chip-list>
+        </div>
         <div
           *ngIf="
             event?.type === EventType.MODIFYCOLLECTION ||
