@@ -288,8 +288,6 @@ function testCollection(org: string, collection: string, registry: string, repo:
   });
 }
 
-for (let i = 0; i < 5; i++) {
-  testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
-  testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
-  testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
-}
+testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
+testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
+testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
