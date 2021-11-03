@@ -6,6 +6,7 @@ export interface OrganizationState {
   organization: Organization;
   canEdit: boolean;
   canEditMembership: boolean;
+  canDeleteCollection: boolean;
 }
 
 export function createInitialState(): OrganizationState {
@@ -13,6 +14,7 @@ export function createInitialState(): OrganizationState {
     organization: null,
     canEdit: false,
     canEditMembership: false,
+    canDeleteCollection: false,
   };
 }
 
