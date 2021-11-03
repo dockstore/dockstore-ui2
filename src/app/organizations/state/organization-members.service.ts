@@ -63,7 +63,7 @@ export class OrganizationMembersService {
       .subscribe(
         () => {
           this.alertService.simpleSuccess();
-          this.updateCanEdit(organizationID);
+          this.updateCanModify(organizationID);
           this.organizationMembersStore.setError(false);
         },
         (error) => {
@@ -74,13 +74,13 @@ export class OrganizationMembersService {
   }
 
   /**
-   * Figures out whether the user can edit the organization info
+   * Figures out whether the user can modify the organization or the collections it owns
    *
    * @param {Organization} organization  The current organization being viewed
    * @returns {boolean}                  Whether the user belongs to this organization and can edit
    * @memberof OrganizationService
    */
-  updateCanEdit(organizationID: number) {
+  updateCanModify(organizationID: number) {
     this.beforeCall();
     this.organizationsService
       .getOrganizationMembers(organizationID)
@@ -102,9 +102,11 @@ export class OrganizationMembersService {
             const canEditMembers = organizationUsers.some(
               (user) => user.id.userId === currentUserId && user.accepted && user.role === OrganizationUser.RoleEnum.ADMIN
             );
-            this.setCanEditState(canEdit, canEditMembers);
+            // If a user can edit the organization, allow them to delete a collection.
+            const canDeleteCollection = canEdit;
+            this.setCanModifyState(canEdit, canEditMembers, canDeleteCollection);
           } else {
-            this.setCanEditState(false, false);
+            this.setCanModifyState(false, false, false);
           }
           this.updateAll(organizationUsers);
           this.organizationMembersStore.setError(false);
@@ -128,12 +130,13 @@ export class OrganizationMembersService {
     this.organizationMembersStore.setError(false);
   }
 
-  setCanEditState(canEdit: boolean, canEditMembers: boolean) {
+  setCanModifyState(canEdit: boolean, canEditMembers: boolean, canDeleteCollection: boolean) {
     this.organizationStore.update((state) => {
       return {
         ...state,
         canEdit: canEdit,
         canEditMembership: canEditMembers,
+        canDeleteCollection: canDeleteCollection,
       };
     });
   }

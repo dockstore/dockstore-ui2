@@ -319,6 +319,18 @@ describe('Dockstore Organizations', () => {
       cy.get('[data-cy=accept-remove-entry-from-org]').click();
       cy.url().should('include', url);
     });
+
+    it('be able to remove the collection', () => {
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.get('[data-cy=removeCollectionButton]').click();
+      cy.get('[data-cy=cancel-remove-collection]').click();
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('veryFakeCollectionName');
+      cy.get('[data-cy=removeCollectionButton]').click();
+      cy.get('[data-cy=accept-remove-collection]').click();
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('veryFakeCollectionName').should('not.exist');
+    });
   });
 
   describe.skip('Should be able to CRUD user', () => {

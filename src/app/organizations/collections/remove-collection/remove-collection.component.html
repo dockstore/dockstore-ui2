@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Remove Collection</h1>
+<div mat-dialog-content>
+  <app-alert></app-alert>
+  <p>
+    Are you sure you want to <strong>remove</strong> the collection <strong>{{data.collectionName}}</strong>?
+  </p>
+  <p>
+    <strong>The collection will be deleted, and you will not be able to restore it.</strong>
+  </p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial matTooltip="Cancel" data-cy="cancel-remove-collection">Cancel</button>
+  <button mat-flat-button [disabled]="collectionsQueryLoading$ | async" (click)="removeCollection()" matTooltip="Remove the collection" data-cy="accept-remove-collection">Remove</button>
+</div>

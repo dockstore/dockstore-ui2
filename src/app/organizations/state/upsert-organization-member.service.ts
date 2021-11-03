@@ -96,7 +96,7 @@ export class UpsertOrganizationMemberService {
         .subscribe(
           (organization: OrganizationUser) => {
             this.matDialog.closeAll();
-            this.organizationMembersService.updateCanEdit(organizationId);
+            this.organizationMembersService.updateCanModify(organizationId);
             this.upsertOrganizationMemberStore.setError(false);
             this.alertService.simpleSuccess();
           },

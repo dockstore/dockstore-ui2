@@ -233,8 +233,6 @@ div.view-content.ns-containers {
   }
 }
 div.panel-container-label {
-  background-color: #ffffff;
-  color: #487980;
   padding: 0 10px;
   clear: both;
   .container-name-oflw {
@@ -260,13 +258,9 @@ label.mat-checkbox-layout {
   margin-bottom: 0 !important;
 }
 
-div.panel-container-label:hover,
-div.panel-container-label.selected {
+div.panel-container-label:hover {
   background-color: #7987a5;
   color: #ffffff;
-  a {
-    color: #ffffff;
-  }
 }
 
 @keyframes spin {

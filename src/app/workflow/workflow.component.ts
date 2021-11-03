@@ -57,6 +57,7 @@ import { UrlResolverService } from '../shared/url-resolver.service';
 
 import RoleEnum = Permission.RoleEnum;
 import { EntriesService } from '../shared/openapi';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-workflow',
@@ -116,7 +117,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     private descriptorTypeCompatService: DescriptorTypeCompatService,
     public dialog: MatDialog,
     alertService: AlertService,
-    entryService: EntriesService
+    entryService: EntriesService,
+    private titleService: Title
   ) {
     super(
       trackLoginService,
@@ -157,8 +159,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     if (this.publicPage) {
       this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
-        if (workflow && workflow.topicId) {
-          this.discourseHelper(workflow.topicId);
+        if (workflow) {
+          const previousTitle = this.titleService.getTitle();
+          this.titleService.setTitle(`${previousTitle} | ${workflow.full_workflow_path}`);
+          if (workflow.topicId) {
+            this.discourseHelper(workflow.topicId);
+          }
         }
       });
     }
