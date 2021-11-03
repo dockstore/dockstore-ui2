@@ -259,6 +259,15 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+      - uptime_monitor_auth:
+          stack: "dev"
+          context:
+            - dockerhub
+      - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth-dev"
+          stack: "dev"
+          context:
+            - dockerhub
       - integration_test_1:
           filters:
             tags:
