@@ -363,7 +363,7 @@ commands:
           path: cypress/screenshots
   setup_integration_test:
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-browser-tools      
       - get_workspace
       - install_container_dependencies
       - run:
@@ -376,7 +376,7 @@ commands:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
           environment:
-            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
+            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0       
       - run:
           name: Install nginx
           command: sudo apt install -y nginx || true
@@ -397,7 +397,7 @@ commands:
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-browser-tools      
       - checkout
       - install_container_dependencies
       - restore_cache:
