@@ -36,9 +36,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - install_cypress_dependencies
       - browser-tools/install-browser-tools
       - setup_nightly_tests
-      - install_cypress_dependencies
       - run:
           name: Run remote verification test against << parameters.stack >> (no auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
@@ -69,9 +69,9 @@ jobs:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
+      - install_cypress_dependencies
       - browser-tools/install-browser-tools
       - setup_nightly_tests
-      - install_cypress_dependencies
       - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
@@ -261,11 +261,15 @@ workflows:
             - dockerhub
       - uptime_monitor_auth:
           stack: "dev"
+          requires:
+            - lint_license_unit_test_coverage
           context:
             - dockerhub
       - uptime_monitor_no_auth:
           name: "uptime_monitor_no_auth-dev"
           stack: "dev"
+          requires:
+            - lint_license_unit_test_coverage
           context:
             - dockerhub
       - integration_test_1:
