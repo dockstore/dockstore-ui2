@@ -36,9 +36,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - install_cypress_dependencies
       - browser-tools/install-browser-tools
       - setup_nightly_tests
+      - install_cypress_dependencies
       - run:
           name: Run remote verification test against << parameters.stack >> (no auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
@@ -50,11 +50,11 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
       - upload_nightly_artifacts
-      - slack/status:
-          fail_only: true
-          channel: $<< parameters.stack >>_id
-          failure_message: Nightly << parameters.stack >> non-auth tests failed!
-          webhook: $SLACK_WEBHOOK
+#      - slack/status:
+#          fail_only: true
+#          channel: $<< parameters.stack >>_id
+#          failure_message: Nightly << parameters.stack >> non-auth tests failed!
+#          webhook: $SLACK_WEBHOOK
 
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
@@ -69,20 +69,21 @@ jobs:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
-      - install_cypress_dependencies
       - browser-tools/install-browser-tools
       - setup_nightly_tests
+      - install_cypress_dependencies
       - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
       - upload_nightly_artifacts
-      - slack/status:
-          fail_only: true
-          channel: $<< parameters.stack >>_id
-          failure_message: Nightly << parameters.stack >> auth tests failed!
-          webhook: $SLACK_WEBHOOK
+#      - slack/status:
+#          fail_only: true
+#          channel: $<< parameters.stack >>_id
+#          failure_message: Nightly << parameters.stack >> auth tests failed!
+#          webhook: $SLACK_WEBHOOK
+
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
