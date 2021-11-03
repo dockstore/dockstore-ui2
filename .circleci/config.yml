@@ -38,6 +38,7 @@ jobs:
     steps:
       - browser-tools/install-browser-tools
       - setup_nightly_tests
+      - install_cypress_dependencies
       - run:
           name: Run remote verification test against << parameters.stack >> (no auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
@@ -70,6 +71,7 @@ jobs:
     steps:
       - browser-tools/install-browser-tools
       - setup_nightly_tests
+      - install_cypress_dependencies
       - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
@@ -361,22 +363,24 @@ commands:
           path: cypress/videos
       - store_artifacts:
           path: cypress/screenshots
+  install_cypress_dependencies:
+    - run:
+        name: Install cypress dependencies
+        command: sudo apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
   setup_integration_test:
     steps:
-      - browser-tools/install-browser-tools      
+      - browser-tools/install-browser-tools
       - get_workspace
       - install_container_dependencies
       - run:
           name: Install postgresql client
           command: sudo apt install -y postgresql-client || true
-      - run:
-          name: Install cypress dependencies
-          command: sudo apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
+      - install_cypress_dependencies
       - run:
           name: Prepare webservice
           command: bash -i -c 'npm run webservice'
           environment:
-            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0       
+            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
       - run:
           name: Install nginx
           command: sudo apt install -y nginx || true
@@ -397,7 +401,7 @@ commands:
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
     steps:
-      - browser-tools/install-browser-tools      
+      - browser-tools/install-browser-tools
       - checkout
       - install_container_dependencies
       - restore_cache:
