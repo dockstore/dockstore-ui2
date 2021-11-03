@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 OICR and UCSC
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { resetDB, setTokenUserViewPort, addOrganizationAdminUser } from '../../support/commands';
 
 describe('Dockstore Categories', () => {
@@ -41,6 +56,13 @@ describe('Dockstore Categories', () => {
     });
   });
 
+  /*
+   * The following ITs were written before I discovered that the current
+   * UI2 CI process does not run Elasticsearch.  These tests will pass
+   * if Elasticsearch is running and knows the categories mappings.
+   * We leave the tests here, in disabled state, in case they may be
+   * useful to someone, someday or somehow.
+   **********************************************************************
   describe('Category and categorized tool should appear in search', () => {
     it('appear in search sidebar', () => {
       cy.visit('/search?entryType=tools');
@@ -56,4 +78,7 @@ describe('Dockstore Categories', () => {
       cy.get('app-search-results').contains('A2/a').should('not.exist');
     });
   });
+   **********************************************************************
+   */
+
 });
