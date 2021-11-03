@@ -20,7 +20,7 @@
   type="button"
   class="mr-1"
   data-cy="refreshOrganization"
-  (click)="refreshOrganization()"
+  (click)="openConfirmationDialog()"
   [disabled]="isRefreshing$ | async"
   matTooltip="{{ tooltipText }}"
 >

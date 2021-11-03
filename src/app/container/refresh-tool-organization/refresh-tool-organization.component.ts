@@ -48,6 +48,10 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
     this.tooltipText = 'Refresh all tools in the namespace';
   }
 
+  openConfirmationDialog() {
+    this.refreshOrganization();
+  }
+
   ngOnInit() {
     this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((userId) => (this.userId = userId));
     this.isRefreshing$ = this.alertQuery.showInfo$;
