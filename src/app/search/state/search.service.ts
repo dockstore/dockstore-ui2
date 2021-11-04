@@ -504,6 +504,7 @@ export class SearchService {
       ['HasCheckerWorkflow', 'has_checker'],
       ['Organization', 'organization'],
       ['VerifiedPlatforms', 'verified_platforms.keyword'],
+      ['Category', 'categories.name.keyword'],
     ]);
   }
 
@@ -523,6 +524,7 @@ export class SearchService {
       ['has_checker', 'Has Checker Workflows'],
       ['organization', 'Organization'],
       ['verified_platforms.keyword', 'Verified Platforms'],
+      ['categories.name.keyword', 'Category'],
     ]);
   }
 
@@ -550,6 +552,7 @@ export class SearchService {
       ['source_control_provider.keyword', new SubBucket()],
       ['namespace', new SubBucket()],
       ['organization', new SubBucket()],
+      ['categories.name.keyword', new SubBucket()],
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
       ['verified', new SubBucket()],
