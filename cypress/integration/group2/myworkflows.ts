@@ -310,6 +310,7 @@ describe('Dockstore my workflows', () => {
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
     cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+    cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
     cy.wait('@refreshWorkflow');
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 1); // 2 Versions and no warning line
@@ -466,5 +467,12 @@ describe('Dockstore my workflows', () => {
         'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
     ).trigger('mouseenter');
     cy.get('.mat-tooltip').contains('Refresh all workflows in the organization');
+    cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+    cy.contains('button', 'Cancel').should('be.visible');
+    cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
+    cy.get('.error-output').should('be.visible');
+    cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+    cy.contains('button', 'Cancel').should('be.visible').click();
+    cy.get('.error-output').should('not.be.visible');
   });
 });
