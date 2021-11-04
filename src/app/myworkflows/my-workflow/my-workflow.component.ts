@@ -239,7 +239,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
  * @template T
  */
 export interface OrgWorkflowObject<T> extends OrgEntryObject<T> {
-  // Swagger doesn't return an enm for this. Currently, some values present are:
+  // Swagger doesn't return an enum for this. Currently, some values present are:
   // github.com and bitbucket.org
   sourceControl: string;
   organization: string;
