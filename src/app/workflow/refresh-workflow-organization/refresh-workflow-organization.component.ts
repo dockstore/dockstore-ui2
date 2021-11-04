@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ConfirmationDialogData } from 'app/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';
 import { bootstrap4mediumModalSize } from 'app/shared/constants';
@@ -36,7 +36,7 @@ import { UserQuery } from '../../shared/user/user.query';
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
-export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent implements OnInit {
+export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent implements OnInit, OnChanges {
   @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;
 
   constructor(
@@ -58,11 +58,15 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
     this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
+  ngOnChanges() {
+    this.isGitHubOrg = this.orgWorkflowObject.sourceControl === 'github.com';
+  }
+
   openConfirmationDialog() {
     const confirmationDialogData: ConfirmationDialogData = {
       title: 'Refresh Organization',
       message: `Are you sure you wish to refresh the organization?
-                It has no effect on GitHub Apps workflows.`,
+                It has no effect on workflows already being synchronized via the Dockstore GitHub App.`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Refresh',
     };
