@@ -24,7 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public displayLoggedInTOSBanner$: Observable<boolean>;
   public currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   public currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
-  public usernameChangeRequired: boolean;
+  public usernameChangeRequired: boolean = false;
 
   constructor(
     private router: Router,
