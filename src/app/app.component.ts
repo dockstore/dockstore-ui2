@@ -24,6 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public displayLoggedInTOSBanner$: Observable<boolean>;
   public currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   public currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
+  public usernameChangeRequired: boolean;
 
   constructor(
     private router: Router,
@@ -46,6 +47,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dismissedLatestPrivacyPolicy$ = this.tosBannerQuery.dismissedLatestPrivacyPolicy$;
     this.displayLoggedInTOSBanner$ = this.tosBannerQuery.displayLoggedInTOSBanner$;
     this.userQuery.user$.pipe().subscribe((user) => {
+      if (user) {
+        this.usernameChangeRequired = user.usernameChangeRequired;
+      }
       if (user && (user.privacyPolicyVersion !== this.currentPrivacyPolicyVersion || user.tosversion !== this.currentTOSVersion)) {
         this.tosBannerService.setDisplayLoggedInTOSBanner(true);
       } else {

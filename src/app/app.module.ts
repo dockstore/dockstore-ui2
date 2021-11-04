@@ -104,6 +104,7 @@ import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/export
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 import { FileTreeComponent } from './file-tree/file-tree.component';
+import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -155,6 +156,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SnaphotExporterModalComponent,
     ExporterStepComponent,
     FileTreeComponent,
+    ChangeUsernameBannerComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
