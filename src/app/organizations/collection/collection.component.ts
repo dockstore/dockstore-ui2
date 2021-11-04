@@ -11,6 +11,7 @@ import { CreateCollectionComponent } from '../collections/create-collection/crea
 import { RemoveCollectionDialogComponent, CollectionDialogData } from '../collections/remove-collection/remove-collection.component';
 // eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
+import { CategoriesStateService } from '../../categories/state/categories.service';
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
@@ -68,7 +69,8 @@ export class CollectionComponent implements OnInit {
     private collectionsService: CollectionsService,
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    public categoriesService: CategoriesStateService,
   ) {}
 
   ngOnInit() {
