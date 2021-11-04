@@ -81,7 +81,12 @@ export class FooterComponent extends Base implements OnInit {
               this.version,
               this.tag,
               Dockstore.COMPOSE_SETUP_VERSION,
-              Dockstore.DEPLOY_VERSION
+              Dockstore.DEPLOY_VERSION,
+              Dockstore.CWL_PARSING_LAMBDA_VERSION,
+              Dockstore.WDL_PARSING_LAMBDA_VERSION,
+              Dockstore.NEXTFLOW_PARSING_LAMBDA_VERSION,
+              Dockstore.GALAXY_PARSING_PLUGIN_VERSION,
+              Dockstore.CHECK_URL_LAMBDA_VERSION
             );
           } else {
             throw new Error('Version undefined');

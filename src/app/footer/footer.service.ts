@@ -17,7 +17,12 @@ export class FooterService {
     webServiceVersion: string | null,
     uiVersion: string | null,
     composeSetupVersion: string | null,
-    deployVersion: string | null
+    deployVersion: string | null,
+    cwlParsingLambdaVersion: string | null,
+    wdlParsingLambdaVersion: string | null,
+    nextflowParsingLambdaVersion: string | null,
+    galaxyParsingLambdaVersion: string | null,
+    checkUrlLambdaVersion: string | null
   ): string {
     return `[Webservice](${this.gitHubUrl('dockstore', webServiceVersion)}) - ${webServiceVersion}
 
@@ -25,7 +30,18 @@ export class FooterService {
 
 [Compose Setup](${this.gitHubUrl('compose_setup', composeSetupVersion)}) - ${composeSetupVersion}
 
-[Deploy](${this.gitHubUrl('dockstore-deploy', deployVersion)}) - ${deployVersion}`;
+[Deploy](${this.gitHubUrl('dockstore-deploy', deployVersion)}) - ${deployVersion}
+
+cwlParsingLambdaVersion: ${cwlParsingLambdaVersion}
+
+wdlParsingLambdaVersion: ${wdlParsingLambdaVersion}
+
+nextflowParsingLambdaVersion: ${nextflowParsingLambdaVersion}
+
+galaxyParsingLambdaVersion: ${galaxyParsingLambdaVersion}
+
+checkUrlLambdaVersion: ${checkUrlLambdaVersion}
+`;
   }
 
   private gitHubUrl(repo: string, commitOrVersion: string | null): string {

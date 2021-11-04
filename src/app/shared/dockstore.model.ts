@@ -90,6 +90,11 @@ export class Dockstore {
   static DEPLOY_VERSION = '';
   static COMPOSE_SETUP_VERSION = '';
   static WEBSERVICE_COMMIT_ID = '';
+  static CWL_PARSING_LAMBDA_VERSION = '';
+  static WDL_PARSING_LAMBDA_VERSION = '';
+  static NEXTFLOW_PARSING_LAMBDA_VERSION = '';
+  static GALAXY_PARSING_PLUGIN_VERSION = '';
+  static CHECK_URL_LAMBDA_VERSION = '';
 
   static FEATURES = {
     enableCwlViewer: true,
