@@ -14,6 +14,10 @@
  *    limitations under the License.
  */
 
+// Set the following variable to an appropriate value for your postgres setup.
+// const psqlInvocation: string = "PASSWORD=dockstore docker exec -i postgres1 psql";
+const psqlInvocation: string = "PASSWORD=dockstore psql";
+
 export function goToTab(tabName: string): void {
   cy.contains('.mat-tab-label', tabName).should('be.visible').click();
 }
@@ -47,8 +51,7 @@ export function assertNoTab(tabName: string): any {
 export function resetDB() {
   before(() => {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything travisci/web.yml');
-    // cy.exec('docker exec -i postgres1 psql webservice_test -U postgres < travisci/db_dump.sql');
-    cy.exec('PGPASSWORD=dockstore psql -h localhost -f travisci/db_dump.sql webservice_test -U dockstore');
+    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < travisci/db_dump.sql');
     cy.exec(
       'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0 travisci/web.yml'
     );
@@ -81,8 +84,14 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | 
   cy.contains(organization).parent().parent().parent().contains('div .no-wrap', repo).should('be.visible').click();
 }
 
+export function invokeSql(sqlStatement: string) {
+  cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore -c "' + sqlStatement + '"');
+}
+
 export function approvePotatoMembership() {
-  cy.exec(
-    'PGPASSWORD=dockstore psql -h localhost -c \'update organization_user set accepted=true where userid=2 and organizationid=1\' webservice_test -U dockstore'
-  );
+  invokeSql('update organization_user set accepted=true where userid=2 and organizationid=1');
+}
+
+export function addOrganizationAdminUser(organization: string, user: string) {
+  invokeSql("insert into organization_user (organizationid, userid, accepted, role) values ((select id from organization where name = '" + organization + "'), (select id from enduser where username = '" + user + "'), true, 'ADMIN')");
 }
