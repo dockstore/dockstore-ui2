@@ -7,7 +7,7 @@
   "requestTimeout": 30000,
   "retries": {
     "runMode": 3,
-    "openMode": 3
+    "openMode": 0
   }
 }
 
