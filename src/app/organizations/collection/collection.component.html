@@ -146,7 +146,7 @@
                         <span
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
                           *ngFor="let category of entry.categories | slice: 0:3"
-                          (click)="categoriesService.goToCategorySearch(category.name)"
+                          (click)="categoriesService.goToCategorySearch(category.name, entry.entryType === 'workflow' ? 'workflows' : 'tools')"
                         >
                           {{ category.displayName }}
                         </span>

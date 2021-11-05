@@ -17,8 +17,8 @@ export class CategoriesStateService {
     private categoriesService: CategoriesService,
   ) {}
 
-  goToCategorySearch(categoryName: string) {
-    window.location.href = '/search?categories.name.keyword=' + categoryName + '&searchMode=files';
+  goToCategorySearch(categoryName: string, entryType: string) {
+    window.location.href = '/search?categories.name.keyword=' + categoryName + '&searchMode=files&entryType=' + entryType;
   }
 
   updateAllCategories() {
@@ -44,13 +44,19 @@ export class CategoriesStateService {
     return this.allCategoriesQuery.selectAll();
   }
 
-  observePopularToolCategories(): Observable<Array<Category>>{
-    // TODO sort akita
-    return this.allCategoriesQuery.selectAll();
+  observePopularToolCategories(count: number): Observable<Array<Category>>{
+    return this.allCategoriesQuery.selectAll(
+      { filterBy: c => c.toolsLength > 0,
+        sortBy: (a, b) => b.toolsLength - a.toolsLength,
+        limitTo: count
+      });
   }
 
-  observePopularWorkflowCategories(): Observable<Array<Category>>{
-    // TODO sort akita
-    return this.allCategoriesQuery.selectAll();
+  observePopularWorkflowCategories(count: number): Observable<Array<Category>>{
+    return this.allCategoriesQuery.selectAll(
+      { filterBy: c => c.workflowsLength > 0,
+        sortBy: (a, b) => b.workflowsLength - a.workflowsLength,
+        limitTo: count
+      });
   }
 }
