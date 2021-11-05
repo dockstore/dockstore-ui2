@@ -45,7 +45,6 @@ export class RefreshToolOrganizationComponent extends RefreshOrganizationCompone
   ) {
     super();
     this.buttonText = 'Refresh Namespace';
-    this.tooltipText = 'Refresh all tools in the namespace';
   }
 
   openConfirmationDialog() {

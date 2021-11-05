@@ -22,7 +22,6 @@
   data-cy="refreshOrganization"
   (click)="isGitHubOrg ? openConfirmationDialog() : refreshOrganization()"
   [disabled]="isRefreshing$ | async"
-  matTooltip="{{ tooltipText }}"
 >
   {{ buttonText }}
 </button>

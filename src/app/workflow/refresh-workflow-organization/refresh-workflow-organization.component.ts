@@ -50,7 +50,6 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
   ) {
     super();
     this.buttonText = 'Refresh Organization';
-    this.tooltipText = 'Refresh all workflows in the organization';
   }
 
   ngOnInit() {
@@ -65,7 +64,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
   openConfirmationDialog() {
     const confirmationDialogData: ConfirmationDialogData = {
       title: 'Refresh Organization',
-      message: `Are you sure you wish to refresh the organization?
+      message: `Are you sure you wish to refresh the workflows in the organization?
                 It has no effect on workflows already being synchronized via the Dockstore GitHub App.`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Refresh',

@@ -23,7 +23,6 @@ export abstract class RefreshOrganizationComponent extends Base {
   public isGitHubOrg: boolean;
   protected userId: number;
   buttonText: string;
-  tooltipText: string;
   public isRefreshing$: Observable<boolean>;
   constructor() {
     super();
