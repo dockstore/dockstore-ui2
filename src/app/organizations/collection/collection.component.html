@@ -138,7 +138,7 @@
                       <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                       <div fxLayout="row wrap" fxLayoutGap="1rem" class="labels">
                         <span
-                          *ngFor="let category of entry.categories | slice: 0:3"
+                          *ngFor="let category of entry.categories"
                           [ngClass]="[entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag', 'clickable']"
                           (click)="categoryLinkService.goToCategorySearch(category.name, entry.entryType === 'workflow' ? 'workflows' : 'tools'); $event.stopPropagation(); $event.preventDefault()"
                         >
