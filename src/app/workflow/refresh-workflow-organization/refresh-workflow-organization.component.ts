@@ -64,8 +64,8 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
   openConfirmationDialog() {
     const confirmationDialogData: ConfirmationDialogData = {
       title: 'Refresh Organization',
-      message: `Are you sure you wish to refresh the workflows in the organization?
-                It has no effect on workflows already being synchronized via the Dockstore GitHub App.`,
+      message: `Are you sure you wish to refresh the organization?
+                This will sequentially refresh all workflows in the organization except for those already being synchronized via the Dockstore GitHub App.`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Refresh',
     };
