@@ -466,7 +466,6 @@ describe('Dockstore my workflows', () => {
       '#cdk-accordion-child-2 > .mat-action-row.ng-star-inserted > div > :nth-child(2) > ' +
         'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
     ).trigger('mouseenter');
-    cy.get('.mat-tooltip').contains('Refresh all workflows in the organization');
     cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
     cy.contains('button', 'Cancel').should('be.visible');
     cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
