@@ -4,7 +4,6 @@
     [routerLink]="['/tools/', tool.tool_path]"
     id="viewPublicToolButton"
     mat-button
-    color="basic"
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"
   >

@@ -37,13 +37,7 @@
             </div>
             <div *ngIf="canEdit$ | async">
               <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0">
-                <button
-                  color="basic"
-                  mat-icon-button
-                  (click)="editCollection(collection)"
-                  id="editCollection"
-                  matTooltip="Edit the collection"
-                >
+                <button mat-icon-button (click)="editCollection(collection)" id="editCollection" matTooltip="Edit the collection">
                   <mat-icon>edit</mat-icon>
                 </button>
               </mat-card-content>
