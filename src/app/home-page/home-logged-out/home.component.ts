@@ -25,7 +25,7 @@ import { User } from '../../shared/swagger/model/user';
 import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { Category } from '../../shared/openapi';
-import { CategoriesStateService } from '../../categories/state/categories.service';
+import { AllCategoriesService } from '../../categories/state/all-categories.service';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
@@ -63,16 +63,16 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     private twitterService: TwitterService,
     private userQuery: UserQuery,
     private homePageService: HomePageService,
-    private categoriesService: CategoriesStateService
+    private allCategoriesService: AllCategoriesService
   ) {
     super();
   }
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
-    this.categoriesService.updateAllCategories();
-    this.toolCategories$ = this.categoriesService.observePopularToolCategories(5);
-    this.workflowCategories$ = this.categoriesService.observePopularWorkflowCategories(5);
+    this.allCategoriesService.updateAllCategories();
+    this.toolCategories$ = this.allCategoriesService.observePopularToolCategories(5);
+    this.workflowCategories$ = this.allCategoriesService.observePopularWorkflowCategories(5);
   }
   ngAfterViewInit() {
     this.loadTwitterWidget();

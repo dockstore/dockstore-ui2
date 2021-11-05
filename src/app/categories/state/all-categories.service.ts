@@ -8,7 +8,7 @@ import { AllCategoriesQuery } from './all-categories.query';
 // import { EntryCategoriesQuery } from './entry-categories.query';
 
 @Injectable({ providedIn: 'root' })
-export class CategoriesStateService {
+export class AllCategoriesService {
   constructor(
     private allCategoriesStore: AllCategoriesStore,
     private allCategoriesQuery: AllCategoriesQuery,
@@ -44,19 +44,19 @@ export class CategoriesStateService {
     return this.allCategoriesQuery.selectAll();
   }
 
-  observePopularToolCategories(count: number): Observable<Array<Category>>{
-    return this.allCategoriesQuery.selectAll(
-      { filterBy: c => c.toolsLength > 0,
-        sortBy: (a, b) => b.toolsLength - a.toolsLength,
-        limitTo: count
-      });
+  observePopularToolCategories(count: number): Observable<Array<Category>> {
+    return this.allCategoriesQuery.selectAll({
+      filterBy: c => c.toolsLength > 0,
+      sortBy: (a, b) => b.toolsLength - a.toolsLength,
+      limitTo: count
+    });
   }
 
-  observePopularWorkflowCategories(count: number): Observable<Array<Category>>{
-    return this.allCategoriesQuery.selectAll(
-      { filterBy: c => c.workflowsLength > 0,
-        sortBy: (a, b) => b.workflowsLength - a.workflowsLength,
-        limitTo: count
-      });
+  observePopularWorkflowCategories(count: number): Observable<Array<Category>> {
+    return this.allCategoriesQuery.selectAll({
+      filterBy: c => c.workflowsLength > 0,
+      sortBy: (a, b) => b.workflowsLength - a.workflowsLength,
+      limitTo: count
+    });
   }
 }
