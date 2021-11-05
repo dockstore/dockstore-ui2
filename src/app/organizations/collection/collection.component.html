@@ -140,7 +140,7 @@
                         <span
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
                           *ngFor="let category of entry.categories | slice: 0:3"
-                          (click)="allCategoriesService.goToCategorySearch(category.name, entry.entryType === 'workflow' ? 'workflows' : 'tools'); $event.stopPropagation(); $event.preventDefault()"
+                          (click)="categoryLinkService.goToCategorySearch(category.name, entry.entryType === 'workflow' ? 'workflows' : 'tools'); $event.stopPropagation(); $event.preventDefault()"
                         >
                           {{ category.displayName }}
                         </span>

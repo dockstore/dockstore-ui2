@@ -4,22 +4,14 @@ import { Observable } from 'rxjs';
 import { Category, CategoriesService } from '../../shared/openapi';
 import { AllCategoriesStore } from './all-categories.store';
 import { AllCategoriesQuery } from './all-categories.query';
-// import { EntryCategoriesStore } from './entry-categories.service';
-// import { EntryCategoriesQuery } from './entry-categories.query';
 
 @Injectable({ providedIn: 'root' })
 export class AllCategoriesService {
   constructor(
     private allCategoriesStore: AllCategoriesStore,
     private allCategoriesQuery: AllCategoriesQuery,
-    // private entryCategoriesStore: EntryCategoriesStore,
-    // private entryCategoriesQuery: EntryCategoriesQuery,
     private categoriesService: CategoriesService,
   ) {}
-
-  goToCategorySearch(categoryName: string, entryType: string) {
-    window.location.href = '/search?categories.name.keyword=' + categoryName + '&searchMode=files&entryType=' + entryType;
-  }
 
   updateAllCategories() {
     this.allCategoriesStore.setLoading(true);
