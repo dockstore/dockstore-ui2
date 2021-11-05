@@ -24,6 +24,21 @@
   padding: 6rem;
 }
 
+.categories {
+  background-color: #121d34;
+  color: white;
+  padding: 1rem 6rem;
+}
+
+.labels > span {
+  display: inline-block;
+  margin: 0 0.4rem;
+}
+
+.black {
+  color: black;
+}
+
 .gray-sections {
   background: mat.get-color-from-palette($dockstore-app-gray, 5);
 }
