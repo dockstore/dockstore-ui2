@@ -64,13 +64,13 @@
       <span>Browse popular categories</span>
       <span *ngIf="(workflowCategories$ | async).length > 0">
         Workflows
-        <span *ngFor="let category of (workflowCategories$ | async)" class="workflow-label-tag" (click)="categoryLinkService.goToCategorySearch(category.name, 'workflows')">
+        <span *ngFor="let category of (workflowCategories$ | async)" class="workflow-label-tag clickable" (click)="categoryLinkService.goToCategorySearch(category.name, 'workflows')">
           {{ category.displayName }}
         </span>
       </span>
       <span *ngIf="(toolCategories$ | async).length > 0">
         Tools
-        <span *ngFor="let category of (toolCategories$ | async)" class="container-label-tag" (click)="categoryLinkService.goToCategorySearch(category.name, 'tools')">
+        <span *ngFor="let category of (toolCategories$ | async)" class="container-label-tag clickable" (click)="categoryLinkService.goToCategorySearch(category.name, 'tools')">
           {{ category.displayName }}
         </span>
       </span>
