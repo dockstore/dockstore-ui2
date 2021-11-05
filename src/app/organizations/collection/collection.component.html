@@ -139,14 +139,8 @@
                       <div fxLayout="row wrap" fxLayoutGap="1rem" class="labels">
                         <span
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
-                          *ngFor="let label of entry.labels | slice: 0:3"
-                        >
-                          {{ label }}
-                        </span>
-                        <span
-                          [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
                           *ngFor="let category of entry.categories | slice: 0:3"
-                          (click)="allCategoriesService.goToCategorySearch(category.name, entry.entryType === 'workflow' ? 'workflows' : 'tools')"
+                          (click)="allCategoriesService.goToCategorySearch(category.name, entry.entryType === 'workflow' ? 'workflows' : 'tools'); $event.stopPropagation(); $event.preventDefault()"
                         >
                           {{ category.displayName }}
                         </span>
