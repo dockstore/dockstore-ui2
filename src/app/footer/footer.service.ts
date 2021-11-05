@@ -24,24 +24,37 @@ export class FooterService {
     galaxyParsingLambdaVersion: string | null,
     checkUrlLambdaVersion: string | null
   ): string {
-    return `[Webservice](${this.gitHubUrl('dockstore', webServiceVersion)}) - ${webServiceVersion}
+    let baseBuildInfo = `[Webservice](${this.gitHubUrl('dockstore', webServiceVersion)}) - ${webServiceVersion}
 
-[UI](${this.gitHubUrl('dockstore-ui2', uiVersion)}) - ${uiVersion}
+[UI](${this.gitHubUrl('dockstore-ui2', uiVersion)}) - ${uiVersion}`;
+    if (composeSetupVersion) {
+      baseBuildInfo =
+        baseBuildInfo + `\n\n[Compose Setup](${this.gitHubUrl('compose_setup', composeSetupVersion)}) - ${composeSetupVersion}`;
+    }
+    if (deployVersion) {
+      baseBuildInfo = baseBuildInfo + `\n\n[Deploy](${this.gitHubUrl('dockstore-deploy', deployVersion)}) - ${deployVersion}`;
+    }
 
-[Compose Setup](${this.gitHubUrl('compose_setup', composeSetupVersion)}) - ${composeSetupVersion}
+    if (cwlParsingLambdaVersion) {
+      baseBuildInfo = baseBuildInfo + `\n\ncwlParsingLambdaVersion: ${cwlParsingLambdaVersion}`;
+    }
 
-[Deploy](${this.gitHubUrl('dockstore-deploy', deployVersion)}) - ${deployVersion}
+    if (wdlParsingLambdaVersion) {
+      baseBuildInfo = baseBuildInfo + `\n\nwdlParsingLambdaVersion: ${wdlParsingLambdaVersion}`;
+    }
 
-cwlParsingLambdaVersion: ${cwlParsingLambdaVersion}
+    if (nextflowParsingLambdaVersion) {
+      baseBuildInfo = baseBuildInfo + `\n\nnextflowParsingLambdaVersion: ${nextflowParsingLambdaVersion}`;
+    }
 
-wdlParsingLambdaVersion: ${wdlParsingLambdaVersion}
+    if (galaxyParsingLambdaVersion) {
+      baseBuildInfo = baseBuildInfo + `\n\ngalaxyParsingLambdaVersion: ${galaxyParsingLambdaVersion}`;
+    }
 
-nextflowParsingLambdaVersion: ${nextflowParsingLambdaVersion}
-
-galaxyParsingLambdaVersion: ${galaxyParsingLambdaVersion}
-
-checkUrlLambdaVersion: ${checkUrlLambdaVersion}
-`;
+    if (checkUrlLambdaVersion) {
+      baseBuildInfo = baseBuildInfo + `\n\ncheckUrlLambdaVersion: ${checkUrlLambdaVersion}`;
+    }
+    return baseBuildInfo;
   }
 
   private gitHubUrl(repo: string, commitOrVersion: string | null): string {
