@@ -14,7 +14,15 @@
     <hr />
 
     <app-change-username showText="true"></app-change-username>
-    <button mat-raised-button matStepperNext class="pull-right mt-2">Next<mat-icon>navigate_next </mat-icon></button>
+    <button
+      mat-raised-button
+      matStepperNext
+      class="pull-right mt-2"
+      data-cy="choose-username-next-button"
+      [disabled]="usernameChangeRequired"
+    >
+      Next<mat-icon>navigate_next </mat-icon>
+    </button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Link External Accounts</ng-template>

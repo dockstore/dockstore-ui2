@@ -63,6 +63,7 @@
             type="button"
             color="primary"
             [href]="gitHubAppInstallationLink$ | async"
+            [disabled]="usernameChangeRequired$ | async"
             matTooltip="Manage Dockstore Installations on GitHub"
             ><mat-icon>add</mat-icon> Manage Dockstore Installations on GitHub</a
           >
@@ -254,7 +255,9 @@
           <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
         </mat-form-field> -->
 
-        <div *ngIf="hostedWorkflow.repository">Final workflow path: dockstore.org/{{username$ | async}}/{{hostedWorkflow.repository}}</div>
+        <div *ngIf="hostedWorkflow.repository">
+          Final workflow path: dockstore.org/{{ username$ | async }}/{{ hostedWorkflow.repository }}
+        </div>
 
         <div class="modal-footer">
           <button type="button" mat-button color="secondary" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
