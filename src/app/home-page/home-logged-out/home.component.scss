@@ -30,13 +30,14 @@
   padding: 1rem 6rem;
 }
 
-.labels > span {
+.labels {
   display: inline-block;
-  margin: 0 0.4rem;
 }
 
-.black {
+.labels > span {
+  margin: 0 0.4rem;
   color: black;
+  display: inline-block;
 }
 
 .gray-sections {
