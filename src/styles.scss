@@ -907,6 +907,7 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.6rem !important;
+  border: none !important;
 }
 
 .workflow-label-tag {
@@ -915,6 +916,7 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.6rem !important;
+  border: none !important;
 }
 
 .gray-label-tag {
@@ -923,6 +925,7 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.6rem !important;
+  border: none !important;
 }
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names

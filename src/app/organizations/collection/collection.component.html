@@ -137,13 +137,13 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                       <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                       <div fxLayout="row wrap" fxLayoutGap="1rem" class="labels">
-                        <span
+                        <button
                           *ngFor="let category of entry.categories"
-                          [ngClass]="[entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag', 'clickable']"
-                          (click)="categoryLinkService.goToCategorySearch(category.name, entry.entryType === 'workflow' ? 'workflows' : 'tools'); $event.stopPropagation(); $event.preventDefault()"
+                          [ngClass]="[entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag']"
+                          (click)="categoryLinkService.goToCategoryPage(category, entry.entryType === 'workflow' ? 'workflows' : 'tools'); $event.stopPropagation(); $event.preventDefault()"
                         >
                           {{ category.displayName }}
-                        </span>
+                        </button>
                         <mat-chip
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
                           *ngIf="entry.verified"
