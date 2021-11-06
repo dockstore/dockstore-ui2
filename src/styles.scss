@@ -906,8 +906,9 @@ app-sidebar-accordion
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
-  padding: 0 0.6rem !important;
+  padding: 0 0.75rem !important;
   border: none !important;
+  line-height: inherit !important;
 }
 
 .workflow-label-tag {
@@ -915,8 +916,9 @@ app-sidebar-accordion
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
-  padding: 0 0.6rem !important;
+  padding: 0 0.75rem !important;
   border: none !important;
+  line-height: inherit !important;
 }
 
 .gray-label-tag {
@@ -924,8 +926,9 @@ app-sidebar-accordion
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
-  padding: 0 0.6rem !important;
+  padding: 0 0.75rem !important;
   border: none !important;
+  line-height: inherit !important;
 }
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names

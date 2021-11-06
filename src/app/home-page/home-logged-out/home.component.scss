@@ -34,10 +34,9 @@
   display: inline-block;
 }
 
-.labels > span, .labels > button {
+.labels > * {
   margin: 0 0.4rem;
   color: black;
-  display: inline-block;
 }
 
 .gray-sections {
