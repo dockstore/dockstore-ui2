@@ -16,7 +16,6 @@ export class AllCategoriesService {
   updateAllCategories() {
     this.allCategoriesStore.setLoading(true);
     this.allCategoriesStore.setError(false);
-    this.allCategoriesStore.set([]);
     this.categoriesService
       .getCategories()
       .subscribe(
@@ -30,6 +29,10 @@ export class AllCategoriesService {
           this.allCategoriesStore.setError(true);
         }
       );
+  }
+
+  observeLoading(): Observable<boolean> {
+    return this.allCategoriesQuery.selectLoading();
   }
 
   observeAllCategories(): Observable<Array<Category>> {
