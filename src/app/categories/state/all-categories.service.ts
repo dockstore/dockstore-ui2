@@ -7,11 +7,27 @@ import { AllCategoriesQuery } from './all-categories.query';
 
 @Injectable({ providedIn: 'root' })
 export class AllCategoriesService {
+  public loading$: Observable<boolean>;
+  public categories$: Observable<Array<Category>>;
+  public toolCategories$: Observable<Array<Category>>;
+  public workflowCategories$: Observable<Array<Category>>;
+
   constructor(
     private allCategoriesStore: AllCategoriesStore,
     private allCategoriesQuery: AllCategoriesQuery,
     private categoriesService: CategoriesService,
-  ) {}
+  ) {
+    this.loading$ = this.allCategoriesQuery.selectLoading();
+    this.categories$ = this.allCategoriesQuery.selectAll();
+    this.toolCategories$ = this.allCategoriesQuery.selectAll({
+      filterBy: c => c.toolsLength > 0,
+      sortBy: (a, b) => b.toolsLength - a.toolsLength
+    });
+    this.workflowCategories$ = this.allCategoriesQuery.selectAll({
+      filterBy: c => c.workflowsLength > 0,
+      sortBy: (a, b) => b.workflowsLength - a.workflowsLength
+    });
+  }
 
   updateAllCategories() {
     this.allCategoriesStore.setLoading(true);
@@ -29,29 +45,5 @@ export class AllCategoriesService {
           this.allCategoriesStore.setError(true);
         }
       );
-  }
-
-  observeLoading(): Observable<boolean> {
-    return this.allCategoriesQuery.selectLoading();
-  }
-
-  observeAllCategories(): Observable<Array<Category>> {
-    return this.allCategoriesQuery.selectAll();
-  }
-
-  observePopularToolCategories(count: number): Observable<Array<Category>> {
-    return this.allCategoriesQuery.selectAll({
-      filterBy: c => c.toolsLength > 0,
-      sortBy: (a, b) => b.toolsLength - a.toolsLength,
-      limitTo: count
-    });
-  }
-
-  observePopularWorkflowCategories(count: number): Observable<Array<Category>> {
-    return this.allCategoriesQuery.selectAll({
-      filterBy: c => c.workflowsLength > 0,
-      sortBy: (a, b) => b.workflowsLength - a.workflowsLength,
-      limitTo: count
-    });
   }
 }

@@ -73,8 +73,8 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   ngOnInit() {
     this.user$ = this.userQuery.user$;
     this.allCategoriesService.updateAllCategories();
-    this.toolCategories$ = this.allCategoriesService.observePopularToolCategories(5);
-    this.workflowCategories$ = this.allCategoriesService.observePopularWorkflowCategories(5);
+    this.toolCategories$ = this.allCategoriesService.toolCategories$;
+    this.workflowCategories$ = this.allCategoriesService.workflowCategories$;
   }
   ngAfterViewInit() {
     this.loadTwitterWidget();
