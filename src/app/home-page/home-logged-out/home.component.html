@@ -65,15 +65,11 @@
       <span>Browse popular categories</span>
       <div *ngIf="(workflowCategories$ | async).length > 0" class="labels">
         <img src="assets/svg/sub-nav/workflow.svg" class="ml-4 mr-1" alt="workflow icon" />
-        <button mat-button *ngFor="let category of (workflowCategories$ | async | slice:0:4)" class="workflow-label-tag" [matTooltip]="category.topic" (click)="categoryLinkService.goToCategoryPage(category, 'workflows')">
-        {{ category.displayName }}
-        </button>
+        <app-category-button *ngFor="let category of (workflowCategories$ | async | slice:0:4)" [category]="category" entryType="workflow"></app-category-button>
       </div>
       <div *ngIf="(toolCategories$ | async).length > 0" class="labels">
         <img src="assets/svg/sub-nav/tool.svg" class="ml-3 mr-1" alt="tool icon" />
-        <button mat-button *ngFor="let category of (toolCategories$ | async | slice:0:4)" class="container-label-tag" [matTooltip]="category.topic" (click)="categoryLinkService.goToCategoryPage(category, 'tools')">
-        {{ category.displayName }}
-        </button>
+        <app-category-button *ngFor="let category of (workflowCategories$ | async | slice:0:4)" [category]="category" entryType="tool"></app-category-button>
       </div>
     </div>
   </div>

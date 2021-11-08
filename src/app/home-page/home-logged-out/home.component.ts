@@ -25,7 +25,6 @@ import { User } from '../../shared/swagger/model/user';
 import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { Category } from '../../shared/openapi';
-import { CategoryLinkService } from '../../category/category-link.service';
 import { AllCategoriesService } from '../../categories/state/all-categories.service';
 
 /**
@@ -64,7 +63,6 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     private twitterService: TwitterService,
     private userQuery: UserQuery,
     private homePageService: HomePageService,
-    private categoryLinkService: CategoryLinkService,
     private allCategoriesService: AllCategoriesService,
   ) {
     super();

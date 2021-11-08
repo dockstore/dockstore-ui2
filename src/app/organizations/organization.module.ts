@@ -15,6 +15,7 @@ import { OrganizationStargazersModule } from './organization/organization-starga
 import { OrganizationStarringModule } from './organization/organization-starring/organization-starring.module';
 import { OrganizationComponent } from './organization/organization.component';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
+import { CategoryButtonModule } from '../categories/button/category-button.module';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     MarkdownModule,
     PipeModule,
     MarkdownWrapperModule,
+    CategoryButtonModule,
   ],
   declarations: [OrganizationComponent],
   exports: [OrganizationComponent],

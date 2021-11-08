@@ -14,6 +14,7 @@ import { ListWorkflowsModule } from 'app/shared/modules/list-workflows.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
+import { CategoryButtonModule } from '../categories/button/category-button.module';
 import { HomePageComponent } from './home-page.component';
 import { RecentEventsComponent } from './recent-events/recent-events.component';
 import { EntriesComponent } from './widget/entries/entries.component';
@@ -38,6 +39,7 @@ import { RequestsComponent } from './widget/requests/requests.component';
     RefreshAlertModule,
     MarkdownModule,
     FontAwesomeModule,
+    CategoryButtonModule,
   ],
   declarations: [
     HomePageComponent,

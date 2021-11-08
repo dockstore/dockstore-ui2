@@ -907,7 +907,6 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.75rem !important;
-  border: none !important;
   line-height: inherit !important;
 }
 
@@ -917,7 +916,6 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.75rem !important;
-  border: none !important;
   line-height: inherit !important;
 }
 
@@ -927,9 +925,14 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.75rem !important;
-  border: none !important;
   line-height: inherit !important;
 }
+
+app-category-button {
+  border: none !important;
+  font-size: 12px !important;
+}
+
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names
 // TODO: Ideally this should stretch to the length of the longest dropdown option.

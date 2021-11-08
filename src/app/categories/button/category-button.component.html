@@ -1,0 +1,10 @@
+<button
+  mat-button
+  [ngClass]="[className, 'category-button']"
+  [matTooltip]="category.topic"
+  [routerLink]="routerLink"
+  [queryParams]="queryParams"
+  (click)="$event.stopPropagation(); $event.preventDefault()"
+  >
+  {{ category.displayName }}
+</button>

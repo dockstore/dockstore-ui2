@@ -13,6 +13,7 @@ import { RemoveCollectionDialogComponent } from './collections/remove-collection
 import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
+import { CategoryButtonModule } from '../categories/button/category-button.module';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     MarkdownModule,
     UpdateOrganizationDescriptionModule,
     MarkdownWrapperModule,
+    CategoryButtonModule,
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent, RemoveCollectionDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],
