@@ -1,6 +1,9 @@
-button {
-  border: none;
+a, a:hover, a:focus, a:active, a:link, a:visited {
+  color: inherit;
   font-weight: inherit;
   font-size: inherit;
   line-height: inherit;
+  border: none;
+  text-decoration: none;
+  outline: none;
 }
