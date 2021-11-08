@@ -8,8 +8,6 @@ import { AllCategoriesState, AllCategoriesStore } from './all-categories.store';
   providedIn: 'root',
 })
 export class AllCategoriesQuery extends QueryEntity<AllCategoriesState, Category> {
-  loading$: Observable<boolean> = this.selectLoading();
-
   constructor(protected store: AllCategoriesStore) {
     super(store);
   }

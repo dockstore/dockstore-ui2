@@ -907,7 +907,6 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.75rem !important;
-  line-height: inherit !important;
 }
 
 .workflow-label-tag {
@@ -916,7 +915,6 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.75rem !important;
-  line-height: inherit !important;
 }
 
 .gray-label-tag {
@@ -925,11 +923,11 @@ app-sidebar-accordion
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.75rem !important;
-  line-height: inherit !important;
 }
 
 app-category-button {
-  border: none !important;
+  color: black;
+  font-weight: normal;
   font-size: 12px !important;
 }
 
