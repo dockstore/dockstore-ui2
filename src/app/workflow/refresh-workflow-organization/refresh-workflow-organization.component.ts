@@ -13,7 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ConfirmationDialogData } from 'app/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';
+import { bootstrap4mediumModalSize } from 'app/shared/constants';
 import { EMPTY, from } from 'rxjs';
 import { catchError, concatMap, takeUntil } from 'rxjs/operators';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
@@ -33,7 +36,7 @@ import { UserQuery } from '../../shared/user/user.query';
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
-export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent implements OnInit {
+export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent implements OnInit, OnChanges {
   @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;
 
   constructor(
@@ -42,16 +45,38 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
     private workflowsService: WorkflowsService,
     private alertService: AlertService,
     protected alertQuery: AlertQuery,
-    private extendedWorkflowQuery: ExtendedWorkflowQuery
+    private extendedWorkflowQuery: ExtendedWorkflowQuery,
+    private confirmationDialogService: ConfirmationDialogService
   ) {
     super();
     this.buttonText = 'Refresh Organization';
-    this.tooltipText = 'Refresh all workflows in the organization';
   }
 
   ngOnInit() {
     this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((userId) => (this.userId = userId));
     this.isRefreshing$ = this.alertQuery.showInfo$;
+  }
+
+  ngOnChanges() {
+    this.isGitHubOrg = this.orgWorkflowObject.sourceControl === 'github.com';
+  }
+
+  openConfirmationDialog() {
+    const confirmationDialogData: ConfirmationDialogData = {
+      title: 'Refresh Organization',
+      message: `Are you sure you wish to refresh the organization?
+                This will sequentially refresh all workflows in the organization except for those already being synchronized via the Dockstore GitHub App.`,
+      cancelButtonText: 'Cancel',
+      confirmationButtonText: 'Refresh',
+    };
+    this.confirmationDialogService
+      .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result) => {
+        if (result) {
+          this.refreshOrganization();
+        }
+      });
   }
 
   refreshOrganization(): void {

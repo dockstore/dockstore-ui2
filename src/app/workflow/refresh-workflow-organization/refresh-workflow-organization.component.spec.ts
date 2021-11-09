@@ -16,6 +16,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -40,6 +41,7 @@ import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organiz
 describe('RefreshWorkflowOrganizationComponent', () => {
   let component: RefreshWorkflowOrganizationComponent;
   let fixture: ComponentFixture<RefreshWorkflowOrganizationComponent>;
+  const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
 
   beforeEach(
     waitForAsync(() => {
@@ -53,6 +55,7 @@ describe('RefreshWorkflowOrganizationComponent', () => {
           { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
           { provide: DateService, useClass: DateStubService },
           { provide: ProviderService, useClass: ProviderStubService },
+          { provide: MatDialog, useValue: matDialogStub },
         ],
       }).compileComponents();
     })
