@@ -16,6 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import {
   faAngleDoubleDown,
@@ -205,11 +206,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasFacetAutoCompleteTerms$ = this.searchQuery.hasFacetAutoCompleteTerms$;
   }
 
-  /**
+ /**
    * Only called when the tab is manually changed by the user
    */
-  saveTabIndex(tab) {
-    this.searchService.saveCurrentTabAndClear(tab.index);
+  saveTabIndex(matTabChangeEvent: MatTabChangeEvent) {
+    // This is to prevent an infinite loop. 
+    // Event is somehow triggered even though it's not the active tab
+    if (matTabChangeEvent.tab.isActive) {
+      this.searchService.saveCurrentTabAndClear(matTabChangeEvent.index);
+    }
   }
 
   /**
