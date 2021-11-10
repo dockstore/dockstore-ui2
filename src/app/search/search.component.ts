@@ -210,7 +210,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Only called when the tab is manually changed by the user
    */
   saveTabIndex(matTabChangeEvent: MatTabChangeEvent) {
-    // This is to prevent an infinite loop. 
+    // This is to prevent an infinite loop.
     // Event is somehow triggered even though it's not the active tab
     if (matTabChangeEvent.tab.isActive) {
       this.searchService.saveCurrentTabAndClear(matTabChangeEvent.index);
