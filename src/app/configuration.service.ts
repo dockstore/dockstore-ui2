@@ -84,6 +84,11 @@ export class ConfigurationService {
     Dockstore.COMPOSE_SETUP_VERSION = config.composeSetupVersion;
 
     Dockstore.WEBSERVICE_COMMIT_ID = config.gitCommitId;
+    Dockstore.CWL_PARSING_LAMBDA_VERSION = config.cwlParsingLambdaVersion;
+    Dockstore.WDL_PARSING_LAMBDA_VERSION = config.wdlParsingLambdaVersion;
+    Dockstore.NEXTFLOW_PARSING_LAMBDA_VERSION = config.nextflowParsingLambdaVersion;
+    Dockstore.GALAXY_PARSING_PLUGIN_VERSION = config.galaxyParsingPluginVersion;
+    Dockstore.CHECK_URL_LAMBDA_VERSION = config.checkUrlLambdaVersion;
   }
 
   /**
