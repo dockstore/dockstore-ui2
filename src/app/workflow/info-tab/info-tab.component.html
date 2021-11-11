@@ -384,6 +384,11 @@
             </span>
           </div>
         </div>
+        <div *ngIf="selectedVersion?.frozen && hasHttpImports" class="pt-3">
+          <mat-card class="alert alert-warning" role="alert">
+            <mat-icon>warning</mat-icon> This version is snapshotted but contains HTTP imports.
+          </mat-card>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>
