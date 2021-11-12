@@ -84,6 +84,33 @@ jobs:
           failure_message: Nightly << parameters.stack >> auth tests failed!
           webhook: $SLACK_WEBHOOK
 
+  audit:
+    working_directory: ~/repo
+      docker:
+          - image: cimg/base:stable-20.04
+            auth:
+              username: dockstoretestuser
+              password: $DOCKERHUB_PASSWORD
+    steps:
+      - browser-tools/install-browser-tools
+      - checkout
+      - run:
+          name: Checkout merge commit (PRs only)
+          command: |
+            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
+              git checkout -qf FETCH_HEAD
+            fi
+      - install_container_dependencies
+      - run:
+          name: License Test
+          command: |
+            bash -i -c 'npm audit > vulnerabilities.txt'
+            bash scripts/npm-audit.sh
+            git checkout develop
+            bash -i -c 'npm audit > vulnerabilities.txt'
+            bash scripts/npm-audit.sh
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
@@ -254,6 +281,12 @@ workflows:
   everything:
     jobs:
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - audit:
+        filters:
+          tags:
+            only: /.*/
+          context:
+            - dockerhub
       - lint_license_unit_test_coverage:
           filters:
             tags:
