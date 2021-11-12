@@ -96,7 +96,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     // This should be enabled when the language parsers are fully functional
     // this.hasHttpImports = this.selectedVersion?.versionMetadata?.parsedInformationSet[0]?.hasHTTPImports ?? false;
     // ngOnChanges seems to be fired twice. Once for most inputs, then another time for just canRead, canWrite, isOwner
-    if (changes.selectedVersion || changes.extendedWorkflow) {
+    if ((changes.selectedVersion || changes.extendedWorkflow) && this.extendedWorkflow && this.selectedVersion) {
       this.workflowsService.getWorkflowVersionsSourcefiles(this.extendedWorkflow.id, this.selectedVersion.id).subscribe((sourceFiles) => {
         this.hasHttpImports = sourceFiles.some((sourceFile) => this.fileService.hasHttpImport(sourceFile));
       });
