@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { Observable } from 'rxjs';
 import { Category } from '../../shared/openapi';
 import { AllCategoriesState, AllCategoriesStore } from './all-categories.store';
 

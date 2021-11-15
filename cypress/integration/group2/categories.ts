@@ -17,6 +17,8 @@ import { resetDB, setTokenUserViewPort, addOrganizationAdminUser } from '../../s
 
 describe('Dockstore Categories', () => {
   const categoryName = 'foooo';
+  const categoryDisplayName = 'Foooo';
+  const categoryTopic = 'some topic';
   const toolPath = '/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info';
   const toolSnippet = 'cgpmap-cramOut';
 
@@ -34,11 +36,11 @@ describe('Dockstore Categories', () => {
       cy.get('#createCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
       typeInInput('Name', categoryName);
-      typeInInput('Display Name', categoryName);
-      typeInInput('Topic', 'some topic');
+      typeInInput('Display Name', categoryDisplayName);
+      typeInInput('Topic', categoryTopic);
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
-      cy.contains(categoryName);
-      cy.contains('some topic');
+      cy.contains(categoryDisplayName);
+      cy.contains(categoryTopic);
     });
   });
 
@@ -51,7 +53,7 @@ describe('Dockstore Categories', () => {
       cy.get('mat-option').contains('Dockstore').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectCollection').click();
-      cy.get('mat-option').contains(categoryName).click();
+      cy.get('mat-option').contains(categoryDisplayName).click();
       cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
     });
   });
@@ -81,4 +83,24 @@ describe('Dockstore Categories', () => {
    **********************************************************************
    */
 
+  describe('Category buttons should appear in various places', () => {
+    it('appear in entry summary on collection page', () => {
+      cy.visit('/organizations/dockstore/collections/' + categoryName);
+      cy.get('app-category-button').contains(categoryDisplayName);
+    });
+    it('appear in logged-out home page', () => {
+      cy.clearLocalStorage();
+      cy.visit('/');
+      cy.get('app-category-button').contains(categoryDisplayName);
+    });
+  });
+
+  describe('Category buttons should link to appropriate destination', () => {
+    it('clickthrough to category search results', () => {
+      cy.visit('/organizations/dockstore/collections/' + categoryName);
+      cy.get('app-category-button').contains(categoryDisplayName).click();
+      cy.url().should('include', '/search');
+      cy.url().should('include', categoryName);
+    });
+  });
 });

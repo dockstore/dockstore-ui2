@@ -24,12 +24,16 @@
   padding: 6rem;
 }
 
+// Styling for the "Browse popular categories" bar
+// Specific to the above
 .categories {
-  background-color: #121d34;
+  background-color: mat.get-color-from-palette($dockstore-app-primary, darker);
   color: white;
   padding: 1rem 6rem;
 }
 
+// Styling for each group of labels.
+// Specific to the above
 .labels {
   display: inline-block;
 }

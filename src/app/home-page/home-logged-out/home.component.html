@@ -60,7 +60,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="(toolCategories$ | async).length + (workflowCategories$ | async).length > 0" fxLayout="column" class="categories">
+  <div *ngIf="(toolCategories$ | async).length + (workflowCategories$ | async).length > 0" class="categories">
     <div class="container">
       <span>Browse popular categories</span>
       <div *ngIf="(workflowCategories$ | async).length > 0" class="labels">

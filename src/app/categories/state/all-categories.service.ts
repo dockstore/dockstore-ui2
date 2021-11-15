@@ -21,8 +21,6 @@ import { AllCategoriesQuery } from './all-categories.query';
 
 @Injectable({ providedIn: 'root' })
 export class AllCategoriesService {
-  public loading$: Observable<boolean>;
-  public categories$: Observable<Array<Category>>;
   public toolCategories$: Observable<Array<Category>>;
   public workflowCategories$: Observable<Array<Category>>;
 
@@ -31,11 +29,6 @@ export class AllCategoriesService {
     private allCategoriesQuery: AllCategoriesQuery,
     private categoriesService: CategoriesService,
   ) {
-    this.loading$ = this.allCategoriesQuery.selectLoading();
-    /**
-     * An observable list of all categories in no particular order.
-     */
-    this.categories$ = this.allCategoriesQuery.selectAll();
     /**
      * An observable list of all categories that contain one or more tools, sorted in descending order of the number of tools.
      */

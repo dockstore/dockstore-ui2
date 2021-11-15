@@ -28,8 +28,6 @@ export class CategoryButtonComponent implements OnChanges {
   routerLink: Array<string>;
   queryParams: object;
 
-  constructor() { }
-
   ngOnChanges(): void {
     const isWorkflow: boolean = this.entryType.startsWith('workflow');
     this.className = isWorkflow ? 'workflow-label-tag' : 'container-label-tag';
