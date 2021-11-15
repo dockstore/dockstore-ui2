@@ -34,6 +34,7 @@ export class ChangeUsernameComponent implements OnInit {
   username: string;
   user: User;
   usernameTaken = false;
+  usernameChangeRequired: boolean = false;
   checkingIfValid = false;
   canChangeUsername$: Observable<boolean>;
   showEmailWarning = false;
@@ -52,6 +53,7 @@ export class ChangeUsernameComponent implements OnInit {
         this.user = user;
         this.username = user.username;
         this.showEmailWarning = this.user.username.includes('@');
+        this.usernameChangeRequired = this.user.usernameChangeRequired;
       }
     });
     this.canChangeUsername$ = this.userQuery.canChangeUsername$;

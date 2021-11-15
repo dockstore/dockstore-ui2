@@ -389,11 +389,10 @@
                   class="form-control"
                   value="{{ dockerPullCommand }}"
                   aria-describedby="clipboard"
-                  #inputTarget
                   disabled
                 />
                 <span class="input-group-btn" id="clipboard">
-                  <button class="btn btn-default btn-sm form-sm-button" type="button" [cdkCopyToClipboard]="inputTarget" appSnackbar>
+                  <button class="btn btn-default btn-sm form-sm-button" type="button" [cdkCopyToClipboard]="dockerPullCommand" appSnackbar>
                     <mat-icon id="file_copy">file_copy</mat-icon>
                   </button>
                 </span>

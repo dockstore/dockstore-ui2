@@ -4,7 +4,6 @@
     [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"
     id="viewPublicWorkflowButton"
     mat-button
-    color="basic"
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"
   >

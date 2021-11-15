@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2019 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
 
-import { Base } from '../base';
-
-@Injectable()
-export abstract class RefreshOrganizationComponent extends Base {
-  public isGitHubOrg: boolean;
-  protected userId: number;
-  buttonText: string;
-  public isRefreshing$: Observable<boolean>;
-  constructor() {
-    super();
-  }
+@Component({
+  selector: 'app-change-username-banner',
+  templateUrl: './changeUsernameBanner.component.html',
+})
+export class ChangeUsernameBannerComponent {
+  constructor() {}
 }

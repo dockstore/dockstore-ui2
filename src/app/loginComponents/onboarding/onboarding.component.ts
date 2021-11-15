@@ -18,6 +18,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   user: User;
   ready = false;
   Dockstore = Dockstore;
+  usernameChangeRequired: boolean = false;
   constructor(private userQuery: UserQuery, private tokenService: TokenQuery) {}
   ngOnInit() {
     localStorage.setItem('page', '/onboarding');
@@ -34,6 +35,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
           this.extendedUser = extendedUser;
           if (user && extendedUser) {
             this.ready = true;
+            this.usernameChangeRequired = this.user.usernameChangeRequired;
           }
         },
         (error) => {
