@@ -355,18 +355,6 @@ h3.available-containers {
   line-height: 55px;
 }
 
-@media (min-width: 992px) {
-  .container {
-    width: 970px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    width: 1200px;
-  }
-}
-
 #container-header {
   box-shadow: 0px 3px 6px #cfd1d7;
   position: relative;
