@@ -104,13 +104,17 @@ jobs:
             fi
       - install_container_dependencies
       - run:
-          name: License Test
+          name: Install dependencies
+          #Only run 'npm ci' if node_modules was not restored from cache
           command: |
-            bash -i -c 'npm ci'
+            bash -i -c "npm i"
             bash -i -c 'npm audit > vulnerabilities.txt'
             bash scripts/npm-audit.sh
+      - run:
+          name: npm audit
+          command: |
             git checkout develop
-            bash -i -c 'npm ci'
+            bash -i -c 'npm i'
             bash -i -c 'npm audit > vulnerabilities.txt'
             bash scripts/npm-audit.sh
             bash scripts/compare-num-vulns.sh
