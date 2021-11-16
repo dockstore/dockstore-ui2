@@ -111,18 +111,24 @@ jobs:
       - run:
           name: npm audit
           command: |
-            bash -i -c 'npm audit > vulnerabilities.txt'
-            cat vulnerabilities.txt
+            bash -i -c "npm audit > vulnerabilities.txt" || true
       - run:
           name: checkout develop
           command: |
             bash scripts/npm-audit.sh
+            git stash
             git checkout develop
             bash -i -c 'npm i'
-            bash -i -c 'npm audit > vulnerabilities.txt'
+            bash -i -c 'npm audit > vulnerabilities.txt' || true
       - run:
           name: npm audit
           command: |
+            # Remove wget once this script has been merged to develop
+            if [[ ! -f scripts/npm-audit.sh ]]; then
+              wget -O scripts/npm-audit.sh https://raw.githubusercontent.com/dockstore/dockstore-ui2/a5ca454980c12dcf3cf4586267790228ce0f263f/scripts/npm-audit.sh
+              wget -O scripts/compare-num-vulns.sh https://raw.githubusercontent.com/dockstore/dockstore-ui2/a5ca454980c12dcf3cf4586267790228ce0f263f/scripts/compare-num-vulns.sh
+            fi
+
             bash scripts/npm-audit.sh
             bash scripts/compare-num-vulns.sh
 
