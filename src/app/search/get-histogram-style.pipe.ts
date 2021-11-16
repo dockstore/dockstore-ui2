@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { SubBucket } from 'app/shared/models/SubBucket';
 
 @Pipe({
   name: 'getHistogramStyle',
@@ -13,14 +14,17 @@ export class GetHistogramStylePipe implements PipeTransform {
    * @returns {number} The width of the histogram for that row
    * @memberof GetHistogramStylePipe
    */
-  transform(buckets: { Items: Map<string, number>; SelectedItems: Map<string, number> }, subBucket: string, selectedIndex: number): any {
+  transform(buckets: SubBucket, subBucket: string, selectedIndex: number): any {
     const bucket = new Map([...buckets.Items, ...buckets.SelectedItems]);
     // Get number of items in the subBucket
     const items = bucket.get(subBucket);
 
     // Sum up number of items in the bucket to get the divisor
     const bucketValues = Array.from(bucket.values());
-    const divisor = bucketValues.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+    const divisor = bucketValues
+      .map((bucketValue) => parseInt(bucketValue))
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
 
     // Width of histogram is percetange of items out of total items in the bucket
     const histogramWidth = (Number(items) / divisor) * 100;

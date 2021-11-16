@@ -40,6 +40,7 @@ import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
 import { IsAppToolPipe } from './is-app-tool.pipe';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { IsAppToolPipe } from './is-app-tool.pipe';
     SearchWorkflowTableComponent,
     BasicSearchComponent,
     IsAppToolPipe,
+    SidebarComponent,
   ],
   imports: [
     CommonModule,

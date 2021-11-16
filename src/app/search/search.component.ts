@@ -125,8 +125,8 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @type {Map<string, V>}
    */
   private bucketStubs: Map<string, string>;
-  public friendlyNames: Map<string, string>;
-  public toolTips: Map<string, string>;
+  public friendlyNames: Map<string, string> = this.searchService.friendlyNames;
+  public toolTips: Map<string, string> = this.searchService.tooltips;
   private entryOrder: Map<string, SubBucket>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
@@ -157,9 +157,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.selectedIndex$ = this.searchQuery.savedTabIndex$;
     // Initialize mappings
     this.bucketStubs = this.searchService.initializeCommonBucketStubs();
-    this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
-    this.toolTips = this.searchService.initializeToolTips();
   }
 
   getKeys(bucketMap: Map<any, any>): Array<string> {
@@ -550,74 +548,5 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   searchSuggestTerm() {
     this.searchService.searchSuggestTerm();
-  }
-  /**
-   * This handles clicking a facet and doing the search
-   * @param category
-   * @param categoryValue
-   */
-  onClick(category: string, categoryValue: string) {
-    if (category !== null && categoryValue !== null) {
-      const checked = this.checkboxMap.get(category).get(categoryValue);
-      this.checkboxMap.get(category).set(categoryValue, !checked);
-      this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
-    }
-    this.facetSearchText = '';
-    this.updatePermalink();
-  }
-
-  clickExpand(key: string) {
-    const isExpanded = this.fullyExpandMap.get(key);
-    this.fullyExpandMap.set(key, !isExpanded);
-  }
-
-  clickSortMode(category: string, sortMode: boolean) {
-    let orderedMap2;
-    if (this.sortModeMap.get(category).SortBy === sortMode) {
-      let orderBy: boolean;
-      if (this.sortModeMap.get(category).SortBy) {
-        // Sort by Count
-        orderBy = this.sortModeMap.get(category).CountOrderBy;
-        this.sortModeMap.get(category).CountOrderBy = !orderBy;
-      } else {
-        orderBy = this.sortModeMap.get(category).AlphabetOrderBy;
-        this.sortModeMap.get(category).AlphabetOrderBy = !orderBy;
-      }
-    }
-    if (sortMode) {
-      /* Reorder the bucket map by count */
-      orderedMap2 = this.searchService.sortCategoryValue(
-        this.orderedBuckets.get(category).Items,
-        sortMode,
-        this.sortModeMap.get(category).CountOrderBy
-      );
-    } else {
-      /* Reorder the bucket map by alphabet */
-      orderedMap2 = this.searchService.sortCategoryValue(
-        this.orderedBuckets.get(category).Items,
-        sortMode,
-        this.sortModeMap.get(category).AlphabetOrderBy
-      );
-    }
-    this.orderedBuckets.get(category).Items = orderedMap2;
-    this.sortModeMap.get(category).SortBy = sortMode;
-  }
-
-  // Get autocomplete terms
-  onFacetSearchKey(key) {
-    const values = this.facetSearchText.toLowerCase();
-    const unfilteredItems = Array.from(this.orderedBuckets.get(key).Items.entries());
-    const filteredItems = unfilteredItems.filter((item) => item[0].toLowerCase().includes(values)).map((item) => item[0]);
-    this.searchService.setFacetAutocompleteTerms(filteredItems);
-  }
-
-  /**===============================================
-   *                Helper Functions
-   * ===============================================
-   *
-   */
-
-  getBucketKeys(key: string) {
-    return Array.from(this.orderedBuckets.get(key).SelectedItems.keys());
   }
 }

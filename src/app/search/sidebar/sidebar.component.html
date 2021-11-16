@@ -1,0 +1,127 @@
+<mat-accordion multi>
+  <app-basic-search></app-basic-search>
+  <mat-expansion-panel *ngFor="let orderedBucket of orderedBuckets | keyvalue: returnZero" #bucket expanded>
+    <mat-expansion-panel-header>
+      {{ friendlyNames.get(orderedBucket.key) }}
+      <mat-icon *ngIf="toolTips.get(orderedBucket.key) as tooltip" matTooltip="{{ tooltip }}">help_outline</mat-icon>
+    </mat-expansion-panel-header>
+    <div *ngIf="orderedBucket.key === 'author'">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Search for {{ orderedBucket.key }}</mat-label>
+        <input
+          matInput
+          placeholder="Search for {{ orderedBucket.key }}"
+          [(ngModel)]="facetSearchText"
+          (keyup)="onFacetSearchKey(orderedBucket.key)"
+          [matAutocomplete]="auto"
+        />
+      </mat-form-field>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of facetAutocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
+      </mat-autocomplete>
+    </div>
+    <!-- overflow-hidden because buttons are using floats causing the parent div to be 0 height -->
+    <div class="overflow-hidden my-1" *ngIf="orderedBuckets.get(orderedBucket.key).Items.size > 10">
+      <button
+        mat-stroked-button
+        (click)="clickSortMode(orderedBucket.key, false)"
+        [ngClass]="{ active: !sortModeMap.get(orderedBucket.key).SortBy }"
+        class="col-md-6 sortBtn"
+      >
+        <fa-icon [icon]="sortModeMap.get(orderedBucket.key).AlphabetOrderBy ? faSortAlphaUp : faSortAlphaDown"></fa-icon>
+        Alphabetical
+      </button>
+      <button
+        mat-stroked-button
+        (click)="clickSortMode(orderedBucket.key, true)"
+        [ngClass]="{ active: sortModeMap.get(orderedBucket.key).SortBy }"
+        class="col-md-6 sortBtn"
+      >
+        <fa-icon [icon]="sortModeMap.get(orderedBucket.key).CountOrderBy ? faSortNumericUp : faSortNumericDown"></fa-icon> Count
+      </button>
+    </div>
+    <div class="my-1" *ngFor="let subBucket of getBucketKeys(orderedBucket.key); let i = index">
+      <!-- Priority: Hover > histogram > selected -->
+      <div class="selected-item">
+        <!-- TODO: Somehow make this re-useable, and make it so that the histogram is slightly thinner (less height) than the selected background -->
+        <div [ngStyle]="orderedBucket.value | getHistogramStyle: subBucket:(selectedIndex$ | async)">
+          <div class="panel-container-label">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div class="container-name-oflw">
+                <span>
+                  <mat-checkbox
+                    class="search-facet-checkboxes"
+                    type="checkbox"
+                    [checked]="checkboxMap.get(orderedBucket.key).get(subBucket)"
+                    (change)="onClick(orderedBucket.key, subBucket)"
+                  >
+                    {{ orderedBucket.key | mapFriendlyValue: subBucket }}
+                  </mat-checkbox>
+                </span>
+              </div>
+              <span>{{ orderedBuckets.get(orderedBucket.key).SelectedItems.get(subBucket) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="my-1"
+      *ngFor="let subBucket of getKeys(orderedBucket.value.Items) | getFacetSearchResults: facetSearchText:orderedBucket.key; let i = index"
+    >
+      <div [ngStyle]="orderedBucket.value | getHistogramStyle: subBucket:(selectedIndex$ | async)">
+        <div class="panel-container-label">
+          <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="container-name-oflw">
+              <span matTooltip="{{ orderedBucket.key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
+                <mat-checkbox
+                  class="search-facet-checkboxes"
+                  type="checkbox"
+                  [checked]="checkboxMap.get(orderedBucket.key).get(subBucket)"
+                  (change)="onClick(orderedBucket.key, subBucket)"
+                >
+                  {{ orderedBucket.key | mapFriendlyValue: subBucket }}
+                </mat-checkbox>
+              </span>
+            </div>
+            <span>{{ orderedBucket.value.Items.get(subBucket) }}</span>
+          </div>
+          <div *ngIf="i >= 5 && fullyExpandMap.get(orderedBucket.key)" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="container-name-oflw">
+              <span matTooltip="{{ orderedBucket.key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
+                <mat-checkbox
+                  class="search-facet-checkboxes"
+                  matTooltip="{{ subBucket }}"
+                  [matTooltipPosition]="'after'"
+                  type="checkbox"
+                  [checked]="checkboxMap.get(orderedBucket.key).get(subBucket)"
+                  (change)="onClick(orderedBucket.key, subBucket)"
+                >
+                  {{ orderedBucket.key | mapFriendlyValue: subBucket }}
+                </mat-checkbox>
+              </span>
+            </div>
+            <span>{{ orderedBucket.value.Items.get(subBucket) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="orderedBucket.value.Items.size > 5">
+      <span style="cursor: pointer" class="pull-right" (click)="clickExpand(orderedBucket.key)">
+        <!-- The anchor is an easy way to change the color of the icon and "more" -->
+        <a>
+          <fa-icon [icon]="fullyExpandMap.get(orderedBucket.key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
+          <span *ngIf="orderedBucket.key !== 'author'; else author">{{
+            fullyExpandMap.get(orderedBucket.key) ? 'Hide' : orderedBucket.value.Items.size - 5 + ' more'
+          }}</span>
+
+          <ng-template #author
+            ><span *ngIf="orderedBucket.key === 'author'">{{
+              fullyExpandMap.get(orderedBucket.key) ? 'Hide' : (getKeys(orderedBucket.value.Items) | getFacetSearchUpdate: facetSearchText)
+            }}</span></ng-template
+          >
+        </a>
+      </span>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
