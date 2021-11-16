@@ -109,13 +109,17 @@ jobs:
           command: |
             bash -i -c "npm i"
             bash -i -c 'npm audit > vulnerabilities.txt'
-            bash scripts/npm-audit.sh
       - run:
           name: npm audit
+          command: bash scripts/npm-audit.sh
+      - run:
+          name: checkout develop
           command: |
             git checkout develop
             bash -i -c 'npm i'
             bash -i -c 'npm audit > vulnerabilities.txt'
+      - run:
+          name: npm audit
             bash scripts/npm-audit.sh
             bash scripts/compare-num-vulns.sh
 
