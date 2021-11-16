@@ -120,6 +120,7 @@ jobs:
             bash -i -c 'npm audit > vulnerabilities.txt'
       - run:
           name: npm audit
+          command: |
             bash scripts/npm-audit.sh
             bash scripts/compare-num-vulns.sh
 
