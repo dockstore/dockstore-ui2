@@ -88,7 +88,7 @@ exec newgrp docker
 
 `;
     this.textDataMacOs = `
-#### Part 1 - Install dependencies
+#### Part 1a - Install Java dependencies
 We'll cover two ways to install Java 11.
 
 1. The first way is to download OpenJDK for Mac OS from [here](https://jdk.java.net/archive/), and execute
@@ -127,7 +127,8 @@ export JAVA_HOME=\`/usr/libexec/java_home -v 11\`
 java -version
 \`\`\`
 
-3. Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 2.0.0.3 installed.
+#### Part 1b - Install Docker dependencies
+Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 2.0.0.3 installed.
     `;
 
     this.textDataInstallCLI = `
