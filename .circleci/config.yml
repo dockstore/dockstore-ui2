@@ -86,11 +86,11 @@ jobs:
 
   audit:
     working_directory: ~/repo
-      docker:
-          - image: cimg/base:stable-20.04
-            auth:
-              username: dockstoretestuser
-              password: $DOCKERHUB_PASSWORD
+    docker:
+      - image: cimg/base:stable-20.04
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     steps:
       - browser-tools/install-browser-tools
       - checkout
@@ -106,11 +106,15 @@ jobs:
       - run:
           name: License Test
           command: |
+            bash -i -c 'npm ci'
             bash -i -c 'npm audit > vulnerabilities.txt'
             bash scripts/npm-audit.sh
             git checkout develop
+            bash -i -c 'npm ci'
             bash -i -c 'npm audit > vulnerabilities.txt'
             bash scripts/npm-audit.sh
+            bash scripts/compare-num-vulns.sh
+
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
