@@ -102,6 +102,9 @@
   </div>
   <div class="row m-1" *ngIf="!showRedirect">
     <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px">
+      <span *ngIf="(categories$ | async).length > 0">
+        Categories
+      </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
           <mat-chip class="workflow-label-tag" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{

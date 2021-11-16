@@ -58,6 +58,7 @@ import { UrlResolverService } from '../shared/url-resolver.service';
 import RoleEnum = Permission.RoleEnum;
 import { EntriesService } from '../shared/openapi';
 import { Title } from '@angular/platform-browser';
+import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Component({
   selector: 'app-workflow',
@@ -118,7 +119,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     public dialog: MatDialog,
     alertService: AlertService,
     entryService: EntriesService,
-    private titleService: Title
+    private titleService: Title,
+    protected entryCategoriesService: EntryCategoriesService,
   ) {
     super(
       trackLoginService,
@@ -133,7 +135,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       sessionQuery,
       gA4GHFilesService,
       alertService,
-      entryService
+      entryService,
+      entryCategoriesService
     );
     this._toolType = 'workflows';
     this.location = location;
@@ -264,6 +267,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           });
       }
       this.updateVerifiedPlatforms(this.workflow.id);
+      this.updateCategories(this.workflow.id);
     }
   }
 

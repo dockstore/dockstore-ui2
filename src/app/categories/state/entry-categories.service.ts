@@ -35,11 +35,12 @@ export class EntryCategoriesService {
   }
 
   /**
-   * Updates the list of categories.
+   * Updates the list of categories for the specified entry.
    */
   updateEntryCategories(id: number) {
     this.entryCategoriesStore.setLoading(true);
     this.entryCategoriesStore.setError(false);
+    this.entryCategoriesStore.set([]);
     this.entriesService
       .entryCategories(id)
       .subscribe(

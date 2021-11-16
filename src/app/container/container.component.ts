@@ -49,6 +49,7 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
+import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Component({
   selector: 'app-container',
@@ -99,7 +100,8 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     private toolService: ToolService,
     alertService: AlertService,
     entryService: EntriesService,
-    private titleService: Title
+    private titleService: Title,
+    protected entryCategoriesService: EntryCategoriesService,
   ) {
     super(
       trackLoginService,
@@ -114,7 +116,8 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
       sessionQuery,
       gA4GHFilesService,
       alertService,
-      entryService
+      entryService,
+      entryCategoriesService
     );
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
@@ -215,6 +218,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.updateVerifiedPlatforms(this.tool.id);
+      this.updateCategories(this.tool.id);
     }
   }
 
