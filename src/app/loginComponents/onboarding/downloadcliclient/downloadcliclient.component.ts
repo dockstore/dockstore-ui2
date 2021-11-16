@@ -89,7 +89,10 @@ exec newgrp docker
 `;
     this.textDataMacOs = `
 #### Part 1 - Install dependencies
-1. We'll cover two ways to install Java 11. One way is to download the JDK for MacOS from [OpenJDK](https://jdk.java.net/archive/) and executing the following commands.  First, unpack the downloaded tar archive, then move the resulting JDK directory to its standard location and check the Java version:
+We'll cover two ways to install Java 11.
+
+1. The first way is to download OpenJDK for Mac OS from [here](https://jdk.java.net/archive/), and execute
+the following commands.  First, unpack the downloaded tar archive, then move the resulting JDK directory to its standard location. Then check the Java version:
 \`\`\`
 sudo mv jdk-11.0.2.jdk /Library/Java/JavaVirtualMachines/
 java -version
@@ -107,10 +110,20 @@ java -version
 \`\`\`
 Add the above export line to your \`.bashrc\` or \`.bash_profile\` to set \`JAVA_HOME\` properly every time you invoke a shell.
 
-2. Or to install Java 11 using Homebrew, execute the following commands:
+2. Alternatively, to install Java 11 using Homebrew, execute the following commands:
 \`\`\`
-brew tap AdoptOpenJDK/openjdk
-brew cask install adoptopenjdk11
+brew update
+brew install openjdk@11
+\`\`\`
+For the system Java wrappers to be able to use this JDK, symlink with the command:
+\`\`\`
+sudo ln -sfn $(brew --prefix)/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+\`\`\`
+Next, set the \`JAVA_HOME\` environment variable to the correct JDK system path, and confirm the
+Java version is correct:
+\`\`\`
+unset JAVA_HOME
+export JAVA_HOME=\`/usr/libexec/java_home -v 11\`
 java -version
 \`\`\`
 
