@@ -112,10 +112,11 @@ jobs:
           name: npm audit
           command: |
             bash -i -c 'npm audit > vulnerabilities.txt'
-            bash scripts/npm-audit.sh
+            cat vulnerabilities.txt
       - run:
           name: checkout develop
           command: |
+            bash scripts/npm-audit.sh
             git checkout develop
             bash -i -c 'npm i'
             bash -i -c 'npm audit > vulnerabilities.txt'
