@@ -24,6 +24,24 @@
   padding: 6rem;
 }
 
+// Styling for the "Browse popular categories" bar
+// Specific to the above
+.categories {
+  background-color: mat.get-color-from-palette($dockstore-app-primary, darker);
+  color: white;
+  padding: 1rem 6rem;
+}
+
+// Styling for each group of labels.
+// Specific to the above
+.labels {
+  display: inline-block;
+}
+
+.labels > * {
+  margin: 0 0.4rem;
+}
+
 .gray-sections {
   background: mat.get-color-from-palette($dockstore-app-gray, 5);
 }

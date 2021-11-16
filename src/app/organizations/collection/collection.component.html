@@ -137,12 +137,7 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                       <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                       <div fxLayout="row wrap" fxLayoutGap="1rem" class="labels">
-                        <span
-                          [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
-                          *ngFor="let label of entry.labels | slice: 0:3"
-                        >
-                          {{ label }}
-                        </span>
+                        <app-category-button *ngFor="let category of entry.categories" [category]="category" [entryType]="entry.entryType"></app-category-button>
                         <mat-chip
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-label-tag' : 'container-label-tag'"
                           *ngIf="entry.verified"

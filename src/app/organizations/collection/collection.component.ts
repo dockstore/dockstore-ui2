@@ -68,7 +68,7 @@ export class CollectionComponent implements OnInit {
     private collectionsService: CollectionsService,
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
   ) {}
 
   ngOnInit() {
