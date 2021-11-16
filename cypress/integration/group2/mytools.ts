@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { DockstoreTool } from '../../../src/app/shared/openapi';
-import { goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
 
 describe('Dockstore my tools', () => {
   resetDB();
@@ -141,6 +141,20 @@ describe('Dockstore my tools', () => {
     it('Publish and Unpublish', () => {
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
       cy.get('#publishToolButton').should('contain', 'Publish').click().should('contain', 'Unpublish').click().should('contain', 'Publish');
+    });
+    it('Be able to add tag with test parameter file', () => {
+      cy.server();
+      cy.route({
+        method: 'PUT',
+        url: 'api/containers/1/testParameterFiles?testParameterPaths=/test.json*',
+      }).as('putTestParameterFile');
+      cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
+      cy.contains('Versions').click();
+      cy.get('#addTagButton').click();
+      typeInInput('Version Tag', 'fakeTag');
+      typeInInput('Git Reference', 'fakeGitReference');
+      cy.get('#addVersionTagButton').click();
+      cy.wait('@putTestParameterFile');
     });
   });
 
