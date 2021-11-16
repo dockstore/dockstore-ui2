@@ -108,10 +108,11 @@ jobs:
           #Only run 'npm ci' if node_modules was not restored from cache
           command: |
             bash -i -c "npm i"
-            bash -i -c 'npm audit > vulnerabilities.txt'
       - run:
           name: npm audit
-          command: bash scripts/npm-audit.sh
+          command: |
+            bash -i -c 'npm audit > vulnerabilities.txt'
+            bash scripts/npm-audit.sh
       - run:
           name: checkout develop
           command: |
