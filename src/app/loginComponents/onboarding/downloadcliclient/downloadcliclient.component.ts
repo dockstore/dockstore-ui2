@@ -91,8 +91,7 @@ exec newgrp docker
 #### Part 1a - Install Java dependencies
 We'll cover two ways to install Java 11.
 
-1. The first way is to download OpenJDK for Mac OS from [here](https://jdk.java.net/archive/), and execute
-the following commands.  First, unpack the downloaded tar archive, then move the resulting JDK directory to its standard location. Then check the Java version:
+1. The first way is to download OpenJDK for Mac OS from [here](https://jdk.java.net/archive/), and execute the following commands.  First, unpack the downloaded tar archive, then move the resulting JDK directory to its standard location. Then check the Java version:
 \`\`\`
 sudo mv jdk-11.0.2.jdk /Library/Java/JavaVirtualMachines/
 java -version
