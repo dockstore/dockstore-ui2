@@ -59,6 +59,7 @@
     "@ngneat/forms-manager": "^2.3.0",
     "@ngx-lite/json-ld": "^0.6.4",
     "academicons": "^1.8.6",
+    "apollo-server": "2.0.0",
     "ace-builds": "^1.4.12",
     "angular-tag-cloud-module": "^6.0.0",
     "bodybuilder": "^2.4.0",
