@@ -1,24 +1,24 @@
-name: npm audit
-
-on:
-  pull_request:
-  push:
-    branches:
-      - main
-      - 'releases/*'
-# on:
-#   schedule:
-#     - cron: '0 10 * * *'
-
-jobs:
-  scan:
-    name: npm audit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: install dependencies
-        run: npm ci
-      - uses: oke-py/npm-audit-action@v1.8.2
-        with:
-          audit_level: high
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+#name: npm audit
+#
+#on:
+#  pull_request:
+#  push:
+#    branches:
+#      - main
+#      - 'releases/*'
+## on:
+##   schedule:
+##     - cron: '0 10 * * *'
+#
+#jobs:
+#  scan:
+#    name: npm audit
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: install dependencies
+#        run: npm ci
+#      - uses: oke-py/npm-audit-action@v1.8.2
+#        with:
+#          audit_level: high
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
