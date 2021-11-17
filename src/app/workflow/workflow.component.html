@@ -104,6 +104,7 @@
     <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px">
       <span *ngIf="(categories$ | async).length > 0">
         Categories
+        <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="workflow"></app-category-button>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked">
         <mat-chip-list>
