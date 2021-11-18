@@ -105,12 +105,10 @@ describe('Dockstore Categories', () => {
     });
     it('appear in tool page', () => {
       cy.visit(toolPath);
-      cy.wait(1000); // give categories time to load
       cy.get('app-category-button').contains(categoryDisplayName);
     });
     it('appear in workflow page', () => {
       cy.visit(workflowPath);
-      cy.wait(1000); // give categories time to load
       cy.get('app-category-button').contains(categoryDisplayName);
     });
     it('appear in logged-out home page', () => {
