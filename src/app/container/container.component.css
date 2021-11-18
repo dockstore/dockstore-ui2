@@ -5,5 +5,5 @@
 
 /* Set a consistent spacing between each label mat-chip and category button that matches the mockup. */
 .labels mat-chip, app-category-button {
-  margin-right: 0.6rem !important;
+  margin-right: 0 0.7rem 0 0 !important;
 }

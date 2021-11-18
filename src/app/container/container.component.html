@@ -104,14 +104,14 @@
     </div>
   </div>
   <div class="row m-1">
-    <div *ngIf="tool" class="size-12">
-      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-4 mt-1 mb-1">
-        <span class="mr-2">Categories</span>
+    <div *ngIf="tool">
+      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
+        <span class="size-12 mr-2">Categories</span>
         <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="tool" class="weight-500"></app-category-button>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
+        <span *ngIf="containerEditData?.labels.length > 0" class="size-12 mr-2">Labels</span>
         <mat-chip-list class="labels">
-          <span *ngIf="containerEditData?.labels.length > 0" class="mr-2">Labels</span>
           <mat-chip class="container-label-tag" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
             label
           }}</mat-chip>
