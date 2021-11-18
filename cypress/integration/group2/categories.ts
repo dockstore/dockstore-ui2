@@ -88,6 +88,11 @@ describe('Dockstore Categories', () => {
       cy.visit('/organizations/dockstore/collections/' + categoryName);
       cy.get('app-category-button').contains(categoryDisplayName);
     });
+    it('appear in tool page', () => {
+      cy.visit(toolPath);
+      cy.wait(1000); // give categories time to load
+      cy.get('app-category-button').contains(categoryDisplayName);
+    });
     it('appear in logged-out home page', () => {
       cy.clearLocalStorage();
       cy.visit('/');
