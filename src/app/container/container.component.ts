@@ -54,6 +54,7 @@ import { EntryCategoriesService } from '../categories/state/entry-categories.ser
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
+  styleUrls: ['./container.component.css'],
 })
 export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   dockerPullCmd: string;

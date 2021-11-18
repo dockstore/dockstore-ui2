@@ -104,9 +104,14 @@
     </div>
   </div>
   <div class="row m-1">
-    <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px">
-      <span *ngIf="!labelsEditMode && !starGazersClicked">
-        <mat-chip-list>
+    <div *ngIf="tool" class="size-12">
+      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-4 mt-1 mb-1">
+        <span class="mr-2">Categories</span>
+        <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="tool" class="weight-500"></app-category-button>
+      </span>
+      <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
+        <mat-chip-list class="labels">
+          <span *ngIf="containerEditData?.labels.length > 0" class="mr-2">Labels</span>
           <mat-chip class="container-label-tag" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
             label
           }}</mat-chip>
@@ -117,7 +122,7 @@
       </span>
 
       <span *ngIf="labelsEditMode && !isToolPublic">
-        <mat-form-field style="width: 100%">
+        <mat-form-field class="mt-3" style="width: 100%">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
               {{ label }}

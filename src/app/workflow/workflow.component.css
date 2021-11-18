@@ -22,3 +22,13 @@ pre {
   white-space: pre-wrap;
   word-break: normal;
 }
+
+/* Force the label mat-chips to be the same height as the adjacent category buttons. */
+.labels * {
+  min-height: 28px;
+}
+
+/* Set a consistent spacing between each label mat-chip and category button that matches the mockup. */
+.labels mat-chip, app-category-button {
+  margin-right: 0.6rem !important;
+}

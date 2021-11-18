@@ -863,6 +863,20 @@ body {
   vertical-align: middle;
 }
 
+// Set various font attributes
+.weight-500 {
+  font-weight: 500;
+}
+
+.size-12 {
+  font-size: 12px;
+}
+
+// Set display to inline-block
+.inline-block {
+  display: inline-block;
+}
+
 // Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
 app-sidebar-accordion
   .mat-accordion
