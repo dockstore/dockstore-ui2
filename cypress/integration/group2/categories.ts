@@ -21,6 +21,7 @@ describe('Dockstore Categories', () => {
   const categoryTopic = 'some topic';
   const toolPath = '/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info';
   const toolSnippet = 'cgpmap-cramOut';
+  const workflowPath = '/workflows/github.com/A/l:master?tab=info';
 
   resetDB();
   setTokenUserViewPort();
@@ -47,6 +48,20 @@ describe('Dockstore Categories', () => {
   describe('Should be able to add a tool to a category', () => {
     it('be able to add tool to category', () => {
       cy.visit(toolPath);
+      cy.get('#addToolToCollectionButton').should('be.visible').click();
+      cy.get('#addEntryToCollectionButton').should('be.disabled');
+      cy.get('#selectOrganization').click();
+      cy.get('mat-option').contains('Dockstore').click();
+      cy.get('#addEntryToCollectionButton').should('be.disabled');
+      cy.get('#selectCollection').click();
+      cy.get('mat-option').contains(categoryDisplayName).click();
+      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
+    });
+  });
+
+  describe('Should be able to add a workflow to a category', () => {
+    it('be able to add workflow to category', () => {
+      cy.visit(workflowPath);
       cy.get('#addToolToCollectionButton').should('be.visible').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
       cy.get('#selectOrganization').click();
@@ -90,6 +105,11 @@ describe('Dockstore Categories', () => {
     });
     it('appear in tool page', () => {
       cy.visit(toolPath);
+      cy.wait(1000); // give categories time to load
+      cy.get('app-category-button').contains(categoryDisplayName);
+    });
+    it('appear in workflow page', () => {
+      cy.visit(workflowPath);
       cy.wait(1000); // give categories time to load
       cy.get('app-category-button').contains(categoryDisplayName);
     });
