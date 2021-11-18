@@ -14,9 +14,11 @@
  *    limitations under the License.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { FileService } from 'app/shared/file.service';
+import { WorkflowsService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -68,6 +70,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
+  public hasHttpImports: boolean = false;
   public entryType$: Observable<EntryType>;
   public isRefreshing$: Observable<boolean>;
   modeTooltipContent = `STUB: Basic metadata pulled from source control.
@@ -76,18 +79,28 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   Dockstore = Dockstore;
   constructor(
     private workflowService: WorkflowService,
-    private workflowsService: ExtendedWorkflowsService,
+    private extendedWorkflowsService: ExtendedWorkflowsService,
+    private workflowsService: WorkflowsService,
     private sessionQuery: SessionQuery,
     private infoTabService: InfoTabService,
     private alertQuery: AlertQuery,
     private workflowQuery: WorkflowQuery,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private fileService: FileService
   ) {
     super();
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay());
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    // This should be enabled when the language parsers are fully functional
+    // this.hasHttpImports = this.selectedVersion?.versionMetadata?.parsedInformationSet[0]?.hasHTTPImports ?? false;
+    // ngOnChanges seems to be fired twice. Once for most inputs, then another time for just canRead, canWrite, isOwner
+    if ((changes.selectedVersion || changes.extendedWorkflow) && this.extendedWorkflow && this.selectedVersion) {
+      this.workflowsService.getWorkflowVersionsSourcefiles(this.extendedWorkflow.id, this.selectedVersion.id).subscribe((sourceFiles) => {
+        this.hasHttpImports = sourceFiles.some((sourceFile) => this.fileService.hasHttpImport(sourceFile));
+      });
+    }
     this.workflow = JSON.parse(JSON.stringify(this.extendedWorkflow));
     this.temporaryDescriptorType = this.workflow.descriptorType;
     if (this.selectedVersion && this.workflow) {
@@ -135,18 +148,20 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
    * @memberof InfoTabComponent
    */
   restubWorkflow() {
-    this.workflowsService.restub(this.workflow.id).subscribe((restubbedWorkflow: Workflow) => {
+    this.extendedWorkflowsService.restub(this.workflow.id).subscribe((restubbedWorkflow: Workflow) => {
       this.workflowService.setWorkflow(restubbedWorkflow);
       this.workflowService.upsertWorkflowToWorkflow(restubbedWorkflow);
     });
   }
 
   downloadZip() {
-    this.workflowsService.getWorkflowZip(this.workflow.id, this.currentVersion.id, 'response').subscribe((data: HttpResponse<any>) => {
-      const blob = new Blob([data.body], { type: 'application/zip' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url);
-    });
+    this.extendedWorkflowsService
+      .getWorkflowZip(this.workflow.id, this.currentVersion.id, 'response')
+      .subscribe((data: HttpResponse<any>) => {
+        const blob = new Blob([data.body], { type: 'application/zip' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
   }
 
   toggleEditWorkflowPath() {
