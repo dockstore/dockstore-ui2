@@ -104,7 +104,7 @@ jobs:
             fi
       - install_container_dependencies
       - run:
-          name: Install dependencies
+          name: Run npm audit
           #Only run 'npm ci' if node_modules was not restored from cache
           command: |
             bash -i -c "npm i"
