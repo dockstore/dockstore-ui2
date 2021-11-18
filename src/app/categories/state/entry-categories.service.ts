@@ -35,23 +35,33 @@ export class EntryCategoriesService {
   }
 
   /**
+   * Current entry category update sequence number.
+   */
+  private updateNumber: number = 0;
+
+  /**
    * Updates the list of categories for the specified entry.
    */
-  updateEntryCategories(id: number) {
+  updateEntryCategories(entryId: number) {
+    const myUpdateNumber = ++this.updateNumber;
     this.entryCategoriesStore.setLoading(true);
     this.entryCategoriesStore.setError(false);
-    this.entryCategoriesStore.set([]);
+    this.entryCategoriesStore.remove();
     this.entriesService
-      .entryCategories(id)
+      .entryCategories(entryId)
       .subscribe(
         (categories: Array<Category>) => {
-          this.entryCategoriesStore.setLoading(false);
-          this.entryCategoriesStore.setError(false);
-          this.entryCategoriesStore.set(categories);
+          if (myUpdateNumber === this.updateNumber) {
+            this.entryCategoriesStore.setLoading(false);
+            this.entryCategoriesStore.setError(false);
+            this.entryCategoriesStore.set(categories);
+          }
         },
         () => {
-          this.entryCategoriesStore.setLoading(false);
-          this.entryCategoriesStore.setError(true);
+          if (myUpdateNumber === this.updateNumber) {
+            this.entryCategoriesStore.setLoading(false);
+            this.entryCategoriesStore.setError(true);
+          }
         }
       );
   }
