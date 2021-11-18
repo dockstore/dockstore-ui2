@@ -19,6 +19,7 @@ import { SortDirection } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { transaction } from '@datorama/akita';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
+import { CategorySort } from 'app/shared/models/CategorySort';
 import { Explanation } from 'elasticsearch';
 import { BehaviorSubject } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -44,6 +45,19 @@ export interface Hit {
   highlight?: any;
   inner_hits?: any;
   sort?: string[];
+}
+
+export interface Bucket {
+  doc_count: number;
+  key: string;
+}
+
+export interface BucketMaps {
+  fullyExpandMap: Map<string, boolean>;
+  sortModeMap: Map<string, CategorySort>;
+  checkboxMap: Map<string, Map<string, boolean>>;
+  filters: Map<string, Set<string>>;
+  entryOrder: Map<string, SubBucket>;
 }
 
 /**
@@ -155,6 +169,10 @@ export class SearchService {
         shortUrl: url,
       };
     });
+  }
+
+  setLoading(loading: boolean) {
+    this.searchStore.setLoading(loading);
   }
 
   setPageSizeAndIndex(pageSize: number, pageIndex: number) {
@@ -593,6 +611,39 @@ export class SearchService {
     return searchTerm && hits && hits.length > 0;
   }
 
+  setupOrderBuckets(
+    checkboxMap: Map<string, Map<string, boolean>>,
+    orderedBuckets: Map<string, SubBucket>,
+    entryOrder: Map<string, SubBucket>
+  ): Map<string, SubBucket> {
+    const newOrderedBuckets = new Map(orderedBuckets);
+    entryOrder.forEach((value, key) => {
+      if (value.Items.size > 0 || value.SelectedItems.size > 0) {
+        // skip the Entry Type bucket, which is only aggregated for filtering results between tabs
+        newOrderedBuckets.set(key, value);
+      }
+    });
+    this.retainZeroBuckets(checkboxMap, newOrderedBuckets);
+    return newOrderedBuckets;
+  }
+
+  /**
+   * For buckets that were checked earlier, retain them even if there is 0 hits.
+   *
+   * @memberof SearchComponent
+   */
+  retainZeroBuckets(checkboxMap: Map<string, Map<string, boolean>>, orderedBuckets: Map<string, SubBucket>) {
+    checkboxMap.forEach((value: Map<string, boolean>, key: string) => {
+      value.forEach((innerValue: boolean, innerKey: string) => {
+        if (innerValue && orderedBuckets.get(key)) {
+          if (!orderedBuckets.get(key).SelectedItems.get(innerKey)) {
+            orderedBuckets.get(key).SelectedItems.set(innerKey, '0');
+          }
+        }
+      });
+    });
+  }
+
   /**
    * Returns true if at least one filter is set
    */
@@ -651,6 +702,46 @@ export class SearchService {
         ...state,
         advancedSearch: { ...initialAdvancedSearchObject },
       };
+    });
+  }
+
+  /**
+   * Partially updates the buckets, fullyExpandMap, and checkboxMap data structures
+   * based on one set of the hit's buckets to update the search view
+   * @param {any} key The aggregation
+   * @param {*} buckets The buckets inside the aggregation
+   * @memberof SearchComponent
+   */
+  setupBuckets(key: string, buckets: Array<Bucket>, bucketMaps: BucketMaps, setFilter: boolean) {
+    buckets.forEach((bucket) => {
+      if (!setFilter) {
+        bucketMaps.fullyExpandMap.set(key, false);
+      }
+      if (buckets.length > 10) {
+        if (!bucketMaps.sortModeMap.get(key)) {
+          const sortby: CategorySort = new CategorySort(true, false, true);
+          bucketMaps.sortModeMap.set(key, sortby);
+        }
+      }
+      const doc_count = bucket.doc_count;
+      if (doc_count > 0) {
+        if (!bucketMaps.checkboxMap.get(key)) {
+          bucketMaps.checkboxMap.set(key, new Map<string, boolean>());
+        }
+        if (!bucketMaps.checkboxMap.get(key).get(bucket.key)) {
+          bucketMaps.checkboxMap.get(key).set(bucket.key, false);
+          if (bucketMaps.filters.has(key)) {
+            if (bucketMaps.filters.get(key).has(bucket.key.toString())) {
+              bucketMaps.checkboxMap.get(key).set(bucket.key, true);
+            }
+          }
+        }
+        if (bucketMaps.checkboxMap.get(key).get(bucket.key)) {
+          bucketMaps.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count.toString());
+        } else {
+          bucketMaps.entryOrder.get(key).Items.set(bucket.key, doc_count.toString());
+        }
+      }
     });
   }
 }

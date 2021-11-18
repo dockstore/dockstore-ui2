@@ -44,6 +44,7 @@ export class SidebarComponent implements OnInit {
   @Input()
   // Shows which of the categories (registry, author, etc) are expanded to show all available buckets
   public fullyExpandMap: Map<string, boolean> = new Map<string, boolean>();
+  // Filters isn't actually shown in the view
   @Input()
   public filters: Map<string, Set<string>> = new Map<string, Set<string>>();
   @Output()

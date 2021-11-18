@@ -18,6 +18,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { applyTransaction, logAction } from '@datorama/akita';
 import {
   faAngleDoubleDown,
   faAngleDoubleUp,
@@ -39,7 +40,7 @@ import { SubBucket } from '../shared/models/SubBucket';
 import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.query';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
-import { Hit, SearchService } from './state/search.service';
+import { BucketMaps, Hit, SearchService } from './state/search.service';
 
 /**
  *
@@ -88,12 +89,14 @@ export class SearchComponent implements OnInit, OnDestroy {
   public oRFilterText$: Observable<string>;
   public nOTFilterText$: Observable<string>;
   public selectedIndex$: Observable<number>;
+  public showOverLimit: boolean = false;
+
+  /*TODO: Bad coding...change this up later (init)..*/
+  private setFilter = false;
   /** current set of search results
    * TODO: this stores all results, but the real implementation should limit results
    * and paginate to be scalable
    */
-  /*TODO: Bad coding...change this up later (init)..*/
-  private setFilter = false;
   public hits: Hit[];
 
   // extra +1 is used to see if there are > 200 results
@@ -269,55 +272,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   /**===============================================
    *                SetUp Functions
    * ==============================================*/
-  /**
-   * Partially updates the buckets, fullyExpandMap, and checkboxMap data structures
-   * based on one set of the hit's buckets to update the search view
-   * @param {any} key The aggregation
-   * @param {*} buckets The buckets inside the aggregation
-   * @memberof SearchComponent
-   */
-  setupBuckets(key, buckets: any) {
-    buckets.forEach((bucket) => {
-      if (!this.setFilter) {
-        this.fullyExpandMap.set(key, false);
-      }
-      if (buckets.length > 10) {
-        if (!this.sortModeMap.get(key)) {
-          const sortby: CategorySort = new CategorySort(true, false, true);
-          this.sortModeMap.set(key, sortby);
-        }
-      }
-      const doc_count = bucket.doc_count;
-      if (doc_count > 0) {
-        if (!this.checkboxMap.get(key)) {
-          this.checkboxMap.set(key, new Map<string, boolean>());
-        }
-        if (!this.checkboxMap.get(key).get(bucket.key)) {
-          this.checkboxMap.get(key).set(bucket.key, false);
-          if (this.filters.has(key)) {
-            if (this.filters.get(key).has(bucket.key.toString())) {
-              this.checkboxMap.get(key).set(bucket.key, true);
-            }
-          }
-        }
-        if (this.checkboxMap.get(key).get(bucket.key)) {
-          this.entryOrder.get(key).SelectedItems.set(bucket.key, doc_count);
-        } else {
-          this.entryOrder.get(key).Items.set(bucket.key, doc_count);
-        }
-      }
-    });
-  }
-
-  setupOrderBuckets() {
-    this.entryOrder.forEach((value, key) => {
-      if (value.Items.size > 0 || value.SelectedItems.size > 0) {
-        // skip the Entry Type bucket, which is only aggregated for filtering results between tabs
-        this.orderedBuckets.set(key, value);
-      }
-    });
-    this.retainZeroBuckets();
-  }
 
   /**
    * Fully updates the bucket, fullyExpandMap, and checkboxMap data structures
@@ -328,34 +282,30 @@ export class SearchComponent implements OnInit, OnDestroy {
   setupAllBuckets(hits: SearchResponse<Hit>) {
     this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
+    const bucketMaps: BucketMaps = {
+      fullyExpandMap: new Map(this.fullyExpandMap),
+      sortModeMap: new Map(this.sortModeMap),
+      checkboxMap: new Map(this.checkboxMap),
+      filters: new Map(this.filters),
+      entryOrder: new Map(this.entryOrder),
+    };
     Object.entries(aggregations).forEach(([key, value]) => {
       if (value['buckets'] != null) {
-        this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
+        this.searchService.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets'], bucketMaps, this.setFilter);
       }
       // look for second level buckets (with filtering)
       // If there are second level buckets,
       // the buckets will always be under a property with the same name as the root property
       if (value[key]) {
-        this.setupBuckets(key, value[key].buckets);
+        this.searchService.setupBuckets(key, value[key].buckets, bucketMaps, this.setFilter);
       }
     });
+    this.fullyExpandMap = bucketMaps.fullyExpandMap;
+    this.sortModeMap = bucketMaps.sortModeMap;
+    this.checkboxMap = bucketMaps.checkboxMap;
+    this.filters = bucketMaps.filters;
+    this.entryOrder = bucketMaps.entryOrder;
     this.setFilter = true;
-  }
-  /**
-   * For buckets that were checked earlier, retain them even if there is 0 hits.
-   *
-   * @memberof SearchComponent
-   */
-  retainZeroBuckets() {
-    this.checkboxMap.forEach((value: Map<string, boolean>, key: string) => {
-      value.forEach((innerValue: boolean, innerKey: string) => {
-        if (innerValue && this.orderedBuckets.get(key)) {
-          if (!this.orderedBuckets.get(key).SelectedItems.get(innerKey)) {
-            this.orderedBuckets.get(key).SelectedItems.set(innerKey, '0');
-          }
-        }
-      });
-    });
   }
 
   // Saves the current search filter and passes to search service for sharing with advanced search
@@ -418,24 +368,41 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters,
       tabIndex
     );
-    this.resetEntryOrder();
-    this.resetPageIndex();
-    this.updateSideBar(sideBarQuery);
-    this.updateResultsTable(tableQuery);
+    this.sendQueries(sideBarQuery, tableQuery);
   }
 
-  updateSideBar(value: string) {
-    this.alertService.start('Updating side bar');
-    this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
-      (hits: any) => {
-        this.setupAllBuckets(hits);
-        this.setupOrderBuckets();
-        this.alertService.simpleSuccess();
+  sendQueries(sidebarQuery: string, tableQuery: string) {
+    const query1 = this.extendedGA4GHService.toolsIndexSearch(sidebarQuery);
+    const query2 = this.extendedGA4GHService.toolsIndexSearch(tableQuery);
+    const shortMessage = 'Performing search query';
+    this.alertService.start(shortMessage);
+    // This is a way of disabling the sidebar to prevent the user from rapidly selecting incompatible buckets
+    this.orderedBuckets = new Map();
+    forkJoin([query1, query2]).subscribe(
+      ([sidebarHits, tableHits]: [any, any]) => {
+        applyTransaction(() => {
+          logAction('updateQuery2');
+          this.alertService.simpleSuccess();
+          this.resetEntryOrder();
+          this.resetPageIndex();
+
+          this.updateSideBar(sidebarHits);
+          this.updateResultsTable(tableHits);
+        });
       },
       (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
+        // TODO: Set state when there's an error
+        this.alertService.detailedError(error, shortMessage);
       }
     );
+  }
+
+  updateSideBar(sidebarHits: any) {
+    this.setupAllBuckets(sidebarHits);
+    this.orderedBuckets = this.searchService.setupOrderBuckets(this.checkboxMap, this.orderedBuckets, this.entryOrder);
+    this.showOverLimit =
+      sidebarHits?.length > this.query_size - 1 &&
+      this.searchService.hasNarrowedSearch(this.advancedSearchQuery.getValue().advancedSearch, this.searchTerm, sidebarHits, this.filters);
   }
 
   /**
@@ -444,47 +411,17 @@ export class SearchComponent implements OnInit, OnDestroy {
    * @param {string} value the elastic search query
    * @memberof SearchComponent
    */
-  updateResultsTable(value: string) {
-    this.alertService.start('Performing search request');
-    this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
-      (hits: any) => {
-        this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
-        const searchText = this.searchQuery.getValue().searchText;
-        this.searchService.setHits(filteredHits[0], filteredHits[1]);
-        if (searchText.length > 0 && hits) {
-          this.searchTerm = true;
-        }
-        if (this.searchTerm && this.hits.length === 0) {
-          this.searchService.suggestSearchTerm(searchText);
-        }
-        this.alertService.simpleSuccess();
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      }
-    );
-  }
-
-  /**
-   * Updates the results table when there is no search term
-   * We need to send one request per index
-   * When each index returns its results, join the results into a single array and filter into table
-   *
-   * @param {string} toolsQuery the elastic search query for tools index
-   * @param {string} workflowsQuery the elastic search query for workflows index
-   * @memberof SearchComponent
-   */
-  updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
-    const toolsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(toolsQuery);
-    const workflowsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(workflowsQuery);
-    forkJoin([toolsObservable, workflowsObservable]).subscribe((results: Array<any>) => {
-      const toolHits = results[0].hits.hits;
-      const workflowHits = results[1].hits.hits;
-      this.hits = toolHits.concat(workflowHits);
-      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
-      this.searchService.setHits(filteredHits[0], filteredHits[1]);
-    });
+  updateResultsTable(hits: any) {
+    this.hits = hits.hits.hits;
+    const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+    const searchText = this.searchQuery.getValue().searchText;
+    this.searchService.setHits(filteredHits[0], filteredHits[1]);
+    if (searchText.length > 0 && hits) {
+      this.searchTerm = true;
+    }
+    if (this.searchTerm && this.hits.length === 0) {
+      this.searchService.suggestSearchTerm(searchText);
+    }
   }
 
   /**===============================================

@@ -62,12 +62,12 @@
         </div>
       </div>
       <app-sidebar
-        [filters]="filters"
-        [fullyExpandMap]="fullyExpandMap"
-        [orderedBuckets]="orderedBuckets"
-        [checkboxMap]="checkboxMap"
+        [(filters)]="filters"
+        [(fullyExpandMap)]="fullyExpandMap"
+        [(orderedBuckets)]="orderedBuckets"
+        [(checkboxMap)]="checkboxMap"
         (uploaded)="updatePermalink()"
-        [sortModeMap]="sortModeMap"
+        [(sortModeMap)]="sortModeMap"
       >
       </app-sidebar>
 
@@ -161,10 +161,7 @@
             </span>
           </mat-card>
         </div>
-        <mat-card
-          class="alert alert-info"
-          *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)"
-        >
+        <mat-card class="alert alert-info" *ngIf="showOverLimit">
           <p>
             <strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.

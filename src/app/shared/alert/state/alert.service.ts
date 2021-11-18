@@ -72,9 +72,10 @@ export class AlertService {
    *
    * @param {string} title      Custom title for the error message
    * @param {string} details    Custom details to provide a clear reason for the error
+   * @param shortMessage        This is the very strange situation in which the message is somehow cleared
    */
-  public customDetailedError(title: string, details: string) {
-    const previousMessage = this.alertQuery.getValue().message;
+  public customDetailedError(title: string, details: string, shortMessage?: string) {
+    const previousMessage = shortMessage ?? this.alertQuery.getValue().message;
     this.setError(title, details);
     this.matSnackBar.open(previousMessage + ' failed', 'Dismiss');
   }
@@ -83,9 +84,9 @@ export class AlertService {
    * Handles error HTTP response and show both matSnackBar and an alert
    *
    * @param {HttpErrorResponse} error  The HttpErrorResponse received when the last HTTP request has errored
-   * @memberof AlertService
+   * @param shortMessage This is the very strange situation in which the message is somehow cleared
    */
-  public detailedError(error: HttpErrorResponse) {
+  public detailedError(error: HttpErrorResponse, shortMessage?: string) {
     let message: string;
     let details: string;
     if (error.status === 0) {
@@ -95,7 +96,7 @@ export class AlertService {
       message = 'The webservice encountered an error.';
       details = AlertService.getDetailedErrorMessage(error);
     }
-    this.customDetailedError(message, details);
+    this.customDetailedError(message, details, shortMessage);
   }
 
   /**
