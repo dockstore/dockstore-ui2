@@ -173,7 +173,7 @@ export class SearchStubService {
     return true;
   }
 
-  setFilterKeys(filters: Map<string, Set<string>>) {}
+  setFilters(filters: Map<string, Set<string>>) {}
 
   setPageSizeAndIndex(pageSize: number, pageIndex: number) {}
 

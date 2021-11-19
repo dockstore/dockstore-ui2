@@ -75,7 +75,7 @@ describe('SearchComponent', () => {
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
           { provide: ProviderService, useClass: ProviderStubService },
           { provide: ExtendedGA4GHService, useClass: ExtendedGA4GHStubService },
-          { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
+          { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText', 'getFilters']) },
         ],
       }).compileComponents();
     })
@@ -93,7 +93,7 @@ describe('SearchComponent', () => {
       showToolTagCloud: false,
       showWorkflowTagCloud: false,
       searchText: '',
-      filterKeys: [],
+      filters: new Map(),
       autocompleteTerms: [],
       facetAutocompleteTerms: [],
       suggestTerm: '',

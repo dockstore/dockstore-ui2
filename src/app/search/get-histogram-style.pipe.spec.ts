@@ -2,12 +2,12 @@ import { GetHistogramStylePipe } from './get-histogram-style.pipe';
 
 describe('Pipe: GetHistogramStyle', () => {
   const bucket1 = new Map([
-    ['foo1', 1],
-    ['foo2', 2],
+    ['foo1', '1'],
+    ['foo2', '2'],
   ]);
   const bucket2 = new Map([
-    ['foo3', 3],
-    ['foo4', 4],
+    ['foo3', '3'],
+    ['foo4', '4'],
   ]);
   const buckets = { Items: bucket1, SelectedItems: bucket2 };
   it('should return histogram width as percentage of items in facet', () => {
