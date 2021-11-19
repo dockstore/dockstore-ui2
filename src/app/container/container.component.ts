@@ -107,7 +107,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     alertService: AlertService,
     entryService: EntriesService,
     private titleService: Title,
-    private workflowQuery: WorkflowQuery
+    private workflowQuery: WorkflowQuery,
     protected entryCategoriesService: EntryCategoriesService,
   ) {
     super(
