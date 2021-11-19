@@ -62,7 +62,7 @@
         </div>
       </div>
       <app-sidebar
-        [(filters)]="filters"
+        [filters]="filters$ | async"
         [(fullyExpandMap)]="fullyExpandMap"
         [(orderedBuckets)]="orderedBuckets"
         [(checkboxMap)]="checkboxMap"
@@ -106,7 +106,7 @@
           </mat-card>
         </mde-popover>
 
-        <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
+        <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || (hasFilters$ | async)">
           <mat-card class="alert alert-info text-break">
             <button
               data-cy="share_button"
@@ -145,19 +145,17 @@
                 >does not contain <strong>"{{ nOTFilterText$ | async }}"</strong></span
               >
             </span>
-            <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-              >&nbsp;AND
-            </span>
-            <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-              >Search:
-            </strong>
+            <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && (hasFilters$ | async)">&nbsp;AND </span>
+            <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && (hasFilters$ | async)">Search: </strong>
             <span *ngFor="let key of filterKeys$ | async; let i = index">
               the <strong>{{ friendlyNames.get(key) }}</strong> is
-              <span *ngFor="let subBucket of filters.get(key); let j = index">
-                <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
-                <span *ngIf="j < filters.get(key).size - 1"> OR </span>
-              </span>
-              <span *ngIf="i < filters.size - 1"> AND </span>
+              <div *ngIf="filters$ | async as filters">
+                <span *ngFor="let subBucket of filters.get(key); let j = index">
+                  <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
+                  <span *ngIf="j < filters.get(key).size - 1"> OR </span>
+                </span>
+                <span *ngIf="i < filters.size - 1"> AND </span>
+              </div>
             </span>
           </mat-card>
         </div>

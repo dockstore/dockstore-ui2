@@ -114,6 +114,7 @@ export class SidebarComponent implements OnInit {
       const checked = this.checkboxMap.get(category).get(categoryValue);
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
+      this.searchService.setFilters(this.filters);
     }
     this.facetSearchText = '';
     this.uploaded.emit('emit');

@@ -24,7 +24,7 @@ export interface SearchState {
   showToolTagCloud: boolean;
   showWorkflowTagCloud: boolean;
   searchText: string;
-  filterKeys: Array<string>;
+  filters: Map<string, Set<string>>;
   autocompleteTerms: Array<string>;
   facetAutocompleteTerms: Array<string>;
   suggestTerm: string;
@@ -42,7 +42,7 @@ export function createInitialState(): SearchState {
     showToolTagCloud: false,
     showWorkflowTagCloud: false,
     searchText: '',
-    filterKeys: [],
+    filters: new Map(),
     autocompleteTerms: [],
     facetAutocompleteTerms: [],
     suggestTerm: '',

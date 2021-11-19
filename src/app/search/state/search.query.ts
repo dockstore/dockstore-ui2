@@ -28,7 +28,8 @@ export class SearchQuery extends Query<SearchState> {
   public basicSearchText$: Observable<string> = this.searchText$.pipe(map((searchText) => this.joinComma(searchText)));
   public showToolTagCloud$: Observable<boolean> = this.select((state) => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select((state) => state.showWorkflowTagCloud);
-  public filterKeys$: Observable<Array<string>> = this.select((state) => state.filterKeys);
+  public filters$: Observable<Map<string, Set<string>>> = this.select((state) => state.filters);
+  public filterKeys$: Observable<Array<string>> = this.filters$.pipe(map((filters) => this.getFilterKeys(filters)));
   public autoCompleteTerms$: Observable<Array<string>> = this.select((state) => state.autocompleteTerms);
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map((terms) => terms.length > 0));
   public facetAutoCompleteTerms$: Observable<Array<string>> = this.select((state) => state.facetAutocompleteTerms);
@@ -36,6 +37,7 @@ export class SearchQuery extends Query<SearchState> {
   public suggestTerm$: Observable<string> = this.select((state) => state.suggestTerm);
   public pageSize$: Observable<number> = this.select((state) => state.pageSize);
   public pageIndex$: Observable<number> = this.select((state) => state.pageIndex);
+  public hasFilters$: Observable<boolean> = this.filters$.pipe(map((filters) => this.hasFilters(filters)));
   public noBasicSearchHits$: Observable<boolean> = combineLatest([this.noToolHits$, this.noWorkflowHits$, this.searchText$]).pipe(
     map(([noToolHits, noWorkflowHits, searchText]) => {
       if (!searchText) {
@@ -48,6 +50,25 @@ export class SearchQuery extends Query<SearchState> {
 
   constructor(protected store: SearchStore, private route: ActivatedRoute) {
     super(store);
+  }
+
+  /**
+   * Returns true if at least one filter is set
+   */
+  hasFilters(filters: Map<string, Set<string>>) {
+    let count = 0;
+    filters.forEach((filter) => {
+      count += filter.size;
+    });
+    return count > 0;
+  }
+
+  getFilters(): Map<string, Set<string>> {
+    return this.getValue().filters;
+  }
+
+  getFilterKeys(filters: Map<string, Set<string>>): Array<string> {
+    return filters ? Array.from(filters.keys()) : [];
   }
 
   haveNoHits(object: Array<any>): boolean {

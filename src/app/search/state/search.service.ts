@@ -261,11 +261,11 @@ export class SearchService {
     });
   }
 
-  setFilterKeys(filters: Map<string, Set<string>>) {
+  setFilters(filters: Map<string, Set<string>>) {
     this.searchStore.update((state) => {
       return {
         ...state,
-        filterKeys: filters ? Array.from(filters.keys()) : [],
+        filters: filters,
       };
     });
   }
@@ -470,7 +470,6 @@ export class SearchService {
       }
       filters.get(category).add(categoryValue);
     }
-    this.setFilterKeys(filters);
     return filters;
   }
 
@@ -708,6 +707,7 @@ export class SearchService {
   /**
    * Partially updates the buckets, fullyExpandMap, and checkboxMap data structures
    * based on one set of the hit's buckets to update the search view
+   * It modifies fullyExpandMap, sortModeMap, checkboxMap, entryOrder
    * @param {any} key The aggregation
    * @param {*} buckets The buckets inside the aggregation
    * @memberof SearchComponent

@@ -122,7 +122,8 @@ export class SearchComponent implements OnInit, OnDestroy {
    * This is temporary and UI only. Modifying this should immediately cause a route change which changes everything
    * @type {Map<string, Set<string>>}
    */
-  public filters: Map<string, Set<string>> = new Map<string, Set<string>>();
+  public filters$: Observable<Map<string, Set<string>>>;
+  public hasFilters$: Observable<boolean>;
   /**
    * Friendly names for fields -> fields in elastic search
    * @type {Map<string, V>}
@@ -173,6 +174,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.hasFilters$ = this.searchQuery.hasFilters$;
+    this.filters$ = this.searchQuery.filters$;
     this.advancedSearchObject$ = this.advancedSearchQuery.advancedSearch$;
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
@@ -264,8 +267,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.filters = newFilters;
-    this.searchService.setFilterKeys(this.filters);
+    this.searchService.setFilters(newFilters);
     this.updateQuery();
   }
 
@@ -286,7 +288,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       fullyExpandMap: new Map(this.fullyExpandMap),
       sortModeMap: new Map(this.sortModeMap),
       checkboxMap: new Map(this.checkboxMap),
-      filters: new Map(this.filters),
+      filters: new Map(this.searchQuery.getValue().filters),
       entryOrder: new Map(this.entryOrder),
     };
     Object.entries(aggregations).forEach(([key, value]) => {
@@ -303,7 +305,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.fullyExpandMap = bucketMaps.fullyExpandMap;
     this.sortModeMap = bucketMaps.sortModeMap;
     this.checkboxMap = bucketMaps.checkboxMap;
-    this.filters = bucketMaps.filters;
     this.entryOrder = bucketMaps.entryOrder;
     this.setFilter = true;
   }
@@ -313,7 +314,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const advancedSearchObject: AdvancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.searchQuery.getValue().searchText;
     const searchInfo = {
-      filter: this.filters,
+      filter: this.searchQuery.getFilters(),
       searchValues: values,
       checkbox: this.checkboxMap,
       sortModeMap: this.sortModeMap,
@@ -327,7 +328,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.searchQuery.getValue().searchText;
     const searchInfo = {
-      filter: this.filters,
+      filter: this.searchQuery.getFilters(),
       searchValues: values,
       advancedSearchObject: advancedSearchObject,
       searchTerm: this.searchTerm,
@@ -356,7 +357,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       advancedSearchObject,
       this.searchTerm,
       this.bucketStubs,
-      this.filters,
+      this.searchQuery.getFilters(),
       this.sortModeMap,
       tabIndex
     );
@@ -365,7 +366,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       values,
       advancedSearchObject,
       this.searchTerm,
-      this.filters,
+      this.searchQuery.getFilters(),
       tabIndex
     );
     this.sendQueries(sideBarQuery, tableQuery);
@@ -402,7 +403,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.orderedBuckets = this.searchService.setupOrderBuckets(this.checkboxMap, this.orderedBuckets, this.entryOrder);
     this.showOverLimit =
       sidebarHits?.length > this.query_size - 1 &&
-      this.searchService.hasNarrowedSearch(this.advancedSearchQuery.getValue().advancedSearch, this.searchTerm, sidebarHits, this.filters);
+      this.searchService.hasNarrowedSearch(
+        this.advancedSearchQuery.getValue().advancedSearch,
+        this.searchTerm,
+        sidebarHits,
+        this.searchQuery.getFilters()
+      );
   }
 
   /**
