@@ -85,6 +85,8 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     dateService: DateService,
     bioschemaService: BioschemaService,
     urlResolverService: UrlResolverService,
+    alertService: AlertService,
+    entryService: EntriesService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
     private updateContainer: ContainerService,
@@ -105,10 +107,6 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     public dialog: MatDialog,
     private toolService: ToolService,
     private titleService: Title,
-    alertService: AlertService,
-    entryService: EntriesService,
-    private workflowQuery: WorkflowQuery,
-    protected entryCategoriesService: EntryCategoriesService,
   ) {
     super(
       trackLoginService,
@@ -248,7 +246,6 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
           }
         },
         () => {
-          //this.containerService.setTool(null);
           this.router.navigate(['../']);
         }
       );

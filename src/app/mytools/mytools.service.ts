@@ -159,21 +159,5 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     lowerLevelA = lowerLevelA.toLowerCase();
     lowerLevelB = lowerLevelB.toLowerCase();
     return lowerLevelA.localeCompare(lowerLevelB);
-
-    //   const registryA = entryA.registry_string.toLowerCase();
-    //   const registryB = entryB.registry_string.toLowerCase();
-    //   const compareRegistry = registryA.localeCompare(registryB);
-    //   if (compareRegistry) {
-    //     return compareRegistry;
-    //   }
-    //   const namespaceA = entryA.namespace.toLowerCase();
-    //   const namespaceB = entryB.namespace.toLowerCase();
-    //   const compareNamespace = namespaceA.localeCompare(namespaceB);
-    //   if (compareNamespace) {
-    //     return compareNamespace;
-    //   }
-    //   const keyA = (entryA.tool_path || '').toLowerCase();
-    //   const keyB = (entryB.tool_path || '').toLowerCase();
-    //   return keyA.localeCompare(keyB);
   }
 }

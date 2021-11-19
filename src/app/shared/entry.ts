@@ -95,6 +95,7 @@ export abstract class Entry implements OnDestroy {
   }
 
   init() {
+    // Getting rid of this line makes the linking work again and I didn't notice any weird behaviour, but I'm not sure.. Needs more testing
     // this.clearState();
     this.subscriptions();
     this.router.events
