@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Category, EntriesService } from '../../shared/openapi';
 import { EntryCategoriesStore } from './entry-categories.store';
 import { EntryCategoriesQuery } from './entry-categories.query';
@@ -35,33 +35,29 @@ export class EntryCategoriesService {
   }
 
   /**
-   * Current entry category update sequence number.
+   * Current entry category update subscription.
    */
-  private updateNumber: number = 0;
+  private currentSubscription: Subscription = null;
 
   /**
    * Updates the list of categories for the specified entry.
    */
   updateEntryCategories(entryId: number) {
-    const myUpdateNumber = ++this.updateNumber;
     this.entryCategoriesStore.setLoading(true);
     this.entryCategoriesStore.setError(false);
     this.entryCategoriesStore.remove();
-    this.entriesService
+    this.currentSubscription?.unsubscribe();
+    this.currentSubscription = this.entriesService
       .entryCategories(entryId)
       .subscribe(
         (categories: Array<Category>) => {
-          if (myUpdateNumber === this.updateNumber) {
-            this.entryCategoriesStore.setLoading(false);
-            this.entryCategoriesStore.setError(false);
-            this.entryCategoriesStore.set(categories);
-          }
+          this.entryCategoriesStore.setLoading(false);
+          this.entryCategoriesStore.setError(false);
+          this.entryCategoriesStore.set(categories);
         },
         () => {
-          if (myUpdateNumber === this.updateNumber) {
-            this.entryCategoriesStore.setLoading(false);
-            this.entryCategoriesStore.setError(true);
-          }
+          this.entryCategoriesStore.setLoading(false);
+          this.entryCategoriesStore.setError(true);
         }
       );
   }
