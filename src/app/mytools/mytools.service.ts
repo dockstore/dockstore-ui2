@@ -77,12 +77,13 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
           this.workflowService.setWorkflow(<AppTool>result);
           this.containerService.setTool(null);
         });
+      } else {
+        this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
+          this.location.go('/my-tools/' + result.tool_path);
+          this.containerService.setTool(result);
+          this.workflowService.setWorkflow(null);
+        });
       }
-      this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
-        this.location.go('/my-tools/' + result.tool_path);
-        this.containerService.setTool(result);
-        this.workflowService.setWorkflow(null);
-      });
     }
   }
   registerEntry(entryType: EntryType) {}

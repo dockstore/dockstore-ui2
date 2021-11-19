@@ -95,7 +95,7 @@ export abstract class Entry implements OnDestroy {
   }
 
   init() {
-    this.clearState();
+    // this.clearState();
     this.subscriptions();
     this.router.events
       .pipe(
