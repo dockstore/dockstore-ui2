@@ -149,13 +149,13 @@
             <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && (hasFilters$ | async)">Search: </strong>
             <span *ngFor="let key of filterKeys$ | async; let i = index">
               the <strong>{{ friendlyNames.get(key) }}</strong> is
-              <div *ngIf="filters$ | async as filters">
+              <span *ngIf="filters$ | async as filters">
                 <span *ngFor="let subBucket of filters.get(key); let j = index">
                   <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
                   <span *ngIf="j < filters.get(key).size - 1"> OR </span>
                 </span>
                 <span *ngIf="i < filters.size - 1"> AND </span>
-              </div>
+              </span>
             </span>
           </mat-card>
         </div>
