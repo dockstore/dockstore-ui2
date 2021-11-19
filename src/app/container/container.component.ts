@@ -104,9 +104,9 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
     private toolService: ToolService,
+    private titleService: Title,
     alertService: AlertService,
     entryService: EntriesService,
-    private titleService: Title,
     private workflowQuery: WorkflowQuery,
     protected entryCategoriesService: EntryCategoriesService,
   ) {
