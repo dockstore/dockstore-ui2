@@ -20,7 +20,7 @@
   <button type="button" mat-menu-item color="accent" *ngIf="isPublic$ | async" (click)="setMode(TagEditorMode.View); (false)">View</button>
   <ng-container *ngIf="(isPublic$ | async) === false">
     <button data-cy="editTagButton" type="button" mat-menu-item color="accent" (click)="setMode(TagEditorMode.Edit); (false)">Edit</button>
-    <button type="button" mat-menu-item color="warn" *ngIf="isManualTool" (click)="deleteTag(); (false)">Delete</button>
+    <button type="button" mat-menu-item color="warn" *ngIf="isManualTool" [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion" (click)="deleteTag(); (false)">Delete</button>
     <button
       type="button"
       mat-menu-item
