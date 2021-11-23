@@ -21,10 +21,13 @@ import { ContainerService } from 'app/shared/container.service';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
-import { ContainerStubService } from 'app/test/service-stubs';
-import { DockstoreTool } from '../shared/swagger';
+import { ContainerStubService, WorkflowsStubService } from 'app/test/service-stubs';
+import { DockstoreTool, WorkflowsService } from '../shared/swagger';
 import { OrgToolObject } from './my-tool/my-tool.component';
 import { MytoolsService } from './mytools.service';
+import { DateService } from '../shared/date.service';
+import { MyWorkflowsService } from '../myworkflows/myworkflows.service';
+import { ProviderService } from '../shared/provider.service';
 
 describe('MytoolsService', () => {
   const tool1: DockstoreTool = {
@@ -156,8 +159,12 @@ describe('MytoolsService', () => {
     TestBed.configureTestingModule({
       providers: [
         MytoolsService,
+        ProviderService,
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: UrlResolverService, useclass: UrlResolverService },
+        MyWorkflowsService,
+        DateService,
       ],
       imports: [RouterTestingModule, CustomMaterialModule, HttpClientTestingModule, MyEntriesModule],
     });
