@@ -143,8 +143,10 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tools) => {
       this.tools = tools;
-      if (this.apptools && this.tools) {
+      if (this.apptools) {
         this.allTools = this.apptools.concat(this.tools);
+      } else {
+        this.allTools = this.tools;
       }
       this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
     });
@@ -157,8 +159,10 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.workflowService.workflows$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((appTools) => {
       this.apptools = appTools;
-      if (this.apptools && this.tools) {
+      if (this.tools) {
         this.allTools = this.apptools.concat(this.tools);
+      } else {
+        this.allTools = this.apptools;
       }
       this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
     });

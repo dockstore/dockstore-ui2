@@ -105,12 +105,7 @@
           </div>
         </div>
 
-        <ng-template *ngIf="tool; else displayAppTool">
-          <app-container [isToolPublic]="false"></app-container>
-        </ng-template>
-        <ng-template #displayAppTool>
-          <app-workflow [isWorkflowPublic]="false"></app-workflow>
-        </ng-template>
+        <app-container [isToolPublic]="false"></app-container>
       </mat-sidenav-content>
     </mat-sidenav-container>
   </div>
