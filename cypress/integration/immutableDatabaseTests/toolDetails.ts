@@ -178,6 +178,6 @@ describe('Find tool by alias', () => {
       response: { tool_path: 'quay.io/A2/b3' },
     });
     cy.visit('/aliases/tools/fakeAlias');
-    cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3');
+    cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=info');
   });
 });
