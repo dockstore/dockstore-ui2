@@ -284,6 +284,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   setupAllBuckets(hits: SearchResponse<Hit>) {
     this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
+    if (!hits.aggregations) {
+      // This normally should not happen, but it does happen in tests because of mocks
+      console.error('No aggregations for sidebar.');
+      return;
+    }
     const bucketMaps: BucketMaps = {
       fullyExpandMap: new Map(this.fullyExpandMap),
       sortModeMap: new Map(this.sortModeMap),
