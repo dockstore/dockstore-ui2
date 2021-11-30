@@ -105,14 +105,15 @@ jobs:
       - install_container_dependencies
       - run:
           name: Run npm audit
-          #Only run 'npm ci' if node_modules was not restored from cache
+          # Run npm audit on current branch and compare it with the results of running npm audit on the develop branch. If there are more
+          # high or critical findings, then the test fails (Test is optional)
           command: |
-            bash -i -c "npm i"
+            bash -i -c "npm ci"
             bash -i -c "npm audit > vulnerabilities.txt" || true
             bash scripts/npm-audit.sh
             git stash
             git checkout develop
-            bash -i -c 'npm i'
+            bash -i -c 'npm ci'
             bash -i -c 'npm audit > vulnerabilities.txt' || true
             # Remove wget once these scripts have been merged to develop
             if [[ ! -f scripts/npm-audit.sh ]]; then
