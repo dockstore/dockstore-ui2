@@ -851,6 +851,17 @@ body {
   vertical-align: middle;
 }
 
+// In our UI mockups, non-header text is rendered in two sizes: a default size and a smaller size.
+// Use this style to set the font size to the smaller size.
+.size-small {
+  font-size: 12px;
+}
+
+// Set display to inline-block
+.inline-block {
+  display: inline-block;
+}
+
 // Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
 app-sidebar-accordion
   .mat-accordion

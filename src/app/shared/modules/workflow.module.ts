@@ -57,6 +57,7 @@ import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SnackbarModule } from './snackbar.module';
+import { CategoryButtonModule } from './../../categories/button/category-button.module';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { SnackbarModule } from './snackbar.module';
     RefreshAlertModule,
     MarkdownWrapperModule,
     SnackbarModule,
+    CategoryButtonModule,
   ],
   providers: [
     DateService,

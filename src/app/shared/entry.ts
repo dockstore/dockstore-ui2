@@ -20,7 +20,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
@@ -38,6 +38,8 @@ import { SessionService } from './session/session.service';
 import { SourceFile } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
+import { Category } from '../shared/openapi';
+import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Directive()
 @Injectable()
@@ -71,6 +73,7 @@ export abstract class Entry implements OnDestroy {
   protected selected = new FormControl(0);
   labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   public verifiedLink: string;
+  public categories$: Observable<Array<Category>>;
   constructor(
     private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
@@ -84,7 +87,8 @@ export abstract class Entry implements OnDestroy {
     protected sessionQuery: SessionQuery,
     protected gA4GHFilesService: GA4GHFilesService,
     protected alertService: AlertService,
-    protected entryService: EntriesService
+    protected entryService: EntriesService,
+    protected entryCategoriesService: EntryCategoriesService
   ) {
     this.location = locationService;
     this.gA4GHFilesService.clearFiles();
@@ -304,6 +308,11 @@ export abstract class Entry implements OnDestroy {
         this.versionsWithVerifiedPlatforms = [];
       }
     );
+  }
+
+  updateCategories(entryId: number): void {
+    this.entryCategoriesService.updateEntryCategories(entryId);
+    this.categories$ = this.entryCategoriesService.categories$;
   }
 
   /**

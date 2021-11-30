@@ -1,9 +1,9 @@
 // A category button is an anchor mat-button.
-// Override the default button styling and inherit various properties to maintain consistency with our mockups and any adjacent "label"-type elements.
+// Override the default button styling and inherit various properties to maintain consistency with our mockups.
 // Specific to the above.
 a, a:hover, a:focus, a:active, a:link, a:visited {
   color: black;
-  font-weight: inherit;
+  font-weight: 500;
   font-size: inherit;
   line-height: inherit;
   border: none;
