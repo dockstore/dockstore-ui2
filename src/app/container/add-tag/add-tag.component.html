@@ -18,7 +18,7 @@
   <app-alert></app-alert>
   <form #addTagForm="ngForm" name="addTagForm">
     <mat-form-field class="w-100">
-      <mat-label>Version Tag</mat-label>
+      <mat-label>Docker Image Tag Name</mat-label>
       <input
         matInput
         id="versionTagInput"
@@ -27,13 +27,13 @@
         maxlength="128"
         [pattern]="validationPatterns.versionTag"
         required
-        title="Docker Image tag name."
-        placeholder="e.g. develop"
+        placeholder="20.04"
       />
+      <mat-hint>e.g. "20.04" is the tag name of "docker pull ubuntu:20.04" </mat-hint>
       <mat-error *ngIf="formErrors.versionTag">{{ formErrors.versionTag }}</mat-error>
     </mat-form-field>
-    <mat-form-field class="w-100">
-      <mat-label>Git Reference</mat-label>
+    <mat-form-field class="w-100 my-3">
+      <mat-label>Git Branch or Tag Name</mat-label>
       <input
         matInput
         id="gitReferenceInput"
@@ -41,10 +41,10 @@
         [(ngModel)]="unsavedVersion.reference"
         maxlength="128"
         [pattern]="validationPatterns.reference"
-        title="Git branch or tag name."
-        placeholder="e.g. develop"
+        placeholder="develop"
         required
       />
+      <mat-hint>e.g. "develop" is the branch name of "https://github.com/dockstore/dockstore/tree/develop"</mat-hint>
       <mat-error *ngIf="formErrors.reference">{{ formErrors.reference }}</mat-error>
     </mat-form-field>
     <mat-form-field class="w-100">
