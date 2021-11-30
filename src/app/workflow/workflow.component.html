@@ -103,11 +103,11 @@
   <div class="row m-1" *ngIf="!showRedirect">
     <div *ngIf="workflow">
       <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
-        <span class="size-12 mr-2">Categories</span>
+        <span class="size-small mr-2">Categories</span>
         <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="workflow" class="weight-500"></app-category-button>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
-        <span *ngIf="workflowEditData?.labels.length > 0" class="size-12 mr-2">Labels</span>
+        <span *ngIf="workflowEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
         <mat-chip-list class="labels">
           <mat-chip class="workflow-label-tag" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
             label
