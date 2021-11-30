@@ -851,13 +851,8 @@ body {
   vertical-align: middle;
 }
 
-// Set various font attributes
-.weight-500 {
-  font-weight: 500;
-}
-
 // In our UI mockups, non-header text is rendered in two sizes: a default size and a smaller size.
-// This style sets the font size to the smaller size.
+// Use this style to set the font size to the smaller size.
 .size-small {
   font-size: 12px;
 }

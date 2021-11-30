@@ -107,7 +107,7 @@
     <div *ngIf="tool">
       <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
-        <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="tool" class="weight-500"></app-category-button>
+        <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="tool"></app-category-button>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
