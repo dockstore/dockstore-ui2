@@ -15,6 +15,6 @@ if [ "$PR_NUM_CRITICAL_VULNS" -gt "$DEV_NUM_CRITICAL_VULNS" ]; then
 fi
 
 if [ "$PR_NUM_HIGH_VULNS" -gt "$DEV_NUM_HIGH_VULNS" ]; then
-  echo "You have introduced $((PR_NUM_HIGH_VULNS-DEV_HIGH_NUM_VULNS)) high vulnerabilities."
+  echo "You have introduced $((PR_NUM_HIGH_VULNS-DEV_NUM_HIGH_VULNS)) high vulnerabilities."
   exit 1
 fi
