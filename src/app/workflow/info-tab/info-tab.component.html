@@ -82,7 +82,6 @@
                     type="text"
                     class="input-default form-control"
                     name="workflowPath"
-                    data-cy="topicInput"
                     [(ngModel)]="workflow.workflow_path"
                     placeholder="e.g. /Dockstore.cwl"
                     fxFlex="noshrink"
@@ -91,7 +90,6 @@
                 </div>
                 <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
                   <button
-                    data-cy="topicCancelButton"
                     *ngIf="!isPublic && workflowPathEditing"
                     type="button"
                     class="btn btn-link"
@@ -102,7 +100,6 @@
                   <button
                     *ngIf="!isPublic"
                     type="button"
-                    data-cy="topicEditButton"
                     [disabled]="
                       topicEditing ||
                       defaultTestFilePathEditing ||
@@ -176,13 +173,14 @@
                     class="input-default form-control"
                     name="topicEditing"
                     [(ngModel)]="workflow.topic"
+                    data-cy="topicInput"                         
                     placeholder="Short description of the workflow"
                     fxFlex="noshrink"
                     fxFlexOffset="4px"
                   />
                 </div>
                 <span>
-                  <button *ngIf="!isPublic && topicEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                  <button data-cy="topicCancelButton" *ngIf="!isPublic && topicEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
                   <button
@@ -191,6 +189,7 @@
                     type="button"
                     class="btn btn-link"
                     (click)="toggleEditTopic()"
+                    data-cy="topicEditButton"
                   >
                     <mat-icon>edit</mat-icon> Edit
                   </button>
