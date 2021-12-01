@@ -82,6 +82,7 @@
                     type="text"
                     class="input-default form-control"
                     name="workflowPath"
+                    data-cy="topicInput"
                     [(ngModel)]="workflow.workflow_path"
                     placeholder="e.g. /Dockstore.cwl"
                     fxFlex="noshrink"
@@ -89,12 +90,19 @@
                   />
                 </div>
                 <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                  <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                  <button
+                    data-cy="topicCancelButton"
+                    *ngIf="!isPublic && workflowPathEditing"
+                    type="button"
+                    class="btn btn-link"
+                    (click)="cancelEditing()"
+                  >
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
                   <button
                     *ngIf="!isPublic"
                     type="button"
+                    data-cy="topicEditButton"
                     [disabled]="
                       topicEditing ||
                       defaultTestFilePathEditing ||
