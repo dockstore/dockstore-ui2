@@ -132,7 +132,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('badTopic').should('not.exist');
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('goodTopic');
-      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicSaveButton]').click();
       cy.contains('goodTopic').should('exist');
     });
     it('should have mode tooltip', () => {

@@ -246,7 +246,7 @@
           <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
           <li>
             <form fxLayout="row" fxLayoutAlign="start center" class="w-100">
-              <span><strong matTooltip="Short descripton of the tool">Topic</strong>:</span>
+              <span><strong matTooltip="Short descripton of the tool">Topic</strong>:&nbsp;</span>
               <span *ngIf="!topicEditing">{{ tool?.topic || 'n/a' }}</span>
               <span fxFlex>
                 <input

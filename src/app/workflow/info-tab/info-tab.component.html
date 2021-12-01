@@ -89,12 +89,7 @@
                   />
                 </div>
                 <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                  <button
-                    *ngIf="!isPublic && workflowPathEditing"
-                    type="button"
-                    class="btn btn-link"
-                    (click)="cancelEditing()"
-                  >
+                  <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
                   <button
@@ -173,18 +168,18 @@
                     class="input-default form-control"
                     name="topicEditing"
                     [(ngModel)]="workflow.topic"
-                    data-cy="topicInput"                         
+                    data-cy="topicInput"
                     placeholder="Short description of the workflow"
                     fxFlex="noshrink"
                     fxFlexOffset="4px"
                   />
                 </div>
-                <span>
-                  <button data-cy="topicCancelButton" *ngIf="!isPublic && topicEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                <ng-container *ngIf="!isPublic">
+                  <button data-cy="topicCancelButton" *ngIf="topicEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
                   <button
-                    *ngIf="!isPublic && !workflow?.topic && !topicEditing"
+                    *ngIf="!workflow?.topic && !topicEditing"
                     [disabled]="forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
                     type="button"
                     class="btn btn-link"
@@ -194,16 +189,17 @@
                     <mat-icon>edit</mat-icon> Edit
                   </button>
                   <button
-                    *ngIf="!isPublic && (workflow?.topic || topicEditing)"
+                    *ngIf="workflow?.topic || topicEditing"
                     type="button"
                     class="btn btn-link"
                     (click)="toggleEditTopic()"
+                    data-cy="topicSaveButton"
                   >
                     <mat-icon *ngIf="topicEditing">save</mat-icon>
                     <mat-icon *ngIf="!topicEditing">edit</mat-icon>
                     {{ topicEditing ? 'Save' : 'Edit' }}
                   </button>
-                </span>
+                </ng-container>
               </form>
               <form
                 class="form-inline"
