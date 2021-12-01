@@ -243,6 +243,49 @@
               </button>
             </form>
           </li>
+          <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
+          <li>
+            <form fxLayout="row" fxLayoutAlign="start center" class="w-100">
+              <span><strong matTooltip="Short descripton of the tool">Topic</strong>:</span>
+              <span *ngIf="!topicEditing">{{ tool?.topic || 'n/a' }}</span>
+              <span fxFlex>
+                <input
+                  *ngIf="topicEditing"
+                  minlength="3"
+                  maxlength="256"
+                  type="text"
+                  name="topic"
+                  class="w-100"
+                  data-cy="topicInput"
+                  [(ngModel)]="tool.topic"
+                  placeholder="Short description of the workflow"
+                />
+              </span>
+              <button
+                data-cy="topicCancelButton"
+                *ngIf="!isPublic && topicEditing"
+                type="button"
+                mat-button
+                class="accent-1-dark"
+                (click)="cancelEditing()"
+              >
+                <mat-icon>cancel</mat-icon> Cancel
+              </button>
+              <button
+                *ngIf="!isPublic"
+                type="button"
+                [disabled]="!(!somethingIsBeingEdited() || topicEditing)"
+                mat-button
+                class="accent-1-dark"
+                data-cy="topicEditButton"
+                (click)="toggleEditTopic()"
+              >
+                <mat-icon *ngIf="topicEditing">save</mat-icon>
+                <mat-icon *ngIf="!topicEditing">edit</mat-icon>
+                {{ topicEditing ? 'Save' : 'Edit' }}
+              </button>
+            </form>
+          </li>
           <app-info-tab-checker-workflow-path
             *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
             [canRead]="true"
