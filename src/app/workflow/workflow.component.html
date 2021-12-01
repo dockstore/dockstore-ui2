@@ -212,7 +212,6 @@
               </ng-template>
             </mat-tab>
           </div>
-          <div *ngIf="entryType === EntryType.Tool"></div>
           <mat-tab id="versionsTab" label="Versions">
             <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
               <app-versions-workflow
