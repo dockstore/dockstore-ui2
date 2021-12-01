@@ -107,6 +107,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     public dialog: MatDialog,
     private toolService: ToolService,
     private titleService: Title,
+    protected entryCategoriesService: EntryCategoriesService
   ) {
     super(
       trackLoginService,
