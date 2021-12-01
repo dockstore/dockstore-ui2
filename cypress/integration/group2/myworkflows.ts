@@ -124,6 +124,8 @@ describe('Dockstore my workflows', () => {
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore.cwl');
+
+      // Topic Editing
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
@@ -131,7 +133,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('goodTopic');
       cy.get('[data-cy=topicEditButton]').click();
-      cy.contains('goodTopic').should('not.exist');
+      cy.contains('goodTopic').should('exist');
     });
     it('should have mode tooltip', () => {
       // .trigger('mouseover') doesn't work for some reason
