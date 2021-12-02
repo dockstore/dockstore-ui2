@@ -5,7 +5,7 @@ import { goToTab } from '../../../support/commands';
  *    1. Base url for cypress must be set to dev.dockstore.net (or if local make sure user is in local database)
  *    2. DockstoreTestUser4 registered on dev.dockstore.net with github and quay accounts linked (at minimum)
  *        -- must have the entries on their github and quay accounts (dockstore-tool-md5sum and hello-dockstore-workflow)
- *    3. Dockstore token for DockstoreTestUser4 must be passed to cypress
+ *    3. Dockstore token for DockstoreTestUser4 must be passed to cypress using the TOKEN environment variable
  *    4. The 'testtest' dockstore organization must exist with 'testcollection' Collection and DockstoreTestUser4 as member
  *    5. Tests will either fail or be flaky if artifacts are left behind from a failed run (ie tool not deleted or workflow unpublished)
  *        -- if tests keep failing double check that these were removed
