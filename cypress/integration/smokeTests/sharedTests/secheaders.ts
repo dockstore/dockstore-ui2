@@ -4,7 +4,7 @@ before(() => {
   cy.visit('');
 });
 
-// Function to check that the value of the specified response header
+// Function to check that the value of the response header "headerKey"
 // contains the substring "containsValue".
 function checkHeaderValueContains(url: string, headerKey: string, containsValue: string) {
     cy.request(url).then((resp) => {
