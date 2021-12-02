@@ -90,21 +90,19 @@ export class InfoTabService extends Base {
     this.topicEditing$.next(editing);
   }
 
-  saveTopic(tool: DockstoreTool, callback: () => void) {
+  saveTopic(tool: DockstoreTool, errorCallback: () => void) {
     this.alertService.start('Updating topic');
     const partialTool = this.getPartialToolForUpdate(tool);
-    console.log(tool.topic);
     this.containersService.updateContainer(this.tool.id, partialTool).subscribe(
       (response) => {
         this.alertService.detailedSuccess();
 
         const newTopic = response.topic;
-        console.log(newTopic);
         this.containerService.updateActiveTopic(newTopic);
       },
       (error) => {
         this.alertService.detailedError(error);
-        callback();
+        errorCallback();
       }
     );
   }

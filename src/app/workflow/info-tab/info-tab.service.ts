@@ -89,7 +89,7 @@ export class InfoTabService {
    * Warning, this could potentially update a few other properties
    * @param workflow
    */
-  saveTopic(workflow: Workflow, callback: () => void) {
+  saveTopic(workflow: Workflow, errorCallback: () => void) {
     this.alertService.start('Updating topic');
     const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
     this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(
@@ -100,7 +100,7 @@ export class InfoTabService {
       },
       (error) => {
         this.alertService.detailedError(error);
-        callback();
+        errorCallback();
       }
     );
   }
