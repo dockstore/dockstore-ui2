@@ -28,9 +28,9 @@
               *ngIf="tool?.providerUrl"
               id="sourceRepository"
               data-cy="sourceRepository"
-              [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+              [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.reference : '')"
             >
-              {{ tool?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
+              {{ tool?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.reference : '') }}
             </a>
           </li>
           <li *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">

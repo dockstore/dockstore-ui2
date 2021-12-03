@@ -155,11 +155,14 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
         if (this.unsavedTestWDLFile.length > 0) {
           this.addTestParameterFile(this.DescriptorType.WDL);
         }
+        const toAddCWLTestParameterFiles = this.unsavedCWLTestParameterFilePaths;
+        const toAddWDLTestParameterFiles = this.unsavedCWLTestParameterFilePaths;
+        // Question: do we really want to clear the form?
         this.initializeTag();
         // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
         const addCWL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
           id,
-          this.unsavedCWLTestParameterFilePaths,
+          toAddCWLTestParameterFiles,
           'CWL',
           tagName,
           null
@@ -167,7 +170,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
         // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
         const addWDL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
           id,
-          this.unsavedWDLTestParameterFilePaths,
+          toAddWDLTestParameterFiles,
           'WDL',
           tagName,
           null

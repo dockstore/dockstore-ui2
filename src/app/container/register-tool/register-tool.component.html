@@ -13,10 +13,13 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<h4 mat-dialog-title>Register Tool</h4>
+
+<div mat-dialog-title>
+  <h4>Register Tool</h4>
+  <app-alert></app-alert>
+</div>
 <mat-progress-bar mat-dialog-title mode="indeterminate" *ngIf="loading$ | async"></mat-progress-bar>
 <mat-dialog-content>
-  <app-alert></app-alert>
   <mat-horizontal-stepper #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
