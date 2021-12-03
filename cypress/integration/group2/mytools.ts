@@ -151,7 +151,7 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
       cy.contains('Versions').click();
       cy.get('#addTagButton').click();
-      typeInInput('Version Tag', 'fakeTag');
+      typeInInput('Docker Image Tag Name', 'fakeTag');
       typeInInput('Git Reference', 'fakeGitReference');
       cy.get('#addVersionTagButton').click();
       cy.wait('@putTestParameterFile');
