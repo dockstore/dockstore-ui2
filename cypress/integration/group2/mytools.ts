@@ -152,7 +152,7 @@ describe('Dockstore my tools', () => {
       cy.contains('Versions').click();
       cy.get('#addTagButton').click();
       typeInInput('Docker Image Tag Name', 'fakeTag');
-      typeInInput('Git Reference', 'fakeGitReference');
+      typeInInput('Git Branch or Tag Name', 'fakeGitReference');
       cy.get('#addVersionTagButton').click();
       cy.wait('@putTestParameterFile');
     });
