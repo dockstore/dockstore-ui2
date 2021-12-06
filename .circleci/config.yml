@@ -22,6 +22,22 @@ executors:
           POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        environment:
+          node.name: es01
+          cluster.name: es-docker-cluster
+          discovery.type: single-node
+          bootstrap.memory_lock: true
+          ES_JAVA_OPTS: "-Xms512m -Xmx512m"
+          xpack.security.enabled: false
+          xpack.monitoring.enabled: false
+          xpack.graph.enabled: false
+          xpack.watcher.enabled: false
+          xpack.ml.enabled: false
+          script.allowed_types: none
+          script.allowed_contexts: none
+          http.port: 9200
+          network.host: 127.0.0.1
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
@@ -231,6 +247,20 @@ jobs:
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
+  local_smoke_tests:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    steps:
+      - setup_smoke_tests
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Run local smoke tests (no auth)
+          command: bash -i -c 'npm run test-local-no-auth'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-local-no-auth-[hash].xml
           when: always
       - upload_artifacts
   upload_to_s3:
@@ -465,6 +495,13 @@ commands:
       - run:
           name: Prebuild
           command: bash -i -c 'npm run prebuild.prod'
+  setup_smoke_tests:
+    steps:
+      - setup_integration_test
+      - run:
+          name: Index ES
+          command: |
+            curl -X POST "http://localhost:4200/api/api/ga4gh/v2/extended/tools/index" -H "accept: text/plain" -H "Authorization: Bearer imamafakedockstoretoken"
   upload_nightly_artifacts:
     steps:
       - store_test_results:
