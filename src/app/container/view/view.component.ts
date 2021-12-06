@@ -71,12 +71,21 @@ export class ViewContainerComponent extends View implements OnInit {
     const deleteMessage = 'Are you sure you want to delete tag ' + this.version.name + ' for tool ' + this.tool.tool_path + '?';
     const confirmDelete = confirm(deleteMessage);
     if (confirmDelete) {
-      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(() => {
-        this.containertagsService.getTagsByPath(this.tool.id).subscribe((response) => {
-          this.tool.workflowVersions = response;
-          this.containerService.setTool(this.tool);
-        });
-      });
+      this.alertService.start('Deleting tag ' + this.version.name);
+      this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(
+        () => {
+          this.alertService.simpleSuccess();
+          this.containertagsService.getTagsByPath(this.tool.id).subscribe(
+            (response) => {
+              this.tool.workflowVersions = response;
+              this.containerService.setTool(this.tool);
+            }
+          );
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
     }
   }
 
