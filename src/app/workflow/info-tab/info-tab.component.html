@@ -157,23 +157,20 @@
                   </button>
                 </span>
               </form>
-              <form #editForumUrl="ngForm" class="form-inline" fxLayout>
-                <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
-                  <strong matTooltip="Short description of the workflow">Topic</strong>:
-                  <span *ngIf="!topicEditing" fxFlexOffset="4px"> {{ workflow?.topic }} </span>
+              <form #editForumUrl="ngForm" fxLayout="row" fxLayout="start center" class="w-100">
+                <span><strong matTooltip="Short description of the workflow">Topic</strong>:&nbsp;</span>
+                <span *ngIf="!topicEditing"> {{ workflow?.topic }} </span>
+                <span fxFlex>
                   <input
                     *ngIf="topicEditing"
                     maxlength="256"
                     type="text"
-                    class="input-default form-control"
+                    class="w-100"
                     name="topicEditing"
                     [(ngModel)]="workflow.topic"
                     data-cy="topicInput"
                     placeholder="Short description of the workflow"
-                    fxFlex="noshrink"
-                    fxFlexOffset="4px"
-                  />
-                </div>
+                /></span>
                 <ng-container *ngIf="!isPublic">
                   <button data-cy="topicCancelButton" *ngIf="topicEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
