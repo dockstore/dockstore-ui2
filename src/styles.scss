@@ -1141,7 +1141,7 @@ mat-icon.mat-icon-sm {
   white-space: normal;
 }
 
-$truncate-text-values: 1, 3;
+$truncate-text-values: 1, 2, 3;
 
 // Hide overflow, values denote the number of lines to keep
 // Similar no-wrap except those are more meant single "words", this is for sentences
