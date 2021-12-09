@@ -42,7 +42,7 @@
             tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
           }}</a>
         </ng-template>
-        <small *ngIf="tool.topic">{{ tool.topic }}</small>
+        <small class="truncate-text-2" *ngIf="tool.topic">{{ tool.topic }}</small>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
