@@ -17,7 +17,7 @@
         <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
           workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
         }}</a>
-        <small class="truncate-text-2" *ngIf="workflow.topic">{{ workflow.topic }}</small>
+        <span class="truncate-text-2 size-small" *ngIf="workflow.topic">{{ workflow.topic }}</span>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
