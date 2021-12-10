@@ -3,7 +3,7 @@
   "version": "2.8.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version": "1.11.9",
+    "webservice_version": "1.11.10",
     "use_circle": true,
     "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/6861/workflows/d3fe74f1-3b20-4276-890f-db35f3fca10f/jobs/15163/artifacts",
     "circle_build_id": "15163"
