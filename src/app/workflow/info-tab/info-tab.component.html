@@ -157,7 +157,7 @@
                   </button>
                 </span>
               </form>
-              <form #editForumUrl="ngForm" fxLayout="row" fxLayout="start center" class="w-100">
+              <form #editForumUrl="ngForm" fxLayout="row" fxLayoutAlign="start center" class="w-100">
                 <span><strong matTooltip="Short description of the workflow">Topic</strong>:&nbsp;</span>
                 <span *ngIf="!topicEditing"> {{ workflow?.topic }} </span>
                 <span fxFlex>
