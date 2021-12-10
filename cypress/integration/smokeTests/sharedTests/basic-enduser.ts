@@ -1,5 +1,4 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
-import { Dockstore } from '../../../../src/app/shared/dockstore.model';
 import { goToTab } from '../../../support/commands';
 import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDescriptor';
 
@@ -38,7 +37,6 @@ function testEntry(tab: string) {
         cy.request(el.prop('href')).its('status').should('eq', 200);
       });
     });
-    cy.get('[data-cy=sourceRepository]').should('have.attr', 'href');
   });
 
   it('check files tab', () => {

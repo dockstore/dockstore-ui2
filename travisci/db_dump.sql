@@ -1583,167 +1583,167 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('version editor', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-04 13:59:33.974563', 111, 'EXECUTED', '8:1ec3a3efcf37baeeec67c49704866c08', 'addColumn tableName=tag; addColumn tableName=workflowversion; addForeignKeyConstraint baseTableName=workflowversion, constraintName=versionEditorForWorkflows, referencedTableName=enduser; addForeignKeyConstraint baseTableName=tag, constraintName=v...', '', NULL, '3.5.4', NULL, NULL, '8135173906');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add commit ids to versions', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-04 13:59:33.980369', 112, 'EXECUTED', '8:5cf40942991bd2d78d893f0224f4cce7', 'addColumn tableName=tag; addColumn tableName=workflowversion', '', NULL, '3.5.4', NULL, NULL, '8135173906');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('verification_metadata', 'dyuen (generated)', 'migrations.1.5.0.xml', '2018-06-13 13:56:14.527219', 113, 'EXECUTED', '8:1d7e6d4405dd59e110644214ad1f3930', 'createTable tableName=sourcefile_verified; addColumn tableName=enduser; addForeignKeyConstraint baseTableName=sourcefile_verified, constraintName=foreign_key, referencedTableName=sourcefile', '', NULL, '3.5.4', NULL, NULL, '8912574484');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('move-github-profile-to-user_profile-table', 'gluu (generated)', 'migrations.1.5.0.xml', '2021-12-10 11:04:42.287879', 114, 'EXECUTED', '8:ab55eecb83e53433da1b80224eeebf80', 'createTable tableName=user_profile; sql; addForeignKeyConstraint baseTableName=user_profile, constraintName=fk_id_with_user_profile, referencedTableName=enduser; dropColumn columnName=bio, tableName=enduser; dropColumn columnName=company, tableNam...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('entry aliases', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 11:04:42.321735', 115, 'EXECUTED', '8:9c7b28e00ccec8232ea92ff2e1a296cd', 'createTable tableName=entry_alias; addUniqueConstraint constraintName=aliases_are_unique, tableName=entry_alias', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('date_more_tables', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 11:04:42.347619', 116, 'EXECUTED', '8:2c05cf7fc1c914245ab26ea8c7634708', 'addColumn tableName=sourcefile_verified; addColumn tableName=entry_alias; addColumn tableName=sourcefile_verified; addColumn tableName=entry_alias', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('migrate-legacy-verification-information', 'gluu', 'migrations.1.5.0.xml', '2021-12-10 11:04:42.371057', 117, 'EXECUTED', '8:c5ff95ac3a254f700afaed850c596ec1', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('no-orphaned-tokens', 'gluu', 'migrations.1.5.0.xml', '2021-12-10 11:04:42.391503', 118, 'EXECUTED', '8:f0d6ca85cdc7871f8689b29cce43493c', 'sql; addForeignKeyConstraint baseTableName=token, constraintName=fk_userid_with_enduser, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('namechanged', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 11:04:42.450794', 119, 'EXECUTED', '8:277c79bb491e54ac757966777ee2005c', 'addColumn tableName=enduser; addColumn tableName=user_profile; addUniqueConstraint constraintName=username_unique, tableName=enduser; sql; sql; addUniqueConstraint constraintName=one_sign_in_method_by_profile, tableName=user_profile; addUniqueCons...', 'migrate existing usernames to profiles based on whether or not they have an
-        @'' as a proxy for whether they are from github or google', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeNextflowToNFL', 'agduncan', 'migrations.1.5.0.xml', '2021-12-10 11:04:42.465609', 120, 'EXECUTED', '8:0d27cfa39db74ae7908b63cc96323a2b', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addSourcefileAbsolutePath', 'agduncan', 'migrations.1.5.0.xml', '2021-12-10 11:04:42.48498', 121, 'EXECUTED', '8:78262ceac123f90e5ca4c2a181848233', 'addColumn tableName=sourcefile; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addPlatformVersionToSourcefileVerified', 'gluu (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.5046', 122, 'EXECUTED', '8:e40eff8a1c553ee080cfaa0b72328fa3', 'addColumn tableName=sourcefile_verified', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.533936', 123, 'EXECUTED', '8:ea4952bacf3204e5a41b6eb5288a5ccb', 'createSequence sequenceName=organisation_id_seq; createTable tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationUserTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.553746', 124, 'EXECUTED', '8:c399d2f2a36d38706c9f2b44f738588e', 'createTable tableName=organisation_user', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('uniqueNameForOrgs', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.572656', 125, 'EXECUTED', '8:cb4c01387d3326997cf51d3b5fc223f2', 'addUniqueConstraint constraintName=nameUK, tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationFKToOrgUser', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.589719', 126, 'EXECUTED', '8:8e0a8ae35a23b6fd86de51f26ed2279e', 'addForeignKeyConstraint baseTableName=organisation_user, constraintName=orgFKOrgUser, referencedTableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserFKToOrgUser', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.606931', 127, 'EXECUTED', '8:30417e0c3590d7ad73922f1a9c3eabd7', 'addForeignKeyConstraint baseTableName=organisation_user, constraintName=userFKOrgUser, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropEndUserGroupFK1', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.622774', 128, 'EXECUTED', '8:c72e394564ddeb26800490494722c01c', 'dropForeignKeyConstraint baseTableName=endusergroup, constraintName=fkm0exig2r3dsxqafwaraf7rnr3', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropEndUserGroupFK2', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.637512', 129, 'EXECUTED', '8:bdbb29bc791901da7cc87558a959da4d', 'dropForeignKeyConstraint baseTableName=endusergroup, constraintName=fkrxn6hh2max4sk4ceehyv7mt2e', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropEndUserGroupTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.653611', 130, 'EXECUTED', '8:cef4a3826422bc42031bbb154b285765', 'dropTable tableName=endusergroup', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropUserGroupTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.669253', 131, 'EXECUTED', '8:0ac3aabe1932244c2df916c1961af751', 'dropTable tableName=usergroup', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('createEventsTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.692111', 132, 'EXECUTED', '8:8df3abca68905baf712a6288e980891c', 'createSequence sequenceName=event_id_seq; createTable tableName=event', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.708746', 133, 'EXECUTED', '8:23e9d0abaf2f2c16c0d1992509df8199', 'addForeignKeyConstraint baseTableName=event, constraintName=fkOrganisationId, referencedTableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addInitiatorUserFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.726672', 134, 'EXECUTED', '8:ad5d35777b18210fde1b25d793307b53', 'addForeignKeyConstraint baseTableName=event, constraintName=FKInitiatorUserId, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addToolFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.745652', 135, 'EXECUTED', '8:ee5bc3d61ada4e8c4bf5537d46503c3b', 'addForeignKeyConstraint baseTableName=event, constraintName=FKToolId, referencedTableName=tool', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.762492', 136, 'EXECUTED', '8:ac94a7540ae27855c96559d56a4ac58c', 'addForeignKeyConstraint baseTableName=event, constraintName=FKUserId, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addWorkflowFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.779158', 137, 'EXECUTED', '8:12b0129ee0c06b63a155c72b12a0da2a', 'addForeignKeyConstraint baseTableName=event, constraintName=FKWorkflowId, referencedTableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('createCollectionTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.806632', 138, 'EXECUTED', '8:4b7a54d90429dc5a91e9fbc9c0e9e6ea', 'createSequence sequenceName=collection_id_seq; createTable tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('createCollectionEntryTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.831106', 139, 'EXECUTED', '8:493ae6dad1145045cd115ebe9f24673d', 'createTable tableName=collection_entry', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCollectionNameConstraint', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.84992', 140, 'EXECUTED', '8:6a554385e511b997c6c7bae042581cf1', 'addUniqueConstraint constraintName=uk_collectionName, tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrgIdFKConstraint', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.866762', 141, 'EXECUTED', '8:ce9917f8b7e4624326f079f9f7f6730b', 'addForeignKeyConstraint baseTableName=collection, constraintName=fk_orgIdInCollection, referencedTableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1addCollectionIdFKConstraint', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.882416', 142, 'EXECUTED', '8:75f01f875624ab747a83b3509e3d9268', 'addForeignKeyConstraint baseTableName=collection_entry, constraintName=fk_collectionIdInCollectionEntry, referencedTableName=collection', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCollectionColumnToEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.897737', 143, 'EXECUTED', '8:7fb4a92eb7eb11e70729ee213b5cea7c', 'addColumn tableName=event', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCollectionFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.912875', 144, 'EXECUTED', '8:d35a57e54fe7b35bca7ff1d7db69f39f', 'addForeignKeyConstraint baseTableName=event, constraintName=fk_collectionIdInEvent, referencedTableName=collection', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addTopicToOrganisation', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.927476', 145, 'EXECUTED', '8:a0ed190ca24bb250596519a36bac2aae', 'addColumn tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddValidationTable', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.953722', 146, 'EXECUTED', '8:ccb9e5b793e575ca962a69166304664b', 'createSequence sequenceName=validation_id_seq; createTable tableName=validation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddValidationJoinTable', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.973912', 147, 'EXECUTED', '8:e836f2f492464f481b2f274c52faf0a5', 'createTable tableName=version_validation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddJoinValidationConstraint', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:42.992402', 148, 'EXECUTED', '8:66ae8f4ed3fd8970acd516c88929a68b', 'addUniqueConstraint constraintName=uk_validationid, tableName=version_validation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddValidationIdConstraint', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.008094', 149, 'EXECUTED', '8:864b0348bcc350f1a964ce2dbb5558d0', 'addForeignKeyConstraint baseTableName=version_validation, constraintName=fkvalidationid, referencedTableName=validation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddNotNullAbsolutePathConstraint', 'coverbeck', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.027055', 150, 'EXECUTED', '8:c75aff65fb5b912537566d6e53497663', 'update tableName=sourcefile; addNotNullConstraint columnName=absolutepath, tableName=sourcefile', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddStatusColumnToOrganisations', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.042446', 151, 'EXECUTED', '8:3b56b7ea4add67143821a2031d9203b6', 'addColumn tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('constraintOrgNames', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.060705', 152, 'EXECUTED', '8:ac31c4c27941ba00a77599d04c8c0952', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropOldApprovedFieldFromOrganisations', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.074171', 153, 'EXECUTED', '8:211e31ffdfb39d51a89ff82531c86022', 'dropColumn columnName=approved, tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('renameAllOrganization', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.102476', 154, 'EXECUTED', '8:9e72ea1337ed59a4224556d8d3d4bca3', 'renameTable newTableName=organization, oldTableName=organisation; renameTable newTableName=organization_user, oldTableName=organisation_user; renameColumn newColumnName=organizationid, oldColumnName=organisationid, tableName=organization_user; ren...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addAvatarurlColumnToOrganizations', 'NatalieEO', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.116942', 155, 'EXECUTED', '8:145fa7e92a21951262efd3ed5573cd81', 'addColumn tableName=organization', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('maintain_consistency', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.153006', 156, 'EXECUTED', '8:c11c29f74bb5b8fbd266d81a7fd1ae92', 'modifyDataType columnName=name, tableName=organization; modifyDataType columnName=type, tableName=validation; modifyDataType columnName=message, tableName=validation', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('collection_alias', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.184868', 157, 'EXECUTED', '8:c2279a3fd137e068b6d13d2bd2789ebe', 'createTable tableName=collection_alias; addUniqueConstraint constraintName=unique_col_aliases, tableName=collection_alias; addForeignKeyConstraint baseTableName=collection_alias, constraintName=fk_collection_alias, referencedTableName=collection', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1551127767692-2', 'dyuen (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.214702', 158, 'EXECUTED', '8:c3f3f66a977ca53d7f47b7b3c086012f', 'createTable tableName=organzation_alias; addUniqueConstraint constraintName=unique_org_aliases, tableName=organzation_alias; addForeignKeyConstraint baseTableName=organzation_alias, constraintName=fk_organzation_alias, referencedTableName=organiza...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDisplayNameToOrganization', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.229184', 159, 'EXECUTED', '8:267a6a4b84a6859312039cb7cd9ec1f1', 'addColumn tableName=organization', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDisplayNameToOrganizationUniqueConstraint', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.251142', 160, 'EXECUTED', '8:fe295a000fd4b33eb52e8f1b6659b011', 'update tableName=organization; addUniqueConstraint constraintName=uk_orgDisplayName, tableName=organization', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDisplayNameToCollection', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.266853', 161, 'EXECUTED', '8:a0238d433862b61f564c9dd25db47aa0', 'addColumn tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDisplayNameToCollectionUniqueConstraint', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.287581', 162, 'EXECUTED', '8:48196f04ced66f02a91143356d6d2a5a', 'update tableName=collection; addUniqueConstraint constraintName=uk_collDisplayName, tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addTopicToCollection', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.30223', 163, 'EXECUTED', '8:fed498b531d9b3c07afbc0958b998ec9', 'addColumn tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addHostedEntryCountlimitToUser', 'charlesoverbeck (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.316954', 164, 'EXECUTED', '8:4f388bb02e539166723be760d203e13c', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addHostedEntryVersionsLimitToUser', 'charlesoverbeck (generated)', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.331484', 165, 'EXECUTED', '8:4d738f07abbcb831dadf552b569538b5', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('constraintColNames', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.356084', 166, 'EXECUTED', '8:ea4424f1a565e0b48cefd3df9244632f', 'dropUniqueConstraint constraintName=uk_collectionName, tableName=collection; dropUniqueConstraint constraintName=nameUK, tableName=organization; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('organization_alias_rename', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.371547', 167, 'EXECUTED', '8:0400dc30c3bf8c8740fcaea47673310e', 'renameTable newTableName=organization_alias, oldTableName=organzation_alias', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fixAbsolutePath', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.387191', 168, 'EXECUTED', '8:8212724a5df44c0217496a696828d955', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('checkAbsolutePath', 'gluu', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.403166', 169, 'EXECUTED', '8:fb9195871b17be1d1ae3d0e2ffffb7ff', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('epicAbsolutePathFix', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 11:04:43.429599', 170, 'EXECUTED', '8:725a0f7aec67c27e62e28c19615afcde', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addToolTopicId', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.446957', 171, 'EXECUTED', '8:ec4c49dadb6f4a923924e89214bc97b1', 'addColumn tableName=tool', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addWorkflowTopicId', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.462207', 172, 'EXECUTED', '8:970ca0506d05b180bbaf1c953b146bfb', 'addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addStarredOrganizations', 'louisecabansay (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.483468', 173, 'EXECUTED', '8:4cd131bd15a70daba5c675af33a1f800', 'createTable tableName=starred_organizations', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserIdStarOrgConstratint', 'louisecabansay (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.501603', 174, 'EXECUTED', '8:4eecbe70d33354090cb35a312c7c81ed', 'addForeignKeyConstraint baseTableName=starred_organizations, constraintName=fk_userIdStarredOrganizations, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganizationIdStarOrgConstratint', 'louisecabansay (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.517643', 175, 'EXECUTED', '8:6f17b6d1909132581786f66564d7c169', 'addForeignKeyConstraint baseTableName=starred_organizations, constraintName=fk_organizationIdStarredOrganizations, referencedTableName=organization', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('services', 'dyuen (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.550544', 176, 'EXECUTED', '8:f1285f768acc3d5097269da63438d051', 'createTable tableName=service; addForeignKeyConstraint baseTableName=service, constraintName=checker_workflows_for_services, referencedTableName=workflow; addColumn tableName=workflowversion; dropForeignKeyConstraint baseTableName=workflow_workflo...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('example_default_path_general_for_tools', 'dyuen (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.653226', 177, 'EXECUTED', '8:4debfab5e7f18fabcde10c4fc1aff2ff', 'createTable tableName=entry_defaultpaths; addUniqueConstraint constraintName=unique_paths, tableName=entry_defaultpaths; addPrimaryKey constraintName=entry_defaultpaths_pkey, tableName=entry_defaultpaths; sql; dropColumn columnName=defaultdockerfi...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCommentsForEntryTimestamps', 'natalieperez (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.715923', 178, 'EXECUTED', '8:46ea6440b21c5bd607da903b1bb7c43d', 'setColumnRemarks columnName=dbcreatedate, tableName=tag; setColumnRemarks columnName=dbcreatedate, tableName=tool; setColumnRemarks columnName=dbcreatedate, tableName=workflow; setColumnRemarks columnName=dbcreatedate, tableName=workflowversion; s...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeLastBuildColumnName', 'natalieperez (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.742816', 179, 'EXECUTED', '8:8ed660396a878108e0ac87aa2f19e593', 'renameColumn newColumnName=lastbuilt, oldColumnName=lastmodified, tableName=tag; setColumnRemarks columnName=lastbuilt, tableName=tag; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dyuen', 'frozen', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.812074', 180, 'EXECUTED', '8:d5e2d30c7ad02c6d44f185e4baa3cd5e', 'addColumn tableName=tag; addColumn tableName=workflowversion; addColumn tableName=sourcefile; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('modifyable version metadata', 'dyuen', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.881685', 181, 'EXECUTED', '8:15a22a6c1433e027f7fdf16e325a2c85', 'createTable tableName=version_metadata; sql; dropColumn columnName=doistatus, tableName=tag; dropColumn columnName=doistatus, tableName=workflowversion; dropColumn columnName=doiurl, tableName=tag; dropColumn columnName=doiurl, tableName=workflowv...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('remove_weird_fk_constraints', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.907957', 182, 'EXECUTED', '8:13e89864c7aa5c5ac7bb8c67a44af915', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_path_constraint_to_service', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.933932', 183, 'EXECUTED', '8:2c148b7921694e0707645f4cadff02b8', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('bannable_users', 'dyuen', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.948315', 184, 'EXECUTED', '8:087a65e3905ce2ee13b773795b9894b6', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('privacy policy and TOS', 'natalieperez (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.970197', 185, 'EXECUTED', '8:73b674e631e0492e5521869876eb5b75', 'addColumn tableName=enduser; addColumn tableName=enduser; addColumn tableName=enduser; addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('createBlacklistedVersionNames', 'gluu (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:43.988098', 186, 'EXECUTED', '8:16e2167a41b8a28bf91a48d55687fa35', 'createTable tableName=entry_blacklistedversionnames', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fix_checker_workflow_publish_mismatch', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 11:04:44.014654', 187, 'EXECUTED', '8:d6f44fa738d4daf06d4ce77cd2d139c0', 'sql; sql; sql; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('wdlValidationMessageAppend', 'agduncan', 'migrations.1.7.0.xml', '2021-12-10 11:04:44.028821', 188, 'EXECUTED', '8:6a25aebd985b31fe7d6989ccae1d1c84', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('unlimitedAvatarUrlLength', 'gluu (generated)', 'migrations.1.7.0.xml', '2021-12-10 11:04:44.040172', 189, 'EXECUTED', '8:7a0825624dd800c9840c9ffb7e793251', 'modifyDataType columnName=avatarurl, tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_service', 'gluu', 'migrations.test.add_service_1.7.0.xml', '2021-12-10 11:04:44.180661', 190, 'EXECUTED', '8:e6395d4de1f1947413b0db5fc5c409f9', 'insert tableName=entry_defaultpaths; insert tableName=service; insert tableName=sourcefile; insert tableName=sourcefile; insert tableName=sourcefile; insert tableName=sourcefile; insert tableName=sourcefile; insert tableName=sourcefile; insert tab...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('alter_test_user', 'natalieperez', 'migrations.test.alter_test_user_1.10.2.xml', '2021-12-10 11:04:44.194868', 191, 'EXECUTED', '8:6f248e5be1b1a67010d8cad334032bdf', 'update tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('alter_test_curator_user', 'natalieperez', 'migrations.test.alter_test_user_1.10.2.xml', '2021-12-10 11:04:44.208077', 192, 'EXECUTED', '8:4cce538e5b2f1cea2705bd674ddffa3a', 'update tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('supportconceptDOI', 'waltershands (generated)', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.224661', 193, 'EXECUTED', '8:aaa47628a8d87938e85f2f71446651b2', 'addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('frozen join table', 'coverbeck', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.252861', 194, 'EXECUTED', '8:85e7133ae2112de1af997379167d9637', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('supportworkflowalias', 'waltershands (generated)', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.282022', 195, 'EXECUTED', '8:e4662adff90c9f2407d404636775d096', 'createTable tableName=workflowversion_alias; addUniqueConstraint constraintName=workflow_version_aliases_are_unique, tableName=workflowversion_alias; addForeignKeyConstraint baseTableName=workflowversion_alias, constraintName=fk_workflowversion_al...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('create_images_checksums', 'natalieperez (generated)', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.32104', 196, 'EXECUTED', '8:6eabf4422ea68e87c104b1aa00cc3e14', 'createTable tableName=entry_version_image; createSequence sequenceName=image_id_seq; createTable tableName=image; addUniqueConstraint constraintName=uk_imageid, tableName=entry_version_image; addForeignKeyConstraint baseTableName=entry_version_ima...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addVersionMetadata', 'gluu (generated)', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.341608', 197, 'EXECUTED', '8:f393fe73dbb120a498eacda2bb6317cc', 'addColumn tableName=version_metadata; addColumn tableName=version_metadata; addColumn tableName=version_metadata; addColumn tableName=version_metadata', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('remove_all_stubs', 'agduncan', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.362549', 198, 'EXECUTED', '8:44f30421c4689498cf609acdcac68957', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('notifications', 'esoth', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.386947', 199, 'EXECUTED', '8:3a7a79437788eedfff6d94e459097159', 'createSequence sequenceName=notification_id_seq; createTable tableName=notification', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('set_null_db_times', 'aduncan', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.444531', 200, 'EXECUTED', '8:078ecf3436d6d7d30921d75855494f58', 'sql; update tableName=tool; update tableName=tool; sql; update tableName=tag; update tableName=tag; sql; update tableName=workflow; update tableName=workflow; sql; update tableName=workflowversion; update tableName=workflowversion', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add-not-null-db-dates', 'aduncan', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.483675', 201, 'EXECUTED', '8:af59af88bab5700b8b210fc19d3a7821', 'addNotNullConstraint columnName=dbcreatedate, tableName=workflow; addNotNullConstraint columnName=dbupdatedate, tableName=workflow; addNotNullConstraint columnName=dbcreatedate, tableName=service; addNotNullConstraint columnName=dbupdatedate, tabl...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('restructure_workflowversions', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.522672', 202, 'EXECUTED', '8:c9c61d9f212c5fafb1e1a9383dea1eb0', 'addColumn tableName=tag; addColumn tableName=workflowversion; sql; dropForeignKeyConstraint baseTableName=tool_tag, constraintName=fkjkn6qubuvn25bun52eqjleyl6; dropForeignKeyConstraint baseTableName=tool_tag, constraintName=fkjtsjg6jdnwxoeicd27ujm...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('cleanup invalid content', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.588409', 203, 'EXECUTED', '8:6463616dd0c538a5e9d4728cd0805860', 'sql; delete tableName=tag; delete tableName=workflowversion; sql; sql; sql; sql; sql; sql; sql; sql; sql; sql', 'some orphaned versions are protected by security
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('move-github-profile-to-user_profile-table', 'gluu (generated)', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.819247', 114, 'EXECUTED', '8:ab55eecb83e53433da1b80224eeebf80', 'createTable tableName=user_profile; sql; addForeignKeyConstraint baseTableName=user_profile, constraintName=fk_id_with_user_profile, referencedTableName=enduser; dropColumn columnName=bio, tableName=enduser; dropColumn columnName=company, tableNam...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('entry aliases', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.853579', 115, 'EXECUTED', '8:9c7b28e00ccec8232ea92ff2e1a296cd', 'createTable tableName=entry_alias; addUniqueConstraint constraintName=aliases_are_unique, tableName=entry_alias', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('date_more_tables', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.880904', 116, 'EXECUTED', '8:2c05cf7fc1c914245ab26ea8c7634708', 'addColumn tableName=sourcefile_verified; addColumn tableName=entry_alias; addColumn tableName=sourcefile_verified; addColumn tableName=entry_alias', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('migrate-legacy-verification-information', 'gluu', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.905066', 117, 'EXECUTED', '8:c5ff95ac3a254f700afaed850c596ec1', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('no-orphaned-tokens', 'gluu', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.924739', 118, 'EXECUTED', '8:f0d6ca85cdc7871f8689b29cce43493c', 'sql; addForeignKeyConstraint baseTableName=token, constraintName=fk_userid_with_enduser, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('namechanged', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.980953', 119, 'EXECUTED', '8:277c79bb491e54ac757966777ee2005c', 'addColumn tableName=enduser; addColumn tableName=user_profile; addUniqueConstraint constraintName=username_unique, tableName=enduser; sql; sql; addUniqueConstraint constraintName=one_sign_in_method_by_profile, tableName=user_profile; addUniqueCons...', 'migrate existing usernames to profiles based on whether or not they have an
+        @'' as a proxy for whether they are from github or google', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeNextflowToNFL', 'agduncan', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.997121', 120, 'EXECUTED', '8:0d27cfa39db74ae7908b63cc96323a2b', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addSourcefileAbsolutePath', 'agduncan', 'migrations.1.5.0.xml', '2021-12-10 14:19:57.018149', 121, 'EXECUTED', '8:78262ceac123f90e5ca4c2a181848233', 'addColumn tableName=sourcefile; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addPlatformVersionToSourcefileVerified', 'gluu (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.037703', 122, 'EXECUTED', '8:e40eff8a1c553ee080cfaa0b72328fa3', 'addColumn tableName=sourcefile_verified', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.070229', 123, 'EXECUTED', '8:ea4952bacf3204e5a41b6eb5288a5ccb', 'createSequence sequenceName=organisation_id_seq; createTable tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationUserTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.090563', 124, 'EXECUTED', '8:c399d2f2a36d38706c9f2b44f738588e', 'createTable tableName=organisation_user', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('uniqueNameForOrgs', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.110787', 125, 'EXECUTED', '8:cb4c01387d3326997cf51d3b5fc223f2', 'addUniqueConstraint constraintName=nameUK, tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationFKToOrgUser', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.127443', 126, 'EXECUTED', '8:8e0a8ae35a23b6fd86de51f26ed2279e', 'addForeignKeyConstraint baseTableName=organisation_user, constraintName=orgFKOrgUser, referencedTableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserFKToOrgUser', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.1431', 127, 'EXECUTED', '8:30417e0c3590d7ad73922f1a9c3eabd7', 'addForeignKeyConstraint baseTableName=organisation_user, constraintName=userFKOrgUser, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropEndUserGroupFK1', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.16108', 128, 'EXECUTED', '8:c72e394564ddeb26800490494722c01c', 'dropForeignKeyConstraint baseTableName=endusergroup, constraintName=fkm0exig2r3dsxqafwaraf7rnr3', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropEndUserGroupFK2', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.177442', 129, 'EXECUTED', '8:bdbb29bc791901da7cc87558a959da4d', 'dropForeignKeyConstraint baseTableName=endusergroup, constraintName=fkrxn6hh2max4sk4ceehyv7mt2e', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropEndUserGroupTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.192449', 130, 'EXECUTED', '8:cef4a3826422bc42031bbb154b285765', 'dropTable tableName=endusergroup', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropUserGroupTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.208468', 131, 'EXECUTED', '8:0ac3aabe1932244c2df916c1961af751', 'dropTable tableName=usergroup', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('createEventsTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.230095', 132, 'EXECUTED', '8:8df3abca68905baf712a6288e980891c', 'createSequence sequenceName=event_id_seq; createTable tableName=event', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.246491', 133, 'EXECUTED', '8:23e9d0abaf2f2c16c0d1992509df8199', 'addForeignKeyConstraint baseTableName=event, constraintName=fkOrganisationId, referencedTableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addInitiatorUserFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.263973', 134, 'EXECUTED', '8:ad5d35777b18210fde1b25d793307b53', 'addForeignKeyConstraint baseTableName=event, constraintName=FKInitiatorUserId, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addToolFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.280418', 135, 'EXECUTED', '8:ee5bc3d61ada4e8c4bf5537d46503c3b', 'addForeignKeyConstraint baseTableName=event, constraintName=FKToolId, referencedTableName=tool', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.295116', 136, 'EXECUTED', '8:ac94a7540ae27855c96559d56a4ac58c', 'addForeignKeyConstraint baseTableName=event, constraintName=FKUserId, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addWorkflowFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.310533', 137, 'EXECUTED', '8:12b0129ee0c06b63a155c72b12a0da2a', 'addForeignKeyConstraint baseTableName=event, constraintName=FKWorkflowId, referencedTableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('createCollectionTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.337059', 138, 'EXECUTED', '8:4b7a54d90429dc5a91e9fbc9c0e9e6ea', 'createSequence sequenceName=collection_id_seq; createTable tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('createCollectionEntryTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.356836', 139, 'EXECUTED', '8:493ae6dad1145045cd115ebe9f24673d', 'createTable tableName=collection_entry', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCollectionNameConstraint', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.375543', 140, 'EXECUTED', '8:6a554385e511b997c6c7bae042581cf1', 'addUniqueConstraint constraintName=uk_collectionName, tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrgIdFKConstraint', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.391635', 141, 'EXECUTED', '8:ce9917f8b7e4624326f079f9f7f6730b', 'addForeignKeyConstraint baseTableName=collection, constraintName=fk_orgIdInCollection, referencedTableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1addCollectionIdFKConstraint', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.407817', 142, 'EXECUTED', '8:75f01f875624ab747a83b3509e3d9268', 'addForeignKeyConstraint baseTableName=collection_entry, constraintName=fk_collectionIdInCollectionEntry, referencedTableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCollectionColumnToEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.423251', 143, 'EXECUTED', '8:7fb4a92eb7eb11e70729ee213b5cea7c', 'addColumn tableName=event', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCollectionFKEvent', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.439312', 144, 'EXECUTED', '8:d35a57e54fe7b35bca7ff1d7db69f39f', 'addForeignKeyConstraint baseTableName=event, constraintName=fk_collectionIdInEvent, referencedTableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addTopicToOrganisation', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.454515', 145, 'EXECUTED', '8:a0ed190ca24bb250596519a36bac2aae', 'addColumn tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddValidationTable', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.479209', 146, 'EXECUTED', '8:ccb9e5b793e575ca962a69166304664b', 'createSequence sequenceName=validation_id_seq; createTable tableName=validation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddValidationJoinTable', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.497527', 147, 'EXECUTED', '8:e836f2f492464f481b2f274c52faf0a5', 'createTable tableName=version_validation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddJoinValidationConstraint', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.514', 148, 'EXECUTED', '8:66ae8f4ed3fd8970acd516c88929a68b', 'addUniqueConstraint constraintName=uk_validationid, tableName=version_validation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddValidationIdConstraint', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.529124', 149, 'EXECUTED', '8:864b0348bcc350f1a964ce2dbb5558d0', 'addForeignKeyConstraint baseTableName=version_validation, constraintName=fkvalidationid, referencedTableName=validation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddNotNullAbsolutePathConstraint', 'coverbeck', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.546937', 150, 'EXECUTED', '8:c75aff65fb5b912537566d6e53497663', 'update tableName=sourcefile; addNotNullConstraint columnName=absolutepath, tableName=sourcefile', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddStatusColumnToOrganisations', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.561524', 151, 'EXECUTED', '8:3b56b7ea4add67143821a2031d9203b6', 'addColumn tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('constraintOrgNames', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.578002', 152, 'EXECUTED', '8:ac31c4c27941ba00a77599d04c8c0952', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropOldApprovedFieldFromOrganisations', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.59293', 153, 'EXECUTED', '8:211e31ffdfb39d51a89ff82531c86022', 'dropColumn columnName=approved, tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('renameAllOrganization', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.621864', 154, 'EXECUTED', '8:9e72ea1337ed59a4224556d8d3d4bca3', 'renameTable newTableName=organization, oldTableName=organisation; renameTable newTableName=organization_user, oldTableName=organisation_user; renameColumn newColumnName=organizationid, oldColumnName=organisationid, tableName=organization_user; ren...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addAvatarurlColumnToOrganizations', 'NatalieEO', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.637983', 155, 'EXECUTED', '8:145fa7e92a21951262efd3ed5573cd81', 'addColumn tableName=organization', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('maintain_consistency', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.675672', 156, 'EXECUTED', '8:c11c29f74bb5b8fbd266d81a7fd1ae92', 'modifyDataType columnName=name, tableName=organization; modifyDataType columnName=type, tableName=validation; modifyDataType columnName=message, tableName=validation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('collection_alias', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.704955', 157, 'EXECUTED', '8:c2279a3fd137e068b6d13d2bd2789ebe', 'createTable tableName=collection_alias; addUniqueConstraint constraintName=unique_col_aliases, tableName=collection_alias; addForeignKeyConstraint baseTableName=collection_alias, constraintName=fk_collection_alias, referencedTableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1551127767692-2', 'dyuen (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.734578', 158, 'EXECUTED', '8:c3f3f66a977ca53d7f47b7b3c086012f', 'createTable tableName=organzation_alias; addUniqueConstraint constraintName=unique_org_aliases, tableName=organzation_alias; addForeignKeyConstraint baseTableName=organzation_alias, constraintName=fk_organzation_alias, referencedTableName=organiza...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDisplayNameToOrganization', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.748228', 159, 'EXECUTED', '8:267a6a4b84a6859312039cb7cd9ec1f1', 'addColumn tableName=organization', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDisplayNameToOrganizationUniqueConstraint', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.76689', 160, 'EXECUTED', '8:fe295a000fd4b33eb52e8f1b6659b011', 'update tableName=organization; addUniqueConstraint constraintName=uk_orgDisplayName, tableName=organization', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDisplayNameToCollection', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.781675', 161, 'EXECUTED', '8:a0238d433862b61f564c9dd25db47aa0', 'addColumn tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDisplayNameToCollectionUniqueConstraint', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.80251', 162, 'EXECUTED', '8:48196f04ced66f02a91143356d6d2a5a', 'update tableName=collection; addUniqueConstraint constraintName=uk_collDisplayName, tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addTopicToCollection', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.816258', 163, 'EXECUTED', '8:fed498b531d9b3c07afbc0958b998ec9', 'addColumn tableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addHostedEntryCountlimitToUser', 'charlesoverbeck (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.829534', 164, 'EXECUTED', '8:4f388bb02e539166723be760d203e13c', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addHostedEntryVersionsLimitToUser', 'charlesoverbeck (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.840688', 165, 'EXECUTED', '8:4d738f07abbcb831dadf552b569538b5', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('constraintColNames', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.863478', 166, 'EXECUTED', '8:ea4424f1a565e0b48cefd3df9244632f', 'dropUniqueConstraint constraintName=uk_collectionName, tableName=collection; dropUniqueConstraint constraintName=nameUK, tableName=organization; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('organization_alias_rename', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.877603', 167, 'EXECUTED', '8:0400dc30c3bf8c8740fcaea47673310e', 'renameTable newTableName=organization_alias, oldTableName=organzation_alias', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fixAbsolutePath', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.892884', 168, 'EXECUTED', '8:8212724a5df44c0217496a696828d955', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('checkAbsolutePath', 'gluu', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.90631', 169, 'EXECUTED', '8:fb9195871b17be1d1ae3d0e2ffffb7ff', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('epicAbsolutePathFix', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.930096', 170, 'EXECUTED', '8:725a0f7aec67c27e62e28c19615afcde', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addToolTopicId', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 14:19:57.945777', 171, 'EXECUTED', '8:ec4c49dadb6f4a923924e89214bc97b1', 'addColumn tableName=tool', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addWorkflowTopicId', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 14:19:57.95907', 172, 'EXECUTED', '8:970ca0506d05b180bbaf1c953b146bfb', 'addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addStarredOrganizations', 'louisecabansay (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:57.978071', 173, 'EXECUTED', '8:4cd131bd15a70daba5c675af33a1f800', 'createTable tableName=starred_organizations', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserIdStarOrgConstratint', 'louisecabansay (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:57.994157', 174, 'EXECUTED', '8:4eecbe70d33354090cb35a312c7c81ed', 'addForeignKeyConstraint baseTableName=starred_organizations, constraintName=fk_userIdStarredOrganizations, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganizationIdStarOrgConstratint', 'louisecabansay (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.009419', 175, 'EXECUTED', '8:6f17b6d1909132581786f66564d7c169', 'addForeignKeyConstraint baseTableName=starred_organizations, constraintName=fk_organizationIdStarredOrganizations, referencedTableName=organization', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('services', 'dyuen (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.038991', 176, 'EXECUTED', '8:f1285f768acc3d5097269da63438d051', 'createTable tableName=service; addForeignKeyConstraint baseTableName=service, constraintName=checker_workflows_for_services, referencedTableName=workflow; addColumn tableName=workflowversion; dropForeignKeyConstraint baseTableName=workflow_workflo...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('example_default_path_general_for_tools', 'dyuen (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.131438', 177, 'EXECUTED', '8:4debfab5e7f18fabcde10c4fc1aff2ff', 'createTable tableName=entry_defaultpaths; addUniqueConstraint constraintName=unique_paths, tableName=entry_defaultpaths; addPrimaryKey constraintName=entry_defaultpaths_pkey, tableName=entry_defaultpaths; sql; dropColumn columnName=defaultdockerfi...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCommentsForEntryTimestamps', 'natalieperez (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.184491', 178, 'EXECUTED', '8:46ea6440b21c5bd607da903b1bb7c43d', 'setColumnRemarks columnName=dbcreatedate, tableName=tag; setColumnRemarks columnName=dbcreatedate, tableName=tool; setColumnRemarks columnName=dbcreatedate, tableName=workflow; setColumnRemarks columnName=dbcreatedate, tableName=workflowversion; s...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeLastBuildColumnName', 'natalieperez (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.206486', 179, 'EXECUTED', '8:8ed660396a878108e0ac87aa2f19e593', 'renameColumn newColumnName=lastbuilt, oldColumnName=lastmodified, tableName=tag; setColumnRemarks columnName=lastbuilt, tableName=tag; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dyuen', 'frozen', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.27656', 180, 'EXECUTED', '8:d5e2d30c7ad02c6d44f185e4baa3cd5e', 'addColumn tableName=tag; addColumn tableName=workflowversion; addColumn tableName=sourcefile; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('modifyable version metadata', 'dyuen', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.331624', 181, 'EXECUTED', '8:15a22a6c1433e027f7fdf16e325a2c85', 'createTable tableName=version_metadata; sql; dropColumn columnName=doistatus, tableName=tag; dropColumn columnName=doistatus, tableName=workflowversion; dropColumn columnName=doiurl, tableName=tag; dropColumn columnName=doiurl, tableName=workflowv...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('remove_weird_fk_constraints', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.357187', 182, 'EXECUTED', '8:13e89864c7aa5c5ac7bb8c67a44af915', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_path_constraint_to_service', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.381579', 183, 'EXECUTED', '8:2c148b7921694e0707645f4cadff02b8', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('bannable_users', 'dyuen', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.398226', 184, 'EXECUTED', '8:087a65e3905ce2ee13b773795b9894b6', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('privacy policy and TOS', 'natalieperez (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.421923', 185, 'EXECUTED', '8:73b674e631e0492e5521869876eb5b75', 'addColumn tableName=enduser; addColumn tableName=enduser; addColumn tableName=enduser; addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('createBlacklistedVersionNames', 'gluu (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.440602', 186, 'EXECUTED', '8:16e2167a41b8a28bf91a48d55687fa35', 'createTable tableName=entry_blacklistedversionnames', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fix_checker_workflow_publish_mismatch', 'aduncan', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.465135', 187, 'EXECUTED', '8:d6f44fa738d4daf06d4ce77cd2d139c0', 'sql; sql; sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('wdlValidationMessageAppend', 'agduncan', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.480663', 188, 'EXECUTED', '8:6a25aebd985b31fe7d6989ccae1d1c84', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('unlimitedAvatarUrlLength', 'gluu (generated)', 'migrations.1.7.0.xml', '2021-12-10 14:19:58.495605', 189, 'EXECUTED', '8:7a0825624dd800c9840c9ffb7e793251', 'modifyDataType columnName=avatarurl, tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_service', 'gluu', 'migrations.test.add_service_1.7.0.xml', '2021-12-10 14:19:58.664174', 190, 'EXECUTED', '8:e6395d4de1f1947413b0db5fc5c409f9', 'insert tableName=entry_defaultpaths; insert tableName=service; insert tableName=sourcefile; insert tableName=sourcefile; insert tableName=sourcefile; insert tableName=sourcefile; insert tableName=sourcefile; insert tableName=sourcefile; insert tab...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('alter_test_user', 'natalieperez', 'migrations.test.alter_test_user_1.10.2.xml', '2021-12-10 14:19:58.678536', 191, 'EXECUTED', '8:6f248e5be1b1a67010d8cad334032bdf', 'update tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('alter_test_curator_user', 'natalieperez', 'migrations.test.alter_test_user_1.10.2.xml', '2021-12-10 14:19:58.692102', 192, 'EXECUTED', '8:4cce538e5b2f1cea2705bd674ddffa3a', 'update tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('supportconceptDOI', 'waltershands (generated)', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.711849', 193, 'EXECUTED', '8:aaa47628a8d87938e85f2f71446651b2', 'addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('frozen join table', 'coverbeck', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.739167', 194, 'EXECUTED', '8:85e7133ae2112de1af997379167d9637', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('supportworkflowalias', 'waltershands (generated)', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.769745', 195, 'EXECUTED', '8:e4662adff90c9f2407d404636775d096', 'createTable tableName=workflowversion_alias; addUniqueConstraint constraintName=workflow_version_aliases_are_unique, tableName=workflowversion_alias; addForeignKeyConstraint baseTableName=workflowversion_alias, constraintName=fk_workflowversion_al...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('create_images_checksums', 'natalieperez (generated)', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.806438', 196, 'EXECUTED', '8:6eabf4422ea68e87c104b1aa00cc3e14', 'createTable tableName=entry_version_image; createSequence sequenceName=image_id_seq; createTable tableName=image; addUniqueConstraint constraintName=uk_imageid, tableName=entry_version_image; addForeignKeyConstraint baseTableName=entry_version_ima...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addVersionMetadata', 'gluu (generated)', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.825607', 197, 'EXECUTED', '8:f393fe73dbb120a498eacda2bb6317cc', 'addColumn tableName=version_metadata; addColumn tableName=version_metadata; addColumn tableName=version_metadata; addColumn tableName=version_metadata', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('remove_all_stubs', 'agduncan', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.845581', 198, 'EXECUTED', '8:44f30421c4689498cf609acdcac68957', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('notifications', 'esoth', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.87018', 199, 'EXECUTED', '8:3a7a79437788eedfff6d94e459097159', 'createSequence sequenceName=notification_id_seq; createTable tableName=notification', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('set_null_db_times', 'aduncan', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.924325', 200, 'EXECUTED', '8:078ecf3436d6d7d30921d75855494f58', 'sql; update tableName=tool; update tableName=tool; sql; update tableName=tag; update tableName=tag; sql; update tableName=workflow; update tableName=workflow; sql; update tableName=workflowversion; update tableName=workflowversion', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add-not-null-db-dates', 'aduncan', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.959796', 201, 'EXECUTED', '8:af59af88bab5700b8b210fc19d3a7821', 'addNotNullConstraint columnName=dbcreatedate, tableName=workflow; addNotNullConstraint columnName=dbupdatedate, tableName=workflow; addNotNullConstraint columnName=dbcreatedate, tableName=service; addNotNullConstraint columnName=dbupdatedate, tabl...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('restructure_workflowversions', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.999825', 202, 'EXECUTED', '8:c9c61d9f212c5fafb1e1a9383dea1eb0', 'addColumn tableName=tag; addColumn tableName=workflowversion; sql; dropForeignKeyConstraint baseTableName=tool_tag, constraintName=fkjkn6qubuvn25bun52eqjleyl6; dropForeignKeyConstraint baseTableName=tool_tag, constraintName=fkjtsjg6jdnwxoeicd27ujm...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('cleanup invalid content', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 14:19:59.070559', 203, 'EXECUTED', '8:6463616dd0c538a5e9d4728cd0805860', 'sql; delete tableName=tag; delete tableName=workflowversion; sql; sql; sql; sql; sql; sql; sql; sql; sql; sql', 'some orphaned versions are protected by security
 delete the versions that are orphaned already
 migrate content from join tables into tag and workflowversion tables
 Delete the source files of deleted tags and versions.
-Delete references from versio...', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('lock_versions_down', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 11:04:44.633972', 204, 'EXECUTED', '8:4431289dbfe8d3b2b378394046cee14f', 'addNotNullConstraint columnName=parentid, constraintName=parent_id_not_nullable, tableName=tag; addNotNullConstraint columnName=parentid, constraintName=parent_id_not_nullable, tableName=workflowversion; addUniqueConstraint constraintName=unique_t...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addVersionToEvent', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.646414', 205, 'EXECUTED', '8:0c8e0f77478370035e34d48d38263c3c', 'addColumn tableName=event', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeVersionEventsWithoutVersions', '', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.656668', 206, 'EXECUTED', '8:b78dce45f5881f93180f422ec5ba47c3', 'delete tableName=event', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddSubclassColumnToServicesAndWorkflows', 'aduncan (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.671899', 207, 'EXECUTED', '8:3a7ab639e050c895c3a3975296a7a7a4', 'addColumn tableName=service; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeFilePathsToText', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.69024', 208, 'EXECUTED', '8:afe66a5e94fba6a10b480b20c7c0e64b', 'modifyDataType columnName=path, tableName=entry_defaultpaths; modifyDataType columnName=path, tableName=sourcefile; modifyDataType columnName=absolutepath, tableName=sourcefile', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addLegacyVersionColumn', 'aduncan (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.707803', 209, 'EXECUTED', '8:ae2404404f5219f482eff89566c1429a', 'addColumn tableName=workflowversion; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addImageRegistryColumnToImageTable', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.720036', 210, 'EXECUTED', '8:3cf8c8a1406d856fb9f4f4ba49f7ed08', 'addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('makeIsLegacyVersionNotNullable', 'Charles Overbeck', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.740006', 211, 'EXECUTED', '8:9674088e2a4cfdb34060dbe6f8a46abf', 'sql; sql; sql; addDefaultValue columnName=islegacyversion, tableName=workflowversion; addNotNullConstraint columnName=islegacyversion, tableName=workflowversion', 'Frozen versions are protected by security
-Because of row-level security, line 57 left nulls in frozen versions', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addChecksumColumntoSourceFile', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.75155', 212, 'EXECUTED', '8:283c85b05ef8b67b275c943d5aa98474', 'addColumn tableName=sourcefile', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDockerHubColumnsToImages', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.765282', 213, 'EXECUTED', '8:9cfe45b37f26b1dc00e6d550f60fd045', 'addColumn tableName=image; addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserOrcidIDColumn', 'esoth (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.77529', 214, 'EXECUTED', '8:caa42dbf4da9817d7448632bdc26e39c', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addNewDefaultVersionColumn', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.832541', 215, 'EXECUTED', '8:60775ca45a5459ae2d519c08e576eb77', 'addColumn tableName=service; addColumn tableName=workflow; addColumn tableName=tool; addForeignKeyConstraint baseTableName=workflow, constraintName=fk_workflow_default_workflowversion, referencedTableName=workflowversion; addForeignKeyConstraint b...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeOldDefaultVersionColumn', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.853606', 216, 'EXECUTED', '8:cb318bfe07d209ad568f56d6c96f191c', 'dropColumn columnName=defaultversion, tableName=service; dropColumn columnName=defaultversion, tableName=tool; dropColumn columnName=defaultversion, tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dagAndToolTableJsonColumnsToWorkflowVersion', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.870839', 217, 'EXECUTED', '8:6483c274e3915af7b06fd717dcde2083', 'addColumn tableName=workflowversion; addColumn tableName=workflowversion', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeServiceMode', 'aduncan', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.884993', 218, 'EXECUTED', '8:1cc2828680db1bc345ec4a7af0aaf375', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addLambdaEvents', 'aduncan (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.911576', 219, 'EXECUTED', '8:6d6c4b61daa2e419f56f2af3de7de469', 'createSequence sequenceName=lambdaevent_id_seq; createTable tableName=lambdaevent; addForeignKeyConstraint baseTableName=lambdaevent, constraintName=fkj387wwrofm9u30t4mwiiwa835, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('splitLambdaEventRepository', 'aduncan', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.930069', 220, 'EXECUTED', '8:67af290b3bc9366f49643bf53c1fd8b8', 'addColumn tableName=lambdaevent; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addSyncedColumnToWorkflowVersion', 'aduncan', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.947474', 221, 'EXECUTED', '8:66cd68cfb42bcfea1677b2e1b9f95a3a', 'addColumn tableName=workflowversion; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeOrganizationUserRoles', 'natalieperez', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.962834', 222, 'EXECUTED', '8:72173e39669b9c00e73882df1ba63616', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeCheckerId', 'gluu', 'migrations.1.9.0.xml', '2021-12-10 11:04:44.976097', 223, 'EXECUTED', '8:413277996597aaa5502043ee5bc644fc', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('uniqueCheckerId', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 11:04:45.006777', 224, 'EXECUTED', '8:619d434a702923243ad8d476993d874a', 'addUniqueConstraint constraintName=uk_uniqueWorkflowCheckerId, tableName=workflow; addUniqueConstraint constraintName=uk_uniqueServiceCheckerId, tableName=service; addUniqueConstraint constraintName=uk_uniqueToolCheckerId, tableName=tool', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('adddescriptortypecolumn', 'natalieperez (generated)', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.032518', 225, 'EXECUTED', '8:76af58d77508a69caf9fbd9ba3710d6b', 'addColumn tableName=tool; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_parsed_information', 'gluu (generated)', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.051329', 226, 'EXECUTED', '8:f23c2fd793417c7c346745e926fc0f05', 'createTable tableName=parsed_information; addForeignKeyConstraint baseTableName=parsed_information, constraintName=version_metadata_parsed_information_fk_constraint, referencedTableName=version_metadata', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeOrphanVersionMetadata', 'gluu', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.064158', 227, 'EXECUTED', '8:71e0d8eb1ee183143a8d24658264e0aa', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addLicenseInformation', 'gluu (generated)', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.083784', 228, 'EXECUTED', '8:e534400357b622caf90786ae5d5824ed', 'addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('notificationsCharLimit', 'nolwarre (generated)', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.09848', 229, 'EXECUTED', '8:71042ed1f2776a723866dd8669ef9536', 'modifyDataType columnName=message, tableName=notification', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCollectionEntryVersion', 'gluu (generated)', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.139956', 230, 'EXECUTED', '8:f1eb66290cace284cc6623c0f2775add', 'createTable tableName=collection_entry_version; addForeignKeyConstraint baseTableName=collection_entry_version, constraintName=fk_collection_entry_version, referencedTableName=collection; sql; dropForeignKeyConstraint baseTableName=collection_entr...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fixSevenBridgesImageLinks', 'gfjhogue', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.15421', 231, 'EXECUTED', '8:32d13f2a8ba0534ae8cb3456abe7fe23', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('workflowForumUrl', 'nzhao (generated)', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.169019', 232, 'EXECUTED', '8:7aad0114af45547e2abed1acd5f377fd', 'addColumn tableName=service; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeForumUrlType', 'nzhao (generated)', 'migrations.1.10.0.xml', '2021-12-10 11:04:45.184901', 233, 'EXECUTED', '8:4fab1f485e0c0638ca00366244aebea0', 'modifyDataType columnName=forumurl, tableName=service; modifyDataType columnName=forumurl, tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addImageSizeAndUpdateDate', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.201741', 234, 'EXECUTED', '8:f80567c09b5d5d10c403fd7944bea148', 'addColumn tableName=image; addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('toolForumUrl', 'nzhao (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.215783', 235, 'EXECUTED', '8:cbe8bffb2060501ea4d4702db452ba17', 'addColumn tableName=tool', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('deletedUsernameTable', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.235022', 236, 'EXECUTED', '8:cf97165eebb697f69be152e2f5ef6611', 'createTable tableName=deletedusername', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('cloudInstanceAndLanguageTables', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.267856', 237, 'EXECUTED', '8:699bd59fa8ee16ad13de66d98c8c486c', 'createTable tableName=cloud_instance; createTable tableName=cloudinstance_supportedlanguages; addForeignKeyConstraint baseTableName=cloudinstance_supportedlanguages, constraintName=fk_cloudinstance_supportedlanguages, referencedTableName=cloud_ins...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('orcidPutCode', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.28914', 238, 'EXECUTED', '8:e8f42fe8c47d320c5dce1a9702fa11a9', 'addColumn tableName=version_metadata; addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('input_output_fileformats_on_entry', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.345552', 239, 'EXECUTED', '8:d3bcf8859445f657723f5ddc9f711050', 'createTable tableName=entry_output_fileformat; createTable tableName=entry_input_fileformat; addForeignKeyConstraint baseTableName=entry_output_fileformat, constraintName=fk_entry_ouput_fileformat, referencedTableName=fileformat; addForeignKeyCons...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('orcidTokenExpansion', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.400736', 240, 'EXECUTED', '8:feea931da3f561dcc6b6eaa8b1791b58', 'addColumn tableName=token; addColumn tableName=token; update tableName=token', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('date_more_things', 'dyuen (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.435009', 241, 'EXECUTED', '8:378eaea45dd1ac6cbd69b7c4800b2d21', 'addColumn tableName=cloud_instance; addColumn tableName=cloudinstance_supportedlanguages; addColumn tableName=collection_entry_version; addColumn tableName=parsed_information; addColumn tableName=version_metadata; addColumn tableName=cloud_instanc...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('standard_sequences', 'dyuen (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.458995', 242, 'EXECUTED', '8:f374d10bc040997c657305c3b4789db0', 'alterSequence sequenceName=container_id_seq; alterSequence sequenceName=enduser_id_seq; alterSequence sequenceName=label_id_seq; alterSequence sequenceName=sourcefile_id_seq; alterSequence sequenceName=tag_id_seq; alterSequence sequenceName=token_...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('existingORCIDScopeSet', 'gluu', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.472119', 243, 'EXECUTED', '8:5f7621705463e96cc8561e0bd3aa13a6', 'update tableName=token', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_ids_from_github', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.519508', 244, 'EXECUTED', '8:67730ca78b5b4d61aa2b5a002659aba0', 'addColumn tableName=user_profile; addColumn tableName=token; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fix_onlineprofileid_datatype', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.574769', 245, 'EXECUTED', '8:ca6833532bd2011cd76b81bdd79af5af', 'sql; modifyDataType columnName=onlineprofileid, tableName=token; modifyDataType columnName=onlineprofileid, tableName=user_profile', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_cloud_instances_constraint', 'dyuen (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.590617', 246, 'EXECUTED', '8:8b5d1b4b4d6eed18a625aada95ace0c1', 'createIndex indexName=unique_user_instances, tableName=cloud_instance', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('global_cloud_instances_constraint', 'dyuen', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.606778', 247, 'EXECUTED', '8:25b0ba634f05a9d2cc6f6385bdcbbf60', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_lambda_index', 'dyuen (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.626015', 248, 'EXECUTED', '8:a9bfa7f935ed0e440fa1942bbb9aa210', 'createIndex indexName=organization_index, tableName=lambdaevent; createIndex indexName=user_index, tableName=lambdaevent', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_display_name_column', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.637046', 249, 'EXECUTED', '8:da7b03de9d2bbe8f8ad840c7cbc5984b', 'addColumn tableName=cloud_instance', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('multipleAuthorsTable', 'ghogue (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.652763', 250, 'EXECUTED', '8:1ea539ecda684e7282cfa394ec94531d', 'createTable tableName=author', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('multipleAuthorsMigrate', 'ghogue', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.666551', 251, 'EXECUTED', '8:c138e2d34096798ba033eeb614c2eed9', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('yamlOrcidAuthors', 'ghogue (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.693891', 252, 'EXECUTED', '8:f42fa70c2e9a992adcaec8d30cbadc1a', 'createTable tableName=version_orcidauthor; createTable tableName=orcidauthor; addForeignKeyConstraint baseTableName=version_orcidauthor, constraintName=fk_version_orcidauthor, referencedTableName=orcidauthor', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('authenticateScopeFix', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 11:04:45.706087', 253, 'EXECUTED', '8:5f7621705463e96cc8561e0bd3aa13a6', 'update tableName=token', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addImageSpecifier', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.719877', 254, 'EXECUTED', '8:0dcd247c2c8c09bd6d17d1a0fc1bddc3', 'addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addAppTool', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.756979', 255, 'EXECUTED', '8:d828c3b6a20d4c065bc585ce7bc4c976', 'createTable tableName=apptool; addForeignKeyConstraint baseTableName=apptool, constraintName=fk_defaultversion_apptool, referencedTableName=workflowversion; addUniqueConstraint constraintName=uk_actualdefaultversion_apptool, tableName=apptool; add...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('upgradeLiquibase', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.774646', 256, 'EXECUTED', '8:a2f9c5f0d4bdf6c9356fd6c2e74a7954', 'dropIndex indexName=unique_user_instances, tableName=cloud_instance; addUniqueConstraint constraintName=unique_user_instances, tableName=cloud_instance', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCheckUrl', 'gluu (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.785517', 257, 'EXECUTED', '8:6e93fb5ad5f19051ccf4963bb47ab9f4', 'addColumn tableName=version_metadata', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('calculatedChecksums', 'coverbeck', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.821632', 258, 'EXECUTED', '8:540195f7fa4a658190a7be89980eb3e1', 'sql; dropColumn columnName=checksums, tableName=sourcefile; sql; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('unique_collection_display_names_per_org', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.843916', 259, 'EXECUTED', '8:d442e69f966aa71067c072a713eaa3b9', 'dropUniqueConstraint constraintName=uk_collDisplayName, tableName=collection; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('deleteVersion', 'gluu', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.856476', 260, 'EXECUTED', '8:c9a6c76060b72210f85c5fa9a170e9db', 'delete tableName=collection_entry_version', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addMultipleOrcidPutCodesForVersionMetadata', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.887635', 261, 'EXECUTED', '8:9d1643079d0f56eb45c13d5965193666', 'createTable tableName=version_metadata_orcidputcode; addForeignKeyConstraint baseTableName=version_metadata_orcidputcode, constraintName=fk_version_metadata_id_version_metadata_orcidputcode, referencedTableName=version_metadata; addUniqueConstrain...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addMultipleOrcidPutCodesForEntry', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.91449', 262, 'EXECUTED', '8:8a00341dd371c112b5d5b2622205b5f0', 'createTable tableName=entry_orcidputcode; addUniqueConstraint constraintName=unique_entry_user_orcidputcode, tableName=entry_orcidputcode', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('migrateOldOrcidPutCode', 'ktran', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.937426', 263, 'EXECUTED', '8:e34c599ffa6c8faabc944e94610b35f4', 'sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeOldOrcidPutCodeColumn', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:45.963015', 264, 'EXECUTED', '8:b76aec12813f3f9c194c610d1093a401', 'dropColumn columnName=orcidputcode, tableName=apptool; dropColumn columnName=orcidputcode, tableName=service; dropColumn columnName=orcidputcode, tableName=tool; dropColumn columnName=orcidputcode, tableName=version_metadata; dropColumn columnName...', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('deleteCollection', 'svonworl', 'migrations.1.12.0.xml', '2021-12-10 11:04:46.002841', 265, 'EXECUTED', '8:ed5c81838e1081645b7db85d382b62b8', 'addColumn tableName=collection; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('categories_new_feature', 'svonworl', 'migrations.1.12.0.xml', '2021-12-10 11:04:46.032538', 266, 'EXECUTED', '8:87d860cab2c01f6a4aa62c697bf8cc4b', 'addColumn tableName=organization; addColumn tableName=collection; addNotNullConstraint columnName=dtype, tableName=collection; sql; sql; sql', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUsernameChangeRequiredColumn', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:46.048726', 267, 'EXECUTED', '8:2fdf3e5d5a81ae009ae07e0806770962', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9152281792');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addTopic', 'gluu (generated)', 'migrations.1.12.0.xml', '2021-12-10 11:04:46.069185', 268, 'EXECUTED', '8:2b2758606c8982de8de3d485c3a5d08e', 'addColumn tableName=apptool; addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9152281792');
+Delete references from versio...', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('lock_versions_down', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 14:19:59.118706', 204, 'EXECUTED', '8:4431289dbfe8d3b2b378394046cee14f', 'addNotNullConstraint columnName=parentid, constraintName=parent_id_not_nullable, tableName=tag; addNotNullConstraint columnName=parentid, constraintName=parent_id_not_nullable, tableName=workflowversion; addUniqueConstraint constraintName=unique_t...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addVersionToEvent', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.132104', 205, 'EXECUTED', '8:0c8e0f77478370035e34d48d38263c3c', 'addColumn tableName=event', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeVersionEventsWithoutVersions', '', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.143904', 206, 'EXECUTED', '8:b78dce45f5881f93180f422ec5ba47c3', 'delete tableName=event', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('AddSubclassColumnToServicesAndWorkflows', 'aduncan (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.159887', 207, 'EXECUTED', '8:3a7ab639e050c895c3a3975296a7a7a4', 'addColumn tableName=service; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeFilePathsToText', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.181518', 208, 'EXECUTED', '8:afe66a5e94fba6a10b480b20c7c0e64b', 'modifyDataType columnName=path, tableName=entry_defaultpaths; modifyDataType columnName=path, tableName=sourcefile; modifyDataType columnName=absolutepath, tableName=sourcefile', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addLegacyVersionColumn', 'aduncan (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.201071', 209, 'EXECUTED', '8:ae2404404f5219f482eff89566c1429a', 'addColumn tableName=workflowversion; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addImageRegistryColumnToImageTable', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.214019', 210, 'EXECUTED', '8:3cf8c8a1406d856fb9f4f4ba49f7ed08', 'addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('makeIsLegacyVersionNotNullable', 'Charles Overbeck', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.237038', 211, 'EXECUTED', '8:9674088e2a4cfdb34060dbe6f8a46abf', 'sql; sql; sql; addDefaultValue columnName=islegacyversion, tableName=workflowversion; addNotNullConstraint columnName=islegacyversion, tableName=workflowversion', 'Frozen versions are protected by security
+Because of row-level security, line 57 left nulls in frozen versions', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addChecksumColumntoSourceFile', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.251059', 212, 'EXECUTED', '8:283c85b05ef8b67b275c943d5aa98474', 'addColumn tableName=sourcefile', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDockerHubColumnsToImages', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.266666', 213, 'EXECUTED', '8:9cfe45b37f26b1dc00e6d550f60fd045', 'addColumn tableName=image; addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserOrcidIDColumn', 'esoth (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.278895', 214, 'EXECUTED', '8:caa42dbf4da9817d7448632bdc26e39c', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addNewDefaultVersionColumn', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.349263', 215, 'EXECUTED', '8:60775ca45a5459ae2d519c08e576eb77', 'addColumn tableName=service; addColumn tableName=workflow; addColumn tableName=tool; addForeignKeyConstraint baseTableName=workflow, constraintName=fk_workflow_default_workflowversion, referencedTableName=workflowversion; addForeignKeyConstraint b...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeOldDefaultVersionColumn', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.366495', 216, 'EXECUTED', '8:cb318bfe07d209ad568f56d6c96f191c', 'dropColumn columnName=defaultversion, tableName=service; dropColumn columnName=defaultversion, tableName=tool; dropColumn columnName=defaultversion, tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dagAndToolTableJsonColumnsToWorkflowVersion', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.382539', 217, 'EXECUTED', '8:6483c274e3915af7b06fd717dcde2083', 'addColumn tableName=workflowversion; addColumn tableName=workflowversion', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeServiceMode', 'aduncan', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.396408', 218, 'EXECUTED', '8:1cc2828680db1bc345ec4a7af0aaf375', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addLambdaEvents', 'aduncan (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.425796', 219, 'EXECUTED', '8:6d6c4b61daa2e419f56f2af3de7de469', 'createSequence sequenceName=lambdaevent_id_seq; createTable tableName=lambdaevent; addForeignKeyConstraint baseTableName=lambdaevent, constraintName=fkj387wwrofm9u30t4mwiiwa835, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('splitLambdaEventRepository', 'aduncan', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.441976', 220, 'EXECUTED', '8:67af290b3bc9366f49643bf53c1fd8b8', 'addColumn tableName=lambdaevent; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addSyncedColumnToWorkflowVersion', 'aduncan', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.458019', 221, 'EXECUTED', '8:66cd68cfb42bcfea1677b2e1b9f95a3a', 'addColumn tableName=workflowversion; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeOrganizationUserRoles', 'natalieperez', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.472481', 222, 'EXECUTED', '8:72173e39669b9c00e73882df1ba63616', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeCheckerId', 'gluu', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.488483', 223, 'EXECUTED', '8:413277996597aaa5502043ee5bc644fc', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('uniqueCheckerId', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.518615', 224, 'EXECUTED', '8:619d434a702923243ad8d476993d874a', 'addUniqueConstraint constraintName=uk_uniqueWorkflowCheckerId, tableName=workflow; addUniqueConstraint constraintName=uk_uniqueServiceCheckerId, tableName=service; addUniqueConstraint constraintName=uk_uniqueToolCheckerId, tableName=tool', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('adddescriptortypecolumn', 'natalieperez (generated)', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.54278', 225, 'EXECUTED', '8:76af58d77508a69caf9fbd9ba3710d6b', 'addColumn tableName=tool; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_parsed_information', 'gluu (generated)', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.558634', 226, 'EXECUTED', '8:f23c2fd793417c7c346745e926fc0f05', 'createTable tableName=parsed_information; addForeignKeyConstraint baseTableName=parsed_information, constraintName=version_metadata_parsed_information_fk_constraint, referencedTableName=version_metadata', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeOrphanVersionMetadata', 'gluu', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.570877', 227, 'EXECUTED', '8:71e0d8eb1ee183143a8d24658264e0aa', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addLicenseInformation', 'gluu (generated)', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.588751', 228, 'EXECUTED', '8:e534400357b622caf90786ae5d5824ed', 'addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('notificationsCharLimit', 'nolwarre (generated)', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.602299', 229, 'EXECUTED', '8:71042ed1f2776a723866dd8669ef9536', 'modifyDataType columnName=message, tableName=notification', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCollectionEntryVersion', 'gluu (generated)', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.645308', 230, 'EXECUTED', '8:f1eb66290cace284cc6623c0f2775add', 'createTable tableName=collection_entry_version; addForeignKeyConstraint baseTableName=collection_entry_version, constraintName=fk_collection_entry_version, referencedTableName=collection; sql; dropForeignKeyConstraint baseTableName=collection_entr...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fixSevenBridgesImageLinks', 'gfjhogue', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.661244', 231, 'EXECUTED', '8:32d13f2a8ba0534ae8cb3456abe7fe23', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('workflowForumUrl', 'nzhao (generated)', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.676574', 232, 'EXECUTED', '8:7aad0114af45547e2abed1acd5f377fd', 'addColumn tableName=service; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeForumUrlType', 'nzhao (generated)', 'migrations.1.10.0.xml', '2021-12-10 14:19:59.689542', 233, 'EXECUTED', '8:4fab1f485e0c0638ca00366244aebea0', 'modifyDataType columnName=forumurl, tableName=service; modifyDataType columnName=forumurl, tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addImageSizeAndUpdateDate', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.702791', 234, 'EXECUTED', '8:f80567c09b5d5d10c403fd7944bea148', 'addColumn tableName=image; addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('toolForumUrl', 'nzhao (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.713056', 235, 'EXECUTED', '8:cbe8bffb2060501ea4d4702db452ba17', 'addColumn tableName=tool', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('deletedUsernameTable', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.726184', 236, 'EXECUTED', '8:cf97165eebb697f69be152e2f5ef6611', 'createTable tableName=deletedusername', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('cloudInstanceAndLanguageTables', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.755147', 237, 'EXECUTED', '8:699bd59fa8ee16ad13de66d98c8c486c', 'createTable tableName=cloud_instance; createTable tableName=cloudinstance_supportedlanguages; addForeignKeyConstraint baseTableName=cloudinstance_supportedlanguages, constraintName=fk_cloudinstance_supportedlanguages, referencedTableName=cloud_ins...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('orcidPutCode', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.781245', 238, 'EXECUTED', '8:e8f42fe8c47d320c5dce1a9702fa11a9', 'addColumn tableName=version_metadata; addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('input_output_fileformats_on_entry', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.822543', 239, 'EXECUTED', '8:d3bcf8859445f657723f5ddc9f711050', 'createTable tableName=entry_output_fileformat; createTable tableName=entry_input_fileformat; addForeignKeyConstraint baseTableName=entry_output_fileformat, constraintName=fk_entry_ouput_fileformat, referencedTableName=fileformat; addForeignKeyCons...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('orcidTokenExpansion', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.875959', 240, 'EXECUTED', '8:feea931da3f561dcc6b6eaa8b1791b58', 'addColumn tableName=token; addColumn tableName=token; update tableName=token', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('date_more_things', 'dyuen (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.912575', 241, 'EXECUTED', '8:378eaea45dd1ac6cbd69b7c4800b2d21', 'addColumn tableName=cloud_instance; addColumn tableName=cloudinstance_supportedlanguages; addColumn tableName=collection_entry_version; addColumn tableName=parsed_information; addColumn tableName=version_metadata; addColumn tableName=cloud_instanc...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('standard_sequences', 'dyuen (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.938139', 242, 'EXECUTED', '8:f374d10bc040997c657305c3b4789db0', 'alterSequence sequenceName=container_id_seq; alterSequence sequenceName=enduser_id_seq; alterSequence sequenceName=label_id_seq; alterSequence sequenceName=sourcefile_id_seq; alterSequence sequenceName=tag_id_seq; alterSequence sequenceName=token_...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('existingORCIDScopeSet', 'gluu', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.949889', 243, 'EXECUTED', '8:5f7621705463e96cc8561e0bd3aa13a6', 'update tableName=token', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_ids_from_github', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:19:59.992523', 244, 'EXECUTED', '8:67730ca78b5b4d61aa2b5a002659aba0', 'addColumn tableName=user_profile; addColumn tableName=token; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('fix_onlineprofileid_datatype', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.045817', 245, 'EXECUTED', '8:ca6833532bd2011cd76b81bdd79af5af', 'sql; modifyDataType columnName=onlineprofileid, tableName=token; modifyDataType columnName=onlineprofileid, tableName=user_profile', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_cloud_instances_constraint', 'dyuen (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.061978', 246, 'EXECUTED', '8:8b5d1b4b4d6eed18a625aada95ace0c1', 'createIndex indexName=unique_user_instances, tableName=cloud_instance', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('global_cloud_instances_constraint', 'dyuen', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.07693', 247, 'EXECUTED', '8:25b0ba634f05a9d2cc6f6385bdcbbf60', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_lambda_index', 'dyuen (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.095615', 248, 'EXECUTED', '8:a9bfa7f935ed0e440fa1942bbb9aa210', 'createIndex indexName=organization_index, tableName=lambdaevent; createIndex indexName=user_index, tableName=lambdaevent', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add_display_name_column', 'natalieperez (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.108194', 249, 'EXECUTED', '8:da7b03de9d2bbe8f8ad840c7cbc5984b', 'addColumn tableName=cloud_instance', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('multipleAuthorsTable', 'ghogue (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.128802', 250, 'EXECUTED', '8:1ea539ecda684e7282cfa394ec94531d', 'createTable tableName=author', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('multipleAuthorsMigrate', 'ghogue', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.144252', 251, 'EXECUTED', '8:c138e2d34096798ba033eeb614c2eed9', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('yamlOrcidAuthors', 'ghogue (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.177067', 252, 'EXECUTED', '8:f42fa70c2e9a992adcaec8d30cbadc1a', 'createTable tableName=version_orcidauthor; createTable tableName=orcidauthor; addForeignKeyConstraint baseTableName=version_orcidauthor, constraintName=fk_version_orcidauthor, referencedTableName=orcidauthor', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('authenticateScopeFix', 'gluu (generated)', 'migrations.1.11.0.xml', '2021-12-10 14:20:00.191617', 253, 'EXECUTED', '8:5f7621705463e96cc8561e0bd3aa13a6', 'update tableName=token', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addImageSpecifier', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.204962', 254, 'EXECUTED', '8:0dcd247c2c8c09bd6d17d1a0fc1bddc3', 'addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addAppTool', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.240962', 255, 'EXECUTED', '8:d828c3b6a20d4c065bc585ce7bc4c976', 'createTable tableName=apptool; addForeignKeyConstraint baseTableName=apptool, constraintName=fk_defaultversion_apptool, referencedTableName=workflowversion; addUniqueConstraint constraintName=uk_actualdefaultversion_apptool, tableName=apptool; add...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('upgradeLiquibase', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.258446', 256, 'EXECUTED', '8:a2f9c5f0d4bdf6c9356fd6c2e74a7954', 'dropIndex indexName=unique_user_instances, tableName=cloud_instance; addUniqueConstraint constraintName=unique_user_instances, tableName=cloud_instance', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addCheckUrl', 'gluu (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.271688', 257, 'EXECUTED', '8:6e93fb5ad5f19051ccf4963bb47ab9f4', 'addColumn tableName=version_metadata', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('calculatedChecksums', 'coverbeck', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.309979', 258, 'EXECUTED', '8:540195f7fa4a658190a7be89980eb3e1', 'sql; dropColumn columnName=checksums, tableName=sourcefile; sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('unique_collection_display_names_per_org', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.326565', 259, 'EXECUTED', '8:d442e69f966aa71067c072a713eaa3b9', 'dropUniqueConstraint constraintName=uk_collDisplayName, tableName=collection; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('deleteVersion', 'gluu', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.337211', 260, 'EXECUTED', '8:c9a6c76060b72210f85c5fa9a170e9db', 'delete tableName=collection_entry_version', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addMultipleOrcidPutCodesForVersionMetadata', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.361283', 261, 'EXECUTED', '8:9d1643079d0f56eb45c13d5965193666', 'createTable tableName=version_metadata_orcidputcode; addForeignKeyConstraint baseTableName=version_metadata_orcidputcode, constraintName=fk_version_metadata_id_version_metadata_orcidputcode, referencedTableName=version_metadata; addUniqueConstrain...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addMultipleOrcidPutCodesForEntry', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.383292', 262, 'EXECUTED', '8:8a00341dd371c112b5d5b2622205b5f0', 'createTable tableName=entry_orcidputcode; addUniqueConstraint constraintName=unique_entry_user_orcidputcode, tableName=entry_orcidputcode', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('migrateOldOrcidPutCode', 'ktran', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.400512', 263, 'EXECUTED', '8:e34c599ffa6c8faabc944e94610b35f4', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeOldOrcidPutCodeColumn', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.419868', 264, 'EXECUTED', '8:b76aec12813f3f9c194c610d1093a401', 'dropColumn columnName=orcidputcode, tableName=apptool; dropColumn columnName=orcidputcode, tableName=service; dropColumn columnName=orcidputcode, tableName=tool; dropColumn columnName=orcidputcode, tableName=version_metadata; dropColumn columnName...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('deleteCollection', 'svonworl', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.44672', 265, 'EXECUTED', '8:ed5c81838e1081645b7db85d382b62b8', 'addColumn tableName=collection; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('categories_new_feature', 'svonworl', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.476829', 266, 'EXECUTED', '8:87d860cab2c01f6a4aa62c697bf8cc4b', 'addColumn tableName=organization; addColumn tableName=collection; addNotNullConstraint columnName=dtype, tableName=collection; sql; sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUsernameChangeRequiredColumn', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.490844', 267, 'EXECUTED', '8:2fdf3e5d5a81ae009ae07e0806770962', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addTopic', 'gluu (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.511126', 268, 'EXECUTED', '8:2b2758606c8982de8de3d485c3a5d08e', 'addColumn tableName=apptool; addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 
 
 --
@@ -1763,10 +1763,6 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator, setupcomplete, hostedentrycountlimit, hostedentryversionslimit, isbanned, privacypolicyversion, tosversion, privacypolicyversionacceptancedate, tosversionacceptancedate, orcid, usernamechangerequired) VALUES (2, '', false, 'potato', NULL, NULL, false, false, NULL, NULL, false, 'NONE', 'NONE', NULL, NULL, NULL, false);
-INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator, setupcomplete, hostedentrycountlimit, hostedentryversionslimit, isbanned, privacypolicyversion, tosversion, privacypolicyversionacceptancedate, tosversionacceptancedate, orcid, usernamechangerequired) VALUES (3, NULL, true, 'user_admin', NULL, NULL, false, false, NULL, NULL, false, 'NONE', 'NONE', NULL, NULL, NULL, false);
-INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator, setupcomplete, hostedentrycountlimit, hostedentryversionslimit, isbanned, privacypolicyversion, tosversion, privacypolicyversionacceptancedate, tosversionacceptancedate, orcid, usernamechangerequired) VALUES (1, NULL, true, 'user_A', NULL, NULL, true, false, NULL, NULL, false, 'PRIVACY_POLICY_VERSION_2_5', 'TOS_VERSION_2', NULL, NULL, NULL, false);
-INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator, setupcomplete, hostedentrycountlimit, hostedentryversionslimit, isbanned, privacypolicyversion, tosversion, privacypolicyversionacceptancedate, tosversionacceptancedate, orcid, usernamechangerequired) VALUES (4, NULL, false, 'user_curator', NULL, NULL, true, false, NULL, NULL, false, 'PRIVACY_POLICY_VERSION_2_5', 'TOS_VERSION_2', NULL, NULL, NULL, false);
 
 
 --
@@ -1785,35 +1781,6 @@ INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbup
 -- Data for Name: entry_defaultpaths; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (52, '/Dockerfile', 'DOCKERFILE');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (2, '/Dockerfile', 'DOCKERFILE');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (5, '/Dockerfile', 'DOCKERFILE');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (4, '/Dockerfile', 'DOCKERFILE');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (3, '/testDir/Dockerfile', 'DOCKERFILE');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (1, '/Dockerfile', 'DOCKERFILE');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (100, '/Dockerfile', 'DOCKERFILE');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (52, '/cwls/cgpmap-cramOut.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (2, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (5, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (4, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (3, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (1, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (100, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (52, '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (2, '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (5, '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (4, '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (3, '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (1, '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (100, '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (52, '/examples/cgpmap/cramOut/fastq_gz_input.json', 'CWL_TEST_JSON');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (52, '/test.wdl.json', 'WDL_TEST_JSON');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (12, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (11, '/1st-workflow.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (6, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (30, '/Dockstore.cwl', 'DOCKSTORE_CWL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (21, '/Dockstore.wdl', 'DOCKSTORE_WDL');
-INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (102, '.dockstore.yml', 'DOCKSTORE_SERVICE_YML');
 
 
 --
@@ -1892,7 +1859,6 @@ INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (102, '.
 -- Data for Name: organization; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.organization (id, dbcreatedate, dbupdatedate, description, email, link, location, name, topic, status, avatarurl, displayname, categorizer) VALUES (1, '2021-12-10 11:04:46.008489', '2021-12-10 11:04:46.008489', 'Each of this organization''s Collections is a Category.', 'support@dockstore.org', 'https://dockstore.org/', NULL, 'dockstore', NULL, 'HIDDEN', NULL, 'Dockstore', true);
 
 
 --
@@ -1917,1248 +1883,12 @@ INSERT INTO public.organization (id, dbcreatedate, dbupdatedate, description, em
 -- Data for Name: service; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.service (id, author, dbcreatedate, dbupdatedate, description, email, giturl, ispublished, lastmodified, lastupdated, topicid, checkerid, descriptortype, mode, organization, repository, sourcecontrol, workflowname, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (102, NULL, '2019-07-30 10:02:48.253', '2019-07-30 10:03:05.999', NULL, NULL, 'git@github.com:garyluu/another-test-service.git', true, '2019-07-19 13:13:48', '2019-07-30 10:02:48.236', NULL, NULL, 'service', 'DOCKSTORE_YML', 'garyluu', 'another-test-service', 'github.com', NULL, NULL, 'n/a', NULL, NULL, NULL, NULL);
 
 
 --
 -- Data for Name: sourcefile; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (21, 'FROM ubuntu:12.04
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x16708b12f1ce79a4a0726c338f0d81bc9b22679ebeb2b23c62ed361f2ac0e43a');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (26, 'FROM ubuntu:12.04
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x16708b12f1ce79a4a0726c338f0d81bc9b22679ebeb2b23c62ed361f2ac0e43a');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (39, '#!/usr/bin/env cwl-runner
-
-class: CommandLineTool
-
-id: "cgpmap"
-
-label: "CGP BWA-mem mapping flow"
-
-cwlVersion: v1.0
-
-#doc:
-#  $include: includes/doc.yml
-
-doc: |
-  ![build_status](https://quay.io/repository/wtsicgp/dockstore-cgpmap/status)
-  A Docker container for PCAP-core. See the [dockstore-cgpmap](https://github.com/cancerit/dockstore-cgpmap) website for more information.
-
-  Parameters for a CWL definition are generally described in a json file, but parameters can be provided on the command line.
-
-  To see the parameters descriptions please run: cwltool --tool-help path_to.cwl
-
-#requirements:
-#  - $mixin: mixins/requirements.yml
-
-requirements:
-  - class: DockerRequirement
-    dockerPull: "quay.io/wtsicgp/dockstore-cgpmap:3.0.0-rc8"
-
-#hints:
-#  - $mixin: mixins/hints.yml
-
-hints:
-  - class: ResourceRequirement
-    coresMin: 1 # works but long, 8 recommended
-    ramMin: 15000 # good for WGS human ~30-60x
-    outdirMin: 5000000 # unlikely any BAM processing would be possible in less
-
-inputs:
-  reference:
-    type: File
-    doc: "The core reference (fa, fai, dict) as tar.gz"
-    inputBinding:
-      prefix: -reference
-      position: 1
-      separate: true
-
-  bwa_idx:
-    type: File
-    doc: "The BWA indexes in tar.gz"
-    inputBinding:
-      prefix: -bwa_idx
-      position: 2
-      separate: true
-
-  sample:
-    type: string
-    doc: "Sample name to be included in output [B|CR]AM header, also used to name final file"
-    inputBinding:
-      prefix: -sample
-      position: 3
-      separate: true
-
-  scramble:
-    type: string?
-    doc: "Options to pass to scramble when generating CRAM output, see scramble docs"
-    default: ''''
-    inputBinding:
-      prefix: -scramble
-      position: 4
-      separate: true
-      shellQuote: true
-
-  bwa:
-    type: string?
-    default: '' -Y -K 100000000''
-    doc: "Mapping and output parameters to pass to BWA-mem, see BWA docs, default '' -Y -K 100000000''"
-    inputBinding:
-      prefix: -bwa
-      position: 5
-      separate: true
-      shellQuote: true
-
-  groupinfo:
-    type: File?
-    doc: "Readgroup metadata file for FASTQ inputs"
-    inputBinding:
-      prefix: -groupinfo
-      position: 6
-      separate: true
-
-  mmqc:
-    type: boolean
-    doc: "Apply mismatch QC to reads following duplicate marking."
-    inputBinding:
-      prefix: -qc
-      position: 7
-
-  mmqcfrac:
-    type: float?
-    default: 0.05
-    doc: "Mismatch fraction to set as max before failing a read [0.05]"
-    inputBinding:
-      prefix: -qcf
-      position: 8
-      separate: true
-
-  bams_in:
-    type:
-    - ''null''
-    - type: array
-      items: File
-    doc: "Can be BAM, CRAM, fastq (paired or interleaved), BAM/CRAM can be mixed together but not FASTQ."
-    inputBinding:
-      position: 9
-
-outputs:
-  out_cram:
-    type: File
-    outputBinding:
-      glob: $(inputs.sample).cram
-    secondaryFiles:
-      - .crai
-      - .bas
-      - .md5
-      - .met
-      - .maptime
-
-baseCommand: ["/opt/wtsi-cgp/bin/ds-cgpmap.pl", "-cram"]
-
-$schemas:
-  - http://schema.org/docs/schema_org_rdfa.html
-
-$namespaces:
-  s: http://schema.org/
-
-s:codeRepository: https://github.com/cancerit/dockstore-biobambam2
-s:license: https://spdx.org/licenses/GPL-3.0
-
-s:author:
-  - class: s:Person
-    s:identifier: https://orcid.org/0000-0002-5634-1539
-    s:email: mailto:keiranmraine@gmail.com
-    s:name: Keiran Raine
-
-dct:creator:
-  "@id": "keiranmraine@gmail.com"
-  foaf:name: Keiran Raine
-  foaf:mbox: "keiranmraine@gmail.com"
-', '/cwls/cgpmap-cramOut.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/cwls/cgpmap-cramOut.cwl', false, '\x8ccc92d3a6b436f9c44b865cca951532cde97e9013d5e1debc1dc523fad39322');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (1, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/Dockstore.cwl', false, '\xe949c76d36c273e9ba7ce06e307f8e7579d27d441fc02673f9cdea08c713d627');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (2, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (3, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/Dockstore.cwl', false, '\xe949c76d36c273e9ba7ce06e307f8e7579d27d441fc02673f9cdea08c713d627');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (4, 'task hello {
-  String name
-
-  command {
-    echo ''hello ${name}!''
-  }
-  output {
-    File response = stdout()
-  }
-}
-
-workflow test {
-  call hello
-}
-', '/Dockstore.wdl', 'DOCKSTORE_WDL', NULL, NULL, '/Dockstore.wdl', false, '\x81b9005dfb23b90b2635a94ae792f6223764446c04875c244e924285eecb2a03');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (5, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (6, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/Dockstore.cwl', false, '\xe949c76d36c273e9ba7ce06e307f8e7579d27d441fc02673f9cdea08c713d627');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (7, 'task hello {
-  String name
-
-  command {
-    echo ''hello ${name}!''
-  }
-  output {
-    File response = stdout()
-  }
-}
-
-workflow test {
-  call hello
-}
-', '/Dockstore.wdl', 'DOCKSTORE_WDL', NULL, NULL, '/Dockstore.wdl', false, '\x81b9005dfb23b90b2635a94ae792f6223764446c04875c244e924285eecb2a03');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (8, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (9, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/Dockstore.cwl', false, '\xe949c76d36c273e9ba7ce06e307f8e7579d27d441fc02673f9cdea08c713d627');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (10, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (11, 'cwlVersion: v1.0 class: CommandLineTool baseCommand: echo inputs: message: type: string inputBinding: position: 1 outputs: []', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/Dockstore.cwl', false, '\xe949c76d36c273e9ba7ce06e307f8e7579d27d441fc02673f9cdea08c713d627');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (12, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (13, 'task hello {
-  String name
-
-  command {
-    echo ''hello ${name}!''
-  }
-  output {
-    File response = stdout()
-  }
-}
-
-workflow test {
-  call hello
-}
-', '/Dockstore.wdl', 'DOCKSTORE_WDL', NULL, NULL, '/Dockstore.wdl', false, '\x81b9005dfb23b90b2635a94ae792f6223764446c04875c244e924285eecb2a03');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (14, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (15, 'task hello {
-  String name
-
-  command {
-    echo ''hello ${name}!''
-  }
-  output {
-    File response = stdout()
-  }
-}
-
-workflow test {
-  call hello
-}
-', '/Dockstore.wdl', 'DOCKSTORE_WDL', NULL, NULL, '/Dockstore.wdl', false, '\x81b9005dfb23b90b2635a94ae792f6223764446c04875c244e924285eecb2a03');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (16, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (18, 'class: EnvVarRequirement
-envDef:
-  - envName: "PATH"
-    envValue: "/usr/local/bin/:/usr/bin:/bin"
-', 'envvar-global.yml', 'DOCKSTORE_CWL', NULL, NULL, '/envvar-global.yml', false, '\x7002c0b23b0a912f3b8cb12f4dd276d22cb3ab1983995d29c78886fff3cdd2c6');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (28, 'cwlVersion: v1.0
-class: Workflow
-inputs:
-  inp: File
-  ex: string
-
-outputs:
-  classout:
-    type: File
-    outputSource: compile/classfile
-
-steps:
-  untar:
-    run: tar-param.cwl
-    in:
-      tarfile: inp
-      extractfile: ex
-    out: [example_out]
-
-  compile:
-    run: arguments.cwl
-    in:
-      src: untar/example_out
-    out: [classfile]
-
-  wrkflow:
-    run: grep-and-count.cwl
-    in:
-      infiles: inp
-      pattern: "hello"
-    out: [outfile]
-', '/1st-workflow.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/1st-workflow.cwl', false, '\x31585116e285a3b0b362cfbd20e579471e84cd17e4e2c86bb3c8c51d3b1a9624');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (61, 'cwlVersion: v1.0
-class: Workflow
-
-inputs:
-  input_file: File
-
-outputs:
-  output_file:
-    type: File
-    outputSource: md5sum/output_file
-
-steps:
-  md5sum:
-    run: md5sum-tool.cwl
-    in:
-      input_file: input_file
-    out: [output_file]
-', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/Dockstore.cwl', false, '\xe0527da7b5ba20e98d97b7d7acea9fcfefb14607765b25fcd4a1fc02f90c4084');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (20, '#!/usr/bin/env cwl-runner
-
-cwlVersion: "cwl:draft-3"
-
-class: CommandLineTool
-
-requirements:
-  - $import: envvar-global.yml
-  - $import: alea-docker.yml
-  - class: InlineJavascriptRequirement
-
-inputs:
-  - id: "#hapsDir"
-    type: File
-    description: |
-      path to the directory containing the .haps files
-    inputBinding:
-      position: 2
-
-  - id: "#unphased"
-    type: File
-    description: |
-      path to the vcf file containing unphased SNPs and Indels
-    inputBinding:
-      position: 3
-
-  - id: "#outputPrefix"
-    type: string
-    description: |
-      output file prefix including the path but not the extension
-    inputBinding:
-      position: 3
-
-outputs:
-  - id: "#phasevcf"
-    type: File
-    description: "Creates the file outputPrefix.vcf.gz"
-    outputBinding:
-      glob: $(inputs.outputPrefix+".vcf.gz")
-
-baseCommand: ["alea", "phaseVCF"]
-
-$namespaces:
-  s: http://schema.org/
-
-$schemas:
-- https://sparql-test.commonwl.org/schema.rdf
-
-s:mainEntity:
-  $import: alea-metadata.yaml
-
-s:downloadUrl: https://github.com/common-workflow-language/workflows/blob/master/tools/alea-phaseVCF.cwl
-s:codeRepository: https://github.com/common-workflow-language/workflows
-s:license: http://www.apache.org/licenses/LICENSE-2.0
-s:isPartOf:
-  class: s:CreativeWork
-  s:name: "Common Workflow Language"
-  s:url: http://commonwl.org/
-
-s:author:
-  class: s:Person
-  s:name: "Andrey Kartashov"
-  s:email: mailto:Andrey.Kartashov@cchmc.org
-  s:sameAs:
-  - id: http://orcid.org/0000-0001-9102-5681
-  s:worksFor:
-  - class: s:Organization
-    s:name: "Cincinnati Children''s Hospital Medical Center"
-    s:location: "3333 Burnet Ave, Cincinnati, OH 45229-3026"
-    s:department:
-    - class: s:Organization
-      s:name: "Barski Lab"
-', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/Dockstore.cwl', false, '\x5a58200e2f5805a8680096083757027ff8e506bb2f2f5f45aff0f11ab319f940');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (60, 'version: 1.2
-workflows:
-   - subclass: cwl
-     primaryDescriptorPath: /dockstore.cwl
-', '/.dockstore.yml', 'DOCKSTORE_YML', NULL, NULL, '/.dockstore.yml', false, '\xe477bb2997d5cfa61f25428e3458435548bbad6dc36904d6edadcef50bf7c287');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (25, '#!/usr/bin/env cwl-runner
-
-cwlVersion: "cwl:draft-3"
-
-class: CommandLineTool
-
-requirements:
-  - $import: envvar-global.yml
-  - $import: alea-docker.yml
-  - class: InlineJavascriptRequirement
-
-inputs:
-  - id: "#hapsDir"
-    type: File
-    description: |
-      path to the directory containing the .haps files
-    inputBinding:
-      position: 2
-
-  - id: "#unphased"
-    type: File
-    description: |
-      path to the vcf file containing unphased SNPs and Indels
-    inputBinding:
-      position: 3
-
-  - id: "#outputPrefix"
-    type: string
-    description: |
-      output file prefix including the path but not the extension
-    inputBinding:
-      position: 3
-
-outputs:
-  - id: "#phasevcf"
-    type: File
-    description: "Creates the file outputPrefix.vcf.gz"
-    outputBinding:
-      glob: $(inputs.outputPrefix+".vcf.gz")
-
-baseCommand: ["alea", "phaseVCF"]
-
-$namespaces:
-  s: http://schema.org/
-
-$schemas:
-- https://sparql-test.commonwl.org/schema.rdf
-
-s:mainEntity:
-  $import: alea-metadata.yaml
-
-s:downloadUrl: https://github.com/common-workflow-language/workflows/blob/master/tools/alea-phaseVCF.cwl
-s:codeRepository: https://github.com/common-workflow-language/workflows
-s:license: http://www.apache.org/licenses/LICENSE-2.0
-s:isPartOf:
-  class: s:CreativeWork
-  s:name: "Common Workflow Language"
-  s:url: http://commonwl.org/
-
-s:author:
-  class: s:Person
-  s:name: "Andrey Kartashov"
-  s:email: mailto:Andrey.Kartashov@cchmc.org
-  s:sameAs:
-  - id: http://orcid.org/0000-0001-9102-5681
-  s:worksFor:
-  - class: s:Organization
-    s:name: "Cincinnati Children''s Hospital Medical Center"
-    s:location: "3333 Burnet Ave, Cincinnati, OH 45229-3026"
-    s:department:
-    - class: s:Organization
-      s:name: "Barski Lab"
-', '/Dockstore.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/Dockstore.cwl', false, '\x5a58200e2f5805a8680096083757027ff8e506bb2f2f5f45aff0f11ab319f940');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (35, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/testDir/Dockerfile', 'DOCKERFILE', NULL, NULL, '/testDir/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (36, 'FROM docker/whalesay:latest
-
-RUN apt-get -y update && apt-get install -y fortunes
-
-CMD /usr/games/fortune -a | cowsay
-', '/testDir/Dockerfile', 'DOCKERFILE', NULL, NULL, '/testDir/Dockerfile', false, '\x75ad4bc17ba6ea8a41c3e0992a5653e7ceb2fb8b2c82c0df5bdc6017f3b09ad7');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (40, 'FROM  ubuntu:16.04 as builder
-
-USER  root
-
-RUN apt-get -yq update
-RUN apt-get install -yq --no-install-recommends\
-  apt-transport-https\
-  locales\
-  curl\
-  ca-certificates\
-  libperlio-gzip-perl\
-  make\
-  bzip2\
-  gcc\
-  psmisc\
-  time\
-  zlib1g-dev\
-  libbz2-dev\
-  liblzma-dev\
-  libcurl4-gnutls-dev\
-  libncurses5-dev
-
-RUN locale-gen en_US.UTF-8
-RUN update-locale LANG=en_US.UTF-8
-
-ENV OPT /opt/wtsi-cgp
-ENV PATH $OPT/bin:$PATH
-ENV PERL5LIB $OPT/lib/perl5
-ENV LD_LIBRARY_PATH $OPT/lib
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-
-RUN mkdir -p $OPT/bin
-
-ADD build/opt-build.sh build/
-RUN bash build/opt-build.sh $OPT
-
-FROM  ubuntu:16.04
-
-MAINTAINER  keiranmraine@gmail.com
-
-LABEL vendor="Cancer Genome Project, Wellcome Trust Sanger Institute"
-LABEL uk.ac.sanger.cgp.description="PCAP-core for dockstore.org"
-LABEL uk.ac.sanger.cgp.version="3.0.0-rc8"
-
-RUN apt-get -yq update
-RUN apt-get install -yq --no-install-recommends\
-  apt-transport-https\
-  locales\
-  curl\
-  ca-certificates\
-  libperlio-gzip-perl\
-  bzip2\
-  psmisc\
-  time\
-  zlib1g\
-  liblzma5\
-  libncurses5
-
-RUN locale-gen en_US.UTF-8
-RUN update-locale LANG=en_US.UTF-8
-
-ENV OPT /opt/wtsi-cgp
-ENV PATH $OPT/bin:$PATH
-ENV PERL5LIB $OPT/lib/perl5
-ENV LD_LIBRARY_PATH $OPT/lib
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-
-RUN mkdir -p $OPT
-COPY --from=builder $OPT $OPT
-
-ADD scripts/mapping.sh $OPT/bin/mapping.sh
-ADD scripts/ds-cgpmap.pl $OPT/bin/ds-cgpmap.pl
-RUN chmod a+x $OPT/bin/mapping.sh $OPT/bin/ds-cgpmap.pl
-
-## USER CONFIGURATION
-RUN adduser --disabled-password --gecos '''' ubuntu && chsh -s /bin/bash && mkdir -p /home/ubuntu
-
-USER    ubuntu
-WORKDIR /home/ubuntu
-
-CMD ["/bin/bash"]
-', '/Dockerfile', 'DOCKERFILE', NULL, NULL, '/Dockerfile', false, '\xafb6d3299bc2fdda80bca736c6e20d6dd32950f992ca251e02492856f98acb76');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (41, '{
-  "reference": {
-    "path": "ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/core_ref_GRCh37d5.tar.gz",
-    "class": "File"
-  },
-  "bwa_idx": {
-    "path": "ftp://ftp.sanger.ac.uk/pub/cancer/dockstore/human/bwa_idx_GRCh37d5.tar.gz",
-    "class": "File"
-  },
-  "bams_in": [
-    {"class": "File",
-     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10658_i.fq.gz"},
-    {"class": "File",
-     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10659_i.fq.gz"},
-    {"class": "File",
-     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10660_i.fq.gz"},
-    {"class": "File",
-     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10661_i.fq.gz"},
-    {"class": "File",
-     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10662_i.fq.gz"},
-    {"class": "File",
-     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10663_i.fq.gz"},
-    {"class": "File",
-     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10664_i.fq.gz"},
-    {"class": "File",
-     "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_10665_i.fq.gz"},
-  ],
-  "groupinfo": {
-    "path": "ftp://ngs.sanger.ac.uk/production/cancer/dockstore/cgpmap/insilico_21_fq.yaml",
-    "class": "File"
-  },
-  "sample": "test",
-  "scramble": "''-e''",
-  "mmqc": false,
-  "mmqcfrag": 0.05,
-  "out_cram": {
-    "path": "/tmp/mapped.cram",
-    "class": "File",
-    "secondaryFiles": [
-      ".crai",
-      ".bas",
-      ".md5",
-      ".met",
-      ".maptime"
-    ]
-  }
-}
-', '/examples/cgpmap/cramOut/fastq_gz_input.json', 'CWL_TEST_JSON', NULL, NULL, '/examples/cgpmap/cramOut/fastq_gz_input.json', false, '\x1cdd19283cc04c61a752b86de1722dbbb37e93769131a39e0e87ab9c50f52bf3');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (27, 'class: Workflow
-cwlVersion: v1.0
-
-requirements:
- - class: ScatterFeatureRequirement
- - class: DockerRequirement
-   dockerPull: java:7
-
-inputs:
-  pattern: string
-  infiles: File[]
-
-outputs:
-  outfile:
-    type: File
-    outputSource: wc/outfile
-
-steps:
-  grep:
-    run: grep.cwl
-    in:
-      pattern: pattern
-      infile: infiles
-    scatter: infile
-    out: [outfile]
-
-  wc:
-    run: wc.cwl
-    in:
-      infiles: grep/outfile
-out: [outfile]
-', 'grep-and-count.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/grep-and-count.cwl', false, '\xd57414f2613434bea90f2027df7c3cc8d277a9150fd8b2996635b78e7c963fcf');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (17, 'class: s:SoftwareSourceCode
-s:name: "alea"
-s:about: >
-  ALEA is a computational toolbox for allele-specific (AS) epigenomics analysis, which incorporates allelic variation data within existing
-  resources, allowing for the identification of significant associations between epigenetic modifications and specific allelic variants
-  in human and mouse cells. ALEA provides a customizable pipeline of command line tools for AS analysis of next-generation sequencing data
-  (ChIP-seq, RNA-seq, etc.) that takes the raw sequencing data and produces separate allelic tracks ready to be viewed on genome browsers.
-  ALEA takes advantage of the available genomic resources for human (The 1000 Genomes Project Consortium) and mouse (The Mouse Genome Project)
-  to reconstruct diploid in silico genomes for human samples or hybrid mouse samples under study. Then, for each accompanying ChIP-seq or
-  RNA-seq dataset, ALEA generates two wig files from short reads aligned differentially to each haplotype.
-  This pipeline has been validated using human and hybrid mouse ChIP-seq and RNA-seq data (See Test Data section).
-
-s:targetProduct:
-  class: s:SoftwareApplication
-  s:downloadUrl: ftp://ftp.bcgsc.ca/supplementary/ALEA/files/alea.1.2.2.tar.gz
-  s:softwareVersion: "1.2.2"
-  s:applicationCategory: "command line tool"
-
-s:url: http://www.bcgsc.ca/platform/bioinfo/software/alea
-s:license: https://opensource.org/licenses/AFL-3.0
-s:programmingLanguage: "JAVA"
-
-s:publication:
-  - id: http://dx.doi.org/10.1093/bioinformatics/btt744
-
-s:author:
-- class: s:Person
-  id: mailto:mkarimi@bcgsc.ca
-  s:name: "Mohammad Karimi"
-  s:email: mailto:mkarimi@bcgsc.ca
-  s:url: http://www.bcgsc.ca/author/mkarimi
-  s:worksFor:
-  - class: s:Organization
-    s:name: "Canada''s Michael Smith Genome Sciences Centre, BC Cancer Agency, Vancouver, British Columbia, V5Z 4S6, Canada"
-  - class: s:Organization
-    s:name: "Department of Medical Genetics, Life Sciences Institute, The University of British Columbia, Vancouver, British Columbia, V6T 1Z3, Canada"
-
-', 'alea-metadata.yaml', 'DOCKSTORE_CWL', NULL, NULL, '/alea-metadata.yaml', false, '\xf215e7e0c23590dbdfe376db368bb3216a91cd08aff565da1659027f92332487');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (19, 'class: DockerRequirement
-dockerPull: scidap/alea:v1.2.2
-#dockerImageId: scidap/alea:v1.2.2 #not yet ready
-dockerFile: |
-  #################################################################
-  # Dockerfile
-  #
-  # Software:         Alea
-  # Software Version: 1.2.2
-  # Description:      Alea image for SciDAP
-  # Website:          http://scidap.com/
-  # Provides:         alea|bwa|Plink|vcftools|bedGraphToBigWig|shapeit2
-  # Base Image:       scidap/scidap:v0.0.1
-  # Build Cmd:        docker build --rm -t scidap/alea:v1.2.2 .
-  # Pull Cmd:         docker pull scidap/alea:v1.2.2
-  # Run Cmd:          docker run --rm scidap/alea:v1.2.2 alea
-  #################################################################
-
-  ### Base Image
-  FROM scidap/scidap:v0.0.1
-  MAINTAINER Andrey V Kartashov "porter@porter.st"
-  ENV DEBIAN_FRONTEND noninteractive
-
-  ################## BEGIN INSTALLATION ######################
-
-  WORKDIR /tmp
-
-  ### Install required packages (samtools)
-
-  RUN apt-get clean all &&\
-      apt-get update &&\
-      apt-get install -y  \
-        libncurses5-dev && \
-      apt-get clean && \
-      apt-get purge && \
-      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
-
-
-  ### Installing BWA
-
-  ENV VERSION 0.7.12
-  ENV NAME bwa
-  ENV URL "https://github.com/lh3/bwa/archive/${VERSION}.tar.gz"
-
-  RUN wget -q -O - $URL | tar -zxv && \
-      cd ${NAME}-${VERSION} && \
-      make -j 4 && \
-      cd .. && \
-      cp ./${NAME}-${VERSION}/${NAME} /usr/local/bin/ && \
-      strip /usr/local/bin/${NAME}; true && \
-      rm -rf ./${NAME}-${VERSION}/
-
-
-  #  ### Installing bowtie
-  #
-  #  ENV VERSION 1.1.2
-  #  ENV NAME bowtie
-  #  ENV URL "https://github.com/BenLangmead/bowtie/archive/v${VERSION}.tar.gz"
-  #
-  #  RUN wget -q -O - $URL | tar -zxv && \
-  #    cd ${NAME}-${VERSION} && \
-  #    make -j 4 && \
-  #    cd .. && \
-  #    cp ./${NAME}-${VERSION}/${NAME} /usr/local/bin/ && \
-  #    cp ./${NAME}-${VERSION}/${NAME}-* /usr/local/bin/ && \
-  #    strip /usr/local/bin/*; true && \
-  #    rm -rf ./${NAME}-${VERSION}/
-
-
-  ### Installing samtools/htslib/tabix/bgzip
-
-  ENV VERSIONH 1.2.1
-  ENV NAMEH htslib
-  ENV URLH "https://github.com/samtools/htslib/archive/${VERSIONH}.tar.gz"
-
-  ENV VERSION "1.2"
-  ENV NAME "samtools"
-  ENV URL "https://github.com/samtools/samtools/archive/${VERSION}.tar.gz"
-
-  RUN wget -q -O - $URLH | tar -zxv && \
-      cd ${NAMEH}-${VERSIONH} && \
-      make -j 4 && \
-      cd .. && \
-      cp ./${NAMEH}-${VERSIONH}/tabix /usr/local/bin/ && \
-      cp ./${NAMEH}-${VERSIONH}/bgzip /usr/local/bin/ && \
-      cp ./${NAMEH}-${VERSIONH}/htsfile /usr/local/bin/ && \
-      strip /usr/local/bin/tabix; true && \
-      strip /usr/local/bin/bgzip; true && \
-      strip /usr/local/bin/htsfile; true && \
-      ln -s ./${NAMEH}-${VERSIONH}/ ./${NAMEH} && \
-      wget -q -O - $URL | tar -zxv && \
-      cd ${NAME}-${VERSION} && \
-      make -j 4 && \
-      cd .. && \
-      cp ./${NAME}-${VERSION}/${NAME} /usr/local/bin/ && \
-      strip /usr/local/bin/${NAME}; true && \
-      rm -rf ./${NAMEH}-${VERSIONH}/ && \
-      rm -rf ./${NAME}-${VERSION}/
-
-
-  ### Installing bedGraphToBigWig
-
-  RUN  wget -q -O /usr/local/bin/bedGraphToBigWig  http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig && \
-  chmod a+x /usr/local/bin/bedGraphToBigWig
-
-
-  ### Installing VCFTools
-
-  ENV VERSION 0.1.14
-  ENV NAME vcftools
-  ENV URL "https://github.com/vcftools/vcftools/releases/download/v${VERSION}/${NAME}-${VERSION}.tar.gz"
-
-  RUN wget -q -O - $URL | tar -zxv && \
-      cd ${NAME}-${VERSION} && \
-      ./configure --prefix=/usr/local && \
-      make -j 4 install && \
-      cd .. && \
-      rm -rf ./${NAME}-${VERSION}/
-
-
-  ### Installing SHAPEIT2
-
-  RUN wget -q -O - https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.v2.r837.GLIBCv2.20.Linux.static.tgz|tar -zxv -C /usr/local bin/shapeit && \
-      chmod a+x /usr/local/bin/shapeit
-
-
-  ### Installing plink
-
-  RUN wget -q -O plink-1.07-x86_64.zip http://pngu.mgh.harvard.edu/~purcell/plink/dist/plink-1.07-x86_64.zip && \
-      unzip plink-1.07-x86_64.zip && \
-      cp plink-1.07-x86_64/* /usr/local/bin && \
-      rm -rf plink-1.07-x86_64 && \
-      rm -f plink-1.07-x86_64.zip
-
-
-  ### Installing alea
-
-  RUN wget -q -O - ftp://ftp.bcgsc.ca/supplementary/ALEA/files/alea.1.2.2.tar.gz | tar -zxv -C /usr/local --strip-components=1 && \
-      cd /usr/local/bin/ && \
-      printf ''144c144\n<                 --output-fasta="$VAR_GENOME1_SNPS"\n---\n>                 --output-fasta="$VAR_GENOME2_SNPS"\n''| patch createGenome.sh && \
-      sed -i.bak s/^AL_BWA_ALN_PARAMS/#AL_BWA_ALN_PARAMS/g alea.config && \
-      sed -i.bak s/^AL_USE_CONCATENATED_GENOME/#AL_USE_CONCATENATED_GENOME/g alea.config && \
-      rm -f alea.config.bak
-', 'alea-docker.yml', 'DOCKSTORE_CWL', NULL, NULL, '/alea-docker.yml', false, '\x7e2062991325f92c0310f0b4e70e90ea6af18beb712a7e0308b21328a42bc48e');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (29, '#!/usr/bin/env cwl-runner
-class: CommandLineTool
-cwlVersion: v1.0
-
-inputs:
-  pattern:
-    type: string
-    inputBinding: {position: 0}
-  infile:
-    type: File
-    inputBinding: {position: 1}
-
-outputs:
-  outfile:
-    type: stdout
-
-baseCommand: grep
-', 'grep.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/grep.cwl', false, '\xff5dc13176445cfd1dbc9da5ec5cb0c048cd1a3204536cf8ac8d35ab642603a5');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (30, '#!/usr/bin/env cwl-runner
-class: CommandLineTool
-cwlVersion: v1.0
-
-inputs:
-  infiles:
-    type: File[]
-    inputBinding: {position: 1}
-
-outputs:
-  outfile:
-    type: stdout
-
-baseCommand: [wc, -l]
-', 'wc.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/wc.cwl', false, '\xf9c32c24306aa53b6137329a5c5baa3f7d5c3235c21c4958c4a8ac89db08210b');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (22, 'class: s:SoftwareSourceCode
-s:name: "alea"
-s:about: >
-  ALEA is a computational toolbox for allele-specific (AS) epigenomics analysis, which incorporates allelic variation data within existing
-  resources, allowing for the identification of significant associations between epigenetic modifications and specific allelic variants
-  in human and mouse cells. ALEA provides a customizable pipeline of command line tools for AS analysis of next-generation sequencing data
-  (ChIP-seq, RNA-seq, etc.) that takes the raw sequencing data and produces separate allelic tracks ready to be viewed on genome browsers.
-  ALEA takes advantage of the available genomic resources for human (The 1000 Genomes Project Consortium) and mouse (The Mouse Genome Project)
-  to reconstruct diploid in silico genomes for human samples or hybrid mouse samples under study. Then, for each accompanying ChIP-seq or
-  RNA-seq dataset, ALEA generates two wig files from short reads aligned differentially to each haplotype.
-  This pipeline has been validated using human and hybrid mouse ChIP-seq and RNA-seq data (See Test Data section).
-
-s:targetProduct:
-  class: s:SoftwareApplication
-  s:downloadUrl: ftp://ftp.bcgsc.ca/supplementary/ALEA/files/alea.1.2.2.tar.gz
-  s:softwareVersion: "1.2.2"
-  s:applicationCategory: "command line tool"
-
-s:url: http://www.bcgsc.ca/platform/bioinfo/software/alea
-s:license: https://opensource.org/licenses/AFL-3.0
-s:programmingLanguage: "JAVA"
-
-s:publication:
-  - id: http://dx.doi.org/10.1093/bioinformatics/btt744
-
-s:author:
-- class: s:Person
-  id: mailto:mkarimi@bcgsc.ca
-  s:name: "Mohammad Karimi"
-  s:email: mailto:mkarimi@bcgsc.ca
-  s:url: http://www.bcgsc.ca/author/mkarimi
-  s:worksFor:
-  - class: s:Organization
-    s:name: "Canada''s Michael Smith Genome Sciences Centre, BC Cancer Agency, Vancouver, British Columbia, V5Z 4S6, Canada"
-  - class: s:Organization
-    s:name: "Department of Medical Genetics, Life Sciences Institute, The University of British Columbia, Vancouver, British Columbia, V6T 1Z3, Canada"
-
-', 'alea-metadata.yaml', 'DOCKSTORE_CWL', NULL, NULL, '/alea-metadata.yaml', false, '\xf215e7e0c23590dbdfe376db368bb3216a91cd08aff565da1659027f92332487');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (23, 'class: EnvVarRequirement
-envDef:
-  - envName: "PATH"
-    envValue: "/usr/local/bin/:/usr/bin:/bin"
-', 'envvar-global.yml', 'DOCKSTORE_CWL', NULL, NULL, '/envvar-global.yml', false, '\x7002c0b23b0a912f3b8cb12f4dd276d22cb3ab1983995d29c78886fff3cdd2c6');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (62, '#!/usr/bin/env cwl-runner
-
-class: CommandLineTool
-id: Md5sum
-label: Simple md5sum tool
-cwlVersion: v1.0
-
-requirements:
-- class: DockerRequirement
-  dockerPull: quay.io/agduncan94/my-md5sum
-- class: InlineJavascriptRequirement
-
-hints:
-- class: ResourceRequirement
-  # The command really requires very little resources.
-  coresMin: 1
-  ramMin: 1024
-  outdirMin: 512
-
-inputs:
-  input_file:
-    type: File
-    inputBinding:
-      position: 1
-    doc: The file that will have its md5sum calculated.
-
-outputs:
-  output_file:
-    type: File
-    format: http://edamontology.org/data_3671
-    outputBinding:
-      glob: md5sum.txt
-    doc: A text file that contains a single line that is the md5sum of the input file.
-
-baseCommand: [/bin/my_md5sum]
-', 'md5sum-tool.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/md5sum-tool.cwl', false, '\x475d5fee2261db61f36b9e0abf2151f1903ca05a8c3712f66072c69f855423c5');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (24, 'class: DockerRequirement
-dockerPull: scidap/alea:v1.2.2
-#dockerImageId: scidap/alea:v1.2.2 #not yet ready
-dockerFile: |
-  #################################################################
-  # Dockerfile
-  #
-  # Software:         Alea
-  # Software Version: 1.2.2
-  # Description:      Alea image for SciDAP
-  # Website:          http://scidap.com/
-  # Provides:         alea|bwa|Plink|vcftools|bedGraphToBigWig|shapeit2
-  # Base Image:       scidap/scidap:v0.0.1
-  # Build Cmd:        docker build --rm -t scidap/alea:v1.2.2 .
-  # Pull Cmd:         docker pull scidap/alea:v1.2.2
-  # Run Cmd:          docker run --rm scidap/alea:v1.2.2 alea
-  #################################################################
-
-  ### Base Image
-  FROM scidap/scidap:v0.0.1
-  MAINTAINER Andrey V Kartashov "porter@porter.st"
-  ENV DEBIAN_FRONTEND noninteractive
-
-  ################## BEGIN INSTALLATION ######################
-
-  WORKDIR /tmp
-
-  ### Install required packages (samtools)
-
-  RUN apt-get clean all &&\
-      apt-get update &&\
-      apt-get install -y  \
-        libncurses5-dev && \
-      apt-get clean && \
-      apt-get purge && \
-      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
-
-
-  ### Installing BWA
-
-  ENV VERSION 0.7.12
-  ENV NAME bwa
-  ENV URL "https://github.com/lh3/bwa/archive/${VERSION}.tar.gz"
-
-  RUN wget -q -O - $URL | tar -zxv && \
-      cd ${NAME}-${VERSION} && \
-      make -j 4 && \
-      cd .. && \
-      cp ./${NAME}-${VERSION}/${NAME} /usr/local/bin/ && \
-      strip /usr/local/bin/${NAME}; true && \
-      rm -rf ./${NAME}-${VERSION}/
-
-
-  #  ### Installing bowtie
-  #
-  #  ENV VERSION 1.1.2
-  #  ENV NAME bowtie
-  #  ENV URL "https://github.com/BenLangmead/bowtie/archive/v${VERSION}.tar.gz"
-  #
-  #  RUN wget -q -O - $URL | tar -zxv && \
-  #    cd ${NAME}-${VERSION} && \
-  #    make -j 4 && \
-  #    cd .. && \
-  #    cp ./${NAME}-${VERSION}/${NAME} /usr/local/bin/ && \
-  #    cp ./${NAME}-${VERSION}/${NAME}-* /usr/local/bin/ && \
-  #    strip /usr/local/bin/*; true && \
-  #    rm -rf ./${NAME}-${VERSION}/
-
-
-  ### Installing samtools/htslib/tabix/bgzip
-
-  ENV VERSIONH 1.2.1
-  ENV NAMEH htslib
-  ENV URLH "https://github.com/samtools/htslib/archive/${VERSIONH}.tar.gz"
-
-  ENV VERSION "1.2"
-  ENV NAME "samtools"
-  ENV URL "https://github.com/samtools/samtools/archive/${VERSION}.tar.gz"
-
-  RUN wget -q -O - $URLH | tar -zxv && \
-      cd ${NAMEH}-${VERSIONH} && \
-      make -j 4 && \
-      cd .. && \
-      cp ./${NAMEH}-${VERSIONH}/tabix /usr/local/bin/ && \
-      cp ./${NAMEH}-${VERSIONH}/bgzip /usr/local/bin/ && \
-      cp ./${NAMEH}-${VERSIONH}/htsfile /usr/local/bin/ && \
-      strip /usr/local/bin/tabix; true && \
-      strip /usr/local/bin/bgzip; true && \
-      strip /usr/local/bin/htsfile; true && \
-      ln -s ./${NAMEH}-${VERSIONH}/ ./${NAMEH} && \
-      wget -q -O - $URL | tar -zxv && \
-      cd ${NAME}-${VERSION} && \
-      make -j 4 && \
-      cd .. && \
-      cp ./${NAME}-${VERSION}/${NAME} /usr/local/bin/ && \
-      strip /usr/local/bin/${NAME}; true && \
-      rm -rf ./${NAMEH}-${VERSIONH}/ && \
-      rm -rf ./${NAME}-${VERSION}/
-
-
-  ### Installing bedGraphToBigWig
-
-  RUN  wget -q -O /usr/local/bin/bedGraphToBigWig  http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/bedGraphToBigWig && \
-  chmod a+x /usr/local/bin/bedGraphToBigWig
-
-
-  ### Installing VCFTools
-
-  ENV VERSION 0.1.14
-  ENV NAME vcftools
-  ENV URL "https://github.com/vcftools/vcftools/releases/download/v${VERSION}/${NAME}-${VERSION}.tar.gz"
-
-  RUN wget -q -O - $URL | tar -zxv && \
-      cd ${NAME}-${VERSION} && \
-      ./configure --prefix=/usr/local && \
-      make -j 4 install && \
-      cd .. && \
-      rm -rf ./${NAME}-${VERSION}/
-
-
-  ### Installing SHAPEIT2
-
-  RUN wget -q -O - https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.v2.r837.GLIBCv2.20.Linux.static.tgz|tar -zxv -C /usr/local bin/shapeit && \
-      chmod a+x /usr/local/bin/shapeit
-
-
-  ### Installing plink
-
-  RUN wget -q -O plink-1.07-x86_64.zip http://pngu.mgh.harvard.edu/~purcell/plink/dist/plink-1.07-x86_64.zip && \
-      unzip plink-1.07-x86_64.zip && \
-      cp plink-1.07-x86_64/* /usr/local/bin && \
-      rm -rf plink-1.07-x86_64 && \
-      rm -f plink-1.07-x86_64.zip
-
-
-  ### Installing alea
-
-  RUN wget -q -O - ftp://ftp.bcgsc.ca/supplementary/ALEA/files/alea.1.2.2.tar.gz | tar -zxv -C /usr/local --strip-components=1 && \
-      cd /usr/local/bin/ && \
-      printf ''144c144\n<                 --output-fasta="$VAR_GENOME1_SNPS"\n---\n>                 --output-fasta="$VAR_GENOME2_SNPS"\n''| patch createGenome.sh && \
-      sed -i.bak s/^AL_BWA_ALN_PARAMS/#AL_BWA_ALN_PARAMS/g alea.config && \
-      sed -i.bak s/^AL_USE_CONCATENATED_GENOME/#AL_USE_CONCATENATED_GENOME/g alea.config && \
-      rm -f alea.config.bak
-', 'alea-docker.yml', 'DOCKSTORE_CWL', NULL, NULL, '/alea-docker.yml', false, '\x7e2062991325f92c0310f0b4e70e90ea6af18beb712a7e0308b21328a42bc48e');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (71, '#!/usr/bin/env cwl-runner
-
-class: CommandLineTool
-id: Md5sum
-label: Simple md5sum tool
-cwlVersion: v1.0
-
-$namespaces:
-  dct: http://purl.org/dc/terms/
-  foaf: http://xmlns.com/foaf/0.1/
-
-requirements:
-- class: DockerRequirement
-  dockerPull: quay.io/agduncan94/my-md5sum
-- class: InlineJavascriptRequirement
-
-hints:
-- class: ResourceRequirement
-  # The command really requires very little resources.
-  coresMin: 1
-  ramMin: 1024
-  outdirMin: 512
-
-inputs:
-  input_file:
-    type: File
-    inputBinding:
-      position: 1
-    doc: The file that will have its md5sum calculated.
-
-outputs:
-  output_file:
-    type: File
-    format: http://edamontology.org/data_3671
-    outputBinding:
-      glob: md5sum.txt
-    doc: A text file that contains a single line that is the md5sum of the input file.
-
-baseCommand: [/bin/my_md5sum]
-', 'md5sum-tool.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/md5sum-tool.cwl', false, '\x79a0784dd41f35efafc550e1ca65d5afb80dc2bd854a1bcbc76ff154b6908501');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (31, 'cwlVersion: v1.0
-class: CommandLineTool
-label: Example trivial wrapper for Java 7 compiler
-baseCommand: javac
-hints:
-  - DockerRequirement:
-      dockerPull: java:7
-baseCommand: javac
-arguments: ["-d", $(runtime.outdir)]
-inputs:
-  src:
-    type: File
-    inputBinding:
-      position: 1
-outputs:
-  classfile:
-    type: File
-    outputBinding:
-glob: "*.class"
-', 'arguments.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/arguments.cwl', false, '\xcca53893adc6823c1f656fda62c9658a616eca0bb899a990ce1b4c6e22fef5a1');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (32, 'cwlVersion: v1.0
-class: CommandLineTool
-baseCommand: [tar, xf]
-inputs:
-  tarfile:
-    type: File
-    inputBinding:
-      position: 1
-  extractfile:
-    type: string
-    inputBinding:
-      position: 2
-outputs:
-  example_out:
-    type: File
-    outputBinding:
-glob: $(inputs.extractfile)
-', 'tar-param.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/tar-param.cwl', false, '\x2dc338e2589cc9181aebd857ee34d6e451868f987e79f59fed35e20c996a50aa');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (70, 'cwlVersion: v1.0
-class: Workflow
-
-inputs:
-  input_file: File
-
-outputs:
-  output_file:
-    type: File
-    outputSource: md5sum/output_file
-
-steps:
-  md5sum:
-    run: md5sum-tool.cwl
-    in:
-      input_file: input_file
-    out: [output_file]
-', 'md5sum-workflow.cwl', 'DOCKSTORE_CWL', NULL, NULL, '/md5sum-workflow.cwl', false, '\xe0527da7b5ba20e98d97b7d7acea9fcfefb14607765b25fcd4a1fc02f90c4084');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (42, 'version: 1.1
-service:
-  subclass: docker-compose
-  name: A cool service
-  author: Andrew Duncan
-  description: |
-    This is the coolest service,
-    it is very cool.
-  files:
-     - docker-compose.yml 
-     - README.md
-', '.dockstore.yml', 'DOCKSTORE_SERVICE_YML', '2019-07-30 10:03:05.943', '2019-07-30 10:03:05.943', '/.dockstore.yml', false, '\x44633f5891e11ef6bc51f1330823c890679292bf34f5c06faecabc921a60a788');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (43, '# another-test-service', 'README.md', 'DOCKSTORE_SERVICE_OTHER', '2019-07-30 10:03:05.949', '2019-07-30 10:03:05.949', '/README.md', false, '\x0ee875295233aacfe163f7d863f60535c3b041e6c53138eaacf07533f4bbc478');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (44, 'Hello
-', 'docker-compose.yml', 'DOCKSTORE_SERVICE_OTHER', '2019-07-30 10:03:05.952', '2019-07-30 10:03:05.952', '/docker-compose.yml', false, '\x66a045b452102c59d840ec097d59d9467e13a3f34f6494e539ffd32c1bb35f18');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (45, 'version: 1.1
-service:
-  subclass: docker-compose
-  name: A cool service
-  author: Andrew Duncan
-  description: |
-    This is the coolest service,
-    it is very cool.
-  files:
-     - docker-compose.yml 
-     - README.md
-', '.dockstore.yml', 'DOCKSTORE_SERVICE_YML', '2019-07-30 10:03:05.963', '2019-07-30 10:03:05.963', '/.dockstore.yml', false, '\x44633f5891e11ef6bc51f1330823c890679292bf34f5c06faecabc921a60a788');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (46, '# another-test-service', 'README.md', 'DOCKSTORE_SERVICE_OTHER', '2019-07-30 10:03:05.966', '2019-07-30 10:03:05.966', '/README.md', false, '\x0ee875295233aacfe163f7d863f60535c3b041e6c53138eaacf07533f4bbc478');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (47, 'Hello
-', 'docker-compose.yml', 'DOCKSTORE_SERVICE_OTHER', '2019-07-30 10:03:05.968', '2019-07-30 10:03:05.969', '/docker-compose.yml', false, '\x66a045b452102c59d840ec097d59d9467e13a3f34f6494e539ffd32c1bb35f18');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (48, 'version: 1.1
-service:
-  subclass: docker-compose
-  name: A cool service
-  author: Andrew Duncan
-  description: |
-    This is the coolest service,
-    it is very cool.
-  files:
-     - docker-compose.yml 
-     - README.md
-', '.dockstore.yml', 'DOCKSTORE_SERVICE_YML', '2019-07-30 10:03:05.975', '2019-07-30 10:03:05.975', '/.dockstore.yml', false, '\x44633f5891e11ef6bc51f1330823c890679292bf34f5c06faecabc921a60a788');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (49, '# another-test-serviceaaaa
-', 'README.md', 'DOCKSTORE_SERVICE_OTHER', '2019-07-30 10:03:05.976', '2019-07-30 10:03:05.976', '/README.md', false, '\x22d9d282c22fc6e15f488bf494f8057d12c8e54a5628e84ca1013876b7f57fab');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (50, 'Hello
-', 'docker-compose.yml', 'DOCKSTORE_SERVICE_OTHER', '2019-07-30 10:03:05.977', '2019-07-30 10:03:05.977', '/docker-compose.yml', false, '\x66a045b452102c59d840ec097d59d9467e13a3f34f6494e539ffd32c1bb35f18');
-INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (51, 'version: 1.1
-service:
-  subclass: docker-compose
-  name: A cool service
-  author: Andrew Duncan
-  description: |
-    This is the coolest service,
-    it is very cool.
-  files:
-     - docker-compose.yml 
-     - README.md
-thisiswrong
-', '.dockstore.yml', 'DOCKSTORE_SERVICE_YML', '2019-07-30 10:03:05.987', '2019-07-30 10:03:05.987', '/.dockstore.yml', false, '\xca1297135631318b165e7c9a29385b09c1542191e84f841d55ae584ff14e0f43');
 
 
 --
@@ -3183,98 +1913,36 @@ thisiswrong
 -- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (1, false, '2016-02-04 16:44:00', 'test', 'feature/test', true, true, '/Dockstore.cwl', '/Dockerfile', '84fc64995896cd90f9b9732e28d4115e82dd471c40925b0ba34c9a419fbe2fa8', 108608297, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 1);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (2, false, '2016-02-16 17:06:55', 'master', 'master', true, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 1);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (3, false, '2016-02-16 17:06:56', 'latest', 'master', true, true, '/Dockstore.cwl', '/Dockerfile', 'e919f2df4a7b01f3be3dc74483544cd9ee8396714dfdbb2e41679039de7cc3e1', 108608275, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 1);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (4, false, '2016-03-15 15:41:00', 'master', 'master', true, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 2);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (5, false, '2016-03-15 15:41:03', 'latest', 'master', true, true, '/Dockstore.cwl', '/Dockerfile', '2cf0cccd32556daf9a0137277938d6f033b7a7c5d65628b582b2ed9afdde40f5', 108722095, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 2);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (6, false, '2016-03-15 15:39:17', 'master', 'master', false, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 3);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (7, false, '2016-03-15 15:39:19', 'latest', 'master', false, true, '/Dockstore.cwl', '/testDir/Dockerfile', '8079f14d756280940d56957f0e1ddb14b8d3124a8d1d195f4a51f2a051d84726', 108722088, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 3);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (8, false, '2016-03-15 15:42:04', 'master', 'master', true, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 4);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (9, false, '2016-03-15 15:42:05', 'latest', 'master', true, true, '/Dockstore.cwl', '/Dockerfile', 'f92aa8edcc265e4d5faabf7f89157008d52d514f8f6d7c1b833024f58f126e9d', 108722128, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 4);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (10, false, '2016-06-08 14:08:08', 'master', 'master', true, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 5);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (11, false, '2016-06-08 14:08:08', 'latest', 'master', true, true, '/Dockstore.cwl', '/Dockerfile', '9227b87c1304b9ce746d06d0eb8144ec17a253f5b8e00a3922d86b538c8296c0', 44363874, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 5);
-INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (52, false, '2018-02-12 15:49:28', '3.0.0-rc8', '3.0.0-rc8', true, true, '/cwls/cgpmap-cramOut.cwl', '/Dockerfile', 'c387f22e65f066c42ccaf11392fdbd640aa2b7627eb40ac06a0dbaca2ca323cb', 138844180, '/Dockstore.wdl', '2016-02-04 16:44:00', '2016-02-04 16:44:00', 'UNSET', NULL, NULL, false, 52);
 
 
 --
 -- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (1, 'imamafakedockstoretoken', NULL, 'dockstore', 1, 'user_A', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (2, 'imamafakegithubtoken', NULL, 'github.com', 1, 'user_A', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (4, 'imamafakequaytoken', NULL, 'quay.io', 1, 'user_A', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (5, 'imamafakedockstoretoken2', NULL, 'dockstore', 4, 'user_curator', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (6, 'imamafakegithubtoken2', NULL, 'github.com', 4, 'user_curator', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (7, 'imamafakequaytoken2', NULL, 'quay.io', 4, 'user_curator', NULL, NULL, NULL, NULL, NULL);
 
 
 --
 -- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (3, NULL, NULL, NULL, 'git@github.com:A2/b2.git', false, NULL, '2016-11-28 15:02:48.557', '2016-03-15 15:35:57', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b2', 'A2', false, 'quay.io', '', NULL, NULL, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, NULL, '', NULL, NULL, NULL);
-INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (100, 'testuser2', 'Whalesay deep quotes', NULL, NULL, false, NULL, '2016-11-28 15:00:43.873', '2016-03-15 15:35:29', 'HOSTED', 'ht', 'hosted-tool', false, 'quay.io', '', NULL, NULL, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, NULL, '', NULL, NULL, NULL);
-INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (52, NULL, NULL, NULL, 'git@github.com:garyluu/dockstore-cgpmap.git', true, NULL, '2018-02-12 15:55:42.691', '2018-02-12 15:40:19', 'MANUAL_IMAGE_PATH', 'dockstore-cgpmap', 'garyluu', false, 'quay.io', '', 'cgpmap-cramOut', NULL, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, NULL, 'CWL', NULL, NULL, NULL);
-INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (2, 'testuser2', 'Whalesay deep quotes', NULL, 'git@github.com:A2/b1.git', false, NULL, '2016-11-28 15:00:43.873', '2016-03-15 15:35:29', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b1', 'A2', false, 'quay.io', '', NULL, NULL, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, NULL, 'CWL', NULL, NULL, NULL);
-INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (5, NULL, '', NULL, 'git@github.com:A2/a.git', true, NULL, '2016-11-28 15:00:43.873', '2016-06-08 14:06:36', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'a', 'A2', false, 'quay.io', '', NULL, NULL, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, NULL, 'CWL', NULL, NULL, NULL);
-INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (4, NULL, NULL, NULL, 'git@github.com:A2/b3.git', true, NULL, '2016-11-28 15:00:43.873', '2016-03-15 15:36:22', 'AUTO_DETECT_QUAY_TAGS_AUTOMATED_BUILDS', 'b3', 'A2', false, 'quay.io', '', NULL, NULL, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, NULL, 'WDL', NULL, NULL, NULL);
-INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (1, 'testuser', 'Whalesay deep quotes', NULL, 'git@github.com:A/a.git', false, NULL, '2016-11-28 15:00:43.873', '2016-02-16 17:04:59', 'MANUAL_IMAGE_PATH', 'a', 'A', true, 'amazon.dkr.ecr.test.amazonaws.com', 'test@email.com', NULL, NULL, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, NULL, 'CWL,WDL', NULL, NULL, NULL);
 
 
 --
 -- Data for Name: user_entry; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 1);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 2);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 3);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 4);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 5);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 6);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 7);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 8);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 9);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 10);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 11);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 12);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 13);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 14);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 16);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 17);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 18);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 19);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 20);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 21);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 22);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 30);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 100);
-INSERT INTO public.user_entry (userid, entryid) VALUES (2, 52);
-INSERT INTO public.user_entry (userid, entryid) VALUES (1, 102);
 
 
 --
 -- Data for Name: user_profile; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate, username, onlineprofileid) VALUES (1, NULL, NULL, NULL, NULL, NULL, '', 'github.com', NULL, NULL, 'user_A', NULL);
-INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate, username, onlineprofileid) VALUES (2, '', NULL, '', '', NULL, '', 'github.com', NULL, NULL, 'potato', NULL);
-INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate, username, onlineprofileid) VALUES (3, NULL, NULL, NULL, NULL, NULL, '', 'github.com', NULL, NULL, 'user_admin', NULL);
-INSERT INTO public.user_profile (id, avatarurl, bio, company, email, location, name, token_type, dbcreatedate, dbupdatedate, username, onlineprofileid) VALUES (4, NULL, NULL, NULL, NULL, NULL, '', 'github.com', NULL, NULL, 'user_curator', NULL);
 
 
 --
 -- Data for Name: validation; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (1, '2019-07-30 10:03:05.954', '2019-07-30 10:03:05.954', '{}', 'DOCKSTORE_SERVICE_YML', true);
-INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (2, '2019-07-30 10:03:05.956', '2019-07-30 10:03:05.956', '{}', 'DOCKSTORE_SERVICE_TEST_JSON', true);
-INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (3, '2019-07-30 10:03:05.97', '2019-07-30 10:03:05.97', '{}', 'DOCKSTORE_SERVICE_YML', true);
-INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (4, '2019-07-30 10:03:05.971', '2019-07-30 10:03:05.971', '{}', 'DOCKSTORE_SERVICE_TEST_JSON', true);
-INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (5, '2019-07-30 10:03:05.98', '2019-07-30 10:03:05.98', '{}', 'DOCKSTORE_SERVICE_YML', true);
-INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (6, '2019-07-30 10:03:05.982', '2019-07-30 10:03:05.982', '{}', 'DOCKSTORE_SERVICE_TEST_JSON', true);
-INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (7, '2019-07-30 10:03:05.988', '2019-07-30 10:03:05.988', '{".dockstore.yml":"while scanning a simple key\\n in ''string'', line 12, column 1:\\n    thisiswrong\\n    ^\\ncould not find expected '':''\\n in ''string'', line 13, column 1:\\n    \\n    ^\\n"}', 'DOCKSTORE_SERVICE_YML', false);
-INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (8, '2019-07-30 10:03:05.989', '2019-07-30 10:03:05.989', '{}', 'DOCKSTORE_SERVICE_TEST_JSON', true);
 
 
 --
@@ -3287,25 +1955,6 @@ INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, va
 -- Data for Name: version_metadata; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 3, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, true, false, NULL, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 7, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 52, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 13, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, true, false, NULL, 14, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, true, false, NULL, 20, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 102, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 103, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 104, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 105, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 --
@@ -3330,96 +1979,24 @@ INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifi
 -- Data for Name: version_sourcefile; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (1, 2);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (1, 1);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (2, 4);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (2, 3);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (2, 5);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (3, 8);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (3, 6);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (3, 7);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (4, 10);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (4, 9);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (5, 12);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (5, 11);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (8, 13);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (8, 14);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (9, 16);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (9, 15);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (10, 17);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (10, 19);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (10, 20);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (10, 18);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (10, 21);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (11, 26);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (11, 23);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (11, 22);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (11, 24);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (11, 25);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (13, 27);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (13, 28);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (13, 30);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (13, 32);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (13, 29);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (13, 31);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (14, 70);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (14, 71);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (6, 35);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (7, 36);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (52, 39);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (52, 40);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (52, 41);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (20, 60);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (20, 61);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (20, 62);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (102, 42);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (102, 43);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (102, 44);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (103, 45);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (103, 46);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (103, 47);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (104, 48);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (104, 49);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (104, 50);
-INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (105, 51);
 
 
 --
 -- Data for Name: version_validation; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.version_validation (versionid, validationid) VALUES (102, 1);
-INSERT INTO public.version_validation (versionid, validationid) VALUES (102, 2);
-INSERT INTO public.version_validation (versionid, validationid) VALUES (103, 3);
-INSERT INTO public.version_validation (versionid, validationid) VALUES (103, 4);
-INSERT INTO public.version_validation (versionid, validationid) VALUES (104, 5);
-INSERT INTO public.version_validation (versionid, validationid) VALUES (104, 6);
-INSERT INTO public.version_validation (versionid, validationid) VALUES (105, 7);
-INSERT INTO public.version_validation (versionid, validationid) VALUES (105, 8);
 
 
 --
 -- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (12, NULL, NULL, NULL, 'git@github.com:A/g.git', false, NULL, '2016-11-28 15:00:57.788', 'cwl', 'FULL', 'A', 'g', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, 'n/a', NULL, NULL, NULL, NULL);
-INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (11, NULL, NULL, NULL, 'git@github.com:A/l.git', true, NULL, '2016-11-28 15:00:57.688', 'cwl', 'FULL', 'A', 'l', NULL, 'github.com', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, 'n/a', NULL, NULL, NULL, NULL);
-INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (6, NULL, NULL, NULL, 'git@bitbucket.org:a/a.git', false, NULL, '2016-11-28 15:00:57.148', 'cwl', 'FULL', 'a', 'a', NULL, 'bitbucket.org', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, 'n/a', NULL, NULL, NULL, NULL);
-INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (21, NULL, NULL, NULL, NULL, false, NULL, '2016-11-28 15:00:57.315', 'wdl', 'HOSTED', 'A', 'hosted-workflow', NULL, 'dockstore.org', NULL, false, '2016-06-08 14:06:36', '2016-06-08 14:06:36', NULL, NULL, 'n/a', NULL, NULL, NULL, NULL);
-INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (30, NULL, NULL, NULL, 'git@github.com:B/z.git', false, NULL, '2020-01-28 15:00:57.315', 'cwl', 'DOCKSTORE_YML', 'B', 'z', NULL, 'github.com', NULL, false, '2020-01-08 14:06:36', '2020-01-08 14:06:36', NULL, NULL, 'n/a', NULL, NULL, NULL, NULL);
 
 
 --
 -- Data for Name: workflowversion; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (13, false, '2016-11-28 15:01:57.003', 'master', 'master', true, '/1st-workflow.cwl', '2016-11-28 15:01:59.003', '2016-11-28 15:01:59.003', 'UNSET', NULL, NULL, NULL, false, 11, true, NULL, NULL, true);
-INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (14, false, '2016-11-28 15:01:57.003', 'test', 'test', true, '/1st-workflow.cwl', '2016-11-28 15:01:57.003', '2016-11-28 15:01:57.003', 'UNSET', NULL, NULL, NULL, false, 11, true, NULL, NULL, true);
-INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (102, false, '2019-07-16 11:53:31', '1.0', '1.0', true, '.dockstore.yml', '2019-07-30 10:03:05.942', '2019-07-30 10:03:05.942', 'TAG', NULL, '08411965122c3115710a15d71e39236f0c918e9f', NULL, false, 102, true, NULL, NULL, true);
-INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (103, false, '2019-07-16 11:53:31', '1.1', '1.1', true, '.dockstore.yml', '2019-07-30 10:03:05.961', '2019-07-30 10:03:05.961', 'TAG', NULL, '08411965122c3115710a15d71e39236f0c918e9f', NULL, false, 102, true, NULL, NULL, true);
-INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (104, false, '2019-07-19 13:13:48', '1.3', '1.3', true, '.dockstore.yml', '2019-07-30 10:03:05.974', '2019-07-30 10:03:05.974', 'TAG', NULL, '0694932f8373799ce99dca1c5e3ce94bf2f6463c', NULL, false, 102, true, NULL, NULL, true);
-INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (105, false, '2019-07-18 09:40:08', 'invalid-yml-release', 'invalid-yml-release', false, '.dockstore.yml', '2019-07-30 10:03:05.986', '2019-07-30 10:03:05.986', 'TAG', NULL, 'f74e59521e2c8b2f782e3c781981e6d73236da84', NULL, false, 102, true, NULL, NULL, true);
-INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (20, false, '2020-01-28 15:01:57.003', 'master', 'master', true, '/Dockstore.cwl', '2020-01-28 15:01:57.003', '2020-01-28 15:01:57.003', 'BRANCH', NULL, NULL, NULL, false, 30, false, NULL, NULL, true);
 
 
 --
