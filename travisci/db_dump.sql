@@ -1466,6 +1466,7 @@ INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, n
 --
 
 INSERT INTO public.collection (id, dbcreatedate, dbupdatedate, description, name, organizationid, displayname, topic, deleted, dtype) VALUES (1, '2021-12-10 15:21:34.824', '2021-12-10 15:21:34.833', NULL, 'aliens', 2, 'aliens', 'not space creatures', false, 'Collection');
+INSERT INTO public.collection (id, dbcreatedate, dbupdatedate, description, name, organizationid, displayname, topic, deleted, dtype) VALUES (2, '2021-12-10 15:52:17.014', '2021-12-10 15:52:17.023', NULL, 'Stuff', 3, 'Stuff', 'and things', false, 'Collection');
 
 
 --
@@ -1479,6 +1480,7 @@ INSERT INTO public.collection (id, dbcreatedate, dbupdatedate, description, name
 --
 
 INSERT INTO public.collection_entry_version (id, entry_id, version_id, collection_id, dbcreatedate, dbupdatedate) VALUES (1, 105, 105, 1, '2021-12-10 15:21:50.89', '2021-12-10 15:21:50.89');
+INSERT INTO public.collection_entry_version (id, entry_id, version_id, collection_id, dbcreatedate, dbupdatedate) VALUES (2, 110, NULL, 2, '2021-12-10 15:52:28.112', '2021-12-10 15:52:28.112');
 
 
 --
@@ -1892,6 +1894,8 @@ INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid,
 INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (19, '2021-12-10 15:31:24.504', '2021-12-10 15:31:24.504', 'ADD_VERSION_TO_ENTRY', 1, NULL, NULL, NULL, 102, NULL, 114);
 INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (20, '2021-12-10 15:41:23.363', '2021-12-10 15:41:23.363', 'ADD_VERSION_TO_ENTRY', 1, NULL, 113, NULL, NULL, NULL, 115);
 INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (21, '2021-12-10 15:41:45.227', '2021-12-10 15:41:45.227', 'ADD_VERSION_TO_ENTRY', 1, NULL, 114, NULL, NULL, NULL, 116);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (22, '2021-12-10 15:52:17.019', '2021-12-10 15:52:17.019', 'CREATE_COLLECTION', 1, 3, NULL, NULL, NULL, 2, NULL);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (23, '2021-12-10 15:52:28.108', '2021-12-10 15:52:28.108', 'ADD_TO_COLLECTION', 1, 3, NULL, NULL, 110, 2, NULL);
 
 
 --
@@ -2970,14 +2974,14 @@ SELECT pg_catalog.setval('public.cloud_instance_id_seq', 1, false);
 -- Name: collection_entry_version_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.collection_entry_version_id_seq', 1, true);
+SELECT pg_catalog.setval('public.collection_entry_version_id_seq', 2, true);
 
 
 --
 -- Name: collection_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.collection_id_seq', 1, true);
+SELECT pg_catalog.setval('public.collection_id_seq', 2, true);
 
 
 --
@@ -3005,7 +3009,7 @@ SELECT pg_catalog.setval('public.enduser_id_seq', 2, true);
 -- Name: event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.event_id_seq', 21, true);
+SELECT pg_catalog.setval('public.event_id_seq', 23, true);
 
 
 --
