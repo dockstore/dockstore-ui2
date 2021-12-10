@@ -6,6 +6,9 @@ import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { WorkflowService } from '../state/workflow.service';
 import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService } from '../swagger';
+import { InformationDialogData } from '../../information-dialog/information-dialog.component';
+import { InformationDialogService } from '../../information-dialog/information-dialog.service';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
 
 @Injectable()
 export class EntryActionsService {
@@ -14,7 +17,8 @@ export class EntryActionsService {
     private workflowsService: WorkflowsService,
     private workflowService: WorkflowService,
     private containersService: ContainersService,
-    private containerService: ContainerService
+    private containerService: ContainerService,
+    private informationDialogService: InformationDialogService
   ) {}
 
   getViewPublicButtonTooltip(entryType: EntryType | null): string {
@@ -100,11 +104,29 @@ export class EntryActionsService {
     return versionTags.some((version) => version.valid);
   }
 
+  private hasDefaultTag(entry: Entry): boolean {
+    return entry.defaultVersion != null;
+  }
+
+  private openNoDefaultDialog(entry: Entry): void {
+    const informationDialogData: InformationDialogData = {
+      title: 'Default Version Required',
+      message: 'Your tool/workflow must have a default version before publishing it.  Please use the Versions tab to select a default version.',
+      closeButtonText: 'OK',
+    };
+    console.log(informationDialogData);
+    this.informationDialogService.openDialog(informationDialogData, bootstrap4mediumModalSize).subscribe(x => { console.log('closed'); });
+  }
+
   publishWorkflowToggle(workflow: Workflow, isOwner: boolean, entryType: EntryType): void {
     const currentlyPublished = workflow.is_published;
     if (this.publishWorkflowDisabled(workflow, isOwner)) {
       return;
     } else {
+      if (!currentlyPublished && !this.hasDefaultTag(workflow)) {
+        this.openNoDefaultDialog(workflow);
+        return;
+      }
       const request: PublishRequest = {
         publish: !currentlyPublished,
       };
@@ -137,6 +159,10 @@ export class EntryActionsService {
     if (this.publishToolDisabled(tool)) {
       return;
     } else {
+      if (!currentlyPublished && !this.hasDefaultTag(tool)) {
+        this.openNoDefaultDialog(tool);
+        return;
+      }
       const request: PublishRequest = {
         publish: !currentlyPublished,
       };

@@ -1,0 +1,8 @@
+<h1 *ngIf="data?.title" mat-dialog-title>{{ data.title }}</h1>
+
+<div *ngIf="data?.message" mat-dialog-content [innerHTML]="data.message"></div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+  <button data-cy="close-dialog-button" mat-button mat-dialog-close color="primary" cdkFocusInitial>
+    {{ data.closeButtonText ? data.closeButtonText : 'OK' }}
+  </button>
+</div>
