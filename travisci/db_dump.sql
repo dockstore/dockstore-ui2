@@ -1432,6 +1432,21 @@ ALTER TABLE ONLY public.token ALTER COLUMN id SET DEFAULT nextval('public.token_
 -- Data for Name: author; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (1, NULL, '2021-12-10 14:57:42.702', '2021-12-10 14:57:42.702', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 102);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (2, NULL, '2021-12-10 14:58:07.767', '2021-12-10 14:58:07.767', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 103);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (3, NULL, '2021-12-10 14:58:30.807', '2021-12-10 14:58:30.807', NULL, 'YOUR_NAME_HERE', NULL, 104);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (4, NULL, '2021-12-10 15:13:08.796', '2021-12-10 15:13:08.796', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 105);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (5, NULL, '2021-12-10 15:13:20.88', '2021-12-10 15:13:20.88', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 106);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (6, NULL, '2021-12-10 15:13:37.993', '2021-12-10 15:13:37.993', NULL, 'YOUR_NAME_HERE', NULL, 107);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (7, NULL, '2021-12-10 15:16:17.497', '2021-12-10 15:16:17.497', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 108);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (8, NULL, '2021-12-10 15:16:31.812', '2021-12-10 15:16:31.812', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 109);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (9, NULL, '2021-12-10 15:16:50.341', '2021-12-10 15:16:50.341', NULL, 'YOUR_NAME_HERE', NULL, 110);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (10, NULL, '2021-12-10 15:17:03.986', '2021-12-10 15:17:03.986', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 111);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (11, NULL, '2021-12-10 15:17:17.255', '2021-12-10 15:17:17.255', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 112);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (12, NULL, '2021-12-10 15:29:00.856', '2021-12-10 15:29:00.856', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 113);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (13, NULL, '2021-12-10 15:31:24.317', '2021-12-10 15:31:24.317', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 114);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (14, NULL, '2021-12-10 15:41:23.203', '2021-12-10 15:41:23.203', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 115);
+INSERT INTO public.author (id, affiliation, dbcreatedate, dbupdatedate, email, name, role, versionid) VALUES (15, NULL, '2021-12-10 15:41:45.102', '2021-12-10 15:41:45.102', 'YOUR_EMAIL_HERE', 'YOUR_NAME_HERE', NULL, 116);
 
 
 --
@@ -1450,6 +1465,7 @@ ALTER TABLE ONLY public.token ALTER COLUMN id SET DEFAULT nextval('public.token_
 -- Data for Name: collection; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.collection (id, dbcreatedate, dbupdatedate, description, name, organizationid, displayname, topic, deleted, dtype) VALUES (1, '2021-12-10 15:21:34.824', '2021-12-10 15:21:34.833', NULL, 'aliens', 2, 'aliens', 'not space creatures', false, 'Collection');
 
 
 --
@@ -1462,6 +1478,7 @@ ALTER TABLE ONLY public.token ALTER COLUMN id SET DEFAULT nextval('public.token_
 -- Data for Name: collection_entry_version; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.collection_entry_version (id, entry_id, version_id, collection_id, dbcreatedate, dbupdatedate) VALUES (1, 105, 105, 1, '2021-12-10 15:21:50.89', '2021-12-10 15:21:50.89');
 
 
 --
@@ -1588,7 +1605,7 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('date_more_tables', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.880904', 116, 'EXECUTED', '8:2c05cf7fc1c914245ab26ea8c7634708', 'addColumn tableName=sourcefile_verified; addColumn tableName=entry_alias; addColumn tableName=sourcefile_verified; addColumn tableName=entry_alias', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('migrate-legacy-verification-information', 'gluu', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.905066', 117, 'EXECUTED', '8:c5ff95ac3a254f700afaed850c596ec1', 'sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('no-orphaned-tokens', 'gluu', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.924739', 118, 'EXECUTED', '8:f0d6ca85cdc7871f8689b29cce43493c', 'sql; addForeignKeyConstraint baseTableName=token, constraintName=fk_userid_with_enduser, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('namechanged', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.980953', 119, 'EXECUTED', '8:277c79bb491e54ac757966777ee2005c', 'addColumn tableName=enduser; addColumn tableName=user_profile; addUniqueConstraint constraintName=username_unique, tableName=enduser; sql; sql; addUniqueConstraint constraintName=one_sign_in_method_by_profile, tableName=user_profile; addUniqueCons...', 'migrate existing usernames to profiles based on whether or not they have an
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('namechanged', 'dyuen (generated)', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.980953', 119, 'EXECUTED', '8:277c79bb491e54ac757966777ee2005c', 'addColumn tableName=enduser; addColumn tableName=user_profile; addUniqueConstraint constraintName=username_unique, tableName=enduser; sql; sql; addUniqueConstraint constraintName=one_sign_in_method_by_profile, tableName=user_profile; addUniqueCons...', 'migrate existing usernames to profiles based on whether or not they have an
         @'' as a proxy for whether they are from github or google', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeNextflowToNFL', 'agduncan', 'migrations.1.5.0.xml', '2021-12-10 14:19:56.997121', 120, 'EXECUTED', '8:0d27cfa39db74ae7908b63cc96323a2b', 'sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addSourcefileAbsolutePath', 'agduncan', 'migrations.1.5.0.xml', '2021-12-10 14:19:57.018149', 121, 'EXECUTED', '8:78262ceac123f90e5ca4c2a181848233', 'addColumn tableName=sourcefile; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
@@ -1596,6 +1613,7 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.070229', 123, 'EXECUTED', '8:ea4952bacf3204e5a41b6eb5288a5ccb', 'createSequence sequenceName=organisation_id_seq; createTable tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationUserTable', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.090563', 124, 'EXECUTED', '8:c399d2f2a36d38706c9f2b44f738588e', 'createTable tableName=organisation_user', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('uniqueNameForOrgs', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.110787', 125, 'EXECUTED', '8:cb4c01387d3326997cf51d3b5fc223f2', 'addUniqueConstraint constraintName=nameUK, tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUsernameChangeRequiredColumn', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.490844', 267, 'EXECUTED', '8:2fdf3e5d5a81ae009ae07e0806770962', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addOrganisationFKToOrgUser', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.127443', 126, 'EXECUTED', '8:8e0a8ae35a23b6fd86de51f26ed2279e', 'addForeignKeyConstraint baseTableName=organisation_user, constraintName=orgFKOrgUser, referencedTableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUserFKToOrgUser', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.1431', 127, 'EXECUTED', '8:30417e0c3590d7ad73922f1a9c3eabd7', 'addForeignKeyConstraint baseTableName=organisation_user, constraintName=userFKOrgUser, referencedTableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropEndUserGroupFK1', 'aduncan (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.16108', 128, 'EXECUTED', '8:c72e394564ddeb26800490494722c01c', 'dropForeignKeyConstraint baseTableName=endusergroup, constraintName=fkm0exig2r3dsxqafwaraf7rnr3', '', NULL, '3.10.3', NULL, NULL, '9163996248');
@@ -1626,6 +1644,7 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('dropOldApprovedFieldFromOrganisations', 'aduncan', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.59293', 153, 'EXECUTED', '8:211e31ffdfb39d51a89ff82531c86022', 'dropColumn columnName=approved, tableName=organisation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('renameAllOrganization', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.621864', 154, 'EXECUTED', '8:9e72ea1337ed59a4224556d8d3d4bca3', 'renameTable newTableName=organization, oldTableName=organisation; renameTable newTableName=organization_user, oldTableName=organisation_user; renameColumn newColumnName=organizationid, oldColumnName=organisationid, tableName=organization_user; ren...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addAvatarurlColumnToOrganizations', 'NatalieEO', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.637983', 155, 'EXECUTED', '8:145fa7e92a21951262efd3ed5573cd81', 'addColumn tableName=organization', '', NULL, '3.10.3', NULL, NULL, '9163996248');
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addTopic', 'gluu (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.511126', 268, 'EXECUTED', '8:2b2758606c8982de8de3d485c3a5d08e', 'addColumn tableName=apptool; addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('maintain_consistency', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.675672', 156, 'EXECUTED', '8:c11c29f74bb5b8fbd266d81a7fd1ae92', 'modifyDataType columnName=name, tableName=organization; modifyDataType columnName=type, tableName=validation; modifyDataType columnName=message, tableName=validation', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('collection_alias', 'dyuen', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.704955', 157, 'EXECUTED', '8:c2279a3fd137e068b6d13d2bd2789ebe', 'createTable tableName=collection_alias; addUniqueConstraint constraintName=unique_col_aliases, tableName=collection_alias; addForeignKeyConstraint baseTableName=collection_alias, constraintName=fk_collection_alias, referencedTableName=collection', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('1551127767692-2', 'dyuen (generated)', 'migrations.1.6.0.xml', '2021-12-10 14:19:57.734578', 158, 'EXECUTED', '8:c3f3f66a977ca53d7f47b7b3c086012f', 'createTable tableName=organzation_alias; addUniqueConstraint constraintName=unique_org_aliases, tableName=organzation_alias; addForeignKeyConstraint baseTableName=organzation_alias, constraintName=fk_organzation_alias, referencedTableName=organiza...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
@@ -1673,10 +1692,10 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('set_null_db_times', 'aduncan', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.924325', 200, 'EXECUTED', '8:078ecf3436d6d7d30921d75855494f58', 'sql; update tableName=tool; update tableName=tool; sql; update tableName=tag; update tableName=tag; sql; update tableName=workflow; update tableName=workflow; sql; update tableName=workflowversion; update tableName=workflowversion', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('add-not-null-db-dates', 'aduncan', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.959796', 201, 'EXECUTED', '8:af59af88bab5700b8b210fc19d3a7821', 'addNotNullConstraint columnName=dbcreatedate, tableName=workflow; addNotNullConstraint columnName=dbupdatedate, tableName=workflow; addNotNullConstraint columnName=dbcreatedate, tableName=service; addNotNullConstraint columnName=dbupdatedate, tabl...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('restructure_workflowversions', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 14:19:58.999825', 202, 'EXECUTED', '8:c9c61d9f212c5fafb1e1a9383dea1eb0', 'addColumn tableName=tag; addColumn tableName=workflowversion; sql; dropForeignKeyConstraint baseTableName=tool_tag, constraintName=fkjkn6qubuvn25bun52eqjleyl6; dropForeignKeyConstraint baseTableName=tool_tag, constraintName=fkjtsjg6jdnwxoeicd27ujm...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('cleanup invalid content', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 14:19:59.070559', 203, 'EXECUTED', '8:6463616dd0c538a5e9d4728cd0805860', 'sql; delete tableName=tag; delete tableName=workflowversion; sql; sql; sql; sql; sql; sql; sql; sql; sql; sql', 'some orphaned versions are protected by security
-delete the versions that are orphaned already
-migrate content from join tables into tag and workflowversion tables
-Delete the source files of deleted tags and versions.
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('cleanup invalid content', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 14:19:59.070559', 203, 'EXECUTED', '8:6463616dd0c538a5e9d4728cd0805860', 'sql; delete tableName=tag; delete tableName=workflowversion; sql; sql; sql; sql; sql; sql; sql; sql; sql; sql', 'some orphaned versions are protected by security
+delete the versions that are orphaned already
+migrate content from join tables into tag and workflowversion tables
+Delete the source files of deleted tags and versions.
 Delete references from versio...', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('lock_versions_down', 'dyuen', 'migrations.1.8.0.xml', '2021-12-10 14:19:59.118706', 204, 'EXECUTED', '8:4431289dbfe8d3b2b378394046cee14f', 'addNotNullConstraint columnName=parentid, constraintName=parent_id_not_nullable, tableName=tag; addNotNullConstraint columnName=parentid, constraintName=parent_id_not_nullable, tableName=workflowversion; addUniqueConstraint constraintName=unique_t...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addVersionToEvent', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.132104', 205, 'EXECUTED', '8:0c8e0f77478370035e34d48d38263c3c', 'addColumn tableName=event', '', NULL, '3.10.3', NULL, NULL, '9163996248');
@@ -1685,7 +1704,7 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('changeFilePathsToText', 'gluu (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.181518', 208, 'EXECUTED', '8:afe66a5e94fba6a10b480b20c7c0e64b', 'modifyDataType columnName=path, tableName=entry_defaultpaths; modifyDataType columnName=path, tableName=sourcefile; modifyDataType columnName=absolutepath, tableName=sourcefile', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addLegacyVersionColumn', 'aduncan (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.201071', 209, 'EXECUTED', '8:ae2404404f5219f482eff89566c1429a', 'addColumn tableName=workflowversion; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addImageRegistryColumnToImageTable', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.214019', 210, 'EXECUTED', '8:3cf8c8a1406d856fb9f4f4ba49f7ed08', 'addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9163996248');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('makeIsLegacyVersionNotNullable', 'Charles Overbeck', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.237038', 211, 'EXECUTED', '8:9674088e2a4cfdb34060dbe6f8a46abf', 'sql; sql; sql; addDefaultValue columnName=islegacyversion, tableName=workflowversion; addNotNullConstraint columnName=islegacyversion, tableName=workflowversion', 'Frozen versions are protected by security
+INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('makeIsLegacyVersionNotNullable', 'Charles Overbeck', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.237038', 211, 'EXECUTED', '8:9674088e2a4cfdb34060dbe6f8a46abf', 'sql; sql; sql; addDefaultValue columnName=islegacyversion, tableName=workflowversion; addNotNullConstraint columnName=islegacyversion, tableName=workflowversion', 'Frozen versions are protected by security
 Because of row-level security, line 57 left nulls in frozen versions', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addChecksumColumntoSourceFile', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.251059', 212, 'EXECUTED', '8:283c85b05ef8b67b275c943d5aa98474', 'addColumn tableName=sourcefile', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addDockerHubColumnsToImages', 'natalieperez (generated)', 'migrations.1.9.0.xml', '2021-12-10 14:19:59.266666', 213, 'EXECUTED', '8:9cfe45b37f26b1dc00e6d550f60fd045', 'addColumn tableName=image; addColumn tableName=image', '', NULL, '3.10.3', NULL, NULL, '9163996248');
@@ -1742,8 +1761,6 @@ INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, ordere
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('removeOldOrcidPutCodeColumn', 'ktran (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.419868', 264, 'EXECUTED', '8:b76aec12813f3f9c194c610d1093a401', 'dropColumn columnName=orcidputcode, tableName=apptool; dropColumn columnName=orcidputcode, tableName=service; dropColumn columnName=orcidputcode, tableName=tool; dropColumn columnName=orcidputcode, tableName=version_metadata; dropColumn columnName...', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('deleteCollection', 'svonworl', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.44672', 265, 'EXECUTED', '8:ed5c81838e1081645b7db85d382b62b8', 'addColumn tableName=collection; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('categories_new_feature', 'svonworl', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.476829', 266, 'EXECUTED', '8:87d860cab2c01f6a4aa62c697bf8cc4b', 'addColumn tableName=organization; addColumn tableName=collection; addNotNullConstraint columnName=dtype, tableName=collection; sql; sql; sql', '', NULL, '3.10.3', NULL, NULL, '9163996248');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addUsernameChangeRequiredColumn', 'natalieperez (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.490844', 267, 'EXECUTED', '8:2fdf3e5d5a81ae009ae07e0806770962', 'addColumn tableName=enduser', '', NULL, '3.10.3', NULL, NULL, '9163996248');
-INSERT INTO public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) VALUES ('addTopic', 'gluu (generated)', 'migrations.1.12.0.xml', '2021-12-10 14:20:00.511126', 268, 'EXECUTED', '8:2b2758606c8982de8de3d485c3a5d08e', 'addColumn tableName=apptool; addColumn tableName=service; addColumn tableName=tool; addColumn tableName=workflow', '', NULL, '3.10.3', NULL, NULL, '9163996248');
 
 
 --
@@ -1763,6 +1780,9 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: enduser; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator, setupcomplete, hostedentrycountlimit, hostedentryversionslimit, isbanned, privacypolicyversion, tosversion, privacypolicyversionacceptancedate, tosversionacceptancedate, orcid, usernamechangerequired) VALUES (1, NULL, true, 'user_admin', NULL, NULL, false, false, NULL, NULL, false, 'NONE', 'NONE', NULL, NULL, NULL, false);
+INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator, setupcomplete, hostedentrycountlimit, hostedentryversionslimit, isbanned, privacypolicyversion, tosversion, privacypolicyversionacceptancedate, tosversionacceptancedate, orcid, usernamechangerequired) VALUES (2, NULL, false, 'user_curator', NULL, NULL, true, false, NULL, NULL, false, 'PRIVACY_POLICY_VERSION_2_5', 'TOS_VERSION_2', NULL, NULL, NULL, false);
+INSERT INTO public.enduser (id, avatarurl, isadmin, username, dbcreatedate, dbupdatedate, curator, setupcomplete, hostedentrycountlimit, hostedentryversionslimit, isbanned, privacypolicyversion, tosversion, privacypolicyversionacceptancedate, tosversionacceptancedate, orcid, usernamechangerequired) VALUES (3, NULL, false, 'user_basic_1', NULL, NULL, false, false, NULL, NULL, false, 'PRIVACY_POLICY_VERSION_2_5', 'TOS_VERSION_2', NULL, NULL, NULL, false);
 
 
 --
@@ -1775,18 +1795,50 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: entry_blacklistedversionnames; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (102, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (103, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (104, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (105, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (106, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (107, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (108, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (109, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (110, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (111, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (112, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (103, '2');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (102, '2');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (113, '1');
+INSERT INTO public.entry_blacklistedversionnames (entry_id, blacklistedversionnames) VALUES (114, '1');
 
 
 --
 -- Data for Name: entry_defaultpaths; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (102, '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (103, '/Dockstore.wdl', 'DOCKSTORE_WDL');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (104, '/nextflow.config', 'NEXTFLOW_CONFIG');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (105, '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (106, '/Dockstore.wdl', 'DOCKSTORE_WDL');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (107, '/nextflow.config', 'NEXTFLOW_CONFIG');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (108, '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (109, '/Dockstore.wdl', 'DOCKSTORE_WDL');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (110, '/nextflow.config', 'NEXTFLOW_CONFIG');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (111, '/Dockstore.cwl', 'DOCKSTORE_CWL');
+INSERT INTO public.entry_defaultpaths (entry_id, path, filetype) VALUES (112, '/Dockstore.wdl', 'DOCKSTORE_WDL');
 
 
 --
 -- Data for Name: entry_input_fileformat; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.entry_input_fileformat (entryid, fileformatid) VALUES (102, 1);
+INSERT INTO public.entry_input_fileformat (entryid, fileformatid) VALUES (105, 1);
+INSERT INTO public.entry_input_fileformat (entryid, fileformatid) VALUES (108, 1);
+INSERT INTO public.entry_input_fileformat (entryid, fileformatid) VALUES (111, 1);
+INSERT INTO public.entry_input_fileformat (entryid, fileformatid) VALUES (113, 1);
+INSERT INTO public.entry_input_fileformat (entryid, fileformatid) VALUES (114, 1);
 
 
 --
@@ -1805,6 +1857,8 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: entry_output_fileformat; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.entry_output_fileformat (entryid, fileformatid) VALUES (113, 2);
+INSERT INTO public.entry_output_fileformat (entryid, fileformatid) VALUES (114, 2);
 
 
 --
@@ -1817,12 +1871,35 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (1, '2021-12-10 14:57:42.932', '2021-12-10 14:57:42.932', 'ADD_VERSION_TO_ENTRY', 1, NULL, NULL, NULL, 102, NULL, 102);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (2, '2021-12-10 14:58:07.874', '2021-12-10 14:58:07.874', 'ADD_VERSION_TO_ENTRY', 1, NULL, NULL, NULL, 103, NULL, 103);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (3, '2021-12-10 14:58:30.884', '2021-12-10 14:58:30.884', 'ADD_VERSION_TO_ENTRY', 1, NULL, NULL, NULL, 104, NULL, 104);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (4, '2021-12-10 15:13:08.938', '2021-12-10 15:13:08.938', 'ADD_VERSION_TO_ENTRY', 2, NULL, NULL, NULL, 105, NULL, 105);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (5, '2021-12-10 15:13:20.984', '2021-12-10 15:13:20.984', 'ADD_VERSION_TO_ENTRY', 2, NULL, NULL, NULL, 106, NULL, 106);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (6, '2021-12-10 15:13:38.073', '2021-12-10 15:13:38.073', 'ADD_VERSION_TO_ENTRY', 2, NULL, NULL, NULL, 107, NULL, 107);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (7, '2021-12-10 15:16:17.613', '2021-12-10 15:16:17.613', 'ADD_VERSION_TO_ENTRY', 3, NULL, NULL, NULL, 108, NULL, 108);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (8, '2021-12-10 15:16:31.899', '2021-12-10 15:16:31.899', 'ADD_VERSION_TO_ENTRY', 3, NULL, NULL, NULL, 109, NULL, 109);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (9, '2021-12-10 15:16:50.425', '2021-12-10 15:16:50.425', 'ADD_VERSION_TO_ENTRY', 3, NULL, NULL, NULL, 110, NULL, 110);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (10, '2021-12-10 15:17:04.096', '2021-12-10 15:17:04.096', 'ADD_VERSION_TO_ENTRY', 3, NULL, NULL, NULL, 111, NULL, 111);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (11, '2021-12-10 15:17:17.358', '2021-12-10 15:17:17.358', 'ADD_VERSION_TO_ENTRY', 3, NULL, NULL, NULL, 112, NULL, 112);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (12, '2021-12-10 15:21:08.886', '2021-12-10 15:21:08.886', 'CREATE_ORG', 1, 2, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (13, '2021-12-10 15:21:34.828', '2021-12-10 15:21:34.828', 'CREATE_COLLECTION', 1, 2, NULL, NULL, NULL, 1, NULL);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (14, '2021-12-10 15:21:50.886', '2021-12-10 15:21:50.886', 'ADD_TO_COLLECTION', 1, 2, NULL, NULL, 105, 1, NULL);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (15, '2021-12-10 15:21:59.243', '2021-12-10 15:21:59.243', 'APPROVE_ORG', 1, 2, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (16, '2021-12-10 15:22:26.699', '2021-12-10 15:22:26.699', 'CREATE_ORG', 1, 3, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (17, '2021-12-10 15:22:34.283', '2021-12-10 15:22:34.283', 'APPROVE_ORG', 1, 3, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (18, '2021-12-10 15:29:01.017', '2021-12-10 15:29:01.017', 'ADD_VERSION_TO_ENTRY', 1, NULL, NULL, NULL, 103, NULL, 113);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (19, '2021-12-10 15:31:24.504', '2021-12-10 15:31:24.504', 'ADD_VERSION_TO_ENTRY', 1, NULL, NULL, NULL, 102, NULL, 114);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (20, '2021-12-10 15:41:23.363', '2021-12-10 15:41:23.363', 'ADD_VERSION_TO_ENTRY', 1, NULL, 113, NULL, NULL, NULL, 115);
+INSERT INTO public.event (id, dbcreatedate, dbupdatedate, type, initiatoruserid, organizationid, toolid, userid, workflowid, collectionid, versionid) VALUES (21, '2021-12-10 15:41:45.227', '2021-12-10 15:41:45.227', 'ADD_VERSION_TO_ENTRY', 1, NULL, 114, NULL, NULL, NULL, 116);
 
 
 --
 -- Data for Name: fileformat; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.fileformat (id, value, dbcreatedate, dbupdatedate) VALUES (1, 'http://edamontology.org/format_2572', '2021-12-10 14:57:42.764', '2021-12-10 14:57:42.764');
+INSERT INTO public.fileformat (id, value, dbcreatedate, dbupdatedate) VALUES (2, 'http://edamontology.org/format_3615', '2021-12-10 15:41:23.261', '2021-12-10 15:41:23.261');
 
 
 --
@@ -1859,6 +1936,8 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: organization; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.organization (id, dbcreatedate, dbupdatedate, description, email, link, location, name, topic, status, avatarurl, displayname, categorizer) VALUES (2, '2021-12-10 15:21:08.879', '2021-12-10 15:21:59.248', NULL, 'pleasedontcontactme@here.com', NULL, NULL, 'NotAlienResearch', 'Definitely not aliens, that''s for sure.', 'APPROVED', NULL, 'NotAlienResearch', false);
+INSERT INTO public.organization (id, dbcreatedate, dbupdatedate, description, email, link, location, name, topic, status, avatarurl, displayname, categorizer) VALUES (3, '2021-12-10 15:22:26.691', '2021-12-10 15:22:34.286', NULL, 'Science@Science.Science', NULL, NULL, 'TheGreatFoundationOfScienceAndThings', 'TheGreatFoundationOfScienceAndThings', 'APPROVED', NULL, 'TheGreatFoundationOfScienceAndThings', false);
 
 
 --
@@ -1871,6 +1950,8 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: organization_user; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.organization_user (organizationid, userid, accepted, dbcreatedate, dbupdatedate, role) VALUES (2, 1, true, '2021-12-10 15:21:08.883', '2021-12-10 15:21:08.883', 'ADMIN');
+INSERT INTO public.organization_user (organizationid, userid, accepted, dbcreatedate, dbupdatedate, role) VALUES (3, 1, true, '2021-12-10 15:22:26.694', '2021-12-10 15:22:26.694', 'ADMIN');
 
 
 --
@@ -1889,12 +1970,693 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: sourcefile; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (42, '#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+id: "YOUR_WORKFLOW"
+label: "YOUR_WORKFLOW''s Label"
+class: Workflow
+doc: |
+    This is sample CWL Workflow code.
+    For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+inputs:
+  bamfile:
+    type: File
+    doc: "The BAM file used as input."
+    format: "http://edamontology.org/format_2572"
+  bedfile:
+    type: File
+  bamqc_pl:
+    type: File
+  flagstat2json:
+    type: File
+
+outputs:
+  bamqc_json:
+    type: File
+    outputSource: bamqc/outjson
+  flagstatjson:
+    type: File
+    outputSource: flagstat_json/flagstat_json
+
+steps:
+  flagstat:
+    run: flagstat.cwl
+    in:
+      bamfile: bamfile
+    out: [flagstat_file]
+
+  flagstat_json:
+    run: flagstat2json.cwl
+    in:
+      flagstat_file: flagstat/flagstat_file
+      flagstat2json: flagstat2json
+    out: [flagstat_json]
+
+  bamqc:
+    run: bamqc.cwl
+    in:
+      bamfile: bamfile
+      bedfile: bedfile
+      bamqc_pl: bamqc_pl
+      xtra_json: flagstat_json/flagstat_json
+    out: [ outjson ]
+
+s:author:
+  - class: s:Person
+    s:email: YOUR_EMAIL_HERE
+    s:name: YOUR_NAME_HERE
+', '/Dockstore.cwl', 'DOCKSTORE_CWL', '2021-12-10 14:57:42.69', '2021-12-10 14:57:42.69', '/Dockstore.cwl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (43, 'version 1.0
+task bamstats {
+
+    meta {
+        author: "YOUR_NAME_HERE"
+        email: "YOUR_EMAIL_HERE"
+        description: "This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs."
+    }
+
+    input {
+        File bam_input
+        Int mem_gb
+    }
+
+    command {
+        bash /usr/local/bin/bamstats ${mem_gb} ${bam_input}
+    }
+
+    output {
+        File bamstats_report = "bamstats_report.zip"
+    }
+
+    runtime {
+        docker: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0"
+        memory: mem_gb + "GB"
+    }
+}
+
+workflow bamstatsWorkflow {
+    input {
+        File bam_input
+        Int mem_gb
+    }
+    call bamstats { input: bam_input=bam_input, mem_gb=mem_gb }
+}
+', '/Dockstore.wdl', 'DOCKSTORE_WDL', '2021-12-10 14:58:07.759', '2021-12-10 14:58:07.759', '/Dockstore.wdl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (44, '#!/usr/bin/env nextflow
+
+bamFile = file(params.bam_input)
+
+process bamstats {
+    input:
+    file bam_input from bamFile
+    val mem_gb from params.mem_gb
+
+    output:
+    file ''bamstats_report.zip''
+
+    """
+    bash /usr/local/bin/bamstats $mem_gb $bam_input
+    """
+}
+', '/main.nf', 'NEXTFLOW', '2021-12-10 14:58:30.8', '2021-12-10 14:58:30.8', '/main.nf', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (45, 'manifest {
+    author = ''YOUR_NAME_HERE''
+    description = ''This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.''
+}
+
+params {
+    bam_input = ''NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam''
+    mem_gb = ''4''
+}
+
+process.container = ''quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0''
+docker {
+    enabled = true
+    docker.runOptions = ''-u $(id -u):$(id -g)''
+}
+', '/nextflow.config', 'NEXTFLOW_CONFIG', '2021-12-10 14:58:30.802', '2021-12-10 14:58:30.802', '/nextflow.config', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (46, '#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+id: "YOUR_WORKFLOW"
+label: "YOUR_WORKFLOW''s Label"
+class: Workflow
+doc: |
+    This is sample CWL Workflow code.
+    For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+inputs:
+  bamfile:
+    type: File
+    doc: "The BAM file used as input."
+    format: "http://edamontology.org/format_2572"
+  bedfile:
+    type: File
+  bamqc_pl:
+    type: File
+  flagstat2json:
+    type: File
+
+outputs:
+  bamqc_json:
+    type: File
+    outputSource: bamqc/outjson
+  flagstatjson:
+    type: File
+    outputSource: flagstat_json/flagstat_json
+
+steps:
+  flagstat:
+    run: flagstat.cwl
+    in:
+      bamfile: bamfile
+    out: [flagstat_file]
+
+  flagstat_json:
+    run: flagstat2json.cwl
+    in:
+      flagstat_file: flagstat/flagstat_file
+      flagstat2json: flagstat2json
+    out: [flagstat_json]
+
+  bamqc:
+    run: bamqc.cwl
+    in:
+      bamfile: bamfile
+      bedfile: bedfile
+      bamqc_pl: bamqc_pl
+      xtra_json: flagstat_json/flagstat_json
+    out: [ outjson ]
+
+s:author:
+  - class: s:Person
+    s:email: YOUR_EMAIL_HERE
+    s:name: YOUR_NAME_HERE
+', '/Dockstore.cwl', 'DOCKSTORE_CWL', '2021-12-10 15:13:08.789', '2021-12-10 15:13:08.789', '/Dockstore.cwl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (47, 'version 1.0
+task bamstats {
+
+    meta {
+        author: "YOUR_NAME_HERE"
+        email: "YOUR_EMAIL_HERE"
+        description: "This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs."
+    }
+
+    input {
+        File bam_input
+        Int mem_gb
+    }
+
+    command {
+        bash /usr/local/bin/bamstats ${mem_gb} ${bam_input}
+    }
+
+    output {
+        File bamstats_report = "bamstats_report.zip"
+    }
+
+    runtime {
+        docker: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0"
+        memory: mem_gb + "GB"
+    }
+}
+
+workflow bamstatsWorkflow {
+    input {
+        File bam_input
+        Int mem_gb
+    }
+    call bamstats { input: bam_input=bam_input, mem_gb=mem_gb }
+}
+', '/Dockstore.wdl', 'DOCKSTORE_WDL', '2021-12-10 15:13:20.87', '2021-12-10 15:13:20.87', '/Dockstore.wdl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (48, '#!/usr/bin/env nextflow
+
+bamFile = file(params.bam_input)
+
+process bamstats {
+    input:
+    file bam_input from bamFile
+    val mem_gb from params.mem_gb
+
+    output:
+    file ''bamstats_report.zip''
+
+    """
+    bash /usr/local/bin/bamstats $mem_gb $bam_input
+    """
+}
+', '/main.nf', 'NEXTFLOW', '2021-12-10 15:13:37.982', '2021-12-10 15:13:37.982', '/main.nf', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (49, 'manifest {
+    author = ''YOUR_NAME_HERE''
+    description = ''This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.''
+}
+
+params {
+    bam_input = ''NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam''
+    mem_gb = ''4''
+}
+
+process.container = ''quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0''
+docker {
+    enabled = true
+    docker.runOptions = ''-u $(id -u):$(id -g)''
+}
+', '/nextflow.config', 'NEXTFLOW_CONFIG', '2021-12-10 15:13:37.986', '2021-12-10 15:13:37.986', '/nextflow.config', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (51, 'version 1.0
+task bamstats {
+
+    meta {
+        author: "YOUR_NAME_HERE"
+        email: "YOUR_EMAIL_HERE"
+        description: "This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs."
+    }
+
+    input {
+        File bam_input
+        Int mem_gb
+    }
+
+    command {
+        bash /usr/local/bin/bamstats ${mem_gb} ${bam_input}
+    }
+
+    output {
+        File bamstats_report = "bamstats_report.zip"
+    }
+
+    runtime {
+        docker: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0"
+        memory: mem_gb + "GB"
+    }
+}
+
+workflow bamstatsWorkflow {
+    input {
+        File bam_input
+        Int mem_gb
+    }
+    call bamstats { input: bam_input=bam_input, mem_gb=mem_gb }
+}
+', '/Dockstore.wdl', 'DOCKSTORE_WDL', '2021-12-10 15:16:31.805', '2021-12-10 15:16:31.805', '/Dockstore.wdl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (50, '#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+id: "YOUR_WORKFLOW"
+label: "YOUR_WORKFLOW''s Label"
+class: Workflow
+doc: |
+    This is sample CWL Workflow code.
+    For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+inputs:
+  bamfile:
+    type: File
+    doc: "The BAM file used as input."
+    format: "http://edamontology.org/format_2572"
+  bedfile:
+    type: File
+  bamqc_pl:
+    type: File
+  flagstat2json:
+    type: File
+
+outputs:
+  bamqc_json:
+    type: File
+    outputSource: bamqc/outjson
+  flagstatjson:
+    type: File
+    outputSource: flagstat_json/flagstat_json
+
+steps:
+  flagstat:
+    run: flagstat.cwl
+    in:
+      bamfile: bamfile
+    out: [flagstat_file]
+
+  flagstat_json:
+    run: flagstat2json.cwl
+    in:
+      flagstat_file: flagstat/flagstat_file
+      flagstat2json: flagstat2json
+    out: [flagstat_json]
+
+  bamqc:
+    run: bamqc.cwl
+    in:
+      bamfile: bamfile
+      bedfile: bedfile
+      bamqc_pl: bamqc_pl
+      xtra_json: flagstat_json/flagstat_json
+    out: [ outjson ]
+
+s:author:
+  - class: s:Person
+    s:email: YOUR_EMAIL_HERE
+    s:name: YOUR_NAME_HERE
+', '/Dockstore.cwl', 'DOCKSTORE_CWL', '2021-12-10 15:16:17.491', '2021-12-10 15:16:17.491', '/Dockstore.cwl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (52, '#!/usr/bin/env nextflow
+
+bamFile = file(params.bam_input)
+
+process bamstats {
+    input:
+    file bam_input from bamFile
+    val mem_gb from params.mem_gb
+
+    output:
+    file ''bamstats_report.zip''
+
+    """
+    bash /usr/local/bin/bamstats $mem_gb $bam_input
+    """
+}
+', '/main.nf', 'NEXTFLOW', '2021-12-10 15:16:50.33', '2021-12-10 15:16:50.33', '/main.nf', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (53, 'manifest {
+    author = ''YOUR_NAME_HERE''
+    description = ''This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.''
+}
+
+params {
+    bam_input = ''NA12878.chrom20.ILLUMINA.bwa.CEU.low_coverage.20121211.bam''
+    mem_gb = ''4''
+}
+
+process.container = ''quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0''
+docker {
+    enabled = true
+    docker.runOptions = ''-u $(id -u):$(id -g)''
+}
+', '/nextflow.config', 'NEXTFLOW_CONFIG', '2021-12-10 15:16:50.334', '2021-12-10 15:16:50.334', '/nextflow.config', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (54, '#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+id: "YOUR_WORKFLOW"
+label: "YOUR_WORKFLOW''s Label"
+class: Workflow
+doc: |
+    This is sample CWL Workflow code.
+    For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+inputs:
+  bamfile:
+    type: File
+    doc: "The BAM file used as input."
+    format: "http://edamontology.org/format_2572"
+  bedfile:
+    type: File
+  bamqc_pl:
+    type: File
+  flagstat2json:
+    type: File
+
+outputs:
+  bamqc_json:
+    type: File
+    outputSource: bamqc/outjson
+  flagstatjson:
+    type: File
+    outputSource: flagstat_json/flagstat_json
+
+steps:
+  flagstat:
+    run: flagstat.cwl
+    in:
+      bamfile: bamfile
+    out: [flagstat_file]
+
+  flagstat_json:
+    run: flagstat2json.cwl
+    in:
+      flagstat_file: flagstat/flagstat_file
+      flagstat2json: flagstat2json
+    out: [flagstat_json]
+
+  bamqc:
+    run: bamqc.cwl
+    in:
+      bamfile: bamfile
+      bedfile: bedfile
+      bamqc_pl: bamqc_pl
+      xtra_json: flagstat_json/flagstat_json
+    out: [ outjson ]
+
+s:author:
+  - class: s:Person
+    s:email: YOUR_EMAIL_HERE
+    s:name: YOUR_NAME_HERE
+', '/Dockstore.cwl', 'DOCKSTORE_CWL', '2021-12-10 15:17:03.979', '2021-12-10 15:17:03.979', '/Dockstore.cwl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (63, '', '/Dockerfile', 'DOCKERFILE', '2021-12-10 15:41:45.094', '2021-12-10 15:41:45.094', '/Dockerfile', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (64, '', '/test.cwl.json', 'CWL_TEST_JSON', '2021-12-10 15:41:45.096', '2021-12-10 15:41:45.096', '/test.cwl.json', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (65, '#!/usr/bin/env cwl-runner
+
+class: CommandLineTool
+id: "BAMStats"
+label: "BAMStats tool"
+cwlVersion: v1.1
+doc: |
+    This is sample CWL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.cwl) repository.
+    For more information, see "Getting Started with CWL" in the Dockstore Docs.
+
+dct:creator:
+  foaf:name: "YOUR_NAME_HERE"
+  foaf:mbox: "mailto:YOUR_EMAIL_HERE"
+
+requirements:
+  - class: DockerRequirement
+    dockerPull: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6"
+
+hints:
+  - class: ResourceRequirement
+    coresMin: 1
+    ramMin: 4092 #"the process requires at least 4G of RAM
+    outdirMin: 512000
+
+inputs:
+  mem_gb:
+    type: int
+    default: 4
+    doc: "The memory, in GB, for the reporting tool"
+    inputBinding:
+      position: 1
+
+  bam_input:
+    type: File
+    doc: "The BAM file used as input, it must be sorted."
+    format: "http://edamontology.org/format_2572"
+    inputBinding:
+      position: 2
+
+outputs:
+  bamstats_report:
+    type: File
+    format: "http://edamontology.org/format_3615"
+    outputBinding:
+      glob: bamstats_report.zip
+    doc: "A zip file that contains the HTML report and various graphics."
+
+
+baseCommand: ["bash", "/usr/local/bin/bamstats"]
+
+
+$namespaces:
+    dct: http://purl.org/dc/terms/
+    foaf: http://xmlns.com/foaf/0.1/
+', '/Dockstore.cwl', 'DOCKSTORE_CWL', '2021-12-10 15:41:45.098', '2021-12-10 15:41:45.098', '/Dockstore.cwl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (55, 'version 1.0
+task bamstats {
+
+    meta {
+        author: "YOUR_NAME_HERE"
+        email: "YOUR_EMAIL_HERE"
+        description: "This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs."
+    }
+
+    input {
+        File bam_input
+        Int mem_gb
+    }
+
+    command {
+        bash /usr/local/bin/bamstats ${mem_gb} ${bam_input}
+    }
+
+    output {
+        File bamstats_report = "bamstats_report.zip"
+    }
+
+    runtime {
+        docker: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0"
+        memory: mem_gb + "GB"
+    }
+}
+
+workflow bamstatsWorkflow {
+    input {
+        File bam_input
+        Int mem_gb
+    }
+    call bamstats { input: bam_input=bam_input, mem_gb=mem_gb }
+}
+', '/Dockstore.wdl', 'DOCKSTORE_WDL', '2021-12-10 15:17:17.247', '2021-12-10 15:17:17.247', '/Dockstore.wdl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (56, 'version 1.0
+task bamstats {
+
+    meta {
+        author: "YOUR_NAME_HERE"
+        email: "YOUR_EMAIL_HERE"
+        description: "This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs."
+    }
+
+    input {
+        File bam_input
+        Int mem_gb
+    }
+
+    command {
+        bash /usr/local/bin/bamstats ${mem_gb} ${bam_input}
+    }
+
+    output {
+        File bamstats_report = "bamstats_report.zip"
+    }
+
+    runtime {
+        docker: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0"
+        memory: mem_gb + "GB"
+    }
+}
+
+workflow bamstatsWorkflow {
+    input {
+        File bam_input
+        Int mem_gb
+    }
+    call bamstats { input: bam_input=bam_input, mem_gb=mem_gb }
+}
+', '/Dockstore.wdl', 'DOCKSTORE_WDL', '2021-12-10 15:29:00.846', '2021-12-10 15:29:00.846', '/Dockstore.wdl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (57, '', '/test.wdl.json', 'WDL_TEST_JSON', '2021-12-10 15:29:00.849', '2021-12-10 15:29:00.849', '/test.wdl.json', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (58, '', '/test.cwl.json', 'CWL_TEST_JSON', '2021-12-10 15:31:24.307', '2021-12-10 15:31:24.307', '/test.cwl.json', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (59, '#!/usr/bin/env cwl-runner
+
+cwlVersion: v1.0
+id: "YOUR_WORKFLOW"
+label: "YOUR_WORKFLOW''s Label"
+class: Workflow
+doc: |
+    This is sample CWL Workflow code.
+    For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+inputs:
+  bamfile:
+    type: File
+    doc: "The BAM file used as input."
+    format: "http://edamontology.org/format_2572"
+  bedfile:
+    type: File
+  bamqc_pl:
+    type: File
+  flagstat2json:
+    type: File
+
+outputs:
+  bamqc_json:
+    type: File
+    outputSource: bamqc/outjson
+  flagstatjson:
+    type: File
+    outputSource: flagstat_json/flagstat_json
+
+steps:
+  flagstat:
+    run: flagstat.cwl
+    in:
+      bamfile: bamfile
+    out: [flagstat_file]
+
+  flagstat_json:
+    run: flagstat2json.cwl
+    in:
+      flagstat_file: flagstat/flagstat_file
+      flagstat2json: flagstat2json
+    out: [flagstat_json]
+
+  bamqc:
+    run: bamqc.cwl
+    in:
+      bamfile: bamfile
+      bedfile: bedfile
+      bamqc_pl: bamqc_pl
+      xtra_json: flagstat_json/flagstat_json
+    out: [ outjson ]
+
+s:author:
+  - class: s:Person
+    s:email: YOUR_EMAIL_HERE
+    s:name: YOUR_NAME_HERE
+', '/Dockstore.cwl', 'DOCKSTORE_CWL', '2021-12-10 15:31:24.311', '2021-12-10 15:31:24.311', '/Dockstore.cwl', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (61, '', '/Dockerfile', 'DOCKERFILE', '2021-12-10 15:41:23.188', '2021-12-10 15:41:23.188', '/Dockerfile', false, DEFAULT);
+INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate, absolutepath, frozen, sha256) VALUES (62, '#!/usr/bin/env cwl-runner
+
+class: CommandLineTool
+id: "BAMStats"
+label: "BAMStats tool"
+cwlVersion: v1.1
+doc: |
+    This is sample CWL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.cwl) repository.
+    For more information, see "Getting Started with CWL" in the Dockstore Docs.
+
+dct:creator:
+  foaf:name: "YOUR_NAME_HERE"
+  foaf:mbox: "mailto:YOUR_EMAIL_HERE"
+
+requirements:
+  - class: DockerRequirement
+    dockerPull: "quay.io/collaboratory/dockstore-tool-bamstats:1.25-6"
+
+hints:
+  - class: ResourceRequirement
+    coresMin: 1
+    ramMin: 4092 #"the process requires at least 4G of RAM
+    outdirMin: 512000
+
+inputs:
+  mem_gb:
+    type: int
+    default: 4
+    doc: "The memory, in GB, for the reporting tool"
+    inputBinding:
+      position: 1
+
+  bam_input:
+    type: File
+    doc: "The BAM file used as input, it must be sorted."
+    format: "http://edamontology.org/format_2572"
+    inputBinding:
+      position: 2
+
+outputs:
+  bamstats_report:
+    type: File
+    format: "http://edamontology.org/format_3615"
+    outputBinding:
+      glob: bamstats_report.zip
+    doc: "A zip file that contains the HTML report and various graphics."
+
+
+baseCommand: ["bash", "/usr/local/bin/bamstats"]
+
+
+$namespaces:
+    dct: http://purl.org/dc/terms/
+    foaf: http://xmlns.com/foaf/0.1/
+', '/Dockstore.cwl', 'DOCKSTORE_CWL', '2021-12-10 15:41:23.194', '2021-12-10 15:41:23.194', '/Dockstore.cwl', false, DEFAULT);
 
 
 --
 -- Data for Name: sourcefile_verified; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.sourcefile_verified (id, metadata, verified, source, dbcreatedate, dbupdatedate, platformversion) VALUES (57, 'c', true, 'a', NULL, NULL, 'b');
+INSERT INTO public.sourcefile_verified (id, metadata, verified, source, dbcreatedate, dbupdatedate, platformversion) VALUES (58, 'c', true, 'a', NULL, NULL, 'b');
 
 
 --
@@ -1913,24 +2675,50 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (115, false, NULL, '1', NULL, true, false, '/Dockstore.cwl', '/Dockerfile', NULL, 0, '/Dockstore.wdl', '2021-12-10 15:41:23.198', '2021-12-10 15:41:23.297', 'TAG', 1, NULL, false, 113);
+INSERT INTO public.tag (id, dirtybit, lastbuilt, name, reference, valid, automated, cwlpath, dockerfilepath, imageid, size, wdlpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, frozen, parentid) VALUES (116, false, NULL, '1', NULL, true, false, '/Dockstore.cwl', '/Dockerfile', NULL, 0, '/Dockstore.wdl', '2021-12-10 15:41:45.1', '2021-12-10 15:41:45.146', 'TAG', 1, NULL, false, 114);
 
 
 --
 -- Data for Name: token; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (1, 'fake-admin-token', NULL, 'dockstore', 1, 'user_admin', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (2, 'fake-curator-token', NULL, 'dockstore', 2, 'user_curator', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (3, 'fake-basic-1-token', NULL, 'dockstore', 3, 'user_basic_1', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (4, 'fake-admin-github-token', NULL, 'github.com', 1, 'user_admin', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.token (id, content, refreshtoken, tokensource, userid, username, dbcreatedate, dbupdatedate, expirationtime, scope, onlineprofileid) VALUES (5, 'fake-admin-quay-token', NULL, 'quay.io', 1, 'user_admin', NULL, NULL, NULL, NULL, NULL);
 
 
 --
 -- Data for Name: tool; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (113, 'YOUR_NAME_HERE', 'This is sample CWL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.cwl) repository.
+For more information, see "Getting Started with CWL" in the Dockstore Docs.
+', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:41:07.101', '2021-12-10 15:41:07.101', NULL, 'HOSTED', 'd', 'd', false, 'quay.io', '', NULL, NULL, '2021-12-10 15:41:07.114', '2021-12-10 15:41:25.296', NULL, NULL, 115, 'CWL', NULL, NULL, NULL);
+INSERT INTO public.tool (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, lastbuild, mode, name, namespace, privateaccess, registry, toolmaintaineremail, toolname, checkerid, dbcreatedate, dbupdatedate, topicid, conceptdoi, actualdefaultversion, descriptortype, licensename, forumurl, topic) VALUES (114, 'YOUR_NAME_HERE', 'This is sample CWL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.cwl) repository.
+For more information, see "Getting Started with CWL" in the Dockstore Docs.
+', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:41:35.63', '2021-12-10 15:41:35.63', NULL, 'HOSTED', 'C', 'C', false, 'quay.io', '', NULL, NULL, '2021-12-10 15:41:35.639', '2021-12-10 15:41:47.333', NULL, NULL, 116, 'CWL', NULL, NULL, NULL);
 
 
 --
 -- Data for Name: user_entry; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 102);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 103);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 104);
+INSERT INTO public.user_entry (userid, entryid) VALUES (2, 105);
+INSERT INTO public.user_entry (userid, entryid) VALUES (2, 106);
+INSERT INTO public.user_entry (userid, entryid) VALUES (2, 107);
+INSERT INTO public.user_entry (userid, entryid) VALUES (3, 108);
+INSERT INTO public.user_entry (userid, entryid) VALUES (3, 109);
+INSERT INTO public.user_entry (userid, entryid) VALUES (3, 110);
+INSERT INTO public.user_entry (userid, entryid) VALUES (3, 111);
+INSERT INTO public.user_entry (userid, entryid) VALUES (3, 112);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 113);
+INSERT INTO public.user_entry (userid, entryid) VALUES (1, 114);
 
 
 --
@@ -1943,18 +2731,87 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: validation; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (1, '2021-12-10 14:57:42.752', '2021-12-10 14:57:42.752', '{}', 'DOCKSTORE_CWL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (2, '2021-12-10 14:57:42.756', '2021-12-10 14:57:42.756', '{}', 'CWL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (3, '2021-12-10 14:58:07.779', '2021-12-10 14:58:07.779', '{}', 'DOCKSTORE_WDL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (4, '2021-12-10 14:58:07.782', '2021-12-10 14:58:07.782', '{}', 'WDL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (5, '2021-12-10 14:58:30.814', '2021-12-10 14:58:30.814', '{}', 'NEXTFLOW_CONFIG', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (6, '2021-12-10 15:13:08.82', '2021-12-10 15:13:08.82', '{}', 'DOCKSTORE_CWL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (7, '2021-12-10 15:13:08.824', '2021-12-10 15:13:08.824', '{}', 'CWL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (8, '2021-12-10 15:13:20.89', '2021-12-10 15:13:20.89', '{}', 'DOCKSTORE_WDL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (9, '2021-12-10 15:13:20.893', '2021-12-10 15:13:20.893', '{}', 'WDL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (10, '2021-12-10 15:13:38', '2021-12-10 15:13:38', '{}', 'NEXTFLOW_CONFIG', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (11, '2021-12-10 15:16:17.517', '2021-12-10 15:16:17.517', '{}', 'DOCKSTORE_CWL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (12, '2021-12-10 15:16:17.52', '2021-12-10 15:16:17.52', '{}', 'CWL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (13, '2021-12-10 15:16:31.823', '2021-12-10 15:16:31.823', '{}', 'DOCKSTORE_WDL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (14, '2021-12-10 15:16:31.827', '2021-12-10 15:16:31.827', '{}', 'WDL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (15, '2021-12-10 15:16:50.349', '2021-12-10 15:16:50.349', '{}', 'NEXTFLOW_CONFIG', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (16, '2021-12-10 15:17:04.005', '2021-12-10 15:17:04.005', '{}', 'DOCKSTORE_CWL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (17, '2021-12-10 15:17:04.009', '2021-12-10 15:17:04.009', '{}', 'CWL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (18, '2021-12-10 15:17:17.266', '2021-12-10 15:17:17.266', '{}', 'DOCKSTORE_WDL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (19, '2021-12-10 15:17:17.271', '2021-12-10 15:17:17.271', '{}', 'WDL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (20, '2021-12-10 15:29:00.866', '2021-12-10 15:29:00.866', '{}', 'DOCKSTORE_WDL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (21, '2021-12-10 15:29:00.87', '2021-12-10 15:29:00.87', '{}', 'WDL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (22, '2021-12-10 15:31:24.347', '2021-12-10 15:31:24.347', '{}', 'DOCKSTORE_CWL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (23, '2021-12-10 15:31:24.35', '2021-12-10 15:31:24.35', '{}', 'CWL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (24, '2021-12-10 15:41:23.242', '2021-12-10 15:41:23.242', '{}', 'DOCKSTORE_CWL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (25, '2021-12-10 15:41:23.244', '2021-12-10 15:41:23.245', '{"/Dockstore.wdl":"Primary WDL descriptor is not present."}', 'DOCKSTORE_WDL', false);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (26, '2021-12-10 15:41:23.247', '2021-12-10 15:41:23.247', '{}', 'DOCKERFILE', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (27, '2021-12-10 15:41:23.25', '2021-12-10 15:41:23.25', '{}', 'CWL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (28, '2021-12-10 15:41:23.253', '2021-12-10 15:41:23.253', '{}', 'WDL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (29, '2021-12-10 15:41:45.131', '2021-12-10 15:41:45.131', '{}', 'DOCKSTORE_CWL', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (30, '2021-12-10 15:41:45.133', '2021-12-10 15:41:45.133', '{"/Dockstore.wdl":"Primary WDL descriptor is not present."}', 'DOCKSTORE_WDL', false);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (31, '2021-12-10 15:41:45.136', '2021-12-10 15:41:45.136', '{}', 'DOCKERFILE', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (32, '2021-12-10 15:41:45.139', '2021-12-10 15:41:45.139', '{}', 'CWL_TEST_JSON', true);
+INSERT INTO public.validation (id, dbcreatedate, dbupdatedate, message, type, valid) VALUES (33, '2021-12-10 15:41:45.142', '2021-12-10 15:41:45.142', '{}', 'WDL_TEST_JSON', true);
 
 
 --
 -- Data for Name: version_input_fileformat; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.version_input_fileformat (versionid, fileformatid) VALUES (105, 1);
+INSERT INTO public.version_input_fileformat (versionid, fileformatid) VALUES (108, 1);
+INSERT INTO public.version_input_fileformat (versionid, fileformatid) VALUES (111, 1);
+INSERT INTO public.version_input_fileformat (versionid, fileformatid) VALUES (102, 1);
+INSERT INTO public.version_input_fileformat (versionid, fileformatid) VALUES (114, 1);
+INSERT INTO public.version_input_fileformat (versionid, fileformatid) VALUES (115, 1);
+INSERT INTO public.version_input_fileformat (versionid, fileformatid) VALUES (116, 1);
 
 
 --
 -- Data for Name: version_metadata; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 102, NULL, 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'DESCRIPTOR', NULL, '2021-12-10 14:57:42.758', '2021-12-10 14:57:42.758', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 103, NULL, 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'DESCRIPTOR', NULL, '2021-12-10 14:58:07.784', '2021-12-10 14:58:07.784', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 104, NULL, 'This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.', 'DESCRIPTOR', NULL, '2021-12-10 14:58:30.817', '2021-12-10 14:58:30.817', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 105, NULL, 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'DESCRIPTOR', NULL, '2021-12-10 15:13:08.827', '2021-12-10 15:13:08.827', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 106, NULL, 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'DESCRIPTOR', NULL, '2021-12-10 15:13:20.896', '2021-12-10 15:13:20.896', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 107, NULL, 'This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.', 'DESCRIPTOR', NULL, '2021-12-10 15:13:38.004', '2021-12-10 15:13:38.004', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 108, NULL, 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'DESCRIPTOR', NULL, '2021-12-10 15:16:17.523', '2021-12-10 15:16:17.523', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 109, NULL, 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'DESCRIPTOR', NULL, '2021-12-10 15:16:31.83', '2021-12-10 15:16:31.83', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 110, NULL, 'This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.', 'DESCRIPTOR', NULL, '2021-12-10 15:16:50.352', '2021-12-10 15:16:50.352', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 111, NULL, 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'DESCRIPTOR', NULL, '2021-12-10 15:17:04.012', '2021-12-10 15:17:04.012', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 112, NULL, 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'DESCRIPTOR', NULL, '2021-12-10 15:17:17.275', '2021-12-10 15:17:17.275', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, true, '["c"]', 113, NULL, 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'DESCRIPTOR', NULL, '2021-12-10 15:29:00.873', '2021-12-10 15:30:29.074', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, true, '["c"]', 114, NULL, 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'DESCRIPTOR', NULL, '2021-12-10 15:31:24.353', '2021-12-10 15:31:37.874', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 115, NULL, 'This is sample CWL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.cwl) repository.
+For more information, see "Getting Started with CWL" in the Dockstore Docs.
+', 'DESCRIPTOR', NULL, '2021-12-10 15:41:23.257', '2021-12-10 15:41:23.257', NULL);
+INSERT INTO public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile) VALUES ('NOT_REQUESTED', NULL, false, false, NULL, 116, NULL, 'This is sample CWL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.cwl) repository.
+For more information, see "Getting Started with CWL" in the Dockstore Docs.
+', 'DESCRIPTOR', NULL, '2021-12-10 15:41:45.144', '2021-12-10 15:41:45.144', NULL);
 
 
 --
@@ -1973,30 +2830,120 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Data for Name: version_output_fileformat; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.version_output_fileformat (versionid, fileformatid) VALUES (115, 2);
+INSERT INTO public.version_output_fileformat (versionid, fileformatid) VALUES (116, 2);
 
 
 --
 -- Data for Name: version_sourcefile; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (102, 42);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (103, 43);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (104, 44);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (104, 45);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (105, 46);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (106, 47);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (107, 48);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (107, 49);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (108, 50);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (109, 51);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (110, 52);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (110, 53);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (111, 54);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (112, 55);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (113, 56);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (113, 57);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (114, 59);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (114, 58);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (115, 61);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (115, 62);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (116, 63);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (116, 65);
+INSERT INTO public.version_sourcefile (versionid, sourcefileid) VALUES (116, 64);
 
 
 --
 -- Data for Name: version_validation; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.version_validation (versionid, validationid) VALUES (102, 1);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (102, 2);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (103, 3);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (103, 4);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (104, 5);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (105, 6);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (105, 7);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (106, 8);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (106, 9);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (107, 10);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (108, 11);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (108, 12);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (109, 13);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (109, 14);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (110, 15);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (111, 16);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (111, 17);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (112, 18);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (112, 19);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (113, 20);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (113, 21);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (114, 22);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (114, 23);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (115, 24);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (115, 25);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (115, 26);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (115, 27);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (115, 28);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (116, 29);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (116, 30);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (116, 31);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (116, 32);
+INSERT INTO public.version_validation (versionid, validationid) VALUES (116, 33);
 
 
 --
 -- Data for Name: workflow; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (110, 'YOUR_NAME_HERE', 'This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.', NULL, NULL, true, '2021-12-10 15:16:45.794', '2021-12-10 15:16:40.263', 'nfl', 'HOSTED', 'user_basic_1', 'C', NULL, 'dockstore.org', NULL, false, '2021-12-10 15:16:40.277', '2021-12-10 15:16:51.913', NULL, NULL, 'n/a', 110, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (104, 'YOUR_NAME_HERE', 'This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.', NULL, NULL, true, '2021-12-10 14:58:25.543', '2021-12-10 14:58:20.288', 'nfl', 'HOSTED', 'user_admin', 'C', NULL, 'dockstore.org', NULL, false, '2021-12-10 14:58:20.298', '2021-12-10 14:58:32.844', NULL, NULL, 'n/a', 104, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (105, 'YOUR_NAME_HERE', 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:13:08.768', '2021-12-10 15:13:03.144', 'cwl', 'HOSTED', 'user_curator', 'A', NULL, 'dockstore.org', NULL, false, '2021-12-10 15:13:03.152', '2021-12-10 15:13:42.19', NULL, NULL, 'n/a', 105, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (106, 'YOUR_NAME_HERE', 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:13:20.809', '2021-12-10 15:13:16.67', 'wdl', 'HOSTED', 'user_curator', 'B', NULL, 'dockstore.org', NULL, false, '2021-12-10 15:13:16.677', '2021-12-10 15:13:46.09', NULL, NULL, 'n/a', 106, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (107, 'YOUR_NAME_HERE', 'This is sample NextFlow code. For more information, see "Getting Started with NextFlow" in the Dockstore Docs.', NULL, NULL, true, '2021-12-10 15:13:33.202', '2021-12-10 15:13:28.679', 'nfl', 'HOSTED', 'user_curator', 'C', NULL, 'dockstore.org', NULL, false, '2021-12-10 15:13:28.687', '2021-12-10 15:13:49.751', NULL, NULL, 'n/a', 107, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (108, 'YOUR_NAME_HERE', 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:16:17.475', '2021-12-10 15:16:11.612', 'cwl', 'HOSTED', 'user_basic_1', 'A', NULL, 'dockstore.org', NULL, false, '2021-12-10 15:16:11.62', '2021-12-10 15:16:19.957', NULL, NULL, 'n/a', 108, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (109, 'YOUR_NAME_HERE', 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:16:31.759', '2021-12-10 15:16:26.396', 'wdl', 'HOSTED', 'user_basic_1', 'B', NULL, 'dockstore.org', NULL, false, '2021-12-10 15:16:26.404', '2021-12-10 15:16:34.566', NULL, NULL, 'n/a', 109, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (111, 'YOUR_NAME_HERE', 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:17:03.962', '2021-12-10 15:16:58.245', 'cwl', 'HOSTED', 'user_basic_1', 'AA', NULL, 'dockstore.org', NULL, false, '2021-12-10 15:16:58.257', '2021-12-10 15:17:05.998', NULL, NULL, 'n/a', 111, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (112, 'YOUR_NAME_HERE', 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:17:17.203', '2021-12-10 15:17:13.089', 'wdl', 'HOSTED', 'user_basic_1', 'BB', NULL, 'dockstore.org', NULL, false, '2021-12-10 15:17:13.097', '2021-12-10 15:17:19.401', NULL, NULL, 'n/a', 112, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (103, 'YOUR_NAME_HERE', 'This is sample WDL Tool code taken and adapted from the [dockstore-tool-bamstats](https://github.com/CancerCollaboratory/dockstore-tool-bamstats/blob/develop/Dockstore.wdl) repository. For more information, see ''Getting Started with WDL'' in the Dockstore Docs.', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:29:00.792', '2021-12-10 14:57:59.702', 'wdl', 'HOSTED', 'user_admin', 'B', NULL, 'dockstore.org', NULL, false, '2021-12-10 14:57:59.713', '2021-12-10 15:29:00.876', NULL, NULL, 'n/a', 113, NULL, NULL, NULL);
+INSERT INTO public.workflow (id, author, description, email, giturl, ispublished, lastmodified, lastupdated, descriptortype, mode, organization, repository, workflowname, sourcecontrol, checkerid, ischecker, dbcreatedate, dbupdatedate, topicid, conceptdoi, descriptortypesubclass, actualdefaultversion, licensename, forumurl, topic) VALUES (102, 'YOUR_NAME_HERE', 'This is sample CWL Workflow code.
+For more information, see "Getting Started with CWL" and "CWL Best Practices" in the Dockstore Docs.
+', 'YOUR_EMAIL_HERE', NULL, true, '2021-12-10 15:31:24.286', '2021-12-10 14:57:37.478', 'cwl', 'HOSTED', 'user_admin', 'A', NULL, 'dockstore.org', NULL, false, '2021-12-10 14:57:37.552', '2021-12-10 15:32:50.376', NULL, NULL, 'n/a', 102, NULL, NULL, NULL);
 
 
 --
 -- Data for Name: workflowversion; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (114, false, '2021-12-10 15:31:24.286', '2', NULL, true, '/Dockstore.cwl', '2021-12-10 15:31:24.314', '2021-12-10 15:31:24.879', 'TAG', 1, NULL, NULL, false, 102, true, NULL, '[]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (104, false, '2021-12-10 14:58:25.543', '1', NULL, true, '/nextflow.config', '2021-12-10 14:58:30.804', '2021-12-10 14:58:37.652', 'TAG', 1, NULL, NULL, false, 104, true, NULL, '[{"id":"bamstats","file":"main.nf","docker":"quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0","link":"https://quay.io/repository/collaboratory/dockstore-tool-bamstats","specifier":"TAG"}]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (105, false, '2021-12-10 15:13:08.768', '1', NULL, true, '/Dockstore.cwl', '2021-12-10 15:13:08.793', '2021-12-10 15:13:09.325', 'TAG', 2, NULL, NULL, false, 105, true, NULL, '[]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (106, false, '2021-12-10 15:13:20.809', '1', NULL, true, '/Dockstore.wdl', '2021-12-10 15:13:20.876', '2021-12-10 15:13:21.506', 'TAG', 2, NULL, NULL, false, 106, true, NULL, '[{"id":"bamstats","file":"/Dockstore.wdl","docker":"quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0","link":"https://quay.io/repository/collaboratory/dockstore-tool-bamstats","specifier":"TAG"}]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (107, false, '2021-12-10 15:13:33.202', '1', NULL, true, '/nextflow.config', '2021-12-10 15:13:37.99', '2021-12-10 15:13:43.831', 'TAG', 2, NULL, NULL, false, 107, true, NULL, '[{"id":"bamstats","file":"main.nf","docker":"quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0","link":"https://quay.io/repository/collaboratory/dockstore-tool-bamstats","specifier":"TAG"}]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (108, false, '2021-12-10 15:16:17.475', '1', NULL, true, '/Dockstore.cwl', '2021-12-10 15:16:17.494', '2021-12-10 15:16:18.005', 'TAG', 3, NULL, NULL, false, 108, true, NULL, '[]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (109, false, '2021-12-10 15:16:31.759', '1', NULL, true, '/Dockstore.wdl', '2021-12-10 15:16:31.809', '2021-12-10 15:16:32.282', 'TAG', 3, NULL, NULL, false, 109, true, NULL, '[{"id":"bamstats","file":"/Dockstore.wdl","docker":"quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0","link":"https://quay.io/repository/collaboratory/dockstore-tool-bamstats","specifier":"TAG"}]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (110, false, '2021-12-10 15:16:45.794', '1', NULL, true, '/nextflow.config', '2021-12-10 15:16:50.337', '2021-12-10 15:16:55.924', 'TAG', 3, NULL, NULL, false, 110, true, NULL, '[{"id":"bamstats","file":"main.nf","docker":"quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0","link":"https://quay.io/repository/collaboratory/dockstore-tool-bamstats","specifier":"TAG"}]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (111, false, '2021-12-10 15:17:03.962', '1', NULL, true, '/Dockstore.cwl', '2021-12-10 15:17:03.982', '2021-12-10 15:17:04.394', 'TAG', 3, NULL, NULL, false, 111, true, NULL, '[]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (112, false, '2021-12-10 15:17:17.203', '1', NULL, true, '/Dockstore.wdl', '2021-12-10 15:17:17.251', '2021-12-10 15:17:17.738', 'TAG', 3, NULL, NULL, false, 112, true, NULL, '[{"id":"bamstats","file":"/Dockstore.wdl","docker":"quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0","link":"https://quay.io/repository/collaboratory/dockstore-tool-bamstats","specifier":"TAG"}]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (103, false, '2021-12-10 14:58:04.84', '1', NULL, true, '/Dockstore.wdl', '2021-12-10 14:58:07.764', '2021-12-10 15:29:00.879', 'TAG', 1, NULL, NULL, false, 103, true, NULL, '[{"id":"bamstats","file":"/Dockstore.wdl","docker":"quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0","link":"https://quay.io/repository/collaboratory/dockstore-tool-bamstats","specifier":"TAG"}]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (113, false, '2021-12-10 15:29:00.792', '2', NULL, true, '/Dockstore.wdl', '2021-12-10 15:29:00.852', '2021-12-10 15:29:01.444', 'TAG', 1, NULL, NULL, false, 103, true, NULL, '[{"id":"bamstats","file":"/Dockstore.wdl","docker":"quay.io/collaboratory/dockstore-tool-bamstats:1.25-6_1.0","link":"https://quay.io/repository/collaboratory/dockstore-tool-bamstats","specifier":"TAG"}]', false);
+INSERT INTO public.workflowversion (id, dirtybit, lastmodified, name, reference, valid, workflowpath, dbcreatedate, dbupdatedate, referencetype, versioneditor_id, commitid, subclass, frozen, parentid, islegacyversion, dagjson, tooltablejson, synced) VALUES (102, false, '2021-12-10 14:57:42.55', '1', NULL, true, '/Dockstore.cwl', '2021-12-10 14:57:42.698', '2021-12-10 15:31:24.36', 'TAG', 1, NULL, NULL, false, 102, true, NULL, '[]', false);
 
 
 --
@@ -2009,7 +2956,7 @@ INSERT INTO public.databasechangeloglock (id, locked, lockgranted, lockedby) VAL
 -- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.author_id_seq', 1, false);
+SELECT pg_catalog.setval('public.author_id_seq', 15, true);
 
 
 --
@@ -2023,21 +2970,21 @@ SELECT pg_catalog.setval('public.cloud_instance_id_seq', 1, false);
 -- Name: collection_entry_version_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.collection_entry_version_id_seq', 1, false);
+SELECT pg_catalog.setval('public.collection_entry_version_id_seq', 1, true);
 
 
 --
 -- Name: collection_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.collection_id_seq', 1, false);
+SELECT pg_catalog.setval('public.collection_id_seq', 1, true);
 
 
 --
 -- Name: container_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.container_id_seq', 101, true);
+SELECT pg_catalog.setval('public.container_id_seq', 114, true);
 
 
 --
@@ -2058,14 +3005,14 @@ SELECT pg_catalog.setval('public.enduser_id_seq', 2, true);
 -- Name: event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.event_id_seq', 1, false);
+SELECT pg_catalog.setval('public.event_id_seq', 21, true);
 
 
 --
 -- Name: fileformat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.fileformat_id_seq', 1, false);
+SELECT pg_catalog.setval('public.fileformat_id_seq', 2, true);
 
 
 --
@@ -2107,21 +3054,21 @@ SELECT pg_catalog.setval('public.orcidauthor_id_seq', 1, false);
 -- Name: organization_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.organization_id_seq', 1, true);
+SELECT pg_catalog.setval('public.organization_id_seq', 3, true);
 
 
 --
 -- Name: sourcefile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.sourcefile_id_seq', 41, true);
+SELECT pg_catalog.setval('public.sourcefile_id_seq', 65, true);
 
 
 --
 -- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.tag_id_seq', 101, true);
+SELECT pg_catalog.setval('public.tag_id_seq', 116, true);
 
 
 --
@@ -2135,7 +3082,7 @@ SELECT pg_catalog.setval('public.token_id_seq', 10, true);
 -- Name: validation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dockstore
 --
 
-SELECT pg_catalog.setval('public.validation_id_seq', 1, false);
+SELECT pg_catalog.setval('public.validation_id_seq', 33, true);
 
 
 --
