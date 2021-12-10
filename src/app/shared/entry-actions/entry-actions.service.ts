@@ -111,7 +111,7 @@ export class EntryActionsService {
   openNoDefaultDialog(entry: Entry, showVersions: EventEmitter<any>): void {
     const informationDialogData: InformationDialogData = {
       title: 'Default Version Required',
-      message: 'Your tool/workflow must have a default version before publishing it.  Please use the Versions tab to select a default version.',
+      message: 'Your tool/workflow must have a default version to be published.  Please use the the Actions menu in the Versions tab to select a default version.',
       closeButtonText: 'OK',
     };
     const observable = this.informationDialogService.openDialog(informationDialogData, bootstrap4mediumModalSize);
