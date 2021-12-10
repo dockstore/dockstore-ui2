@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { AlertService } from '../alert/state/alert.service';
 import { includesAuthors, includesVersions } from '../constants';
 import { ContainerService } from '../container.service';
@@ -108,23 +108,25 @@ export class EntryActionsService {
     return entry.defaultVersion != null;
   }
 
-  private openNoDefaultDialog(entry: Entry): void {
+  openNoDefaultDialog(entry: Entry, showVersions: EventEmitter<any>): void {
     const informationDialogData: InformationDialogData = {
       title: 'Default Version Required',
       message: 'Your tool/workflow must have a default version before publishing it.  Please use the Versions tab to select a default version.',
       closeButtonText: 'OK',
     };
-    console.log(informationDialogData);
-    this.informationDialogService.openDialog(informationDialogData, bootstrap4mediumModalSize).subscribe(x => { console.log('closed'); });
+    const observable = this.informationDialogService.openDialog(informationDialogData, bootstrap4mediumModalSize);
+    if (showVersions != null) {
+      observable.subscribe(() => { showVersions.emit(); });
+    }
   }
 
-  publishWorkflowToggle(workflow: Workflow, isOwner: boolean, entryType: EntryType): void {
+  publishWorkflowToggle(workflow: Workflow, isOwner: boolean, entryType: EntryType, emitter: EventEmitter<string> | null): void {
     const currentlyPublished = workflow.is_published;
     if (this.publishWorkflowDisabled(workflow, isOwner)) {
       return;
     } else {
       if (!currentlyPublished && !this.hasDefaultTag(workflow)) {
-        this.openNoDefaultDialog(workflow);
+        this.openNoDefaultDialog(workflow, emitter);
         return;
       }
       const request: PublishRequest = {
@@ -154,13 +156,13 @@ export class EntryActionsService {
     }
   }
 
-  publishToolToggle(tool: DockstoreTool) {
+  publishToolToggle(tool: DockstoreTool, emitter: EventEmitter<string> | null) {
     const currentlyPublished = tool.is_published;
     if (this.publishToolDisabled(tool)) {
       return;
     } else {
       if (!currentlyPublished && !this.hasDefaultTag(tool)) {
-        this.openNoDefaultDialog(tool);
+        this.openNoDefaultDialog(tool, emitter);
         return;
       }
       const request: PublishRequest = {

@@ -99,7 +99,7 @@
     </div>
     <div *ngIf="!publicPage" class="col-md-5">
       <h3>
-        <app-tool-actions [tool]="tool" [selectedVersion]="selectedVersion" [entryType]="EntryType.Tool"></app-tool-actions>
+        <app-tool-actions [tool]="tool" [selectedVersion]="selectedVersion" [entryType]="EntryType.Tool" (showVersions)="selectVersionsTab()"></app-tool-actions>
       </h3>
     </div>
   </div>

@@ -223,6 +223,15 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     }
   }
 
+  /**
+   * Select the Versions tab
+   *
+   * @memberof WorkflowComponent
+   */
+  public selectVersionsTab() {
+    this.selectTab(this.validTabs.indexOf('versions'));
+  }
+
   public setupPublicEntry(url: String) {
     if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)

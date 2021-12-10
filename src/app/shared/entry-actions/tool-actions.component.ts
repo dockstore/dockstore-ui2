@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AlertQuery } from '../alert/state/alert.query';
 import { RefreshService } from '../refresh.service';
 import { DockstoreTool, Tag } from '../swagger';
@@ -15,6 +15,7 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
   // This is unused unlike workflow because there's no DOI and refresh doesn't need it (for some reason)
   // Keeping it here anyways to be symmetrical and maybe for future use (although these shouldn't be version specific actions)
   @Input() selectedVersion: Tag;
+  @Output() showVersions = new EventEmitter<any>();
   constructor(
     protected entryActionsService: EntryActionsService,
     protected alertQuery: AlertQuery,
@@ -38,7 +39,7 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
    * @memberof ToolActionsComponent
    */
   publishToggle() {
-    this.entryActionsService.publishToolToggle(this.tool);
+    this.entryActionsService.publishToolToggle(this.tool, this.showVersions);
   }
 
   /**
