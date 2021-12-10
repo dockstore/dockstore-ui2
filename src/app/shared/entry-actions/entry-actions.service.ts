@@ -108,7 +108,7 @@ export class EntryActionsService {
     return entry.defaultVersion != null;
   }
 
-  openNoDefaultDialog(entry: Entry, showVersions: EventEmitter<any>): void {
+  openNoDefaultDialog(entry: Entry, showVersions: EventEmitter<void>): void {
     const informationDialogData: InformationDialogData = {
       title: 'Default Version Required',
       message: 'Your tool/workflow must have a default version to be published.  Please use the the Actions menu in the Versions tab to select a default version.',
@@ -120,7 +120,7 @@ export class EntryActionsService {
     }
   }
 
-  publishWorkflowToggle(workflow: Workflow, isOwner: boolean, entryType: EntryType, emitter: EventEmitter<string> | null): void {
+  publishWorkflowToggle(workflow: Workflow, isOwner: boolean, entryType: EntryType, emitter: EventEmitter<void> | null): void {
     const currentlyPublished = workflow.is_published;
     if (this.publishWorkflowDisabled(workflow, isOwner)) {
       return;
@@ -156,7 +156,7 @@ export class EntryActionsService {
     }
   }
 
-  publishToolToggle(tool: DockstoreTool, emitter: EventEmitter<string> | null) {
+  publishToolToggle(tool: DockstoreTool, emitter: EventEmitter<void> | null) {
     const currentlyPublished = tool.is_published;
     if (this.publishToolDisabled(tool)) {
       return;

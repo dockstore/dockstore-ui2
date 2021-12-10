@@ -21,7 +21,7 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   @Input() selectedVersion: WorkflowVersion;
   @Input() isOwner: boolean;
   @Input() canWrite: boolean;
-  @Output() showVersions = new EventEmitter<any>();
+  @Output() showVersions = new EventEmitter<void>();
   EntryType = EntryType;
   zenodoAccountIsLinked$: Observable<boolean>;
   WorkflowModel = Workflow;
