@@ -12,10 +12,10 @@ export class InformationDialogService {
    * Creates a small informational modal dialog with a single button that closes it.
    * @param {InformationDialogData} data  Data required to construct the dialog
    * @param {string} size   Choose from bootstrap4smallModalSize, bootstrap4mediumModalSize, or bootstrap4LargeModalSize
-   * @returns {Observable<void>} Produces a new value when closed
+   * @returns {Observable<void>} Produces new value when dialog is closed
    * @memberof InformationDialogService
    */
-  openDialog(data: InformationDialogData, size: string): Observable<any> {
+  openDialog(data: InformationDialogData, size: string): Observable<void> {
     const dialogRef = this.dialog.open(InformationDialogComponent, {
       width: size,
       data: data,
