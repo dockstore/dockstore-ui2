@@ -34,10 +34,10 @@ executors:
           xpack.graph.enabled: false
           xpack.watcher.enabled: false
           xpack.ml.enabled: false
-          script.allowed_types: none
-          script.allowed_contexts: none
+          script.allowed_types: inline
           http.port: 9200
           network.host: 127.0.0.1
+
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
