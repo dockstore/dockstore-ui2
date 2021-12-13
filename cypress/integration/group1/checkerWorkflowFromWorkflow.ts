@@ -125,6 +125,12 @@ describe('Checker workflow test from my-workflows', () => {
 
       // In the parent tool right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
+
+      goToTab('Versions');
+      cy.contains('button', 'Actions').click();
+      cy.contains('Set as Default Version').click();
+      goToTab('Info');
+
       // Hacky fix from https://github.com/cypress-io/cypress/issues/695
       cy.wait(1000);
       cy.get('#publishButton').should('be.visible').should('not.be.disabled').contains('Publish').click();
