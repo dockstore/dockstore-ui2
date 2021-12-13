@@ -434,6 +434,23 @@ describe('Dockstore my workflows', () => {
     });
   });
 
+  describe('Should require default version to publish', () => {
+    it('should not be able to publish with no default version', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.get('#publishButton').should('contain', 'Unpublish').click();
+      cy.get('#publishButton').should('contain', 'Publish').click();
+      cy.get('[data-cy=close-dialog-button]').click();
+      cy.get('#publishButton').should('contain', 'Publish');
+    });
+    it('should be able to publish after setting default version', () => {
+      goToTab('Versions');
+      cy.contains('button', 'Actions').click();
+      cy.contains('Set as Default Version').click();
+      cy.wait(1000);
+      cy.get('#publishButton').should('contain', 'Publish').click();
+    });
+  });
+
   describe('Look at a published workflow', () => {
     it('Look at each tab', () => {
       const tabs = ['Info', 'Launch', 'Versions', 'Files', 'Tools', 'DAG'];
@@ -451,11 +468,6 @@ describe('Dockstore my workflows', () => {
 
       cy.get('#viewPublicWorkflowButton').should('not.exist');
 
-      goToTab('Versions');
-      cy.contains('button', 'Actions').click();
-      cy.contains('Set as Default Version').click();
-
-      cy.wait(1000);
       cy.get('#publishButton').should('be.visible').should('contain', 'Publish').click();
 
       cy.get('#publishButton').should('contain', 'Unpublish');

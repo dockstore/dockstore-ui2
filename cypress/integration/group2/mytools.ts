@@ -112,6 +112,15 @@ describe('Dockstore my tools', () => {
     });
   });
 
+  describe('Should require default version to publish', () => {
+    it('should not be able to publish a tool with no default', () => {
+      cy.visit('/my-tools/quay.io/A2/b1');
+      cy.get('#publishToolButton').should('contain', 'Publish').click();
+      cy.get('[data-cy=close-dialog-button]').click();
+      cy.get('#publishToolButton').should('contain', 'Publish');
+    });
+  });
+
   describe('publish a tool', () => {
     it('publish and unpublish', () => {
       cy.server();
