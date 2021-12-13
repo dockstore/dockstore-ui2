@@ -453,6 +453,10 @@ commands:
           name: Install cypress dependencies
           command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
   setup_integration_test:
+    parameters:
+      db_dump:
+        type: string
+        default: "db_dump.sql"
     steps:
       - browser-tools/install-browser-tools
       - get_workspace
@@ -463,7 +467,7 @@ commands:
       - install_cypress_dependencies
       - run:
           name: Prepare webservice
-          command: bash -i -c 'npm run webservice'
+          command: bash -i -c 'DB_DUMP=<< parameters.db_dump >> npm run webservice'
           environment:
             PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
       - run:
@@ -505,7 +509,8 @@ commands:
           command: bash -i -c 'npm run prebuild.prod'
   setup_smoke_tests:
     steps:
-      - setup_integration_test
+      - setup_integration_test:
+          db_dump: "smoke_test_db.sql"
       - run:
           name: Index ES
           command: |
