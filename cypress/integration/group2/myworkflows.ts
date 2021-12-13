@@ -451,6 +451,11 @@ describe('Dockstore my workflows', () => {
 
       cy.get('#viewPublicWorkflowButton').should('not.exist');
 
+      goToTab('Versions');
+      cy.contains('button', 'Actions').click();
+      cy.contains('Set as Default Version').click();
+
+      cy.wait(1000);
       cy.get('#publishButton').should('be.visible').should('contain', 'Publish').click();
 
       cy.get('#publishButton').should('contain', 'Unpublish');

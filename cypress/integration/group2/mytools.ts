@@ -122,6 +122,13 @@ describe('Dockstore my tools', () => {
 
       cy.get('#viewPublicToolButton').should('not.exist');
 
+      cy.get('#publishToolButton').click();
+      cy.get('[data-cy=close-dialog-button]').click();
+
+      goToTab('Versions');
+      cy.contains('button', 'Actions').click();
+      cy.contains('Set as Default Version').click();
+
       cy.get('#publishToolButton')
         .should('contain', 'Publish')
         .click()
@@ -140,6 +147,14 @@ describe('Dockstore my tools', () => {
   describe('Publish and unpublish an existing Amazon ECR tool', () => {
     it('Publish and Unpublish', () => {
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
+
+      cy.get('#publishToolButton').click();
+      cy.get('[data-cy=close-dialog-button]').click();
+
+      goToTab('Versions');
+      cy.contains('button', 'Actions').click();
+      cy.contains('Set as Default Version').click();
+
       cy.get('#publishToolButton').should('contain', 'Publish').click().should('contain', 'Unpublish').click().should('contain', 'Publish');
     });
     it('Be able to add tag with test parameter file', () => {
