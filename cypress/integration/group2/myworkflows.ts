@@ -445,7 +445,7 @@ describe('Dockstore my workflows', () => {
     it('should be able to publish after setting default version', () => {
       goToTab('Versions');
       cy.contains('button', 'Actions').click();
-      cy.contains('Set as Default Version').click();
+      cy.get('[data-cy=set-default-version-button]').click();
       cy.wait(1000);
       cy.get('#publishButton').should('contain', 'Publish').click();
     });

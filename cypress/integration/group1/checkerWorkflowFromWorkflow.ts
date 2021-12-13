@@ -128,7 +128,7 @@ describe('Checker workflow test from my-workflows', () => {
 
       goToTab('Versions');
       cy.contains('button', 'Actions').click();
-      cy.contains('Set as Default Version').click();
+      cy.get('[data-cy=set-default-version-button]').click();
       goToTab('Info');
 
       // Hacky fix from https://github.com/cypress-io/cypress/issues/695

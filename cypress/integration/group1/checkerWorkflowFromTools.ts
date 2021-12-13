@@ -101,7 +101,7 @@ describe('Checker workflow test from my-tools', () => {
 
       goToTab('Versions');
       cy.contains('button', 'Actions').click();
-      cy.contains('Set as Default Version').click();
+      cy.get('[data-cy=set-default-version-button]').click();
       goToTab('Info');
       
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish');

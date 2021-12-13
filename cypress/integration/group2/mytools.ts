@@ -136,7 +136,7 @@ describe('Dockstore my tools', () => {
 
       goToTab('Versions');
       cy.contains('button', 'Actions').click();
-      cy.contains('Set as Default Version').click();
+      cy.get('[data-cy=set-default-version-button]').click();
 
       cy.get('#publishToolButton')
         .should('contain', 'Publish')
@@ -162,7 +162,7 @@ describe('Dockstore my tools', () => {
 
       goToTab('Versions');
       cy.contains('button', 'Actions').click();
-      cy.contains('Set as Default Version').click();
+      cy.get('[data-cy=set-default-version-button]').click();
 
       cy.get('#publishToolButton').should('contain', 'Publish').click().should('contain', 'Unpublish').click().should('contain', 'Publish');
     });
