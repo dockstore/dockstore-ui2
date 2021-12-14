@@ -5,8 +5,8 @@
   "config": {
     "webservice_version": "1.11.9",
     "use_circle": true,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/6861/workflows/d3fe74f1-3b20-4276-890f-db35f3fca10f/jobs/15163/artifacts",
-    "circle_build_id": "15163"
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/6978/workflows/f7281873-ea62-48b4-a646-505a9c7f3be8/jobs/15792/artifacts",
+    "circle_build_id": "15792"
   },
   "scripts": {
     "ng": "npx ng",
