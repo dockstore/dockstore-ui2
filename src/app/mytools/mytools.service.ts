@@ -72,7 +72,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
 
   selectEntry(tool: DockstoreTool | Workflow | null): void {
     if (tool && tool.id) {
-      if (tool.path.includes('github.com')) {
+      if (MytoolsService.isAppTool(tool)) {
         this.workflowsService.getWorkflow(tool.id, includesValidation + ',' + includesAuthors).subscribe((result) => {
           this.location.go('/my-tools/' + result.full_workflow_path);
           this.workflowService.setWorkflow(<AppTool>result);
@@ -87,6 +87,26 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
       }
     }
   }
+
+  // static isAppTool2(tool: DockstoreTool | Workflow | OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow> | null): tool is AppTool {
+  //   if ('organization' in tool) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  static isAppTool(tool: DockstoreTool | AppTool | OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>): tool is AppTool {
+    if (tool !== null) {
+      return (tool as AppTool).organization !== undefined;
+    }
+  }
+
+  static isDockstoreTool(tool: DockstoreTool | AppTool): tool is DockstoreTool {
+    if (tool !== null) {
+      return (tool as DockstoreTool).registry !== undefined;
+    }
+  }
+
   registerEntry(entryType: EntryType) {}
 
   protected sortOrgEntryObjects(orgToolObjectA: OrgToolObject<DockstoreTool>, orgToolObjectB: OrgToolObject<DockstoreTool>): number {
@@ -123,21 +143,21 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     let midLevelB: string;
     let lowerLevelA: string;
     let lowerLevelB: string;
-    if ('full_workflow_path' in entryA) {
+    if (MytoolsService.isAppTool(entryA)) {
       topLevelA = entryA.sourceControl;
       midLevelA = entryA.organization;
       lowerLevelA = entryA.full_workflow_path || '';
-    } else if ('tool_path' in entryA) {
+    } else if (MytoolsService.isDockstoreTool(entryA)) {
       topLevelA = entryA.registry_string;
       midLevelA = entryA.namespace;
       lowerLevelA = entryA.tool_path || '';
     }
 
-    if ('full_workflow_path' in entryB) {
+    if (MytoolsService.isAppTool(entryB)) {
       topLevelB = entryB.sourceControl;
       midLevelB = entryB.organization;
       lowerLevelB = entryB.full_workflow_path || '';
-    } else if ('tool_path' in entryB) {
+    } else if (MytoolsService.isDockstoreTool(entryB)) {
       topLevelB = entryB.registry_string;
       midLevelB = entryB.namespace;
       lowerLevelB = entryB.tool_path || '';
