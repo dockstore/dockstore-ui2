@@ -23,6 +23,9 @@ executors:
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
       - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
         environment:
           - xpack.security.enabled: false
           - transport.host: localhost
@@ -327,30 +330,30 @@ workflows:
               only: /.*/
           context:
             - dockerhub
-#      - integration_test_1:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - integration_test_2:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - integration_test_3:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
+      - integration_test_1:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
       - local_smoke_tests:
           filters:
             tags:
@@ -360,27 +363,27 @@ workflows:
           context:
             - dockerhub
       # Upload builds for tags and branches to s3.
-#      - upload_to_s3:
-#          requires:
-#            - integration_test_1
-#            - integration_test_2
-#            - integration_test_3
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              only: /.*/
-#          context:
-#            - dockerhub
-#            - aws
-#      - check_build_develop:
-#          requires:
-#            - upload_to_s3
-#          filters:
-#            branches:
-#              only: /^develop/
-#          context:
-#            - dockerhub
+      - upload_to_s3:
+          requires:
+            - integration_test_1
+            - integration_test_2
+            - integration_test_3
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+          context:
+            - dockerhub
+            - aws
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
+          context:
+            - dockerhub
 
   nightly:
     triggers:
