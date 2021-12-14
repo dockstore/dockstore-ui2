@@ -103,7 +103,7 @@ describe('Checker workflow test from my-tools', () => {
       cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').click();
       goToTab('Info');
-      
+
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish');
       cy.wait(250);
       cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
