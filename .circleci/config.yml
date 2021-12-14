@@ -504,10 +504,6 @@ commands:
       - setup_integration_test:
           db_dump: "smoke_test_db.sql"
       - run:
-          name: Wait for ES
-          command: |
-            wget --output-document /dev/null --waitretry=5 --tries=10 --retry-connrefused localhost:9200 || true
-      - run:
           name: Index ES
           command: |
             curl -X POST "localhost:4200/api/api/ga4gh/v2/extended/tools/index" -H "accept: text/plain" -H "Authorization: Bearer fake-admin-token"

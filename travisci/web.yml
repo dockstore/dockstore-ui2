@@ -36,6 +36,10 @@ externalConfig:
   scheme: http
   port: 8080
 
+esconfiguration:
+  port: 9200
+  hostname: localhost
+
 authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
 
 database:
@@ -77,7 +81,7 @@ uiConfig:
   dnaStackImportUrl: https://app.dnastack.com/#/app/workflow/import/dockstore
   dnaNexusImportUrl: https://platform.dnanexus.com/panx/tools/import-workflow
   bdCatalystTerraImportUrl: https://dev.terra.biodatacatalyst.nhlbi.nih.gov
-  bdCatalystSevenBridgesImportUrl: https://sb.biodatacatalyst.nhlbi.nih.gov 
+  bdCatalystSevenBridgesImportUrl: https://sb.biodatacatalyst.nhlbi.nih.gov
   terraImportUrl: https://app.terra.bio/#import-tool/dockstore
 
   gitHubAuthUrl: https://github.com/login/oauth/authorize
