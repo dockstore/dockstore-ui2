@@ -28,6 +28,7 @@ import { finalize } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
 import { OrgToolObject } from './my-tool/my-tool.component';
 import { WorkflowService } from '../shared/state/workflow.service';
+import { OrgWorkflowObject } from '../myworkflows/my-workflow/my-workflow.component';
 
 @Injectable()
 export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObject<DockstoreTool>> {
