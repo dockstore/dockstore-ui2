@@ -24,19 +24,11 @@ executors:
           POSTGRES_HOST_AUTH_METHOD: trust
       - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
         environment:
-          node.name: es01
-          cluster.name: es-docker-cluster
-          discovery.type: single-node
-          bootstrap.memory_lock: true
-          ES_JAVA_OPTS: "-Xms512m -Xmx512m"
-          xpack.security.enabled: false
-          xpack.monitoring.enabled: false
-          xpack.graph.enabled: false
-          xpack.watcher.enabled: false
-          xpack.ml.enabled: false
-          script.allowed_types: inline
-          http.port: 9200
-          network.host: 127.0.0.1
+          - xpack.security.enabled: false
+          - transport.host: localhost
+          - network.host: 127.0.0.1
+          - http.port: 9200
+          - discovery.type: single-node
 
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
