@@ -245,9 +245,9 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
+      - setup_smoke_tests
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
-      - setup_smoke_tests
       - run:
           name: Run local smoke tests (no auth)
           command: bash -i -c 'npm run test-local-no-auth'
