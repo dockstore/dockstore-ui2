@@ -56,7 +56,7 @@
           >
         </span>
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
-          <mat-chip matTooltip="Verified" class="workflow-background bubble">
+          <mat-chip matTooltip="Verified" class="bubble workflow-background">
             <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
               <mat-icon class="verified-icon">done</mat-icon>
               <span>Verified</span>
@@ -109,7 +109,7 @@
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
         <mat-chip-list class="labels">
-          <mat-chip class="workflow-background bubble" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
+          <mat-chip class="bubble workflow-background" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
             label
           }}</mat-chip>
           <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">

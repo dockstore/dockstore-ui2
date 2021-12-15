@@ -99,7 +99,7 @@
                 <hr class="mb-4" />
                 <a [routerLink]="org.name" class="no-underline" target="_self">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <span class="gray-background bubble">
+                    <span class="bubble gray-background">
                       {{ org.collectionsLength }}
                       <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                       <ng-template #oneCollection> Collection</ng-template>

@@ -58,7 +58,7 @@
           {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
           ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
           <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
-            <mat-chip matTooltip="Verified" class="container-background bubble">
+            <mat-chip matTooltip="Verified" class="bubble container-background">
               <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                 <mat-icon class="verified-icon">done</mat-icon>
                 <span>Verified</span>
@@ -112,7 +112,7 @@
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
         <mat-chip-list class="labels">
-          <mat-chip class="container-background bubble" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
+          <mat-chip class="bubble container-background" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
             label
           }}</mat-chip>
           <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
