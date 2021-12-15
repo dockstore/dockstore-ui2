@@ -44,7 +44,9 @@ import { InfoTabService } from './info-tab.service';
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
   @Input() defaultVersion;
+  // This should represent what's in the database
   @Input() extendedWorkflow: ExtendedWorkflow;
+  // This is what the user is currently seeing/editing
   public workflow: Workflow;
   currentVersion: WorkflowVersion;
   downloadZipLink: string;
@@ -61,6 +63,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   defaultTestFilePathEditing: boolean;
   forumUrlEditing: boolean;
+  topicEditing: boolean;
   isPublic: boolean;
   trsLink: string;
   displayTextForButton: string;
@@ -140,6 +143,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((entryType) => (this.displayTextForButton = '#' + entryType + '/' + this.workflow?.full_workflow_path));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
+    this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
   }
   /**
    * Handle restubbing a workflow
@@ -171,6 +175,13 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.infoTabService.setWorkflowPathEditing(!this.workflowPathEditing);
   }
 
+  toggleEditTopic() {
+    if (this.topicEditing) {
+      this.infoTabService.saveTopic(this.workflow, this.revertTopic);
+    }
+    this.infoTabService.setTopicEditing(!this.topicEditing);
+  }
+
   toggleEditDefaultTestFilePath() {
     if (this.defaultTestFilePathEditing) {
       this.save();
@@ -183,6 +194,10 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.save();
     }
     this.infoTabService.setForumUrlEditing(!this.forumUrlEditing);
+  }
+
+  revertTopic() {
+    this.workflow.topic = this.extendedWorkflow.topic;
   }
 
   save() {
@@ -204,5 +219,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
+    this.revertTopic();
   }
 }

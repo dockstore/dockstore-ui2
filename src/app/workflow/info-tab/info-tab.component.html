@@ -96,6 +96,7 @@
                     *ngIf="!isPublic"
                     type="button"
                     [disabled]="
+                      topicEditing ||
                       defaultTestFilePathEditing ||
                       forumUrlEditing ||
                       (workflowPathEditing && !editWorkflowPathForm.valid) ||
@@ -141,6 +142,7 @@
                     *ngIf="!isPublic"
                     type="button"
                     [disabled]="
+                      topicEditing ||
                       workflowPathEditing ||
                       forumUrlEditing ||
                       (defaultTestFilePathEditing && !editTestFilePathForm.valid) ||
@@ -155,8 +157,48 @@
                   </button>
                 </span>
               </form>
+              <form #editForumUrl="ngForm" fxLayout="row" fxLayoutAlign="start center" class="w-100">
+                <span><strong matTooltip="Short description of the workflow">Topic</strong>:&nbsp;</span>
+                <span *ngIf="!topicEditing"> {{ workflow?.topic }} </span>
+                <span fxFlex>
+                  <input
+                    *ngIf="topicEditing"
+                    maxlength="150"
+                    type="text"
+                    class="w-100"
+                    name="topicEditing"
+                    [(ngModel)]="workflow.topic"
+                    data-cy="topicInput"
+                    placeholder="Short description of the workflow"
+                /></span>
+                <ng-container *ngIf="!isPublic">
+                  <button data-cy="topicCancelButton" *ngIf="topicEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
+                    <mat-icon>cancel</mat-icon> Cancel
+                  </button>
+                  <button
+                    *ngIf="!workflow?.topic && !topicEditing"
+                    [disabled]="forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    type="button"
+                    class="btn btn-link"
+                    (click)="toggleEditTopic()"
+                    data-cy="topicEditButton"
+                  >
+                    <mat-icon>edit</mat-icon> Edit
+                  </button>
+                  <button
+                    *ngIf="workflow?.topic || topicEditing"
+                    type="button"
+                    class="btn btn-link"
+                    (click)="toggleEditTopic()"
+                    data-cy="topicSaveButton"
+                  >
+                    <mat-icon *ngIf="topicEditing">save</mat-icon>
+                    <mat-icon *ngIf="!topicEditing">edit</mat-icon>
+                    {{ topicEditing ? 'Save' : 'Edit' }}
+                  </button>
+                </ng-container>
+              </form>
               <form
-                #editForumUrl="ngForm"
                 class="form-inline"
                 fxLayout
                 *ngIf="(isNFL$ | async) === false && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
@@ -182,7 +224,7 @@
                   </button>
                   <button
                     *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
-                    [disabled]="workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
                     type="button"
                     class="btn btn-link"
                     (click)="toggleEditForumUrl()"

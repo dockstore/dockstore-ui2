@@ -77,11 +77,13 @@ export class QueryBuilderService {
       'name',
       'namespace',
       'organization',
+      'private_access',
       'providerUrl',
       'repository',
       'starredUsers',
       'toolname',
       'tool_path',
+      'topic',
       'verified',
       'workflowName',
     ]);
