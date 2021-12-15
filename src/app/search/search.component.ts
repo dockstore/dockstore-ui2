@@ -137,7 +137,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
-
+  //
   // For search within facets
   public facetAutocompleteTerms$: Observable<Array<string>>;
   public hasFacetAutoCompleteTerms$: Observable<boolean>;
