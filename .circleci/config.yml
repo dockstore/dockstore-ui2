@@ -474,7 +474,7 @@ commands:
           background: true
       - run:
           name: Run webservice
-          command: java -jar dockstore-webservice.jar server travisci/web.yml 1>/dev/null
+          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
           background: true
       - run: mkdir -p integration-tests/test-results/junit
       - run:
