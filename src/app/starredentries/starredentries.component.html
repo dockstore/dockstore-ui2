@@ -69,17 +69,17 @@
               <div fxLayout="row wrap" fxLayoutGap="1rem">
                 <span>
                   <mat-chip-list>
-                    <mat-chip class="workflow-label-tag" *ngFor="let label of workflow?.labels | slice: 0:3">{{ label.value }}</mat-chip>
-                    <mat-chip class="gray-label-tag" *ngIf="workflow.versionVerified === true">
+                    <mat-chip class="workflow-background bubble" *ngFor="let label of workflow?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                    <mat-chip class="gray-background bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                         <mat-icon class="verified-icon">done</mat-icon>
                         <span>Verified</span>
                       </span>
                     </mat-chip>
-                    <mat-chip class="gray-label-tag">
+                    <mat-chip class="gray-background bubble">
                       {{ workflow?.descriptorType | uppercase }}
                     </mat-chip>
-                    <mat-chip class="gray-label-tag" *ngIf="workflow.versionVerified === true">
+                    <mat-chip class="gray-background bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                         <mat-icon class="verified-icon">done</mat-icon>
                         <span>Verified</span>
@@ -131,14 +131,14 @@
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                 <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
                 <mat-chip-list>
-                  <mat-chip class="container-label-tag" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
-                  <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="gray-label-tag">
+                  <mat-chip class="container-background bubble" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                  <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="gray-background bubble">
                     <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                       <mat-icon class="verified-icon">done</mat-icon>
                       <span>Verified</span>
                     </a>
                   </mat-chip>
-                  <mat-chip class="gray-label-tag" *ngFor="let descriptortype of tool?.descriptorType">
+                  <mat-chip class="gray-background bubble" *ngFor="let descriptortype of tool?.descriptorType">
                     {{ descriptortype }}
                   </mat-chip>
                 </mat-chip-list>
@@ -227,7 +227,7 @@
                 <hr class="mb-4" />
                 <a routerLink="/organizations/{{ org.name }}" class="no-underline">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <span class="gray-label-tag">
+                    <span class="gray-background bubble">
                       {{ org.collectionsLength }}
                       <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                       <ng-template #oneCollection> Collection</ng-template>
