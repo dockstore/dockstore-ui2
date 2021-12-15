@@ -28,7 +28,7 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-chip-list>
-          <mat-chip class="bubble gray-background"> Main Account </mat-chip>
+          <mat-chip class="bubble"> Main Account </mat-chip>
         </mat-chip-list>
       </div>
       <mat-card-content>
@@ -90,22 +90,22 @@
             </mat-card-header>
             <mat-chip-list>
               <mat-chip
-                class="bubble gray-background"
+                class="bubble"
                 *ngIf="row.control"
                 matTooltip="Pull your workflows from cloud source control to make them available on Dockstore"
               >
                 Source Control
               </mat-chip>
-              <mat-chip class="bubble gray-background" *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
+              <mat-chip class="bubble" *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
               <mat-chip
-                class="bubble gray-background"
+                class="bubble"
                 *ngIf="row.docker"
                 matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
               >
                 Docker Repository
               </mat-chip>
               <mat-chip
-                class="bubble gray-background"
+                class="bubble"
                 *ngIf="row.research"
                 matTooltip="Services popular among scientific researchers to aid with publications and citation"
               >

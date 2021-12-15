@@ -908,15 +908,12 @@ app-sidebar-accordion
   background: #d2fbf0 !important;
 }
 
-.gray-background {
-  background: mat.get-color-from-palette($dockstore-app-gray, lighter) !important;
-}
-
 .bubble {
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.75rem !important;
+  background: mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
 
 a.bubble, a.bubble:hover, a.bubble:focus, a.bubble:active, a.bubble:link, a.bubble:visited {
