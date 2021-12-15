@@ -900,28 +900,32 @@ app-sidebar-accordion
   opacity: 0.7;
 }
 
-.container-label-tag {
+.container-background {
   background: #d0effd !important;
-  text-decoration: none !important;
-  border-radius: 1rem !important;
-  font-size: 12px !important;
-  padding: 0 0.75rem !important;
 }
 
-.workflow-label-tag {
+.workflow-background {
   background: #d2fbf0 !important;
+}
+
+.gray-background {
+  background: mat.get-color-from-palette($dockstore-app-gray, lighter) !important;
+
+.bubble {
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
   padding: 0 0.75rem !important;
 }
 
-.gray-label-tag {
-  background: mat.get-color-from-palette($dockstore-app-gray, lighter) !important;
-  text-decoration: none !important;
-  border-radius: 1rem !important;
-  font-size: 12px !important;
-  padding: 0 0.75rem !important;
+a.bubble, a.bubble:hover, a.bubble:focus, a.bubble:active, a.bubble:link, a.bubble:visited {
+  color: black;
+  font-weight: 500;
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  outline: none;
+  min-width: 32px;
 }
 
 app-category-button {

@@ -1,3 +1,3 @@
-<a mat-button [routerLink]="routerLink" [queryParams]="queryParams" [ngClass]="[className]" [matTooltip]="category.topic" (click)="$event.stopPropagation(); $event.preventDefault()">
+<a mat-button class="bubble" [routerLink]="routerLink" [queryParams]="queryParams" [ngClass]="[className]" [matTooltip]="category.topic" (click)="$event.stopPropagation(); $event.preventDefault()">
   {{ category.displayName }}
 </a>
