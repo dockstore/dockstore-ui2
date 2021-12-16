@@ -144,17 +144,9 @@ export class MyToolComponent extends MyEntry implements OnInit {
     combineLatest([this.containerService.tools$, this.workflowService.workflows$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([tools, workflows]) => {
-        this.tools = tools;
-        this.apptools = workflows;
-        if (this.tools) {
-          if (this.apptools) {
-            this.allTools = this.tools.concat(this.apptools);
-          } else {
-            this.allTools = this.tools;
-          }
-        } else {
-          this.allTools = this.apptools;
-        }
+        this.tools = tools || [];
+        this.apptools = workflows || [];
+        this.allTools = this.tools.concat(this.apptools);
         this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
       });
 

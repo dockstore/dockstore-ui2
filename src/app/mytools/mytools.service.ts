@@ -72,7 +72,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
 
   selectEntry(tool: DockstoreTool | Workflow | null): void {
     if (tool && tool.id) {
-      if (MytoolsService.isAppTool(tool)) {
+      if (MytoolsService.isWorkflowBasedObject(tool)) {
         this.workflowsService.getWorkflow(tool.id, includesValidation + ',' + includesAuthors).subscribe((result) => {
           this.location.go('/my-tools/' + result.full_workflow_path);
           this.workflowService.setWorkflow(<AppTool>result);
@@ -88,7 +88,10 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     }
   }
 
-  static isAppTool(tool: DockstoreTool | AppTool | OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>): tool is AppTool {
+  // GitHub App Tools are Workflows in the backend, but are displayed as tools to users
+  static isWorkflowBasedObject(
+    tool: DockstoreTool | AppTool | OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>
+  ): tool is Workflow {
     if (tool !== null) {
       return (tool as AppTool).organization !== undefined;
     }
@@ -136,7 +139,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     let midLevelB: string;
     let lowerLevelA: string;
     let lowerLevelB: string;
-    if (MytoolsService.isAppTool(entryA)) {
+    if (MytoolsService.isWorkflowBasedObject(entryA)) {
       topLevelA = entryA.sourceControl;
       midLevelA = entryA.organization;
       lowerLevelA = entryA.full_workflow_path || '';
@@ -146,7 +149,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
       lowerLevelA = entryA.tool_path || '';
     }
 
-    if (MytoolsService.isAppTool(entryB)) {
+    if (MytoolsService.isWorkflowBasedObject(entryB)) {
       topLevelB = entryB.sourceControl;
       midLevelB = entryB.organization;
       lowerLevelB = entryB.full_workflow_path || '';
