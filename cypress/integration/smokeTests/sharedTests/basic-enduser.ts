@@ -1,5 +1,4 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
-import { Dockstore } from '../../../../src/app/shared/dockstore.model';
 import { goToTab } from '../../../support/commands';
 import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDescriptor';
 
@@ -38,7 +37,6 @@ function testEntry(tab: string) {
         cy.request(el.prop('href')).its('status').should('eq', 200);
       });
     });
-    cy.get('[data-cy=sourceRepository]').should('have.attr', 'href');
   });
 
   it('check files tab', () => {
@@ -170,10 +168,12 @@ const workflowVersionTuples = [
   ],
   ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
 ];
-
-describe('Monitor workflows', () => {
-  workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
-});
+// This test shouldn't be run for smoke tests as it depends on 'real' entries
+if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
+  describe('Monitor workflows', () => {
+    workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
+  });
+}
 
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
   it('info tab works', () => {
