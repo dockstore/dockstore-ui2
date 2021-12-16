@@ -88,13 +88,6 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     }
   }
 
-  // static isAppTool2(tool: DockstoreTool | Workflow | OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow> | null): tool is AppTool {
-  //   if ('organization' in tool) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   static isAppTool(tool: DockstoreTool | AppTool | OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>): tool is AppTool {
     if (tool !== null) {
       return (tool as AppTool).organization !== undefined;
