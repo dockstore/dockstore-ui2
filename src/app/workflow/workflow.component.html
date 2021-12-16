@@ -56,10 +56,12 @@
           >
         </span>
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
-          <a mat-button matTooltip="Verified" class="bubble workflow-background verified-check ml-3">
-            <mat-icon class="verified-icon">done</mat-icon>
-            <span>Verified</span>
-          </a>
+          <mat-chip matTooltip="Verified" class="bubble workflow-background ml-3">
+            <a [href]="verifiedLink" class="verified-check">
+              <mat-icon class="verified-icon">done</mat-icon>
+              <span>Verified</span>
+            </a>
+          </mat-chip>
         </span>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
@@ -102,21 +104,20 @@
     <div *ngIf="workflow">
       <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
-        <span class="bubble-list">
+        <mat-chip-list class="bubble-list">
           <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="workflow"></app-category-button>
-        </span>
+        </mat-chip-list>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
-        <span class="bubble-list">
-          <a mat-button class="bubble workflow-background" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
+        <mat-chip-list class="bubble-list">
+          <mat-chip class="bubble workflow-background pointer" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
             label
-          }}</a>
-          <mat-chip-list><mat-chip class="bubble"><a href="/about"><span>moooo</span></a></mat-chip></mat-chip-list>
-        </span>
-        <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
-          Manage labels
-        </button>
+          }}</mat-chip>
+          <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+            Manage labels
+          </button>
+        </mat-chip-list>
       </span>
       <span *ngIf="labelsEditMode && !isWorkflowPublic">
         <mat-form-field class="mt-3" style="width: 100%">
