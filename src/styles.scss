@@ -909,25 +909,32 @@ app-sidebar-accordion
 }
 
 .bubble {
+  color: black !important;
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
+  line-height: 28px !important;
   padding: 0 0.75rem !important;
+  display: inline-flex !important;
+  min-width: 32px !important;
   background: mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
 
 a.bubble, a.bubble:hover, a.bubble:focus, a.bubble:active, a.bubble:link, a.bubble:visited {
-  color: black;
   font-weight: 500;
-  font-size: inherit;
-  line-height: inherit;
   border: none;
   outline: none;
-  min-width: 32px;
 }
 
-app-category-button {
-  font-size: 12px !important;
+/*
+.bubble-list .bubble {
+  margin: 0 0.6em 0 0;
+}
+*/
+.bubble-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 // Make the dropdown at least the size of the default material dropdown.
