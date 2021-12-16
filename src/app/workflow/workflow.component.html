@@ -57,7 +57,7 @@
         </span>
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
           <mat-chip matTooltip="Verified" class="bubble workflow-background ml-3">
-            <a [href]="verifiedLink" class="verified-check">
+            <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
               <mat-icon class="verified-icon">done</mat-icon>
               <span>Verified</span>
             </a>

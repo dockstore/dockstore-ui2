@@ -59,7 +59,7 @@
           ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
           <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
             <mat-chip matTooltip="Verified" class="bubble container-background ml-3">
-              <a [href]="verifiedLink" class="verified-check">
+              <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                 <mat-icon class="verified-icon">done</mat-icon>
                 <span>Verified</span>
               </a>
