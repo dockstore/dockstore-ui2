@@ -141,15 +141,22 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.getMyEntries();
 
-    this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tools) => {
-      this.tools = tools;
-      if (this.apptools) {
-        this.allTools = this.apptools.concat(this.tools);
-      } else {
-        this.allTools = this.tools;
-      }
-      this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
-    });
+    combineLatest([this.containerService.tools$, this.workflowService.workflows$])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([tools, workflows]) => {
+        this.tools = tools;
+        this.apptools = workflows;
+        if (this.tools) {
+          if (this.apptools) {
+            this.allTools = this.tools.concat(this.apptools);
+          } else {
+            this.allTools = this.tools;
+          }
+        } else {
+          this.allTools = this.apptools;
+        }
+        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+      });
 
     this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(
       map(([tools, tool]) => {
@@ -157,15 +164,6 @@ export class MyToolComponent extends MyEntry implements OnInit {
       })
     );
 
-    this.workflowService.workflows$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((appTools) => {
-      this.apptools = appTools;
-      if (this.tools) {
-        this.allTools = this.apptools.concat(this.tools);
-      } else {
-        this.allTools = this.apptools;
-      }
-      this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
-    });
     this.groupAppToolEntryObjects$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.selectActive()]).pipe(
       map(([workflows, workflow]) => {
         return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
@@ -177,6 +175,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
     );
+
     this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => (this.registerTool = tool));
   }
 
