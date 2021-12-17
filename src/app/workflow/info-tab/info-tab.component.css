@@ -21,3 +21,8 @@
 a {
   word-break: break-word;
 }
+
+/* Bootstrap adds a 5px bottom margin, this counteracts it. Remove once Bootstrap is removed */
+::ng-deep label {
+  margin-bottom: 0px;
+}

@@ -153,7 +153,7 @@ export class InfoTabService extends Base {
       defaultCWLTestParameterFile: tool.defaultCWLTestParameterFile,
       defaultWDLTestParameterFile: tool.defaultWDLTestParameterFile,
       default_dockerfile_path: tool.default_dockerfile_path,
-      topic: tool.topic,
+      topicManual: tool.topicManual,
     };
     return partialTool;
   }
