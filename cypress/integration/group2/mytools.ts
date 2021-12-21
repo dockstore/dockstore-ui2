@@ -144,8 +144,8 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=close-dialog-button]').click();
 
       goToTab('Versions');
-      cy.contains('button', 'Actions').click();
-      cy.get('[data-cy=set-default-version-button]').click();
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
 
       cy.get('#publishToolButton')
         .should('contain', 'Publish')
@@ -170,8 +170,8 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=close-dialog-button]').click();
 
       goToTab('Versions');
-      cy.contains('button', 'Actions').click();
-      cy.get('[data-cy=set-default-version-button]').click();
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
 
       cy.get('#publishToolButton').should('contain', 'Publish').click().should('contain', 'Unpublish').click().should('contain', 'Publish');
     });

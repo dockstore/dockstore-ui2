@@ -127,8 +127,8 @@ describe('Checker workflow test from my-workflows', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
 
       goToTab('Versions');
-      cy.contains('button', 'Actions').click();
-      cy.get('[data-cy=set-default-version-button]').click();
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       goToTab('Info');
 
       // Hacky fix from https://github.com/cypress-io/cypress/issues/695
