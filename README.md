@@ -235,10 +235,12 @@ To modify the smoke test database, `test/smoke_test_db.sql`:
 3. Login to one of the test users already in the database by setting the browser `ng2-ui-auth_token` 
 to `fake-admin-token`, `fake-curator-token` or `fake-basic-1-token`. Then, refresh the page. (To locate `ng2-ui-auth_token` in chrome, 
 go to developer tools -> application -> storage (on the left snackbar) -> local storage -> http://localhost:4200)
-4. Make any desired changes to the database, preferably via the UI. It's not recommended to manually change the smoke test database with SQL commands, as this can cause
-constraint issues, but in some cases it is required.
+4. Make any desired changes to the database, preferably via the UI. It's not recommended to manually change the smoke test database with SQL commands, 
+as this can cause constraint issues, but in some cases it is required.
 5. Create a new database dump for the content in postgres, for example if postgres is running in a Docker container, execute: 
 `docker exec -t postgres1 pg_dump -U postgres --column-inserts webservice_test > smoke_test_db.sql`
+6. Verify the database dump doesn't have any live tokens in the tokens table 
+(Search for `Data for Name: token; Type: TABLE DATA; Schema: public; Owner: dockstore`), then commit the new database dump.
 
 ## Further help
 
