@@ -80,6 +80,15 @@ describe('Dockstore my tools', () => {
       cy.contains('button', ' Save ').click();
       cy.visit('/my-tools/quay.io/A2/b1');
       cy.contains('/Dockerfile');
+
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicCancelButton]').click();
+      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.contains('goodTopic').should('exist');
     });
     it('should be able to add labels', () => {
       cy.contains('quay.io/A2/a:latest');
