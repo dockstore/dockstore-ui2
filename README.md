@@ -212,6 +212,36 @@ Before running the tests make sure you:
 - serve the app via `ng serve` or similar.
 - have the Dockstore webservice jar in the root directory and run it (see scripts/run-webservice-script.sh for guideline)
 
+### Running smoke tests
+Smoke tests are part of the end-to-end testing suite and are located under `cypress/integration/smokeTests/`. The smoke tests
+can be executed alongside other integration tests when running `$(npm bin)/cypress open` or `$(npm bin)/cypress run`.
+
+Various sets of smoke tests are runnable from scripts in `package.json`. To run smoke tests against your local service,
+run `npm run test-local-no-auth`. Before running the tests make sure you have Dockstore set up locally, as described in the above section.
+
+`npm run test-local-no-auth` is also executed in CircleCI when a branch is pushed, or a pull request is made. When run on CircleCI,
+the smoke tests leverage a dummy database stored in `test/smoke_test_db.sql`. If a smoke test fails on CircleCI, there are two main scenarios
+to consider:
+1. The smoke tests are failing due to a change in the UI. This can be fixed by modifying the tests in `cypress/integration/smokeTests/`.
+2. The dummy smoke test database does not have the proper data for the tested version of the UI. This can be fixed by modifying the data in `test/smoke_test_db.sql`.
+
+#### Modifying the smoke test database
+*Note: Do not link any real accounts in the smoke test database as that will add tokens to the database dump, which is publicly visible. 
+This means you cannot register an account in the normal fashion, as that will add either a GitHub or Google token to the database.* 
+
+To modify the smoke test database, `test/smoke_test_db.sql`:
+1. Load `test/smoke_test_db.sql` into your postgres database.
+2. Run Dockstore locally.
+3. Login to one of the test users already in the database by setting the browser `ng2-ui-auth_token` 
+to `fake-admin-token`, `fake-curator-token` or `fake-basic-1-token`. Then, refresh the page. (To locate `ng2-ui-auth_token` in chrome, 
+go to developer tools -> application -> storage (on the left snackbar) -> local storage -> http://localhost:4200)
+4. Make any desired changes to the database, preferably via the UI. It's not recommended to manually change the smoke test database with SQL commands, 
+as this can cause constraint issues, but in some cases it is required.
+5. Create a new database dump for the content in postgres, for example if postgres is running in a Docker container, execute: 
+`docker exec -t postgres1 pg_dump -U postgres --column-inserts webservice_test > smoke_test_db.sql`
+6. Verify the database dump doesn't have any live tokens in the tokens table 
+(Search for `Data for Name: token; Type: TABLE DATA; Schema: public; Owner: dockstore`), then commit the new database dump.
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
