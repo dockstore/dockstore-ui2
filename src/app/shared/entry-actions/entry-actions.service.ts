@@ -108,10 +108,10 @@ export class EntryActionsService {
     return entry.defaultVersion != null;
   }
 
-  openNoDefaultDialog(entry: Entry, showVersions: EventEmitter<void>): void {
+  openNoDefaultDialog(entry: Entry, entryType: string, showVersions: EventEmitter<void> | null): void {
     const informationDialogData: InformationDialogData = {
       title: 'Default Version Required',
-      message: 'Your tool/workflow must have a default version to be published.  Please use the the Actions menu in the Versions tab to select a default version.',
+      message: `Your ${entryType} must have a default version to be published.  Please use the the Actions menu in the Versions tab to select a default version.`,
       closeButtonText: 'OK',
     };
     const observable = this.informationDialogService.openDialog(informationDialogData, bootstrap4mediumModalSize);
@@ -126,7 +126,7 @@ export class EntryActionsService {
       return;
     } else {
       if (!currentlyPublished && !this.hasDefaultTag(workflow)) {
-        this.openNoDefaultDialog(workflow, emitter);
+        this.openNoDefaultDialog(workflow, 'workflow', emitter);
         return;
       }
       const request: PublishRequest = {
@@ -162,7 +162,7 @@ export class EntryActionsService {
       return;
     } else {
       if (!currentlyPublished && !this.hasDefaultTag(tool)) {
-        this.openNoDefaultDialog(tool, emitter);
+        this.openNoDefaultDialog(tool, 'tool', emitter);
         return;
       }
       const request: PublishRequest = {
