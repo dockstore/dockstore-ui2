@@ -216,7 +216,7 @@ Before running the tests make sure you:
 Smoke tests are part of the end-to-end testing suite and are located under `cypress/integration/smokeTests/`. The smoke tests
 can be executed alongside other integration tests when running `$(npm bin)/cypress open` or `$(npm bin)/cypress run`.
 
-Various sets of smoke tests are defined as scripts in `package.json`. To run smoke tests against your local service,
+Various sets of smoke tests are runnable from scripts in `package.json`. To run smoke tests against your local service,
 run `npm run test-local-no-auth`. Before running the tests make sure you have Dockstore set up locally, as described in the above section.
 
 `npm run test-local-no-auth` is also executed in CircleCI when a branch is pushed, or a pull request is made. When run on CircleCI,
