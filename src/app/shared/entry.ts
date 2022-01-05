@@ -126,7 +126,7 @@ export abstract class Entry implements OnDestroy {
   }
 
   protected isAppTool(url: String): boolean {
-    if (url.includes('containers') && url.includes('github.com')) {
+    if (url.includes('/containers/github.com')) {
       return true;
     }
     return false;
