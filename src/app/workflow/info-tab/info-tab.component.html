@@ -62,7 +62,7 @@
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
           </button>
         </li>
-        <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
+        <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Tool">
           <span>
             <li *ngIf="workflow?.workflow_path || !isPublic">
               <form

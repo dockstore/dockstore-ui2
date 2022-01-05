@@ -106,11 +106,11 @@
               </mat-toolbar>
             </div>
             <p *ngIf="(hasGroupEntriesObject$ | async) === false">You have not registered any {{ entryType$ | async }}s</p>
-            <app-sidebar-accordion
+            <app-workflow-sidebar-accordion
               [openOneAtATime]="oneAtATime"
               [groupEntriesObject]="groupEntriesObject$ | async"
               [refreshMessage]="isRefreshing$ | async"
-            ></app-sidebar-accordion>
+            ></app-workflow-sidebar-accordion>
             <br />
             <small
               >Don't see an organization?
@@ -124,10 +124,10 @@
                 <h3 class="sidebar-header">Shared with me</h3>
               </div>
               <p *ngIf="(hasGroupSharedEntriesObject$ | async) === false">You have no {{ entryType$ | async }}s shared with you</p>
-              <app-sidebar-accordion
+              <app-workflow-sidebar-accordion
                 [openOneAtATime]="oneAtATime"
                 [groupEntriesObject]="groupSharedEntriesObject$ | async"
-              ></app-sidebar-accordion>
+              ></app-workflow-sidebar-accordion>
             </ng-container>
           </div>
         </div>

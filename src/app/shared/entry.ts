@@ -95,7 +95,8 @@ export abstract class Entry implements OnDestroy {
   }
 
   init() {
-    this.clearState();
+    // Getting rid of this line makes the linking work again and I didn't notice any weird behaviour, but I'm not sure.. Needs more testing
+    // this.clearState();
     this.subscriptions();
     this.router.events
       .pipe(
@@ -122,6 +123,13 @@ export abstract class Entry implements OnDestroy {
         this.selectTab(0);
       }
     }
+  }
+
+  protected isAppTool(url: String): boolean {
+    if (url.includes('/containers/github.com')) {
+      return true;
+    }
+    return false;
   }
 
   starGazersChange(): void {

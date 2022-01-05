@@ -11,7 +11,7 @@ import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.component';
 
 @Component({
-  selector: 'app-sidebar-accordion',
+  selector: 'app-workflow-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
   styleUrls: ['./sidebar-accordion.component.scss'],
 })

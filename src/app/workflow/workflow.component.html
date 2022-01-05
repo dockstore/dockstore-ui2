@@ -104,7 +104,7 @@
     <div *ngIf="workflow">
       <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
-        <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="workflow"></app-category-button>
+        <app-category-button *ngFor="let category of categories$ | async" [category]="category" entryType="workflow"></app-category-button>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
@@ -181,7 +181,7 @@
               [isOwner]="isOwner"
             ></app-info-tab>
           </mat-tab>
-          <div *ngIf="entryType === EntryType.BioWorkflow">
+          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
             <mat-tab id="launchTab" label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
@@ -200,6 +200,7 @@
                   [canWrite]="canWrite"
                   [isOwner]="isOwner"
                   [mode]="workflow?.mode"
+                  [entryType]="entryType"
                 ></app-launch>
               </ng-template>
               <ng-template #noVersions>

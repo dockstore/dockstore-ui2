@@ -27,6 +27,7 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
+import { EntryType } from '../../shared/enum/entry-type';
 
 @Component({
   selector: 'app-launch',
@@ -41,6 +42,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
 
   _selectedVersion: WorkflowVersion;
   @Input() selectedVersion: WorkflowVersion;
+  @Input() entryType: EntryType;
 
   DockstoreToolType = DockstoreTool;
   WorkflowType = Workflow;
@@ -63,6 +65,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
+  EntryType = EntryType;
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
@@ -96,7 +99,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.params = this.launchService.getParamsString(workflowPath, versionName, descriptorType);
     this.cli = this.launchService.getCliString(workflowPath, versionName, descriptorType);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
-    this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
+    this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName, this.entryType);
     this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);

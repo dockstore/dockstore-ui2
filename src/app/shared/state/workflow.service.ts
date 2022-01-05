@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-import { Workflow, WorkflowVersion } from '../swagger';
+import { AppTool, Workflow, WorkflowVersion } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
 import { ExtendedWorkflowService } from './extended-workflow.service';
@@ -41,7 +41,7 @@ export class WorkflowService {
   }
 
   @transaction()
-  setWorkflow(workflow: BioWorkflow | Service | null) {
+  setWorkflow(workflow: BioWorkflow | Service | AppTool | null) {
     if (workflow) {
       this.workflowStore.upsert(workflow.id, workflow);
       this.extendedWorkflowService.update(workflow);
