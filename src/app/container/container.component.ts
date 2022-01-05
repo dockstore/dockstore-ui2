@@ -49,7 +49,6 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
-import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Workflow } from '../shared/swagger';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
@@ -230,7 +229,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   }
 
   public setupPublicEntry(url: String) {
-    if (url.includes('github.com')) {
+    if (url.includes('/containers/github.com')) {
       this.containerService.setTool(null);
       this.displayAppTool = true;
     } else if (url.includes('containers') || url.includes('tools')) {

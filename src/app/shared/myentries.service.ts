@@ -16,7 +16,7 @@
 import { OrgToolObject } from 'app/mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from 'app/myworkflows/my-workflow/my-workflow.component';
 import { EntryType } from './enum/entry-type';
-import { AppTool, DockstoreTool, Workflow } from './swagger';
+import { DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 
 export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O extends OrgToolObject<E> | OrgWorkflowObject<E>> {
