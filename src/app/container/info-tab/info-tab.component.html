@@ -243,48 +243,70 @@
               </button>
             </form>
           </li>
-          <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
-          <li>
-            <form fxLayout="row" fxLayoutAlign="start center" class="w-100">
-              <span><strong matTooltip="Short descripton of the tool">Topic</strong>:&nbsp;</span>
-              <span *ngIf="!topicEditing">{{ tool?.topic || 'n/a' }}</span>
-              <span fxFlex>
-                <input
-                  *ngIf="topicEditing"
-                  maxlength="150"
-                  type="text"
-                  name="topic"
-                  class="w-100"
-                  data-cy="topicInput"
-                  [(ngModel)]="tool.topicManual"
-                  placeholder="Short description of the tool"
-                />
-              </span>
-              <button
-                data-cy="topicCancelButton"
-                *ngIf="!isPublic && topicEditing"
-                type="button"
-                mat-button
-                class="accent-1-dark"
-                (click)="cancelEditing()"
-              >
-                <mat-icon>cancel</mat-icon> Cancel
-              </button>
-              <button
-                *ngIf="!isPublic"
-                type="button"
-                [disabled]="!(!somethingIsBeingEdited() || topicEditing)"
-                mat-button
-                class="accent-1-dark"
-                data-cy="topicEditButton"
-                (click)="toggleEditTopic()"
-              >
-                <mat-icon *ngIf="topicEditing">save</mat-icon>
-                <mat-icon *ngIf="!topicEditing">edit</mat-icon>
-                {{ topicEditing ? 'Save' : 'Edit' }}
-              </button>
-            </form>
+          <!-- Public Topic -->
+          <li *ngIf="isPublic">
+            <span><strong matTooltip="Short description of the tool">Topic</strong>:&nbsp;</span>
+            <span>{{ tool?.topicSelection === TopicSelectionEnum.AUTOMATIC ? tool?.topicAutomatic : tool?.topicManual }}</span>
           </li>
+          <!-- Private topic Topic -->
+          <ng-container *ngIf="!isPublic">
+            <li>
+              <span><strong matTooltip="Short description of the tool">Topic Automatic</strong>:&nbsp;</span>
+              <span>{{ tool?.topicAutomatic }}</span>
+            </li>
+            <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
+            <li>
+              <form fxLayout="row" fxLayoutAlign="start center" class="w-100">
+                <span><strong matTooltip="Short descripton of the tool">Topic</strong>:&nbsp;</span>
+                <span *ngIf="!topicEditing">{{ tool?.topicManual || 'n/a' }}</span>
+                <span fxFlex>
+                  <input
+                    *ngIf="topicEditing"
+                    maxlength="150"
+                    type="text"
+                    name="topic"
+                    class="w-100"
+                    data-cy="topicInput"
+                    [(ngModel)]="tool.topicManual"
+                    placeholder="Short description of the tool"
+                  />
+                </span>
+                <button
+                  data-cy="topicCancelButton"
+                  *ngIf="topicEditing"
+                  type="button"
+                  mat-button
+                  class="accent-1-dark"
+                  (click)="cancelEditing()"
+                >
+                  <mat-icon>cancel</mat-icon> Cancel
+                </button>
+                <button
+                  type="button"
+                  [disabled]="!(!somethingIsBeingEdited() || topicEditing)"
+                  mat-button
+                  class="accent-1-dark"
+                  data-cy="topicEditButton"
+                  (click)="toggleEditTopic()"
+                >
+                  <mat-icon *ngIf="topicEditing">save</mat-icon>
+                  <mat-icon *ngIf="!topicEditing">edit</mat-icon>
+                  {{ topicEditing ? 'Save' : 'Edit' }}
+                </button>
+              </form>
+            </li>
+            <li>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
+                <span>
+                  <mat-radio-group [(ngModel)]="tool.topicSelection" aria-label="Select an option" (change)="topicSelectionChange($event)">
+                    <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
+                    <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+              </div>
+            </li>
+          </ng-container>
           <app-info-tab-checker-workflow-path
             *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
             [canRead]="true"
