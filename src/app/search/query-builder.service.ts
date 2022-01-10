@@ -83,7 +83,7 @@ export class QueryBuilderService {
       'starredUsers',
       'toolname',
       'tool_path',
-      'topic',
+      'topicAutomatic',
       'verified',
       'workflowName',
     ]);
