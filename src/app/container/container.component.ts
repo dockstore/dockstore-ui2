@@ -228,6 +228,15 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     }
   }
 
+  /**
+   * Select the Versions tab
+   *
+   * @memberof WorkflowComponent
+   */
+  public selectVersionsTab() {
+    this.selectTab(this.validTabs.indexOf('versions'));
+  }
+
   public setupPublicEntry(url: String) {
     if (url.includes('/containers/github.com')) {
       this.containerService.setTool(null);
