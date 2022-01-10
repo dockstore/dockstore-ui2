@@ -181,7 +181,7 @@
                     data-cy="topicInput"
                     placeholder="Short description of the workflow"
                 /></span>
-                <ng-container *ngIf="!isPublic">
+                <ng-container>
                   <button data-cy="topicCancelButton" *ngIf="topicEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
                     <mat-icon>cancel</mat-icon> Cancel
                   </button>
