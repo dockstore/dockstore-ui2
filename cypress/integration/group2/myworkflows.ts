@@ -124,6 +124,16 @@ describe('Dockstore my workflows', () => {
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore.cwl');
+
+      // Topic Editing
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicCancelButton]').click();
+      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.contains('goodTopic').should('exist');
     });
     it('should have mode tooltip', () => {
       // .trigger('mouseover') doesn't work for some reason
@@ -431,6 +441,23 @@ describe('Dockstore my workflows', () => {
       notHaveAlert();
       cy.get('#closeRegisterWorkflowModalButton').contains('button', 'Close').should('be.visible').should('be.enabled').click();
       cy.get('#closeRegisterWorkflowModalButton').should('not.exist');
+    });
+  });
+
+  describe('Should require default version to publish', () => {
+    it('should not be able to publish with no default version', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.get('#publishButton').should('contain', 'Unpublish').should('be.visible').click();
+      cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();
+      cy.get('[data-cy=close-dialog-button]').should('be.visible').click();
+      cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
+    });
+    it('should be able to publish after setting default version', () => {
+      goToTab('Versions');
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
+      cy.wait(1000);
+      cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();
     });
   });
 

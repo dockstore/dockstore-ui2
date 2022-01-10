@@ -33,6 +33,7 @@ import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { InformationDialogComponent } from './information-dialog/information-dialog.component';
 import { FooterComponent } from './footer/footer.component';
 import { GitTagPipe } from './footer/git-tag.pipe';
 import { FundingComponent } from './funding/funding.component';
@@ -148,6 +149,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SitemapComponent,
     GithubCallbackComponent,
     ConfirmationDialogComponent,
+    InformationDialogComponent,
     SessionExpiredComponent,
     TosBannerComponent,
     LogoutComponent,

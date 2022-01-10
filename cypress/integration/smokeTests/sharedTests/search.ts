@@ -37,12 +37,6 @@ describe('Admin UI', () => {
       });
       cy.get('[data-cy=search-workflow-table-paginator]').contains(10).should('be.visible').click();
       cy.get('mat-option').contains(20).click();
-      cy.get('[data-cy=search-workflow-table-paginator]').within(() => {
-        cy.get('.mat-paginator-navigation-next').click();
-      });
-      cy.get('[data-cy=search-workflow-table-paginator]').within(() => {
-        cy.get('.mat-paginator-range-label').contains('40 of');
-      });
       cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
       cy.get('a').contains('Organizations').click();
       cy.go('back');

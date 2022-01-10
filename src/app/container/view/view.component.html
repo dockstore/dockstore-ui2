@@ -31,7 +31,7 @@
     >
       Delete
     </button>
-    <button mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion" (click)="updateDefaultVersion()">
+    <button data-cy="set-default-version-button" mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion" (click)="updateDefaultVersion()">
       Set as Default Version
     </button>
   </ng-container>

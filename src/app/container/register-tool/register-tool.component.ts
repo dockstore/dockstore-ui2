@@ -23,6 +23,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { RegisterToolService } from './register-tool.service';
+import { Dockstore } from '../../shared/dockstore.model';
 
 interface HostedTool {
   path: string;
@@ -48,6 +49,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public disablePrivateCheckbox = false;
   public loading$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
+  public gitHubAppInstallationLink$: Observable<string>;
   public hostedTool: HostedTool = {
     path: '',
     registry: 'quay.io',
@@ -72,9 +74,16 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
         'Manually add individual tools with descriptor(s) stored on Dockstore.org. Docker images are stored on sites like Quay.io and DockerHub.',
       value: 2,
     },
+    {
+      label: 'Register using GitHub Apps',
+      extendedLabel:
+        'Install our GitHub App on your repository/organization to automatically sync tools with GitHub. Allows you to register a tool descriptor without linking to a Docker image you own.',
+      value: 3,
+    },
   ];
   public selectedOption = this.options[0];
   private ngUnsubscribe: Subject<{}> = new Subject();
+  Dockstore = Dockstore;
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
@@ -144,6 +153,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.loading$ = this.sessionQuery.loadingDialog$;
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.registerToolService.toolRegisterError
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((toolRegisterError) => (this.toolRegisterError = toolRegisterError));

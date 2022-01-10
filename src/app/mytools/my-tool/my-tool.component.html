@@ -64,6 +64,11 @@
               [groupEntriesObject]="groupEntriesObject$ | async"
               [refreshMessage]="isRefreshing$ | async"
             ></app-sidebar-accordion>
+            <app-workflow-sidebar-accordion
+              [openOneAtATime]="oneAtATime"
+              [groupEntriesObject]="groupAppToolEntryObjects$ | async"
+              [refreshMessage]="isRefreshing$ | async"
+            ></app-workflow-sidebar-accordion>
           </div>
         </div>
       </mat-sidenav>
@@ -99,6 +104,7 @@
             </mat-card>
           </div>
         </div>
+
         <app-container [isToolPublic]="false"></app-container>
       </mat-sidenav-content>
     </mat-sidenav-container>

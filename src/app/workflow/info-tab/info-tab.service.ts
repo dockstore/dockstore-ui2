@@ -34,6 +34,7 @@ export class InfoTabService {
   public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public forumUrlEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public topicEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguageMap = [];
 
   /**
@@ -72,12 +73,36 @@ export class InfoTabService {
     this.workflowPathEditing$.next(editing);
   }
 
+  setTopicEditing(editing: boolean) {
+    this.topicEditing$.next(editing);
+  }
+
   setDefaultTestFilePathEditing(editing: boolean) {
     this.defaultTestFilePathEditing$.next(editing);
   }
 
   setForumUrlEditing(editing: boolean) {
     this.forumUrlEditing$.next(editing);
+  }
+
+  /**
+   * Warning, this could potentially update a few other properties
+   * @param workflow
+   */
+  saveTopic(workflow: Workflow, errorCallback: () => void) {
+    this.alertService.start('Updating topic');
+    const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
+    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(
+      (response) => {
+        this.alertService.detailedSuccess();
+        const newTopic = response.topic;
+        this.workflowService.updateActiveTopic(newTopic);
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+        errorCallback();
+      }
+    );
   }
 
   updateAndRefresh(workflow: Workflow) {
@@ -185,11 +210,13 @@ export class InfoTabService {
     this.workflowPathEditing$.next(false);
     this.defaultTestFilePathEditing$.next(false);
     this.forumUrlEditing$.next(false);
+    this.topicEditing$.next(false);
     this.restoreWorkflow();
   }
 
   /**
    * Reverts the workflow info back to the original
+   * This actually doesn't work anymore
    *
    * @memberof InfoTabService
    */

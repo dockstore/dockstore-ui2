@@ -80,6 +80,15 @@ describe('Dockstore my tools', () => {
       cy.contains('button', ' Save ').click();
       cy.visit('/my-tools/quay.io/A2/b1');
       cy.contains('/Dockerfile');
+
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicCancelButton]').click();
+      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.contains('goodTopic').should('exist');
     });
     it('should be able to add labels', () => {
       cy.contains('quay.io/A2/a:latest');
@@ -112,6 +121,15 @@ describe('Dockstore my tools', () => {
     });
   });
 
+  describe('Should require default version to publish', () => {
+    it('should not be able to publish a tool with no default', () => {
+      cy.visit('/my-tools/quay.io/A2/b1');
+      cy.get('#publishToolButton').should('contain', 'Publish').click();
+      cy.get('[data-cy=close-dialog-button]').click();
+      cy.get('#publishToolButton').should('contain', 'Publish');
+    });
+  });
+
   describe('publish a tool', () => {
     it('publish and unpublish', () => {
       cy.server();
@@ -121,6 +139,13 @@ describe('Dockstore my tools', () => {
       selectTool('b1');
 
       cy.get('#viewPublicToolButton').should('not.exist');
+
+      cy.get('#publishToolButton').click();
+      cy.get('[data-cy=close-dialog-button]').click();
+
+      goToTab('Versions');
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
 
       cy.get('#publishToolButton')
         .should('contain', 'Publish')
@@ -140,6 +165,14 @@ describe('Dockstore my tools', () => {
   describe('Publish and unpublish an existing Amazon ECR tool', () => {
     it('Publish and Unpublish', () => {
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
+
+      cy.get('#publishToolButton').click();
+      cy.get('[data-cy=close-dialog-button]').click();
+
+      goToTab('Versions');
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
+
       cy.get('#publishToolButton').should('contain', 'Publish').click().should('contain', 'Unpublish').click().should('contain', 'Publish');
     });
     it('Be able to add tag with test parameter file', () => {

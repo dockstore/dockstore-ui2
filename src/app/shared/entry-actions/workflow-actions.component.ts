@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
 import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../constants';
@@ -21,6 +21,7 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   @Input() selectedVersion: WorkflowVersion;
   @Input() isOwner: boolean;
   @Input() canWrite: boolean;
+  @Output() showVersions = new EventEmitter<void>();
   EntryType = EntryType;
   zenodoAccountIsLinked$: Observable<boolean>;
   WorkflowModel = Workflow;
@@ -51,7 +52,7 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
    * @memberof EntryActionsComponent
    */
   publishToggle() {
-    this.entryActionsService.publishWorkflowToggle(this.workflow, this.isOwner, this.entryType);
+    this.entryActionsService.publishWorkflowToggle(this.workflow, this.isOwner, this.entryType, this.showVersions);
   }
 
   /**

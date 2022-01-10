@@ -71,7 +71,7 @@
     >
       Export to ORCID
     </button>
-    <button mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion" (click)="updateDefaultVersion()">
+    <button data-cy="set-default-version-button" mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion" (click)="updateDefaultVersion()">
       Set as Default Version
     </button>
     <button

@@ -98,6 +98,12 @@ describe('Checker workflow test from my-tools', () => {
       // Didn't change the tool path upon entry or select
       // cy.url().should('eq','/my-tools/quay.io/A2/b3')
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click();
+
+      goToTab('Versions');
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
+      goToTab('Info');
+
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish');
       cy.wait(250);
       cy.get('#viewCheckerWorkflowButton').should('be.visible').click();

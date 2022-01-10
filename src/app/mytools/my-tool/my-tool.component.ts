@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -33,12 +33,16 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ContainerService } from '../../shared/container.service';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { TokenQuery } from '../../shared/state/token.query';
-import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { AppTool, DockstoreTool, Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
+import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
+import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
 
 @Component({
   selector: 'app-my-tool',
@@ -48,12 +52,17 @@ import { MytoolsService } from '../mytools.service';
 export class MyToolComponent extends MyEntry implements OnInit {
   faGithub = faGithub;
   tools: any;
+  apptools: Array<AppTool>;
+  allTools: any;
   tool: any;
+  tool$: Observable<DockstoreTool | null>;
+  appTool: AppTool;
   isRefreshing$: Observable<boolean>;
   readonly pageName = '/my-tools';
   private registerTool: Tool;
   public showSidebar = true;
   public groupEntriesObject$: Observable<Array<OrgToolObject<DockstoreTool>>>;
+  public groupAppToolEntryObjects$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
@@ -73,7 +82,10 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private alertService: AlertService,
     protected sessionQuery: SessionQuery,
     protected myEntriesQuery: MyEntriesQuery,
-    protected myEntriesStateService: MyEntriesStateService
+    protected myEntriesStateService: MyEntriesStateService,
+    protected myWorkflowsService: MyWorkflowsService,
+    private workflowService: WorkflowService,
+    protected workflowQuery: WorkflowQuery
   ) {
     super(
       accountsService,
@@ -97,8 +109,9 @@ export class MyToolComponent extends MyEntry implements OnInit {
         filter((event) => event instanceof NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(() => {
-        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.tools));
+      .subscribe((event: RouterEvent) => {
+        this.allTools = this.tools.concat(this.apptools);
+        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
       });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
@@ -116,27 +129,45 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
     this.containerService.setTools(null);
+    this.workflowService.setWorkflow(null);
+    this.workflowService.setWorkflows(null);
+    this.tool$ = this.toolQuery.tool$;
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
+    });
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((appTool) => {
+      this.appTool = appTool;
     });
 
     this.getMyEntries();
 
-    this.containerService.tools$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tools) => {
-      this.tools = tools;
-      this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(tools));
-    });
+    combineLatest([this.containerService.tools$, this.workflowService.workflows$])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([tools, workflows]) => {
+        this.tools = tools || [];
+        this.apptools = workflows || [];
+        this.allTools = this.tools.concat(this.apptools);
+        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+      });
 
     this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(
       map(([tools, tool]) => {
         return this.mytoolsService.convertEntriesToOrgEntryObject(tools, tool);
       })
     );
+
+    this.groupAppToolEntryObjects$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.selectActive()]).pipe(
+      map(([workflows, workflow]) => {
+        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
+      })
+    );
+
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
       map((orgToolObjects: OrgToolObject<DockstoreTool>[]) => {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
     );
+
     this.registerToolService.tool.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => (this.registerTool = tool));
   }
 

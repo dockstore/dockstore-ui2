@@ -31,6 +31,7 @@ export class InfoTabService extends Base {
   public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public cwlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public wdlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public topicEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   /**
    * The original tool that should be in sync with the database
@@ -85,6 +86,27 @@ export class InfoTabService extends Base {
     this.wdlTestPathEditing$.next(editing);
   }
 
+  setTopicEditing(editing: boolean) {
+    this.topicEditing$.next(editing);
+  }
+
+  saveTopic(tool: DockstoreTool, errorCallback: () => void) {
+    this.alertService.start('Updating topic');
+    const partialTool = this.getPartialToolForUpdate(tool);
+    this.containersService.updateContainer(this.tool.id, partialTool).subscribe(
+      (response) => {
+        this.alertService.detailedSuccess();
+
+        const newTopic = response.topic;
+        this.containerService.updateActiveTopic(newTopic);
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+        errorCallback();
+      }
+    );
+  }
+
   updateAndRefresh(tool: ExtendedDockstoreTool) {
     const message = 'Tool Info';
     const partialTool = this.getPartialToolForUpdate(tool);
@@ -131,6 +153,7 @@ export class InfoTabService extends Base {
       defaultCWLTestParameterFile: tool.defaultCWLTestParameterFile,
       defaultWDLTestParameterFile: tool.defaultWDLTestParameterFile,
       default_dockerfile_path: tool.default_dockerfile_path,
+      topic: tool.topic,
     };
     return partialTool;
   }
@@ -155,6 +178,7 @@ export class InfoTabService extends Base {
     this.wdlPathEditing$.next(false);
     this.wdlTestPathEditing$.next(false);
     this.cwlTestPathEditing$.next(false);
+    this.topicEditing$.next(false);
     this.restoreTool();
   }
 

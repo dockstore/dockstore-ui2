@@ -15,8 +15,11 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ExtendedDockstoreToolService } from './extended-dockstoreTool/extended-dockstoreTool.service';
 import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { ToolQuery } from './tool/tool.query';
 import { ToolService } from './tool/tool.service';
+import { ToolStore } from './tool/tool.store';
 
 /**
  * This is mostly deprecated in favor of ToolService for the selected tool
@@ -30,7 +33,12 @@ export class ContainerService {
   tools$ = new BehaviorSubject<DockstoreTool[]>(null); // This contains the list of unsorted tools
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
-  constructor(private toolService: ToolService) {}
+  constructor(
+    private toolService: ToolService,
+    private toolQuery: ToolQuery,
+    private toolStore: ToolStore,
+    private extendedDockstoreToolService: ExtendedDockstoreToolService
+  ) {}
   setTool(tool: any) {
     this.toolService.setTool(tool);
   }
@@ -87,5 +95,11 @@ export class ContainerService {
 
   setCopyBtn(copyBtn: any) {
     this.copyBtnSource.next(copyBtn);
+  }
+
+  updateActiveTopic(topic: string) {
+    const newTool = { ...this.toolQuery.getActive(), topic: topic };
+    this.toolStore.upsert(newTool.id, newTool);
+    this.extendedDockstoreToolService.update(newTool);
   }
 }

@@ -96,6 +96,7 @@
           [selectedVersion]="selectedVersion"
           [isOwner]="isOwner"
           [canWrite]="canWrite"
+          (showVersions)="selectVersionsTab()"
         ></app-workflow-actions>
       </h3>
     </div>
@@ -183,7 +184,7 @@
               [isOwner]="isOwner"
             ></app-info-tab>
           </mat-tab>
-          <div *ngIf="entryType === EntryType.BioWorkflow">
+          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
             <mat-tab id="launchTab" label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
@@ -202,6 +203,7 @@
                   [canWrite]="canWrite"
                   [isOwner]="isOwner"
                   [mode]="workflow?.mode"
+                  [entryType]="entryType"
                 ></app-launch>
               </ng-template>
               <ng-template #noVersions>

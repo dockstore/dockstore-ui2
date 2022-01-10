@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="tool">
+<div *ngIf="tool; else workflow">
   <div class="row m-1" *ngIf="error || missingWarning">
     <div class="col-md-12" *ngIf="!isToolPublic">
       <mat-card class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
@@ -99,7 +99,7 @@
     </div>
     <div *ngIf="!publicPage" class="col-md-5">
       <h3>
-        <app-tool-actions [tool]="tool" [selectedVersion]="selectedVersion" [entryType]="EntryType.Tool"></app-tool-actions>
+        <app-tool-actions [tool]="tool" [selectedVersion]="selectedVersion" [entryType]="EntryType.Tool" (showVersions)="selectVersionsTab()"></app-tool-actions>
       </h3>
     </div>
   </div>
@@ -405,4 +405,7 @@
       </span>
     </mat-card>
   </div>
+</ng-template>
+<ng-template #workflow>
+  <app-workflow [isWorkflowPublic]="isToolPublic"></app-workflow>
 </ng-template>
