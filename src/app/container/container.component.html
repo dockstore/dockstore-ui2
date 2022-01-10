@@ -58,7 +58,7 @@
           {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
           ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
           <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
-            <mat-chip matTooltip="Verified" class="container-label-tag">
+            <mat-chip matTooltip="Verified" class="bubble container-background ml-3">
               <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                 <mat-icon class="verified-icon">done</mat-icon>
                 <span>Verified</span>
@@ -107,12 +107,14 @@
     <div *ngIf="tool">
       <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
-        <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="tool"></app-category-button>
+        <mat-chip-list class="bubble-list">
+          <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="tool"></app-category-button>
+        </mat-chip-list>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
-        <mat-chip-list class="labels">
-          <mat-chip class="container-label-tag" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
+        <mat-chip-list class="bubble-list">
+          <mat-chip class="bubble container-background pointer" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
             label
           }}</mat-chip>
           <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">

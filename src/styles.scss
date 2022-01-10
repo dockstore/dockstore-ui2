@@ -900,33 +900,59 @@ app-sidebar-accordion
   opacity: 0.7;
 }
 
-.container-label-tag {
+// Set the background to the color associated with containers (blue).
+// Used to set the background color in bubbles.
+.container-background {
   background: #d0effd !important;
-  text-decoration: none !important;
-  border-radius: 1rem !important;
-  font-size: 12px !important;
-  padding: 0 0.75rem !important;
 }
 
-.workflow-label-tag {
+// Set the background to the color associated with workflows (green).
+// Used to set the background color in bubbles.
+.workflow-background {
   background: #d2fbf0 !important;
+}
+
+// Styles an element as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
+// Bubbles always render in a 12px font, are 28px tall, and default to gray background.
+.bubble {
+  color: black !important;
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
+  line-height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
   padding: 0 0.75rem !important;
+  display: inline-block !important;
+  min-width: 32px !important;
+  background: mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
 
-.gray-label-tag {
-  background: mat.get-color-from-palette($dockstore-app-gray, lighter) !important;
-  text-decoration: none !important;
-  border-radius: 1rem !important;
-  font-size: 12px !important;
-  padding: 0 0.75rem !important;
+// Remove any default link styling from a bubble, and ensure the font-weight is correct.
+a.bubble, a.bubble:hover, a.bubble:focus, a.bubble:active, a.bubble:link, a.bubble:visited {
+  font-weight: 500;
+  border: none;
+  outline: none;
 }
 
+// Space out the bubbles in a list.
+// Add this class to a mat-chip-list that surrounds some bubbles.
+.bubble-list .bubble {
+  margin: 0 0.6rem 0 0 !important;
+}
+
+// Set the font size of an app-category-button to 12px.
+// This is necessary to prevent single-pixel vertical offsets between adjacent elements, such as that crop up when an app-category-button is displayed next to a bubble span.
 app-category-button {
   font-size: 12px !important;
 }
+
+// Change the cursor to a pointer.
+// Use this to make elements appear to navigate somewhere.
+.pointer {
+  cursor: pointer !important;
+}
+
 
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names

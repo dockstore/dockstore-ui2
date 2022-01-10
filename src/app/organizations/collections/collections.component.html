@@ -47,12 +47,12 @@
             <hr />
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                <span class="gray-label-tag" *ngIf="collection.value.workflowsLength > 0">
+                <span class="bubble" *ngIf="collection.value.workflowsLength > 0">
                   {{ collection.value.workflowsLength }}
                   <span *ngIf="collection.value.workflowsLength !== 1; else oneWorkflow"> Workflows</span>
                   <ng-template #oneWorkflow> Workflow</ng-template>
                 </span>
-                <span class="gray-label-tag" *ngIf="collection.value.toolsLength > 0">
+                <span class="bubble" *ngIf="collection.value.toolsLength > 0">
                   {{ collection.value.toolsLength }}
                   <span *ngIf="collection.value.toolsLength !== 1; else oneTool"> Tools</span>
                   <ng-template #oneTool> Tool</ng-template>

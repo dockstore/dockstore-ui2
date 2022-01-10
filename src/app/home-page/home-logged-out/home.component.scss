@@ -32,16 +32,6 @@
   padding: 1rem 6rem;
 }
 
-// Styling for each group of labels.
-// Specific to the above
-.labels {
-  display: inline-block;
-}
-
-.labels > * {
-  margin: 0 0.4rem;
-}
-
 .gray-sections {
   background: mat.get-color-from-palette($dockstore-app-gray, 5);
 }
