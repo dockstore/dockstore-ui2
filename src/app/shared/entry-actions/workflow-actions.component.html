@@ -2,7 +2,7 @@
   <a
     *ngIf="workflow?.is_published"
     [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"
-    id="viewPublicWorkflowButton"
+    data-cy="viewPublicWorkflowButton"
     mat-button
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"

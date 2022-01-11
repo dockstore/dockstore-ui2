@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { contains } from 'cypress/types/jquery';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
@@ -108,6 +109,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
+      // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('github.com');
       cy.get('a#sourceRepository').contains('A/g').should('have.attr', 'href', 'https://github.com/A/g');
@@ -126,6 +128,8 @@ describe('Dockstore my workflows', () => {
       cy.contains('/Dockstore.cwl');
 
       // Topic Editing
+      const privateEntryURI = '/my-workflows/github.com/A/l';
+      cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
@@ -133,6 +137,17 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('goodTopic');
       cy.get('[data-cy=topicSaveButton]').click();
+      cy.contains('goodTopic').should('exist');
+
+      // Check public view
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+      cy.contains('goodTopic').should('not.exist');
+
+      cy.visit(privateEntryURI);
+      cy.get('.mat-radio-label').contains('Manual').click();
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.contains('goodTopic').should('exist');
     });
     it('should have mode tooltip', () => {
@@ -476,13 +491,13 @@ describe('Dockstore my workflows', () => {
 
       cy.get('#publishButton').should('contain', 'Unpublish').click();
 
-      cy.get('#viewPublicWorkflowButton').should('not.exist');
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');
 
       cy.get('#publishButton').should('be.visible').should('contain', 'Publish').click();
 
       cy.get('#publishButton').should('contain', 'Unpublish');
 
-      cy.get('#viewPublicWorkflowButton').should('be.visible').click();
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
 
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
     });
