@@ -212,7 +212,7 @@
             </li>
             <li *ngIf="!isPublic">
               <div fxLayout="row" fxLayoutAlign="start center">
-                <span><strong matTooltip="Short description of the workflow">Topic Selection</strong>:&nbsp;</span>
+                <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
                 <span>
                   <mat-radio-group [(ngModel)]="workflow.topicSelection" aria-label="Select an option" (change)="radioChange($event)">
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
