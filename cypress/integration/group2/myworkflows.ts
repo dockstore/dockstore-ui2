@@ -114,13 +114,13 @@ describe('Dockstore my workflows', () => {
       cy.contains('/Dockstore.cwl');
       // Change the file path
       cy.contains('button', ' Edit ').click();
-      cy.get('input').clear().type('/Dockstore2.cwl');
+      cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore2.cwl');
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
       cy.contains('button', ' Edit ').click();
-      cy.get('input').clear().type('/Dockstore.cwl');
+      cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore.cwl');
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore.cwl');
@@ -143,7 +143,7 @@ describe('Dockstore my workflows', () => {
     it('should be able to add labels', () => {
       cy.contains('github.com/A/g');
       cy.get('button').contains('Manage labels').click();
-      cy.get('input').type('potato');
+      cy.get('[data-cy=workflowLabelInput]').type('potato');
       cy.get('button').contains('Save').click();
       cy.get('button').contains('Save').should('not.exist');
     });

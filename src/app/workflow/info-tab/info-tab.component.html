@@ -75,6 +75,7 @@
                   <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
                   <span *ngIf="!workflowPathEditing" fxFlexOffset="4px"> {{ workflow.workflow_path }} </span>
                   <input
+                    data-cy="workflowPathInput"
                     *ngIf="workflowPathEditing"
                     minlength="3"
                     maxlength="256"
