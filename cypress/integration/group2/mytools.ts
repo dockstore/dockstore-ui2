@@ -250,9 +250,7 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
-      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-      cy.wait(1000);
-      cy.get('mat-radio-button').eq(1).click();
+      cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
@@ -325,9 +323,7 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
-      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-      cy.wait(1000);
-      cy.get('mat-radio-button').eq(1).click();
+      cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
@@ -442,9 +438,7 @@ describe('Dockstore my tools', () => {
         });
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
-      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-      cy.wait(1000);
-      cy.get('mat-radio-button').eq(1).click();
+      cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
