@@ -151,6 +151,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('goodTopic').should('exist');
     });
     it('should have mode tooltip', () => {
+      cy.visit('/my-workflows/github.com/A/g');
       // .trigger('mouseover') doesn't work for some reason
       cy.contains('Mode').trigger('mouseenter');
       cy.get('.mat-tooltip').contains('STUB: Basic metadata pulled from source control.');
