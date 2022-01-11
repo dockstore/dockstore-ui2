@@ -93,7 +93,7 @@ describe('Dockstore my tools', () => {
     it('should be able to add labels', () => {
       cy.contains('quay.io/A2/a:latest');
       cy.get('button').contains('Manage labels').click();
-      cy.get('input').type('potato');
+      cy.get('[data-cy=toolLabelInput]').type('potato');
       cy.get('button').contains('Save').click();
       cy.get('button').contains('Save').should('not.exist');
     });
