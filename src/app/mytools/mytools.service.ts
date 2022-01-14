@@ -128,8 +128,12 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     });
   }
 
-  getPath(entry: DockstoreTool): string {
-    return entry.tool_path || '';
+  getPath(entry: DockstoreTool | Workflow): string {
+    if (MytoolsService.isWorkflowBasedObject(entry)) {
+      return entry.full_workflow_path;
+    } else {
+      return entry.tool_path || '';
+    }
   }
 
   sortEntry(entryA: DockstoreTool | Workflow, entryB: DockstoreTool | Workflow): number {

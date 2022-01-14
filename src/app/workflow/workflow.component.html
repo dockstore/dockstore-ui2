@@ -46,9 +46,14 @@
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div fxFlex="80">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-        <span>
+        <span *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Service; else gitHubAppTool">
           <img src="../../assets/svg/workflow-circle.svg" alt="workflow icon" />
         </span>
+        <ng-template #gitHubAppTool>
+          <span>
+            <img src="../../assets/svg/tool-circle.svg" alt="tool icon" />
+          </span>
+        </ng-template>
         <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ title
           }}<span *ngIf="workflow?.workflowVersions.length > 0"
@@ -106,7 +111,11 @@
       <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
         <mat-chip-list class="bubble-list">
-          <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="workflow"></app-category-button>
+          <app-category-button
+            *ngFor="let category of categories$ | async"
+            [category]="category"
+            entryType="workflow"
+          ></app-category-button>
         </mat-chip-list>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">

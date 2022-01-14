@@ -48,18 +48,16 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor } from '../shared/swagger';
-import { WorkflowsService } from '../shared/swagger/api/workflows.service';
+import { Permission, ToolDescriptor, WorkflowsService } from '../shared/swagger';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
-
-import RoleEnum = Permission.RoleEnum;
 import { EntriesService, WorkflowSubClass } from '../shared/openapi';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
+import RoleEnum = Permission.RoleEnum;
 
 @Component({
   selector: 'app-workflow',
@@ -121,7 +119,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     alertService: AlertService,
     entryService: EntriesService,
     private titleService: Title,
-    protected entryCategoriesService: EntryCategoriesService,
+    protected entryCategoriesService: EntryCategoriesService
   ) {
     super(
       trackLoginService,
@@ -248,9 +246,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       this.canRead = this.canWrite = this.isOwner = false;
       this.readers = this.writers = this.owners = [];
       if (!this.isPublic()) {
+        const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
         this.showWorkflowActions = false;
         this.workflowsService
-          .getWorkflowActions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
+          .getWorkflowActions(this.workflow.full_workflow_path, subclass)
           .pipe(
             finalize(() => {
               this.showWorkflowActions = true;
@@ -312,18 +311,23 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     this.selectTab(this.validTabs.indexOf('versions'));
   }
 
+  public getWorkflowSubclass(entryType: EntryType): WorkflowSubClass {
+    let subclass: WorkflowSubClass;
+    if (entryType === EntryType.Tool) {
+      subclass = WorkflowSubClass.APPTOOL;
+    } else if (entryType === EntryType.BioWorkflow) {
+      subclass = WorkflowSubClass.BIOWORKFLOW;
+    } else {
+      subclass = WorkflowSubClass.SERVICE;
+    }
+    return subclass;
+  }
+
   public setupPublicEntry(url: String) {
     if (url.includes('workflows') || url.includes('services')) {
       // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
-      let subclass: WorkflowSubClass;
-      if (this.entryType === EntryType.Tool) {
-        subclass = WorkflowSubClass.APPTOOL;
-      } else if (this.entryType === EntryType.BioWorkflow) {
-        subclass = WorkflowSubClass.BIOWORKFLOW;
-      } else {
-        subclass = WorkflowSubClass.SERVICE;
-      }
+      const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
       this.workflowsService
         .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
         .subscribe(
@@ -429,10 +433,16 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
     if (this.selectVersion) {
-      const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
-      this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
-        this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
-      ]);
+      if (this.entryType === EntryType.AppTool) {
+        this.gA4GHFilesService.updateFiles(this.workflow.full_workflow_path, this.selectedVersion.name, [
+          this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
+        ]);
+      } else {
+        let prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+        this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+          this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
+        ]);
+      }
       this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
     }
     this.workflowService.setWorkflowVersion(version);
