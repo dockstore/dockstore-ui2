@@ -13,7 +13,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<div *ngIf="title$ | async as title">
+<ng-container *ngIf="title$ | async as title">
+<ng-container *ngIf="saveLabel$ | async as saveLabel">
+<div>
   <h1 mat-dialog-title>{{ title }}</h1>
   <div mat-dialog-content>
     <app-alert></app-alert>
@@ -52,7 +54,9 @@
       (click)="createCollection()"
       cdkFocusInitial
     >
-      {{ title }}
+      {{ saveLabel }}
     </button>
   </div>
 </div>
+</ng-container>
+</ng-container>
