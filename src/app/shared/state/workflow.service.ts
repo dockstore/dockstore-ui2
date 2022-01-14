@@ -53,7 +53,13 @@ export class WorkflowService {
   }
 
   updateActiveTopic(topic: string) {
-    const newWorkflow = { ...this.workflowQuery.getActive(), topic: topic };
+    const newWorkflow = { ...this.workflowQuery.getActive(), topicManual: topic };
+    this.workflowStore.upsert(newWorkflow.id, newWorkflow);
+    this.extendedWorkflowService.update(newWorkflow);
+  }
+
+  updateActiveTopicSelection(topicSelection: Workflow.TopicSelectionEnum) {
+    const newWorkflow = { ...this.workflowQuery.getActive(), topicSelection: topicSelection };
     this.workflowStore.upsert(newWorkflow.id, newWorkflow);
     this.extendedWorkflowService.update(newWorkflow);
   }

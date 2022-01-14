@@ -51,6 +51,7 @@ describe('Dockstore my tools', () => {
 
   describe('Should contain extended DockstoreTool properties', () => {
     it('visit another page then come back', () => {
+      // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.server();
       cy.route('api/containers/*?include=validations').as('getTool');
       cy.get('a#home-nav-button').click();
@@ -81,6 +82,9 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools/quay.io/A2/b1');
       cy.contains('/Dockerfile');
 
+      // // Topic Editing
+      let privateEntryURI = '/my-tools/github.com/A2/a';
+      cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
@@ -89,11 +93,22 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=topicInput]').clear().type('goodTopic');
       cy.get('[data-cy=topicEditButton]').click();
       cy.contains('goodTopic').should('exist');
+
+      // Check public view
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
+      cy.contains('goodTopic').should('not.exist');
+
+      cy.visit(privateEntryURI);
+      cy.get('.mat-radio-label').contains('Manual').click();
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
+      cy.contains('goodTopic').should('exist');
     });
     it('should be able to add labels', () => {
       cy.contains('quay.io/A2/a:latest');
       cy.get('button').contains('Manage labels').click();
-      cy.get('input').type('potato');
+      cy.get('[data-cy=toolLabelInput]').type('potato');
       cy.get('button').contains('Save').click();
       cy.get('button').contains('Save').should('not.exist');
     });
@@ -138,7 +153,7 @@ describe('Dockstore my tools', () => {
       selectUnpublishedTab('quay.io/A2');
       selectTool('b1');
 
-      cy.get('#viewPublicToolButton').should('not.exist');
+      cy.get('[data-cy=viewPublicToolButton]').should('not.exist');
 
       cy.get('#publishToolButton').click();
       cy.get('[data-cy=close-dialog-button]').click();
@@ -156,7 +171,7 @@ describe('Dockstore my tools', () => {
         .click()
         .should('contain', 'Unpublish');
 
-      cy.get('#viewPublicToolButton').should('be.visible').click();
+      cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
 
       cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b1:latest?tab=info');
     });
@@ -250,9 +265,7 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
-      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-      cy.wait(1000);
-      cy.get('mat-radio-button').eq(1).click();
+      cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
@@ -325,9 +338,7 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
-      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-      cy.wait(1000);
-      cy.get('mat-radio-button').eq(1).click();
+      cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
@@ -442,9 +453,7 @@ describe('Dockstore my tools', () => {
         });
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
-      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
-      cy.wait(1000);
-      cy.get('mat-radio-button').eq(1).click();
+      cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);

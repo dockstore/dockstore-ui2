@@ -131,6 +131,7 @@
               <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
             </mat-chip>
             <input
+              data-cy="toolLabelInput"
               placeholder="New label..."
               [formControl]="labelFormControl"
               [matChipInputFor]="chipList"

@@ -15,6 +15,7 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
@@ -57,6 +58,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
 
   public validationPatterns = validationDescriptorPatterns;
   public WorkflowType = Workflow;
+  public TopicSelectionEnum = Workflow.TopicSelectionEnum;
   public tooltip = Tooltip;
   workflowPathEditing: boolean;
   temporaryDescriptorType: Workflow.DescriptorTypeEnum;
@@ -177,7 +179,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
 
   toggleEditTopic() {
     if (this.topicEditing) {
-      this.infoTabService.saveTopic(this.workflow, this.revertTopic);
+      this.infoTabService.saveTopic(this.workflow, this.revertTopic.bind(this));
     }
     this.infoTabService.setTopicEditing(!this.topicEditing);
   }
@@ -197,7 +199,15 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   revertTopic() {
-    this.workflow.topic = this.extendedWorkflow.topic;
+    this.workflow.topicManual = this.extendedWorkflow.topicManual;
+  }
+
+  revertTopicSelection() {
+    this.workflow.topicSelection = this.extendedWorkflow.topicSelection;
+  }
+
+  radioChange(event: MatRadioChange) {
+    this.infoTabService.saveTopicSelection(this.workflow, this.revertTopicSelection.bind(this));
   }
 
   save() {
