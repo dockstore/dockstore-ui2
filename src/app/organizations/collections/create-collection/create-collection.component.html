@@ -14,49 +14,49 @@
    limitations under the License.
 -->
 <ng-container *ngIf="title$ | async as title">
-<ng-container *ngIf="saveLabel$ | async as saveLabel">
-<div>
-  <h1 mat-dialog-title>{{ title }}</h1>
-  <div mat-dialog-content>
-    <app-alert></app-alert>
-    <form [formGroup]="createCollectionForm" fxLayout="column">
-      <mat-form-field>
-        <input type="text" matInput formControlName="name" placeholder="Name" required />
-        <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
-        <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
-        <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
-        <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
-        <mat-hint>The name of the collection</mat-hint>
-      </mat-form-field>
-      <mat-form-field>
-        <input type="text" matInput formControlName="displayName" placeholder="Display Name" required />
-        <mat-error *ngIf="displayName.hasError('required')">Display Name is required</mat-error>
-        <mat-error *ngIf="displayName.hasError('minlength')">Display Name should be at least 3 characters long</mat-error>
-        <mat-error *ngIf="displayName.hasError('maxlength')">Display Name should be at most 50 characters long</mat-error>
-        <mat-error *ngIf="displayName.hasError('pattern')"
-          >Display Name can contain alphanumeric characters, spaces, and some punctuation.</mat-error
+  <ng-container *ngIf="saveLabel$ | async as saveLabel">
+    <div>
+      <h1 mat-dialog-title>{{ title }}</h1>
+      <div mat-dialog-content>
+        <app-alert></app-alert>
+        <form [formGroup]="createCollectionForm" fxLayout="column">
+          <mat-form-field>
+            <input type="text" matInput formControlName="name" placeholder="Name" required />
+            <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
+            <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
+            <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
+            <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
+            <mat-hint>The name of the collection</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput formControlName="displayName" placeholder="Display Name" required />
+            <mat-error *ngIf="displayName.hasError('required')">Display Name is required</mat-error>
+            <mat-error *ngIf="displayName.hasError('minlength')">Display Name should be at least 3 characters long</mat-error>
+            <mat-error *ngIf="displayName.hasError('maxlength')">Display Name should be at most 50 characters long</mat-error>
+            <mat-error *ngIf="displayName.hasError('pattern')"
+              >Display Name can contain alphanumeric characters, spaces, and some punctuation.</mat-error
+            >
+            <mat-hint>The display name of the collection</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput formControlName="topic" placeholder="Topic" required />
+          </mat-form-field>
+        </form>
+      </div>
+      <div mat-dialog-actions class="pull-right">
+        <button matTooltip="Cancel" mat-button mat-dialog-close>Cancel</button>
+        <button
+          id="createOrUpdateCollectionButton"
+          [matTooltip]="title"
+          mat-flat-button
+          color="primary"
+          [disabled]="!createCollectionForm.valid"
+          (click)="createCollection()"
+          cdkFocusInitial
         >
-        <mat-hint>The display name of the collection</mat-hint>
-      </mat-form-field>
-      <mat-form-field>
-        <input type="text" matInput formControlName="topic" placeholder="Topic" required />
-      </mat-form-field>
-    </form>
-  </div>
-  <div mat-dialog-actions class="pull-right">
-    <button matTooltip="Cancel" mat-button mat-dialog-close>Cancel</button>
-    <button
-      id="createOrUpdateCollectionButton"
-      [matTooltip]="title"
-      mat-flat-button
-      color="primary"
-      [disabled]="!createCollectionForm.valid"
-      (click)="createCollection()"
-      cdkFocusInitial
-    >
-      {{ saveLabel }}
-    </button>
-  </div>
-</div>
-</ng-container>
+          {{ saveLabel }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
 </ng-container>
