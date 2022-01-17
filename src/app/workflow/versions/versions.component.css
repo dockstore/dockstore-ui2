@@ -50,7 +50,7 @@
 
 /* Material says it should highlight on hover, sadly Angular Material does not */
 .mat-row:hover {
-  background-color: rgba(197, 202, 233, 0.17);
+  background-color: rgba(232, 234, 246, 0.42);
 }
 
 /* Overwrite the bootstrap class */
