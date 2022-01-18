@@ -330,29 +330,31 @@
           <td mat-cell *matCellDef="let author">{{ author.name }}</td>
         </ng-container>
         <ng-container matColumnDef="role">
-          <th scope="col" mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">Role</th>
-          <td mat-cell *matCellDef="let author">{{ author.role }}</td>
+          <th scope="col" mat-header-cell fxHide.lt-md *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">
+            Role
+          </th>
+          <td mat-cell fxHide.lt-md *matCellDef="let author">{{ author.role }}</td>
         </ng-container>
         <ng-container matColumnDef="affiliation">
-          <th scope="col" mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">
+          <th scope="col" mat-header-cell fxHide.lt-md *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">
             Affiliation
           </th>
-          <td mat-cell *matCellDef="let author">{{ author.affiliation }}</td>
+          <td mat-cell fxHide.lt-md *matCellDef="let author">{{ author.affiliation }}</td>
         </ng-container>
         <ng-container matColumnDef="email">
           <th scope="col" mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">Email</th>
           <td mat-cell *matCellDef="let author">
             <span *ngIf="author.email">
               <mat-icon class="info-icon" color="accent">email</mat-icon>
-              <span>
-                <a [href]="'mailto:' + author.email" target="_top">{{ author.email }}</a>
-              </span>
+              <a [href]="'mailto:' + author.email" target="_top">{{ author.email }}</a>
             </span>
           </td>
         </ng-container>
         <ng-container matColumnDef="orcid_id">
-          <th scope="col" mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">ORCID ID</th>
-          <td mat-cell *matCellDef="let author">
+          <th scope="col" mat-header-cell fxHide.lt-sm *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">
+            ORCID ID
+          </th>
+          <td mat-cell fxHide.lt-sm *matCellDef="let author">
             <span *ngIf="author.orcid">
               <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
               <a href="https://orcid.org/{{ author.orcid }}">{{ author.orcid }}</a>
