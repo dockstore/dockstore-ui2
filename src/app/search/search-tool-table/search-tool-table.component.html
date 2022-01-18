@@ -75,7 +75,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Project Links</mat-header-cell>
+      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
         <a [href]="tool?.providerUrl" *ngIf="tool?.providerUrl">
           <fa-icon class="fa-lg" [icon]="tool.providerIcon" [matTooltip]="tool?.provider"></fa-icon>
