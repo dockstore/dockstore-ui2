@@ -122,18 +122,20 @@ export class CreateCollectionService {
   }
 
   /**
-   * Sets the title based on the mode
+   * Sets the title and save button label based on the mode
    *
    * @param {*} data  Data object during dialog component creation
    * @memberof CreateCollectionService
    */
-  setTitle(data: any): void {
+  setValues(data: any): void {
     const mode: TagEditorMode = data.mode;
     const title = mode === TagEditorMode.Add ? 'Create Collection' : 'Edit Collection';
+    const saveLabel = mode === TagEditorMode.Add ? 'Create Collection' : 'Save';
     this.createCollectionStore.update((state) => {
       return {
         ...state,
         title: title,
+        saveLabel: saveLabel,
       };
     });
   }

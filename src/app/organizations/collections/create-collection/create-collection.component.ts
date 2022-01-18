@@ -22,6 +22,7 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
   createCollectionForm: FormGroup;
   public loading$: Observable<boolean>;
   public title$: Observable<string>;
+  public saveLabel$: Observable<string>;
   constructor(
     private createCollectionQuery: CreateCollectionQuery,
     private createCollectionService: CreateCollectionService,
@@ -32,9 +33,10 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading$ = this.createCollectionQuery.loading$;
     this.title$ = this.createCollectionQuery.title$;
+    this.saveLabel$ = this.createCollectionQuery.saveLabel$;
     this.createCollectionService.clearState();
     this.createCollectionForm = this.createCollectionService.createForm(this.formsManager, this.data);
-    this.createCollectionService.setTitle(this.data);
+    this.createCollectionService.setValues(this.data);
   }
 
   createCollection() {
