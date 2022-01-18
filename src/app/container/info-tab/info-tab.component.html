@@ -49,18 +49,14 @@
           <span *ngIf="isPublic && isValidVersion">
             <li *ngIf="trsLinkCWL">
               <strong matTooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
-              <a [href]="trsLinkCWL">
-                {{ tool?.tool_path }}
-              </a>
+              <a [href]="trsLinkCWL">{{ tool?.tool_path }}</a>
               <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
               </button>
             </li>
             <li *ngIf="trsLinkWDL">
               <strong matTooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
-              <a [href]="trsLinkWDL">
-                {{ tool?.tool_path }}
-              </a>
+              <a [href]="trsLinkWDL">{{ tool?.tool_path }}</a>
               <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
               </button>
