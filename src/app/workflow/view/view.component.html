@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 
-<button mat-button [matMenuTriggerFor]="menu">Actions<mat-icon>arrow_drop_down</mat-icon></button>
+<button mat-button [matMenuTriggerFor]="menu">Info</button>
 <mat-menu #menu="matMenu">
   <button type="button" mat-menu-item color="accent" (click)="showVersionModal()">
     {{ isPublic || !canWrite ? 'View' : 'Edit' }}
@@ -71,7 +71,12 @@
     >
       Export to ORCID
     </button>
-    <button data-cy="set-default-version-button" mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion" (click)="updateDefaultVersion()">
+    <button
+      data-cy="set-default-version-button"
+      mat-menu-item
+      [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion"
+      (click)="updateDefaultVersion()"
+    >
       Set as Default Version
     </button>
     <button
