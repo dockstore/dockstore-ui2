@@ -14,10 +14,19 @@
   ~    limitations under the License.
   -->
 
-<button mat-button [matMenuTriggerFor]="menu">Info</button>
+<!-- Display public workflow button design -->
+<button mat-button class="public" [style.display]="isPublic ? 'block' : 'none'" [matMenuTriggerFor]="menu">Info</button>
+
+<!-- Display private workflow button design-->
+<button mat-button class="private" [style.display]="isPublic ? 'none' : 'block'" [matMenuTriggerFor]="menu">
+  <img src="../assets/svg/icons-cog.svg" style="width: 14px; padding: 0 1px 4px 2px" />
+  Actions
+  <img src="../assets/svg/drop-down-arrow.svg" style="width: 11px; padding: 0 0 2px 1px" />
+</button>
+
 <mat-menu #menu="matMenu">
   <button type="button" mat-menu-item color="accent" (click)="showVersionModal()">
-    {{ isPublic || !canWrite ? 'View' : 'Edit' }}
+    {{ isPublic || !canWrite ? 'View' : 'Edit Info' }}
   </button>
   <ng-container *ngIf="!isPublic">
     <button

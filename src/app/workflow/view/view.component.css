@@ -15,15 +15,34 @@
  */
 
 .mat-button {
-  color: white;
   font-weight: bold;
   font-size: 12px;
+  height: 26px;
+  padding: 0px;
+  line-height: 26px;
+}
 
+/* Style for public workflow button */
+.public {
+  color: white;
   background-color: #397a84;
   width: 42px;
   min-width: 42px;
-  height: 26px;
+}
 
-  padding: 0px;
-  line-height: 26px;
+/* Style for private workflow button */
+.private {
+  width: 90px;
+  color: #3f51b5;
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+  border: solid 1px #d8d8d8;
+}
+
+/* Drop-down menu restyling */
+.mat-menu-item {
+  font-size: 13px;
+  font-weight: bold;
+  height: 40px;
+  line-height: 40px;
 }
