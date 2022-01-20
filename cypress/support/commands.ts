@@ -36,8 +36,10 @@ export function cancelMatMenu(): void {
   cy.reload();
 }
 
+// Public workflow should display "Info" and private should display "Actions"
 export function clickFirstActionsButton(): void {
-  cy.get('button').contains('Actions').click();
+  if (cy.get('.publicButton')) cy.get('publicButton').contains('Info').click();
+  if (cy.get('.privateButton')) cy.get('privateButton').contains('Actions').click();
 }
 
 export function isActiveTab(tabName: string): void {

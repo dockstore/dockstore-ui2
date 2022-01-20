@@ -23,7 +23,7 @@
 }
 
 /* Style for public workflow button */
-.public {
+.publicButton {
   color: white;
   background-color: #397a84;
   width: 42px;
@@ -31,7 +31,7 @@
 }
 
 /* Style for private workflow button */
-.private {
+.privateButton {
   width: 90px;
   color: #3f51b5;
   background-color: #fff;

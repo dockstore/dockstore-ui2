@@ -16,11 +16,11 @@
 
 <!-- Display public workflow button design -->
 <div *ngIf="isPublic; else displayPrivateButton">
-  <button mat-button class="public" [matMenuTriggerFor]="menu">Info</button>
+  <button mat-button class="publicButton" [matMenuTriggerFor]="menu">Info</button>
 </div>
 <!-- Display private workflow button design-->
 <ng-template #displayPrivateButton>
-  <button mat-button class="private" [matMenuTriggerFor]="menu">
+  <button mat-button class="privateButton" [matMenuTriggerFor]="menu">
     <img src="../assets/svg/icons-cog.svg" alt="Gear icon" style="width: 14px; padding: 0 1px 4px 2px" />
     Actions
     <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" style="width: 11px; padding: 0 0 2px 1px" />
