@@ -15,14 +15,17 @@
   -->
 
 <!-- Display public workflow button design -->
-<button mat-button class="public" [style.display]="isPublic ? 'block' : 'none'" [matMenuTriggerFor]="menu">Info</button>
-
+<div *ngIf="isPublic; else displayPrivateButton">
+  <button mat-button class="public" [matMenuTriggerFor]="menu">Info</button>
+</div>
 <!-- Display private workflow button design-->
-<button mat-button class="private" [style.display]="isPublic ? 'none' : 'block'" [matMenuTriggerFor]="menu">
-  <img src="../assets/svg/icons-cog.svg" alt="Gear icon" style="width: 14px; padding: 0 1px 4px 2px" />
-  Actions
-  <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" style="width: 11px; padding: 0 0 2px 1px" />
-</button>
+<ng-template #displayPrivateButton>
+  <button mat-button class="private" [matMenuTriggerFor]="menu">
+    <img src="../assets/svg/icons-cog.svg" alt="Gear icon" style="width: 14px; padding: 0 1px 4px 2px" />
+    Actions
+    <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" style="width: 11px; padding: 0 0 2px 1px" />
+  </button>
+</ng-template>
 
 <mat-menu #menu="matMenu">
   <button type="button" mat-menu-item color="accent" (click)="showVersionModal()">
