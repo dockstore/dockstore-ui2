@@ -238,7 +238,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   }
 
   public setupPublicEntry(url: String) {
-    if (url.includes('/containers/github.com')) {
+    if (url.includes('/containers/github.com') || url.includes('/tools/github.com')) {
       this.containerService.setTool(null);
       this.displayAppTool = true;
     } else if (url.includes('containers') || url.includes('tools')) {
