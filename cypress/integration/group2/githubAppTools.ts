@@ -23,14 +23,7 @@ describe('GitHub App Tools', () => {
       .parentsUntil('mat-accordion')
       .should('be.visible')
       .contains('.mat-tab-label-content', 'Unpublished')
-      .should('be.visible')
       .click();
-  }
-
-  function selectTool(tool: string) {
-    cy.get('#tool-path').should('be.visible');
-    cy.contains('div .no-wrap', tool).should('be.visible').click();
-    cy.get('#tool-path').contains(tool);
   }
 
   function selectGitHubAppTool(tool: string) {
