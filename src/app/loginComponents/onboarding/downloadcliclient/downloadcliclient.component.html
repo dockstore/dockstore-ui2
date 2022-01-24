@@ -10,12 +10,12 @@
   </mat-tab>
 </mat-tab-group>
 
-<markdown [data]="textDataInstallCLI"></markdown>
+<markdown class="font" [data]="textDataInstallCLI"></markdown>
 <a mat-raised-button color="primary" *ngIf="downloadCli" class="hori-offset-12 indent" [attr.href]="downloadCli">
   <mat-icon>save_alt</mat-icon>
   Download CLI
 </a>
-<markdown [data]="textDataCLIConfig"></markdown>
+<markdown class="font" [data]="textDataCLIConfig"></markdown>
 <div class="input-group textarea indent">
   <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>
 token: {{ dsToken }}&#13;&#10;server-url: {{ dsServerURI }}</textarea
@@ -34,4 +34,4 @@ token: {{ dsToken }}&#13;&#10;server-url: {{ dsServerURI }}</textarea
   </span>
 </div>
 
-<markdown [data]="textDataConfirmInstallation"></markdown>
+<markdown class="font" [data]="textDataConfirmInstallation"></markdown>
