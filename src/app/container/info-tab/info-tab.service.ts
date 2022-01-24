@@ -96,9 +96,28 @@ export class InfoTabService extends Base {
     this.containersService.updateContainer(this.tool.id, partialTool).subscribe(
       (response) => {
         this.alertService.detailedSuccess();
-
-        const newTopic = response.topic;
+        const newTopic = response.topicManual;
         this.containerService.updateActiveTopic(newTopic);
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+        errorCallback();
+      }
+    );
+  }
+
+  /**
+   * Warning, this could potentially update a few other properties
+   * @param entry
+   */
+  saveTopicSelection(entry: DockstoreTool, errorCallback: () => void) {
+    this.alertService.start('Updating topic selection');
+    const partialEntryForUpdate = this.getPartialToolForUpdate(entry);
+    this.containersService.updateContainer(this.originalTool.id, partialEntryForUpdate).subscribe(
+      (response) => {
+        this.alertService.detailedSuccess();
+        const newTopicSelection = response.topicSelection;
+        this.containerService.updateActiveTopicSelection(newTopicSelection);
       },
       (error) => {
         this.alertService.detailedError(error);
@@ -153,7 +172,8 @@ export class InfoTabService extends Base {
       defaultCWLTestParameterFile: tool.defaultCWLTestParameterFile,
       defaultWDLTestParameterFile: tool.defaultWDLTestParameterFile,
       default_dockerfile_path: tool.default_dockerfile_path,
-      topic: tool.topic,
+      topicManual: tool.topicManual,
+      topicSelection: tool.topicSelection,
     };
     return partialTool;
   }

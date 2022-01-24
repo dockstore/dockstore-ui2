@@ -546,13 +546,13 @@ export class SearchService {
 
   initializeEntryOrder() {
     return new Map([
+      ['categories.name.keyword', new SubBucket()],
       ['descriptorType', new SubBucket()],
       ['author', new SubBucket()],
       ['registry', new SubBucket()],
       ['source_control_provider.keyword', new SubBucket()],
       ['namespace', new SubBucket()],
       ['organization', new SubBucket()],
-      ['categories.name.keyword', new SubBucket()],
       ['labels.value.keyword', new SubBucket()],
       ['private_access', new SubBucket()],
       ['verified', new SubBucket()],

@@ -97,9 +97,15 @@ export class ContainerService {
     this.copyBtnSource.next(copyBtn);
   }
 
-  updateActiveTopic(topic: string) {
-    const newTool = { ...this.toolQuery.getActive(), topic: topic };
+  updateActiveTopic(topicManual: string) {
+    const newTool = { ...this.toolQuery.getActive(), topicManual: topicManual };
     this.toolStore.upsert(newTool.id, newTool);
     this.extendedDockstoreToolService.update(newTool);
+  }
+
+  updateActiveTopicSelection(topicSelection: DockstoreTool.TopicSelectionEnum) {
+    const newWorkflow = { ...this.toolQuery.getActive(), topicSelection: topicSelection };
+    this.toolStore.upsert(newWorkflow.id, newWorkflow);
+    this.extendedDockstoreToolService.update(newWorkflow);
   }
 }

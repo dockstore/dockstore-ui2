@@ -13,3 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+/* Bootstrap adds a 5px bottom margin, this counteracts it. Remove once Bootstrap is removed */
+::ng-deep label {
+  margin-bottom: 0px;
+}

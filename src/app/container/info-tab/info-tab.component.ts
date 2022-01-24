@@ -46,6 +46,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   public DockstoreToolType = DockstoreTool;
   public tool: DockstoreTool;
   public topicEditing: boolean;
+  public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
   wdlPathEditing: boolean;
@@ -110,13 +111,21 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
 
   toggleEditTopic() {
     if (this.topicEditing) {
-      this.infoTabService.saveTopic(this.tool, this.revertTopic);
+      this.infoTabService.saveTopic(this.tool, this.revertTopic.bind(this));
     }
     this.infoTabService.setTopicEditing(!this.topicEditing);
   }
 
   revertTopic() {
-    this.tool.topic = this.extendedDockstoreTool.topic;
+    this.tool.topicManual = this.extendedDockstoreTool.topicManual;
+  }
+
+  revertTopicSelection() {
+    this.tool.topicSelection = this.extendedDockstoreTool.topicSelection;
+  }
+
+  topicSelectionChange() {
+    this.infoTabService.saveTopicSelection(this.tool, this.revertTopicSelection.bind(this));
   }
 
   toggleEditDockerFile() {
