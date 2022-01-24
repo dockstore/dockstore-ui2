@@ -929,7 +929,12 @@ app-sidebar-accordion
 }
 
 // Remove any default link styling from a bubble, and ensure the font-weight is correct.
-a.bubble, a.bubble:hover, a.bubble:focus, a.bubble:active, a.bubble:link, a.bubble:visited {
+a.bubble,
+a.bubble:hover,
+a.bubble:focus,
+a.bubble:active,
+a.bubble:link,
+a.bubble:visited {
   font-weight: 500;
   border: none;
   outline: none;
@@ -952,7 +957,6 @@ app-category-button {
 .pointer {
   cursor: pointer !important;
 }
-
 
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names
@@ -1208,4 +1212,22 @@ $truncate-text-values: 1, 2, 3;
 // This style is used by table headers when there is no data to display
 .inactive-table-header {
   color: #d8d8d8 !important;
+}
+
+// This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
+// These redesigned buttons have purple text and white backgrounds
+button.private-btn {
+  font-weight: bold;
+  font-size: 12px;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+  border: solid 1px #d8d8d8;
+}
+
+//This style should be used for the new small buttons in the Dockstore redesign with a height of 26px
+button.small-btn-structure {
+  height: 26px;
+  line-height: 26px;
+  padding: 0 10px;
 }
