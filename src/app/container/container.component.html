@@ -99,7 +99,12 @@
     </div>
     <div *ngIf="!publicPage" class="col-md-5">
       <h3>
-        <app-tool-actions [tool]="tool" [selectedVersion]="selectedVersion" [entryType]="EntryType.Tool" (showVersions)="selectVersionsTab()"></app-tool-actions>
+        <app-tool-actions
+          [tool]="tool"
+          [selectedVersion]="selectedVersion"
+          [entryType]="EntryType.Tool"
+          (showVersions)="selectVersionsTab()"
+        ></app-tool-actions>
       </h3>
     </div>
   </div>
@@ -108,15 +113,18 @@
       <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
         <mat-chip-list class="bubble-list">
-          <app-category-button *ngFor="let category of (categories$ | async)" [category]="category" entryType="tool"></app-category-button>
+          <app-category-button *ngFor="let category of categories$ | async" [category]="category" entryType="tool"></app-category-button>
         </mat-chip-list>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
         <mat-chip-list class="bubble-list">
-          <mat-chip class="bubble container-background pointer" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
-            label
-          }}</mat-chip>
+          <mat-chip
+            class="bubble container-background pointer"
+            *ngFor="let label of containerEditData?.labels"
+            (click)="goToSearch(label)"
+            >{{ label }}</mat-chip
+          >
           <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
             Manage labels
           </button>
@@ -131,6 +139,7 @@
               <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
             </mat-chip>
             <input
+              data-cy="toolLabelInput"
               placeholder="New label..."
               [formControl]="labelFormControl"
               [matChipInputFor]="chipList"
@@ -287,8 +296,8 @@
                   [ngStyle]="{ 'font-weight': selectedVersion?.name === sortedVersion?.name ? 'bold' : 'normal' }"
                   (click)="onSelectedVersionChange(sortedVersion)"
                   class="panel-body-anchor"
-                  >{{ sortedVersion.name }}
-                </a>
+                  >{{ sortedVersion.name }}</a
+                >&nbsp;
                 <small>{{ sortedVersion.last_built | date }}</small>
               </p>
               <hr class="m-0" />

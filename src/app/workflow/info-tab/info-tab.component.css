@@ -18,6 +18,17 @@
   text-decoration: underline;
 }
 
-a {
-  word-break: break-word;
+/* Max width set for author name so a really long name doesn't squish the other columns */
+.mat-column-name {
+  max-width: 25rem;
+}
+
+/* ORCID ID length is fixed */
+.mat-column-orcid_id {
+  width: 20rem;
+}
+
+/* Bootstrap adds a 5px bottom margin, this counteracts it. Remove once Bootstrap is removed */
+::ng-deep label {
+  margin-bottom: 0px;
 }

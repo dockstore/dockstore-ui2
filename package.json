@@ -5,8 +5,8 @@
   "config": {
     "webservice_version": "1.11.10",
     "use_circle": true,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/7003/workflows/f7281873-ea62-48b4-a646-505a9c7f3be8/jobs/15935/artifacts",
-    "circle_build_id": "15935"
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/7081/workflows/55fc9f91-9f15-419a-a18e-fa55c2bd726c/jobs/16367/artifacts",
+    "circle_build_id": "16367"
   },
   "scripts": {
     "ng": "npx ng",
@@ -107,7 +107,7 @@
     "husky": "^7.0.0",
     "jasmine-core": "^3.7.1",
     "jasmine-spec-reporter": "^7.0.0",
-    "karma": "^6.3.4",
+    "karma": "^6.3.11",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",

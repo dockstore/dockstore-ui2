@@ -95,8 +95,28 @@ export class InfoTabService {
     this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(
       (response) => {
         this.alertService.detailedSuccess();
-        const newTopic = response.topic;
+        const newTopic = response.topicManual;
         this.workflowService.updateActiveTopic(newTopic);
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+        errorCallback();
+      }
+    );
+  }
+
+  /**
+   * Warning, this could potentially update a few other properties
+   * @param workflow
+   */
+  saveTopicSelection(workflow: Workflow, errorCallback: () => void) {
+    this.alertService.start('Updating topic selection');
+    const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
+    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(
+      (response) => {
+        this.alertService.detailedSuccess();
+        const newTopicSelection = response.topicSelection;
+        this.workflowService.updateActiveTopicSelection(newTopicSelection);
       },
       (error) => {
         this.alertService.detailedError(error);
