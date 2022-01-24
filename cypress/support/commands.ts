@@ -38,12 +38,12 @@ export function cancelMatMenu(): void {
 
 // Public workflow should display "Info" "
 export function clickFirstActionsButtonPublic(): void {
-  cy.get('.publicButton').contains('Info').click();
+  cy.get('.small-btn-structure').contains('Info').click();
 }
 
 // Private workflow should display "Actions"
 export function clickFirstActionsButtonPrivate(): void {
-  cy.get('.privateButton').contains('Actions').click();
+  cy.get('.private-btn').contains('Actions').click();
 }
 
 export function isActiveTab(tabName: string): void {
