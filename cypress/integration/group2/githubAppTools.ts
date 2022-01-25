@@ -1,4 +1,5 @@
 import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
+import { LambdaEvent } from '../../../src/app/shared/swagger';
 
 describe('GitHub App Tools', () => {
   resetDB();
@@ -60,7 +61,7 @@ describe('GitHub App Tools', () => {
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
 
-      const realResponse = [
+      const realResponse: LambdaEvent[] = [
         {
           eventDate: 1582165220000,
           githubUsername: 'testUser',
