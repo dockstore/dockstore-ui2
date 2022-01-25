@@ -13,11 +13,13 @@
   >
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-      <mat-cell data-cy="workflowColumn" *matCellDef="let workflow" fxLayout="row wrap">
-        <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
-          workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
-        }}</a>
-        <span class="truncate-text-2 size-small" *ngIf="workflow.topicAutomatic">{{ workflow.topicAutomatic }}</span>
+      <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
+        <div>
+          <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
+            workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
+          }}</a>
+          <div class="truncate-text-2 size-small" *ngIf="workflow.topicAutomatic">{{ workflow.topicAutomatic }}</div>
+        </div>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">

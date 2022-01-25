@@ -28,21 +28,23 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <!-- the wrap causes slightly odd behavior with the mat-icon but is needed for the topic -->
-      <mat-cell data-cy="toolNames" *matCellDef="let tool" fxLayout="row wrap">
-        <span *ngIf="tool.private_access">
-          <app-private-icon></app-private-icon>
-        </span>
-        <div *ngIf="tool | isAppTool; else docktoreToolName">
-          <a [matTooltip]="tool?.full_workflow_path" [routerLink]="'/containers/' + tool.full_workflow_path">{{
-            tool?.organization + '/' + tool?.repository + (tool?.workflowName ? '/' + tool?.workflowName : '')
-          }}</a>
+      <mat-cell data-cy="toolNames" *matCellDef="let tool">
+        <div>
+          <span *ngIf="tool.private_access">
+            <app-private-icon></app-private-icon>
+          </span>
+          <div *ngIf="tool | isAppTool; else docktoreToolName">
+            <a [matTooltip]="tool?.full_workflow_path" [routerLink]="'/containers/' + tool.full_workflow_path">{{
+              tool?.organization + '/' + tool?.repository + (tool?.workflowName ? '/' + tool?.workflowName : '')
+            }}</a>
+          </div>
+          <ng-template #docktoreToolName>
+            <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
+              tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
+            }}</a>
+          </ng-template>
+          <div class="truncate-text-2 size-small" *ngIf="tool.topicAutomatic">{{ tool.topicAutomatic }}</div>
         </div>
-        <ng-template #docktoreToolName>
-          <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
-            tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
-          }}</a>
-        </ng-template>
-        <span class="truncate-text-2 size-small" *ngIf="tool.topicAutomatic">{{ tool.topicAutomatic }}</span>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
