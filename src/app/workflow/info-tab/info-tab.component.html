@@ -55,9 +55,12 @@
           <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Source Code</strong>:
           <i>The source code for this workflow is stored on Dockstore.org</i>
         </li>
-        <li *ngIf="isPublic && isValidVersion">
+        <li *ngIf="isPublic && isValidVersion" data-cy="trs-link">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
-          <a [href]="trsLink"> #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }}</a>
+          <a [href]="trsLink" *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Service">
+            #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }}</a
+          >
+          <a [href]="trsLink" *ngIf="(entryType$ | async) === EntryType.Tool"> {{ workflow?.full_workflow_path }}</a>
           <button mat-icon-button color="secondary" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton" appSnackbar>
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
           </button>

@@ -58,6 +58,12 @@ export function resetDB() {
   });
 }
 
+export function insertAppTools() {
+  before(() => {
+    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/github_app_tool_db_dump.sql');
+  });
+}
+
 export function typeInInput(fieldName: string, text: string) {
   cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
 }

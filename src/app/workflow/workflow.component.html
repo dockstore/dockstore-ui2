@@ -46,10 +46,10 @@
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div fxFlex="80">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-        <span *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Service">
+        <span *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Service" data-cy="workflow-icon">
           <img src="../../assets/svg/workflow-circle.svg" alt="workflow icon" />
         </span>
-        <span *ngIf="entryType === EntryType.AppTool">
+        <span *ngIf="entryType === EntryType.Tool" data-cy="tool-icon">
           <img src="../../assets/svg/tool-circle.svg" alt="tool icon" />
         </span>
         <span fxLayout.lt-sm="column" style="word-break: break-word">
