@@ -16,7 +16,7 @@
 
 <!-- Display public workflow button design -->
 <div *ngIf="isPublic; else displayPrivateButton">
-  <button mat-button class="small-btn-structure" mat-raised-button color="accent" [matMenuTriggerFor]="menu">Info</button>
+  <button mat-button class="small-btn-structure" mat-raised-button color="accent" (click)="showVersionModal()">Info</button>
 </div>
 <!-- Display private workflow button design-->
 <ng-template #displayPrivateButton>
@@ -29,7 +29,7 @@
 
 <mat-menu #menu="matMenu">
   <button type="button" mat-menu-item color="accent" (click)="showVersionModal()">
-    {{ isPublic || !canWrite ? 'View' : 'Edit Info' }}
+    {{ !canWrite ? 'View' : 'Edit Info' }}
   </button>
   <ng-container *ngIf="!isPublic">
     <button
