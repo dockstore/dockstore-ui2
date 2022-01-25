@@ -48,18 +48,16 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor } from '../shared/swagger';
-import { WorkflowsService } from '../shared/swagger/api/workflows.service';
+import { Permission, ToolDescriptor, WorkflowsService } from '../shared/swagger';
 import { Tag } from '../shared/swagger/model/tag';
 import { Workflow } from '../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
-
-import RoleEnum = Permission.RoleEnum;
 import { EntriesService, WorkflowSubClass } from '../shared/openapi';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
+import RoleEnum = Permission.RoleEnum;
 
 @Component({
   selector: 'app-workflow',
@@ -121,7 +119,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     alertService: AlertService,
     entryService: EntriesService,
     private titleService: Title,
-    protected entryCategoriesService: EntryCategoriesService,
+    protected entryCategoriesService: EntryCategoriesService
   ) {
     super(
       trackLoginService,
@@ -145,6 +143,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       this._toolType = 'workflows';
     }
     this.location = location;
+    // Entry type is set in the container, workflow, and service routing files.
     this.entryType = this.sessionQuery.getValue().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
       this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
@@ -248,9 +247,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       this.canRead = this.canWrite = this.isOwner = false;
       this.readers = this.writers = this.owners = [];
       if (!this.isPublic()) {
+        const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
         this.showWorkflowActions = false;
         this.workflowsService
-          .getWorkflowActions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
+          .getWorkflowActions(this.workflow.full_workflow_path, subclass)
           .pipe(
             finalize(() => {
               this.showWorkflowActions = true;
@@ -288,14 +288,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
           this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
-          const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+          const trsID = this.getTRSID();
           const compatType = this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType);
           if (compatType) {
-            this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [compatType]);
+            this.gA4GHFilesService.updateFiles(trsID, this.selectedVersion.name, [compatType]);
           } else {
-            this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
-              this.workflow.descriptorType,
-            ]);
+            this.gA4GHFilesService.updateFiles(trsID, this.selectedVersion.name, [this.workflow.descriptorType]);
           }
         }
       }
@@ -303,6 +301,16 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     });
   }
 
+  public getTRSID(): string {
+    let id: string;
+    if (this.entryType === EntryType.Tool) {
+      id = this.workflow.full_workflow_path;
+    } else {
+      let prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+      id = prefix + this.workflow.full_workflow_path;
+    }
+    return id;
+  }
   /**
    * Select the Versions tab
    *
@@ -312,45 +320,48 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     this.selectTab(this.validTabs.indexOf('versions'));
   }
 
-  public setupPublicEntry(url: String) {
-    if (url.includes('workflows') || url.includes('services')) {
-      // Only get published workflow if the URI is for a specific workflow (/containers/quay.io%2FA2%2Fb3)
-      // as opposed to just /tools or /docs etc.
-      let subclass: WorkflowSubClass;
-      if (this.entryType === EntryType.Tool) {
-        subclass = WorkflowSubClass.APPTOOL;
-      } else if (this.entryType === EntryType.BioWorkflow) {
-        subclass = WorkflowSubClass.BIOWORKFLOW;
-      } else {
-        subclass = WorkflowSubClass.SERVICE;
-      }
-      this.workflowsService
-        .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
-        .subscribe(
-          (workflow) => {
-            this.workflowService.setWorkflow(workflow);
-            this.selectTab(this.validTabs.indexOf(this.currentTab));
-            this.updateWorkflowUrl(this.workflow);
-          },
-          (error) => {
-            const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
-            if (regex.test(this.resourcePath)) {
-              this.router.navigate(['../']);
-            } else {
-              this.showRedirect = true;
-              // Retrieve the workflow path from the URL
-              const splitPath = this.resourcePath.split('/');
-              const workflowPath = splitPath.slice(2, 5);
-              const pathSuffix = workflowPath.join('/');
-
-              // Create suggested paths
-              this.gitlabPath += pathSuffix;
-              this.githubPath += pathSuffix;
-              this.bitbucketPath += pathSuffix;
-            }
-          }
-        );
+  public getWorkflowSubclass(entryType: EntryType): WorkflowSubClass {
+    switch (entryType) {
+      case EntryType.Tool:
+        return WorkflowSubClass.APPTOOL;
+      case EntryType.AppTool:
+        // don't think this should happen.
+        return WorkflowSubClass.APPTOOL;
+      case EntryType.BioWorkflow:
+        return WorkflowSubClass.BIOWORKFLOW;
+      case EntryType.Service:
+        return WorkflowSubClass.SERVICE;
     }
+  }
+
+  public setupPublicEntry(url: String) {
+    const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
+    this.workflowsService
+      .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
+      .subscribe(
+        (workflow) => {
+          this.workflowService.setWorkflow(workflow);
+          this.selectTab(this.validTabs.indexOf(this.currentTab));
+          this.updateWorkflowUrl(this.workflow);
+        },
+        (error) => {
+          const regex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
+          if (regex.test(this.resourcePath)) {
+            this.router.navigate(['../']);
+          } else {
+            this.showRedirect = true;
+            // Retrieve the workflow path from the URL
+            const splitPath = this.resourcePath.split('/');
+            const workflowPath = splitPath.slice(2, 5);
+            const pathSuffix = workflowPath.join('/');
+
+            // Create suggested paths
+            this.gitlabPath += pathSuffix;
+            this.githubPath += pathSuffix;
+            this.bitbucketPath += pathSuffix;
+          }
+        }
+      );
   }
   /**
    * Updates the workflow (bio workflow or service) url and also checks for the null
@@ -429,8 +440,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   onSelectedVersionChange(version: WorkflowVersion): void {
     this.selectedVersion = version;
     if (this.selectVersion) {
-      const prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
-      this.gA4GHFilesService.updateFiles(prefix + this.workflow.full_workflow_path, this.selectedVersion.name, [
+      const trsID = this.getTRSID();
+      this.gA4GHFilesService.updateFiles(trsID, this.selectedVersion.name, [
         this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
       ]);
       this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
