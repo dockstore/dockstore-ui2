@@ -60,9 +60,7 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('be.visible');
       checkVersionsTab();
       // Hidden version not visible on public page
-      // View button visible on public page, otherwise Edit
       clickFirstActionsButtonPublic();
-      cy.contains('button', 'View');
       cy.contains('td', 'test').should('not.exist');
       cancelMatMenu();
       checkFilesTab();
