@@ -68,6 +68,7 @@ export const exampleDescriptorPatterns = {
 
 export const validationDescriptorPatterns = {
   gitPath: '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
+  smkPath: '^/([^/?:*|<>]++/)*[^./?:*|<>]+(.smk)?$',
   cwlPath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)',
   wdlPath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$',
   nflPath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)',
@@ -93,6 +94,12 @@ export const validationDescriptorPatterns = {
 };
 
 export const validationMessages = {
+  smkPath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Descriptor Path is too short (minimum 3 characters).',
+    maxlength: 'Descriptor Path is too long (max 1000 characters).',
+    pattern: `Descriptor Path must begin with '/' and end with '*.smk' or no suffix.`,
+  },
   cwlPath: {
     required: 'This field cannot be empty.',
     minlength: 'Descriptor Path is too short (minimum 3 characters).',

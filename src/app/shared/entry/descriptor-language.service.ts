@@ -32,6 +32,7 @@ import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBea
 @Injectable()
 export class DescriptorLanguageService {
   // Known value for the DescriptorLanguageBeans
+  readonly knownSMKValue = 'SMK';
   readonly knownCWLValue = 'CWL';
   readonly knownWDLValue = 'WDL';
   readonly knownNFLValue = 'NFL';
@@ -132,6 +133,9 @@ export class DescriptorLanguageService {
    */
   getDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): string {
     switch (descriptorType) {
+      case ToolDescriptor.TypeEnum.SMK: {
+        return validationDescriptorPatterns.smkPath;
+      }
       case ToolDescriptor.TypeEnum.CWL: {
         return validationDescriptorPatterns.cwlPath;
       }
@@ -180,6 +184,10 @@ export class DescriptorLanguageService {
     }
     descriptorLanguageBeans.forEach((descriptorLanguageBean) => {
       switch (descriptorLanguageBean.value) {
+        case this.knownSMKValue: {
+          innerHTMLArray.push('<a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">SMK</a>');
+          break;
+        }
         case this.knownCWLValue: {
           innerHTMLArray.push('<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>');
           break;

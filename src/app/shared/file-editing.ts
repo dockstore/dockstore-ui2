@@ -56,6 +56,7 @@ export class FileEditing extends Files {
   getDescriptorFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
       (sourcefile) =>
+        sourcefile.type === SourceFile.TypeEnum.DOCKSTORESMK ||
         sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL ||
         sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL ||
         sourcefile.type === SourceFile.TypeEnum.NEXTFLOWCONFIG ||
