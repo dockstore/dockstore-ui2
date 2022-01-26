@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Dockstore } from '../../shared/dockstore.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'app/shared/user/user.service';
 import { of as observableOf } from 'rxjs';
@@ -14,6 +15,7 @@ import { TokenService } from '../../shared/state/token.service';
   templateUrl: './auth.component.html',
 })
 export class AuthComponent extends Base implements OnInit {
+  Dockstore = Dockstore;
   constructor(
     private tokenService: TokenService,
     private activatedRoute: ActivatedRoute,
@@ -99,7 +101,7 @@ export class AuthComponent extends Base implements OnInit {
             this.alertService.detailedSnackBarErrorWithLink(
               error,
               'Docs',
-              'https://docs.dockstore.org/en/latest/faq.html#what-is-the-difference-between-logging-in-with-github-or-logging-in-with-google'
+              Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-the-difference-between-logging-in-with-github-or-logging-in-with-google'
             );
           } else {
             this.alertService.detailedSnackBarError(error);
