@@ -58,7 +58,9 @@
                 </mat-toolbar-row>
               </mat-toolbar>
             </div>
-            <p *ngIf="(hasGroupEntriesObject$ | async) === false">You have not registered any tools</p>
+            <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
+              You have not registered any tools
+            </p>
             <app-sidebar-accordion
               [openOneAtATime]="oneAtATime"
               [groupEntriesObject]="groupEntriesObject$ | async"

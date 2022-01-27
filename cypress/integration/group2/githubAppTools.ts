@@ -106,6 +106,8 @@ describe('GitHub App Tools', () => {
 
       // Fix hiding a version. You have to refresh the page to see that it was hidden in the table
       cy.contains('Edit').click();
+      cy.contains('Edit Tool');
+      cy.contains('Tool Path');
       cy.get('[data-cy=hiddenLabel]').click();
       cy.get('[data-cy=save-version]').click();
       // cy.get('[data-cy=valid').should('exist');
@@ -127,12 +129,11 @@ describe('GitHub App Tools', () => {
       cy.contains('button', 'OK').click();
       goToTab('Versions');
       cy.contains('button', 'Actions').should('be.visible').click();
-      cy.contains('button', 'Set as').click();
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('#publishButton').contains('Publish').click();
 
       // Fix that the entry list on the left doesn't update without refreshing the page
-      // selectGitHubAppTool('test-github-app-tools/testing');
+      selectGitHubAppTool('test-github-app-tools/testing');
     });
 
     it('Public view', () => {

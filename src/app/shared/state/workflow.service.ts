@@ -77,11 +77,11 @@ export class WorkflowService {
     this.workflowStore.update({ version: null });
   }
 
-  add(workflow: Service | BioWorkflow) {
+  add(workflow: Service | BioWorkflow | AppTool) {
     this.workflowStore.add(workflow);
   }
 
-  update(id: ID, workflow: Partial<Service | BioWorkflow>) {
+  update(id: ID, workflow: Partial<Service | BioWorkflow | AppTool>) {
     this.workflowStore.update(id, workflow);
   }
 
@@ -89,7 +89,7 @@ export class WorkflowService {
     this.workflowStore.remove(id);
   }
 
-  setWorkflows(workflows: BioWorkflow[] | Service[]) {
+  setWorkflows(workflows: BioWorkflow[] | Service[] | AppTool[]) {
     this.workflows$.next(workflows);
   }
 
@@ -106,7 +106,7 @@ export class WorkflowService {
    * If not found will add to the workflows list (not shared workflows)
    * @param workflow Workflow to be upserted
    */
-  upsertWorkflowToWorkflow(workflow: BioWorkflow | Service) {
+  upsertWorkflowToWorkflow(workflow: BioWorkflow | Service | AppTool) {
     const workflows = this.workflows$.getValue();
     const sharedWorkflows = this.sharedWorkflows$.getValue();
     if (workflow && workflows && sharedWorkflows) {
