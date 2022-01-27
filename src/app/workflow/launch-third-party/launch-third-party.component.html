@@ -93,14 +93,14 @@
               <!--              <a-->
               <!--                mat-raised-button-->
               <!--                class="old-launch-with-button"-->
-              <!--                [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"-->
+              <!--                [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"-->
               <!--                target="_blank"-->
               <!--                rel="noopener"-->
               <!--                [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"-->
-              <!--                [disabled]="(hasContent$ | async) === false"-->
+              <!--                [disabled]="!(hasContent$ | async)"-->
               <!--                color="primary"-->
               <!--                data-cy="dnastackLaunchWith"-->
-              <!--                ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a-->
+              <!--              ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a-->
               <!--              >-->
               <a
                 mat-raised-button
