@@ -205,26 +205,6 @@ angular-tag-cloud > span.w1:hover {
   color: #ff5e86 !important;
 }
 
-@font-face {
-  font-family: Gotham;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-Book.otf') format('opentype');
-}
-
-@font-face {
-  font-family: Gotham;
-  font-weight: bold;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-Bold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: Gotham;
-  font-style: italic;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-BookItalic.otf') format('opentype');
-}
-
 /* Main Styles */
 
 body {
