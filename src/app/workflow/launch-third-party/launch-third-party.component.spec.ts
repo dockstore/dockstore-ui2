@@ -57,7 +57,7 @@ describe('LaunchThirdPartyComponent', () => {
 
     // Verify urls are correct; got these from prod (except for Terra, which is new) to verify there is no breakage.
     // This test was removed as part of: https://ucsc-cgl.atlassian.net/browse/SEAB-3800
-    // /* eslint-disable max-len */
+    // tslint:disable:max-line-length
     // if (!Dockstore.FEATURES.enableMultiCloudLaunchWithDNAstack) {
     //   expect(
     //     nativeElement.querySelector(
@@ -66,6 +66,7 @@ describe('LaunchThirdPartyComponent', () => {
     //   ).toBeTruthy();
     // }
 
+    // tslint:disable:max-line-length
     // https://platform.dnanexus.com/panx/tools/import-workflow?source=https://dockstore.org:443/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master
     expect(
       nativeElement.querySelector(
