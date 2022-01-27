@@ -64,7 +64,6 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     }
   }
 
-  //
   getMyServices(id: number): void {
     this.alertService.start('Fetching services');
     this.myEntriesStateService.setRefreshingMyEntries(true);
