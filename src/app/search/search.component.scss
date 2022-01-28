@@ -153,8 +153,34 @@ mat-tab-group.homeComponent {
 }
 
 .mat-expansion-panel-spacing {
-  margin: 10px 0;
+  margin: 0px;
 }
+
+mat-expansion-panel.panels,
+.pb-3 {
+  border-radius: 0px; // TO DO: bottom corners are still rounded...
+
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
+}
+
+// mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
+//   padding: 2.5px;
+// }
+
+// ::ng-deep app-basic-search > mat-expansion-panel .mat-expansion-panel-body {
+//   padding: 0 10px;
+// }
+
+// mat-expansion-panel-header , ::ng-deep app-basic-search > mat-expansion-panel-header{ //search header is not being affected
+//   padding: 10.5px;
+// }
+
+// REMOVE THIS BUTTON SIZE 12
+// .m-1 {
+//   font-size: 12px;
+//   font-weight: bold;
+// }
 
 .expand-collapse-holder {
   display: flex;
