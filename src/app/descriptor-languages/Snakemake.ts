@@ -20,7 +20,7 @@ export const extendedSMK: ExtendedDescriptorLanguageBean = {
     workflowStepHeader: 'Tool Excerpt',
   },
   workflowLaunchSupport: true,
-  testParameterFileType: SourceFile.TypeEnum.DOCKSTORESMK,
+  testParameterFileType: SourceFile.TypeEnum.SMKTESTPARAMS,
   fileTabs: [
     {
       tabName: 'Descriptor Files',

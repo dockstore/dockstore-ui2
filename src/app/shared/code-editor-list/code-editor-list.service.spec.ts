@@ -135,6 +135,7 @@ describe('CodeEditorListService', () => {
   it('should be able to determine whether to show the sourcefile in the current tab or not', () => {
     // Descriptor tab
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORESMK, 'descriptor', ToolDescriptor.TypeEnum.SMK)).toBe(true);
+    expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.SMKTESTPARAMS, 'descriptor', ToolDescriptor.TypeEnum.SMK)).toBe(false);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORECWL, 'descriptor', ToolDescriptor.TypeEnum.CWL)).toBe(true);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.CWLTESTJSON, 'descriptor', ToolDescriptor.TypeEnum.CWL)).toBe(false);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTOREWDL, 'descriptor', ToolDescriptor.TypeEnum.WDL)).toBe(true);
@@ -153,6 +154,7 @@ describe('CodeEditorListService', () => {
 
     // Test file tab
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORESMK, 'testParam', ToolDescriptor.TypeEnum.SMK)).toBe(false);
+    expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.SMKTESTPARAMS, 'testParam', ToolDescriptor.TypeEnum.SMK)).toBe(true);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORECWL, 'testParam', ToolDescriptor.TypeEnum.CWL)).toBe(false);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.CWLTESTJSON, 'testParam', ToolDescriptor.TypeEnum.CWL)).toBe(true);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTOREWDL, 'testParam', ToolDescriptor.TypeEnum.WDL)).toBe(false);
