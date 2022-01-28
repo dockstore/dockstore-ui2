@@ -22,6 +22,7 @@ import { SourceFile, ToolFile, Workflow } from 'app/shared/swagger';
   name: 'mapFriendlyValue',
 })
 export class MapFriendlyValuesPipe implements PipeTransform {
+  readonly shortFriendlySMKName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.SMK);
   readonly shortFriendlyCWLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
   readonly shortFriendlyWDLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
   readonly shortFriendlyNFLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
@@ -75,6 +76,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     [
       'descriptorType',
       new Map([
+        ['smk', this.shortFriendlySMKName],
         ['cwl', this.shortFriendlyCWLName],
         ['wdl', this.shortFriendlyWDLName],
         ['nfl', this.shortFriendlyNFLName],
@@ -85,6 +87,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     [
       'descriptor_type',
       new Map([
+        ['smk', this.shortFriendlySMKName],
+        ['SMK', this.shortFriendlySMKName],
         ['cwl', this.shortFriendlyCWLName],
         ['CWL', this.shortFriendlyCWLName],
         ['wdl', this.shortFriendlyWDLName],
@@ -116,6 +120,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     [
       'descriptor_tooltip',
       new Map([
+        ['SMK', 'Snakemake'],
         ['CWL', 'Common Workflow Language'],
         ['WDL', 'Workflow Description Language'],
         ['NFL', 'Nextflow'],
@@ -135,6 +140,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     [
       'SourceFile.TypeEnum',
       new Map([
+        [SourceFile.TypeEnum.DOCKSTORESMK, 'Descriptor Files'],
+        [SourceFile.TypeEnum.SMKTESTPARAMS, 'Test Parameter Files'],
         [SourceFile.TypeEnum.DOCKERFILE, 'Dockerfile'],
         [SourceFile.TypeEnum.DOCKSTORECWL, 'Descriptor Files'],
         [SourceFile.TypeEnum.DOCKSTOREWDL, 'Descriptor Files'],

@@ -4,7 +4,7 @@ import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 export const extendedSMK: ExtendedDescriptorLanguageBean = {
   descriptorLanguageEnum: 'SMK',
   value: 'SMK',
-  shortFriendlyName: 'SMK',
+  shortFriendlyName: 'Snakemake',
   friendlyName: 'Snakemake',
   defaultDescriptorPath: '/Snakefile',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^./?:*|<>]+(.smk)?$',
@@ -25,6 +25,10 @@ export const extendedSMK: ExtendedDescriptorLanguageBean = {
     {
       tabName: 'Descriptor Files',
       fileTypes: [SourceFile.TypeEnum.DOCKSTORESMK],
+    },
+    {
+      tabName: 'Test Parameter Files',
+      fileTypes: [SourceFile.TypeEnum.SMKTESTPARAMS],
     },
     { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
   ],
