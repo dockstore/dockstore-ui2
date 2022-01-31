@@ -50,7 +50,7 @@
       <div fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
           <div *ngIf="gravatarUrl$ | async" fxHide.lt-sm>
-            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="organization logo" />
+            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="organization logo" onerror="this.onerror=null; this.src='../../../assets/images/dockstore/default-org-logo.png'"/>
           </div>
           <div>
             <h2>
