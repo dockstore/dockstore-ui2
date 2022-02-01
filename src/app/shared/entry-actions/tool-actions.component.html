@@ -7,12 +7,13 @@
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"
   >
-    View Public
+    View public page
   </a>
   <div [matTooltip]="pubUnpubMessage">
     <button
       id="publishToolButton"
-      mat-flat-button
+      mat-raised-button
+      class="accent-1-dark-btn mat-elevation-z"
       color="accent"
       (click)="publishToggle()"
       [disabled]="(isRefreshing$ | async) || publishDisabled"

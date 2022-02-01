@@ -77,13 +77,13 @@
   margin-right: 15px !important;
 }
 
-// Style for organization card. 
+// Style for organization card.
 // The card size is unique compared to other cards (linked accounts) because <to be filled>
 .org-style {
   height: 340px;
 }
 
-// Used as a placeholder when there is no logo for the organization. 
+// Used as a placeholder when there is no logo for the organization.
 // The height is different than the default mat-card-avatar and account's page logo height because <to be filled>
 .logo-height {
   height: 50px;
@@ -92,4 +92,9 @@
 // Adds padding to all tab content. May consider adding this to styles.scss but it'll affect a lot of things.
 ::ng-deep .mat-tab-body-content {
   padding-top: 26px;
+}
+
+// Adjust bottom padding for workflow and tool cards
+mat-card:not(.org-style) {
+  padding-bottom: 7px;
 }

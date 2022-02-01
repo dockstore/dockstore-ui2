@@ -49,11 +49,13 @@
       <!--      </ng-container>-->
     </mat-radio-group>
   </div>
-  <div class="px-4" fxLayout="row" fxLayoutAlign="end end">
-    <button mat-button class="view-button" color="accent" (click)="closeMatMenu()">Cancel</button>
+  <div class="px-4 pt-3 pb-2" fxLayout="row" fxLayoutAlign="end end">
+    <button mat-raised-button class="mat-elevation-z small-mat-btn-skin small-btn-structure" color="white" (click)="closeMatMenu()">
+      Cancel
+    </button>
     <a
       mat-raised-button
-      class="view-button"
+      class="small-mat-btn-skin small-btn-structure"
       target="_blank"
       rel="noopener"
       [attr.href]="launchWith.url + appendToLaunchUrl"

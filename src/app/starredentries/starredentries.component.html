@@ -69,7 +69,9 @@
               <div fxLayout="row wrap" fxLayoutGap="1rem">
                 <span>
                   <mat-chip-list>
-                    <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                    <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
+                      label.value
+                    }}</mat-chip>
                     <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                         <mat-icon class="verified-icon">done</mat-icon>
@@ -90,7 +92,7 @@
               </div>
             </div>
             <a routerLink="/workflows/{{ workflow.full_workflow_path }}" class="no-underline">
-              <button mat-raised-button color="accent" class="view-button">View</button>
+              <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
             </a>
           </div>
         </div>
@@ -144,7 +146,7 @@
                 </mat-chip-list>
               </div>
               <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
-                <button mat-raised-button color="accent" class="view-button">View</button>
+                <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
               </a>
             </div>
           </div>
@@ -232,7 +234,7 @@
                       <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                       <ng-template #oneCollection> Collection</ng-template>
                     </span>
-                    <button mat-raised-button color="accent" class="view-button">View</button>
+                    <button mat-raised-button color="accent">View</button>
                   </div>
                 </a>
               </div>

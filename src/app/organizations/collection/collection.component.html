@@ -137,7 +137,11 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                       <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                       <mat-chip-list class="bubble-list">
-                        <app-category-button *ngFor="let category of entry.categories" [category]="category" [entryType]="entry.entryType"></app-category-button>
+                        <app-category-button
+                          *ngFor="let category of entry.categories"
+                          [category]="category"
+                          [entryType]="entry.entryType"
+                        ></app-category-button>
                         <mat-chip
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-background bubble' : 'container-background bubble'"
                           *ngIf="entry.verified"
@@ -150,7 +154,7 @@
                         <span class="bubble" *ngFor="let descriptorType of entry.descriptorTypes">{{ descriptorType }}</span>
                       </mat-chip-list>
                     </div>
-                    <button mat-raised-button color="accent" class="view-button">View</button>
+                    <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
                   </div>
                 </a>
               </mat-card>
