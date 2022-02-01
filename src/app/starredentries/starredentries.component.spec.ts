@@ -6,7 +6,8 @@ import { ProviderService } from './../shared/provider.service';
 import { StarentryService } from './../shared/starentry.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { StarringService } from './../starring/starring.service';
-import { ImageProviderStubService, StarEntryStubService, StarringStubService, UsersStubService } from './../test/service-stubs';
+import { OrgLogoService } from './../shared/org-logo.service';
+import { ImageProviderStubService, StarEntryStubService, StarringStubService, UsersStubService, OrgLogoStubService } from './../test/service-stubs';
 import { StarredEntriesComponent } from './starredentries.component';
 
 describe('StarredEntriesComponent', () => {
@@ -24,6 +25,7 @@ describe('StarredEntriesComponent', () => {
           ProviderService,
           { provide: StarentryService, useClass: StarEntryStubService },
           { provide: UsersService, useClass: UsersStubService },
+          { provide: OrgLogoService, useClass: OrgLogoStubService },
         ],
       }).compileComponents();
     })
