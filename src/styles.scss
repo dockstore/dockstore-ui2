@@ -1210,3 +1210,21 @@ $truncate-text-values: 1, 2, 3;
 .mat-header-cell:not(:last-of-type) {
   padding-right: 1.6rem;
 }
+
+// This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
+// These redesigned buttons have purple text and white backgrounds
+button.private-btn {
+  font-weight: bold;
+  font-size: 12px;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+  border: solid 1px #d8d8d8;
+}
+
+//This style should be used for the new small buttons in the Dockstore redesign with a height of 26px
+button.small-btn-structure {
+  height: 26px;
+  line-height: 26px;
+  padding: 0 10px;
+}

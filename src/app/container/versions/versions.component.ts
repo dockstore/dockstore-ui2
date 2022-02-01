@@ -33,7 +33,7 @@ import { Versions } from '../../shared/versions';
 @Component({
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
-  styleUrls: ['./../../workflow/versions/versions.component.css'],
+  styleUrls: ['./../../workflow/versions/versions.component.scss'],
 })
 export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;
