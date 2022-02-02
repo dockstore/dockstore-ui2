@@ -899,9 +899,9 @@ app-sidebar-accordion
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
-  line-height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
+  line-height: 26px !important;
+  min-height: 26px !important;
+  max-height: 26px !important;
   padding: 0 0.75rem !important;
   display: inline-block !important;
   min-width: 32px !important;
@@ -1196,6 +1196,11 @@ $truncate-text-values: 1, 2, 3;
   padding-right: 1.6rem;
 }
 
+// This style should be used for the new mat-card designs that have reduced padding on bottom of card, 8px
+mat-card.mat-card-padding {
+  padding-bottom: 8px;
+}
+
 // This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
 // These redesigned buttons have purple text and white backgrounds
 button.private-btn {
@@ -1205,13 +1210,6 @@ button.private-btn {
   background-color: #fff;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
   border: solid 1px #d8d8d8;
-}
-
-//This style should be used for the new small buttons in the Dockstore redesign with a height of 26px
-button.small-btn-structure {
-  height: 26px;
-  line-height: 26px;
-  padding: 0 10px;
 }
 
 // Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
@@ -1226,6 +1224,7 @@ a.mat-raised-button {
 
 // Most cases style should be used accompanied with the mat-raised-button style
 // This style is for the new SMALLER dockstore buttons with size 12 font
+// a.small... is included to account for "buttons" that have links ex. "launch"
 button.small-mat-btn-skin,
 a.small-mat-btn-skin {
   font-size: 12px;
@@ -1240,7 +1239,7 @@ a.small-mat-btn-skin {
   line-height: 26px;
   height: 26px;
   padding: 0 10px;
-  //needed for smaller mat buttons ex. "info"
+  // Needed for smaller mat buttons ex. "info"
   min-width: 42px;
 }
 

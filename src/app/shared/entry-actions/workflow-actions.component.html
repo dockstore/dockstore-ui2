@@ -21,8 +21,8 @@
     </button>
   </div>
   <button
-    mat-flat-button
-    color="primary"
+    mat-raised-button
+    class="accent-1-dark-btn mat-elevation-z"
     (click)="refresh()"
     [disabled]="isRefreshing$ | async"
     *ngIf="!isHosted && canWrite && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"

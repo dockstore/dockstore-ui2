@@ -93,8 +93,3 @@
 ::ng-deep .mat-tab-body-content {
   padding-top: 26px;
 }
-
-// Adjust bottom padding for workflow and tool cards
-mat-card:not(.org-style) {
-  padding-bottom: 7px;
-}
