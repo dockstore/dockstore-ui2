@@ -75,7 +75,13 @@
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div *ngIf="(isRefreshing$ | async) === false && (hasGroupEntriesObject$ | async) === false">
+        <div
+          *ngIf="
+            (isRefreshing$ | async) === false &&
+            (hasGroupEntriesObject$ | async) === false &&
+            (hasGroupGitHubAppToolEntriesObjects$ | async) === false
+          "
+        >
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>
