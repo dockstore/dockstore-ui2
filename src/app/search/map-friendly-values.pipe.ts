@@ -77,6 +77,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       'descriptorType',
       new Map([
         ['smk', this.shortFriendlySMKName],
+        ['SMK', this.shortFriendlySMKName],
         ['cwl', this.shortFriendlyCWLName],
         ['wdl', this.shortFriendlyWDLName],
         ['nfl', this.shortFriendlyNFLName],
