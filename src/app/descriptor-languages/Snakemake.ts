@@ -7,7 +7,7 @@ export const extendedSMK: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'Snakemake',
   friendlyName: 'Snakemake',
   defaultDescriptorPath: '/Snakefile',
-  descriptorPathPattern: '^/([^/?:*|<>]+/)*[^./?:*|<>]+(.smk)?$',
+  descriptorPathPattern: '^/([^/?:*|<>]++/)*(Snakefile|[^./?:*|<>]++.smk))$',
   descriptorPathPlaceholder: 'e.g. /Snakefile',
 
   toolDescriptorEnum: ToolDescriptor.TypeEnum.SMK,
