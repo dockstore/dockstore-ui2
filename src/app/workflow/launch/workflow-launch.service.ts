@@ -43,7 +43,6 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getDockstoreSupportedCwlMakeTemplateString(path: string, versionName: string, entryType?: EntryType) {
-    console.log(entryType);
     if (entryType === EntryType.Tool) {
       return super.getDockstoreSupportedCwlMakeTemplateString(path, versionName);
     }
