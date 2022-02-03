@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class OrgLogoService {
+  readonly DEFAULT_URL = '../../../../assets/images/dockstore/default-org-logo.svg';
   setDefault(img: any) {
     // Check/set a flag to ensure the default logo is set only once, to avoid an infinite load loop if the default org image is not loadable
     // IMPORTANT: BEFORE YOU CHANGE THE BELOW CODE, MAKE SURE YOU COMPLETELY UNDERSTAND IT!
