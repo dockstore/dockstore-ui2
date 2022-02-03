@@ -92,7 +92,7 @@
           <div fxLayout="column" fxLayoutGap="15px">
             <h3>Workflows & Tools</h3>
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
-              <mat-card class="mat-elevation-z3 mat-card-padding">
+              <mat-card class="mat-elevation-z3 pb-3">
                 <a
                   [routerLink]="[
                     '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',

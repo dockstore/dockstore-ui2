@@ -1196,11 +1196,6 @@ $truncate-text-values: 1, 2, 3;
   padding-right: 1.6rem;
 }
 
-// This style should be used for the new mat-card designs that have reduced padding on bottom of card, 8px
-mat-card.mat-card-padding {
-  padding-bottom: 8px;
-}
-
 // This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
 // These redesigned buttons have purple text and white backgrounds
 button.private-btn {
