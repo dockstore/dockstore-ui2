@@ -66,13 +66,21 @@
       <div *ngIf="(workflowCategories$ | async).length > 0" class="inline-block">
         <img src="../../../assets/svg/sub-nav/workflow.svg" class="ml-4 mr-2" alt="workflow icon" />
         <mat-chip-list class="bubble-list">
-          <app-category-button *ngFor="let category of (workflowCategories$ | async | slice:0:4)" [category]="category" entryType="workflow"></app-category-button>
+          <app-category-button
+            *ngFor="let category of workflowCategories$ | async | slice: 0:4"
+            [category]="category"
+            entryType="workflow"
+          ></app-category-button>
         </mat-chip-list>
       </div>
       <div *ngIf="(toolCategories$ | async).length > 0" class="inline-block">
         <img src="../../../assets/svg/sub-nav/tool.svg" class="ml-3 mr-2" alt="tool icon" />
         <mat-chip-list class="bubble-list">
-          <app-category-button *ngFor="let category of (toolCategories$ | async | slice:0:4)" [category]="category" entryType="tool"></app-category-button>
+          <app-category-button
+            *ngFor="let category of toolCategories$ | async | slice: 0:4"
+            [category]="category"
+            entryType="tool"
+          ></app-category-button>
         </mat-chip-list>
       </div>
     </div>
@@ -98,9 +106,10 @@
               <ul class="ordered-list">
                 <li>
                   Visit the
-                  <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master?tab=info'">Hello World Workflow</a>; a
-                  tutorial from our
-                  <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko&t=3226s">BCC 2020 workshop</a
+                  <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master?tab=info'">Hello World Workflow</a>;
+                  a tutorial from our
+                  <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko&t=3226s"
+                    >BCC 2020 workshop</a
                   >.
                 </li>
                 <li>
@@ -150,10 +159,8 @@
                 </li>
                 <li>
                   Download and install the
-                  <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/launch-with/launch.html#dockstore-cli'"
-                    >Dockstore CLI</a
-                  >
-                  and set up the <a [routerLink]="['/quick-start']">configuration file</a>.
+                  <a [routerLink]="['/quick-start']">Dockstore CLI</a>
+                  and set up the configuration file.
                 </li>
                 <li>Run the following launch commands.</li>
               </ul>
@@ -229,7 +236,9 @@
             <a target="_blank" rel="noopener noreferrer" href="https://www.ga4gh.org/">GA4GH</a> ensures your work is findable and
             interoperable.
           </li>
-          <li>Create organizations for your lab, company, or university where you can curate collections of related workflows and tools.</li>
+          <li>
+            Create organizations for your lab, company, or university where you can curate collections of related workflows and tools.
+          </li>
           <li>
             Create a landing page for your work to share with the community. Keep track of the workflows, tools and organizations you are
             interested in by starring them.
