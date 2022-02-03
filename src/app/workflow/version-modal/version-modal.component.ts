@@ -86,12 +86,19 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   ngOnInit() {
     this.isService$ = this.sessionQuery.isService$.pipe(shareReplay());
     this.sessionQuery.entryType$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((type: EntryType) => {
-      if (type === EntryType.Tool) {
-        this.entryTypeText = 'Tool';
-      } else if (type === EntryType.Service) {
-        this.entryTypeText = 'Service';
-      } else if (type === EntryType.BioWorkflow) {
-        this.entryTypeText = 'Workflow';
+      switch (type) {
+        case EntryType.Service:
+          this.entryTypeText = 'Service';
+          break;
+        case EntryType.AppTool:
+          this.entryTypeText = 'Tool';
+          break;
+        case EntryType.Tool:
+          this.entryTypeText = 'Tool';
+          break;
+        case EntryType.BioWorkflow:
+          this.entryTypeText = 'Workflow';
+          break;
       }
     });
     this.canRead = this.data.canRead;
