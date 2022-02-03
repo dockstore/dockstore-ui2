@@ -91,9 +91,6 @@ describe('CodeEditorListService', () => {
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'testParam', [])).toEqual([testGalaxyFile]);
 
     // When there's already the primary descriptor
-    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.SMK, 'descriptor', [primarySMKFile])).toEqual([
-      secondarySMKFile,
-    ]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'descriptor', [primaryCWLFile])).toEqual([
       secondaryCWLFile,
     ]);

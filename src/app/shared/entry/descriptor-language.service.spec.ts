@@ -96,7 +96,7 @@ describe('Service: DescriptorLanguage', () => {
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
     let placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.SMK);
-    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^./?:*|<>]+(.smk)?$');
+    expect(placeholder).toEqual('^/([^/?:*|<>]++/)*(Snakefile|[^./?:*|<>]++.smk))$');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.CWL);
     expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.WDL);
@@ -125,7 +125,7 @@ describe('Service: DescriptorLanguage', () => {
   });
   it('should be able to get shortFriendlyName from Worfklow.DescriptorTypeEnum for workflow registration', () => {
     let placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.SMK);
-    expect(placeholder).toEqual('SMK');
+    expect(placeholder).toEqual('Snakemake');
     placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
     expect(placeholder).toEqual('CWL');
     placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
