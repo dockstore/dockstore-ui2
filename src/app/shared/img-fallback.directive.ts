@@ -1,10 +1,10 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
-  selector: 'img[fallback]'
+  selector: 'img[appFallback]'
 })
 export class ImgFallbackDirective {
-  @Input() fallback: string;
+  @Input() appFallback: string;
   changed: boolean;
   img: any;
   constructor(elementRef: ElementRef) {
@@ -17,7 +17,7 @@ export class ImgFallbackDirective {
     // IMPORTANT: BEFORE YOU CHANGE THE BELOW CODE, MAKE SURE YOU COMPLETELY UNDERSTAND IT!
     if (!this.changed) {
       this.changed = true;
-      this.img.src = this.fallback;
+      this.img.src = this.appFallback;
     }
   }
 }
