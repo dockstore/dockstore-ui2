@@ -32,7 +32,6 @@ import { CollectionsQuery } from '../state/collections.query';
 import { EventsQuery } from '../state/events.query';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
 import { OrgLogoService } from '../../shared/org-logo.service';
-import { ImgFallbackModule } from '../../shared/modules/img-fallback.module';
 
 @Component({
   selector: 'app-organization',
