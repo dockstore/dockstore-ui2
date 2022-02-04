@@ -1,4 +1,12 @@
+@use '~@angular/material' as mat;
+
+@import '/src/materialColorScheme.scss';
+
 mat-icon {
   float: right;
   line-height: inherit;
+}
+
+button.small-mat-btn-skin {
+  color: mat.get-color-from-palette($dockstore-app-accent);
 }

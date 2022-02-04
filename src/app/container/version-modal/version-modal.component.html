@@ -401,13 +401,14 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" mat-button color="secondary" (click)="onHidden()">Cancel</button>
+          <button type="button" mat-flat-button class="secondary-1" (click)="onHidden()">Cancel</button>
           <button
             id="saveVersionModal"
             type="button"
             (click)="onSubmit()"
-            mat-flat-button
+            mat-raised-button
             color="primary"
+            class="mat-elevation-z"
             *ngIf="mode === TagEditorMode.Edit"
             [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
             data-dismiss="modal"
