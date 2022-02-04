@@ -19,6 +19,8 @@ const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
 const collectionTuple = ['test', 'testcollection'];
 
+const HARDCODED_WAIT_TIME = 10000;
+
 // get the dockstore token from env variable and put it in local storage
 function storeToken() {
   window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('TOKEN'));
@@ -38,7 +40,7 @@ function deleteTool() {
     storeToken();
     cy.server();
     cy.route('delete', '**/containers/**').as('containers');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
+    cy.wait(HARDCODED_WAIT_TIME); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.contains('#deregisterButton', 'Delete').should('be.enabled');
     cy.contains('#deregisterButton', 'Delete').click();
     // cy.get('#deregisterButton').click();
@@ -66,7 +68,7 @@ function registerQuayTool(repo: string, name: string) {
     cy.visit('/my-tools');
     cy.wait('@tokens');
     // click thru the steps of registering a tool
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
+    cy.wait(HARDCODED_WAIT_TIME); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#register_tool_button').click();
     cy.wait('@orgs');
     // cy.wait(1000);
@@ -84,6 +86,9 @@ function registerQuayTool(repo: string, name: string) {
     });
     cy.wait('@containers');
     cy.contains('button', 'Finish').click();
+    cy.wait(HARDCODED_WAIT_TIME); // hardcoded 2s wait is least flaky option right now, revisit in future
+    cy.contains('button', 'Refresh').click();
+    cy.wait(HARDCODED_WAIT_TIME); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#publishToolButton').click();
     cy.wait('@publish');
   });
@@ -99,7 +104,7 @@ function registerRemoteSitesTool(repo: string, name: string) {
 
     cy.visit('/my-tools');
     cy.wait('@tokens');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
+    cy.wait(HARDCODED_WAIT_TIME); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#register_tool_button').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
@@ -138,12 +143,12 @@ function registerToolOnDockstore(repo: string, name: string) {
     cy.wait('@metadata');
     cy.wait('@docker');
     cy.wait('@sourceControl');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
+    cy.wait(HARDCODED_WAIT_TIME); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#register_tool_button').should('be.visible').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').click();
       cy.contains('button', 'Next').click();
-      cy.wait(1000);
+      cy.wait(HARDCODED_WAIT_TIME);
       cy.get('#hostedImagePath').type(`${repo}/${name}`);
       cy.contains('button', 'Add Tool').click();
     });
@@ -281,7 +286,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.route('**/tokens').as('tokens');
       cy.visit('/my-tools');
       cy.wait('@tokens');
-      cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
+      cy.wait(HARDCODED_WAIT_TIME); // hardcoded 2s wait is least flaky option right now, revisit in future
     });
     unpublishTool();
     deleteTool();
