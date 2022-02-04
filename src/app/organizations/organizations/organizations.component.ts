@@ -27,6 +27,7 @@ import { TrackLoginService } from '../../shared/track-login.service';
 import { OrganizationsQuery } from '../state/organizations.query';
 import { OrganizationsStateService } from '../state/organizations.service';
 import { RequireAccountsModalComponent } from '../registerOrganization/requireAccountsModal/require-accounts-modal.component';
+import { OrgLogoService } from '../../shared/org-logo.service';
 
 @Component({
   selector: 'app-organizations',
@@ -48,7 +49,8 @@ export class OrganizationsComponent extends Base implements OnInit {
     private formBuilder: FormBuilder,
     private alertQuery: AlertQuery,
     private matDialog: MatDialog,
-    private trackLoginService: TrackLoginService
+    private trackLoginService: TrackLoginService,
+    private orgLogoService: OrgLogoService,
   ) {
     super();
   }

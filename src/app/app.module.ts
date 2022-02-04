@@ -106,6 +106,8 @@ import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-moda
 import { ViewService } from './workflow/view/view.service';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
+import { OrgLogoService } from './shared/org-logo.service';
+import { ImgFallbackModule } from './shared/modules/img-fallback.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -188,6 +190,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     HomePageModule,
     HttpClientModule,
     SnackbarModule,
+    ImgFallbackModule,
   ],
   providers: [
     AccountsService,
@@ -219,6 +222,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ViewService,
     TosBannerService,
     ConfigurationService,
+    OrgLogoService,
     {
       provide: APP_INITIALIZER,
       useFactory: configurationServiceFactory,

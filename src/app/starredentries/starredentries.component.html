@@ -188,7 +188,7 @@
               <div fxLayout="column" fxLayoutGap="1rem">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between start">
                   <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                    <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
+                    <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" [appFallback]="orgLogoService.DEFAULT_URL"/>
                     <ng-template #placeholder><span class="logo-height"></span></ng-template>
                   </a>
                   <app-organization-starring
