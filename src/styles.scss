@@ -1021,13 +1021,14 @@ hr {
 
 .small-org-logo {
   height: 50px;
-  object-fit: scale-down;
   max-width: 250px;
+  object-fit: scale-down;
 }
 
 .big-org-logo {
-  max-height: 100px;
+  height: 100px;
   max-width: 200px;
+  object-fit: scale-down;
   margin-top: 1.5rem;
 }
 

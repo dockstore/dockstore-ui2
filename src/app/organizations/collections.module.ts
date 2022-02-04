@@ -14,6 +14,7 @@ import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
 import { CategoryButtonModule } from '../categories/button/category-button.module';
+import { ImgFallbackModule } from '../shared/modules/img-fallback.module';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { CategoryButtonModule } from '../categories/button/category-button.modul
     UpdateOrganizationDescriptionModule,
     MarkdownWrapperModule,
     CategoryButtonModule,
+    ImgFallbackModule,
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent, RemoveCollectionDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],

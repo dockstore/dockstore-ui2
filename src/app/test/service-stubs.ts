@@ -866,3 +866,8 @@ export class VersionModalStubService {
   unsavedTestCWLFile = observableOf([]);
   unsavedTestWDLFile = observableOf([]);
 }
+
+export class OrgLogoStubService {
+  setDefault(img: any) {
+  }
+}
