@@ -46,7 +46,7 @@
       </div>
       <div class="modal-footer">
         <button mat-button color="secondary" (click)="hideModal()">Close</button>
-        <button mat-raised-button color="primary" matStepperNext>Next</button>
+        <button mat-raised-button color="primary" class="mat-elevation-z" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
@@ -68,7 +68,8 @@
         </p>
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
           <a
-            mat-flat-button
+            mat-raised-button
+            class="mat-elevation-z"
             type="button"
             color="primary"
             [href]="gitHubAppInstallationLink$ | async"
@@ -363,6 +364,7 @@
             id="submitButton"
             type="submit"
             mat-raised-button
+            class="mat-elevation-z"
             color="primary"
             [disabled]="!registerToolForm.form.valid || (isRefreshing$ | async) || isInvalidCustomRegistry() || isInvalidPrivateTool()"
           >
@@ -505,7 +507,14 @@
         </div>
         <div mat-dialog-actions class="pull-right">
           <button mat-button type="button" color="secondary" (click)="hideModal()">Close</button>
-          <button id="submitButton" type="submit" mat-raised-button color="primary" [disabled]="!registerHostedToolForm.form.valid">
+          <button
+            id="submitButton"
+            type="submit"
+            mat-raised-button
+            color="primary"
+            class="mat-elevation-z"
+            [disabled]="!registerHostedToolForm.form.valid"
+          >
             Add Tool
           </button>
         </div>

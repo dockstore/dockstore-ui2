@@ -7,13 +7,13 @@
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"
   >
-    View Public
+    View public page
   </a>
   <div [matTooltip]="pubUnpubMessage">
     <button
       id="publishToolButton"
-      mat-flat-button
-      color="accent"
+      mat-raised-button
+      class="accent-1-dark-btn mat-elevation-z"
       (click)="publishToggle()"
       [disabled]="(isRefreshing$ | async) || publishDisabled"
     >
@@ -29,8 +29,8 @@
   </ng-template>
   <button
     *ngIf="!isHosted"
-    mat-flat-button
-    color="primary"
+    mat-raised-button
+    class="accent-1-dark-btn mat-elevation-z"
     (click)="refresh()"
     [disabled]="isRefreshing$ | async"
     matTooltip="Sync the tool with the Docker image repository, etc"

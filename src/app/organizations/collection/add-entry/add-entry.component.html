@@ -71,10 +71,11 @@
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
   <button mat-button id="closeDialogButton" mat-dialog-close>Close</button>
   <button
-    mat-flat-button
+    mat-raised-button
     id="addEntryToCollectionButton"
     [mat-dialog-close]="selectedCollectionId"
     color="primary"
+    class="mat-elevation-z"
     [disabled]="!selectedOrganizationId || !selectedCollectionId"
     (click)="addToCollection()"
   >
