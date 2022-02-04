@@ -70,7 +70,7 @@ export class CollectionComponent implements OnInit {
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userQuery: UserQuery,
-    private orgLogoService: OrgLogoService,
+    public orgLogoService: OrgLogoService,
   ) {}
 
   ngOnInit() {
