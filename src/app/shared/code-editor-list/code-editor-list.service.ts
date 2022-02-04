@@ -40,6 +40,7 @@ export class CodeEditorListService {
       }
       case 'descriptor': {
         return (
+          (descriptorType === ToolDescriptor.TypeEnum.SMK && sourcefileType === SourceFile.TypeEnum.DOCKSTORESMK) ||
           (descriptorType === ToolDescriptor.TypeEnum.CWL && sourcefileType === SourceFile.TypeEnum.DOCKSTORECWL) ||
           (descriptorType === ToolDescriptor.TypeEnum.WDL && sourcefileType === SourceFile.TypeEnum.DOCKSTOREWDL) ||
           (descriptorType === ToolDescriptor.TypeEnum.NFL &&
@@ -49,6 +50,7 @@ export class CodeEditorListService {
       }
       case 'testParam': {
         return (
+          (descriptorType === ToolDescriptor.TypeEnum.SMK && sourcefileType === SourceFile.TypeEnum.SMKTESTPARAMS) ||
           (descriptorType === ToolDescriptor.TypeEnum.CWL && sourcefileType === SourceFile.TypeEnum.CWLTESTJSON) ||
           (descriptorType === ToolDescriptor.TypeEnum.WDL && sourcefileType === SourceFile.TypeEnum.WDLTESTJSON) ||
           (descriptorType === ToolDescriptor.TypeEnum.NFL && sourcefileType === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS) ||
@@ -71,6 +73,8 @@ export class CodeEditorListService {
       return false;
     }
     const primaryDescriptors = [
+      // SMK
+      '/Snakefile',
       // CWL
       '/Dockstore.cwl',
       // WDL
@@ -117,6 +121,7 @@ export class CodeEditorListService {
           );
           break;
         }
+        case ToolDescriptor.TypeEnum.SMK:
         case ToolDescriptor.TypeEnum.CWL:
         case ToolDescriptor.TypeEnum.WDL:
         case ToolDescriptor.TypeEnum.GXFORMAT2: {
@@ -199,11 +204,12 @@ export class CodeEditorListService {
               return SourceFile.TypeEnum.NEXTFLOW;
             }
           }
+          case ToolDescriptor.TypeEnum.SMK:
           case ToolDescriptor.TypeEnum.CWL:
           case ToolDescriptor.TypeEnum.WDL:
           case ToolDescriptor.TypeEnum.GXFORMAT2: {
-            const descriptorFileTypes = DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType)
-              .descriptorFileTypes;
+            const descriptorFileTypes =
+              DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorFileTypes;
             if (descriptorFileTypes && descriptorFileTypes.length > 0) {
               return descriptorFileTypes[0];
             } else {
