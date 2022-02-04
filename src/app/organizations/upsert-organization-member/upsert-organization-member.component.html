@@ -22,7 +22,8 @@
   <button
     id="upsertUserDialogButton"
     [matTooltip]="title"
-    mat-flat-button
+    mat-raised-button
+    class="mat-elevation-z"
     color="primary"
     [disabled]="!form.valid"
     (click)="upsertUser()"

@@ -206,13 +206,14 @@
     </fieldset>
   </div>
   <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-    <button type="button" mat-button color="secondary" mat-dialog-close>Cancel</button>
+    <button type="button" mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
     <button
       data-cy="save-version"
       type="button"
       (click)="saveChanges()"
-      mat-flat-button
+      mat-raised-button
       color="primary"
+      class="mat-elevation-z"
       *ngIf="!isPublic && canWrite"
       [disabled]="!versionEditorForm.form.valid"
     >
