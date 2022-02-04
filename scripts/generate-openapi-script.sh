@@ -21,7 +21,7 @@ if [ "$npm_package_config_use_circle" = true ]
 then
         SWAGGER_PATH="${CIRCLE_CI_PATH}""/swagger.yaml"
         OPENAPI_PATH="${CIRCLE_CI_PATH}""/openapi.yaml"
-else         
+else
         SWAGGER_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/swagger.yaml"
         OPENAPI_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/openapi3/openapi.yaml"
 fi
