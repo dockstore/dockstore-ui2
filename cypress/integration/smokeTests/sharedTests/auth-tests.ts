@@ -96,7 +96,7 @@ function registerRemoteSitesTool(repo: string, name: string) {
 
     cy.visit('/my-tools');
     cy.wait('@tokens');
-    cy.get('#register_tool_button').should('be.visible').should('be.visible').click();
+    cy.get('#register_tool_button').should('be.visible').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
       cy.contains('button', 'Next').click();
