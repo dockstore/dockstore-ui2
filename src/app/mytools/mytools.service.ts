@@ -76,6 +76,8 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
         this.workflowsService.getWorkflow(tool.id, includesValidation + ',' + includesAuthors).subscribe((result) => {
           this.location.go('/my-tools/' + result.full_workflow_path);
           this.workflowService.setWorkflow(<AppTool>result);
+          // We check that the shared workflows are not null in upsertWorkflowToWorkflow
+          this.workflowService.setSharedWorkflows([]);
           this.containerService.setTool(null);
         });
       } else {

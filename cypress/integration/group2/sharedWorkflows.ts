@@ -15,7 +15,8 @@
  */
 import {
   cancelMatMenu,
-  clickFirstActionsButton,
+  clickFirstActionsButtonPublic,
+  clickFirstActionsButtonPrivate,
   goToTab,
   goToUnexpandedSidebarEntry,
   resetDB,
@@ -218,7 +219,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       goToTab('Versions');
-      clickFirstActionsButton();
+      clickFirstActionsButtonPrivate();
       cy.contains('View').should('be.visible');
       cy.contains('Edit').should('not.exist');
       cy.contains('Delete').should('not.exist');
@@ -234,7 +235,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       goToTab('Versions');
-      clickFirstActionsButton();
+      clickFirstActionsButtonPrivate();
       cy.contains('View').should('not.exist');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
@@ -250,7 +251,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('not.be.disabled');
 
       goToTab('Versions');
-      clickFirstActionsButton();
+      clickFirstActionsButtonPrivate();
       cy.contains('View').should('not.exist');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');

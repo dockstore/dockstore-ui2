@@ -14,7 +14,14 @@
  *    limitations under the License.
  */
 import { Dockstore } from '../../../src/app/shared/dockstore.model';
-import { clickFirstActionsButton, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
+import {
+  clickFirstActionsButtonPublic,
+  clickFirstActionsButtonPrivate,
+  goToTab,
+  goToUnexpandedSidebarEntry,
+  resetDB,
+  setTokenUserViewPort,
+} from '../../support/commands';
 
 describe('Dockstore hosted workflows', () => {
   resetDB();
@@ -135,7 +142,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
-      clickFirstActionsButton();
+      clickFirstActionsButtonPrivate();
       cy.contains('Delete').click();
       // Automatically selects the newest version that wasn't the one that was just deleted
       cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');

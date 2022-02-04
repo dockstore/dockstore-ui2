@@ -106,9 +106,12 @@ describe('GitHub App Tools', () => {
 
       // Fix hiding a version. You have to refresh the page to see that it was hidden in the table
       cy.contains('Edit').click();
+      cy.contains('Edit Tool');
+      cy.contains('Tool Path');
       cy.get('[data-cy=hiddenLabel]').click();
       cy.get('[data-cy=save-version]').click();
-      // cy.get('[data-cy=valid').should('exist');
+      cy.get('[data-cy=valid').should('exist');
+      // cy.get('[data-cy=hidden').should('exist');
 
       goToTab('Files');
       isActiveTab('Files');
@@ -122,20 +125,22 @@ describe('GitHub App Tools', () => {
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');
-      cy.get('#publishButton').contains('Publish').click();
+      cy.get('#publishButton').should('be.visible').contains('Publish').click();
       cy.contains('Default Version Required');
-      cy.contains('button', 'OK').click();
+      cy.get('[data-cy=close-dialog-button]').click();
       goToTab('Versions');
       cy.contains('button', 'Actions').should('be.visible').click();
-      cy.contains('button', 'Set as').click();
+      cy.contains('button', 'Set as Default Version').should('be.visible').click();
+      cy.wait(500);
       cy.get('#publishButton').should('not.be.disabled');
-      cy.get('#publishButton').contains('Publish').click();
+      cy.get('#publishButton').should('be.visible').contains('Publish').click();
 
       // Fix that the entry list on the left doesn't update without refreshing the page
-      // selectGitHubAppTool('test-github-app-tools/testing');
+      selectGitHubAppTool('test-github-app-tools/testing');
     });
 
     it('Public view', () => {
+      selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('[data-cy=viewPublicWorkflowButton]').click();
       cy.get('[data-cy=tool-icon]').should('exist');
       cy.contains('Tool Information');
