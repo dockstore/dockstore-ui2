@@ -18,18 +18,15 @@
     <mat-card-title>Collections</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item
-        [matTooltip]="collectionOrganizations.organizationDisplayName"
-        *ngFor="let collectionOrganizations of currentCollections$ | async"
-      >
-        <a
-          [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]"
-          routerLinkActive="router-link-active"
-          >{{ collectionOrganizations.collectionDisplayName }}</a
-        >
-      </mat-list-item>
-    </mat-list>
+    <div>
+      <div *ngFor="let collectionOrganizations of currentCollections$ | async">
+        <a [matTooltip]="collectionOrganizations.organizationDisplayName" [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]" routerLinkActive="router-link-active"
+        ><ng-container *ngIf="collectionOrganizations.organizationAvatarUrl; then withAvatar else withoutAvatar"></ng-container><
+        /a>
+        <ng-template #withAvatar><img src="collectionOrganizations.organizationAvatarUrl" class="tiny-org-logo" alt="org logo"/><span>{{ collectionOrganizations.collectionDisplayName }}</span></ng-template>
+        <ng-template #withoutAvatar>{{ collectionOrganizations.organizationDisplayName }}:</span> {{ collectionOrganizations.collectionDisplayName }}</ng-template>
+      </div>
+    </div>
     <div class="p-3">
       <button
         *ngIf="isLoggedIn$ | async"
