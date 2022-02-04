@@ -111,7 +111,7 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=hiddenLabel]').click();
       cy.get('[data-cy=save-version]').click();
       cy.get('[data-cy=valid').should('exist');
-      // cy.get('[data-cy=hidden').should('exist');
+      cy.get('[data-cy=hidden').should('exist');
 
       goToTab('Files');
       isActiveTab('Files');

@@ -23,6 +23,8 @@ import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { AppTool, BioWorkflow, Service } from '../../shared/swagger';
 
 @Injectable()
 export class VersionModalService {
@@ -32,6 +34,7 @@ export class VersionModalService {
     private alertService: AlertService,
     private workflowQuery: WorkflowQuery,
     private workflowsService: WorkflowsService,
+    private workflowService: WorkflowService,
     private refreshService: RefreshService,
     private matDialog: MatDialog
   ) {}
@@ -56,6 +59,7 @@ export class VersionModalService {
    * @memberof VersionModalService
    */
   saveVersion(
+    workflow: BioWorkflow | Service | AppTool,
     originalVersion: WorkflowVersion,
     workflowVersion: WorkflowVersion,
     originalTestParameterFilePaths,
@@ -74,6 +78,8 @@ export class VersionModalService {
     if (workflowMode !== 'HOSTED') {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         (response) => {
+          workflow = { ...workflow, workflowVersions: response };
+          this.workflowService.setWorkflow(workflow);
           this.alertService.start(message2);
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
             (success) => {
@@ -103,6 +109,8 @@ export class VersionModalService {
     } else {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         (response) => {
+          workflow = { ...workflow, workflowVersions: response };
+          this.workflowService.setWorkflow(workflow);
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
         },

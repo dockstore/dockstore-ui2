@@ -117,7 +117,14 @@ describe('Dockstore my workflows', () => {
       // Change the file path
       cy.contains('button', ' Edit ').click();
       cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore2.cwl');
+      // Hide version
+      cy.get('[data-cy=hiddenLabel]').click();
       cy.contains('button', ' Save ').click();
+      // Check for hidden version and unhide
+      cy.get('[data-cy=hidden').should('exist');
+      cy.contains('Edit').click();
+      cy.get('[data-cy=hiddenLabel]').click();
+
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
