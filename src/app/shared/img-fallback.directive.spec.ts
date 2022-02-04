@@ -11,14 +11,14 @@ class TestComponent {
 
 describe('ImgFallbackDirective', () => {
   let img: any;
-   
+
   beforeEach(() => {
     const component = TestBed.configureTestingModule({declarations: [ImgFallbackDirective, TestComponent]}).createComponent(TestComponent);
     img = component.debugElement.query(By.css('img')).nativeElement;
   });
 
   it('sets the fallback image url on the first load error but not subsequent errors', () => {
-    
+
     expect(img.src).toContain('original.jpg');
     img.dispatchEvent(new ErrorEvent('error'));
     expect(img.src).toContain('fallback.jpg');
