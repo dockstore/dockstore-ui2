@@ -351,12 +351,6 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
-      - uptime_monitor_auth:
-          stack: "dev"
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
       - local_smoke_tests:
           filters:
             tags:
