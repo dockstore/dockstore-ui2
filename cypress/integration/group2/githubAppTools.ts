@@ -108,10 +108,15 @@ describe('GitHub App Tools', () => {
       cy.contains('Edit').click();
       cy.contains('Edit Tool');
       cy.contains('Tool Path');
-      cy.get('[data-cy=hiddenLabel]').click();
+      cy.get('[type="checkbox"]').check();
       cy.get('[data-cy=save-version]').click();
       cy.get('[data-cy=valid').should('exist');
       cy.get('[data-cy=hidden').should('exist');
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('Edit').click();
+      cy.get('[type="checkbox"]').uncheck();
+      cy.get('[data-cy=save-version]').click();
+      cy.get('[data-cy=hidden').should('not.exist');
 
       goToTab('Files');
       isActiveTab('Files');

@@ -117,14 +117,6 @@ describe('Dockstore my workflows', () => {
       // Change the file path
       cy.contains('button', ' Edit ').click();
       cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore2.cwl');
-      // Hide version
-      cy.get('[data-cy=hiddenLabel]').click();
-      cy.contains('button', ' Save ').click();
-      // Check for hidden version and unhide
-      cy.get('[data-cy=hidden').should('exist');
-      cy.contains('Edit').click();
-      cy.get('[data-cy=hiddenLabel]').click();
-
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
@@ -186,6 +178,22 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=remove-test-parameter-file-button]').click();
       cy.get('[data-cy=save-version').click();
       cy.get('[data-cy=save-version').should('not.exist');
+    });
+    it('Should be able to hide/unhide', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.contains('Versions').click();
+      cy.get('td').contains('Actions').should('exist').click();
+      cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
+      cy.get('[type="checkbox"]').check();
+      cy.contains('button', ' Save ').click();
+      // Check for hidden version and unhide
+      cy.get('[data-cy=hidden').should('exist');
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.contains('Versions').click();
+      cy.get('td').contains('Actions').should('exist').click();
+      cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
+      cy.get('[type="checkbox"]').uncheck();
+      cy.contains('button', ' Save ').click();
     });
   });
 
