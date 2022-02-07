@@ -119,6 +119,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore2.cwl');
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
+      cy.contains('button', ' Save ').click();
       // Change the file path back
       cy.contains('button', ' Edit ').click();
       cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore.cwl');
