@@ -38,10 +38,7 @@ function deleteTool() {
     storeToken();
     cy.server();
     cy.route('delete', '**/containers/**').as('containers');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
-    cy.contains('#deregisterButton', 'Delete').should('be.enabled');
-    cy.contains('#deregisterButton', 'Delete').click();
-    // cy.get('#deregisterButton').click();
+    cy.contains('#deregisterButton', 'Delete').should('be.visible').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
       cy.contains('button', 'Delete').click();
     });
@@ -66,8 +63,7 @@ function registerQuayTool(repo: string, name: string) {
     cy.visit('/my-tools');
     cy.wait('@tokens');
     // click thru the steps of registering a tool
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
-    cy.get('#register_tool_button').click();
+    cy.get('#register_tool_button').should('be.visible').click();
     cy.wait('@orgs');
     // cy.wait(1000);
     cy.get('mat-dialog-content').within(() => {
@@ -83,8 +79,9 @@ function registerQuayTool(repo: string, name: string) {
       });
     });
     cy.wait('@containers');
-    cy.contains('button', 'Finish').click();
-    cy.get('#publishToolButton').click();
+    cy.contains('button', 'Finish').should('be.visible').click();
+    cy.contains('button', 'Refresh').should('be.visible').click();
+    cy.get('#publishToolButton').should('be.visible').click();
     cy.wait('@publish');
   });
 }
@@ -99,8 +96,7 @@ function registerRemoteSitesTool(repo: string, name: string) {
 
     cy.visit('/my-tools');
     cy.wait('@tokens');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
-    cy.get('#register_tool_button').click();
+    cy.get('#register_tool_button').should('be.visible').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
       cy.contains('button', 'Next').click();
@@ -108,7 +104,7 @@ function registerRemoteSitesTool(repo: string, name: string) {
       cy.get('#imageRegistryInput').type(`${repo}/${name}`);
       cy.contains('button', 'Add Tool').click();
     });
-    cy.get('#publishToolButton').click();
+    cy.get('#publishToolButton').should('be.visible').click();
     cy.wait('@publish');
   });
 }
@@ -138,14 +134,12 @@ function registerToolOnDockstore(repo: string, name: string) {
     cy.wait('@metadata');
     cy.wait('@docker');
     cy.wait('@sourceControl');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     cy.get('#register_tool_button').should('be.visible').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').click();
-      cy.contains('button', 'Next').click();
-      cy.wait(1000);
+      cy.contains('button', 'Next').should('be.visible').click();
       cy.get('#hostedImagePath').type(`${repo}/${name}`);
-      cy.contains('button', 'Add Tool').click();
+      cy.contains('button', 'Add Tool').should('be.visible').click();
     });
     // should not be able to publish because there should be no files or versions
     cy.contains('button', 'Publish').should('be.disabled');
@@ -273,7 +267,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.visit(`/organizations/${org}/collections/${collection}`);
       cy.contains(`quay.io/${repo}/${name}`);
       cy.get('#removeEntryButton').click();
-      cy.get('[data-cy=accept-remove-entry-from-org]').click();
+      cy.get('[data-cy=accept-remove-entry-from-org]').should('be.visible').click();
       cy.contains('This collection has no associated entries');
       cy.visit(`/organizations/${org}`);
       cy.contains('Members').should('be.visible');
@@ -281,7 +275,6 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.route('**/tokens').as('tokens');
       cy.visit('/my-tools');
       cy.wait('@tokens');
-      cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     });
     unpublishTool();
     deleteTool();
