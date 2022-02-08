@@ -12,9 +12,12 @@ import { MarkdownService } from 'ngx-markdown';
  Wrapper for ngx-markdown. Allows custom sanitization of user-input markdown through DOMPurify, which is not accessible
  through the built-in sanitizer, DOMSanitize.
  DOMSanitize's safe-lists can be seen https://github.com/angular/angular/blob/master/packages/core/src/sanitization/html_sanitizer.ts
+
+ Also specifies the base url used for relative links.
  */
 export class MarkdownWrapperComponent implements OnInit, OnChanges {
   @Input() data: string;
+  @Input() baseUrl?: string;
   cleanedData: string;
 
   // tags and attributes that will be sanitized by DOMPurify.
@@ -26,7 +29,7 @@ export class MarkdownWrapperComponent implements OnInit, OnChanges {
   constructor(private markdownService: MarkdownService) {}
 
   ngOnChanges(): void {
-    this.cleanedData = this.customSanitize(this.data);
+    this.cleanedData = this.customSanitize(this.customCompile(this.data, this.baseUrl));
   }
 
   ngOnInit(): void {
@@ -37,8 +40,20 @@ export class MarkdownWrapperComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * Compiles markdown into HTML with custom options.
+   * @param data
+   * @param baseUrl A base url used as a prefix for relative links
+   * @returns
+   */
+  customCompile(data, baseUrl): string {
+    return this.markdownService.compile(data, undefined, undefined, {
+      baseUrl: baseUrl,
+    });
+  }
+
   customSanitize(data): string {
     // compile markdown into html then pass it to DOMPurify to be sanitized.
-    return DOMPurify.sanitize(this.markdownService.compile(data));
+    return DOMPurify.sanitize(data);
   }
 }
