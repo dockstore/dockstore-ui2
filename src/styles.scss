@@ -1032,6 +1032,10 @@ hr {
 .tiny-org-logo {
   height: 40px;
   width: 65px;
+  min-height: 40px;
+  min-width: 65px;
+  max-height: 40px;
+  max-width: 65px;
   object-fit: scale-down;
   object-position: 50% 50%;
 }

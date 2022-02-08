@@ -18,23 +18,24 @@
     <mat-card-title>Collections</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div>
-      <ng-container *ngFor="let collectionOrganizations of currentCollections$ | async">
-        <ng-container *ngIf="collectionOrganizations.organizationAvatarUrl; then withAvatar else withoutAvatar"></ng-container>
-        <ng-template #withAvatar>
-          <div class="mb-1">
-            <img [src]="collectionOrganizations.organizationAvatarUrl" alt="org logo" class="tiny-org-logo mr-3">
-            <span><a [matTooltip]="collectionOrganizations.collectionDisplayName" [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganizations.collectionDisplayName }}</a></span>
-          </div>
-        </ng-template>
-        <ng-template #withoutAvatar>
-          <div class="mb-1 pt-2 pb-2">
-            <span class="weight-bold">{{ collectionOrganizations.organizationDisplayName }}: </span>
-            <a [matTooltip]="collectionOrganizations.collectionDisplayName" [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganizations.collectionDisplayName }}</a>
-          </div>
-        </ng-template>
-      </ng-container>
-    </div>
+    <ng-container *ngFor="let collectionOrganizations of currentCollections$ | async">
+      <ng-container *ngIf="collectionOrganizations.organizationAvatarUrl; then withAvatar else withoutAvatar"></ng-container>
+      <ng-template #withAvatar>
+        <div class="mb-1" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+          <img [src]="collectionOrganizations.organizationAvatarUrl" alt="org logo" class="tiny-org-logo">
+          <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
+        </div>
+      </ng-template>
+      <ng-template #withoutAvatar>
+        <div class="mb-1 pt-2 pb-2">
+          <span class="weight-bold">{{ collectionOrganizations.organizationDisplayName }}: </span>
+          <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
+        </div>
+      </ng-template>
+      <ng-template #collectionLink>
+          <a matTooltip="view {{ collectionOrganizations.collectionDisplayName }}" [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganizations.collectionDisplayName }}</a>
+      </ng-template>
+    </ng-container>
     <div *ngIf="isLoggedIn$ | async" class="p-3">
       <button
         fxFlex
