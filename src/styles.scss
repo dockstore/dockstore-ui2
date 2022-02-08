@@ -837,6 +837,11 @@ body {
   font-size: 12px;
 }
 
+// Set the line height to a ratio that makes the text "single-spaced".
+.single-spaced {
+  line-height: 1.33;
+}
+
 // Set display to inline-block
 .inline-block {
   display: inline-block;
