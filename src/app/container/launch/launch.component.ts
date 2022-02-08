@@ -16,7 +16,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { SourceFile, ToolDescriptor } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Workflow } from '../../shared/swagger/model/workflow';
