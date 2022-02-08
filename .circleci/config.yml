@@ -44,7 +44,8 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
@@ -77,7 +78,8 @@ jobs:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
@@ -100,7 +102,8 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - checkout
       - run:
           name: Checkout merge commit (PRs only)
@@ -139,7 +142,8 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - checkout
       - run:
           name: Checkout merge commit (PRs only)
@@ -200,7 +204,8 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -215,7 +220,8 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -230,7 +236,8 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -450,7 +457,8 @@ commands:
         type: string
         default: "db_dump.sql"
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - get_workspace
       - install_container_dependencies
       - run:
@@ -482,7 +490,8 @@ commands:
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - checkout
       - install_container_dependencies
       - restore_cache:
