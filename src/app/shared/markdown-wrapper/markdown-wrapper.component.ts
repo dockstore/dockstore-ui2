@@ -44,7 +44,7 @@ export class MarkdownWrapperComponent implements OnInit, OnChanges {
    * Compiles markdown into HTML with custom options.
    * @param data
    * @param baseUrl A base url used as a prefix for relative links
-   * @returns
+   * @returns {string} HTML string
    */
   customCompile(data, baseUrl): string {
     return this.markdownService.compile(data, undefined, undefined, {
@@ -52,8 +52,8 @@ export class MarkdownWrapperComponent implements OnInit, OnChanges {
     });
   }
 
-  customSanitize(data): string {
-    // compile markdown into html then pass it to DOMPurify to be sanitized.
-    return DOMPurify.sanitize(data);
+  customSanitize(html): string {
+    // Passes HTML to DOMPurify to be sanitized.
+    return DOMPurify.sanitize(html);
   }
 }
