@@ -22,7 +22,7 @@
       <ng-container *ngIf="collectionOrganizations.organizationAvatarUrl; then withAvatar else withoutAvatar"></ng-container>
       <ng-template #withAvatar>
         <div class="mb-1" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-          <img [src]="collectionOrganizations.organizationAvatarUrl" alt="org logo" class="tiny-org-logo">
+          <img class="tiny-org-logo" [src]="collectionOrganizations.organizationAvatarUrl" alt="org logo">
           <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
         </div>
       </ng-template>
@@ -33,7 +33,7 @@
         </div>
       </ng-template>
       <ng-template #collectionLink>
-          <a matTooltip="view {{ collectionOrganizations.collectionDisplayName }}" [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganizations.collectionDisplayName }}</a>
+        <a matTooltip="view the '{{ collectionOrganizations.collectionDisplayName }}' collection" [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganizations.collectionDisplayName }}</a>
       </ng-template>
     </ng-container>
     <div *ngIf="isLoggedIn$ | async" class="p-3">
