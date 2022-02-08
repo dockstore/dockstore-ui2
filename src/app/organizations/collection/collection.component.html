@@ -50,7 +50,7 @@
       <div fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
           <div *ngIf="gravatarUrl$ | async" fxHide.lt-sm>
-            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="organization logo" />
+            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="organization logo" [appFallback]="orgLogoService.DEFAULT_URL" />
           </div>
           <div>
             <h2>
@@ -92,7 +92,7 @@
           <div fxLayout="column" fxLayoutGap="15px">
             <h3>Workflows & Tools</h3>
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
-              <mat-card class="mat-elevation-z3">
+              <mat-card class="mat-elevation-z3 pb-3">
                 <a
                   [routerLink]="[
                     '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
@@ -137,7 +137,11 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                       <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                       <mat-chip-list class="bubble-list">
-                        <app-category-button *ngFor="let category of entry.categories" [category]="category" [entryType]="entry.entryType"></app-category-button>
+                        <app-category-button
+                          *ngFor="let category of entry.categories"
+                          [category]="category"
+                          [entryType]="entry.entryType"
+                        ></app-category-button>
                         <mat-chip
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-background bubble' : 'container-background bubble'"
                           *ngIf="entry.verified"
@@ -150,7 +154,7 @@
                         <span class="bubble" *ngFor="let descriptorType of entry.descriptorTypes">{{ descriptorType }}</span>
                       </mat-chip-list>
                     </div>
-                    <button mat-raised-button color="accent" class="view-button">View</button>
+                    <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
                   </div>
                 </a>
               </mat-card>

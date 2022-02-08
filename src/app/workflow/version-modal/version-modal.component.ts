@@ -32,6 +32,8 @@ import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
+import { AppTool } from '../../shared/openapi';
+import { EntryType } from '../../shared/enum/entry-type';
 
 export interface Dialogdata {
   canRead: boolean;
@@ -49,7 +51,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   isModalShown: boolean;
   version: WorkflowVersion;
   originalVersion: WorkflowVersion;
-  workflow: BioWorkflow | Service;
+  workflow: BioWorkflow | Service | AppTool;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
   public tooltip = Tooltip;
@@ -67,6 +69,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   canWrite: boolean;
   isOwner: boolean;
   isService$: Observable<boolean>;
+  entryTypeText: string;
   @ViewChild('versionEditorForm', { static: true }) currentForm: NgForm;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
@@ -82,6 +85,22 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.isService$ = this.sessionQuery.isService$.pipe(shareReplay());
+    this.sessionQuery.entryType$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((type: EntryType) => {
+      switch (type) {
+        case EntryType.Service:
+          this.entryTypeText = 'Service';
+          break;
+        case EntryType.AppTool:
+          this.entryTypeText = 'Tool';
+          break;
+        case EntryType.Tool:
+          this.entryTypeText = 'Tool';
+          break;
+        case EntryType.BioWorkflow:
+          this.entryTypeText = 'Workflow';
+          break;
+      }
+    });
     this.canRead = this.data.canRead;
     this.canWrite = this.data.canWrite;
     this.isOwner = this.data.isOwner;

@@ -15,6 +15,7 @@ import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { OrgLogoService } from '../../shared/org-logo.service';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
@@ -69,6 +70,7 @@ export class CollectionComponent implements OnInit {
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userQuery: UserQuery,
+    public orgLogoService: OrgLogoService,
   ) {}
 
   ngOnInit() {

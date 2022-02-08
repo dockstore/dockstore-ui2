@@ -19,8 +19,9 @@
   <button
     id="updateOrganizationDescriptionButton"
     [matTooltip]="'Update ' + data.type + ' description'"
-    mat-flat-button
+    mat-raised-button
     color="primary"
+    class="mat-elevation-z"
     [disabled]="!updateOrganizationOrCollectionDescriptionForm.valid"
     (click)="updateOrganizationDescription()"
     cdkFocusInitial

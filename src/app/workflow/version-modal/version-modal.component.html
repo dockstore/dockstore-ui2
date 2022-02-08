@@ -14,9 +14,7 @@
   ~    limitations under the License.
   -->
 <div>
-  <h4 mat-dialog-title>
-    {{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ (isService$ | async) ? 'Service Version' : 'Workflow Version' }}
-  </h4>
+  <h4 mat-dialog-title>{{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ entryTypeText }}</h4>
   <div mat-dialog-content>
     <app-alert></app-alert>
     <fieldset [disabled]="!canWrite || isPublic">
@@ -40,7 +38,7 @@
           </div>
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
-              {{ (isService$ | async) ? 'Service Path:' : 'Workflow Path:' }}
+              {{ entryTypeText + ' Path:' }}
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
@@ -206,13 +204,14 @@
     </fieldset>
   </div>
   <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-    <button type="button" mat-button color="secondary" mat-dialog-close>Cancel</button>
+    <button type="button" mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
     <button
       data-cy="save-version"
       type="button"
       (click)="saveChanges()"
-      mat-flat-button
+      mat-raised-button
       color="primary"
+      class="mat-elevation-z"
       *ngIf="!isPublic && canWrite"
       [disabled]="!versionEditorForm.form.valid"
     >
