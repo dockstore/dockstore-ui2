@@ -15,8 +15,8 @@
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Base } from 'app/shared/base';
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { SourceFile, ToolDescriptor } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Workflow } from '../../shared/swagger/model/workflow';
@@ -57,6 +57,9 @@ export class LaunchComponent extends Base implements OnInit, OnChanges {
   cwltoolTooltip = this.launchService.cwltoolTooltip;
   currentDescriptorType: ToolDescriptor.TypeEnum;
   protected published$: Observable<boolean>;
+  selectedVersion$: BehaviorSubject<Tag> = new BehaviorSubject<Tag>(null);
+  versionsFileTypes$: BehaviorSubject<Array<SourceFile.TypeEnum>> = new BehaviorSubject<Array<SourceFile.TypeEnum>>([]);
+  path$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(
     private launchService: ToolLaunchService,
@@ -67,21 +70,21 @@ export class LaunchComponent extends Base implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.descriptorLanguageService.filteredDescriptorLanguages$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((descriptors: Array<Workflow.DescriptorTypeEnum>) => {
-        this.descriptors = descriptors;
-        this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
-        this.changeDescriptor();
-      });
     this.published$ = this.toolQuery.toolIsPublished$;
+    combineLatest([this.descriptorLanguageService.filteredDescriptorLanguages$, this.path$, this.selectedVersion$, this.versionsFileTypes$])
+      .pipe(takeUntil(this.ngUnsubscribe), debounceTime(0))
+      .subscribe(([filteredDescriptorLanguages, path, selectedVersion, versionsFileTypes]) => {
+        this.filteredDescriptors = this.filterDescriptors(filteredDescriptorLanguages, selectedVersion, versionsFileTypes);
+        this.changeDescriptor(path, selectedVersion, this.currentDescriptor);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this._selectedVersion = this.selectedVersion;
-    this.filteredDescriptors = this.filterDescriptors(this.descriptors, this._selectedVersion, this.versionsFileTypes);
+    this.path$.next(this.path);
+    this.selectedVersion$.next(this.selectedVersion);
+    this.versionsFileTypes$.next(this.versionsFileTypes);
     this.reactToDescriptor();
-    this.changeDescriptor();
   }
 
   // Returns an array of descriptors that are valid for the given tool version
@@ -130,10 +133,9 @@ export class LaunchComponent extends Base implements OnInit, OnChanges {
     this.consonance = this.launchService.getConsonanceString(toolPath, versionName);
   }
 
-  changeDescriptor() {
-    const toolPath = this.path;
-    const versionName = this._selectedVersion.name;
-    this.params = this.launchService.getParamsString(toolPath, versionName, this.currentDescriptor);
-    this.cli = this.launchService.getCliString(toolPath, versionName, this.currentDescriptor);
+  changeDescriptor(path: string, version: Tag, currentDescriptor: string) {
+    const versionName = version.name;
+    this.params = this.launchService.getParamsString(path, versionName, currentDescriptor);
+    this.cli = this.launchService.getCliString(path, versionName, currentDescriptor);
   }
 }
