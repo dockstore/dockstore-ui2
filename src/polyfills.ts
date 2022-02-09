@@ -18,8 +18,6 @@
  * BROWSER POLYFILLS
  */
 
-import '@angular-devkit/build-angular/node_modules/core-js/features/url';
-
 /***************************************************************************************************
  * Zone JS is required by Angular itself.
  */
