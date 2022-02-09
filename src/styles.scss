@@ -1042,13 +1042,15 @@ hr {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
-button.accent-1-dark-btn {
+button.accent-1-dark-btn,
+a.accent-1-dark-btn {
   background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;
 }
 
 .mat-flat-button.secondary-1 {
   color: mat.get-color-from-palette($dockstore-app-accent);
+  font-weight: bold;
 }
 .mat-flat-button.accent-1-dark {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
@@ -1199,7 +1201,9 @@ $truncate-text-values: 1, 2, 3;
 
 // This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
 // These redesigned buttons have purple text and white backgrounds
-button.private-btn {
+// Use with mat-button and small-btn-structure
+button.private-btn,
+a.private-btn {
   font-weight: bold;
   font-size: 12px;
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
@@ -1231,7 +1235,7 @@ a.small-mat-btn-skin {
 // This style is for the SMALLER dockstore buttons with 26px height
 // Use this most likely with the small-mat-btn-skin
 button.small-btn-structure,
-a.small-mat-btn-skin {
+a.small-btn-structure {
   line-height: 26px;
   height: 26px;
   padding: 0 10px;

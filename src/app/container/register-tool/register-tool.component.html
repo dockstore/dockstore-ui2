@@ -45,8 +45,8 @@
         </mat-radio-group>
       </div>
       <div class="modal-footer">
-        <button mat-button color="secondary" (click)="hideModal()">Close</button>
-        <button mat-raised-button color="primary" class="mat-elevation-z" matStepperNext>Next</button>
+        <button mat-flat-button class="secondary-1" (click)="hideModal()">Close</button>
+        <button mat-raised-button class="accent-1-dark-btn mat-elevation-z" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
@@ -69,9 +69,8 @@
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
           <a
             mat-raised-button
-            class="mat-elevation-z"
+            class="accent-1-dark-btn mat-elevation-z"
             type="button"
-            color="primary"
             [href]="gitHubAppInstallationLink$ | async"
             matTooltip="Manage Dockstore installations on GitHub"
             ><mat-icon>add</mat-icon> Manage Dockstore installations on GitHub</a
@@ -359,13 +358,12 @@
           </mat-form-field>
         </div>
         <div mat-dialog-actions class="pull-right">
-          <button mat-button type="button" color="secondary" data-dismiss="modal" (click)="hideModal()">Close</button>
+          <button mat-flat-button type="button" class="secondary-1" data-dismiss="modal" (click)="hideModal()">Close</button>
           <button
             id="submitButton"
             type="submit"
             mat-raised-button
-            class="mat-elevation-z"
-            color="primary"
+            class="accent-1-dark-btn mat-elevation-z"
             [disabled]="!registerToolForm.form.valid || (isRefreshing$ | async) || isInvalidCustomRegistry() || isInvalidPrivateTool()"
           >
             Add Tool
@@ -506,13 +504,12 @@
           </div>
         </div>
         <div mat-dialog-actions class="pull-right">
-          <button mat-button type="button" color="secondary" (click)="hideModal()">Close</button>
+          <button mat-flat-button type="button" class="secondary-1" (click)="hideModal()">Close</button>
           <button
             id="submitButton"
             type="submit"
             mat-raised-button
-            color="primary"
-            class="mat-elevation-z"
+            class="accent-1-dark-btn mat-elevation-z"
             [disabled]="!registerHostedToolForm.form.valid"
           >
             Add Tool

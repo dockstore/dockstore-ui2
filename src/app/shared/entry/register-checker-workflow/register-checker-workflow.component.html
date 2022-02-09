@@ -45,12 +45,12 @@
       </mat-select>
     </mat-form-field>
     <div class="modal-footer">
-      <button type="button" mat-button color="secondary" data-dismiss="modal" mat-dialog-close>Close</button>
+      <button type="button" mat-flat-button class="secondary-1" data-dismiss="modal" mat-dialog-close>Close</button>
       <button
         id="submitButton"
         type="submit"
-        mat-flat-button
-        color="primary"
+        mat-raised-button
+        class="accent-1-dark-btn mat-elevation-z"
         [disabled]="!registerCheckerWorkflowForm.form.valid || (isRefreshing$ | async)"
       >
         {{ (mode$ | async) === 'add' ? 'Add Checker Workflow' : 'Save Checker Workflow' }}

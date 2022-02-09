@@ -22,3 +22,8 @@ pre {
   white-space: pre-wrap;
   word-break: normal;
 }
+
+/* Better alignment for "save" icon instead of vertical-align: middle*/
+mat-icon.mat-icon-sm {
+  vertical-align: text-bottom;
+}

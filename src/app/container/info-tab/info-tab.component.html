@@ -82,18 +82,25 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button *ngIf="!isPublic && dockerFileEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                  <mat-icon>cancel</mat-icon> Cancel
+                <button
+                  *ngIf="!isPublic && dockerFileEditing"
+                  type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  (click)="cancelEditing()"
+                >
+                  <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid))"
-                  class="btn btn-link"
                   (click)="toggleEditDockerFile()"
                 >
-                  <mat-icon *ngIf="dockerFileEditing">save</mat-icon>
-                  <mat-icon *ngIf="!dockerFileEditing">edit</mat-icon>
+                  <mat-icon *ngIf="dockerFileEditing" class="mat-icon-sm">save</mat-icon>
+                  <img *ngIf="!dockerFileEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Dockerfile path" />
                   {{ dockerFileEditing ? 'Save' : 'Edit' }}
                 </button>
               </div>
@@ -120,18 +127,25 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button *ngIf="!isPublic && cwlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                  <mat-icon>cancel</mat-icon> Cancel
+                <button
+                  *ngIf="!isPublic && cwlPathEditing"
+                  type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  (click)="cancelEditing()"
+                >
+                  <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid))"
-                  class="btn btn-link"
                   (click)="toggleEditCWLPath()"
                 >
-                  <mat-icon *ngIf="cwlPathEditing">save</mat-icon>
-                  <mat-icon *ngIf="!cwlPathEditing">edit</mat-icon>
+                  <mat-icon *ngIf="cwlPathEditing" class="mat-icon-sm">save</mat-icon>
+                  <img *ngIf="!cwlPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit CWL path" />
                   {{ cwlPathEditing ? 'Save' : 'Edit' }}
                 </button>
               </div>
@@ -158,18 +172,25 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button *ngIf="!isPublic && wdlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                  <mat-icon>cancel</mat-icon> Cancel
+                <button
+                  *ngIf="!isPublic && wdlPathEditing"
+                  type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  (click)="cancelEditing()"
+                >
+                  <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid))"
-                  class="btn btn-link"
                   (click)="toggleEditWDLPath()"
                 >
-                  <mat-icon *ngIf="wdlPathEditing">save</mat-icon>
-                  <mat-icon *ngIf="!wdlPathEditing">edit</mat-icon>
+                  <mat-icon *ngIf="wdlPathEditing" class="mat-icon-sm">save</mat-icon>
+                  <img *ngIf="!wdlPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit WDL path" />
                   {{ wdlPathEditing ? 'Save' : 'Edit' }}
                 </button>
               </div>
@@ -197,12 +218,13 @@
               <button
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
+                mat-raised-button
+                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                 [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))"
-                class="btn btn-link"
                 (click)="toggleEditCWLTestPath()"
               >
-                <mat-icon *ngIf="cwlTestPathEditing">save</mat-icon>
-                <mat-icon *ngIf="!cwlTestPathEditing">edit</mat-icon>
+                <mat-icon *ngIf="cwlTestPathEditing" class="mat-icon-sm">save</mat-icon>
+                <img *ngIf="!cwlTestPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit CWL test file path" />
                 {{ cwlTestPathEditing ? 'Save' : 'Edit' }}
               </button>
             </form>
@@ -229,12 +251,14 @@
               <button
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
+                mat-raised-button
+                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                 [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))"
-                class="btn btn-link"
                 (click)="toggleEditWDLTestPath()"
               >
-                <mat-icon *ngIf="wdlTestPathEditing">save</mat-icon>
-                <mat-icon *ngIf="!wdlTestPathEditing">edit</mat-icon>
+                <mat-icon *ngIf="wdlTestPathEditing" class="mat-icon-sm">save</mat-icon>
+                <img *ngIf="!wdlTestPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit WDL test file path" />
+
                 {{ wdlTestPathEditing ? 'Save' : 'Edit' }}
               </button>
             </form>
@@ -271,22 +295,22 @@
                   data-cy="topicCancelButton"
                   *ngIf="topicEditing"
                   type="button"
-                  mat-button
-                  class="accent-1-dark"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   (click)="cancelEditing()"
                 >
-                  <mat-icon>cancel</mat-icon> Cancel
+                  <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   type="button"
                   [disabled]="!(!somethingIsBeingEdited() || topicEditing)"
-                  mat-button
-                  class="accent-1-dark"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   data-cy="topicEditButton"
                   (click)="toggleEditTopic()"
                 >
-                  <mat-icon *ngIf="topicEditing">save</mat-icon>
-                  <mat-icon *ngIf="!topicEditing">edit</mat-icon>
+                  <mat-icon *ngIf="topicEditing" class="mat-icon-sm">save</mat-icon>
+                  <img *ngIf="!topicEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit topic" />
                   {{ topicEditing ? 'Save' : 'Edit' }}
                 </button>
               </form>
@@ -343,8 +367,14 @@
           <span *ngIf="!selectedVersion?.email"> n/a </span>
         </div>
         <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
-          <button *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
-          <a [href]="downloadZipLink" *ngIf="tool?.is_published" mat-raised-button>Export as ZIP</a>
+          <button *ngIf="!tool?.is_published" mat-button color="accent" class="private-btn small-btn-structure" (click)="downloadZip()">
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>
+            Export as ZIP
+          </button>
+          <a [href]="downloadZipLink" *ngIf="tool?.is_published" mat-button color="accent" class="private-btn small-btn-structure">
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>
+            Export as ZIP</a
+          >
         </span>
 
         <div *ngIf="selectedVersion?.description || !isPublic">

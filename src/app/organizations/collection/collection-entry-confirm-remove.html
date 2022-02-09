@@ -7,6 +7,8 @@
   </p>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close data-cy="cancel-remove-entry-from-org">Cancel</button>
-  <button mat-flat-button data-cy="accept-remove-entry-from-org" (click)="deleteCollection()">Remove</button>
+  <button mat-flat-button class="secondary-1" mat-dialog-close data-cy="cancel-remove-entry-from-org">Cancel</button>
+  <button mat-raised-button class="accent-1-dark-btn mat-elevation-z" data-cy="accept-remove-entry-from-org" (click)="deleteCollection()">
+    Remove
+  </button>
 </div>
