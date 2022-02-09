@@ -183,14 +183,20 @@
       You have no starred organizations.
     </mat-card>
     <div *ngIf="starredOrganizations?.length > 0">
-      <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="1rem" class="mb-2 mx-1">
+      <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-2 mx-1">
         <div *ngFor="let org of starredOrganizations; let last = last" fxFlex="33.3" fxFlex.lt-lg="500" fxFlex.lt-md="100">
           <mat-card class="org-style mat-elevation-z3 pb-3">
             <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
               <div fxLayout="column" fxLayoutGap="1rem">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between start">
                   <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                    <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" [appFallback]="orgLogoService.DEFAULT_URL"/>
+                    <img
+                      *ngIf="org.avatarUrl; else placeholder"
+                      class="small-org-logo"
+                      [src]="org.avatarUrl"
+                      alt="org logo"
+                      [appFallback]="orgLogoService.DEFAULT_URL"
+                    />
                     <ng-template #placeholder><span class="logo-height"></span></ng-template>
                   </a>
                   <app-organization-starring
