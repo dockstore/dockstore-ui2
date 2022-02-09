@@ -25,8 +25,11 @@
       </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid">
-      <div>
-        <mat-card *ngIf="(isNFL$ | async) === false" class="m-2" matTooltip="Commands for creating a runtime JSON template">
+      <div fxLayout="column" fxLayoutGap="1rem">
+        <mat-card *ngIf="entryType === EntryType.Tool" class="alert alert-info" role="alert">
+          <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
+        </mat-card>
+        <mat-card *ngIf="(isNFL$ | async) === false" matTooltip="Commands for creating a runtime JSON template">
           Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
           <pre>{{ params }}</pre>
           <span *ngIf="wgetTestJsonDescription">
@@ -36,16 +39,12 @@
         </mat-card>
         <mat-card
           *ngIf="(isNFL$ | async) === false"
-          class="m-2"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >
           Run locally with the Dockstore CLI
           <pre>{{ cli }}</pre>
         </mat-card>
-        <mat-card
-          *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode"
-          class="m-2"
-        >
+        <mat-card *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
           <div matTooltip="Nextflow can conveniently run a workflow off of source control">
             Run with nextflow
             <pre>{{ nextflowNativeLaunchDescription }}</pre>
@@ -53,10 +52,7 @@
           </div>
         </mat-card>
 
-        <mat-card
-          *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)"
-          class="m-2"
-        >
+        <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)">
           <div matTooltip="Nextflow can also run a local workflow">
             Download the workflow files
             <pre>{{ nextflowDownloadFileDescription }}</pre>
