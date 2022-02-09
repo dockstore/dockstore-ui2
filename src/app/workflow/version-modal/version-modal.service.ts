@@ -78,8 +78,8 @@ export class VersionModalService {
     if (workflowMode !== 'HOSTED') {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         (response) => {
-          workflow = { ...workflow, workflowVersions: response };
-          this.workflowService.setWorkflow(workflow);
+          const updatedWorkflow: BioWorkflow | Service | AppTool = { ...workflow, workflowVersions: response };
+          this.workflowService.setWorkflow(updatedWorkflow);
           this.alertService.start(message2);
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
             (success) => {
@@ -109,8 +109,8 @@ export class VersionModalService {
     } else {
       this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
         (response) => {
-          workflow = { ...workflow, workflowVersions: response };
-          this.workflowService.setWorkflow(workflow);
+          const updatedWorkflow: BioWorkflow | Service | AppTool = { ...workflow, workflowVersions: response };
+          this.workflowService.setWorkflow(updatedWorkflow);
           this.alertService.detailedSuccess();
           this.matDialog.closeAll();
         },
