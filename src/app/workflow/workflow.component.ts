@@ -345,8 +345,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           this.updateWorkflowUrl(this.workflow);
         },
         (error) => {
-          const regex = /\/((workflows)|(containers))\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
-          if (regex.test(this.resourcePath)) {
+          const workflowRegex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
+          const gitHubAppToolRegex = /\/containers\/(github.com)\/.+/;
+          if (workflowRegex.test(this.resourcePath) || gitHubAppToolRegex.test(this.resourcePath)) {
             this.router.navigate(['../']);
           } else {
             this.showRedirect = true;
