@@ -109,8 +109,8 @@ describe('Dockstore my tools', () => {
       cy.contains('quay.io/A2/a:latest');
       cy.get('button').contains('Manage labels').click();
       cy.get('[data-cy=toolLabelInput]').type('potato');
-      cy.get('button').contains('Save').click();
-      cy.get('button').contains('Save').should('not.exist');
+      cy.get('[data-cy=saveLabelButton]').click();
+      cy.get('[data-cy=saveLabelButton]').should('not.exist');
     });
     it('add and remove test parameter file', () => {
       cy.server();
