@@ -1,6 +1,7 @@
 import { SecurityContext } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MarkdownModule, MarkdownService, SECURITY_CONTEXT } from 'ngx-markdown';
+import { BaseUrlPipe } from '../entry/base-url.pipe';
 import { MarkdownWrapperComponent } from './markdown-wrapper.component';
 
 describe('MarkdownWrapperComponent', () => {
@@ -90,6 +91,20 @@ describe('MarkdownWrapperComponent', () => {
       expect(fixture.nativeElement.innerHTML).toContain('class="mat-focus-indicator mat-flat-button mat-button-base mat-primary');
       expect(fixture.nativeElement.innerHTML).toContain('href="javascript:window.alert(\'mashing\')"');
       expect(fixture.nativeElement.innerHTML).toContain('Safe!');
+    })
+  );
+
+  it(
+    'Link generated for relative link in markdown should be correct',
+    waitForAsync(() => {
+      const pipe = new BaseUrlPipe();
+      wrapperComponent.data = '[relative link here](docs/hello_world.md)';
+      wrapperComponent.baseUrl = pipe.transform('https://github.com/kathy-t/hello_world', 'master');
+      wrapperComponent.ngOnChanges(); // has to be called manually in unit tests (TestBed doesn't by default)
+      fixture.detectChanges();
+      expect(fixture.nativeElement.innerHTML).toContain(
+        '<a href="https://github.com/kathy-t/hello_world/blob/master/docs/hello_world.md">relative link here</a>'
+      );
     })
   );
 });
