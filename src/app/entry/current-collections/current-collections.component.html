@@ -18,21 +18,30 @@
     <mat-card-title>Collections</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-list>
-      <mat-list-item
-        [matTooltip]="collectionOrganizations.organizationDisplayName"
-        *ngFor="let collectionOrganizations of currentCollections$ | async"
-      >
-        <a
-          [routerLink]="['/organizations', collectionOrganizations.organizationName, 'collections', collectionOrganizations.collectionName]"
-          routerLinkActive="router-link-active"
-          >{{ collectionOrganizations.collectionDisplayName }}</a
-        >
-      </mat-list-item>
-    </mat-list>
-    <div class="p-3">
+    <ng-container *ngFor="let collectionOrganization of currentCollections$ | async">
+      <div class="mb-1 single-spaced">
+        <ng-container *ngIf="collectionOrganization.organizationAvatarUrl; then withAvatar else withoutAvatar"></ng-container>
+        <ng-template #withAvatar>
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+            <img class="tiny-org-logo" [src]="collectionOrganization.organizationAvatarUrl" alt="Org logo for {{ collectionOrganization.organizationDisplayName }}" [appFallback]="orgLogoService.DEFAULT_URL"/>
+            <div class="pt-2 pb-2">
+              <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template #withoutAvatar>
+          <div class="pt-2 pb-2">
+            <span class="weight-bold">{{ collectionOrganization.organizationDisplayName }}: </span>
+            <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
+          </div>
+        </ng-template>
+        <ng-template #collectionLink>
+          <a matTooltip="View the collection" [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganization.collectionDisplayName }}</a>
+        </ng-template>
+      </div>
+    </ng-container>
+    <div *ngIf="isLoggedIn$ | async" class="p-3">
       <button
-        *ngIf="isLoggedIn$ | async"
         fxFlex
         mat-raised-button
         class="accent-1-dark-btn"
