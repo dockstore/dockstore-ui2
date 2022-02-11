@@ -36,7 +36,7 @@
           </div>
         </ng-template>
         <ng-template #collectionLink>
-          <a matTooltip="View the {{ collectionOrganization.collectionDisplayName }} collection from the {{ collectionOrganization.organizationDisplayName }} organization" [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganization.collectionDisplayName }}</a>
+          <a matTooltip="View the collection" [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganization.collectionDisplayName }}</a>
         </ng-template>
       </div>
     </ng-container>
