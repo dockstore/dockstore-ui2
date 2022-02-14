@@ -15,13 +15,12 @@
   </mat-tab-group>
 </div>
 <div mat-dialog-actions class="pull-right">
-  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
   <button
     id="updateOrganizationDescriptionButton"
     [matTooltip]="'Update ' + data.type + ' description'"
     mat-raised-button
-    color="primary"
-    class="mat-elevation-z"
+    class="accent-1-dark-btn mat-elevation-z"
     [disabled]="!updateOrganizationOrCollectionDescriptionForm.valid"
     (click)="updateOrganizationDescription()"
     cdkFocusInitial

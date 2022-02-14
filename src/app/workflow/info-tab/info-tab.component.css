@@ -32,3 +32,14 @@
 ::ng-deep label {
   margin-bottom: 0px;
 }
+
+/* Better alignment for "save" icon instead of vertical-align: middle */
+.mat-icon-sm {
+  vertical-align: text-bottom;
+}
+
+/* Disabled state for "edit" buttons */
+.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  background-color: white;
+  filter: opacity(0.3);
+}

@@ -160,8 +160,10 @@ describe('Dockstore my workflows', () => {
       cy.contains('github.com/A/g');
       cy.get('button').contains('Manage labels').click();
       cy.get('[data-cy=workflowLabelInput]').type('potato');
-      cy.get('button').contains('Save').click();
-      cy.get('button').contains('Save').should('not.exist');
+      // Adding force:true, appears to be a cypress issue, when clicking this button the event does not fire
+      // this will force submitWorkflowEdits() to fire
+      cy.get('[data-cy=saveLabelButton]').click({ force: true });
+      cy.get('[data-cy=saveLabelButton]').should('not.exist');
     });
     it('add and remove test parameter file', () => {
       cy.visit('/my-workflows/github.com/A/l');
