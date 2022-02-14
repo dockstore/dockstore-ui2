@@ -3,7 +3,8 @@
     *ngIf="tool?.is_published"
     [routerLink]="['/tools/', tool.tool_path]"
     data-cy="viewPublicToolButton"
-    mat-button
+    mat-flat-button
+    class="secondary-1"
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"
   >

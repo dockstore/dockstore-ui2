@@ -65,21 +65,23 @@
           <div fxFlex></div>
           <button
             *ngIf="canDelete$ | async"
-            mat-button
+            mat-raised-button
+            class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
             (click)="removeCollection(organization, collection)"
             data-cy="removeCollectionButton"
             matTooltip="Remove the collection"
           >
-            <mat-icon>clear</mat-icon> Remove
+            <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove collection" />Remove
           </button>
           <button
             *ngIf="canEdit$ | async"
-            mat-button
+            mat-raised-button
+            class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
             (click)="editCollection(collection)"
             id="editCollection"
             matTooltip="Edit the collection"
           >
-            <mat-icon>edit</mat-icon>
+            <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit collection" />Edit
           </button>
         </mat-card-actions>
       </div>
@@ -111,7 +113,8 @@
                     <div *ngIf="canEdit$ | async" fxLayout="row" fxLayoutAlign="end center">
                       <span>
                         <button
-                          mat-flat-button
+                          mat-raised-button
+                          class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                           matTooltip="Remove entry from collection."
                           id="removeEntryButton"
                           (click)="
@@ -127,7 +130,7 @@
                             $event.preventDefault()
                           "
                         >
-                          <mat-icon>clear</mat-icon> Remove
+                          <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove from collection" />
                         </button>
                       </span>
                     </div>
@@ -168,13 +171,14 @@
               <div fxLayout="row" fxLayoutAlign="space-between">
                 <h3>About the Collection</h3>
                 <button
-                  mat-button
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   *ngIf="canEdit$ | async"
                   (click)="updateDescription(collection.description, collection.id)"
                   id="editCollectionDescription"
                   matTooltip="Edit the description"
                 >
-                  <mat-icon>edit</mat-icon>
+                  <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit collection description" />Edit
                 </button>
               </div>
               <div *ngIf="!collection.description" fxFlex>

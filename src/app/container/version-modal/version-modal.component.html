@@ -407,8 +407,7 @@
             type="button"
             (click)="onSubmit()"
             mat-raised-button
-            color="primary"
-            class="mat-elevation-z"
+            class="accent-1-dark-btn mat-elevation-z"
             *ngIf="mode === TagEditorMode.Edit"
             [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
             data-dismiss="modal"

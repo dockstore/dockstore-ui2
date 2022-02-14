@@ -158,7 +158,7 @@
                 </li>
                 <button
                   mat-raised-button
-                  color="primary"
+                  class="accent-1-dark-btn"
                   type="button"
                   (click)="showRegisterEntryModal()"
                   [disabled]="isRefreshing$ | async"
@@ -170,7 +170,7 @@
                   <li>If there are already workflows on Dockstore added by other users that you have access to, press the button below.</li>
                   <button
                     mat-raised-button
-                    color="primary"
+                    class="accent-1-dark-btn"
                     type="button"
                     (click)="addToExistingWorkflows()"
                     [disabled]="(isRefreshing$ | async) || (noUser$ | async)"

@@ -46,13 +46,12 @@
         </form>
       </div>
       <div mat-dialog-actions class="pull-right">
-        <button matTooltip="Cancel" mat-button mat-dialog-close>Cancel</button>
+        <button matTooltip="Cancel" mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
         <button
           id="createOrUpdateCollectionButton"
           [matTooltip]="title"
           mat-raised-button
-          color="primary"
-          class="mat-elevation-z"
+          class="accent-1-dark-btn mat-elevation-z"
           [disabled]="!createCollectionForm.valid"
           (click)="createCollection()"
           cdkFocusInitial

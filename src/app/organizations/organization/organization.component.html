@@ -75,8 +75,14 @@
         </div>
       </div>
       <mat-card-actions *ngIf="(canEdit$ | async) && !organizationStarGazersClicked" fxLayoutAlign="flex-end">
-        <button mat-button (click)="editOrganization()" id="editOrgInfo" matTooltip="Edit the organization">
-          <mat-icon>edit</mat-icon>
+        <button
+          mat-raised-button
+          class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+          (click)="editOrganization()"
+          id="editOrgInfo"
+          matTooltip="Edit the organization"
+        >
+          <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit organization" />Edit
         </button>
       </mat-card-actions>
     </div>
@@ -130,13 +136,14 @@
             <div fxLayout="row" fxLayoutAlign="space-between">
               <h4>About the Organization</h4>
               <button
-                mat-button
+                mat-raised-button
+                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                 *ngIf="canEdit$ | async"
                 (click)="updateDescription()"
                 id="editOrgDescription"
                 matTooltip="Edit the description"
               >
-                <mat-icon>edit</mat-icon>
+                <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit organization description" />Edit
               </button>
             </div>
             <div *ngIf="!org.description" fxFlex>

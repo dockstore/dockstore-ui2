@@ -160,8 +160,10 @@ describe('Dockstore my workflows', () => {
       cy.contains('github.com/A/g');
       cy.get('button').contains('Manage labels').click();
       cy.get('[data-cy=workflowLabelInput]').type('potato');
-      cy.get('button').contains('Save').click();
-      cy.get('button').contains('Save').should('not.exist');
+      // Adding force:true, appears to be a cypress issue, when clicking this button the event does not fire
+      // this will force submitWorkflowEdits() to fire
+      cy.get('[data-cy=saveLabelButton]').click({ force: true });
+      cy.get('[data-cy=saveLabelButton]').should('not.exist');
     });
     it('add and remove test parameter file', () => {
       cy.visit('/my-workflows/github.com/A/l');
@@ -179,6 +181,22 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=remove-test-parameter-file-button]').click();
       cy.get('[data-cy=save-version').click();
       cy.get('[data-cy=save-version').should('not.exist');
+    });
+    it('Should be able to hide/unhide', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.contains('Versions').click();
+      cy.get('td').contains('Actions').should('exist').click();
+      cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
+      cy.get('[type="checkbox"]').check();
+      cy.contains('button', ' Save ').click();
+      // Check for hidden version and unhide
+      cy.get('[data-cy=hidden').should('exist');
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.contains('Versions').click();
+      cy.get('td').contains('Actions').should('exist').click();
+      cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
+      cy.get('[type="checkbox"]').uncheck();
+      cy.contains('button', ' Save ').click();
     });
   });
 
