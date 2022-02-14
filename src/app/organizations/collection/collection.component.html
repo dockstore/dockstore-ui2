@@ -88,7 +88,7 @@
         workflow you want to add and select `Add to collection`
       </mat-card>
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px" class="my-3">
-        <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
+        <div fxFlex="40" fxGrow="1" fxFlex.lt-md="100%">
           <div fxLayout="column" fxLayoutGap="15px">
             <h3>Workflows & Tools</h3>
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
@@ -162,7 +162,7 @@
           </div>
         </div>
 
-        <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
+        <div fxFlex="60" fxGrow="1" fxFlex.lt-md="100%">
           <div fxLayout="column" fxLayoutGap="15px">
             <div fxLayout="column" fxLayoutGap="15px">
               <div fxLayout="row" fxLayoutAlign="space-between">
@@ -182,7 +182,9 @@
                 <div *ngIf="(canEdit$ | async) === false" class="text-muted">This collection does not have a description</div>
               </div>
             </div>
-            <app-markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></app-markdown-wrapper>
+            <div>
+              <app-markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></app-markdown-wrapper>
+            </div>
           </div>
         </div>
       </div>

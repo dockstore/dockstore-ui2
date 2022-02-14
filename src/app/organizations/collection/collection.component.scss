@@ -30,3 +30,8 @@ h5 {
 .labels {
   margin: 0.5rem 0;
 }
+
+// For large descriptions (ex. with a markdown table) add scroll bar if needed for smaller windows
+div > app-markdown-wrapper {
+  overflow-x: auto;
+}
