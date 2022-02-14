@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Dockstore } from '../../../shared/dockstore.model';
 import { OrganizationUpdateTime } from 'app/shared/openapi/model/organizationUpdateTime';
 import { UserQuery } from 'app/shared/user/user.query';
 import { takeUntil } from 'rxjs/operators';
@@ -11,6 +12,8 @@ import { FilteredList } from '../filtered-list';
   styleUrls: ['./organizations.component.scss'],
 })
 export class OrganizationsComponent extends FilteredList {
+  Dockstore = Dockstore;
+
   constructor(userQuery: UserQuery, usersService: UsersService, entriesService: EntriesService) {
     super(userQuery, entriesService, usersService);
   }

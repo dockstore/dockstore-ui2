@@ -14,6 +14,9 @@
  *    limitations under the License.
  */
 
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
 /* TODO:
 - Min-width for table with horizontal scroll
 - All columns except name should be as small as possible (assuming content will always fit)
@@ -28,7 +31,7 @@
 
 /* Material says it should highlight on hover, sadly Angular Material does not */
 .mat-row:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6, 0.42);
 }
 
 /* Overwrite the bootstrap class */
@@ -39,5 +42,10 @@ th {
 /* Highlight row with the selected version */
 /* The mat-row is so that this is more specific and able to override the hover style above */
 tr.mat-row.highlight {
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6);
+}
+
+/* Add padding to the left of first cell for selected version */
+tr.highlight > .mat-cell:first-of-type > span {
+  padding-left: 5px;
 }

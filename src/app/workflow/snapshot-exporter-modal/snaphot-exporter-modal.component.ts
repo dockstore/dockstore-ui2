@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router/';
+import { Router } from '@angular/router';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
 import { concat, Observable, of as observableOf, throwError } from 'rxjs';
 import { catchError, first, switchMap, tap } from 'rxjs/operators';

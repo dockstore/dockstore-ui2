@@ -56,6 +56,7 @@ export class FileEditing extends Files {
   getDescriptorFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
       (sourcefile) =>
+        sourcefile.type === SourceFile.TypeEnum.DOCKSTORESMK ||
         sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWDL ||
         sourcefile.type === SourceFile.TypeEnum.DOCKSTORECWL ||
         sourcefile.type === SourceFile.TypeEnum.NEXTFLOWCONFIG ||
@@ -74,6 +75,7 @@ export class FileEditing extends Files {
   getTestFiles(sourceFiles: Array<SourceFile>): Array<SourceFile> {
     return sourceFiles.filter(
       (sourcefile) =>
+        sourcefile.type === SourceFile.TypeEnum.SMKTESTPARAMS ||
         sourcefile.type === SourceFile.TypeEnum.WDLTESTJSON ||
         sourcefile.type === SourceFile.TypeEnum.CWLTESTJSON ||
         // DOCKSTORE-2428 - demo how to add new workflow language

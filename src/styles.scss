@@ -16,7 +16,7 @@
 
 // Must define the material icons font directory path, see https://www.npmjs.com/package/material-design-icons-iconfont
 $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import '~material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';
@@ -203,26 +203,6 @@ angular-tag-cloud > span.w2:hover {
 }
 angular-tag-cloud > span.w1:hover {
   color: #ff5e86 !important;
-}
-
-@font-face {
-  font-family: Gotham;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-Book.otf') format('opentype');
-}
-
-@font-face {
-  font-family: Gotham;
-  font-weight: bold;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-Bold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: Gotham;
-  font-style: italic;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-BookItalic.otf') format('opentype');
 }
 
 /* Main Styles */
@@ -1229,4 +1209,22 @@ $truncate-text-values: 1, 2, 3;
 .mat-cell:not(:last-of-type),
 .mat-header-cell:not(:last-of-type) {
   padding-right: 1.6rem;
+}
+
+// This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
+// These redesigned buttons have purple text and white backgrounds
+button.private-btn {
+  font-weight: bold;
+  font-size: 12px;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+  border: solid 1px #d8d8d8;
+}
+
+//This style should be used for the new small buttons in the Dockstore redesign with a height of 26px
+button.small-btn-structure {
+  height: 26px;
+  line-height: 26px;
+  padding: 0 10px;
 }

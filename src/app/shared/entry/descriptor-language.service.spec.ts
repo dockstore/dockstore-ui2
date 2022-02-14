@@ -76,7 +76,9 @@ describe('Service: DescriptorLanguage', () => {
     const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
-    let placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.CWL);
+    let placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SMK);
+    expect(placeholder).toEqual('e.g. /Snakefile');
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.CWL);
     expect(placeholder).toEqual('e.g. /Dockstore.cwl');
     placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.WDL);
     expect(placeholder).toEqual('e.g. /Dockstore.wdl');
@@ -93,7 +95,9 @@ describe('Service: DescriptorLanguage', () => {
     const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
-    let placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.CWL);
+    let placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.SMK);
+    expect(placeholder).toEqual('^/([^/?:*|<>]++/)*(Snakefile|[^./?:*|<>]++.smk))$');
+    placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.CWL);
     expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.WDL);
     expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$');
@@ -120,7 +124,9 @@ describe('Service: DescriptorLanguage', () => {
     expect(placeholder).toEqual(null);
   });
   it('should be able to get shortFriendlyName from Worfklow.DescriptorTypeEnum for workflow registration', () => {
-    let placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
+    let placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.SMK);
+    expect(placeholder).toEqual('Snakemake');
+    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
     expect(placeholder).toEqual('CWL');
     placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
     expect(placeholder).toEqual('WDL');
@@ -137,7 +143,9 @@ describe('Service: DescriptorLanguage', () => {
   });
 
   it('should be able to get defaultDescriptorPath from ToolDescriptor.TypeEnum for workflow stub language changing', () => {
-    let placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.CWL);
+    let placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SMK);
+    expect(placeholder).toEqual('/Snakefile');
+    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.CWL);
     expect(placeholder).toEqual('/Dockstore.cwl');
     placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.WDL);
     expect(placeholder).toEqual('/Dockstore.wdl');

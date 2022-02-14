@@ -17,7 +17,8 @@ import {
   assertNoTab,
   assertVisibleTab,
   cancelMatMenu,
-  clickFirstActionsButton,
+  clickFirstActionsButtonPublic,
+  clickFirstActionsButtonPrivate,
   goToTab,
   setTokenUserViewPort,
   setTokenUserViewPortCurator,
@@ -59,9 +60,7 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('be.visible');
       checkVersionsTab();
       // Hidden version not visible on public page
-      // View button visible on public page, otherwise Edit
-      clickFirstActionsButton();
-      cy.contains('button', 'View');
+      clickFirstActionsButtonPublic();
       cy.contains('td', 'test').should('not.exist');
       cancelMatMenu();
       checkFilesTab();
@@ -91,7 +90,7 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('not.exist');
       checkVersionsTab();
       // Edit button only in my-services
-      clickFirstActionsButton();
+      clickFirstActionsButtonPrivate();
       cy.contains('button', 'Edit');
       cancelMatMenu();
       checkFilesTab();
