@@ -7,6 +7,7 @@ import { CollectionOrganization } from '../../shared/swagger';
 import { TrackLoginService } from '../../shared/track-login.service';
 import { CurrentCollectionsQuery } from '../state/current-collections.query';
 import { CurrentCollectionsService } from '../state/current-collections.service';
+import { OrgLogoService } from '../../shared/org-logo.service';
 
 @Component({
   selector: 'app-current-collections',
@@ -25,7 +26,8 @@ export class CurrentCollectionsComponent implements OnInit, OnChanges {
     private currentCollectionsQuery: CurrentCollectionsQuery,
     private matDialog: MatDialog,
     private currentCollectionsService: CurrentCollectionsService,
-    private trackLoginService: TrackLoginService
+    private trackLoginService: TrackLoginService,
+    public orgLogoService: OrgLogoService
   ) {}
 
   ngOnInit() {
