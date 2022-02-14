@@ -56,14 +56,16 @@ describe('LaunchThirdPartyComponent', () => {
     const nativeElement: HTMLElement = fixture.nativeElement;
 
     // Verify urls are correct; got these from prod (except for Terra, which is new) to verify there is no breakage.
-    /* eslint-disable max-len */
-    if (!Dockstore.FEATURES.enableMultiCloudLaunchWithDNAstack) {
-      expect(
-        nativeElement.querySelector(
-          'a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'
-        )
-      ).toBeTruthy();
-    }
+    // This test was removed as part of: https://ucsc-cgl.atlassian.net/browse/SEAB-3800
+    // tslint:disable:max-line-length
+    // if (!Dockstore.FEATURES.enableMultiCloudLaunchWithDNAstack) {
+    //   expect(
+    //     nativeElement.querySelector(
+    //       'a[href="https://app.dnastack.com/#/app/workflow/import/dockstore?descriptorType=wdl&path=github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl"]'
+    //     )
+    //   ).toBeTruthy();
+    // }
+
     // https://platform.dnanexus.com/panx/tools/import-workflow?source=https://dockstore.org:443/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master
     expect(
       nativeElement.querySelector(

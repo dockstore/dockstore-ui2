@@ -89,18 +89,19 @@
           </div>
           <ng-template #oldWdlLaunch>
             <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
-              <a
-                mat-raised-button
-                class="old-launch-with-button"
-                [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
-                target="_blank"
-                rel="noopener"
-                [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"
-                [disabled]="(hasContent$ | async) === false"
-                color="primary"
-                data-cy="dnastackLaunchWith"
-                ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a
-              >
+              <!--              Commenting out as part of https://ucsc-cgl.atlassian.net/browse/SEAB-3800. We can keep this around in case DNAStack spins up another instance.-->
+              <!--              <a-->
+              <!--                mat-raised-button-->
+              <!--                class="old-launch-with-button"-->
+              <!--                [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"-->
+              <!--                target="_blank"-->
+              <!--                rel="noopener"-->
+              <!--                [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"-->
+              <!--                [disabled]="!(hasContent$ | async)"-->
+              <!--                color="primary"-->
+              <!--                data-cy="dnastackLaunchWith"-->
+              <!--              ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a-->
+              <!--              >-->
               <a
                 mat-raised-button
                 class="old-launch-with-button"
