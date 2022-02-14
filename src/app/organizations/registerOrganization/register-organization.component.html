@@ -69,13 +69,12 @@
   </form>
 </div>
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-  <button mat-raised-button class="mat-elevation-z" mat-dialog-close>Cancel</button>
+  <button mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
   <button
     id="createOrUpdateOrganizationButton"
     [matTooltip]="title"
     mat-raised-button
-    class="mat-elevation-z"
-    color="primary"
+    class="accent-1-dark-btn mat-elevation-z"
     [disabled]="!registerOrganizationForm.valid"
     (click)="createOrUpdateOrganization()"
     cdkFocusInitial
