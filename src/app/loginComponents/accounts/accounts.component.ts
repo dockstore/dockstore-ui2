@@ -57,6 +57,6 @@ export class AccountsComponent extends Base implements OnInit {
   setAccountsTab(tabName: string) {
     // Adding the & symbol causes the URL to be parsed in an unexpected way.
     // TODO: Change replace to replaceAll once we use EC2021
-    this.location.replaceState('accounts?tab=' + tabName.replace('&', 'and'));
+    this.location.replaceState('accounts?tab=' + tabName.replace(/&/g, 'and'));
   }
 }
