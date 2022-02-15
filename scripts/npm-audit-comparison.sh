@@ -7,7 +7,6 @@ set -o xtrace
 # Run npm audit on current branch and compare it with the results of running npm audit on the base branch that is set in the package.json. If there are more
 # high or critical findings in the current branch, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
 # If they are are different, then the test fails.
-# Test is optional to merge. Use your and the reviewer's best judgement
 
 # Save high and critical vulns from current branch
 npm ci
