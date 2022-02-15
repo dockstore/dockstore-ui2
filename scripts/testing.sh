@@ -12,7 +12,7 @@ npm audit | grep -E "(Critical)" -B3 -A10 > current-branch-critical-vulnerabilit
 #bash scripts/npm-audit.sh
 HIGH_VULN="$(grep -o High current-branch-high-vulnerabilities.txt | wc -l || true)"
 CRITICAL_VULN="$(grep -o Critical current-branch-critical-vulnerabilities.txt | wc -l || true)"
-echo $HIGH_VULN >> compare-num-vulnerabilities.txt
+echo $HIGH_VULN > compare-num-vulnerabilities.txt
 echo $CRITICAL_VULN >> compare-num-vulnerabilities.txt
 
 git stash
