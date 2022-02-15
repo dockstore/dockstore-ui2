@@ -72,12 +72,3 @@ if [ "$CURRENT_BRANCH_NUM_HIGH_VULNS" -eq "$BASE_BRANCH_NUM_HIGH_VULNS" ]; then
     exit 1;
   fi
 fi
-
-
-
-
-
-
-
-
-
