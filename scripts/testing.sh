@@ -40,7 +40,7 @@ if [ "$CURRENT_BRANCH_NUM_CRITICAL_VULNS" -gt "$BASE_BRANCH_NUM_CRITICAL_VULNS" 
   exit 1
 fi
 
-if [ "$CURRENT_BRANCH_HIGH_VULNS" -gt "$BASE_BRANCH_NUM_HIGH_VULNS" ]; then
+if [ "$CURRENT_BRANCH_NUM_HIGH_VULNS" -gt "$BASE_BRANCH_NUM_HIGH_VULNS" ]; then
   echo "You have introduced $((CURRENT_BRANCH_NUM_HIGH_VULNS-BASE_BRANCH_NUM_HIGH_VULNS)) high vulnerabilities."
   echo "If this seems wrong, make sure the base_branch in the package.json is set correctly"
   exit 1
