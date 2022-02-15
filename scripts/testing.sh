@@ -10,6 +10,12 @@ npm audit | grep -E "(High)" -B3 -A10 > current-branch-high-vulnerabilities.txt 
 npm audit | grep -E "(Critical)" -B3 -A10 > current-branch-critical-vulnerabilities.txt || true
 
 #bash scripts/npm-audit.sh
+
+# Run npm audit on current branch and compare it with the results of running npm audit on the develop branch. If there are more
+# high or critical findings, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
+# If they are are different, then the test fails.
+# Test is optional to merge. Use your best judgement
+
 HIGH_VULN="$(grep -o High current-branch-high-vulnerabilities.txt | wc -l || true)"
 CRITICAL_VULN="$(grep -o Critical current-branch-critical-vulnerabilities.txt | wc -l || true)"
 echo $HIGH_VULN > compare-num-vulnerabilities.txt
