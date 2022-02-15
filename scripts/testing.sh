@@ -48,7 +48,7 @@ fi
 
 # If the number of vulnerabilities is equal, then check that if they are the same set of vulnerabilities.
 if [ "$CURRENT_BRANCH_NUM_CRITICAL_VULNS" -eq "$BASE_BRANCH_NUM_CRITICAL_VULNS" ]; then
-  if [ cmp -s "current-branch-critical-vulnerabilities.txt" "base-branch-critical-vulnerabilities.txt" ]; then
+  if cmp -s "current-branch-critical-vulnerabilities.txt" "base-branch-critical-vulnerabilities.txt"; then
     echo "The critical vulnerabilities between the PR and base branch are the same"
   else
     echo "Looks like you have fixed at least one critical vulnerability, but have unfortunately introduce a new one in the process."
