@@ -57,7 +57,7 @@ if [ "$CURRENT_BRANCH_NUM_CRITICAL_VULNS" -eq "$BASE_BRANCH_NUM_CRITICAL_VULNS" 
 fi
 
 if [ "$CURRENT_BRANCH_NUM_HIGH_VULNS" -eq "$BASE_BRANCH_NUM_HIGH_VULNS" ]; then
-  if [ cmp -s "current-branch-high-vulnerabilities.txt" "base-branch-high-vulnerabilities.txt" ]; then
+  if cmp -s "current-branch-high-vulnerabilities.txt" "base-branch-high-vulnerabilities.txt"; then
     echo "The high vulnerabilities between the PR and base branch are the same"
   else
     echo "Looks like you have fixed at least one high vulnerability, but have unfortunately introduce a new one in the process."
