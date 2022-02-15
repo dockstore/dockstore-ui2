@@ -4,17 +4,15 @@ set -o pipefail
 set -o nounset
 set -o xtrace
 
+# Run npm audit on current branch and compare it with the results of running npm audit on the base branch that is set in the package.json. If there are more
+# high or critical findings in the current branch, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
+# If they are are different, then the test fails.
+# Test is optional to merge. Use your and the reviewer's best judgement
+
 # Save high and critical vulns from current branch
 npm ci
 npm audit | grep -E "(High)" -B3 -A10 > current-branch-high-vulnerabilities.txt || true
 npm audit | grep -E "(Critical)" -B3 -A10 > current-branch-critical-vulnerabilities.txt || true
-
-#bash scripts/npm-audit.sh
-
-# Run npm audit on current branch and compare it with the results of running npm audit on the develop branch. If there are more
-# high or critical findings, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
-# If they are are different, then the test fails.
-# Test is optional to merge. Use your best judgement
 
 HIGH_VULN="$(grep -o High current-branch-high-vulnerabilities.txt | wc -l || true)"
 CRITICAL_VULN="$(grep -o Critical current-branch-critical-vulnerabilities.txt | wc -l || true)"
@@ -40,33 +38,37 @@ BASE_BRANCH_NUM_HIGH_VULNS=$(sed -n '3p' compare-num-vulnerabilities.txt)
 CURRENT_BRANCH_NUM_CRITICAL_VULNS=$(sed -n '2p' compare-num-vulnerabilities.txt)
 BASE_BRANCH_NUM_CRITICAL_VULNS=$(sed -n '4p' compare-num-vulnerabilities.txt)
 
+ERROR_MSG="If this seems wrong, make sure the base_branch in the package.json is set correctly"
+
 if [ "$CURRENT_BRANCH_NUM_CRITICAL_VULNS" -gt "$BASE_BRANCH_NUM_CRITICAL_VULNS" ]; then
   echo "You have introduced $((CURRENT_BRANCH_NUM_CRITICAL_VULNS-BASE_BRANCH_NUM_CRITICAL_VULNS)) critical vulnerabilities."
-  echo "If this seems wrong, make sure the base_branch in the package.json is set correctly"
+  echo $ERROR_MSG
   exit 1
 fi
 
 if [ "$CURRENT_BRANCH_NUM_HIGH_VULNS" -gt "$BASE_BRANCH_NUM_HIGH_VULNS" ]; then
   echo "You have introduced $((CURRENT_BRANCH_NUM_HIGH_VULNS-BASE_BRANCH_NUM_HIGH_VULNS)) high vulnerabilities."
-  echo "If this seems wrong, make sure the base_branch in the package.json is set correctly"
+  echo $ERROR_MSG
   exit 1
 fi
 
 # If the number of vulnerabilities is equal, then check that if they are the same set of vulnerabilities.
 if [ "$CURRENT_BRANCH_NUM_CRITICAL_VULNS" -eq "$BASE_BRANCH_NUM_CRITICAL_VULNS" ]; then
   if cmp -s "current-branch-critical-vulnerabilities.txt" "base-branch-critical-vulnerabilities.txt"; then
-    echo "The critical vulnerabilities between the PR and base branch are the same"
+    echo "The number of critical vulnerabilities between the PR and base branch are the same"
   else
-    echo "Looks like you have fixed at least one critical vulnerability, but have unfortunately introduce a new one in the process."
+    echo "Looks like you have fixed and introduced an equal amount of critical vulnerabilities compared to the base branch"
+    echo $ERROR_MSG
     exit 1;
   fi
 fi
 
 if [ "$CURRENT_BRANCH_NUM_HIGH_VULNS" -eq "$BASE_BRANCH_NUM_HIGH_VULNS" ]; then
   if cmp -s "current-branch-high-vulnerabilities.txt" "base-branch-high-vulnerabilities.txt"; then
-    echo "The high vulnerabilities between the PR and base branch are the same"
+    echo "The number of high vulnerabilities between the PR and base branch are the same"
   else
-    echo "Looks like you have fixed at least one high vulnerability, but have unfortunately introduce a new one in the process."
+    echo "Looks like you have fixed and introduced an equal amount of high vulnerabilities compared to the base branch"
+    echo $ERROR_MSG
     exit 1;
   fi
 fi
