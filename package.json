@@ -91,7 +91,6 @@
     "@angular/language-service": "^13.2.2",
     "@datorama/akita-ngdevtools": "^6.0.0",
     "@types/cytoscape": "^3.14.15",
-    "@types/elastic.js": "^1.2.8",
     "@types/elasticsearch": "^5.0.37",
     "@types/jasmine": "^3.7.7",
     "@types/jquery": "^3.5.5",
