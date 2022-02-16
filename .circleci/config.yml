@@ -116,8 +116,9 @@ jobs:
       - install_container_dependencies
       - run:
           name: Run npm audit
-          # Run npm audit on current branch and compare it with the results of running npm audit on the develop branch. If there are more
-          # high or critical findings, then the test fails. If the same number (Test is optional)
+          # Run npm audit on current branch and compare it with the results of running npm audit on the base branch that is set in the package.json. If there are more
+          # high or critical findings in the current branch, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
+          # If they are are different, then the test fails.
           command: |
             bash -i -c "npm run compare-audits"
 

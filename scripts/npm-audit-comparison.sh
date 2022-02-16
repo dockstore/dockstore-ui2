@@ -8,6 +8,9 @@ set -o xtrace
 # high or critical findings in the current branch, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
 # If they are are different, then the test fails.
 
+# If you're running this script locally, you'll end up being switched to the base branch when this is complete.
+# You may want to stash your local changes before running this script.
+
 # Save high and critical vulns from current branch
 npm ci
 npm audit | grep -E "(High)" -B3 -A10 > current-branch-high-vulnerabilities.txt || true
@@ -17,8 +20,6 @@ HIGH_VULN="$(grep -o High current-branch-high-vulnerabilities.txt | wc -l || tru
 CRITICAL_VULN="$(grep -o Critical current-branch-critical-vulnerabilities.txt | wc -l || true)"
 echo $HIGH_VULN > compare-num-vulnerabilities.txt
 echo $CRITICAL_VULN >> compare-num-vulnerabilities.txt
-
-git stash
 
 # Save high and critical vulns from the base branch (e.g. develop, hotfix/1.11.2)
 git checkout "$npm_package_config_base_branch"
