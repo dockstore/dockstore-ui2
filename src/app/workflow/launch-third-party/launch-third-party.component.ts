@@ -4,7 +4,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
-import { map, share, takeUntil } from 'rxjs/operators';
+import { map, shareReplay, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -115,7 +115,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   /**
    * Indicates whether the selected version has any content
    */
-  hasContent$ = this.descriptorsQuery.hasContent$.pipe(share());
+  hasContent$ = this.descriptorsQuery.hasContent$.pipe(shareReplay({refCount: true}));
 
   /**
    * Indicates whether the selected version's workflow has any file-based imports.
