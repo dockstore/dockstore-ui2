@@ -73,7 +73,6 @@
     "ng2-ui-auth": "^10.0.1",
     "ngx-markdown": "^13.1.0",
     "ngx-sharebuttons": "^8.0.5",
-    "ngx-window-token": "^5.0.0",
     "rxjs": "^6.6.7",
     "ts-md5": "^1.2.8",
     "tslib": "^2.3.0",
