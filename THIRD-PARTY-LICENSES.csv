@@ -188,7 +188,6 @@
 "@types/cookie@0.4.1","MIT","https://github.com/DefinitelyTyped/DefinitelyTyped"
 "@types/cors@2.8.12","MIT","https://github.com/DefinitelyTyped/DefinitelyTyped"
 "@types/cytoscape@3.19.4","MIT","https://github.com/DefinitelyTyped/DefinitelyTyped"
-"@types/elastic.js@1.2.8","MIT","https://github.com/DefinitelyTyped/DefinitelyTyped"
 "@types/elasticsearch@5.0.40","MIT","https://github.com/DefinitelyTyped/DefinitelyTyped"
 "@types/eslint-scope@3.7.3","MIT","https://github.com/DefinitelyTyped/DefinitelyTyped"
 "@types/eslint@8.4.1","MIT","https://github.com/DefinitelyTyped/DefinitelyTyped"
