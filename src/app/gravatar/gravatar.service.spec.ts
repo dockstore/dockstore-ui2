@@ -17,7 +17,7 @@ describe('GravatarService', () => {
   it('should create gravatar urls', () => {
     expect(service.gravatarUrlForImageUrl(null)).toBeNull();
     expect(service.gravatarUrlForImageUrl(undefined)).toBeNull();
-    expect(service.gravatarUrlForImageUrl('https://foo.com').endsWith('https://foo.com')).toBeTrue();
+    expect(service.gravatarUrlForImageUrl('https://foo.com').endsWith(encodeURIComponent('https://foo.com'))).toBeTrue();
     expect(service.gravatarUrlForImageUrl('https://foo.com').startsWith(service.gravatarBaseUrl)).toBeTrue();
   });
 });

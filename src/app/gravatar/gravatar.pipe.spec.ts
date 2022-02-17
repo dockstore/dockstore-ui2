@@ -9,7 +9,7 @@ describe('GravatarPipe', () => {
   });
   it('creates the correct urls', () => {
     const pipe = new GravatarPipe(new GravatarService());
-    expect(pipe.transform(fakeUrl).endsWith(fakeUrl)).toBeTrue();
+    expect(pipe.transform(fakeUrl).endsWith(encodeURIComponent(fakeUrl))).toBeTrue();
     expect(pipe.transform(fakeUrl).startsWith('https://www.gravatar')).toBeTrue();
     expect(pipe.transform(undefined)).toBe(null);
     expect(pipe.transform(null)).toBeNull();
