@@ -4,8 +4,8 @@
 
 # test/dbdump.sql
 test/db_dump.sql:.*
-test/github_app_tool_db_dump.sql:.*
-test/smoke_test_db.sql:.*
+test/github_app_tool_db_dump.sql:.*public.workflowversion
+test/smoke_test_db.sql:.*public.databasechangelog
 
 # src/app/organizations/events/events.component.html
 src/app/organizations/events/events.component.html:.*EventType.REMOVEFROMCOLLECTION
