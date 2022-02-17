@@ -11,6 +11,7 @@ describe('CodeEditorListService', () => {
     expect(service).toBeTruthy();
   });
   it('should be able to know if path is a primary descriptor', () => {
+    expect(CodeEditorListService.isPrimaryDescriptor('/Snakefile')).toBe(true);
     expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.cwl')).toBe(true);
     expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.wdl')).toBe(true);
     expect(CodeEditorListService.isPrimaryDescriptor('/nextflow.config')).toBe(true);
@@ -22,6 +23,8 @@ describe('CodeEditorListService', () => {
 
   it('should be able to know if path is a primary descriptor', () => {
     // Brand new hosted workflow with no descriptors
+    const primarySMKFile = { content: '', absolutePath: '/Snakefile', path: '/Snakefile', type: SourceFile.TypeEnum.DOCKSTORESMK };
+    const secondarySMKFile = { content: '', absolutePath: '/.smk', path: '/.smk', type: SourceFile.TypeEnum.DOCKSTORESMK };
     const primaryCWLFile: SourceFile = {
       content: '',
       absolutePath: '/Dockstore.cwl',
@@ -52,11 +55,13 @@ describe('CodeEditorListService', () => {
       path: '/.yml',
       type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2,
     };
+    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.SMK, 'descriptor', [])).toEqual([primarySMKFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'descriptor', [])).toEqual([primaryCWLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'descriptor', [])).toEqual([primaryWDLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'descriptor', [])).toEqual(primaryNFLFiles);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'descriptor', [])).toEqual([primaryGalaxyFile]);
 
+    const testSMKFile = { content: '', absolutePath: '/test.smk.json', path: '/test.smk.json', type: SourceFile.TypeEnum.SMKTESTPARAMS };
     const testCWLFile = { content: '', absolutePath: '/test.cwl.json', path: '/test.cwl.json', type: SourceFile.TypeEnum.CWLTESTJSON };
     const testWDLFile = { content: '', absolutePath: '/test.wdl.json', path: '/test.wdl.json', type: SourceFile.TypeEnum.WDLTESTJSON };
     // Weird because NFL doesn't have test parameter files
@@ -79,6 +84,7 @@ describe('CodeEditorListService', () => {
       type: SourceFile.TypeEnum.DOCKERFILE,
     };
     // Brand new hosted workflow with no test parameter file
+    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.SMK, 'testParam', [])).toEqual([testSMKFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'testParam', [])).toEqual([testCWLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'testParam', [])).toEqual([testWDLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'testParam', [])).toEqual([testNFLFile]);
@@ -99,6 +105,7 @@ describe('CodeEditorListService', () => {
     ]);
 
     // When there's already a test parameter file
+    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.SMK, 'testParam', [testSMKFile])).toEqual([testSMKFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'testParam', [testCWLFile])).toEqual([testCWLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'testParam', [testWDLFile])).toEqual([testWDLFile]);
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'testParam', [testNFLFile])).toEqual([testNFLFile]);
@@ -124,6 +131,8 @@ describe('CodeEditorListService', () => {
   });
   it('should be able to determine whether to show the sourcefile in the current tab or not', () => {
     // Descriptor tab
+    expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORESMK, 'descriptor', ToolDescriptor.TypeEnum.SMK)).toBe(true);
+    expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.SMKTESTPARAMS, 'descriptor', ToolDescriptor.TypeEnum.SMK)).toBe(false);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORECWL, 'descriptor', ToolDescriptor.TypeEnum.CWL)).toBe(true);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.CWLTESTJSON, 'descriptor', ToolDescriptor.TypeEnum.CWL)).toBe(false);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTOREWDL, 'descriptor', ToolDescriptor.TypeEnum.WDL)).toBe(true);
@@ -141,6 +150,8 @@ describe('CodeEditorListService', () => {
     ).toBe(false);
 
     // Test file tab
+    expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORESMK, 'testParam', ToolDescriptor.TypeEnum.SMK)).toBe(false);
+    expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.SMKTESTPARAMS, 'testParam', ToolDescriptor.TypeEnum.SMK)).toBe(true);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORECWL, 'testParam', ToolDescriptor.TypeEnum.CWL)).toBe(false);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.CWLTESTJSON, 'testParam', ToolDescriptor.TypeEnum.CWL)).toBe(true);
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTOREWDL, 'testParam', ToolDescriptor.TypeEnum.WDL)).toBe(false);

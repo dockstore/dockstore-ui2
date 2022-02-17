@@ -16,7 +16,7 @@
 
 // Must define the material icons font directory path, see https://www.npmjs.com/package/material-design-icons-iconfont
 $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import '~material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';

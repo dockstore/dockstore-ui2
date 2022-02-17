@@ -19,7 +19,7 @@ import { Directive, Injectable, Input, OnDestroy, ViewChild } from '@angular/cor
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
-import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
+import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../shared/dockstore.model';
