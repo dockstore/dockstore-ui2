@@ -61,7 +61,13 @@
                 <a [routerLink]="org.name" class="no-underline" target="_self">
                   <div fxLayout="column" fxLayoutAlign="space-around">
                     <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                      <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" [appFallback]="orgLogoService.DEFAULT_URL"/>
+                      <img
+                        *ngIf="org.avatarUrl; else placeholder"
+                        class="small-org-logo"
+                        [src]="org.avatarUrl | gravatar"
+                        alt="org logo"
+                        [appFallback]="orgLogoService.DEFAULT_URL"
+                      />
                       <ng-template #placeholder><span style="height: 50px"></span></ng-template>
                       <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
                         <mat-icon class="orgStar">star</mat-icon>

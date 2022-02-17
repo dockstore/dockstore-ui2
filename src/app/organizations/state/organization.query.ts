@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 
 import { map } from 'rxjs/operators';
+import { GravatarService } from '../../gravatar/gravatar.service';
 import { Organization } from '../../shared/swagger';
 import { OrganizationState, OrganizationStore } from './organization.store';
 
@@ -21,11 +22,11 @@ export class OrganizationQuery extends Query<OrganizationState> {
       }
     })
   );
-  constructor(protected store: OrganizationStore) {
+  constructor(protected store: OrganizationStore, private gravatarService: GravatarService) {
     super(store);
   }
 
   genGravatarUrl(url: string): string {
-    return url ? 'https://www.gravatar.com/avatar/' + '000' + '?d=' + url : null;
+    return this.gravatarService.gravatarUrlForImageUrl(url);
   }
 }
