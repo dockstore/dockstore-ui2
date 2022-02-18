@@ -49,8 +49,13 @@
       </mat-card>
       <div fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
-          <div *ngIf="gravatarUrl$ | async" fxHide.lt-sm>
-            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="organization logo" [appFallback]="orgLogoService.DEFAULT_URL" />
+          <div *ngIf="organization?.avatarUrl" fxHide.lt-sm>
+            <img
+              [src]="organization.avatarUrl | gravatar"
+              class="big-org-logo"
+              alt="organization logo"
+              [appFallback]="orgLogoService.DEFAULT_URL"
+            />
           </div>
           <div>
             <h2>
