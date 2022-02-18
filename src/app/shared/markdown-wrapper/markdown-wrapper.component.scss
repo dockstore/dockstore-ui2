@@ -1,0 +1,14 @@
+th,
+td {
+  white-space: nowrap;
+}
+
+:host ::ng-deep {
+  table {
+    td,
+    th {
+      padding: 6px 18px;
+      white-space: nowrap;
+    }
+  }
+}
