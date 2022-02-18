@@ -31,7 +31,12 @@ h5 {
   margin: 0.5rem 0;
 }
 
-// For large descriptions (ex. with a markdown table) add scroll bar if needed for smaller windows
-div > app-markdown-wrapper {
-  overflow-x: auto;
+// Gap between left/right columns
+div.my-3 {
+  gap: 30px;
+}
+
+// For row wrapping
+.mb-4 {
+  min-width: 500px;
 }
