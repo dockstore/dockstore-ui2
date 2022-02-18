@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -183,11 +183,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.toSaveSearch$.next(false);
       }
     });
-    this.searchQuery.searchText$
-      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
-      .subscribe((searchText: string) => {
-        this.onKey(searchText);
-      });
+
     this.hits = [];
 
     this.aNDSplitFilterText$ = this.advancedSearchQuery.aNDSplitFilterText$;
@@ -266,6 +262,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
     this.updateQuery();
+  }
+
+  handleChanged(searchText: string) {
+    console.log("SC change " + searchText);
+    this.doAutoComplete(searchText);
+  }
+
+  handleSubmitted(searchText: string) {
+    console.log("SC submitted " + searchText);
+    this.doSearch(searchText);
   }
 
   /**===============================================
@@ -513,8 +519,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ==============================================
    */
 
-  onKey(searchText: string) {
-    /*TODO: FOR DEMO USE, make this better later...*/
+  doAutoComplete(searchText: string) {
     const pattern = searchText + '.*';
     const body = {
       size: 0,
@@ -541,6 +546,10 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.alertService.detailedError(error);
       }
     );
+  }
+
+  doSearch(searchText: string) {
+    this.searchService.setSearchText(searchText);
     this.searchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;

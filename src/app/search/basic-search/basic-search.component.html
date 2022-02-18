@@ -11,13 +11,14 @@
       [matTooltipPosition]="'after'"
       list="suggestions"
       type="text"
+      (keydown.enter)="this.submitSearch()"
       data-cy="basic-search"
     />
     <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
-  <mat-autocomplete #auto="matAutocomplete">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="this.submitSearch()">
     <mat-option *ngFor="let option of autocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
   </mat-autocomplete>
   <a data-cy="advanced-search" (click)="openAdvancedSearch()"> Open Advanced Search </a>
