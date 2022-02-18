@@ -501,6 +501,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   resetFilters() {
     this.searchService.reset();
+    this.searchTerm = false;
     this.facetSearchText = '';
   }
 
@@ -554,6 +555,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
     }
+    console.log("SEARCHTERM " + this.searchTerm + " " + searchText);
     this.updatePermalink();
   }
 

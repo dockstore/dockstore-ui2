@@ -27,6 +27,7 @@ export class BasicSearchComponent extends Base implements OnInit {
       // This keeps the state and the view in sync but this is slightly awkward
       // Changes to the searchText$ state will change searchFormControl
       // TODO update the rest of this comment ^^^
+      console.log("UPDATE '" + searchText + "'");
       this.searchFormControl.setValue(searchText);
     });
     this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;
@@ -35,7 +36,7 @@ export class BasicSearchComponent extends Base implements OnInit {
     this.searchFormControl.valueChanges
       .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe((searchText) => {
-        console.log("b changed " + searchText);
+        console.log("BS changed " + searchText);
         this.changed.emit(searchText);
       });
   }
@@ -55,11 +56,12 @@ export class BasicSearchComponent extends Base implements OnInit {
 
   submitSearch() {
     const searchText = this.searchFormControl.value;
-    console.log("SEARCH TEXT " + searchText);
+    console.log("BS search " + searchText);
     this.submitted.emit(searchText);
   }
 
   clearSearch() {
-    this.searchService.setSearchText('');
+    this.searchFormControl.setValue('');
+    this.submitted.emit('');
   }
 }

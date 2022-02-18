@@ -365,6 +365,8 @@ export class SearchService {
   }
 
   reset() {
+    this.setSearchText(' ');
+    this.setSearchText('');
     this.router.navigateByUrl('search');
   }
 

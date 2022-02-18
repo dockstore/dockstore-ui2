@@ -14,6 +14,7 @@
       (keydown.enter)="this.submitSearch()"
       data-cy="basic-search"
     />
+    <mat-hint align="end">Press &lt;Enter&gt; to search</mat-hint>
     <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
       <mat-icon>close</mat-icon>
     </button>
@@ -21,5 +22,5 @@
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="this.submitSearch()">
     <mat-option *ngFor="let option of autocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
   </mat-autocomplete>
-  <a data-cy="advanced-search" (click)="openAdvancedSearch()"> Open Advanced Search </a>
+  <div class="mt-2"><a data-cy="advanced-search" (click)="openAdvancedSearch()"> Open Advanced Search </a></div>
 </mat-expansion-panel>
