@@ -59,7 +59,7 @@
         [matTooltip]="show ? 'Hide token' : 'Show token'"
         mat-button
         color="secondary"
-        class="accent-1-dark mat-btn-sm"
+        class="accent-1-dark small-mat-btn-skin small-btn-structure mat-elevation-z"
         (click)="show = !show"
       >
         <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
@@ -132,7 +132,7 @@
             <button
               *ngIf="row.isLinked === false; else linked"
               mat-raised-button
-              class="accent-1-dark mat-btn-sm"
+              class="accent-1-dark small-mat-btn-skin small-btn-structure mt-2"
               [attr.id]="'link-' + row.name"
               (click)="link(row.source)"
               matTooltip="Link the account"
@@ -145,7 +145,7 @@
             <!-- This button needs to be vertically centered -->
             <button
               mat-raised-button
-              class="accent-1-dark-btn mat-btn-sm"
+              class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
               [attr.id]="'unlink-' + row.name"
               (click)="unlink(row.source)"
               matTooltip="Unlink the account"

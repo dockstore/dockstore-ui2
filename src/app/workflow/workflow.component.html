@@ -122,7 +122,14 @@
           <mat-chip class="bubble workflow-background pointer" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
             label
           }}</mat-chip>
-          <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+          <button
+            type="button"
+            *ngIf="!labelsEditMode && !isWorkflowPublic"
+            mat-button
+            class="private-btn small-btn-structure"
+            (click)="toggleLabelsEditMode()"
+          >
+            <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
           </button>
         </mat-chip-list>
@@ -148,17 +155,26 @@
             >
           </mat-chip-list>
         </mat-form-field>
-        <button type="button" (click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
-          <mat-icon>cancel</mat-icon>Cancel
-        </button>
         <button
           type="button"
+          (click)="cancelLabelChanges()"
+          mat-button
+          class="private-btn small-btn-structure mr-2"
+          *ngIf="labelsEditMode && !isWorkflowPublic"
+        >
+          <img src="../assets/svg/icons-reject.svg" alt="Cancel" class="pr-1 pb-1" />
+          Cancel
+        </button>
+        <button
+          data-cy="saveLabelButton"
+          mat-button
+          type="button"
           (click)="submitWorkflowEdits()"
-          class="btn btn-link"
+          class="private-btn small-btn-structure"
           *ngIf="labelsEditMode && !isWorkflowPublic"
           [disabled]="labelFormControl.hasError('pattern')"
         >
-          <mat-icon>save</mat-icon> Save
+          <mat-icon class="mat-icon-sm">save</mat-icon> Save
         </button>
       </span>
     </div>

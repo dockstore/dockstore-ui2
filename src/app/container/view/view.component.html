@@ -14,13 +14,40 @@
   ~    limitations under the License.
   -->
 
-<!-- Button trigger modal -->
-<button data-cy="actionsButton" mat-button [matMenuTriggerFor]="menu">Actions<mat-icon>arrow_drop_down</mat-icon></button>
+<!-- Display public tool button design -->
+<div *ngIf="isPublic$ | async; else displayPrivateButton">
+  <button
+    class="small-mat-btn-skin small-btn-structure"
+    mat-raised-button
+    color="accent"
+    data-cy="actionsButton"
+    (click)="setMode(TagEditorMode.View); (false)"
+  >
+    Info
+  </button>
+</div>
+<!-- Display private tool button design-->
+<ng-template #displayPrivateButton>
+  <button data-cy="actionsButton" mat-button class="private-btn small-btn-structure" [matMenuTriggerFor]="menu">
+    <img src="../assets/svg/gear-icon.svg" alt="Gear icon" class="pb-1" />
+    Actions
+    <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
+  </button>
+</ng-template>
+
 <mat-menu #menu="matMenu">
-  <button type="button" mat-menu-item color="accent" *ngIf="isPublic$ | async" (click)="setMode(TagEditorMode.View); (false)">View</button>
   <ng-container *ngIf="(isPublic$ | async) === false">
     <button data-cy="editTagButton" type="button" mat-menu-item color="accent" (click)="setMode(TagEditorMode.Edit); (false)">Edit</button>
-    <button type="button" mat-menu-item color="warn" *ngIf="isManualTool" [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion" (click)="deleteTag(); (false)">Delete</button>
+    <button
+      type="button"
+      mat-menu-item
+      color="warn"
+      *ngIf="isManualTool"
+      [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion"
+      (click)="deleteTag(); (false)"
+    >
+      Delete
+    </button>
     <button
       type="button"
       mat-menu-item
@@ -31,7 +58,12 @@
     >
       Delete
     </button>
-    <button data-cy="set-default-version-button" mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion" (click)="updateDefaultVersion()">
+    <button
+      data-cy="set-default-version-button"
+      mat-menu-item
+      [disabled]="(isRefreshing$ | async) || version.name === tool.defaultVersion"
+      (click)="updateDefaultVersion()"
+    >
       Set as Default Version
     </button>
   </ng-container>

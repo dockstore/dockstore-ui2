@@ -43,7 +43,7 @@
       You have no starred workflows.
     </mat-card>
     <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-      <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="mat-elevation-z4">
+      <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="mat-elevation-z4 pb-3">
         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
           <a routerLink="/workflows/{{ workflow.full_workflow_path }}" class="no-underline">
             <mat-card-header>
@@ -69,7 +69,9 @@
               <div fxLayout="row wrap" fxLayoutGap="1rem">
                 <span>
                   <mat-chip-list>
-                    <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                    <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
+                      label.value
+                    }}</mat-chip>
                     <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                         <mat-icon class="verified-icon">done</mat-icon>
@@ -90,7 +92,7 @@
               </div>
             </div>
             <a routerLink="/workflows/{{ workflow.full_workflow_path }}" class="no-underline">
-              <button mat-raised-button color="accent" class="view-button">View</button>
+              <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
             </a>
           </div>
         </div>
@@ -112,7 +114,7 @@
         You have no starred tools.
       </mat-card>
       <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-        <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 mat-elevation-z4">
+        <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 mat-elevation-z4 pb-3">
           <div fxLayout="row" fxLayoutAlign="space-between">
             <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
               <mat-card-header>
@@ -144,7 +146,7 @@
                 </mat-chip-list>
               </div>
               <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
-                <button mat-raised-button color="accent" class="view-button">View</button>
+                <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
               </a>
             </div>
           </div>
@@ -181,14 +183,20 @@
       You have no starred organizations.
     </mat-card>
     <div *ngIf="starredOrganizations?.length > 0">
-      <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="1rem" class="mb-2 mx-1">
+      <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-2 mx-1">
         <div *ngFor="let org of starredOrganizations; let last = last" fxFlex="33.3" fxFlex.lt-lg="500" fxFlex.lt-md="100">
-          <mat-card class="org-style mat-elevation-z3">
+          <mat-card class="org-style mat-elevation-z3 pb-3">
             <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
               <div fxLayout="column" fxLayoutGap="1rem">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between start">
                   <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                    <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
+                    <img
+                      *ngIf="org.avatarUrl; else placeholder"
+                      class="small-org-logo"
+                      [src]="org.avatarUrl"
+                      alt="org logo"
+                      [appFallback]="orgLogoService.DEFAULT_URL"
+                    />
                     <ng-template #placeholder><span class="logo-height"></span></ng-template>
                   </a>
                   <app-organization-starring
@@ -232,7 +240,7 @@
                       <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                       <ng-template #oneCollection> Collection</ng-template>
                     </span>
-                    <button mat-raised-button color="accent" class="view-button">View</button>
+                    <button mat-raised-button color="accent">View</button>
                   </div>
                 </a>
               </div>

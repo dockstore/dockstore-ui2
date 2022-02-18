@@ -25,7 +25,9 @@
             <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
             <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
             <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
-            <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters. It must begin with a letter.</mat-error>
+            <mat-error *ngIf="name.hasError('pattern')"
+              >Name can only contain alphanumeric characters. It must begin with a letter.</mat-error
+            >
             <mat-hint>The name of the collection</mat-hint>
           </mat-form-field>
           <mat-form-field>
@@ -44,12 +46,12 @@
         </form>
       </div>
       <div mat-dialog-actions class="pull-right">
-        <button matTooltip="Cancel" mat-button mat-dialog-close>Cancel</button>
+        <button matTooltip="Cancel" mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
         <button
           id="createOrUpdateCollectionButton"
           [matTooltip]="title"
-          mat-flat-button
-          color="primary"
+          mat-raised-button
+          class="accent-1-dark-btn mat-elevation-z"
           [disabled]="!createCollectionForm.valid"
           (click)="createCollection()"
           cdkFocusInitial

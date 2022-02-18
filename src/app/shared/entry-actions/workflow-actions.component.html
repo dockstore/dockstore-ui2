@@ -3,17 +3,18 @@
     *ngIf="workflow?.is_published"
     [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"
     data-cy="viewPublicWorkflowButton"
-    mat-button
+    mat-flat-button
+    class="secondary-1"
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"
   >
-    View Public
+    View public page
   </a>
   <div [matTooltip]="pubUnpubMessage">
     <button
-      mat-flat-button
+      mat-raised-button
+      class="accent-1-dark-btn mat-elevation-z"
       id="publishButton"
-      color="accent"
       (click)="publishToggle()"
       [disabled]="(isRefreshing$ | async) || publishDisabled"
     >
@@ -21,8 +22,8 @@
     </button>
   </div>
   <button
-    mat-flat-button
-    color="primary"
+    mat-raised-button
+    class="accent-1-dark-btn mat-elevation-z"
     (click)="refresh()"
     [disabled]="isRefreshing$ | async"
     *ngIf="!isHosted && canWrite && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"

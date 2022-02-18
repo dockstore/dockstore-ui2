@@ -25,9 +25,22 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
+import { BioWorkflow, Workflow } from '../../shared/swagger';
+import DescriptorTypeSubclassEnum = Workflow.DescriptorTypeSubclassEnum;
 
 describe('Service: version-modal.service.ts', () => {
   let workflowQuery: jasmine.SpyObj<WorkflowQuery>;
+  const workflow: BioWorkflow = {
+    mode: 'FULL',
+    gitUrl: 'git@github.com:test/potato.git',
+    organization: 'test',
+    repository: 'potato',
+    sourceControl: 'github.com',
+    descriptorType: 'CWL',
+    workflow_path: 'github.com/test/potato',
+    defaultTestParameterFilePath: null,
+    descriptorTypeSubclass: DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, MatSnackBarModule, MatDialogModule],
@@ -60,7 +73,7 @@ describe('Service: version-modal.service.ts', () => {
     [VersionModalService, AlertQuery],
     (service: VersionModalService, alertQuery: AlertQuery) => {
       workflowQuery.getActive.and.returnValue(<any>{ id: 1 });
-      service.saveVersion(expectedVersion, expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
+      service.saveVersion(workflow, expectedVersion, expectedVersion, ['a', 'b'], ['b', 'c'], 'FULL');
       // Refresh service takes modifying the refreshMessage from the third message;
       alertQuery.message$.subscribe((refreshMessage) => expect(refreshMessage).toEqual(''));
     }

@@ -55,13 +55,13 @@
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
       <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="2rem grid">
         <div *ngFor="let org of organizations" fxFlex="33.3" fxFlex.lt-lg="50" fxFlex.lt-md="100">
-          <mat-card style="height: 340px" class="mat-elevation-z3">
+          <mat-card style="height: 340px" class="mat-elevation-z3 pb-3">
             <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
               <div fxLayout="column" fxLayoutGap="2rem">
                 <a [routerLink]="org.name" class="no-underline" target="_self">
                   <div fxLayout="column" fxLayoutAlign="space-around">
                     <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                      <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
+                      <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" [appFallback]="orgLogoService.DEFAULT_URL"/>
                       <ng-template #placeholder><span style="height: 50px"></span></ng-template>
                       <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
                         <mat-icon class="orgStar">star</mat-icon>
@@ -104,7 +104,7 @@
                       <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                       <ng-template #oneCollection> Collection</ng-template>
                     </span>
-                    <button mat-raised-button color="accent" class="view-button">View</button>
+                    <button mat-raised-button color="accent">View</button>
                   </div>
                 </a>
               </div>

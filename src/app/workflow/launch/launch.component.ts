@@ -100,7 +100,11 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.cli = this.launchService.getCliString(workflowPath, versionName, descriptorType);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
     this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName, this.entryType);
-    this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
+    this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(
+      workflowPath,
+      versionName,
+      this.entryType
+    );
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);

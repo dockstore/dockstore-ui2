@@ -19,7 +19,7 @@
   </div>
   <ng-template #hasCollections>
     <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
-      <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue" class="m-1 mat-elevation-z4">
+      <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue" class="m-1 mat-elevation-z4 pb-3">
         <a
           class="no-underline"
           [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]"
@@ -36,11 +36,7 @@
               </mat-card-header>
             </div>
             <div *ngIf="canEdit$ | async">
-              <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0">
-                <button mat-icon-button (click)="editCollection(collection); $event.stopPropagation(); $event.preventDefault()" id="editCollection" matTooltip="Edit the collection">
-                  <mat-icon>edit</mat-icon>
-                </button>
-              </mat-card-content>
+              <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0"></mat-card-content>
             </div>
           </div>
           <div>
@@ -58,7 +54,20 @@
                   <ng-template #oneTool> Tool</ng-template>
                 </span>
               </div>
-              <div><button mat-raised-button color="accent" class="view-button">View</button></div>
+              <div *ngIf="canEdit$ | async; else viewBtn">
+                <button
+                  mat-button
+                  class="private-btn small-btn-structure"
+                  (click)="editCollection(collection); $event.stopPropagation(); $event.preventDefault()"
+                  id="editCollection"
+                  matTooltip="Edit the collection"
+                >
+                  <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit collection" />Edit
+                </button>
+              </div>
+              <ng-template #viewBtn
+                ><button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button></ng-template
+              >
             </div>
           </div>
         </a>

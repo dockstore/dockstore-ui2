@@ -16,7 +16,6 @@
 import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, shareReplay, takeUntil } from 'rxjs/operators';
@@ -25,13 +24,14 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { ToolDescriptor } from '../../shared/swagger';
+import { AppTool, BioWorkflow, ToolDescriptor } from '../../shared/swagger';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
+import { EntryType } from '../../shared/enum/entry-type';
 
 export interface Dialogdata {
   canRead: boolean;
@@ -48,8 +48,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
+  workflow: BioWorkflow | Service | AppTool;
   originalVersion: WorkflowVersion;
-  workflow: BioWorkflow | Service;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
   public tooltip = Tooltip;
@@ -67,6 +67,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   canWrite: boolean;
   isOwner: boolean;
   isService$: Observable<boolean>;
+  entryTypeText: string;
   @ViewChild('versionEditorForm', { static: true }) currentForm: NgForm;
 
   private ngUnsubscribe: Subject<{}> = new Subject();
@@ -82,6 +83,22 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.isService$ = this.sessionQuery.isService$.pipe(shareReplay());
+    this.sessionQuery.entryType$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((type: EntryType) => {
+      switch (type) {
+        case EntryType.Service:
+          this.entryTypeText = 'Service';
+          break;
+        case EntryType.AppTool:
+          this.entryTypeText = 'Tool';
+          break;
+        case EntryType.Tool:
+          this.entryTypeText = 'Tool';
+          break;
+        case EntryType.BioWorkflow:
+          this.entryTypeText = 'Workflow';
+          break;
+      }
+    });
     this.canRead = this.data.canRead;
     this.canWrite = this.data.canWrite;
     this.isOwner = this.data.isOwner;
@@ -124,6 +141,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     }
 
     this.versionModalService.saveVersion(
+      this.workflow,
       this.originalVersion,
       this.version,
       this.originalTestParameterFilePaths,

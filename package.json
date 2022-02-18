@@ -6,7 +6,8 @@
     "webservice_version": "1.11.12",
     "use_circle": true,
     "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/7141/workflows/85f15db7-5bf9-4cb2-b8d8-983e42a1cd0e/jobs/16688/artifacts",
-    "circle_build_id": "16688"
+    "circle_build_id": "16688",
+    "base_branch": "develop"
   },
   "scripts": {
     "ng": "npx ng",
@@ -35,7 +36,8 @@
     "test-dev-auth": "npx cypress run --record --reporter junit -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/smokeTests/devOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
     "test-staging-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/smokeTests/stagingOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
     "test-prod-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/smokeTests/prodOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "compare-audits": "scripts/npm-audit-comparison.sh"
   },
   "private": true,
   "dependencies": {

@@ -93,12 +93,20 @@
                   />
                 </div>
                 <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                  <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                    <mat-icon>cancel</mat-icon> Cancel
+                  <button
+                    *ngIf="!isPublic && workflowPathEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="cancelEditing()"
+                  >
+                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
                     *ngIf="!isPublic"
                     type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     [disabled]="
                       topicEditing ||
                       defaultTestFilePathEditing ||
@@ -106,11 +114,10 @@
                       (workflowPathEditing && !editWorkflowPathForm.valid) ||
                       (isRefreshing$ | async)
                     "
-                    class="btn btn-link"
                     (click)="toggleEditWorkflowPath()"
                   >
-                    <mat-icon *ngIf="workflowPathEditing">save</mat-icon>
-                    <mat-icon *ngIf="!workflowPathEditing">edit</mat-icon>
+                    <mat-icon *ngIf="workflowPathEditing" class="mat-icon-sm">save</mat-icon>
+                    <img *ngIf="!workflowPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit workflow path" />
                     {{ workflowPathEditing ? 'Save' : 'Edit' }}
                   </button>
                 </div>
@@ -139,12 +146,20 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                  <button *ngIf="!isPublic && defaultTestFilePathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                    <mat-icon>cancel</mat-icon> Cancel
+                  <button
+                    *ngIf="!isPublic && defaultTestFilePathEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="cancelEditing()"
+                  >
+                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
                     *ngIf="!isPublic"
                     type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     [disabled]="
                       topicEditing ||
                       workflowPathEditing ||
@@ -152,11 +167,15 @@
                       (defaultTestFilePathEditing && !editTestFilePathForm.valid) ||
                       (isRefreshing$ | async)
                     "
-                    class="btn btn-link"
                     (click)="toggleEditDefaultTestFilePath()"
                   >
-                    <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
-                    <mat-icon *ngIf="!defaultTestFilePathEditing">edit</mat-icon>
+                    <mat-icon *ngIf="defaultTestFilePathEditing" class="mat-icon-sm">save</mat-icon>
+                    <img
+                      *ngIf="!defaultTestFilePathEditing"
+                      src="../assets/svg/icons-actions-edit.svg"
+                      class="pr-2"
+                      alt="Edit test file path"
+                    />
                     {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
                   </button>
                 </span>
@@ -186,28 +205,37 @@
                     placeholder="Short description of the workflow"
                 /></span>
                 <ng-container>
-                  <button data-cy="topicCancelButton" *ngIf="topicEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                    <mat-icon>cancel</mat-icon> Cancel
+                  <button
+                    data-cy="topicCancelButton"
+                    *ngIf="topicEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="cancelEditing()"
+                  >
+                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
                     *ngIf="!workflow?.topic && !topicEditing"
                     [disabled]="forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
                     type="button"
-                    class="btn btn-link"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditTopic()"
                     data-cy="topicEditButton"
                   >
-                    <mat-icon>edit</mat-icon> Edit
+                    <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />Edit
                   </button>
                   <button
                     *ngIf="workflow?.topic || topicEditing"
                     type="button"
-                    class="btn btn-link"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditTopic()"
                     data-cy="topicSaveButton"
                   >
-                    <mat-icon *ngIf="topicEditing">save</mat-icon>
-                    <mat-icon *ngIf="!topicEditing">edit</mat-icon>
+                    <mat-icon *ngIf="topicEditing" class="mat-icon-sm">save</mat-icon>
+                    <img *ngIf="!topicEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />
                     {{ topicEditing ? 'Save' : 'Edit' }}
                   </button>
                 </ng-container>
@@ -246,26 +274,34 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                  <button *ngIf="!isPublic && forumUrlEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                    <mat-icon>cancel</mat-icon> Cancel
+                  <button
+                    *ngIf="!isPublic && forumUrlEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="cancelEditing()"
+                  >
+                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
                     *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
                     [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
                     type="button"
-                    class="btn btn-link"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditForumUrl()"
                   >
-                    <mat-icon>add</mat-icon> Add
+                    <img *ngIf="!forumUrlEditing" src="../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Plus sign" />Add
                   </button>
                   <button
                     *ngIf="!isPublic && (workflow?.forumUrl || forumUrlEditing)"
                     type="button"
-                    class="btn btn-link"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditForumUrl()"
                   >
-                    <mat-icon *ngIf="forumUrlEditing">save</mat-icon>
-                    <mat-icon *ngIf="!forumUrlEditing">edit</mat-icon>
+                    <mat-icon *ngIf="forumUrlEditing" class="mat-icon-sm">save</mat-icon>
+                    <img *ngIf="!forumUrlEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit form url" />
                     {{ forumUrlEditing ? 'Save' : 'Edit' }}
                   </button>
                 </span>
@@ -285,13 +321,14 @@
           <li *ngIf="!isPublic">
             <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
             <button
-              class="btn btn-link push-right"
+              mat-raised-button
+              class="push-right small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
               type="button"
               *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
               [disabled]="isRefreshing$ | async"
             >
-              <mat-icon>clear</mat-icon> Restub
+              <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Restub
             </button>
           </li>
           <li>
@@ -335,12 +372,12 @@
           {{ selectedVersion?.name }}
         </span>
         <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
-          <button *ngIf="!workflow?.is_published" mat-stroked-button color="accent" class="zip-button" (click)="downloadZip()">
-            <mat-icon>file_download</mat-icon>
+          <button *ngIf="!workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure" (click)="downloadZip()">
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
           </button>
-          <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-stroked-button color="accent" class="zip-button">
-            <mat-icon>file_download</mat-icon>Export as ZIP
+          <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure">
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>Export as ZIP
           </a>
         </span>
       </div>
@@ -417,7 +454,10 @@
         <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
           <div *ngIf="selectedVersion?.description" class="well well-sm">
-            <app-markdown-wrapper [data]="selectedVersion?.description"></app-markdown-wrapper>
+            <app-markdown-wrapper
+              [data]="selectedVersion?.description"
+              [baseUrl]="workflow?.providerUrl | baseUrl: selectedVersion?.name"
+            ></app-markdown-wrapper>
           </div>
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>

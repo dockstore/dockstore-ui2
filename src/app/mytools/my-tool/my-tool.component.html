@@ -58,7 +58,9 @@
                 </mat-toolbar-row>
               </mat-toolbar>
             </div>
-            <p *ngIf="(hasGroupEntriesObject$ | async) === false">You have not registered any tools</p>
+            <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
+              You have not registered any tools
+            </p>
             <app-sidebar-accordion
               [openOneAtATime]="oneAtATime"
               [groupEntriesObject]="groupEntriesObject$ | async"
@@ -73,7 +75,13 @@
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div *ngIf="(isRefreshing$ | async) === false && (hasGroupEntriesObject$ | async) === false">
+        <div
+          *ngIf="
+            (isRefreshing$ | async) === false &&
+            (hasGroupEntriesObject$ | async) === false &&
+            (hasGroupGitHubAppToolEntriesObjects$ | async) === false
+          "
+        >
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>
@@ -88,7 +96,7 @@
                 <li>Press the 'Add Tool' button to manually add a tool using the registration wizard.</li>
                 <button
                   mat-raised-button
-                  color="primary"
+                  class="accent-1-dark-btn"
                   (click)="showRegisterEntryModal()"
                   type="button"
                   [disabled]="isRefreshing$ | async"

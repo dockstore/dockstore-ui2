@@ -5,11 +5,25 @@
 </div>
 <div mat-dialog-actions>
   <div fxFlex></div>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-flat-button class="secondary-1" (click)="onNoClick()">No Thanks</button>
   <span *ngIf="data.approve; else rejectBlock">
-    <button mat-flat-button id="approve-pending-org-dialog" [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }">Approve</button>
+    <button
+      mat-raised-button
+      class="accent-1-dark-btn mat-elevation-z"
+      id="approve-pending-org-dialog"
+      [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"
+    >
+      Approve
+    </button>
   </span>
   <ng-template #rejectBlock>
-    <button mat-flat-button id="reject-pending-org-dialog" [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }">Reject</button>
+    <button
+      mat-raised-button
+      class="accent-1-dark-btn mat-elevation-z"
+      id="reject-pending-org-dialog"
+      [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"
+    >
+      Reject
+    </button>
   </ng-template>
 </div>

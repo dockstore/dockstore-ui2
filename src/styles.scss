@@ -837,9 +837,19 @@ body {
   font-size: 12px;
 }
 
+// Set the line height to a compact ratio that makes the text "single-spaced".
+.single-spaced {
+  line-height: 1.33;
+}
+
 // Set display to inline-block
 .inline-block {
   display: inline-block;
+}
+
+// Set font weight to bold
+.weight-bold {
+  font-weight: 500;
 }
 
 // Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
@@ -899,9 +909,9 @@ app-sidebar-accordion
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
-  line-height: 28px !important;
-  min-height: 28px !important;
-  max-height: 28px !important;
+  line-height: 26px !important;
+  min-height: 26px !important;
+  max-height: 26px !important;
   padding: 0 0.75rem !important;
   display: inline-block !important;
   min-width: 32px !important;
@@ -1009,11 +1019,6 @@ mat-tab-group.no-pagination {
   background-color: #5c5c5c !important;
 }
 
-.view-button {
-  font-size: 12px !important;
-  line-height: inherit !important;
-}
-
 hr {
   margin: 0.5rem 0;
   border: 1px solid mat.get-color-from-palette($dockstore-app-gray, lighter);
@@ -1024,15 +1029,27 @@ hr {
   margin-right: 0.5rem;
 }
 
+.tiny-org-logo {
+  height: 40px;
+  width: 65px;
+  min-height: 40px;
+  min-width: 65px;
+  max-height: 40px;
+  max-width: 65px;
+  object-fit: scale-down;
+  object-position: 50% 50%;
+}
+
 .small-org-logo {
   height: 50px;
-  object-fit: scale-down;
   max-width: 250px;
+  object-fit: scale-down;
 }
 
 .big-org-logo {
-  max-height: 100px;
+  height: 100px;
   max-width: 200px;
+  object-fit: scale-down;
   margin-top: 1.5rem;
 }
 
@@ -1046,13 +1063,15 @@ hr {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
-button.accent-1-dark-btn {
+button.accent-1-dark-btn,
+a.accent-1-dark-btn {
   background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;
 }
 
 .mat-flat-button.secondary-1 {
   color: mat.get-color-from-palette($dockstore-app-accent);
+  font-weight: bold;
 }
 .mat-flat-button.accent-1-dark {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
@@ -1066,16 +1085,6 @@ button.accent-1-dark-btn {
 // Used for smaller than usual forms
 .mat-form-field.small-text {
   font-size: 12px;
-}
-
-// Applied to buttons to make them smaller than Material defaults.
-// Use whenever the developer thinks a more compact button is more suitable
-.mat-btn-sm {
-  // This overrides .mat-raised-button's 36px line-height
-  line-height: 26px;
-  // This overrides .mat-button and most other material buttons' 12px font with font-weight normal
-  font-size: 12px;
-  font-weight: bold;
 }
 
 // Applied to mat-icons to make them smaller than Material defaults. 16px was chosen based on ORCID's recommended min logo size.
@@ -1213,7 +1222,9 @@ $truncate-text-values: 1, 2, 3;
 
 // This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
 // These redesigned buttons have purple text and white backgrounds
-button.private-btn {
+// Use with mat-button and small-btn-structure
+button.private-btn,
+a.private-btn {
   font-weight: bold;
   font-size: 12px;
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
@@ -1222,9 +1233,39 @@ button.private-btn {
   border: solid 1px #d8d8d8;
 }
 
-//This style should be used for the new small buttons in the Dockstore redesign with a height of 26px
-button.small-btn-structure {
-  height: 26px;
+// Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
+// 14px font and 36px height
+button.mat-raised-button,
+a.mat-raised-button {
+  font-weight: bold;
+  line-height: 36px;
+  height: 36px;
+  padding: 0 15px;
+}
+
+// Most cases style should be used accompanied with the mat-raised-button style
+// This style is for the new SMALLER dockstore buttons with size 12 font
+// a.small... is included to account for "buttons" that have links ex. "launch"
+button.small-mat-btn-skin,
+a.small-mat-btn-skin {
+  font-size: 12px;
+  // For cases when not accompanied by mat-raised-button
+  font-weight: bold;
+}
+
+// This style is for the SMALLER dockstore buttons with 26px height
+// Use this most likely with the small-mat-btn-skin
+button.small-btn-structure,
+a.small-btn-structure {
   line-height: 26px;
+  height: 26px;
   padding: 0 10px;
+  // Needed for smaller mat buttons ex. "info"
+  min-width: 42px;
+}
+
+// Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
+button.small-mat-btn-skin:not([class*='mat-elevation-z']),
+a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
 }

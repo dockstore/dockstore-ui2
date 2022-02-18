@@ -10,6 +10,7 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
 import { CollectionsModule } from './collections.module';
 import { EventsModule } from './events.module';
+import { ImgFallbackModule } from '../shared/modules/img-fallback.module';
 import { OrganizationMembersModule } from './organization-members.module';
 import { OrganizationStargazersModule } from './organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organization/organization-starring/organization-starring.module';
@@ -33,6 +34,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     MarkdownModule,
     PipeModule,
     MarkdownWrapperModule,
+    ImgFallbackModule,
   ],
   declarations: [OrganizationComponent],
   exports: [OrganizationComponent],
