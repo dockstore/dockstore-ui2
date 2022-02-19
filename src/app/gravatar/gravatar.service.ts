@@ -10,7 +10,7 @@ export class GravatarService {
 
   public gravatarUrlForEmail(email: string, defaultImage: string) {
     const hash = Md5.hashStr(email);
-    return `${this.gravatarBaseUrl}${hash}}?id=${encodeURIComponent(defaultImage)}&s=500`;
+    return `${this.gravatarBaseUrl}${hash}?id=${encodeURIComponent(defaultImage)}&s=500`;
   }
 
   public gravatarUrlForMysteryPerson() {
