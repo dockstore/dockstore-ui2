@@ -1,34 +1,73 @@
-/*!
- *    Copyright 2017 OICR
+/*
+ * Copyright 2022 OICR and UCSC
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
 @use '~@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-// mat-expansion-panel-header {
-//     color: red;
-// }
-
-mat-expansion-panel {
+// Panel spacing
+.mat-expansion-panel-spacing {
   margin: 0px;
-
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08);
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
-  border-radius: 0px; // TO DO: bottom corners are still rounded...
 }
 
-// mat-expansion-panel .mat-expansion-panel-body  {
-//     padding: 0 10px !important;
-// }
+// Panel header
+mat-expansion-panel mat-expansion-panel-header {
+  padding: 10px;
+  height: 36px;
+  font-weight: 500;
+}
+
+// Panel header collapse style
+mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
+  color: mat.get-color-from-palette($kim-secondary, 2);
+  text-decoration: underline;
+}
+
+//Form field box
+:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
+  margin: 0px;
+  padding-bottom: 8px;
+  line-height: 36px;
+}
+
+// Form field label
+:host
+  .mat-expansion-panel
+  ::ng-deep
+  .mat-form-field-wrapper
+  .mat-form-field-flex
+  .mat-form-field-infix
+  .mat-form-field-label-wrapper
+  .mat-form-field-label {
+  top: 18px;
+}
+
+// Form field inner
+:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
+  border: 0px;
+  padding: 0px;
+}
+
+// Form field text animation re-implementation
+:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.1em) scale(0.75);
+  width: 133.33333%;
+  top: 1.84375em;
+}
+
+// Panel body
+:host mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
+  padding: 0 10px 8px 10px;
+}
