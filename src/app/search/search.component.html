@@ -44,7 +44,7 @@
 
 <div class="container search-container">
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-5">
       <div class="p-2">
         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
           <button fxFlex="1 0 auto" class="m-1 private-btn mat-accent small-btn-structure" mat-button (click)="accordion.openAll()">
@@ -196,7 +196,7 @@
         </mat-expansion-panel>
       </mat-accordion>
 
-      <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 my-3">Reset Filters</button>
+      <!-- <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 my-3">Reset Filters</button> -->
     </div>
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
