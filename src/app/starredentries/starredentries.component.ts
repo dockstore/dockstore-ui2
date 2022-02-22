@@ -10,6 +10,7 @@ import { FormControl } from '@angular/forms';
 import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 // import { DockstoreService } from 'app/shared/dockstore.service';
+import { OrgLogoService } from '../shared/org-logo.service';
 
 @Component({
   selector: 'app-starredentries',
@@ -32,6 +33,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
     private providerService: ProviderService,
     private usersService: UsersService,
     // private dockstoreService: DockstoreService
+    private orgLogoService: OrgLogoService
   ) {
     super();
   }

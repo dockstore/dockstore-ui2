@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { approvePotatoMembership, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { approvePotatoMembership, approvePotatoOrganization, resetDB, setTokenUserViewPort } from '../../support/commands';
 import { TokenUser } from '../../../src/app/shared/swagger';
 import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
 
@@ -306,7 +306,7 @@ describe('Dockstore Organizations', () => {
     });
 
     // test the fix for DOCK-1945
-    it('stay on collections page when removing an entry',  () => {
+    it('stay on collections page when removing an entry', () => {
       const url: string = '/organizations/Potatoe/collections/veryFakeCollectionName';
       cy.visit(url);
       cy.url().should('include', url);
@@ -318,6 +318,15 @@ describe('Dockstore Organizations', () => {
       cy.url().should('include', url);
       cy.get('[data-cy=accept-remove-entry-from-org]').click();
       cy.url().should('include', url);
+    });
+
+    it('use default organization logo image', () => {
+      approvePotatoOrganization();
+      for (const url of ['/organizations', '/organizations/Potatoe', '/organizations/Potatoe/collections/veryFakeCollectionName']) {
+        cy.visit(url);
+        cy.wait(1000);
+        cy.get('img[src*="default-org-logo"]').should('be.visible');
+      }
     });
 
     it('be able to remove the collection', () => {

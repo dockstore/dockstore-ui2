@@ -10,6 +10,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
 import { OrganizationsRouting } from './organizations.routing';
 import { OrganizationsComponent } from './organizations/organizations.component';
 import { RegisterOrganizationModule } from './register-organization.module';
+import { ImgFallbackModule } from '../shared/modules/img-fallback.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { RegisterOrganizationModule } from './register-organization.module';
     ReactiveFormsModule,
     RegisterOrganizationModule,
     UpdateOrganizationDescriptionModule,
+    ImgFallbackModule,
   ],
   declarations: [OrganizationsComponent],
 })

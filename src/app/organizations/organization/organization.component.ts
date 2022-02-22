@@ -31,6 +31,7 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-org
 import { CollectionsQuery } from '../state/collections.query';
 import { EventsQuery } from '../state/events.query';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
+import { OrgLogoService } from '../../shared/org-logo.service';
 
 @Component({
   selector: 'app-organization',
@@ -59,7 +60,8 @@ export class OrganizationComponent implements OnInit {
     private userQuery: UserQuery,
     public organizationMembersQuery: OrganizationMembersQuery,
     public collectionsQuery: CollectionsQuery,
-    public eventsQuery: EventsQuery
+    public eventsQuery: EventsQuery,
+    public orgLogoService: OrgLogoService
   ) {}
 
   ngOnInit() {

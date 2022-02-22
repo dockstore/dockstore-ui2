@@ -6,7 +6,8 @@
     "webservice_version": "1.11.12",
     "use_circle": true,
     "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/7141/workflows/85f15db7-5bf9-4cb2-b8d8-983e42a1cd0e/jobs/16688/artifacts",
-    "circle_build_id": "16688"
+    "circle_build_id": "16688",
+    "base_branch": "develop"
   },
   "scripts": {
     "ng": "npx ng",
@@ -35,7 +36,8 @@
     "test-dev-auth": "npx cypress run --record --reporter junit -c baseUrl=https://dev.dockstore.net -s \"cypress/integration/smokeTests/devOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
     "test-staging-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/smokeTests/stagingOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
     "test-prod-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/smokeTests/prodOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "compare-audits": "scripts/npm-audit-comparison.sh"
   },
   "private": true,
   "dependencies": {
@@ -73,11 +75,9 @@
     "ng2-ui-auth": "^10.0.1",
     "ngx-markdown": "^13.1.0",
     "ngx-sharebuttons": "^8.0.5",
-    "ngx-window-token": "^5.0.0",
     "rxjs": "^6.6.7",
     "ts-md5": "^1.2.8",
     "tslib": "^2.3.0",
-    "tsutils": "^3.21.0",
     "uuid": "^8.3.2",
     "zone.js": "~0.11.4"
   },
@@ -93,7 +93,6 @@
     "@angular/language-service": "^13.2.2",
     "@datorama/akita-ngdevtools": "^6.0.0",
     "@types/cytoscape": "^3.14.15",
-    "@types/elastic.js": "^1.2.8",
     "@types/elasticsearch": "^5.0.37",
     "@types/jasmine": "^3.7.7",
     "@types/jquery": "^3.5.5",
@@ -112,9 +111,7 @@
     "license-checker": "^25.0.1",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
-    "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.5.5"
   }
 }

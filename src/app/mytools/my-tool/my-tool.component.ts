@@ -58,6 +58,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   tool$: Observable<DockstoreTool | null>;
   appTool: AppTool;
   isRefreshing$: Observable<boolean>;
+  public hasGroupGitHubAppToolEntriesObjects$: Observable<boolean>;
   readonly pageName = '/my-tools';
   private registerTool: Tool;
   public showSidebar = true;
@@ -156,7 +157,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
       })
     );
 
-    this.groupAppToolEntryObjects$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.selectActive()]).pipe(
+    this.groupAppToolEntryObjects$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.workflow$]).pipe(
       map(([workflows, workflow]) => {
         return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
       })
@@ -164,6 +165,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
       map((orgToolObjects: OrgToolObject<DockstoreTool>[]) => {
+        return orgToolObjects && orgToolObjects.length !== 0;
+      })
+    );
+
+    this.hasGroupGitHubAppToolEntriesObjects$ = this.groupAppToolEntryObjects$.pipe(
+      map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
         return orgToolObjects && orgToolObjects.length !== 0;
       })
     );

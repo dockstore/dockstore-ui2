@@ -42,7 +42,10 @@ export class WorkflowLaunchService extends LaunchService {
     return `cwltool \\#workflow/${path}:${versionName} Dockstore.json`;
   }
 
-  getDockstoreSupportedCwlMakeTemplateString(path: string, versionName: string) {
+  getDockstoreSupportedCwlMakeTemplateString(path: string, versionName: string, entryType?: EntryType) {
+    if (entryType === EntryType.Tool) {
+      return super.getDockstoreSupportedCwlMakeTemplateString(path, versionName);
+    }
     return `cwltool --make-template \\#workflow/${path}:${versionName} > input.yaml`;
   }
 

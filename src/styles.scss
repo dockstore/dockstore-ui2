@@ -837,9 +837,19 @@ body {
   font-size: 12px;
 }
 
+// Set the line height to a compact ratio that makes the text "single-spaced".
+.single-spaced {
+  line-height: 1.33;
+}
+
 // Set display to inline-block
 .inline-block {
   display: inline-block;
+}
+
+// Set font weight to bold
+.weight-bold {
+  font-weight: 500;
 }
 
 // Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
@@ -1019,15 +1029,27 @@ hr {
   margin-right: 0.5rem;
 }
 
+.tiny-org-logo {
+  height: 40px;
+  width: 65px;
+  min-height: 40px;
+  min-width: 65px;
+  max-height: 40px;
+  max-width: 65px;
+  object-fit: scale-down;
+  object-position: 50% 50%;
+}
+
 .small-org-logo {
   height: 50px;
-  object-fit: scale-down;
   max-width: 250px;
+  object-fit: scale-down;
 }
 
 .big-org-logo {
-  max-height: 100px;
+  height: 100px;
   max-width: 200px;
+  object-fit: scale-down;
   margin-top: 1.5rem;
 }
 
