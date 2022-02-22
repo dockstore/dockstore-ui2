@@ -195,9 +195,8 @@
           </div>
         </mat-expansion-panel>
       </mat-accordion>
-
-      <!-- <button mat-raised-button color="accent" (click)="resetFilters()" type="button" class="w-100 my-3">Reset Filters</button> -->
     </div>
+
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
         <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning text-break">
