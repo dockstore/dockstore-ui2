@@ -57,8 +57,8 @@
     <div fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between">
         <div fxFlex="90" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
-          <div *ngIf="gravatarUrl$ | async">
-            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="avatar" [appFallback]="orgLogoService.DEFAULT_URL" />
+          <div *ngIf="org?.avatarUrl">
+            <img [src]="org.avatarUrl | gravatar" class="big-org-logo" alt="avatar" [appFallback]="orgLogoService.DEFAULT_URL" />
           </div>
           <div>
             <h2 class="name">{{ org.displayName }}</h2>
