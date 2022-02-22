@@ -99,6 +99,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   // extra +1 is used to see if there are > 200 results
   public readonly query_size = 201;
   searchTerm = false;
+  public unsubmittedSearchText = '';
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -227,6 +228,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // URL is gospel, if it doesn't have a search term, then there's no search term
     if (!paramMap.has('search')) {
       this.searchService.setSearchText('');
+      this.unsubmittedSearchText = '';
     }
     paramMap.keys.forEach((key) => {
       const value = paramMap.getAll(key);
@@ -240,6 +242,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       } else if (key === 'search') {
         this.searchTerm = true;
         this.searchService.setSearchText(value[0]);
+        this.unsubmittedSearchText = value[0];
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
         this.searchTerm = false;
         if (key.includes('Filter')) {
@@ -267,6 +270,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   handleChanged(searchText: string) {
     console.log("SC change " + searchText);
     this.doAutoComplete(searchText);
+    this.unsubmittedSearchText = searchText;
   }
 
   handleSubmitted(searchText: string) {
@@ -503,6 +507,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchService.reset();
     this.searchTerm = false;
     this.facetSearchText = '';
+    this.unsubmittedSearchText = '';
   }
 
   resetEntryOrder() {
@@ -574,6 +579,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
     }
     this.facetSearchText = '';
+    this.searchService.setSearchText(this.unsubmittedSearchText);
     this.updatePermalink();
   }
 
