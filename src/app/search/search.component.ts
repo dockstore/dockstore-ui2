@@ -268,13 +268,14 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   handleChanged(searchText: string) {
-    console.log("SC change " + searchText);
-    this.doAutoComplete(searchText);
     this.unsubmittedSearchText = searchText;
   }
 
+  handleChangedDebounced(searchText: string) {
+    this.doAutoComplete(searchText);
+  }
+
   handleSubmitted(searchText: string) {
-    console.log("SC submitted " + searchText);
     this.doSearch(searchText);
   }
 
@@ -560,7 +561,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
     }
-    console.log("SEARCHTERM " + this.searchTerm + " " + searchText);
     this.updatePermalink();
   }
 

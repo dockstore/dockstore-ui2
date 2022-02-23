@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, shareReplay, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { bootstrap4largeModalSize, formInputDebounceTime } from '../../shared/constants';
 import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
@@ -21,23 +21,26 @@ export class BasicSearchComponent extends Base implements OnInit {
   public autocompleteTerms$: Observable<Array<string>>;
   public hasAutoCompleteTerms$: Observable<boolean>;
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
+  @Output() changedDebounced: EventEmitter<string> = new EventEmitter<string>();
   @Output() submitted: EventEmitter<string> = new EventEmitter<string>();
   ngOnInit() {
     this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((searchText) => {
-      // This keeps the state and the view in sync but this is slightly awkward
-      // Changes to the searchText$ state will change searchFormControl
-      // TODO update the rest of this comment ^^^
-      console.log("UPDATE '" + searchText + "'");
       this.searchFormControl.setValue(searchText);
     });
     this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;
     this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
 
-    this.searchFormControl.valueChanges
-      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
+    const valueChanges = this.searchFormControl.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe), shareReplay({refCount: true}));
+
+    valueChanges
       .subscribe((searchText) => {
-        console.log("BS changed " + searchText);
         this.changed.emit(searchText);
+      });
+    valueChanges
+      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged())
+      .subscribe((searchText) => {
+        this.changedDebounced.emit(searchText);
       });
   }
 
@@ -56,7 +59,6 @@ export class BasicSearchComponent extends Base implements OnInit {
 
   submitSearch() {
     const searchText = this.searchFormControl.value;
-    console.log("BS search " + searchText);
     this.submitted.emit(searchText);
   }
 
