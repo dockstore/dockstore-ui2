@@ -158,7 +158,12 @@ mat-tab-group.homeComponent {
 }
 
 .selected-item {
-  background-color: #e7f1fb;
+  background-color: mat.get-color-from-palette($kim-accent1-success, 6);
+}
+
+div.panel-container-label:hover {
+  background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6, 0.5);
+  color: black;
 }
 
 .expand-collapse-holder {
