@@ -25,6 +25,10 @@ export class BasicSearchComponent extends Base implements OnInit {
   @Output() submitted: EventEmitter<string> = new EventEmitter<string>();
   ngOnInit() {
     this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((searchText) => {
+      // This keeps the state and the view in sync but this is slightly awkward
+      // Changes to the searchText$ state may change searchFormControl
+      // However, changes to searchFormControl may change searchText$
+      // The ONLY reason why this doesn't go infinite loop is because Akita doesn't emit when it's the same value
       this.searchFormControl.setValue(searchText);
     });
     this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;

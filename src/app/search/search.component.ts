@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
