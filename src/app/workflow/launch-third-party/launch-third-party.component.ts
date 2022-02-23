@@ -115,7 +115,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   /**
    * Indicates whether the selected version has any content
    */
-  hasContent$ = this.descriptorsQuery.hasContent$.pipe(shareReplay({refCount: true}));
+  hasContent$ = this.descriptorsQuery.hasContent$.pipe(shareReplay({ refCount: true }));
 
   /**
    * Indicates whether the selected version's workflow has any file-based imports.
