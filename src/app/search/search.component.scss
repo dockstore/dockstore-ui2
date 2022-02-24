@@ -99,8 +99,8 @@ mat-tab-group.homeComponent {
 .sortBtn {
   font-size: 16px;
   border-color: mat.get-color-from-palette($dockstore-app-gray, 4);
-  width: 40px;
-  min-width: 40px;
+  width: 4rem;
+  min-width: 4rem;
   &.active {
     background-color: mat.get-color-from-palette($kim-secondary, 2);
     color: white;
@@ -119,7 +119,7 @@ mat-tab-group.homeComponent {
 // Need individual classes for left and right sort buttons to adjust unique border-radiuses
 .leftSortbtn {
   border-radius: 4px 0px 0px 4px;
-  margin-left: 8px;
+  margin-left: 0.8rem;
 }
 
 .rightSortbtn {
@@ -182,13 +182,13 @@ input.mat-input-element:not(:focus) {
 
 // Panel spacing
 .mat-expansion-panel-spacing {
-  margin: 0px;
+  margin: 0rem;
 }
 
 // Panel header
 mat-accordion mat-expansion-panel-header {
-  padding: 12px 10px;
-  height: 36px;
+  padding: 1.2rem 1rem;
+  height: 3.6rem;
   font-weight: 500;
 }
 
@@ -200,9 +200,9 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 
 // Form field box
 :host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
-  margin: 0 7.5px;
-  padding-bottom: 8px;
-  line-height: 36px;
+  margin: 0 0.75rem;
+  padding-bottom: 0.8rem;
+  line-height: 3.6rem;
 }
 
 // Form field label
@@ -214,13 +214,13 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
   .mat-form-field-infix
   .mat-form-field-label-wrapper
   .mat-form-field-label {
-  top: 18px;
+  top: 1.8rem;
 }
 
 // Form field inner
 :host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
-  border: 0px;
-  padding: 0px;
+  border: 0rem;
+  padding: 0rem;
 }
 
 // Form field text animation re-implementation
@@ -232,7 +232,7 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 
 // Panel body
 :host .mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
-  padding: 0px 2.5px 7px 0px;
+  padding: 0rem 0.25rem 0.7rem 0rem;
 }
 
 // Panel
@@ -241,7 +241,7 @@ mat-expansion-panel,
 .mat-accordion .mat-expansion-panel:first-of-type,
 .p-2,
 :host ::ng-deep .mat-accordion app-basic-search .mat-expansion-panel:first-of-type {
-  border-radius: 0px;
+  border-radius: 0rem;
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.1), 0 0.2rem 0.3rem 0 rgba(0, 0, 0, 0.08);
 }

@@ -19,13 +19,13 @@
 
 // Panel spacing
 .mat-expansion-panel-spacing {
-  margin: 0px;
+  margin: 0rem;
 }
 
 // Panel header
 mat-expansion-panel mat-expansion-panel-header {
-  padding: 10px;
-  height: 36px;
+  padding: 1rem;
+  height: 3.6rem;
   font-weight: 500;
 }
 
@@ -37,9 +37,9 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 
 //Form field box
 :host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
-  margin: 0px;
-  padding-bottom: 8px;
-  line-height: 36px;
+  margin: 0rem;
+  padding-bottom: 0.8rem;
+  line-height: 3.6rem;
 }
 
 // Form field label
@@ -51,13 +51,13 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
   .mat-form-field-infix
   .mat-form-field-label-wrapper
   .mat-form-field-label {
-  top: 18px;
+  top: 1.8rem;
 }
 
 // Form field inner
 :host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
-  border: 0px;
-  padding: 0px;
+  border: 0rem;
+  padding: 0rem;
 }
 
 // Form field text animation re-implementation
@@ -69,5 +69,5 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 
 // Panel body
 :host mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
-  padding: 0 10px 8px 10px;
+  padding: 0rem 1rem 0.8rem;
 }
