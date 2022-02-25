@@ -80,7 +80,11 @@
         </div>
       </div>
       <mat-accordion multi>
-        <app-basic-search (changed)="handleChanged($event)" (changedDebounced)="handleChangedDebounced($event)" (submitted)="handleSubmitted($event)"></app-basic-search>
+        <app-basic-search
+          (changed)="handleChanged($event)"
+          (changedDebounced)="handleChangedDebounced($event)"
+          (submitted)="handleSubmitted($event)"
+        ></app-basic-search>
         <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
           <mat-expansion-panel-header>
             {{ friendlyNames.get(key) }}

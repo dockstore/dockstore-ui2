@@ -34,18 +34,14 @@ export class BasicSearchComponent extends Base implements OnInit {
     this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;
     this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
 
-    const valueChanges = this.searchFormControl.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe), shareReplay({refCount: true}));
+    const valueChanges = this.searchFormControl.valueChanges.pipe(takeUntil(this.ngUnsubscribe), shareReplay({ refCount: true }));
 
-    valueChanges
-      .subscribe((searchText) => {
-        this.changed.emit(searchText);
-      });
-    valueChanges
-      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged())
-      .subscribe((searchText) => {
-        this.changedDebounced.emit(searchText);
-      });
+    valueChanges.subscribe((searchText) => {
+      this.changed.emit(searchText);
+    });
+    valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged()).subscribe((searchText) => {
+      this.changedDebounced.emit(searchText);
+    });
   }
 
   /**

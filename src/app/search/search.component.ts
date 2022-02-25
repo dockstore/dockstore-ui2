@@ -201,7 +201,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasFacetAutoCompleteTerms$ = this.searchQuery.hasFacetAutoCompleteTerms$;
   }
 
- /**
+  /**
    * Only called when the tab is manually changed by the user
    */
   saveTabIndex(matTabChangeEvent: MatTabChangeEvent) {
