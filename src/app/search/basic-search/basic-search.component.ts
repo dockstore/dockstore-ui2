@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, shareReplay, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { bootstrap4largeModalSize, formInputDebounceTime } from '../../shared/constants';
 import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
@@ -20,23 +20,28 @@ export class BasicSearchComponent extends Base implements OnInit {
   public searchFormControl = new FormControl();
   public autocompleteTerms$: Observable<Array<string>>;
   public hasAutoCompleteTerms$: Observable<boolean>;
+  @Output() changed: EventEmitter<string> = new EventEmitter<string>();
+  @Output() changedDebounced: EventEmitter<string> = new EventEmitter<string>();
+  @Output() submitted: EventEmitter<string> = new EventEmitter<string>();
   ngOnInit() {
     this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((searchText) => {
       // This keeps the state and the view in sync but this is slightly awkward
-      // Changes to the searchText$ state will change searchFormControl
-      // However, changes to searchFormControl will change searchText$
+      // Changes to the searchText$ state may change searchFormControl
+      // However, changes to searchFormControl may change searchText$
       // The ONLY reason why this doesn't go infinite loop is because Akita doesn't emit when it's the same value
-      // Ideally, we should probably be using AkitaFormManager because then there would only be one variable
       this.searchFormControl.setValue(searchText);
     });
     this.autocompleteTerms$ = this.searchQuery.autoCompleteTerms$;
     this.hasAutoCompleteTerms$ = this.searchQuery.hasAutoCompleteTerms$;
 
-    this.searchFormControl.valueChanges
-      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
-      .subscribe((searchText) => {
-        this.searchService.setSearchText(searchText);
-      });
+    const valueChanges = this.searchFormControl.valueChanges.pipe(takeUntil(this.ngUnsubscribe), shareReplay({ refCount: true }));
+
+    valueChanges.subscribe((searchText) => {
+      this.changed.emit(searchText);
+    });
+    valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged()).subscribe((searchText) => {
+      this.changedDebounced.emit(searchText);
+    });
   }
 
   /**
@@ -52,7 +57,13 @@ export class BasicSearchComponent extends Base implements OnInit {
     });
   }
 
+  submitSearch() {
+    const searchText = this.searchFormControl.value;
+    this.submitted.emit(searchText);
+  }
+
   clearSearch() {
     this.searchFormControl.setValue('');
+    this.submitted.emit('');
   }
 }
