@@ -19,7 +19,7 @@ describe('Admin UI', () => {
       cy.contains('the Language is WDL').should('not.exist');
     });
     it('should be able to use basic search box and have suggestions', () => {
-      cy.get('[data-cy=basic-search]').type('dockstore_i');
+      cy.get('[data-cy=basic-search]').type('dockstore_i{enter}');
       cy.contains(' Sorry, no matches found for dockstore_i');
       cy.contains(/Do[ ]you[ ]mean:[ ].+/);
       cy.url().should('include', 'search=dockstore_i');
@@ -43,7 +43,7 @@ describe('Admin UI', () => {
       cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
     });
     it('should have basic search and advanced search mutually exclusive', () => {
-      cy.get('[data-cy=basic-search]').type('dockstore_');
+      cy.get('[data-cy=basic-search]').type('dockstore_{enter}');
       cy.contains('Open Advanced Search').click();
       cy.contains('button', /^Advanced Search$/)
         .should('be.visible')
