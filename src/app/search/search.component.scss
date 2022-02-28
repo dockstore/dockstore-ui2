@@ -116,6 +116,11 @@ mat-tab-group.homeComponent {
   }
 }
 
+fa-icon.ng-fa-icon {
+  display: inline-block;
+  vertical-align: top;
+}
+
 // Need individual classes for left and right sort buttons to adjust unique border-radiuses
 .leftSortbtn {
   border-radius: 4px 0px 0px 4px;
