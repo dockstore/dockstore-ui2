@@ -16,10 +16,11 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatRadioChange } from '@angular/material/radio';
+import { includesAuthors } from 'app/shared/constants';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
-import { WorkflowsService } from 'app/shared/openapi';
+import { AbstractAuthor, WorkflowsService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -70,7 +71,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   trsLink: string;
   displayTextForButton: string;
   displayedColumns: string[] = ['name', 'role', 'affiliation', 'email', 'orcid_id'];
-  authors: (Author | OrcidAuthor)[];
+  authors: AbstractAuthor[] = [];
   EntryType = EntryType;
   descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
@@ -121,7 +122,11 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
-      this.authors = [...this.selectedVersion.authors, ...this.selectedVersion.orcidAuthors];
+      this.workflowsService
+        .getWorkflowVersionById(this.workflow.id, this.selectedVersion.id, includesAuthors)
+        .subscribe((workflowVersion) => {
+          this.authors = [...workflowVersion.authors, ...workflowVersion.orcidAuthors];
+        });
     } else {
       this.isValidVersion = false;
       this.trsLink = null;
