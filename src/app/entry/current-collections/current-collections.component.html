@@ -20,10 +20,15 @@
   <mat-card-content>
     <ng-container *ngFor="let collectionOrganization of currentCollections$ | async">
       <div class="mb-1 single-spaced">
-        <ng-container *ngIf="collectionOrganization.organizationAvatarUrl; then withAvatar else withoutAvatar"></ng-container>
+        <ng-container *ngIf="collectionOrganization.organizationAvatarUrl; then withAvatar; else withoutAvatar"></ng-container>
         <ng-template #withAvatar>
           <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-            <img class="tiny-org-logo" [src]="collectionOrganization.organizationAvatarUrl" alt="Org logo for {{ collectionOrganization.organizationDisplayName }}" [appFallback]="orgLogoService.DEFAULT_URL"/>
+            <img
+              class="tiny-org-logo"
+              [src]="collectionOrganization.organizationAvatarUrl"
+              alt="Org logo for {{ collectionOrganization.organizationDisplayName }}"
+              [appFallback]="orgLogoService.DEFAULT_URL"
+            />
             <div class="pt-2 pb-2">
               <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
             </div>
@@ -36,7 +41,12 @@
           </div>
         </ng-template>
         <ng-template #collectionLink>
-          <a matTooltip="View the collection" [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]" routerLinkActive="router-link-active">{{ collectionOrganization.collectionDisplayName }}</a>
+          <a
+            matTooltip="View the collection"
+            [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]"
+            routerLinkActive="router-link-active"
+            >{{ collectionOrganization.collectionDisplayName }}</a
+          >
         </ng-template>
       </div>
     </ng-container>

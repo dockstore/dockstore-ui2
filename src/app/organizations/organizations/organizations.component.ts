@@ -50,7 +50,7 @@ export class OrganizationsComponent extends Base implements OnInit {
     private alertQuery: AlertQuery,
     private matDialog: MatDialog,
     private trackLoginService: TrackLoginService,
-    private orgLogoService: OrgLogoService,
+    private orgLogoService: OrgLogoService
   ) {
     super();
   }

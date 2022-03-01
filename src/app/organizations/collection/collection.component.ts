@@ -70,7 +70,7 @@ export class CollectionComponent implements OnInit {
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private userQuery: UserQuery,
-    public orgLogoService: OrgLogoService,
+    public orgLogoService: OrgLogoService
   ) {}
 
   ngOnInit() {
@@ -126,10 +126,7 @@ export class CollectionComponent implements OnInit {
     });
   }
 
-  removeCollection(
-    organization: Organization,
-    collection: Collection
-  ) {
+  removeCollection(organization: Organization, collection: Collection) {
     const data: CollectionDialogData = {
       organizationId: organization.id,
       collectionId: collection.id,

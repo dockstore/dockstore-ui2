@@ -61,7 +61,7 @@ export class OrganizationComponent implements OnInit {
     public organizationMembersQuery: OrganizationMembersQuery,
     public collectionsQuery: CollectionsQuery,
     public eventsQuery: EventsQuery,
-    public orgLogoService: OrgLogoService,
+    public orgLogoService: OrgLogoService
   ) {}
 
   ngOnInit() {

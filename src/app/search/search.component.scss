@@ -97,14 +97,13 @@ mat-tab-group.homeComponent {
 }
 
 .sortBtn {
-  border-color: #dddddd;
-  border-radius: 0;
-  color: #3b769a;
-  font-size: 12px;
-  background-color: #ffffff;
+  font-size: 16px;
+  border-color: mat.get-color-from-palette($dockstore-app-gray, 4);
+  width: 4rem;
+  min-width: 4rem;
   &.active {
-    background-color: #487980;
-    color: #ffffff;
+    background-color: mat.get-color-from-palette($kim-secondary, 2);
+    color: white;
     font-weight: bold;
   }
   &:not(.active) {
@@ -112,9 +111,23 @@ mat-tab-group.homeComponent {
       background-color: #f8f8f8;
     }
     .ng-fa-icon {
-      display: none;
+      color: mat.get-color-from-palette($kim-secondary, 2);
     }
   }
+}
+
+fa-icon.ng-fa-icon {
+  vertical-align: top;
+}
+
+// Need individual classes for left and right sort buttons to adjust unique border-radiuses
+.leftSortbtn {
+  border-radius: 4px 0px 0px 4px;
+  margin-left: 0.8rem;
+}
+
+.rightSortbtn {
+  border-radius: 0px 4px 4px 0px;
 }
 
 .suggestTerm {
@@ -149,11 +162,12 @@ mat-tab-group.homeComponent {
 }
 
 .selected-item {
-  background-color: #e7f1fb;
+  background-color: mat.get-color-from-palette($kim-accent1-success, 6);
 }
 
-.mat-expansion-panel-spacing {
-  margin: 10px 0;
+div.panel-container-label:hover {
+  background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6, 0.5);
+  color: black;
 }
 
 .expand-collapse-holder {
@@ -168,4 +182,70 @@ mat-form-field {
 
 input.mat-input-element:not(:focus) {
   height: 1rem;
+}
+
+// Panel spacing
+.mat-expansion-panel-spacing {
+  margin: 0rem;
+}
+
+// Panel header
+mat-accordion mat-expansion-panel-header {
+  padding: 1.2rem 1rem;
+  height: 3.6rem;
+  font-weight: 500;
+}
+
+// Panel header collapse style
+mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
+  color: mat.get-color-from-palette($kim-secondary, 2);
+  text-decoration: underline;
+}
+
+// Form field box
+:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
+  margin: 0 0.75rem;
+  padding-bottom: 0.8rem;
+  line-height: 3.6rem;
+}
+
+// Form field label
+:host
+  .mat-expansion-panel
+  ::ng-deep
+  .mat-form-field-wrapper
+  .mat-form-field-flex
+  .mat-form-field-infix
+  .mat-form-field-label-wrapper
+  .mat-form-field-label {
+  top: 1.8rem;
+}
+
+// Form field inner
+:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
+  border: 0rem;
+  padding: 0rem;
+}
+
+// Form field text animation re-implementation
+:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.1em) scale(0.75);
+  width: 133.33333%;
+  top: 1.84375em;
+}
+
+// Panel body
+:host .mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
+  padding: 0rem 0.25rem 0.7rem 0rem;
+}
+
+// Panel
+mat-expansion-panel,
+.mat-accordion .mat-expansion-panel:last-of-type,
+.mat-accordion .mat-expansion-panel:first-of-type,
+.p-2,
+:host ::ng-deep .mat-accordion app-basic-search .mat-expansion-panel:first-of-type {
+  border-radius: 0rem;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
+  box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.1), 0 0.2rem 0.3rem 0 rgba(0, 0, 0, 0.08);
 }
