@@ -20,7 +20,7 @@ import { includesAuthors } from 'app/shared/constants';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
-import { WorkflowsService } from 'app/shared/openapi';
+import { Author, OrcidAuthor, WorkflowsService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -71,7 +71,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   trsLink: string;
   displayTextForButton: string;
   displayedColumns: string[] = ['name', 'role', 'affiliation', 'email', 'orcid_id'];
-  authors: any[] = [];
+  authors: (Author | OrcidAuthor)[] = [];
   EntryType = EntryType;
   descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
