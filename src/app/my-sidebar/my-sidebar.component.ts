@@ -1,3 +1,4 @@
+import { I } from '@angular/cdk/keycodes';
 import { Component, NgModule, OnInit } from '@angular/core';
 
 @Component({
@@ -8,5 +9,7 @@ import { Component, NgModule, OnInit } from '@angular/core';
 export class MySidebarComponent implements OnInit {
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let init: boolean = true;
+  }
 }
