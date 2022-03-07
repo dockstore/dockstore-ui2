@@ -84,14 +84,6 @@ app-header h3 {
   line-height: 4rem;
 }
 
-app-header .container-fluid {
-  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
-  box-shadow: 0px 3px 6px #cfd1d7;
-  position: relative;
-  z-index: 1;
-  padding-top: 5px;
-}
-
 #format > tbody > tr > th,
 #format > tbody > tr > td {
   border-top: none;

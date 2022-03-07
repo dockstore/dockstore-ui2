@@ -58,6 +58,7 @@ import { RefreshService } from './../refresh.service';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SnackbarModule } from './snackbar.module';
 import { CategoryButtonModule } from './../../categories/button/category-button.module';
+import { MySidebarModule } from '../modules/my-sidebar.module';
 
 @NgModule({
   declarations: [
@@ -97,6 +98,7 @@ import { CategoryButtonModule } from './../../categories/button/category-button.
     MarkdownWrapperModule,
     SnackbarModule,
     CategoryButtonModule,
+    MySidebarModule,
   ],
   providers: [
     DateService,
@@ -116,6 +118,7 @@ import { CategoryButtonModule } from './../../categories/button/category-button.
     CommonModule,
     WorkflowActionsComponent,
     FilterCloudInstancesPipe,
+    MySidebarModule,
   ],
 })
 export class WorkflowModule {}

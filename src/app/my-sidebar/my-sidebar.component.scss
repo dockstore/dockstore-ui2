@@ -1,0 +1,101 @@
+/*
+ * Copyright 2021 OICR and UCSC
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+@use '@angular/material' as mat;
+@import 'materialColorScheme.scss';
+
+div[fxFlex='0 0 auto'] {
+  width: 9rem;
+  height: 100%;
+  border-right: 0.1rem solid mat.get-color-from-palette($kim-gray, 4);
+  box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  width: 100%;
+  height: 8rem;
+  border-radius: 0rem;
+  display: block;
+  font-size: 12px;
+  line-height: 3rem;
+  padding: 1.4rem 0.5rem;
+  color: mat.get-color-from-palette($kim-gray, 2);
+}
+
+// Icons
+img {
+  padding-top: 0.15rem;
+}
+
+// Lines between buttons
+hr {
+  width: 90%;
+  margin: auto;
+}
+
+// Active white icon
+button.active img {
+  filter: brightness(0) saturate(100%) invert(98%) sepia(98%) saturate(6%) hue-rotate(111deg) brightness(102%) contrast(102%);
+}
+
+// Ative purple text
+button.active {
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+}
+
+// Active line between buttons
+hr.active {
+  border: 1px solid mat.get-color-from-palette($kim-accent1-success, 2);
+}
+
+// Active button transition
+button.active div {
+  height: 3.6rem;
+  width: 3.6rem;
+  border-radius: 50%;
+  margin: auto;
+  animation: circle 0.4s ease 0s 1;
+}
+
+// Active button animation
+@keyframes circle {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+// Active purple circle
+button.active#purple div {
+  background-color: mat.get-color-from-palette($kim-accent1-success, 2);
+}
+
+// Active green workflow circle
+button.active#workflow div {
+  background-color: $workflow-color;
+}
+
+// Active blue tools circle
+button.active#tool div {
+  background-color: $tool-color;
+}
+
+// Active orange services circle
+button.active#service div {
+  background-color: $service-color;
+}

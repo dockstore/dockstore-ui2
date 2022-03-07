@@ -6,9 +6,10 @@ import { StarentryService } from '../shared/starentry.service';
 import { StargazersModule } from '../stargazers/stargazers.module';
 import { StarringModule } from '../starring/starring.module';
 import { StarringService } from '../starring/starring.service';
+import { MySidebarModule } from '../shared/modules/my-sidebar.module';
 
 @NgModule({
-  imports: [CommonModule, StargazersModule, HeaderModule, StarringModule],
+  imports: [CommonModule, StargazersModule, HeaderModule, StarringModule, MySidebarModule],
   providers: [StarentryService, StarringService],
 })
 export class StarredEntriesModule {}

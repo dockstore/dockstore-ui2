@@ -108,6 +108,7 @@ import { FileTreeComponent } from './file-tree/file-tree.component';
 import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
 import { OrgLogoService } from './shared/org-logo.service';
 import { ImgFallbackModule } from './shared/modules/img-fallback.module';
+import { MySidebarModule } from './shared/modules/my-sidebar.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -191,6 +192,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     HttpClientModule,
     SnackbarModule,
     ImgFallbackModule,
+    MySidebarModule,
   ],
   providers: [
     AccountsService,
