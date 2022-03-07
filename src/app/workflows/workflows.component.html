@@ -15,7 +15,7 @@
   -->
 <app-header>
   <div fxLayout="row" fxLayoutAlign="start center">
-    <img [src]="'../assets/svg/sub-nav/' + ((entryPageTitle$ | async | titlecase) === 'Services' ? 'services.svg' : 'workflow.svg')" />
+    <img src="../assets/svg/sub-nav/{{ (entryPageTitle$ | async | titlecase) === 'Services' ? 'services.svg' : 'workflow.svg' }}" />
     <span>&nbsp;{{ entryPageTitle$ | async | titlecase }}&nbsp;</span>
     <div *ngIf="(entryPageTitle$ | async | titlecase) === 'Services'" class="beta-label">preview</div>
   </div>
