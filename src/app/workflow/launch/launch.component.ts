@@ -68,6 +68,9 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   EntryType = EntryType;
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  wesWrapperJson: string;
+  wesLaunchCommand: string;
+  wesTooltip = this.launchService.wesTooltip;
 
   constructor(
     private launchService: WorkflowLaunchService,
@@ -111,6 +114,8 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
     this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
     this.updateWgetTestJsonString(workflowPath, versionName, descriptorType);
+    this.wesLaunchCommand = this.launchService.getWesLaunch(workflowPath, versionName);
+    this.wesWrapperJson = this.launchService.getAgcFileWrapper();
   }
 
   /**
