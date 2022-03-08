@@ -85,25 +85,24 @@
 
       <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
         <div [matTooltip]="wesTooltip">
-          <p>Launch this workflow using Amazon Web Services' (AWS) Amazon Genomics CLI (AGC) cloud infrastructure.</p>
+          <p>Launch this workflow on Amazon Web Services' (AWS) Amazon Genomics CLI (AGC) cloud infrastructure.</p>
 
           <!--TODO: replace with actual documentation link after https://github.com/dockstore/dockstore-documentation/pull/173-->
           <p>
-            For an introduction to AWS AGC, see their official
-            <a href="https://aws.github.io/amazon-genomics-cli/docs/getting-started/">quick start guide</a>. To learn how to configure the
-            Dockstore CLI to communicate with AWS AGC infrastructure, see the
-            <a href="https://docs.dockstore.org/en/stable/dockstore-introduction.html">Dockstore documentation</a>.
+            Learn how to configure the Dockstore CLI to communicate with AWS AGC infrastructure by reading the
+            <a href="https://docs.dockstore.org/en/stable/dockstore-introduction.html">Dockstore documentation</a>. For an introduction to
+            AWS AGC, see their official <a href="https://aws.github.io/amazon-genomics-cli/docs/getting-started/">quick start guide</a>.
           </p>
 
           <div>
             Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
             <pre>{{ params }}</pre>
 
-            Create a wrapper JSON used by AWS AGC.
+            Create a wrapper JSON file, which is used by AWS AGC.
             <pre>{{ wesWrapperJson }}</pre>
 
             Launch the workflow. (Note: Any input files required to run this workflow must be specified using the `--attach` or `-a` command
-            line switch)
+            line switch.)
             <pre>{{ wesLaunchCommand }}</pre>
           </div>
         </div>
