@@ -27,6 +27,7 @@ export abstract class LaunchService {
   public readonly cwlrunnerTooltip = 'Commands for launching tools/workflows through cwl-runner. ' + this.nonStrict;
   public readonly cwltoolTooltip =
     'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' + this.nonStrict;
+  public readonly wesTooltip = 'Commands for provisioning files and launching a workflow against AWS AGC infrastructure.';
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {}
   abstract getParamsString(path: string, versionName: string, currentDescriptor: string): string;
   abstract getCliString(path: string, versionName: string, currentDescriptor: string): string;
