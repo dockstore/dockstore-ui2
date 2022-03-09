@@ -24,7 +24,13 @@ export class RecentEventsComponent implements OnInit {
   noEvents$: Observable<boolean>;
   readonly starringDocUrl = `${Dockstore.DOCUMENTATION_URL}/end-user-topics/starring.html#starring-tools-and-workflows`;
   homepage = true;
-  readonly supportedEventTypes = [Event.TypeEnum.ADDVERSIONTOENTRY, Event.TypeEnum.CREATECOLLECTION, Event.TypeEnum.ADDTOCOLLECTION];
+  readonly supportedEventTypes = [
+    Event.TypeEnum.ADDVERSIONTOENTRY,
+    Event.TypeEnum.CREATECOLLECTION,
+    Event.TypeEnum.ADDTOCOLLECTION,
+    Event.TypeEnum.PUBLISHENTRY,
+    Event.TypeEnum.UNPUBLISHENTRY,
+  ];
   constructor(private recentEventsQuery: RecentEventsQuery, private recentEventsService: RecentEventsService) {}
 
   ngOnInit() {
