@@ -66,8 +66,8 @@
         <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 mat-elevation-z4 pb-3">
           <ng-container
             *ngTemplateOutlet="
-              tool.mode == 'DOCKSTORE_YML' ? workflowSummary : toolSummary;
-              context: tool.mode == 'DOCKSTORE_YML' ? { workflow: tool, isAppTool: true } : { tool: tool }
+              tool.mode === 'DOCKSTORE_YML' ? workflowSummary : toolSummary;
+              context: tool.mode === 'DOCKSTORE_YML' ? { workflow: tool, isAppTool: true } : { tool: tool }
             "
           ></ng-container>
         </mat-card>
