@@ -24,6 +24,7 @@ import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service'
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { Dockstore } from '../../shared/dockstore.model';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
@@ -44,6 +45,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   @Input() selectedVersion: WorkflowVersion;
   @Input() entryType: EntryType;
 
+  Dockstore = Dockstore;
   DockstoreToolType = DockstoreTool;
   WorkflowType = Workflow;
   params: string;
@@ -68,6 +70,9 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   EntryType = EntryType;
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  wesWrapperJson: string;
+  wesLaunchCommand: string;
+  wesTooltip = this.launchService.wesTooltip;
 
   constructor(
     private launchService: WorkflowLaunchService,
@@ -111,6 +116,8 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
     this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
     this.updateWgetTestJsonString(workflowPath, versionName, descriptorType);
+    this.wesLaunchCommand = this.launchService.getWesLaunch(workflowPath, versionName);
+    this.wesWrapperJson = this.launchService.getAgcFileWrapper();
   }
 
   /**
