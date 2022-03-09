@@ -44,7 +44,7 @@
     </mat-card>
     <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
       <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="mat-elevation-z4 pb-3">
-        <ng-container *ngTemplateOutlet="workflowSummary; context: { workflow: workflow }"></ng-container>
+        <ng-container *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, isAppTool: false }"></ng-container>
       </mat-card>
     </div>
   </mat-tab>
@@ -64,18 +64,26 @@
       </mat-card>
       <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
         <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 mat-elevation-z4 pb-3">
-          <ng-container *ngTemplateOutlet="toolSummary; context: { tool: tool }"></ng-container>
+          <ng-container
+            *ngTemplateOutlet="
+              tool.mode == 'DOCKSTORE_YML' ? workflowSummary : toolSummary;
+              context: tool.mode == 'DOCKSTORE_YML' ? { workflow: tool, isAppTool: true } : { tool: tool }
+            "
+          ></ng-container>
         </mat-card>
       </div>
     </div>
   </mat-tab>
 
-  <ng-template #workflowSummary let-workflow="workflow">
+  <ng-template #workflowSummary let-workflow="workflow" let-isAppTool="isAppTool">
     <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-      <a routerLink="/workflows/{{ workflow.full_workflow_path }}" class="no-underline">
+      <a routerLink="{{ isAppTool ? '/containers/' : '/workflows/' }}{{ workflow.full_workflow_path }}" class="no-underline">
         <mat-card-header>
           <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
-            <img src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
+            <img
+              src="../../../assets/svg/sub-nav/{{ isAppTool ? 'tool' : 'workflow' }}.svg"
+              alt="{{ isAppTool ? 'tool' : 'workflow' }} logo"
+            />
             <h4>
               {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
             </h4>
@@ -162,6 +170,7 @@
       </div>
     </div>
   </ng-template>
+
   <!-- Services not done -->
   <mat-tab *ngIf="starredServices">
     <ng-template mat-tab-label>
