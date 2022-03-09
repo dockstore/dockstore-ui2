@@ -126,7 +126,7 @@
             </span>
           </div>
         </div>
-        <a routerLink="/workflows/{{ workflow.full_workflow_path }}" class="no-underline">
+        <a routerLink="{{ isAppTool ? '/containers/' : '/workflows/' }}{{ workflow.full_workflow_path }}" class="no-underline">
           <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
         </a>
       </div>
