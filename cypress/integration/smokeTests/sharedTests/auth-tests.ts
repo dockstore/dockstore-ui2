@@ -6,7 +6,7 @@ import { goToTab } from '../../../support/commands';
  *    2. DockstoreTestUser4 registered on dev.dockstore.net with github and quay accounts linked (at minimum)
  *        -- must have the entries on their github and quay accounts (dockstore-tool-md5sum and hello-dockstore-workflow)
  *    3. Dockstore token for DockstoreTestUser4 must be passed to cypress using the TOKEN environment variable
- *    4. The 'testtest' dockstore organization must exist with 'testcollection' Collection and DockstoreTestUser4 as member
+ *    4. The 'DockstoreAuthTestOrg' dockstore organization must exist with 'SimpleCollection' Collection and DockstoreTestUser4 as member
  *    5. Tests will either fail or be flaky if artifacts are left behind from a failed run (ie tool not deleted or workflow unpublished)
  *        -- if tests keep failing double check that these were removed
  */
@@ -18,7 +18,7 @@ const toolName = 'dockstore-tool-md5sum';
 const toolTuple = ['github.com', username, toolName];
 const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
-const collectionTuple = ['test', 'testcollection'];
+const collectionTuple = ['DockstoreAuthTestOrg', 'SimpleCollection'];
 const hardcodedWaitTime = 8000;
 
 // get the dockstore token from env variable and put it in local storage

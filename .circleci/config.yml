@@ -401,12 +401,19 @@ workflows:
 #          stack: "prod"
 #          context:
 #            - dockerhub
-      # TODO: Add auth tests for staging/prod once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done.
+
       - uptime_monitor_auth:
           stack: "dev"
           context:
             - dockerhub
-
+      - uptime_monitor_auth:
+          stack: "staging"
+          context:
+            - dockerhub
+      - uptime_monitor_auth:
+          stack: "prod"
+          context:
+            - dockerhub
 commands:
   install_container_dependencies:
     steps:
