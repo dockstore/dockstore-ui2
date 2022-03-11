@@ -13,10 +13,19 @@
         <div [ngSwitch]="event?.type">
           <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
             <strong>{{ event.initiatorUser?.username }} </strong> created the {{ event.version?.referenceType | lowercase }}
-            <strong>{{ event.version?.name }}</strong> in {{ event?.tool ? 'tool' : 'workflow' }}
-            <a [routerLink]="event?.tool ? '/tools/' + event?.tool.tool_path : '/workflows/' + event?.workflow.full_workflow_path">{{
-              (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName)
-            }}</a>
+            <strong>{{ event.version?.name }}</strong> in {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+            <a
+              [routerLink]="
+                event?.apptool
+                  ? '/tools/' + event?.apptool.full_workflow_path
+                  : event?.tool
+                  ? '/tools/' + event?.tool.tool_path
+                  : '/workflows/' + event?.workflow.full_workflow_path
+              "
+              >{{
+                (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
+              }}</a
+            >
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
           </div>
@@ -31,16 +40,59 @@
             <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
           </div>
           <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
-            <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool ? 'tool' : 'workflow' }}
-            <a [routerLink]="event?.tool ? '/tools/' + event?.tool.tool_path : '/workflows/' + event?.workflow.full_workflow_path">{{
-              (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName)
-            }}</a>
+            <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+            <a
+              [routerLink]="
+                event?.apptool
+                  ? '/tools/' + event?.apptool.full_workflow_path
+                  : event?.tool
+                  ? '/tools/' + event?.tool.tool_path
+                  : '/workflows/' + event?.workflow.full_workflow_path
+              "
+              >{{
+                (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
+              }}</a
+            >
             to the collection
             <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
               >{{ event.collection?.name }}
             </a>
             in organization
             <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
+          </div>
+          <div *ngSwitchCase="EventType.PUBLISHENTRY">
+            <strong>{{ event.user.username }} </strong> published the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+            <a
+              [routerLink]="
+                event?.apptool
+                  ? '/tools/' + event?.apptool.full_workflow_path
+                  : event?.tool
+                  ? '/tools/' + event?.tool.tool_path
+                  : '/workflows/' + event?.workflow.full_workflow_path
+              "
+              >{{
+                (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
+              }}</a
+            >
+            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
+          </div>
+          <div *ngSwitchCase="EventType.UNPUBLISHENTRY">
+            <strong>{{ event.user.username }} </strong> unpublished the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+            <a
+              [routerLink]="
+                event?.apptool
+                  ? '/tools/' + event?.apptool.full_workflow_path
+                  : event?.tool
+                  ? '/tools/' + event?.tool.tool_path
+                  : '/workflows/' + event?.workflow.full_workflow_path
+              "
+              >{{
+                (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
+              }}</a
+            >
             <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
           </div>
