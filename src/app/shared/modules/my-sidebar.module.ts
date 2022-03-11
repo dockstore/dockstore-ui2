@@ -16,12 +16,12 @@
 
 import { NgModule } from '@angular/core';
 import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
-import { MatButtonModule } from '@angular/material/button';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [MySidebarComponent],
-  imports: [MatButtonModule, RouterModule],
+  imports: [CustomMaterialModule, RouterModule],
   providers: [],
   exports: [MySidebarComponent],
 })

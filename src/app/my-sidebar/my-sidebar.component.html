@@ -17,28 +17,28 @@
 <div fxFlex="0 0 auto">
   <!-- Dashboard links to homepage since page doesn't exist yet -->
   <!-- TO DO: Update routerLink (button and hr) with Dashboard page when avalible -->
-  <button mat-flat-button id="purple" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <button mat-flat-button class="purple" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
     <div><img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /></div>
     Dashboard
   </button>
   <hr routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" />
 
   <!-- My Workflows -->
-  <button mat-flat-button id="workflow" routerLink="/my-workflows" routerLinkActive="active">
+  <button mat-flat-button class="workflow" routerLink="/my-workflows" routerLinkActive="active">
     <div><img src="../assets/svg/my-nav/workflows.svg" alt="my workflows" /></div>
     Workflows
   </button>
   <hr routerLink="/my-workflows" routerLinkActive="active" />
 
   <!-- My Tools -->
-  <button mat-flat-button id="tool" routerLink="/my-tools" routerLinkActive="active">
+  <button mat-flat-button class="tool" routerLink="/my-tools" routerLinkActive="active">
     <div><img src="../assets/svg/my-nav/tools.svg" alt="my tools" /></div>
     Tools
   </button>
   <hr routerLink="/my-tools" routerLinkActive="active" />
 
   <!-- My Services -->
-  <button mat-flat-button id="service" routerLink="/my-services" routerLinkActive="active">
+  <button mat-flat-button class="service" routerLink="/my-services" routerLinkActive="active">
     <div><img src="../assets/svg/my-nav/services.svg" alt="my services" /></div>
     Services
   </button>
@@ -46,21 +46,21 @@
 
   <!-- Organizations page does not exist, framework is commented out for the time being -->
   <!-- TO DO: Update routerLink (button and hr) with Org. page when avalible and uncomment to add to nav bar -->
-  <!-- <button mat-flat-button id="purple" routerLink="/organizations" routerLinkActive="active">
-        <div><img src="../assets/svg/my-nav/organization.svg" alt="my organizations"></div>
+  <!-- <button mat-flat-button class="purple" routerLink="/organizations" routerLinkActive="active">
+        <div><img src="../assets/svg/my-nav/organization.svg" class="pb-1" alt="my organizations"></div>
         Organizations
     </button>
     <hr routerLink="/organizations" routerLinkActive="active"/> -->
 
   <!-- My Starred -->
-  <button mat-flat-button id="purple" routerLink="/starred" routerLinkActive="active">
+  <button mat-flat-button class="purple" routerLink="/starred" routerLinkActive="active">
     <div><img src="../assets/svg/my-nav/starred.svg" class="pb-1" alt="starred" /></div>
     Starred
   </button>
   <hr routerLink="/starred" routerLinkActive="active" />
 
   <!-- My Accounts -->
-  <button mat-flat-button id="purple" routerLink="/accounts" routerLinkActive="active">
+  <button mat-flat-button class="purple" routerLink="/accounts" routerLinkActive="active">
     <div><img src="../assets/svg/my-nav/account.svg" class="pb-1" alt="my account" /></div>
     Account
   </button>

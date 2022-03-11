@@ -62,8 +62,8 @@ hr.active {
   border: 1px solid mat.get-color-from-palette($kim-accent1-success, 2);
 }
 
-// Active button transition
-button.active div {
+// Active button circle
+button div {
   height: 3.6rem;
   width: 3.6rem;
   border-radius: 50%;
@@ -82,21 +82,26 @@ button.active div {
 }
 
 // Active purple circle
-button.active#purple div {
+button.active.purple div {
   background-color: mat.get-color-from-palette($kim-accent1-success, 2);
 }
 
 // Active green workflow circle
-button.active#workflow div {
+button.active.workflow div {
   background-color: $workflow-color;
 }
 
 // Active blue tools circle
-button.active#tool div {
+button.active.tool div {
   background-color: $tool-color;
 }
 
 // Active orange services circle
-button.active#service div {
+button.active.service div {
   background-color: $service-color;
+}
+
+// button hover effect
+button:hover {
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
 }
