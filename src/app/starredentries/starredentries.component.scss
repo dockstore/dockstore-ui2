@@ -90,6 +90,6 @@
 }
 
 // Adds padding to all tab content. May consider adding this to styles.scss but it'll affect a lot of things.
-::ng-deep .mat-tab-body-content {
+:host ::ng-deep .mat-tab-body-content {
   padding-top: 26px;
 }

@@ -42,7 +42,7 @@
     </mat-card>
   </div>
 
-  <div class="row m-1" fxLayout.lt-sm="column">
+  <div class="row m-1" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div fxFlex="80">
       <h3 id="tool-path" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
@@ -97,7 +97,7 @@
         </div>
       </h3>
     </div>
-    <div *ngIf="!publicPage" class="col-md-5">
+    <div *ngIf="!publicPage">
       <h3>
         <app-tool-actions
           [tool]="tool"

@@ -24,6 +24,7 @@ import { GettingStartedComponent } from './widget/getting-started/getting-starte
 import { NewsUpdatesComponent } from './widget/news-updates/news-updates.component';
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
 import { RequestsComponent } from './widget/requests/requests.component';
+import { MySidebarModule } from '../shared/modules/my-sidebar.module';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import { RequestsComponent } from './widget/requests/requests.component';
     MarkdownModule,
     FontAwesomeModule,
     CategoryButtonModule,
+    MySidebarModule,
   ],
   declarations: [
     HomePageComponent,

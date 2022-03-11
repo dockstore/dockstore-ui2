@@ -13,108 +13,117 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<app-header>
-  <span fxLayoutAlign="flex-start center" fxLayoutGap="0.5rem">
-    <button mat-icon-button (click)="toggleSidebar()">
-      <mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
-    </button>
-    <img src="../assets/svg/sub-nav/tool.svg" alt="tool icon" />
-    <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
-  </span>
-</app-header>
 
-<div class="container-fluid sidebar-set-height">
-  <!--Tool Content Page-->
-  <div class="row containers-rsb" style="height: 100%">
-    <mat-sidenav-container autosize class="sidebar-set-height">
-      <mat-sidenav
-        #sidenav
-        mode="side"
-        [(opened)]="showSidebar"
-        class="col-sm-3 col-xs-12"
-        *ngIf="(refreshingMyEntries$ | async) === false"
-      >
-        <div id="parent">
-          <div id="child">
-            <div class="clearfix sidebar-header">
-              <mat-toolbar>
-                <mat-toolbar-row>
-                  <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-                    <span>My tools</span>
-                    <span>
-                      <button
-                        mat-icon-button
-                        color="primary"
-                        id="register_tool_button"
-                        matTooltip="Register tool"
-                        matTooltipPosition="after"
-                        (click)="showRegisterEntryModal()"
-                        [disabled]="isRefreshing$ | async"
-                      >
-                        <mat-icon>add</mat-icon>
-                      </button>
-                    </span>
-                  </div>
-                </mat-toolbar-row>
-              </mat-toolbar>
-            </div>
-            <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
-              You have not registered any tools
-            </p>
-            <app-sidebar-accordion
-              [openOneAtATime]="oneAtATime"
-              [groupEntriesObject]="groupEntriesObject$ | async"
-              [refreshMessage]="isRefreshing$ | async"
-            ></app-sidebar-accordion>
-            <app-workflow-sidebar-accordion
-              [openOneAtATime]="oneAtATime"
-              [groupEntriesObject]="groupAppToolEntryObjects$ | async"
-              [refreshMessage]="isRefreshing$ | async"
-            ></app-workflow-sidebar-accordion>
-          </div>
-        </div>
-      </mat-sidenav>
-      <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div
-          *ngIf="
-            (isRefreshing$ | async) === false &&
-            (hasGroupEntriesObject$ | async) === false &&
-            (hasGroupGitHubAppToolEntriesObjects$ | async) === false
-          "
+<div fxLayout>
+  <div>
+    <app-my-sidebar></app-my-sidebar>
+  </div>
+
+  <div fxLayout="column" fxFlex>
+    <app-header fxFlex>
+      <span fxLayoutAlign="flex-start center" fxLayoutGap="0.5rem">
+        <button mat-icon-button (click)="toggleSidebar()">
+          <mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
+        </button>
+        <img src="../assets/svg/sub-nav/tool.svg" alt="tool icon" />
+        <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
+      </span>
+    </app-header>
+
+    <div class="container-fluid sidebar-set-height">
+      <!--Tool Content Page-->
+      <mat-sidenav-container fxLayout autosize class="sidebar-set-height">
+        <mat-sidenav
+          #sidenav
+          fxFlex="27"
+          fxFlex.lt-md="calc(100vw - 11rem)"
+          class="container-fluid"
+          mode="side"
+          [(opened)]="showSidebar"
+          *ngIf="(refreshingMyEntries$ | async) === false"
         >
-          <div class="col-md-12">
-            <mat-card class="alert alert-info" role="alert">
-              <p>
-                <mat-icon>info</mat-icon>
-                There are currently no tools registered under this account, to add your first tool, do one of the following:
-              </p>
-              <ul>
-                <li>
-                  Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket. Tools
-                  will be synchronized in the linking process.
-                </li>
-                <li>Press the 'Add Tool' button to manually add a tool using the registration wizard.</li>
-                <button
-                  mat-raised-button
-                  class="accent-1-dark-btn"
-                  (click)="showRegisterEntryModal()"
-                  type="button"
-                  [disabled]="isRefreshing$ | async"
-                >
-                  Add Tool
-                </button>
-              </ul>
-              <div *ngIf="!hasGitHubToken" class="mt-3">
-                <button mat-raised-button (click)="link()">
-                  <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
-                </button>
+          <div id="parent">
+            <div id="child">
+              <div class="clearfix sidebar-header">
+                <mat-toolbar>
+                  <mat-toolbar-row>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
+                      <span>My tools</span>
+                      <span>
+                        <button
+                          mat-icon-button
+                          color="primary"
+                          id="register_tool_button"
+                          matTooltip="Register tool"
+                          matTooltipPosition="after"
+                          (click)="showRegisterEntryModal()"
+                          [disabled]="isRefreshing$ | async"
+                        >
+                          <mat-icon>add</mat-icon>
+                        </button>
+                      </span>
+                    </div>
+                  </mat-toolbar-row>
+                </mat-toolbar>
               </div>
-            </mat-card>
+              <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
+                You have not registered any tools
+              </p>
+              <app-sidebar-accordion
+                [openOneAtATime]="oneAtATime"
+                [groupEntriesObject]="groupEntriesObject$ | async"
+                [refreshMessage]="isRefreshing$ | async"
+              ></app-sidebar-accordion>
+              <app-workflow-sidebar-accordion
+                [openOneAtATime]="oneAtATime"
+                [groupEntriesObject]="groupAppToolEntryObjects$ | async"
+                [refreshMessage]="isRefreshing$ | async"
+              ></app-workflow-sidebar-accordion>
+            </div>
           </div>
-        </div>
-
-        <app-container [isToolPublic]="false"></app-container>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
+        </mat-sidenav>
+        <mat-sidenav-content fxFlex class="sidebar-set-height pl-3">
+          <div
+            *ngIf="
+              (isRefreshing$ | async) === false &&
+              (hasGroupEntriesObject$ | async) === false &&
+              (hasGroupGitHubAppToolEntriesObjects$ | async) === false
+            "
+            fxLayout
+          >
+            <div fxFlex>
+              <mat-card class="alert alert-info" role="alert">
+                <p>
+                  <mat-icon>info</mat-icon>
+                  There are currently no tools registered under this account, to add your first tool, do one of the following:
+                </p>
+                <ul>
+                  <li>
+                    Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket.
+                    Tools will be synchronized in the linking process.
+                  </li>
+                  <li>Press the 'Add Tool' button to manually add a tool using the registration wizard.</li>
+                  <button
+                    mat-raised-button
+                    class="accent-1-dark-btn"
+                    (click)="showRegisterEntryModal()"
+                    type="button"
+                    [disabled]="isRefreshing$ | async"
+                  >
+                    Add Tool
+                  </button>
+                </ul>
+                <div *ngIf="!hasGitHubToken" class="mt-3">
+                  <button mat-raised-button (click)="link()">
+                    <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
+                  </button>
+                </div>
+              </mat-card>
+            </div>
+          </div>
+          <app-container [isToolPublic]="false"></app-container>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+    </div>
   </div>
 </div>
