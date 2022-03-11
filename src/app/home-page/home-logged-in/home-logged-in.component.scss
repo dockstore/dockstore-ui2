@@ -40,7 +40,11 @@ ul {
   border-top: 0.1rem solid #e0e1e2;
 }
 
-// Remove 10px layout gap between sidenav and side column
-.side-column {
-  margin-left: -10px;
+// Let sidebar shadow fall on top of side-column
+app-my-sidebar {
+  z-index: 2;
+}
+
+.left-side-column {
+  z-index: 1;
 }
