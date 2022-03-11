@@ -410,10 +410,13 @@ workflows:
           stack: "staging"
           context:
             - dockerhub
-      - uptime_monitor_auth:
-          stack: "prod"
-          context:
-            - dockerhub
+
+# TODO: wait until 1.12 release
+#      - uptime_monitor_auth:
+#          stack: "prod"
+#          context:
+#            - dockerhub
+
 commands:
   install_container_dependencies:
     steps:
