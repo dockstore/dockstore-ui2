@@ -1,5 +1,5 @@
-import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
 import { LambdaEvent } from '../../../src/app/shared/swagger';
+import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('GitHub App Tools', () => {
   resetDB();
@@ -158,6 +158,13 @@ describe('GitHub App Tools', () => {
       cy.get('#starCountButton').should('contain', '1');
       goToTab('Info');
       cy.get('[data-cy=trs-link]').contains('TRS: github.com/C/test-github-app-tools/md5sum');
+    });
+
+    it('Table view', () => {
+      cy.visit('/apptools');
+      cy.url().should('contain', 'apptools');
+      cy.contains('Search app tools');
+      cy.get('[data-cy=entry-link]').should('contain', 'A/l');
     });
   });
 });

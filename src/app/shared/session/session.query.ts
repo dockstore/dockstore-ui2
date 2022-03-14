@@ -28,7 +28,15 @@ import { SessionState, SessionStore } from './session.store';
 export class SessionQuery extends Query<SessionState> {
   isPublic$: Observable<boolean> = this.select((session) => session.isPublic);
   entryType$: Observable<EntryType> = this.select((session) => session.entryType);
-  entryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => entryType + 's'));
+  entryTypeDisplayName$: Observable<string> = this.entryType$.pipe(
+    map((entryType: EntryType) => {
+      if (entryType === EntryType.AppTool) {
+        return 'app tool';
+      }
+      return entryType + ''; // convert to string
+    })
+  );
+  entryPageTitle$: Observable<string> = this.entryTypeDisplayName$.pipe(map((displayName: string) => displayName + 's'));
   myEntryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => 'my ' + entryType + 's'));
   isService$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Service));
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
