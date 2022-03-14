@@ -14,6 +14,7 @@ mat-sidenav-container {
 
 .left-side-column {
   background-color: #f6f8fa;
+  z-index: 1;
 }
 
 @media screen and (min-width: 992px) {
@@ -40,11 +41,7 @@ ul {
   border-top: 0.1rem solid #e0e1e2;
 }
 
-// Let sidebar shadow fall on top of side-column
+// Let sidebar shadow fall on top of left-side-column
 app-my-sidebar {
   z-index: 2;
-}
-
-.left-side-column {
-  z-index: 1;
 }
