@@ -164,7 +164,7 @@ describe('GitHub App Tools', () => {
       cy.visit('/apptools');
       cy.url().should('contain', 'apptools');
       cy.contains('Search app tools');
-      cy.get('[data-cy=entry-link]').should('contain', 'A/l');
+      cy.get('[data-cy=entry-link]').should('contain', 'test-github-app-tools');
     });
   });
 });
