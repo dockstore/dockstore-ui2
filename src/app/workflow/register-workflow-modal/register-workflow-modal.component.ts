@@ -244,6 +244,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.descriptorValidationPattern =
       DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPattern;
     switch (descriptorType) {
+      case Workflow.DescriptorTypeEnum.SMK:
+        this.workflowPathError = validationMessages.smkPath.pattern;
+        break;
       case Workflow.DescriptorTypeEnum.CWL:
         this.workflowPathError = validationMessages.cwlPath.pattern;
         break;

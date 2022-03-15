@@ -1,4 +1,4 @@
-<div *ngIf="showButtons" class="flex-wrap-gap" fxLayout="row wrap" fxLayoutAlign="end start" fxLayoutGap="0.5rem">
+<div *ngIf="showButtons" class="flex-wrap-gap" fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="0.5rem">
   <a
     *ngIf="workflow?.is_published"
     [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"

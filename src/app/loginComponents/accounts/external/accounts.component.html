@@ -131,8 +131,8 @@
             <!-- This button needs to be vertically centered -->
             <button
               *ngIf="row.isLinked === false; else linked"
-              mat-raised-button
-              class="accent-1-dark small-mat-btn-skin small-btn-structure mt-2"
+              mat-button
+              class="accent-1-dark private-btn small-btn-structure mt-2"
               [attr.id]="'link-' + row.name"
               (click)="link(row.source)"
               matTooltip="Link the account"

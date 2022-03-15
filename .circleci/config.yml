@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@3.0.0
   slack: circleci/slack@3.4.2
-  browser-tools: circleci/browser-tools@1.2.3
+  browser-tools: circleci/browser-tools@1.2.4
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -401,11 +401,21 @@ workflows:
 #          stack: "prod"
 #          context:
 #            - dockerhub
-      # TODO: Add auth tests for staging/prod once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done.
+
       - uptime_monitor_auth:
           stack: "dev"
           context:
             - dockerhub
+      - uptime_monitor_auth:
+          stack: "staging"
+          context:
+            - dockerhub
+
+# TODO: wait until 1.12 release
+#      - uptime_monitor_auth:
+#          stack: "prod"
+#          context:
+#            - dockerhub
 
 commands:
   install_container_dependencies:

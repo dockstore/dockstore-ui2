@@ -12,6 +12,7 @@ import { SearchService } from '../state/search.service';
 @Component({
   selector: 'app-basic-search',
   templateUrl: './basic-search.component.html',
+  styleUrls: ['./basic-search.component.scss'],
 })
 export class BasicSearchComponent extends Base implements OnInit {
   constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {

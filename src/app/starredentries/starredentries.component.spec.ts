@@ -7,7 +7,13 @@ import { StarentryService } from './../shared/starentry.service';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { StarringService } from './../starring/starring.service';
 import { OrgLogoService } from './../shared/org-logo.service';
-import { ImageProviderStubService, StarEntryStubService, StarringStubService, UsersStubService, OrgLogoStubService } from './../test/service-stubs';
+import {
+  ImageProviderStubService,
+  StarEntryStubService,
+  StarringStubService,
+  UsersStubService,
+  OrgLogoStubService,
+} from './../test/service-stubs';
 import { StarredEntriesComponent } from './starredentries.component';
 
 describe('StarredEntriesComponent', () => {

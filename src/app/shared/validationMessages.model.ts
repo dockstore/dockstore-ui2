@@ -68,6 +68,7 @@ export const exampleDescriptorPatterns = {
 
 export const validationDescriptorPatterns = {
   gitPath: '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
+  smkPath: '^/([^/?:*|<>]++/)*(Snakefile|[^./?:*|<>]++.smk))$',
   cwlPath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)',
   wdlPath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$',
   nflPath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)',
@@ -80,7 +81,7 @@ export const validationDescriptorPatterns = {
   label: '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   versionTag: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
   reference: '[\\w-]+((/|.)[\\w-]+)*',
-  workflowDescriptorPath: '^/([^\\/?:*|<>]+/)*[^\\/?:*|<>]+.(cwl|wdl|yaml|yml|config|ga)',
+  workflowDescriptorPath: '^/([^\\/?:*|<>]+/)*(Snakefile|[^\\/?:*|<>]+.(smk|cwl|wdl|yaml|yml|config|ga))',
   workflowName: '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
   cwlTestParameterFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
   wdlTestParameterFilePath: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(json|yml|yaml)$',
@@ -93,6 +94,12 @@ export const validationDescriptorPatterns = {
 };
 
 export const validationMessages = {
+  smkPath: {
+    required: 'This field cannot be empty.',
+    minlength: 'Descriptor Path is too short (minimum 3 characters).',
+    maxlength: 'Descriptor Path is too long (max 1000 characters).',
+    pattern: `Descriptor Path must begin with '/' and end with 'Snakefile' or '*.smk'.`,
+  },
   cwlPath: {
     required: 'This field cannot be empty.',
     minlength: 'Descriptor Path is too short (minimum 3 characters).',
@@ -192,7 +199,9 @@ export const validationMessages = {
     required: 'This field cannot be empty.',
     minlength: 'Workflow Path is too short (minimum 3 characters).',
     maxlength: 'Workflow Path is too long (max 1000 characters).',
-    pattern: `Must begin with '/' and end with '*.cwl', '*.yml', '*.yaml', '*.config', or'*.wdl' ` + 'depending on the descriptor type.',
+    pattern:
+      `Must begin with '/' and end with 'Snakefile', '*.smk', '*.cwl', '*.yml', '*.yaml', '*.config', or'*.wdl' ` +
+      'depending on the descriptor type.',
   },
   repository: {
     maxlength: 'Repository Name is too long (max 256 characters).',

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2019 OICR
+ *    Copyright 2017 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,19 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-module.exports = {
-    resolve: {
-      extensions: [".ts", ".js"],
-    },
-    module: {
-      rules: [
-        {
-          test: /\.ts$/,
-          exclude: [/node_modules/],
-          use: [{
-            loader: "ts-loader",
-          }],
-        },
-      ],
-    },
-  };
+
+import { NgModule } from '@angular/core';
+import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { RouterModule } from '@angular/router';
+
+@NgModule({
+  declarations: [MySidebarComponent],
+  imports: [CustomMaterialModule, RouterModule],
+  providers: [],
+  exports: [MySidebarComponent],
+})
+export class MySidebarModule {}

@@ -25,3 +25,9 @@
   padding-right: 17px;
   box-sizing: content-box;
 }
+
+// Overflow-x: hidden is used 1.to enable resizing of mat-sidenav-content 2.to hide mat-sidenav-content when resized to md breakpoint
+// TO DO: Explore additional methods to get the navbar to resize on top of content when in narrow window to remove large white space scrolling
+div[fxLayout='column'] {
+  overflow-x: hidden;
+}

@@ -45,7 +45,9 @@ export class ParamfilesService {
     const descriptorsWithParamfiles: Array<ToolDescriptor.TypeEnum> = [];
     if (versionsFileTypes) {
       for (const type of versionsFileTypes) {
-        if (type === SourceFile.TypeEnum.CWLTESTJSON && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.CWL)) {
+        if (type === SourceFile.TypeEnum.SMKTESTPARAMS && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.SMK)) {
+          descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.SMK);
+        } else if (type === SourceFile.TypeEnum.CWLTESTJSON && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.CWL)) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.CWL);
         } else if (type === SourceFile.TypeEnum.WDLTESTJSON && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.WDL)) {
           descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.WDL);
@@ -75,6 +77,10 @@ export class ParamfilesService {
     if (version) {
       const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
       if (version.validations && versionsFileTypes) {
+        if (this.checkValidFileType(version, SourceFile.TypeEnum.SMKTESTPARAMS, SourceFile.TypeEnum.DOCKSTORESMK, versionsFileTypes)) {
+          descriptorTypes.push(ToolDescriptor.TypeEnum.SMK);
+        }
+
         if (this.checkValidFileType(version, SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.DOCKSTORECWL, versionsFileTypes)) {
           descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
         }

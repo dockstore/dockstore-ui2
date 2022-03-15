@@ -306,7 +306,7 @@ describe('Dockstore Organizations', () => {
     });
 
     // test the fix for DOCK-1945
-    it('stay on collections page when removing an entry',  () => {
+    it('stay on collections page when removing an entry', () => {
       const url: string = '/organizations/Potatoe/collections/veryFakeCollectionName';
       cy.visit(url);
       cy.url().should('include', url);

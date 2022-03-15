@@ -5,8 +5,10 @@ import { goToTab } from '../../../support/commands';
  *    1. Base url for cypress must be set to dev.dockstore.net (or if local make sure user is in local database)
  *    2. DockstoreTestUser4 registered on dev.dockstore.net with github and quay accounts linked (at minimum)
  *        -- must have the entries on their github and quay accounts (dockstore-tool-md5sum and hello-dockstore-workflow)
- *    3. Dockstore token for DockstoreTestUser4 must be passed to cypress using the TOKEN environment variable
- *    4. The 'testtest' dockstore organization must exist with 'testcollection' Collection and DockstoreTestUser4 as member
+ *    3. Dockstore token for DockstoreTestUser4 must be passed to cypress using the TOKEN environment variable. The token environment variable should
+ *    match the target Dockstore stage. DEV_TOKEN, STAGING_TOKEN, and PROD_TOKEN for the respective stages. Cypress env variables must be
+ *    prepended with 'CYPRESS_', so to set the token for dev, you would make an environment variable named CYPRESS_DEV_TOKEN.
+ *    4. The 'DockstoreAuthTestOrg' dockstore organization must exist with 'SimpleCollection' Collection and DockstoreTestUser4 as member
  *    5. Tests will either fail or be flaky if artifacts are left behind from a failed run (ie tool not deleted or workflow unpublished)
  *        -- if tests keep failing double check that these were removed
  */
@@ -14,19 +16,29 @@ import { goToTab } from '../../../support/commands';
 // TODO: for clarity and future debugging refactor variable names to use 'namespace', 'entry-name', call those variable names in methods
 const username = 'dockstoretestuser4';
 // tuples of registry, repo namespace (username), and entry-name (repo name)
-const toolTuple = ['github.com', username, 'dockstore-tool-md5sum'];
+const toolName = 'dockstore-tool-md5sum';
+const toolTuple = ['github.com', username, toolName];
 const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
-const collectionTuple = ['test', 'testcollection'];
+const collectionTuple = ['DockstoreAuthTestOrg', 'SimpleCollection'];
+const hardcodedWaitTime = 8000;
 
 // get the dockstore token from env variable and put it in local storage
 function storeToken() {
-  window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('TOKEN'));
+  if (Cypress.config('baseUrl') === 'https://dockstore.org') {
+    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('PROD_TOKEN'));
+  } else if (Cypress.config('baseUrl') === 'https://staging.dockstore.org') {
+    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('STAGING_TOKEN'));
+  } else {
+    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('DEV_TOKEN'));
+  }
 }
 
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
+    cy.visit('/my-tools');
+    cy.wait(hardcodedWaitTime);
     cy.contains('#publishToolButton', 'Unpublish').should('be.enabled').click();
     cy.contains('#publishToolButton', 'Publish').should('be.enabled');
     cy.contains('#deregisterButton', 'Delete').should('be.enabled');
@@ -38,12 +50,9 @@ function deleteTool() {
     storeToken();
     cy.server();
     cy.route('delete', '**/containers/**').as('containers');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
-    cy.contains('#deregisterButton', 'Delete').should('be.enabled');
-    cy.contains('#deregisterButton', 'Delete').click();
-    // cy.get('#deregisterButton').click();
+    cy.contains('#deregisterButton', 'Delete').should('be.visible').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
-      cy.contains('button', 'Delete').click();
+      cy.contains('button', 'Delete').should('be.visible').click();
     });
     cy.wait('@containers');
     cy.contains('There are currently no tools registered under this account');
@@ -66,25 +75,27 @@ function registerQuayTool(repo: string, name: string) {
     cy.visit('/my-tools');
     cy.wait('@tokens');
     // click thru the steps of registering a tool
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
-    cy.get('#register_tool_button').click();
+    cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
+    cy.get('#register_tool_button').should('be.visible').click();
     cy.wait('@orgs');
-    // cy.wait(1000);
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
-      cy.contains('button', 'Next').click();
-      cy.contains('mat-form-field', 'Select namespace').click();
+      cy.contains('button', 'Next').should('be.visible').click();
+      cy.contains('mat-form-field', 'Select namespace').should('be.visible').click();
     });
-    cy.contains('mat-option', repo).click();
+    cy.contains('mat-option', repo).should('be.visible').click();
     cy.wait('@repos');
     cy.get('mat-dialog-content').within(() => {
       cy.contains('div', name).within(() => {
-        cy.contains('mat-icon', 'sync').click();
+        cy.contains('mat-icon', 'sync').should('be.visible').click();
       });
     });
     cy.wait('@containers');
-    cy.contains('button', 'Finish').click();
-    cy.get('#publishToolButton').click();
+    cy.contains('button', 'Finish').should('be.visible').click();
+    cy.url().should('contain', toolName);
+    cy.contains('button', 'Refresh').should('be.visible').click();
+    cy.wait(hardcodedWaitTime); // The publish button is enabled even when publishing fails, so we need to wait for the refresh to complete.
+    cy.get('#publishToolButton').should('be.visible').click();
     cy.wait('@publish');
   });
 }
@@ -99,16 +110,17 @@ function registerRemoteSitesTool(repo: string, name: string) {
 
     cy.visit('/my-tools');
     cy.wait('@tokens');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
-    cy.get('#register_tool_button').click();
+    cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
+    cy.get('#register_tool_button').should('be.visible').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
-      cy.contains('button', 'Next').click();
+      cy.contains('button', 'Next').should('be.visible').click();
       cy.get('#sourceCodeRepositoryInput').type(`${repo}/${name}`);
       cy.get('#imageRegistryInput').type(`${repo}/${name}`);
-      cy.contains('button', 'Add Tool').click();
+      cy.contains('button', 'Add Tool').should('be.visible').click();
     });
-    cy.get('#publishToolButton').click();
+    cy.url().should('contain', toolName);
+    cy.get('#publishToolButton').should('be.visible').click();
     cy.wait('@publish');
   });
 }
@@ -138,15 +150,15 @@ function registerToolOnDockstore(repo: string, name: string) {
     cy.wait('@metadata');
     cy.wait('@docker');
     cy.wait('@sourceControl');
-    cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
+    cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
     cy.get('#register_tool_button').should('be.visible').click();
     cy.get('mat-dialog-content').within(() => {
-      cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').click();
-      cy.contains('button', 'Next').click();
-      cy.wait(1000);
+      cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').should('be.visible').click();
+      cy.contains('button', 'Next').should('be.visible').click();
       cy.get('#hostedImagePath').type(`${repo}/${name}`);
-      cy.contains('button', 'Add Tool').click();
+      cy.contains('button', 'Add Tool').should('be.visible').click();
     });
+    cy.url().should('contain', toolName);
     // should not be able to publish because there should be no files or versions
     cy.contains('button', 'Publish').should('be.disabled');
   });
@@ -256,10 +268,10 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
       cy.get('#addToolToCollectionButton').should('be.visible').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectOrganization').click();
-      cy.get('mat-option').contains(org).click();
+      cy.get('#selectOrganization').should('be.visible').click();
+      cy.get('mat-option').contains(org).should('be.visible').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectCollection').click();
+      cy.get('#selectCollection').should('be.visible').click();
       cy.get('mat-option').contains(collection).click();
       cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
       cy.wait('@postToCollection');
@@ -272,8 +284,8 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.server();
       cy.visit(`/organizations/${org}/collections/${collection}`);
       cy.contains(`quay.io/${repo}/${name}`);
-      cy.get('#removeEntryButton').click();
-      cy.get('[data-cy=accept-remove-entry-from-org]').click();
+      cy.get('#removeEntryButton').should('be.visible').click();
+      cy.get('[data-cy=accept-remove-entry-from-org]').should('be.visible').click();
       cy.contains('This collection has no associated entries');
       cy.visit(`/organizations/${org}`);
       cy.contains('Members').should('be.visible');
@@ -281,7 +293,6 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.route('**/tokens').as('tokens');
       cy.visit('/my-tools');
       cy.wait('@tokens');
-      cy.wait(2000); // hardcoded 2s wait is least flaky option right now, revisit in future
     });
     unpublishTool();
     deleteTool();
