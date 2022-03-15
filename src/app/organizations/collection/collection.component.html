@@ -49,8 +49,13 @@
       </mat-card>
       <div fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
-          <div *ngIf="gravatarUrl$ | async" fxHide.lt-sm>
-            <img [src]="gravatarUrl$ | async" class="big-org-logo" alt="organization logo" [appFallback]="orgLogoService.DEFAULT_URL" />
+          <div *ngIf="organization?.avatarUrl" fxHide.lt-sm>
+            <img
+              [src]="organization.avatarUrl | gravatar"
+              class="big-org-logo"
+              alt="organization logo"
+              [appFallback]="orgLogoService.DEFAULT_URL"
+            />
           </div>
           <div>
             <h2>
@@ -89,8 +94,8 @@
         <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
         workflow you want to add and select `Add to collection`
       </mat-card>
-      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px" class="my-3">
-        <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
+      <div fxLayout="row wrap" class="my-3">
+        <div fxFlex="1 0 45%" class="mb-4">
           <div fxLayout="column" fxLayoutGap="15px">
             <h3>Workflows & Tools</h3>
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
@@ -165,11 +170,10 @@
           </div>
         </div>
 
-        <div fxFlex fxGrow="1" fxFlex.lt-md="100%">
+        <div fxFlex="1 0 45%">
           <div fxLayout="column" fxLayoutGap="15px">
             <div fxLayout="column" fxLayoutGap="15px">
-              <div fxLayout="row" fxLayoutAlign="space-between">
-                <h3>About the Collection</h3>
+              <div fxLayout="row" fxLayoutAlign="end center">
                 <button
                   mat-raised-button
                   class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
@@ -181,12 +185,17 @@
                   <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit collection description" />Edit
                 </button>
               </div>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <h3>About the Collection</h3>
+              </div>
               <div *ngIf="!collection.description" fxFlex>
                 <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
                 <div *ngIf="(canEdit$ | async) === false" class="text-muted">This collection does not have a description</div>
               </div>
             </div>
-            <app-markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></app-markdown-wrapper>
+            <div>
+              <app-markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></app-markdown-wrapper>
+            </div>
           </div>
         </div>
       </div>

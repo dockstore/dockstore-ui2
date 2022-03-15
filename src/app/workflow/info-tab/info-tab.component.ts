@@ -19,7 +19,8 @@ import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
-import { WorkflowsService } from 'app/shared/openapi';
+import { Author, WorkflowsService } from 'app/shared/openapi';
+import { OrcidAuthorInformation } from 'app/shared/openapi/model/orcidAuthorInformation';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -30,7 +31,7 @@ import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { Author, OrcidAuthor, ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor } from '../../shared/swagger';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
@@ -70,7 +71,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   trsLink: string;
   displayTextForButton: string;
   displayedColumns: string[] = ['name', 'role', 'affiliation', 'email', 'orcid_id'];
-  authors: (Author | OrcidAuthor)[];
+  authors: (Author | OrcidAuthorInformation)[] = [];
   EntryType = EntryType;
   descriptorType$: Observable<ToolDescriptor.TypeEnum | string>;
   isNFL$: Observable<boolean>;
@@ -121,7 +122,10 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
-      this.authors = [...this.selectedVersion.authors, ...this.selectedVersion.orcidAuthors];
+      this.authors = []; // Clear authors so the previous authors are not displayed if the getWorkflowVersionOrcidAuthors call is slow or fails
+      this.workflowsService.getWorkflowVersionOrcidAuthors(this.workflow.id, this.selectedVersion.id).subscribe((orcidAuthors) => {
+        this.authors = [...this.selectedVersion.authors, ...orcidAuthors];
+      });
     } else {
       this.isValidVersion = false;
       this.trsLink = null;

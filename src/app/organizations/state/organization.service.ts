@@ -83,13 +83,4 @@ export class OrganizationService {
         }
       );
   }
-
-  genGravatarUrl(url: string): string {
-    if (url) {
-      const gravatarUrl = 'https://www.gravatar.com/avatar/' + '000' + '?d=' + url;
-      return gravatarUrl;
-    } else {
-      return null;
-    }
-  }
 }

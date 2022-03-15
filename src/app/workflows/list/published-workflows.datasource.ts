@@ -20,6 +20,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
+import { WorkflowSubClass } from '../../shared/openapi';
 import { ProviderService } from '../../shared/provider.service';
 import { Workflow, WorkflowsService } from '../../shared/swagger';
 
@@ -29,6 +30,11 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
   private loadingSubject$ = new BehaviorSubject<boolean>(false);
   public entriesLengthSubject$ = new BehaviorSubject<number>(0);
   public loading$ = this.loadingSubject$.asObservable();
+  readonly entryTypeToWorkflowSubclassMap = new Map<EntryType, WorkflowSubClass>([
+    [EntryType.AppTool, WorkflowSubClass.APPTOOL],
+    [EntryType.BioWorkflow, WorkflowSubClass.BIOWORKFLOW],
+    [EntryType.Service, WorkflowSubClass.SERVICE],
+  ]);
 
   constructor(private workflowsService: WorkflowsService, private providersService: ProviderService) {}
 
@@ -43,9 +49,9 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
    */
   loadEntries(entryType: EntryType, filter: string, sortDirection: 'asc' | 'desc', pageIndex: number, pageSize: number, sortCol: string) {
     this.loadingSubject$.next(true);
-    const isService = entryType === EntryType.Service;
+    const workflowSubClass = this.entryTypeToWorkflowSubclassMap.get(entryType);
     this.workflowsService
-      .allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, isService, 'response')
+      .allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, false, workflowSubClass, 'response')
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject$.next(false))
