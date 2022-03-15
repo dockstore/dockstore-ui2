@@ -110,7 +110,10 @@ export class CreateCollectionService {
     }
 
     const createOrUpdateCollectionForm = this.builder.group({
-      name: [name, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
+      name: [
+        name,
+        [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z](-?[a-zA-Z\d])*$/)],
+      ],
       displayName: [
         displayName,
         [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)],
