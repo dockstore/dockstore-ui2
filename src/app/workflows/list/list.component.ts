@@ -37,6 +37,7 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
 
   public displayedColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
   public entryType$: Observable<EntryType>;
+  public entryTypeDisplayName$: Observable<string>;
   type: 'tool' | 'workflow' = 'workflow';
   constructor(
     private dockstoreService: DockstoreService,
@@ -53,6 +54,7 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
 
   ngOnInit() {
     this.entryType$ = this.sessionQuery.entryType$;
+    this.entryTypeDisplayName$ = this.sessionQuery.entryTypeDisplayName$;
     this.pageSize$ = this.paginatorQuery.workflowPageSize$;
     this.pageIndex$ = this.paginatorQuery.workflowPageIndex$;
     this.dataSource = new PublishedWorkflowsDataSource(this.workflowsService, this.providerService);
