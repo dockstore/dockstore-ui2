@@ -22,14 +22,14 @@
   </ng-template>
   <div [hidden]="previewMode">
     <mat-form-field>
-      <input matInput placeholder="Search {{ entryType$ | async }}s" #input />
+      <input matInput placeholder="Search {{ entryTypeDisplayName$ | async }}s" #input />
     </mat-form-field>
   </div>
   <mat-table [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="repository">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let workflow">
-        <a [routerLink]="'/' + (entryType$ | async) + 's/' + workflow?.full_workflow_path">{{
+        <a [routerLink]="entryType$ | async | routerLink: workflow" data-cy="entry-link">{{
           workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
         }}</a>
       </mat-cell>

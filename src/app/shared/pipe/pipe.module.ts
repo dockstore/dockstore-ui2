@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FilePathPipe } from '../../entry/file-path.pipe';
+import { RouterLinkPipe } from '../../entry/router-link.pipe';
 import { GravatarPipe } from '../../gravatar/gravatar.pipe';
 import { TimeAgoMsgPipe } from '../../organizations/organization/time-ago-msg.pipe';
 import { GetFacetSearchUpdatePipe } from '../../search/facet-search/facet-search-update.pipe';
@@ -18,6 +19,7 @@ const DECLARATIONS: any[] = [
   GetFacetSearchResultsPipe,
   GetFacetSearchUpdatePipe,
   GravatarPipe,
+  RouterLinkPipe,
 ];
 @NgModule({
   imports: [CommonModule],
