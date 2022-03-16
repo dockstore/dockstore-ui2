@@ -8,14 +8,14 @@
       #trigger="matAutocompleteTrigger"
       [matAutocomplete]="auto"
       [formControl]="searchFormControl"
-      matTooltip="Find tools and workflows"
+      matTooltip="Press &lt;Enter&gt; to search"
       [matTooltipPosition]="'after'"
       list="suggestions"
       type="text"
       (keydown.enter)="this.submitSearch(); trigger.closePanel()"
       data-cy="basic-search"
     />
-    <mat-hint align="end">Press &lt;Enter&gt; to search</mat-hint>
+    <!-- <mat-hint align="end">Press &lt;Enter&gt; to search</mat-hint> -->
     <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
       <mat-icon>close</mat-icon>
     </button>
