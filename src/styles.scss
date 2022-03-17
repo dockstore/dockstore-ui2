@@ -358,7 +358,7 @@ h4.title.caption {
 }
 
 a {
-  color: #3d7d86;
+  color: mat.get-color-from-palette($kim-secondary, 2);
   text-decoration: underline;
 }
 
@@ -900,7 +900,7 @@ app-sidebar-accordion
 .bubble {
   color: black !important;
   text-decoration: none !important;
-  border-radius: 1rem !important;
+  border-radius: 0.8rem !important;
   font-size: 12px !important;
   line-height: 26px !important;
   min-height: 26px !important;
@@ -908,6 +908,7 @@ app-sidebar-accordion
   padding: 0 0.75rem !important;
   display: inline-block !important;
   min-width: 32px !important;
+  font-weight: 500 !important;
   background: mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
 
