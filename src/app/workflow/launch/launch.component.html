@@ -62,7 +62,7 @@
           </div>
         </mat-card>
 
-        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)" class="m-2">
+        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <div [matTooltip]="cwlrunnerTooltip">
             {{ cwlrunnerDescription }}
             <pre>{{ cwl }}</pre>

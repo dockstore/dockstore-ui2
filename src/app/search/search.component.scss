@@ -246,6 +246,6 @@ mat-expansion-panel,
 .p-2,
 :host ::ng-deep .mat-accordion app-basic-search .mat-expansion-panel:first-of-type {
   border-radius: 0rem;
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
   box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.1), 0 0.2rem 0.3rem 0 rgba(0, 0, 0, 0.08);
 }
