@@ -1,21 +1,21 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { OrgLogoService } from '../../shared/org-logo.service';
 import { Collection, Organization } from '../../shared/swagger';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
-import { RemoveCollectionDialogComponent, CollectionDialogData } from '../collections/remove-collection/remove-collection.component';
+import { CollectionDialogData, RemoveCollectionDialogComponent } from '../collections/remove-collection/remove-collection.component';
 // eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organization/update-organization-description/update-organization-description.component';
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
-import { bootstrap4mediumModalSize } from '../../shared/constants';
-import { OrgLogoService } from '../../shared/org-logo.service';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
@@ -54,12 +54,11 @@ export class CollectionComponent implements OnInit {
   collection$: Observable<Collection>;
   loadingCollection$: Observable<boolean>;
 
-  organization$: Observable<Collection>;
+  organization$: Observable<Organization>;
   loadingOrganization$: Observable<boolean>;
   canEdit$: Observable<boolean>;
   canDelete$: Observable<boolean>;
   pendingEnum = Organization.StatusEnum.PENDING;
-  gravatarUrl$: Observable<string>;
 
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
@@ -82,7 +81,6 @@ export class CollectionComponent implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.canDelete$ = this.organizationQuery.canDeleteCollection$;
     this.organization$ = this.organizationQuery.organization$;
-    this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;

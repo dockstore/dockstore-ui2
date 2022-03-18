@@ -30,3 +30,13 @@ h5 {
 .labels {
   margin: 0.5rem 0;
 }
+
+// Gap between left/right columns
+div.my-3 {
+  gap: 30px;
+}
+
+// For row wrapping
+.mb-4 {
+  min-width: 500px;
+}

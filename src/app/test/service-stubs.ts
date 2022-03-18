@@ -868,5 +868,6 @@ export class VersionModalStubService {
 }
 
 export class OrgLogoStubService {
-  setDefault(img: any) {}
+  setDefault(img: any) {
+  }
 }

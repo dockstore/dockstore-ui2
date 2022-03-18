@@ -30,9 +30,8 @@ import {
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
 import { forkJoin, Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert/state/alert.service';
-import { formInputDebounceTime } from '../shared/constants';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
 import { SubBucket } from '../shared/models/SubBucket';
@@ -99,6 +98,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   // extra +1 is used to see if there are > 200 results
   public readonly query_size = 201;
   searchTerm = false;
+  public unsubmittedSearchText = '';
 
   /** a map from a field (like _type or author) in elastic search to specific values for that field (tool, workflow) and how many
    results exist in that field after narrowing down based on search */
@@ -183,11 +183,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searchService.toSaveSearch$.next(false);
       }
     });
-    this.searchQuery.searchText$
-      .pipe(debounceTime(formInputDebounceTime), distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
-      .subscribe((searchText: string) => {
-        this.onKey(searchText);
-      });
+
     this.hits = [];
 
     this.aNDSplitFilterText$ = this.advancedSearchQuery.aNDSplitFilterText$;
@@ -205,7 +201,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.hasFacetAutoCompleteTerms$ = this.searchQuery.hasFacetAutoCompleteTerms$;
   }
 
- /**
+  /**
    * Only called when the tab is manually changed by the user
    */
   saveTabIndex(matTabChangeEvent: MatTabChangeEvent) {
@@ -231,6 +227,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // URL is gospel, if it doesn't have a search term, then there's no search term
     if (!paramMap.has('search')) {
       this.searchService.setSearchText('');
+      this.unsubmittedSearchText = '';
     }
     paramMap.keys.forEach((key) => {
       const value = paramMap.getAll(key);
@@ -244,6 +241,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       } else if (key === 'search') {
         this.searchTerm = true;
         this.searchService.setSearchText(value[0]);
+        this.unsubmittedSearchText = value[0];
       } else if (this.advancedSearchOptions.indexOf(key) > -1) {
         this.searchTerm = false;
         if (key.includes('Filter')) {
@@ -266,6 +264,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
     this.updateQuery();
+  }
+
+  handleChanged(searchText: string) {
+    this.unsubmittedSearchText = searchText;
+  }
+
+  handleChangedDebounced(searchText: string) {
+    this.doAutoComplete(searchText);
+  }
+
+  handleSubmitted(searchText: string) {
+    this.doSearch(searchText);
   }
 
   /**===============================================
@@ -495,7 +505,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   resetFilters() {
     this.searchService.reset();
+    this.searchTerm = false;
     this.facetSearchText = '';
+    this.unsubmittedSearchText = '';
   }
 
   resetEntryOrder() {
@@ -513,8 +525,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * ==============================================
    */
 
-  onKey(searchText: string) {
-    /*TODO: FOR DEMO USE, make this better later...*/
+  doAutoComplete(searchText: string) {
     const pattern = searchText + '.*';
     const body = {
       size: 0,
@@ -541,6 +552,10 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.alertService.detailedError(error);
       }
     );
+  }
+
+  doSearch(searchText: string) {
+    this.searchService.setSearchText(searchText);
     this.searchTerm = true;
     if (!searchText || 0 === searchText.length) {
       this.searchTerm = false;
@@ -563,6 +578,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
     }
     this.facetSearchText = '';
+    this.searchService.setSearchText(this.unsubmittedSearchText);
     this.updatePermalink();
   }
 

@@ -33,7 +33,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
     private providerService: ProviderService,
     private usersService: UsersService,
     // private dockstoreService: DockstoreService
-    private orgLogoService: OrgLogoService
+    private orgLogoService: OrgLogoService,
   ) {
     super();
   }

@@ -365,6 +365,11 @@ export class SearchService {
   }
 
   reset() {
+    // If we simply set the search text to '', and the current value is '', the associated observable won't produce a new value and the basic search component text box won't be reset.
+    // Avoid the above by first setting the search text to a different "blankish" value.
+    this.setSearchText(' ');
+    this.setSearchText('');
+
     this.router.navigateByUrl('search');
   }
 
