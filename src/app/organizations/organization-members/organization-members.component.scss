@@ -1,12 +1,22 @@
+@use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
 .header-image {
   background-size: cover;
 }
 
+mat-card {
+  padding: 0.7rem 0.9rem;
+}
+
 .mat-card-avatar {
   height: 50px !important;
   width: 50px !important;
+}
+
+// Allow word break/wrapping for long usernames (ex. emails)
+h5 {
+  word-break: break-all;
 }
 
 .orcid {
@@ -18,21 +28,8 @@
   border: 0;
 }
 
-.mat-standard-chip {
-  font-size: 1.1rem;
-  border-radius: 1rem;
-  padding: none;
-}
-
 a {
-  text-decoration: underline;
-}
-
-.role-display {
-  background: #e0e0e0;
-  border-radius: 1rem;
-  padding: 0.5rem 0.7rem;
-  font-size: 1.3rem;
+  color: mat.get-color-from-palette($kim-secondary, 2);
 }
 
 * {
