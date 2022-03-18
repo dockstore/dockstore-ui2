@@ -64,7 +64,7 @@
                       <img
                         *ngIf="org.avatarUrl; else placeholder"
                         class="small-org-logo"
-                        [src]="org.avatarUrl"
+                        [src]="org.avatarUrl | gravatar"
                         alt="org logo"
                         [appFallback]="orgLogoService.DEFAULT_URL"
                       />

@@ -14,12 +14,12 @@
  *    limitations under the License.
  */
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBarConfig, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { MatTooltipDefaultOptions, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -31,15 +31,17 @@ import { AboutComponent } from './about/about.component';
 import { AppComponent } from './app.component';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
+import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
 import { ConfigurationService } from './configuration.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
-import { InformationDialogComponent } from './information-dialog/information-dialog.component';
+import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FooterComponent } from './footer/footer.component';
 import { GitTagPipe } from './footer/git-tag.pipe';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
 import { HomePageModule } from './home-page/home-page.module';
+import { InformationDialogComponent } from './information-dialog/information-dialog.component';
 import { CustomHeaderInterceptor } from './interceptors/custom-header.interceptor';
 import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
 import { LoginComponent } from './login/login.component';
@@ -78,6 +80,7 @@ import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
 import { HeaderModule } from './shared/modules/header.module';
+import { ImgFallbackModule } from './shared/modules/img-fallback.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
@@ -85,7 +88,9 @@ import { OrderByModule } from './shared/modules/orderby.module';
 import { SnackbarModule } from './shared/modules/snackbar.module';
 import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
 import { GA4GHV20Service } from './shared/openapi/api/gA4GHV20.service';
+import { OrgLogoService } from './shared/org-logo.service';
 import { PagenumberService } from './shared/pagenumber.service';
+import { PipeModule } from './shared/pipe/pipe.module';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
 import { ApiModule } from './shared/swagger/api.module';
@@ -104,10 +109,6 @@ import { TosBannerComponent } from './tosBanner/tos-banner.component';
 import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/exporter-step/exporter-step.component';
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
-import { FileTreeComponent } from './file-tree/file-tree.component';
-import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
-import { OrgLogoService } from './shared/org-logo.service';
-import { ImgFallbackModule } from './shared/modules/img-fallback.module';
 import { MySidebarModule } from './shared/modules/my-sidebar.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -192,6 +193,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     HttpClientModule,
     SnackbarModule,
     ImgFallbackModule,
+    PipeModule,
     MySidebarModule,
   ],
   providers: [

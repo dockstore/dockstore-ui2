@@ -24,6 +24,9 @@ import { EntryType } from '../../shared/enum/entry-type';
 @Injectable()
 export class WorkflowLaunchService extends LaunchService {
   private type = 'workflow';
+  private wesInputFile = 'Dockstore.json';
+  private agcWrapperFile = 'agcWrapper.json';
+
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {
     super(descriptorTypeCompatService);
   }
@@ -63,5 +66,13 @@ export class WorkflowLaunchService extends LaunchService {
 
   getCheckWorkflowString(path: string, versionName: string): string {
     return this.getCheckEntry(path, versionName);
+  }
+
+  getWesLaunch(workflowPath: string, versionName: string) {
+    return `dockstore workflow wes launch --entry ${workflowPath}:${versionName} --json ${this.agcWrapperFile} -a ${this.wesInputFile}`;
+  }
+
+  getAgcFileWrapper() {
+    return `echo '{\"workflowInputs\": \"${this.wesInputFile}\"}' > ${this.agcWrapperFile}`;
   }
 }
