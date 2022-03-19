@@ -60,6 +60,29 @@ export class DescriptorLanguageService {
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map((combined) => this.filterLanguages(combined[0], combined[1])));
   }
+
+  static testParameterTypeEnumToToolDescriptorEnum(sourceFileType: SourceFile.TypeEnum | null): ToolDescriptor.TypeEnum | null {
+    return DescriptorLanguageService.testSourceFileTypeEnumToExtendedDescriptorLanguageBean(sourceFileType).toolDescriptorEnum;
+  }
+
+  static testSourceFileTypeEnumToExtendedDescriptorLanguageBean(
+    sourceFileType: SourceFile.TypeEnum | null
+  ): ExtendedDescriptorLanguageBean {
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.testParameterFileType === sourceFileType
+    );
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
+  }
+
+  static descriptorSourceFileTypeEnumToExtendedDescriptorLanguageBean(
+    sourceFileType: SourceFile.TypeEnum | null
+  ): ExtendedDescriptorLanguageBean {
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find((extendedDescriptorLanguage) =>
+      extendedDescriptorLanguage.descriptorFileTypes.includes(sourceFileType)
+    );
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
+  }
+
   static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
     return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
   }
