@@ -67,11 +67,6 @@ describe('Service: DescriptorLanguage', () => {
     expect(innerHTML).toEqual(
       `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
     );
-    descriptorLanguageBeans.push({ friendlyName: 'hmm', value: 'service' });
-    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
-    expect(innerHTML).toEqual(
-      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
-    );
     descriptorLanguageBeans.push({ friendlyName: 'cow', value: 'SMK' });
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
@@ -81,6 +76,11 @@ describe('Service: DescriptorLanguage', () => {
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
       `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>, <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>, or <a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>`
+    );
+    descriptorLanguageBeans.push({ friendlyName: 'hmm', value: 'service' });
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
+    expect(innerHTML).toEqual(
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>, <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>, <a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>, or <a href="https://docs.dockstore.org/en/stable/getting-started/getting-started-with-services.html?highlight=service#services" target="_blank" rel="noopener noreferrer">Service</a>`
     );
   });
   it('should be able to get descriptor path placeholder', () => {
