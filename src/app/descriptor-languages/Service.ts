@@ -12,6 +12,8 @@ export const extendedService: ExtendedDescriptorLanguageBean = {
   descriptorPathPlaceholder: 'e.g. /.dockstore.yml',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.SERVICE,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Service,
+  languageDocumentationURL:
+    'https://docs.dockstore.org/en/stable/getting-started/getting-started-with-services.html?highlight=service#services',
   plainTRS: 'PLAIN-SERVICE',
   descriptorFileTypes: [],
   toolTab: {

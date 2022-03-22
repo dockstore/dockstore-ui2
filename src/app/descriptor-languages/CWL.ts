@@ -11,6 +11,7 @@ export const extendedCWL: ExtendedDescriptorLanguageBean = {
   descriptorPathPlaceholder: 'e.g. /Dockstore.cwl',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.CWL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.CWL,
+  languageDocumentationURL: 'https://www.commonwl.org/',
   plainTRS: 'PLAIN-CWL',
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTORECWL],
   toolTab: {
