@@ -18,6 +18,7 @@ import { first } from 'rxjs/operators';
 import { ToolDescriptor, Workflow } from '../swagger';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 import { DescriptorLanguageService } from './descriptor-language.service';
+import { SourceFile } from '../openapi';
 
 describe('Service: DescriptorLanguage', () => {
   let metadataServiceSpy;
@@ -70,6 +71,23 @@ describe('Service: DescriptorLanguage', () => {
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
       `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, or <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>`
+    );
+    descriptorLanguageBeans.push({ friendlyName: 'cow', value: 'SMK' });
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
+    expect(innerHTML).toEqual(
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>,
+                <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>,
+                <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>, or
+                <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>`
+    );
+    descriptorLanguageBeans.push({ friendlyName: 'goat', value: 'gxformat2' });
+    innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
+    expect(innerHTML).toEqual(
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>,
+                <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>,
+                <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>,
+                <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>, or
+                <a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>`
     );
   });
   it('should be able to get descriptor path placeholder', () => {
@@ -158,6 +176,23 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(null);
     expect(placeholder).toEqual(null);
     placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    expect(placeholder).toEqual(null);
+  });
+
+  it('should be able to get Tool descriptor enum from SourceFile type enum', () => {
+    let placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.SMKTESTPARAMS);
+    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.SMK);
+    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.CWLTESTJSON);
+    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.CWL);
+    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.CWLTESTJSON);
+    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.WDL);
+    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.WDLTESTJSON);
+    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.SMK);
+    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.NEXTFLOWTESTPARAMS);
+    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.NFL);
+    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.GXFORMAT2TESTFILE);
+    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.GXFORMAT2);
+    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(<SourceFile.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual(null);
   });
 });

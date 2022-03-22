@@ -222,7 +222,7 @@ export class DescriptorLanguageService {
         descriptorLanguageBean.value
       );
       innerHTMLArray.push(
-        `<a href="${extendedDescriptorLanguageBean.languageDocumentationURL}" target="_blank" rel="noopener noreferrer">${extendedDescriptorLanguageBean.value}</a>`
+        `<a href="${extendedDescriptorLanguageBean.languageDocumentationURL}" target="_blank" rel="noopener noreferrer">${extendedDescriptorLanguageBean.shortFriendlyName}</a>`
       );
 
       // switch (descriptorLanguageBean.value) {
