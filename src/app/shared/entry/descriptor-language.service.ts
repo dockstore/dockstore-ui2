@@ -25,7 +25,7 @@ import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
 import { SourceFile, ToolDescriptor } from '../swagger';
 import { Workflow } from '../swagger/model/workflow';
-import { validationDescriptorPatterns } from '../validationMessages.model';
+// import { validationDescriptorPatterns } from '../validationMessages.model';
 import { MetadataService } from './../swagger/api/metadata.service';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 
@@ -75,7 +75,7 @@ export class DescriptorLanguageService {
   }
 
   static descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
-    descriptorLanguageBeanValue: String | null
+    descriptorLanguageBeanValue: string | null
   ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.value === descriptorLanguageBeanValue
