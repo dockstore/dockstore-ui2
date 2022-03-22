@@ -184,10 +184,8 @@ describe('Service: DescriptorLanguage', () => {
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.SMK);
     placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.CWLTESTJSON);
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.CWL);
-    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.CWLTESTJSON);
-    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.WDL);
     placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.WDLTESTJSON);
-    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.SMK);
+    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.WDL);
     placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.NEXTFLOWTESTPARAMS);
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.NFL);
     placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.GXFORMAT2TESTFILE);
