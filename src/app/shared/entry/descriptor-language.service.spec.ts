@@ -75,19 +75,12 @@ describe('Service: DescriptorLanguage', () => {
     descriptorLanguageBeans.push({ friendlyName: 'cow', value: 'SMK' });
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
-      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>,
-                <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>,
-                <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>, or
-                <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>`
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>, or <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>`
     );
     descriptorLanguageBeans.push({ friendlyName: 'goat', value: 'gxformat2' });
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
-      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>,
-                <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>,
-                <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>,
-                <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>, or
-                <a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>`
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>, <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>, or <a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>`
     );
   });
   it('should be able to get descriptor path placeholder', () => {
