@@ -19,6 +19,7 @@ import { FilesService } from '../../workflow/files/state/files.service';
 import { GA4GHV20Service } from '../openapi';
 import { ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
+import { DescriptorLanguageService } from '../entry/descriptor-language.service';
 
 @Injectable({
   providedIn: 'root',
@@ -43,14 +44,15 @@ export class GA4GHFilesService {
     this.clearFiles();
     this.filesService.removeAll();
     if (!descriptorTypes) {
-      descriptorTypes = [
-        ToolDescriptor.TypeEnum.SMK,
-        ToolDescriptor.TypeEnum.CWL,
-        ToolDescriptor.TypeEnum.WDL,
-        // DOCKSTORE-2428 - demo how to add new workflow language
-        // ToolDescriptor.TypeEnum.SWL,
-        ToolDescriptor.TypeEnum.NFL,
-      ];
+      // descriptorTypes = [
+      //   ToolDescriptor.TypeEnum.SMK,
+      //   ToolDescriptor.TypeEnum.CWL,
+      //   ToolDescriptor.TypeEnum.WDL,
+      //   // DOCKSTORE-2428 - demo how to add new workflow language
+      //   // ToolDescriptor.TypeEnum.SWL,
+      //   ToolDescriptor.TypeEnum.NFL,
+      // ];
+      descriptorTypes = DescriptorLanguageService.getDescriptorLanguagesToolTypes();
     }
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach((descriptorType) => {

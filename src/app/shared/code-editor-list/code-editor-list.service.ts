@@ -39,23 +39,29 @@ export class CodeEditorListService {
         return true;
       }
       case 'descriptor': {
-        return (
-          (descriptorType === ToolDescriptor.TypeEnum.SMK && sourcefileType === SourceFile.TypeEnum.DOCKSTORESMK) ||
-          (descriptorType === ToolDescriptor.TypeEnum.CWL && sourcefileType === SourceFile.TypeEnum.DOCKSTORECWL) ||
-          (descriptorType === ToolDescriptor.TypeEnum.WDL && sourcefileType === SourceFile.TypeEnum.DOCKSTOREWDL) ||
-          (descriptorType === ToolDescriptor.TypeEnum.NFL &&
-            (sourcefileType === SourceFile.TypeEnum.NEXTFLOW || sourcefileType === SourceFile.TypeEnum.NEXTFLOWCONFIG)) ||
-          (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && sourcefileType === Validation.TypeEnum.DOCKSTOREGXFORMAT2)
-        );
+        return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+          descriptorType
+        ).descriptorFileTypes.includes(sourcefileType);
+        // return (
+        //   (descriptorType === ToolDescriptor.TypeEnum.SMK && sourcefileType === SourceFile.TypeEnum.DOCKSTORESMK) ||
+        //   (descriptorType === ToolDescriptor.TypeEnum.CWL && sourcefileType === SourceFile.TypeEnum.DOCKSTORECWL) ||
+        //   (descriptorType === ToolDescriptor.TypeEnum.WDL && sourcefileType === SourceFile.TypeEnum.DOCKSTOREWDL) ||
+        //   (descriptorType === ToolDescriptor.TypeEnum.NFL &&
+        //     (sourcefileType === SourceFile.TypeEnum.NEXTFLOW || sourcefileType === SourceFile.TypeEnum.NEXTFLOWCONFIG)) ||
+        //   (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && sourcefileType === Validation.TypeEnum.DOCKSTOREGXFORMAT2)
+        // );
       }
       case 'testParam': {
-        return (
-          (descriptorType === ToolDescriptor.TypeEnum.SMK && sourcefileType === SourceFile.TypeEnum.SMKTESTPARAMS) ||
-          (descriptorType === ToolDescriptor.TypeEnum.CWL && sourcefileType === SourceFile.TypeEnum.CWLTESTJSON) ||
-          (descriptorType === ToolDescriptor.TypeEnum.WDL && sourcefileType === SourceFile.TypeEnum.WDLTESTJSON) ||
-          (descriptorType === ToolDescriptor.TypeEnum.NFL && sourcefileType === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS) ||
-          (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && sourcefileType === Validation.TypeEnum.GXFORMAT2TESTFILE)
-        );
+        return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+          descriptorType
+        ).testParameterFileType.includes(sourcefileType);
+        // return (
+        //   (descriptorType === ToolDescriptor.TypeEnum.SMK && sourcefileType === SourceFile.TypeEnum.SMKTESTPARAMS) ||
+        //   (descriptorType === ToolDescriptor.TypeEnum.CWL && sourcefileType === SourceFile.TypeEnum.CWLTESTJSON) ||
+        //   (descriptorType === ToolDescriptor.TypeEnum.WDL && sourcefileType === SourceFile.TypeEnum.WDLTESTJSON) ||
+        //   (descriptorType === ToolDescriptor.TypeEnum.NFL && sourcefileType === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS) ||
+        //   (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && sourcefileType === Validation.TypeEnum.GXFORMAT2TESTFILE)
+        // );
       }
     }
   }
@@ -121,25 +127,40 @@ export class CodeEditorListService {
           );
           break;
         }
-        case ToolDescriptor.TypeEnum.SMK:
-        case ToolDescriptor.TypeEnum.CWL:
-        case ToolDescriptor.TypeEnum.WDL:
-        case ToolDescriptor.TypeEnum.GXFORMAT2: {
+        // case ToolDescriptor.TypeEnum.SMK:
+        // case ToolDescriptor.TypeEnum.CWL:
+        // case ToolDescriptor.TypeEnum.WDL:
+        // case ToolDescriptor.TypeEnum.GXFORMAT2: {
+        //   const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
+        //   if (defaultDescriptorPath) {
+        //     CodeEditorListService.pushFileIfNotNull(
+        //       filesToAdd,
+        //       CodeEditorListService.createSourceFile(defaultDescriptorPath, descriptorType, fileType)
+        //     );
+        //   }
+        //   break;
+        // }
+        // default: {
+        //   CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
+        //   CodeEditorListService.pushFileIfNotNull(
+        //     filesToAdd,
+        //     CodeEditorListService.createSourceFile('/Dockstore' + newFilePath, descriptorType, fileType)
+        //   );
+        // }
+        default: {
           const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
           if (defaultDescriptorPath) {
             CodeEditorListService.pushFileIfNotNull(
               filesToAdd,
               CodeEditorListService.createSourceFile(defaultDescriptorPath, descriptorType, fileType)
             );
+          } else {
+            CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
+            CodeEditorListService.pushFileIfNotNull(
+              filesToAdd,
+              CodeEditorListService.createSourceFile('/Dockstore' + newFilePath, descriptorType, fileType)
+            );
           }
-          break;
-        }
-        default: {
-          CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
-          CodeEditorListService.pushFileIfNotNull(
-            filesToAdd,
-            CodeEditorListService.createSourceFile('/Dockstore' + newFilePath, descriptorType, fileType)
-          );
         }
       }
     } else if (!CodeEditorListService.hasPrimaryTestParam(descriptorType, sourcefiles) && fileType === 'testParam') {
@@ -204,10 +225,27 @@ export class CodeEditorListService {
               return SourceFile.TypeEnum.NEXTFLOW;
             }
           }
-          case ToolDescriptor.TypeEnum.SMK:
-          case ToolDescriptor.TypeEnum.CWL:
-          case ToolDescriptor.TypeEnum.WDL:
-          case ToolDescriptor.TypeEnum.GXFORMAT2: {
+          // case ToolDescriptor.TypeEnum.SMK:
+          // case ToolDescriptor.TypeEnum.CWL:
+          // case ToolDescriptor.TypeEnum.WDL:
+          // case ToolDescriptor.TypeEnum.GXFORMAT2: {
+          //   const descriptorFileTypes =
+          //     DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorFileTypes;
+          //   if (descriptorFileTypes && descriptorFileTypes.length > 0) {
+          //     return descriptorFileTypes[0];
+          //   } else {
+          //     CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
+          //     // Defaulting to CWL for some reason
+          //     return SourceFile.TypeEnum.DOCKSTORECWL;
+          //   }
+          // }
+          // default: {
+          //     CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
+          //     // Defaulting to CWL for some reason
+          //     return SourceFile.TypeEnum.DOCKSTORECWL;
+          // }
+
+          default: {
             const descriptorFileTypes =
               DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorFileTypes;
             if (descriptorFileTypes && descriptorFileTypes.length > 0) {
@@ -217,11 +255,6 @@ export class CodeEditorListService {
               // Defaulting to CWL for some reason
               return SourceFile.TypeEnum.DOCKSTORECWL;
             }
-          }
-          default: {
-            CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
-            // Defaulting to CWL for some reason
-            return SourceFile.TypeEnum.DOCKSTORECWL;
           }
         }
       }

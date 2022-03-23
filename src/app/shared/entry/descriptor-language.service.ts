@@ -92,6 +92,25 @@ export class DescriptorLanguageService {
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
+  /**
+   * This gets the list of descriptor languages tool Types
+   *
+   * @returns {Array<string>}
+   */
+  static getDescriptorLanguagesToolTypes(): Array<string> {
+    const tooTypesArray: Array<string> = [];
+    extendedDescriptorLanguages.forEach((descriptorLanguageBean) => {
+      const extendedDescriptorLanguageBean = DescriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
+        descriptorLanguageBean.value
+      );
+      // Don't include Services at this time
+      if (descriptorLanguageBean.toolDescriptorEnum != ToolDescriptor.TypeEnum.SERVICE) {
+        tooTypesArray.push(extendedDescriptorLanguageBean.toolDescriptorEnum);
+      }
+    });
+    return tooTypesArray;
+  }
+
   static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
     return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
   }
