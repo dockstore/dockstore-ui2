@@ -186,4 +186,26 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(<SourceFile.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual(null);
   });
+
+  it('should be able to get descriptor path list', () => {
+    let placeholder = DescriptorLanguageService.getDescriptorLanguagesDefaultDescriptorPaths();
+    expect(placeholder).toContain('/Dockstore.cwl');
+    expect(placeholder).toContain('/Dockstore.yml'); // Galaxy
+    expect(placeholder).toContain('/nextflow.config');
+    expect(placeholder).toContain('/Snakefile');
+    expect(placeholder).toContain('/Dockstore.wdl');
+    // Service not included at this time
+    expect(placeholder).not.toContain('/.dockstore.yml');
+  });
+
+  it('should be able to get tool descriptor types list', () => {
+    let placeholder = DescriptorLanguageService.getDescriptorLanguagesToolTypes();
+    expect(placeholder).toContain(ToolDescriptor.TypeEnum.CWL);
+    expect(placeholder).toContain(ToolDescriptor.TypeEnum.GXFORMAT2);
+    expect(placeholder).toContain(ToolDescriptor.TypeEnum.NFL);
+    expect(placeholder).toContain(ToolDescriptor.TypeEnum.SMK);
+    expect(placeholder).toContain(ToolDescriptor.TypeEnum.WDL);
+    // Service not included at this time
+    expect(placeholder).not.toContain(ToolDescriptor.TypeEnum.SERVICE);
+  });
 });

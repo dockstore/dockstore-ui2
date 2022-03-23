@@ -25,19 +25,13 @@ import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
 import { SourceFile, ToolDescriptor } from '../swagger';
 import { Workflow } from '../swagger/model/workflow';
-// import { validationDescriptorPatterns } from '../validationMessages.model';
 import { MetadataService } from './../swagger/api/metadata.service';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 
 @Injectable()
 export class DescriptorLanguageService {
   // Known value for the DescriptorLanguageBeans
-  // readonly knownSMKValue = 'SMK';
-  // readonly knownCWLValue = 'CWL';
-  // readonly knownWDLValue = 'WDL';
-  // readonly knownNFLValue = 'NFL';
   readonly knownServiceValue = 'service';
-  // readonly knownGalaxyValue = 'gxformat2';
 
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public descriptorLanguagesInnerHTML$: Observable<string>;
@@ -79,15 +73,6 @@ export class DescriptorLanguageService {
   ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.value === descriptorLanguageBeanValue
-    );
-    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
-  }
-
-  static descriptorSourceFileTypeEnumToExtendedDescriptorLanguageBean(
-    sourceFileType: SourceFile.TypeEnum | null
-  ): ExtendedDescriptorLanguageBean {
-    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find((extendedDescriptorLanguage) =>
-      extendedDescriptorLanguage.descriptorFileTypes.includes(sourceFileType)
     );
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
@@ -203,28 +188,6 @@ export class DescriptorLanguageService {
    */
   getDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): string {
     return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPattern;
-
-    // switch (descriptorType) {
-    //   case ToolDescriptor.TypeEnum.SMK: {
-    //     return validationDescriptorPatterns.smkPath;
-    //   }
-    //   case ToolDescriptor.TypeEnum.CWL: {
-    //     return validationDescriptorPatterns.cwlPath;
-    //   }
-    //   case ToolDescriptor.TypeEnum.WDL: {
-    //     return validationDescriptorPatterns.wdlPath;
-    //   }
-    //   case ToolDescriptor.TypeEnum.NFL: {
-    //     return validationDescriptorPatterns.nflPath;
-    //   }
-    //   case ToolDescriptor.TypeEnum.SERVICE: {
-    //     return '.*';
-    //   }
-    //   default: {
-    //     this.genericUnhandledTypeError(descriptorType);
-    //     return '.*';
-    //   }
-    // }
   }
 
   /**
@@ -262,32 +225,6 @@ export class DescriptorLanguageService {
       innerHTMLArray.push(
         `<a href="${extendedDescriptorLanguageBean.languageDocumentationURL}" target="_blank" rel="noopener noreferrer">${extendedDescriptorLanguageBean.shortFriendlyName}</a>`
       );
-
-      // switch (descriptorLanguageBean.value) {
-      //   case this.knownSMKValue: {
-      //     innerHTMLArray.push('<a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">SMK</a>');
-      //     break;
-      //   }
-      //   case this.knownCWLValue: {
-      //     innerHTMLArray.push('<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>');
-      //     break;
-      //   }
-      //   case this.knownWDLValue: {
-      //     innerHTMLArray.push('<a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>');
-      //     break;
-      //   }
-      //   case this.knownNFLValue: {
-      //     innerHTMLArray.push('<a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>');
-      //     break;
-      //   }
-      //   case this.knownGalaxyValue: {
-      //     innerHTMLArray.push('<a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>');
-      //     break;
-      //   }
-      //   default: {
-      //     this.genericUnhandledTypeError(descriptorLanguageBean.value);
-      //   }
-      // }
     });
     const length = innerHTMLArray.length;
     if (length === 0) {

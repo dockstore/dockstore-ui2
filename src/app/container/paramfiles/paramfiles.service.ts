@@ -42,34 +42,6 @@ export class ParamfilesService {
     }
   }
 
-  // // get descriptors which have test parameter files
-  // getDescriptors(versionsFileTypes: Array<SourceFile.TypeEnum>): Array<ToolDescriptor.TypeEnum> {
-  //   const descriptorsWithParamfiles: Array<ToolDescriptor.TypeEnum> = [];
-  //   if (versionsFileTypes) {
-  //     for (const type of versionsFileTypes) {
-  //       if (type === SourceFile.TypeEnum.SMKTESTPARAMS && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.SMK)) {
-  //         descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.SMK);
-  //       } else if (type === SourceFile.TypeEnum.CWLTESTJSON && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.CWL)) {
-  //         descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.CWL);
-  //       } else if (type === SourceFile.TypeEnum.WDLTESTJSON && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.WDL)) {
-  //         descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.WDL);
-  //       } else if (type === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.NFL)) {
-  //         descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.NFL);
-  //       } else if (
-  //         type === SourceFile.TypeEnum.GXFORMAT2TESTFILE &&
-  //         !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.GXFORMAT2)
-  //       ) {
-  //         descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.GXFORMAT2);
-  //       }
-  //       // DOCKSTORE-2428 - demo how to add new workflow language
-  //       // else if (type === 'SWL_TEST_JSON' && !descriptorsWithParamfiles.includes(ToolDescriptor.TypeEnum.SWL)) {
-  //       //   descriptorsWithParamfiles.push(ToolDescriptor.TypeEnum.SWL);
-  //       // }
-  //     }
-  //   }
-  //   return descriptorsWithParamfiles;
-  // }
-
   // get descriptors which have test parameter files
   getDescriptors(versionsFileTypes: Array<SourceFile.TypeEnum>): Array<ToolDescriptor.TypeEnum> {
     const descriptorsWithParamfiles: Array<ToolDescriptor.TypeEnum> = [];
@@ -83,47 +55,6 @@ export class ParamfilesService {
     }
     return descriptorsWithParamfiles;
   }
-
-  /**
-   * Gets the descriptor types (CWL/WDL/NFL) that are valid and have valid test parameter files
-   * @param version the current selected version of the workflow or tool
-   * @returns an array that may contain 'CWL' or 'WDL' or 'NFL'
-   */
-  // getValidDescriptors(version: WorkflowVersion | Tag, versionsFileTypes: Array<SourceFile.TypeEnum>) {
-  //   if (version) {
-  //     const descriptorTypes: Array<ToolDescriptor.TypeEnum> = [];
-  //     if (version.validations && versionsFileTypes) {
-  //       if (this.checkValidFileType(version, SourceFile.TypeEnum.SMKTESTPARAMS, SourceFile.TypeEnum.DOCKSTORESMK, versionsFileTypes)) {
-  //         descriptorTypes.push(ToolDescriptor.TypeEnum.SMK);
-  //       }
-  //
-  //       if (this.checkValidFileType(version, SourceFile.TypeEnum.CWLTESTJSON, SourceFile.TypeEnum.DOCKSTORECWL, versionsFileTypes)) {
-  //         descriptorTypes.push(ToolDescriptor.TypeEnum.CWL);
-  //       }
-  //
-  //       if (this.checkValidFileType(version, SourceFile.TypeEnum.WDLTESTJSON, SourceFile.TypeEnum.DOCKSTOREWDL, versionsFileTypes)) {
-  //         descriptorTypes.push(ToolDescriptor.TypeEnum.WDL);
-  //       }
-  //
-  //       if (
-  //         this.checkValidFileType(version, SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, SourceFile.TypeEnum.NEXTFLOWCONFIG, versionsFileTypes)
-  //       ) {
-  //         descriptorTypes.push(ToolDescriptor.TypeEnum.NFL);
-  //       }
-  //
-  //       if (
-  //         this.checkValidFileType(version, SourceFile.TypeEnum.GXFORMAT2TESTFILE, SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, versionsFileTypes)
-  //       ) {
-  //         descriptorTypes.push(ToolDescriptor.TypeEnum.GXFORMAT2);
-  //       }
-  //       // DOCKSTORE-2428 - demo how to add new workflow language
-  //       // if (this.checkValidFileType(version, SourceFile.TypeEnum.SWLTESTJSON, SourceFile.TypeEnum.DOCKSTORESWL)) {
-  //       //   descriptorTypes.push(ToolDescriptor.TypeEnum.SWL);
-  //       // }
-  //     }
-  //     return descriptorTypes;
-  //   }
-  // }
 
   getValidDescriptors(version: WorkflowVersion | Tag, versionsFileTypes: Array<SourceFile.TypeEnum>) {
     if (version) {
