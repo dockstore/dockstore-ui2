@@ -78,19 +78,22 @@ export class CodeEditorListService {
     if (!path) {
       return false;
     }
-    const primaryDescriptors = [
-      // SMK
-      '/Snakefile',
-      // CWL
-      '/Dockstore.cwl',
-      // WDL
-      '/Dockstore.wdl',
-      // NFL
-      CodeEditorListService.NEXTFLOW_CONFIG_PATH,
-      CodeEditorListService.NEXTFLOW_PATH,
-      // Galaxy
-      '/Dockstore.yml',
-    ];
+    // const primaryDescriptors = [
+    //   // SMK
+    //   '/Snakefile',
+    //   // CWL
+    //   '/Dockstore.cwl',
+    //   // WDL
+    //   '/Dockstore.wdl',
+    //   // NFL
+    //   CodeEditorListService.NEXTFLOW_CONFIG_PATH,
+    //   CodeEditorListService.NEXTFLOW_PATH,
+    //   // Galaxy
+    //   '/Dockstore.yml',
+    // ];
+    const primaryDescriptors = DescriptorLanguageService.getDescriptorLanguagesDefaultDescriptorPaths();
+    // CodeEditorListService.NEXTFLOW_PATH isn't currently in Nextflow.ts/extendedDescriptorLanguage
+    primaryDescriptors.push(CodeEditorListService.NEXTFLOW_PATH);
     return primaryDescriptors.includes(path);
   }
 

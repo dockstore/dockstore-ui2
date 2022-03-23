@@ -111,6 +111,25 @@ export class DescriptorLanguageService {
     return tooTypesArray;
   }
 
+  /**
+   * This gets the list of default descriptor paths
+   *
+   * @returns {Array<string>}
+   */
+  static getDescriptorLanguagesDefaultDescriptorPaths(): Array<string> {
+    const descriptorPathArray: Array<string> = [];
+    extendedDescriptorLanguages.forEach((descriptorLanguageBean) => {
+      const extendedDescriptorLanguageBean = DescriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
+        descriptorLanguageBean.value
+      );
+      // Don't include Services at this time
+      if (descriptorLanguageBean.toolDescriptorEnum != ToolDescriptor.TypeEnum.SERVICE) {
+        descriptorPathArray.push(extendedDescriptorLanguageBean.defaultDescriptorPath);
+      }
+    });
+    return descriptorPathArray;
+  }
+
   static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
     return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
   }
