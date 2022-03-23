@@ -24,7 +24,7 @@
         <mat-icon>warning</mat-icon> This section is only available for valid versions. A valid version requires a valid descriptor file.
       </mat-card>
     </div>
-    <div *ngIf="_selectedVersion.valid">
+    <div *ngIf="_selectedVersion.valid" fxLayout="column" fxLayoutGap="1rem">
       <div fxLayout="column" fxLayoutGap="1rem">
         <mat-card *ngIf="entryType === EntryType.Tool" class="alert alert-info" role="alert">
           <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
@@ -62,7 +62,7 @@
           </div>
         </mat-card>
 
-        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)" class="m-2">
+        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <div [matTooltip]="cwlrunnerTooltip">
             {{ cwlrunnerDescription }}
             <pre>{{ cwl }}</pre>
