@@ -21,7 +21,7 @@ describe('CodeEditorListService', () => {
     expect(CodeEditorListService.isPrimaryDescriptor('/Dockstore.potato')).toBe(false);
   });
 
-  it('should be able to know if path is a primary descriptor', () => {
+  it('should be able to determine files to add', () => {
     // Brand new hosted workflow with no descriptors
     const primarySMKFile = { content: '', absolutePath: '/Snakefile', path: '/Snakefile', type: SourceFile.TypeEnum.DOCKSTORESMK };
     const secondarySMKFile = { content: '', absolutePath: '/.smk', path: '/.smk', type: SourceFile.TypeEnum.DOCKSTORESMK };
