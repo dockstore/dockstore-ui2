@@ -94,8 +94,8 @@ export class ParamfilesService {
   ) {
     // Check that the language has a valid descriptor
     const descriptorValidation = version.validations.find((validation: Validation) => {
+      // This will now be true if there is any descriptor of the input type
       return descriptorTypes.includes(validation.type);
-      // return validation.type === descriptorType;
     });
 
     if (!(descriptorValidation && descriptorValidation.valid)) {

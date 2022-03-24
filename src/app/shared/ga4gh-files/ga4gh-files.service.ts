@@ -17,7 +17,6 @@ import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { FilesService } from '../../workflow/files/state/files.service';
 import { GA4GHV20Service } from '../openapi';
-import { ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
 
