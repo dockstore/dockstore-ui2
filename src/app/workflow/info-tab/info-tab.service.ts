@@ -203,7 +203,7 @@ export class InfoTabService {
    */
   private changeWorkflowPathToDefaults(workflow: Workflow): Workflow {
     const descriptorType: ToolDescriptor.TypeEnum = this.descriptorTypeCompatService.stringToDescriptorType(workflow.descriptorType);
-    const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
+    const defaultDescriptorPath = this.descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
     if (defaultDescriptorPath) {
       workflow.workflow_path = defaultDescriptorPath;
     } else {

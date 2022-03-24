@@ -55,22 +55,18 @@ export class DescriptorLanguageService {
     this.filteredDescriptorLanguages$ = combined$.pipe(map((combined) => this.filterLanguages(combined[0], combined[1])));
   }
 
-  static testParameterTypeEnumToToolDescriptorEnum(sourceFileType: SourceFile.TypeEnum | null): ToolDescriptor.TypeEnum | null {
-    return DescriptorLanguageService.testSourceFileTypeEnumToExtendedDescriptorLanguageBean(sourceFileType).toolDescriptorEnum;
+  testParameterTypeEnumToToolDescriptorEnum(sourceFileType: SourceFile.TypeEnum | null): ToolDescriptor.TypeEnum | null {
+    return this.testSourceFileTypeEnumToExtendedDescriptorLanguageBean(sourceFileType).toolDescriptorEnum;
   }
 
-  static testSourceFileTypeEnumToExtendedDescriptorLanguageBean(
-    sourceFileType: SourceFile.TypeEnum | null
-  ): ExtendedDescriptorLanguageBean {
+  testSourceFileTypeEnumToExtendedDescriptorLanguageBean(sourceFileType: SourceFile.TypeEnum | null): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.testParameterFileType === sourceFileType
     );
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
-  static descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
-    descriptorLanguageBeanValue: string | null
-  ): ExtendedDescriptorLanguageBean {
+  descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBeanValue: string | null): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.value === descriptorLanguageBeanValue
     );
@@ -82,12 +78,10 @@ export class DescriptorLanguageService {
    *
    * @returns {Array<string>}
    */
-  static getDescriptorLanguagesToolTypes(): Array<string> {
+  getDescriptorLanguagesToolTypes(): Array<string> {
     const tooTypesArray: Array<string> = [];
     extendedDescriptorLanguages.forEach((descriptorLanguageBean) => {
-      const extendedDescriptorLanguageBean = DescriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
-        descriptorLanguageBean.value
-      );
+      const extendedDescriptorLanguageBean = this.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBean.value);
       // Don't include Services at this time
       if (descriptorLanguageBean.toolDescriptorEnum != ToolDescriptor.TypeEnum.SERVICE) {
         tooTypesArray.push(extendedDescriptorLanguageBean.toolDescriptorEnum);
@@ -101,12 +95,10 @@ export class DescriptorLanguageService {
    *
    * @returns {Array<string>}
    */
-  static getDescriptorLanguagesDefaultDescriptorPaths(): Array<string> {
+  getDescriptorLanguagesDefaultDescriptorPaths(): Array<string> {
     const descriptorPathArray: Array<string> = [];
     extendedDescriptorLanguages.forEach((descriptorLanguageBean) => {
-      const extendedDescriptorLanguageBean = DescriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
-        descriptorLanguageBean.value
-      );
+      const extendedDescriptorLanguageBean = this.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBean.value);
       // Don't include Services at this time
       if (descriptorLanguageBean.toolDescriptorEnum != ToolDescriptor.TypeEnum.SERVICE) {
         descriptorPathArray.push(extendedDescriptorLanguageBean.defaultDescriptorPath);
@@ -115,28 +107,26 @@ export class DescriptorLanguageService {
     return descriptorPathArray;
   }
 
-  static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
+  toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
+    return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
   }
 
-  static toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
-    descriptorType: ToolDescriptor.TypeEnum | null
-  ): ExtendedDescriptorLanguageBean {
+  toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType: ToolDescriptor.TypeEnum | null): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
-  static toolDescriptorTypeEnumTotestParameterFileType(descriptorType: ToolDescriptor.TypeEnum): SourceFile.TypeEnum | null {
+  toolDescriptorTypeEnumTotestParameterFileType(descriptorType: ToolDescriptor.TypeEnum): SourceFile.TypeEnum | null {
     return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType;
   }
 
-  static workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
+  workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
     return this.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflowDescriptorTypeEnum).shortFriendlyName;
   }
 
-  static workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+  workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
     descriptorType: Workflow.DescriptorTypeEnum | null
   ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
@@ -187,7 +177,7 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   getDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): string {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPattern;
+    return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPattern;
   }
 
   /**
@@ -198,7 +188,7 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum | null): string {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
+    return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
   }
 
   genericUnhandledTypeError(type: any): void {
@@ -219,9 +209,7 @@ export class DescriptorLanguageService {
     }
 
     descriptorLanguageBeans.forEach((descriptorLanguageBean) => {
-      const extendedDescriptorLanguageBean = DescriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
-        descriptorLanguageBean.value
-      );
+      const extendedDescriptorLanguageBean = this.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBean.value);
       innerHTMLArray.push(
         `<a href="${extendedDescriptorLanguageBean.languageDocumentationURL}" target="_blank" rel="noopener noreferrer">${extendedDescriptorLanguageBean.shortFriendlyName}</a>`
       );

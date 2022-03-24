@@ -22,13 +22,23 @@ import { SourceFile, ToolFile, Workflow } from 'app/shared/swagger';
   name: 'mapFriendlyValue',
 })
 export class MapFriendlyValuesPipe implements PipeTransform {
-  readonly shortFriendlySMKName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.SMK);
-  readonly shortFriendlyCWLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
-  readonly shortFriendlyWDLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
-  readonly shortFriendlyNFLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
-  readonly shortFriendlyGalaxyName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+  readonly shortFriendlySMKName = this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+    Workflow.DescriptorTypeEnum.SMK
+  );
+  readonly shortFriendlyCWLName = this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+    Workflow.DescriptorTypeEnum.CWL
+  );
+  readonly shortFriendlyWDLName = this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+    Workflow.DescriptorTypeEnum.WDL
+  );
+  readonly shortFriendlyNFLName = this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+    Workflow.DescriptorTypeEnum.NFL
+  );
+  readonly shortFriendlyGalaxyName = this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
     Workflow.DescriptorTypeEnum.Gxformat2
   );
+
+  constructor(private descriptorLanguageService: DescriptorLanguageService) {}
 
   // For instances in which we know it is nullable and don't need an console.error
   readonly nullableKeys = ['reference'];

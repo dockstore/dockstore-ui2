@@ -15,7 +15,7 @@ import { FileCategory } from './code-editor-list.component';
 export class CodeEditorListService {
   static readonly NEXTFLOW_CONFIG_PATH = '/nextflow.config';
   static readonly NEXTFLOW_PATH = '/main.nf';
-  constructor() {}
+  constructor(private descriptorLanguageService: DescriptorLanguageService) {}
   /**
    * Determines whether to show the current sourcefile based on the descriptor type and tab
    *
@@ -26,7 +26,7 @@ export class CodeEditorListService {
    * @returns {boolean} Whether to show sourcefile or not
    * @memberof CodeEditorListService
    */
-  static showSourcefile(
+  showSourcefile(
     sourcefileType: SourceFile.TypeEnum | null | undefined,
     fileCategory: FileCategory | null | undefined,
     descriptorType: ToolDescriptor.TypeEnum | null | undefined
@@ -39,13 +39,13 @@ export class CodeEditorListService {
         return true;
       }
       case 'descriptor': {
-        return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
-          descriptorType
-        ).descriptorFileTypes.includes(sourcefileType);
+        return this.descriptorLanguageService
+          .toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType)
+          .descriptorFileTypes.includes(sourcefileType);
       }
       case 'testParam': {
         return (
-          DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType ===
+          this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType ===
           sourcefileType
         );
       }
@@ -60,11 +60,11 @@ export class CodeEditorListService {
    * @returns {boolean}
    * @memberof CodeEditorListService
    */
-  static isPrimaryDescriptor(path: string | null): boolean {
+  isPrimaryDescriptor(path: string | null): boolean {
     if (!path) {
       return false;
     }
-    const primaryDescriptors = DescriptorLanguageService.getDescriptorLanguagesDefaultDescriptorPaths();
+    const primaryDescriptors = this.descriptorLanguageService.getDescriptorLanguagesDefaultDescriptorPaths();
     // CodeEditorListService.NEXTFLOW_PATH isn't currently in Nextflow.ts/extendedDescriptorLanguage
     primaryDescriptors.push(CodeEditorListService.NEXTFLOW_PATH);
     return primaryDescriptors.includes(path);
@@ -80,7 +80,7 @@ export class CodeEditorListService {
    * @returns {SourceFile[]}
    * @memberof CodeEditorListService
    */
-  static determineFilesToAdd(
+  determineFilesToAdd(
     descriptorType: ToolDescriptor.TypeEnum | null | undefined,
     fileType: FileCategory | null | undefined,
     sourcefiles: SourceFile[] | null | undefined
@@ -92,46 +92,34 @@ export class CodeEditorListService {
     const newFilePath = CodeEditorListService.getDefaultPath(fileType, descriptorType);
     if (!CodeEditorListService.hasPrimaryDescriptor(descriptorType, sourcefiles) && fileType === 'descriptor') {
       if (descriptorType === ToolDescriptor.TypeEnum.NFL) {
-        const nextflowConfigFile = CodeEditorListService.createSourceFile(CodeEditorListService.NEXTFLOW_PATH, descriptorType, fileType);
-        if (nextflowConfigFile) {
-          CodeEditorListService.pushFileIfNotNull(filesToAdd, nextflowConfigFile);
-        }
         CodeEditorListService.pushFileIfNotNull(
           filesToAdd,
-          CodeEditorListService.createSourceFile(CodeEditorListService.NEXTFLOW_CONFIG_PATH, descriptorType, fileType)
+          this.createSourceFile(CodeEditorListService.NEXTFLOW_PATH, descriptorType, fileType)
+        );
+        CodeEditorListService.pushFileIfNotNull(
+          filesToAdd,
+          this.createSourceFile(CodeEditorListService.NEXTFLOW_CONFIG_PATH, descriptorType, fileType)
         );
       } else {
-        const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
+        const defaultDescriptorPath = this.descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
         if (defaultDescriptorPath) {
-          CodeEditorListService.pushFileIfNotNull(
-            filesToAdd,
-            CodeEditorListService.createSourceFile(defaultDescriptorPath, descriptorType, fileType)
-          );
+          CodeEditorListService.pushFileIfNotNull(filesToAdd, this.createSourceFile(defaultDescriptorPath, descriptorType, fileType));
         } else {
           CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
-          CodeEditorListService.pushFileIfNotNull(
-            filesToAdd,
-            CodeEditorListService.createSourceFile('/Dockstore' + newFilePath, descriptorType, fileType)
-          );
+          CodeEditorListService.pushFileIfNotNull(filesToAdd, this.createSourceFile('/Dockstore' + newFilePath, descriptorType, fileType));
         }
       }
     } else if (!CodeEditorListService.hasPrimaryTestParam(descriptorType, sourcefiles) && fileType === 'testParam') {
       if (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2) {
-        CodeEditorListService.pushFileIfNotNull(
-          filesToAdd,
-          CodeEditorListService.createSourceFile('/test.galaxy.json', descriptorType, fileType)
-        );
+        CodeEditorListService.pushFileIfNotNull(filesToAdd, this.createSourceFile('/test.galaxy.json', descriptorType, fileType));
       } else {
         CodeEditorListService.pushFileIfNotNull(
           filesToAdd,
-          CodeEditorListService.createSourceFile('/test.' + descriptorType.toLowerCase() + newFilePath, descriptorType, fileType)
+          this.createSourceFile('/test.' + descriptorType.toLowerCase() + newFilePath, descriptorType, fileType)
         );
       }
     } else {
-      CodeEditorListService.pushFileIfNotNull(
-        filesToAdd,
-        CodeEditorListService.createSourceFile('/' + newFilePath, descriptorType, fileType)
-      );
+      CodeEditorListService.pushFileIfNotNull(filesToAdd, this.createSourceFile('/' + newFilePath, descriptorType, fileType));
     }
     return filesToAdd;
   }
@@ -162,11 +150,7 @@ export class CodeEditorListService {
    * @returns {(SourceFile.TypeEnum | null)}
    * @memberof CodeEditorListService
    */
-  private static getFileType(
-    filepath: string,
-    descriptorType: ToolDescriptor.TypeEnum,
-    fileType: FileCategory
-  ): SourceFile.TypeEnum | null {
+  private getFileType(filepath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): SourceFile.TypeEnum | null {
     switch (fileType) {
       case 'descriptor': {
         if (descriptorType === ToolDescriptor.TypeEnum.NFL) {
@@ -177,7 +161,7 @@ export class CodeEditorListService {
           }
         } else {
           const descriptorFileTypes =
-            DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorFileTypes;
+            this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorFileTypes;
           if (descriptorFileTypes && descriptorFileTypes.length > 0) {
             return descriptorFileTypes[0];
           } else {
@@ -188,7 +172,7 @@ export class CodeEditorListService {
         }
       }
       case 'testParam': {
-        return DescriptorLanguageService.toolDescriptorTypeEnumTotestParameterFileType(descriptorType);
+        return this.descriptorLanguageService.toolDescriptorTypeEnumTotestParameterFileType(descriptorType);
       }
       case 'dockerfile': {
         return SourceFile.TypeEnum.DOCKERFILE;
@@ -207,8 +191,8 @@ export class CodeEditorListService {
    * @returns {(SourceFile | null)}
    * @memberof CodeEditorListService
    */
-  private static createSourceFile(newFilePath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): SourceFile | null {
-    const type = CodeEditorListService.getFileType(newFilePath, descriptorType, fileType);
+  private createSourceFile(newFilePath: string, descriptorType: ToolDescriptor.TypeEnum, fileType: FileCategory): SourceFile | null {
+    const type = this.getFileType(newFilePath, descriptorType, fileType);
     if (type) {
       return {
         // Absolute path is completely unused by the backend

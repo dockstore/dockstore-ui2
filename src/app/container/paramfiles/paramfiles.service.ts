@@ -30,7 +30,11 @@ export class ParamfilesService {
   // - get versions with test paramfiles
   // - get descriptors with test paramfiles for each version
 
-  constructor(private containersService: ContainersService, private workflowsService: WorkflowsService) {}
+  constructor(
+    private containersService: ContainersService,
+    private workflowsService: WorkflowsService,
+    private descriptorLanguageService: DescriptorLanguageService
+  ) {}
 
   getFiles(id: number, type: string, versionName?: string, descriptor?: ToolDescriptor.TypeEnum) {
     if (type === 'workflows') {
@@ -47,7 +51,7 @@ export class ParamfilesService {
     const descriptorsWithParamfiles: Array<ToolDescriptor.TypeEnum> = [];
     if (versionsFileTypes) {
       for (const type of versionsFileTypes) {
-        const toolDescriptorTypeEnum = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(type);
+        const toolDescriptorTypeEnum = this.descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(type);
         if (toolDescriptorTypeEnum && !descriptorsWithParamfiles.includes(toolDescriptorTypeEnum)) {
           descriptorsWithParamfiles.push(toolDescriptorTypeEnum);
         }

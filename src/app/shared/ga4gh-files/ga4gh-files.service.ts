@@ -24,7 +24,12 @@ import { DescriptorLanguageService } from '../entry/descriptor-language.service'
   providedIn: 'root',
 })
 export class GA4GHFilesService {
-  constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHV20Service, private filesService: FilesService) {}
+  constructor(
+    private ga4ghFilesStore: GA4GHFilesStore,
+    private ga4ghService: GA4GHV20Service,
+    private filesService: FilesService,
+    private descriptorLanguageService: DescriptorLanguageService
+  ) {}
 
   /**
    * Updates all GA4GH files from all descriptor types unless specific ones provided
@@ -43,7 +48,7 @@ export class GA4GHFilesService {
     this.clearFiles();
     this.filesService.removeAll();
     if (!descriptorTypes) {
-      descriptorTypes = DescriptorLanguageService.getDescriptorLanguagesToolTypes();
+      descriptorTypes = this.descriptorLanguageService.getDescriptorLanguagesToolTypes();
     }
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach((descriptorType) => {

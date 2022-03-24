@@ -131,7 +131,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
 
   registerCheckerWorkflow(): void {
     const extendedDescriptorLanguageBean: ExtendedDescriptorLanguageBean =
-      DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(this.descriptorType);
+      this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(this.descriptorType);
     if (extendedDescriptorLanguageBean) {
       this.registerCheckerWorkflowService.registerCheckerWorkflow(
         this.workflowPath,
