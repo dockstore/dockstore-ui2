@@ -42,26 +42,12 @@ export class CodeEditorListService {
         return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
           descriptorType
         ).descriptorFileTypes.includes(sourcefileType);
-        // return (
-        //   (descriptorType === ToolDescriptor.TypeEnum.SMK && sourcefileType === SourceFile.TypeEnum.DOCKSTORESMK) ||
-        //   (descriptorType === ToolDescriptor.TypeEnum.CWL && sourcefileType === SourceFile.TypeEnum.DOCKSTORECWL) ||
-        //   (descriptorType === ToolDescriptor.TypeEnum.WDL && sourcefileType === SourceFile.TypeEnum.DOCKSTOREWDL) ||
-        //   (descriptorType === ToolDescriptor.TypeEnum.NFL &&
-        //     (sourcefileType === SourceFile.TypeEnum.NEXTFLOW || sourcefileType === SourceFile.TypeEnum.NEXTFLOWCONFIG)) ||
-        //   (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && sourcefileType === Validation.TypeEnum.DOCKSTOREGXFORMAT2)
-        // );
       }
       case 'testParam': {
-        return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
-          descriptorType
-        ).testParameterFileType.includes(sourcefileType);
-        // return (
-        //   (descriptorType === ToolDescriptor.TypeEnum.SMK && sourcefileType === SourceFile.TypeEnum.SMKTESTPARAMS) ||
-        //   (descriptorType === ToolDescriptor.TypeEnum.CWL && sourcefileType === SourceFile.TypeEnum.CWLTESTJSON) ||
-        //   (descriptorType === ToolDescriptor.TypeEnum.WDL && sourcefileType === SourceFile.TypeEnum.WDLTESTJSON) ||
-        //   (descriptorType === ToolDescriptor.TypeEnum.NFL && sourcefileType === SourceFile.TypeEnum.NEXTFLOWTESTPARAMS) ||
-        //   (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2 && sourcefileType === Validation.TypeEnum.GXFORMAT2TESTFILE)
-        // );
+        return (
+          DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType ===
+          sourcefileType
+        );
       }
     }
   }
