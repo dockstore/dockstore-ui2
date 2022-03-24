@@ -91,32 +91,28 @@ export class CodeEditorListService {
     const filesToAdd: SourceFile[] = [];
     const newFilePath = CodeEditorListService.getDefaultPath(fileType, descriptorType);
     if (!CodeEditorListService.hasPrimaryDescriptor(descriptorType, sourcefiles) && fileType === 'descriptor') {
-      switch (descriptorType) {
-        case ToolDescriptor.TypeEnum.NFL: {
-          const nextflowConfigFile = CodeEditorListService.createSourceFile(CodeEditorListService.NEXTFLOW_PATH, descriptorType, fileType);
-          if (nextflowConfigFile) {
-            CodeEditorListService.pushFileIfNotNull(filesToAdd, nextflowConfigFile);
-          }
+      if (descriptorType === ToolDescriptor.TypeEnum.NFL) {
+        const nextflowConfigFile = CodeEditorListService.createSourceFile(CodeEditorListService.NEXTFLOW_PATH, descriptorType, fileType);
+        if (nextflowConfigFile) {
+          CodeEditorListService.pushFileIfNotNull(filesToAdd, nextflowConfigFile);
+        }
+        CodeEditorListService.pushFileIfNotNull(
+          filesToAdd,
+          CodeEditorListService.createSourceFile(CodeEditorListService.NEXTFLOW_CONFIG_PATH, descriptorType, fileType)
+        );
+      } else {
+        const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
+        if (defaultDescriptorPath) {
           CodeEditorListService.pushFileIfNotNull(
             filesToAdd,
-            CodeEditorListService.createSourceFile(CodeEditorListService.NEXTFLOW_CONFIG_PATH, descriptorType, fileType)
+            CodeEditorListService.createSourceFile(defaultDescriptorPath, descriptorType, fileType)
           );
-          break;
-        }
-        default: {
-          const defaultDescriptorPath = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
-          if (defaultDescriptorPath) {
-            CodeEditorListService.pushFileIfNotNull(
-              filesToAdd,
-              CodeEditorListService.createSourceFile(defaultDescriptorPath, descriptorType, fileType)
-            );
-          } else {
-            CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
-            CodeEditorListService.pushFileIfNotNull(
-              filesToAdd,
-              CodeEditorListService.createSourceFile('/Dockstore' + newFilePath, descriptorType, fileType)
-            );
-          }
+        } else {
+          CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
+          CodeEditorListService.pushFileIfNotNull(
+            filesToAdd,
+            CodeEditorListService.createSourceFile('/Dockstore' + newFilePath, descriptorType, fileType)
+          );
         }
       }
     } else if (!CodeEditorListService.hasPrimaryTestParam(descriptorType, sourcefiles) && fileType === 'testParam') {
@@ -173,24 +169,21 @@ export class CodeEditorListService {
   ): SourceFile.TypeEnum | null {
     switch (fileType) {
       case 'descriptor': {
-        switch (descriptorType) {
-          case ToolDescriptor.TypeEnum.NFL: {
-            if (filepath === CodeEditorListService.NEXTFLOW_CONFIG_PATH) {
-              return SourceFile.TypeEnum.NEXTFLOWCONFIG;
-            } else {
-              return SourceFile.TypeEnum.NEXTFLOW;
-            }
+        if (descriptorType === ToolDescriptor.TypeEnum.NFL) {
+          if (filepath === CodeEditorListService.NEXTFLOW_CONFIG_PATH) {
+            return SourceFile.TypeEnum.NEXTFLOWCONFIG;
+          } else {
+            return SourceFile.TypeEnum.NEXTFLOW;
           }
-          default: {
-            const descriptorFileTypes =
-              DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorFileTypes;
-            if (descriptorFileTypes && descriptorFileTypes.length > 0) {
-              return descriptorFileTypes[0];
-            } else {
-              CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
-              // Defaulting to CWL for some reason
-              return SourceFile.TypeEnum.DOCKSTORECWL;
-            }
+        } else {
+          const descriptorFileTypes =
+            DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorFileTypes;
+          if (descriptorFileTypes && descriptorFileTypes.length > 0) {
+            return descriptorFileTypes[0];
+          } else {
+            CodeEditorListService.unhandledHostedWorkflowDescriptorType(descriptorType);
+            // Defaulting to CWL for some reason
+            return SourceFile.TypeEnum.DOCKSTORECWL;
           }
         }
       }
