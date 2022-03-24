@@ -120,15 +120,15 @@ describe('CodeEditorListService', () => {
 
     expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'dockerfile', [])).toEqual([testDockerFile]);
 
-    // Unhandled hosted workflow descriptor type
     const weirdServiceFile = {
       content: '',
-      absolutePath: '/Dockstore.service',
-      path: '/Dockstore.service',
+      absolutePath: '/.dockstore.yml',
+      path: '/.dockstore.yml',
       type: SourceFile.TypeEnum.DOCKSTORECWL,
     };
-    // expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.SERVICE, 'descriptor', [])).toEqual([weirdServiceFile]);
+    expect(CodeEditorListService.determineFilesToAdd(ToolDescriptor.TypeEnum.SERVICE, 'descriptor', [])).toEqual([weirdServiceFile]);
   });
+
   it('should be able to determine whether to show the sourcefile in the current tab or not', () => {
     // Descriptor tab
     expect(CodeEditorListService.showSourcefile(SourceFile.TypeEnum.DOCKSTORESMK, 'descriptor', ToolDescriptor.TypeEnum.SMK)).toBe(true);
