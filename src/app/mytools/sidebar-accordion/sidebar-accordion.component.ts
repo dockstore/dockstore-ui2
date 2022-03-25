@@ -1,8 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { DockstoreTool } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { OrgToolObject } from '../my-tool/my-tool.component';
+
+interface groupEntriesBySource {
+  groupEntryInfo: OrgToolObject<DockstoreTool>[];
+  sourceControlTitle: string;
+}
 
 @Component({
   selector: 'app-sidebar-accordion',
@@ -10,15 +15,83 @@ import { OrgToolObject } from '../my-tool/my-tool.component';
   styleUrls: ['./sidebar-accordion.component.scss'],
 })
 export class SidebarAccordionComponent implements OnInit {
-  constructor(private toolQuery: ToolQuery) {}
   @Input() openOneAtATime;
   @Input() groupEntriesObject: OrgToolObject<DockstoreTool>[];
   @Input() refreshMessage;
-
   public toolId$: Observable<number>;
   activeTab = 0;
 
-  ngOnInit(): void {
+  public MasterArray: groupEntriesBySource[] = [
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'QUAY.IO',
+    },
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'GITLAB.COM',
+    },
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'GITHUB.COM',
+    },
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'DOCKSTORE.ORG',
+    },
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'HUB.DOCKER.COM',
+    },
+    {
+      // For attitional tools, to be removed once amazon and seven bridges have their own groupings
+      groupEntryInfo: [],
+      sourceControlTitle: 'ADDITIONAL',
+    },
+    // Amazon and seven bridges commented out for now, to be included at a later time
+    // {
+    //   groupEntryInfo: [],
+    //   sourceControlTitle: "AMAZONECR",
+    // },
+    // {
+    //   groupEntryInfo: [],
+    //   sourceControlTitle: "SEVENBRIDGES",
+    // }
+  ];
+
+  constructor(private toolQuery: ToolQuery) {}
+
+  /**
+   * Sort tools by registeries to display by groups
+   */
+  public sortByRegisteries() {
+    for (var index in this.groupEntriesObject) {
+      if (this.groupEntriesObject[index].registry === 'quay.io') {
+        this.MasterArray[0].groupEntryInfo.push(this.groupEntriesObject[index]);
+      } else if (this.groupEntriesObject[index].registry === 'registry.gitlab.com') {
+        this.MasterArray[1].groupEntryInfo.push(this.groupEntriesObject[index]);
+      } else if (this.groupEntriesObject[index].registry === 'github.com') {
+        this.MasterArray[2].groupEntryInfo.push(this.groupEntriesObject[index]);
+      } else if (this.groupEntriesObject[index].registry === 'dockstore.org') {
+        this.MasterArray[3].groupEntryInfo.push(this.groupEntriesObject[index]);
+      } else if (this.groupEntriesObject[index].registry === 'registry.hub.docker.com') {
+        this.MasterArray[4].groupEntryInfo.push(this.groupEntriesObject[index]);
+      } else {
+        // For additional tools, remove once amazon and seven bridges have their own groups
+        this.MasterArray[5].groupEntryInfo.push(this.groupEntriesObject[index]);
+      }
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.groupEntriesObject && this.groupEntriesObject) {
+      for (var index in this.MasterArray) {
+        this.MasterArray[index].groupEntryInfo = [];
+      }
+      this.sortByRegisteries();
+    }
+  }
+
+  ngOnInit() {
     this.toolId$ = this.toolQuery.toolId$;
   }
 }

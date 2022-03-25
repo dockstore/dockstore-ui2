@@ -1,7 +1,101 @@
-mat-expansion-panel {
-  margin: 0px 2px;
+@use '@angular/material' as mat;
+@import 'materialColorScheme.scss';
+
+// Grouping titles by registery
+div.registeryTitle {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 2.8rem;
 }
 
-.mat-expansion-panel-spacing {
-  margin: 16px 2px !important;
+// Header style
+mat-expansion-panel-header,
+mat-expansion-panel-header[aria-expanded='true'] {
+  height: 3.4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+// Header style - Expanded
+mat-expansion-panel-header,
+mat-expansion-panel-header[aria-expanded='true']:hover,
+mat-expansion-panel-header[aria-expanded='true']:focus {
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #f3fbff;
+}
+
+// Header style - Collapsed
+mat-expansion-panel-header[aria-expanded='false'] {
+  color: #487980;
+  text-decoration: underline;
+  background-color: white;
+  :hover {
+    background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
+  }
+}
+
+// Expansion body expanded
+:host ::ng-deep mat-expansion-panel .mat-expansion-panel-content {
+  background-color: #f3fbff;
+  .mat-expansion-panel-body {
+    padding: 0rem 0.8rem 1.2rem;
+  }
+}
+
+// Expansion panel outlines
+mat-expansion-panel {
+  margin: 0px 2px;
+  border-bottom: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+}
+
+//Avoid overlap with borders (only first panel gets top, all others get bottom)
+.mat-accordion .mat-expansion-panel:first-of-type {
+  border-top: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+}
+
+// Expansion panel corners
+.mat-accordion .mat-expansion-panel:last-of-type,
+.mat-accordion .mat-expansion-panel:first-of-type {
+  border-radius: 0rem;
+}
+
+// Refresh button div
+.mat-action-row {
+  border-color: mat.get-color-from-palette($dockstore-app-gray, 3);
+  padding: 0rem 0rem 0.3rem 0rem;
+}
+
+////////// MAT TABS ///////////
+:host ::ng-deep .mat-tab-label-content {
+  font-size: 12px;
+}
+
+// Selected tab style
+:host ::ng-deep .mat-tab-label-active {
+  opacity: 1;
+
+  .mat-tab-label-content {
+    font-weight: bold;
+    color: #181f40;
+  }
+}
+
+// Selected tool style
+.selected {
+  background-color: #d0effd;
+  a {
+    color: #181f40;
+    text-decoration: none;
+  }
+  .arrow {
+    display: block;
+    margin-right: 0.5rem;
+  }
+}
+
+// Hide arrow for non-selected tool
+.arrow {
+  display: none;
 }

@@ -43,9 +43,9 @@
       <mat-sidenav-container fxLayout autosize class="sidebar-set-height">
         <mat-sidenav
           #sidenav
-          fxFlex="27"
+          fxFlex="18"
           fxFlex.lt-md="calc(100vw - 11rem)"
-          class="container-fluid"
+          class="container-fluid p-0"
           mode="side"
           [(opened)]="showSidebar"
           *ngIf="(refreshingMyEntries$ | async) === false"
@@ -53,66 +53,64 @@
           <div id="parent">
             <div id="child">
               <div
-                class="clearfix sidebar-header"
+                class="clearfix sidebar-header w-100"
                 matTooltipPosition="after"
                 [matTooltip]="(hasSourceControlToken$ | async) ? '' : 'Requires source control token'"
               >
-                <mat-toolbar>
-                  <mat-toolbar-row>
-                    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-                      <span>My {{ entryType$ | async }}s</span>
-                      <span>
-                        <span *ngIf="entryType === EntryType.BioWorkflow">
-                          <button
-                            mat-icon-button
-                            color="primary"
-                            id="registerWorkflowButton"
-                            matTooltip="Register {{ entryType$ | async }}"
-                            matTooltipPosition="after"
-                            (click)="showRegisterEntryModal()"
-                            [disabled]="isRefreshing$ | async"
-                          >
-                            <mat-icon>add</mat-icon>
-                          </button>
-                          <button
-                            mat-icon-button
-                            [matMenuTriggerFor]="myWorkflowsActions"
-                            [disabled]="isRefreshing$ | async"
-                            id="myWorkflowsMoreActionButtons"
-                            data-cy="myWorkflowsMoreActionButtons"
-                          >
-                            <mat-icon>more_vert</mat-icon>
-                          </button>
-                          <mat-menu #myWorkflowsActions="matMenu">
-                            <button
-                              mat-menu-item
-                              color="primary"
-                              type="button"
-                              (click)="addToExistingWorkflows()"
-                              [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
-                              matTooltip="Discover workflows added by others using your linked source control accounts"
-                              matTooltipPosition="after"
-                              id="addToExistingWorkflows"
-                              data-cy="addToExistingWorkflows"
-                            >
-                              <span>Discover Existing Dockstore Workflows</span>
-                            </button>
-                          </mat-menu>
-                        </span>
-                        <ng-container *ngIf="entryType === EntryType.Service">
-                          <a
-                            mat-icon-button
-                            [href]="gitHubAppInstallationLink$ | async"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            matTooltip="Manage on GitHub"
-                            ><mat-icon>add</mat-icon></a
-                          >
-                        </ng-container>
-                      </span>
-                    </div>
-                  </mat-toolbar-row>
-                </mat-toolbar>
+                <span *ngIf="entryType === EntryType.BioWorkflow">
+                  <button
+                    mat-button
+                    class="private-btn small-btn-structure ml-3 mb-3"
+                    id="registerWorkflowButton"
+                    matTooltip="Register {{ entryType$ | async }}"
+                    matTooltipPosition="after"
+                    (click)="showRegisterEntryModal()"
+                    [disabled]="isRefreshing$ | async"
+                  >
+                    <img src="../../../assets/svg/icons-plus.svg" alt="Register a tool" class="pr-2 pb-1" />
+                    Register a Workflow
+                  </button>
+                  <button
+                    mat-button
+                    class="private-btn small-btn-structure ml-3 mb-3"
+                    [matMenuTriggerFor]="myWorkflowsActions"
+                    [disabled]="isRefreshing$ | async"
+                    id="myWorkflowsMoreActionButtons"
+                    data-cy="myWorkflowsMoreActionButtons"
+                  >
+                    <img src="../../../assets/svg/gear-icon.svg" alt="Gear icon" />
+                    More
+                    <img src="../../../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
+                  </button>
+                  <mat-menu #myWorkflowsActions="matMenu">
+                    <button
+                      mat-menu-item
+                      color="primary"
+                      type="button"
+                      (click)="addToExistingWorkflows()"
+                      [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
+                      matTooltip="Discover workflows added by others using your linked source control accounts"
+                      matTooltipPosition="after"
+                      id="addToExistingWorkflows"
+                      data-cy="addToExistingWorkflows"
+                    >
+                      <span>Discover Existing Dockstore Workflows</span>
+                    </button>
+                  </mat-menu>
+                </span>
+                <ng-container *ngIf="entryType === EntryType.Service">
+                  <a
+                    mat-button
+                    class="private-btn small-btn-structure ml-3 mb-3"
+                    [href]="gitHubAppInstallationLink$ | async"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    matTooltip="Manage on GitHub"
+                  >
+                    <img src="../../../assets/svg/icons-plus.svg" alt="Register a tool" class="pr-1 pb-1" />
+                    Add a Service
+                  </a>
+                </ng-container>
               </div>
               <p *ngIf="(hasGroupEntriesObject$ | async) === false">You have not registered any {{ entryType$ | async }}s</p>
               <app-workflow-sidebar-accordion
@@ -132,8 +130,8 @@
                 your authorized organizations.</small
               >
               <ng-container *ngIf="entryType !== EntryType.Service">
-                <div class="clearfix sidebar-header">
-                  <h3 class="sidebar-header">Shared with me</h3>
+                <div class="clearfix">
+                  <h3>Shared with me</h3>
                 </div>
                 <p *ngIf="(hasGroupSharedEntriesObject$ | async) === false">You have no {{ entryType$ | async }}s shared with you</p>
                 <app-workflow-sidebar-accordion

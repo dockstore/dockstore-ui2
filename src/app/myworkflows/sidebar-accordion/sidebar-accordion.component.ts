@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
@@ -9,6 +9,11 @@ import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.component';
+
+interface groupEntriesBySource {
+  groupEntryInfo: OrgWorkflowObject<Workflow>[];
+  sourceControlTitle: string;
+}
 
 @Component({
   selector: 'app-workflow-sidebar-accordion',
@@ -24,12 +29,58 @@ export class SidebarAccordionComponent implements OnInit {
   entryType$: Observable<EntryType>;
   EntryType = EntryType;
   public isRefreshing$: Observable<boolean>;
+
+  public MasterArray: groupEntriesBySource[] = [
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'DOCKSTORE.ORG',
+    },
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'GITHUB.COM',
+    },
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'GITLAB.COM',
+    },
+    {
+      groupEntryInfo: [],
+      sourceControlTitle: 'BITBUCKET.COM',
+    },
+  ];
+
   constructor(
     private workflowQuery: WorkflowQuery,
     public dialog: MatDialog,
     private sessionQuery: SessionQuery,
     private alertQuery: AlertQuery
   ) {}
+
+  /**
+   * Sort workflows by source control to display by groups
+   */
+  public sortBySourceControl() {
+    for (var index in this.groupEntriesObject) {
+      if (this.groupEntriesObject[index].sourceControl === 'dockstore.org') {
+        this.MasterArray[0].groupEntryInfo.push(this.groupEntriesObject[index]);
+      } else if (this.groupEntriesObject[index].sourceControl === 'github.com') {
+        this.MasterArray[1].groupEntryInfo.push(this.groupEntriesObject[index]);
+      } else if (this.groupEntriesObject[index].sourceControl === 'gitlab.org') {
+        this.MasterArray[2].groupEntryInfo.push(this.groupEntriesObject[index]);
+      } else if (this.groupEntriesObject[index].sourceControl === 'bitbucket.org') {
+        this.MasterArray[3].groupEntryInfo.push(this.groupEntriesObject[index]);
+      }
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.groupEntriesObject && this.groupEntriesObject) {
+      for (var index in this.MasterArray) {
+        this.MasterArray[index].groupEntryInfo = [];
+      }
+      this.sortBySourceControl();
+    }
+  }
 
   ngOnInit(): void {
     this.isRefreshing$ = this.alertQuery.showInfo$;

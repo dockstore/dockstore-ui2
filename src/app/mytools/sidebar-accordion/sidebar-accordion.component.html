@@ -1,47 +1,54 @@
-<mat-accordion>
-  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject" [expanded]="orgObj.expanded">
-    <mat-expansion-panel-header>
-      <mat-panel-title class="org-accordion-header">
-        {{ orgObj.registry + '/' + orgObj?.namespace }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+<div *ngFor="let registeryObj of MasterArray">
+  <div *ngIf="registeryObj.groupEntryInfo.length" class="registeryTitle">
+    <img src="../../../assets/images/registries/{{ registeryObj.sourceControlTitle }}.svg" class="mb-2" />
+    {{ registeryObj?.sourceControlTitle }}
+  </div>
 
-    <mat-tab-group mat-stretch-tabs [selectedIndex]="orgObj | selectTab: (toolId$ | async)">
-      <mat-tab label="Published">
-        <mat-list class="org-accordion-list">
-          <mat-list-item *ngFor="let toolObj of orgObj?.published" [ngClass]="{ selected: (toolId$ | async) === toolObj?.id }">
-            <a
-              class="no-wrap"
-              title="{{ toolObj?.repository + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
-              [routerLink]="'/my-tools/' + toolObj.tool_path"
-            >
-              {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
-            </a>
-          </mat-list-item>
-          <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
-            <p class="text-center">No published tools.</p>
-          </mat-list-item>
-        </mat-list>
-      </mat-tab>
-      <mat-tab label="Unpublished">
-        <mat-list class="org-accordion-list">
-          <mat-list-item *ngFor="let toolObj of orgObj?.unpublished" [ngClass]="{ selected: (toolId$ | async) === toolObj?.id }">
-            <a
-              class="no-wrap"
-              title="{{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
-              [routerLink]="'/my-tools/' + toolObj.tool_path"
-            >
-              {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
-            </a>
-          </mat-list-item>
-          <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
-            <p class="text-center">No unpublished tools.</p>
-          </mat-list-item>
-        </mat-list>
-      </mat-tab>
-    </mat-tab-group>
-    <mat-action-row>
-      <app-refresh-tool-organization class="pull-right" [orgToolObject]="orgObj"></app-refresh-tool-organization>
-    </mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
+  <mat-accordion multi="true">
+    <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z" *ngFor="let orgObj of registeryObj.groupEntryInfo">
+      <mat-expansion-panel-header class="pt-2">
+        {{ orgObj?.namespace }}
+      </mat-expansion-panel-header>
+
+      <mat-tab-group mat-stretch-tabs class="tool-tab-group" [selectedIndex]="orgObj | selectTab: (toolId$ | async)">
+        <mat-tab label="Published">
+          <mat-list class="org-accordion-list">
+            <mat-list-item *ngFor="let toolObj of orgObj?.published" [ngClass]="{ selected: (toolId$ | async) === toolObj?.id }">
+              <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+              <a
+                class="no-wrap"
+                title="{{ toolObj?.repository + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
+                [routerLink]="'/my-tools/' + toolObj.tool_path"
+              >
+                {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
+              </a>
+            </mat-list-item>
+            <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
+              <p class="text-center size-small">No published tools.</p>
+            </mat-list-item>
+          </mat-list>
+        </mat-tab>
+        <mat-tab label="Unpublished">
+          <mat-list class="org-accordion-list">
+            <mat-list-item *ngFor="let toolObj of orgObj?.unpublished" [ngClass]="{ selected: (toolId$ | async) === toolObj?.id }">
+              <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+              <a
+                class="no-wrap"
+                title="{{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
+                [routerLink]="'/my-tools/' + toolObj.tool_path"
+              >
+                {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
+              </a>
+            </mat-list-item>
+            <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
+              <p class="text-center size-small">No unpublished tools.</p>
+            </mat-list-item>
+          </mat-list>
+        </mat-tab>
+      </mat-tab-group>
+      <mat-action-row>
+        <app-refresh-tool-organization class="pull-right" [orgToolObject]="orgObj"></app-refresh-tool-organization>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
