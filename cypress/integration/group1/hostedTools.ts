@@ -33,7 +33,7 @@ describe('Dockstore hosted tools', () => {
   });
 
   function getTool() {
-    goToUnexpandedSidebarEntry('quay.io/hosted-tool', 'ht');
+    goToUnexpandedSidebarEntry('hosted-tool', 'ht');
   }
 
   // Ensure tabs are correct for the hosted tool, try adding a version

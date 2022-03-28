@@ -21,7 +21,7 @@ export class SidebarAccordionComponent implements OnInit {
   public toolId$: Observable<number>;
   activeTab = 0;
 
-  public MasterArray: groupEntriesBySource[] = [
+  public sortedTools: groupEntriesBySource[] = [
     {
       groupEntryInfo: [],
       sourceControlTitle: 'QUAY.IO',
@@ -66,26 +66,26 @@ export class SidebarAccordionComponent implements OnInit {
   public sortByRegisteries() {
     for (var index in this.groupEntriesObject) {
       if (this.groupEntriesObject[index].registry === 'quay.io') {
-        this.MasterArray[0].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedTools[0].groupEntryInfo.push(this.groupEntriesObject[index]);
       } else if (this.groupEntriesObject[index].registry === 'registry.gitlab.com') {
-        this.MasterArray[1].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedTools[1].groupEntryInfo.push(this.groupEntriesObject[index]);
       } else if (this.groupEntriesObject[index].registry === 'github.com') {
-        this.MasterArray[2].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedTools[2].groupEntryInfo.push(this.groupEntriesObject[index]);
       } else if (this.groupEntriesObject[index].registry === 'dockstore.org') {
-        this.MasterArray[3].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedTools[3].groupEntryInfo.push(this.groupEntriesObject[index]);
       } else if (this.groupEntriesObject[index].registry === 'registry.hub.docker.com') {
-        this.MasterArray[4].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedTools[4].groupEntryInfo.push(this.groupEntriesObject[index]);
       } else {
         // For additional tools, remove once amazon and seven bridges have their own groups
-        this.MasterArray[5].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedTools[5].groupEntryInfo.push(this.groupEntriesObject[index]);
       }
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.groupEntriesObject && this.groupEntriesObject) {
-      for (var index in this.MasterArray) {
-        this.MasterArray[index].groupEntryInfo = [];
+      for (var index in this.sortedTools) {
+        this.sortedTools[index].groupEntryInfo = [];
       }
       this.sortByRegisteries();
     }

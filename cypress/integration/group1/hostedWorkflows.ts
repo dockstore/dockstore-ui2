@@ -40,7 +40,7 @@ describe('Dockstore hosted workflows', () => {
   });
 
   function getWorkflow() {
-    goToUnexpandedSidebarEntry('dockstore.org/A', /hosted/);
+    goToUnexpandedSidebarEntry('A2', /hosted/);
   }
 
   // using an ugly name to flex workflow naming functionality a bit
@@ -79,7 +79,7 @@ describe('Dockstore hosted workflows', () => {
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:1');
+      cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:1');
       // Should have a version 1
       goToTab('Versions');
       cy.get('table').contains('span', /\b1\b/);
@@ -119,7 +119,7 @@ describe('Dockstore hosted workflows', () => {
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
+      cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:2');
       // Should have a version 2
       goToTab('Versions');
       cy.get('table').contains('span', /\b2\b/);
@@ -132,7 +132,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#editFilesButton').click();
       cy.get('.delete-editor-file').first().click();
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:3');
+      cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:3');
 
       // Testing for one ace editor as mat-tab hides the second element due to it being in a different tab
       cy.get('.ace_editor').should('have.length', 1);
@@ -145,7 +145,7 @@ describe('Dockstore hosted workflows', () => {
       clickFirstActionsButtonPrivate();
       cy.contains('Delete').click();
       // Automatically selects the newest version that wasn't the one that was just deleted
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
+      cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:2');
       // Version 3 should no longer exist since it was just deleted
       goToTab('Versions');
       cy.get('table').find('a').should('not.contain', '3');

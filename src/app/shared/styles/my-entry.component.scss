@@ -42,6 +42,7 @@
 }
 
 mat-sidenav {
+  min-width: 28rem;
   border-right: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 4);
   box-shadow: 1px 2px 1px rgb(0 0 0 / 10%);
 }

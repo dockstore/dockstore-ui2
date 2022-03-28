@@ -1,4 +1,4 @@
-<div *ngFor="let registeryObj of MasterArray">
+<div *ngFor="let registeryObj of sortedWorkflows">
   <div *ngIf="registeryObj.groupEntryInfo.length" class="registeryTitle">
     <img src="../../../assets/images/registries/{{ registeryObj.sourceControlTitle }}.svg" class="mb-2 mr-1" />
     {{ registeryObj?.sourceControlTitle }}

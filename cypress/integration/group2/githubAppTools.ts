@@ -48,7 +48,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Close').click();
 
       // GitHub App Logs
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('There were problems retrieving GitHub App logs for this organization.');
       cy.contains('Close').click();
       cy.server();
@@ -57,7 +57,7 @@ describe('GitHub App Tools', () => {
         url: '/api/lambdaEvents/**',
         response: [],
       }).as('lambdaEvents');
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
 
@@ -79,7 +79,7 @@ describe('GitHub App Tools', () => {
         url: '/api/lambdaEvents/**',
         response: realResponse,
       }).as('lambdaEvents');
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
     });

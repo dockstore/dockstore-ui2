@@ -30,7 +30,7 @@ export class SidebarAccordionComponent implements OnInit {
   EntryType = EntryType;
   public isRefreshing$: Observable<boolean>;
 
-  public MasterArray: groupEntriesBySource[] = [
+  public sortedWorkflows: groupEntriesBySource[] = [
     {
       groupEntryInfo: [],
       sourceControlTitle: 'DOCKSTORE.ORG',
@@ -62,21 +62,21 @@ export class SidebarAccordionComponent implements OnInit {
   public sortBySourceControl() {
     for (var index in this.groupEntriesObject) {
       if (this.groupEntriesObject[index].sourceControl === 'dockstore.org') {
-        this.MasterArray[0].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedWorkflows[0].groupEntryInfo.push(this.groupEntriesObject[index]);
       } else if (this.groupEntriesObject[index].sourceControl === 'github.com') {
-        this.MasterArray[1].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedWorkflows[1].groupEntryInfo.push(this.groupEntriesObject[index]);
       } else if (this.groupEntriesObject[index].sourceControl === 'gitlab.org') {
-        this.MasterArray[2].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedWorkflows[2].groupEntryInfo.push(this.groupEntriesObject[index]);
       } else if (this.groupEntriesObject[index].sourceControl === 'bitbucket.org') {
-        this.MasterArray[3].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedWorkflows[3].groupEntryInfo.push(this.groupEntriesObject[index]);
       }
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.groupEntriesObject && this.groupEntriesObject) {
-      for (var index in this.MasterArray) {
-        this.MasterArray[index].groupEntryInfo = [];
+      for (var index in this.sortedWorkflows) {
+        this.sortedWorkflows[index].groupEntryInfo = [];
       }
       this.sortBySourceControl();
     }
