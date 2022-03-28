@@ -1,11 +1,21 @@
 <div
   *ngIf="
-    !(isLoggedIn$ | async) &&
+    (isLoggedIn$ | async) === false &&
     ((dismissedLatestTOS$ | async) !== currentTOSVersion || (dismissedLatestPrivacyPolicy$ | async) !== currentPrivacyPolicyVersion)
   "
   class="push-tos"
 >
-  <app-tos-banner class="scroll-tos-banner"></app-tos-banner>
+  <app-tos-banner
+    class="scroll-tos-banner"
+    [bannerText]="'By using our site, you acknowledge that you have read and understand our '"
+    [loggedIn]="false"
+  ></app-tos-banner>
+</div>
+<div *ngIf="(isLoggedIn$ | async) && (displayLoggedInTOSBanner$ | async)" class="push-tos">
+  <app-tos-banner class="scroll-tos-banner" [bannerText]="'You have not accepted the latest '" [loggedIn]="true"></app-tos-banner>
+</div>
+<div *ngIf="usernameChangeRequired" class="push-tos">
+  <app-change-username-banner class="scroll-tos-banner"></app-change-username-banner>
 </div>
 <div class="wrapper">
   <app-notifications></app-notifications>

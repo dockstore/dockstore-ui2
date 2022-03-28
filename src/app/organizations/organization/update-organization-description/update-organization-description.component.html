@@ -10,17 +10,17 @@
       </form>
     </mat-tab>
     <mat-tab label="Preview Mode">
-      <markdown-wrapper class="p-1" [data]="descriptionValue"></markdown-wrapper>
+      <app-markdown-wrapper class="p-1" [data]="descriptionValue"></app-markdown-wrapper>
     </mat-tab>
   </mat-tab-group>
 </div>
 <div mat-dialog-actions class="pull-right">
-  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
   <button
     id="updateOrganizationDescriptionButton"
     [matTooltip]="'Update ' + data.type + ' description'"
-    mat-flat-button
-    color="primary"
+    mat-raised-button
+    class="accent-1-dark-btn mat-elevation-z"
     [disabled]="!updateOrganizationOrCollectionDescriptionForm.valid"
     (click)="updateOrganizationDescription()"
     cdkFocusInitial

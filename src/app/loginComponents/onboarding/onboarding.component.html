@@ -14,7 +14,15 @@
     <hr />
 
     <app-change-username showText="true"></app-change-username>
-    <button mat-raised-button matStepperNext class="pull-right mt-2">Next<mat-icon>navigate_next </mat-icon></button>
+    <button
+      mat-raised-button
+      matStepperNext
+      class="pull-right mt-2"
+      data-cy="choose-username-next-button"
+      [disabled]="usernameChangeRequired"
+    >
+      Next<mat-icon>navigate_next </mat-icon>
+    </button>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Link External Accounts</ng-template>
@@ -37,12 +45,14 @@
     <p>Dockstore is powered by:</p>
     <ul>
       <li>
-        <a href="https://quay.io/" target="_blank">Quay.io</a>, <a href="https://hub.docker.com/" target="_blank">DockerHub</a>, and
-        <a href="https://gitlab.com/" target="_blank">GitLab</a> for storing Docker images
+        <a href="https://quay.io/" target="_blank" rel="noopener">Quay.io</a>,
+        <a href="https://hub.docker.com/" target="_blank" rel="noopener">DockerHub</a>, and
+        <a href="https://gitlab.com/" target="_blank" rel="noopener">GitLab</a> for storing Docker images
       </li>
       <li>
-        <a href="https://github.com/" target="_blank">GitHub</a>, <a href="https://bitbucket.org/" target="_blank">Bitbucket</a>, and
-        <a href="https://gitlab.com/" target="_blank">GitLab</a> for storing the build file and descriptor files
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>,
+        <a href="https://bitbucket.org/" target="_blank" rel="noopener">Bitbucket</a>, and
+        <a href="https://gitlab.com/" target="_blank" rel="noopener">GitLab</a> for storing the build file and descriptor files
       </li>
     </ul>
 

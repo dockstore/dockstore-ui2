@@ -24,6 +24,8 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { User } from '../../shared/swagger/model/user';
 import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
+import { Category } from '../../shared/openapi';
+import { AllCategoriesService } from '../../categories/state/all-categories.service';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
@@ -49,6 +51,8 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;
   public selectedTab = 'toolTab';
   Dockstore = Dockstore;
+  public toolCategories$: Observable<Array<Category>>;
+  public workflowCategories$: Observable<Array<Category>>;
 
   @ViewChild('twitter') twitterElement: ElementRef;
 
@@ -58,13 +62,17 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private twitterService: TwitterService,
     private userQuery: UserQuery,
-    private homePageService: HomePageService
+    private homePageService: HomePageService,
+    private allCategoriesService: AllCategoriesService,
   ) {
     super();
   }
 
   ngOnInit() {
     this.user$ = this.userQuery.user$;
+    this.allCategoriesService.updateAllCategories();
+    this.toolCategories$ = this.allCategoriesService.toolCategories$;
+    this.workflowCategories$ = this.allCategoriesService.workflowCategories$;
   }
   ngAfterViewInit() {
     this.loadTwitterWidget();

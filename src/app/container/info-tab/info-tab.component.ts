@@ -15,6 +15,8 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Base } from 'app/shared/base';
+import { takeUntil } from 'rxjs/operators';
 import { ga4ghPath } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
@@ -33,7 +35,7 @@ import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
   templateUrl: './info-tab.component.html',
   styleUrls: ['./info-tab.component.css'],
 })
-export class InfoTabComponent implements OnInit, OnChanges {
+export class InfoTabComponent extends Base implements OnInit, OnChanges {
   currentVersion: Tag;
   @Input() validVersions: Array<WorkflowVersion | Tag>;
   @Input() selectedVersion: Tag;
@@ -43,6 +45,8 @@ export class InfoTabComponent implements OnInit, OnChanges {
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
   public DockstoreToolType = DockstoreTool;
   public tool: DockstoreTool;
+  public topicEditing: boolean;
+  public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
   wdlPathEditing: boolean;
@@ -54,11 +58,9 @@ export class InfoTabComponent implements OnInit, OnChanges {
   downloadZipLink: string;
   isValidVersion = false;
   Dockstore = Dockstore;
-  constructor(
-    private infoTabService: InfoTabService,
-    private sessionQuery: SessionQuery,
-    private containersService: ExtendedToolsService
-  ) {}
+  constructor(private infoTabService: InfoTabService, private sessionQuery: SessionQuery, private containersService: ExtendedToolsService) {
+    super();
+  }
 
   ngOnChanges() {
     this.tool = JSON.parse(JSON.stringify(this.extendedDockstoreTool));
@@ -90,12 +92,13 @@ export class InfoTabComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.infoTabService.dockerFileEditing$.subscribe((editing) => (this.dockerFileEditing = editing));
-    this.infoTabService.cwlPathEditing$.subscribe((editing) => (this.cwlPathEditing = editing));
-    this.infoTabService.wdlPathEditing$.subscribe((editing) => (this.wdlPathEditing = editing));
-    this.infoTabService.cwlTestPathEditing$.subscribe((editing) => (this.cwlTestPathEditing = editing));
-    this.infoTabService.wdlTestPathEditing$.subscribe((editing) => (this.wdlTestPathEditing = editing));
-    this.sessionQuery.isPublic$.subscribe((publicPage) => (this.isPublic = publicPage));
+    this.infoTabService.dockerFileEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.dockerFileEditing = editing));
+    this.infoTabService.cwlPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.cwlPathEditing = editing));
+    this.infoTabService.wdlPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.wdlPathEditing = editing));
+    this.infoTabService.cwlTestPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.cwlTestPathEditing = editing));
+    this.infoTabService.wdlTestPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.wdlTestPathEditing = editing));
+    this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
+    this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => (this.isPublic = publicPage));
   }
 
   downloadZip() {
@@ -104,6 +107,25 @@ export class InfoTabComponent implements OnInit, OnChanges {
       const url = window.URL.createObjectURL(blob);
       window.open(url);
     });
+  }
+
+  toggleEditTopic() {
+    if (this.topicEditing) {
+      this.infoTabService.saveTopic(this.tool, this.revertTopic.bind(this));
+    }
+    this.infoTabService.setTopicEditing(!this.topicEditing);
+  }
+
+  revertTopic() {
+    this.tool.topicManual = this.extendedDockstoreTool.topicManual;
+  }
+
+  revertTopicSelection() {
+    this.tool.topicSelection = this.extendedDockstoreTool.topicSelection;
+  }
+
+  topicSelectionChange() {
+    this.infoTabService.saveTopicSelection(this.tool, this.revertTopicSelection.bind(this));
   }
 
   toggleEditDockerFile() {
@@ -141,7 +163,14 @@ export class InfoTabComponent implements OnInit, OnChanges {
   }
 
   somethingIsBeingEdited(): boolean {
-    return this.dockerFileEditing || this.cwlPathEditing || this.wdlPathEditing || this.cwlTestPathEditing || this.wdlTestPathEditing;
+    return (
+      this.dockerFileEditing ||
+      this.cwlPathEditing ||
+      this.wdlPathEditing ||
+      this.cwlTestPathEditing ||
+      this.wdlTestPathEditing ||
+      this.topicEditing
+    );
   }
 
   /**
@@ -151,6 +180,7 @@ export class InfoTabComponent implements OnInit, OnChanges {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
+    this.revertTopic();
   }
 
   /**

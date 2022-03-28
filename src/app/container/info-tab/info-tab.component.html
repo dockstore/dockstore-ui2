@@ -39,28 +39,24 @@
           </li>
           <li *ngIf="tool?.imgProviderUrl">
             <strong matTooltip="Docker registry for the associated Docker images">Docker Image</strong>:
-            <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!privateOnlyRegistry">
-              {{ tool?.imgProviderUrl | urlDeconstruct }}
+            <a id="imageRegistry" [href]="tool?.imgProviderUrl" *ngIf="!tool?.private_access">
+              {{ tool?.path }}
             </a>
-            <span *ngIf="privateOnlyRegistry">
-              {{ tool?.imgProviderUrl }}
+            <span *ngIf="tool?.private_access">
+              {{ tool?.path }}
             </span>
           </li>
           <span *ngIf="isPublic && isValidVersion">
             <li *ngIf="trsLinkCWL">
               <strong matTooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
-              <a [href]="trsLinkCWL">
-                {{ tool?.tool_path }}
-              </a>
+              <a [href]="trsLinkCWL">{{ tool?.tool_path }}</a>
               <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
               </button>
             </li>
             <li *ngIf="trsLinkWDL">
               <strong matTooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
-              <a [href]="trsLinkWDL">
-                {{ tool?.tool_path }}
-              </a>
+              <a [href]="trsLinkWDL">{{ tool?.tool_path }}</a>
               <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
               </button>
@@ -86,18 +82,25 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button *ngIf="!isPublic && dockerFileEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                  <mat-icon>cancel</mat-icon> Cancel
+                <button
+                  *ngIf="!isPublic && dockerFileEditing"
+                  type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  (click)="cancelEditing()"
+                >
+                  <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid))"
-                  class="btn btn-link"
                   (click)="toggleEditDockerFile()"
                 >
-                  <mat-icon *ngIf="dockerFileEditing">save</mat-icon>
-                  <mat-icon *ngIf="!dockerFileEditing">edit</mat-icon>
+                  <mat-icon *ngIf="dockerFileEditing" class="mat-icon-sm">save</mat-icon>
+                  <img *ngIf="!dockerFileEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Dockerfile path" />
                   {{ dockerFileEditing ? 'Save' : 'Edit' }}
                 </button>
               </div>
@@ -124,18 +127,25 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button *ngIf="!isPublic && cwlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                  <mat-icon>cancel</mat-icon> Cancel
+                <button
+                  *ngIf="!isPublic && cwlPathEditing"
+                  type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  (click)="cancelEditing()"
+                >
+                  <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid))"
-                  class="btn btn-link"
                   (click)="toggleEditCWLPath()"
                 >
-                  <mat-icon *ngIf="cwlPathEditing">save</mat-icon>
-                  <mat-icon *ngIf="!cwlPathEditing">edit</mat-icon>
+                  <mat-icon *ngIf="cwlPathEditing" class="mat-icon-sm">save</mat-icon>
+                  <img *ngIf="!cwlPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit CWL path" />
                   {{ cwlPathEditing ? 'Save' : 'Edit' }}
                 </button>
               </div>
@@ -162,18 +172,25 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button *ngIf="!isPublic && wdlPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                  <mat-icon>cancel</mat-icon> Cancel
+                <button
+                  *ngIf="!isPublic && wdlPathEditing"
+                  type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  (click)="cancelEditing()"
+                >
+                  <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                   [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid))"
-                  class="btn btn-link"
                   (click)="toggleEditWDLPath()"
                 >
-                  <mat-icon *ngIf="wdlPathEditing">save</mat-icon>
-                  <mat-icon *ngIf="!wdlPathEditing">edit</mat-icon>
+                  <mat-icon *ngIf="wdlPathEditing" class="mat-icon-sm">save</mat-icon>
+                  <img *ngIf="!wdlPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit WDL path" />
                   {{ wdlPathEditing ? 'Save' : 'Edit' }}
                 </button>
               </div>
@@ -201,12 +218,13 @@
               <button
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
+                mat-raised-button
+                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                 [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid))"
-                class="btn btn-link"
                 (click)="toggleEditCWLTestPath()"
               >
-                <mat-icon *ngIf="cwlTestPathEditing">save</mat-icon>
-                <mat-icon *ngIf="!cwlTestPathEditing">edit</mat-icon>
+                <mat-icon *ngIf="cwlTestPathEditing" class="mat-icon-sm">save</mat-icon>
+                <img *ngIf="!cwlTestPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit CWL test file path" />
                 {{ cwlTestPathEditing ? 'Save' : 'Edit' }}
               </button>
             </form>
@@ -233,16 +251,82 @@
               <button
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
+                mat-raised-button
+                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                 [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid))"
-                class="btn btn-link"
                 (click)="toggleEditWDLTestPath()"
               >
-                <mat-icon *ngIf="wdlTestPathEditing">save</mat-icon>
-                <mat-icon *ngIf="!wdlTestPathEditing">edit</mat-icon>
+                <mat-icon *ngIf="wdlTestPathEditing" class="mat-icon-sm">save</mat-icon>
+                <img *ngIf="!wdlTestPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit WDL test file path" />
+
                 {{ wdlTestPathEditing ? 'Save' : 'Edit' }}
               </button>
             </form>
           </li>
+          <!-- Public Topic -->
+          <li *ngIf="isPublic">
+            <span><strong matTooltip="Short description of the tool">Topic</strong>:&nbsp;</span>
+            <span>{{ tool?.topicSelection === TopicSelectionEnum.AUTOMATIC ? tool?.topicAutomatic : tool?.topicManual }}</span>
+          </li>
+          <!-- Private topic Topic -->
+          <ng-container *ngIf="!isPublic">
+            <li>
+              <span><strong matTooltip="Short description of the tool">Topic Automatic</strong>:&nbsp;</span>
+              <span>{{ tool?.topicAutomatic }}</span>
+            </li>
+            <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
+            <li>
+              <form fxLayout="row" fxLayoutAlign="start center" class="w-100">
+                <span><strong matTooltip="Short descripton of the tool">Topic</strong>:&nbsp;</span>
+                <span *ngIf="!topicEditing">{{ tool?.topicManual || 'n/a' }}</span>
+                <span fxFlex>
+                  <input
+                    *ngIf="topicEditing"
+                    maxlength="150"
+                    type="text"
+                    name="topic"
+                    class="w-100"
+                    data-cy="topicInput"
+                    [(ngModel)]="tool.topicManual"
+                    placeholder="Short description of the tool"
+                  />
+                </span>
+                <button
+                  data-cy="topicCancelButton"
+                  *ngIf="topicEditing"
+                  type="button"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  (click)="cancelEditing()"
+                >
+                  <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
+                </button>
+                <button
+                  type="button"
+                  [disabled]="!(!somethingIsBeingEdited() || topicEditing)"
+                  mat-raised-button
+                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  data-cy="topicEditButton"
+                  (click)="toggleEditTopic()"
+                >
+                  <mat-icon *ngIf="topicEditing" class="mat-icon-sm">save</mat-icon>
+                  <img *ngIf="!topicEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit topic" />
+                  {{ topicEditing ? 'Save' : 'Edit' }}
+                </button>
+              </form>
+            </li>
+            <li>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
+                <span>
+                  <mat-radio-group [(ngModel)]="tool.topicSelection" aria-label="Select an option" (change)="topicSelectionChange($event)">
+                    <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
+                    <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+              </div>
+            </li>
+          </ng-container>
           <app-info-tab-checker-workflow-path
             *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
             [canRead]="true"
@@ -283,14 +367,23 @@
           <span *ngIf="!selectedVersion?.email"> n/a </span>
         </div>
         <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
-          <button *ngIf="!tool?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
-          <a [href]="downloadZipLink" *ngIf="tool?.is_published" mat-raised-button>Export as ZIP</a>
+          <button *ngIf="!tool?.is_published" mat-button color="accent" class="private-btn small-btn-structure" (click)="downloadZip()">
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>
+            Export as ZIP
+          </button>
+          <a [href]="downloadZipLink" *ngIf="tool?.is_published" mat-button color="accent" class="private-btn small-btn-structure">
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>
+            Export as ZIP</a
+          >
         </span>
 
         <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of tool obtained from tool descriptor"> Description </label>:
           <div *ngIf="selectedVersion?.description" class="well well-sm">
-            <markdown-wrapper [data]="selectedVersion?.description"></markdown-wrapper>
+            <app-markdown-wrapper
+              [data]="selectedVersion?.description"
+              [baseUrl]="tool?.providerUrl | baseUrl: selectedVersion?.reference"
+            ></app-markdown-wrapper>
           </div>
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>

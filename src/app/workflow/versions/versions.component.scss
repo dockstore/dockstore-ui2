@@ -1,0 +1,51 @@
+/*
+ *    Copyright 2017 OICR
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+@use '~@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
+/* TODO:
+- Min-width for table with horizontal scroll
+- All columns except name should be as small as possible (assuming content will always fit)
+- If content is larger than the min-width, then name should be truncated with ellipsis
+- Move some of these classes to scss so that it's easier to apply to all future tables and maintain consistent styling
+  */
+
+/* Center columns with only icons and cannot be sorted (because the sorting icon takes up space so it doesn't look center anymore) */
+.mat-column-snapshot {
+  text-align: center;
+}
+
+/* Material says it should highlight on hover, sadly Angular Material does not */
+.mat-row:hover {
+  background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6, 0.42);
+}
+
+/* Overwrite the bootstrap class */
+th {
+  background-color: white;
+}
+
+/* Highlight row with the selected version */
+/* The mat-row is so that this is more specific and able to override the hover style above */
+tr.mat-row.highlight {
+  background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6);
+}
+
+/* Add padding to the left of first cell for selected version */
+tr.highlight > .mat-cell:first-of-type > span {
+  padding-left: 5px;
+}

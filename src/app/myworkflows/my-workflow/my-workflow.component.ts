@@ -77,6 +77,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   workflow$: Observable<Service | BioWorkflow>;
   EntryType = EntryType;
   sharedWorkflows: Array<Workflow>;
+  noUser$: Observable<boolean>;
   readonly pageName = '/my-workflows';
   public isRefreshing$: Observable<boolean>;
   public showSidebar = true;
@@ -124,6 +125,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay(1));
     this.user = this.userQuery.getValue().user;
     this.user$ = this.userQuery.user$;
+    this.noUser$ = this.userQuery.noUser$;
   }
 
   ngOnInit() {
@@ -237,6 +239,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
  * @template T
  */
 export interface OrgWorkflowObject<T> extends OrgEntryObject<T> {
+  // Swagger doesn't return an enum for this. Currently, some values present are:
+  // github.com and bitbucket.org
   sourceControl: string;
   organization: string;
 }

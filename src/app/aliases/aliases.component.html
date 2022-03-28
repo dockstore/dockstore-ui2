@@ -24,11 +24,7 @@
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       Redirecting to the tool <strong>{{ tool.tool_path }}</strong>
     </div>
-    <mat-card
-      class="alert alert-warning"
-      role="alert"
-      *ngIf="types.includes(type) && !(organization$ | async) && !(collection$ | async) && !(workflow$ | async) && !(tool$ | async)"
-    >
+    <mat-card class="alert alert-warning" role="alert" *ngIf="types.includes(type) && (aliasNotFound$ | async)">
       <mat-icon>warning</mat-icon>
       &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
     </mat-card>

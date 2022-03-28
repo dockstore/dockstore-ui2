@@ -22,14 +22,14 @@
   </ng-template>
   <div [hidden]="previewMode">
     <mat-form-field>
-      <input matInput placeholder="Search {{ entryType$ | async }}s" #input />
+      <input matInput placeholder="Search {{ entryTypeDisplayName$ | async }}s" #input />
     </mat-form-field>
   </div>
-  <mat-table class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
+  <mat-table [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="repository">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let workflow">
-        <a [routerLink]="'/' + (entryType$ | async) + 's/' + workflow?.full_workflow_path">{{
+        <a [routerLink]="entryType$ | async | routerLink: workflow" data-cy="entry-link">{{
           workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
         }}</a>
       </mat-cell>
@@ -58,7 +58,7 @@
       <mat-cell *matCellDef="let workflow">{{ workflow?.descriptorType | uppercase }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
-      <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell *matCellDef="let entry">
         <a [href]="entry?.providerUrl" *ngIf="entry.providerUrl">
           <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"> </fa-icon>

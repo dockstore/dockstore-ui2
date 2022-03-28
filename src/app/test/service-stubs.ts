@@ -175,6 +175,8 @@ export class SearchStubService {
 
   setFilterKeys(filters: Map<string, Set<string>>) {}
 
+  setPageSizeAndIndex(pageSize: number, pageIndex: number) {}
+
   // Initialization Functions
   initializeCommonBucketStubs() {
     return new Map([
@@ -213,7 +215,7 @@ export class SearchStubService {
   initializeToolTips() {
     return new Map([
       // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
-      /* tslint:disable-next-line:quotemark*/
+      /* eslint-disable-next-line quotes, @typescript-eslint/quotes */
       ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
       ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
       [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
@@ -445,12 +447,12 @@ export class MetadataStubService {
       url: 'https://gitlab.com/',
     },
     {
-      dockerPath: null,
+      dockerPath: 'public.ecr.aws',
       customDockerPath: 'true',
-      privateOnly: 'true',
+      privateOnly: 'false',
       enum: 'AMAZON_ECR',
       friendlyName: 'Amazon ECR',
-      url: null,
+      url: 'https://gallery.ecr.aws/',
     },
     {
       dockerPath: null,
@@ -527,6 +529,8 @@ export class UserStubService {
   updateUser() {}
   getExtendedUserData() {}
 }
+
+export class TosBannerStubService {}
 
 export class TokenStubService {
   tokens$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);
@@ -861,4 +865,9 @@ export class VersionModalStubService {
   mode = observableOf(TagEditorMode.View);
   unsavedTestCWLFile = observableOf([]);
   unsavedTestWDLFile = observableOf([]);
+}
+
+export class OrgLogoStubService {
+  setDefault(img: any) {
+  }
 }

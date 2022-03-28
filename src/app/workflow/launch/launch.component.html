@@ -25,8 +25,11 @@
       </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid">
-      <div>
-        <mat-card *ngIf="!(isNFL$ | async)" class="m-2" matTooltip="Commands for creating a runtime JSON template">
+      <div fxLayout="column" fxLayoutGap="1rem">
+        <mat-card *ngIf="entryType === EntryType.Tool" class="alert alert-info" role="alert">
+          <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
+        </mat-card>
+        <mat-card *ngIf="(isNFL$ | async) === false" matTooltip="Commands for creating a runtime JSON template">
           Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
           <pre>{{ params }}</pre>
           <span *ngIf="wgetTestJsonDescription">
@@ -35,17 +38,13 @@
           </span>
         </mat-card>
         <mat-card
-          *ngIf="!(isNFL$ | async)"
-          class="m-2"
+          *ngIf="(isNFL$ | async) === false"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >
           Run locally with the Dockstore CLI
           <pre>{{ cli }}</pre>
         </mat-card>
-        <mat-card
-          *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode"
-          class="m-2"
-        >
+        <mat-card *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
           <div matTooltip="Nextflow can conveniently run a workflow off of source control">
             Run with nextflow
             <pre>{{ nextflowNativeLaunchDescription }}</pre>
@@ -53,10 +52,7 @@
           </div>
         </mat-card>
 
-        <mat-card
-          *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)"
-          class="m-2"
-        >
+        <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)">
           <div matTooltip="Nextflow can also run a local workflow">
             Download the workflow files
             <pre>{{ nextflowDownloadFileDescription }}</pre>
@@ -71,19 +67,47 @@
             {{ cwlrunnerDescription }}
             <pre>{{ cwl }}</pre>
           </div>
-          <!-- cwltool instructions for workflows will need to wait for https://github.com/common-workflow-language/cwltool/pull/1093
+        </mat-card>
+        <mat-card>
+          <!--          cwltool instructions for workflows will need to wait for https://github.com/common-workflow-language/cwltool/pull/1093-->
           <div [matTooltip]="cwltoolTooltip">
-            Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently
-            run
-            a workflow off of dockstore.org and other <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH
-              tool registries</a> when all inputs and outputs are available on the local filesystem or via HTTP(S):
-            <pre>{{ dockstoreSupportedCwlLaunch }}</pre> cwltool can also be used to create the input template:
+            Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of
+            dockstore.org and other
+            <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when
+            all inputs and outputs are available on the local filesystem or via HTTP(S):
+            <pre>{{ dockstoreSupportedCwlLaunch }}</pre>
+            cwltool can also be used to create the input template:
             <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
           </div>
-          -->
         </mat-card>
         <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
       </div>
+
+      <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
+        <div [matTooltip]="wesTooltip">
+          <p>Launch this workflow on Amazon Web Services' (AWS) Amazon Genomics CLI (AGC) cloud infrastructure.</p>
+
+          <!--TODO: replace with actual documentation link after https://github.com/dockstore/dockstore-documentation/pull/173-->
+          <p>
+            Learn how to configure the Dockstore CLI to communicate with AWS AGC infrastructure by reading the
+            <a [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/wes/cli-wes-tutorial.html'">Dockstore documentation</a>. For an
+            introduction to AWS AGC, see their official
+            <a href="https://aws.github.io/amazon-genomics-cli/docs/getting-started/">quick start guide</a>.
+          </p>
+
+          <div>
+            Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+            <pre>{{ params }}</pre>
+
+            Create a wrapper JSON file, which is used by AWS AGC.
+            <pre>{{ wesWrapperJson }}</pre>
+
+            Launch the workflow. (Note: Any input files required to run this workflow must be specified using the `--attach` or `-a` command
+            line switch.)
+            <pre>{{ wesLaunchCommand }}</pre>
+          </div>
+        </div>
+      </mat-card>
     </div>
   </div>
 </div>

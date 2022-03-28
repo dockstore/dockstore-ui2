@@ -46,8 +46,14 @@
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div fxFlex="80">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-        <span>
+        <span *ngIf="entryType === EntryType.Tool" data-cy="tool-icon">
+          <img src="../../assets/svg/tool-circle.svg" alt="tool icon" />
+        </span>
+        <span *ngIf="entryType === EntryType.BioWorkflow" data-cy="workflow-icon">
           <img src="../../assets/svg/workflow-circle.svg" alt="workflow icon" />
+        </span>
+        <span *ngIf="entryType === EntryType.Service" data-cy="service-icon">
+          <img src="../../assets/svg/service-circle.svg" alt="service icon" />
         </span>
         <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ title
@@ -56,7 +62,7 @@
           >
         </span>
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
-          <mat-chip matTooltip="Verified" class="workflow-label-tag">
+          <mat-chip matTooltip="Verified" class="bubble workflow-background ml-3">
             <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
               <mat-icon class="verified-icon">done</mat-icon>
               <span>Verified</span>
@@ -84,7 +90,7 @@
         [workflow]="workflow"
         class="pull-right starring-button"
         *ngIf="isWorkflowPublic && workflow"
-        (change)="starGazersChange()"
+        (starGazersChange)="starGazersChange()"
       ></app-starring>
     </div>
     <div *ngIf="!publicPage" class="col-md-5">
@@ -96,30 +102,50 @@
           [selectedVersion]="selectedVersion"
           [isOwner]="isOwner"
           [canWrite]="canWrite"
+          (showVersions)="selectVersionsTab()"
         ></app-workflow-actions>
       </h3>
     </div>
   </div>
   <div class="row m-1" *ngIf="!showRedirect">
-    <div *ngIf="workflow" class="col-sm-12" style="margin-bottom: 5px">
-      <span *ngIf="!labelsEditMode && !starGazersClicked">
-        <mat-chip-list>
-          <mat-chip class="workflow-label-tag" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
+    <div *ngIf="workflow">
+      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
+        <span class="size-small mr-2">Categories</span>
+        <mat-chip-list class="bubble-list">
+          <app-category-button
+            *ngFor="let category of categories$ | async"
+            [category]="category"
+            entryType="workflow"
+          ></app-category-button>
+        </mat-chip-list>
+      </span>
+      <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
+        <span *ngIf="workflowEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
+        <mat-chip-list class="bubble-list">
+          <mat-chip class="bubble workflow-background pointer" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
             label
           }}</mat-chip>
-          <button type="button" *ngIf="!labelsEditMode && !isWorkflowPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+          <button
+            type="button"
+            *ngIf="!labelsEditMode && !isWorkflowPublic"
+            mat-button
+            class="private-btn small-btn-structure"
+            (click)="toggleLabelsEditMode()"
+          >
+            <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
           </button>
         </mat-chip-list>
       </span>
       <span *ngIf="labelsEditMode && !isWorkflowPublic">
-        <mat-form-field style="width: 100%">
+        <mat-form-field class="mt-3" style="width: 100%">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let label of workflowEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
               {{ label }}
               <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
             </mat-chip>
             <input
+              data-cy="workflowLabelInput"
               placeholder="New label..."
               [formControl]="labelFormControl"
               [matChipInputFor]="chipList"
@@ -132,17 +158,26 @@
             >
           </mat-chip-list>
         </mat-form-field>
-        <button type="button" (click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isWorkflowPublic">
-          <mat-icon>cancel</mat-icon>Cancel
-        </button>
         <button
           type="button"
+          (click)="cancelLabelChanges()"
+          mat-button
+          class="private-btn small-btn-structure mr-2"
+          *ngIf="labelsEditMode && !isWorkflowPublic"
+        >
+          <img src="../assets/svg/icons-reject.svg" alt="Cancel" class="pr-1 pb-1" />
+          Cancel
+        </button>
+        <button
+          data-cy="saveLabelButton"
+          mat-button
+          type="button"
           (click)="submitWorkflowEdits()"
-          class="btn btn-link"
+          class="private-btn small-btn-structure"
           *ngIf="labelsEditMode && !isWorkflowPublic"
           [disabled]="labelFormControl.hasError('pattern')"
         >
-          <mat-icon>save</mat-icon> Save
+          <mat-icon class="mat-icon-sm">save</mat-icon> Save
         </button>
       </span>
     </div>
@@ -176,9 +211,9 @@
               [isOwner]="isOwner"
             ></app-info-tab>
           </mat-tab>
-          <div *ngIf="entryType === EntryType.BioWorkflow">
+          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
             <mat-tab id="launchTab" label="Launch">
-              <div *ngIf="!(launchSupport$ | async); else launchSupported">
+              <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
                   <mat-card class="alert alert-warning" role="alert">
                     <mat-icon>warning</mat-icon> Dockstore does not yet have customized launch-with instructions for this language.
@@ -195,6 +230,7 @@
                   [canWrite]="canWrite"
                   [isOwner]="isOwner"
                   [mode]="workflow?.mode"
+                  [entryType]="entryType"
                 ></app-launch>
               </ng-template>
               <ng-template #noVersions>
@@ -244,29 +280,9 @@
             <ng-template matTabContent>
               <!-- Check if there's versions, then check workflow mode, then check descriptor type -->
               <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
-                <div [ngSwitch]="workflow.mode">
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.STUB">
-                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
-                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else newComponent" class="p-3">
-                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
-                    </div>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
-                    <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML">
-                    <ng-container *ngTemplateOutlet="dockstoreYmlComponent"></ng-container>
-                  </div>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.FULL">
-                    <!-- For old languages, we use the old files component because it's well tested, for new unknown languages, use the new component -->
-                    <div *ngIf="oldLanguages.includes(workflow.descriptorType); else newComponent" class="p-3">
-                      <ng-container *ngTemplateOutlet="oldComponent"></ng-container>
-                    </div>
-                  </div>
-                  <div *ngSwitchDefault>
-                    <ng-container *ngTemplateOutlet="newComponent"></ng-container>
-                  </div>
-                </div>
+                <ng-container
+                  *ngIf="workflow.mode === WorkflowModel.ModeEnum.HOSTED; then hostedComponent; else dockstoreYmlComponent"
+                ></ng-container>
               </div>
               <ng-template #noVersionsFilesTab>
                 <div [ngSwitch]="workflow.mode" class="p-3">
@@ -286,27 +302,9 @@
                   </mat-card>
                 </div>
               </ng-template>
-              <ng-template #oldComponent>
-                <app-files-workflow
-                  [entrypath]="workflow.full_workflow_path"
-                  [id]="workflow?.id"
-                  [versions]="validVersions"
-                  [default]="defaultVersion"
-                  [selectedVersion]="selectedVersion"
-                  [descriptorType]="descriptorType$ | async"
-                  [canRead]="canRead"
-                  [canWrite]="canWrite"
-                  [isOwner]="isOwner"
-                  [versionsFileTypes]="versionsFileTypes"
-                >
-                </app-files-workflow>
-              </ng-template>
-              <ng-template #newComponent>
-                <app-entry-file-tab [version]="selectedVersion"></app-entry-file-tab>
-              </ng-template>
-
               <ng-template #dockstoreYmlComponent>
                 <app-source-file-tabs
+                  [entryPath]="workflow.full_workflow_path"
                   [workflowId]="workflow?.id"
                   [version]="selectedVersion"
                   [descriptorType]="descriptorType$ | async"
@@ -378,7 +376,7 @@
         </ng-template>
       </div>
     </div>
-    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
+    <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-md-2 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
       <mat-card>
         <mat-card-header>
@@ -397,8 +395,8 @@
                   [ngStyle]="{ 'font-weight': selectedVersion?.name === sortedVersion?.name ? 'bold' : 'normal' }"
                   (click)="onSelectedVersionChange(sortedVersion)"
                   class="panel-body-anchor"
-                  >{{ sortedVersion.name }}
-                </a>
+                  >{{ sortedVersion.name }}</a
+                >&nbsp;
                 <small>{{ sortedVersion.last_modified | date }}</small>
               </p>
               <hr class="m-0" />
@@ -415,7 +413,7 @@
           <div class="container-source-repos">
             <p>
               <span *ngIf="(extendedWorkflow$ | async).provider">
-                <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank">
+                <a [href]="(extendedWorkflow$ | async).providerUrl" target="_blank" rel="noopener">
                   {{ (extendedWorkflow$ | async).provider }}
                   <mat-icon>open_in_new</mat-icon>
                 </a>
@@ -424,7 +422,7 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></current-collections>
+      <app-current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></app-current-collections>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
       <mat-card *ngIf="workflow">

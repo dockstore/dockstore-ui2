@@ -25,7 +25,7 @@
       <input matInput placeholder="Search tools" #input />
     </mat-form-field>
   </div>
-  <mat-table class="mat-elevation-z4" [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
+  <mat-table [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool">
@@ -61,7 +61,7 @@
       <mat-cell *matCellDef="let tool">{{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
-      <mat-header-cell *matHeaderCellDef>Project Links</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell *matCellDef="let tool">
         <a [href]="tool?.providerUrl" *ngIf="tool?.providerUrl">
           <fa-icon class="fa-lg" [icon]="tool.providerIcon" [matTooltip]="tool?.provider"> </fa-icon>

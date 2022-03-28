@@ -22,15 +22,15 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
-import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { Organization } from '../../shared/swagger';
 import { TrackLoginService } from '../../shared/track-login.service';
-import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
 import { OrganizationsQuery } from '../state/organizations.query';
 import { OrganizationsStateService } from '../state/organizations.service';
+import { RequireAccountsModalComponent } from '../registerOrganization/requireAccountsModal/require-accounts-modal.component';
+import { OrgLogoService } from '../../shared/org-logo.service';
 
 @Component({
-  selector: 'organizations',
+  selector: 'app-organizations',
   templateUrl: './organizations.component.html',
   styleUrls: ['./organizations.component.scss'],
 })
@@ -49,7 +49,8 @@ export class OrganizationsComponent extends Base implements OnInit {
     private formBuilder: FormBuilder,
     private alertQuery: AlertQuery,
     private matDialog: MatDialog,
-    private trackLoginService: TrackLoginService
+    private trackLoginService: TrackLoginService,
+    private orgLogoService: OrgLogoService,
   ) {
     super();
   }
@@ -89,8 +90,8 @@ export class OrganizationsComponent extends Base implements OnInit {
    *
    * @memberof OrganizationsComponent
    */
-  createOrganization(): void {
-    this.matDialog.open(RegisterOrganizationComponent, { data: { organization: null, mode: TagEditorMode.Add }, width: '600px' });
+  requireAccounts(): void {
+    this.matDialog.open(RequireAccountsModalComponent, { width: '600px' });
   }
 
   onPageChange(event: PageEvent) {
@@ -102,5 +103,9 @@ export class OrganizationsComponent extends Base implements OnInit {
       endIndex = length;
     }
     this.pagedOrganizations = organizations.slice(startIndex, endIndex);
+  }
+
+  clearSearch() {
+    this.organizationSearchForm.get('name').setValue('');
   }
 }

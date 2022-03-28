@@ -31,7 +31,7 @@
   <mat-tab label="Test Parameter Files">
     <ng-template matTabContent>
       <app-code-editor-list
-        *ngIf="!(isNFL$ | async)"
+        *ngIf="(isNFL$ | async) === false"
         [sourcefiles]="testParameterFiles"
         [editing]="editing"
         [descriptorType]="selectedDescriptorType$ | async"
@@ -50,10 +50,12 @@
 
 <div class="editor-button-container p-2" *ngIf="!publicPage && canWrite && isNewestVersion">
   <span *ngIf="!editing">
-    <button id="editFilesButton" mat-raised-button color="primary" (click)="toggleEdit()">Edit Files</button>
+    <button id="editFilesButton" mat-raised-button class="accent-1-dark-btn mat-elevation-z" (click)="toggleEdit()">Edit Files</button>
   </span>
   <span *ngIf="editing">
-    <button id="cancelButton" mat-button color="secondary" (click)="toggleEdit(); resetFiles()">Cancel</button>
-    <button id="saveNewVersionButton" mat-raised-button color="primary" (click)="saveVersion()">Save as New Version</button>
+    <button id="cancelButton" mat-flat-button class="secondary-1" (click)="toggleEdit(); resetFiles()">Cancel</button>
+    <button id="saveNewVersionButton" mat-raised-button class="accent-1-dark-btn mat-elevation-z" (click)="saveVersion()">
+      Save as New Version
+    </button>
   </span>
 </div>

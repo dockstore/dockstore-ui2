@@ -365,6 +365,11 @@ export class SearchService {
   }
 
   reset() {
+    // If we simply set the search text to '', and the current value is '', the associated observable won't produce a new value and the basic search component text box won't be reset.
+    // Avoid the above by first setting the search text to a different "blankish" value.
+    this.setSearchText(' ');
+    this.setSearchText('');
+
     this.router.navigateByUrl('search');
   }
 
@@ -504,6 +509,7 @@ export class SearchService {
       ['HasCheckerWorkflow', 'has_checker'],
       ['Organization', 'organization'],
       ['VerifiedPlatforms', 'verified_platforms.keyword'],
+      ['Category', 'categories.name.keyword'],
     ]);
   }
 
@@ -523,13 +529,14 @@ export class SearchService {
       ['has_checker', 'Has Checker Workflows'],
       ['organization', 'Organization'],
       ['verified_platforms.keyword', 'Verified Platforms'],
+      ['categories.name.keyword', 'Category'],
     ]);
   }
 
   initializeToolTips() {
     return new Map([
       // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
-      /* tslint:disable-next-line:quotemark*/
+      /* eslint-disable-next-line quotes, @typescript-eslint/quotes */
       ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
       ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
       [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
@@ -544,6 +551,7 @@ export class SearchService {
 
   initializeEntryOrder() {
     return new Map([
+      ['categories.name.keyword', new SubBucket()],
       ['descriptorType', new SubBucket()],
       ['author', new SubBucket()],
       ['registry', new SubBucket()],

@@ -19,7 +19,7 @@
     <span>Organizations</span>
   </div>
 </app-header>
-<div *ngIf="!(loading$ | async)" class="container mb-5">
+<div *ngIf="(loading$ | async) === false" class="container mb-5">
   <div *ngIf="pagedOrganizations as organizations; else noOrganizationsFound">
     <div fxLayout="row" fxLayoutAlign="space-between center" class="my-3" fxLayout.lt-sm="column-reverse" fxLayoutAlign.lt-sm="start start">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem" fxLayout.lt-md="column" fxLayoutAlign.lt-md="start start">
@@ -28,7 +28,7 @@
           *ngIf="isLoggedIn$ | async"
           color="primary"
           mat-raised-button
-          (click)="createOrganization()"
+          (click)="requireAccounts()"
           matTooltip="Create Organization Request"
         >
           Create Organization Request
@@ -45,8 +45,8 @@
         <mat-form-field appearance="outline" class="search-form-field">
           <mat-label>Search Organizations</mat-label>
           <input #search matInput formControlName="name" />
-          <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
-            <mat-icon inline="true">close</mat-icon>
+          <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
+            <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
       </form>
@@ -55,13 +55,19 @@
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
       <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="2rem grid">
         <div *ngFor="let org of organizations" fxFlex="33.3" fxFlex.lt-lg="50" fxFlex.lt-md="100">
-          <mat-card style="height: 340px" class="mat-elevation-z3">
+          <mat-card style="height: 340px" class="mat-elevation-z3 pb-3">
             <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
               <div fxLayout="column" fxLayoutGap="2rem">
                 <a [routerLink]="org.name" class="no-underline" target="_self">
                   <div fxLayout="column" fxLayoutAlign="space-around">
                     <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                      <img *ngIf="org.avatarUrl; else placeholder" class="small-org-logo" [src]="org.avatarUrl" alt="org logo" />
+                      <img
+                        *ngIf="org.avatarUrl; else placeholder"
+                        class="small-org-logo"
+                        [src]="org.avatarUrl | gravatar"
+                        alt="org logo"
+                        [appFallback]="orgLogoService.DEFAULT_URL"
+                      />
                       <ng-template #placeholder><span style="height: 50px"></span></ng-template>
                       <div *ngIf="org?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center">
                         <mat-icon class="orgStar">star</mat-icon>
@@ -78,17 +84,17 @@
                   <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
                     <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.link">
                       <mat-icon class="info-icon">link</mat-icon>
-                      <span class="info-overflow"
+                      <span class="truncate-text-1"
                         ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
                       >
                     </span>
                     <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.location">
                       <mat-icon class="info-icon">location_on</mat-icon>
-                      <span class="info-overflow">{{ org.location }}</span>
+                      <span class="truncate-text-1">{{ org.location }}</span>
                     </span>
                     <span fxLayout="row" fxLayoutAlign="start center" *ngIf="org?.email">
                       <mat-icon class="info-icon">email</mat-icon>
-                      <span class="info-overflow"
+                      <span class="truncate-text-1"
                         ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
                       >
                     </span>
@@ -99,12 +105,12 @@
                 <hr class="mb-4" />
                 <a [routerLink]="org.name" class="no-underline" target="_self">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <span class="gray-label-tag">
+                    <span class="bubble">
                       {{ org.collectionsLength }}
-                      <span *ngIf="org.collectionsLength != 1; else oneCollection"> Collections</span>
+                      <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                       <ng-template #oneCollection> Collection</ng-template>
                     </span>
-                    <button mat-raised-button color="accent" class="view-button">View</button>
+                    <button mat-raised-button color="accent">View</button>
                   </div>
                 </a>
               </div>

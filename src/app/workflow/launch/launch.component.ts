@@ -24,9 +24,11 @@ import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service'
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor, ToolFile } from '../../shared/swagger';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { Dockstore } from '../../shared/dockstore.model';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
+import { EntryType } from '../../shared/enum/entry-type';
 
 @Component({
   selector: 'app-launch',
@@ -41,7 +43,9 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
 
   _selectedVersion: WorkflowVersion;
   @Input() selectedVersion: WorkflowVersion;
+  @Input() entryType: EntryType;
 
+  Dockstore = Dockstore;
   DockstoreToolType = DockstoreTool;
   WorkflowType = Workflow;
   params: string;
@@ -63,8 +67,12 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
+  EntryType = EntryType;
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  wesWrapperJson: string;
+  wesLaunchCommand: string;
+  wesTooltip = this.launchService.wesTooltip;
 
   constructor(
     private launchService: WorkflowLaunchService,
@@ -96,14 +104,20 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.params = this.launchService.getParamsString(workflowPath, versionName, descriptorType);
     this.cli = this.launchService.getCliString(workflowPath, versionName, descriptorType);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
-    this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName);
-    this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(workflowPath, versionName);
+    this.dockstoreSupportedCwlLaunch = this.launchService.getDockstoreSupportedCwlLaunchString(workflowPath, versionName, this.entryType);
+    this.dockstoreSupportedCwlMakeTemplate = this.launchService.getDockstoreSupportedCwlMakeTemplateString(
+      workflowPath,
+      versionName,
+      this.entryType
+    );
     this.checkEntryCommand = this.launchService.getCheckWorkflowString(workflowPath, versionName);
     this.consonance = this.launchService.getConsonanceString(workflowPath, versionName);
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
     this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
     this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
     this.updateWgetTestJsonString(workflowPath, versionName, descriptorType);
+    this.wesLaunchCommand = this.launchService.getWesLaunch(workflowPath, versionName);
+    this.wesWrapperJson = this.launchService.getAgcFileWrapper();
   }
 
   /**

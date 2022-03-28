@@ -1,4 +1,4 @@
-// tslint:disable:max-line-length
+/* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { finalize } from 'rxjs/operators';
@@ -144,7 +144,7 @@ source ~/.bashrc
     `;
 
     this.textDataCLIConfig = `
-#### Part 2 - Setup Dockstore CLI Config
+#### Part 3 - Setup Dockstore CLI Config
 1. Create the folder \`~/.dockstore\` and create a configuration file \`~/.dockstore/config\`:
 \`\`\`
 mkdir -p ~/.dockstore
@@ -153,7 +153,7 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
 2. Alternatively, copy this content to your config file directly.
 `;
     this.textDataConfirmInstallation = `
-#### Part 3 - Confirm installation
+#### Part 4 - Confirm installation
 1. Run our dependencies to verify that they have been installed properly.
 \`\`\`
 $ java -version
@@ -167,7 +167,7 @@ Hello from Docker!
 ...
 \`\`\`
 
-#### Part 4 - Install cwltool (Optional)
+#### Part 5 - Install cwltool (Optional)
 Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) -a reference implementation of CWL- for local execution of tools and workflows described with CWL.
 You'll need to have Python 3 and [pip3](https://pip.pypa.io/en/latest/installing/) to be installed on your machine.
 
@@ -186,7 +186,7 @@ $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
 \`\`\`
 
-#### Part 5 - Install Nextflow (Optional)
+#### Part 6 - Install Nextflow (Optional)
 The Dockstore CLI does not run Nextflow workflows. Users can run them directly by using the Nextflow command line tool. For installation instructions, follow [Nextflow's documentation](https://github.com/nextflow-io/nextflow#download-the-package)
 `;
   }

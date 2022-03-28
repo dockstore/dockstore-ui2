@@ -48,7 +48,7 @@ export class OrganizationService {
         (organization: Organization) => {
           this.organizationStore.setError(false);
           this.updateOrganization(organization);
-          this.organizationMembersService.updateCanEdit(organizationID);
+          this.organizationMembersService.updateCanModify(organizationID);
         },
         () => {
           this.organizationStore.setError(true);
@@ -76,20 +76,11 @@ export class OrganizationService {
         (organization: Organization) => {
           this.organizationStore.setError(false);
           this.updateOrganization(organization);
-          this.organizationMembersService.updateCanEdit(organization.id);
+          this.organizationMembersService.updateCanModify(organization.id);
         },
         () => {
           this.organizationStore.setError(true);
         }
       );
-  }
-
-  genGravatarUrl(url: string): string {
-    if (url) {
-      const gravatarUrl = 'https://www.gravatar.com/avatar/' + '000' + '?d=' + url;
-      return gravatarUrl;
-    } else {
-      return null;
-    }
   }
 }

@@ -15,12 +15,12 @@
  */
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Directive, Injectable, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Directive, Injectable, Input, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../shared/dockstore.model';
 import { Tag } from '../shared/swagger/model/tag';
@@ -38,11 +38,13 @@ import { SessionService } from './session/session.service';
 import { SourceFile } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
+import { Category } from '../shared/openapi';
+import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Directive()
 @Injectable()
-// tslint:disable-next-line: directive-class-suffix
-export abstract class Entry implements OnInit, OnDestroy {
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
+export abstract class Entry implements OnDestroy {
   @ViewChild('entryTabs') entryTabs: MatTabGroup;
   protected shareURL: string;
   public starGazersClicked = false;
@@ -71,6 +73,7 @@ export abstract class Entry implements OnInit, OnDestroy {
   protected selected = new FormControl(0);
   labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   public verifiedLink: string;
+  public categories$: Observable<Array<Category>>;
   constructor(
     private trackLoginService: TrackLoginService,
     public providerService: ProviderService,
@@ -84,14 +87,16 @@ export abstract class Entry implements OnInit, OnDestroy {
     protected sessionQuery: SessionQuery,
     protected gA4GHFilesService: GA4GHFilesService,
     protected alertService: AlertService,
-    protected entryService: EntriesService
+    protected entryService: EntriesService,
+    protected entryCategoriesService: EntryCategoriesService
   ) {
     this.location = locationService;
     this.gA4GHFilesService.clearFiles();
   }
 
-  ngOnInit() {
-    this.clearState();
+  init() {
+    // Getting rid of this line makes the linking work again and I didn't notice any weird behaviour, but I'm not sure.. Needs more testing
+    // this.clearState();
     this.subscriptions();
     this.router.events
       .pipe(
@@ -118,6 +123,13 @@ export abstract class Entry implements OnInit, OnDestroy {
         this.selectTab(0);
       }
     }
+  }
+
+  protected isAppTool(url: String): boolean {
+    if (url.includes('/containers/github.com')) {
+      return true;
+    }
+    return false;
   }
 
   starGazersChange(): void {
@@ -304,6 +316,11 @@ export abstract class Entry implements OnInit, OnDestroy {
         this.versionsWithVerifiedPlatforms = [];
       }
     );
+  }
+
+  updateCategories(entryId: number): void {
+    this.entryCategoriesService.updateEntryCategories(entryId);
+    this.categories$ = this.entryCategoriesService.categories$;
   }
 
   /**

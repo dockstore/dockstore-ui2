@@ -18,15 +18,17 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { includesValidation } from 'app/shared/constants';
+import { includesAuthors, includesValidation } from 'app/shared/constants';
 import { ContainerService } from 'app/shared/container.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
-import { ContainersService, DockstoreTool, UsersService, Workflow } from 'app/shared/swagger';
+import { AppTool, ContainersService, DockstoreTool, UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { finalize } from 'rxjs/operators';
 import { MyEntriesService } from './../shared/myentries.service';
 import { OrgToolObject } from './my-tool/my-tool.component';
+import { WorkflowService } from '../shared/state/workflow.service';
+import { OrgWorkflowObject } from '../myworkflows/my-workflow/my-workflow.component';
 
 @Injectable()
 export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObject<DockstoreTool>> {
@@ -34,6 +36,8 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     private alertService: AlertService,
     private usersService: UsersService,
     private containerService: ContainerService,
+    private workflowService: WorkflowService,
+    private workflowsService: WorkflowsService,
     private myEntriesService: MyEntriesStateService,
     private location: Location,
     protected urlResolverService: UrlResolverService,
@@ -57,15 +61,50 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
           this.alertService.detailedError(error);
         }
       );
+
+    this.usersService
+      .userAppTools(userId)
+      .pipe(finalize(() => this.myEntriesService.setRefreshingMyEntries(false)))
+      .subscribe((appTools: Array<Workflow>) => {
+        this.workflowService.setWorkflows(appTools);
+      });
   }
+
   selectEntry(tool: DockstoreTool | Workflow | null): void {
     if (tool && tool.id) {
-      this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
-        this.location.go('/my-tools/' + result.tool_path);
-        this.containerService.setTool(result);
-      });
+      if (MytoolsService.isWorkflowBasedObject(tool)) {
+        this.workflowsService.getWorkflow(tool.id, includesValidation + ',' + includesAuthors).subscribe((result) => {
+          this.location.go('/my-tools/' + result.full_workflow_path);
+          this.workflowService.setWorkflow(<AppTool>result);
+          // We check that the shared workflows are not null in upsertWorkflowToWorkflow
+          this.workflowService.setSharedWorkflows([]);
+          this.containerService.setTool(null);
+        });
+      } else {
+        this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
+          this.location.go('/my-tools/' + result.tool_path);
+          this.containerService.setTool(result);
+          this.workflowService.setWorkflow(null);
+        });
+      }
     }
   }
+
+  // GitHub App Tools are Workflows in the backend, but are displayed as tools to users
+  static isWorkflowBasedObject(
+    tool: DockstoreTool | AppTool | OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>
+  ): tool is Workflow {
+    if (tool !== null) {
+      return (tool as AppTool).organization !== undefined;
+    }
+  }
+
+  static isDockstoreTool(tool: DockstoreTool | AppTool): tool is DockstoreTool {
+    if (tool !== null) {
+      return (tool as DockstoreTool).registry !== undefined;
+    }
+  }
+
   registerEntry(entryType: EntryType) {}
 
   protected sortOrgEntryObjects(orgToolObjectA: OrgToolObject<DockstoreTool>, orgToolObjectB: OrgToolObject<DockstoreTool>): number {
@@ -91,25 +130,57 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     });
   }
 
-  getPath(entry: DockstoreTool): string {
-    return entry.tool_path || '';
+  getPath(entry: DockstoreTool | Workflow): string {
+    if (MytoolsService.isWorkflowBasedObject(entry)) {
+      return entry.full_workflow_path || '';
+    } else {
+      return entry.tool_path || '';
+    }
   }
 
-  sortEntry(entryA: DockstoreTool, entryB: DockstoreTool): number {
-    const registryA = entryA.registry_string.toLowerCase();
-    const registryB = entryB.registry_string.toLowerCase();
-    const compareRegistry = registryA.localeCompare(registryB);
+  sortEntry(entryA: DockstoreTool | Workflow, entryB: DockstoreTool | Workflow): number {
+    let topLevelA: string;
+    let topLevelB: string;
+    let midLevelA: string;
+    let midLevelB: string;
+    let lowerLevelA: string;
+    let lowerLevelB: string;
+    if (MytoolsService.isWorkflowBasedObject(entryA)) {
+      topLevelA = entryA.sourceControl;
+      midLevelA = entryA.organization;
+      lowerLevelA = entryA.full_workflow_path || '';
+    } else if (MytoolsService.isDockstoreTool(entryA)) {
+      topLevelA = entryA.registry_string;
+      midLevelA = entryA.namespace;
+      lowerLevelA = entryA.tool_path || '';
+    }
+
+    if (MytoolsService.isWorkflowBasedObject(entryB)) {
+      topLevelB = entryB.sourceControl;
+      midLevelB = entryB.organization;
+      lowerLevelB = entryB.full_workflow_path || '';
+    } else if (MytoolsService.isDockstoreTool(entryB)) {
+      topLevelB = entryB.registry_string;
+      midLevelB = entryB.namespace;
+      lowerLevelB = entryB.tool_path || '';
+    }
+
+    topLevelA = topLevelA.toLowerCase();
+    topLevelB = topLevelB.toLowerCase();
+    const compareRegistry = topLevelA.localeCompare(topLevelB);
     if (compareRegistry) {
       return compareRegistry;
     }
-    const namespaceA = entryA.namespace.toLowerCase();
-    const namespaceB = entryB.namespace.toLowerCase();
-    const compareNamespace = namespaceA.localeCompare(namespaceB);
-    if (compareNamespace) {
-      return compareNamespace;
+
+    midLevelA = midLevelA.toLowerCase();
+    midLevelB = midLevelB.toLowerCase();
+    const compareMidLevel = midLevelA.localeCompare(midLevelB);
+    if (compareMidLevel) {
+      return compareMidLevel;
     }
-    const keyA = (entryA.tool_path || '').toLowerCase();
-    const keyB = (entryB.tool_path || '').toLowerCase();
-    return keyA.localeCompare(keyB);
+
+    lowerLevelA = lowerLevelA.toLowerCase();
+    lowerLevelB = lowerLevelB.toLowerCase();
+    return lowerLevelA.localeCompare(lowerLevelB);
   }
 }

@@ -22,7 +22,7 @@ import { DagQuery } from './dag.query';
 import { DagService } from './dag.service';
 import { DagStore } from './dag.store';
 
-/* tslint:disable:no-unused-variable */
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 describe('Service: Dag', () => {
   beforeEach(() => {

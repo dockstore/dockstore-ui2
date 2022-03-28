@@ -15,7 +15,8 @@
  */
 import {
   cancelMatMenu,
-  clickFirstActionsButton,
+  clickFirstActionsButtonPublic,
+  clickFirstActionsButtonPrivate,
   goToTab,
   goToUnexpandedSidebarEntry,
   resetDB,
@@ -133,6 +134,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       workflowName: undefined,
       workflowVersions: [
         {
+          authors: [],
           commitID: undefined,
           dirtyBit: false,
           doiStatus: 'NOT_REQUESTED',
@@ -142,6 +144,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           input_file_formats: [],
           last_modified: 1530729511472,
           name: '1',
+          orcidAuthors: [],
           output_file_formats: [],
           reference: '1',
           referenceType: 'TAG',
@@ -162,6 +165,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           workingDirectory: '',
         },
         {
+          authors: [],
           commitID: undefined,
           dirtyBit: false,
           doiStatus: 'NOT_REQUESTED',
@@ -171,6 +175,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           input_file_formats: [],
           last_modified: 1530729532618,
           name: '2',
+          orcidAuthors: [],
           output_file_formats: [],
           reference: '2',
           referenceType: 'TAG',
@@ -214,13 +219,13 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       goToTab('Versions');
-      clickFirstActionsButton();
+      clickFirstActionsButtonPrivate();
       cy.contains('View').should('be.visible');
-      cy.contains('Edit').should('not.be.visible');
-      cy.contains('Delete').should('not.be.visible');
+      cy.contains('Edit').should('not.exist');
+      cy.contains('Delete').should('not.exist');
       cancelMatMenu();
       goToTab('Files');
-      cy.contains('Edit Files').should('not.be.visible');
+      cy.contains('Edit Files').should('not.exist');
     });
 
     it('select a workflow you are a WRITER of and try to perform actions', () => {
@@ -230,8 +235,8 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('be.disabled');
 
       goToTab('Versions');
-      clickFirstActionsButton();
-      cy.contains('View').should('not.be.visible');
+      clickFirstActionsButtonPrivate();
+      cy.contains('View').should('not.exist');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
       cancelMatMenu();
@@ -246,8 +251,8 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.get('#publishButton').should('not.be.disabled');
 
       goToTab('Versions');
-      clickFirstActionsButton();
-      cy.contains('View').should('not.be.visible');
+      clickFirstActionsButtonPrivate();
+      cy.contains('View').should('not.exist');
       cy.contains('Edit').should('be.visible');
       cy.contains('Delete').should('be.visible');
       cancelMatMenu();

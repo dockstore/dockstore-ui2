@@ -1,3 +1,5 @@
+@import '/src/materialColorScheme.scss';
+
 // Old launch with buttons are the blue buttons used before the UI redesign.
 .old-launch-with-button {
   width: 20rem;
@@ -44,5 +46,5 @@ img.galaxy-launch {
 }
 
 .partner-name {
-  color: #151c3d;
+  color: $header-color;
 }

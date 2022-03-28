@@ -39,8 +39,8 @@ describe('Dropdown test', () => {
     });
 
     it('Should have nothing starred', () => {
-      cy.get('#starCountButton').should('not.be.visible');
-      cy.get('#starringButton').should('not.be.visible');
+      cy.get('#starCountButton').should('not.exist');
+      cy.get('#starringButton').should('not.exist');
     });
 
     it('cy.should - assert that <title> is correct', () => {
@@ -71,9 +71,9 @@ describe('Dropdown test', () => {
       goToTab('Profiles');
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=profiles');
     });
-    it('Change tab to dockstore account controls', () => {
-      goToTab('Dockstore Account Controls');
-      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20controls');
+    it('Change tab to Dockstore Account & Preferences', () => {
+      goToTab('Dockstore Account & Preferences');
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20and%20preferences');
     });
     it('Change tab to requests', () => {
       goToTab('Requests');
@@ -88,9 +88,9 @@ describe('Dropdown test', () => {
       cy.visit('/accounts?tab=profiles');
       isActiveTab('Profiles');
     });
-    it('Link to dockstore account controls tab', () => {
-      cy.visit('/accounts?tab=dockstore%20account%20controls');
-      isActiveTab('Dockstore Account Controls');
+    it('Link to Dockstore Account & Preferences tab', () => {
+      cy.visit('/accounts?tab=dockstore%20account%20and%20preferences');
+      isActiveTab('Dockstore Account & Preferences');
     });
     it('Link to requests tab', () => {
       cy.visit('/accounts?tab=requests');
@@ -178,11 +178,11 @@ describe('Dropdown test', () => {
 
       // Ensure that there is one org
       cy.get('#my-rejected-org-card-0').should('be.visible');
-      cy.get('#my-rejected-org-card-1').should('not.be.visible');
+      cy.get('#my-rejected-org-card-1').should('not.exist');
 
       // Request re-review
       cy.get('#request-re-review-0').should('be.visible').click();
-      cy.get('#my-rejected-org-card-0').should('not.be.visible');
+      cy.get('#my-rejected-org-card-0').should('not.exist');
 
       // Should now have org in pending (3 Total)
       cy.get('#pending-org-card-0').should('be.visible');
@@ -221,7 +221,7 @@ describe('Dropdown test', () => {
 
       // Ensure that only one org exists now
       cy.get('#pending-org-card-0').should('be.visible');
-      cy.get('#pending-org-card-1').should('not.be.visible');
+      cy.get('#pending-org-card-1').should('not.exist');
     });
 
     it('Should have a pending invite', () => {
@@ -328,7 +328,7 @@ describe('Dropdown test', () => {
     });
   });
 
-  describe('Go to enabled Dockstore Account Controls', () => {
+  describe('Go to enabled Dockstore Account & Preferences', () => {
     beforeEach(() => {
       // Select dropdown accounts
       cy.server().route({
@@ -337,7 +337,7 @@ describe('Dropdown test', () => {
         response: 'true',
       });
       cy.get('#dropdown-accounts').click();
-      cy.contains('Dockstore Account Controls').click();
+      cy.contains('Dockstore Account & Preferences').click();
     });
     it('Should have the danger alert', () => {
       cy.get('.alert-danger').should('be.visible');
@@ -426,10 +426,10 @@ describe('Dropdown test', () => {
     //         .should('be.visible')
     //     cy
     //         .get('h3').contains('Step 2')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 3')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('#next_step')
     //         .click()
@@ -437,13 +437,13 @@ describe('Dropdown test', () => {
     //     // Should now be on step 2
     //     cy
     //         .get('h3').contains('Step 1')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 2')
     //         .should('be.visible')
     //     cy
     //         .get('h3').contains('Step 3')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('#next_step')
     //         .click()
@@ -451,10 +451,10 @@ describe('Dropdown test', () => {
     //     // Should now be on step 3
     //     cy
     //         .get('h3').contains('Step 1')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 2')
-    //         .should('not.be.visible')
+    //         .should('not.exist')
     //     cy
     //         .get('h3').contains('Step 3')
     //         .should('be.visible')

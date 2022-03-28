@@ -12,7 +12,7 @@ import { RequestsQuery } from '../state/requests.query';
 import { RequestsService } from '../state/requests.service';
 
 @Component({
-  selector: 'organization-request-confirm-dialog',
+  selector: 'app-organization-request-confirm-dialog',
   templateUrl: 'organization-request-confirm-dialog.html',
 })
 export class OrganizationRequestConfirmDialogComponent {
@@ -27,7 +27,7 @@ export class OrganizationRequestConfirmDialogComponent {
 }
 
 @Component({
-  selector: 'organization-invite-confirm-dialog',
+  selector: 'app-organization-invite-confirm-dialog',
   templateUrl: 'organization-invite-confirm-dialog.html',
 })
 export class OrganizationInviteConfirmDialogComponent {
@@ -45,7 +45,7 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'requests',
+  selector: 'app-requests',
   templateUrl: './requests.component.html',
   styleUrls: ['./requests.component.scss'],
 })

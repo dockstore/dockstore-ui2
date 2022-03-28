@@ -64,8 +64,8 @@ describe('Dockstore Workflow Details', () => {
     cy.get('tbody>tr').should('have.length', 1); // 1 Version and no warning line
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
     // Buttons to create snapshots are hidden on public
-    cy.get('[data-cy=dockstore-snapshot]').should('not.be.visible');
-    cy.get('[data-cy=dockstore-request-doi-button]').should('not.be.visible');
+    cy.get('[data-cy=dockstore-snapshot]').should('not.exist');
+    cy.get('[data-cy=dockstore-request-doi-button]').should('not.exist');
     cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
 
     cy.get('[data-cy=dockstore-snapshot-unlocked]').its('length').should('be.gt', 0);
@@ -91,7 +91,7 @@ describe('Dockstore Workflow Details', () => {
       });
 
       it('Should not have content in file viewer', () => {
-        cy.get('.ace_content').should('not.be.visible');
+        cy.get('.ace_content').should('not.exist');
       });
     });
   });
@@ -102,17 +102,14 @@ describe('Dockstore Workflow Details', () => {
   });
 
   describe('Change tab to dag', () => {
-    beforeEach(() => {
-      cy.get('.mat-tab-header-pagination-after').click();
+    it('Change to fullscreen and back', () => {
+      goToTab('DAG');
       goToTab('DAG');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=dag');
-    });
-
-    it('Change to fullscreen and back', () => {
       cy.get('[data-cy=dag-holder]').should('have.class', 'small');
       cy.get('[data-cy=dag-holder]').should('not.have.class', 'big');
-      cy.get('#dag_fullscreen').click();
       // Cypress or electron can't initiate fullscreen because:
+      // cy.get('#dag_fullscreen').click();
       // "Failed to execute 'requestFullscreen' on 'Element': API can only be initiated by a user gesture."
       // TODO: Figure out how to test it
     });

@@ -1,18 +1,12 @@
+@use '~@angular/material' as mat;
 @import 'materialColorScheme.scss';
 
 .side-icons {
-  color: mat-color($dockstore-app-accent);
+  color: mat.get-color-from-palette($dockstore-app-accent);
 }
 
 .tab-icons {
   color: #7887cb;
-}
-
-.tab-display {
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  font-size: 1.3rem;
-  background-color: #e0e0e0;
 }
 
 .category-text {
@@ -20,5 +14,5 @@
 }
 
 .name {
-  color: #151c3d;
+  color: $header-color;
 }

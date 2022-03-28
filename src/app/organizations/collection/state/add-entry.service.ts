@@ -5,6 +5,7 @@ import { CurrentCollectionsService } from '../../../entry/state/current-collecti
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Collection, OrganizationsService, OrganizationUser, UsersService } from '../../../shared/swagger';
 import { AddEntryState, AddEntryStore } from './add-entry.store';
+import { EntryCategoriesService } from '../../../categories/state/entry-categories.service';
 
 @Injectable({ providedIn: 'root' })
 export class AddEntryService {
@@ -13,7 +14,8 @@ export class AddEntryService {
     private organizationsService: OrganizationsService,
     private usersService: UsersService,
     private alertService: AlertService,
-    private currentCollectionsService: CurrentCollectionsService
+    private currentCollectionsService: CurrentCollectionsService,
+    private entryCategoriesService: EntryCategoriesService
   ) {}
 
   /**
@@ -104,6 +106,8 @@ export class AddEntryService {
         (collection: Collection) => {
           this.alertService.detailedSuccess();
           this.currentCollectionsService.get(entryId);
+          // Changing collection membership can change category membership.
+          this.entryCategoriesService.updateEntryCategories(entryId);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);

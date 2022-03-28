@@ -16,6 +16,7 @@
 
 // Must define the material icons font directory path, see https://www.npmjs.com/package/material-design-icons-iconfont
 $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
+@use '~@angular/material' as mat;
 @import '~material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';
@@ -83,7 +84,7 @@ app-header h3 {
 }
 
 app-header .container-fluid {
-  background-color: mat-color($dockstore-app-gray, 6);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
   box-shadow: 0px 3px 6px #cfd1d7;
   position: relative;
   z-index: 1;
@@ -101,31 +102,6 @@ markdown pre code {
   color: #487980;
 }
 
-/* Green Login Button */
-.green {
-  margin-top: 5px;
-  background-color: #487980;
-  border-radius: 8px;
-  display: inline-block;
-}
-
-.green p {
-  margin: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-  line-height: 2.5em;
-}
-
-.green a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.sideblock {
-  background-color: white;
-}
-
 /* Center */
 .absCenter {
   display: flex;
@@ -134,10 +110,6 @@ markdown pre code {
 
   min-height: 100%; /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
-}
-
-.select-box {
-  border-radius: 3px !important;
 }
 
 .starring-button {
@@ -233,26 +205,6 @@ angular-tag-cloud > span.w1:hover {
   color: #ff5e86 !important;
 }
 
-@font-face {
-  font-family: Gotham;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-Book.otf') format('opentype');
-}
-
-@font-face {
-  font-family: Gotham;
-  font-weight: bold;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-Bold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: Gotham;
-  font-style: italic;
-  font-display: swap;
-  src: url('assets/fonts/Gotham-BookItalic.otf') format('opentype');
-}
-
 /* Main Styles */
 
 body {
@@ -264,13 +216,13 @@ body {
   margin: 0;
 }
 
-.main-menu {
-  background-color: mat-color($dockstore-app-primary);
-  position: relative;
+// Used when the body class that applies line-height 2em is somehow applied to an item that isn't considered body
+.normal-line-height {
+  line-height: normal;
 }
 
 .header {
-  background-color: mat-color($dockstore-app-primary);
+  background-color: mat.get-color-from-palette($dockstore-app-primary);
   position: relative;
   img#ship,
   img#truck {
@@ -279,22 +231,6 @@ body {
   }
   img#truck {
     padding-left: 45px;
-  }
-}
-
-.header-lower {
-  min-height: 144px;
-  background-color: #2a3e6b;
-  height: 100%;
-  .button {
-    margin-top: 5px;
-  }
-  img.blue-rectangle {
-    position: absolute;
-    right: 0px;
-  }
-  &.row {
-    padding-top: 30px;
   }
 }
 
@@ -366,14 +302,6 @@ p {
   font-size: 14px;
 }
 
-.row-center {
-  text-align: center;
-}
-
-.header-lower .button {
-  width: 250px;
-}
-
 h1.title {
   font-size: 56px;
   color: white;
@@ -392,35 +320,19 @@ h2.title.caption {
 
 h3 {
   font-size: 20px;
-  color: mat-color($dockstore-app-primary);
+  color: mat.get-color-from-palette($dockstore-app-primary);
   font-weight: normal;
 }
 
+// Used by funding page, login page, maintenance page, and sitemap page
+// Unclear why it's not used for search page, organization page, etc
 h3.available-containers {
   font-size: 20px;
-  color: mat-color($dockstore-app-primary);
+  color: mat.get-color-from-palette($dockstore-app-primary);
   font-weight: normal;
   margin: 20px 0px 15px 0px;
   display: inline;
   line-height: 55px;
-}
-
-table.homepage-container {
-  /*margin-top: 2px;*/
-  width: 100%;
-  /*z-index: -1;*/
-}
-
-@media (min-width: 992px) {
-  .container {
-    width: 970px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    width: 1200px;
-  }
 }
 
 #container-header {
@@ -437,28 +349,11 @@ table.homepage-container {
   right: 350px;
 }
 
-.tools {
-  font-size: 14px;
-  font-weight: bold;
-  color: #7a88a9;
-  /*position: relative;*/
-  position: absolute;
-  right: 450px;
-  /*text-align: right;*/
-}
-
 // Globally allow any material tooltip to break the word if it's too long
 // Long sentences should still break on spaces if needed
 // Long continous words (without spaces and hyphens) will break at different points depending on browser
 .mat-tooltip {
   overflow-wrap: break-word;
-}
-
-.public-lists {
-  font-size: 14px;
-  font-weight: bold;
-  color: #7a88a9;
-  padding-left: 4px;
 }
 
 h4.title.caption {
@@ -469,22 +364,15 @@ h4.title.caption {
   margin: 0;
 }
 
-blockquote {
-  color: #a0adcc;
-}
-
-cite {
-  color: #cfd1d7;
-  font-size: 80%;
-}
-
 a {
   color: #3d7d86;
   text-decoration: underline;
 }
 
+// Some links (anchors) do not require an underline and also have a different color
+// Unclear when to use this
 a.no-underline {
-  color: mat-color($dockstore-app-gray, darker);
+  color: mat.get-color-from-palette($dockstore-app-gray, darker);
   text-decoration: none;
 }
 
@@ -492,18 +380,20 @@ a.no-underline:hover {
   text-decoration: none;
 }
 
+// Used when the background and the default anchor color doesn't have enough contrast
 a.white-link {
   color: #ffffff;
 }
 
 a.white-link:hover {
-  color: mat-color($dockstore-app-accent, lighter);
+  color: mat.get-color-from-palette($dockstore-app-accent, lighter);
 }
 
 ul.more li a {
   text-decoration: none;
 }
 
+// Some icons are these two size...others aren't. Size seems random right now (14px, 24 px, etc)
 img.site-icons-small {
   width: 16px;
   height: 16px;
@@ -519,47 +409,16 @@ img.site-icons-tab {
   height: 16px;
 }
 
+// Used in home page, don't know when and why to use it elsewhere
 img.contain-img {
   object-fit: contain;
 }
 
-#homeSearch {
-  background-color: #487980;
-  color: #ffffff;
-  width: 100px;
-}
-
 /* SEARCH BAR - - - - - - - - - - - - */
-
-.rounded {
-  -webkit-border-top-right-radius: 8px;
-  -webkit-border-bottom-right-radius: 8px;
-  -moz-border-radius-topright: 8px;
-  -moz-border-radius-bottomright: 8px;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-
-.rounded-left {
-  -webkit-border-top-left-radius: 8px;
-  -webkit-border-bottom-left-radius: 8px;
-  -moz-border-radius-topleft: 8px;
-  -moz-border-radius-bottomleft: 8px;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  -webkit-border-top-right-radius: 0px;
-  -webkit-border-bottom-right-radius: 0px;
-  -moz-border-radius-topright: 0px;
-  -moz-border-radius-bottomright: 0px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-
 .fully-rounded {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
-  margin-top: 8px;
 }
 
 .button.login p {
@@ -574,44 +433,8 @@ img.contain-img {
   padding-bottom: 3px;
   border: none;
   line-height: 2em;
-  background: white url(../images/search-button.png) left center no-repeat;
   background-position: 5px;
   outline: none;
-}
-
-input[type='text']:focus,
-textarea:focus {
-  border: 1px solid rgba(81, 203, 238, 1);
-}
-
-.docker-pull {
-  font-size: 12px;
-  width: 280px;
-  position: relative;
-  padding-left: 8px;
-  padding-right: 32px;
-  border: 1px solid #cfd1d7;
-  line-height: 2em;
-  background: white url(../images/copy-button.png) right center no-repeat;
-  background-position: 245px;
-  margin-right: 10px;
-  outline: none;
-}
-
-.rounded2 {
-  -webkit-border-top-left-radius: 4px !important;
-  -webkit-border-bottom-left-radius: 4px !important;
-  -moz-border-top-left-radius: 4px !important;
-  -moz-border-bottom-left-radius: 4px !important;
-  border-top-left-radius: 4px !important;
-  border-bottom-left-radius: 4px !important;
-}
-
-.account-dropdown {
-  padding-left: 15px;
-  padding-right: 15px;
-  line-height: 2.5em;
-  margin: 0;
 }
 
 .push-right {
@@ -658,7 +481,7 @@ div.button a {
 }
 
 .mat-raised-button.mat-accent:hover {
-  background-color: mat-color($dockstore-app-accent, darker);
+  background-color: mat.get-color-from-palette($dockstore-app-accent, darker);
 }
 
 table a {
@@ -680,87 +503,17 @@ td {
   word-break: break-word;
 }
 
-td,
-th {
-  font-weight: normal;
-  border-bottom: 1px solid #cfd1d7;
-}
-
-td,
-th {
-  padding: 10px 26px;
-}
-
-th {
-  background-color: #f4f4f4;
-  text-align: left;
-}
-
 #container-pagination {
   width: 100%;
   /*height: auto;*/
   height: 65px;
-  background-color: mat-color($dockstore-app-gray, 6);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
   border: 1px solid #cfd1d7;
   /*margin:0;*/
 }
 
-// Commenting this out because pagination formatting is done by Angular-Datatables
-// ul.pagination li{
-//   padding-top: 5px;
-//   display: inline;
-//   margin: 3px;
-// }
-#homeFooter {
-  margin: 40px 0px;
-  width: 100%;
-  background-color: mat-color($dockstore-app-gray, 6);
-  border: 1px solid #cfd1d7;
-  /*box-shadow: 0px 0px 10px #cfd1d7;*/
-}
-
-.button.homeFooter {
-  /*width: auto;*/
-  text-align: center;
-  margin: 10px;
-  margin-top: 2px;
-  margin-bottom: 28px;
-  width: 280px;
-}
-
-#homeFooter ul {
-  padding-left: 15px;
-  margin-top: 0;
-}
-
-#homeFooter ul li {
-  font-size: 14px;
-}
-
-#homeFooter h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-#our-sponsors {
-  padding-top: 10px;
-  padding-bottom: 40px;
-}
-
-ul.our-sponsors li {
-  display: inline;
-  padding-right: 32px;
-  a {
-    text-decoration: none;
-  }
-}
-
-ul.our-sponsors li img {
-  margin-top: 15px;
-}
-
 #footer {
-  background-color: mat-color($dockstore-app-primary);
+  background-color: mat.get-color-from-palette($dockstore-app-primary);
   /*width: 100%;*/
   /*padding: 0px 100px;*/
   /*position: relative;*/
@@ -862,30 +615,19 @@ code {
 
 /* CONTAINERS-LIST PAGE */
 
-.detail-view {
-  background-color: #f4f4f4;
-}
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-.button.back-to-containers {
-  margin-top: 8px;
-}
 
 h5,
 .h5 {
   font-size: 16px;
-  color: #151c3d;
+  color: $header-color;
   font-weight: normal;
 }
 
+// Used by container and workflow's last build/modified "subtitle"
 p.update {
   font-weight: bold;
   color: #7987aa;
-}
-
-div.side-block {
-  padding: 0px;
 }
 
 div.side-block table,
@@ -903,7 +645,7 @@ div.side-block td {
 div.side-block h3 {
   font-size: 16px;
   margin: 0px;
-  color: mat-color($dockstore-app-primary);
+  color: mat.get-color-from-palette($dockstore-app-primary);
 }
 
 div.side-block a {
@@ -1012,73 +754,9 @@ div.tabs > div:target > div,
   z-index: -1;
 }
 
-.starRating {
-  float: right;
-  margin-top: 35px;
-}
-
-.starRating:not(old) {
-  display: inline-block;
-  width: 7.5em;
-  height: 1.5em;
-  overflow: hidden;
-  vertical-align: bottom;
-}
-
-.starRating:not(old) > input {
-  margin-right: -100%;
-  opacity: 0;
-}
-
-.starRating:not(old) > label {
-  display: block;
-  float: right;
-  position: relative;
-  background: url('assets/svg/star-off.svg');
-  background-size: contain;
-}
-
-.starRating:not(old) > label:before {
-  content: '';
-  display: block;
-  width: 1.5em;
-  height: 1.5em;
-  background: url('assets/svg/star-on.svg');
-  background-size: contain;
-  opacity: 0;
-  transition: opacity 0.2s linear;
-}
-
-.starRating:not(old) > label:hover:before,
-.starRating:not(old) > label:hover ~ label:before,
-.starRating:not(:hover) > :checked ~ label:before {
-  opacity: 1;
-}
-
-/* Begin Temporary Styles - Need to Refactor Later */
-
-.hori-offset-4 {
-  margin-left: 4px;
-}
-
-.hori-offset-8 {
-  margin-left: 8px;
-}
-
+// Replace with bootstrap4 ml-something
 .hori-offset-12 {
   margin-left: 12px;
-}
-
-.vert-offset-4 {
-  margin-top: 4px;
-}
-
-.vert-offset-8 {
-  margin-top: 8px;
-}
-
-.vert-offset-12 {
-  margin-top: 12px;
 }
 
 /* Dockstore Grid */
@@ -1091,98 +769,10 @@ div.tabs > div:target > div,
   margin-top: -25px;
 }
 
-.signup-or-separator {
-  position: relative;
-  height: 34px;
-  text-align: center;
-  background: none;
-}
-
-.signup-or-separator hr {
-  width: 90%;
-  margin: -16px auto 10px auto;
-  border-top: 1px solid #dce0e0;
-}
-
-.signup-or-separator .text {
-  display: inline-block;
-  padding: 8px;
-  margin: 0;
-  background-color: #fff;
-}
-
-.btn-login {
-  width: 100%;
-}
-
-.btn-sad {
-  background-color: white;
-  box-shadow: none;
-}
-
-#label-holder {
-  padding-right: 0em;
-  max-height: 1.5em;
-  line-height: 1.5em;
-  min-height: 0em;
-  overflow: hidden;
-}
-
-#label-button {
-  font-weight: bold;
-  background-color: #337ab7;
-  border-color: #2e6da4;
-}
-
-.search-dropdown {
-  top: 100%;
-}
-
 // This currently breaks the new ngx-tabset
 // .nav-item {
 //   height:50px;
 // }
-.nav-item-text {
-  padding-top: 10px;
-}
-
-.nav-item-button {
-  padding-top: 8px;
-}
-
-.radio-button-reference {
-  margin-top: -1px;
-  vertical-align: middle;
-}
-
-.home-search-entry-holder {
-  width: 475px;
-  overflow: hidden;
-  padding-left: 10px;
-}
-
-.home-search-entry-type {
-  float: right;
-  width: 130px;
-  background: #f4f4f4;
-  padding-left: 15px;
-  padding-right: 15px;
-  font-size: 10px;
-}
-
-.home-search-entry-name {
-  float: left;
-  width: 325px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.custom-typeahead-popup {
-  padding: 0px;
-  border: 1px solid #ccc;
-  margin: 0px;
-}
 
 .fullscreen {
   z-index: 100000;
@@ -1195,69 +785,19 @@ div.tabs > div:target > div,
   margin: 0px;
 }
 
+// Currently only used by the DAG tooltip, consider using this for any non-material tooltips
 .bootstrap-tooltip-z-index {
   z-index: 1070;
 }
 
+// Currently only used by the DAG tooltip, probably pretty unique and should be moved to the DAG scss
 .opaq {
   opacity: 0.825;
-}
-
-.no-display {
-  display: none;
-}
-
-#dag-popover {
-  z-index: 9999;
-  position: absolute;
-  max-width: 250px;
-}
-
-#tooltiptext {
-  display: none;
-}
-
-.file-tabs {
-  padding-bottom: 5px;
-}
-
-.search-description {
-  padding: 0px 35px 10px 35px;
-  line-height: 1.5;
-  font-size: 90%;
-}
-
-.search-with-description td {
-  border-bottom: 0px;
-}
-
-.search-date {
-  color: #808080;
 }
 
 .test_parameter_input {
   width: 90%;
   float: left;
-}
-
-.test_parameter_remove_button {
-  margin-left: 2px;
-  width: 9%;
-  float: left;
-  padding: 4px 0px 4px 0px;
-}
-
-.test_parameter_add_button {
-  float: right;
-}
-
-.test_parameter_div {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-#githubSyncUserButton {
-  float: right;
 }
 
 html,
@@ -1282,14 +822,6 @@ body {
   }
 }
 
-.entry-row {
-  height: 52px;
-}
-
-.my-entry-button-group {
-  margin-bottom: 5px;
-}
-
 .nav-tabs.nav-justified > li > a {
   margin: 0px !important;
 }
@@ -1297,6 +829,27 @@ body {
 // This is like the bootstrap 4 utility class, remove once we have the real one
 .align-middle {
   vertical-align: middle;
+}
+
+// In our UI mockups, non-header text is rendered in two sizes: a default size and a smaller size.
+// Use this style to set the font size to the smaller size.
+.size-small {
+  font-size: 12px;
+}
+
+// Set the line height to a compact ratio that makes the text "single-spaced".
+.single-spaced {
+  line-height: 1.33;
+}
+
+// Set display to inline-block
+.inline-block {
+  display: inline-block;
+}
+
+// Set font weight to bold
+.weight-bold {
+  font-weight: 500;
 }
 
 // Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
@@ -1316,45 +869,85 @@ app-sidebar-accordion
 }
 
 .tool-tab-group.mat-primary .mat-ink-bar {
-  background: #29b6f6 !important;
+  background: $tool-color !important;
 }
 
 .workflow-tab-group.mat-primary .mat-ink-bar {
-  background: #26bfa5 !important;
+  background: $workflow-color !important;
+}
+
+.service-tab-group.mat-primary .mat-ink-bar {
+  background: $service-color !important;
 }
 
 .purple-tab-group.mat-primary .mat-ink-bar {
-  background: #3f51b5 !important;
+  background: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
+// Automatically used by Angular Material
 .mat-tab-label:hover {
   color: black;
   opacity: 0.7;
 }
 
-.container-label-tag {
+// Set the background to the color associated with containers (blue).
+// Used to set the background color in bubbles.
+.container-background {
   background: #d0effd !important;
-  text-decoration: none !important;
-  border-radius: 1rem !important;
-  font-size: 12px !important;
-  padding: 0 0.6rem !important;
 }
 
-.workflow-label-tag {
+// Set the background to the color associated with workflows (green).
+// Used to set the background color in bubbles.
+.workflow-background {
   background: #d2fbf0 !important;
-  text-decoration: none !important;
-  border-radius: 1rem !important;
-  font-size: 12px !important;
-  padding: 0 0.6rem !important;
 }
 
-.gray-label-tag {
-  background: mat-color($dockstore-app-gray, lighter) !important;
+// Styles an element as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
+// Bubbles always render in a 12px font, are 28px tall, and default to gray background.
+.bubble {
+  color: black !important;
   text-decoration: none !important;
   border-radius: 1rem !important;
   font-size: 12px !important;
-  padding: 0 0.6rem !important;
+  line-height: 26px !important;
+  min-height: 26px !important;
+  max-height: 26px !important;
+  padding: 0 0.75rem !important;
+  display: inline-block !important;
+  min-width: 32px !important;
+  background: mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
+
+// Remove any default link styling from a bubble, and ensure the font-weight is correct.
+a.bubble,
+a.bubble:hover,
+a.bubble:focus,
+a.bubble:active,
+a.bubble:link,
+a.bubble:visited {
+  font-weight: 500;
+  border: none;
+  outline: none;
+}
+
+// Space out the bubbles in a list.
+// Add this class to a mat-chip-list that surrounds some bubbles.
+.bubble-list .bubble {
+  margin: 0 0.6rem 0 0 !important;
+}
+
+// Set the font size of an app-category-button to 12px.
+// This is necessary to prevent single-pixel vertical offsets between adjacent elements, such as that crop up when an app-category-button is displayed next to a bubble span.
+app-category-button {
+  font-size: 12px !important;
+}
+
+// Change the cursor to a pointer.
+// Use this to make elements appear to navigate somewhere.
+.pointer {
+  cursor: pointer !important;
+}
+
 // Make the dropdown at least the size of the default material dropdown.
 // Making the general width to grow to 50% of the parent width so that there's more room to display long file names
 // TODO: Ideally this should stretch to the length of the longest dropdown option.
@@ -1368,24 +961,10 @@ mat-icon.star-icon {
   height: 16px;
 }
 
-.landing-search {
-  width: 60%;
-  max-width: 600px;
-  padding-left: 30px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  border: none;
-  line-height: 2em;
-  background: white url(../images/search-button.png) left center no-repeat;
-  background-position: 5px;
-  outline: none;
-  color: black;
-}
-
-.ellipsis-overflow {
+.no-wrap {
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .notification-display p {
@@ -1422,9 +1001,9 @@ mat-tab-group.no-pagination {
 .nonclick-badge {
   display: inline-flex;
   border-radius: 8px;
-  background-color: mat-color($dockstore-app-gray, lighter);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, lighter);
   padding: 5px 8px;
-  color: #151c3d;
+  color: $header-color;
   font-size: 1.3rem;
   font-weight: 500;
 }
@@ -1440,59 +1019,83 @@ mat-tab-group.no-pagination {
   background-color: #5c5c5c !important;
 }
 
-.view-button {
-  font-size: 12px !important;
-  line-height: inherit !important;
-}
-
 hr {
   margin: 0.5rem 0;
-  border: 1px solid mat-color($dockstore-app-gray, lighter);
+  border: 1px solid mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
 
 .orcid-id-logo {
-  height: 1.6rem;
-  width: 1.6rem;
   vertical-align: sub;
+  margin-right: 0.5rem;
+}
+
+.tiny-org-logo {
+  height: 40px;
+  width: 65px;
+  min-height: 40px;
+  min-width: 65px;
+  max-height: 40px;
+  max-width: 65px;
+  object-fit: scale-down;
+  object-position: 50% 50%;
 }
 
 .small-org-logo {
   height: 50px;
+  max-width: 250px;
   object-fit: scale-down;
 }
 
 .big-org-logo {
-  max-height: 100px;
+  height: 100px;
   max-width: 200px;
+  object-fit: scale-down;
   margin-top: 1.5rem;
 }
 
 // To indicate success of an operation.
 .accent-3-dark {
-  color: #00bfa5;
+  color: $accent-3-dark;
 }
 
-// Following 4 items are for stepper/stepper-like dialogs
+// Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
 .accent-1-dark {
-  color: mat-color($dockstore-app-accent-1, darker);
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
-.mat-flat-button.bg-accent-1-dark {
-  background-color: mat-color($dockstore-app-accent-1, darker);
+
+button.accent-1-dark-btn,
+a.accent-1-dark-btn {
+  background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;
 }
+
 .mat-flat-button.secondary-1 {
-  color: mat-color($dockstore-app-accent);
+  color: mat.get-color-from-palette($dockstore-app-accent);
+  font-weight: bold;
 }
 .mat-flat-button.accent-1-dark {
-  color: mat-color($dockstore-app-accent-1, darker);
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
+// Automatically used by Angular Material
 .mat-radio-label-content {
   font-weight: normal;
 }
 
+// Used for smaller than usual forms
 .mat-form-field.small-text {
   font-size: 12px;
+}
+
+// Applied to mat-icons to make them smaller than Material defaults. 16px was chosen based on ORCID's recommended min logo size.
+// Typically acompanied with mat-btn-sm above.
+// This is also the same size as site-icons-small
+mat-icon.mat-icon-sm {
+  // These two override .mat-icon's default 24px height and width
+  height: 16px;
+  width: 16px;
+  // This overrides .material-icon's default 24px font-size, changing the font-size fixes the position of it
+  font-size: 16px;
 }
 
 // Can use this class for all search bars
@@ -1507,12 +1110,12 @@ hr {
 // Style the float label of the mat-form-field
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
   .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
-  color: mat-color($dockstore-app-accent, 1);
+  color: mat.get-color-from-palette($dockstore-app-accent, 1);
 }
 
 // Keep the outer circle in a radio button gray even when selected
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: mat-color($dockstore-app-gray, 2) !important;
+  border-color: mat.get-color-from-palette($dockstore-app-gray, 2) !important;
 }
 
 // Remove some padding from mat form fields that are part of a radio group
@@ -1530,4 +1133,139 @@ hr {
 // Align the floating text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
 .mat-radio-button .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   top: 1.8em;
+}
+
+// Used for mat tabs to display the number of items
+.tab-display {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1.3rem;
+  background-color: #e0e0e0;
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  height: auto !important;
+  color: mat.get-color-from-palette($dockstore-app-primary);
+  padding: 0 !important;
+}
+
+.info {
+  font-size: 12px;
+  line-height: 2rem;
+}
+
+// The material checkbox overflows text by default so this style wraps the text instead.
+.mat-checkbox.text-wrap > label.mat-checkbox-layout {
+  white-space: normal;
+}
+
+$truncate-text-values: 1, 2, 3;
+
+// Hide overflow, values denote the number of lines to keep
+// Similar no-wrap except those are more meant single "words", this is for sentences
+@each $value in $truncate-text-values {
+  .truncate-text-#{$value} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $value;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+}
+
+// The following styles are for mat-tables.
+// The redesigned tables have no borders, bolded headers, no left-padding on the first elements and no right-padding on the last elements.
+.mat-table {
+  border: none;
+}
+
+.mat-header-cell {
+  font-weight: bold !important;
+  color: $header-color !important;
+}
+
+.mat-header-cell:first-of-type,
+.mat-cell:first-of-type,
+.mat-footer-cell:first-of-type {
+  padding-left: 0 !important;
+}
+
+.mat-cell:last-of-type,
+.mat-header-cell:last-of-type,
+.mat-footer-cell:last-of-type {
+  padding-right: 0 !important;
+}
+
+// This style is used by table headers when there is no data to display
+.inactive-table-header {
+  color: #d8d8d8 !important;
+}
+
+/* Don't have multi-line headers */
+.mat-header-row {
+  white-space: nowrap;
+}
+
+/* Material says it should have 16dp to the left and right, sadly Angular Material does not */
+.mat-cell:not(:first-of-type),
+.mat-header-cell:not(:first-of-type) {
+  padding-left: 1.6rem;
+}
+
+/* Material says it should have 16dp to the left and right, sadly Angular Material does not */
+.mat-cell:not(:last-of-type),
+.mat-header-cell:not(:last-of-type) {
+  padding-right: 1.6rem;
+}
+
+// This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
+// These redesigned buttons have purple text and white backgrounds
+// Use with mat-button and small-btn-structure
+button.private-btn,
+a.private-btn {
+  font-weight: bold;
+  font-size: 12px;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+  border: solid 1px #d8d8d8;
+}
+
+// Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
+// 14px font and 36px height
+button.mat-raised-button,
+a.mat-raised-button {
+  font-weight: bold;
+  line-height: 36px;
+  height: 36px;
+  padding: 0 15px;
+}
+
+// Most cases style should be used accompanied with the mat-raised-button style
+// This style is for the new SMALLER dockstore buttons with size 12 font
+// a.small... is included to account for "buttons" that have links ex. "launch"
+button.small-mat-btn-skin,
+a.small-mat-btn-skin {
+  font-size: 12px;
+  // For cases when not accompanied by mat-raised-button
+  font-weight: bold;
+}
+
+// This style is for the SMALLER dockstore buttons with 26px height
+// Use this most likely with the small-mat-btn-skin
+button.small-btn-structure,
+a.small-btn-structure {
+  line-height: 26px;
+  height: 26px;
+  padding: 0 10px;
+  // Needed for smaller mat buttons ex. "info"
+  min-width: 42px;
+}
+
+// Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
+button.small-mat-btn-skin:not([class*='mat-elevation-z']),
+a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
 }

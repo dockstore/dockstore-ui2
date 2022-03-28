@@ -1,17 +1,19 @@
 version: 2.1
 orbs:
-  aws-s3: circleci/aws-s3@1.0.0
+  aws-s3: circleci/aws-s3@3.0.0
   slack: circleci/slack@3.4.2
+  browser-tools: circleci/browser-tools@1.2.3
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: circleci/buildpack-deps:18.04-browsers
+      - image: cimg/base:stable-18.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
-      - image: circleci/postgres:11.6-alpine-ram
+      - image: cimg/postgres:13.3
+        command: postgres -c max_connections=200 -c jit=off
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -20,59 +22,116 @@ executors:
           POSTGRES_DB: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
-jobs:
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        environment:
+          - xpack.security.enabled: false
+          - transport.host: localhost
+          - network.host: 127.0.0.1
+          - http.port: 9200
+          - discovery.type: single-node
 
+jobs:
+  # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
+  # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
   uptime_monitor_no_auth:
+    parameters:
+      stack:
+        type: string
     working_directory: ~/repo
     docker:
-      - image: circleci/buildpack-deps:18.04-browsers
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_nightly_tests
+      - install_cypress_dependencies
       - run:
-          name: Run remote verification test against dev (no auth)
-          command: bash -i -c 'npm run test-dev-no-auth'
+          name: Run remote verification test against << parameters.stack >> (no auth)
+          command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
           environment:
-            MOCHA_FILE: nightly-test-results/junit/test-dev-no-auth-[hash].xml
+            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-no-auth-[hash].xml
       - run:
-          name: Run remote verification of WAF against dev
-          command: bash -i -c 'npm run test-dev-waf'
+          name: Run remote verification of WAF against << parameters.stack >>
+          command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
           environment:
-            MOCHA_FILE: nightly-test-results/junit/test-dev-waf-[hash].xml
+            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
       - upload_nightly_artifacts
       - slack/status:
           fail_only: true
-          failure_message: Nightly non-auth tests failed!
+          channel: $<< parameters.stack >>_id
+          failure_message: Nightly << parameters.stack >> non-auth tests failed!
           webhook: $SLACK_WEBHOOK
+
+  # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
+  # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
   uptime_monitor_auth:
+    parameters:
+      stack:
+        type: string
     working_directory: ~/repo
     docker:
-        - image: circleci/buildpack-deps:18.04-browsers
+        - image: cimg/base:stable-20.04
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_nightly_tests
+      - install_cypress_dependencies
       - run:
-          name: Run remote verification test against dev (with auth)
-          command: bash -i -c 'npm run test-dev-auth'
+          name: Run remote verification test against << parameters.stack >> (with auth)
+          command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
-            MOCHA_FILE: nightly-test-results/junit/test-dev-auth-[hash].xml
+            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
       - upload_nightly_artifacts
       - slack/status:
           fail_only: true
-          failure_message: Nightly auth tests failed!
+          channel: $<< parameters.stack >>_id
+          failure_message: Nightly << parameters.stack >> auth tests failed!
           webhook: $SLACK_WEBHOOK
-  lint_license_unit_test_coverage:
+
+  audit:
     working_directory: ~/repo
     docker:
-      - image: circleci/buildpack-deps:18.04-browsers
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - checkout
+      - run:
+          name: Checkout merge commit (PRs only)
+          command: |
+            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
+              git checkout -qf FETCH_HEAD
+            fi
+      - install_container_dependencies
+      - run:
+          name: Run npm audit
+          # Run npm audit on current branch and compare it with the results of running npm audit on the base branch that is set in the package.json. If there are more
+          # high or critical findings in the current branch, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
+          # If they are are different, then the test fails.
+          command: |
+            bash -i -c "npm run compare-audits"
+
+  lint_license_unit_test_coverage:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/base:stable-20.04
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - checkout
       - run:
           name: Checkout merge commit (PRs only)
@@ -133,6 +192,8 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -147,6 +208,8 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -161,6 +224,8 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -171,10 +236,24 @@ jobs:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
       - upload_artifacts
+  local_smoke_tests:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    steps:
+      - setup_smoke_tests
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Run local smoke tests (no auth)
+          command: bash -i -c 'npm run test-local-no-auth'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-local-no-auth-[hash].xml
+          when: always
+      - upload_artifacts
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: circleci/python:2.7
+      - image: cimg/python:2.7
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -211,7 +290,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: circleci/python:2.7
+      - image: cimg/python:2.7
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -231,6 +310,12 @@ workflows:
   everything:
     jobs:
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - audit:
+        filters:
+          tags:
+            only: /.*/
+          context:
+            - dockerhub
       - lint_license_unit_test_coverage:
           filters:
             tags:
@@ -261,6 +346,14 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+      - local_smoke_tests:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
@@ -274,6 +367,7 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+            - aws
       - check_build_develop:
           requires:
             - upload_to_s3
@@ -293,9 +387,23 @@ workflows:
                 - develop
     jobs:
       - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth-dev"
+          stack: "dev"
           context:
             - dockerhub
+      - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth-staging"
+          stack: "staging"
+          context:
+            - dockerhub
+#      - uptime_monitor_no_auth:
+#          name: "uptime_monitor_no_auth-prod"
+#          stack: "prod"
+#          context:
+#            - dockerhub
+      # TODO: Add auth tests for staging/prod once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done.
       - uptime_monitor_auth:
+          stack: "dev"
           context:
             - dockerhub
 
@@ -326,19 +434,30 @@ commands:
           path: cypress/videos
       - store_artifacts:
           path: cypress/screenshots
-  setup_integration_test:
+  install_cypress_dependencies:
     steps:
+      - run:
+          name: Install cypress dependencies
+          command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
+  setup_integration_test:
+    parameters:
+      db_dump:
+        type: string
+        default: "db_dump.sql"
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - get_workspace
       - install_container_dependencies
       - run:
           name: Install postgresql client
           command: sudo apt install -y postgresql-client || true
-      - run:
-          name: Install cypress dependencies
-          command: sudo apt install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
+      - install_cypress_dependencies
       - run:
           name: Prepare webservice
-          command: bash -i -c 'npm run webservice'
+          command: bash -i -c 'DB_DUMP=<< parameters.db_dump >> npm run webservice'
+          environment:
+            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
       - run:
           name: Install nginx
           command: sudo apt install -y nginx || true
@@ -351,7 +470,7 @@ commands:
           background: true
       - run:
           name: Run webservice
-          command: java -jar dockstore-webservice.jar server travisci/web.yml 1>/dev/null
+          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
           background: true
       - run: mkdir -p integration-tests/test-results/junit
       - run:
@@ -359,6 +478,8 @@ commands:
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - checkout
       - install_container_dependencies
       - restore_cache:
@@ -375,6 +496,16 @@ commands:
       - run:
           name: Prebuild
           command: bash -i -c 'npm run prebuild.prod'
+  setup_smoke_tests:
+    steps:
+      - setup_integration_test:
+          db_dump: "smoke_test_db.sql"
+      - run:
+          name: Index ES
+          command: |
+            curl -X POST "localhost:4200/api/api/ga4gh/v2/extended/tools/index" -H "accept: text/plain" -H "Authorization: Bearer fake-admin-token"
+          requires:
+            - setup_integration_test
   upload_nightly_artifacts:
     steps:
       - store_test_results:

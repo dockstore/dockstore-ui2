@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ContainersService } from 'app/shared/swagger';
 import { ToolQuery } from 'app/shared/tool/tool.query';
 import { ToolService } from 'app/shared/tool/tool.service';
@@ -32,20 +32,28 @@ import { UserQuery } from '../../shared/user/user.query';
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
 })
-export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent {
+export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent implements OnInit {
   @Input() protected orgToolObject: OrgToolObject<DockstoreTool>;
 
   constructor(
-    userQuery: UserQuery,
+    private userQuery: UserQuery,
     private alertService: AlertService,
     protected alertQuery: AlertQuery,
     private toolService: ToolService,
     private containersService: ContainersService,
     private toolQuery: ToolQuery
   ) {
-    super(userQuery, alertQuery);
+    super();
     this.buttonText = 'Refresh Namespace';
-    this.tooltipText = 'Refresh all tools in the namespace';
+  }
+
+  openConfirmationDialog() {
+    this.refreshOrganization();
+  }
+
+  ngOnInit() {
+    this.userQuery.userId$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((userId) => (this.userId = userId));
+    this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
   refreshOrganization(): void {

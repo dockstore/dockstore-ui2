@@ -3,6 +3,7 @@ import { ID } from '@datorama/akita';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { Event } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { RecentEventsQuery } from '../state/recent-events.query';
 import { RecentEventsService } from '../state/recent-events.service';
 
@@ -12,7 +13,7 @@ import { RecentEventsService } from '../state/recent-events.service';
  * TODO: collapse events with the same date (refresh all adding multiple versions at the same time)
  */
 @Component({
-  selector: 'recent-events',
+  selector: 'app-recent-events',
   templateUrl: './recent-events.component.html',
   styleUrls: ['./recent-events.component.scss'],
 })
@@ -20,9 +21,16 @@ export class RecentEventsComponent implements OnInit {
   events$: Observable<Event[]>;
   loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
+  noEvents$: Observable<boolean>;
   readonly starringDocUrl = `${Dockstore.DOCUMENTATION_URL}/end-user-topics/starring.html#starring-tools-and-workflows`;
   homepage = true;
-  readonly supportedEventTypes = [Event.TypeEnum.ADDVERSIONTOENTRY, Event.TypeEnum.CREATECOLLECTION, Event.TypeEnum.ADDTOCOLLECTION];
+  readonly supportedEventTypes = [
+    Event.TypeEnum.ADDVERSIONTOENTRY,
+    Event.TypeEnum.CREATECOLLECTION,
+    Event.TypeEnum.ADDTOCOLLECTION,
+    Event.TypeEnum.PUBLISHENTRY,
+    Event.TypeEnum.UNPUBLISHENTRY,
+  ];
   constructor(private recentEventsQuery: RecentEventsQuery, private recentEventsService: RecentEventsService) {}
 
   ngOnInit() {
@@ -30,7 +38,7 @@ export class RecentEventsComponent implements OnInit {
       filterBy: (entity) => this.supportedEventTypes.includes(entity.type),
     });
     this.loading$ = this.recentEventsQuery.selectLoading();
-
+    this.noEvents$ = this.events$.pipe(map((events) => !events || events.length === 0));
     this.recentEventsService.get();
   }
 

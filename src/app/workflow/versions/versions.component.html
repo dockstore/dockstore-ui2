@@ -45,7 +45,7 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-          <mat-chip *ngIf="defaultVersion === version.name" class="workflow-label-tag">
+          <mat-chip *ngIf="defaultVersion === version.name" class="bubble workflow-background">
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -100,7 +100,7 @@
         Valid
       </th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon *ngIf="version.valid">check</mat-icon>
+        <mat-icon *ngIf="version.valid" data-cy="valid">check</mat-icon>
       </td>
     </ng-container>
 
@@ -115,7 +115,7 @@
         Hidden
       </th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon *ngIf="version.hidden">check</mat-icon>
+        <mat-icon data-cy="hidden" *ngIf="version.hidden">check</mat-icon>
       </td>
     </ng-container>
 

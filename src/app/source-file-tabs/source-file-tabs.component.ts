@@ -1,12 +1,17 @@
+import { KeyValue } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SafeUrl } from '@angular/platform-browser';
+import { FileTreeComponent } from 'app/file-tree/file-tree.component';
+import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
-import { Validation } from 'app/shared/swagger';
 import { finalize } from 'rxjs/operators';
 import { SourceFileTabsService } from './source-file-tabs.service';
+
+import { WorkflowQuery } from '../shared/state/workflow.query';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -14,36 +19,36 @@ import { SourceFileTabsService } from './source-file-tabs.service';
   styleUrls: ['./source-file-tabs.component.scss'],
 })
 export class SourceFileTabsComponent implements OnChanges {
-  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
+  constructor(
+    private fileService: FileService,
+    private sourceFileTabsService: SourceFileTabsService,
+    private matDialog: MatDialog,
+    private workflowQuery: WorkflowQuery
+  ) {
+    this.isPublished$ = this.workflowQuery.workflowIsPublished$;
+  }
+  // Used to generate the TRS file path
+  @Input() entryPath: string;
   @Input() workflowId: number;
+  // Used to generate the TRS file path
   @Input() descriptorType: ToolDescriptor.TypeEnum;
   // Version is strictly non-null because everything that uses this component has a truthy-check guard
   @Input() version: WorkflowVersion;
   loading = true;
   displayError = false;
-  files: SourceFile[];
-  filteredFiles: SourceFile[];
-  currentFile: SourceFile;
-  fileTypes: SourceFile.TypeEnum[];
-  currentFileType: SourceFile.TypeEnum;
-  validationMessage: Object;
-  customDownloadHREF: SafeUrl;
-  customDownloadPath: String;
-  filePath: String;
-
+  currentFile: SourceFile | null;
+  validationMessage: Map<string, string>;
+  fileName: string;
+  relativePath: string;
+  downloadFilePath: string;
+  fileTabs: Map<string, SourceFile[]>;
+  protected isPublished$: Observable<boolean>;
   /**
-   * The webservice returns two file types for Nextflow (NEXTFLOW_CONFIG and NEXTFLOW).
-   * However, we're overriding that and just returning a single file type and appending the NEXTFLOW_CONFIG file to the end of NEXTFLOW
-   * @param array The original sourcefiles that have not been transformed
+   * To prevent the Angular's keyvalue pipe from sorting by key
    */
-  private static hackNextflowFiles(array: SourceFile[]) {
-    const index = array.findIndex((file) => file.type === SourceFile.TypeEnum.NEXTFLOWCONFIG);
-    if (index === -1) {
-      return;
-    }
-    array[index].type = SourceFile.TypeEnum.NEXTFLOW;
-    array.push(array.splice(index, 1)[0]);
-  }
+  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+    return 0;
+  };
 
   ngOnChanges() {
     this.setupVersionFileTabs();
@@ -61,13 +66,14 @@ export class SourceFileTabsComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
-          SourceFileTabsComponent.hackNextflowFiles(sourceFiles);
-          const fileTypes = this.sourceFileTabsService.getFileTypes(sourceFiles);
-          if (fileTypes.length > 0) {
-            this.changeFileType(fileTypes[0], sourceFiles);
+          this.fileTabs = this.sourceFileTabsService.convertSourceFilesToFileTabs(
+            sourceFiles,
+            this.version.workflow_path,
+            this.descriptorType
+          );
+          if (this.fileTabs.size > 0) {
+            this.changeFileType(this.fileTabs.values().next().value);
           }
-          this.files = sourceFiles;
-          this.fileTypes = fileTypes;
         },
         () => {
           this.displayError = true;
@@ -76,42 +82,54 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   /**
-   * Sets the file type to display and loads validation messages
+   * Sets the validation message and new default selected file
    * @param fileType
    */
-  changeFileType(fileType: SourceFile.TypeEnum, files: SourceFile[]) {
-    let validationMessage = null;
-    this.version.validations.forEach((validation: Validation) => {
-      if (validation.type === fileType && !validation.valid) {
-        validationMessage = JSON.parse(validation.message);
-      }
-    });
-
-    const filteredFiles = files.filter((file: SourceFile) => {
-      return file.type === fileType;
-    });
-    if (filteredFiles.length > 0) {
-      this.selectFile(filteredFiles[0]);
-    }
-
-    this.currentFileType = fileType;
-    this.filteredFiles = filteredFiles;
-    this.validationMessage = validationMessage;
+  changeFileType(files: SourceFile[]) {
+    this.selectFile(files[0]);
+    this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
   }
 
   selectFile(file: SourceFile) {
-    this.customDownloadHREF = this.fileService.getFileData(file.content);
-    this.customDownloadPath = this.fileService.getFileName(file.path);
-    this.filePath = this.sourceFileTabsService.getDescriptorPath(this.descriptorType, file.path, this.version.name);
+    if (file) {
+      this.fileName = this.fileService.getFileName(file.path);
+      this.relativePath = file.absolutePath;
+      this.downloadFilePath = this.sourceFileTabsService.getDescriptorPath(
+        this.workflowId,
+        this.descriptorType,
+        this.entryPath,
+        this.version.name,
+        this.relativePath
+      );
+    } else {
+      this.fileName = null;
+      this.relativePath = null;
+      this.downloadFilePath = null;
+    }
     this.currentFile = file;
   }
 
   matTabChange(event: MatTabChangeEvent) {
-    const fileType: SourceFile.TypeEnum = this.fileTypes[event.index];
-    this.changeFileType(fileType, this.files);
+    this.changeFileType(this.fileTabs.get(event.tab.textLabel));
   }
 
   matSelectChange(event: MatSelectChange) {
     this.selectFile(event.value);
+  }
+
+  openFileTree(sourceFiles: SourceFile[]) {
+    this.matDialog
+      .open(FileTreeComponent, { width: bootstrap4largeModalSize, data: { files: sourceFiles, selectedFile: this.currentFile } })
+      .afterClosed()
+      .subscribe((absoluteFilePath) => {
+        const foundFile = sourceFiles.find((file) => file.absolutePath === absoluteFilePath);
+        if (foundFile) {
+          this.selectFile(foundFile);
+        }
+      });
+  }
+
+  downloadFileContent() {
+    this.fileService.downloadFileContent(this.currentFile.content, this.fileName);
   }
 }

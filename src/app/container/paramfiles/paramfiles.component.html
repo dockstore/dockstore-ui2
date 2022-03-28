@@ -40,7 +40,7 @@
             [placeholder]="'Descriptor Type'"
             [items]="descriptors"
             [default]="currentDescriptor"
-            (select)="onDescriptorChange($event); checkIfValid(false, _selectedVersion)"
+            (selectionChange)="onDescriptorChange($event); checkIfValid(false, _selectedVersion)"
           >
           </app-select>
         </span>
@@ -54,7 +54,7 @@
       <mat-toolbar color="primary">
         <mat-toolbar-row>
           <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-            <app-select class="longer" [items]="files" [default]="currentFile" [field]="'path'" (select)="onFileChange($event)">
+            <app-select class="longer" [items]="files" [default]="currentFile" [field]="'path'" (selectionChange)="onFileChange($event)">
             </app-select>
             <div class="btn-group pull-right" role="group">
               <a
@@ -70,15 +70,7 @@
                 <mat-icon>save_alt</mat-icon>
               </a>
               <ng-template #unpublishedDownloadLink>
-                <a
-                  mat-icon-button
-                  color="secondary"
-                  class="mr-1"
-                  [href]="customDownloadHREF"
-                  [download]="customDownloadPath"
-                  type="button"
-                  title="{{ filePath }}"
-                >
+                <a mat-icon-button color="secondary" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>

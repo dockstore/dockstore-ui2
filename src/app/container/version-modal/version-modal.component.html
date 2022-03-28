@@ -33,7 +33,7 @@
                 required
                 title="Docker Image tag name."
                 placeholder="e.g. 1.0.0"
-                [disabled]="!(mode == 'Add')"
+                [disabled]="!(mode === 'Add')"
               />
             </div>
           </div>
@@ -204,7 +204,7 @@
                     class="btn btn-default form-sm-button"
                     [disabled]="hasDuplicateTestJson(DescriptorType.CWL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
                     (click)="addTestParameterFile(DescriptorType.CWL)"
-                    *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)"
+                    *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
@@ -212,8 +212,8 @@
                     title="Enter a valid path"
                     type="button"
                     class="btn btn-default form-sm-button"
-                    [disabled]="model1.invalid || unsavedTestCWLFile.length == 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-                    *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length == 0)"
+                    [disabled]="model1.invalid || unsavedTestCWLFile.length === 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                    *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
@@ -230,7 +230,7 @@
                 </mat-card>
               </div>
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
+            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedCWLTestParameterFilePaths.length === 0 && !editMode">
               <input class="form-control" placeholder="None provided" [disabled]="true" />
             </div>
           </div>
@@ -300,7 +300,7 @@
                     class="btn btn-default form-sm-button"
                     [disabled]="hasDuplicateTestJson(DescriptorType.WDL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
                     (click)="addTestParameterFile(DescriptorType.WDL)"
-                    *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)"
+                    *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
@@ -308,8 +308,8 @@
                     title="Enter a valid path"
                     type="button"
                     class="btn btn-default form-sm-button"
-                    [disabled]="model1.invalid || unsavedTestWDLFile.length == 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-                    *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length == 0)"
+                    [disabled]="model1.invalid || unsavedTestWDLFile.length === 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                    *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
@@ -326,7 +326,7 @@
                 </mat-card>
               </div>
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">
+            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedWDLTestParameterFilePaths.length === 0 && !editMode">
               <input class="form-control" placeholder="None provided" [disabled]="true" />
             </div>
           </div>
@@ -389,11 +389,10 @@
                   class="form-control"
                   value="{{ dockerPullCommand }}"
                   aria-describedby="clipboard"
-                  #inputTarget
                   disabled
                 />
                 <span class="input-group-btn" id="clipboard">
-                  <button class="btn btn-default btn-sm form-sm-button" type="button" [cdkCopyToClipboard]="inputTarget" appSnackbar>
+                  <button class="btn btn-default btn-sm form-sm-button" type="button" [cdkCopyToClipboard]="dockerPullCommand" appSnackbar>
                     <mat-icon id="file_copy">file_copy</mat-icon>
                   </button>
                 </span>
@@ -402,14 +401,14 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" mat-button color="secondary" (click)="onHidden()">Cancel</button>
+          <button type="button" mat-flat-button class="secondary-1" (click)="onHidden()">Cancel</button>
           <button
             id="saveVersionModal"
             type="button"
             (click)="onSubmit()"
-            mat-flat-button
-            color="primary"
-            *ngIf="mode == TagEditorMode.Edit"
+            mat-raised-button
+            class="accent-1-dark-btn mat-elevation-z"
+            *ngIf="mode === TagEditorMode.Edit"
             [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
             data-dismiss="modal"
           >

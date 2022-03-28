@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="tool">
+<div *ngIf="tool; else workflow">
   <div class="row m-1" *ngIf="error || missingWarning">
     <div class="col-md-12" *ngIf="!isToolPublic">
       <mat-card class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
@@ -58,7 +58,7 @@
           {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
           ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
           <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
-            <mat-chip matTooltip="Verified" class="container-label-tag">
+            <mat-chip matTooltip="Verified" class="bubble container-background ml-3">
               <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                 <mat-icon class="verified-icon">done</mat-icon>
                 <span>Verified</span>
@@ -86,44 +86,67 @@
         [tool]="tool"
         class="pull-right starring-button"
         *ngIf="isToolPublic && tool"
-        (change)="starGazersChange()"
+        (starGazersChange)="starGazersChange()"
       ></app-starring>
       <h3 class="pull-right">
         <div class="mr-2" *ngIf="publicPage && tool?.private_access">
-          <a mat-raised-button color="accent" [href]="requestAccessHREF$ | async"> Request Access </a>
+          <a mat-raised-button class="accent-1-dark-btn" [href]="requestAccessHREF$ | async"> Request Access </a>
         </div>
         <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
-          <a mat-raised-button color="primary" [href]="contactAuthorHREF"> Contact Author </a>
+          <a mat-raised-button class="mat-accent" [href]="contactAuthorHREF"> Contact Author </a>
         </div>
       </h3>
     </div>
     <div *ngIf="!publicPage" class="col-md-5">
       <h3>
-        <app-tool-actions [tool]="tool" [selectedVersion]="selectedVersion" [entryType]="EntryType.Tool"></app-tool-actions>
+        <app-tool-actions
+          [tool]="tool"
+          [selectedVersion]="selectedVersion"
+          [entryType]="EntryType.Tool"
+          (showVersions)="selectVersionsTab()"
+        ></app-tool-actions>
       </h3>
     </div>
   </div>
   <div class="row m-1">
-    <div *ngIf="tool" class="col-sm-12" style="margin-bottom: 5px">
-      <span *ngIf="!labelsEditMode && !starGazersClicked">
-        <mat-chip-list>
-          <mat-chip class="container-label-tag" *ngFor="let label of containerEditData?.labels" (click)="goToSearch(label)">{{
-            label
-          }}</mat-chip>
-          <button type="button" *ngIf="!labelsEditMode && !isToolPublic" class="btn btn-link" (click)="toggleLabelsEditMode()">
+    <div *ngIf="tool">
+      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
+        <span class="size-small mr-2">Categories</span>
+        <mat-chip-list class="bubble-list">
+          <app-category-button *ngFor="let category of categories$ | async" [category]="category" entryType="tool"></app-category-button>
+        </mat-chip-list>
+      </span>
+      <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
+        <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
+        <mat-chip-list class="bubble-list">
+          <mat-chip
+            class="bubble container-background pointer"
+            *ngFor="let label of containerEditData?.labels"
+            (click)="goToSearch(label)"
+            >{{ label }}</mat-chip
+          >
+          <button
+            type="button"
+            *ngIf="!labelsEditMode && !isToolPublic"
+            mat-button
+            class="private-btn small-btn-structure"
+            (click)="toggleLabelsEditMode()"
+          >
+            <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
           </button>
         </mat-chip-list>
       </span>
 
       <span *ngIf="labelsEditMode && !isToolPublic">
-        <mat-form-field style="width: 100%">
+        <mat-form-field class="mt-3" style="width: 100%">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
               {{ label }}
               <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
             </mat-chip>
             <input
+              data-cy="toolLabelInput"
               placeholder="New label..."
               [formControl]="labelFormControl"
               [matChipInputFor]="chipList"
@@ -136,24 +159,33 @@
             >
           </mat-chip-list>
         </mat-form-field>
-        <button type="button" (click)="cancelLabelChanges()" class="btn btn-link" *ngIf="labelsEditMode && !isToolPublic">
-          <mat-icon>clear</mat-icon>Cancel
-        </button>
         <button
           type="button"
+          (click)="cancelLabelChanges()"
+          mat-button
+          class="private-btn small-btn-structure mr-2"
+          *ngIf="labelsEditMode && !isToolPublic"
+        >
+          <img src="../assets/svg/icons-reject.svg" alt="Cancel" class="pr-1 pb-1" />
+          Cancel
+        </button>
+        <button
+          data-cy="saveLabelButton"
+          mat-button
+          type="button"
           (click)="submitContainerEdits()"
-          class="btn btn-link"
+          class="private-btn small-btn-structure"
           *ngIf="labelsEditMode && !isToolPublic"
           [disabled]="labelFormControl.hasError('pattern')"
         >
-          <mat-icon>save</mat-icon>Save
+          <mat-icon class="mat-icon-sm">save</mat-icon> Save
         </button>
       </span>
     </div>
   </div>
   <div class="row ml-4 mr-4 mb-4" *ngIf="starGazersClicked">
     <app-stargazers></app-stargazers>
-    <button mat-flat-button color="primary" id="backButton" type="button" (click)="starGazersClicked = false">
+    <button mat-raised-button class="accent-1-dark-btn mat-elevation-z" id="backButton" type="button" (click)="starGazersClicked = false">
       <mat-icon>chevron_left</mat-icon>Back to details
     </button>
   </div>
@@ -213,8 +245,8 @@
                 type="button"
                 class="pull-right m-3"
                 *ngIf="!publicPage && (isManualMode$ | async)"
-                mat-flat-button
-                color="primary"
+                mat-raised-button
+                class="accent-1-dark-btn mat-elevation-z"
                 (click)="showAddTagModal()"
               >
                 Add Tag
@@ -262,7 +294,7 @@
       </div>
     </div>
 
-    <div fxLayout="column" fxLayoutGap="1rem" class="side-block col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
+    <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
       <mat-card>
         <mat-card-header>
           <mat-card-title>Recent Versions</mat-card-title>
@@ -280,8 +312,8 @@
                   [ngStyle]="{ 'font-weight': selectedVersion?.name === sortedVersion?.name ? 'bold' : 'normal' }"
                   (click)="onSelectedVersionChange(sortedVersion)"
                   class="panel-body-anchor"
-                  >{{ sortedVersion.name }}
-                </a>
+                  >{{ sortedVersion.name }}</a
+                >&nbsp;
                 <small>{{ sortedVersion.last_built | date }}</small>
               </p>
               <hr class="m-0" />
@@ -322,7 +354,7 @@
             <p>
               Git Repository:
               <span *ngIf="(extendedTool$ | async).provider">
-                <a [href]="(extendedTool$ | async).providerUrl" target="_blank">
+                <a [href]="(extendedTool$ | async).providerUrl" target="_blank" rel="noopener">
                   {{ (extendedTool$ | async).provider }}
                   <mat-icon>open_in_new</mat-icon>
                 </a>
@@ -334,7 +366,7 @@
                 {{ (extendedTool$ | async)?.imgProvider }}</span
               >
               <span *ngIf="(extendedTool$ | async).imgProviderUrl && !privateOnlyRegistry">
-                <a *ngIf="(extendedTool$ | async).imgProviderUrl !== null" [href]="(extendedTool$ | async).imgProviderUrl" target="_blank">
+                <a [href]="(extendedTool$ | async).imgProviderUrl" target="_blank" rel="noopener">
                   {{ (extendedTool$ | async)?.imgProvider }}
                   <mat-icon>open_in_new</mat-icon>
                 </a>
@@ -344,7 +376,7 @@
                 *ngIf="(extendedTool$ | async)?.imgProviderUrl && (extendedTool$ | async).imgProviderUrl.startsWith('https://quay.io')"
                 class="pull-right"
               >
-                <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank">
+                <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank" rel="noopener">
                   <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" />
                 </a>
               </span>
@@ -352,7 +384,7 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <current-collections [id]="tool.id" [versions]="tool.workflowVersions"></current-collections>
+      <app-current-collections [id]="tool.id" [versions]="tool.workflowVersions"></app-current-collections>
       <app-verified-by
         *ngIf="selectedVersion"
         [version]="selectedVersion"
@@ -398,4 +430,7 @@
       </span>
     </mat-card>
   </div>
+</ng-template>
+<ng-template #workflow>
+  <app-workflow [isWorkflowPublic]="isToolPublic"></app-workflow>
 </ng-template>

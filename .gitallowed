@@ -1,9 +1,9 @@
 # Each line is a regular expression against the output of git-secrets
-# travisci/dbdump.sql:.*
+# test/dbdump.sql:.*
 # Can match on the content of the string
 
-# travisci/dbdump.sql
-travisci/db_dump.sql:.*
+# test/dbdump.sql
+test/db_dump.sql:.*
 
 # src/app/organizations/events/events.component.html
 src/app/organizations/events/events.component.html:.*EventType.REMOVEFROMCOLLECTION

@@ -1,0 +1,112 @@
+template: Hello, %s!
+quayClientID: <quay_client_id_here>
+quayRedirectURI: http://localhost:8080/static/quay_callback.htm
+githubClientID: <github_client_id_here>
+githubClientSecret: <github_client_secret_here>
+githubRedirectURI: http://localhost:8080/auth/tokens/github.com
+gitlabClientID: <gitlab_client_id_here>
+gitlabClientSecret: <gitlab_client_secret_here>
+gitlabRedirectURI: http://localhost:9001/auth/gitlab.com
+bitbucketClientID:  <bitbucket client is here>
+bitbucketClientSecret: <bitbucket secret here>
+googleClientID: <fill me in>
+googleClientSecret: <fill me in>
+googleRedirectURI: http://localhost:8080/auth/tokens/google.com
+discourseKey: <fill me in>
+discourseUrl: <fill me in>
+discourseCategoryId: 9
+
+zenodoClientID: <fill me in>
+zenodoClientSecret: <fill me in>
+zenodoRedirectURI: http://<fill me in>:8080/auth/zenodo.org
+zenodoUrl: https://zenodo.org
+orcidClientID: <fill me in>
+orcidClientSecret: <fill me in>
+gitHubAppPrivateKeyFile: <fill me in>
+gitHubAppId: <fill me in>
+
+orcidClientID: <fill me in>
+orcidClientSecret: <fill me in>
+
+authorizerType: inmemory
+
+externalConfig:
+  basePath: /api/
+  hostname: localhost
+  scheme: http
+  port: 8080
+
+esconfiguration:
+  port: 9200
+  hostname: localhost
+
+authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
+
+database:
+  # the name of your JDBC driver
+  driverClass: org.postgresql.Driver
+
+  # the username
+  user: dockstore
+
+  # the password
+  password: dockstore
+
+  # the JDBC URL
+  url: jdbc:postgresql://localhost:5432/webservice_test
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    # create database as needed, disable in production
+    hibernate.hbm2ddl.auto: validate
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyApplication Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
+uiConfig:
+  dnaStackImportUrl: https://app.dnastack.com/#/app/workflow/import/dockstore
+  dnaNexusImportUrl: https://platform.dnanexus.com/panx/tools/import-workflow
+  bdCatalystTerraImportUrl: https://dev.terra.biodatacatalyst.nhlbi.nih.gov
+  bdCatalystSevenBridgesImportUrl: https://sb.biodatacatalyst.nhlbi.nih.gov
+  terraImportUrl: https://app.terra.bio/#import-tool/dockstore
+
+  gitHubAuthUrl: https://github.com/login/oauth/authorize
+  gitHubRedirectPath: /auth/github.com
+  gitHubScope: read:org,user:email
+
+  quayIoAuthUrl: https://quay.io/oauth/authorize
+  quayIoRedirectPath: /auth/quay.io
+  quayIoScope: repo:read,user:read
+
+  bitBucketAuthUrl: https://bitbucket.org/site/oauth2/authorize
+
+  gitlabAuthUrl: https://gitlab.com/oauth/authorize
+  gitlabRedirectPath: /auth/gitlab.com
+  gitlabScope: api
+
+  zenodoAuthUrl: https://zenodo.org/oauth/authorize
+  zenodoRedirectPath: /auth/zenodo.org
+  zenodoScope: deposit:write deposit:actions
+
+  orcidAuthUrl: https://orcid.org/oauth/authorize
+  orcidRedirectPath: /auth/orcid.org
+  orcidScope: /authenticate
+
+  googleScope: profile email
+
+  cwlVisualizerUri: https://view.commonwl.org
+

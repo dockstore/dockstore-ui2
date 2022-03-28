@@ -18,12 +18,12 @@
   </form>
 </div>
 <div mat-dialog-actions class="pull-right">
-  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
   <button
     id="upsertUserDialogButton"
     [matTooltip]="title"
-    mat-flat-button
-    color="primary"
+    mat-raised-button
+    class="accent-1-dark-btn mat-elevation-z"
     [disabled]="!form.valid"
     (click)="upsertUser()"
     cdkFocusInitial

@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
 .about-dockstore {
@@ -19,7 +20,7 @@
 
 h3 {
   font-size: 1.7rem;
-  color: #3f51b5;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   line-height: 2.5rem;
   font-weight: 500;
 }
@@ -30,7 +31,7 @@ h2 {
 }
 
 .register-dockstore {
-  background: mat-color($dockstore-app-gray, 5);
+  background: mat.get-color-from-palette($dockstore-app-gray, 5);
 }
 
 ul.ordered-list > li:before {
@@ -75,7 +76,7 @@ hr {
 }
 
 .workflowlength {
-  background: mat-color($dockstore-app-gray, lighter);
+  background: mat.get-color-from-palette($dockstore-app-gray, lighter);
   border-radius: 1rem;
   padding: 0.2rem 0.6rem;
 }

@@ -83,13 +83,18 @@ export class Dockstore {
   static GITHUB_APP_INSTALLATION_URL = 'will be filled in by configuration.service';
 
   static DOCKSTORE_REPO = 'https://github.com/dockstore/dockstore';
-  static DOCUMENTATION_URL = 'https://docs.dockstore.org';
+  static DOCUMENTATION_URL = 'https://docs.dockstore.org/en/stable';
   static FEATURED_CONTENT_URL = 'will be filled in by configuration.service';
   static FEATURED_NEWS_URL = 'will be filled in by configuration.service';
 
   static DEPLOY_VERSION = '';
   static COMPOSE_SETUP_VERSION = '';
   static WEBSERVICE_COMMIT_ID = '';
+  static CWL_PARSING_LAMBDA_VERSION = '';
+  static WDL_PARSING_LAMBDA_VERSION = '';
+  static NEXTFLOW_PARSING_LAMBDA_VERSION = '';
+  static GALAXY_PARSING_PLUGIN_VERSION = '';
+  static CHECK_URL_LAMBDA_VERSION = '';
 
   static FEATURES = {
     enableCwlViewer: true,

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 /**
  * To use this component, wrap your original component with this component's <app-loading> tags
@@ -14,10 +14,8 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.scss'],
 })
-export class LoadingComponent implements OnInit {
+export class LoadingComponent {
   @Input() loading = true;
   @Input() retainContent = false;
   constructor() {}
-
-  ngOnInit() {}
 }

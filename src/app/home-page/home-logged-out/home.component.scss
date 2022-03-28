@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+@use '~@angular/material' as mat;
 @import 'materialColorScheme.scss';
 
 .title {
@@ -23,8 +24,16 @@
   padding: 6rem;
 }
 
+// Styling for the "Browse popular categories" bar
+// Specific to the above
+.categories {
+  background-color: mat.get-color-from-palette($dockstore-app-primary, darker);
+  color: white;
+  padding: 1rem 6rem;
+}
+
 .gray-sections {
-  background: mat-color($dockstore-app-gray, 5);
+  background: mat.get-color-from-palette($dockstore-app-gray, 5);
 }
 
 pre {
@@ -76,7 +85,7 @@ ul.ordered-list {
 
 .subtitle {
   font-size: 1.7rem;
-  color: #3f51b5;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   line-height: 2.5rem;
   font-weight: 500;
 }
@@ -91,7 +100,7 @@ ul.unordered-list > li {
 
 .title-strong {
   font-weight: 600;
-  color: #3f51b5;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 h3 {
@@ -106,25 +115,39 @@ h3 {
 }
 
 .search-background {
-  background: mat-color($dockstore-app-accent);
+  background: mat.get-color-from-palette($dockstore-app-accent);
   padding: 2rem;
   border-radius: 1rem;
 }
 
 .primary-3 {
-  color: mat-color($dockstore-app-primary, 3);
+  color: mat.get-color-from-palette($dockstore-app-primary, 3);
 }
 
 .warn-1 {
-  color: mat-color($dockstore-app-warn, darker);
+  color: mat.get-color-from-palette($dockstore-app-warn, darker);
 }
 
-// Style home search mat-form-field
-// Make mat-form-field match home search bar, could look into more solutions
-::ng-deep .home-field .mat-form-field-wrapper {
-  padding-bottom: 0;
+// Style home search mat-form-field which is vastly different from all other form fields on the site due to the accented border on a non-white background
+::ng-deep .search-background .landing-search {
+  max-width: 600px;
+  background: white;
+  color: black;
+  .mat-form-field-wrapper {
+    // Removing the padding because we don't need hint
+    padding-bottom: 0;
+    // Material expects to have some extra space from the form field with `margin: .25em 0;`
+    // However, we have none because of the accent border surrounding the form field
+    margin: 0;
+  }
+
+  .mat-form-field-infix {
+    // Overriding the default `padding: 1em 0 1em 0;` and making it smaller to align with mocks
+    padding: 0.5em 0;
+  }
 }
-::ng-deep .home-field .mat-form-field-infix {
-  padding: 0.8em 0 0.8em 0;
-  border-top: 0em;
+
+// Changing the color of the search icon
+.search-icon {
+  color: gray;
 }

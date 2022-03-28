@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { Directive, OnDestroy } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
@@ -31,7 +30,7 @@ import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../
  * Abstract class to be implemented by components that have select boxes for a given entry and version
  */
 @Directive()
-// tslint:disable-next-line: directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class EntryFileSelector implements OnDestroy {
   _selectedVersion: any;
   id: number;
@@ -46,7 +45,6 @@ export abstract class EntryFileSelector implements OnDestroy {
   public files: Array<ToolFile>;
   public published$: Observable<boolean>;
   public downloadFilePath: string;
-  public customDownloadHREF: SafeUrl;
   public customDownloadPath: string;
   public loading = false;
   public validationMessage = null;
@@ -138,7 +136,6 @@ export abstract class EntryFileSelector implements OnDestroy {
    * @memberof EntryFileSelector
    */
   updateCustomDownloadFileButtonAttributes(): void {
-    this.customDownloadHREF = this.fileService.getFileData(this.content);
     this.customDownloadPath = this.fileService.getFileName(this.filePath);
   }
 

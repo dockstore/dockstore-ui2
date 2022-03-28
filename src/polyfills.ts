@@ -18,7 +18,7 @@
  * BROWSER POLYFILLS
  */
 
-import 'core-js/features/url';
+import '@angular-devkit/build-angular/node_modules/core-js/features/url';
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
 // import 'classlist.js';  // Run `npm install --save classlist.js`.
 
@@ -31,7 +31,7 @@ import 'core-js/features/url';
 /***************************************************************************************************
  * Zone JS is required by Angular itself.
  */
-import 'zone.js/dist/zone'; // Included with Angular CLI.
+import 'zone.js'; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

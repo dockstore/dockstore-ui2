@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+import { NgFormsManager } from '@ngneat/forms-manager';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
@@ -96,12 +96,12 @@ export class CreateCollectionService {
    * @returns {FormGroup}
    * @memberof CreateCollectionService
    */
-  createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
+  createForm(formsManager: NgFormsManager<FormsState>, data: any): FormGroup {
     const mode: TagEditorMode = data.mode;
     let name = null;
     let topic = null;
     let displayName = null;
-    formsManager.remove('createOrUpdateCollection');
+    formsManager.clear('createOrUpdateCollection');
     if (mode !== TagEditorMode.Add) {
       const collection: Collection = data.collection.value;
       name = collection.name;
@@ -110,7 +110,10 @@ export class CreateCollectionService {
     }
 
     const createOrUpdateCollectionForm = this.builder.group({
-      name: [name, [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z][a-zA-Z\d]*$/)]],
+      name: [
+        name,
+        [Validators.required, Validators.maxLength(39), Validators.minLength(3), Validators.pattern(/^[a-zA-Z](-?[a-zA-Z\d])*$/)],
+      ],
       displayName: [
         displayName,
         [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)],
@@ -122,18 +125,20 @@ export class CreateCollectionService {
   }
 
   /**
-   * Sets the title based on the mode
+   * Sets the title and save button label based on the mode
    *
    * @param {*} data  Data object during dialog component creation
    * @memberof CreateCollectionService
    */
-  setTitle(data: any): void {
+  setValues(data: any): void {
     const mode: TagEditorMode = data.mode;
     const title = mode === TagEditorMode.Add ? 'Create Collection' : 'Edit Collection';
+    const saveLabel = mode === TagEditorMode.Add ? 'Create Collection' : 'Save';
     this.createCollectionStore.update((state) => {
       return {
         ...state,
         title: title,
+        saveLabel: saveLabel,
       };
     });
   }

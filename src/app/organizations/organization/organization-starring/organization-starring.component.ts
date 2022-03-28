@@ -33,7 +33,7 @@ import { OrganizationStarringService } from './organization-starring.service';
 })
 export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {
   @Input() organization: Organization;
-  @Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() stargazersChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   private user: User;
   public isLoggedIn: boolean;
   public rate = false;
@@ -126,6 +126,6 @@ export class OrganizationStarringComponent extends Base implements OnInit, OnDes
       theOrganization: this.organization,
     };
     this.starOrganizationService.setOrganization(selectedOrganization);
-    this.change.emit();
+    this.stargazersChange.emit();
   }
 }

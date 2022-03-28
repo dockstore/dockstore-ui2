@@ -19,8 +19,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { SessionQuery } from 'app/shared/session/session.query';
+import { UserQuery } from 'app/shared/user/user.query';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -60,11 +61,13 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
   public gitHubAppInstallationLink$: Observable<string>;
+  public usernameChangeRequired$: Observable<boolean>;
   public hostedWorkflow = {
     repository: '',
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
     entryName: null,
   };
+  public username$: Observable<string>;
   private baseOptions = [
     {
       label: 'Quickly register remote workflows',
@@ -103,7 +106,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     public dialogRef: MatDialogRef<RegisterWorkflowModalComponent>,
     private alertQuery: AlertQuery,
     private descriptorLanguageService: DescriptorLanguageService,
-    protected sessionQuery: SessionQuery
+    protected sessionQuery: SessionQuery,
+    private userQuery: UserQuery
   ) {}
 
   friendlyRepositoryKeys(): Array<string> {
@@ -115,6 +119,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   }
 
   ngOnInit() {
+    this.username$ = this.userQuery.username$;
+    this.usernameChangeRequired$ = this.userQuery.user$.pipe(map((user) => user.usernameChangeRequired));
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {
@@ -235,9 +241,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    * @memberof RegisterWorkflowModalComponent
    */
   changeDescriptorType(descriptorType: Workflow.DescriptorTypeEnum): void {
-    this.descriptorValidationPattern = DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
-      descriptorType
-    ).descriptorPathPattern;
+    this.descriptorValidationPattern =
+      DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPattern;
     switch (descriptorType) {
       case Workflow.DescriptorTypeEnum.CWL:
         this.workflowPathError = validationMessages.cwlPath.pattern;

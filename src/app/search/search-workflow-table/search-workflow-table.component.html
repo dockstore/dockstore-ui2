@@ -4,7 +4,6 @@
   </div>
   <mat-table
     [hidden]="!dataSource"
-    class="mat-elevation-z4"
     [dataSource]="dataSource"
     matSort
     matSortActive="starredUsers"
@@ -15,9 +14,12 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
-        <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
-          workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
-        }}</a>
+        <div>
+          <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
+            workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
+          }}</a>
+          <div class="truncate-text-2 size-small" *ngIf="workflow.topicAutomatic">{{ workflow.topicAutomatic }}</div>
+        </div>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="verified">
@@ -33,10 +35,8 @@
       <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
-      <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header fxFlex="20%"
-        >Format</mat-header-cell
-      >
-      <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow" fxFlex="20%">
+      <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow">
         <div>
           <span class="nonclick-badge">{{
             workflow?.descriptorType === 'gxformat2' ? galaxyShortfriendlyName : (workflow?.descriptorType | uppercase)
@@ -45,7 +45,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Project Links</mat-header-cell>
+      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let entry">
         <a [href]="entry?.providerUrl" *ngIf="entry?.providerUrl">
           <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"></fa-icon>

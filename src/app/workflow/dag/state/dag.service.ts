@@ -216,7 +216,7 @@ export class DagService {
 
   isValidUrl(possibleUrl: string | null | undefined): boolean {
     try {
-      // tslint:disable-next-line: no-unused-expression
+      // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
       new URL(possibleUrl);
     } catch (_) {
       return false;
@@ -322,7 +322,7 @@ export class DagService {
         },
         popper: { removeOnDestroy: true },
       });
-      popper.scheduleUpdate();
+      popper.update();
     };
     const destroy = () => {
       try {

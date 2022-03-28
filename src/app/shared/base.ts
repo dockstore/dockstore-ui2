@@ -27,7 +27,7 @@ import { Subject } from 'rxjs';
  * @implements {OnDestroy}
  */
 @Directive()
-// tslint:disable-next-line: directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class Base implements OnDestroy {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 

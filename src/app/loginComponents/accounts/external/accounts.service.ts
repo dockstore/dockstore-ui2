@@ -76,4 +76,12 @@ export class AccountsService {
         break;
     }
   }
+
+  /**
+   * Compute the root portion of a URL.  Adapted from:
+   * {@link https://stackoverflow.com/questions/1368264/how-to-extract-the-hostname-portion-of-a-url-in-javascript}
+   */
+  getRoot(url: string): string {
+    return url.replace(/^(.*\/\/[^\/?#]*).*$/,"$1");
+  }
 }

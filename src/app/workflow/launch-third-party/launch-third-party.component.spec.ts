@@ -66,7 +66,6 @@ describe('LaunchThirdPartyComponent', () => {
     //   ).toBeTruthy();
     // }
 
-    // tslint:disable:max-line-length
     // https://platform.dnanexus.com/panx/tools/import-workflow?source=https://dockstore.org:443/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2FDataBiosphere%2Ftopmed-workflows%2FUM_aligner_wdl/versions/master
     expect(
       nativeElement.querySelector(

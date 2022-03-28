@@ -39,7 +39,7 @@
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <table mat-table [dataSource]="availableLogs$ | async" class="mat-elevation-z8 w-100">
+        <table mat-table [dataSource]="availableLogs$ | async" class="w-100">
           <ng-container matColumnDef="testFilename">
             <th mat-header-cell *matHeaderCellDef>Tested File</th>
             <td mat-cell *matCellDef="let element">{{ element.testFilename }}</td>
@@ -75,5 +75,5 @@
 </mat-dialog-content>
 
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-  <button mat-button mat-dialog-close>Close</button>
+  <button mat-flat-button class="secondary-1" mat-dialog-close>Close</button>
 </div>

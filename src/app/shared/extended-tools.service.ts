@@ -11,7 +11,7 @@ import { ContainersService } from './../shared/swagger/api/containers.service';
  * @class ExtendedToolsService
  * @extends {ContainersService}
  */
-/* tslint:disable */
+/* eslint-disable */
 @Injectable()
 export class ExtendedToolsService extends ContainersService {
   /**

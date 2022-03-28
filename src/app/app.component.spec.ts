@@ -6,7 +6,8 @@ import { Component } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
 import { TrackLoginService } from './shared/track-login.service';
-import { TrackLoginStubService } from './test/service-stubs';
+import { TosBannerStubService, TrackLoginStubService } from './test/service-stubs';
+import { TosBannerService } from './tosBanner/state/tos-banner.service';
 
 @Component({ selector: 'app-banner', template: '' })
 class BannerStubComponent {}
@@ -38,7 +39,10 @@ describe('AppComponent', () => {
           NotificationStubComponent,
         ],
         imports: [RouterTestingModule, MatSnackBarModule],
-        providers: [{ provide: TrackLoginService, useClass: TrackLoginStubService }],
+        providers: [
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
+          { provide: TosBannerService, useClass: TosBannerStubService },
+        ],
       }).compileComponents();
     })
   );

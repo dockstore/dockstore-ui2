@@ -1,29 +1,31 @@
-<li *ngIf="((checkerId$ | async) || (canAdd$ | async)) && !(isRefreshing$ | async)">
+<li *ngIf="((checkerId$ | async) || (canAdd$ | async)) && (isRefreshing$ | async) === false">
   <form #editCheckerWorkflowPathForm="ngForm" class="form-inline">
     <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
       <strong matTooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
     </div>
-    <span *ngIf="!(checkerId$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
+    <span *ngIf="(noChecker$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
     <div class="btn-group" role="group">
       <a
         [routerLink]="checkerWorkflowURL$ | async"
         id="viewCheckerWorkflowButton"
-        *ngIf="(checkerWorkflowURL$ | async) && !(isRefreshing$ | async)"
+        *ngIf="(checkerWorkflowURL$ | async) && (isRefreshing$ | async) === false"
         type="button"
-        class="btn btn-link"
+        mat-raised-button
+        class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
       >
-        <mat-icon>visibility</mat-icon> View
+        <mat-icon class="mat-icon-sm">visibility</mat-icon> View
       </a>
-      <span *ngIf="!(isPublic$ | async)">
+      <span *ngIf="(isPublic$ | async) === false">
         <button
           id="addCheckerWorkflowButton"
           #addCheckerWorkflowButton
           *ngIf="(canAdd$ | async) && canWrite"
           type="button"
-          class="btn btn-link"
+          mat-raised-button
+          class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
           (click)="add()"
         >
-          <mat-icon>add</mat-icon> Add
+          <img src="../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Plus sign" />Add
         </button>
         <!-- <button *ngIf="checkerWorkflowPath" type="button" class="btn btn-link" (click)="delete()">
           <mat-icon>clear</mat-icon> Delete
@@ -38,8 +40,14 @@
       <div class="form-group"><strong matTooltip="The parent entry of this checker workflow">Parent Entry</strong>:</div>
       <span>
         <div class="btn-group" role="group">
-          <button id="viewParentEntryButton" type="button" class="btn btn-link" (click)="viewParentEntry()">
-            <mat-icon>visibility</mat-icon> View
+          <button
+            id="viewParentEntryButton"
+            type="button"
+            mat-raised-button
+            class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+            (click)="viewParentEntry()"
+          >
+            <mat-icon class="mat-icon-sm">visibility</mat-icon> View
           </button>
         </div>
       </span>

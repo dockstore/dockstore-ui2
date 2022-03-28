@@ -20,9 +20,8 @@
   type="button"
   class="mr-1"
   data-cy="refreshOrganization"
-  (click)="refreshOrganization()"
+  (click)="isGitHubOrg ? openConfirmationDialog() : refreshOrganization()"
   [disabled]="isRefreshing$ | async"
-  matTooltip="{{ tooltipText }}"
 >
   {{ buttonText }}
 </button>

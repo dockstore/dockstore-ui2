@@ -62,11 +62,11 @@ describe('Tool, Workflow, and Organization starring', () => {
     cy.get('[data-cy=dropdown-main]:visible').click();
     cy.get('#dropdown-starred').click();
     if (entity === 'tool') {
-      cy.get('.mat-tab-label-content').contains('Tools').click();
+      cy.contains('.mat-tab-label-content', 'Tools').click();
     } else if (entity === 'workflow') {
-      cy.get('.mat-tab-label-content').contains('Workflows').click();
+      cy.contains('.mat-tab-label-content', 'Workflows').click();
     } else {
-      cy.get('.mat-tab-label-content').contains('Organizations').click();
+      cy.contains('.mat-tab-label-content', 'Organizations').click();
     }
     cy.get('#starringButton').should('exist');
     cy.get('#starCountButton').should('exist');
@@ -94,9 +94,11 @@ describe('Tool, Workflow, and Organization starring', () => {
     it('Organization can be starred/unstarred', () => {
       cy.visit('/organizations');
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
+      cy.contains('button', 'Next').should('be.visible').click();
       typeInInput('Name', 'Potato');
       typeInInput('Display Name', 'Potato');
-      typeInInput('Topic', 'Boil \'em, mash \'em, stick \'em in a stew');
+      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
+      typeInInput('Email', 'yukon@potato.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
 

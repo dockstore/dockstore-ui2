@@ -17,7 +17,8 @@ import {
   assertNoTab,
   assertVisibleTab,
   cancelMatMenu,
-  clickFirstActionsButton,
+  clickFirstActionsButtonPublic,
+  clickFirstActionsButtonPrivate,
   goToTab,
   setTokenUserViewPort,
   setTokenUserViewPortCurator,
@@ -59,10 +60,8 @@ describe('Dockstore Home', () => {
       cy.contains('TRS: ').should('be.visible');
       checkVersionsTab();
       // Hidden version not visible on public page
-      // View button visible on public page, otherwise Edit
-      clickFirstActionsButton();
-      cy.contains('button', 'View');
-      cy.contains('td', 'test').should('not.be.visible');
+      clickFirstActionsButtonPublic();
+      cy.contains('td', 'test').should('not.exist');
       cancelMatMenu();
       checkFilesTab();
     });
@@ -88,10 +87,10 @@ describe('Dockstore Home', () => {
       checkTabs();
       checkInfoTab();
       // TRS only visibile in public page
-      cy.contains('TRS: ').should('not.be.visible');
+      cy.contains('TRS: ').should('not.exist');
       checkVersionsTab();
       // Edit button only in my-services
-      clickFirstActionsButton();
+      clickFirstActionsButtonPrivate();
       cy.contains('button', 'Edit');
       cancelMatMenu();
       checkFilesTab();
@@ -109,14 +108,14 @@ describe('Dockstore Home', () => {
     // Info Tab Service Information
     cy.contains('Service Information');
     cy.contains('Source Code: ').should('be.visible');
-    cy.contains('Workflow Path: ').should('not.be.visible');
-    cy.contains('Test File Path: ').should('not.be.visible');
-    cy.contains('Checker Workflow: ').should('not.be.visible');
-    cy.contains('Descriptor Type: ').should('not.be.visible');
+    cy.contains('Workflow Path: ').should('not.exist');
+    cy.contains('Test File Path: ').should('not.exist');
+    cy.contains('Checker Workflow: ').should('not.exist');
+    cy.contains('Descriptor Type: ').should('not.exist');
     // Info Tab Service Version Information
     cy.contains('Service Version Information');
-    cy.contains('Author: ');
-    cy.contains('E-mail: ');
+    cy.contains('tr', 'Author');
+    cy.contains('tr', 'Email');
     cy.contains('Export as ZIP');
   }
 

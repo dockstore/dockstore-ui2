@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { contains } from 'cypress/types/jquery';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
@@ -108,24 +109,49 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
+      // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('github.com');
       cy.get('a#sourceRepository').contains('A/g').should('have.attr', 'href', 'https://github.com/A/g');
       cy.contains('/Dockstore.cwl');
       // Change the file path
       cy.contains('button', ' Edit ').click();
-      cy.get('input').clear().type('/Dockstore2.cwl');
+      cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore2.cwl');
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
       cy.contains('button', ' Edit ').click();
-      cy.get('input').clear().type('/Dockstore.cwl');
+      cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore.cwl');
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore.cwl');
+
+      // Topic Editing
+      const privateEntryURI = '/my-workflows/github.com/A/l';
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicCancelButton]').click();
+      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.contains('goodTopic').should('exist');
+
+      // Check public view
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+      cy.contains('goodTopic').should('not.exist');
+
+      cy.visit(privateEntryURI);
+      cy.get('.mat-radio-label').contains('Manual').click();
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+      cy.contains('goodTopic').should('exist');
     });
     it('should have mode tooltip', () => {
+      cy.visit('/my-workflows/github.com/A/g');
       // .trigger('mouseover') doesn't work for some reason
       cy.contains('Mode').trigger('mouseenter');
       cy.get('.mat-tooltip').contains('STUB: Basic metadata pulled from source control.');
@@ -133,9 +159,11 @@ describe('Dockstore my workflows', () => {
     it('should be able to add labels', () => {
       cy.contains('github.com/A/g');
       cy.get('button').contains('Manage labels').click();
-      cy.get('input').type('potato');
-      cy.get('button').contains('Save').click();
-      cy.get('button').contains('Save').should('not.exist');
+      cy.get('[data-cy=workflowLabelInput]').type('potato');
+      // Adding force:true, appears to be a cypress issue, when clicking this button the event does not fire
+      // this will force submitWorkflowEdits() to fire
+      cy.get('[data-cy=saveLabelButton]').click({ force: true });
+      cy.get('[data-cy=saveLabelButton]').should('not.exist');
     });
     it('add and remove test parameter file', () => {
       cy.visit('/my-workflows/github.com/A/l');
@@ -152,7 +180,23 @@ describe('Dockstore my workflows', () => {
       cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
       cy.get('[data-cy=remove-test-parameter-file-button]').click();
       cy.get('[data-cy=save-version').click();
-      cy.get('[data-cy=save-version').should('not.be.visible');
+      cy.get('[data-cy=save-version').should('not.exist');
+    });
+    it('Should be able to hide/unhide', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.contains('Versions').click();
+      cy.get('td').contains('Actions').should('exist').click();
+      cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
+      cy.get('[type="checkbox"]').check();
+      cy.contains('button', ' Save ').click();
+      // Check for hidden version and unhide
+      cy.get('[data-cy=hidden').should('exist');
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.contains('Versions').click();
+      cy.get('td').contains('Actions').should('exist').click();
+      cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
+      cy.get('[type="checkbox"]').uncheck();
+      cy.contains('button', ' Save ').click();
     });
   });
 
@@ -163,6 +207,7 @@ describe('Dockstore my workflows', () => {
       goToTab('Versions');
       cy.get('td').contains('Actions').click();
     }
+
     it('Should be able to snapshot', () => {
       gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
@@ -177,8 +222,11 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=snapshot-button]').click();
 
       cy.wait(250);
-      cy.get('[data-cy=dockstore-snapshot-locked').should('have.length', 1);
+      cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 1);
+      cy.get('td').contains('Actions').click();
+      cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
     });
+
     it('Request DOI should require linked account', () => {
       gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-request-doi-button]').click();
@@ -189,9 +237,19 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=link-zenodo]').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
     });
-    it('Export DOI should result in badge', () => {
+
+    it('Export to ORCID should require linked account', () => {
+      gotoVersionsAndClickActions();
+      cy.get('[data-cy=dockstore-export-orcid-button]').click();
+      cy.get('[data-cy=orcid-not-linked]').its('length').should('be.gt', 0);
+      cy.get('[data-cy=export-button').should('be.disabled');
+      cy.get('[data-cy=link-orcid]').click();
+      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
+    });
+
+    it('Should be able to request DOI and then export to ORCID', () => {
       cy.server();
-      // tokens.json indicates a Zenodo token
+      // tokens.json indicates a Zenodo token and an ORCID token
       cy.fixture('tokens.json').then((json) => {
         cy.route({
           url: '/api/users/1/tokens',
@@ -209,13 +267,32 @@ describe('Dockstore my workflows', () => {
           response: json,
         });
       });
-      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist');
+      // orcidExportResponse.json has a workflow version with an ORCID put code
+      cy.fixture('orcidExportResponse.json').then((json) => {
+        cy.route({
+          url: '/api/entries/*/exportToOrcid?versionId=*',
+          method: 'POST',
+          status: 200,
+          response: json,
+        });
+      });
+
+      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist'); // Make sure there are no existing Zenodo badges
       gotoVersionsAndClickActions();
-      // Make sure there are no existing Zenodo badges
+      // Request DOI
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0);
+      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0); // Should have a DOI badge now
+      cy.get('td').contains('Actions').click();
+      cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
+
+      // Export to ORCID
+      cy.get('[data-cy=dockstore-export-orcid-button]').click();
+      cy.get('[data-cy=export-button').should('be.enabled');
+      cy.get('[data-cy=export-button').click();
+      cy.get('td').contains('Actions').click();
+      cy.get('[data-cy=dockstore-export-orcid-button]').should('not.exist'); // Should not be able to export to ORCID again
     });
   });
 
@@ -225,7 +302,7 @@ describe('Dockstore my workflows', () => {
     cy.contains('Automatically synced via GitHub App');
 
     cy.get('#publishButton').should('not.be.disabled');
-    cy.get('#refreshButton').should('not.exist');
+    cy.get('[data-cy=refreshButton]').should('not.exist');
 
     cy.contains('Workflow Path').should('not.exist');
     cy.contains('Test File Path').should('not.exist');
@@ -277,6 +354,7 @@ describe('Dockstore my workflows', () => {
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
     cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+    cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
     cy.wait('@refreshWorkflow');
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 1); // 2 Versions and no warning line
@@ -286,7 +364,7 @@ describe('Dockstore my workflows', () => {
     it('Invalid workflow should not be publishable', () => {
       cy.visit('/my-workflows/github.com/A/g');
       cy.get('#publishButton').should('be.disabled');
-      cy.get('#refreshButton').should('not.be.disabled');
+      cy.get('[data-cy=refreshButton]').should('not.be.disabled');
     });
   });
 
@@ -295,7 +373,7 @@ describe('Dockstore my workflows', () => {
   }
 
   function notHaveAlert() {
-    cy.get('.mat-error').should('not.be.visible');
+    cy.get('.mat-error').should('not.exist');
   }
 
   describe('Test workflow wizard form', () => {
@@ -351,7 +429,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('button', 'Next').click();
 
       // Select github.com in git registry
-      cy.get('entry-wizard').within(() => {
+      cy.get('app-entry-wizard').within(() => {
         cy.get('mat-select').eq(0).click().type('{enter}');
         cy.get('mat-select').eq(1).click().type('{enter}');
 
@@ -396,7 +474,24 @@ describe('Dockstore my workflows', () => {
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.cwl');
       notHaveAlert();
       cy.get('#closeRegisterWorkflowModalButton').contains('button', 'Close').should('be.visible').should('be.enabled').click();
-      cy.get('#closeRegisterWorkflowModalButton').should('not.be.visible');
+      cy.get('#closeRegisterWorkflowModalButton').should('not.exist');
+    });
+  });
+
+  describe('Should require default version to publish', () => {
+    it('should not be able to publish with no default version', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.get('#publishButton').should('contain', 'Unpublish').should('be.visible').click();
+      cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();
+      cy.get('[data-cy=close-dialog-button]').should('be.visible').click();
+      cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
+    });
+    it('should be able to publish after setting default version', () => {
+      goToTab('Versions');
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
+      cy.wait(1000);
+      cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();
     });
   });
 
@@ -415,13 +510,13 @@ describe('Dockstore my workflows', () => {
 
       cy.get('#publishButton').should('contain', 'Unpublish').click();
 
-      cy.get('#viewPublicWorkflowButton').should('not.be.visible');
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');
 
       cy.get('#publishButton').should('be.visible').should('contain', 'Publish').click();
 
       cy.get('#publishButton').should('contain', 'Unpublish');
 
-      cy.get('#viewPublicWorkflowButton').should('be.visible').click();
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
 
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
     });
@@ -432,6 +527,12 @@ describe('Dockstore my workflows', () => {
       '#cdk-accordion-child-2 > .mat-action-row.ng-star-inserted > div > :nth-child(2) > ' +
         'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
     ).trigger('mouseenter');
-    cy.get('.mat-tooltip').contains('Refresh all workflows in the organization');
+    cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+    cy.contains('button', 'Cancel').should('be.visible');
+    cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
+    cy.get('.error-output').should('be.visible');
+    cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+    cy.contains('button', 'Cancel').should('be.visible').click();
+    cy.get('.error-output').should('not.be.visible');
   });
 });

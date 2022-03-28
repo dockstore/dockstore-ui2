@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@use '~@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
 mat-tab-group.homeComponent {
@@ -20,7 +21,7 @@ mat-tab-group.homeComponent {
 }
 
 ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
-  color: #151c3d;
+  color: $header-color;
 }
 
 .sidebar {
@@ -32,7 +33,7 @@ mat-tab-group.homeComponent {
   padding: 20px;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: mat-color($dockstore-app-gray, 5);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
   border-right: 1px solid #eee;
 }
 
@@ -149,7 +150,6 @@ mat-tab-group.homeComponent {
 
 .selected-item {
   background-color: #e7f1fb;
-  color: #487980;
 }
 
 .mat-expansion-panel-spacing {
@@ -162,32 +162,6 @@ mat-tab-group.homeComponent {
   justify-content: space-between;
 }
 
-/*for facet histograms*/
-.number-of-items {
-  position: absolute;
-  right: 3rem;
-}
-
-/*for facet histograms*/
-.panel-container-label {
-  padding-right: 0;
-}
-
-.workflow-histogram {
-  background-color: #d2fbf0;
-  min-height: 2rem;
-}
-
-.tool-histogram {
-  background-color: #d0effd;
-  min-height: 2rem;
-}
-
-// For facet search
-input[type='text']:focus,
-textarea:focus {
-  border: none;
-}
 mat-form-field {
   width: 100%;
 }

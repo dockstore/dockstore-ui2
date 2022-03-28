@@ -13,3 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
+/* Drop-down menu restyling to match new design: bolded text & smaller height */
+.mat-menu-item {
+  font-size: 13px;
+  font-weight: bold;
+  height: 40px;
+  line-height: 40px;
+}

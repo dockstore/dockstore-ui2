@@ -23,6 +23,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { formInputDebounceTime } from '../../shared/constants';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { RegisterToolService } from './register-tool.service';
+import { Dockstore } from '../../shared/dockstore.model';
 
 interface HostedTool {
   path: string;
@@ -41,12 +42,14 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public tool: any;
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
+  public validationMessages = validationMessages;
   public customDockerRegistryPath: string;
   public showCustomDockerRegistryPath: boolean;
   public isModalShown: boolean;
   public disablePrivateCheckbox = false;
   public loading$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
+  public gitHubAppInstallationLink$: Observable<string>;
   public hostedTool: HostedTool = {
     path: '',
     registry: 'quay.io',
@@ -71,9 +74,16 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
         'Manually add individual tools with descriptor(s) stored on Dockstore.org. Docker images are stored on sites like Quay.io and DockerHub.',
       value: 2,
     },
+    {
+      label: 'Register using GitHub Apps',
+      extendedLabel:
+        'Install our GitHub App on your repository/organization to automatically sync tools with GitHub. Allows you to register a tool descriptor without linking to a Docker image you own.',
+      value: 3,
+    },
   ];
   public selectedOption = this.options[0];
   private ngUnsubscribe: Subject<{}> = new Subject();
+  Dockstore = Dockstore;
 
   registerToolForm: NgForm;
   @ViewChild('registerToolForm') currentForm: NgForm;
@@ -122,6 +132,20 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     this.disablePrivateCheckbox = this.registerToolService.disabledPrivateCheckbox;
   }
 
+  togglePrivateAccess() {
+    // Amazon ECR is a public and private registry, but it has custom docker paths for its private registries.
+    // If tool is private, allow the docker registry path to be edited.
+    // If tool is public, disable the docker registry path input field and set it to the public docker registry path (public.ecr.aws)
+    if (this.tool.irProvider === 'Amazon ECR') {
+      this.registerToolService.setShowCustomDockerRegistryPath(this.tool.private_access);
+      if (this.tool.private_access) {
+        this.registerToolService.setCustomDockerRegistryPath(null);
+      } else {
+        this.registerToolService.setCustomDockerRegistryPath(this.registerToolService.getImageRegistryPath(this.tool.irProvider));
+      }
+    }
+  }
+
   hideModal() {
     this.registerToolService.setIsModalShown(false);
     this.alertService.clearEverything();
@@ -129,6 +153,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.loading$ = this.sessionQuery.loadingDialog$;
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.registerToolService.toolRegisterError
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((toolRegisterError) => (this.toolRegisterError = toolRegisterError));
@@ -162,6 +187,8 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
         .subscribe((data) => this.onValueChanged(data));
     }
   }
+
+  // Shows one form error at a time
   onValueChanged(data?: any) {
     if (!this.registerToolForm) {
       return;
@@ -176,7 +203,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
           const messages = validationMessages[field];
           for (const key in control.errors) {
             if (control.errors.hasOwnProperty(key)) {
-              formErrors[field] += messages[key] + ' ';
+              formErrors[field] = messages[key];
             }
           }
         }

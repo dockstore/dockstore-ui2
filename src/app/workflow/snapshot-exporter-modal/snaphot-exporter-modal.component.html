@@ -9,7 +9,13 @@
       <div>
         <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
           <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
-          <button class="bg-accent-1-dark" data-cy="snapshot-button" [disabled]="isAjaxing$ | async" mat-flat-button (click)="snapshot()">
+          <button
+            class="accent-1-dark-btn mat-elevation-z"
+            data-cy="snapshot-button"
+            [disabled]="isAjaxing$ | async"
+            mat-raised-button
+            (click)="snapshot()"
+          >
             Snapshot
           </button>
         </div>
@@ -65,12 +71,12 @@
           <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
           <button
             [disabled]="
-              (hasZenodoToken$ | async) === false ||
+              ((hasZenodoToken$ | async) === false && !version.doiURL) ||
               (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false) ||
               state.overall !== StepState.INITIAL
             "
-            class="bg-accent-1-dark"
-            mat-flat-button
+            class="accent-1-dark-btn mat-elevation-z"
+            mat-raised-button
             data-cy="export-button"
             (click)="export(false)"
             *ngIf="!promptToConfirmSnapshot"
@@ -78,8 +84,8 @@
             {{ action === SnapshotExporterAction.DOI ? 'Request DOI' : 'Export' }}
           </button>
           <button
-            class="bg-accent-1-dark"
-            mat-flat-button
+            class="accent-1-dark-btn mat-elevation-z"
+            mat-raised-button
             [disabled]="state.overall !== StepState.INITIAL"
             (click)="export(true)"
             *ngIf="promptToConfirmSnapshot"
@@ -135,7 +141,7 @@
 
   <ng-template #zenodoCheck>
     <div
-      *ngIf="(hasZenodoToken$ | async) === false"
+      *ngIf="(hasZenodoToken$ | async) === false && !version.doiURL"
       class="alert-danger p-2"
       fxLayout="row"
       fxLayoutGap="0.625rem;"
@@ -150,7 +156,7 @@
           this screen and try again.
         </div>
         <div>
-          <button data-cy="link-zenodo" class="ml-1 accent-1-dark" mat-flat-button (click)="linkAccount()">
+          <button data-cy="link-zenodo" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>
@@ -165,10 +171,10 @@
         <mat-icon class="account-warning">warning</mat-icon>
       </div>
       <div>
-        <div>
+        <div data-cy="orcid-not-linked">
           To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
           come back to this screen and try again.
-          <button class="ml-1 accent-1-dark" mat-flat-button (click)="linkAccount()">
+          <button data-cy="link-orcid" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
             <mat-icon>link</mat-icon>
             Link account now
           </button>

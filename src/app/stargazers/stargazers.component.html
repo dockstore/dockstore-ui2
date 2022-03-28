@@ -14,13 +14,13 @@
   ~    limitations under the License.
   -->
 
-<mat-card class="alert alert-info" data-cy="noStargazers" role="alert" *ngIf="starGazers?.length == 0">
+<mat-card class="alert alert-info" data-cy="noStargazers" role="alert" *ngIf="starGazers?.length === 0">
   <mat-card-header>
     <mat-card-title>Stargazers</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <mat-icon>warning</mat-icon>
-    There are no stargazers for this <span>{{ organization != null ? 'organization' : 'entry' }}.</span>
+    There are no stargazers for this <span>{{ organization !== null ? 'organization' : 'entry' }}.</span>
   </mat-card-content>
 </mat-card>
 <mat-card *ngIf="starGazers?.length > 0" class="mb-3">
@@ -36,7 +36,7 @@
             <div class="text-break" fxLayout="column" fxLayoutAlign="space-between center">
               <h5>{{ stargazer.username }}</h5>
               <h6 *ngIf="stargazer.orcid">
-                ORCID <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo" />
+                ORCID <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
                 <a href="https://orcid.org/{{ stargazer.orcid }}" style="font-size: 0.8em">{{ stargazer.orcid }}</a>
               </h6>
             </div>

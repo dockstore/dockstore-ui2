@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+import { NgFormsManager } from '@ngneat/forms-manager';
 import { Observable } from 'rxjs';
 
 import { CreateCollectionQuery } from '../state/create-collection.query';
@@ -17,25 +17,26 @@ import { CreateCollectionService, FormsState } from '../state/create-collection.
  */
 @Component({
   templateUrl: './create-collection.component.html',
-  styleUrls: ['./create-collection.component.scss'],
 })
 export class CreateCollectionComponent implements OnInit, OnDestroy {
   createCollectionForm: FormGroup;
   public loading$: Observable<boolean>;
   public title$: Observable<string>;
+  public saveLabel$: Observable<string>;
   constructor(
     private createCollectionQuery: CreateCollectionQuery,
     private createCollectionService: CreateCollectionService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private formsManager: AkitaNgFormsManager<FormsState>
+    private formsManager: NgFormsManager<FormsState>
   ) {}
 
   ngOnInit() {
     this.loading$ = this.createCollectionQuery.loading$;
     this.title$ = this.createCollectionQuery.title$;
+    this.saveLabel$ = this.createCollectionQuery.saveLabel$;
     this.createCollectionService.clearState();
     this.createCollectionForm = this.createCollectionService.createForm(this.formsManager, this.data);
-    this.createCollectionService.setTitle(this.data);
+    this.createCollectionService.setValues(this.data);
   }
 
   createCollection() {

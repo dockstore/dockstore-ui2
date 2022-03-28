@@ -15,6 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
+import { includesAuthors } from 'app/shared/constants';
 import { WorkflowsService as OpenApiWorkflowServices } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -114,7 +115,7 @@ export class WorkflowFileEditorComponent extends FileEditing {
           // Only stop editing when version change was successful (not 204)
           this.toggleEdit();
           // TODO: Comment why workflow is explicitly gotten again when tool does not
-          this.workflowsService.getWorkflow(editedWorkflow.id).subscribe(
+          this.workflowsService.getWorkflow(editedWorkflow.id, includesAuthors).subscribe(
             (newlyGottenWorkflow: Workflow) => {
               this.workflowService.setWorkflow(newlyGottenWorkflow);
               const updatedVersion = this.getNewestVersion(newlyGottenWorkflow.workflowVersions);

@@ -27,7 +27,13 @@
   <!--Tool Content Page-->
   <div class="row containers-rsb" style="height: 100%">
     <mat-sidenav-container autosize class="sidebar-set-height">
-      <mat-sidenav #sidenav mode="side" [(opened)]="showSidebar" class="col-sm-3 col-xs-12" *ngIf="!(refreshingMyEntries$ | async)">
+      <mat-sidenav
+        #sidenav
+        mode="side"
+        [(opened)]="showSidebar"
+        class="col-sm-3 col-xs-12"
+        *ngIf="(refreshingMyEntries$ | async) === false"
+      >
         <div id="parent">
           <div id="child">
             <div class="clearfix sidebar-header">
@@ -52,17 +58,30 @@
                 </mat-toolbar-row>
               </mat-toolbar>
             </div>
-            <p *ngIf="!(hasGroupEntriesObject$ | async)">You have not registered any tools</p>
+            <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
+              You have not registered any tools
+            </p>
             <app-sidebar-accordion
               [openOneAtATime]="oneAtATime"
               [groupEntriesObject]="groupEntriesObject$ | async"
               [refreshMessage]="isRefreshing$ | async"
             ></app-sidebar-accordion>
+            <app-workflow-sidebar-accordion
+              [openOneAtATime]="oneAtATime"
+              [groupEntriesObject]="groupAppToolEntryObjects$ | async"
+              [refreshMessage]="isRefreshing$ | async"
+            ></app-workflow-sidebar-accordion>
           </div>
         </div>
       </mat-sidenav>
       <mat-sidenav-content [className]="showSidebar ? 'col-sm-9' : 'col-sm-12'" class="col-xs-12 sidebar-set-height">
-        <div *ngIf="!(isRefreshing$ | async) && !(hasGroupEntriesObject$ | async)">
+        <div
+          *ngIf="
+            (isRefreshing$ | async) === false &&
+            (hasGroupEntriesObject$ | async) === false &&
+            (hasGroupGitHubAppToolEntriesObjects$ | async) === false
+          "
+        >
           <div class="col-md-12">
             <mat-card class="alert alert-info" role="alert">
               <p>
@@ -77,7 +96,7 @@
                 <li>Press the 'Add Tool' button to manually add a tool using the registration wizard.</li>
                 <button
                   mat-raised-button
-                  color="primary"
+                  class="accent-1-dark-btn"
                   (click)="showRegisterEntryModal()"
                   type="button"
                   [disabled]="isRefreshing$ | async"
@@ -93,6 +112,7 @@
             </mat-card>
           </div>
         </div>
+
         <app-container [isToolPublic]="false"></app-container>
       </mat-sidenav-content>
     </mat-sidenav-container>

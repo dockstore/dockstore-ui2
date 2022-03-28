@@ -13,11 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+@use '~@angular/material' as mat;
 @import 'materialColorScheme.scss';
 
 .container-fluid,
 a {
-  background-color: mat-color($dockstore-app-primary);
+  background-color: mat.get-color-from-palette($dockstore-app-primary);
   color: #e8eaf6;
 }
 
@@ -44,7 +45,7 @@ ul {
 }
 
 hr {
-  border: 1px solid mat-color($dockstore-app-primary, 3);
+  border: 1px solid mat.get-color-from-palette($dockstore-app-primary, 3);
 }
 
 @media only screen and (min-width: 80rem) {

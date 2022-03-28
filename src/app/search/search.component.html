@@ -47,22 +47,44 @@
     <div class="col-md-3">
       <div class="pb-3">
         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-          <button fxFlex="1 0 12rem" class="m-1" mat-raised-button color="accent" (click)="accordion.openAll()">
-            Expand All<mat-icon>unfold_more</mat-icon>
+          <button
+            fxFlex="1 0 auto"
+            class="m-1 small-mat-btn-skin small-btn-structure"
+            mat-raised-button
+            color="accent"
+            (click)="accordion.openAll()"
+          >
+            Expand All
           </button>
-          <button fxFlex="1 0 12rem" class="m-1" mat-raised-button color="accent" (click)="accordion.closeAll()">
-            Collapse All<mat-icon>unfold_less</mat-icon>
+          <button
+            fxFlex="1 0 auto"
+            class="m-1 small-mat-btn-skin small-btn-structure"
+            mat-raised-button
+            color="accent"
+            (click)="accordion.closeAll()"
+          >
+            Collapse All
           </button>
-        </div>
-        <div>
           <!-- For some reason w-100 doesn't work exactly, using fxFlex instead -->
-          <button fxFlex="1 1 auto" mat-raised-button color="accent" (click)="resetFilters()" type="button" class="mx-1">
-            Reset Filters
+          <button
+            fxFlex="1 0 auto"
+            class="m-1 small-mat-btn-skin small-btn-structure"
+            mat-raised-button
+            color="accent"
+            (click)="resetFilters()"
+            type="button"
+          >
+            <mat-icon class="m-0" inline="true">autorenew</mat-icon>
+            Reset
           </button>
         </div>
       </div>
       <mat-accordion multi>
-        <app-basic-search></app-basic-search>
+        <app-basic-search
+          (changed)="handleChanged($event)"
+          (changedDebounced)="handleChangedDebounced($event)"
+          (submitted)="handleSubmitted($event)"
+        ></app-basic-search>
         <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
           <mat-expansion-panel-header>
             {{ friendlyNames.get(key) }}
@@ -83,12 +105,13 @@
               <mat-option *ngFor="let option of facetAutocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
             </mat-autocomplete>
           </div>
-          <div *ngIf="orderedBuckets.get(key).Items.size > 10">
+          <!-- overflow-hidden because buttons are using floats causing the parent div to be 0 height -->
+          <div class="overflow-hidden my-1" *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button
               mat-stroked-button
               (click)="clickSortMode(key, false)"
               [ngClass]="{ active: !sortModeMap.get(key).SortBy }"
-              class="col-md-6 sortBtn mb-1"
+              class="col-md-6 sortBtn"
             >
               <fa-icon [icon]="sortModeMap.get(key).AlphabetOrderBy ? faSortAlphaUp : faSortAlphaDown"></fa-icon>
               Alphabetical
@@ -97,80 +120,88 @@
               mat-stroked-button
               (click)="clickSortMode(key, true)"
               [ngClass]="{ active: sortModeMap.get(key).SortBy }"
-              class="col-md-6 sortBtn mb-1"
+              class="col-md-6 sortBtn"
             >
               <fa-icon [icon]="sortModeMap.get(key).CountOrderBy ? faSortNumericUp : faSortNumericDown"></fa-icon> Count
             </button>
           </div>
-          <div *ngFor="let subBucket of getBucketKeys(key); let i = index">
-            <div class="panel-container-label selected-item" fxLayout="row" fxLayoutAlign="space-between center">
-              <div class="container-name-oflw">
-                <span>
-                  <mat-checkbox
-                    class="search-facet-checkboxes"
-                    type="checkbox"
-                    [checked]="checkboxMap.get(key).get(subBucket)"
-                    (change)="onClick(key, subBucket)"
-                  >
-                    {{ key | mapFriendlyValue: subBucket }}
-                  </mat-checkbox>
-                </span>
-              </div>
-              <span>{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
-            </div>
-          </div>
-          <div *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index">
-            <div class="panel-container-label">
-              <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="container-name-oflw">
-                  <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
-                    <mat-checkbox
-                      class="search-facet-checkboxes"
-                      type="checkbox"
-                      [checked]="checkboxMap.get(key).get(subBucket)"
-                      (change)="onClick(key, subBucket)"
-                    >
-                      {{ key | mapFriendlyValue: subBucket }}
-                    </mat-checkbox>
-                  </span>
+          <div class="my-1" *ngFor="let subBucket of getBucketKeys(key); let i = index">
+            <!-- Priority: Hover > histogram > selected -->
+            <div class="selected-item">
+              <!-- TODO: Somehow make this re-useable, and make it so that the histogram is slightly thinner (less height) than the selected background -->
+              <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
+                <div class="panel-container-label">
+                  <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="container-name-oflw">
+                      <span>
+                        <mat-checkbox
+                          class="search-facet-checkboxes"
+                          type="checkbox"
+                          [checked]="checkboxMap.get(key).get(subBucket)"
+                          (change)="onClick(key, subBucket)"
+                        >
+                          {{ key | mapFriendlyValue: subBucket }}
+                        </mat-checkbox>
+                      </span>
+                    </div>
+                    <span>{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
+                  </div>
                 </div>
-                <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                <div
-                  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-histogram' : 'tool-histogram'"
-                  [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"
-                ></div>
-              </div>
-              <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="container-name-oflw">
-                  <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
-                    <mat-checkbox
-                      class="search-facet-checkboxes"
-                      matTooltip="{{ subBucket }}"
-                      [matTooltipPosition]="'after'"
-                      type="checkbox"
-                      [checked]="checkboxMap.get(key).get(subBucket)"
-                      (change)="onClick(key, subBucket)"
-                    >
-                      {{ key | mapFriendlyValue: subBucket }}
-                    </mat-checkbox>
-                  </span>
-                </div>
-                <span class="number-of-items">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                <div
-                  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-histogram' : 'tool-histogram'"
-                  [style.width.%]="orderedBuckets.get(key).Items | getHistogramWidth: subBucket"
-                ></div>
               </div>
             </div>
           </div>
-          <div class="panel-container-label" *ngIf="orderedBuckets.get(key).Items.size > 5">
+          <div
+            class="my-1"
+            *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index"
+          >
+            <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
+              <div class="panel-container-label">
+                <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
+                  <div class="container-name-oflw">
+                    <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
+                      <mat-checkbox
+                        class="search-facet-checkboxes"
+                        type="checkbox"
+                        [checked]="checkboxMap.get(key).get(subBucket)"
+                        (change)="onClick(key, subBucket)"
+                      >
+                        {{ key | mapFriendlyValue: subBucket }}
+                      </mat-checkbox>
+                    </span>
+                  </div>
+                  <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                </div>
+                <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
+                  <div class="container-name-oflw">
+                    <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
+                      <mat-checkbox
+                        class="search-facet-checkboxes"
+                        matTooltip="{{ subBucket }}"
+                        [matTooltipPosition]="'after'"
+                        type="checkbox"
+                        [checked]="checkboxMap.get(key).get(subBucket)"
+                        (change)="onClick(key, subBucket)"
+                      >
+                        {{ key | mapFriendlyValue: subBucket }}
+                      </mat-checkbox>
+                    </span>
+                  </div>
+                  <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="orderedBuckets.get(key).Items.size > 5">
             <span style="cursor: pointer" class="pull-right" (click)="clickExpand(key)">
-              <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
-              <a *ngIf="key != 'author'">
-                {{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}
-              </a>
-              <a *ngIf="key == 'author'">
-                {{ fullyExpandMap.get(key) ? 'Hide' : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchText) }}
+              <!-- The anchor is an easy way to change the color of the icon and "more" -->
+              <a>
+                <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
+                <span *ngIf="key !== 'author'">{{
+                  fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more'
+                }}</span>
+                <span *ngIf="key === 'author'">{{
+                  fullyExpandMap.get(key) ? 'Hide' : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchText)
+                }}</span>
               </a>
             </span>
           </div>
@@ -181,7 +212,7 @@
     </div>
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
-        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning">
+        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning text-break">
           Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
           >.
           <span *ngIf="suggestTerm$ | async"
@@ -213,15 +244,14 @@
         </mde-popover>
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
-          <mat-card class="alert alert-info">
+          <mat-card class="alert alert-info text-break">
             <button
               data-cy="share_button"
               mat-raised-button
               type="button"
-              color="primary"
               [mdePopoverTriggerFor]="appPopover"
               mdePopoverTriggerOn="click"
-              class="mr-2"
+              class="mr-2 accent-1-dark-btn"
             >
               <fa-icon [icon]="faShareAlt" aria-hidden="true"></fa-icon>
               Share

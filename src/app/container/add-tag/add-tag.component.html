@@ -18,7 +18,7 @@
   <app-alert></app-alert>
   <form #addTagForm="ngForm" name="addTagForm">
     <mat-form-field class="w-100">
-      <mat-label>Version Tag</mat-label>
+      <mat-label>Docker Image Tag Name</mat-label>
       <input
         matInput
         id="versionTagInput"
@@ -27,13 +27,13 @@
         maxlength="128"
         [pattern]="validationPatterns.versionTag"
         required
-        title="Docker Image tag name."
-        placeholder="e.g. develop"
+        placeholder="20.04"
       />
+      <mat-hint>e.g. "20.04" is the tag name of "docker pull ubuntu:20.04" </mat-hint>
       <mat-error *ngIf="formErrors.versionTag">{{ formErrors.versionTag }}</mat-error>
     </mat-form-field>
-    <mat-form-field class="w-100">
-      <mat-label>Git Reference</mat-label>
+    <mat-form-field class="w-100 my-3">
+      <mat-label>Git Branch or Tag Name</mat-label>
       <input
         matInput
         id="gitReferenceInput"
@@ -41,10 +41,10 @@
         [(ngModel)]="unsavedVersion.reference"
         maxlength="128"
         [pattern]="validationPatterns.reference"
-        title="Git branch or tag name."
-        placeholder="e.g. develop"
+        placeholder="develop"
         required
       />
+      <mat-hint>e.g. "develop" is the branch name of "https://github.com/dockstore/dockstore/tree/develop"</mat-hint>
       <mat-error *ngIf="formErrors.reference">{{ formErrors.reference }}</mat-error>
     </mat-form-field>
     <mat-form-field class="w-100">
@@ -153,7 +153,7 @@
               class="btn btn-default form-sm-button-material"
               [disabled]="hasDuplicateCWL"
               (click)="addTestParameterFile(DescriptorType.CWL)"
-              *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length == 0)"
+              *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length === 0)"
             >
               <mat-icon>add</mat-icon>
             </button>
@@ -161,8 +161,8 @@
               title="Enter a valid path"
               type="button"
               class="btn btn-default form-sm-button-material"
-              [disabled]="model1.invalid || unsavedTestCWLFile.length == 0"
-              *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length == 0)"
+              [disabled]="model1.invalid || unsavedTestCWLFile.length === 0"
+              *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length === 0)"
             >
               <mat-icon>add</mat-icon>
             </button>
@@ -171,7 +171,7 @@
         <mat-error *ngIf="formErrors.cwlTestParameterFilePath">{{ formErrors.cwlTestParameterFilePath }}</mat-error>
         <mat-error *ngIf="hasDuplicateCWL">Duplicate test json files are not allowed.</mat-error>
       </div>
-      <div *ngIf="unsavedCWLTestParameterFilePaths.length == 0 && !editMode">
+      <div *ngIf="unsavedCWLTestParameterFilePaths.length === 0 && !editMode">
         <input class="form-control" placeholder="None provided" [disabled]="true" />
       </div>
     </div>
@@ -231,7 +231,7 @@
               class="btn btn-default form-sm-button-material"
               [disabled]="hasDuplicateWDL"
               (click)="addTestParameterFile(DescriptorType.WDL)"
-              *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length == 0)"
+              *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length === 0)"
             >
               <mat-icon>add</mat-icon>
             </button>
@@ -239,8 +239,8 @@
               title="Enter a valid path"
               type="button"
               class="btn btn-default form-sm-button-material"
-              [disabled]="model1.invalid || unsavedTestWDLFile.length == 0"
-              *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length == 0)"
+              [disabled]="model1.invalid || unsavedTestWDLFile.length === 0"
+              *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length === 0)"
             >
               <mat-icon>add</mat-icon>
             </button>
@@ -249,7 +249,7 @@
         <mat-error *ngIf="formErrors.wdlTestParameterFilePath">{{ formErrors.wdlTestParameterFilePath }}</mat-error>
         <mat-error *ngIf="hasDuplicateWDL">Duplicate test json files are not allowed.</mat-error>
       </div>
-      <div *ngIf="unsavedWDLTestParameterFilePaths.length == 0 && !editMode">
+      <div *ngIf="unsavedWDLTestParameterFilePaths.length === 0 && !editMode">
         <input class="form-control" placeholder="None provided" [disabled]="true" />
       </div>
     </div>
@@ -270,12 +270,12 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button type="button" mat-button color="secondary" mat-dialog-close>Close</button>
+  <button type="button" mat-flat-button class="secondary-1" mat-dialog-close>Close</button>
   <button
     id="addVersionTagButton"
     type="button"
-    mat-flat-button
-    color="primary"
+    mat-raised-button
+    class="accent-1-dark-btn mat-elevation-z"
     (click)="addTag()"
     [disabled]="!addTagForm.form.valid || hasDuplicateCWL || hasDuplicateWDL"
   >

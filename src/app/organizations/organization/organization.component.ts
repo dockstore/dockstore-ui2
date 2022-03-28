@@ -18,22 +18,23 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { OrgLogoService } from '../../shared/org-logo.service';
 import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
 import { Organization } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
-import { OrganizationQuery } from '../state/organization.query';
-import { OrganizationService } from '../state/organization.service';
-// tslint:disable-next-line: max-line-length
-import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 
 import { CollectionsQuery } from '../state/collections.query';
 import { EventsQuery } from '../state/events.query';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
+import { OrganizationQuery } from '../state/organization.query';
+import { OrganizationService } from '../state/organization.service';
+// eslint-disable-next-line max-len
+import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 
 @Component({
-  selector: 'organization',
+  selector: 'app-organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
 })
@@ -46,7 +47,6 @@ export class OrganizationComponent implements OnInit {
   canEdit$: Observable<boolean>;
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
-  gravatarUrl$: Observable<string>;
   public schema$: Observable<OrganizationSchema>;
   approved = Organization.StatusEnum.APPROVED;
 
@@ -59,7 +59,8 @@ export class OrganizationComponent implements OnInit {
     private userQuery: UserQuery,
     public organizationMembersQuery: OrganizationMembersQuery,
     public collectionsQuery: CollectionsQuery,
-    public eventsQuery: EventsQuery
+    public eventsQuery: EventsQuery,
+    public orgLogoService: OrgLogoService
   ) {}
 
   ngOnInit() {
@@ -68,7 +69,6 @@ export class OrganizationComponent implements OnInit {
     this.canEdit$ = this.organizationQuery.canEdit$;
     this.organizationService.updateOrganizationFromName(organizationName);
     this.organization$ = this.organizationQuery.organization$;
-    this.gravatarUrl$ = this.organizationQuery.gravatarUrl$;
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
     this.schema$ = this.organization$.pipe(map((organization) => this.orgschemaService.getSchema(organization)));

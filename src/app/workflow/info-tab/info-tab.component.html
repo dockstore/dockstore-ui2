@@ -24,7 +24,7 @@
   >
     Keep your workflow automatically in sync with GitHub with our new registration process. Click
     <a
-      [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#why-should-i-migrate-my-existing-workflow-to-use-github-apps-and-a-dockstore-yml'"
+      [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps.html#why-have-a-dockstore-github-app'"
       target="_blank"
       rel="noopener noreferrer"
       class="link-with-underline"
@@ -36,6 +36,7 @@
     <mat-card-header>
       <mat-card-title>{{ entryType$ | async | titlecase }} Information</mat-card-title>
     </mat-card-header>
+    <mat-divider></mat-divider>
     <mat-card-content class="p-3">
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
@@ -54,14 +55,17 @@
           <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Source Code</strong>:
           <i>The source code for this workflow is stored on Dockstore.org</i>
         </li>
-        <li *ngIf="isPublic && isValidVersion">
+        <li *ngIf="isPublic && isValidVersion" data-cy="trs-link">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
-          <a [href]="trsLink"> #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }} </a>
+          <a [href]="trsLink" *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Service">
+            #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }}</a
+          >
+          <a [href]="trsLink" *ngIf="(entryType$ | async) === EntryType.Tool"> {{ workflow?.full_workflow_path }}</a>
           <button mat-icon-button color="secondary" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton" appSnackbar>
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
           </button>
         </li>
-        <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
+        <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Tool">
           <span>
             <li *ngIf="workflow?.workflow_path || !isPublic">
               <form
@@ -74,6 +78,7 @@
                   <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
                   <span *ngIf="!workflowPathEditing" fxFlexOffset="4px"> {{ workflow.workflow_path }} </span>
                   <input
+                    data-cy="workflowPathInput"
                     *ngIf="workflowPathEditing"
                     minlength="3"
                     maxlength="256"
@@ -88,23 +93,31 @@
                   />
                 </div>
                 <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                  <button *ngIf="!isPublic && workflowPathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                    <mat-icon>cancel</mat-icon> Cancel
+                  <button
+                    *ngIf="!isPublic && workflowPathEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="cancelEditing()"
+                  >
+                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
                     *ngIf="!isPublic"
                     type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     [disabled]="
+                      topicEditing ||
                       defaultTestFilePathEditing ||
                       forumUrlEditing ||
                       (workflowPathEditing && !editWorkflowPathForm.valid) ||
                       (isRefreshing$ | async)
                     "
-                    class="btn btn-link"
                     (click)="toggleEditWorkflowPath()"
                   >
-                    <mat-icon *ngIf="workflowPathEditing">save</mat-icon>
-                    <mat-icon *ngIf="!workflowPathEditing">edit</mat-icon>
+                    <mat-icon *ngIf="workflowPathEditing" class="mat-icon-sm">save</mat-icon>
+                    <img *ngIf="!workflowPathEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit workflow path" />
                     {{ workflowPathEditing ? 'Save' : 'Edit' }}
                   </button>
                 </div>
@@ -113,7 +126,7 @@
                 #editTestFilePathForm="ngForm"
                 class="form-inline"
                 fxLayout
-                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+                *ngIf="(isNFL$ | async) === false && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
               >
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Path in Git repository to main descriptor file">Test File Path</strong>:
@@ -133,32 +146,117 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                  <button *ngIf="!isPublic && defaultTestFilePathEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                    <mat-icon>cancel</mat-icon> Cancel
+                  <button
+                    *ngIf="!isPublic && defaultTestFilePathEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="cancelEditing()"
+                  >
+                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
                     *ngIf="!isPublic"
                     type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     [disabled]="
+                      topicEditing ||
                       workflowPathEditing ||
                       forumUrlEditing ||
                       (defaultTestFilePathEditing && !editTestFilePathForm.valid) ||
                       (isRefreshing$ | async)
                     "
-                    class="btn btn-link"
                     (click)="toggleEditDefaultTestFilePath()"
                   >
-                    <mat-icon *ngIf="defaultTestFilePathEditing">save</mat-icon>
-                    <mat-icon *ngIf="!defaultTestFilePathEditing">edit</mat-icon>
+                    <mat-icon *ngIf="defaultTestFilePathEditing" class="mat-icon-sm">save</mat-icon>
+                    <img
+                      *ngIf="!defaultTestFilePathEditing"
+                      src="../assets/svg/icons-actions-edit.svg"
+                      class="pr-2"
+                      alt="Edit test file path"
+                    />
                     {{ defaultTestFilePathEditing ? 'Save' : 'Edit' }}
                   </button>
                 </span>
               </form>
+              <div *ngIf="isPublic">
+                <span><strong matTooltip="Short description of the workflow">Topic</strong>:&nbsp;</span>
+                <span>{{
+                  workflow?.topicSelection === TopicSelectionEnum.AUTOMATIC ? workflow?.topicAutomatic : workflow?.topicManual
+                }}</span>
+              </div>
+              <div *ngIf="!isPublic">
+                <span><strong matTooltip="Short description of the workflow">Topic Automatic</strong>:&nbsp;</span>
+                <span>{{ workflow?.topicAutomatic }}</span>
+              </div>
+              <form *ngIf="!isPublic" #editTopic="ngForm" fxLayout="row" fxLayoutAlign="start center" class="w-100">
+                <span><strong matTooltip="Short description of the workflow">Topic Manual</strong>:&nbsp;</span>
+                <span *ngIf="!topicEditing"> {{ workflow?.topicManual }} </span>
+                <span fxFlex>
+                  <input
+                    *ngIf="topicEditing"
+                    maxlength="150"
+                    type="text"
+                    class="w-100"
+                    name="topicEditing"
+                    [(ngModel)]="workflow.topicManual"
+                    data-cy="topicInput"
+                    placeholder="Short description of the workflow"
+                /></span>
+                <ng-container>
+                  <button
+                    data-cy="topicCancelButton"
+                    *ngIf="topicEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="cancelEditing()"
+                  >
+                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
+                  </button>
+                  <button
+                    *ngIf="!workflow?.topic && !topicEditing"
+                    [disabled]="forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="toggleEditTopic()"
+                    data-cy="topicEditButton"
+                  >
+                    <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />Edit
+                  </button>
+                  <button
+                    *ngIf="workflow?.topic || topicEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="toggleEditTopic()"
+                    data-cy="topicSaveButton"
+                  >
+                    <mat-icon *ngIf="topicEditing" class="mat-icon-sm">save</mat-icon>
+                    <img *ngIf="!topicEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />
+                    {{ topicEditing ? 'Save' : 'Edit' }}
+                  </button>
+                </ng-container>
+              </form>
+            </li>
+            <li *ngIf="!isPublic">
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
+                <span>
+                  <mat-radio-group [(ngModel)]="workflow.topicSelection" aria-label="Select an option" (change)="radioChange($event)">
+                    <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
+                    <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
+                  </mat-radio-group>
+                </span>
+              </div>
+            </li>
+            <li>
               <form
-                #editForumUrl="ngForm"
                 class="form-inline"
                 fxLayout
-                *ngIf="!(isNFL$ | async) && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
+                *ngIf="(isNFL$ | async) === false && workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML"
               >
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Link to a discussion forum for this workflow">Discussion Forum</strong>:
@@ -176,26 +274,34 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                  <button *ngIf="!isPublic && forumUrlEditing" type="button" class="btn btn-link" (click)="cancelEditing()">
-                    <mat-icon>cancel</mat-icon> Cancel
+                  <button
+                    *ngIf="!isPublic && forumUrlEditing"
+                    type="button"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    (click)="cancelEditing()"
+                  >
+                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
                     *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
-                    [disabled]="workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
                     type="button"
-                    class="btn btn-link"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditForumUrl()"
                   >
-                    <mat-icon>add</mat-icon> Add
+                    <img *ngIf="!forumUrlEditing" src="../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Plus sign" />Add
                   </button>
                   <button
                     *ngIf="!isPublic && (workflow?.forumUrl || forumUrlEditing)"
                     type="button"
-                    class="btn btn-link"
+                    mat-raised-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditForumUrl()"
                   >
-                    <mat-icon *ngIf="forumUrlEditing">save</mat-icon>
-                    <mat-icon *ngIf="!forumUrlEditing">edit</mat-icon>
+                    <mat-icon *ngIf="forumUrlEditing" class="mat-icon-sm">save</mat-icon>
+                    <img *ngIf="!forumUrlEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit form url" />
                     {{ forumUrlEditing ? 'Save' : 'Edit' }}
                   </button>
                 </span>
@@ -203,7 +309,7 @@
             </li>
           </span>
           <app-info-tab-checker-workflow-path
-            *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && !(isNFL$ | async)"
+            *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && (isNFL$ | async) === false"
             [canRead]="canRead"
             [canWrite]="canWrite"
             [isOwner]="isOwner"
@@ -215,13 +321,14 @@
           <li *ngIf="!isPublic">
             <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
             <button
-              class="btn btn-link push-right"
+              mat-raised-button
+              class="push-right small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
               type="button"
               *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
               [disabled]="isRefreshing$ | async"
             >
-              <mat-icon>clear</mat-icon> Restub
+              <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Restub
             </button>
           </li>
           <li>
@@ -256,10 +363,74 @@
   </mat-card>
   <mat-card class="mt-3" *ngIf="workflow && workflow?.mode !== WorkflowType.ModeEnum.STUB && selectedVersion">
     <mat-card-header>
-      <mat-card-title class="m-0">{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
-      <mat-card-subtitle class="m-0">{{ selectedVersion?.name }}</mat-card-subtitle>
+      <mat-card-title>{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
     </mat-card-header>
+    <mat-divider></mat-divider>
     <mat-card-content class="p-3">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
+        <span class="bubble">
+          {{ selectedVersion?.name }}
+        </span>
+        <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
+          <button *ngIf="!workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure" (click)="downloadZip()">
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>
+            Export as ZIP
+          </button>
+          <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure">
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>Export as ZIP
+          </a>
+        </span>
+      </div>
+      <mat-divider [inset]="true" class="mt-3"></mat-divider>
+      <div *ngIf="selectedVersion?.frozen && hasHttpImports" class="pt-3">
+        <mat-card class="alert alert-warning" role="alert">
+          <mat-icon>warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may change and execution results
+          may vary.
+        </mat-card>
+      </div>
+      <table mat-table [dataSource]="this.authors" class="w-100 mb-5" aria-describedby="Authors">
+        <ng-container matColumnDef="name">
+          <th scope="col" mat-header-cell *matHeaderCellDef>Author</th>
+          <td mat-cell *matCellDef="let author">{{ author.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="role">
+          <th scope="col" mat-header-cell fxHide.lt-md *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">
+            Role
+          </th>
+          <td mat-cell fxHide.lt-md *matCellDef="let author">{{ author.role }}</td>
+        </ng-container>
+        <ng-container matColumnDef="affiliation">
+          <th scope="col" mat-header-cell fxHide.lt-md *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">
+            Affiliation
+          </th>
+          <td mat-cell fxHide.lt-md *matCellDef="let author">{{ author.affiliation }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th scope="col" mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">Email</th>
+          <td mat-cell *matCellDef="let author">
+            <span *ngIf="author.email">
+              <mat-icon class="info-icon" color="accent">email</mat-icon>
+              <a [href]="'mailto:' + author.email" target="_top">{{ author.email }}</a>
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="orcid_id">
+          <th scope="col" mat-header-cell fxHide.lt-sm *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }">
+            ORCID iD
+          </th>
+          <td mat-cell fxHide.lt-sm *matCellDef="let author">
+            <span *ngIf="author.orcid">
+              <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
+              <a href="https://orcid.org/{{ author.orcid }}">{{ author.orcid }}</a>
+            </span>
+          </td>
+        </ng-container>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" [colSpan]="displayedColumns.length">Not Available</td>
+        </tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
       <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <strong matTooltip="Digital Object Identifier">DOI</strong>:
         <a
@@ -273,25 +444,20 @@
         /></a>
         {{ selectedVersion?.doiURL ? '' : 'n/a' }}
       </div>
-      <div>
-        <strong matTooltip="Author listed in descriptor">Author</strong>: {{ selectedVersion?.author ? selectedVersion?.author : 'n/a' }}
+      <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
+        <strong matTooltip="Version has a test parameter file where all URLs are publicly accessible"
+          >Test Parameter File With Open Data</strong
+        >:
+        {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
       </div>
-      <div>
-        <strong matTooltip="E-mail of corresponding author for workflow">E-mail</strong>:
-        <a href="mailto:{{ selectedVersion?.email }}" *ngIf="selectedVersion?.email">
-          {{ selectedVersion?.email }}
-        </a>
-        <span *ngIf="!selectedVersion?.email"> n/a </span>
-      </div>
-      <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
-        <button *ngIf="!workflow?.is_published" mat-raised-button (click)="downloadZip()">Export as ZIP</button>
-        <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-raised-button>Export as ZIP</a>
-      </span>
       <div>
         <div *ngIf="selectedVersion?.description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
           <div *ngIf="selectedVersion?.description" class="well well-sm">
-            <markdown-wrapper [data]="selectedVersion?.description"></markdown-wrapper>
+            <app-markdown-wrapper
+              [data]="selectedVersion?.description"
+              [baseUrl]="workflow?.providerUrl | baseUrl: selectedVersion?.name"
+            ></app-markdown-wrapper>
           </div>
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>

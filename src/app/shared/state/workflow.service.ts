@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-import { Workflow, WorkflowVersion } from '../swagger';
+import { AppTool, Workflow, WorkflowVersion } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
 import { ExtendedWorkflowService } from './extended-workflow.service';
+import { WorkflowQuery } from './workflow.query';
 import { WorkflowStore } from './workflow.store';
 
 @Injectable({ providedIn: 'root' })
@@ -19,7 +20,11 @@ export class WorkflowService {
   nsWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject<Array<Workflow>>(null);
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
-  constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {}
+  constructor(
+    private workflowStore: WorkflowStore,
+    private extendedWorkflowService: ExtendedWorkflowService,
+    private workflowQuery: WorkflowQuery
+  ) {}
 
   /**
    * Converts the mapping of roles to workflows to a concatentation of all the workflows
@@ -36,7 +41,7 @@ export class WorkflowService {
   }
 
   @transaction()
-  setWorkflow(workflow: BioWorkflow | Service | null) {
+  setWorkflow(workflow: BioWorkflow | Service | AppTool | null) {
     if (workflow) {
       this.workflowStore.upsert(workflow.id, workflow);
       this.extendedWorkflowService.update(workflow);
@@ -45,6 +50,18 @@ export class WorkflowService {
       this.workflowStore.remove();
       this.extendedWorkflowService.remove();
     }
+  }
+
+  updateActiveTopic(topic: string) {
+    const newWorkflow = { ...this.workflowQuery.getActive(), topicManual: topic };
+    this.workflowStore.upsert(newWorkflow.id, newWorkflow);
+    this.extendedWorkflowService.update(newWorkflow);
+  }
+
+  updateActiveTopicSelection(topicSelection: Workflow.TopicSelectionEnum) {
+    const newWorkflow = { ...this.workflowQuery.getActive(), topicSelection: topicSelection };
+    this.workflowStore.upsert(newWorkflow.id, newWorkflow);
+    this.extendedWorkflowService.update(newWorkflow);
   }
 
   get() {
@@ -60,11 +77,11 @@ export class WorkflowService {
     this.workflowStore.update({ version: null });
   }
 
-  add(workflow: Service | BioWorkflow) {
+  add(workflow: Service | BioWorkflow | AppTool) {
     this.workflowStore.add(workflow);
   }
 
-  update(id: ID, workflow: Partial<Service | BioWorkflow>) {
+  update(id: ID, workflow: Partial<Service | BioWorkflow | AppTool>) {
     this.workflowStore.update(id, workflow);
   }
 
@@ -72,7 +89,7 @@ export class WorkflowService {
     this.workflowStore.remove(id);
   }
 
-  setWorkflows(workflows: BioWorkflow[] | Service[]) {
+  setWorkflows(workflows: BioWorkflow[] | Service[] | AppTool[]) {
     this.workflows$.next(workflows);
   }
 
@@ -89,7 +106,7 @@ export class WorkflowService {
    * If not found will add to the workflows list (not shared workflows)
    * @param workflow Workflow to be upserted
    */
-  upsertWorkflowToWorkflow(workflow: BioWorkflow | Service) {
+  upsertWorkflowToWorkflow(workflow: BioWorkflow | Service | AppTool) {
     const workflows = this.workflows$.getValue();
     const sharedWorkflows = this.sharedWorkflows$.getValue();
     if (workflow && workflows && sharedWorkflows) {

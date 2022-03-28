@@ -59,7 +59,7 @@ describe('FileService', () => {
     expect(downloadFilePath).toEqual(
       Dockstore.API_URI +
         ga4ghPath +
-        // tslint:disable-next-line: max-line-length
+        // eslint-disable-next-line max-len
         '/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN-WDL/descriptor/HISAT2.wdl'
     );
   }));

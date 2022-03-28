@@ -34,9 +34,9 @@
 //   }));
 //   it('should be able generate the model', inject([WdlViewerService], (service: WdlViewerService) => {
 //     const content = `
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 // import "https://raw.githubusercontent.com/DataBiosphere/topmed-workflows/1.32.0/aligner/u_of_michigan_aligner/u_of_michigan_aligner.wdl" as TopMed_aligner
-// tslint:disable-next-line:max-line-length
+// eslint-disable-next-line max-len
 // import "https://raw.githubusercontent.com/DataBiosphere/topmed-workflows/1.32.0/aligner/u_of_michigan_aligner-checker/u_of_michigan_aligner_checker_calculation.wdl" as checker
 //
 // workflow checkerWorkflow {

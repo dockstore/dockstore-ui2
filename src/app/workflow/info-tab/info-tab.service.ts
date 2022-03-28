@@ -34,6 +34,7 @@ export class InfoTabService {
   public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public forumUrlEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public topicEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguageMap = [];
 
   /**
@@ -72,12 +73,56 @@ export class InfoTabService {
     this.workflowPathEditing$.next(editing);
   }
 
+  setTopicEditing(editing: boolean) {
+    this.topicEditing$.next(editing);
+  }
+
   setDefaultTestFilePathEditing(editing: boolean) {
     this.defaultTestFilePathEditing$.next(editing);
   }
 
   setForumUrlEditing(editing: boolean) {
     this.forumUrlEditing$.next(editing);
+  }
+
+  /**
+   * Warning, this could potentially update a few other properties
+   * @param workflow
+   */
+  saveTopic(workflow: Workflow, errorCallback: () => void) {
+    this.alertService.start('Updating topic');
+    const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
+    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(
+      (response) => {
+        this.alertService.detailedSuccess();
+        const newTopic = response.topicManual;
+        this.workflowService.updateActiveTopic(newTopic);
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+        errorCallback();
+      }
+    );
+  }
+
+  /**
+   * Warning, this could potentially update a few other properties
+   * @param workflow
+   */
+  saveTopicSelection(workflow: Workflow, errorCallback: () => void) {
+    this.alertService.start('Updating topic selection');
+    const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
+    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(
+      (response) => {
+        this.alertService.detailedSuccess();
+        const newTopicSelection = response.topicSelection;
+        this.workflowService.updateActiveTopicSelection(newTopicSelection);
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+        errorCallback();
+      }
+    );
   }
 
   updateAndRefresh(workflow: Workflow) {
@@ -185,11 +230,13 @@ export class InfoTabService {
     this.workflowPathEditing$.next(false);
     this.defaultTestFilePathEditing$.next(false);
     this.forumUrlEditing$.next(false);
+    this.topicEditing$.next(false);
     this.restoreWorkflow();
   }
 
   /**
    * Reverts the workflow info back to the original
+   * This actually doesn't work anymore
    *
    * @memberof InfoTabService
    */
@@ -218,13 +265,36 @@ export class InfoTabService {
    * @memberof InfoTabService
    */
   getTRSLink(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
-    const prefix: string = entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
     return (
-      `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(prefix + path)}` +
+      `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(this.getTRSIDFromPath(path, entryType))}` +
       `/versions/${encodeURIComponent(versionName)}/plain-` +
       descriptorType.toUpperCase() +
       `/descriptor/` +
       descriptorPath
     );
+  }
+
+  getTRSId(workflow: Workflow | undefined, entryType: EntryType): string {
+    if (!workflow) {
+      return '';
+    }
+    return this.getTRSIDFromPath(workflow.full_workflow_path, entryType);
+  }
+
+  private getTRSIDFromPath(fullWorkflowPath: string, entryType: EntryType): string {
+    return this.getTRSPrefix(entryType) + fullWorkflowPath;
+  }
+
+  private getTRSPrefix(entryType: EntryType): string {
+    switch (entryType) {
+      case EntryType.BioWorkflow:
+        return ga4ghWorkflowIdPrefix;
+      case EntryType.Service:
+        return ga4ghServiceIdPrefix;
+      case EntryType.Tool: // This one shouldn't get invoked from this code
+      case EntryType.AppTool:
+      default:
+        return '';
+    }
   }
 }

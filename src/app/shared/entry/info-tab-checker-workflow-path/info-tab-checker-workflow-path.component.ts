@@ -37,6 +37,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
   checkerWorkflowURL$: Observable<string>;
   isRefreshing$: Observable<boolean>;
   checkerId$: Observable<number>;
+  noChecker$: Observable<boolean>;
   canAdd$: Observable<boolean>;
   canView$: Observable<boolean>;
   checkerWorkflow$: Observable<Workflow>;
@@ -65,6 +66,7 @@ export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit,
       this.isPublic$
     );
     this.checkerId$ = this.checkerWorkflowQuery.checkerId$;
+    this.noChecker$ = this.checkerWorkflowQuery.noChecker$;
     this.canAdd$ = this.checkerWorkflowService.canAdd(this.checkerId$, this.parentId$, this.isStub$);
   }
 

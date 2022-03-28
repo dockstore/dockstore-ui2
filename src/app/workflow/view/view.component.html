@@ -14,10 +14,22 @@
   ~    limitations under the License.
   -->
 
-<button mat-button [matMenuTriggerFor]="menu">Actions<mat-icon>arrow_drop_down</mat-icon></button>
+<!-- Display public workflow button design -->
+<div *ngIf="isPublic; else displayPrivateButton">
+  <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent" (click)="showVersionModal()">Info</button>
+</div>
+<!-- Display private workflow button design-->
+<ng-template #displayPrivateButton>
+  <button mat-button class="private-btn small-btn-structure" [matMenuTriggerFor]="menu">
+    <img src="../assets/svg/gear-icon.svg" alt="Gear icon" class="pb-1" />
+    Actions
+    <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
+  </button>
+</ng-template>
+
 <mat-menu #menu="matMenu">
   <button type="button" mat-menu-item color="accent" (click)="showVersionModal()">
-    {{ isPublic || !canWrite ? 'View' : 'Edit' }}
+    {{ !canWrite ? 'View' : 'Edit Info' }}
   </button>
   <ng-container *ngIf="!isPublic">
     <button
@@ -61,12 +73,22 @@
       (click)="exportToOrcid()"
       [disabled]="isRefreshing$ | async"
       data-cy="dockstore-export-orcid-button"
-      *ngIf="enableExportToOrcid && version.referenceType !== 'BRANCH' && !version.versionMetadata?.orcidPutCode && workflow?.is_published"
+      *ngIf="
+        enableExportToOrcid &&
+        version.referenceType !== 'BRANCH' &&
+        !version.versionMetadata?.userIdToOrcidPutCode[userId] &&
+        workflow?.is_published
+      "
       matTooltip="Export this version to ORCID."
     >
       Export to ORCID
     </button>
-    <button mat-menu-item [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion" (click)="updateDefaultVersion()">
+    <button
+      data-cy="set-default-version-button"
+      mat-menu-item
+      [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion"
+      (click)="updateDefaultVersion()"
+    >
       Set as Default Version
     </button>
     <button

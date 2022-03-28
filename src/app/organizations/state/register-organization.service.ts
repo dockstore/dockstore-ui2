@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AkitaNgFormsManager } from '@datorama/akita-ng-forms-manager';
+import { NgFormsManager } from '@ngneat/forms-manager';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -88,13 +88,13 @@ export class RegisterOrganizationService {
   /**
    * Creates the organization (create and update) form based on the mode given
    *
-   * @param {AkitaNgFormsManager<FormsState>} formsManager
+   * @param {NgFormsManager<FormsState>} formsManager
    * @param {*} data
    * @returns {FormGroup}
    * @memberof RegisterOrganizationService
    */
-  createForm(formsManager: AkitaNgFormsManager<FormsState>, data: any): FormGroup {
-    formsManager.remove('registerOrganization');
+  createForm(formsManager: NgFormsManager<FormsState>, data: any): FormGroup {
+    formsManager.clear('registerOrganization');
     let name = null;
     let displayName = null;
     let topic = null;
@@ -124,7 +124,7 @@ export class RegisterOrganizationService {
       topic: [topic, Validators.required],
       link: [link, Validators.pattern(this.urlRegex)],
       location: [location],
-      contactEmail: [contactEmail, [Validators.email]],
+      contactEmail: [contactEmail, [Validators.email, Validators.required]],
       avatarUrl: [avatarUrl, Validators.pattern(this.logoUrlRegex)],
     });
     formsManager.upsert('registerOrganization', registerOrganizationForm);

@@ -19,7 +19,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { transaction } from '@datorama/akita';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { includesValidation } from 'app/shared/constants';
+import { includesAuthors, includesValidation } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from 'app/shared/myentries.service';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -58,6 +58,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   getMyEntries(userId: number, entryType: EntryType) {
     if (entryType === EntryType.BioWorkflow) {
       this.getMyBioWorkflows(userId);
+    } else if (entryType === EntryType.Tool) {
     } else {
       this.getMyServices(userId);
     }
@@ -155,9 +156,9 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   selectEntry(workflow: DockstoreTool | Workflow | null, entryType: EntryType | null): void {
     if (workflow && entryType && workflow.id) {
       if (entryType === EntryType.BioWorkflow) {
-        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation);
+        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation + ',' + includesAuthors);
       } else {
-        this.myServicesService.selectEntry(workflow.id, includesValidation);
+        this.myServicesService.selectEntry(workflow.id, includesValidation + ',' + includesAuthors);
       }
     }
   }

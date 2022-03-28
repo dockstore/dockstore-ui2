@@ -233,8 +233,6 @@ div.view-content.ns-containers {
   }
 }
 div.panel-container-label {
-  background-color: #ffffff;
-  color: #487980;
   padding: 0 10px;
   clear: both;
   .container-name-oflw {
@@ -260,13 +258,9 @@ label.mat-checkbox-layout {
   margin-bottom: 0 !important;
 }
 
-div.panel-container-label:hover,
-div.panel-container-label.selected {
+div.panel-container-label:hover {
   background-color: #7987a5;
   color: #ffffff;
-  a {
-    color: #ffffff;
-  }
 }
 
 @keyframes spin {
@@ -461,9 +455,6 @@ div.modal form {
   span.nav-menu-usericon {
     display: inline;
   }
-  .header-lower .row {
-    padding-bottom: 30px;
-  }
   .header .header1 {
     img#ship,
     img#truck {
@@ -550,9 +541,6 @@ div.modal form {
   }
 }
 @media (min-width: 992px) and (max-width: 1200px) {
-  .header-lower div.button {
-    width: 210px;
-  }
   ul.nav-tabs {
     li {
       min-width: 130px;

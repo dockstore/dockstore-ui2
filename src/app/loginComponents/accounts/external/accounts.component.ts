@@ -29,22 +29,38 @@ import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
 
+export interface AccountInfo {
+  name: string;
+  source: TokenSource;
+  bold: string;
+  control: boolean;
+  docker: boolean;
+  research: boolean;
+  message: string;
+  show: boolean;
+  logo: string;
+  isLinked?: boolean;
+}
+
 @Component({
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.css'],
+  styleUrls: ['./accounts.component.scss'],
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;
   public orcidId$: Observable<string>;
   public TokenSource = TokenSource;
+  public username$: Observable<string>;
   Dockstore = Dockstore;
-  // TODO: Uncomment section when GitLab is enabled
-  accountsInfo: Array<any> = [
+  accountsInfo: Array<AccountInfo> = [
     {
       name: 'GitHub',
       source: TokenSource.GITHUB,
       bold: 'One of GitHub or Google is required.',
+      control: true,
+      docker: false,
+      research: false,
       message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
       show: false,
       logo: 'github.svg',
@@ -53,6 +69,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Google',
       source: TokenSource.GOOGLE,
       bold: 'One of GitHub or Google is required.',
+      control: false,
+      docker: false,
+      research: false,
       message: 'Google credentials are used for login purposes and integration with Terra.',
       show: false,
       logo: 'google.svg',
@@ -61,6 +80,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Quay',
       source: TokenSource.QUAY,
       bold: '',
+      control: false,
+      docker: true,
+      research: false,
       message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
       show: false,
       logo: 'quay.svg',
@@ -69,6 +91,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Bitbucket',
       source: TokenSource.BITBUCKET,
       bold: '',
+      control: true,
+      docker: false,
+      research: false,
       message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
       show: false,
       logo: 'bitbucket.svg',
@@ -77,6 +102,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'GitLab',
       source: TokenSource.GITLAB,
       bold: '',
+      control: true,
+      docker: false,
+      research: false,
       message: 'GitLab credentials are used for pulling source code from GitLab.',
       show: false,
       logo: 'gitlab.svg',
@@ -85,6 +113,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'Zenodo',
       source: TokenSource.ZENODO,
       bold: '',
+      control: false,
+      docker: false,
+      research: true,
       message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
       show: false,
       logo: 'zenodo.jpg',
@@ -93,6 +124,9 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       name: 'ORCID',
       source: TokenSource.ORCID,
       bold: '',
+      control: false,
+      docker: false,
+      research: true,
       message:
         'ORCID credentials are used for creating ORCID works by exporting snapshotted entries and versions from Dockstore and to link to your ORCID record when your Dockstore account is displayed on the site.',
       show: false,
@@ -104,6 +138,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   public show: false;
   public dockstoreToken: string;
+  public orcidRootUrl: string;
   constructor(
     private trackLoginService: TrackLoginService,
     private tokenService: TokenService,
@@ -121,6 +156,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
       }
     });
     this.dockstoreToken = this.getDockstoreToken();
+    this.orcidRootUrl = this.accountsService.getRoot(Dockstore.ORCID_AUTH_URL);
   }
 
   // Delete token by id
@@ -194,6 +230,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
       this.setTokens(tokens);
     });
+    this.username$ = this.userQuery.username$;
     this.orcidId$ = this.userQuery.user$.pipe(map((user) => user.orcid));
   }
 

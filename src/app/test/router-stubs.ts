@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-/* tslint:disable */
+/* eslint-disable */
 // export for convenience.
 export { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 

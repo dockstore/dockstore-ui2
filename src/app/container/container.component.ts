@@ -15,9 +15,10 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Observable } from 'rxjs';
@@ -48,12 +49,15 @@ import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
+import { Workflow } from '../shared/swagger';
+import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
+  styleUrls: ['./container.component.css'],
 })
-export class ContainerComponent extends Entry implements AfterViewInit {
+export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
   containerEditData: any;
@@ -67,6 +71,9 @@ export class ContainerComponent extends Entry implements AfterViewInit {
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
+  public displayAppTool: boolean = false;
+  tool$: Observable<DockstoreTool | null>;
+  apptool$: Observable<Workflow | null>;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema: BioschemaTool;
@@ -77,6 +84,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     dateService: DateService,
     bioschemaService: BioschemaService,
     urlResolverService: UrlResolverService,
+    alertService: AlertService,
+    entryService: EntriesService,
     private imageProviderService: ImageProviderService,
     private listContainersService: ListContainersService,
     private updateContainer: ContainerService,
@@ -96,8 +105,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
     private toolService: ToolService,
-    alertService: AlertService,
-    entryService: EntriesService
+    private titleService: Title,
+    protected entryCategoriesService: EntryCategoriesService
   ) {
     super(
       trackLoginService,
@@ -112,7 +121,8 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       sessionQuery,
       gA4GHFilesService,
       alertService,
-      entryService
+      entryService,
+      entryCategoriesService
     );
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
@@ -120,11 +130,19 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     this.redirectToCanonicalURL('/my-tools');
   }
 
+  ngOnInit() {
+    this.init();
+  }
+
   ngAfterViewInit() {
     if (this.publicPage) {
       this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
-        if (tool && tool.topicId) {
-          this.discourseHelper(tool.topicId);
+        if (tool) {
+          const previousTitle = this.titleService.getTitle();
+          this.titleService.setTitle(`${previousTitle} | ${tool.tool_path}`);
+          if (tool.topicId) {
+            this.discourseHelper(tool.topicId);
+          }
         }
       });
     }
@@ -174,6 +192,7 @@ export class ContainerComponent extends Entry implements AfterViewInit {
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
+        this.displayAppTool = true;
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
@@ -205,11 +224,24 @@ export class ContainerComponent extends Entry implements AfterViewInit {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.updateVerifiedPlatforms(this.tool.id);
+      this.updateCategories(this.tool.id);
     }
   }
 
+  /**
+   * Select the Versions tab
+   *
+   * @memberof WorkflowComponent
+   */
+  public selectVersionsTab() {
+    this.selectTab(this.validTabs.indexOf('versions'));
+  }
+
   public setupPublicEntry(url: String) {
-    if (url.includes('containers') || url.includes('tools')) {
+    if (url.includes('/containers/github.com') || url.includes('/tools/github.com')) {
+      this.containerService.setTool(null);
+      this.displayAppTool = true;
+    } else if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
       this.containersService.getPublishedContainerByToolPath(this.title, includesValidation).subscribe(

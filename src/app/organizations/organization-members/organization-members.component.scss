@@ -1,3 +1,5 @@
+@import '/src/materialColorScheme.scss';
+
 .header-image {
   background-size: cover;
 }
@@ -14,12 +16,6 @@
 
 .mat-action-row {
   border: 0;
-}
-
-.orcid-id-logo {
-  height: 1.4rem;
-  width: 1.4rem;
-  vertical-align: sub;
 }
 
 .mat-standard-chip {
@@ -40,5 +36,5 @@ a {
 }
 
 * {
-  color: #151c3d;
+  color: $header-color;
 }
