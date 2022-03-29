@@ -23,7 +23,6 @@ import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { ContainersService } from '../../shared/swagger/api/containers.service';
 import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
-import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 
 @Injectable()
 export class InfoTabService extends Base {
