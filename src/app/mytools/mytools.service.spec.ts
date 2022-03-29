@@ -28,6 +28,7 @@ import { MytoolsService } from './mytools.service';
 import { DateService } from '../shared/date.service';
 import { MyWorkflowsService } from '../myworkflows/myworkflows.service';
 import { ProviderService } from '../shared/provider.service';
+import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 
 describe('MytoolsService', () => {
   const tool1: DockstoreTool = {
@@ -280,6 +281,7 @@ describe('MytoolsService', () => {
         { provide: UrlResolverService, useclass: UrlResolverService },
         MyWorkflowsService,
         DateService,
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
       ],
       imports: [RouterTestingModule, CustomMaterialModule, HttpClientTestingModule, MyEntriesModule],
     });

@@ -16,7 +16,7 @@
 import { of as observableOf } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { ToolDescriptor, Workflow } from '../swagger';
-import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
+import { DescriptorLanguageBean } from '../swagger';
 import { DescriptorLanguageService } from './descriptor-language.service';
 import { SourceFile } from '../openapi';
 
@@ -135,60 +135,72 @@ describe('Service: DescriptorLanguage', () => {
     expect(placeholder).toEqual(null);
   });
   it('should be able to get shortFriendlyName from Worfklow.DescriptorTypeEnum for workflow registration', () => {
-    let placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.SMK);
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.SMK);
     expect(placeholder).toEqual('Snakemake');
-    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
     expect(placeholder).toEqual('CWL');
-    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
     expect(placeholder).toEqual('WDL');
-    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
     expect(placeholder).toEqual('Nextflow');
-    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Service);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Service);
     expect(placeholder).toEqual('Service');
-    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Gxformat2);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Gxformat2);
     expect(placeholder).toEqual('Galaxy');
-    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(null);
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(null);
     expect(placeholder).toEqual(null);
-    placeholder = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(<Workflow.DescriptorTypeEnum>'UnrecognizedType');
+    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(<Workflow.DescriptorTypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual(null);
   });
 
   it('should be able to get defaultDescriptorPath from ToolDescriptor.TypeEnum for workflow stub language changing', () => {
-    let placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SMK);
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SMK);
     expect(placeholder).toEqual('/Snakefile');
-    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.CWL);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.CWL);
     expect(placeholder).toEqual('/Dockstore.cwl');
-    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.WDL);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.WDL);
     expect(placeholder).toEqual('/Dockstore.wdl');
-    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.NFL);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.NFL);
     expect(placeholder).toEqual('/nextflow.config');
-    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SERVICE);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual('/.dockstore.yml');
-    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.GXFORMAT2);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.GXFORMAT2);
     expect(placeholder).toEqual('/Dockstore.yml');
-    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(null);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(null);
     expect(placeholder).toEqual(null);
-    placeholder = DescriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(<ToolDescriptor.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual(null);
   });
 
   it('should be able to get Tool descriptor enum from SourceFile type enum', () => {
-    let placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.SMKTESTPARAMS);
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.SMKTESTPARAMS);
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.SMK);
-    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.CWLTESTJSON);
+    placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.CWLTESTJSON);
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.CWL);
-    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.WDLTESTJSON);
+    placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.WDLTESTJSON);
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.WDL);
-    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.NEXTFLOWTESTPARAMS);
+    placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.NEXTFLOWTESTPARAMS);
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.NFL);
-    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.GXFORMAT2TESTFILE);
+    placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.GXFORMAT2TESTFILE);
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.GXFORMAT2);
-    placeholder = DescriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(<SourceFile.TypeEnum>'UnrecognizedType');
+    placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(<SourceFile.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual(null);
   });
 
   it('should be able to get descriptor path list', () => {
-    let placeholder = DescriptorLanguageService.getDescriptorLanguagesDefaultDescriptorPaths();
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.getDescriptorLanguagesDefaultDescriptorPaths();
     expect(placeholder).toContain('/Dockstore.cwl');
     expect(placeholder).toContain('/Dockstore.yml'); // Galaxy
     expect(placeholder).toContain('/nextflow.config');
@@ -199,7 +211,10 @@ describe('Service: DescriptorLanguage', () => {
   });
 
   it('should be able to get tool descriptor types list', () => {
-    let placeholder = DescriptorLanguageService.getDescriptorLanguagesToolTypes();
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.getDescriptorLanguagesToolTypes();
     expect(placeholder).toContain(ToolDescriptor.TypeEnum.CWL);
     expect(placeholder).toContain(ToolDescriptor.TypeEnum.GXFORMAT2);
     expect(placeholder).toContain(ToolDescriptor.TypeEnum.NFL);

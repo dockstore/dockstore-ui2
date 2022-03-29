@@ -39,6 +39,8 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 
 @Component({
   selector: 'app-view-workflow',
@@ -70,7 +72,7 @@ describe('VersionsWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule],
+        imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule, HttpClientTestingModule],
         declarations: [
           VersionsWorkflowComponent,
           OrderBy,
@@ -89,6 +91,7 @@ describe('VersionsWorkflowComponent', () => {
           WorkflowQuery,
           { provide: ImageProviderService, useClass: ImageProviderStubService },
           { provide: RefreshService, useClass: RefreshStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

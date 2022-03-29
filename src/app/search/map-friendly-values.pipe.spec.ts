@@ -1,8 +1,19 @@
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Pipe: MapFriendlyValuese', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [MapFriendlyValuesPipe, { provide: DescriptorLanguageService, useClass: DescriptorLanguageService }],
+    });
+  });
+
   it('create an instance and test friendly verified conversion', () => {
-    const pipe = new MapFriendlyValuesPipe();
+    const service: DescriptorLanguageService = TestBed.inject(DescriptorLanguageService);
+    const pipe = new MapFriendlyValuesPipe(service);
     expect(pipe).toBeTruthy();
     expect(pipe.transform('file_formats.keyword', 'potato')).toBe('potato');
     expect(pipe.transform('potato', null)).toBe(null);

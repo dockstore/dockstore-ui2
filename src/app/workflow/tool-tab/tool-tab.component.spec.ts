@@ -21,6 +21,8 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/swagger';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ToolTabComponent } from './tool-tab.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 
 describe('ToolTabComponent', () => {
   let component: ToolTabComponent;
@@ -30,10 +32,11 @@ describe('ToolTabComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ToolTabComponent],
-        imports: [FormsModule, CustomMaterialModule, RefreshAlertModule],
+        imports: [FormsModule, CustomMaterialModule, RefreshAlertModule, HttpClientTestingModule],
         providers: [
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

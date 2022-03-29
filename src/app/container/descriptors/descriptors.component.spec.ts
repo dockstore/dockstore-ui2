@@ -26,6 +26,8 @@ import { EntriesService, GA4GHV20Service } from '../../shared/openapi';
 import { ContainersService } from '../../shared/swagger';
 import { sampleToolVersion } from '../../test/mocked-objects';
 import { DescriptorsComponent } from './descriptors.component';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DescriptorsComponent', () => {
   let component: DescriptorsComponent;
@@ -36,7 +38,7 @@ describe('DescriptorsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [DescriptorsComponent],
-        imports: [HttpClientModule, MatSnackBarModule],
+        imports: [HttpClientModule, MatSnackBarModule, HttpClientTestingModule],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           DescriptorService,
@@ -45,6 +47,7 @@ describe('DescriptorsComponent', () => {
           { provide: FileService, useClass: FileStubService },
           { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
           { provide: EntriesService, useClass: EntryStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

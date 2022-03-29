@@ -23,6 +23,8 @@ import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
 import { HostedStubService, RefreshStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { WorkflowFileEditorComponent } from './workflow-file-editor.component';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('WorkflowFileEditorComponent', () => {
   let component: WorkflowFileEditorComponent;
@@ -51,6 +53,7 @@ describe('WorkflowFileEditorComponent', () => {
           MatCardModule,
           BrowserAnimationsModule,
           HttpClientModule,
+          HttpClientTestingModule,
         ],
         providers: [
           { provide: HostedService, useClass: HostedStubService },
@@ -58,6 +61,7 @@ describe('WorkflowFileEditorComponent', () => {
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: FileService, useClass: FileStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

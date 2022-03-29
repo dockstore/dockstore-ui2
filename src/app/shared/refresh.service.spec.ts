@@ -42,11 +42,13 @@ import { ContainersService } from './swagger/api/containers.service';
 import { UsersService } from './swagger/api/users.service';
 import { WorkflowsService } from './swagger/api/workflows.service';
 import { ToolQuery } from './tool/tool.query';
+import { DescriptorLanguageService } from './entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('RefreshService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, MatSnackBarModule],
+      imports: [BrowserAnimationsModule, MatSnackBarModule, HttpClientTestingModule],
       providers: [
         RefreshService,
         { provide: ContainersService, useClass: ContainersStubService },
@@ -61,6 +63,7 @@ describe('RefreshService', () => {
         { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
         { provide: WorkflowService, useClass: WorkflowService },
         { provide: UsersService, useClass: UsersStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
       ],
     });
   });
