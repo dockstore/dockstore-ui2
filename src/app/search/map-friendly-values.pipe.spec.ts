@@ -2,6 +2,7 @@ import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SourceFile } from '../shared/openapi/model/sourceFile';
 
 describe('Pipe: MapFriendlyValuese', () => {
   beforeEach(() => {
@@ -22,5 +23,10 @@ describe('Pipe: MapFriendlyValuese', () => {
     expect(pipe.transform('source_control_provider.keyword', 'BITBUCKET')).toBe('Bitbucket');
     expect(pipe.transform('descriptor_type', 'NFL')).toBe('Nextflow');
     expect(pipe.transform('descriptor_type', 'nfl')).toBe('Nextflow');
+
+    expect(pipe.transform('SourceFile.TypeEnum', SourceFile.TypeEnum.NEXTFLOWCONFIG)).toBe('Descriptor Files');
+    expect(pipe.transform('SourceFile.TypeEnum', SourceFile.TypeEnum.NEXTFLOW)).toBe('Descriptor Files');
+    expect(pipe.transform('SourceFile.TypeEnum', SourceFile.TypeEnum.GXFORMAT2TESTFILE)).toBe('Test Parameter Files');
+    expect(pipe.transform('SourceFile.TypeEnum', 'goat')).toBe('goat');
   });
 });

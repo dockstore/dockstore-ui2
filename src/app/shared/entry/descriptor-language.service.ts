@@ -66,6 +66,20 @@ export class DescriptorLanguageService {
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
+  sourceFileTypeEnumToExtendedDescriptorLanguageBean(sourceFileType: string | null): ExtendedDescriptorLanguageBean {
+    let foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find((extendedDescriptorLanguage) =>
+      extendedDescriptorLanguage.descriptorFileTypes.find((f) => f === sourceFileType)
+    );
+    // Check if the source file type matches a test file type
+    if (!foundExtendedDescriptorLanguageFromValue) {
+      foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+        (extendedDescriptorLanguage) => extendedDescriptorLanguage.testParameterFileType === sourceFileType
+      );
+    }
+
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
+  }
+
   descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBeanValue: string | null): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.value === descriptorLanguageBeanValue

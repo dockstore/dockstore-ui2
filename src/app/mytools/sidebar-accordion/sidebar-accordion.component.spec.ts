@@ -13,7 +13,6 @@ import { RefreshToolOrganizationComponent } from './../../container/refresh-tool
 import { ContainerService } from './../../shared/container.service';
 import { ContainerStubService, RegisterToolStubService } from './../../test/service-stubs';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
-import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
