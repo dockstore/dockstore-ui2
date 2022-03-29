@@ -28,7 +28,6 @@ describe('Checker workflow test from my-workflows', () => {
    */
   function getWorkflow() {
     cy.contains('mat-expansion-panel', 'A')
-      .should('have.class', 'mat-expanded')
       .first()
       .parentsUntil('accordion-group')
       .contains('div .no-wrap', /\l\b/)

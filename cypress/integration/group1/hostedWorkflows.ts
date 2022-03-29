@@ -165,8 +165,8 @@ describe('Dockstore hosted workflows', () => {
     });
     it('Add files to hosted workflow', () => {
       // navigate to workflow
-      cy.get('.mat-expanded');
-      cy.contains('dockstore.org/user_A').click();
+      cy.get('.mat-expansion-panel');
+      cy.contains('.mat-expansion-panel', 'user_A').click();
       cy.contains('a', NEW_WORKFLOW_NAME).click();
 
       // Check content of the info tab

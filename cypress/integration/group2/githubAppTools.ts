@@ -8,7 +8,7 @@ describe('GitHub App Tools', () => {
 
   function selectUnpublishedTab(org: string) {
     cy.get('#tool-path').should('be.visible');
-    cy.get('mat-panel-title')
+    cy.get('mat-expansion-panel-header')
       .contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
@@ -19,7 +19,7 @@ describe('GitHub App Tools', () => {
 
   function selectUnpublishedGitHubAppTab(org: string) {
     cy.get('#workflow-path').should('be.visible');
-    cy.get('mat-panel-title')
+    cy.get('mat-expansion-panel-header')
       .contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
@@ -126,7 +126,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Configuration');
       cy.contains('/.dockstore.yml');
 
-      selectUnpublishedGitHubAppTab('github.com/C');
+      selectUnpublishedGitHubAppTab('C');
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');
