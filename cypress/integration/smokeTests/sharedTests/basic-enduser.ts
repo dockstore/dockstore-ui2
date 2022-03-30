@@ -4,8 +4,8 @@ import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDes
 
 // Test an entry, these should be ambiguous between tools and workflows.
 describe('run stochastic smoke test', () => {
-  testEntry('Tools');
-  testEntry('Workflows');
+  // testEntry('Tools');
+  // testEntry('Workflows');
 });
 function testEntry(tab: string) {
   beforeEach('get random entry on first page', () => {
@@ -180,6 +180,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.visit('/workflows/' + url + ':' + version1);
     goToTab('Launch');
     cy.url().should('contain', '?tab=launch');
+    goToTab('Info');
+    cy.url().should('contain', '?tab=info');
     cy.contains('mat-card-header', 'Workflow Information');
   });
 
@@ -198,17 +200,10 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.contains('Descriptor Files');
     cy.get('.ace_editor').should('be.visible');
     goToTab('Test Parameter Files');
-    if (Cypress.config('baseUrl') === 'https://dev.dockstore.net' || Cypress.config('baseUrl') === 'http://localhost:4200') {
-      if (type === ToolDescriptor.TypeEnum.NFL) {
-        cy.contains('This version has no files of this type.');
-        cy.get('.ace_editor').should('not.be.visible');
-      }
-    } else {
-      if (type === ToolDescriptor.TypeEnum.NFL) {
-        cy.contains('Nextflow does not have the concept of a test parameter file.');
-      } else {
-        cy.get('[data-cy=testParamFiles]');
-      }
+    cy.wait(3000);
+    if (type === ToolDescriptor.TypeEnum.NFL) {
+      cy.contains('This version has no files of this type.');
+      cy.get('.ace_editor').should('not.be.visible');
     }
   });
 
