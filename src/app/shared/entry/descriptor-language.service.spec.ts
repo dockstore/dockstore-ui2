@@ -15,8 +15,7 @@
  */
 import { of as observableOf } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { ToolDescriptor, Workflow } from '../swagger';
-import { DescriptorLanguageBean } from '../swagger';
+import { DescriptorLanguageBean, ToolDescriptor, Workflow } from '../swagger';
 import { DescriptorLanguageService } from './descriptor-language.service';
 import { SourceFile } from '../openapi';
 

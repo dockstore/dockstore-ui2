@@ -86,15 +86,6 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['DOCKSTORE', 'Dockstore'],
       ]),
     ],
-    [
-      'descriptor_tooltip',
-      new Map([
-        ['SMK', 'Snakemake'],
-        ['CWL', 'Common Workflow Language'],
-        ['WDL', 'Workflow Description Language'],
-        ['NFL', 'Nextflow'],
-      ]),
-    ],
     ['author', new Map([['', 'n/a']])],
     [
       'ToolFile.FileTypeEnum',
@@ -148,14 +139,20 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         const shortFriendlyName = this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
           subBucketString.toUpperCase()
         ).shortFriendlyName;
-        if (shortFriendlyName) return shortFriendlyName;
-        return subBucketString;
+        if (shortFriendlyName) {
+          return shortFriendlyName;
+        } else {
+          return subBucketString;
+        }
       case 'descriptor_tooltip':
         const friendlyName = this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
           subBucketString.toUpperCase()
         ).friendlyName;
-        if (friendlyName) return friendlyName;
-        return subBucketString;
+        if (friendlyName) {
+          return friendlyName;
+        } else {
+          return subBucketString;
+        }
       case 'SourceFile.TypeEnum': {
         // Get the specific ExtendedDescriptorLanguageBean using subBucketString, which is the SourceFile.TypeEnum
         // Search through the file tabs
@@ -164,10 +161,12 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         // e.g. whether it is a descriptor or test file
         const fileTabsSchematic =
           this.descriptorLanguageService.sourceFileTypeEnumToExtendedDescriptorLanguageBean(subBucketString).fileTabs;
-        console.log('sbucketstring:' + subBucketString + ' filetabsschematic:' + fileTabsSchematic);
         const fileTypes = fileTabsSchematic.find((fileTab) => fileTab.fileTypes.find((fileType) => fileType === subBucketString));
-        if (fileTypes) return fileTypes.tabName;
-        return subBucketString;
+        if (fileTypes) {
+          return fileTypes.tabName;
+        } else {
+          return subBucketString;
+        }
       }
       default:
         // Handle string

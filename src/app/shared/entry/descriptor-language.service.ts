@@ -97,7 +97,7 @@ export class DescriptorLanguageService {
     extendedDescriptorLanguages.forEach((descriptorLanguageBean) => {
       const extendedDescriptorLanguageBean = this.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBean.value);
       // Don't include Services at this time
-      if (descriptorLanguageBean.toolDescriptorEnum != ToolDescriptor.TypeEnum.SERVICE) {
+      if (descriptorLanguageBean.toolDescriptorEnum !== ToolDescriptor.TypeEnum.SERVICE) {
         tooTypesArray.push(extendedDescriptorLanguageBean.toolDescriptorEnum);
       }
     });
@@ -114,7 +114,7 @@ export class DescriptorLanguageService {
     extendedDescriptorLanguages.forEach((descriptorLanguageBean) => {
       const extendedDescriptorLanguageBean = this.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBean.value);
       // Don't include Services at this time
-      if (descriptorLanguageBean.toolDescriptorEnum != ToolDescriptor.TypeEnum.SERVICE) {
+      if (descriptorLanguageBean.toolDescriptorEnum !== ToolDescriptor.TypeEnum.SERVICE) {
         descriptorPathArray.push(extendedDescriptorLanguageBean.defaultDescriptorPath);
       }
     });

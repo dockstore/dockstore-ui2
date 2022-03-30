@@ -1,8 +1,9 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
+import { Dockstore } from '../shared/dockstore.model';
 
-const DOCUMENTATION_URL =
-  'https://docs.dockstore.org/en/stable/getting-started/getting-started-with-services.html?highlight=service#services';
+const SERVICE_DOCUMENTATION_URL =
+  Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html?highlight=service#services';
 
 export const extendedService: ExtendedDescriptorLanguageBean = {
   descriptorLanguageEnum: 'SERVICE',
@@ -15,7 +16,7 @@ export const extendedService: ExtendedDescriptorLanguageBean = {
   descriptorPathPlaceholder: 'e.g. /.dockstore.yml',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.SERVICE,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Service,
-  languageDocumentationURL: DOCUMENTATION_URL,
+  languageDocumentationURL: SERVICE_DOCUMENTATION_URL,
   plainTRS: 'PLAIN-SERVICE',
   descriptorFileTypes: [],
   toolTab: {

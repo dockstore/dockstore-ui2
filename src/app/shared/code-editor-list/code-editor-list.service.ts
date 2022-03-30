@@ -65,7 +65,11 @@ export class CodeEditorListService {
       return false;
     }
     const primaryDescriptors = this.descriptorLanguageService.getDescriptorLanguagesDefaultDescriptorPaths();
+    // ExtendedDescriptorLanguageBean defaultDescriptorPath has only one value
+    // The Nextflow language seems to have what we consider multiple descriptors
     // CodeEditorListService.NEXTFLOW_PATH isn't currently in Nextflow.ts/extendedDescriptorLanguage
+    // So add it here.
+    // TODO expand defaultDescriptorPath to a list of primary descriptors?
     primaryDescriptors.push(CodeEditorListService.NEXTFLOW_PATH);
     return primaryDescriptors.includes(path);
   }

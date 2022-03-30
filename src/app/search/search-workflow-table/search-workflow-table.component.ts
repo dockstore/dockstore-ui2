@@ -35,9 +35,12 @@ import { SearchService } from '../state/search.service';
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
   readonly entryType = 'workflow';
   public dataSource: MatTableDataSource<Workflow>;
-  public galaxyShortfriendlyName = this.descriptorLanguageService
-    .workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Gxformat2)
-    .split(' ')[0];
+  // When displaying the descriptor type typically the workflow descriptor type string is used
+  // However for Galaxy this is gxformat2, so change it to be Galaxy.
+  // The shortFriendlyName is Galaxy so use that.
+  public galaxyShortfriendlyName = this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
+    Workflow.DescriptorTypeEnum.Gxformat2
+  );
   constructor(
     dateService: DateService,
     searchQuery: SearchQuery,

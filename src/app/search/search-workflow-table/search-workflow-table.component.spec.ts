@@ -42,5 +42,6 @@ describe('SearchWorkflowTableComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.galaxyShortfriendlyName === 'Galaxy');
   });
 });
