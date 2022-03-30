@@ -4,8 +4,8 @@ import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDes
 
 // Test an entry, these should be ambiguous between tools and workflows.
 describe('run stochastic smoke test', () => {
-  // testEntry('Tools');
-  // testEntry('Workflows');
+  testEntry('Tools');
+  testEntry('Workflows');
 });
 function testEntry(tab: string) {
   beforeEach('get random entry on first page', () => {
@@ -200,7 +200,6 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.contains('Descriptor Files');
     cy.get('.ace_editor').should('be.visible');
     goToTab('Test Parameter Files');
-    cy.wait(3000);
     if (type === ToolDescriptor.TypeEnum.NFL) {
       cy.contains('This version has no files of this type.');
       cy.get('.ace_editor').should('not.be.visible');
