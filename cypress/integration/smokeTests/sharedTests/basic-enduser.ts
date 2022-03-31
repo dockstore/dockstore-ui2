@@ -104,6 +104,7 @@ describe('Test search page functionality', () => {
     cy.contains('mat-checkbox', 'Nextflow').click();
     cy.get('[data-cy=workflowColumn] a');
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
+    cy.wait(3000);
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
@@ -180,6 +181,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.visit('/workflows/' + url + ':' + version1);
     goToTab('Launch');
     cy.url().should('contain', '?tab=launch');
+    goToTab('Info');
+    cy.url().should('contain', '?tab=info');
     cy.contains('mat-card-header', 'Workflow Information');
   });
 
@@ -198,17 +201,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.contains('Descriptor Files');
     cy.get('.ace_editor').should('be.visible');
     goToTab('Test Parameter Files');
-    if (Cypress.config('baseUrl') === 'https://dev.dockstore.net' || Cypress.config('baseUrl') === 'http://localhost:4200') {
-      if (type === ToolDescriptor.TypeEnum.NFL) {
-        cy.contains('This version has no files of this type.');
-        cy.get('.ace_editor').should('not.be.visible');
-      }
-    } else {
-      if (type === ToolDescriptor.TypeEnum.NFL) {
-        cy.contains('Nextflow does not have the concept of a test parameter file.');
-      } else {
-        cy.get('[data-cy=testParamFiles]');
-      }
+    if (type === ToolDescriptor.TypeEnum.NFL) {
+      cy.contains('This version has no files of this type.');
     }
   });
 
