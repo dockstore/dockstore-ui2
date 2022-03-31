@@ -2,8 +2,7 @@ import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLang
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 import { Dockstore } from '../shared/dockstore.model';
 
-const SERVICE_DOCUMENTATION_URL =
-  Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html?highlight=service#services';
+const SERVICE_DOCUMENTATION_URL = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
 
 export const extendedService: ExtendedDescriptorLanguageBean = {
   descriptorLanguageEnum: 'SERVICE',
