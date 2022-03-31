@@ -43,7 +43,7 @@ export class SidebarAccordionComponent implements OnInit {
       sourceControlTitle: 'HUB.DOCKER.COM',
     },
     {
-      // For attitional tools, to be removed once amazon and seven bridges have their own groupings
+      // For additional tools, to be removed once amazon and seven bridges have their own groupings
       groupEntryInfo: [],
       sourceControlTitle: 'ADDITIONAL',
     },
@@ -61,25 +61,25 @@ export class SidebarAccordionComponent implements OnInit {
   constructor(private toolQuery: ToolQuery) {}
 
   /**
-   * Sort tools by registeries to display by groups
+   * Sort tools by Registries to display by groups
    */
-  public sortByRegisteries() {
-    for (var index in this.groupEntriesObject) {
-      if (this.groupEntriesObject[index].registry === 'quay.io') {
-        this.sortedTools[0].groupEntryInfo.push(this.groupEntriesObject[index]);
-      } else if (this.groupEntriesObject[index].registry === 'registry.gitlab.com') {
-        this.sortedTools[1].groupEntryInfo.push(this.groupEntriesObject[index]);
-      } else if (this.groupEntriesObject[index].registry === 'github.com') {
-        this.sortedTools[2].groupEntryInfo.push(this.groupEntriesObject[index]);
-      } else if (this.groupEntriesObject[index].registry === 'dockstore.org') {
-        this.sortedTools[3].groupEntryInfo.push(this.groupEntriesObject[index]);
-      } else if (this.groupEntriesObject[index].registry === 'registry.hub.docker.com') {
-        this.sortedTools[4].groupEntryInfo.push(this.groupEntriesObject[index]);
+  public sortByRegistries() {
+    this.groupEntriesObject.forEach((groupEntryObject) => {
+      if (groupEntryObject.registry === 'quay.io') {
+        this.sortedTools[0].groupEntryInfo.push(groupEntryObject);
+      } else if (groupEntryObject.registry === 'registry.gitlab.com') {
+        this.sortedTools[1].groupEntryInfo.push(groupEntryObject);
+      } else if (groupEntryObject.registry === 'github.com') {
+        this.sortedTools[2].groupEntryInfo.push(groupEntryObject);
+      } else if (groupEntryObject.registry === 'dockstore.org') {
+        this.sortedTools[3].groupEntryInfo.push(groupEntryObject);
+      } else if (groupEntryObject.registry === 'registry.hub.docker.com') {
+        this.sortedTools[4].groupEntryInfo.push(groupEntryObject);
       } else {
         // For additional tools, remove once amazon and seven bridges have their own groups
-        this.sortedTools[5].groupEntryInfo.push(this.groupEntriesObject[index]);
+        this.sortedTools[5].groupEntryInfo.push(groupEntryObject);
       }
-    }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -87,7 +87,7 @@ export class SidebarAccordionComponent implements OnInit {
       for (var index in this.sortedTools) {
         this.sortedTools[index].groupEntryInfo = [];
       }
-      this.sortByRegisteries();
+      this.sortByRegistries();
     }
   }
 

@@ -525,9 +525,11 @@ describe('Dockstore my tools', () => {
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 0); // No versions
   });
-  // Refresh button does not have a tool tip
-  // it('Refresh Namespace button should have tooltip', () => {
-  //   cy.visit('/my-tools/quay.io/A2/a');
-  //   cy.get('#cdk-accordion-child-1 > .mat-action-row > .pull-right > [data-cy=refreshOrganization]').trigger('mouseenter');
-  // });
+  // Refresh org button does not have tool tip, re-enable test when feature is added
+  if (false) {
+    it('Refresh Namespace button should have tooltip', () => {
+      cy.visit('/my-tools/quay.io/A2/a');
+      cy.get('#cdk-accordion-child-1 > .mat-action-row > .pull-right > [data-cy=refreshOrganization]').trigger('mouseenter');
+    });
+  }
 });

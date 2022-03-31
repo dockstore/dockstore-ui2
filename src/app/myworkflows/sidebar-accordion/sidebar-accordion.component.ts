@@ -45,7 +45,7 @@ export class SidebarAccordionComponent implements OnInit {
     },
     {
       groupEntryInfo: [],
-      sourceControlTitle: 'BITBUCKET.COM',
+      sourceControlTitle: 'BITBUCKET.ORG',
     },
   ];
 
@@ -60,17 +60,17 @@ export class SidebarAccordionComponent implements OnInit {
    * Sort workflows by source control to display by groups
    */
   public sortBySourceControl() {
-    for (var index in this.groupEntriesObject) {
-      if (this.groupEntriesObject[index].sourceControl === 'dockstore.org') {
-        this.sortedWorkflows[0].groupEntryInfo.push(this.groupEntriesObject[index]);
-      } else if (this.groupEntriesObject[index].sourceControl === 'github.com') {
-        this.sortedWorkflows[1].groupEntryInfo.push(this.groupEntriesObject[index]);
-      } else if (this.groupEntriesObject[index].sourceControl === 'gitlab.org') {
-        this.sortedWorkflows[2].groupEntryInfo.push(this.groupEntriesObject[index]);
-      } else if (this.groupEntriesObject[index].sourceControl === 'bitbucket.org') {
-        this.sortedWorkflows[3].groupEntryInfo.push(this.groupEntriesObject[index]);
+    this.groupEntriesObject.forEach((groupEntryObject) => {
+      if (groupEntryObject.sourceControl === 'dockstore.org') {
+        this.sortedWorkflows[0].groupEntryInfo.push(groupEntryObject);
+      } else if (groupEntryObject.sourceControl === 'github.com') {
+        this.sortedWorkflows[1].groupEntryInfo.push(groupEntryObject);
+      } else if (groupEntryObject.sourceControl === 'gitlab.org') {
+        this.sortedWorkflows[2].groupEntryInfo.push(groupEntryObject);
+      } else if (groupEntryObject.sourceControl === 'bitbucket.org') {
+        this.sortedWorkflows[3].groupEntryInfo.push(groupEntryObject);
       }
-    }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {

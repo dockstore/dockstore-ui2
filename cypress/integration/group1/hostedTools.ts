@@ -23,13 +23,10 @@ describe('Dockstore hosted tools', () => {
   beforeEach(() => {
     cy.visit('/my-tools');
 
-    // cy.server and cy.route are depreciated, keeping this code in seems to interfere with cypress behaviour when running tests...
-    // cy.server();
-    // cy.route({
-    //   method: 'GET',
-    //   url: /containers\/.+\/zip\/.+/,
-    //   response: 200,
-    // }).as('downloadZip');
+    cy.intercept({
+      method: 'GET',
+      url: /containers\/.+\/zip\/.+/,
+    }).as('downloadZip');
   });
 
   function getTool() {
@@ -96,8 +93,7 @@ describe('Dockstore hosted tools', () => {
       // https://github.com/ga4gh/dockstore/issues/2050
       cy.get('#downloadZipButton').click();
 
-      // Commented out, cy.route is depreciated
-      // cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
+      cy.wait('@downloadZip').its('response.statusCode').should('eq', 200);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');

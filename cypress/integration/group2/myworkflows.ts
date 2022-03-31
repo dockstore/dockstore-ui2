@@ -521,19 +521,21 @@ describe('Dockstore my workflows', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
     });
   });
-  // Refresh organization button does not have tooltip
-  // it('Refresh Organization button should have tooltip', () => {
-  //   cy.visit('/my-workflows/github.com/A/l');
-  //   cy.get(
-  //     '#cdk-accordion-child-2 > .mat-action-row.ng-star-inserted > div > :nth-child(2) > ' +
-  //       'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
-  //   ).trigger('mouseenter');
-  //   cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
-  //   cy.contains('button', 'Cancel').should('be.visible');
-  //   cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
-  //   cy.get('.error-output').should('be.visible');
-  //   cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
-  //   cy.contains('button', 'Cancel').should('be.visible').click();
-  //   cy.get('.error-output').should('not.be.visible');
-  // });
+  // Refresh org button does not have tool tip, re-enable test when feature is added
+  if (false) {
+    it('Refresh Organization button should have tooltip', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.get(
+        '#cdk-accordion-child-2 > .mat-action-row.ng-star-inserted > div > :nth-child(2) > ' +
+          'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
+      ).trigger('mouseenter');
+      cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+      cy.contains('button', 'Cancel').should('be.visible');
+      cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
+      cy.get('.error-output').should('be.visible');
+      cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+      cy.contains('button', 'Cancel').should('be.visible').click();
+      cy.get('.error-output').should('not.be.visible');
+    });
+  }
 });
