@@ -104,6 +104,7 @@ describe('Test search page functionality', () => {
     cy.contains('mat-checkbox', 'Nextflow').click();
     cy.get('[data-cy=workflowColumn] a');
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
+    cy.wait(3000);
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
@@ -202,7 +203,6 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     goToTab('Test Parameter Files');
     if (type === ToolDescriptor.TypeEnum.NFL) {
       cy.contains('This version has no files of this type.');
-      cy.get('.ace_editor').should('not.be.visible');
     }
   });
 
