@@ -156,34 +156,6 @@ export class DescriptorLanguageService {
   }
 
   /**
-   * Registering checker workflow has another weird set of accepted string values for descriptor type.
-   * It doesn't use ToolDescriptor.TypeEnum, Workflow.DescriptorTypeEnum, or a string.
-   * It only accepts 'cwl' or 'wdl' (not even capitals)
-   * This function converts ToolDesriptor.TypeEnum to it
-   * @param {ToolDescriptor.TypeEnum} descriptorType Descriptor type from ToolDescriptor.TypeEnum
-   * @returns {('cwl' | 'wdl' | null)} The weird values accepted by register checker workflow endpoint
-   * @memberof DescriptorLanguageService
-   */
-  toolDescriptorTypeEnumToWeirdCheckerRegisterString(descriptorType: ToolDescriptor.TypeEnum): 'cwl' | 'wdl' | null {
-    let descriptorTypeNoNFL: 'cwl' | 'wdl';
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL: {
-        descriptorTypeNoNFL = 'cwl';
-        break;
-      }
-      case ToolDescriptor.TypeEnum.WDL: {
-        descriptorTypeNoNFL = 'wdl';
-        break;
-      }
-      default: {
-        this.genericUnhandledTypeError(descriptorType);
-        return null;
-      }
-    }
-    return descriptorTypeNoNFL;
-  }
-
-  /**
    * Returns the validation pattern for the descriptor path associated with the descriptor type
    *
    * @param {ToolDescriptor.TypeEnum} descriptorType  Descriptor type from ToolDescriptor.TypeEnum

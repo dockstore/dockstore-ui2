@@ -79,7 +79,7 @@ describe('Service: DescriptorLanguage', () => {
     descriptorLanguageBeans.push({ friendlyName: 'hmm', value: 'service' });
     innerHTML = descriptorLanguageService.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans);
     expect(innerHTML).toEqual(
-      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>, <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>, <a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>, or <a href="https://docs.dockstore.org/en/stable/getting-started/getting-started-with-services.html?highlight=service#services" target="_blank" rel="noopener noreferrer">Service</a>`
+      `<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>, <a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>, <a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>, <a href="https://snakemake.github.io/" target="_blank" rel="noopener noreferrer">Snakemake</a>, <a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>, or <a href="https://docs.dockstore.org/en/stable/getting-started/getting-started-with-services.html" target="_blank" rel="noopener noreferrer">Service</a>`
     );
   });
   it('should be able to get descriptor path placeholder', () => {
@@ -117,21 +117,6 @@ describe('Service: DescriptorLanguage', () => {
     expect(placeholder).toEqual('.*');
     placeholder = descriptorLanguageService.getDescriptorPattern(<ToolDescriptor.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual('.*');
-  });
-  it('should be able to get weird descriptor type for checker workflow registration', () => {
-    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
-    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
-    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
-    let placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.CWL);
-    expect(placeholder).toEqual('cwl');
-    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.WDL);
-    expect(placeholder).toEqual('wdl');
-    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.NFL);
-    expect(placeholder).toEqual(null);
-    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(ToolDescriptor.TypeEnum.SERVICE);
-    expect(placeholder).toEqual(null);
-    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToWeirdCheckerRegisterString(<ToolDescriptor.TypeEnum>'UnrecognizedType');
-    expect(placeholder).toEqual(null);
   });
   it('should be able to get shortFriendlyName from Worfklow.DescriptorTypeEnum for workflow registration', () => {
     const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
