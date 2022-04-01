@@ -86,19 +86,19 @@ describe('Service: DescriptorLanguage', () => {
     const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
-    let placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SMK);
+    let placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SMK);
     expect(placeholder).toEqual('e.g. /Snakefile');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.CWL);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.CWL);
     expect(placeholder).toEqual('e.g. /Dockstore.cwl');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.WDL);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.WDL);
     expect(placeholder).toEqual('e.g. /Dockstore.wdl');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.NFL);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.NFL);
     expect(placeholder).toEqual('e.g. /nextflow.config');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SERVICE);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual('e.g. /.dockstore.yml');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.GXFORMAT2);
-    expect(placeholder).toEqual('e.g. /Dockstore.yml');
-    placeholder = descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(<ToolDescriptor.TypeEnum>'UnrecognizedType');
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.GXFORMAT2);
+    expect(placeholder).toEqual('e.g. /workflow-name.yml');
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(<ToolDescriptor.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual('');
   });
   it('should be able to get descriptor path pattern', () => {
@@ -155,7 +155,7 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual('/.dockstore.yml');
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.GXFORMAT2);
-    expect(placeholder).toEqual('/Dockstore.yml');
+    expect(placeholder).toEqual('/workflow-name.yml');
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(null);
     expect(placeholder).toEqual(null);
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(<ToolDescriptor.TypeEnum>'UnrecognizedType');
@@ -186,7 +186,7 @@ describe('Service: DescriptorLanguage', () => {
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
     let placeholder = descriptorLanguageService.getDescriptorLanguagesDefaultDescriptorPaths();
     expect(placeholder).toContain('/Dockstore.cwl');
-    expect(placeholder).toContain('/Dockstore.yml'); // Galaxy
+    expect(placeholder).toContain('/workflow-name.yml'); // Galaxy
     expect(placeholder).toContain('/nextflow.config');
     expect(placeholder).toContain('/Snakefile');
     expect(placeholder).toContain('/Dockstore.wdl');

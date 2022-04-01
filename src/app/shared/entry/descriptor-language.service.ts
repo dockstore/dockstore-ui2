@@ -173,7 +173,7 @@ export class DescriptorLanguageService {
    * @returns {string}  Placeholder descriptor path
    * @memberof DescriptorLanguageService
    */
-  workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum | null): string {
+  toolDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum | null): string {
     return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
   }
 

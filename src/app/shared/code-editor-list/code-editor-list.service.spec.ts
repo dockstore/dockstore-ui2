@@ -25,7 +25,7 @@ describe('CodeEditorListService', () => {
     expect(service.isPrimaryDescriptor('/Dockstore.wdl')).toBe(true);
     expect(service.isPrimaryDescriptor('/nextflow.config')).toBe(true);
     expect(service.isPrimaryDescriptor('/main.nf')).toBe(true);
-    expect(service.isPrimaryDescriptor('/Dockstore.yml')).toBe(true);
+    expect(service.isPrimaryDescriptor('/workflow-name.yml')).toBe(true);
     expect(service.isPrimaryDescriptor(null)).toBe(false);
     expect(service.isPrimaryDescriptor('/Dockstore.potato')).toBe(false);
   });
@@ -55,8 +55,8 @@ describe('CodeEditorListService', () => {
     const primaryNFLFiles = [firstPrimaryNFLFile, secondPrimaryNFLFile];
     const primaryGalaxyFile = {
       content: '',
-      absolutePath: '/Dockstore.yml',
-      path: '/Dockstore.yml',
+      absolutePath: '/workflow-name.yml',
+      path: '/workflow-name.yml',
       type: SourceFile.TypeEnum.DOCKSTOREGXFORMAT2,
     };
     const secondaryGalaxyFile = {

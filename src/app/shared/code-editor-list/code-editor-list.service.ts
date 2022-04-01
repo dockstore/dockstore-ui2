@@ -94,7 +94,7 @@ export class CodeEditorListService {
     }
     const filesToAdd: SourceFile[] = [];
     const newFilePath = CodeEditorListService.getDefaultPath(fileType, descriptorType);
-    if (!CodeEditorListService.hasPrimaryDescriptor(descriptorType, sourcefiles) && fileType === 'descriptor') {
+    if (!this.hasPrimaryDescriptor(descriptorType, sourcefiles) && fileType === 'descriptor') {
       if (descriptorType === ToolDescriptor.TypeEnum.NFL) {
         CodeEditorListService.pushFileIfNotNull(
           filesToAdd,
@@ -283,17 +283,15 @@ export class CodeEditorListService {
    * @returns {boolean} whether or not version has a primary descriptor
    * @memberof CodeEditorListService
    */
-  private static hasPrimaryDescriptor(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: SourceFile[]): boolean {
-    const pathToFind = '/Dockstore.' + descriptorType.toLowerCase();
+  private hasPrimaryDescriptor(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: SourceFile[]): boolean {
+    const pathToFind =
+      this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
     switch (descriptorType) {
       case ToolDescriptor.TypeEnum.NFL: {
         return (
           CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_PATH, sourcefiles) &&
           CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_CONFIG_PATH, sourcefiles)
         );
-      }
-      case ToolDescriptor.TypeEnum.GXFORMAT2: {
-        return CodeEditorListService.hasFilePath('/Dockstore.yml', sourcefiles);
       }
       default: {
         return CodeEditorListService.hasFilePath(pathToFind, sourcefiles);

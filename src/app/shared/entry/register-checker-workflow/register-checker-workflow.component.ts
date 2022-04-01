@@ -98,7 +98,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
   }
 
   updateDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): void {
-    this.descriptorPathPlaceholder = this.descriptorLanguageService.workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType);
+    this.descriptorPathPlaceholder = this.descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(descriptorType);
     this.descriptorPattern = this.descriptorLanguageService.getDescriptorPattern(descriptorType);
   }
 
