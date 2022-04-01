@@ -387,35 +387,35 @@ workflows:
                 - develop
     jobs:
       - uptime_monitor_no_auth:
-          name: "uptime_monitor_no_auth-dev"
+          name: "uptime_monitor_no_auth_dev"
           stack: "dev"
           context:
             - dockerhub
       - uptime_monitor_no_auth:
-          name: "uptime_monitor_no_auth-staging"
+          name: "uptime_monitor_no_auth_staging"
           stack: "staging"
           context:
             - dockerhub
-#      - uptime_monitor_no_auth:
-#          name: "uptime_monitor_no_auth-prod"
-#          stack: "prod"
-#          context:
-#            - dockerhub
-
+      - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth_prod"
+          stack: "prod"
+          context:
+            - dockerhub
       - uptime_monitor_auth:
+          name: "uptime_monitor_auth_dev"
           stack: "dev"
           context:
             - dockerhub
       - uptime_monitor_auth:
+          name: "uptime_monitor_auth_staging"
           stack: "staging"
           context:
             - dockerhub
-
-# TODO: wait until 1.12 release
-#      - uptime_monitor_auth:
-#          stack: "prod"
-#          context:
-#            - dockerhub
+      - uptime_monitor_auth:
+          name: "uptime_monitor_auth_prod"
+          stack: "prod"
+          context:
+            - dockerhub
 
 commands:
   install_container_dependencies:
