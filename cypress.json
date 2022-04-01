@@ -1,6 +1,6 @@
 {
   "projectId": "1ya4vj",
-  "baseUrl": "http://localhost:4200",
+  "baseUrl": "https://dockstore.org",
   "viewportHeight": 900,
   "viewportWidth": 1440,
   "defaultCommandTimeout": 30000,
