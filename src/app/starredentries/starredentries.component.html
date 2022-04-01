@@ -86,7 +86,7 @@
 
         <ng-template #workflowSummary let-workflow="workflow" let-isAppTool="isAppTool">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a routerLink="{{ isAppTool ? '/containers/' : '/workflows/' }}{{ workflow.full_workflow_path }}" class="no-underline">
+            <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
               <mat-card-header>
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
@@ -138,7 +138,7 @@
                 </span>
               </div>
             </div>
-            <a routerLink="{{ isAppTool ? '/containers/' : '/workflows/' }}{{ workflow.full_workflow_path }}" class="no-underline">
+            <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
               <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
             </a>
           </div>
