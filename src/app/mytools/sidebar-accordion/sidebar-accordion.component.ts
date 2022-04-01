@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { DockstoreTool } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { ToolQuery } from '../../shared/tool/tool.query';
@@ -14,7 +14,7 @@ interface groupEntriesBySource {
   templateUrl: './sidebar-accordion.component.html',
   styleUrls: ['./sidebar-accordion.component.scss'],
 })
-export class SidebarAccordionComponent implements OnInit {
+export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() openOneAtATime;
   @Input() groupEntriesObject: OrgToolObject<DockstoreTool>[];
   @Input() refreshMessage;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
@@ -20,7 +20,7 @@ interface groupEntriesBySource {
   templateUrl: './sidebar-accordion.component.html',
   styleUrls: ['./sidebar-accordion.component.scss'],
 })
-export class SidebarAccordionComponent implements OnInit {
+export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() openOneAtATime;
   @Input() groupEntriesObject: OrgWorkflowObject<Workflow>[];
   @Input() refreshMessage;
@@ -51,7 +51,6 @@ export class SidebarAccordionComponent implements OnInit {
     this.groupEntriesObject.forEach((groupEntryObject) => {
       this.sourceControlToWorkflows.get(groupEntryObject.sourceControl).groupEntryInfo.push(groupEntryObject);
     });
-    console.log(this.sourceControlToWorkflows);
   }
 
   ngOnChanges(changes: SimpleChanges) {

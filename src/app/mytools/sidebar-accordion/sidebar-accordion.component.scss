@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+
 @import 'materialColorScheme.scss';
 
 // Grouping titles by registery
@@ -31,6 +32,7 @@ mat-expansion-panel-header[aria-expanded='false'] {
   color: #487980;
   text-decoration: underline;
   background-color: white;
+
   :hover {
     background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
   }
@@ -39,6 +41,7 @@ mat-expansion-panel-header[aria-expanded='false'] {
 // Expansion body expanded
 :host ::ng-deep mat-expansion-panel .mat-expansion-panel-content {
   background-color: #f3fbff;
+
   .mat-expansion-panel-body {
     padding: 0rem 0.8rem 1.2rem;
   }
@@ -85,10 +88,12 @@ mat-expansion-panel {
 // Selected tool style
 .selected {
   background-color: #d0effd;
+
   a {
     color: #181f40;
     text-decoration: none;
   }
+
   .arrow {
     display: block;
     margin-right: 0.5rem;
