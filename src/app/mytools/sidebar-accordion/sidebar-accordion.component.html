@@ -1,11 +1,11 @@
-<div *ngFor="let registeryObj of sortedTools">
-  <div *ngIf="registeryObj.groupEntryInfo.length" class="registeryTitle">
-    <img src="../../../assets/images/registries/{{ registeryObj.sourceControlTitle }}.svg" class="mb-2" alt="Registry" />
-    {{ registeryObj?.sourceControlTitle }}
+<div *ngFor="let registeryObj of registryToTools | keyvalue">
+  <div *ngIf="registeryObj.value.groupEntryInfo.length" class="registeryTitle">
+    <img src="../../../assets/images/registries/{{ registeryObj.value.sourceControlTitle }}.svg" class="mb-2" alt="Registry" />
+    {{ registeryObj.value?.sourceControlTitle }}
   </div>
 
   <mat-accordion multi="true">
-    <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z" *ngFor="let orgObj of registeryObj.groupEntryInfo">
+    <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z" *ngFor="let orgObj of registeryObj.value.groupEntryInfo">
       <mat-expansion-panel-header class="pt-2">
         {{ orgObj?.namespace }}
       </mat-expansion-panel-header>

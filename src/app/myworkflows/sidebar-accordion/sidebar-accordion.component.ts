@@ -30,24 +30,12 @@ export class SidebarAccordionComponent implements OnInit {
   EntryType = EntryType;
   public isRefreshing$: Observable<boolean>;
 
-  public sortedWorkflows: groupEntriesBySource[] = [
-    {
-      groupEntryInfo: [],
-      sourceControlTitle: 'DOCKSTORE.ORG',
-    },
-    {
-      groupEntryInfo: [],
-      sourceControlTitle: 'GITHUB.COM',
-    },
-    {
-      groupEntryInfo: [],
-      sourceControlTitle: 'GITLAB.COM',
-    },
-    {
-      groupEntryInfo: [],
-      sourceControlTitle: 'BITBUCKET.ORG',
-    },
-  ];
+  public sourceControlToWorkflows: Map<string, groupEntriesBySource> = new Map<string, groupEntriesBySource>([
+    ['dockstore.org', { groupEntryInfo: [], sourceControlTitle: 'DOCKSTORE.ORG' }],
+    ['github.com', { groupEntryInfo: [], sourceControlTitle: 'GITHUB.COM' }],
+    ['gitlab.com', { groupEntryInfo: [], sourceControlTitle: 'GITLAB.COM' }],
+    ['bitbucket.org', { groupEntryInfo: [], sourceControlTitle: 'BITBUCKET.ORG' }],
+  ]);
 
   constructor(
     private workflowQuery: WorkflowQuery,
@@ -61,22 +49,15 @@ export class SidebarAccordionComponent implements OnInit {
    */
   public sortBySourceControl() {
     this.groupEntriesObject.forEach((groupEntryObject) => {
-      if (groupEntryObject.sourceControl === 'dockstore.org') {
-        this.sortedWorkflows[0].groupEntryInfo.push(groupEntryObject);
-      } else if (groupEntryObject.sourceControl === 'github.com') {
-        this.sortedWorkflows[1].groupEntryInfo.push(groupEntryObject);
-      } else if (groupEntryObject.sourceControl === 'gitlab.org') {
-        this.sortedWorkflows[2].groupEntryInfo.push(groupEntryObject);
-      } else if (groupEntryObject.sourceControl === 'bitbucket.org') {
-        this.sortedWorkflows[3].groupEntryInfo.push(groupEntryObject);
-      }
+      this.sourceControlToWorkflows.get(groupEntryObject.sourceControl).groupEntryInfo.push(groupEntryObject);
     });
+    console.log(this.sourceControlToWorkflows);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.groupEntriesObject && this.groupEntriesObject) {
-      for (var index in this.sortedWorkflows) {
-        this.sortedWorkflows[index].groupEntryInfo = [];
+      for (let key of this.sourceControlToWorkflows.keys()) {
+        this.sourceControlToWorkflows.get(key).groupEntryInfo = [];
       }
       this.sortBySourceControl();
     }
