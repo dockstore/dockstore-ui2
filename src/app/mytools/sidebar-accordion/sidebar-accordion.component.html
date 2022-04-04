@@ -1,7 +1,7 @@
-<div *ngFor="let registeryObj of registryToTools | keyvalue">
-  <div *ngIf="registeryObj.value.groupEntryInfo.length" class="registeryTitle">
-    <img src="../../../assets/images/registries/{{ registeryObj.value.sourceControlTitle }}.svg" class="mb-2" alt="Registry" />
-    {{ registeryObj.value?.sourceControlTitle }}
+<div *ngFor="let registeryObj of registryToTools | keyvalue: defaultOrdering">
+  <div *ngIf="registeryObj.value.groupEntryInfo.length" class="registryTitle">
+    <img src="../../../assets/images/registries/{{ registeryObj.value.registryTitle }}.svg" class="mb-2" alt="Registry" />
+    {{ registeryObj.value?.registryTitle }}
   </div>
 
   <mat-accordion multi="true">

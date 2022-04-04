@@ -1,14 +1,14 @@
-<div *ngFor="let registeryObj of sourceControlToWorkflows | keyvalue">
-  <div *ngIf="registeryObj.value.groupEntryInfo.length" class="registeryTitle">
-    <img src="../../../assets/images/registries/{{ registeryObj.value.sourceControlTitle }}.svg" class="mb-2 mr-1" alt="Source Control" />
-    {{ registeryObj.value?.sourceControlTitle }}
+<div *ngFor="let sourceObj of sourceControlToWorkflows | keyvalue: defaultOrdering">
+  <div *ngIf="sourceObj.value.groupEntryInfo.length" class="sourceTitle">
+    <img src="../../../assets/images/registries/{{ sourceObj.value.sourceControlTitle }}.svg" class="mb-2 mr-1" alt="Source Control" />
+    {{ sourceObj.value?.sourceControlTitle }}
   </div>
 
   <mat-accordion multi="true">
     <mat-expansion-panel
       [expanded]="orgObj.expanded"
       class="mat-elevation-z"
-      *ngFor="let orgObj of registeryObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
+      *ngFor="let orgObj of sourceObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
     >
       <mat-expansion-panel-header class="pt-2">
         {{ orgObj?.organization }}

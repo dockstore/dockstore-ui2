@@ -1,0 +1,73 @@
+<div *ngIf="groupEntriesObject.length">
+  <div class="sourceTitle">
+    <img src="../../../assets/images/registries/GITHUB.svg" class="mb-2 mr-1" alt="Registry" />
+    GITHUB APPS
+  </div>
+</div>
+
+<mat-accordion multi="true">
+  <mat-expansion-panel
+    [expanded]="orgObj.expanded"
+    class="mat-elevation-z"
+    *ngFor="let orgObj of groupEntriesObject; trackBy: trackByOrgWorkflowObject"
+  >
+    <mat-expansion-panel-header class="pt-2">
+      {{ orgObj?.organization }}
+    </mat-expansion-panel-header>
+
+    <mat-tab-group mat-stretch-tabs class="tool-tab-group" [selectedIndex]="orgObj | selectTab: (workflowId$ | async)">
+      <mat-tab label="Published">
+        <mat-list class="org-accordion-list">
+          <mat-list-item
+            *ngFor="let workflowObj of orgObj?.published; trackBy: trackByWorkflowId"
+            [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }"
+          >
+            <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+            <a
+              class="no-wrap"
+              title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
+              [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
+            >
+              {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
+            </a>
+          </mat-list-item>
+          <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
+            <p class="text-center size-small">No published tools.</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-tab>
+      <mat-tab label="Unpublished">
+        <mat-list class="org-accordion-list">
+          <mat-list-item
+            *ngFor="let workflowObj of orgObj?.unpublished; trackBy: trackByWorkflowId"
+            [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }"
+          >
+            <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+            <a
+              class="no-wrap"
+              title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
+              [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
+            >
+              {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
+            </a>
+          </mat-list-item>
+          <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
+            <p class="text-center size-small">No unpublished tools.</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-tab>
+    </mat-tab-group>
+    <mat-action-row>
+      <div fxFlex fxLayout="row" fxLayoutAlign="end">
+        <button
+          mat-button
+          class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z mr-1 mt-2 mb-2"
+          (click)="openGitHubAppsLogs(orgObj.organization)"
+        >
+          <img src="../../../assets/svg/git-hub.svg" alt="GitHub app logs" class="pr-2" />
+          Apps Logs
+        </button>
+      </div>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -9,8 +9,11 @@ import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.component';
+import { KeyValue } from '@angular/common';
+import { MetadataService } from '../../shared/swagger/api/metadata.service';
+import { SourceControlBean } from '../../shared/swagger';
 
-interface groupEntriesBySource {
+interface GroupEntriesBySource {
   groupEntryInfo: OrgWorkflowObject<Workflow>[];
   sourceControlTitle: string;
 }
@@ -18,7 +21,7 @@ interface groupEntriesBySource {
 @Component({
   selector: 'app-workflow-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
-  styleUrls: ['./sidebar-accordion.component.scss'],
+  styleUrls: ['./sidebar-accordion.component.scss', '../../shared/styles/my-entry-sidebar.scss'],
 })
 export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() openOneAtATime;
@@ -29,20 +32,31 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   entryType$: Observable<EntryType>;
   EntryType = EntryType;
   public isRefreshing$: Observable<boolean>;
-
-  public sourceControlToWorkflows: Map<string, groupEntriesBySource> = new Map<string, groupEntriesBySource>([
-    ['dockstore.org', { groupEntryInfo: [], sourceControlTitle: 'DOCKSTORE.ORG' }],
-    ['github.com', { groupEntryInfo: [], sourceControlTitle: 'GITHUB.COM' }],
-    ['gitlab.com', { groupEntryInfo: [], sourceControlTitle: 'GITLAB.COM' }],
-    ['bitbucket.org', { groupEntryInfo: [], sourceControlTitle: 'BITBUCKET.ORG' }],
-  ]);
+  private sourceControlMap: Array<SourceControlBean> = [];
+  public sourceControlToWorkflows: Map<string, GroupEntriesBySource> = new Map<string, GroupEntriesBySource>([]);
 
   constructor(
     private workflowQuery: WorkflowQuery,
     public dialog: MatDialog,
     private sessionQuery: SessionQuery,
-    private alertQuery: AlertQuery
-  ) {}
+    private alertQuery: AlertQuery,
+    private metadataService: MetadataService
+  ) {
+    this.metadataService.getSourceControlList().subscribe((map) => {
+      this.sourceControlMap = map;
+      this.sourceControlMap.forEach((source) => {
+        this.sourceControlToWorkflows.set(source.value, { groupEntryInfo: [], sourceControlTitle: source.friendlyName.toUpperCase() });
+      });
+      this.sortBySourceControl();
+    });
+  }
+
+  /**
+   * Display in original ordering when iterating through keys
+   */
+  public defaultOrdering(_left: KeyValue<any, any>, _right: KeyValue<any, any>): number {
+    return 0;
+  }
 
   /**
    * Sort workflows by source control to display by groups
@@ -58,7 +72,9 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
       for (let key of this.sourceControlToWorkflows.keys()) {
         this.sourceControlToWorkflows.get(key).groupEntryInfo = [];
       }
-      this.sortBySourceControl();
+      if (this.sourceControlToWorkflows.size != 0) {
+        this.sortBySourceControl();
+      }
     }
   }
 

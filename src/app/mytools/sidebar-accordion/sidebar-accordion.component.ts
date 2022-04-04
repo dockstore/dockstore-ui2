@@ -3,38 +3,48 @@ import { DockstoreTool } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { OrgToolObject } from '../my-tool/my-tool.component';
+import { KeyValue } from '@angular/common';
+import { MetadataService } from '../../shared/swagger/api/metadata.service';
 
-interface groupEntriesBySource {
+interface GroupEntriesByRegistry {
   groupEntryInfo: OrgToolObject<DockstoreTool>[];
-  sourceControlTitle: string;
+  registryTitle: string;
 }
 
 @Component({
   selector: 'app-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
-  styleUrls: ['./sidebar-accordion.component.scss'],
+  styleUrls: ['./sidebar-accordion.component.scss', '../../shared/styles/my-entry-sidebar.scss'],
 })
 export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() openOneAtATime;
   @Input() groupEntriesObject: OrgToolObject<DockstoreTool>[];
   @Input() refreshMessage;
   public toolId$: Observable<number>;
+  private dockerRegistryMap = [];
+  public registryToTools: Map<string, GroupEntriesByRegistry> = new Map<string, GroupEntriesByRegistry>([]);
   activeTab = 0;
 
-  public registryToTools: Map<string, groupEntriesBySource> = new Map<string, groupEntriesBySource>([
-    ['quay.io', { groupEntryInfo: [], sourceControlTitle: 'QUAY.IO' }],
-    ['registry.gitlab.com', { groupEntryInfo: [], sourceControlTitle: 'GITLAB.COM' }],
-    ['github.com', { groupEntryInfo: [], sourceControlTitle: 'GITHUB.COM' }],
-    ['dockstore.org', { groupEntryInfo: [], sourceControlTitle: 'DOCKSTORE.ORG' }],
-    ['registry.hub.docker.com', { groupEntryInfo: [], sourceControlTitle: 'HUB.DOCKER.COM' }],
-    // For additional tools, to be removed once amazon and seven bridges have their own groupings
-    ['additional', { groupEntryInfo: [], sourceControlTitle: 'ADDITIONAL' }],
-    // Amazon and seven bridges commented out for now, to be included at a later time
-    // ["", { groupEntryInfo: [], sourceControlTitle: 'AMAZONECR'} ],
-    // ["", { groupEntryInfo: [], sourceControlTitle: 'SEVENBRIDGES'} ],
-  ]);
+  constructor(private toolQuery: ToolQuery, private metadataService: MetadataService) {
+    this.metadataService.getDockerRegistries().subscribe((map) => {
+      this.dockerRegistryMap = map;
+      this.dockerRegistryMap.forEach((registry) => {
+        // Do not create new keys for amazon and seven bridges, to be put in additional category
+        if (registry.dockerPath !== null && registry.dockerPath !== 'public.ecr.aws')
+          this.registryToTools.set(registry.dockerPath, { groupEntryInfo: [], registryTitle: registry.friendlyName.toUpperCase() });
+      });
+      // For additional tools, to be removed once amazon and seven bridges have their own groupings
+      this.registryToTools.set('additional', { groupEntryInfo: [], registryTitle: 'ADDITIONAL' });
+      this.sortByRegistries();
+    });
+  }
 
-  constructor(private toolQuery: ToolQuery) {}
+  /**
+   * Display in original ordering when iterating through keys
+   */
+  public defaultOrdering(_left: KeyValue<any, any>, _right: KeyValue<any, any>): number {
+    return 0;
+  }
 
   /**
    * Sort tools by registries to display by groups
@@ -44,8 +54,6 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
       if (this.registryToTools.has(groupEntryObject.registry)) {
         this.registryToTools.get(groupEntryObject.registry).groupEntryInfo.push(groupEntryObject);
       } else {
-        // If a tool doesn't belong to any of the specified keys then add to additional group
-        // For additional tools, remove once amazon and seven bridges have their own groups
         this.registryToTools.get('additional').groupEntryInfo.push(groupEntryObject);
       }
     });
