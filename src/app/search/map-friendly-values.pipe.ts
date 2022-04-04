@@ -160,7 +160,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         // then return the tabName, which is sort of a description of the file,
         // e.g. whether it is a descriptor or test file
         const fileTabsSchematic =
-          this.descriptorLanguageService.sourceFileTypeEnumToExtendedDescriptorLanguageBean(subBucketString).fileTabs;
+          this.descriptorLanguageService.sourceFileTypeStringToExtendedDescriptorLanguageBean(subBucketString).fileTabs;
         const fileTypes = fileTabsSchematic.find((fileTab) => fileTab.fileTypes.find((fileType) => fileType === subBucketString));
         if (fileTypes) {
           return fileTypes.tabName;

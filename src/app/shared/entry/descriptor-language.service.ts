@@ -66,7 +66,7 @@ export class DescriptorLanguageService {
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
-  sourceFileTypeEnumToExtendedDescriptorLanguageBean(sourceFileType: string | null): ExtendedDescriptorLanguageBean {
+  sourceFileTypeStringToExtendedDescriptorLanguageBean(sourceFileType: string | null): ExtendedDescriptorLanguageBean {
     let foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find((extendedDescriptorLanguage) =>
       extendedDescriptorLanguage.descriptorFileTypes.find((f) => f === sourceFileType)
     );
