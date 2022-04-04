@@ -82,7 +82,7 @@ export class DescriptorLanguageService {
 
   descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBeanValue: string | null): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
-      (extendedDescriptorLanguage) => extendedDescriptorLanguage.value === descriptorLanguageBeanValue
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.value.toUpperCase() === descriptorLanguageBeanValue.toUpperCase()
     );
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }

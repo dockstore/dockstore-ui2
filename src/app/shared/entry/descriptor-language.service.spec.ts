@@ -207,4 +207,20 @@ describe('Service: DescriptorLanguage', () => {
     // Service not included at this time
     expect(placeholder).not.toContain(ToolDescriptor.TypeEnum.SERVICE);
   });
+
+  it('should be able to get correct extended language bean', () => {
+    const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
+    metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
+    let placeholder = descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean('gxformat2');
+    expect(placeholder.value === 'GALAXY');
+    placeholder = descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean('cwl');
+    expect(placeholder.value === 'CWL');
+    placeholder = descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean('nFL');
+    expect(placeholder.value === 'NFL');
+
+    // Service not included at this time
+    placeholder = descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean('SERVICE');
+    expect(placeholder.value === null);
+  });
 });

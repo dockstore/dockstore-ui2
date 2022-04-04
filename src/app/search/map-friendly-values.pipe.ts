@@ -136,18 +136,16 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     switch (key) {
       case 'descriptorType':
       case 'descriptor_type':
-        const shortFriendlyName = this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
-          subBucketString.toUpperCase()
-        ).shortFriendlyName;
+        const shortFriendlyName =
+          this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(subBucketString).shortFriendlyName;
         if (shortFriendlyName) {
           return shortFriendlyName;
         } else {
           return subBucketString;
         }
       case 'descriptor_tooltip':
-        const friendlyName = this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(
-          subBucketString.toUpperCase()
-        ).friendlyName;
+        const friendlyName =
+          this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(subBucketString).friendlyName;
         if (friendlyName) {
           return friendlyName;
         } else {
