@@ -101,11 +101,13 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
    */
   isGitHubAppTool(): boolean {
     let isAppTool: boolean = false;
-    this.entryType$.subscribe((value) => {
-      if (value === this.EntryType.Tool) {
-        isAppTool = true;
-      }
-    }).unsubscribe;
+    this.entryType$
+      .subscribe((value) => {
+        if (value === this.EntryType.Tool) {
+          isAppTool = true;
+        }
+      })
+      .unsubscribe();
     return isAppTool;
   }
 }
